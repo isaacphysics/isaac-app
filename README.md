@@ -1,35 +1,6 @@
-# angular-seed — the seed for AngularJS apps
+# Isaac Physics front-end project
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
-You can use it to quickly bootstrap your angular webapp projects and dev environment for these
-projects.
-
-The seed contains a sample AngularJS application and is preconfigured to install the Angular
-framework and a bunch of development and testing tools for instant web development gratification.
-
-The seed app doesn't do much, just shows how to wire two controllers and views together.
-
-
-## Getting Started
-
-To get you started you can simply clone the angular-seed repository and install the dependencies:
-
-### Prerequisites
-
-You need git to clone the angular-seed repository. You can get it from
-[http://git-scm.com/](http://git-scm.com/).
-
-We also use a number of node.js tools to initialize and test angular-seed. You must have node.js and
-its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
-
-### Clone angular-seed
-
-Clone the angular-seed repository using [git][git]:
-
-```
-git clone https://github.com/angular/angular-seed.git
-cd angular-seed
-```
+This project is based on the angular-seed application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
 
 ### Install Dependencies
 
@@ -65,37 +36,6 @@ npm start
 ```
 
 Now browse to the app at `http://localhost:8000/app/index.html`.
-
-
-
-## Directory Layout
-
-    app/                --> all of the files to be used in production
-      css/              --> css files
-        app.css         --> default stylesheet
-      img/              --> image files
-      index.html        --> app layout file (the main html template file of the app)
-      index-async.html  --> just like index.html, but loads js files asynchronously
-      js/               --> javascript files
-        app.js          --> application
-        controllers.js  --> application controllers
-        directives.js   --> application directives
-        filters.js      --> custom angular filters
-        services.js     --> custom angular services
-      partials/             --> angular view partials (partial html templates)
-        partial1.html
-        partial2.html
-
-    test/               --> test config and source files
-      protractor-conf.js    --> config file for running e2e tests with Protractor
-      e2e/                  --> end-to-end specs
-        scenarios.js
-      karma.conf.js         --> config file for running unit tests with Karma
-      unit/                 --> unit level specs/tests
-        controllersSpec.js      --> specs for controllers
-        directivessSpec.js      --> specs for directives
-        filtersSpec.js          --> specs for filters
-        servicesSpec.js         --> specs for services
 
 
 ## Testing
@@ -168,12 +108,7 @@ This script will execute the end-to-end tests against the application being host
 development server.
 
 
-## Updating Angular
-
-Previously we recommended that you merge in changes to angular-seed into your own fork of the project.
-Now that the angular framework library code and tools are acquired through package managers (npm and
-bower) you can use these tools instead to update the dependencies.
-
+## Updating
 You can update the tool dependencies by running:
 
 ```
@@ -189,21 +124,6 @@ bower update
 ```
 
 This will find the latest versions that match the version ranges specified in the `bower.json` file.
-
-
-## Loading Angular Asynchronously
-
-The angular-seed project supports loading the framework and application scripts asynchronously.  The
-special `index-async.html` is designed to support this style of loading.  For it to work you must
-inject a piece of Angular JavaScript into the HTML page.  The project has a predefined script to help
-do this.
-
-```
-npm run update-index-async
-```
-
-This will copy the contents of the `angular-loader.js` library file into the `index-async.html` page.
-You can run this every time you update the version of Angular that you are using.
 
 
 ## Serving the Application Files
