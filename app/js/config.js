@@ -9,6 +9,7 @@ require.config({
         "foundation": '../../bower_components/foundation/js/foundation',
         "angular": '../../bower_components/angular/angular',
         "angular-route": '../../bower_components/angular-route/angular-route',
+        "angular-resource": '../../bower_components/angular-resource/angular-resource',
         "react": '../../bower_components/react/react-with-addons',
         "JSXTransformer": '../../bower_components/react/JSXTransformer',
         "angulartics": '../../bower_components/angulartics/src/angulartics',
@@ -18,6 +19,7 @@ require.config({
 
     shim: {
         "foundation": ['jquery', 'modernizr'],
+        "angular-resource": ['angular'],
         "angular-route": ['angular'],
         "angular": ['jquery'],
         "angulartics-ga": ["angulartics"],
