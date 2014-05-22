@@ -1,32 +1,553 @@
-/* app css stylesheet */
 
+// Other 3rd party css
+@import "video-js";
+// Foundation
+@import "settings";
 @import "foundation";
+@import "responsive-tables";
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+// Video JS overrides
+
+.vjs-time-controls, .vjs-time-divider, .vjs-volume-control
+{
+    display: none;
 }
 
-.menu:before {
-  content: "[";
+.video-js
+{
+    margin-bottom: 2em;
 }
 
-.menu:after {
-  content: "]";
+// Rutherford specific items
+
+body
+{
+    position: relative;
 }
 
-.menu > li {
-  display: inline;
+.bg-wrap
+{
+    background-image: url('/assets/isaac-bg.jpg');
+    background-repeat: repeat-x;
+    background-position: left bottom;
+    padding-bottom: 25px;
 }
 
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
+@media #{$small-only}
+{
+    body
+    {
+        overflow-x: hidden;
+    }
 }
 
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+// Bullets
+
+.ru-bullet-header, .ru-table-header, .ru-tips-header
+{
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: .4rem;
+}
+
+ul
+{
+    list-style-image: url('../assets/hexagon.svg');
+}
+
+
+ol.ru_ol {
+    list-style-type: none;
+    counter-reset: ol-counter;
+    margin: 0;
+    margin-left: $list-ordered-side-margin;
+    padding: 0;
+}
+
+ol.ru_ol > li:before {
+    content: counter(ol-counter) ".";
+    counter-increment: ol-counter;
+    display: inline-block;
+    position: relative;
+    left: -1em;
+    min-width: 12px;
+    font-weight: bold;
+    text-align: right;
+    color: $ru_green;
+}
+
+// Orbit
+
+.orbit-container .orbit-bullets li
+{
+    @include radius(0);
+    background: none;
+    background-image: url('../assets/hexagon-grey.svg');
+    background-repeat: no-repeat;
+}
+
+.orbit-container .orbit-bullets li.active
+{
+    background: none;
+    background-image: url('../assets/hexagon.svg');
+    background-repeat: no-repeat;
+}
+
+ul.ru-right-bullets~.orbit-bullets-container
+{
+    text-align: right;
+    bottom: -10px;
+    right: 0px;
+    position: absolute;
+}
+
+// Block adjustgments
+
+figure
+{
+    margin: 0;
+}
+
+// Block which needs a little more space above
+.space
+{
+    margin-top: 15px;
+}
+
+// Type adjustments
+
+.caption
+{
+    font-style: italic;
+    font-weight: 300;
+    margin-top: 5px;
+}
+
+.light, .panel p.light 
+{
+    color: #858585;
+}
+
+h3,h4,h5,h6
+{
+    font-weight: 600;
+}
+
+h1~.subheader { position: relative; bottom: 10px;}
+h2~.subheader { position: relative; bottom:  9px;}
+h3~.subheader { position: relative; bottom:  9px;}
+h4~.subheader { position: relative; bottom:  8px;}
+h5~.subheader { position: relative; bottom:  8px;}
+h6~.subheader { position: relative; bottom:  8px;}
+
+.ru-quote
+{
+    @extend .text-center;
+    font-size: rem-calc(22);
+    font-style: italic;
+    font-weight: 300;
+}
+
+// Type top panel adjustments
+
+.ru-desktop-panel   {
+    h1 { font-size: $h3-font-size; }
+    h2 { font-size: $h4-font-size; }
+    h3 { font-size: $h5-font-size; }
+    h4 { font-size: $h6-font-size; }
+    h5 { font-size: $h6-font-size; }
+    h6 { font-size: $h6-font-size; }
+}
+
+.ru-mobile-panel   {
+    h1 { font-size: $h3-font-size - rem-calc(5); }
+    h2 { font-size: $h4-font-size - rem-calc(5); }
+    h3 { font-size: $h5-font-size; }
+    h4 { font-size: $h6-font-size; }
+    h5 { font-size: $h6-font-size; }
+    h6 { font-size: $h6-font-size; }
+}
+
+// Left float
+
+.pad-left
+{
+    @extend .left;
+    margin-right: 2em;
+}
+
+// Table
+
+.ru-table
+{
+    width: 100%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+.ru-table thead tr, .ru-table tbody tr, .ru-table thead tr th, .ru-table tbody tr td
+{
+    @extend .text-center;
+    border: 1px solid #ddd;
+
+}
+
+// Desktop Header
+
+.ru-desktop-header
+{
+    @extend .hide-for-small-only;
+}
+
+$ru_nav_size : 7em;
+
+.ru-desktop-nav-item
+{
+    height: 140px;
+    display: inline-block;
+    margin-top: -1px;
+}
+
+.ru-desktop-menu-img
+{
+    height: 136px;
+}
+
+.ru-desktop-nav-item-inner {
+	width: 7em;
+	height: 188px;
+	background-image: url('/assets/menu-desktop-inactive.png');
+	position: relative;
+}
+
+.ru-desktop-nav-item span
+{
+    width: $ru_nav_size - 0.7;
+    text-align: center;
+    top: 3.5em;
+    position: relative;
+    font-size: 1.1em;
+    display: inline-block;
+    font-style: italic;
+    font-weight: 300;
+    color: #333333;
+}
+
+.ru-desktop-nav-item-inner:hover
+{
+    background-image: url('/assets/menu-desktop-inactive-hover.png');
+}
+
+.ru-desktop-nav-item-inner:hover span
+{
+    color: #fff;
+}
+
+.ru-desktop-nav-item-inner.active
+{
+	background-image: url('/assets/menu-desktop-active.png');
+        z-index: 1000;
+        cursor: default;
+}
+
+.ru-desktop-nav-item-inner.active span
+{
+    font-weight: 600;
+    color: #fff;
+}
+
+.ru-desktop-panel
+{
+    margin-top: 19px;
+    padding: 8px 8px 8px 20px;
+    background: white;
+    border: $ru_green solid 1px;
+    margin-bottom: 10px;
+}
+
+.ru-desktop-panel-search
+{
+    position: absolute;
+    right: 15px;
+    top: 19px;
+}
+
+// Mobile Header
+
+.ru-mobile-header
+{
+    @extend .show-for-small-only;
+}
+
+.ru-fixed-header
+{
+    background-color: black;
+    height: 42px;
+    font-wight: 400;
+    font-size: 0.9em;
+    font-style: italic;
+    color: white;
+}
+
+.ru-fixed-header * span
+{
+    position: relative;
+    bottom: 16px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+@each $name in (login, down, search)
+{
+    .ru-mobile-#{$name}
+    {
+        height: 42px;
+        width: 28px;
+        background-image: url('/assets/ru-mobile-#{$name}.png');
+        background-repeat: none;
+        display: inline-block;
+        @if $name == down { cursor: pointer;}
+    }
+}
+
+.ru-mobile-panel
+{
+    border-top: 1px solid $ru_green;
+    border-bottom: 1px solid $ru_green;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: white;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 2px;
+}
+
+.ru-mobile-nav
+{
+    margin-top: 42px;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 0.8em;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.ru-mobile-menu-img
+{
+    @extend .left;
+    width: 72px;
+}
+
+.ru-mobile-nav-item-inner {
+	width: 72px;
+	height: 129px;
+	background-image: url('/assets/menu-mobile-inactive.png');
+	position: relative;
+}
+
+.ru-mobile-nav-item-inner.active
+{
+        background-image: url('/assets/menu-mobile-active.png'); 
+        color: white;
+}
+
+.ru-mobile-nav-item
+{
+    @extend .right;
+    height: 100px;
+    display: inline-block;
+    position: relative;
+    margin-left: 4px;
+    color: #333333;
+}
+
+.ru-mobile-nav-item span
+{
+    width: 72px;
+    text-align: center;
+    top: 3em;
+    position: relative;
+    font-size: 1.1em;
+    display: inline-block;
+}
+
+// Footer
+
+footer
+{
+    width: 100%;
+    background-color: $ru_footer;
+    color: #fff;
+    font-weight: 300;
+    font-size: 0.9rem;
+    padding-bottom: 2.5em;
+}
+
+// Desktop
+
+.ru-desktop-banner
+{
+    vertical-align: top;
+    width: 100px;
+}
+
+.footer_link
+{
+    color: #fff;
+}
+
+.footer_link:hover
+{
+    color: #ddd;
+}
+
+.footer_links
+{
+    padding-top: 3.5em;
+    line-height: 120%;
+}
+
+.footer_links a
+{
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.footer_links a:hover
+{
+    color: #ddd;
+    font-style: italic;
+}
+
+@each $name in (google, facebook, twitter)
+{
+    .ru-social-#{$name}
+    {
+        height: 48px;
+        width: 48px;
+        background-size: 48px 48px;
+        background-image: url('/assets/social-icon-#{$name}.png');
+        background-repeat: none;
+    }
+    
+    .ru-social-#{$name}:hover
+    {
+        background-image: url('/assets/social-icon-#{$name}-hover.png');
+    }
+    
+    a.ru-social-#{$name}
+    {
+        display: inline-block;
+    }
+}
+
+.ru-social
+{
+    font-size: 0.9rem;
+    display: inline;
+    position: relative;
+    bottom: 28px;
+    padding-right: 4px;
+}
+
+@media only screen and (max-width: 52.5em)
+{
+    .ru-social
+    {
+        display: none;
+    }
+}
+
+.ru-footer-base
+{
+    margin-top: 1em;
+    color: #fff;
+    line-height: 150%;
+    font-style: italic;
+}
+
+.ru-footer-base span:first-child
+{
+    position: relative;
+    top: 12px;
+}
+
+// Mobile specifics
+
+img.ru-mobile-logo
+{
+    vertical-align: top;
+    width: 100px;
+}
+
+.ru-mobile-doe
+{
+    position: absolute;
+    top: 20px;
+}
+
+.ru-mobile-social
+{
+    margin-top: 2em;
+}
+
+.ru-mobile-social span
+{
+    color: $ru_green;
+    display: block;
+    padding-top: 6px;
+    padding-right: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 120%;
+}
+
+.ru-mobile-social a
+{
+    padding-left: 8px;
+}
+
+.ru-mobile-menu
+{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ru-mobile-menu hr
+{
+    border: solid  #666;
+    border-width: 1px 0 0;
+    margin: 0;
+}
+
+.ru-mobile-menu * img
+{
+    @extend .right;
+    height: 24px;
+}
+
+.ru-mobile-menu * span
+{
+    position: relative;
+    top: 4px;
+    font-style: italic;
+}
+
+.ru-mobile-menu * a
+{
+    color: #fff;
+    font-style: italic;
+    padding-bottom: 1.5em;
+    padding-top: 1em;
+    display: block;
+    
+}
+
+.ru-mobile-menu * a:hover
+{
+    color: #fff;
+    font-style: italic;
 }

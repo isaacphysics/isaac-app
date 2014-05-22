@@ -1,6 +1,8 @@
 'use strict';
 
-define(["foundation", "angular", "angular-route", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define(["foundation", "app/responsive_video", "angular", "angular-route", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+
+	var rv = require("app/responsive_video");
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
@@ -20,9 +22,42 @@ define(["foundation", "angular", "angular-route", "app/controllers", "app/direct
 		$routeProvider.otherwise({redirectTo: '/view1'});
 	}])
 
-	.run([function() {
+	.run(['$rootScope', function($rootScope) {
 
-		$(document).foundation();
+        // Make all videos responsive
+        rv.updateAll();
+        
+        $rootScope.$on("$includeContentLoaded", function() {
+            console.log("Partial loaded. Reinitialising foundation.");
+            $(document).foundation({
+                // Queries for retina images for data interchange
+                interchange:
+                {
+                    named_queries :
+                    {
+                        small_retina :  'only screen and (min-width: 1px) and (-webkit-min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1px) and (min--moz-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1px) and (-o-min-device-pixel-ratio: 2/1),'+
+                                        'only screen and (min-width: 1px) and (min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1px) and (min-resolution: 192dpi),'+
+                                        'only screen and (min-width: 1px) and (min-resolution: 2dppx)',
+                        medium_retina : 'only screen and (min-width: 641px) and (-webkit-min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 641px) and (min--moz-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 641px) and (-o-min-device-pixel-ratio: 2/1),'+
+                                        'only screen and (min-width: 641px) and (min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 641px) and (min-resolution: 192dpi),'+
+                                        'only screen and (min-width: 641px) and (min-resolution: 2dppx)',
+                        large_retina :  'only screen and (min-width: 1024px) and (-webkit-min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1024px) and (min--moz-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1024px) and (-o-min-device-pixel-ratio: 2/1),'+
+                                        'only screen and (min-width: 1024px) and (min-device-pixel-ratio: 2),'+
+                                        'only screen and (min-width: 1024px) and (min-resolution: 192dpi),'+
+                                        'only screen and (min-width: 1024px) and (min-resolution: 2dppx)'
+                    }
+                }
+            });
+            $(document).foundation('interchange', 'reflow');
+        });
 
 	}]);
 
