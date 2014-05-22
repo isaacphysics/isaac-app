@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/api"], function() {
+define(["angular", "angular-resource", "app/services/Api"], function() {
 
 	/* Services */
 
@@ -24,7 +24,7 @@ define(["angular", "angular-resource", "app/services/api"], function() {
 
 		this.$get = ["$resource", function ApiFactory($resource) {
 
-			var Api = require("app/services/api");
+			var Api = require("app/services/Api");
 
 			return new Api($resource, server);
 				
