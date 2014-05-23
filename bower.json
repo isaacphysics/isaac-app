@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "angular": "1.2.x",
-    "angular-route": "1.2.x",
+    "angular-ui-router": "0.2.10",
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "angular-resource": "1.2.x",

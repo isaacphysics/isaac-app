@@ -1,6 +1,6 @@
 'use strict';
 
-define(["foundation", "app/responsive_video", "angular", "angular-route", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define(["foundation", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
 
 	var rv = require("app/responsive_video");
 
@@ -13,13 +13,10 @@ define(["foundation", "app/responsive_video", "angular", "angular-route", "angul
 		'isaac.controllers'
 	])
 
-	.config(['$routeProvider', '$locationProvider', 'apiProvider', function($routeProvider, $locationProvider, apiProvider) {
+	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
 
 		$locationProvider.html5Mode(true).hashPrefix("!");
 
-		$routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
-		$routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
-		$routeProvider.otherwise({redirectTo: '/view1'});
 
         // Here we configure the api provider with the server running the API. Don't need to do this if it's local.
         apiProvider.server("http://isaac-dev.dtg.cl.cam.ac.uk");

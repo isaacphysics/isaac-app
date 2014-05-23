@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-route", "app/filters"], function() {
+define(["angular", "app/filters", "app/directives/IsaacContent"], function() {
 
 	/* Directives */
 
