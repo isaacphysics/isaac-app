@@ -1,6 +1,6 @@
 'use strict';
 
-define(["RSVP", "foundation", "angular-ui-router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
