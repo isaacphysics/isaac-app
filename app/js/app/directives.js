@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "app/filters", "app/directives/IsaacContent"], function() {
+define(["angular", "app/filters", "app/directives/IsaacContent", "app/directives/IsaacContentLoad"], function() {
 
 	/* Directives */
 
@@ -14,5 +14,7 @@ define(["angular", "app/filters", "app/directives/IsaacContent"], function() {
 	}])
 
 	.directive('isaacContent', require("app/directives/IsaacContent"))
+
+	.directive('isaacContentLoad', require("app/directives/IsaacContentLoad"))
 
 });

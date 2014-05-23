@@ -63,6 +63,7 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
             .state('home', staticPageState("/", "home"))
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
+            .state('contact', staticPageState("/contact", "contact"))
             .state('404', {
                 params: ["target"],
                 views: {
