@@ -11,6 +11,8 @@ define(["angular", "app/filters", "app/directives/IsaacContent"], function() {
 	    return function(scope, elm, attrs) {
 	    	elm.text(version);
 	    };
-	}]);
+	}])
+
+	.directive('isaacContent', require("app/directives/IsaacContent"))
 
 });

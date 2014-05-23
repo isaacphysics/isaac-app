@@ -24,6 +24,10 @@ define(["foundation", "app/responsive_video", "angular", "angular-resource", "ap
 
 	.run(['$rootScope', 'api', function($rootScope, api) {
 
+        api.pages.get({id: "about_us_index"}).$promise.then(function(d) {
+            $rootScope.aboutPage = d.contentObject;
+            $rootScope.$apply();
+        });
 
         $rootScope.$on("$includeContentLoaded", function() {
             console.log("Partial loaded. Reinitialising document.");
