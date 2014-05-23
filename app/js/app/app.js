@@ -34,11 +34,11 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
                 },                
                 views: {
                     "header-panel": {
-                        templateUrl: "partials/states/generic_page/header_panel.html",
+                        templateUrl: "/partials/states/generic_page/header_panel.html",
                         controller: "GenericPageHeaderController",
                     },
                     "body": {
-                        templateUrl: "partials/states/generic_page/body.html",
+                        templateUrl: "/partials/states/generic_page/body.html",
                         controller: "GenericPageBodyController",
                     }
                 }
@@ -50,10 +50,10 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
                 url: url,
                 views: {
                     "header-panel": {
-                        templateUrl: "partials/states/" + folder + "/header_panel.html",
+                        templateUrl: "/partials/states/" + folder + "/header_panel.html",
                     },
                     "body": { 
-                        templateUrl: "partials/states/" + folder + "/body.html"
+                        templateUrl: "/partials/states/" + folder + "/body.html"
                     },
                 },
             }
@@ -73,13 +73,13 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
                 },
                 views: {
                     "header-panel": {
-                        templateUrl: "partials/states/generic_page/header_panel.html",
+                        templateUrl: "/partials/states/generic_page/header_panel.html",
                         controller: ["$scope", "page", function($scope, page) {
                             $scope.title = "Content object: " + page.contentObject.id;
                         }],
                     },
                     "body": {
-                        templateUrl: "partials/states/generic_page/body.html",
+                        templateUrl: "/partials/states/generic_page/body.html",
                         controller: ["$scope", "page", function($scope, page) {
                             $scope.doc = page.contentObject;
                         }],
