@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-route"], function() {
+define(["angular"], function() {
 
 	/* Filters */
 

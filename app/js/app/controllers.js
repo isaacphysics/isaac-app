@@ -1,16 +1,14 @@
 'use strict';
 
-define(["angular", "angular-route", "app/filters", "app/services", "app/directives"], function() {
+define(["angular", "app/filters", "app/services", "app/directives", "app/controllers/GenericPageControllers"], function() {
+	
+	var genericPage = require("app/controllers/GenericPageControllers");
 	
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
 	
-	.controller('MyCtrl1', ['$scope', function($scope) {
+	.controller('GenericPageHeaderController', genericPage.HeaderController)
 
-	}])
-
-	.controller('MyCtrl2', ['$scope', function($scope) {
-
-	}]);
+	.controller('GenericPageBodyController', genericPage.BodyController);
 });

@@ -1,33 +1,95 @@
 'use strict';
 
-define(["foundation", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define(["RSVP", "foundation", "angular-ui-router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+
+    window.Promise = RSVP.Promise;
+    window.Promise.defer = RSVP.defer;
 
 	var rv = require("app/responsive_video");
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
-		'ngRoute',
+        'ui.router',
 		'isaac.filters',
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers'
 	])
 
-	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
+	.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'apiProvider', function($stateProvider, $urlRouterProvider, $locationProvider, apiProvider) {
 
-		$locationProvider.html5Mode(true).hashPrefix("!");
+        $urlRouterProvider.when("", "/");
+        $urlRouterProvider.otherwise(function($injector, $location) {
+            var $state = $injector.get("$state");
+            $state.go("404", {target: $location.url()});
+        });
 
+        var genericPageState = function(url, id) {
+            return {
+                url: url,
+                resolve: {
+                    "page": ["api", function(api) {
+                        return api.pages.get({id: id}).$promise;
+                    }]
+                },                
+                views: {
+                    "header-panel": {
+                        templateUrl: "partials/states/generic_page/header_panel.html",
+                        controller: "GenericPageHeaderController",
+                    },
+                    "body": {
+                        templateUrl: "partials/states/generic_page/body.html",
+                        controller: "GenericPageBodyController",
+                    }
+                }
+            };
+        }
+
+        var staticPageState = function(url, folder) {
+            return {
+                url: url,
+                views: {
+                    "header-panel": {
+                        templateUrl: "partials/states/" + folder + "/header_panel.html",
+                    },
+                    "body": { 
+                        templateUrl: "partials/states/" + folder + "/body.html"
+                    },
+                },
+            }
+        }
+
+        $stateProvider
+            .state('home', staticPageState("/", "home"))
+            .state('about', genericPageState("/about", "about_us_index"))
+            .state('events', genericPageState("/events", "events_index"))
+            .state('404', {
+                params: ["target"],
+                views: {
+                    "header-panel": {
+                        template: "<h1>Page not found</h1>",
+                    },
+                    "body": {
+                        template: "Page not found: {{target}}",
+                        controller: function($scope, $stateParams) {
+                            $scope.target = $stateParams.target;
+                        }
+                    },
+                },
+            })
+
+        // Only use html5 mode if we are on a real server, which should respect .htaccess
+		$locationProvider.html5Mode(document.location.hostname != "localhost").hashPrefix("!");
 
         // Here we configure the api provider with the server running the API. Don't need to do this if it's local.
         apiProvider.server("http://isaac-dev.dtg.cl.cam.ac.uk");
 	}])
 
 	.run(['$rootScope', 'api', function($rootScope, api) {
-
-        api.pages.get({id: "about_us_index"}).$promise.then(function(d) {
+/*
+        api.pages.get({id: "events_index"}).$promise.then(function(d) {
             $rootScope.aboutPage = d.contentObject;
-            $rootScope.$apply();
-        });
+        });*/
 
         $rootScope.$on("$includeContentLoaded", function() {
             console.log("Partial loaded. Reinitialising document.");
