@@ -42,7 +42,7 @@ define(["mathjax"], function() {
 		extensions: ["MatchWebFonts.js"]
 	});
 
-	if (MathJax.Hub.Browser.isChrome && MathJax.Hub.Browser.version.substr(0,3) === "32.") {
+	if (MathJax.Hub.Browser.isChrome) {
 		MathJax.Hub.Register.StartupHook(
 			"HTML-CSS Jax Config",
 			function () {MathJax.OutputJax["HTML-CSS"].FontFaceBug = true}

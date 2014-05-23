@@ -64,6 +64,28 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
             .state('contact', staticPageState("/contact", "contact"))
+            .state('random_content', {
+                url: "/content/:id",
+                resolve: {
+                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.content.get({id: $stateParams.id}).$promise;
+                    }]
+                },
+                views: {
+                    "header-panel": {
+                        templateUrl: "partials/states/generic_page/header_panel.html",
+                        controller: ["$scope", "page", function($scope, page) {
+                            $scope.title = "Content object: " + page.contentObject.id;
+                        }],
+                    },
+                    "body": {
+                        templateUrl: "partials/states/generic_page/body.html",
+                        controller: ["$scope", "page", function($scope, page) {
+                            $scope.doc = page.contentObject;
+                        }],
+                    }
+                }
+            })
             .state('404', {
                 params: ["target"],
                 views: {

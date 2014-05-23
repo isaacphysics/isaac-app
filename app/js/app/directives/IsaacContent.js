@@ -1,4 +1,4 @@
-define(["showdown"], function() {
+define(["showdown", "app/MathJaxConfig"], function() {
 
 
 	return ["$compile", function($compile) {
@@ -12,9 +12,18 @@ define(["showdown"], function() {
 
 			if (scope.doc.value) {
 
-				// Convert the value to HTML, add it to the element.
-
-				var html = converter.makeHtml(scope.doc.value);
+				switch (scope.doc.encoding) {
+					case "html":
+						var html = scope.doc.value;
+						break;
+					case "markdown":
+						var html = converter.makeHtml(scope.doc.value);
+						break;
+					default:
+						var html = "Invalid document encoding: " + scope.doc.encoding;
+						break;
+				}
+				
 				element.html(html);
 
 			} else if (scope.doc.children) {
@@ -29,6 +38,7 @@ define(["showdown"], function() {
 				}
 
 			}
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub, element[0]]);         
 
 		}
 
