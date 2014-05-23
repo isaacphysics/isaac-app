@@ -1,6 +1,6 @@
 'use strict';
 
-define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define(["rsvp", "foundation", "app/router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
@@ -9,97 +9,14 @@ define(["rsvp", "foundation", "angular-ui-router", "app/responsive_video", "angu
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
-        'ui.router',
+        'isaac.router',
 		'isaac.filters',
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers'
 	])
 
-	.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'apiProvider', function($stateProvider, $urlRouterProvider, $locationProvider, apiProvider) {
-
-        $urlRouterProvider.when("", "/");
-        $urlRouterProvider.otherwise(function($injector, $location) {
-            var $state = $injector.get("$state");
-            $state.go("404", {target: $location.url()});
-        });
-
-        var genericPageState = function(url, id) {
-            return {
-                url: url,
-                resolve: {
-                    "page": ["api", function(api) {
-                        return api.pages.get({id: id}).$promise;
-                    }]
-                },                
-                views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/generic_page/header_panel.html",
-                        controller: "GenericPageHeaderController",
-                    },
-                    "body": {
-                        templateUrl: "/partials/states/generic_page/body.html",
-                        controller: "GenericPageBodyController",
-                    }
-                }
-            };
-        }
-
-        var staticPageState = function(url, folder) {
-            return {
-                url: url,
-                views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/" + folder + "/header_panel.html",
-                    },
-                    "body": { 
-                        templateUrl: "/partials/states/" + folder + "/body.html"
-                    },
-                },
-            }
-        }
-
-        $stateProvider
-            .state('home', staticPageState("/", "home"))
-            .state('about', genericPageState("/about", "about_us_index"))
-            .state('events', genericPageState("/events", "events_index"))
-            .state('contact', staticPageState("/contact", "contact"))
-            .state('random_content', {
-                url: "/content/:id",
-                resolve: {
-                    "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.content.get({id: $stateParams.id}).$promise;
-                    }]
-                },
-                views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/generic_page/header_panel.html",
-                        controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.contentObject.id;
-                        }],
-                    },
-                    "body": {
-                        templateUrl: "/partials/states/generic_page/body.html",
-                        controller: ["$scope", "page", function($scope, page) {
-                            $scope.doc = page.contentObject;
-                        }],
-                    }
-                }
-            })
-            .state('404', {
-                params: ["target"],
-                views: {
-                    "header-panel": {
-                        template: "<h1>Page not found</h1>",
-                    },
-                    "body": {
-                        template: "Page not found: {{target}}",
-                        controller: function($scope, $stateParams) {
-                            $scope.target = $stateParams.target;
-                        }
-                    },
-                },
-            })
+	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
 
         // Only use html5 mode if we are on a real server, which should respect .htaccess
 		$locationProvider.html5Mode(document.location.hostname != "localhost").hashPrefix("!");
