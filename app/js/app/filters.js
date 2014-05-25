@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular"], function() {
+define(["angular", "showdown"], function() {
 
 	/* Filters */
 
@@ -10,6 +10,15 @@ define(["angular"], function() {
 		return function(text) {
 			return String(text).replace(/\%VERSION\%/mg, version);
 		};
-	}]);
+	}])
+
+	.filter('showdown', [function() {
+		var Showdown = require("showdown");
+		var converter = new Showdown.converter();
+
+		return function(input) {
+			return converter.makeHtml(input);
+		}
+	}])
 
 });
