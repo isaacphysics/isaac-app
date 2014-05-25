@@ -10,6 +10,7 @@ require.config({
         "angular": '../../bower_components/angular/angular',
         "angular-ui-router": '../../bower_components/angular-ui-router/release/angular-ui-router',
         "angular-resource": '../../bower_components/angular-resource/angular-resource',
+        "angular-recursion": '../../bower_components/angular-recursion/angular-recursion',
         "react": '../../bower_components/react/react-with-addons',
         "JSXTransformer": '../../bower_components/react/JSXTransformer',
         "angulartics": '../../bower_components/angulartics/src/angulartics',
@@ -23,7 +24,8 @@ require.config({
         "angular-ui-router": ['angular'],
         "angular": ['jquery'],
         "angulartics-ga": ["angulartics"],
-        "angulartics": ["angular"]
+        "angulartics": ["angular"],
+        "angular-recursion": ["angular"],
     }
 });
 
