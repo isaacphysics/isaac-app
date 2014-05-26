@@ -1,10 +1,6 @@
 <div class="row">
     <div class="medium-14 medium-offset-1 small-16 columns end">
         <dl class="tabs ru_tabs physics" data-tab>
-            <!--<dd class="active"><a href="#panel2-1">Video</a></dd>
-            <dd>               <a href="#panel2-2">Test <span class='ru_tabs_question'></span>1</a></dd>
-            <dd>               <a href="#panel2-3">Test <span class='ru_tabs_question'></span>2</a></dd>
-            <dd>               <a href="#panel2-4">More</a></dd>-->
             <dd ng-repeat="t in doc.children" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">{{t.title}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs">
