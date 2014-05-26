@@ -15,7 +15,7 @@ define([], function() {
 
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
-
+	            	// Post-link actions go here.
 	            });
 	        }
 		};

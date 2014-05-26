@@ -9,6 +9,8 @@ define([
 	"app/directives/content/ValueOrChildren", 
 	"app/directives/content/MathJax",
 	"app/directives/content/BindMarkdown",
+	"app/directives/content/Image",
+	"app/directives/content/Figure",
 	], function() {
 
 	/* Directives */
@@ -32,5 +34,9 @@ define([
 	.directive('isaacContentLoad', require("app/directives/content/ContentLoad"))
 
 	.directive('isaacContentValueOrChildren', require("app/directives/content/ValueOrChildren"))
+
+	.directive('isaacImage', require("app/directives/content/Image"))
+	
+	.directive('isaacFigure', require("app/directives/content/Figure"))
 
 });

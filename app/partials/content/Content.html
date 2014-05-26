@@ -1,4 +1,6 @@
 <div ng-switch="doc.type">
+	<div ng-switch-when="figure" isaac-figure="doc"></div>
+	<div ng-switch-when="image" isaac-image="doc.id"></div>
 	<div ng-switch-default>
 		<div isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div>
 	</div>
