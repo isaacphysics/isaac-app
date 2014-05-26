@@ -18,7 +18,6 @@ define([], function() {
 
 				api.content.get({id: id}).$promise.then(function(c) {
 					scope.content = c.contentObject;
-					scope.$apply();
 				});
 			},
 		};

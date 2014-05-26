@@ -11,6 +11,7 @@ define([
 	"app/directives/content/BindMarkdown",
 	"app/directives/content/Image",
 	"app/directives/content/Figure",
+	"app/directives/content/Tabs",
 	], function() {
 
 	/* Directives */
@@ -38,5 +39,7 @@ define([
 	.directive('isaacImage', require("app/directives/content/Image"))
 	
 	.directive('isaacFigure', require("app/directives/content/Figure"))
+
+	.directive('isaacTabs', require("app/directives/content/Tabs"))
 
 });
