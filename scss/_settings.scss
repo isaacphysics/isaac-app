@@ -10,8 +10,15 @@
 // FOUNDATION SETTINGS
 //
 
+// Colours
+
 $ru_green: #509e2e;
+$ru_purple: #944cbe;
+$ru_physics: $ru_purple;
+$ru_blue: #009acd;
+$ru_maths: $ru_blue;
 $ru_footer: #333333;
+
 // This is the default html and body font-size for the base rem value.
 // $rem-base: 16px;
 
@@ -60,7 +67,7 @@ $body-font-weight: 300;
 // $default-float: left;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
+ $primary-color: $ru_green;
 // $secondary-color: #e7e7e7;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
@@ -351,7 +358,7 @@ $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 // $button-font-align: center;
 
 // We use these to control various hover effects.
-// $button-function-factor: -20%;
+$button-function-factor: 15%;
 
 // We use these to control button border styles.
 // $button-border-width: 0px;
@@ -518,14 +525,14 @@ $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 // $input-font-size: rem-calc(14);
 // $input-bg-color: #fff;
 // $input-focus-bg-color: scale-color(#fff, $lightness: -2%);
-// $input-border-color: scale-color(#fff, $lightness: -20%);
-// $input-focus-border-color: scale-color(#fff, $lightness: -40%);
+$input-border-color: #999999;
+$input-focus-border-color: $ru_green;
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;
 // $input-disabled-bg: #ddd;
 // $input-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-// $input-include-glowing-effect: true;
+$input-include-glowing-effect: false;
 
 // We use these to style the fieldset border and spacing.
 // $fieldset-border-style: solid;

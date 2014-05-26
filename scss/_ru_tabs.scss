@@ -1,0 +1,69 @@
+
+// Tabs
+
+.tabs.ru_tabs dd a
+{
+    font-weight: 200;
+    color: white; 
+    margin-right: 6px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+.tabs.ru_tabs.physics dd a
+{
+    background-color: $ru_physics !important;
+    border: $ru_physics 1px solid;
+}
+
+.tabs.ru_tabs.maths dd a
+{
+    background-color: $ru_maths !important;
+    border: $ru_maths 1px solid;
+}
+
+.tabs.ru_tabs dd.active a
+{
+    background-color: #f6f6f6 !important;
+    font-weight: 600;
+    color: #333;
+    border: #cccccc 1px solid;
+    border-bottom: #f6f6f6 1px solid;
+    padding-bottom: 11px;
+    z-index: 100;
+}
+
+.ru_tabs_question:after
+{
+    content: "Question ";
+
+}
+
+.tabs-content.ru_tabs
+{
+    border: #cccccc solid 1px;
+    margin-top: -1px;
+}
+
+.tabs-content.ru_tabs .content
+{
+    background-color: #f6f6f6 !important;
+}
+
+
+@media #{$small-only}
+{
+    .ru_tabs_question:after
+    {
+        content: "Q";
+    }
+    
+    .tabs.ru_tabs dd a
+    {
+        font-size: 0.9rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}

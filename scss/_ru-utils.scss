@@ -1,0 +1,25 @@
+// @mixins
+//
+// Add a transition
+// $speed - Default: 300ms
+// $ease - Default:ease-out
+@mixin anim-transition($speed:300ms, $ease:ease-out) 
+{
+     -moz-transition-duration: $speed;
+    -webkit-transition-duration: $speed;
+    -o-transition-duration: $speed;
+    transition-duration: $speed;
+    -moz-transition-timing-function: $ease;
+    -webkit-transition-timing-function: $ease;
+    -o-transition-timing-function: $ease;
+    transition-timing-function: $ease;
+}
+
+$i : 0.25;
+@while $i <= 6 {
+    $j : $i * 4;
+        .ru-toppad-#{$j} {
+        margin-top: 1rem * $i !important;
+    }
+    $i : $i + 0.25;
+}

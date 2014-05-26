@@ -1,0 +1,12 @@
+// Video JS overrides
+
+.vjs-time-controls, .vjs-time-divider, .vjs-volume-control
+{
+    display: none;
+}
+
+.video-js
+{
+    margin-bottom: 2em;
+}
+

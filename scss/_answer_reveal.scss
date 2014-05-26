@@ -1,0 +1,45 @@
+// Answer Reveal
+
+.ru_answer_reveal > div
+{
+    text-align: center;
+}
+
+.ru_answer_reveal > div:first-child
+{
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: white;
+    cursor: pointer;
+}
+
+.ru_answer_reveal.physics > div:first-child
+{
+    background-color: $ru_physics;
+}
+
+.ru_answer_reveal.maths > div:first-child
+{
+    background-color: $ru_maths;
+}
+
+.ru_answer_reveal > div:last-child
+{
+    padding-top: 0.6em;
+    padding-bottom: 0.6rem;
+    border: 1px #999999 solid;
+    background-color: #f6f6f6;
+    display: none;
+}
+
+.ru_answer_reveal > div:last-child div.ru_answer_close
+{
+    float: right;
+    background-image: url('/assets/Close-button.jpg');
+    height: 22px;
+    width: 22px;
+    margin-right: 10px;
+    cursor: pointer;
+}

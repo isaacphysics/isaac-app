@@ -1,6 +1,20 @@
 'use strict';
 
-define(["rsvp", "foundation", "app/router", "app/responsive_video", "angular", "angular-resource", "app/controllers", "app/directives", "app/services", "app/filters"], function() {
+define([
+    "rsvp", 
+    "foundation", 
+    "app/router", 
+    "app/responsive_video", 
+    "angular", 
+    "angular-resource", 
+    "app/controllers", 
+    "app/directives", 
+    "app/services", 
+    "app/filters",
+    "fastclick",
+    "app/dropdown",
+    "app/answer_reveal",
+    ], function() {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
@@ -65,6 +79,50 @@ define(["rsvp", "foundation", "app/router", "app/responsive_video", "angular", "
                 }
             });
             $(document).foundation('interchange', 'reflow');
+
+            // Global jQuery
+            $(function()
+            {
+                // Fast click
+                FastClick.attach(document.body);
+                
+                // Mobile login drop down
+                $("#mobile-login").click(function(e)
+                {
+                    e.preventDefault();
+                    $("#mobile-login-form").ruDropDownToggle();
+                });
+                
+                // Mobile search drop down
+                $("#mobile-search").click(function(e)
+                {
+                    e.preventDefault();
+                    $("#mobile-search-form").ruDropDownToggle();
+                });
+                
+                // Force resize of vidoes on tab change and accordion change
+                $(document).foundation(
+                {
+                    tab:{
+                        callback : function (tab)
+                        {
+                            rv.forceResize();
+                        }
+                    }
+                }); 
+                $(".ru_accordion_titlebar").click(function()
+                {
+                    rv.forceResize();
+                });
+                
+                // Toggle hide / show of share links
+                $(".ru_share").click(function()
+                {
+                    $(".ru_share_link").toggleClass('ru_share_link_show');
+                });
+                                
+            });
+
         });
 
 	}]);

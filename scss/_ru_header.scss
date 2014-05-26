@@ -1,0 +1,188 @@
+// Desktop Header
+
+.ru-desktop-header
+{
+    @extend .hide-for-small-only;
+}
+
+$ru_nav_size : 7em;
+
+.ru-desktop-nav-item
+{
+    height: 140px;
+    display: inline-block;
+    margin-top: -1px;
+}
+
+.ru-desktop-menu-img
+{
+    height: 136px;
+}
+
+.ru-desktop-nav-item-inner {
+	width: 7em;
+	height: 188px;
+	background-image: url('/assets/menu-desktop-inactive.png');
+	position: relative;
+    background-repeat: no-repeat;
+}
+
+.ru-desktop-nav-item span
+{
+    width: $ru_nav_size - 0.7;
+    text-align: center;
+    top: 3.5em;
+    position: relative;
+    font-size: 1.1em;
+    display: inline-block;
+    font-style: italic;
+    font-weight: 300;
+    color: #333333;
+}
+
+.ru-desktop-nav-item-inner:hover
+{
+    background-image: url('/assets/menu-desktop-inactive-hover.png');
+}
+
+.ru-desktop-nav-item-inner:hover span
+{
+    color: #fff;
+}
+
+.ru-desktop-nav-item-inner.active
+{
+	background-image: url('/assets/menu-desktop-active.png');
+    z-index: 1000;
+    cursor: default;
+}
+
+.ru-desktop-nav-item-inner.active span
+{
+    font-weight: 600;
+    color: #fff;
+}
+
+.ru-desktop-panel
+{
+    margin-top: 19px;
+    padding: 8px 8px 8px 20px;
+    background: white;
+    border: $ru_green solid 1px;
+    margin-bottom: 10px;
+}
+
+.ru-desktop-panel-search
+{
+    position: absolute;
+    right: 15px;
+    top: 19px;
+    z-index: 200;
+}
+
+// Mobile Header
+
+.pointer
+{
+    cursor: pointer;
+}
+
+.ru-mobile-header
+{
+    @extend .show-for-small-only;
+}
+
+.ru-fixed-header
+{
+    background-color: black;
+    height: 42px;
+    font-wight: 400;
+    font-size: 0.9em;
+    font-style: italic;
+    color: white;
+    z-index: 600;
+}
+
+.ru-fixed-header * span
+{
+    position: relative;
+    bottom: 16px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+@each $name in (login, down, search)
+{
+    .ru-mobile-#{$name}
+    {
+        height: 42px;
+        width: 28px;
+        background-image: url('/assets/ru-mobile-#{$name}.png');
+        background-repeat: none;
+        display: inline-block;
+        @if $name == down { cursor: pointer;}
+    }
+}
+
+.ru-mobile-panel
+{
+    border-top: 1px solid $ru_green;
+    border-bottom: 1px solid $ru_green;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: white;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 2px;
+}
+
+.ru-mobile-nav
+{
+    margin-top: 41px;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 0.8em;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.ru-mobile-menu-img
+{
+    @extend .left;
+    width: 72px;
+}
+
+.ru-mobile-nav-item-inner {
+	width: 72px;
+	height: 129px;
+	background-image: url('/assets/menu-mobile-inactive.png');
+	position: relative;
+    background-repeat: no-repeat;
+}
+
+.ru-mobile-nav-item-inner.active
+{
+    background-image: url('/assets/menu-mobile-active.png'); 
+    color: white;
+    background-repeat: no-repeat;
+}
+
+.ru-mobile-nav-item
+{
+    @extend .right;
+    height: 100px;
+    display: inline-block;
+    position: relative;
+    margin-left: 4px;
+    color: #333333;
+}
+
+.ru-mobile-nav-item span
+{
+    width: 72px;
+    text-align: center;
+    top: 3em;
+    position: relative;
+    font-size: 1.1em;
+    display: inline-block;
+}

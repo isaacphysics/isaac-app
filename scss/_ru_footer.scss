@@ -1,0 +1,188 @@
+
+// Footer
+
+footer
+{
+    width: 100%;
+    background-color: $ru_footer;
+    color: #fff;
+    font-weight: 300;
+    font-size: 0.9rem;
+    padding-bottom: 2.5em;
+}
+
+// Desktop
+
+.ru-desktop-banner
+{
+    vertical-align: top;
+    width: 100px;
+}
+
+.footer_link
+{
+    color: #fff;
+}
+
+.footer_link:hover
+{
+    color: #ddd;
+}
+
+.footer_links
+{
+    padding-top: 3.5em;
+    line-height: 120%;
+}
+
+.footer_links a
+{
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+.footer_links a:hover
+{
+    color: #ddd;
+    font-style: italic;
+}
+
+@each $name in (google, facebook, twitter)
+{
+    .ru-social-#{$name}
+    {
+        height: 48px;
+        width: 48px;
+        background-size: 48px 48px;
+        background-image: url('/assets/social-icon-#{$name}.png');
+        background-repeat: none;
+    }
+    
+    .ru-social-#{$name}:hover
+    {
+        background-image: url('/assets/social-icon-#{$name}-hover.png');
+    }
+    
+    a.ru-social-#{$name}
+    {
+        display: inline-block;
+    }
+}
+
+.ru-social
+{
+    font-size: 0.9rem;
+    display: inline;
+    position: relative;
+    bottom: 28px;
+    padding-right: 4px;
+}
+
+.ru-social-small
+{
+    height: 40px;
+    width: 40px;
+    background-size: 40px 40px;
+}
+
+@media only screen and (max-width: 52.5em)
+{
+    .ru-social
+    {
+        display: none;
+    }
+}
+
+.ru-footer-base
+{
+    margin-top: 1em;
+    color: #fff;
+    line-height: 150%;
+    font-style: italic;
+}
+
+.ru-footer-base span:first-child
+{
+    position: relative;
+    top: 12px;
+}
+
+// Mobile specifics
+
+img.ru-mobile-logo
+{
+    vertical-align: top;
+    width: 100px;
+}
+
+.ru-mobile-doe
+{
+    position: absolute;
+    top: 20px;
+}
+
+.ru-mobile-social
+{
+    margin-top: 2em;
+}
+
+.ru-mobile-social span
+{
+    color: $ru_green;
+    display: block;
+    padding-top: 6px;
+    padding-right: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 120%;
+}
+
+.ru-mobile-social a
+{
+    padding-left: 8px;
+}
+
+.ru-mobile-menu
+{
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ru-mobile-menu hr
+{
+    border: solid  #666;
+    border-width: 1px 0 0;
+    margin: 0;
+}
+
+.ru-mobile-menu * img
+{
+    @extend .right;
+    height: 24px;
+}
+
+.ru-mobile-menu * span
+{
+    position: relative;
+    top: 4px;
+    font-style: italic;
+}
+
+.ru-mobile-menu * a
+{
+    color: #fff;
+    font-style: italic;
+    padding-bottom: 1.5em;
+    padding-top: 1em;
+    display: block;
+    
+}
+
+.ru-mobile-menu * a:hover
+{
+    color: #fff;
+    font-style: italic;
+}

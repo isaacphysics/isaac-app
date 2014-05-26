@@ -1,0 +1,109 @@
+.ru-drop
+{
+    @extend .show-for-small-only;
+    width: 100%;
+    position: fixed;
+    top: 41px;
+    z-index: 500;
+    background: #eee;
+    border-bottom: 1px solid #ccc;
+}
+
+.ru-drop-big-label
+{
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.ru-drop-mid-label
+{
+    font-size: 1rem;
+    font-weight: 200;
+    font-style: italic;
+}
+
+.button.ru-drop-big-button 
+{
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    font-style: italic !important;
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+}
+
+
+.ru-drop-hide {
+    overflow: hidden;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    @include anim-transition(0.6s, cubic-bezier(0, 1, 0.5, 1));
+}
+.ru-drop-show {
+    @include anim-transition(0.6s, ease-in);
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+
+.ru-drop-small-link
+{
+    color: #666666;
+    text-decoration: underline;
+}
+
+.ru-drop-small-link:hover
+{
+    color: #555555;
+}
+
+/* Faked checkbox in CSS */
+.ru-drop-check {
+  width: 24px;
+  position: relative;
+  bottom: 2px;
+  /*margin: 20px auto;*/
+  label {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    @include radius( 3px );
+    /*@include box-shadow( inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,.4) );*/
+    &:after {
+      content: '';
+      width: 12px;
+      height: 7px;
+      position: absolute;
+      top: 7px;
+      left: 7px;
+      border: 3px solid #fcfff4;
+      border-top: none;
+      border-right: none;
+      background: transparent;
+      opacity: 0;
+      @include rotate(-45deg);
+    }
+    &:hover::after {
+      opacity: 0.3;
+    }
+  }
+  input[type=checkbox] {
+    visibility: hidden;
+    &:checked + label:after {
+      opacity: 1;
+    }    
+  }
+}
+
+.ru-drop-check~label
+{
+    display: inline;
+    margin-left: 1.5rem;
+}

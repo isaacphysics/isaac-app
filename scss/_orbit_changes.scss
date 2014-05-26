@@ -1,0 +1,24 @@
+// Orbit
+
+.orbit-container .orbit-bullets li
+{
+    @include radius(0);
+    background: none;
+    background-image: url('../assets/hexagon-grey.svg');
+    background-repeat: no-repeat;
+}
+
+.orbit-container .orbit-bullets li.active
+{
+    background: none;
+    background-image: url('../assets/hexagon.svg');
+    background-repeat: no-repeat;
+}
+
+ul.ru-right-bullets~.orbit-bullets-container
+{
+    text-align: right;
+    bottom: -10px;
+    right: 0px;
+    position: absolute;
+}

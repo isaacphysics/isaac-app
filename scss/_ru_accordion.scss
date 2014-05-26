@@ -1,0 +1,150 @@
+
+// Accordion
+
+// Accordtion Title
+.accordion.ru_accordion dd a.ru_accordion_titlebar
+{
+    padding: 0;
+    font-size: 1.25rem;
+    font-weight: 400;
+    font-style: italic;
+    background-color: f6f6f6;
+    height: 60px;
+    border-top: #cccccc 1px solid !important;
+}
+
+.accordion.ru_accordion dd.active a.ru_accordion_titlebar
+{
+   border-bottom: #cccccc 1px solid !important;
+}
+
+.accordion.ru_accordion dd a.ru_accordion_titlebar div.ru_accordion_details
+{
+    padding-top: 13px;
+    float: right;
+    position: relative;
+    bottom: 4px;
+    padding-right: 20px;
+}
+
+.accordion.ru_accordion dd a.ru_accordion_titlebar div.ru_accordion_details img
+{
+    @include rotate(180deg);
+    position: relative;
+    bottom: 3px;
+}
+
+.accordion.ru_accordion dd.active a.ru_accordion_titlebar div.ru_accordion_details img
+{
+    @include rotate(0deg);
+}
+
+.ru_accordion_title
+{
+    padding-left: 1rem;
+}
+
+.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name
+{
+    color: white;
+    display: inline-block;
+    height: 60px;
+    padding-top: 13px;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    margin-top: -1px;
+    min-width: 140px;
+}
+
+.accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
+{
+    background-color: $ru_physics;
+    border-top: 3px solid $ru_physics;
+}
+
+.accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name
+{
+    background-color: $ru_maths;
+}
+
+@media #{$small-only}
+{
+    .ru_accordion_title
+    {
+        display: none;
+    }
+    
+    .accordion.ru_accordion dd a.ru_accordion_titlebar
+    {
+        height: 34px;
+        font-size: 0.9rem;
+        padding-top: 3px;
+    }
+    
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name
+    {
+        height: 34px;
+        padding-top: 3px;
+        margin-top: -4px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: 80px;
+    }
+    
+    .accordion.ru_accordion dd a.ru_accordion_titlebar div.ru_accordion_details
+    {
+        padding-top: 0px;
+        padding-right: 8px;
+        position: relative;
+        bottom: 6px;
+        max-height: 30px;
+    }
+    
+    .accordion.ru_accordion dd a.ru_accordion_titlebar div.ru_accordion_details img, .accordion.ru_accordion dd.active a.ru_accordion_titlebar div.ru_accordion_details img
+    {
+        height: 28px;
+        position: relative;
+        bottom: 5px;
+    }
+}
+
+// Ratings hexagons
+
+$ru_level_prefix : '/assets/isaac-level-marker-';
+$ru_types :(physics, maths);
+$ru_levels : 6;
+$ru_inactive: 'inactive';
+
+@each $type in $ru_types
+{
+    @for $i from 1 through $ru_levels
+    {
+        $bg_list : ();
+        $pos_list : ();
+        @for $j from 1 through 6
+        {
+            $pos_list : append($pos_list, ($j - 1) * 100% / 6 );
+            @if $i < $j { $bg_list : append($bg_list, url('#{$ru_level_prefix}#{$ru_inactive}.png')); }
+            @if $i >= $j { $bg_list : append($bg_list, url('#{$ru_level_prefix}#{$type}.png')); }
+        }
+        .ru-level-#{$type}-#{$i}:after
+        {
+            content:'';
+            display: inline-block;
+            position: relative;
+            top: 6px;
+            height: 27px;
+            width: 31px * $ru_levels;
+            background-repeat: no-repeat;
+            background-image: nth($bg_list, 1), nth($bg_list, 2), nth($bg_list, 3), nth($bg_list, 4), nth($bg_list, 5), nth($bg_list, 6);
+            background-position: nth($pos_list, 1) top, nth($pos_list, 2) top, nth($pos_list, 3) top, nth($pos_list, 4) top, nth($pos_list, 5) top, nth($pos_list, 6) top;
+        }
+        @media #{$large-up}
+        {
+            .ru-level-#{$type}-#{$i}:before
+            {
+                content: 'Level: ';
+            }
+        }
+    }
+}

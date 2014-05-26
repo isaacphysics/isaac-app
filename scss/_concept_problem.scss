@@ -1,0 +1,48 @@
+// Concept and Problem specific SCSS
+
+.ru_figure img
+{
+    padding-bottom: 1rem;
+}
+
+.ru-pad
+{
+    margin: 0 0.5rem;
+}
+
+.ru-concept-buttons
+{
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+
+.ru-concept-button
+{
+    font-size: 1.25rem;
+    font-weight: 500;
+    display: block;
+    background-color: #333333;
+    padding: 1.3rem 2rem;
+    text-align: center;
+    color: white;
+    &:hover
+    {
+        background-color: $ru_physics;
+        color: white;
+    }
+}
+
+
+@media #{$small-only}
+{
+    .ru-concept-button
+    {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+        &:hover
+        {
+            background-color: #333333;
+        }
+    }
+}
