@@ -6,7 +6,7 @@
 
 <div ng-repeat="cc in contentChunks">
 	<div ng-switch="cc.isAccordion">
-	
+
 		<!-- This chunk is an accordion, render it outside the grid -->
 		<div ng-switch-when="true">
 			<div isaac-content ng-repeat="c in cc" doc="c"></div>    
@@ -22,4 +22,3 @@
     	</div>
 	</div>
 </div>
-

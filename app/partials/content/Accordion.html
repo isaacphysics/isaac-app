@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <dl class="accordion ru_accordion physics" data-accordion>
-    <dd ng-repeat="c in doc.children" ng-class="{active: $index == activeChild}">
-        <a href="javascript:void(0)" ng-click="activateChild($index)" class="ru_accordion_titlebar">
+    <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}">
+        <a href="javascript:void(0)" ng-click="toggleChild($index)" class="ru_accordion_titlebar">
             <div class="ru_accordion_name">{{c.title}}</div>
             <span class="ru_accordion_title">{{c.subtitle}}</span>
             <div class="ru_accordion_details">
@@ -9,7 +9,7 @@
                 <img src='/assets/icon-expand-arrow.png'>
             </div>
         </a>
-        <div ng-class="{content: true, active: $index == activeChild}">
+        <div ng-class="{content: true, active: openChildren[$index]}">
             <isaac-content doc="c"></isaac-content>
         </div>
     </dd>

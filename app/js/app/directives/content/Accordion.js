@@ -15,13 +15,12 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.activeChild = 0;
+				scope.openChildren = {
+					0: true
+				};
 
-				scope.activateChild = function(i) {
-					if(scope.activeChild == i)
-						scope.activeChild = -1;
-					else
-						scope.activeChild = i;
+				scope.toggleChild = function(i) {
+					scope.openChildren[i] = !scope.openChildren[i];
 				}
 
 			}
