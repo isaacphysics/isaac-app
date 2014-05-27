@@ -6,7 +6,7 @@ define([], function() {
 		return {
 
 			scope: {
-				id: "=",
+				src: "=",
 				isaacImage: "=",
 			},
 
@@ -16,7 +16,7 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.src = api.getImageUrl(scope.id || scope.isaacImage);
+				scope.path = api.getImageUrl(scope.src || scope.isaacImage);
 
 			}
 		};

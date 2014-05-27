@@ -16,6 +16,10 @@ define([], function() {
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
 	            	// Post-link actions go here.
+
+	            	if(scope.doc && scope.doc.layout=="right") {
+	            		iElement.css("float", "right").width(300);
+	            	}
 	            });
 	        }
 		};

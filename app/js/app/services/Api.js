@@ -7,8 +7,8 @@ define([], function() {
 		this.pages = $resource(server + "/isaac/api/pages/:id");
 		this.content = $resource(server + "/isaac/api/pages/:id"); // TODO: Use the actual content endpoint once it is written.
 
-		this.getImageUrl = function(id) {
-			return server + "/isaac/api/images/" + id;
+		this.getImageUrl = function(path) {
+			return server + "/isaac/api/images/" + path;
 		}
 
 		this.admin = {
