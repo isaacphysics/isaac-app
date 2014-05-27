@@ -12,6 +12,7 @@ define([
 	"app/directives/content/Image",
 	"app/directives/content/Figure",
 	"app/directives/content/Tabs",
+	"app/directives/content/Accordion",
 	], function() {
 
 	/* Directives */
@@ -41,5 +42,7 @@ define([
 	.directive('isaacFigure', require("app/directives/content/Figure"))
 
 	.directive('isaacTabs', require("app/directives/content/Tabs"))
+
+	.directive('isaacAccordion', require("app/directives/content/Accordion"))
 
 });

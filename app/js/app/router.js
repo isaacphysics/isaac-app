@@ -53,6 +53,26 @@ define(["angular-ui-router"], function() {
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
             .state('contact', staticPageState("/contact", "contact"))
+
+            .state('concept', {
+                url: "/concept/:id",
+                resolve: {
+                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.pages.get({id: $stateParams.id}).$promise;
+                    }]
+                },                
+                views: {
+                    "header-panel": {
+                        templateUrl: "/partials/states/concept/header_panel.html",
+                        controller: "ConceptPageHeaderController",
+                    },
+                    "body": {
+                        templateUrl: "/partials/states/concept/body.html",
+                        controller: "ConceptPageBodyController",
+                    }
+                }
+            })
+
             .state('random_content', {
                 url: "/content/:id",
                 resolve: {
