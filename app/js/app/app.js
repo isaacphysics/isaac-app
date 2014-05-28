@@ -35,8 +35,9 @@ define([
         // Only use html5 mode if we are on a real server, which should respect .htaccess
 		$locationProvider.html5Mode(document.location.hostname != "localhost").hashPrefix("!");
 
-        // Here we configure the api provider with the server running the API. Don't need to do this if it's local.
-        apiProvider.server("http://isaac-dev.dtg.cl.cam.ac.uk");
+        // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
+        if (document.location.hostname == "localhost")
+            apiProvider.server("http://dev.isaacphysics.org");
 	}])
 
 	.run(['$rootScope', 'api', function($rootScope, api) {
