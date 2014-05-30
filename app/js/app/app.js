@@ -46,6 +46,18 @@ define([
             $rootScope.aboutPage = d.contentObject;
         });*/
 
+        $rootScope.$on("$stateChangeStart", function() {
+            $rootScope.isLoading = true;
+        });
+
+        $rootScope.$on("$stateChangeSuccess", function() {
+            $rootScope.isLoading = false;
+        })
+
+        $rootScope.$on("$stateChangeError", function() {
+            $rootScope.isLoading = false;
+        })
+
         $rootScope.$on("$includeContentLoaded", function() {
             console.log("Partial loaded. Reinitialising document.");
 

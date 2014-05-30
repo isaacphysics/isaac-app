@@ -21,5 +21,18 @@ define([
 	
 	.controller('ConceptPageHeaderController', conceptPage.HeaderController)
 	.controller('ConceptPageBodyController', conceptPage.BodyController)
+
+	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
+
+		var showLoadingMessageAfter = 1000; // ms
+		
+		var timeout = $timeout(function() {
+			$scope.displayMessage = true;
+		}, showLoadingMessageAfter);
+
+		$scope.$on("$destroy", function() {
+			$timeout.cancel(timeout);
+		})
+	}])
 	
 });
