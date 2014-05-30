@@ -1,0 +1,7 @@
+<div ng-repeat="concept in list">
+	<h2><a ui-sref="concept({id: concept.id})">{{concept.title}}</a></h2>
+</div>
+
+<button ng-if="pageNumber!=1" ui-sref="conceptsIndex({page: pageNumber-1})">Previous</button>
+
+<button ui-sref="conceptsIndex({page: pageNumber+1})">Next</button>

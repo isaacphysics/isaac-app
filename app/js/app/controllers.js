@@ -7,10 +7,12 @@ define([
 	"app/directives", 
 	"app/controllers/GenericPageControllers",
 	"app/controllers/ConceptPageControllers",
+	"app/controllers/ConceptsIndexPageControllers",
 	], function() {
 	
 	var genericPage = require("app/controllers/GenericPageControllers");
 	var conceptPage = require("app/controllers/ConceptPageControllers");
+	var conceptIndexPage = require("app/controllers/ConceptsIndexPageControllers");
 	
 	/* Controllers */
 
@@ -21,6 +23,9 @@ define([
 	
 	.controller('ConceptPageHeaderController', conceptPage.HeaderController)
 	.controller('ConceptPageBodyController', conceptPage.BodyController)
+
+	.controller('ConceptsIndexPageHeaderController', conceptIndexPage.HeaderController)
+	.controller('ConceptsIndexPageBodyController', conceptIndexPage.BodyController)
 
 	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
 
