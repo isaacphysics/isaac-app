@@ -6,12 +6,12 @@ define([], function() {
 		return {
 
 			scope: {
-				doc: "=isaacProfile",
+				doc: "=isaacFeaturedProfile",
 			},
 
 			restrict: 'EA',
 
-			templateUrl: "/partials/content/Profile.html",
+			templateUrl: "/partials/content/FeaturedProfile.html",
 
 			link: function(scope, element, attrs) {
 
