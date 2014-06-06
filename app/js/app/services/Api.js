@@ -11,8 +11,6 @@ define([], function() {
 		var conceptList = $resource(server + "/api/concepts?start_index=:startIndex&limit=:limit");
 
 		this.getConceptList = function(page){
-			//page = parseInt(page) -1;
-
 			return conceptList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});
 		}
 
