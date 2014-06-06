@@ -8,10 +8,16 @@ define([], function() {
 		this.content = $resource(server + "/api/pages/:id"); // TODO: Use the actual content endpoint once it is written.
 		
 		var conceptsPerPage = 10;
-		var conceptList = $resource(server + "/api/concepts?start_index=:startIndex&limit=:limit",{},{'query': {method: 'GET', isArray: false }});
+		var conceptList = $resource(server + "/api/concepts?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var questionList = $resource(server + "/api/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+
 
 		this.getConceptList = function(page){
 			return conceptList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});
+		}
+
+		this.getQuestionList = function(page){
+			return questionList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});
 		}
 
 		this.getImageUrl = function(path) {

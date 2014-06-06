@@ -75,6 +75,28 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+            .state('questionsIndex', {
+                url: "/questions?page",
+                resolve: {
+                    "pageIndex" :['$stateParams', function($stateParams){
+                        return parseInt($stateParams.page || "1") - 1;
+                    }],
+                    "list" : ['api', 'pageIndex', function(api, pageIndex){
+                        return api.getQuestionList(pageIndex).$promise;
+                    }]
+                },
+                views: {
+                    //TODO: Stop reusing ConceptsIndex controllers eventually - I was just being lazy.
+                    "header-panel": {
+                        templateUrl: "/partials/states/questions/header_panel.html",
+                        controller: "ConceptsIndexPageHeaderController",
+                    },
+                    "body": {
+                        templateUrl: "/partials/states/questions/body.html",
+                        controller: "ConceptsIndexPageBodyController",
+                    }
+                }
+            })            
 
             .state('concept', {
                 url: "/concepts/:id",
@@ -94,6 +116,25 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('question', {
+                url: "/questions/:id",
+                resolve: {
+                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.pages.get({id: $stateParams.id}).$promise;
+                    }]
+                },                
+                views: {
+                    "header-panel": {
+                        templateUrl: "/partials/states/question/header_panel.html",
+                        controller: "QuestionPageHeaderController",
+                    },
+                    "body": {
+                        templateUrl: "/partials/states/question/body.html",
+                        controller: "QuestionPageBodyController",
+                    }
+                }
+            })            
 
             .state('random_content', {
                 url: "/content/:id",
