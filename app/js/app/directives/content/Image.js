@@ -4,7 +4,6 @@ define([], function() {
 	return ["api", function(api) {
 
 		return {
-
 			scope: {
 				src: "=",
 				isaacImage: "=",
@@ -15,9 +14,15 @@ define([], function() {
 			templateUrl: "/partials/content/Image.html",
 
 			link: function(scope, element, attrs) {
+				var src = scope.isaacImage || scope.src;
 
-				scope.path = api.getImageUrl(scope.src || scope.isaacImage);
-
+				// check if the image source is a fully qualified link (suggesting it is external to the Isaac site)
+				if(src.indexOf("http") > -1){
+					scope.path = src;
+				}
+				else{
+					scope.path = api.getImageUrl(src);
+				}
 			}
 		};
 	}];
