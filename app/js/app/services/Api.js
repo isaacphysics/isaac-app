@@ -23,7 +23,13 @@ define([], function() {
 		}
 
 		this.getImageUrl = function(path) {
-			return server + "/api/images/" + path;
+			// check if the image source is a fully qualified link (suggesting it is external to the Isaac site)
+			if(path.indexOf("http") > -1){
+				return path;
+			}
+			else{
+				return server + "/api/images/" + path;
+			}
 		}
 
 		this.admin = {

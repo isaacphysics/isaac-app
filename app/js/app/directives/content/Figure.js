@@ -14,9 +14,7 @@ define([], function() {
 			templateUrl: "/partials/content/Figure.html",
 
 			link: function(scope, element, attrs) {
-
 				var src = api.getImageUrl(scope.doc.src);
-
 				scope.imgSrc = src;
 			}
 		};
