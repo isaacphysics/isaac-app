@@ -52,6 +52,10 @@ define(["angular-ui-router"], function() {
             .state('home', staticPageState("/", "home"))
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
+            .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
+            .state('featured_problems', genericPageState("/featured_problems", "featured_problems_index"))
+            .state('bios', genericPageState("/bios", "bios"))
+            .state('why_physics', genericPageState("/why_physics", "why_physics"))
             .state('contact', staticPageState("/contact", "contact"))
 
             .state('conceptsIndex', {
@@ -102,7 +106,7 @@ define(["angular-ui-router"], function() {
                 url: "/concepts/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.pages.get({id: $stateParams.id}).$promise;
+                        return api.concepts.get({id: $stateParams.id}).$promise;
                     }]
                 },                
                 views: {
@@ -121,7 +125,7 @@ define(["angular-ui-router"], function() {
                 url: "/questions/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.pages.get({id: $stateParams.id}).$promise;
+                        return api.questions.get({id: $stateParams.id}).$promise;
                     }]
                 },                
                 views: {

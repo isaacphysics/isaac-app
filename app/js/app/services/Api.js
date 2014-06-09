@@ -6,7 +6,9 @@ define([], function() {
 
 		this.pages = $resource(server + "/api/pages/:id");
 		this.content = $resource(server + "/api/pages/:id"); // TODO: Use the actual content endpoint once it is written.
-		
+		this.questions = $resource(server + "/api/pages/:id");
+		this.concepts = $resource(server + "/api/pages/:id");
+
 		var conceptsPerPage = 10;
 		var conceptList = $resource(server + "/api/concepts?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var questionList = $resource(server + "/api/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
