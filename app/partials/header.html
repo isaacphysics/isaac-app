@@ -11,13 +11,13 @@
                              [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
                 </div>
                 <div class='large-8 medium-12 columns'>
-                    <a class='ru-desktop-nav-item'>  
-                        <div class='ru-desktop-nav-item-inner' ui-sref='questionsIndex'>
+                    <a class='ru-desktop-nav-item' ui-sref='questionsIndex'>  
+                        <div class='ru-desktop-nav-item-inner active'>
                             <span>Problems</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item' ui-sref='conceptsIndex'>  
-                        <div class='ru-desktop-nav-item-inner active'>
+                        <div class='ru-desktop-nav-item-inner'>
                             <span>Concepts</span>
                         </div>
                     </a>
@@ -73,12 +73,12 @@
                     </div>
                 </a>
                 <a class='ru-mobile-nav-item' ui-sref='conceptsIndex'>  
-                    <div class='ru-mobile-nav-item-inner active'>
+                    <div class='ru-mobile-nav-item-inner'>
                         <span>Concepts</span>
                     </div>
                 </a>
                 <a class='ru-mobile-nav-item' ui-sref='questionsIndex'>  
-                    <div class='ru-mobile-nav-item-inner'>
+                    <div class='ru-mobile-nav-item-inner active'>
                         <span>Problems</span>
                     </div>
                 </a>
@@ -89,7 +89,42 @@
     <div class='row hide-for-small-only'>
         <div class='large-16 medium-16 columns'>
             <div class='ru-desktop-panel-search'>
-                <a href=''><img src='/assets/desktop-search.png'></a>
+                <a href=""><img src='/assets/desktop-search.png' alt="Search"></a>
+                <div class='ru-desktop-search'>
+                    <div class="row">
+                        <div class="large-2 medium-3 columns">
+                            <label for="ru-search-box" class=" text-center inline">Search</label> 
+                        </div>
+                        <div class="large-4 medium-13 columns">
+                            <input id="ru-search-box" type="text"/>
+                        </div>
+                        <div class="clearfix show-for-medium-only"></div>
+                        <div class="large-4 medium-5 medium-offset-3 large-offset-0 columns">
+                            <div class="ru-desktop-search-check">
+                                <span class="ru-drop-check">
+                                    <input id="search-check1" name="checkbox2" type="checkbox" checked='checked'>
+                                    <label for='search-check1'></label>
+                                </span>
+                                <label class=''> Problems only</label>
+                            </div>
+                        </div>
+                        <div class="large-4 medium-5 columns">
+                            <div class="ru-desktop-search-check">
+                                <span class="ru-drop-check">
+                                    <input id="search-check2" name="checkbox2" type="checkbox" checked='checked'>
+                                    <label for='search-check2'></label>
+                                </span>
+                                <label class=''> Concepts only</label>
+                            </div>
+                        </div>
+                        <div class="large-2 medium-3 columns text-center">
+                            <img  src="/assets/search.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ru-desktop-panel-search-close">
+                <img src='/assets/Close-button.jpg' alt="Close Search">
             </div>
         </div>
     </div>
