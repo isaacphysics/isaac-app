@@ -23,3 +23,12 @@ $i : 0.25;
     }
     $i : $i + 0.25;
 }
+
+@mixin scale($x:1, $y:1)
+{
+    transform:scale($x,$y); /* W3C */
+    -webkit-transform:scale($x,$y); /* Safari and Chrome */
+    -moz-transform:scale($x,$y); /* Firefox */
+    -ms-transform:scale($x,$y); /* IE 9 */
+    -o-transform:scale($x,$y); /* Opera */
+}

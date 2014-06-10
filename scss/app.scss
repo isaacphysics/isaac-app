@@ -1,12 +1,15 @@
-// Other 3rd party css
-@import "video-js";
-
 // Foundation
 @import "settings";
 @import "foundation";
 @import "responsive-tables";
 
+// Other 3rd party css
+@import "video-js";
+@import "anim_check";
+@import "bxslider";
+
 // Ruherford Base SCSS
+@import "ru";
 @import "ru-utils.scss";
 @import "mobilemenus.scss";
 @import "videojs_overrides.scss";
@@ -22,3 +25,4 @@
 
 // Rutherford additional per page SCSS
 @import "concept_problem.scss";
+@import "home.scss";

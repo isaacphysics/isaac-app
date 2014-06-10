@@ -13,6 +13,22 @@
     border-top: #cccccc 1px solid !important;
 }
 
+.ru_level:before
+{
+    content: 'Level';
+}
+
+.ru_part:before
+{
+    content: 'Part ';
+}
+
+.accordion.ru_accordion>dd>.content
+{
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
 .accordion.ru_accordion dd.active a.ru_accordion_titlebar
 {
    border-bottom: #cccccc 1px solid !important;
@@ -32,6 +48,7 @@
     @include rotate(180deg);
     position: relative;
     bottom: 3px;
+    margin-left: 20px;
 }
 
 .accordion.ru_accordion dd.active a.ru_accordion_titlebar div.ru_accordion_details img
@@ -39,9 +56,15 @@
     @include rotate(0deg);
 }
 
+.ru_accordion_details.ru-problem img
+{
+    bottom: 0px !important;
+}
+
 .ru_accordion_title
 {
     padding-left: 1rem;
+    font-weight: 600;
 }
 
 .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name
@@ -53,7 +76,8 @@
     padding-left: 2.5rem;
     padding-right: 2.5rem;
     margin-top: -1px;
-    min-width: 140px;
+    min-width: 150px;
+    position: relative;
 }
 
 .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
@@ -62,33 +86,110 @@
     border-top: 3px solid $ru_physics;
 }
 
+.accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
+{
+    background-color: lighten($ru_physics, 15%);
+    border-top: 3px solid lighten($ru_physics, 15%);
+}
+
+.accordion.ru_accordion dd:not(.active) a.ru_accordion_titlebar .ru_accordion_name:after
+{
+    content: '';
+    display: block;
+    width: 150px;
+    height: 1px;
+    background-color: #aaaaaa;
+    position: absolute;
+    bottom: -1px;
+    z-index: 3;
+    left: 0;
+}
+
 .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name
 {
     background-color: $ru_maths;
+    border-top: 3px solid $ru_maths;
+}
+
+.accordion.ru_accordion.maths dd a.ru_accordion_titlebar:hover .ru_accordion_name
+{
+    background-color: lighten($ru_maths, 15%);
+    border-top: 3px solid lighten($ru_maths, 15%);
+}
+
+
+// Ellipsis for title
+.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
+{
+    width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+    top: 8px;
+}
+
+@media #{$medium-only}
+{
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
+    {
+        width: 300px;
+    }
+}
+
+.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title.safari
+{
+    top: 0px;
 }
 
 @media #{$small-only}
 {
-    .ru_accordion_title
+    .ru_level:before
+    {
+        content: 'L';
+    }
+
+    .ru_part:before
+    {
+        content: ' ';
+    }
+    
+    [class^=ru-level-]
     {
         display: none;
     }
     
     .accordion.ru_accordion dd a.ru_accordion_titlebar
     {
-        height: 34px;
+        height: 50px;
         font-size: 0.9rem;
         padding-top: 3px;
     }
     
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
+    {
+        padding-left: 0.4rem;
+        width: 180px;
+        position: relative;
+        top: 6px;
+    }
+    
     .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name
     {
-        height: 34px;
-        padding-top: 3px;
+        height: 50px;
+        padding-top: 10px;
         margin-top: -4px;
         padding-left: 1rem;
         padding-right: 1rem;
-        min-width: 80px;
+        min-width: 55px;
+        position: relative;
+        bottom: 0px;
+    }
+    
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title.iphone
+    {
+        top: 0px;
     }
     
     .accordion.ru_accordion dd a.ru_accordion_titlebar div.ru_accordion_details
@@ -96,7 +197,7 @@
         padding-top: 0px;
         padding-right: 8px;
         position: relative;
-        bottom: 6px;
+        bottom: 0px;
         max-height: 30px;
     }
     
@@ -104,7 +205,12 @@
     {
         height: 28px;
         position: relative;
-        bottom: 5px;
+        top: 6px;
+    }
+    
+    .accordion.ru_accordion dd:not(.active) a.ru_accordion_titlebar .ru_accordion_name:after
+    {
+        width: 55px;
     }
 }
 
@@ -123,7 +229,7 @@ $ru_inactive: 'inactive';
         $pos_list : ();
         @for $j from 1 through 6
         {
-            $pos_list : append($pos_list, ($j - 1) * 100% / 6 );
+            $pos_list : append($pos_list, ($j - 1) * 100% / 5 );
             @if $i < $j { $bg_list : append($bg_list, url('#{$ru_level_prefix}#{$ru_inactive}.png')); }
             @if $i >= $j { $bg_list : append($bg_list, url('#{$ru_level_prefix}#{$type}.png')); }
         }
@@ -132,19 +238,33 @@ $ru_inactive: 'inactive';
             content:'';
             display: inline-block;
             position: relative;
-            top: 6px;
+            top: 13px;
             height: 27px;
-            width: 31px * $ru_levels;
+            width: 16px * $ru_levels;
             background-repeat: no-repeat;
             background-image: nth($bg_list, 1), nth($bg_list, 2), nth($bg_list, 3), nth($bg_list, 4), nth($bg_list, 5), nth($bg_list, 6);
             background-position: nth($pos_list, 1) top, nth($pos_list, 2) top, nth($pos_list, 3) top, nth($pos_list, 4) top, nth($pos_list, 5) top, nth($pos_list, 6) top;
         }
-        @media #{$large-up}
-        {
-            .ru-level-#{$type}-#{$i}:before
-            {
-                content: 'Level: ';
-            }
-        }
     }
+}
+
+.ru-level
+{
+    padding-top: 24px;
+    display: inline-block;
+}
+
+@media #{$small-only}
+{
+    .ru-level
+    {
+        position: relative;
+        padding-top: 0px;
+        bottom: 4px
+    }
+}
+
+.ru-level:not([class^='ru-level-'])
+{
+    padding-top: 36px;
 }

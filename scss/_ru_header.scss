@@ -20,11 +20,11 @@ $ru_nav_size : 7em;
 }
 
 .ru-desktop-nav-item-inner {
+    background-image: url(/assets/ru.png);
+    background-position: -127px -5px;
+    height: 188px;
 	width: 7em;
-	height: 188px;
-	background-image: url('/assets/menu-desktop-inactive.png');
 	position: relative;
-    background-repeat: no-repeat;
 }
 
 .ru-desktop-nav-item span
@@ -42,7 +42,7 @@ $ru_nav_size : 7em;
 
 .ru-desktop-nav-item-inner:hover
 {
-    background-image: url('/assets/menu-desktop-inactive-hover.png');
+    background-position: -249px -5px;
 }
 
 .ru-desktop-nav-item-inner:hover span
@@ -52,7 +52,7 @@ $ru_nav_size : 7em;
 
 .ru-desktop-nav-item-inner.active
 {
-	background-image: url('/assets/menu-desktop-active.png');
+    background-position: -5px -5px;
     z-index: 1000;
     cursor: default;
 }
@@ -78,6 +78,11 @@ $ru_nav_size : 7em;
     right: 15px;
     top: 19px;
     z-index: 200;
+}
+
+.ru-desktop-panel-content
+{
+    min-height: 40px;
 }
 
 // Mobile Header
@@ -124,6 +129,11 @@ $ru_nav_size : 7em;
     }
 }
 
+.ru-mobile-up
+{
+    @include rotate(180deg);
+}
+
 .ru-mobile-panel
 {
     border-top: 1px solid $ru_green;
@@ -134,6 +144,7 @@ $ru_nav_size : 7em;
     width: 100%;
     margin-bottom: 10px;
     margin-top: 2px;
+    min-height: 40px;
 }
 
 .ru-mobile-nav
@@ -165,6 +176,7 @@ $ru_nav_size : 7em;
     background-image: url('/assets/menu-mobile-active.png'); 
     color: white;
     background-repeat: no-repeat;
+    z-index: 2;
 }
 
 .ru-mobile-nav-item
@@ -185,4 +197,52 @@ $ru_nav_size : 7em;
     position: relative;
     font-size: 1.1em;
     display: inline-block;
+}
+
+.ru-desktop-search
+{
+    padding-top: 16px;
+}
+
+.ru-desktop-search * label
+{
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 100;
+}
+
+label[for="ru-search-box"]
+{
+    font-weight: 600;
+}
+
+#ru-search-box
+{
+    margin-top: 6px;
+}
+
+.ru-desktop-search-check
+{
+    margin-top: 8px;
+}
+
+.ru-desktop-panel-search > .ru-desktop-search
+{
+    display: none;
+    visiblity: hidden;
+}
+
+.ru-desktop-menu-noz-active
+{
+    z-index: inherit !important;
+}
+
+.ru-desktop-panel-search-close
+{
+    position: absolute;
+    right: 5px;
+    top: 9px;
+    z-index: 200;
+    display: none;
+    cursor: pointer;
 }

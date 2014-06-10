@@ -1,8 +1,85 @@
 // Concept and Problem specific SCSS
+.ru-concept-intro
+{
+    margin-bottom: 15px;
+}
+
+.ru-panel-arrow-block
+{
+    border-left: 40px solid $ru_green;
+}
+
+.ru-panel-arrow
+{
+    float: left;
+    z-index: 1;
+    cursor: pointer;
+    display: inline-block;
+    &:after
+    {
+        content: url('/assets/white-arrow.png');
+        display: inline-block;
+        position: absolute;
+        left: -30px;
+        top: 25px;
+    }
+}
+
+.ru-panel-question
+{
+    padding-top: 14px;
+    font-size: 1.3rem;
+    font-weight: 300;
+    padding-bottom: 0px;
+    margin-bottom: 14px;
+    padding-left: 10px;
+    
+}
+
+@media #{$small-only}
+{
+    .ru-panel-arrow
+    {   
+        float: left;
+        &:after
+        {
+            top: 20px;
+            left: -30px;
+        }
+    }
+    
+    .ru-panel-question
+    {
+        font-size: 1.1rem;
+        font-weight: 300;
+        padding-top: 10px;
+        margin-bottom: 8px;
+    }
+}
+
+.ru-concept
+{
+    font-style: italic;
+}
+
+.ru-concept-inner
+{
+    margin: 0 15px;
+}
 
 .ru_figure img
 {
     padding-bottom: 1rem;
+}
+
+@media #{$medium-up}
+{
+.ru_figure_panel
+{
+    width: 300px;
+    float: right;
+    margin-left: 10px;
+}
 }
 
 .ru-pad
@@ -16,14 +93,19 @@
     margin-bottom: 2rem;
 }
 
+.ru-problem-buttons
+{
+    margin-top: 1rem;
+    margin-bottom: 1rem;    
+}
 
-.ru-concept-button
+.ru-concept-button, .ru-problem-button
 {
     font-size: 1.25rem;
     font-weight: 500;
     display: block;
     background-color: #333333;
-    padding: 1.3rem 2rem;
+    padding: 1.3rem 1rem;
     text-align: center;
     color: white;
     &:hover
@@ -33,16 +115,368 @@
     }
 }
 
+.ru-problem-button.physics
+{
+    background-color: $ru_physics;
+    &:hover
+    {
+        background-color: lighten($ru_physics, 15%);
+    }
+}
+
+.ru-problem-button.maths
+{
+    background-color: $ru_maths;
+    &:hover
+    {
+        background-color: lighten($ru_maths, 15%);
+    }
+}
 
 @media #{$small-only}
 {
-    .ru-concept-button
+    .ru-concept-button, .ru-problem-button
     {
         font-size: 0.9rem;
-        padding: 0.5rem 0.75rem;
+        padding-top: 14px;
+        padding-bottom: 15px;
+        padding-left: 2px;
+        padding-right: 2px;
         &:hover
         {
             background-color: #333333;
         }
     }
+    
+    .ru-concept-inner
+    {
+        margin: 0 0;
+    }
+}
+
+.ru-answer-wrong
+{
+    background-color: #666666;
+    margin-top: 0.5em;
+    overflow: hidden;
+    display: none;
+}
+
+.ru-answer-correct-wrap
+{
+    overflow: hidden;
+    display: none;
+}
+
+.ru-answer-wrong * h1,
+.ru-answer-wrong * h2,
+.ru-answer-wrong * h3,
+.ru-answer-wrong * h4,
+.ru-answer-wrong * h5,
+.ru-answer-wrong * h6
+{
+    font-family: 'desyrel';
+}
+
+.ru-answer-wrong * p
+
+.ru-answer-wrong * h1 { font-size: $h1-font-size * 2;}
+.ru-answer-wrong * h2 { font-size: $h2-font-size * 2;}
+.ru-answer-wrong * h3 { font-size: $h3-font-size * 2;}
+.ru-answer-wrong * h4 { font-size: $h4-font-size * 2;}
+.ru-answer-wrong * h5 { font-size: $h5-font-size * 2;}
+.ru-answer-wrong * h6 { font-size: $h6-font-size * 2;}
+.ru-answer-wrong * p  { font-size: 1.5rem !important; }
+
+.ru-answer-check * button
+{
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+@media #{$small-only}
+{
+    .ru-answer-wrong * h1 { font-size: $h1-font-size * 1.5;}
+    .ru-answer-wrong * h2 { font-size: $h2-font-size * 1.5;}
+    .ru-answer-wrong * h3 { font-size: $h3-font-size * 1.5;}
+    .ru-answer-wrong * h4 { font-size: $h4-font-size * 1.5;}
+    .ru-answer-wrong * h5 { font-size: $h5-font-size * 1.5;}
+    .ru-answer-wrong * h6 { font-size: $h6-font-size * 1.5;}
+    .ru-answer-wrong * p  { font-size: 1.25rem  !important; }
+    .ru-answer-wrong
+    {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .ru-answer-check * button
+    {
+        font-size: 1.25rem;
+    }
+}
+
+.ru-answer-block
+{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+    font-size: 1.1rem;
+}
+
+.ru-answer-block input
+{
+    @include radius(3px);
+    box-shadow: none;
+    height: 2.7rem;
+    font-size: 1.6rem;
+    padding: 0 0.5rem 0 0.5rem;
+    font-style: italic;
+}
+
+.ru-answer-block .ru-answer-block-panel
+{
+   margin-top: 0.5rem;
+   padding: 0.3rem 0.3rem 0.7rem 0.3rem;
+   @include radius(6px);
+}
+
+.ru-answer-block.ru-error .ru-answer-block-panel
+{
+    background-color: $ru_red;
+    input
+    {
+        color: $ru_red;
+    }
+}
+
+.ru-answer-correct-summary
+{
+    padding: 1.5rem 0 0.5rem 0;
+    p
+    {
+        font-size: 1.4rem !important;
+    }
+}
+
+.ru-answer-correct-summary.physics
+{
+    background-color: $ru_darkpurple;
+}
+
+.ru-answer-correct-summary.maths
+{
+    background-color: darken($ru_maths, 15%);
+}
+
+.ru-answer-correct
+{
+    padding: 1rem 0 1rem 0;
+}
+
+.ru-answer-correct.physics
+{
+    background-color: $ru_physics;   
+}
+
+.ru-answer-correct.maths
+{
+    background-color: $ru_maths;   
+}
+
+.ru-answer-correct img
+{
+    margin: 0 1.25rem;
+    padding-bottom: 1rem;
+
+}
+
+.ru-answer-correct p
+{
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.ru-answer-correct h1
+{
+    font-size: 4rem;
+    font-family: 'desyrel';
+}
+
+.ru-answer-check
+{
+    padding-top: 30px;
+    background-color: #4b4b4b;
+    padding-bottom: 20px;
+}
+
+// Carousel
+
+.ru-answer-orbit .ru-answer-orbit-content
+{
+    background-color: #4b4b4b;
+    margin: 1rem 0 0 0;
+    padding: 1rem 0;
+    p
+    {
+        font-style: normal;
+        font-size: 1.4rem !important;
+    }
+}
+
+.ru-answer-orbit .ru-answer-orbit-controls
+{
+    form
+    {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+}
+
+.ru-answer-orbit .ru-answer-orbit-prev, .ru-answer-orbit .ru-answer-orbit-next
+{
+    position: relative;
+    top: 100px;
+    a
+    {
+        display: block;
+        height: 90px;
+        width: 48px;
+    }
+}
+
+.ru-answer-orbit .ru-answer-orbit-prev a, .ru-answer-orbit .ru-answer-orbit-next a
+{
+    background-image: url(/assets/icon-arrow-white.png);
+    background-repeat: no-repeat;
+}
+
+.ru-answer-orbit .ru-answer-orbit-next a
+{
+    margin-left: 0px;
+}
+
+.ru-answer-orbit .ru-answer-orbit-prev a
+{
+    @include rotate(180deg);
+    margin-left: 30px;
+}
+
+.ru-answer-orbit .ru-answer-orbit-prev a.physics:hover, .ru-answer-orbit .ru-answer-orbit-next a.physics:hover
+{
+    background-image: url(/assets/icon-arrow-physics.png);
+}
+
+.ru-answer-orbit .ru-answer-orbit-prev a.maths:hover, .ru-answer-orbit .ru-answer-orbit-next a.maths:hover
+{
+    background-image: url(/assets/icon-arrow-maths.png);
+}
+
+
+@media #{$medium-only}
+{
+    .ru-answer-orbit .ru-answer-orbit-prev a, .ru-answer-orbit .ru-answer-orbit-next a
+    {
+        top: 120px;
+        height: 45px;
+        width: 24px;
+        background-size: 24px 45px;
+    }
+}
+
+@media #{$small-only}
+{
+    .ru-answer-correct-summary p, .ru-answer-correct p
+    {
+        font-size: 1rem !important;
+        font-weight: 300;
+    }
+    
+    .ru-answer-correct img
+    {
+        padding-top: 0.5rem;
+        padding-bottom: 1.5rem;
+    }
+    .ru-answer-orbit .ru-answer-orbit-content p
+    {
+        font-style: normal;
+        font-size: 1rem !important;
+    }
+    .ru-answer-orbit .ru-answer-orbit-content p.iphone
+    {
+        font-size: 0.5rem !important;
+    }
+    
+    .ru-mobile-expand
+    {
+        position : relative;
+    }
+    
+    .ru-mobile-expand div
+    {
+        display: block;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        width: 30px;
+        height: 31px;
+        cursor: pointer;
+    }
+    
+    .ru-mobile-expand.physics div
+    {
+        background-image: url(/assets/icon-expand-physics.png);
+        
+    }
+    
+    .ru-mobile-expand.maths div
+    {
+        background-image: url(/assets/icon-expand-maths.png);
+    }
+}
+
+.ru-answer-orbit-slide
+{
+    padding: 2rem 0;
+    margin: 0 auto;
+    padding-right: 20px;
+}
+
+.ru-answer-orbit-bullets
+{
+    div
+    {
+        height: 14px;
+        width: 13px;
+        margin: 4px;
+        background-image: url('/assets/bullet-unselected.png');
+        background-repeat: no-repeat;
+        display: inline-block;
+        cursor: pointer;
+    }
+    div.active
+    {
+        background-image: url('/assets/bullet-selected.png');
+    }
+}
+
+.ru-arrow-hidden
+{
+    opacity: 0.0001;
+    cursor: default !important;
+}
+
+.ru-answer-orbit-slide
+{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.ru-problem-q-pad, .ru-problem-q-pad ul 
+{
+    padding: 20px 0 !important;
+}
+
+.ru-light
+{
+    font-weight: 100;
 }

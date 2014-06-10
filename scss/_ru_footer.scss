@@ -51,24 +51,18 @@ footer
 
 @each $name in (google, facebook, twitter)
 {
-    .ru-social-#{$name}
+    .ru-social-icon-#{$name}-48x48:hover
     {
-        height: 48px;
-        width: 48px;
-        background-size: 48px 48px;
-        background-image: url('/assets/social-icon-#{$name}.png');
-        background-repeat: none;
-    }
-    
-    .ru-social-#{$name}:hover
-    {
-        background-image: url('/assets/social-icon-#{$name}-hover.png');
-    }
-    
-    a.ru-social-#{$name}
-    {
+        $var : '.ru-social-icon-#{$name}-hover-48x48'; 
+        @extend #{$var}; 
         display: inline-block;
     }
+}
+
+
+a[class^='ru ru-social-icon']
+{
+    display: inline-block;
 }
 
 .ru-social
@@ -78,13 +72,6 @@ footer
     position: relative;
     bottom: 28px;
     padding-right: 4px;
-}
-
-.ru-social-small
-{
-    height: 40px;
-    width: 40px;
-    background-size: 40px 40px;
 }
 
 @media only screen and (max-width: 52.5em)

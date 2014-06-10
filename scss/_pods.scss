@@ -27,23 +27,49 @@
     padding-top: 10px;
 }
 
+.ru_pod_image_inner
+{
+    padding: 20px;
+    p,a
+    {
+        font-size: 0.95rem;
+    }
+}
+
+.ru_pod_image
+{
+    height: auto;
+    padding: 0;
+    overflow-y: visible;
+}
+
+.ru_pod_image img
+{
+    width: 320px;
+    height: 180px;
+    overflow: hidden;
+}
+
+.ru_pod hr
+{
+    margin-top: 6px;
+}
+
 @media #{$small-only}
 {
     .ru_pod
     {
         overflow-y: hidden;
+        height: auto;
     }
 }
 
-.ru_pod_title img
-{
-    float: left;
-    margin-right: 10px;
-}
 
 .ru_pod_title
 {
-    height: 50px;
+    height: 65px;
+    padding-left: 75px; 
+    background-repeat: no-repeat;
     &:after
         {
             clear:both;
@@ -61,9 +87,63 @@
     margin-bottom: 1px;
 }
 
-.ru_pod > h5,h6
+.ru_pod ul
 {
+    margin-left: 0;
+    line-height: 1;
+}
+
+.ru_pod ul li
+{
+    list-style: none;
+    padding-bottom: 0.5rem;
+}
+
+.ru_pod ul li > a
+{
+    color: $anchor-font-color !important;
+    &:hover
+    {
+        color: $anchor-font-color-hover  !important;
+    }
+    font-size: $h6-font-size;
+    font-weight: 600;
+    font-style: italic;
     margin-bottom: 0.3rem;
+    margin-top: 0;
+    display: block;
+}
+
+.ru_pod ul li > h5
+{
+    color: $ru_green;
+    font-size: $h6-font-size;
+}
+
+.ru_pod ul li > h6
+{
+    font-size: $h6-font-size;
+}
+
+.ru_pod ul li > h5, .ru_pod ul li > h6, .ru_pod ul li > a
+{
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+}
+
+.ru_pod_concepts
+{
+    background-image:  url('/assets/icon-books.png');
+}
+
+.ru_pod_questions
+{
+    background-image:  url('/assets/icon-search-concepts.png');
+}
+
+.ru_pod_forum .ru_pod_title
+{
+    background-image:  url('/assets/icon-help-forum.png');
 }
 
 .ru_pod.ru_pod_forum > a
@@ -77,3 +157,4 @@
         text-decoration: none;
     }
 }
+

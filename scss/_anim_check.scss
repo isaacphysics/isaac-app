@@ -1,0 +1,126 @@
+/**
+ * Animated Radio Buttons
+ * As recommened by Honest, from: http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
+ */
+
+.ac-custom h2 {
+	padding: 0 0 0.5em;
+	margin: 0 0 30px;
+}
+
+.ac-custom ul,
+.ac-custom ol {
+	list-style: none;
+	padding: 0;
+	margin: 0 auto;
+	max-width: 800px;
+}
+
+.ac-custom li {
+	margin: 0 auto;
+	padding: 1em 0;
+	position: relative;
+}
+
+.ac-custom label {
+	display: inline-block;
+	position: relative;
+    font-size: 1.4rem;
+    color: white;
+	padding: 0 0 0 80px;
+	vertical-align: top;
+	cursor: pointer;
+	-webkit-transition: color 0.3s;
+	transition: color 0.3s;
+}
+
+@media #{$small-only}
+{
+    .ac-custom label {
+    font-size: 1rem;
+    }
+}
+
+.ac-custom input[type="checkbox"],
+.ac-custom input[type="radio"],
+.ac-custom label::before {
+	width: 40px;
+	height: 40px;
+	top: 50%;
+	left: 0;
+	margin-top: -20px;
+	position: absolute;
+	cursor: pointer;
+}
+
+.ac-custom input[type="checkbox"],
+.ac-custom input[type="radio"] {
+	opacity: 0;
+	-webkit-appearance: none;
+	display: inline-block;
+	vertical-align: middle;
+	z-index: 100;
+}
+
+.ac-custom label::before {
+	content: '';
+	border: 2px solid #fff;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+
+.ac-radio label::before {
+	border-radius: 50%;
+}
+
+.ac-custom input[type="checkbox"]:checked + label,
+.ac-custom input[type="radio"]:checked + label {
+	color: #fff;
+} 
+
+.ac-custom input[type="checkbox"]:checked + label::before,
+.ac-custom input[type="radio"]:checked + label::before {
+	opacity: 0.8;
+}
+
+/* General SVG and path styles */
+
+.ac-custom svg {
+	position: absolute;
+	width: 35px;
+	height: 35px;
+	top: 50%;
+	margin-top: -17px;
+	left: 12px;
+	pointer-events: none;
+}
+
+.ac-custom svg path {
+	stroke: #fdfcd3;
+	stroke-width: 13px;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	fill: none;
+}
+
+.ac-custom.physics svg path {
+    stroke: $ru_physics;
+}
+
+.ac-custom.maths svg path {
+    stroke: $ru_maths;
+}
+
+.ac-center
+{
+    position: relative;
+    right: 20px;
+}
+
+@media #{$small-only}
+{
+    .ac-center
+    {
+        right: 25px;  
+    }
+}

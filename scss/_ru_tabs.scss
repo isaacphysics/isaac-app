@@ -16,15 +16,37 @@
 {
     background-color: $ru_physics !important;
     border: $ru_physics 1px solid;
+    &:hover
+    {
+        background-color: lighten($ru_physics,15%) !important;
+        border: lighten($ru_physics,15%) 1px solid;
+    }
 }
 
 .tabs.ru_tabs.maths dd a
 {
     background-color: $ru_maths !important;
     border: $ru_maths 1px solid;
+    &:hover
+    {
+        background-color: lighten($ru_maths,15%) !important;
+        border: lighten($ru_maths,15%) 1px solid;
+    }
 }
 
-.tabs.ru_tabs dd.active a
+.tabs.ru_tabs dd.ru-answer a
+{
+    color: white;
+    background-color: $ru_footer !important;
+    border: $ru_footer 1px solid;
+    &:hover
+    {
+        background-color: lighten($ru_footer,15%) !important;
+        border: lighten($ru_footer,15%) 1px solid;
+    }
+}
+
+.tabs.ru_tabs dd.active a, .tabs.ru_tabs dd.active a:hover
 {
     background-color: #f6f6f6 !important;
     font-weight: 600;
@@ -33,6 +55,30 @@
     border-bottom: #f6f6f6 1px solid;
     padding-bottom: 11px;
     z-index: 100;
+}
+
+.tabs.ru_tabs.ru-answer dd.active a
+{
+    border-left: #333333 1px solid;
+    border-top: #333333 1px solid;
+    border-right: #333333 1px solid;
+    border-bottom: white 1px solid;
+    background-color: white !important;
+}
+
+.tabs.ru_tabs dd.active.ru-answer a
+{
+    background-color: #333333 !important;
+    border-bottom: #333333 solid 1px;
+    color: white;
+}
+
+@media #{$small-only}
+{
+    .tabs.ru_tabs.ru-answer dd:not(.active)
+    {
+        border-bottom: white 1px solid;
+    }
 }
 
 .ru_tabs_question:after
@@ -47,11 +93,58 @@
     margin-top: -1px;
 }
 
+.tabs-content.ru_tabs.ru-answer
+{
+    border: #333333  solid 1px;
+}
+
+.tabs-content>.content.ru-answer
+{
+    padding-bottom: 0px;
+}
+
 .tabs-content.ru_tabs .content
 {
     background-color: #f6f6f6 !important;
 }
 
+.tabs-content.ru_tabs.ru-answer .content
+{
+    background-color: white !important;
+    font-size: 1.25rem;
+    font-style: italic;
+}
+
+.tabs-content.ru_tabs.ru-answer .content * p
+{
+    font-size: 1.1rem;
+}
+
+.tabs-content.ru_tabs.ru-answer .content.ru-answer
+{
+    background-color: $ru_footer !important;
+    color: white;
+}
+
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h1,
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h2,
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h3,
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h4,
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h5,
+.tabs-content.ru_tabs.ru-answer .content.ru-answer * h6
+{
+    color: white;
+}
+
+@media #{$medium-only}
+{
+    .tabs.ru_tabs dd a
+    {
+        padding-left: 6px;
+        padding-right: 6px;
+        text-align: center;
+    }
+}
 
 @media #{$small-only}
 {
@@ -63,7 +156,30 @@
     .tabs.ru_tabs dd a
     {
         font-size: 0.9rem;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-right: 1px;
+        line-height: 1.2;
+        text-align: center;
     }
+    
+    .tabs-content.ru_tabs.ru-answer
+    {
+        padding-bottom: 0px;
+        position: relative;
+        top: 1px;
+    }
+}
+
+@media #{$medium-up}
+{
+    .tabs.ru_tabs dd a br
+    {
+        display: none;
+    }
+}
+
+.tabs-content.ru_tabs
+{
+    margin-bottom: 0px;
 }

@@ -2,9 +2,10 @@
 
 .ru_share
 {
-    background-image: url('/assets/icon-share.png');
+    background-image: url('/assets/share.svg');
     width: 50px;
     height: 56px;
+    right: -50px;
     float: right;
     background-repeat: no-repeat;
     z-index: 101;
@@ -17,19 +18,20 @@
     .ru_share_link
     {
         position: absolute;
-        height: 53px;
+        height: 56px;
         z-index: 100;
-        width: 260px;
+        width: 0px;
         background-color: white;
         border: #a7a7a7 solid 1px;
         margin-top: 1px;
-        right: 40px;
-        display: none;
+        top: -1px;
+        right: -10px;
+        overflow: hidden;
     }
     
     .ru_share_link > div
     {
-        margin: 14px 28px 14px 8px;
+        margin: 14px 30px 14px 6px;
         padding: 3px 6px;
         background-color: #ebf3e8;
     }
@@ -42,11 +44,12 @@
 
 .ru_acrobat
 {
-    display: none;
-    background-image: url('/assets/icon-acrobat.png');
+    background-image: url('/assets/PDF.svg');
     width: 50px;
     height: 56px;
     float: right;
+    position: relative;
+    right: -40px;
     background-repeat: no-repeat;
 }
 
@@ -57,13 +60,35 @@
         background-size: 40px 45px;
         width: 40px;
         height: 45px;
-        display: inherit;
         cursor: inherit;
+        right: -20px;
+        margin-left: 4px;
     }
     
-    .ru_share_link_show, .ru_share_link
+    .ru_acrobat
     {
-        display: none;
-        visibility: hidden;
+
     }
+    
+    .ru_share_link
+    {
+        position: absolute;
+        height: 45px;
+        z-index: 100;
+        width: 0px;
+        background-color: white;
+        border: #a7a7a7 solid 1px;
+        margin-top: 1px;
+        right: 13px;
+        top: -1px;
+        overflow: hidden;
+    }
+    
+    .ru_share_link > div
+    {
+        margin: 10px 28px 8px 8px;
+        padding: 2px 4px;
+        background-color: #ebf3e8;
+    }
+    
 }
