@@ -2,6 +2,7 @@
 	<div ng-switch-when="figure" isaac-figure="doc"></div>
 	<div ng-switch-when="image" isaac-image="doc.src"></div>
 	<div ng-switch-when="isaacFeaturedProfile" isaac-featured-profile="doc"></div>
+	<div ng-switch-when="isaacMultiChoiceQuestion" isaac-multi-choice-question="doc"></div>
 	<div ng-switch-default ng-switch="doc.layout">
 			<div ng-switch-when="tabs" isaac-tabs doc="doc"></div>
 			<div ng-switch-when="accordion" isaac-accordion doc="doc"></div>

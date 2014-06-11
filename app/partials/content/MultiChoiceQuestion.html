@@ -1,0 +1,48 @@
+<br/>
+<div class="row">
+    <div class="medium-14 medium-offset-1 small-16 columns end">
+        <dl class="tabs ru_tabs physics ru-answer" data-tab>
+            <dd class="ru-answer active"><a href="#panel2-4">Answer Now</a></dd>
+            <dd ng-repeat="hint in doc.hints"><a href="#panel2-2">Hint<br> {{$index + 1}}</a></dd>     
+        </dl>
+        <div class="tabs-content ru_tabs ru-answer">
+            <div class="content active ru-answer" id="panel2-4">
+                <div class='ru-answer-area'>
+                    <div class='row'>
+                        <div class="small-14 small-offset-1 columns end">
+                            <form class="ac-custom ac-radio ac-fill physics" autocomplete="off">
+                                <h3>Q. {{doc.value}}</h3>
+                                <ul class='ru-problem-q-pad'>
+                                    <li ng-repeat="choice in doc.choices"><input id="r1" name="r1" type="radio"><label for="r1">{{choice.value}}</label></li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- TODO move somewhere else -->
+                <div class='ru-answer-check'>
+                    <div class='row'>
+                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
+                            <p>Don’t forget to use the <strong>hint</strong> tabs above or take
+                                a look on our <strong>forums</strong> if you need help!</p>
+                        </div>
+                        <div class="small-14 small-offset-1 medium-6 columns end">
+                            <button class='expand ru-answer-button'>Check my answer</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END move somewhere else -->
+            </div>
+            <!-- TODO move somewhere else -->
+            <div ng-repeat="hint in doc.hints" class="content">
+                <div class='row'>
+                    <div class="small-14 small-offset-1 columns end">
+                        {{hint.value}}
+                    </div>
+                </div>
+            </div>
+            <!-- END move somewhere else -->
+        </div>
+    </div>
+</div>
+<br/>

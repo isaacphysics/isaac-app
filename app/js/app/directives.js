@@ -13,7 +13,8 @@ define([
 	"app/directives/content/Figure",
 	"app/directives/content/Tabs",
 	"app/directives/content/Accordion",
-	"app/directives/content/FeaturedProfile"
+	"app/directives/content/FeaturedProfile",
+	"app/directives/content/MultiChoiceQuestion"
 	], function() {
 
 	/* Directives */
@@ -47,5 +48,7 @@ define([
 	.directive('isaacAccordion', require("app/directives/content/Accordion"))
 
 	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))	
+
+	.directive('isaacMultiChoiceQuestion', require("app/directives/content/MultiChoiceQuestion"))
 
 });
