@@ -8,14 +8,16 @@ define([
 	"app/controllers/GenericPageControllers",
 	"app/controllers/ConceptPageControllers",
 	"app/controllers/ConceptsIndexPageControllers",
-	"app/controllers/QuestionPageControllers"
+	"app/controllers/QuestionPageControllers",
+	"app/controllers/HomePageControllers"
 	], function() {
 	
 	var genericPage = require("app/controllers/GenericPageControllers");
 	var conceptPage = require("app/controllers/ConceptPageControllers");
 	var conceptIndexPage = require("app/controllers/ConceptsIndexPageControllers");
 	var questionPage = require("app/controllers/QuestionPageControllers");
-	
+	var homePage = require("app/controllers/HomePageControllers");
+
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
@@ -31,6 +33,9 @@ define([
 
 	.controller('QuestionPageHeaderController', questionPage.HeaderController)
 	.controller('QuestionPageBodyController', questionPage.BodyController)
+
+	.controller('HomePageHeaderController', homePage.HeaderController)
+	.controller('HomePageBodyController', homePage.BodyController)
 
 	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
 
