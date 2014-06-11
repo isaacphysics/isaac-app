@@ -4,7 +4,7 @@ define([
     "rsvp", 
     "foundation", 
     "app/router", 
-    "app/responsive_video", 
+    "app/honest/responsive_video", 
     "angular", 
     "angular-resource", 
     "app/controllers", 
@@ -12,14 +12,14 @@ define([
     "app/services", 
     "app/filters",
     "fastclick",
-    "app/dropdown",
-    "app/answer_reveal",
+    "app/honest/dropdown",
+    "app/honest/answer_reveal",
     ], function() {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-	var rv = require("app/responsive_video");
+	var rv = require("app/honest/responsive_video");
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [

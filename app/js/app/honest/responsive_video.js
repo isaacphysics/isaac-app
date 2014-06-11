@@ -1,4 +1,4 @@
-define(["video"],
+define(["jquery","honest/video"],
     /** 
     * A simple module for making videojs videos responsive.
     * video elements can support a data-aspect element to override the default aspect
@@ -7,9 +7,14 @@ define(["video"],
     * @exports responsive_video
     * @version 1.0
     */
-    function(videojs) 
+    function($, videojs) 
     {
         return {
+            
+            /**
+             * List of resize functions to call
+             */
+            _videos:[],
             /**
              * Cross platform add an event to a DOM object, e.g. window
              * @param {DOM object} obj
@@ -51,14 +56,25 @@ define(["video"],
                     function resizeVideoJS()
                     {
                         // Get the parent element's actual width
-                        var width = document.getElementById(myPlayer.id()).parentElement.offsetWidth;
+                        var width = $(document.getElementById(myPlayer.id()).parentElement).width()
                         // Set width to fill parent element, Set height
                         myPlayer.width(width).height( width * aspectRatio );
                     }
-
                     setTimeout(resizeVideoJS, 0); // Initialize the function
                     us._addEvent(window, 'resize', resizeVideoJS); // Call the function on resize
+                    us._videos.push(resizeVideoJS); // Store call back so we can force resize if needed
                 });
+            },
+            /**
+             * Forces a resize of all videos we know of
+             */
+            forceResize: function()
+            {
+                // Just call the previously stored resize callbacks
+                for(var i = 0; i < this._videos.length; i++)
+                {
+                    setTimeout(this._videos[i], 0);
+                }
             },
             /**
              * Make all videos (i.e. <video> tags) responsive
