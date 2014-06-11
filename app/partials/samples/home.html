@@ -1,110 +1,369 @@
-<script type='text/javascript'>
-    // e.g. pulled by Ajax, or embedded during page generation
-    var questions = 
-    [
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway",
-            "level": 1,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "correct",
-            "subject": "physics"
-        },
-        {
-            "title": "Wild Card",
-            "uri": "",
-            "description": "Q. This is a wild card question",
-            "level": 3,
-            "type": "wildcard",
-            "state": "incorrect",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "correct",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 1,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 1,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "incorrect",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "physics"
-        },
-        {
-            "title": "Circular Motion",
-            "uri": "",
-            "description": "Car on a motorway.",
-            "level": 1,
-            "type": "multiple_choice",
-            "state": "correct",
-            "subject": "physics"
-        },
-        {
-            "title": "Plane Geometry",
-            "uri": "",
-            "description": "Maths Example.",
-            "level": 3,
-            "type": "multiple_choice",
-            "state": "not_attempted",
-            "subject": "maths"
-        }
-    ];
-</script>
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>Home</title>
+        <link rel="icon" href="/assets/favicon/isaac-favicon-16x16.png"   sizes="16x16">
+        <link rel="icon" href="/assets/favicon/isaac-favicon-32x32.png"   sizes="32x32">
+        <link rel="icon" href="/assets/favicon/isaac-favicon-96x96.png"   sizes="96x96">
+        <link rel="icon" href="/assets/favicon/isaac-favicon-196x196.png" sizes="196x196">
+        <link rel="stylesheet" href="css/app.css" />
+        <!-- Math Jax single '$' config -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config(
+            {
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+        </script>
+        <script type='text/javascript'>
+            // e.g. pulled by Ajax, or embedded during page generation
+            var questions = 
+            [
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway",
+                    "level": 1,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "correct",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Wild Card",
+                    "uri": "",
+                    "description": "Q. This is a wild card question",
+                    "level": 3,
+                    "type": "wildcard",
+                    "state": "incorrect",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "correct",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 1,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 1,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "incorrect",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Circular Motion",
+                    "uri": "",
+                    "description": "Car on a motorway.",
+                    "level": 1,
+                    "type": "multiple_choice",
+                    "state": "correct",
+                    "subject": "physics"
+                },
+                {
+                    "title": "Plane Geometry",
+                    "uri": "",
+                    "description": "Maths Example.",
+                    "level": 3,
+                    "type": "multiple_choice",
+                    "state": "not_attempted",
+                    "subject": "maths"
+                }
+            ];
+           </script>
+        <script data-main="js/home" src="js/lib/require.js"></script>
 
-<section>
+    <body>
+         <!-- Mobile login -->
+        <div class='ru-drop ru-drop-hide fixed' id='mobile-login-form'>
+            <div class='row ru-toppad-6'>
+                <form>
+                    <div class='small-16 columns'>
+
+                        <label class='ru-drop-big-label'>Username
+                            <input type="text" placeholder="" />
+                        </label>
+                        <label class='ru-drop-big-label'>Password
+                            <input type="password" placeholder="" />
+                        </label>
+                    </div>
+                    <div class='small-10 columns'>
+                        <div class='ru-toppad-2'>
+                            <span class="ru-drop-check">
+                                <input id="checkbox1" name="checkbox1" type="checkbox" checked='checked'>
+                                <label for='checkbox1'></label>
+                            </span>
+                            <label class='ru-drop-mid-label'>Remember me</label>
+                        </div>
+                    </div>
+                    <div class='small-6 columns'>
+                        <input class='button expand ru-drop-big-button ' type='button' value="Login">
+
+                    </div>
+                </form>
+                <div class='clearfix'></div>
+                <div class='small-7 columns'>
+                    <div class='ru-toppad-3'><strong><em>Sign in with:</em></strong></div>
+                </div>
+                <div class='small-9 columns'>
+                    <div class='right'>
+                        <a class='ru ru-social-icon-google-40x40'></a>
+                        <a class='ru ru-social-icon-facebook-40x40'></a>
+                        <a class='ru ru-social-icon-twitter-40x40'></a>
+                    </div>
+                </div>
+                <div class='small-16 columns'>
+                    <h4 class='ru_green'>Not registered?</h4>
+                    <small><a href='' class='ru-drop-small-link'>Register here to create your own challenge!</a></small>
+                </div>
+            </div>
+            <div class='ru-toppad-8'></div>
+        </div>
+        <!-- Mobile search -->
+        <div class='ru-drop ru-drop-hide' id='mobile-search-form'>
+            <div class='row'>
+            <div class='small-16 columns ru-toppad-6'>
+                <form>
+                    <label class='ru-drop-big-label'>Search
+                        <input type="text" placeholder="" />
+                    </label>
+                    <div>
+                        <span class="ru-drop-check">
+                                <input id="checkbox2" name="checkbox2" type="checkbox" checked='checked'>
+                                <label for='checkbox2'></label>
+                            </span>
+                            <label class='ru-drop-big-label'> Problems only</label>
+                    </div>
+                    <div>
+                        <span class="ru-drop-check">
+                                <input id="checkbox3" name="checkbox1" type="checkbox">
+                                <label for='checkbox3'></label>
+                            </span>
+                            <label class='ru-drop-big-label'> Concepts only</label>
+                    </div>
+                    <div class="ru-toppad-3">
+                        <input class='button expand ru-drop-big-button ' type='button' value="Search">
+                    </div>
+                </form>
+            </div>
+            </div>
+            <div class='ru-toppad-8'></div>
+        </div>
+        <!-- Container for hexagon background -->
+        <div class='bg-wrap'>
+            <header>
+                <!-- Desktop Header -->
+                <div class='ru-desktop-header'>
+                    <div class='ru-dekstop-nav'>
+                        <!-- Desktop Nav -->
+                        <nav class='row'>
+                            <div class='large-8 medium-4 columns'>
+                                <a href=''>
+                                    <img alt='Isaac. Physics. You work it out.' class='ru-desktop-menu-img' src='' 
+                                         data-interchange="[/assets/isaac-logo.png, (medium)], [/assets/isaac-logo-strap.png, (large)], 
+                                         [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
+                            </div>
+                            <div class='large-8 medium-12 columns'>
+                                <a class='ru-desktop-nav-item'>  
+                                    <div class='ru-desktop-nav-item-inner active'>
+                                        <span>Problems</span>
+                                    </div>
+                                </a>
+                                <a class='ru-desktop-nav-item'>  
+                                    <div class='ru-desktop-nav-item-inner '>
+                                        <span>Concepts</span>
+                                    </div>
+                                </a>
+                                <a class='ru-desktop-nav-item'>  
+                                    <div class='ru-desktop-nav-item-inner'>
+                                        <span>My Boards</span>
+                                    </div>
+                                </a>
+                                <a class='ru-desktop-nav-item'>  
+                                    <div class='ru-desktop-nav-item-inner'>
+                                        <span>Login</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Mobile Header -->
+                <div class='ru-mobile-header'>
+                    <!-- Mobile Fixed Header -->
+                    <div class='ru-fixed-header fixed'>
+                        <div class='row'>
+                            <div class='small-8 columns'>
+                                <div id='mobile-login' class='pointer'>
+                                    <div class='ru-mobile-login'></div>
+                                    <span>
+                                        Login
+                                    </span>
+                                    <div class='ru-mobile-down'></div>
+                                </div>
+                            </div>
+                            <div class='small-8 columns'>
+                                <div class='right pointer' id='mobile-search'>
+                                    <div class='ru-mobile-search'></div>
+                                    <span>
+                                        Search
+                                    </span>
+                                    <div class='ru-mobile-down'></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Nav -->
+                    <div class='ru-mobile-nav'>
+                        <nav class='row'>
+                            <a href=''><img alt='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' 
+                                            data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
+
+
+                            <a class='ru-mobile-nav-item'>  
+                                <div class='ru-mobile-nav-item-inner'>
+                                    <span>My Boards</span>
+                                </div>
+                            </a>
+                            <a class='ru-mobile-nav-item'>  
+                                <div class='ru-mobile-nav-item-inner '>
+                                    <span>Concepts</span>
+                                </div>
+                            </a>
+                            <a class='ru-mobile-nav-item'>  
+                                <div class='ru-mobile-nav-item-inner active'>
+                                    <span>Problems</span>
+                                </div>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Search button  MUST BE LAST-->
+                <div class='row hide-for-small-only'>
+                    <div class='large-16 medium-16 columns'>
+                        <div class='ru-desktop-panel-search'>
+                            <a><img src='/assets/desktop-search.png' alt="Search"></a>
+                            <div class='ru-desktop-search'>
+                                <div class="row">
+                                    <div class="large-2 medium-3 columns">
+                                        <label for="ru-search-box" class=" text-center inline">Search</label> 
+                                    </div>
+                                    <div class="large-4 medium-13 columns">
+                                        <input id="ru-search-box" type="text"/>
+                                    </div>
+                                    <div class="clearfix show-for-medium-only"></div>
+                                    <div class="large-4 medium-5 medium-offset-3 large-offset-0 columns">
+                                        <div class="ru-desktop-search-check">
+                                            <span class="ru-drop-check">
+                                                <input id="search-check1" name="checkbox2" type="checkbox" checked='checked'>
+                                                <label for='search-check1'></label>
+                                            </span>
+                                            <label class=''> Problems only</label>
+                                        </div>
+                                    </div>
+                                    <div class="large-4 medium-5 columns">
+                                        <div class="ru-desktop-search-check">
+                                            <span class="ru-drop-check">
+                                                <input id="search-check2" name="checkbox2" type="checkbox" checked='checked'>
+                                                <label for='search-check2'></label>
+                                            </span>
+                                            <label class=''> Concepts only</label>
+                                        </div>
+                                    </div>
+                                   <div class="large-2 medium-3 columns text-center">
+                                       <img  src="/assets/search.png">
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ru-desktop-panel-search-close">
+                            <img src='/assets/Close-button.jpg' alt="Close Search">
+                        </div>
+                    </div>
+                </div>
+            </header>
+        <!--  Main Content -->
+        <main class='ru-body'>
+             <!-- Desktop panel - e.g. About Us  MUST BE FIRST-->
+                <div class='row hide-for-small-only'>
+                    <div class='large-16 medium-16 columns'>
+                        <div class='ru-desktop-panel'>
+                            <div class='ru-desktop-panel-content'>
+                                <div class='medium-7 columns'>
+                                    <ul class='ru-crumb physics'>
+                                        <li>Physics</li>
+                                        <li>Mechanics</li>
+                                    </ul>
+                                </div>
+                                <div class='medium-8 end columns text-right'>
+                                    <h2 class='ru-welcome'>Welcome <span class='green'>Tammy</span></h2>
+                                    <span class='ru-challenge'>Your board is 50% complete<br class='show-for-medium-only'> <a href=''>Create your Challenge!</a></span>
+                                </div>
+                                <div class='clearfix'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mobile panel MUST BE SECOND-->
+                <div class='ru-mobile-panel show-for-small-only'>
+                    <div class='row'>
+                        <div class='small-16 columns'>
+                            <p/>
+                            <p>Will populate as part of mobile filter etc.</p>
+                        </div>
+                    </div>
+                </div>
+        <section>
         <div class="row">
             <div class='ru-board-title show-for-large-up'>
                 <div class="large-5 columns">
@@ -200,71 +459,203 @@
                 </div>
             </div>
         </section>
-
-<!-- SVG Patterns used in the hexagons -->
-<svg width="1" height="2" viewBox="0 0 1 2" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <filter id="filter1">
-            <feComponentTransfer>
-                 <feFuncR type="linear" slope="0.6"/>
-                 <feFuncG type="linear" slope="0.6"/>
-                 <feFuncB type="linear" slope="0.6"/>
-            </feComponentTransfer>
-        </filter>
-        <filter id="filter2">
-            <feComponentTransfer>
-                 <feFuncR type="linear" slope="0.8"/>
-                 <feFuncG type="linear" slope="0.8"/>
-                 <feFuncB type="linear" slope="0.8"/>
-            </feComponentTransfer>
-        </filter>
-        <filter id="filter3">
-            <feComponentTransfer>
-                 <feFuncR type="linear" slope="1.3"/>
-                 <feFuncG type="linear" slope="1.3"/>
-                 <feFuncB type="linear" slope="1.3"/>
-            </feComponentTransfer>
-        </filter>
-        <filter id="filter4">
-            <feComponentTransfer>
-                 <feFuncR type="linear" slope="1.6"/>
-                 <feFuncG type="linear" slope="1.6"/>
-                 <feFuncB type="linear" slope="1.6"/>
-            </feComponentTransfer>
-        </filter>
-        <filter id="filter5">
-            <feComponentTransfer>
-                 <feFuncR type="linear" slope="1"/>
-                 <feFuncG type="linear" slope="1"/>
-                 <feFuncB type="linear" slope="1"/>
-            </feComponentTransfer>
-        </filter>
+        </main>
+                        <!-- SVG Patterns used in the hexagons -->
+        <svg width="1" height="2" viewBox="0 0 1 2" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="filter1">
+                    <feComponentTransfer>
+                         <feFuncR type="linear" slope="0.6"/>
+                         <feFuncG type="linear" slope="0.6"/>
+                         <feFuncB type="linear" slope="0.6"/>
+                    </feComponentTransfer>
+                </filter>
+                <filter id="filter2">
+                    <feComponentTransfer>
+                         <feFuncR type="linear" slope="0.8"/>
+                         <feFuncG type="linear" slope="0.8"/>
+                         <feFuncB type="linear" slope="0.8"/>
+                    </feComponentTransfer>
+                </filter>
+                <filter id="filter3">
+                    <feComponentTransfer>
+                         <feFuncR type="linear" slope="1.3"/>
+                         <feFuncG type="linear" slope="1.3"/>
+                         <feFuncB type="linear" slope="1.3"/>
+                    </feComponentTransfer>
+                </filter>
+                <filter id="filter4">
+                    <feComponentTransfer>
+                         <feFuncR type="linear" slope="1.6"/>
+                         <feFuncG type="linear" slope="1.6"/>
+                         <feFuncB type="linear" slope="1.6"/>
+                    </feComponentTransfer>
+                </filter>
+                <filter id="filter5">
+                    <feComponentTransfer>
+                         <feFuncR type="linear" slope="1"/>
+                         <feFuncG type="linear" slope="1"/>
+                         <feFuncB type="linear" slope="1"/>
+                    </feComponentTransfer>
+                </filter>
+            
+                <pattern id="physics" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-purple-bg.png" x="0" y="0" width="1" height="2" />
+                </pattern> 
+                <pattern id="physics-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-purple-bg-hover.png" x="0" y="0" width="1" height="2" />
+                </pattern>
     
-        <pattern id="physics" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-purple-bg.png" x="0" y="0" width="1" height="2" />
-        </pattern> 
-        <pattern id="physics-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-purple-bg-hover.png" x="0" y="0" width="1" height="2" />
-        </pattern>
+                <pattern id="maths" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-blue-bg.png" x="0" y="0" width="1" height="2" />
+                </pattern> 
+                <pattern id="maths-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-blue-bg-hover.png" x="0" y="0" width="1" height="2" />
+                </pattern>
+    
+                <pattern id="correct" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-correct-bg.png" x="0" y="0" width="1" height="2" />
+                </pattern> 
+                <pattern id="correct-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-correct-bg-hover.png" x="0" y="0" width="1" height="2" />
+                </pattern>
+                <pattern id="wild" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-wild-bg.png" x="0" y="0" width="1" height="2" />
+                </pattern> 
+                <pattern id="wild-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <image xlink:href="/assets/hex-wild-bg-hover.png" x="0" y="0" width="1" height="2" />
+                </pattern>
+            </defs>
+        </svg>
+        </div>
+        
+        <!--  End Main Content -->
+                <!-- Footer for desktop -->
+        <footer class='hide-for-small-only'>
+            <div class='row'>
+                <div class='large-2 medium-2 columns'>
+                    <a href='#'><img alt='Isaac. Physics. You work it out.' class='ru-desktop-banner'
+                                     data-interchange="[/assets/isaac-logo.png, (medium)], [/assets/isaac-logo@2x.png, (medium_retina)]" src='/assets/isaac-logo.png'></a>
+                </div>
+                <!-- Link Collections -->
+                <div class='large-2 medium-2 columns footer_links'>
+                    <a href=''>About Us</a>
+                    <a href=''>Contact Us</a>
+                    <a href=''>Events</a>
+                    <a href=''>FAQs</a>
+                </div>
+                <div class='large-4 medium-4 columns footer_links'>
+                    <a href=''>Real World Problems</a>
+                    <a href=''>Challenge of the Week</a>
+                    <a href=''>Why Physics?</a>
+                    <a href=''>Applying to Uni</a>
+                </div>
+                <div class='large-3 medium-3 columns footer_links'>
+                    <a href=''>This is a Link 1</a>
+                    <a href=''>This is another Link 2</a>
+                    <a href=''>This is a third Link 3</a>
+                </div>
+                <div class='large-5 medium-5 columns footer_links'>
+                    <div class='right'>
+                        <span class='ru-social'>Get Social</span>
+                        <a class='ru ru-social-icon-google-48x48'></a>
+                        <a class='ru ru-social-icon-facebook-48x48'></a>
+                        <a class='ru ru-social-icon-twitter-48x48'></a>
+                    </div>
+                </div>
+                <div class='clearfix'></div>
+                <div class='ru-footer-base large-16 medium-16 columns'>
+                    <span class='left'>Supported by: 
+                        <a class='footer_link' href='https://www.gov.uk/government/organisations/department-for-education' target='_blank'>
+                            <strong>Department for Education</strong></a></span>
+                    <span class='right text-right'>All materials on this site are<br>
+                        licensed under the <a class='footer_link' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'>
+                            <strong>Creative Commons license</strong></a></span>
+                </div>
+            </div>
+        </footer>
 
-        <pattern id="maths" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-blue-bg.png" x="0" y="0" width="1" height="2" />
-        </pattern> 
-        <pattern id="maths-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-blue-bg-hover.png" x="0" y="0" width="1" height="2" />
-        </pattern>
-
-        <pattern id="correct" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-correct-bg.png" x="0" y="0" width="1" height="2" />
-        </pattern> 
-        <pattern id="correct-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-correct-bg-hover.png" x="0" y="0" width="1" height="2" />
-        </pattern>
-        <pattern id="wild" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-wild-bg.png" x="0" y="0" width="1" height="2" />
-        </pattern> 
-        <pattern id="wild-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
-            <image xlink:href="/assets/hex-wild-bg-hover.png" x="0" y="0" width="1" height="2" />
-        </pattern>
-    </defs>
-</svg>
+        <!-- Footer for mobile -->
+        <footer class='show-for-small-only'>
+            <div class='row'>
+                <div class='small-4 columns'><a href='#'><img alt='Isaac. Physics. You work it out.' class='ru-mobile-logo' 
+                                                              data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a></div>
+                <div class='small-12 columns'><span class='ru-mobile-doe ru-footer-base'>Supported by:<br>
+                        <a class='footer_link' href='https://www.gov.uk/government/organisations/department-for-education' target='_blank'>
+                            <strong>Department for Education</strong></a></span></div>
+                <div class='clearfix'></div>
+                <div class='small-16 columns'>
+                    <div class='ru-mobile-social'>
+                        <div class='small-4 columns'>
+                            <span>Get<br>Social:</span>
+                        </div>
+                        <div class='small-12 columns'>
+                            <a class='ru ru-social-icon-google-40x40'></a>
+                            <a class='ru ru-social-icon-facebook-40x40'></a>
+                            <a class='ru ru-social-icon-twitter-40x40'></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Links -->
+            <div class='ru-mobile-menu'>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>About Us</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Contact us</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Events</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>FAQs</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Real World Problems</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Challenge of the Week</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Why Physics?</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+                <div class='row'>
+                    <div class='small-16 columns'>
+                        <a href=''><span>Applying to Uni</span><img src='/assets/icon-index-arrow.png'></a>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class='row'>
+                <div class='small-16 columns'>
+                    <span class='ru-footer-base'>All materials on this site are<br>
+                        licensed under the <a class='footer_link' href='http://creativecommons.org/licenses/by/4.0/' target='_blank'>
+                            <strong>Creative Commons license</strong></a></span>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

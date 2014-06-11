@@ -96,43 +96,118 @@ define([
             // Global jQuery
             $(function()
             {
-                // Fast click
-                FastClick.attach(document.body);
-                
-                // Mobile login drop down
-                $("#mobile-login").click(function(e)
+            // Fix ups for iOS
+            if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
+            {
+                $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('iphone');
+                $('.ru-answer-orbit .ru-answer-orbit-content p').addClass('iphone');
+            }
+            
+            // Fix up for Firefox scroll to
+            if (navigator.userAgent.match(/firefox/i))
+            {
+                $('html').css({overflow:'hidden', height:'100%'});
+                $('body').css({overflow:'auto', height:'100%'});
+            }
+            
+            // Safari - accordion titles
+            if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0)
+            {
+                $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('safari');
+            }
+            
+            // Fast click
+            FastClick.attach(document.body);
+            
+            // Mobile login drop down
+            $("#mobile-login").click(function(e)
+            {
+                e.preventDefault();
+                $("#mobile-login-form").ruDropDownToggle(this);
+            });
+            
+            // Mobile search drop down
+            $("#mobile-search").click(function(e)
+            {
+                e.preventDefault();
+                $("#mobile-search-form").ruDropDownToggle(this);
+            });
+            
+            // Resize slider on tab change (copes with resize when slider tab not visible)
+            var sliderResize = function()
+            {
+                $(".bxslider").each(function()
                 {
-                    e.preventDefault();
-                    $("#mobile-login-form").ruDropDownToggle();
+                    var slider = $(this).data('slider');
+                    slider.reloadSlider();
+                    var orbit = $(this).closest('.ru-answer-orbit');
+                    var item = parseInt($('.ru-answer-orbit-bullets>.active', orbit).attr('data-target'));
+                    slider.goToSlide(item);
                 });
-                
-                // Mobile search drop down
-                $("#mobile-search").click(function(e)
+                // Also - remove iphone override on p carousel text as it is not needed after a change of tab
+//                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
+//                {
+//                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
+//                }
+            };
+            
+            // Force resize of vidoes on tab change and accordion change
+            $(document).foundation(
+            {
+                tab:{
+                    callback : function (tab)
+                    {
+                        rv.forceResize();
+                        sliderResize();
+                    }
+                }
+            }); 
+            $(".ru_accordion_titlebar").click(function()
+            {
+                rv.forceResize();
+                sliderResize();
+                var clicked_title = this;
+                setTimeout(function()
                 {
-                    e.preventDefault();
-                    $("#mobile-search-form").ruDropDownToggle();
-                });
-                
-                // Force resize of vidoes on tab change and accordion change
-                $(document).foundation(
-                {
-                    tab:{
-                        callback : function (tab)
+                    // If clicked title bar is not in view - scroll to it
+                    if(!$(clicked_title).visible(false))
+                    {
+                        // Are we on mobile - if so add header height
+                        var offset = $('.ru-mobile-header').css('display') === 'block' ? 41 : 0;
+                        // Scroll
+                        if (navigator.userAgent.match(/firefox/i))
+                        {   
+                            // FF offset and scroll location are different
+                            $('body').scrollTo((-$(clicked_title).offset().top) - $(clicked_title).height());
+                        }
+                        else
                         {
-                            rv.forceResize();
+                            $('body').scrollTo($(clicked_title).offset().top - offset);
                         }
                     }
-                }); 
-                $(".ru_accordion_titlebar").click(function()
+                }, 0);
+            });
+            
+            // Toggle hide / show of share links
+            $(".ru_share").click(function()
+            {
+                if($(".ru_share_link").width() === 258)
                 {
-                    rv.forceResize();
-                });
-                
-                // Toggle hide / show of share links
-                $(".ru_share").click(function()
+                    $(".ru_share_link").animate({width:0}, {duration:400});
+                }
+                else
                 {
-                    $(".ru_share_link").toggleClass('ru_share_link_show');
-                });
+                    $(".ru_share_link").animate({width:260}, {duration:400});
+                }
+            });
+            
+            // Image zoom
+            $('.ru-mobile-expand div').click(function(e)
+            {
+                e.preventDefault();
+                var url = $(this).parent().find('img').attr('src');
+                 window.location.href = url;
+            });
                                 
             });
 
