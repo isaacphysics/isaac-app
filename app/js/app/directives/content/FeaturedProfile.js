@@ -14,8 +14,8 @@ define([], function() {
 			templateUrl: "/partials/content/FeaturedProfile.html",
 
 			link: function(scope, element, attrs) {
-				if(doc.image){
-					doc.image = api.getImageUrl(doc.image.src);	
+				if(scope.doc.image){
+					scope.doc.image.src = api.getImageUrl(scope.doc.image.src);	
 				}
 			}
 		};
