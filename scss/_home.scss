@@ -23,6 +23,10 @@
     padding: 0 10px;
     position: relative;
     bottom: 3px;
+    &:hover
+    {
+        opacity: 0.93;
+    }
 }
 
 ul.ru-crumb
@@ -206,7 +210,7 @@ $col_values : 5;
         //filter: url('#filter#{$i}');
         &:hover
         {
-            fill: url('#physics-hover') lighten( $ru_purple, 15%);
+            fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);
             //filter: url('#filter#{$i}');
         }
     }
@@ -217,7 +221,7 @@ $col_values : 5;
         //filter: url('#filter#{$i}');
         &:hover
         {
-            fill: url('#maths-hover') lighten( $ru_maths, 15%);
+            fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
             //filter: url('#filter#{$i}');
         }
     }
@@ -228,7 +232,7 @@ $col_values : 5;
     fill: url(#wild) $ru_orange;
     &:hover
     {
-        fill: url(#wild-hover) lighten( $ru_orange, 15%);
+        fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
     }
 }
 
@@ -237,7 +241,7 @@ $col_values : 5;
     fill: url(#correct) $ru_darkgrey;
     &:hover
     {
-        fill: url(#correct-hover) lighten($ru_darkgrey, 15%);
+        fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
     }
 }
 

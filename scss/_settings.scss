@@ -10,6 +10,9 @@
 // FOUNDATION SETTINGS
 //
 
+// Site wide hover
+$ru_site_hover: 9%;
+
 // Colours
 
 $ru_orange: #fea100;
@@ -362,7 +365,7 @@ $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 // $button-font-align: center;
 
 // We use these to control various hover effects.
-$button-function-factor: 15%;
+$button-function-factor: $ru_site_hover;
 
 // We use these to control button border styles.
 // $button-border-width: 0px;

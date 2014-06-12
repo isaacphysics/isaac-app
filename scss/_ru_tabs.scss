@@ -18,8 +18,8 @@
     border: $ru_physics 1px solid;
     &:hover
     {
-        background-color: lighten($ru_physics,15%) !important;
-        border: lighten($ru_physics,15%) 1px solid;
+        background-color: lighten($ru_physics,$ru_site_hover) !important;
+        border: lighten($ru_physics,$ru_site_hover) 1px solid;
     }
 }
 
@@ -29,8 +29,8 @@
     border: $ru_maths 1px solid;
     &:hover
     {
-        background-color: lighten($ru_maths,15%) !important;
-        border: lighten($ru_maths,15%) 1px solid;
+        background-color: lighten($ru_maths,$ru_site_hover) !important;
+        border: lighten($ru_maths,$ru_site_hover) 1px solid;
     }
 }
 
@@ -41,8 +41,8 @@
     border: $ru_footer 1px solid;
     &:hover
     {
-        background-color: lighten($ru_footer,15%) !important;
-        border: lighten($ru_footer,15%) 1px solid;
+        background-color: lighten($ru_footer,$ru_site_hover) !important;
+        border: lighten($ru_footer,$ru_site_hover) 1px solid;
     }
 }
 

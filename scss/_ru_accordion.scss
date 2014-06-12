@@ -88,8 +88,8 @@
 
 .accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
 {
-    background-color: lighten($ru_physics, 15%);
-    border-top: 3px solid lighten($ru_physics, 15%);
+    background-color: lighten($ru_physics, $ru_site_hover);
+    border-top: 3px solid lighten($ru_physics, $ru_site_hover);
 }
 
 .accordion.ru_accordion dd:not(.active) a.ru_accordion_titlebar .ru_accordion_name:after
@@ -113,8 +113,8 @@
 
 .accordion.ru_accordion.maths dd a.ru_accordion_titlebar:hover .ru_accordion_name
 {
-    background-color: lighten($ru_maths, 15%);
-    border-top: 3px solid lighten($ru_maths, 15%);
+    background-color: lighten($ru_maths, $ru_site_hover);
+    border-top: 3px solid lighten($ru_maths, $ru_site_hover);
 }
 
 
