@@ -15,7 +15,8 @@ define([
 	"app/directives/content/Accordion",
 	"app/directives/content/FeaturedProfile",
 	"app/directives/content/MultiChoiceQuestion",
-	"app/directives/content/QuickQuestion"
+	"app/directives/content/QuickQuestion",
+	"app/directives/content/QuestionRadioButton"
 	], function() {
 
 	/* Directives */
@@ -53,5 +54,7 @@ define([
 	.directive('isaacMultiChoiceQuestion', require("app/directives/content/MultiChoiceQuestion"))
 
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
+
+	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))	
 
 });

@@ -13,7 +13,10 @@
                             <form class="ac-custom ac-radio ac-fill physics" autocomplete="off">
                                 <h3>Q. {{doc.value}}</h3>
                                 <ul class='ru-problem-q-pad'>
-                                    <li ng-repeat="choice in doc.choices"><input id="r1" name="r1" type="radio"><label for="r1">{{choice.value}}</label></li>
+
+                                    <li ng-repeat="choice in doc.choices">
+                                            <div question-radio-button="choice"></div>
+                                    </li>
                                 </ul>
                             </form>
                         </div>

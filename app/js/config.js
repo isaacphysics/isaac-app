@@ -4,6 +4,7 @@ require.config({
 
     paths: {
         "app": '../app',
+        "honest-lib": './honest',
         "jquery": '../../bower_components/jquery/dist/jquery',
         "modernizr": '../../bower_components/modernizr/modernizr',
         "foundation": '../../bower_components/foundation/js/foundation',
