@@ -25,6 +25,44 @@
                     </div>
                     <!-- END difference -->
                 </div>
+
+                <!-- TODO Remove display:none from css -->
+                <div class='ru-answer-wrong' style="display:block;" ng-show="correct==false">
+                    <div class='row'>
+                        <div class="small-14 small-offset-1 columns end text-center">
+                            <h2>incorrect</h2>
+                            <h5>Please try again.</h5>
+                            <p>Why not get a pen and paper and work it out!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TODO Remove display:none from css -->
+                <div class='ru-answer-correct-wrap' style="display:block;" ng-show="correct==true">
+                    <div class='ru-answer-correct physics'>
+                        <div class='row'>
+                            <div class="small-14 small-offset-1 medium-5 medium-offset-1 columns">
+                                <h1>Correct!</h1>
+                            </div>
+                            <div class='small-15  medium-9  columns'>
+                                <img src='/assets/icon-award.png' class='img-responsive right'>
+                                <p class='text-right'>You have earned yourself a Top of the Class Isaac award and 25 bonus points!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='ru-answer-correct-summary physics'>
+                        <div class='row'>
+                            <div class="small-14 small-offset-1 columns end">
+                                <p><strong>Well done!</strong> The correct answer is (a). The centripetal force required to keep an object moving 
+                                    at a constant velocity in a circle is mv2r towards the centre and so Newton's Second Law, F=ma says 
+                                    that the acceleration must therefore be v2r , towards the centre also since Fand a must lie 
+                                    in the same direction.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class='ru-answer-check'>
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
@@ -32,7 +70,7 @@
                                 a look on our <strong>forums</strong> if you need help!</p>
                         </div>
                         <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button class='expand ru-answer-button'>Check my answer</button>
+                            <button class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="correct">Check my answer</button>
                         </div>
                     </div>
                 </div>

@@ -14,18 +14,23 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.activeTab = -1;
+				scope.activeTab = -1; // Activate "Answer now" tab by default.
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
 				}
 
-				scope.selectedAnswer = -1;
+				scope.checkAnswer = function() {
+					if (scope.selectedAnswer != null) {
+						scope.correct = scope.doc.choices[scope.selectedAnswer].correct;
+					} else {
+						// TODO: Somehow tell the user that they need to choose an option before clicking Check.
+					}
+				}
 
 				scope.$watch("selectedAnswer", function() {
-					console.log("Selected answer changed", scope.selectedAnswer);
+					delete scope.correct;
 				})
-
 			}
 		};
 	}];
