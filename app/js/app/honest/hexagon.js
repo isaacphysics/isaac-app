@@ -104,6 +104,11 @@ define([ 'jquery','d3'],
                         y += hex.height + hex.pad - hex.gap;
                         // X depends on even or odd
                         x = (row % 2 === 0 ? hex.centre : hex.centre + ((hex.width + hex.pad) / 2));
+                        // Are we the last hexagon on a new row with minWidth > 1?
+                        if(i === len - 2 && hex.min > 1)
+                        {
+                            x = (( hex.wrapWidth / 2) - ( hex.width / 2)) + (hex.pad * (1 + Math.floor(hex.max / 2)));
+                        }
                         col = 0;
                         full_row = true;
                     }

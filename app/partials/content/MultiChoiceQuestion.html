@@ -2,12 +2,13 @@
 <div class="row">
     <div class="medium-14 medium-offset-1 small-16 columns end">
         <dl class="tabs ru_tabs physics ru-answer" data-tab>
-            <dd class="ru-answer active"><a href="#panel2-4">Answer Now</a></dd>
-            <dd ng-repeat="hint in doc.hints"><a href="#panel2-2">Hint<br> {{$index + 1}}</a></dd>     
+            <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer Now</a></dd>
+            <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs ru-answer">
-            <div class="content active ru-answer" id="panel2-4">
+            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}">
                 <div class='ru-answer-area'>
+                    <!-- TODO this will be different for each question type -->
                     <div class='row'>
                         <div class="small-14 small-offset-1 columns end">
                             <form class="ac-custom ac-radio ac-fill physics" autocomplete="off">
@@ -15,14 +16,15 @@
                                 <ul class='ru-problem-q-pad'>
 
                                     <li ng-repeat="choice in doc.choices">
-                                            <div question-radio-button="choice"></div>
+                                        <input type="radio" question-radio-button ng-model="$parent.selectedAnswer" ng-value="$index">
+                                        <label ng-click="$parent.selectedAnswer = $index">{{choice.value}}</label>
                                     </li>
                                 </ul>
                             </form>
                         </div>
                     </div>
+                    <!-- END difference -->
                 </div>
-                <!-- TODO move somewhere else -->
                 <div class='ru-answer-check'>
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
@@ -34,17 +36,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- END move somewhere else -->
             </div>
-            <!-- TODO move somewhere else -->
-            <div ng-repeat="hint in doc.hints" class="content">
+            <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
                 <div class='row'>
                     <div class="small-14 small-offset-1 columns end">
                         {{hint.value}}
                     </div>
                 </div>
             </div>
-            <!-- END move somewhere else -->
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@ define([], function() {
 		return {
 
 			scope: { 
-				doc: "="
+				children: "="
 			},
 
 			restrict: 'EA',

@@ -12,7 +12,7 @@ define(["jquery","honest/video"],
         return {
             
             /**
-             * List of resize functions to call
+             * List of video objects
              */
             _videos:[],
             /**
@@ -62,8 +62,24 @@ define(["jquery","honest/video"],
                     }
                     setTimeout(resizeVideoJS, 0); // Initialize the function
                     us._addEvent(window, 'resize', resizeVideoJS); // Call the function on resize
-                    us._videos.push(resizeVideoJS); // Store call back so we can force resize if needed
+                    us._videos.push({resizeVideoJS:resizeVideoJS, videojs:myPlayer}); // Store call back so we can force resize if needed
                 });
+            },
+            /**
+             * Pause all videos (optionally within a given scope)
+             * @param {Query Obj} scope - limit pause to children of scope
+             */
+            pauseVideos: function(scope)
+            {
+                for(var i = 0; i < this._videos.length; i++)
+                {   
+                    // Pause if in scope OR if scope not specified
+                    if((scope === null || scope === undefined) 
+                            || $.contains($(scope).get(0), document.getElementById(this._videos[i].videojs.id())))
+                    {
+                        this._videos[i].videojs.pause();
+                    }
+                }
             },
             /**
              * Forces a resize of all videos we know of
@@ -73,7 +89,7 @@ define(["jquery","honest/video"],
                 // Just call the previously stored resize callbacks
                 for(var i = 0; i < this._videos.length; i++)
                 {
-                    setTimeout(this._videos[i], 0);
+                    setTimeout(this._videos[i].resizeVideoJS, 0);
                 }
             },
             /**
