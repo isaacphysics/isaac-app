@@ -59,14 +59,8 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/concept_index/header_panel.html",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/concept_index/header_panel_mobile.html",
-                    },
                     "body": {
-                        templateUrl: "/partials/states/concept_index/body.html",
+                        templateUrl: "/partials/states/concept_index.html",
                         controller: "ConceptIndexController",
                     }
                 }
@@ -82,17 +76,9 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/question_index/header_panel.html",
-                        controller: "QuestionIndexHeaderController",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/question_index/header_panel_mobile.html",
-                        controller: "QuestionIndexHeaderController",
-                    },
                     "body": {
-                        templateUrl: "/partials/states/question_index/body.html",
-                        controller: "QuestionIndexBodyController",
+                        templateUrl: "/partials/states/question_index.html",
+                        controller: "QuestionIndexController",
                     }
                 }
             })            

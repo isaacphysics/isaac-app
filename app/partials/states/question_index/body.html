@@ -1,7 +1,0 @@
-<div ng-repeat="question in list.results">
-	<h2><a ui-sref="question({id: question.id})">{{question.title}}</a></h2>
-</div>
-
-<button ng-if="pageNumber!=1" ui-sref="questionsIndex({page: pageNumber-1})">Previous</button>
-
-<button ui-sref="questionsIndex({page: pageNumber+1})">Next</button>
