@@ -22,14 +22,24 @@ define([], function() {
 
 				scope.checkAnswer = function() {
 					if (scope.selectedAnswer != null) {
-						scope.correct = scope.doc.choices[scope.selectedAnswer].correct;
+
+						var selectedChoice = scope.doc.choices[scope.selectedAnswer];
+
+						var s = api.questionValidator.validate({id: scope.doc.id}, selectedChoice);
+
+						s.$promise.then(function foo(r) {
+							scope.validationResponse = r;
+						}, function bar(e) {
+							console.error("Error validating answer:", e);
+						});
+
 					} else {
 						// TODO: Somehow tell the user that they need to choose an option before clicking Check.
 					}
 				}
 
 				scope.$watch("selectedAnswer", function() {
-					delete scope.correct;
+					delete scope.validationResponse;
 				})
 			}
 		};
