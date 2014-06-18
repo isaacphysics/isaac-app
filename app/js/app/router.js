@@ -121,7 +121,7 @@ define(["angular-ui-router"], function() {
                 url: "/concepts/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.concepts.get({id: $stateParams.id}).$promise;
+                        return api.conceptPages.get({id: $stateParams.id}).$promise;
                     }]
                 },                
                 views: {
@@ -144,7 +144,7 @@ define(["angular-ui-router"], function() {
                 url: "/questions/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.questions.get({id: $stateParams.id}).$promise;
+                        return api.questionPages.get({id: $stateParams.id}).$promise;
                     }]
                 },                
                 views: {

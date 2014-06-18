@@ -1,18 +1,21 @@
 define([], function() {
 
 
-	
 	var Api = function ApiConstructor($resource, server) {
 
 		this.pages = $resource(server + "/api/pages/:id");
 		this.content = $resource(server + "/api/pages/:id"); // TODO: Use the actual content endpoint once it is written.
-		this.questions = $resource(server + "/api/pages/:id");
-		this.concepts = $resource(server + "/api/pages/:id");
+		this.questionPages = $resource(server + "/api/pages/questions/:id");
+		this.conceptPages = $resource(server + "/api/pages/concepts/:id");
+		this.questionValidator = $resource(server + "/api/questions/:id/answer", {}, {
+			validate: {
+				method: "POST",
+			}
+		});
 
 		var conceptsPerPage = 10;
-		var conceptList = $resource(server + "/api/concepts?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-		var questionList = $resource(server + "/api/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-
+		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
 
 		this.getConceptList = function(page){
 			return conceptList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});

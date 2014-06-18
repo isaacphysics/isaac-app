@@ -8,6 +8,39 @@ define([ 'jquery','d3'],
         // NOTE this could be encapsulated further (into a Class) but all use cases
         // not yet clear. It doesn't make any functional difference.
         return {
+            
+            /**
+             * Calculate all the vital information about a Hexagon
+             * @param {Number} _width Width of hexagon
+             * @param {Number} _aspect How much to scale the sides
+             * @param {Object} _offset Offset from origin {x,y}
+             * @returns {Object} Hexagon definition
+             */
+            calculateHexagon: function(_width, _aspect, _offset)
+            {
+                var _offset = _offset || {x:0,y:0};
+                // Side length
+                var _side = (_width * Math.sqrt(3) / 4) * _aspect;
+                // Gap betwwen rows
+                var _gap = (_width / 4) * _aspect;
+                // Height of hexagon
+                var _height = _side + ((_width / 2) * _aspect);
+                // Hexagon lines for D3 line generator
+                var _hexagon = [{x : _width / 2, y : 0}, 
+                                {x : 0,          y : _gap},
+                                {x : 0,          y : _gap + _side},
+                                {x : _width / 2, y : _height},
+                                {x : _width,     y : _gap + _side},
+                                {x : _width,     y : _gap},
+                                {x : _width / 2, y : 0}];
+                for(var i = 0; i < 7; i++)
+                {
+                    _hexagon[i].x += _offset.x;
+                    _hexagon[i].y += _offset.y;
+                }
+                return {side:_side, gap:_gap, height:_height, hexagon:_hexagon};
+            },
+            
             /**
              * Calculate all the vital information about the hexagons we are plotting
              * @param {String} where Selector string
@@ -15,9 +48,10 @@ define([ 'jquery','d3'],
              * @param {Number} _width Width of hexagon
              * @param {Number} _aspect How much to scale the sides
              * @param {Array} items Items to render
-             * @returns {Object} Hexagon definition
+             * @param {Boolean} equalRows - do we have the same number of hexagons in each row?
+             * @returns {Object} Hexagons definition
              */           
-            calculateHexagons : function(where, _pad, _width, _aspect, items)
+            calculateHexagons : function(where, _pad, _width, _aspect, items, equalRows)
             {
                 // Internal page width function
                 var pageWidth = function()
@@ -26,16 +60,30 @@ define([ 'jquery','d3'],
                 };
                 
                 // Work our hexagon variables
+                var _hexagon = this.calculateHexagon(_width, _aspect);
                 // Side length
-                var _side = (_width * Math.sqrt(3) / 4) * _aspect;
+                var _side = _hexagon.side;
                 // Gap betwwen rows
-                var _gap = (_width / 4) * _aspect;
+                var _gap = _hexagon.gap;
                 // Height of hexagon
-                var _height = _side + ((_width / 2) * _aspect);
-                // Maximum number of columns
-                var _maxCols = Math.floor(pageWidth() / (_width + _pad));
-                // Minimum number of columns
-                var _minCols = _maxCols === 1 ? 1 : _maxCols - 1;
+                var _height = _hexagon.height;
+                // Hexagon lines for D3 line generator
+                var hexagon = _hexagon.hexagon;
+                
+                if(equalRows)
+                {
+                    // Maximum number of columns
+                    var _maxCols = Math.ceil(pageWidth() / (_width + _pad)) - 1;
+                    // Minimum number of columns
+                    var _minCols = _maxCols;
+                }
+                else
+                {
+                    // Maximum number of columns
+                    _maxCols = Math.floor(pageWidth() / (_width + _pad));
+                    // Minimum number of columns
+                    _minCols = _maxCols === 1 ? 1 : _maxCols - 1;
+                }
                 var _rows = 0, _count = 0;
                 var _wrapHeight = 0;
                 // Determine total height and number of rows
@@ -46,20 +94,18 @@ define([ 'jquery','d3'],
                 }
 
                 // Centre hexagons horizontally
-                var centre = (_maxCols === _minCols) ? (pageWidth() + (_pad * 2) - (_width * 1.5)) / 2 : (pageWidth() +(_pad * 2) - (_width * _maxCols)) / 2;
-                if(centre < 0)
+                if(!equalRows)
+                {
+                    var centre = (_maxCols === 1) ? (pageWidth() + (_pad * 2) - (_width * 1.5)) / 2 : (pageWidth() +(_pad * 2) - (_width * _maxCols)) / 2;
+                    if(centre < 0)
+                    {
+                        centre = 0;
+                    }
+                }
+                else
                 {
                     centre = 0;
                 }
-
-                // Hexagon lines for D3 line generator
-                var hexagon = [{x : _width / 2, y : 0}, 
-                               {x : 0,          y : _gap},
-                               {x : 0,          y : _gap + _side},
-                               {x : _width / 2, y : _height},
-                               {x : _width,     y : _gap + _side},
-                               {x : _width,     y : _gap},
-                               {x : _width / 2, y : 0}];
                      
                // Return all Hexagon info
                return {
@@ -69,7 +115,7 @@ define([ 'jquery','d3'],
                    side: _side,
                    gap: _gap,
                    height: _height,
-                   wrapHeight: _wrapHeight,
+                   wrapHeight: _wrapHeight + 2,
                    wrapWidth: pageWidth(),
                    min: _minCols,
                    max: _maxCols,
@@ -167,7 +213,7 @@ define([ 'jquery','d3'],
                             .style('position', 'absolute')
                             .style('z-index', '0')
                             .style('width', hex.width + 'px')
-                            .style('height', hex.height + 'px');
+                            .style('height', (Math.ceil(hex.height)) + 'px');
                
                // Call user supplied function to add specific items to SVG 
                hexplot = svgItems(hexplot);
@@ -187,12 +233,13 @@ define([ 'jquery','d3'],
              * @param {Number} _width Width of hexagon
              * @param {Number} _aspect How much to scale the sides
              * @param {Array} items Items to render
+             * @param {Boolean} equalRows - do we have the same number of hexagons in each row?
              * @returns {Object} Hexagon definition
              */ 
-            calculateAndPositionHexagons : function(where, _pad, _width, _aspect, items)
+            calculateAndPositionHexagons : function(where, _pad, _width, _aspect, items, equalRows)
             {
                 // Calculate
-                var hex = this.calculateHexagons(where, _pad, _width, _aspect, items.length);
+                var hex = this.calculateHexagons(where, _pad, _width, _aspect, items.length, equalRows);
                 this.setPositions(hex, items);
                 // Position and wrapper height
                 $(where).height(hex.wrapHeight);
