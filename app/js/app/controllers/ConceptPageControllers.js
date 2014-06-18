@@ -1,8 +1,6 @@
 define([], function() {
 
 	var HeaderController = ['$scope', 'page', function($scope, page) {
-		$scope.title = page.contentObject.title;
-		$scope.subtitle = page.contentObject.subtitle;
 	}];
 
 	var BodyController = ['$scope', 'page', function($scope, page) {

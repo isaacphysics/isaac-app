@@ -1,0 +1,278 @@
+$ru_odd: #f7f7f7;
+$ru_even: #ffffff;
+$ci_top_pad : 15px;
+$ci_bottom_pad: 10px;
+
+.h1-concept-index
+{
+    font-weight: 200;
+}
+
+span.physics
+{
+    color: $ru_physics;
+}
+
+span.maths
+{
+    color: $ru_maths;
+}
+
+#result-template
+{
+    height: 0px;
+    overflow: hidden;
+}
+
+#desktop-button
+{
+    margin: 0;
+    float: right;
+    padding: 9px 10px 8px 10px;
+}
+
+.ru-search-result-bar
+{
+    background-color: $ru_darkgrey;
+    color: white;
+    font-style: italic;
+    padding: 20px 0 10px 0;
+    position: relative;
+    h4
+    {
+        padding: 0;
+        margin: 0;
+        position: relative;
+        color: white;
+        bottom: 4px;
+        padding-left: 30px;
+    }
+    * span
+    {
+        display: inline !important;
+        padding-right: 10px;
+    }
+    * input
+    {
+        margin-left: 10px;
+    }
+    * label
+    {
+        color: white !important;
+    }
+}
+
+.ru-search-result
+{
+    cursor: pointer;
+    font-style: italic;
+}
+
+.ru-mobile-answer-wrap
+{
+    &:nth-child(2n+1) .ru-search-result
+    {
+        background-color: $ru_odd;
+    }
+    &:nth-child(2n)  .ru-search-result
+    {
+        background-color: $ru_even;
+    }
+}
+
+.ru-concept-results * h4, .ru-concept-pad * h4
+{
+    margin: 0;
+}
+
+@media #{$medium-up}
+{
+    .ru-search-result
+    {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    
+    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result
+    {
+        border-left: $ru_lightgrey 1px solid;
+        border-right: $ru_lightgrey 1px solid;
+        padding-top: $ci_top_pad  + 1px;
+        padding-bottom: $ci_bottom_pad + 1px;
+    }
+    
+    .ru-concept-results .ru-mobile-answer-wrap:first-child .ru-search-result
+    {
+        border-top: $ru_lightgrey 1px solid;
+        padding-top:  $ci_top_pad;
+    }
+    
+    .ru-concept-results .ru-mobile-answer-wrap:last-child .ru-search-result
+    {
+        border-bottom: $ru_lightgrey 1px solid;
+        padding-bottom: $ci_bottom_pad;
+    }
+    
+    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result:hover
+    {
+        padding-top: $ci_top_pad;
+        padding-bottom: $ci_bottom_pad;
+    }
+    
+    .ru-mobile-answer-wrap.physics .ru-search-result:hover
+    {
+        border: 1px solid $ru_physics;
+    }
+    
+    .ru-mobile-answer-wrap.maths .ru-search-result:hover
+    {
+        border: 1px solid $ru_maths;
+    }
+    
+    .ru-mobile-answer-wrap.both .ru-search-result:hover
+    {
+        border: 1px solid $ru_darkgrey;
+    }
+    
+    .ru-concept-search
+    {
+        margin-top: 20px;
+    }
+    .ru-mobile-searchbar-wrap
+    {
+        margin-top: 10px;
+    }
+    
+    .ru-answer-pad
+    {
+        height: 101px;
+    }
+}
+
+.ru-no-result
+{
+    padding-top: 10px;
+}
+
+.ru-concept-result-bullets
+{
+    img
+    {
+        padding: 20px 4px 10px 4px;
+        cursor: pointer;
+    }
+}
+
+.ru-concept-search
+{
+    position: relative;
+}
+
+.ru-search-list
+{
+    position: absolute;
+    z-index: 10;
+    top: 37px;
+}
+
+.ru-search-list-item
+{
+    border-bottom: 1px $input-border-color solid;
+    border-left: 1px $input-border-color solid;
+    border-right: 1px $input-border-color solid;
+    font-size: $h5-font-size;
+    font-weight: 400;
+    font-style: italic;
+    padding: 8px;
+    cursor: pointer;
+    
+    &:hover
+    {
+        color: $ru_green;
+    }
+    
+    &:nth-child(2n+1)
+    {
+        background-color: $ru_odd;
+    }
+    &:nth-child(2n)
+    {
+        background-color: $ru_even;
+    }
+}
+
+@media #{$small-only}
+{
+    .ru-concept-search
+    {
+        background-color: white;
+    }
+    .ru-mobile-searchbar-wrap
+    {
+        background-color: $ru_darkgrey;
+    }
+    
+    .ru-mobile-answer-wrap .ru-search-result
+    {
+        padding-right: 10px;
+        padding-top: 12px;
+        padding-bottom: 8px;
+    }
+    
+    .ru-mobile-answer-wrap
+    {
+        &:nth-child(2n+1)
+        {
+            background-color: $ru_odd;
+        }
+        &:nth-child(2n)
+        {
+            background-color: $ru_even;
+        }
+    }
+    
+    .ru-search-result-bar
+    {
+        padding: 12px 0 10px 0;
+        * span
+        {
+            display: none !important;
+        }
+        h4
+        {
+            font-size: 1.0rem;
+            bottom: 0px;
+            padding-left: 0px;
+        }
+        * input
+        {
+            margin: 0 !important;
+            margin-right: 4px !important;
+            padding: 0px !important;
+        }
+        * label
+        {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+    
+    .ru-search-result-content
+    {
+        img
+        {
+            padding-top: 14px;
+        }
+    }
+    
+    #load-more
+    {
+        @include button(1, $ru_darkgrey, 0, true, false, false);
+        margin-top: 10px;
+        font-size: $h4-font-size;
+        font-weight: 400;
+        font-style: italic;
+        display: none;
+    }
+    
+}

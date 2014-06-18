@@ -26,6 +26,10 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/generic_page/header_panel.html",
                         controller: "GenericPageHeaderController",
                     },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/generic_page/header_panel_mobile.html",
+                        controller: "GenericPageHeaderController",
+                    },
                     "body": {
                         templateUrl: "/partials/states/generic_page/body.html",
                         controller: "GenericPageBodyController",
@@ -40,6 +44,9 @@ define(["angular-ui-router"], function() {
                 views: {
                     "header-panel": {
                         templateUrl: "/partials/states/" + folder + "/header_panel.html",
+                    },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/" + folder + "/header_panel_mobile.html",
                     },
                     "body": { 
                         templateUrl: "/partials/states/" + folder + "/body.html"
@@ -73,6 +80,10 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/concepts/header_panel.html",
                         controller: "ConceptsIndexPageHeaderController",
                     },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/concepts/header_panel_mobile.html",
+                        controller: "ConceptsIndexPageHeaderController",
+                    },
                     "body": {
                         templateUrl: "/partials/states/concepts/body.html",
                         controller: "ConceptsIndexPageBodyController",
@@ -95,6 +106,10 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/questions/header_panel.html",
                         controller: "ConceptsIndexPageHeaderController",
                     },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/questions/header_panel_mobile.html",
+                        controller: "ConceptsIndexPageHeaderController",
+                    },
                     "body": {
                         templateUrl: "/partials/states/questions/body.html",
                         controller: "ConceptsIndexPageBodyController",
@@ -114,6 +129,10 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/concept/header_panel.html",
                         controller: "ConceptPageHeaderController",
                     },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/concept/header_panel_mobile.html",
+                        controller: "ConceptPageHeaderController",
+                    },
                     "body": {
                         templateUrl: "/partials/states/concept/body.html",
                         controller: "ConceptPageBodyController",
@@ -131,6 +150,10 @@ define(["angular-ui-router"], function() {
                 views: {
                     "header-panel": {
                         templateUrl: "/partials/states/question/header_panel.html",
+                        controller: "QuestionPageHeaderController",
+                    },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/question/header_panel_mobile.html",
                         controller: "QuestionPageHeaderController",
                     },
                     "body": {
@@ -154,6 +177,12 @@ define(["angular-ui-router"], function() {
                             $scope.title = "Content object: " + page.contentObject.id;
                         }],
                     },
+                    "header-panel-mobile": {
+                        templateUrl: "/partials/states/generic_page/header_panel.html",
+                        controller: ["$scope", "page", function($scope, page) {
+                            $scope.title = "Content object: " + page.contentObject.id;
+                        }],
+                    },
                     "body": {
                         templateUrl: "/partials/states/generic_page/body.html",
                         controller: ["$scope", "page", function($scope, page) {
@@ -166,6 +195,9 @@ define(["angular-ui-router"], function() {
                 params: ["target"],
                 views: {
                     "header-panel": {
+                        template: "<h1>Page not found</h1>",
+                    },
+                    "header-panel-mobile": {
                         template: "<h1>Page not found</h1>",
                     },
                     "body": {

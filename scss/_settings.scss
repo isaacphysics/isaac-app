@@ -23,6 +23,7 @@ $ru_physics: $ru_purple;
 $ru_blue: #009acd;
 $ru_maths: $ru_blue;
 $ru_darkgrey: #333333;
+$ru_lightgrey: #cccccc;
 $ru_footer: $ru_darkgrey;
 $ru_red: #be4c4c;
 
@@ -79,7 +80,7 @@ $body-font-weight: 300;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
 // $warning-color: #f08a24;
-// $info-color: #a0d3e8;
+$info-color: $ru_darkgrey;
 
 // We use these to make sure border radius matches unless we want it different.
 // $global-radius: 3px;

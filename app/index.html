@@ -34,13 +34,9 @@
                     </div>
                 </div>
                 <!-- Mobile panel MUST BE SECOND-->
-                <div class='ru-mobile-panel show-for-small-only'>
-                    <div class='row'>
-                        <div class='small-16 columns'>
-                            <div ng-if="isLoading"><h1>Loading...</h1></div>
-                            <div ng-if="!isLoading" ui-view="header-panel"></div>
-                        </div>
-                    </div>
+                <div class='ru-mobile-panel show-for-small-only ru-mobile-panel-with-crumb'>
+                    <div ng-if="isLoading"><h1>Loading...</h1></div>
+                    <div ng-if="!isLoading" ui-view="header-panel-mobile"></div>
                 </div>
 
                 <!--<div ng-include="'/partials/samples/concept.html'"></div>-->
