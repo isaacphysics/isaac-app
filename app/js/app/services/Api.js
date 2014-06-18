@@ -13,16 +13,16 @@ define([], function() {
 			}
 		});
 
-		var conceptsPerPage = 10;
-		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-
-		this.getConceptList = function(page){
-			return conceptList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});
-		}
+		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999999}, {'query': {method: 'GET', isArray: false }});
 
 		this.getQuestionList = function(page){
-			return questionList.query({"startIndex" : page*conceptsPerPage, "limit" : conceptsPerPage});
+			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
+		}
+
+		this.getConceptList = function(){
+			return conceptList.query();
 		}
 
 		this.getImageUrl = function(path) {

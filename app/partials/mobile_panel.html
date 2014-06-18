@@ -1,0 +1,5 @@
+<!-- Mobile panel MUST BE SECOND-->
+<div class='ru-mobile-panel show-for-small-only ru-mobile-panel-with-crumb'>
+    <div ng-if="isLoading" ng-controller="LoadingMessageController"><h1 ng-show="displayMessage">Loading...</h1></div>
+    <div ng-if="!isLoading" ng-transclude></div>
+</div>

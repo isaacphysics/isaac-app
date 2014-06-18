@@ -16,7 +16,9 @@ define([
 	"app/directives/content/FeaturedProfile",
 	"app/directives/content/MultiChoiceQuestion",
 	"app/directives/content/QuickQuestion",
-	"app/directives/content/QuestionRadioButton"
+	"app/directives/content/QuestionRadioButton",
+	"app/directives/DesktopPanel",
+	"app/directives/MobilePanel",
 	], function() {
 
 	/* Directives */
@@ -30,6 +32,14 @@ define([
 	    	elm.text(version);
 	    };
 	}])
+
+	// General Directives
+
+	.directive('desktopPanel', require("app/directives/DesktopPanel"))
+	
+	.directive('mobilePanel', require("app/directives/MobilePanel"))
+
+	// Content Directives
 
 	.directive('mathJax', require("app/directives/content/MathJax"))
 
@@ -56,5 +66,7 @@ define([
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
 
 	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))	
+
+
 
 });

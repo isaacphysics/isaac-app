@@ -7,35 +7,37 @@ define([
 	"app/directives", 
 	"app/controllers/GenericPageControllers",
 	"app/controllers/ConceptPageControllers",
-	"app/controllers/ConceptsIndexPageControllers",
+	"app/controllers/ConceptIndexControllers",
+	"app/controllers/QuestionIndexControllers",
 	"app/controllers/QuestionPageControllers",
 	"app/controllers/HomePageControllers"
 	], function() {
 	
-	var genericPage = require("app/controllers/GenericPageControllers");
-	var conceptPage = require("app/controllers/ConceptPageControllers");
-	var conceptIndexPage = require("app/controllers/ConceptsIndexPageControllers");
-	var questionPage = require("app/controllers/QuestionPageControllers");
-	var homePage = require("app/controllers/HomePageControllers");
+	var genericPageControllers = require("app/controllers/GenericPageControllers");
+
+	var conceptPageControllers = require("app/controllers/ConceptPageControllers");
+	var conceptIndexControllers = require("app/controllers/ConceptIndexControllers");
+
+	var questionPageControllers = require("app/controllers/QuestionPageControllers");
+	var questionIndexControllers = require("app/controllers/QuestionIndexControllers");
+
+	var homePageControllers = require("app/controllers/HomePageControllers");
 
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
 	
-	.controller('GenericPageHeaderController', genericPage.HeaderController)
-	.controller('GenericPageBodyController', genericPage.BodyController)
+	.controller('GenericPageController', genericPageControllers.PageController)
 	
-	.controller('ConceptPageHeaderController', conceptPage.HeaderController)
-	.controller('ConceptPageBodyController', conceptPage.BodyController)
+	.controller('ConceptPageController', conceptPageControllers.PageController)
 
-	.controller('ConceptsIndexPageHeaderController', conceptIndexPage.HeaderController)
-	.controller('ConceptsIndexPageBodyController', conceptIndexPage.BodyController)
+	.controller('ConceptIndexController', conceptIndexControllers.PageController)
 
-	.controller('QuestionPageHeaderController', questionPage.HeaderController)
-	.controller('QuestionPageBodyController', questionPage.BodyController)
+	.controller('QuestionIndexController', questionIndexControllers.PageController)
 
-	.controller('HomePageHeaderController', homePage.HeaderController)
-	.controller('HomePageBodyController', homePage.BodyController)
+	.controller('QuestionPageController', questionPageControllers.PageController)
+
+	.controller('HomePageController', homePageControllers.PageController)
 
 	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
 

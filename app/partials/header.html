@@ -11,23 +11,23 @@
                              [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
                 </div>
                 <div class='large-8 medium-12 columns'>
-                    <a class='ru-desktop-nav-item' ui-sref='questionsIndex'>  
-                        <div class='ru-desktop-nav-item-inner active'>
-                            <span>Problems</span>
+                    <a class='ru-desktop-nav-item' ui-sref='questionIndex'>  
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('questionIndex')}">
+                            <span>Questions</span>
                         </div>
                     </a>
-                    <a class='ru-desktop-nav-item' ui-sref='conceptsIndex'>  
-                        <div class='ru-desktop-nav-item-inner'>
+                    <a class='ru-desktop-nav-item' ui-sref='conceptIndex'>  
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex')}">
                             <span>Concepts</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item'>  
-                        <div class='ru-desktop-nav-item-inner'>
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: false}">
                             <span>My Boards</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item'>  
-                        <div class='ru-desktop-nav-item-inner'>
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: false}">
                             <span>Login</span>
                         </div>
                     </a>

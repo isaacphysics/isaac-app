@@ -22,34 +22,20 @@ define(["angular-ui-router"], function() {
                     }]
                 },                
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/generic_page/header_panel.html",
-                        controller: "GenericPageHeaderController",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/generic_page/header_panel_mobile.html",
-                        controller: "GenericPageHeaderController",
-                    },
                     "body": {
-                        templateUrl: "/partials/states/generic_page/body.html",
-                        controller: "GenericPageBodyController",
+                        templateUrl: "/partials/states/generic_page.html",
+                        controller: "GenericPageController",
                     }
                 }
             };
         }
 
-        var staticPageState = function(url, folder) {
+        var staticPageState = function(url, state) {
             return {
                 url: url,
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/" + folder + "/header_panel.html",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/" + folder + "/header_panel_mobile.html",
-                    },
                     "body": { 
-                        templateUrl: "/partials/states/" + folder + "/body.html"
+                        templateUrl: "/partials/states/" + state + ".html"
                     },
                 },
             }
@@ -65,32 +51,27 @@ define(["angular-ui-router"], function() {
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
             .state('contact', staticPageState("/contact", "contact"))
 
-            .state('conceptsIndex', {
+            .state('conceptIndex', {
                 url: "/concepts?page",
                 resolve: {
-                    "pageIndex" :['$stateParams', function($stateParams){
-                        return parseInt($stateParams.page || "1") - 1;
-                    }],
-                    "list" : ['api', 'pageIndex', function(api, pageIndex){
-                        return api.getConceptList(pageIndex).$promise;
+                    "conceptList" : ['api', function(api){
+                        return api.getConceptList().$promise;
                     }]
                 },
                 views: {
                     "header-panel": {
-                        templateUrl: "/partials/states/concepts/header_panel.html",
-                        controller: "ConceptsIndexPageHeaderController",
+                        templateUrl: "/partials/states/concept_index/header_panel.html",
                     },
                     "header-panel-mobile": {
-                        templateUrl: "/partials/states/concepts/header_panel_mobile.html",
-                        controller: "ConceptsIndexPageHeaderController",
+                        templateUrl: "/partials/states/concept_index/header_panel_mobile.html",
                     },
                     "body": {
-                        templateUrl: "/partials/states/concepts/body.html",
-                        controller: "ConceptsIndexPageBodyController",
+                        templateUrl: "/partials/states/concept_index/body.html",
+                        controller: "ConceptIndexController",
                     }
                 }
             })
-            .state('questionsIndex', {
+            .state('questionIndex', {
                 url: "/questions?page",
                 resolve: {
                     "pageIndex" :['$stateParams', function($stateParams){
@@ -101,18 +82,17 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 views: {
-                    //TODO: Stop reusing ConceptsIndex controllers eventually - I was just being lazy.
                     "header-panel": {
-                        templateUrl: "/partials/states/questions/header_panel.html",
-                        controller: "ConceptsIndexPageHeaderController",
+                        templateUrl: "/partials/states/question_index/header_panel.html",
+                        controller: "QuestionIndexHeaderController",
                     },
                     "header-panel-mobile": {
-                        templateUrl: "/partials/states/questions/header_panel_mobile.html",
-                        controller: "ConceptsIndexPageHeaderController",
+                        templateUrl: "/partials/states/question_index/header_panel_mobile.html",
+                        controller: "QuestionIndexHeaderController",
                     },
                     "body": {
-                        templateUrl: "/partials/states/questions/body.html",
-                        controller: "ConceptsIndexPageBodyController",
+                        templateUrl: "/partials/states/question_index/body.html",
+                        controller: "QuestionIndexBodyController",
                     }
                 }
             })            
@@ -125,17 +105,9 @@ define(["angular-ui-router"], function() {
                     }]
                 },                
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/concept/header_panel.html",
-                        controller: "ConceptPageHeaderController",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/concept/header_panel_mobile.html",
-                        controller: "ConceptPageHeaderController",
-                    },
                     "body": {
-                        templateUrl: "/partials/states/concept/body.html",
-                        controller: "ConceptPageBodyController",
+                        templateUrl: "/partials/states/concept.html",
+                        controller: "ConceptPageController",
                     }
                 }
             })
@@ -148,17 +120,9 @@ define(["angular-ui-router"], function() {
                     }]
                 },                
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/question/header_panel.html",
-                        controller: "QuestionPageHeaderController",
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/question/header_panel_mobile.html",
-                        controller: "QuestionPageHeaderController",
-                    },
                     "body": {
-                        templateUrl: "/partials/states/question/body.html",
-                        controller: "QuestionPageBodyController",
+                        templateUrl: "/partials/states/question.html",
+                        controller: "QuestionPageController",
                     }
                 }
             })            
@@ -171,21 +135,10 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 views: {
-                    "header-panel": {
-                        templateUrl: "/partials/states/generic_page/header_panel.html",
-                        controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.contentObject.id;
-                        }],
-                    },
-                    "header-panel-mobile": {
-                        templateUrl: "/partials/states/generic_page/header_panel.html",
-                        controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.contentObject.id;
-                        }],
-                    },
                     "body": {
-                        templateUrl: "/partials/states/generic_page/body.html",
+                        templateUrl: "/partials/states/generic_page.html",
                         controller: ["$scope", "page", function($scope, page) {
+                            $scope.title = "Content object: " + page.contentObject.id;
                             $scope.doc = page.contentObject;
                         }],
                     }
@@ -194,14 +147,8 @@ define(["angular-ui-router"], function() {
             .state('404', {
                 params: ["target"],
                 views: {
-                    "header-panel": {
-                        template: "<h1>Page not found</h1>",
-                    },
-                    "header-panel-mobile": {
-                        template: "<h1>Page not found</h1>",
-                    },
                     "body": {
-                        template: "Page not found: {{target}}",
+                        templateUrl: "/partials/states/404.html",
                         controller: function($scope, $stateParams) {
                             $scope.target = $stateParams.target;
                         }

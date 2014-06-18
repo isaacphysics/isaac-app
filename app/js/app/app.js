@@ -40,11 +40,13 @@ define([
             apiProvider.server("http://dev.isaacphysics.org");
 	}])
 
-	.run(['$rootScope', 'api', function($rootScope, api) {
+	.run(['$rootScope', 'api', '$state', function($rootScope, api, $state) {
 /*
         api.pages.get({id: "events_index"}).$promise.then(function(d) {
             $rootScope.aboutPage = d.contentObject;
         });*/
+
+        $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.isLoading = true;
