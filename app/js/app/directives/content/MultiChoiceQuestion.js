@@ -1,4 +1,4 @@
-define([], function() {
+define(["app/honest/responsive_video"], function(rv) {
 
 
 	return ["api", function(api) {
@@ -14,11 +14,12 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.activeTab = -1; // Activate "Answer now" tab by default.
-
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
+					rv.updateAll();					
 				}
+
+				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
 				scope.checkAnswer = function() {
 					if (scope.selectedAnswer != null) {
