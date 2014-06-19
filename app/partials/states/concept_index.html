@@ -20,13 +20,14 @@
                     <h3>Search:</h3>
                 </div>
                 <div class='clearfix show-for-small-only'></div>
-                <div class='medium-13 small-13 columns'>
-                    <input type='text' id='concept-search'>
+                <div class='medium-14 small-13 columns'>
+                    <input type='text' ng-model="searchText">
                     <div class="ru-search-list hide-for-small-only">
                     </div>
                 </div>
+
                 <div class='medium-1 small-3 columns end'>
-                    <button id='desktop-button' class='hide-for-small-only'>GO</button>
+                    <!--<button id='desktop-button' class='hide-for-small-only'>GO</button>-->
                     <div id='mobile-button' class='hide-for-medium-up'>
                         <img src='/assets/mobile-search.png'>
                     </div>
@@ -51,7 +52,7 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="concept in allConcepts" class='row ru-mobile-answer-wrap' ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" ng-show="includePhysics && physics || includeMaths && maths">
+                <div ng-repeat="concept in allConcepts | filter:{$:searchText}" class='row ru-mobile-answer-wrap' ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" ng-show="includePhysics && physics || includeMaths && maths">
                     <div class='small-16 columns'>
                         <div class="ru-search-result">
                             <div class="ru-search-result-content">
