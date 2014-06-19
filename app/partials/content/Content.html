@@ -1,6 +1,7 @@
 <div ng-switch="doc.type">
 	<div ng-switch-when="figure" isaac-figure="doc"></div>
 	<div ng-switch-when="image" isaac-image="doc.src"></div>
+	<div ng-switch-when="video" isaac-video="doc"></div>
 	<div ng-switch-when="isaacFeaturedProfile" isaac-featured-profile="doc"></div>
 	<div ng-switch-when="isaacQuestion" isaac-quick-question="doc"></div>
 	<div ng-switch-when="isaacMultiChoiceQuestion" isaac-multi-choice-question="doc"></div>
