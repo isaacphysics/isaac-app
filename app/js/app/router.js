@@ -144,5 +144,15 @@ define(["angular-ui-router"], function() {
 
 	}])
 
+    .run(['$rootScope', '$state', function($rootScope, $state) {
+        $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+            console.warn("State change error:", error);
+
+            if (error.status == 404)
+                $state.go('404', {target: $state.href(toState, toParams)});
+        });
+
+    }])
+
 
 })
