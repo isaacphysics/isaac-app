@@ -5,6 +5,7 @@ define([], function() {
 		$scope.allConcepts = conceptList.results;
 
 		$scope.includePhysics = true;
+		$scope.includeMaths = true;
 
 	}]
 
