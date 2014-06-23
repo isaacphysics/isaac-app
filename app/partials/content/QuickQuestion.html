@@ -1,9 +1,10 @@
 <br/>
 <div class='row'>
     <div class="small-14 small-offset-1 columns end">
-        {{doc.value}}
+        <div isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div>
     </div>
 </div>
+<br><br>
 <div class='row'>
     <div class="medium-7 medium-offset-8 small-14 small-offset-1 columns end">
         <div class='ru_answer_reveal physics'>
@@ -11,9 +12,10 @@
                 Show answer
             </div>
             <div>
-                {{doc.answer.value}}
+                <div isaac-content-value-or-children encoding="doc.answer.encoding" value="doc.answer.value" children="doc.answer.children"></div>
                 <div class='ru_answer_close'></div>
             </div>
         </div>
     </div>
 </div>
+<br/>
