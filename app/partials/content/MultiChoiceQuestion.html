@@ -1,86 +1,16 @@
-<br/>
-<div class="row">
-    <div class="medium-14 medium-offset-1 small-16 columns end">
-        <dl class="tabs ru_tabs physics ru-answer" data-tab>
-            <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer Now</a></dd>
-            <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
-        </dl>
-        <div class="tabs-content ru_tabs ru-answer">
-            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}">
-                <div class='ru-answer-area'>
-                    <!-- TODO this will be different for each question type -->
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 columns end">
-                            <form class="ac-custom ac-radio ac-fill physics" autocomplete="off">
-                                <h3><isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></isaac-content-value-or-children> </h3>
-                                <ul class='ru-problem-q-pad'>
+<div isaac-question-tabs>
+    <div class='row'>
+        <div class="small-14 small-offset-1 columns end">
+            <form class="ac-custom ac-radio ac-fill physics" autocomplete="off">
+                <h3><isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></isaac-content-value-or-children> </h3>
+                <ul class='ru-problem-q-pad'>
 
-                                    <li ng-repeat="choice in doc.choices">
-                                        <input type="radio" question-radio-button ng-model="$parent.selectedAnswer" ng-value="$index">
-                                        <label ng-click="$parent.selectedAnswer = $index" math-jax>{{choice.value}}</label>
-                                    </li>
-                                </ul>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- END difference -->
-                </div>
-
-                <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-wrong' style="display:block;" ng-show="validationResponse.correct==false">
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 columns end text-center">
-                            <h2>incorrect</h2>
-                            <h5>Please try again.</h5>
-                            <isaac-content doc="validationResponse.explanation"></isaac-content>
-                            <p>Why not get a pen and paper and work it out?</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap' style="display:block;" ng-show="validationResponse.correct==true">
-                    <div class='ru-answer-correct physics'>
-                        <div class='row'>
-                            <div class="small-14 small-offset-1 medium-5 medium-offset-1 columns">
-                                <h1>Correct!</h1>
-                            </div><!--
-                            <div class='small-15  medium-9  columns'>
-                                <img src='/assets/icon-award.png' class='img-responsive right'>
-                                <p class='text-right'>You have earned yourself a Top of the Class Isaac award and 25 bonus points!</p>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class='ru-answer-correct-summary physics'>
-                        <div class='row'>
-                            <div class="small-14 small-offset-1 columns end">
-                                <p><strong>Well done!</strong></p>
-                                <isaac-content doc="validationResponse.explanation"></isaac-content>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class='ru-answer-check'>
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
-                            <p>Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
-                        </div>
-                        <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="validationResponse.correct">Check my answer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
-                <div class='row'>
-                    <div class="small-14 small-offset-1 columns end">
-                        <isaac-content doc="hint"></isaac-content>
-                    </div>
-                </div>
-            </div>
+                    <li ng-repeat="choice in doc.choices">
+                        <input type="radio" question-radio-button ng-model="$parent.selectedAnswer" ng-value="$index">
+                        <label ng-click="$parent.selectedAnswer = $index" math-jax>{{choice.value}}</label>
+                    </li>
+                </ul>
+            </form>
         </div>
     </div>
 </div>
-<br/>
