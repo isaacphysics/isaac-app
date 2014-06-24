@@ -1,7 +1,8 @@
 define([], function() {
 
-	var PageController = ['$scope', 'page', function($scope, page) {
-		$scope.doc = page.contentObject;
+	var PageController = ['$scope', 'api', function($scope, api) {
+
+		$scope.gameBoard = api.gameBoards.get();
 	}]
 
 	return {

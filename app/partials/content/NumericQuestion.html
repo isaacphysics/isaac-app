@@ -6,15 +6,15 @@
 	    <div class="small-14 small-offset-1 medium-8 medium-offset-1 columns end">
 	        <form class="" autocomplete="off">
 	            <ul class="small-block-grid-2">
-	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correct == false}">
+	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctValue === false}">
 	                    <div>Value</div>
 	                    <div class="ru-answer-block-panel">
 	                        <input type="text" ng-model="selectedChoice.value">
 	                        <small>Please answer to three significant figures.</small>
 	                    </div>
 	                </li>
-	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correct == false}">
-	                    <div>Unit</div>
+	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctUnits === false}">
+	                    <div>Units</div>
 	                    <div class="ru-answer-block-panel">
 	                        <input type="text" ng-model="selectedChoice.units">
 	                        <small>Please enter the unit of measurement.</small>

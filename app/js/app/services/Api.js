@@ -13,6 +13,8 @@ define([], function() {
 			}
 		});
 
+		this.gameBoards = $resource(server + "/api/gameboards?tags=physics,maths&level=1,2,3,4,5,6");
+
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: -1}, {'query': {method: 'GET', isArray: false }});

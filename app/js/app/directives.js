@@ -22,6 +22,7 @@ define([
 	"app/directives/content/QuestionRadioButton",
 	"app/directives/DesktopPanel",
 	"app/directives/MobilePanel",
+	"app/directives/Hexagons",
 	], function() {
 
 	/* Directives */
@@ -41,6 +42,8 @@ define([
 	.directive('desktopPanel', require("app/directives/DesktopPanel"))
 	
 	.directive('mobilePanel', require("app/directives/MobilePanel"))
+	
+	.directive('hexagons', require("app/directives/Hexagons"))
 
 	// Content Directives
 

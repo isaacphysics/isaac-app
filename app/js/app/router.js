@@ -30,19 +30,20 @@ define(["angular-ui-router"], function() {
             };
         }
 
-        var staticPageState = function(url, state) {
+        var staticPageState = function(url, state, controller) {
             return {
                 url: url,
                 views: {
                     "body": { 
-                        templateUrl: "/partials/states/" + state + ".html"
+                        templateUrl: "/partials/states/" + state + ".html",
+                        controller: controller
                     },
                 },
             }
         }
 
         $stateProvider
-            .state('home', staticPageState("/", "home"))
+            .state('home', staticPageState("/", "home", "HomePageController"))
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
