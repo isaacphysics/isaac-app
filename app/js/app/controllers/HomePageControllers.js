@@ -12,13 +12,24 @@ define([], function() {
 
 		function updateGameBoard() {
 
-			$scope.gameBoard = api.gameBoards.get({
-				subjects: $scope.filterSubjects,
-				fields: $scope.filterFields,
-				topics: $scope.filterTopics,
-				levels: $scope.filterLevels,
-				concepts: $scope.filterConcepts.map(function(c) { return c.id }),
-			});
+			var params = {};
+
+			if ($scope.filterSubjects.length > 0)
+				params.subjects = $scope.filterSubjects.join(",");
+
+			if ($scope.filterFields.length > 0)
+				params.fields = $scope.filterFields.join(",");
+
+			if ($scope.filterTopics.length > 0)
+				params.topics = $scope.filterTopics.join(",");
+
+			if ($scope.filterLevels.length > 0)
+				params.levels = $scope.filterLevels.join(",");
+
+			if ($scope.filterConcepts.length > 0)
+				params.concepts = $scope.filterConcepts.map(function(c) { return c.id }).join(",");
+
+			$scope.gameBoard = api.gameBoards.get(params);
 		}
 
 		$scope.$watchCollection("filterSubjects", updateGameBoard);
