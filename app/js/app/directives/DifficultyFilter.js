@@ -6,7 +6,7 @@ define(["app/honest/difficulty"], function(Difficulty) {
 		return {
 
 			scope: {
-				config: "=difficultyFilter",
+				selectedLevels: "=difficultyFilter",
 			},
 
 			restrict: "A",
@@ -14,22 +14,42 @@ define(["app/honest/difficulty"], function(Difficulty) {
 			templateUrl: "/partials/difficulty_filter.html",
 
 			link: function(scope, element, attrs) {
+			    var config = [
+			    	{ level:1, selected:false, enabled:true },
+			        { level:2, selected:false, enabled:true },
+			        { level:3, selected:false, enabled:true },
+			        { level:4, selected:false, enabled:true },
+			        { level:5, selected:false, enabled:true },
+			        { level:6, selected:false, enabled:true }
+			    ];
 
 				var difficulty = new Difficulty(element,
 				{
 	                // Replace with real function to get state
 	                get:function(callback) {
-	                	callback(scope.config);
+	                	callback(config);
 	                },
 	                // Does nothing - replace as required
 	                change:function(state)
 	                {
+	                	scope.selectedLevels.length = 0;
+	                	$.each(config, function(i, level) {
+	                		if (level.selected)
+	                			scope.selectedLevels.push(level.level);
+	                	});
 	                	scope.$apply();
 	                }
 	            });
 
-			    scope.$watch("config", function() {
-			    	difficulty.plotHexagons(scope.config);
+			    scope.$watch("selectedLevels", function() {
+
+			    	if (scope.selectedLevels) {
+				    	$.each(config, function(i, level) {
+				    		level.selected = scope.selectedLevels.indexOf(level.level) > -1;
+				    	});
+					}
+				    
+				    difficulty.plotHexagons(config);
 			    }, true)
 			}
 		};

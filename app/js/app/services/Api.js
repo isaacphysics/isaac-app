@@ -13,7 +13,7 @@ define([], function() {
 			}
 		});
 
-		this.gameBoards = $resource(server + "/api/gameboards?tags=physics,maths");
+		this.gameBoards = $resource(server + "/api/gameboards?subjects=:subjects&fields=:fields&topics=:topics&concepts=:concepts&levels=:levels");
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
