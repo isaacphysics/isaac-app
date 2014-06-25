@@ -102,6 +102,7 @@ define([], function() {
 		$scope.gameBoard = api.gameBoards.get();
 		$scope.hexFilterConfig = hex_filter;
 		$scope.difficultyFilterConfig = difficulty;
+		$scope.filterConcepts = [];
 	}]
 
 	return {

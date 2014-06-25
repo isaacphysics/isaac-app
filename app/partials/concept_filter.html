@@ -1,0 +1,12 @@
+<div id="conceptfilter">
+	<h3>Filter by Concept <a href=''><small>(What's this?)</small></a></h3>
+	<input type="text" placeholder="Concept title" ng-model="conceptInput">
+	<div id="concept-search-data">
+		<div ng-repeat="c in concepts.results | filter:removeSelected | filter:{title: conceptInput}:titleMatcher | limitTo:4" class='concept-search-result physics' ng-click="selectConcept(c)">
+			<div>{{c.title}}</div>
+		</div>
+	</div>
+	<div id="concept-results">
+		<div ng-repeat="c in selectedConcepts" class='concept-search-result physics' ng-click="deselectConcept($index)"><div>{{c.title}}</div></div>
+	</div>
+</div>

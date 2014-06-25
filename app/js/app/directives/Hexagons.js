@@ -170,7 +170,6 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
-	            		console.log("QUESTIONS:", scope.questions);
 
 	            		$.each(scope.questions, function(i, q) {
 	            			if (q.tags.indexOf("physics") > -1) {

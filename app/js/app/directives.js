@@ -25,6 +25,7 @@ define([
 	"app/directives/Hexagons",
 	"app/directives/HexFilter",
 	"app/directives/DifficultyFilter",
+	"app/directives/ConceptFilter",
 	], function() {
 
 	/* Directives */
@@ -50,6 +51,8 @@ define([
 	.directive('hexFilter', require("app/directives/HexFilter"))
 	
 	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
+	
+	.directive('conceptFilter', require("app/directives/ConceptFilter"))
 
 	// Content Directives
 
