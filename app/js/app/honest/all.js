@@ -1,5 +1,4 @@
-define("all",
-    [ 'jquery',
+define([ 'jquery',
       'modernizr',
       'foundation.core',
       'fastclick',
@@ -55,6 +54,16 @@ define("all",
         // Global jQuery
         $(function()
         {
+            // Mobile detection based on presence of mobile header
+            /**
+             * Are we on a mobile? (Safe on any browser without needing media queries via JS)
+             * @returns {Boolean}
+             */
+            $.ru_IsMobile = function()
+            {
+                return ($(".ru-mobile-header").css('display') !== 'none');
+            };
+            
             // Fix ups for iOS
             if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
             {
@@ -74,6 +83,39 @@ define("all",
             {
                 $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('safari');
             }
+            
+            // Fix up for custom check box 2nd label
+            $('.ru-drop-big-label,.ru-drop-mid-label').each(function()
+            {
+                var $drop = $(this).prev('.ru-drop-check');
+                var id = $('input', $drop).attr('id');
+                $(this).attr('for', id);
+            });
+            
+            // Set tab indexes for some things
+            // Header nav
+            $('.ru-desktop-nav-item').attr('tabindex', 0).bind('keydown', function(e)
+            {
+                // Follow link for tab on top level nav
+                if(e.which === 13)
+                {
+                    $link = $('a', $(this));
+                    if(!$link.hasClass('active'))
+                    {
+                        window.location.href = $link.attr('href');
+                    }
+                }
+            });
+            $('.ru-desktop-nav-item .active').parent().attr('tabindex', null);
+            // Footer social icons
+            $("[class*='ru-social-icon-']").attr('tabindex',0).bind('keydown', function(e)
+            {
+                // Follow link for tab on top level nav
+                if(e.which === 13)
+                {
+                    window.location.href = $(this).attr('href');
+                }
+            });
             
             // Fast click
             FastClick.attach(document.body);
@@ -109,7 +151,7 @@ define("all",
 //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
 //                }
             };
-            
+                       
             // Force resize of vidoes on tab change and accordion change
             $(document).foundation(
             {
@@ -118,6 +160,9 @@ define("all",
                     {
                         rv.forceResize();
                         sliderResize();
+                        // Determine location of tabs content and then pause any child videos
+                        var obj = $($('a', tab).attr('href')).parent();
+                        rv.pauseVideos(obj);
                     }
                 }
             }); 
@@ -148,25 +193,87 @@ define("all",
             });
             
             // Toggle hide / show of share links
-            $(".ru_share").click(function()
+            $(".ru_share").bind('click keydown',function(e)
             {
-                if($(".ru_share_link").width() === 258)
+                if(e.type === 'click' || (e.type === 'keydown' && e.which === 13))
                 {
-                    $(".ru_share_link").animate({width:0}, {duration:400});
-                }
-                else
-                {
-                    $(".ru_share_link").animate({width:260}, {duration:400});
+                    if($(".ru_share_link").width() === 258)
+                    {
+                        $(".ru_share_link").animate({width:0}, {duration:400});
+                    }
+                    else
+                    {
+                        $(".ru_share_link").animate({width:260}, {duration:400});
+                    }
                 }
             });
             
-            // Image zoom
-            $('.ru-mobile-expand div').click(function(e)
+        // Image zoom
+        
+        // Redraw slider after being fullscreen (for webkit) and also show a message about 'escape'
+        document.addEventListener("webkitfullscreenchange", function ()
+        {
+            if(!document.webkitIsFullScreen)
             {
-                e.preventDefault();
-                var url = $(this).parent().find('img').attr('src');
-                 window.location.href = url;
-            });
+                $('.ru-expand-esc').hide();
+                sliderResize();
+            }
+            else
+            {
+                $('.ru-expand-esc').show();
+            }
+        }, false);
+        // Press ESC message for WebKit
+        $('.ru-expand img').before('<p class="ru-expand-esc">Please press ESC to exit</p>');
+        // Do Zoom
+        $('.ru-expand div').click(function(e)
+        {
+            e.preventDefault();
+
+            // Invoke browser full screen
+            function requestFullScreen(element)
+            {
+                // Supports most browsers and their versions.
+                var requested = false;
+                var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+                if (requestMethod)
+                { 
+                    // Native full screen.
+                    requestMethod.call(element);
+                    requested = true;
+                }
+                else if (typeof window.ActiveXObject !== "undefined")
+                { 
+                    // Older IE.
+                    var wscript = new ActiveXObject("WScript.Shell");
+                    if (wscript !== null)
+                    {
+                        wscript.SendKeys("{F11}");
+                        requested = true;
+                    }
+                }
+                return requested;
+            }
+
+            // Get target img element
+            var elem = $(this).parent().find('img');
+            var url = elem.attr('src');
+            // Mobile - follow link
+            if($.ru_IsMobile())
+            {   
+                window.location.href = url;
+            }
+            // Desktop - full screen mode, else revert to opening link
+            else
+            {
+                // On FF show img only, on others show messae with ESC also
+                if(!requestFullScreen(navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? elem.get(0) : elem.parent().get(0)))
+                {
+                    window.location.href = url;
+                }
+            }
+        });
             
             // Bug Herd - let jQuery initialise then do it (prevent hold up as much as possible)
             (function(d, t)

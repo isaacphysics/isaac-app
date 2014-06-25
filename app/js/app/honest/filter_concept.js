@@ -2,7 +2,7 @@
  * Library to handle filter concept
  * Requires jQuery 
  */
-define([ 'jquery', 'honest/utils'],
+define([ 'jquery', 'utils'],
     function($) 
     { 
         /**

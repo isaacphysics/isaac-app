@@ -1,11 +1,12 @@
 define(["app/honest/hexagon"],function(hexagon) {
 
+	// TODO: This entire file is a horrible mess. But at least it's an isolated horrible mess.
 
     // Generic draw function for initial and update
     var draw = function(hex, questions, $state)
     {
         // Plot
-        hexagon.drawHexagons(".hexagon_wrap", hex, questions, "ru-hex-home-content", function(plotdiv)
+        hexagon.drawHexagons($(".hexagon_wrap"), hex, questions, "ru-hex-home-content", function(plotdiv)
         {
             // Tick / Arrow
             plotdiv.each(function(d) 
@@ -196,7 +197,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 	            		scope.questions.splice(Math.floor(Math.random() * 10),0,wildCard);
 						// Calculate Hexagon info
-		    			var hex = hexagon.calculateAndPositionHexagons('.hexagon_wrap', _pad, _width, _aspect, scope.questions, equalRows);
+		    			var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions, equalRows);
 
 		    			draw(hex, scope.questions, $state);	       
 		    		}     	

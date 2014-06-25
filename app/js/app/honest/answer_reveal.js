@@ -1,7 +1,7 @@
 /**
  * jQuery code to enable all answer reveal panels
  */
-define(['jquery'],
+define([ 'jquery'],
     function($) 
     {  
         $(function()

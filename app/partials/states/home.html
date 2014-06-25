@@ -11,22 +11,13 @@
             <span class='ru-challenge'>Your board is 50% complete<br class='show-for-medium-only'> <a href=''>Create your Challenge!</a></span>
         </div>
         <div class='clearfix'></div>
-        <div id='desktop-filter'>
+        <div id='desktop-filter' class="down isdown">
             <div class='medium-9 large-10 columns' id='desktop-filter1'>
-                <div id='hexfilter'>
-                    <div id="hexfilter-large" class="show-for-large-up"></div>
-                    <h3>Create your challenge...</h3>
-                    <div id="hexfilter-text"></div>
-                    <svg id="hexfilter-svg"></svg>
-                </div>
+                <div hex-filter="hexFilterConfig"></div>
             </div>
             <div class='medium-7 large-6 columns'>
                 <div id='desktop-filter2'>
-                    <div id='difficulty'>
-                        <h3>Difficulty... <a href=''><small>(What's my level?)</small></a></h3>
-                        <div id="difficulty-hexagons">
-                        </div>
-                    </div>
+                    <div difficulty-filter="difficultyFilterConfig"></div>
                 </div>
                 <div id='desktop-filter3'>
                     <div id='conceptfilter'>
@@ -61,8 +52,12 @@
         </div>
         <div class='clearfix'></div>
         <div class='mobile-filter'>
-            <div id='mobile-filter1'></div>
-            <div id='mobile-filter2'></div>
+            <div id='mobile-filter1'>
+                <div id="hexfilter" hex-filter="hexFilterConfig"></div>
+            </div>
+            <div id='mobile-filter2' class="down isdown">
+                <div difficulty-filter="difficultyFilterConfig"></div>
+            </div>
             <div id='mobile-filter3'></div>
         </div>
         <div class='clearfix'></div>

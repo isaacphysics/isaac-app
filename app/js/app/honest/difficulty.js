@@ -2,7 +2,7 @@
  * Library to handle difficulty filter
  * Requires jQuery 
  */
-define([ 'jquery', 'honest/hexagon', 'd3'],
+define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
     function($, hexagon, d3) 
     { 
         /**
@@ -10,8 +10,9 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
          * @param {Object} options - get:get current settings callback, change:change callback
          * @returns {FilterConcept Object}
          */
-        var Difficulty = function(options)
+        var Difficulty = function(element, options)
         {
+            var us = this;
             options.get    = options.get    || function(callback) { callback([]);};
             options.change = options.change || function() {};
             // Constants
@@ -19,13 +20,13 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
             var _width = 68;
             var _aspect = 1.2;
            
-            var plotHexagons = function(state)
+            us.plotHexagons = function(state)
             {
                 // Calculate Hexagon info
-                var hex = hexagon.calculateAndPositionHexagons('#difficulty-hexagons', _pad, _width, _aspect, state, true);
+                var hex = hexagon.calculateAndPositionHexagons(element.find('#difficulty-hexagons'), _pad, _width, _aspect, state, true);
                 
                 // Plot
-                hexagon.drawHexagons("#difficulty-hexagons", hex, state, "ru-diff-hex", function(plotdiv)
+                hexagon.drawHexagons(element.find("#difficulty-hexagons"), hex, state, "ru-diff-hex", function(plotdiv)
                 {
                     // Title
                     plotdiv.append('div').text(function(d) { return d.level; }).each(function(d) 
@@ -60,20 +61,24 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         }
                         $(this).attr('class',klass).attr('data-level', d.level);
                         // Click handler to navigate
-                        $(this).click(function(e)
+                        $(this).parent().parent().attr('tabindex', -1);
+                        $(this).parent().parent().bind('click keydown',function(e)
                         {
-                            e.preventDefault();
-                            // Change state if needed
-                            for(var i = 0; i < state.length; i++)
+                            if(e.type === 'click' || (e.type === 'keydown' && e.which === 13))
                             {
-                                if(state[i].level === parseInt($(this).attr('data-level')) && state[i].enabled)
+                                e.preventDefault();
+                                // Change state if needed
+                                for(var i = 0; i < state.length; i++)
                                 {
-                                    state[i].selected = !state[i].selected;
+                                    if(state[i].level === parseInt($('path', $(this)).attr('data-level')) && state[i].enabled)
+                                    {
+                                        state[i].selected = !state[i].selected;
+                                    }
                                 }
+                                // Plot and call change callback
+                                us.plotHexagons(state);
+                                options.change(state);
                             }
-                            // Plot and call change callback
-                            plotHexagons(state);
-                            options.change(state);
                         });
                     }); 
                     return hexPath;
@@ -87,7 +92,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
             };
             options.get(function(state)
             {
-                plotHexagons(state);
+                us.plotHexagons(state);
             });
             
             

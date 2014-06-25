@@ -12,6 +12,18 @@ $ru_nav_size : 7em;
     height: 140px;
     display: inline-block;
     margin-top: -1px;
+    outline: none;
+    &:focus
+    {
+        .ru-desktop-nav-item-inner
+        {
+            background-position: -249px -5px;
+            span
+            {
+                color: #fff;
+            }
+        }
+    }
 }
 
 .ru-desktop-menu-img

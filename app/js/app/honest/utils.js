@@ -20,30 +20,30 @@ define([ 'jquery'],
                {
                    return this.each(function()
                    {
-                       $this = $(this);
+                       _this = this;
                        var width = 9999999;
-                       var set = function()
+                       var set = function(target, $control, _options)
                        {
+                           $target = $(target);
                            var css = {};
-                           $.each(options, function(i, option)
+                           $.each(_options, function(i, option)
                            {
-                               var value = $(control).css(option);
+                               var value = $control.css(option);
                                // Fix up for Safari width bug
                                if(navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0 && option === 'width')
                                {
                                    if($('html').width() < width)
                                    {
-                                       value = parseInt(value) - (parseInt($(control).css('padding-left')) + parseInt($(control).css('padding-right')));
+                                       value = parseInt(value) - (parseInt($control.css('padding-left')) + parseInt($control.css('padding-right')));
                                    }
                                    width = $('html').width();
                                }
                                css[option] = value;
                            });
-                           $this.css(css);
+                           $target.css(css);
                        };
-                      
-                       set();
-                       $(window).bind('resize', set);
+                       set(_this, $(control), options);
+                       $(window).bind('resize', function() {set(_this, $(control), options)});
                    });   
                },
                 /**

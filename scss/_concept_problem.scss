@@ -67,6 +67,11 @@
     margin: 0 15px;
 }
 
+.ru_figure figcaption
+{
+    font-size: 1.2rem !important;
+}
+
 .ru_figure img
 {
     padding-bottom: 1rem;
@@ -74,12 +79,12 @@
 
 @media #{$medium-up}
 {
-.ru_figure_panel
-{
-    width: 300px;
-    float: right;
-    margin-left: 10px;
-}
+    .ru_figure_panel
+    {
+        width: 300px;
+        float: right;
+        margin-left: 10px;
+    }
 }
 
 .ru-pad
@@ -152,6 +157,11 @@
     {
         margin: 0 0;
     }
+    .ru_figure figcaption
+    {
+        font-size: 1.05rem !important;
+    }
+
 }
 
 .ru-answer-wrong
@@ -173,20 +183,21 @@
 .ru-answer-wrong * h3,
 .ru-answer-wrong * h4,
 .ru-answer-wrong * h5,
-.ru-answer-wrong * h6
+.ru-answer-wrong * h6,
+.ru-answer-wrong * p.ru-answer-result
 {
     font-family: 'desyrel';
 }
 
 .ru-answer-wrong * p
 
-.ru-answer-wrong * h1 { font-size: $h1-font-size * 2;}
+.ru-answer-wrong * h1,  .ru-answer-wrong * p.ru-answer-result:first-child { font-size: $h2-font-size * 2 !important;}
 .ru-answer-wrong * h2 { font-size: $h2-font-size * 2;}
 .ru-answer-wrong * h3 { font-size: $h3-font-size * 2;}
 .ru-answer-wrong * h4 { font-size: $h4-font-size * 2;}
-.ru-answer-wrong * h5 { font-size: $h5-font-size * 2;}
+.ru-answer-wrong * h5, .ru-answer-wrong * p.ru-answer-result:nth-child(2) { font-size: $h5-font-size * 2 !important;}
 .ru-answer-wrong * h6 { font-size: $h6-font-size * 2;}
-.ru-answer-wrong * p  { font-size: 1.5rem !important; }
+.ru-answer-wrong * p  { font-size: 1.5rem !important; margin-bottom: 4px;}
 
 .ru-answer-check * button
 {
@@ -202,7 +213,7 @@
     .ru-answer-wrong * h4 { font-size: $h4-font-size * 1.5;}
     .ru-answer-wrong * h5 { font-size: $h5-font-size * 1.5;}
     .ru-answer-wrong * h6 { font-size: $h6-font-size * 1.5;}
-    .ru-answer-wrong * p  { font-size: 1.25rem  !important; }
+    .ru-answer-wrong * p  { font-size: 1.25rem  !important; margin-bottom: 4px;}
     .ru-answer-wrong
     {
         padding-top: 0.5em;
@@ -296,10 +307,11 @@
     font-weight: 600;
 }
 
-.ru-answer-correct h1
+.ru-answer-correct h1, p.ru-answer-result
 {
-    font-size: 4rem;
+    font-size: 4rem !important;
     font-family: 'desyrel';
+    margin-bottom: 4px;
 }
 
 .ru-answer-check
@@ -385,8 +397,49 @@
 
 .ru-expand
 {
-    position : relative;
-}
+        position : relative;
+        &:-moz-full-screen
+        {
+            /*background-color: transparent;*/
+            div
+            {
+                display: none;
+            }
+        }
+        &:-webkit-full-screen
+        {
+            background-color: transparent;
+            div
+            {
+                display: none;
+            }
+            .ru-expand-esc
+            {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        &:-ms-fullscreen
+        {
+            background-color: transparent;
+            div
+            {
+                display: none;
+            }
+        }
+        &:fullscreen
+        {
+            background-color: transparent;
+            div
+            {
+                display: none;
+            }
+        }
+        .ru-expand-esc
+        {
+            display: none;
+        }
+    }
 
 .ru-expand div
 {
@@ -396,7 +449,7 @@
     top: 2px;
     width: 30px;
     height: 31px;
-    cursor: pointer;
+    cursor: pointer;   
 }
 
 .ru-expand.physics div

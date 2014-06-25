@@ -23,6 +23,8 @@ define([
 	"app/directives/DesktopPanel",
 	"app/directives/MobilePanel",
 	"app/directives/Hexagons",
+	"app/directives/HexFilter",
+	"app/directives/DifficultyFilter",
 	], function() {
 
 	/* Directives */
@@ -44,6 +46,10 @@ define([
 	.directive('mobilePanel', require("app/directives/MobilePanel"))
 	
 	.directive('hexagons', require("app/directives/Hexagons"))
+	
+	.directive('hexFilter', require("app/directives/HexFilter"))
+	
+	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
 
 	// Content Directives
 

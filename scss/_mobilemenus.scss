@@ -102,8 +102,25 @@
   }
 }
 
+@media #{$small-only}
+{
+    /* Faked checkbox in CSS */
+    .ru-drop-check {
+      label {
+        &:hover::after {
+          opacity: 0;
+        }
+      }
+    }
+}
+
 .ru-drop-check~label
 {
     display: inline;
     margin-left: 1.5rem;
+}
+
+.ru-drop-check.ru-drop-gap~label
+{
+    margin-left: 0.5rem;
 }

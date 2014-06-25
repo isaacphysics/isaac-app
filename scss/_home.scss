@@ -97,6 +97,10 @@ ul.ru-crumb.maths li
 
 @media #{$small-only}
 {
+    .ru-no-wrap
+    {
+        white-space: nowrap;
+    }
     .ru-mobile-panel.ru-mobile-panel-with-crumb
     {
         padding-bottom: 0px;
@@ -206,6 +210,30 @@ $col_values : 5;
 @for $i from 1 through $col_values
 {
     // Note these filters are applied via JS, else FF baulks
+    .hexagon_wrap>div
+    {
+        outline: none;
+        &:focus
+        {
+            .hex-physics#{$i}
+            {
+                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);           
+            }
+            .hex-maths#{$i}
+            {
+                fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
+            }
+            .hex-orange
+            {
+                fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
+            }
+
+            .hex-grey
+            {
+                fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
+            }
+        }
+    }
     .hex-physics#{$i}
     {
         fill: url('#physics') $ru_purple; 

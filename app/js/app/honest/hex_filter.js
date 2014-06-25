@@ -2,7 +2,7 @@
  * Library to handle Hex Filter
  * Requires jQuery 
  */
-define([ 'jquery', 'honest/hexagon', 'd3'],
+define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
     function($, hexagon, d3) 
     { 
         /**
@@ -10,8 +10,9 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
          * @param {Object} options - get:get current options callback, change:change callback
          * @returns {HexFilter Object}
          */
-        var HexFilter = function(options)
+        var HexFilter = function(element, options)
         {
+            this._element = element;
             // Parse options
             this.options =  {};
             this.options.get    = options.get    || function(callback) { callback([]);};
@@ -180,11 +181,11 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         var startY = us._dotGap * 7.5;
                         for(var i = 0; i <= circles; i++)
                         {
-                            $("#hexfilter-svg").append(svgEl("circle").attr({'cx':((startX + (us._dotGap * i)) + us._dotRadius - 1), 
+                            us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':((startX + (us._dotGap * i)) + us._dotRadius - 1), 
                                                                              'cy':(startY + us._dotRadius - 1), 
                                                                              'r':us._dotRadius}).attr('class',subject));
                         }
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 
                                                                              'cy':(startY + us._dotGap + us._dotRadius - 1), 
                                                                              'r':us._dotRadius}).attr('class',subject));
                     }
@@ -227,7 +228,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                        
                         var startX = 12 * us._dotGap;
                         var startY = (us._dotGap * 12.5) + (selectedParent * us._dotGap * 8);
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
                     }
                     // Plot 'vertical' circles
                     var startY = (9.5 + minCircle) * us._dotGap;
@@ -239,7 +240,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         {
                             klass = 'grey';
                         }
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                     }
                     // Plot drop across to children from vertical
                     for(var i = 0; i < child.length; i++)
@@ -247,7 +248,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         var klass = (child[i].enabled) ? subject : 'grey';
                         var startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
                         var startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
 
                     }
                 }
@@ -281,7 +282,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                     var startY = (parentLevel- 1) * (us._height + (us._dotGap * us._deskVertical)) + (us._dotGap * 3 / 4) + us._height;
                     for(var i = 0; i < 2; i++, startY = startY + us._dotGap)
                     {
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
                     }
                     // Plot 'horizontal' circles
                     var startX = (3 + minCircle) * us._dotGap;
@@ -292,7 +293,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         {
                             klass = 'grey';
                         }
-                        $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
+                        us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                     }
                     startY += us._dotGap;
                     // Plot drop downs to children from horizotal
@@ -305,7 +306,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                             var dropY = startY;
                             for(var j = 0; j < 2; j++, dropY = dropY + us._dotGap)
                             {
-                                $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
+                                us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                             }
                         }
                         else
@@ -314,7 +315,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                             var dropY = startY - (us._dotGap * 0.1);
                             for(var j = 0; j < 3; j++, dropY = dropY + (us._dotGap * 0.9), startX = startX + (us._dotGap * 0.6))
                             {
-                                $("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
+                                us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                             }
                         }
                     }
@@ -324,13 +325,13 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
             };
             
             // CLear
-            $("#hexfilter-text, #hexfilter-svg").empty();
+            us._element.find("#hexfilter-text, #hexfilter-svg").empty();
             // Work out exactly which items we are plotting
             // by walking tree and finding 'enabled' items
             this._determineVisibility();
             
             // Text
-            var select = d3.select('#hexfilter-text').selectAll("path")
+            var select = d3.select(us._element.find('#hexfilter-text')[0]).selectAll("path")
             .data(this.visible).enter();
             var divs = select.append("div");
             // Inner content of divs
@@ -344,8 +345,25 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                         .addClass(d.enabled ? 'enabled' : 'disabled')
                         .addClass(d.active ? '' : 'inactive')
                         .addClass(d.level > us.endLevel ? ' hide' : '');
+                if(d.active)
+                {
+                    $(this).attr('tabindex', '0');
+                    $(this).bind('keydown', function(e)
+                    {
+                        if(e.which === 13)
+                        {
+                            var selectedItem = us.visible[parseInt($(this).attr('data-item'))];
+                            if(selectedItem.active)
+                            {
+                                selectedItem.enabled = !selectedItem.enabled;
+                                us.ReDraw();
+                            }
+                        }
+                    });
+                }
                 // Name
-                var item = $('[data-item='+i+']');
+                var item = us._element.find('[data-item='+i+']');
+
                 // A name is small if any word > 10
                 var small = false;
                 var split = d.title.split(' ');
@@ -358,7 +376,12 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
                     }
                 }
                 // Add title
-                $(item).append("<div width='100%' class='ru-hex-filter-name "+(small ? 'ru-hex-filter-name-small' : '')+"'><p>"+d.title+"</p></div>");
+                $(item).append("<div width='100%' class='ru-hex-filter-name "
+                        +(d.active ? '' : ' inactive ')
+                        +(small ? 'ru-hex-filter-name-small' : '')
+                        +"'><p>"+d.title+"</p>"+
+                        (d.active ?  '' : '<p class="ru-hex-filter-inactive-text">Coming Soon</p>')
+                        +"</div>");
                 // Add percentage
                 $(item).append("<div class='ru-hex-filter-circle "+
                         (d.percent === 0 ? 'ru-hex-filter-circle-zero' : (d.percent === 100 ? 'ru-hex-filter-circle-hundred' : ''))+
@@ -366,7 +389,7 @@ define([ 'jquery', 'honest/hexagon', 'd3'],
             });
             
             // Hexagons
-            var _hexagons = d3.select('#hexfilter-svg').selectAll("path")
+            var _hexagons = d3.select(us._element.find('#hexfilter-svg')[0]).selectAll("path")
                         .data(this.visible).enter();
             // Basic D3 Line function
             var lineFunction = d3.svg.line()

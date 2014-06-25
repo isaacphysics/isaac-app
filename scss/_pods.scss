@@ -40,12 +40,13 @@
 {
     height: auto;
     padding: 0;
+    overflow-x: hidden;
     overflow-y: visible;
 }
 
 .ru_pod_image img
 {
-    width: 320px;
+    min-width: 1000px;
     height: 180px;
     overflow: hidden;
 }

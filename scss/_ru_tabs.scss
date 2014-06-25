@@ -169,6 +169,15 @@
         position: relative;
         top: 1px;
     }
+    
+    .tabs.ru_tabs.ru-answer dd.active a
+    {
+        padding-bottom: 12px;
+    }
+    .tabs-content.ru-answer
+    {
+        top: 0px !important;
+    }
 }
 
 @media #{$medium-up}

@@ -56,7 +56,7 @@ define(["jquery","honest/video"],
                     function resizeVideoJS()
                     {
                         // Get the parent element's actual width
-                        var width = $(document.getElementById(myPlayer.id()).parentElement).width()
+                        var width = $(document.getElementById(myPlayer.id()).parentElement).width();
                         // Set width to fill parent element, Set height
                         myPlayer.width(width).height( width * aspectRatio );
                     }

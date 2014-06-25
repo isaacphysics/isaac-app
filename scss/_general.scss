@@ -74,12 +74,22 @@ $footer_height : 250px;
     background-color: #f4f4f4 !important;
 }
 
+p.ru-large
+{
+    font-size: 1.2rem !important;
+}
+
 @media #{$small-only}
 {
     body
     {
         overflow-x: hidden;
     }
+    p.ru-large
+    {
+        font-size: 1.05rem !important;
+    }
+
 }
 
 // Bullets

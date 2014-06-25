@@ -56,7 +56,7 @@ define([ 'jquery','honest/d3.min'],
                 // Internal page width function
                 var pageWidth = function()
                 {
-                    return $(where).width();
+                    return where.width();
                 };
                 
                 // Work our hexagon variables
@@ -179,10 +179,10 @@ define([ 'jquery','honest/d3.min'],
             drawHexagons : function(where, hex, items, divClass, divItems, pathAttrs, svgItems)
             {
                 // Clear target
-                $(where).empty();
+                where.empty();
                 
                 // Create D3 enter for each item
-                var plot = d3.select(where).selectAll("div")
+                var plot = d3.select(where[0]).selectAll("div")
                         .data(items).enter();
                 
                 // Create div for each item and position
@@ -207,13 +207,14 @@ define([ 'jquery','honest/d3.min'],
                                  .interpolate("linear");   
                          
                // Create and position SVG canvas for each Hexagon
-               var hexplot = plot.append('svg')
+               var hexplot = plot.append('div')
                             .style('top', function(d) { return d.y+'px'; })
                             .style('left', function(d) { return d.x+'px'; })
                             .style('position', 'absolute')
                             .style('z-index', '0')
                             .style('width', hex.width + 'px')
-                            .style('height', (Math.ceil(hex.height)) + 'px');
+                            .style('height', (Math.ceil(hex.height)) + 'px')
+                            .append('svg');
                
                // Call user supplied function to add specific items to SVG 
                hexplot = svgItems(hexplot);
@@ -242,7 +243,7 @@ define([ 'jquery','honest/d3.min'],
                 var hex = this.calculateHexagons(where, _pad, _width, _aspect, items.length, equalRows);
                 this.setPositions(hex, items);
                 // Position and wrapper height
-                $(where).height(hex.wrapHeight);
+                where.height(hex.wrapHeight);
                 // Return Hexagon info
                 return hex;
             }

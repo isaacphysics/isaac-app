@@ -23,11 +23,14 @@ define([ 'jquery'],
                 $(".ru-desktop-nav-item-inner.active").addClass("ru-desktop-menu-noz-active");
                 // Show close button
                 $(".ru-desktop-panel-search-close").show();
-                
+                // Hide home drop dpwn
+                $("#desktop-reveal").hide();
             };
             
             var hide = function()
             {
+                // Show home drop dpwn
+                $("#desktop-reveal").show();
                 // Hide close button
                 $(".ru-desktop-panel-search-close").hide();
                 // Disable Z-index on title bar
@@ -46,17 +49,23 @@ define([ 'jquery'],
             };
             
             // Show search
-            $(".ru-desktop-panel-search a").click(function(e)
+            $(".ru-desktop-panel-search a").bind('click keydown',function(e)
             {
-                e.preventDefault();
-                show();
+                if(e.type === 'click' || (e.type === 'keydown' && e.which === 13))
+                {
+                    e.preventDefault();
+                    show();
+                }
             });
             
             // Hide search
-            $(".ru-desktop-panel-search-close").click(function(e)
+            $(".ru-desktop-panel-search-close").bind('click keydown',function(e)
             {
-                e.preventDefault();
-                hide();
+                if(e.type === 'click' || (e.type === 'keydown' && e.which === 13))
+                {
+                    e.preventDefault();
+                    hide();
+                }
             });
         });
     }

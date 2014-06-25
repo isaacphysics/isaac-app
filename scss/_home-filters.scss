@@ -96,6 +96,18 @@
     }
 }
 
+#hexfilter-text .ru-hex-filter-item
+{
+    &.inactive
+    {
+        color: #cecece;
+    }
+    .ru-hex-filter-name p.ru-hex-filter-inactive-text
+    {
+        font-size: 0.6rem !important;
+    }
+}
+
 #hexfilter-svg
 {
     width: 550px;
@@ -244,6 +256,8 @@
     position: relative;
 }
 
+
+
 .diff-hex-selected
 {
     fill: $ru_green;
@@ -283,6 +297,27 @@
     {
         transition: 0.3s;
         fill: white;
+    }
+}
+
+#difficulty-hexagons>div
+{
+    outline: none;
+    &:focus
+    {
+        .diff-hex-selected
+        {
+            fill: lighten($ru_green, $ru_site_hover);
+            stroke: lighten($ru_green, $ru_site_hover);
+        }
+        .diff-hex-unselected, .diff-hex-disabled
+        {
+            fill: #ededed;
+        }
+        .diff-hex-disabled
+        {
+            fill: white;
+        }
     }
 }
 
@@ -544,6 +579,16 @@ $hex_diff_levels : 6;
     transition: 0.6s;
 }
 
+#mobile-dd-pad
+{
+    height: 0px;
+    transition: 0.6s;
+    &.active
+    {
+        height: 20px;
+        transition: 0.6s;
+    }
+}
 
 #desktop-filter
 {
