@@ -17,7 +17,7 @@ define([], function() {
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
-		this.authenticationEndpoint = server+"/api/auth/"
+		this.authenticationEndpoint = server+"/api/auth"
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
