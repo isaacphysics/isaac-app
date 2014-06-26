@@ -4,6 +4,18 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
 
+		$scope.mobileFilterPanelOpen = null;
+
+		$scope.openMobilePanel = function(panelNumberToOpen) {
+			if ($scope.mobileFilterPanelOpen === panelNumberToOpen) {
+				// it turns into a toggle
+				$scope.mobileFilterPanelOpen = null;
+			}
+			else{
+				$scope.mobileFilterPanelOpen = panelNumberToOpen;	
+			}
+		}
+
 		$scope.filterSubjects = [];
 		$scope.filterFields = [];
 		$scope.filterTopics = [];

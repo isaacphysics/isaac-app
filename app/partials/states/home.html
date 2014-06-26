@@ -32,26 +32,26 @@
     <div class='row'>
         <div class='small-16 columns bottom-grey'>
             <ul class='small-block-grid-3 ' id='buttons'>
-                <li id='button-hex' data-for="mobile-filter1">
+                <li id='button-hex' ng-click="openMobilePanel('mobile-filter1')" data-for="mobile-filter1" ng-class="{active: mobileFilterPanelOpen == 'mobile-filter1'}">
                     <p><small>Your challenge</small></p>
                 </li>
-                <li id='button-difficulty' data-for="mobile-filter2">
+                <li id='button-difficulty' ng-click="openMobilePanel('mobile-filter2')" data-for="mobile-filter2" ng-class="{active: mobileFilterPanelOpen == 'mobile-filter2'}">
                     <p><small>Difficulty</small></p>
                 </li>
-                <li id='button-concept' data-for="mobile-filter3">
+                <li id='button-concept' ng-click="openMobilePanel('mobile-filter3')" data-for="mobile-filter3" ng-class="{active: mobileFilterPanelOpen == 'mobile-filter3'}">
                     <p><small>Filter by concept</small></p>
                 </li>
             </ul>
         </div>
         <div class='clearfix'></div>
         <div class='mobile-filter'>
-            <div id='mobile-filter1'>
+            <div id='mobile-filter1' ng-show="mobileFilterPanelOpen == 'mobile-filter1'" class="down isdown">
                 <div id="hexfilter" hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics"></div>
             </div>
-            <div id='mobile-filter2'>
+            <div id='mobile-filter2' ng-show="mobileFilterPanelOpen == 'mobile-filter2'" class="down isdown">
                 <div difficulty-filter="filterLevels"></div>
             </div>
-            <div id='mobile-filter3' class="down isdown">
+            <div id='mobile-filter3' ng-show="mobileFilterPanelOpen == 'mobile-filter3'" class="down isdown">
                 <div concept-filter="filterConcepts"></div>
             </div>
         </div>
