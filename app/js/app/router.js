@@ -51,6 +51,7 @@ define(["angular-ui-router"], function() {
             .state('bios', genericPageState("/bios", "bios"))
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
             .state('contact', staticPageState("/contact", "contact"))
+            //.state('login', staticPageState("/users/login", "login_page"))
 
             .state('conceptIndex', {
                 url: "/concepts?page",
@@ -144,7 +145,21 @@ define(["angular-ui-router"], function() {
                         controller: "ContentErrorController",
                     }
                 }
-            })            
+            })
+            .state('login', {
+                url: "/users/login",
+                resolve: {
+                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.authenticationEndpoint;
+                    }]
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/login_page.html",
+                        controller: "LoginPageController",
+                    }
+                }
+            })                         
             .state('404', {
                 params: ["target"],
                 views: {

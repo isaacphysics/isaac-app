@@ -11,7 +11,8 @@ define([
 	"app/controllers/QuestionIndexControllers",
 	"app/controllers/QuestionPageControllers",
 	"app/controllers/HomePageControllers",
-	"app/controllers/ContentErrorControllers"
+	"app/controllers/ContentErrorControllers",
+	"app/controllers/LoginPageControllers"
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -25,6 +26,8 @@ define([
 	var homePageControllers = require("app/controllers/HomePageControllers");
 
 	var contentErrorController = require("app/controllers/ContentErrorControllers");
+
+	var loginPageControllers = require("app/controllers/LoginPageControllers");
 
 	/* Controllers */
 
@@ -43,6 +46,8 @@ define([
 	.controller('HomePageController', homePageControllers.PageController)
 
 	.controller('ContentErrorController', contentErrorController.PageController)
+
+	.controller('LoginPageController', loginPageControllers.PageController)
 
 	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
 
