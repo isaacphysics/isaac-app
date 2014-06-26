@@ -10,7 +10,8 @@ define([
 	"app/controllers/ConceptIndexControllers",
 	"app/controllers/QuestionIndexControllers",
 	"app/controllers/QuestionPageControllers",
-	"app/controllers/HomePageControllers"
+	"app/controllers/HomePageControllers",
+	"app/controllers/ContentErrorControllers"
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -22,6 +23,8 @@ define([
 	var questionIndexControllers = require("app/controllers/QuestionIndexControllers");
 
 	var homePageControllers = require("app/controllers/HomePageControllers");
+
+	var contentErrorController = require("app/controllers/ContentErrorControllers");
 
 	/* Controllers */
 
@@ -38,6 +41,8 @@ define([
 	.controller('QuestionPageController', questionPageControllers.PageController)
 
 	.controller('HomePageController', homePageControllers.PageController)
+
+	.controller('ContentErrorController', contentErrorController.PageController)
 
 	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
 

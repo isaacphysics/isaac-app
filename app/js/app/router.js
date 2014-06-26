@@ -131,6 +131,20 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+            .state('content_errors', {
+                url: "/admin/content_errors",
+                resolve: {
+                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.contentProblems.get().$promise;
+                    }]
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/content_error.html",
+                        controller: "ContentErrorController",
+                    }
+                }
+            })            
             .state('404', {
                 params: ["target"],
                 views: {
