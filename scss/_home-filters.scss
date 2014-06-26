@@ -630,6 +630,7 @@ $hex_diff_levels : 6;
     background-position: 50% top;
     background-repeat: no-repeat;
     cursor: pointer;
+    z-index: 10;
     &.down
     {
         background-image: url(/assets/reveal-down.png); 

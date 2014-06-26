@@ -4,15 +4,15 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
 
-		$scope.mobileFilterPanelOpen = null;
+		$scope.filterPanelOpen = null;
 
-		$scope.openMobilePanel = function(panelNumberToOpen) {
-			if ($scope.mobileFilterPanelOpen === panelNumberToOpen) {
+		$scope.openFilterPanel = function(panelNumberToOpen) {
+			if ($scope.filterPanelOpen === panelNumberToOpen) {
 				// it turns into a toggle
-				$scope.mobileFilterPanelOpen = null;
+				$scope.filterPanelOpen = null;
 			}
 			else{
-				$scope.mobileFilterPanelOpen = panelNumberToOpen;	
+				$scope.filterPanelOpen = panelNumberToOpen;	
 			}
 		}
 
