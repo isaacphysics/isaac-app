@@ -168,6 +168,16 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            // Always false for home hexagons - true used for testing
 	            var equalRows = false;
 
+                var update = function() {
+                    // Calculate Hexagon info
+                    var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions, equalRows);
+
+                    draw(hex, scope.questions, $state);        
+
+                }
+
+                $(window).on("resize", update);
+
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
 
@@ -195,10 +205,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            		})
 
 	            		scope.questions.splice(Math.floor(Math.random() * 10),0,wildCard);
-						// Calculate Hexagon info
-		    			var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions, equalRows);
-
-		    			draw(hex, scope.questions, $state);	       
+                        update();
 		    		}     	
 	            })
 			}

@@ -17,9 +17,11 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 
 			link: function(scope, element, attrs) {
 
+				// This is the internal state object, from which the filter is drawn. Externally, this directive is driven from (and provides)
+				// the subjects, fields and topics attributes.
 				var config = 
 				[
-				  {title:"Maths", active:true, subject:'maths', percent:65, enabled:false, symbol:'maths', id:"maths",
+				  {title:"Maths", active:true, subject:'maths', percent:65, enabled:true, symbol:'maths', id:"maths",
 				      children:
 				      [
 				        {title:"Geometry", active:true, subject:'maths', percent:35, enabled:false, symbol:'geometry', id:"geometry",
@@ -48,7 +50,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 				            ]}
 				      ]
 				  },
-				  {title:"Physics", active:true, subject:'physics', percent:25, enabled:true, symbol:'mechanics', id:"physics",
+				  {title:"Physics", active:true, subject:'physics', percent:25, enabled:false, symbol:'mechanics', id:"physics",
 				      children:
 				      [
 				          {title:"Mechanics", active:true, subject:'physics', percent:35, enabled:true, symbol:'mechanics', id:"mechanics",
@@ -84,42 +86,43 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			        },
 
 			        // Does nothing - replace as required
-			        change:function(items)
-			        {
-			        	var selectedItems = [[],[],[]];
-
-			        	function walk(depth, obj) {
-			        		if (obj.enabled) {
-			        			selectedItems[depth].push(obj.id);
-			        		}
-
-			        		if (obj.children) {
-				        		$.each(obj.children, function(i, child) {
-				        			walk(depth + 1, child);
-				        		});
-				        	}
-			        	}
-			        	walk(0,config[0]);
-			        	walk(0,config[1]);
-			        	
-			        	var subjects = selectedItems[0];
-			        	var fields = selectedItems[1];
-			        	var topics = selectedItems[2];
-
-			        	scope.subjects.length = 0;
-			        	scope.fields.length = 0;
-			        	scope.topics.length = 0;
-
-			        	Array.prototype.push.apply(scope.subjects,subjects);
-			        	if (subjects.length < 2)
-			        		Array.prototype.push.apply(scope.fields,fields);
-			        	if (subjects.length < 2 && fields.length < 2)
-			        		Array.prototype.push.apply(scope.topics,topics);
-
-			        	// TODO: Fix the error that this causes when executed while $digest is currently in progress.
-					  	scope.$apply();
-			        }
+			        change: function() { }
 			    });
+
+	        	// Set this after the hexFilter is constructed so that it doesn't try to change the attributes on initialisation.
+			    hexFilter.change = function(items) {
+		        	var selectedItems = [[],[],[]];
+
+		        	function walk(depth, obj) {
+		        		if (obj.enabled) {
+		        			selectedItems[depth].push(obj.id);
+		        		}
+
+		        		if (obj.children) {
+			        		$.each(obj.children, function(i, child) {
+			        			walk(depth + 1, child);
+			        		});
+			        	}
+		        	}
+		        	walk(0,config[0]);
+		        	walk(0,config[1]);
+		        	
+		        	var subjects = selectedItems[0];
+		        	var fields = selectedItems[1];
+		        	var topics = selectedItems[2];
+
+		        	scope.subjects.length = 0;
+		        	scope.fields.length = 0;
+		        	scope.topics.length = 0;
+
+		        	Array.prototype.push.apply(scope.subjects,subjects);
+		        	if (subjects.length < 2)
+		        		Array.prototype.push.apply(scope.fields,fields);
+		        	if (subjects.length < 2 && fields.length < 2)
+		        		Array.prototype.push.apply(scope.topics,topics);
+
+			  		scope.$apply();
+		        }
 
 			    var hexFilterResize = function()
 			    {
@@ -131,11 +134,100 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 				hexFilterResize(element);
 
 			    // Resize handling for Hex Filter
-			    $(window).bind("resize", function() {
-			    	hexFilterResize();
-			    });
+			    $(window).bind("resize", hexFilterResize);
 
-			    // TODO: Update config when scope.subjects, scope.fields, scope.topics change.
+			    var configChanged = function() {
+
+	    			var visit = function(obj, callback, level) {
+	    				if (!level) 
+	    					level = 0;
+
+	    				callback(obj, level);
+
+		    			if (obj.children) {
+		    				for(var i in obj.children) {
+		    					visit(obj.children[i], callback, level + 1);
+		    				}
+		    			}
+	    			}
+
+	    			var disabler = function(minLevel) {
+	    				return function(obj, level) {
+		    				if (level >= minLevel) {
+		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
+		    				}
+		    			};
+	    			}
+
+	    			// Enable/disable subjects in config object to reflect subjects attribute.
+	    			visit(config[0], function(obj, level) {
+	    				if (level == 0) {
+	    					obj.enabled = scope.subjects.indexOf(obj.id) > -1;
+	    				}
+	    			})
+	    			visit(config[1], function(obj, level) {
+	    				if (level == 0) {
+	    					obj.enabled = scope.subjects.indexOf(obj.id) > -1;
+	    				}
+	    			})
+
+			    	if (scope.subjects.length > 1) {
+
+			    		// We have selected multiple subjects. Disable all fields and topics.
+			    		var disableTopics = disabler(1);
+
+		    			visit(config[0], disableTopics)
+		    			visit(config[1], disableTopics)
+
+			    	} else {
+
+			    		// Enable/disable fields in config object to reflect fields attribute
+		    			visit(config[0], function(obj, level) {
+		    				if (level == 1) {
+		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
+		    				}
+		    			})
+		    			visit(config[1], function(obj, level) {
+		    				if (level == 1) {
+		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
+		    				}
+		    			})
+
+			    		if (scope.fields.length > 1) {
+
+			    			// We have selected more than one field. Disable all topics.
+
+			    			var disableFields = disabler(2);
+			    			visit(config[0], disableFields);
+			    			visit(config[1], disableFields);
+
+			    		} else {
+
+			    			// Enable/disable topics in config object to reflect topics attribute
+			    			visit(config[0], function(obj, level) {
+			    				if (level == 2) {
+			    					obj.enabled = scope.topics.indexOf(obj.id) > -1;
+			    				}
+			    			})
+			    			visit(config[1], function(obj, level) {
+			    				if (level == 2) {
+			    					obj.enabled = scope.topics.indexOf(obj.id) > -1;
+			    				}
+			    			})
+
+			    		}
+
+			    	}
+
+			    	hexFilterResize();
+
+			    }
+
+			    scope.$watchCollection("subjects", configChanged);
+			    scope.$watchCollection("fields", configChanged);
+			    scope.$watchCollection("topics", configChanged);
+
+			    configChanged();
 			}
 		};
 	}]

@@ -400,8 +400,8 @@ $hex_levels : 6;
     @for $j from 1 through $hex_levels
     {
         $pos_list : append($pos_list, ($j - 1) * 100% / $hex_levels );
-        @if $i < $j { $bg_list : append($bg_list, url('/assets/hex-level-on.png')); }
-        @if $i >= $j { $bg_list : append($bg_list, url('/assets/hex-level-off.png')); }
+        @if $hex_levels - $i < $j { $bg_list : append($bg_list, url('/assets/hex-level-on.png')); }
+        @if $hex_levels - $i >= $j { $bg_list : append($bg_list, url('/assets/hex-level-off.png')); }
     }
     .ru-hex-level-#{$i}:after
     {
