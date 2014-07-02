@@ -16,7 +16,7 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
             // Parse options
             this.options =  {};
             this.options.get    = options.get    || function(callback) { callback([]);};
-            this.options.change = options.change || function() {};
+            this.change = options.change || function() {};
             var us = this;
             // Filter
             this.filter = [];
@@ -545,7 +545,7 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                     us.selected.push(this);
                 }
             });
-            this.options.change(us.selected);
+            this.change(us.selected);
         };
         
         /**
