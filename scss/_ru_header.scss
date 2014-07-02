@@ -256,3 +256,10 @@ label[for="ru-search-box"]
     z-index: 200;
     cursor: pointer;
 }
+
+.site-search-row
+{
+    position: absolute;
+    width: 100% !important;
+    z-index: 100;
+}

@@ -8,13 +8,13 @@
 <div class='row'>
     <div class="medium-7 medium-offset-8 small-14 small-offset-1 columns end">
         <div class='ru_answer_reveal physics'>
-            <div ng-click="toggleVisibility()"> 
+            <div ng-click="isVisible=!isVisible"> 
                 <span ng-if="isVisible">Hide answer</span> 
                 <span ng-if="!isVisible">Show answer</span>
             </div>
             <div ng-show="isVisible">
                 <div isaac-content-value-or-children encoding="doc.answer.encoding" value="doc.answer.value" children="doc.answer.children"></div>
-                <div ng-click="toggleVisibility()" class='ru_answer_close'></div>
+                <div ng-click="isVisible=!isVisible" class='ru_answer_close'></div>
             </div>
         </div>
     </div>

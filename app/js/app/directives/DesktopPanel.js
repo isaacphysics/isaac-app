@@ -18,9 +18,9 @@ define([],function() {
 					// This is because ngHide will create its own scope, preventing ngTransclude from working. Yuk.
 
 					if(searchOpen) {
-						element.hide();
+						//element.hide();
 					} else {
-						element.show();
+						//element.show();
 					}
 				})
 			}

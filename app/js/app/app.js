@@ -49,6 +49,14 @@ define([
             isLoading: false,
         };
 
+        $rootScope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
+            if (searchOpen) {
+                $(".ru-body").fadeTo(300,0.15);
+            } else {
+                $(".ru-body").fadeTo(300,1);
+            }
+        })
+
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {

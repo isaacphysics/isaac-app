@@ -86,44 +86,49 @@
         </div>
     </div>
     <!-- Search button  MUST BE LAST-->
-    <div class='row hide-for-small-only'>
-        <div class='large-16 medium-16 columns'>
-            <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen">
-                <a tabindex="0" ng-click="globalFlags.siteSearchOpen = true"><img src='/assets/desktop-search.png' alt="Search"></a>
-            </div>
-            <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
-                <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
-            </div>
-            <div class="ru-desktop-panel" ng-show="globalFlags.siteSearchOpen">
-                <div class='ru-desktop-search'>
-                    <div class="row">
-                        <div class="large-2 medium-2 columns">
-                            <label for="ru-search-box" class=" text-center inline">Search</label>
-                        </div>
-                        <div class="large-3 medium-13 columns">
-                            <input id="ru-search-box" type="text"/>
-                        </div>
-                        <div class="clearfix show-for-medium-only"></div>
-                        <div class="large-4 medium-5 medium-offset-2 large-offset-0 columns">
-                            <div class="ru-desktop-search-check">
-                                <span class="ru-drop-check">
-                                    <input id="search-check1" name="checkbox2" type="checkbox" checked='checked'>
-                                    <label for='search-check1'></label>
-                                </span>
-                                <label class=''> Problems only</label>
+    <div class="row">
+        <div class="small-16 columns">
+
+            <div class='row hide-for-small-only site-search-row'>
+                <div class='large-16 medium-16 columns'>
+                    <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen">
+                        <a tabindex="0" ng-click="globalFlags.siteSearchOpen = true"><img src='/assets/desktop-search.png' alt="Search"></a>
+                    </div>
+                    <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
+                        <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
+                    </div>
+                    <div class="ru-desktop-panel" ng-show="globalFlags.siteSearchOpen">
+                        <div class='ru-desktop-search'>
+                            <div class="row">
+                                <div class="large-2 medium-2 columns">
+                                    <label for="ru-search-box" class=" text-center inline">Search</label>
+                                </div>
+                                <div class="large-3 medium-13 columns">
+                                    <input id="ru-search-box" type="text"/>
+                                </div>
+                                <div class="clearfix show-for-medium-only"></div>
+                                <div class="large-4 medium-5 medium-offset-2 large-offset-0 columns">
+                                    <div class="ru-desktop-search-check">
+                                        <span class="ru-drop-check">
+                                            <input id="search-check1" name="checkbox2" type="checkbox" checked='checked'>
+                                            <label for='search-check1'></label>
+                                        </span>
+                                        <label class=''> Problems only</label>
+                                    </div>
+                                </div>
+                                <div class="large-4 medium-5  columns">
+                                    <div class="ru-desktop-search-check">
+                                        <span class="ru-drop-check">
+                                            <input id="search-check2" name="checkbox2" type="checkbox" checked='checked'>
+                                            <label for='search-check2'></label>
+                                        </span>
+                                        <label class=''> Concepts only</label>
+                                    </div>
+                                </div>
+                                <div class="large-2 medium-3 medium-offset-0 columns end">
+                                    <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now">
+                                </div>
                             </div>
-                        </div>
-                        <div class="large-4 medium-5  columns">
-                            <div class="ru-desktop-search-check">
-                                <span class="ru-drop-check">
-                                    <input id="search-check2" name="checkbox2" type="checkbox" checked='checked'>
-                                    <label for='search-check2'></label>
-                                </span>
-                                <label class=''> Concepts only</label>
-                            </div>
-                        </div>
-                        <div class="large-2 medium-3 medium-offset-0 columns end">
-                            <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now">
                         </div>
                     </div>
                 </div>
