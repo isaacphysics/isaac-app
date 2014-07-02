@@ -21,18 +21,21 @@ define([ 'jquery'],
             };
             
            // If 'show answer' clicked - reveal answer
-           $(".ru_answer_reveal div:first-child").click(function()
+           $(".ru_answer_reveal div:first-child").bind("click keyup", function(e)
            {
-               if($(this).hasClass('revealed'))
+               if(e.type === 'click' || (e.type === 'keyup' && e.which === 13))
                {
-                   hide(this);
-               }
-               else
-               {
-                   show(this);
+                   if($(this).hasClass('revealed'))
+                   {
+                       hide(this);
+                   }
+                   else
+                   {
+                       show(this);
+                   }
                }
                
-           });
+           }).attr('tabindex', 0);
            // If close clicked - hide answer
            $(".ru_answer_close").click(function()
            {

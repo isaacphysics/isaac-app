@@ -85,12 +85,12 @@ define([ 'jquery',
             }
             
             // Fix up for custom check box 2nd label
-            $('.ru-drop-big-label,.ru-drop-mid-label').each(function()
+            $('.ru-drop-big-label,.ru-drop-mid-label,span.ru-drop-check~label').each(function()
             {
                 var $drop = $(this).prev('.ru-drop-check');
                 var id = $('input', $drop).attr('id');
                 $(this).attr('for', id);
-            });
+            }).css('user-select','none');
             
             // Set tab indexes for some things
             // Header nav
@@ -115,6 +115,26 @@ define([ 'jquery',
                 {
                     window.location.href = $(this).attr('href');
                 }
+            });
+            // Custom tick boxes
+            $('span.ru-drop-check').each(function()
+            {
+                // Add tab index
+                var span = $(this);
+                span.attr('tabindex', 0);
+                // Blur span on click
+                $('input', span).click(function()
+                {
+                    $(this).parent().blur();
+                });
+                // Enter on checkbox
+                span.bind('keyup', function(e)
+                {
+                    if(e.which === 13)
+                    {
+                        $('input', span).click();
+                    }
+                });
             });
             
             // Fast click
