@@ -15,7 +15,7 @@ $ru_nav_size : 7em;
     outline: none;
     &:focus
     {
-        .ru-desktop-nav-item-inner
+        .ru-desktop-nav-item-inner:not(.active)
         {
             background-position: -249px -5px;
             span
