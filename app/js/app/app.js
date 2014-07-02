@@ -48,6 +48,10 @@ define([
             $rootScope.aboutPage = d.contentObject;
         });*/
 
+        $rootScope.flags = {
+            siteSearchOpen: false,
+        };
+
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {

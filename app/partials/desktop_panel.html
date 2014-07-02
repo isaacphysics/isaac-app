@@ -1,5 +1,5 @@
 <!-- Desktop panel - e.g. About Us  MUST BE FIRST-->
-<div class='row hide-for-small-only'>
+<div class='row hide-for-small-only' ng-if="!flags.siteSearchOpen">
     <div class='large-16 medium-16 columns'>
         <div class='ru-desktop-panel'>
             <div ng-if="isLoading" ng-controller="LoadingMessageController"><h1 ng-show="displayMessage">Loading...</h1></div>
