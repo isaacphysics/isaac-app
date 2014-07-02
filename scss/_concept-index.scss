@@ -74,6 +74,7 @@ span.maths
 
 .ru-mobile-answer-wrap
 {
+    outline: none;
     &:nth-child(2n+1) .ru-search-result
     {
         background-color: $ru_odd;
@@ -117,23 +118,23 @@ span.maths
         padding-bottom: $ci_bottom_pad;
     }
     
-    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result:hover
+    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result:hover, .ru-concept-results .ru-mobile-answer-wrap:focus .ru-search-result
     {
         padding-top: $ci_top_pad;
         padding-bottom: $ci_bottom_pad;
     }
     
-    .ru-mobile-answer-wrap.physics .ru-search-result:hover
+    .ru-mobile-answer-wrap.physics .ru-search-result:hover, .ru-mobile-answer-wrap.physics:focus .ru-search-result
     {
         border: 1px solid $ru_physics;
     }
     
-    .ru-mobile-answer-wrap.maths .ru-search-result:hover
+    .ru-mobile-answer-wrap.maths .ru-search-result:hover, .ru-mobile-answer-wrap.maths:focus .ru-search-result
     {
         border: 1px solid $ru_maths;
     }
     
-    .ru-mobile-answer-wrap.both .ru-search-result:hover
+    .ru-mobile-answer-wrap.both .ru-search-result:hover, .ru-mobile-answer-wrap.both:focus .ru-search-result
     {
         border: 1px solid $ru_darkgrey;
     }
@@ -203,6 +204,16 @@ span.maths
     {
         background-color: $ru_even;
     }
+}
+
+#load-more
+{
+    @include button(1, $ru_darkgrey, 0, true, false, false);
+    margin-top: 20px;
+    font-size: $h4-font-size;
+    font-weight: 400;
+    font-style: italic;
+    display: none;
 }
 
 @media #{$small-only}
@@ -277,15 +288,9 @@ span.maths
             padding-top: 14px;
         }
     }
-    
+
     #load-more
     {
-        @include button(1, $ru_darkgrey, 0, true, false, false);
         margin-top: 10px;
-        font-size: $h4-font-size;
-        font-weight: 400;
-        font-style: italic;
-        display: none;
     }
-    
 }

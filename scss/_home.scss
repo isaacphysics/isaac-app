@@ -14,6 +14,24 @@
     }
 }
 
+.ru-search-button
+{
+    padding-top: 8px;
+    height: 39px;
+    padding-bottom: 6px;
+    font-size: 1.2rem;
+}
+
+@media #{$large-only}
+{
+    input.ru-search-button
+    {
+        padding-left: 42px !important;
+        padding-right: 42px !important;
+        width: auto !important;
+    }
+}
+
 .pad
 {
     height: 20px;

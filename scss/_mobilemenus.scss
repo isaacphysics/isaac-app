@@ -114,6 +114,15 @@
     }
 }
 
+.ru-drop-check:focus
+{
+    outline: none;
+    label
+    {
+        background-color: $ru_green;
+    }
+}
+
 .ru-drop-check~label
 {
     display: inline;

@@ -3,7 +3,8 @@
  * As recommened by Honest, from: http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
  */
 
-.ac-custom h2 {
+.ac-custom h2
+{
 	padding: 0 0 0.5em;
 	margin: 0 0 30px;
 }
@@ -122,5 +123,14 @@
     .ac-center
     {
         right: 25px;  
+    }
+}
+
+.ac-custom ul li:focus
+{
+    outline: none;
+    label:before
+    {
+        border: 2px solid $ru_green;
     }
 }

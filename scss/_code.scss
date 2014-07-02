@@ -1,0 +1,100 @@
+.hljs{display:block;padding:.5em;background:#fffff4}.hljs-header,.hljs-decorator,.hljs-annotation{color:#007}.hljs-horizontal_rule,.hljs-link_url,.hljs-emphasis,.hljs-attribute{color:#070}.hljs-emphasis{font-style:italic}.hljs-link_label,.hljs-strong,.hljs-value,.hljs-string,.scss .hljs-value .hljs-string{color:#d14}.hljs-strong{font-weight:bold}.hljs-blockquote,.hljs-comment{color:#998;font-style:italic}.asciidoc .hljs-title,.hljs-function .hljs-title{color:#900}.hljs-class{color:#458}.hljs-id,.hljs-pseudo,.hljs-constant,.hljs-hexcolor{color:teal}.hljs-variable{color:#369}.hljs-bullet,.hljs-javadoc{color:#970}.hljs-pi,.hljs-doctype{color:#34b}.hljs-code,.hljs-number{color:#099}.hljs-important{color:#f00}.smartquote,.hljs-label{color:#970}.hljs-preprocessor,.hljs-pragma{color:#579}.hljs-reserved,.hljs-keyword,.scss .hljs-value{color:#000}.hljs-regexp{background-color:#fff0ff;color:#808}.hljs-symbol{color:#990073}.hljs-symbol .hljs-string{color:#a60}.hljs-tag{color:#070}.hljs-at_rule,.hljs-at_rule .hljs-keyword{color:#088}.hljs-at_rule .hljs-preprocessor{color:#808}.scss .hljs-tag,.scss .hljs-attribute{color:#339}
+
+.ru-documentation
+{
+    background-color: #eee;
+    section>h3:first-child
+    {
+        color: $ru_green;
+    }
+    
+    article>h2:first-child
+    {
+    }
+    
+    code, code span, code * span
+    {
+        font-size: 14px;
+        font-weight: normal;
+    }
+    
+    .white
+    {
+        color: white !important;
+    }
+    
+    p.info
+    {
+        margin-top: 15px;
+        margin-bottom: 5px;
+        color: #777;
+    }
+    
+    .ru-answer-correct-wrap, .ru-answer-wrong
+    {
+        display: block;
+    }
+    
+    // Hide share link
+    .ru_share_link
+    {
+        display: none;
+    }
+    
+    #sidebar
+    {
+        a.article~span
+        {
+            cursor: pointer;
+            postion: relative;
+            padding-left: 20px;
+            color: #999;
+        }
+        
+        a.article
+        {
+            color: #999;
+            padding-top: 12px;
+            display: inline-block;
+            padding-bottom: 8px;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        
+        ul
+        {
+            list-style-type: none;
+            margin: 0;
+            transition: 0.4s;
+            overflow: hidden;
+            max-height: 0px;
+            &.show
+            {
+                transition: 0.4s;
+                max-height: 1000px;
+            }
+        }
+        
+        li
+        {
+            display: block;
+            padding-bottom: 2px;
+            padding-top: 2px;
+            margin: 0;
+            margin-left: 8px;
+            margin-right: 8px;
+            a
+            {
+                color: #bbb;
+                font-weight: 200;
+                font-size: 13px;
+            }
+            &:last-child
+            {
+                padding-bottom: 8px;
+                border-bottom: 1px solid #eee;
+            }
+        }
+        
+    }
+}
