@@ -43,27 +43,24 @@ define([
 	}])
 
 	.run(['$rootScope', 'api', '$state', function($rootScope, api, $state) {
-/*
-        api.pages.get({id: "events_index"}).$promise.then(function(d) {
-            $rootScope.aboutPage = d.contentObject;
-        });*/
 
-        $rootScope.flags = {
+        $rootScope.globalFlags = {
             siteSearchOpen: false,
+            isLoading: false,
         };
 
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {
-            $rootScope.isLoading = true;
+            $rootScope.globalFlags.isLoading = true;
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
-            $rootScope.isLoading = false;
+            $rootScope.globalFlags.isLoading = false;
         })
 
         $rootScope.$on("$stateChangeError", function() {
-            $rootScope.isLoading = false;
+            $rootScope.globalFlags.isLoading = false;
         })
 
         $rootScope.$on("$includeContentLoaded", function() {

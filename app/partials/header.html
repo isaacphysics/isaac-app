@@ -88,13 +88,13 @@
     <!-- Search button  MUST BE LAST-->
     <div class='row hide-for-small-only'>
         <div class='large-16 medium-16 columns'>
-            <div class='ru-desktop-panel-search' ng-hide="flags.siteSearchOpen">
-                <a tabindex="0" ng-click="flags.siteSearchOpen = true"><img src='/assets/desktop-search.png' alt="Search"></a>
+            <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen">
+                <a tabindex="0" ng-click="globalFlags.siteSearchOpen = true"><img src='/assets/desktop-search.png' alt="Search"></a>
             </div>
-            <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="flags.siteSearchOpen">
-                <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="flags.siteSearchOpen = false">
+            <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
+                <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
             </div>
-            <div class="ru-desktop-panel" ng-show="flags.siteSearchOpen">
+            <div class="ru-desktop-panel" ng-show="globalFlags.siteSearchOpen">
                 <div class='ru-desktop-search'>
                     <div class="row">
                         <div class="large-2 medium-2 columns">
