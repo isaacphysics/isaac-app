@@ -19,6 +19,9 @@ define([], function() {
 					element.find("#concept-search-data").width(element.find('input').width());
 				}
 
+				// TODO: Make sure this happens properly on load.
+				// At the moment, I think it's being called before the input box has a width.
+				
 				$(window).on("resize", matchSize);
 				matchSize();
 

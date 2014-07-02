@@ -115,7 +115,7 @@ define(["angular-ui-router"], function() {
                 }
             })            
 
-            .state('random_content', {
+            .state('randomContent', {
                 url: "/content/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
@@ -132,7 +132,7 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
-            .state('content_errors', {
+            .state('contentErrors', {
                 url: "/admin/content_errors",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
