@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: Implement site-wide search functionality.
+
 define([
     "rsvp", 
     "foundation", 
@@ -129,7 +131,60 @@ define([
                     $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('safari');
                 }
                 
-                // Fast click
+                // Fix up for custom check box 2nd label
+                $('.ru-drop-big-label,.ru-drop-mid-label,span.ru-drop-check~label').each(function()
+                {
+                    var $drop = $(this).prev('.ru-drop-check');
+                    var id = $('input', $drop).attr('id');
+                    $(this).attr('for', id);
+                }).css('user-select','none');
+                
+                // Set tab indexes for some things
+                // Header nav
+                $('.ru-desktop-nav-item').attr('tabindex', 0).bind('keydown', function(e)
+                {
+                    // Follow link for tab on top level nav
+                    if(e.which === 13)
+                    {
+                        $link = $('a', $(this));
+                        if(!$link.hasClass('active'))
+                        {
+                            window.location.href = $link.attr('href');
+                        }
+                    }
+                });
+                $('.ru-desktop-nav-item .active').parent().attr('tabindex', null);
+                // Footer social icons
+                $("[class*='ru-social-icon-']").attr('tabindex',0).bind('keydown', function(e)
+                {
+                    // Follow link for tab on top level nav
+                    if(e.which === 13)
+                    {
+                        window.location.href = $(this).attr('href');
+                    }
+                });
+                // Custom tick boxes
+                $('span.ru-drop-check').each(function()
+                {
+                    // Add tab index
+                    var span = $(this);
+                    span.attr('tabindex', 0);
+                    // Blur span on click
+                    $('input', span).click(function()
+                    {
+                        $(this).parent().blur();
+                    });
+                    // Enter on checkbox
+                    span.bind('keyup', function(e)
+                    {
+                        if(e.which === 13)
+                        {
+                            $('input', span).click();
+                        }
+                    });
+                });
+            
+                 // Fast click
                 FastClick.attach(document.body);
                 
                 // Mobile login drop down
