@@ -4,6 +4,8 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
 
+		$scope.userInformation = api.currentUserInformation.get();
+
 		$scope.filterPanelOpen = null;
 
 		$scope.openFilterPanel = function(panelNumberToOpen) {

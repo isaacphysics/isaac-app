@@ -17,6 +17,8 @@ define([], function() {
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
+		this.currentUserInformation = $resource(server + "/api/users/current_user")
+
 		this.authenticationEndpoint = server+"/api/auth"
 
 		var questionsPerPage = 10;
