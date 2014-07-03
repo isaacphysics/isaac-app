@@ -19,7 +19,7 @@ define([], function() {
 
 		this.currentUserInformation = $resource(server + "/api/users/current_user")
 
-		this.authenticationEndpoint = server+"/api/auth"
+		this.authenticationEndpoint = server+"/api/auth";
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});

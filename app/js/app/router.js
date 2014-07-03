@@ -149,7 +149,7 @@ define(["angular-ui-router"], function() {
             .state('login', {
                 url: "/users/login",
                 resolve: {
-                    "page": ["api", "$stateParams", function(api, $stateParams) {
+                    "authenticationEndpoint": ["api", "$stateParams", function(api, $stateParams) {
                         return api.authenticationEndpoint;
                     }]
                 },
