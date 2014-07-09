@@ -20,7 +20,7 @@ define(["mathjax"], function() {
 		TeX: {
 			Macros: {
 				// See http://docs.mathjax.org/en/latest/tex.html#defining-tex-macros
-				"quantity": ["{#1}\\,{\\textrm{#2}}",2],
+				"quantity": ["{#1}\\,{\\rm{#2}}",2],
 				"valuedef": ["{#1}={\\quantity{#2}{#3}}",3],
 				"vtr": ["{\\underline{\\boldsymbol{#1}}}",1],
 				"d": "\\operatorname{d}",
