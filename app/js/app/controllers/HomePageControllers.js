@@ -2,7 +2,7 @@ define([], function() {
 
 
 
-	var PageController = ['$scope', 'api', function($scope, api) {
+	var PageController = ['$scope', 'api', '$location', function($scope, api, $location) {
 
 		$scope.userInformation = api.currentUserInformation.get();
 
@@ -20,11 +20,21 @@ define([], function() {
 
 		$scope.filterSubjects = ["physics"];
 		$scope.filterFields = ["mechanics"];
-		$scope.filterTopics = [];
+		$scope.filterTopics = ["shm"];
 		$scope.filterLevels = [2,4];
 		$scope.filterConcepts = [];
 
-		function updateGameBoard() {
+		function loadGameBoardById(id) {
+
+			console.debug("Loading game board by id: ", id)
+			$scope.gameBoard = api.gameBoards.get({id: id});
+
+			// TODO: Set filter to match game board
+		}
+
+		function loadGameBoardFromFilter() {
+
+			console.debug("Loading game board based on filter settings.")
 
 			var params = {};
 
@@ -43,14 +53,34 @@ define([], function() {
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.map(function(c) { return c.id }).join(",");
 
-			$scope.gameBoard = api.gameBoards.get(params);
+			$scope.gameBoard = api.gameBoards.filter(params);
+
+			$scope.gameBoard.$promise.then(function(board) {
+				$location.hash(board.id);
+			})
 		}
 
-		$scope.$watchCollection("filterSubjects", updateGameBoard);
-		$scope.$watchCollection("filterFields", updateGameBoard);
-		$scope.$watchCollection("filterTopics", updateGameBoard);
-		$scope.$watchCollection("filterLevels", updateGameBoard);
-		$scope.$watchCollection("filterConcepts", updateGameBoard);
+		function filterChanged(newVal, oldVal) {
+			if (newVal !== undefined && newVal === oldVal)
+				return; // Initialisation
+
+			loadGameBoardFromFilter();
+
+		}
+
+		var hash = $location.hash();
+
+		if (hash) {
+			loadGameBoardById(hash);
+		} else {
+			loadGameBoardFromFilter();
+		}
+
+		$scope.$watchCollection("filterSubjects", filterChanged);
+		$scope.$watchCollection("filterFields", filterChanged);
+		$scope.$watchCollection("filterTopics", filterChanged);
+		$scope.$watchCollection("filterLevels", filterChanged);
+		$scope.$watchCollection("filterConcepts", filterChanged);
 	}]
 
 	return {

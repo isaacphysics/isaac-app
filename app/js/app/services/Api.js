@@ -13,7 +13,12 @@ define([], function() {
 			}
 		});
 
-		this.gameBoards = $resource(server + "/api/gameboards");
+		this.gameBoards = $resource(server + "/api/gameboards/:id", {}, {
+			filter: {
+				method: "GET",
+				url: server + "/api/gameboards",
+			}
+		});
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
