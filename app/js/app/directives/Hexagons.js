@@ -182,14 +182,18 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            	if (scope.questions) {
 
 	            		$.each(scope.questions, function(i, q) {
-	            			if (q.tags.indexOf("physics") > -1) {
+                            if (!q.tags) {
+                                q.subject = "";
+                            } else if (q.tags.indexOf("physics") > -1) {
 	            				q.subject = "physics";
 	            			} else if (q.tags.indexOf("maths") > -1) {
 	            				q.subject= "maths";
 	            			}
 	            			q.description = q.title;
 
-	            			if (q.tags.indexOf("angular_motion") > -1) {
+	            			if (!q.tags) {
+                                q.title = "";
+                            } else if (q.tags.indexOf("angular_motion") > -1) {
 	            				q.title = "Angular Motion";
 	            			} else if (q.tags.indexOf("circular_motion") > -1) {
 	            				q.title = "Circular Motion";
