@@ -16,6 +16,8 @@ define([
     "fastclick",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
+    "angulartics", 
+    "angulartics-ga",
     ], function() {
 
     window.Promise = RSVP.Promise;
@@ -29,7 +31,9 @@ define([
 		'isaac.filters',
 		'isaac.services',
 		'isaac.directives',
-		'isaac.controllers'
+		'isaac.controllers',
+        'angulartics',
+        'angulartics.google.analytics',
 	])
 
 	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
@@ -64,7 +68,6 @@ define([
         })
 
         $rootScope.$on("$includeContentLoaded", function() {
-            console.log("Partial loaded. Reinitialising document.");
 
             // Make all videos responsive
             rv.updateAll();

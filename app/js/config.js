@@ -18,6 +18,8 @@ require.config({
         "angulartics-ga": '../../bower_components/angulartics/src/angulartics-ga',
         "mathjax": 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
         "fastclick" : '../../bower_components/fastclick/lib/fastclick',
+        "angulartics": '../../bower_components/angulartics/src/angulartics',
+        "angulartics-ga": '../../bower_components/angulartics/src/angulartics-ga',
     },
 
     shim: {
