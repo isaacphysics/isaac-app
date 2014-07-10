@@ -24,12 +24,42 @@ define([], function() {
 		$scope.filterLevels = [2,4];
 		$scope.filterConcepts = [];
 
+		var watchers = [];
+
+		function addFilterWatchers() {
+			watchers.push($scope.$watchCollection("filterSubjects", filterChanged));
+			watchers.push($scope.$watchCollection("filterFields", filterChanged));
+			watchers.push($scope.$watchCollection("filterTopics", filterChanged));
+			watchers.push($scope.$watchCollection("filterLevels", filterChanged));
+			watchers.push($scope.$watchCollection("filterConcepts", filterChanged));
+		}
+
+		function clearFilterWatchers() {
+			var w = null;
+			while(w = watchers.pop())
+				w();			
+		}
+
 		function loadGameBoardById(id) {
 
 			console.debug("Loading game board by id: ", id)
-			$scope.gameBoard = api.gameBoards.get({id: id});
 
-			// TODO: Set filter to match game board
+			$scope.gameBoard = api.gameBoards.get({id: id}).$promise.then(function(board) {
+
+				clearFilterWatchers();
+
+				$scope.filterSubjects = board.gameFilter.subjects;
+				$scope.filterFields = board.gameFilter.fields;
+				$scope.filterTopics = board.gameFilter.topics;
+				$scope.filterLevels = board.gameFilter.levels;
+
+				addFilterWatchers();
+
+				$scope.gameBoard = board;
+
+				console.debug("New filter levels:", board.gameFilter.levels);
+
+			});
 		}
 
 		function loadGameBoardFromFilter() {
@@ -57,6 +87,7 @@ define([], function() {
 
 			$scope.gameBoard.$promise.then(function(board) {
 				$location.hash(board.id);
+				lastHash = board.id;
 			})
 		}
 
@@ -65,22 +96,34 @@ define([], function() {
 				return; // Initialisation
 
 			loadGameBoardFromFilter();
-
 		}
 
-		var hash = $location.hash();
+		var lastHash = null;
+		function hashChanged() {
+			var hash = $location.hash();
 
-		if (hash) {
-			loadGameBoardById(hash);
-		} else {
-			loadGameBoardFromFilter();
+			if (hash == lastHash)
+				return;
+
+			console.debug("Hash changed:", hash);
+			lastHash = hash;
+
+			if (hash) {
+				loadGameBoardById(hash);
+			} else {
+				loadGameBoardFromFilter();
+			}			
 		}
 
-		$scope.$watchCollection("filterSubjects", filterChanged);
-		$scope.$watchCollection("filterFields", filterChanged);
-		$scope.$watchCollection("filterTopics", filterChanged);
-		$scope.$watchCollection("filterLevels", filterChanged);
-		$scope.$watchCollection("filterConcepts", filterChanged);
+		hashChanged();
+
+		addFilterWatchers();
+
+		$(window).on('hashchange', hashChanged);	
+		$scope.$on('$destroy', function() {
+			$(window).off('hashchange', hashChanged);
+        });	
+
 	}]
 
 	return {
