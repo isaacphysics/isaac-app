@@ -6,7 +6,7 @@ define([], function() {
 		return {
 
 			scope: {
-				selectedConcepts: "=conceptFilter"
+				selectedConceptIds: "=conceptFilter"
 			},
 
 			restrict: "A",
@@ -25,10 +25,20 @@ define([], function() {
 				$(window).on("resize", matchSize);
 				matchSize();
 
-				scope.concepts = api.getConceptList()
+				scope.allConcepts = api.getConceptList();
+
+				scope.allConcepts.$promise.then(function(d) {
+
+					scope.conceptMap = {};
+
+					for(var i in d.results) {
+						scope.conceptMap[d.results[i].id] = d.results[i];
+					}
+
+				});
 
 				scope.removeSelected = function(c) {
-					return scope.selectedConcepts.indexOf(c) == -1;
+					return scope.selectedConceptIds.indexOf(c.id) == -1;
 				}
 
 				scope.titleMatcher = function(actual, expected) {
@@ -36,12 +46,12 @@ define([], function() {
 				}
 
 				scope.selectConcept = function(c) {
-					scope.selectedConcepts.push(c);
+					scope.selectedConceptIds.push(c);
 					scope.conceptInput = "";
 				}
 
 				scope.deselectConcept = function(i) {
-					scope.selectedConcepts.splice(i,1);
+					scope.selectedConceptIds.splice(i,1);
 				}
 
 				scope.conceptInput = "";

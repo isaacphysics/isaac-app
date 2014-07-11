@@ -48,16 +48,17 @@ define([], function() {
 
 				clearFilterWatchers();
 
-				$scope.filterSubjects = board.gameFilter.subjects;
-				$scope.filterFields = board.gameFilter.fields;
-				$scope.filterTopics = board.gameFilter.topics;
-				$scope.filterLevels = board.gameFilter.levels;
+				$scope.filterSubjects = board.gameFilter.subjects || [];
+				$scope.filterFields = board.gameFilter.fields || [];
+				$scope.filterTopics = board.gameFilter.topics || [];
+				$scope.filterLevels = board.gameFilter.levels || [];
+				$scope.filterConcepts = board.gameFilter.concepts || [];
 
 				addFilterWatchers();
 
 				$scope.gameBoard = board;
 
-				console.debug("New filter levels:", board.gameFilter.levels);
+				console.debug("New filter concepts:", board);
 
 			});
 		}
@@ -81,7 +82,7 @@ define([], function() {
 				params.levels = $scope.filterLevels.join(",");
 
 			if ($scope.filterConcepts.length > 0)
-				params.concepts = $scope.filterConcepts.map(function(c) { return c.id }).join(",");
+				params.concepts = $scope.filterConcepts.join(",");
 
 			$scope.gameBoard = api.gameBoards.filter(params);
 
@@ -120,7 +121,7 @@ define([], function() {
 		addFilterWatchers();
 
 		$(window).on('hashchange', hashChanged);	
-		$scope.$on('$destroy', function() {
+		$scope.$on('$stateChangeStart', function() {
 			$(window).off('hashchange', hashChanged);
         });	
 
