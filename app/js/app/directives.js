@@ -5,7 +5,7 @@ define([
 	"angular-recursion", 
 	"app/filters", 
 	"app/directives/content/Content", 
-	"app/directives/content/ContentLoad", 
+	"app/directives/content/PageFragment", 
 	"app/directives/content/ValueOrChildren", 
 	"app/directives/content/MathJax",
 	"app/directives/content/BindMarkdown",
@@ -62,7 +62,7 @@ define([
 
 	.directive('isaacContent', require("app/directives/content/Content"))
 
-	.directive('isaacContentLoad', require("app/directives/content/ContentLoad"))
+	.directive('isaacPageFragment', require("app/directives/content/PageFragment"))
 
 	.directive('isaacContentValueOrChildren', require("app/directives/content/ValueOrChildren"))
 

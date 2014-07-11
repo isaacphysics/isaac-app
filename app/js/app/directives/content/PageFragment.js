@@ -5,19 +5,17 @@ define([], function() {
 
 		return {
 
-			scope: {
-				doc: "=",
-			},
+			scope: true,
 
 			restrict: 'A',
 
 			template: '<isaac-content doc="content" />',
 
 			link: function(scope, element, attrs) {
-				var id = attrs.isaacContentLoad;
+				var id = attrs.isaacPageFragment;
 
-				api.content.get({id: id}).$promise.then(function(c) {
-					scope.content = c.contentObject;
+				api.pageFragments.get({id: id}).$promise.then(function(c) {
+					scope.content = c;
 				});
 			},
 		};

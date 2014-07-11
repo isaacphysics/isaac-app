@@ -4,7 +4,7 @@ define([], function() {
 	// See problem.js and problem.html in final code drop.
 
 	var PageController = ['$scope', 'page', function($scope, page) {
-		$scope.doc = page.contentObject;
+		$scope.doc = page;
 	}]
 
 	return {
