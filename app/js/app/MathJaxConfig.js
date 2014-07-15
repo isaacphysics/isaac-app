@@ -31,6 +31,7 @@ define(["mathjax"], function() {
 				"quarter": ["\\frac{1}{4}",0],
 				"eighth": ["\\frac{1}{8}",0],
 				"e": ["\\textrm{e}",0],
+				"units": ["\\rm{#1}",1],
 			}
 		},
 	});
