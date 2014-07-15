@@ -382,10 +382,12 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         +"'><p>"+d.title+"</p>"+
                         (d.active ?  '' : '<p class="ru-hex-filter-inactive-text">Coming Soon</p>')
                         +"</div>");
+                /*
                 // Add percentage
                 $(item).append("<div class='ru-hex-filter-circle "+
                         (d.percent === 0 ? 'ru-hex-filter-circle-zero' : (d.percent === 100 ? 'ru-hex-filter-circle-hundred' : ''))+
                         "'><div><p>"+(d.percent === 100 ? '' : d.percent+'%')+"</p></div></div>");
+                */
             });
             
             // Hexagons

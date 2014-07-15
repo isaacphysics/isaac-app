@@ -58,8 +58,6 @@ define([], function() {
 
 				$scope.gameBoard = board;
 
-				console.debug("New filter concepts:", board);
-
 			});
 		}
 

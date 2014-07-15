@@ -1,9 +1,34 @@
 <div desktop-panel>
     <div class='ru-desktop-panel-content'>
         <div class='medium-7 columns'>
-            <ul class='ru-crumb physics'>
-                <li>Physics</li>
-                <li>Mechanics</li>
+            <ul ng-class="{'ru-crumb': true, physics: filterSubjects.indexOf('physics') > -1, maths: filterSubjects.indexOf('maths') > -1}">
+
+                <li ng-if="filterSubjects.indexOf('physics') > -1 && filterSubjects.length == 1">Physics</li>
+                <li ng-if="filterSubjects.indexOf('maths') > -1 && filterSubjects.length == 1">Maths</li>
+                <li ng-if="filterSubjects.length > 1">Physics&nbsp;&amp;&nbsp;Maths</li>
+
+                <li ng-if="filterFields.indexOf('mechanics') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Mechanics</li>
+                <li ng-if="filterFields.indexOf('waves') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Waves</li>
+                <li ng-if="filterFields.indexOf('fields') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Fields</li>
+                <li ng-if="filterFields.indexOf('circuits') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Circuits</li>
+                <li ng-if="filterFields.indexOf('geometry') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Geometry</li>
+                <li ng-if="filterFields.indexOf('calculus') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Calculus</li>
+                <li ng-if="filterFields.indexOf('algebra') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Algebra</li>
+                <li ng-if="filterFields.indexOf('functions') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Functions</li>
+                <li ng-if="filterFields.indexOf('probability') > -1 && filterSubjects.length == 1 && filterFields.length == 1">Probability</li>
+                <li ng-if="filterSubjects.length == 1 && filterFields.length > 1">Multiple&nbsp;Fields</li>
+
+                <li ng-if="filterTopics.indexOf('statics') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Statics</li>
+                <li ng-if="filterTopics.indexOf('dynamics') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Dynamics</li>
+                <li ng-if="filterTopics.indexOf('shm') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">SHM</li>
+                <li ng-if="filterTopics.indexOf('angular_motion') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Angular Motion</li>
+                <li ng-if="filterTopics.indexOf('circular_motion') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Circular Motion</li>
+                <li ng-if="filterTopics.indexOf('kinematics') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Kinematics</li>
+                <li ng-if="filterTopics.indexOf('vectors') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Vectors</li>
+                <li ng-if="filterTopics.indexOf('trigonometry') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Trigonometry</li>
+                <li ng-if="filterTopics.indexOf('greek') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Greek</li>
+                <li ng-if="filterTopics.indexOf('symmetry') > -1 && filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length == 1">Symmetry</li>
+                <li ng-if="filterSubjects.length == 1 && filterFields.length == 1 && filterTopics.length > 1">Multiple&nbsp;Topics</li>
             </ul>
         </div>
         <div class='medium-8 end columns text-right'>

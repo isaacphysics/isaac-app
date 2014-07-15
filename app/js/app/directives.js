@@ -18,6 +18,7 @@ define([
 	"app/directives/content/QuestionTabs",
 	"app/directives/content/MultiChoiceQuestion",
 	"app/directives/content/NumericQuestion",
+	"app/directives/content/SymbolicQuestion",
 	"app/directives/content/QuickQuestion",
 	"app/directives/content/QuestionRadioButton",
 	"app/directives/DesktopPanel",
@@ -83,6 +84,8 @@ define([
 	.directive('isaacMultiChoiceQuestion', require("app/directives/content/MultiChoiceQuestion"))
 
 	.directive('isaacNumericQuestion', require("app/directives/content/NumericQuestion"))
+
+	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
 
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
 
