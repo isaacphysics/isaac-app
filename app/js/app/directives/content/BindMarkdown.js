@@ -1,4 +1,4 @@
-define(["showdown"], function() {
+define(["showdown/showdown"], function() {
 
 
 	return ["$parse", function($parse) {
@@ -10,8 +10,9 @@ define(["showdown"], function() {
 			priority: 0,
 
 			link: function(scope, element, attrs) {
-				var Showdown = require("showdown");
-				var converter = new Showdown.converter();
+				var converter = new Showdown.converter({
+					extensions: ["table"],
+				});
 
 				var parsed = $parse(attrs.bindMarkdown|| element.html());
 				var markdown = (parsed(scope) || "").toString();

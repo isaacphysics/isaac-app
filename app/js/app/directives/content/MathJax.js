@@ -1,4 +1,4 @@
-define(["showdown", "app/MathJaxConfig"], function() {
+define(["app/MathJaxConfig"], function() {
 
 
 	return ["$compile", function($compile) {

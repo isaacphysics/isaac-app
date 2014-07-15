@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "showdown"], function() {
+define(["angular", "showdown/showdown", "showdown/extensions/table"], function() {
 
 	/* Filters */
 
@@ -13,8 +13,10 @@ define(["angular", "showdown"], function() {
 	}])
 
 	.filter('showdown', [function() {
-		var Showdown = require("showdown");
-		var converter = new Showdown.converter();
+		var Showdown = require("showdown/showdown");
+		var converter = new Showdown.converter({
+			extensions: ["table"],
+		});
 
 		return function(input) {
 			return converter.makeHtml(input);
