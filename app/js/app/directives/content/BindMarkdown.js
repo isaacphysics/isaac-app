@@ -1,4 +1,4 @@
-define(["showdown/showdown"], function() {
+define(["showdown/showdown", "showdown/extensions/table"], function() {
 
 
 	return ["$parse", function($parse) {
