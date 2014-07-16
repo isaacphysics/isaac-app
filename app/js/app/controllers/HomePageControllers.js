@@ -20,8 +20,8 @@ define([], function() {
 
 		$scope.filterSubjects = ["physics"];
 		$scope.filterFields = ["mechanics"];
-		$scope.filterTopics = ["shm"];
-		$scope.filterLevels = [2,4];
+		$scope.filterTopics = [];
+		$scope.filterLevels = [2];
 		$scope.filterConcepts = [];
 
 		var watchers = [];
@@ -57,7 +57,7 @@ define([], function() {
 				addFilterWatchers();
 
 				$scope.gameBoard = board;
-
+				buildBreadCrumb();
 			});
 		}
 
