@@ -2,8 +2,8 @@
 <div class='row hide-for-small-only'>
     <div class='large-16 medium-16 columns'>
         <div class='ru-desktop-panel'>
-            <div ng-if="globalFlags.isLoading" ng-controller="LoadingMessageController"><h1 ng-show="displayMessage">Loading...</h1></div>
-            <div ng-if="!globalFlags.isLoading" ng-transclude></div>
+            <div ng-if="globalFlags.isLoading" ng-controller="LoadingMessageController"><h1 ng-show="globalFlags.displayLoadingMessage">Loading...</h1></div>
+            <div ng-if="!globalFlags.displayLoadingMessage" ng-transclude></div>
         </div>
     </div>
 </div>

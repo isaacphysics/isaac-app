@@ -49,12 +49,12 @@ define([
 
 	.controller('LoginPageController', loginPageControllers.PageController)
 
-	.controller("LoadingMessageController", ["$scope", "$timeout", function($scope, $timeout) {
+	.controller("LoadingMessageController", ["$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
 
 		var showLoadingMessageAfter = 1000; // ms
 		
 		var timeout = $timeout(function() {
-			$scope.displayMessage = true;
+			$rootScope.globalFlags.displayLoadingMessage = true;
 		}, showLoadingMessageAfter);
 
 		$scope.$on("$destroy", function() {
