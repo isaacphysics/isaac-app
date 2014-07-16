@@ -1,10 +1,10 @@
-<div desktop-panel>
+<div desktop-panel arrow-block>
     <a class='ru-panel-arrow' href='/'> </a>
     <div class='ru-desktop-panel-content'>
         <p class='ru_green ru-panel-question'><em>Back to your question</em></p>
     </div>
 </div>
-<div mobile-panel>
+<div mobile-panel arrow-block>
     <a class='ru-panel-arrow' href='/'> </a>
     <div class='row'>
         <div class='small-16 columns'>
@@ -26,8 +26,9 @@
                     </div>
                  </div>
                 <a class="ru_acrobat" href=""></a>
-                <h2 class="ru_physics">{{doc.title}}</h2>
-                <h3 class='subheader'><strong>Physics Concept</strong></h3>
+                <h2 class="ru_{{$root.pageSubject}}">{{doc.title}}</h2>
+                <h3 class='subheader' ng-if="$root.pageSubject == 'physics'"><strong>Physics Concept</strong></h3>
+                <h3 class='subheader' ng-if="$root.pageSubject == 'maths'"><strong>Maths Concept</strong></h3>
                 <div class="clearfix"></div>
             </div>
             

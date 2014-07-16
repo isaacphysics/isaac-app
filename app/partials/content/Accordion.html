@@ -1,11 +1,11 @@
 <div class="clearfix"></div>
-<dl class="accordion ru_accordion physics" data-accordion>
+<dl class="accordion ru_accordion {{$root.pageSubject}}" data-accordion>
     <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}">
         <a href="javascript:void(0)" ng-click="toggleChild($index)" class="ru_accordion_titlebar">
             <div class="ru_accordion_name"><span class='ru_level' ng-if="c.level"></span> {{c.level}}<span ng-if="!c.level">{{c.title}}</span></div>
             <span class="ru_accordion_title" ng-if="c.level">{{c.title}}</span>
             <div class="ru_accordion_details">
-                <span class='ru-level-physics-{{c.level || "0"}}'></span>    
+                <span class='ru-level-{{$root.pageSubject}}-{{c.level || "0"}}'></span>    
                 <img src='/assets/icon-expand-arrow.png'>
             </div>
         </a>

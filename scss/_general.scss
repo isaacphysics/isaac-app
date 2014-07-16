@@ -55,6 +55,11 @@ $footer_height : 250px;
     border: 1px solid $ru_physics !important;
 }
 
+.panel.maths
+{
+    border: 1px solid $ru_maths !important;
+}
+
 .ru_maths, .panel.maths *
 {
     color: $ru_maths !important;

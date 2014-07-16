@@ -12,12 +12,12 @@
                 </div>
                 <div class='large-8 medium-12 columns'>
                     <a class='ru-desktop-nav-item' ui-sref='home'>  
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('home')}">
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('home') || $state.includes('question')}">
                             <span>Questions</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item' ui-sref='conceptIndex'>  
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex')}">
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
                             <span>Concepts</span>
                         </div>
                     </a>

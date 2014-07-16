@@ -11,8 +11,27 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', function($scope, page) {
+	var PageController = ['$scope', 'page', 'tags', '$rootScope', function($scope, page, tags, $rootScope) {
 		$scope.doc = page;
+
+		var pageTags = page.tags;
+
+		var subjects = tags.filter(function(t) { return t && !t.parent; });
+
+		// Find subject tags on page.
+		var pageSubject = null;
+		for(var i in subjects) {
+			if (pageTags.indexOf(subjects[i].id) > -1) {
+				if (!pageSubject) {
+					pageSubject = subjects[i].id;
+				} else {
+					pageSubject = null; // We found tags for more than one subject.
+				}
+			}
+		}
+
+
+		$rootScope.pageSubject = pageSubject;
 	}]
 
 	return {

@@ -12,6 +12,10 @@ define([],function() {
 
 			link: function(scope, element, attrs) {
 
+				if (attrs.arrowBlock != undefined) {
+					element.find(".ru-desktop-panel").addClass(" ru-panel-arrow-block");
+				}
+
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
 
 					// Do this the old-fashioned way, because we can't add an ngHide on the template.

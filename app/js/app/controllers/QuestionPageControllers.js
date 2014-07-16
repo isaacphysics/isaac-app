@@ -3,7 +3,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', function($scope, page, tags, $sce) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', function($scope, page, tags, $sce, $rootScope) {
 		$scope.doc = page;
 
 		var pageTags = page.tags;
@@ -60,7 +60,7 @@ define([], function() {
 		$scope.breadCrumbs = [];
 
 		if (pageSubject) {
-			$scope.pageSubject = pageSubject;
+			$rootScope.pageSubject = pageSubject;
 			$scope.breadCrumbs.push(pageSubject);
 			if (pageField) {
 				$scope.breadCrumbs.push(pageField);

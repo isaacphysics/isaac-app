@@ -1,7 +1,7 @@
 <div desktop-panel>
     <div class='ru-desktop-panel-content'>
         <div class='medium-12 columns'>
-            <ul ng-class='{"ru-crumb": true, "physics": pageSubject == "physics", "maths": pageSubject == "maths"}'>
+            <ul ng-class='["ru-crumb", $root.pageSubject]'>
                 <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)"></li>
             </ul>
         </div>
@@ -9,7 +9,7 @@
             <span class='ru-level'>Level: </span>
         </div>
         <div class='medium-2 end columns'>
-            <span class='ru-level-physics-{{doc.level}} ru-level' aria-label='Physics Level {{doc.level}}'></span>    
+            <span class='ru-level-{{$root.pageSubject}}-{{doc.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{doc.level}}'></span>    
         </div>
         <div class='clearfix'></div>
     </div>
@@ -17,16 +17,14 @@
 <div mobile-panel>
     <div class='row'>
         <div class='small-16 columns text-right'>
-            <span class='ru-level-physics-{{doc.level}} ru-level' aria-label='Physics Level {{doc.level}}'></span>  
+            <span class='ru-level-{{$root.pageSubject}}-{{doc.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{doc.level}}'></span>  
         </div>
     </div>
     <div class='ru-mobile-crumb'>
         <div class='row'>
             <div class='small-16 columns'>
-                <ul class='physics'>
-                    <li>Physics</li>
-                    <li>Mechanics</li>
-                    <li>Circular Motion</li>
+                <ul ng-class='[$root.pageSubject]'>
+                    <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)"></li>
                 </ul>
             </div>
         </div>
@@ -50,7 +48,7 @@
                             </div>
                         </div>
                         <div class="ru_acrobat"></div>
-                        <h2>Q: <span class='ru_physics'>{{doc.title}}</span></h2>       
+                        <h2>Q: <span class='ru_{{$root.pageSubject}}'>{{doc.title}}</span></h2>       
                     </div>
                 </div>
                 <isaac-content doc="doc"></isaac-content>
