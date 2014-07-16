@@ -2,7 +2,7 @@ define([], function() {
 
 
 
-	var PageController = ['$scope', 'api', '$location', function($scope, api, $location) {
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', function($scope, api, $location, tags, $sce) {
 
 		$scope.userInformation = api.currentUserInformation.get();
 
@@ -94,6 +94,8 @@ define([], function() {
 			if (newVal !== undefined && newVal === oldVal)
 				return; // Initialisation
 
+			buildBreadCrumb();
+
 			loadGameBoardFromFilter();
 		}
 
@@ -114,9 +116,56 @@ define([], function() {
 			}			
 		}
 
+		function buildBreadCrumb() {
+
+			delete $scope.breadCrumbSubject;
+			delete $scope.breadCrumbField;
+			delete $scope.breadCrumbTopic;
+
+			if ($scope.filterSubjects.length == 1) {
+				$scope.breadCrumbSubject = $scope.filterSubjects[0];
+
+				if ($scope.filterFields.length == 1) {
+					$scope.breadCrumbField = $scope.filterFields[0];
+
+					if ($scope.filterTopics.length == 1) {
+						$scope.breadCrumbTopic = $scope.filterTopics[0];
+					} else if ($scope.filterTopics.length > 1) {
+						$scope.breadCrumbTopic = "multiple_topics";
+					}
+
+				} else if ($scope.filterFields.length > 1) {
+					$scope.breadCrumbField = "multiple_fields";
+				}
+
+			} else if ($scope.filterSubjects.length > 1) {
+				$scope.breadCrumbSubject = "multiple_subjects";
+			}
+
+		}
+
+		$scope.getTagTitle = function(id) {
+
+			switch(id) {
+				case "multiple_subjects":
+					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+				case "multiple_fields":
+					return $sce.trustAsHtml("Multiple Fields");
+				case "multiple_topics":
+					return $sce.trustAsHtml("Multiple Topics");
+			}
+
+			for (var i in tags) {
+				if (tags[i].id == id)
+					return $sce.trustAsHtml(tags[i].title);
+			}
+		}
+
 		hashChanged();
 
 		addFilterWatchers();
+
+		buildBreadCrumb();
 
 		$(window).on('hashchange', hashChanged);	
 		$scope.$on('$stateChangeStart', function() {

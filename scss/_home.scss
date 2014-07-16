@@ -104,6 +104,25 @@ ul.ru-crumb.maths li
     }
 }
 
+// TODO: Create an appropriate asset for crumb-multiple. Green, perhaps?
+ul.ru-crumb.multiple-subjects li
+{
+    &:before
+    {
+        content: url(/assets/crumb-physics.png);
+        display: inline-block;
+        width: 112px;
+        height: 28px;
+        position: relative;
+        left: (66 * 2px) / 3;
+        text-align: left;
+    }
+    &:last-child:before
+    {
+        content: url(/assets/crumb-physics-end.png);
+    }
+}
+
 
 @media #{$medium-only}
 {

@@ -1,10 +1,8 @@
 <div desktop-panel>
     <div class='ru-desktop-panel-content'>
         <div class='medium-12 columns'>
-            <ul class='ru-crumb physics'>
-                <li>Physics</li>
-                <li>Mechanics</li>
-                <li>Circular Motion</li>
+            <ul ng-class='{"ru-crumb": true, "physics": pageSubject == "physics", "maths": pageSubject == "maths"}'>
+                <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)"></li>
             </ul>
         </div>
         <div class='medium-1 columns text-right'>

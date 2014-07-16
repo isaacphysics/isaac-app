@@ -1,7 +1,7 @@
 define(["app/honest/hex_filter"], function(HexFilter) {
 
 
-	return ["$state", function($state) {
+	return ["$state", "tags", function($state, tags) {
 
 		return {
 
@@ -17,67 +17,49 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 
 			link: function(scope, element, attrs) {
 
-				// This is the internal state object, from which the filter is drawn. Externally, this directive is driven from (and provides)
-				// the subjects, fields and topics attributes.
-				var config = 
-				[
-				  {title:"Maths", active:true, subject:'maths', percent:65, enabled:true, symbol:'maths', id:"maths",
-				      children:
-				      [
-				        {title:"Geometry", active:true, subject:'maths', percent:35, enabled:false, symbol:'geometry', id:"geometry",
-				            children:
-				            [
-				                {title:"Vectors", active:true, subject:'maths', percent:0, enabled:false, symbol:'mechanics', id:"vectors"},
-				                {title:"Trigonometry", active:true, subject:'maths', percent:100, enabled:false, symbol:'mechanics', id:"trig"},
-				                {title:"Greek", active:true, subject:'maths', percent:0, enabled:false, symbol:'mechanics', id:"greek"},
-				                {title:"Symmetry", active:true, subject:'maths', percent:5, enabled:false, symbol:'mechanics', id:"symmetry"}
-				            ]},
-				        {title:"Calculus", active:true, subject:'maths', percent:10, enabled:false, symbol:'calculus', id:"calculus",
-				            children:
-				            [
-				            ]},
-				       	{title:"Algebra", active:true, subject:'maths', percent:0, enabled:false, symbol:'algebra', id:"algebra",
-							children:
-							[
-							]},
-				       	{title:"Functions", active:true, subject:'maths', percent:0, enabled:false, symbol:'functions', id:"functions",
-				            children:
-				            [
-				            ]},
-				       	{title:"Probability", active:true, subject:'maths', percent:0, enabled:false, symbol:'maths', id:"probability",
-				            children:
-				            [    
-				            ]}
-				      ]
-				  },
-				  {title:"Physics", active:true, subject:'physics', percent:25, enabled:false, symbol:'mechanics', id:"physics",
-				      children:
-				      [
-				          {title:"Mechanics", active:true, subject:'physics', percent:35, enabled:true, symbol:'mechanics', id:"mechanics",
-				            children:
-				            [
-				                {title:"Statics", active:true, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"statics",},
-				                {title:"Dynamics", active:true, subject:'physics', percent:100, enabled:true, symbol:'mechanics', id:"dynamics",},
-				                {title:"SHM", active:true, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"shm",},
-				                {title:"Angular Motion", active:true, subject:'physics', percent:5, enabled:false, symbol:'mechanics', id:"angular_motion",},
-				                {title:"Circular Motion", active:true, subject:'physics', percent:0, enabled:true, symbol:'mechanics', id:"circular_motion",},
-				                {title:"Kinematics", active:true, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"kinematics",}
-				            ]},
-							{title:"Waves", active:false, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"waves",
-								children:
-								[
-								]},
-							{title:"Fields", active:false, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"fields",
-								children:
-								[
-								]},
-							{title:"Electric Circuits", active:false, subject:'physics', percent:0, enabled:false, symbol:'mechanics', id:"circuits",
-								children:
-								[
-								]},
-				      ]
-				  }
-				];
+				// We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
+				var buildHexFilterState = function(tags) {
+					tags = JSON.parse(JSON.stringify(tags));
+
+					// TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
+
+					// For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
+
+					var subjects = tags.filter(function(t) { return t && !t.parent; });
+
+					for (var i in subjects) {
+						var s = subjects[i];
+
+						s.enabled = !s.comingSoon && s.enabled !== false;
+						s.selected = false;
+						s.subject = s.id;
+
+						s.children = tags.filter(function(t) { return t && t.parent == s.id; });
+
+						for (var j in s.children) {
+							var f = s.children[j];
+
+							f.enabled = !f.comingSoon && f.enabled !== false;
+							f.selected = false;
+							f.subject = s.id;
+
+							f.children = tags.filter(function(t) { return t && t.parent == f.id; });
+
+							for (var k in f.children) {
+								var t = f.children[k];
+
+								t.enabled = !t.comingSoon && t.enabled !== false;
+								t.selected = false;
+								t.subject = s.id;
+							}
+						}
+					}
+
+					return subjects;
+
+				}
+
+				var config = buildHexFilterState(tags);
 
 			    var hexFilter = new HexFilter(element, {
 			        // Replace with real function to get state
@@ -94,7 +76,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 		        	var selectedItems = [[],[],[]];
 
 		        	function walk(depth, obj) {
-		        		if (obj.enabled) {
+		        		if (obj.selected) {
 		        			selectedItems[depth].push(obj.id);
 		        		}
 
@@ -104,8 +86,15 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			        		});
 			        	}
 		        	}
-		        	walk(0,config[0]);
-		        	walk(0,config[1]);
+
+		        	function walkAll(arr) {
+		        		for(var i in arr) {
+		        			walk(0, arr[i]);
+		        		}
+		        	}
+		        	walkAll(config);
+
+		        	console.debug("Selected Items", selectedItems);
 		        	
 		        	var subjects = selectedItems[0];
 		        	var fields = selectedItems[1];
@@ -116,9 +105,9 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 		        	scope.topics.length = 0;
 
 		        	Array.prototype.push.apply(scope.subjects,subjects);
-		        	if (subjects.length < 2)
+		        	if (subjects.length == 1)
 		        		Array.prototype.push.apply(scope.fields,fields);
-		        	if (subjects.length < 2 && fields.length < 2)
+		        	if (subjects.length == 1 && fields.length == 1)
 		        		Array.prototype.push.apply(scope.topics,topics);
 
 			  		scope.$apply();
@@ -136,6 +125,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    // Resize handling for Hex Filter
 			    $(window).bind("resize", hexFilterResize);
 
+			    // Deal with external changes to the selected subjects, fields and topics.
 			    var configChanged = function() {
 
 	    			var visit = function(obj, callback, level) {
@@ -151,67 +141,56 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 		    			}
 	    			}
 
-	    			var disabler = function(minLevel) {
+	    			var visitAll = function(arr, callback) {
+	    				for (var i in arr) {
+	    					visit(arr[i], callback);
+	    				}
+	    			}
+
+	    			var deselector = function(minLevel) {
 	    				return function(obj, level) {
 		    				if (level >= minLevel) {
-		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
+		    					obj.selected = false;
 		    				}
 		    			};
 	    			}
 
-	    			// Enable/disable subjects in config object to reflect subjects attribute.
-	    			visit(config[0], function(obj, level) {
+	    			// Select/deselect subjects in config object to reflect subjects attribute.
+	    			visitAll(config, function(obj, level) {
 	    				if (level == 0) {
-	    					obj.enabled = scope.subjects.indexOf(obj.id) > -1;
-	    				}
-	    			})
-	    			visit(config[1], function(obj, level) {
-	    				if (level == 0) {
-	    					obj.enabled = scope.subjects.indexOf(obj.id) > -1;
+	    					obj.selected = scope.subjects.indexOf(obj.id) > -1;
 	    				}
 	    			})
 
 			    	if (scope.subjects.length > 1) {
 
-			    		// We have selected multiple subjects. Disable all fields and topics.
-			    		var disableTopics = disabler(1);
+			    		// We have selected multiple subjects. Deselect all fields and topics.
+			    		var deselectTopics = deselector(1);
 
-		    			visit(config[0], disableTopics)
-		    			visit(config[1], disableTopics)
+		    			visitAll(config, deselectTopics)
 
 			    	} else {
 
-			    		// Enable/disable fields in config object to reflect fields attribute
-		    			visit(config[0], function(obj, level) {
+			    		// Select/deselect fields in config object to reflect fields attribute
+		    			visitAll(config, function(obj, level) {
 		    				if (level == 1) {
-		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
-		    				}
-		    			})
-		    			visit(config[1], function(obj, level) {
-		    				if (level == 1) {
-		    					obj.enabled = scope.fields.indexOf(obj.id) > -1;
+		    					obj.selected = scope.fields.indexOf(obj.id) > -1;
 		    				}
 		    			})
 
 			    		if (scope.fields.length > 1) {
 
-			    			// We have selected more than one field. Disable all topics.
+			    			// We have selected more than one field. Deselect all topics.
 
-			    			var disableFields = disabler(2);
-			    			visit(config[0], disableFields);
-			    			visit(config[1], disableFields);
+			    			var deselectFields = deselector(2);
+			    			visitAll(config, deselectFields);
 
 			    		} else {
 
-			    			// Enable/disable topics in config object to reflect topics attribute
-			    			visit(config[0], function(obj, level) {
+			    			// Select/deselect topics in config object to reflect topics attribute
+			    			visitAll(config, function(obj, level) {
 			    				if (level == 2) {
-			    					obj.enabled = scope.topics.indexOf(obj.id) > -1;
-			    				}
-			    			})
-			    			visit(config[1], function(obj, level) {
-			    				if (level == 2) {
-			    					obj.enabled = scope.topics.indexOf(obj.id) > -1;
+			    					obj.selected = scope.topics.indexOf(obj.id) > -1;
 			    				}
 			    			})
 

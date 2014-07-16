@@ -78,33 +78,33 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
             us.endLevel = 3;
             us.visible = [];
             /**
-             * Find currenly enabled items to determine what to show
+             * Find currenly selected items to determine what to show
              * and what the last visible level is
              */
-            var _findEnabled = function(items)
+            var _findSelected = function(items)
             {
-                var enabled = 0;
+                var selected = 0;
                 $.each(items, function(i, item)
                 {
                     // Push current item
                     us.visible.push(item);
-                    // Enabled - so also plot all children
-                    if(item.enabled)
+                    // Selected - so also plot all children
+                    if(item.selected)
                     {
-                        enabled++;
+                        selected++;
                         if(item.hasOwnProperty('children'))
                         {
-                            _findEnabled(item.children);
+                            _findSelected(item.children);
                         }
                     }
-                    // If more than 1 enabled at this level - don't show children
-                    if(enabled > 1)
+                    // If more than 1 selected at this level - don't show children
+                    if(selected > 1)
                     {
                         us.endLevel = items[0].level;
                     }
                 });
             };
-            _findEnabled(us.filter);
+            _findSelected(us.filter);
         };
 
         /**
@@ -119,8 +119,9 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
              */
             var _circles = function(items, vertical)
             {
+
                 // If the current item has no children - return
-                if(!items[0].hasOwnProperty('children'))
+                if(items.length == 0 || !items[0].hasOwnProperty('children'))
                 {
                     return;
                 }
@@ -143,7 +144,7 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                 // Get the extents based on parent position and children count and selections
                 for(var i = 0; i < items.length; i++)
                 {
-                    if(items[i].enabled)
+                    if(items[i].selected)
                     {
                         selectedParent = i;
                         subject = items[i].subject;
@@ -152,7 +153,7 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         // Determine extent of selected children     
                         for(var j = 0; j < child.length; j++)
                         {
-                            if(child[j].enabled)
+                            if(child[j].selected)
                             {
                                 if(firstSelectedChild === -1)
                                 {
@@ -242,10 +243,11 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         }
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                     }
+                    
                     // Plot drop across to children from vertical
                     for(var i = 0; i < child.length; i++)
                     {
-                        var klass = (child[i].enabled) ? subject : 'grey';
+                        var klass = (child[i].selected) ? subject : 'grey';
                         var startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
                         var startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
@@ -296,10 +298,11 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                     }
                     startY += us._dotGap;
+
                     // Plot drop downs to children from horizotal
                     for(var i = 0; i < child.length; i++)
                     {
-                        var klass = (child[i].enabled) ? subject : 'grey';
+                        var klass = (child[i].selected) ? subject : 'grey';
                         if(i === 0)
                         {
                             var startX = (3 + minCircle) * us._dotGap;
@@ -327,7 +330,7 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
             // CLear
             us._element.find("#hexfilter-text, #hexfilter-svg").empty();
             // Work out exactly which items we are plotting
-            // by walking tree and finding 'enabled' items
+            // by walking tree and finding 'selected' items
             this._determineVisibility();
             
             // Text
@@ -342,10 +345,10 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         .css({'top':(d.position.y)+'px', left:(d.position.x)+'px', width:(us._width)+'px', height:(us._height)+'px'})
                         .attr({'data-item':i})
                         .addClass('ru-hex-filter-item')
-                        .addClass(d.enabled ? 'enabled' : 'disabled')
-                        .addClass(d.active ? '' : 'inactive')
+                        .addClass(d.selected ? 'enabled' : 'disabled')
+                        .addClass(d.enabled ? '' : 'inactive')
                         .addClass(d.level > us.endLevel ? ' hide' : '');
-                if(d.active)
+                if(d.enabled)
                 {
                     $(this).attr('tabindex', '0');
                     $(this).bind('keydown', function(e)
@@ -353,9 +356,9 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                         if(e.which === 13)
                         {
                             var selectedItem = us.visible[parseInt($(this).attr('data-item'))];
-                            if(selectedItem.active)
+                            if(selectedItem.enabled)
                             {
-                                selectedItem.enabled = !selectedItem.enabled;
+                                selectedItem.selected = !selectedItem.selected;
                                 us.ReDraw();
                             }
                         }
@@ -377,11 +380,12 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                 }
                 // Add title
                 $(item).append("<div width='100%' class='ru-hex-filter-name "
-                        +(d.active ? '' : ' inactive ')
+                        +(d.enabled ? '' : ' inactive ')
                         +(small ? 'ru-hex-filter-name-small' : '')
                         +"'><p>"+d.title+"</p>"+
-                        (d.active ?  '' : '<p class="ru-hex-filter-inactive-text">Coming Soon</p>')
+                        (d.comingSoon ? '<p class="ru-hex-filter-inactive-text">Coming Soon</p>' : '')
                         +"</div>");
+
                 /*
                 // Add percentage
                 $(item).append("<div class='ru-hex-filter-circle "+
@@ -407,8 +411,8 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                 }).attr("class", function(d)
                 {
                     return d.subject+' '+
-                            (d.enabled ? 'enabled' : 'disabled')+' '+
-                            (d.active ? '' : 'inactive')+
+                            (d.selected ? 'enabled' : 'disabled')+' '+
+                            (d.enabled ? '' : 'inactive')+
                             (d.level > us.endLevel ? ' hide' : '');
                 }).attr('data-item', function(d, i)
                 {
@@ -418,9 +422,9 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                     $(this).click(function()
                     {
                         var selectedItem = us.visible[parseInt($(this).attr('data-item'))];
-                        if(selectedItem.active)
+                        if(selectedItem.enabled)
                         {
-                            selectedItem.enabled = !selectedItem.enabled;
+                            selectedItem.selected = !selectedItem.selected;
                             us.ReDraw();
                         }
                     });

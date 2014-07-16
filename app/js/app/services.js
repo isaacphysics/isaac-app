@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api"], function() {
+define(["angular", "angular-resource", "app/services/Api", "app/services/Tags"], function() {
 
 	/* Services */
 
@@ -10,6 +10,8 @@ define(["angular", "angular-resource", "app/services/Api"], function() {
 	angular.module('isaac.services', ['ngResource'])
 
 	.value('version', '0.1')
+
+	.factory('tags', require("app/services/Tags"))
 
 	.provider('api', function ApiProvider() {
 
@@ -30,6 +32,8 @@ define(["angular", "angular-resource", "app/services/Api"], function() {
 				
 		}];
 	})
+
+
 
 
 });
