@@ -7,7 +7,7 @@
 
                     <li ng-repeat="choice in doc.choices">
                         <input type="radio" question-radio-button ng-model="$parent.selectedAnswer" ng-value="$index">
-                        <label ng-click="$parent.selectedAnswer = $index" math-jax>{{choice.value}}</label>
+                        <label ng-click="$parent.selectedAnswer = $index" math-jax><isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></isaac-content-value-or-children></label>
                     </li>
                 </ul>
             </form>
