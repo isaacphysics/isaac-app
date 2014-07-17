@@ -72,13 +72,13 @@
                         <span>My Boards</span>
                     </div>
                 </a>
-                <a class='ru-mobile-nav-item' ui-sref='conceptsIndex'>  
-                    <div class='ru-mobile-nav-item-inner'>
+                <a class='ru-mobile-nav-item' ui-sref='conceptIndex'>  
+                    <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
                         <span>Concepts</span>
                     </div>
                 </a>
-                <a class='ru-mobile-nav-item' ui-sref='questionsIndex'>  
-                    <div class='ru-mobile-nav-item-inner active'>
+                <a class='ru-mobile-nav-item' ui-sref='home'>  
+                    <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('home') || $state.includes('question')}">
                         <span>Problems</span>
                     </div>
                 </a>
