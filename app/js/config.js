@@ -30,6 +30,7 @@ require.config({
         "angulartics-ga": ["angulartics"],
         "angulartics": ["angular"],
         "angular-recursion": ["angular"],
+        "showdown/extensions/table": ["showdown/showdown"],
     }
 });
 
