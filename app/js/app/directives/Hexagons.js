@@ -147,6 +147,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 			scope: {
 				questions: "=hexagons",
+                wildCardPosition: "="
 			},
 
 			restrict: "A",
@@ -181,6 +182,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
 
+                        // TODO: Implement this based on the tags service.
 	            		$.each(scope.questions, function(i, q) {
                             if (!q.tags) {
                                 q.subject = "";
@@ -208,7 +210,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            			} 
 	            		})
 
-	            		scope.questions.splice(Math.floor(Math.random() * 10),0,wildCard);
+	            		scope.questions.splice(scope.wildCardPosition,0,wildCard);
                         update();
 		    		}     	
 	            })
