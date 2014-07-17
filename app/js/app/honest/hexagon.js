@@ -215,10 +215,11 @@ define([ 'jquery','honest/d3.min'],
                             .style('width', hex.width + 'px')
                             .style('height', (Math.ceil(hex.height)) + 'px')
                             .append('svg');
-               
+
                // Call user supplied function to add specific items to SVG 
                hexplot = svgItems(hexplot);
-                    
+               hexplot.attr("viewBox", "0 0 " + hex.width + " " + (Math.ceil(hex.height)));
+               
                // Plot Hexagon
                var hexPath = hexplot.append("path")
                                 .attr("d", lineFunction(hex.hexagon));
