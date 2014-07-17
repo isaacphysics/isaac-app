@@ -52,9 +52,9 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="concept in allConcepts | filter:{$:searchText}" class='row ru-mobile-answer-wrap' ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" ng-show="includePhysics && physics || includeMaths && maths">
+                <div ng-repeat="concept in allConcepts | filter:{$:searchText} | filter:subjectFilter" class='row ru-mobile-answer-wrap' ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" >
                     <div class='small-16 columns'>
-                        <div class="ru-search-result">
+                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
                                 <h4>
@@ -63,7 +63,7 @@
                                     <span class="physics" ng-show="physics">Physics</span>
                                     : {{concept.title}}</h4>
 
-                                    <p>Every body continues in its state of being at rest or in uniform motion unless acted upon by a resultant force.</p>
+                                    <p>{{concept.summary}}</p>
                                 </h4>
                             </div>
                             <div class="clearfix"></div>

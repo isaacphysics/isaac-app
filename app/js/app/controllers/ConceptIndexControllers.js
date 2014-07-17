@@ -19,6 +19,12 @@ define([], function() {
 		$scope.includePhysics = true;
 		$scope.includeMaths = true;
 
+		$scope.subjectFilter = function(input) {
+			if (!input.tags)
+				return false;
+			return (input.tags.indexOf("physics") > -1 && $scope.includePhysics) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
+		}
+
 	}]
 
 	return {

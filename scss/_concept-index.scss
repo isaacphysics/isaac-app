@@ -72,14 +72,14 @@ span.maths
     font-style: italic;
 }
 
-.ru-mobile-answer-wrap
+.ru-concept-results
 {
     outline: none;
-    &:nth-child(2n+1) .ru-search-result
+    .ru-search-result.odd
     {
         background-color: $ru_odd;
     }
-    &:nth-child(2n)  .ru-search-result
+    .ru-search-result.even
     {
         background-color: $ru_even;
     }
