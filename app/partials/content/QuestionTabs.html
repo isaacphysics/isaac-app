@@ -18,7 +18,7 @@
                         <div class="small-14 small-offset-1 columns end text-center">
                             <h2>incorrect</h2>
                             <h5>Please try again.</h5>
-                            <isaac-content doc="validationResponse.explanation"></isaac-content>
+                            <div isaac-content doc="validationResponse.explanation"></div>
                             <p>Why not get a pen and paper and work it out?</p>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end">
                                 <p><strong>Well done!</strong></p>
-                                <isaac-content doc="validationResponse.explanation"></isaac-content>
+                                <div isaac-content doc="validationResponse.explanation"></div>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
                 <div class='row'>
                     <div class="small-14 small-offset-1 columns end">
-                        <isaac-content doc="hint"></isaac-content>
+                        <div isaac-content doc="hint"></div>
                     </div>
                 </div>
             </div>

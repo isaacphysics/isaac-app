@@ -5,7 +5,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 		return {
 
-			restrict: 'EA',
+			restrict: 'A',
 
 			transclude: true,
 

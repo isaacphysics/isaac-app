@@ -14,7 +14,7 @@
                 <div class='ru-answer-area'>
 					<div class="row">
 					    <div class="small-14 small-offset-1 columns end">
-					        <h3><isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></isaac-content-value-or-children></h3>
+					        <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
 					    </div>
 					</div>
                 </div>
@@ -45,7 +45,7 @@
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
                 <div class='row'>
                     <div class="small-14 small-offset-1 columns end">
-                        <isaac-content doc="hint"></isaac-content>
+                        <div isaac-content doc="hint"></div>
                     </div>
                 </div>
             </div>

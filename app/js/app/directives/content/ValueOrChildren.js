@@ -6,19 +6,33 @@ define([], function() {
 
 		return {
 
-			scope: {
-				value: "=",
-				children: "=",
-				encoding: "=",
-			},
+			scope: true,
 
-			restrict: 'EA',
+			restrict: 'A',
 
 			templateUrl: '/partials/content/ValueOrChildren.html',
 
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+
+	            	scope.value = undefined;
+	            	scope.children = undefined;
+	            	scope.encoding = undefined;
 	            	
+	            	scope.$parent.$watch(iAttrs.value, function(newValue) {
+	            		scope.value = newValue;
+	            		update();
+	            	});
+
+	            	scope.$parent.$watch(iAttrs.children, function(newChildren) {
+	            		scope.children = newChildren;
+	            		update();
+	            	});
+
+	            	scope.$parent.$watch(iAttrs.encoding, function(newEncoding) {
+	            		scope.encoding = newEncoding;
+	            		update();
+	            	});
 
 	            	var update = function updateFn() {
 
@@ -36,6 +50,7 @@ define([], function() {
 									scope.contentChunks.push(currentChunk);
 								var accordionChunk = [c];
 								accordionChunk.isAccordion = true;
+								accordionChunk.isFirstChunk = scope.contentChunks.length == 0;
 								scope.contentChunks.push(accordionChunk);
 								currentChunk = [];
 							} else {
@@ -48,10 +63,6 @@ define([], function() {
 
 					}
 
-
-					scope.$watch('value', update);
-					scope.$watch('children', update);
-					scope.$watch('encoding', update);
 	            });
 	        }
 		};

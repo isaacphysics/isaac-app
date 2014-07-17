@@ -4,7 +4,7 @@
 	<div ng-switch-default>[CONTENT WITH UNKNOWN ENCODING: <i>{{encoding}}</i>]</div>
 </div>
 
-<div ng-repeat="cc in contentChunks">
+<div ng-repeat="cc in contentChunks" ng-init="contentChunkIndex = $index">
 	<div ng-switch="cc.isAccordion">
 
 		<!-- This chunk is an accordion, render it outside the grid -->

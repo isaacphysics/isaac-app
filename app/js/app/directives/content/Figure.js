@@ -5,17 +5,23 @@ define([], function() {
 
 		return {
 
-			scope: {
-				doc: "=isaacFigure",
-			},
+			scope: true,
 
 			restrict: 'A',
 
 			templateUrl: "/partials/content/Figure.html",
 
 			link: function(scope, element, attrs) {
-				var src = api.getImageUrl(scope.doc.src);
-				scope.imgSrc = src;
+
+				scope.doc = undefined;
+				scope.imgSrc = undefined;
+				
+				scope.$parent.$watch(attrs.isaacFigure, function(newDoc) {
+					scope.doc = newDoc;
+
+					var src = api.getImageUrl(scope.doc.src);
+					scope.imgSrc = src;
+				});
 
 			}
 		};

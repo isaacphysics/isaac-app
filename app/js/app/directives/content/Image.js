@@ -4,18 +4,22 @@ define([], function() {
 	return ["api", function(api) {
 
 		return {
-			scope: {
-				src: "=",
-				isaacImage: "=",
-			},
+			scope: true,
 
-			restrict: 'EA',
+			restrict: 'A',
 
 			templateUrl: "/partials/content/Image.html",
 
 			link: function(scope, element, attrs) {
-				var src = scope.isaacImage || scope.src;
-				scope.path = api.getImageUrl(src);
+
+				scope.src = undefined;
+				scope.path = undefined;
+				scope.$parent.$watch(attrs.isaacImage, function(newSrc) {
+					scope.src = newSrc;
+
+					scope.path = api.getImageUrl(scope.src);
+				});
+
 			}
 		};
 	}];

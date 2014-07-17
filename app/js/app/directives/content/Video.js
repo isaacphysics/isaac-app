@@ -13,7 +13,14 @@ define([], function() {
 			templateUrl: "/partials/content/Video.html",
 
 			link: function(scope, element, attrs) {
-				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src);
+
+				scope.doc = undefined;
+				scope.videoSrc = undefined;
+
+				scope.$parent.$watch(attrs.isaacVideo, function(newDoc) {
+					scope.doc = newDoc;
+					scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src);
+				})
 			}
 		};
 	}];
