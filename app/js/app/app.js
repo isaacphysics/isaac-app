@@ -238,32 +238,7 @@ define([
                         }
                     }
                 }); 
-                $(".ru_accordion_titlebar").click(function()
-                {
-                    rv.forceResize();
-                    sliderResize();
-                    var clicked_title = this;
-                    setTimeout(function()
-                    {
-                        // If clicked title bar is not in view - scroll to it
-                        if(!$(clicked_title).visible(false))
-                        {
-                            // Are we on mobile - if so add header height
-                            var offset = $('.ru-mobile-header').css('display') === 'block' ? 41 : 0;
-                            // Scroll
-                            if (navigator.userAgent.match(/firefox/i))
-                            {   
-                                // FF offset and scroll location are different
-                                $('body').scrollTo((-$(clicked_title).offset().top) - $(clicked_title).height());
-                            }
-                            else
-                            {
-                                $('body').scrollTo($(clicked_title).offset().top - offset);
-                            }
-                        }
-                    }, 0);
-                });
-                
+
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
                 {
