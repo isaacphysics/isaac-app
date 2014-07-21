@@ -19,9 +19,9 @@ define([], function() {
 		}
 
 		$scope.filterSubjects = ["physics"];
-		$scope.filterFields = ["mechanics"];
+		$scope.filterFields = [];
 		$scope.filterTopics = [];
-		$scope.filterLevels = [2];
+		$scope.filterLevels = [1];
 		$scope.filterConcepts = [];
 
 		var watchers = [];
