@@ -36,7 +36,7 @@ define(["mathjax"], function() {
 		},
 	  "HTML-CSS": {
 	    availableFonts: [], preferredFont: null, // force Web fonts
-	    webFont: "STIX-Web"
+	    webFont: "Gyre-Termes",// "Latin-Modern"
 	  }
 
 	});
