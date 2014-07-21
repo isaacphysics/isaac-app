@@ -25,7 +25,7 @@ define([], function() {
 				if (!pageSubject) {
 					pageSubject = subjects[i].id;
 				} else {
-					pageSubject = null; // We found tags for more than one subject.
+					pageSubject = "physics"; // We found tags for more than one subject.
 				}
 			}
 		}
