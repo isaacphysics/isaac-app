@@ -22,9 +22,12 @@
 
 .ru_pod
 {
-    height: 258px;
-    overflow-y: auto;
     padding-top: 10px;
+
+    .pod-scroll-list {
+        height: 150px;
+        overflow-y: auto;
+    }
 }
 
 .ru_pod_image_inner
@@ -148,7 +151,7 @@
     background-image:  url('/assets/icon-help-forum.png');
 }
 
-.ru_pod.ru_pod_forum > a
+.ru_pod.ru_pod_forum  a
 {
     display: block;
     font-size: 0.9rem;
