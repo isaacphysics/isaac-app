@@ -31,25 +31,6 @@ define([], function() {
 				comingSoon: true,
 			},
 
-			// Maths fields
-
-			{
-				id: "geometry",
-				parent: "maths",
-			}, {
-				id: "calculus",
-				parent: "maths",
-			}, {
-				id: "algebra",
-				parent: "maths",
-			}, {
-				id: "functions",
-				parent: "maths",
-			}, {
-				id: "probability",
-				parent: "maths",
-			}, 
-
 			// Mechanics topics
 
 			{
@@ -71,6 +52,98 @@ define([], function() {
 			}, {
 				id: "kinematics",
 				parent: "mechanics",
+			},
+
+			// Maths fields
+
+			{
+				id: "geometry",
+				parent: "maths",
+			}, {
+				id: "calculus",
+				parent: "maths",
+			}, {
+				id: "algebra",
+				parent: "maths",
+			}, {
+				id: "functions",
+				parent: "maths",
+			}, {
+				id: "probability",
+				parent: "maths",
+			}, 
+
+			// Geometry topics
+
+			{
+				id: "geom_vectors",
+				title: "Vectors",
+				parent: "geometry",
+			}, {
+				id: "trigonometry",
+				parent: "geometry",
+			}, {
+				id: "greek",
+				parent: "geometry",
+			}, {
+				id: "symmetry",
+				parent: "geometry",
+			},
+			
+			// Calculus topics
+
+			{
+				id: "integration",
+				parent: "calculus",
+			}, {
+				id: "differentiation",
+				parent: "calculus",
+			}, {
+				id: "differential_equations",
+				parent: "calculus",
+			},
+
+			// Algebra topics
+
+			{
+				id: "simultaneous_equations",
+				parent: "algebra",
+			}, {
+				id: "quadratics",
+				parent: "algebra",
+			}, {
+				id: "manipulation",
+				parent: "algebra",
+			}, {
+				id: "series",
+				parent: "algebra",
+			},
+			
+			// Functions topics
+
+			{
+				id: "special",
+				parent: "functions",
+			}, {
+				id: "trigonometric",
+				parent: "functions",
+			}, {
+				id: "curve_sketching",
+				parent: "functions",
+			},
+
+			// Probability topics
+
+			{
+				id: "means",
+				parent: "probability",
+			}, {
+				id: "prob_functions",
+				title: "Functions",
+				parent: "probability",
+			}, {
+				id: "distributions",
+				parent: "probability",
 			},
 
 		];
