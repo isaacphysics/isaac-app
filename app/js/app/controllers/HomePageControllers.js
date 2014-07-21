@@ -2,7 +2,7 @@ define([], function() {
 
 
 
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', function($scope, api, $location, tags, $sce) {
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', '$window', function($scope, api, $location, tags, $sce, $window) {
 
 		$scope.userInformation = api.currentUserInformation.get();
 
@@ -57,6 +57,7 @@ define([], function() {
 				addFilterWatchers();
 
 				$scope.gameBoard = board;
+				$window.localStorage.setItem("lastGameBoardId", board.id);
 				buildBreadCrumb();
 			});
 		}
@@ -85,7 +86,11 @@ define([], function() {
 			$scope.gameBoard = api.gameBoards.filter(params);
 
 			$scope.gameBoard.$promise.then(function(board) {
+				if (!$location.hash()) {
+					$location.replace();
+				}
 				$location.hash(board.id);
+				$window.localStorage.setItem("lastGameBoardId", board.id);
 				lastHash = board.id;
 			})
 		}

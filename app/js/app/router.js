@@ -171,6 +171,12 @@ define(["angular-ui-router"], function() {
                     },
                 },
             })
+            .state('lastGameBoard', {
+                onEnter: ['$state', '$location', function($state, $location) {
+                    console.debug("Go to last game board");
+                    $location.url("/#" + localStorage.lastGameBoardId || "");
+                }],
+            })
 
 	}])
 
