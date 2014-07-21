@@ -4,13 +4,14 @@
 {
     background-image: url('/assets/share.svg');
     width: 50px;
-    height: 56px;
+    height: 80px;
     right: -50px;
     float: right;
     background-repeat: no-repeat;
     z-index: 101;
     position: relative;
     cursor: pointer;
+
     &:hover
     {
         opacity: 0.85;
@@ -50,7 +51,7 @@
 {
     background-image: url('/assets/PDF.svg');
     width: 50px;
-    height: 56px;
+    height: 80px;
     float: right;
     position: relative;
     right: -40px;
