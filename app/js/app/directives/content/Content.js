@@ -18,11 +18,12 @@ define([], function() {
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
 	            		scope.doc = newDoc;
+	            		
+		            	if(scope.doc && scope.doc.layout=="right") {
+		            		iElement.css("float", "right").width(300);
+		            	}
 	            	});
 
-	            	if(scope.doc && scope.doc.layout=="right") {
-	            		iElement.css("float", "right").width(300);
-	            	}
 	            });
 	        }
 		};
