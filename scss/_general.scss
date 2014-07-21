@@ -50,6 +50,12 @@ $footer_height : 250px;
     color: $ru_physics !important;
 }
 
+.panel
+{
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+}
+
 .panel.physics
 {
     border: 1px solid $ru_physics !important;
