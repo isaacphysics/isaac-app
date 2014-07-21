@@ -43,7 +43,7 @@ define(["mathjax"], function() {
 
 	// Fix font issues in Chrome 32
 	// https://groups.google.com/forum/#!msg/mathjax-users/S5x-RQDPJrI/p4nmRXJvoskJ
-/*
+
 	MathJax.Hub.Config({
 		extensions: ["MatchWebFonts.js"]
 	});
@@ -54,7 +54,7 @@ define(["mathjax"], function() {
 			function () {MathJax.OutputJax["HTML-CSS"].FontFaceBug = true}
 		);
 	}
-*/
+
 });
 
 // Here is a very useful page:
