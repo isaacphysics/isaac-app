@@ -26,13 +26,13 @@
                     </div>
                  </div>
                 <a class="ru_acrobat" href=""></a>
-                <h2 class="ru_{{$root.pageSubject}}" math-jax>{{doc.title}}</h2>
+                <h2 class="ru_{{$root.pageSubject}}" math-jax>{{page.title}}</h2>
                 <h3 class='subheader' ng-if="$root.pageSubject == 'physics'"><strong>Physics Concept</strong></h3>
                 <h3 class='subheader' ng-if="$root.pageSubject == 'maths'"><strong>Maths Concept</strong></h3>
                 <div class="clearfix"></div>
             </div>
             
-            <div isaac-content doc="doc"></div>
+            <div isaac-content doc="page"></div>
         </div>
     </div>
 </section>

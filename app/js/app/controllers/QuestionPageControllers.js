@@ -4,7 +4,8 @@ define([], function() {
 	// See problem.js and problem.html in final code drop.
 
 	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', function($scope, page, tags, $sce, $rootScope, persistence, $location) {
-		$scope.doc = page;
+		$scope.page = page;
+		$scope.figures = {};
 
 		var pageTags = page.tags;
 

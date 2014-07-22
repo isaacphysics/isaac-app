@@ -9,7 +9,7 @@
             <span class='ru-level'>Level: </span>
         </div>
         <div class='medium-2 end columns'>
-            <span class='ru-level-{{$root.pageSubject}}-{{doc.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{doc.level}}'></span>    
+            <span class='ru-level-{{$root.pageSubject}}-{{page.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{page.level}}'></span>    
         </div>
         <div class='clearfix'></div>
     </div>
@@ -17,7 +17,7 @@
 <div mobile-panel>
     <div class='row'>
         <div class='small-16 columns text-right'>
-            <span class='ru-level-{{$root.pageSubject}}-{{doc.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{doc.level}}'></span>  
+            <span class='ru-level-{{$root.pageSubject}}-{{page.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{page.level}}'></span>  
         </div>
     </div>
     <div class='ru-mobile-crumb'>
@@ -48,10 +48,10 @@
                             </div>
                         </div>
                         <div class="ru_acrobat"></div>
-                        <h2>Q: <span class='ru_{{$root.pageSubject}}' math-jax>{{doc.title}}</span></h2>       
+                        <h2>Q: <span class='ru_{{$root.pageSubject}}' math-jax>{{page.title}}</span></h2>       
                     </div>
                 </div>
-                <div isaac-content doc="doc"></div>
+                <div isaac-content doc="page"></div>
             </div>
         </section>
 
