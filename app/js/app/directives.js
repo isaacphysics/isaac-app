@@ -11,6 +11,7 @@ define([
 	"app/directives/content/BindMarkdown",
 	"app/directives/content/Image",
 	"app/directives/content/Figure",
+	"app/directives/content/FigureRef",
 	"app/directives/content/Video",
 	"app/directives/content/Tabs",
 	"app/directives/content/Accordion",
@@ -70,6 +71,8 @@ define([
 	.directive('isaacImage', require("app/directives/content/Image"))
 	
 	.directive('isaacFigure', require("app/directives/content/Figure"))
+
+	.directive('isaacFigureRef', require("app/directives/content/FigureRef"))
 
 	.directive('isaacVideo', require("app/directives/content/Video"))
 

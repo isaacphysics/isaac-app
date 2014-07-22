@@ -71,6 +71,19 @@ $footer_height : 250px;
     color: $ru_maths !important;
 }
 
+.ru-figure-ref
+{
+    font-weight: bold;
+
+    &.physics {
+        color: $ru_physics !important;
+    }
+
+    &.maths {
+        color: $ru_maths !important;
+    }
+}
+
 .bg-wrap
 {
     background-image: url('/assets/Rutherford_bg_top.png'), url('/assets/isaac-bg.jpg');

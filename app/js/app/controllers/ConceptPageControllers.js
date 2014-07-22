@@ -13,6 +13,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', function($scope, page, tags, $rootScope, persistence, $location, $window) {
 		$scope.doc = page;
+		$scope.page = page;
 
 		var pageTags = page.tags;
 
@@ -49,6 +50,8 @@ define([], function() {
 				$location.url(url);
 			}
 		}
+
+		$scope.figures = {};
 	}]
 
 	return {
