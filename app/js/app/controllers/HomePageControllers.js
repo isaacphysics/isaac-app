@@ -91,6 +91,12 @@ define([], function() {
 			$scope.gameBoard = api.gameBoards.filter(params);
 
 			$scope.gameBoard.$promise.then(function(board) {
+
+				if (!board.id) {
+					$scope.gameBoard = null;
+					return;
+				}
+
 				if (!$location.hash()) {
 					$location.replace();
 				}

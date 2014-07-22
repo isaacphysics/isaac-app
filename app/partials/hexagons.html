@@ -1,1 +1,8 @@
-<div class='hexagon_wrap' math-jax></div>
+<div class="row" ng-if="!questions">
+    <div class='small-16 columns text-center'>
+        <div class='ru-score'>
+            <strong class="green">No questions found in selected topics</strong>
+        </div>
+    </div>
+</div>
+<div class='hexagon_wrap' math-jax ng-show="questions"></div>

@@ -171,9 +171,9 @@ define(["app/honest/hexagon"],function(hexagon) {
 
                 var update = function() {
                     // Calculate Hexagon info
-                    var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions, equalRows);
+                    var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions || [], equalRows);
 
-                    draw(hex, scope.questions, $state);        
+                    draw(hex, scope.questions || [], $state);        
 
                 }
 
@@ -212,7 +212,9 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 	            		scope.questions.splice(scope.wildCardPosition,0,wildCard);
                         update();
-		    		}     	
+		    		} else {
+                        update();
+                    }     	
 	            })
 			}
 		};
