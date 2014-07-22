@@ -15,7 +15,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     $(this).addClass('ru-hex-home-content-wild');
                 }
-                else if(d.state == 'CORRECT')
+                else if(d.state == 'COMPLETED')
                 {
                     $(this).addClass('ru-hex-home-content-correct');
                 }
