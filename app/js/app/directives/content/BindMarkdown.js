@@ -10,11 +10,14 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 			priority: 0,
 
 			link: function(scope, element, attrs) {
+
+				var pageId = scope.page ? scope.page.id : "";
+
 				Showdown.extensions.refs = function(converter) {
 					return [{
 						type: "lang",
 						regex: '(~D)?\\\\ref{([^}]*)}(~D)?',
-						replace: '<span isaac-figure-ref="' + scope.page.id + '|$2"></span>',
+						replace: '<span isaac-figure-ref="' + pageId + '|$2"></span>',
 					}];
 				};
 
