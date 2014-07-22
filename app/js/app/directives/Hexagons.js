@@ -11,11 +11,11 @@ define(["app/honest/hexagon"],function(hexagon) {
             // Tick / Arrow
             plotdiv.each(function(d) 
             {
-                if(d.type === 'wildcard' && d.state !== 'correct')
+                if(d.type === 'wildcard')
                 {
                     $(this).addClass('ru-hex-home-content-wild');
                 }
-                else if(d.state === 'correct')
+                else if(d.state == 'CORRECT')
                 {
                     $(this).addClass('ru-hex-home-content-correct');
                 }
@@ -54,11 +54,11 @@ define(["app/honest/hexagon"],function(hexagon) {
                     .classed({"ru-hex-home-msg" : true})
                     .each(function(d)
             {
-                if(d.state === 'correct')
+                if(d.state === 'COMPLETED')
                 {
                     $(this).text('Well Done!').addClass('ru-hex-home-msg-correct');
                 }
-                else if (d.state === 'incorrect')
+                else if (d.state === 'TRY_AGAIN')
                 {
                     $(this).text('Try Again!').addClass('ru-hex-home-msg-incorrect');
                 }
@@ -82,11 +82,11 @@ define(["app/honest/hexagon"],function(hexagon) {
                     var rand = Math.floor((Math.random() * 5) + 1);
                     var c = 'hex-'+d.subject+rand;
 
-                    if(d.type === 'wildcard' && d.state !== 'correct')
+                    if(d.type === 'wildcard')
                     {
                         c = 'hex-orange';   
                     }
-                    else if(d.state === 'correct')
+                    else if(d.state === 'COMPLETED')
                     {
                         c = 'hex-grey';
                     }
