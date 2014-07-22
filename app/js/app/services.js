@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api", "app/services/Tags"], function() {
+define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Persistence"], function() {
 
 	/* Services */
 
@@ -32,6 +32,8 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags"],
 				
 		}];
 	})
+
+	.service('persistence', require("app/services/Persistence"))
 
 
 

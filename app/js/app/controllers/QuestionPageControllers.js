@@ -3,7 +3,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', function($scope, page, tags, $sce, $rootScope) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', function($scope, page, tags, $sce, $rootScope, persistence, $location) {
 		$scope.doc = page;
 
 		var pageTags = page.tags;
@@ -78,7 +78,7 @@ define([], function() {
 			}
 		}
 
-
+		persistence.session.save("conceptPageSource", $location.url());
 
 	}]
 

@@ -12,7 +12,7 @@ define([], function() {
         });	 
 	*/
 
-	var PageController = ['$scope', '$state', 'conceptList', function($scope, $state, conceptList) {
+	var PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', function($scope, $state, conceptList, persistence, $location) {
 
 		$scope.allConcepts = conceptList.results;
 
@@ -24,6 +24,8 @@ define([], function() {
 				return false;
 			return (input.tags.indexOf("physics") > -1 && $scope.includePhysics) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
 		}
+
+		persistence.session.save("conceptPageSource", $location.url());
 
 	}]
 

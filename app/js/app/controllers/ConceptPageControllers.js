@@ -11,7 +11,7 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', function($scope, page, tags, $rootScope) {
+	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', function($scope, page, tags, $rootScope, persistence, $location, $window) {
 		$scope.doc = page;
 
 		var pageTags = page.tags;
@@ -29,9 +29,26 @@ define([], function() {
 				}
 			}
 		}
+		$scope.sourceUrl = persistence.session.load("conceptPageSource");
 
+		if($scope.sourceUrl.indexOf("/questions") == 0) {
+			$scope.backText = "Back to your question";
+		} else if ($scope.sourceUrl == "/concepts") {
+			$scope.backText = "Back to concepts";
+		} else {
+			$scope.backText = "Back";
+			$scope.sourceUrl = "BACK"
+		}
 
 		$rootScope.pageSubject = pageSubject;
+
+		$scope.go = function(url) {
+			if (url == "BACK") {
+				$window.history.back();
+			} else {
+				$location.url(url);
+			}
+		}
 	}]
 
 	return {
