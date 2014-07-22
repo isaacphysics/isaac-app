@@ -14,18 +14,16 @@ define([], function() {
 	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', function($scope, page, tags, $rootScope, persistence, $location, $window) {
 		$scope.page = page;
 
-		var pageTags = page.tags;
+		var pageTags = page.tags || [];
 
 		var subjects = tags.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = null;
+		var pageSubject = "physics";
 		for(var i in subjects) {
 			if (pageTags.indexOf(subjects[i].id) > -1) {
 				if (!pageSubject) {
 					pageSubject = subjects[i].id;
-				} else {
-					pageSubject = "physics"; // We found tags for more than one subject.
 				}
 			}
 		}
