@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Persistence"], function() {
+define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Persistence", "app/services/FilterWarnings"], function() {
 
 	/* Services */
 
@@ -12,6 +12,8 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 	.value('version', '0.1')
 
 	.factory('tags', require("app/services/Tags"))
+
+	.factory('filterWarnings', require("app/services/FilterWarnings"))
 
 	.provider('api', function ApiProvider() {
 

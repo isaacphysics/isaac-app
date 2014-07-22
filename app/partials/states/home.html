@@ -105,7 +105,9 @@
 
                     <div class=''> 
                         <div class='small-16 columns text-center'>
-                            <div class='ru-score'><strong>Total Score: <span class='green'>2360pts</span></strong><br class='show-for-small-only'> out of a possible <strong>5565pts</strong></div>
+                            <div class='ru-score' ng-repeat="w in warnings">
+                                <strong>Warning:</strong> {{w}}
+                            </div>
                         </div>
                         <div class='ru-board-title hide-for-medium-up'>
                             <div class="small-8 columns">

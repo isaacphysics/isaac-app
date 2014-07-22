@@ -2,7 +2,7 @@ define([], function() {
 
 
 
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', function($scope, api, $location, tags, $sce, persistence) {
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', function($scope, api, $location, tags, $sce, persistence, filterWarnings) {
 
 		$scope.userInformation = api.currentUserInformation.get();
 
@@ -14,7 +14,7 @@ define([], function() {
 				$scope.filterPanelOpen = null;
 			}
 			else{
-				$scope.filterPanelOpen = panelNumberToOpen;	
+				$scope.filterPanelOpen = panelNumberToOpen;
 			}
 		}
 
@@ -23,6 +23,10 @@ define([], function() {
 		$scope.filterTopics = [];
 		$scope.filterLevels = [1];
 		$scope.filterConcepts = [];
+
+		function setWarnings() {
+			$scope.warnings = filterWarnings($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels, $scope.filterConcepts);
+		}
 
 		var watchers = [];
 
@@ -37,7 +41,7 @@ define([], function() {
 		function clearFilterWatchers() {
 			var w = null;
 			while(w = watchers.pop())
-				w();			
+				w();
 		}
 
 		function loadGameBoardById(id) {
@@ -55,6 +59,7 @@ define([], function() {
 				$scope.filterConcepts = board.gameFilter.concepts || [];
 
 				addFilterWatchers();
+				setWarnings();
 
 				$scope.gameBoard = board;
 				persistence.save("lastGameBoardId", board.id);
@@ -101,6 +106,8 @@ define([], function() {
 
 			buildBreadCrumb();
 
+			setWarnings();
+
 			loadGameBoardFromFilter();
 		}
 
@@ -118,7 +125,7 @@ define([], function() {
 				loadGameBoardById(hash);
 			} else {
 				loadGameBoardFromFilter();
-			}			
+			}
 		}
 
 		function buildBreadCrumb() {
@@ -172,10 +179,10 @@ define([], function() {
 
 		buildBreadCrumb();
 
-		$(window).on('hashchange', hashChanged);	
+		$(window).on('hashchange', hashChanged);
 		$scope.$on('$stateChangeStart', function() {
 			$(window).off('hashchange', hashChanged);
-        });	
+        });
 
 	}]
 
