@@ -101,14 +101,17 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    <div class="small-16 columns" hexagons="gameBoard.questions" wild-card-position="gameBoard.wildCardPosition"></div>
-
-                    <div class=''> 
+                    <div class="row">
                         <div class='small-16 columns text-center'>
                             <div class='ru-score' ng-repeat="w in warnings">
                                 <strong>Warning:</strong> {{w}}
                             </div>
                         </div>
+                    </div>
+
+                    <div class="small-16 columns" hexagons="gameBoard.questions" wild-card-position="gameBoard.wildCardPosition"></div>
+
+                    <div class=''> 
                         <div class='ru-board-title hide-for-medium-up'>
                             <div class="small-8 columns">
                                 <a href=''>
