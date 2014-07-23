@@ -101,7 +101,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('question', {
-                url: "/questions/:id",
+                url: "/questions/:id?board",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
                         return api.questionPages.get({id: $stateParams.id}).$promise;
@@ -170,11 +170,6 @@ define(["angular-ui-router"], function() {
                         }
                     },
                 },
-            })
-            .state('lastGameBoard', {
-                onEnter: ['$state', '$location', 'persistence', function($state, $location, persistence) {
-                    $location.url("/#" + persistence.load("lastGameBoardId") || "");
-                }],
             })
 
 	}])

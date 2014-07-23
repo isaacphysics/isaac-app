@@ -3,7 +3,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', function($scope, page, tags, $sce, $rootScope, persistence, $location) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api) {
 		$scope.page = page;
 		$scope.figures = {};
 
@@ -15,9 +15,8 @@ define([], function() {
 		var pageSubject = "physics";
 		for(var i in subjects) {
 			if (pageTags.indexOf(subjects[i].id) > -1) {
-				if (!pageSubject) {
-					pageSubject = subjects[i].id;
-				}
+				pageSubject = subjects[i].id;
+				break;
 			}
 		}
 
@@ -78,6 +77,38 @@ define([], function() {
 		}
 
 		persistence.session.save("conceptPageSource", $location.url());
+
+		if ($stateParams.board) {
+			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
+			$scope.gameBoard.$promise.then(function(board) {
+
+				// Find the index of this question on the game board.
+
+				var thisIndex = null;
+				for(var i = 0; i < board.questions.length; i++) {
+
+					var q = board.questions[i];
+
+					if(q.id == page.id) {
+						thisIndex = i;
+						break;
+					}
+				}
+
+				if (thisIndex == null) {
+					console.error("Question not found in linked game board.");
+					return;
+				}
+
+				$scope.nextQuestion = board.questions[thisIndex + 1];
+
+			});
+		}
+
+		$scope.backToBoard = function() {
+			$location.url("/#" + $stateParams.board)
+		}
+
 
 	}]
 

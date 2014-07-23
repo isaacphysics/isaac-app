@@ -48,7 +48,9 @@ define([], function() {
 
 			console.debug("Loading game board by id: ", id)
 
+			$scope.gameBoardLoading = true;
 			$scope.gameBoard = api.gameBoards.get({id: id}).$promise.then(function(board) {
+				$scope.gameBoardLoading = false;
 
 				clearFilterWatchers();
 
@@ -62,8 +64,12 @@ define([], function() {
 				setWarnings();
 
 				$scope.gameBoard = board;
-				persistence.save("lastGameBoardId", board.id);
+
 				buildBreadCrumb();
+
+			}).catch(function() {
+				$scope.gameBoardLoading = false;
+				$scope.gameBoard = null;
 			});
 		}
 
@@ -88,9 +94,11 @@ define([], function() {
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.join(",");
 
+			$scope.gameBoardLoading = true;
 			$scope.gameBoard = api.gameBoards.filter(params);
 
 			$scope.gameBoard.$promise.then(function(board) {
+				$scope.gameBoardLoading = false;
 
 				if (!board.id) {
 					$scope.gameBoard = null;
@@ -101,8 +109,12 @@ define([], function() {
 					$location.replace();
 				}
 				$location.hash(board.id);
-				persistence.save("lastGameBoardId", board.id);
+
 				lastHash = board.id;
+				
+			}).catch(function() {
+				$scope.gameBoardLoading = false;
+				$scope.gameBoard = null;
 			})
 		}
 

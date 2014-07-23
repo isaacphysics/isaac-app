@@ -1,7 +1,7 @@
 <div desktop-panel>
     <div class='ru-desktop-panel-content'>
         <div class='medium-12 columns'>
-            <ul ng-class='["ru-crumb", $root.pageSubject]'>
+            <ul ng-class='["ru-crumb", pageSubject]'>
                 <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)"></li>
             </ul>
         </div>
@@ -9,7 +9,7 @@
             <span class='ru-level'>Level: </span>
         </div>
         <div class='medium-2 end columns'>
-            <span class='ru-level-{{$root.pageSubject}}-{{page.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{page.level}}'></span>    
+            <span class='ru-level-{{pageSubject}}-{{page.level}} ru-level' aria-label='{{pageSubject}} Level {{page.level}}'></span>    
         </div>
         <div class='clearfix'></div>
     </div>
@@ -17,13 +17,13 @@
 <div mobile-panel>
     <div class='row'>
         <div class='small-16 columns text-right'>
-            <span class='ru-level-{{$root.pageSubject}}-{{page.level}} ru-level' aria-label='{{$root.pageSubject}} Level {{page.level}}'></span>  
+            <span class='ru-level-{{pageSubject}}-{{page.level}} ru-level' aria-label='{{pageSubject}} Level {{page.level}}'></span>  
         </div>
     </div>
     <div class='ru-mobile-crumb'>
         <div class='row'>
             <div class='small-16 columns'>
-                <ul ng-class='[$root.pageSubject]'>
+                <ul ng-class='[pageSubject]'>
                     <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)"></li>
                 </ul>
             </div>
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="ru_acrobat"></div>
-                        <h2>Q: <span class='ru_{{$root.pageSubject}}' math-jax>{{page.title}}</span></h2>       
+                        <h2>Q: <span class='ru_{{pageSubject}}' math-jax>{{page.title}}</span></h2>       
                     </div>
                 </div>
                 <div isaac-content doc="page"></div>
@@ -59,9 +59,9 @@
         <section>
             <div class="row">
                 <div class="large-12 large-offset-2 medium-12 medium-offset-2 small-16 columns ru-concept-buttons">
-                    <ul class='medium-block-grid-2 small-block-grid-2 ru-pad'>
-                        <li><a class='ru-concept-button' ui-sref="lastGameBoard">Back to Board</a></li>
-                        <li><a class='ru-concept-button' href="javascript:void(0)">Next Question</a></li>
+                    <ul ng-show="gameBoard.$resolved" class='medium-block-grid-2 small-block-grid-2 ru-pad'>
+                        <li><a class='ru-concept-button' ng-click="backToBoard()">Back to Board</a></li>
+                        <li><a class='ru-concept-button' ng-show="nextQuestion" ui-sref="question({id: nextQuestion.id})">Next Question</a></li>
                     </ul>
                 </div>
             </div>

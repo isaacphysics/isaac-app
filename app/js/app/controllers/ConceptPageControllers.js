@@ -22,9 +22,8 @@ define([], function() {
 		var pageSubject = "physics";
 		for(var i in subjects) {
 			if (pageTags.indexOf(subjects[i].id) > -1) {
-				if (!pageSubject) {
-					pageSubject = subjects[i].id;
-				}
+				pageSubject = subjects[i].id;
+				break;
 			}
 		}
 		$scope.sourceUrl = persistence.session.load("conceptPageSource");

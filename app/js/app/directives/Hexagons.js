@@ -3,7 +3,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	// TODO: This entire file is a horrible mess. But at least it's an isolated horrible mess.
 
     // Generic draw function for initial and update
-    var draw = function(hex, questions, $state)
+    var draw = function(hex, questions, $state, boardId)
     {
         // Plot
         hexagon.drawHexagons($(".hexagon_wrap"), hex, questions, "ru-hex-home-content", function(plotdiv)
@@ -100,7 +100,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     e.preventDefault();
                     //window.location.href = d.uri;
-                    $state.go("question", {id: d.id});
+                    $state.go("question", {id: d.id, board: boardId});
 
                 });
                 // Handle tab enter
@@ -147,7 +147,9 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 			scope: {
 				questions: "=hexagons",
-                wildCardPosition: "="
+                wildCardPosition: "=",
+                loading: "=",
+                boardId: "="
 			},
 
 			restrict: "A",
@@ -173,11 +175,12 @@ define(["app/honest/hexagon"],function(hexagon) {
                     // Calculate Hexagon info
                     var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions || [], equalRows);
 
-                    draw(hex, scope.questions || [], $state);        
+                    draw(hex, scope.questions || [], $state, scope.boardId);        
 
                 }
 
                 $(window).on("resize", update);
+
 
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {

@@ -1,7 +1,7 @@
 <br/>
 <div class="row">
     <div class="medium-14 medium-offset-1 small-16 columns end">
-        <dl class="tabs ru_tabs {{$root.pageSubject}} ru-answer" data-tab>
+        <dl class="tabs ru_tabs {{pageSubject}} ru-answer" data-tab>
             <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer Now</a></dd>
             <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
         </dl>
@@ -26,7 +26,7 @@
 
                 <!-- TODO Remove display:none from css -->
                 <div class='ru-answer-correct-wrap' style="display:block;" ng-show="validationResponse.correct==true">
-                    <div class='ru-answer-correct {{$root.pageSubject}}'>
+                    <div class='ru-answer-correct {{pageSubject}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 medium-5 medium-offset-1 columns">
                                 <h1>Correct!</h1>
@@ -37,7 +37,7 @@
                             </div>-->
                         </div>
                     </div>
-                    <div class='ru-answer-correct-summary {{$root.pageSubject}}'>
+                    <div class='ru-answer-correct-summary {{pageSubject}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end">
                                 <p><strong>Well done!</strong></p>
