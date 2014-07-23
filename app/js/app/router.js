@@ -171,7 +171,6 @@ define(["angular-ui-router"], function() {
                     },
                 },
             })
-
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
