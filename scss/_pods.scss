@@ -30,6 +30,12 @@
     }
 }
 
+.ru_pod li h6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .ru_pod_image_inner
 {
     height: 180px;

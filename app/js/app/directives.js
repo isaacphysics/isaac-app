@@ -22,6 +22,7 @@ define([
 	"app/directives/content/SymbolicQuestion",
 	"app/directives/content/QuickQuestion",
 	"app/directives/content/QuestionRadioButton",
+	"app/directives/FooterPods",
 	"app/directives/DesktopPanel",
 	"app/directives/MobilePanel",
 	"app/directives/Hexagons",
@@ -55,6 +56,8 @@ define([
 	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
 	
 	.directive('conceptFilter', require("app/directives/ConceptFilter"))
+
+	.directive('footerPods', require("app/directives/FooterPods"))
 
 	// Content Directives
 

@@ -9,8 +9,8 @@
             </ul>
         </div>
         <div class='medium-8 end columns text-right'>
-            <h2 class='ru-welcome'>Welcome <span class='green' ng-if="userInformation">{{userInformation.givenName}}</span></h2>
-            <span class='ru-challenge'>Your board is 50% complete<br class='show-for-medium-only'> <a href=''>Create your Challenge!</a></span>
+            <h2 class='ru-welcome'>Welcome to Isaac<span class='green' ng-if="userInformation">{{userInformation.givenName}}</span></h2>
+            <span class='ru-challenge' ng-hide="filterPanelOpen == 'desktop-filter'">Get started by <br class='show-for-medium-only'> <a ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
         </div>
         <div class='clearfix'></div>
         <div id='desktop-filter' class="down isdown" ng-show="filterPanelOpen == 'desktop-filter'">
