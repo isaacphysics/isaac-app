@@ -14,7 +14,7 @@ define([], function() {
 				if (i > 0 && i < arr.length - 1)
 					s += ", ";
 
-				if (i == arr.length - 1)
+				if (i == arr.length - 1 && i > 0)
 					s += " or ";
 				s += arr[i];
 			}
