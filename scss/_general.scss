@@ -66,6 +66,13 @@ $footer_height : 250px;
     border: 1px solid $ru_maths !important;
 }
 
+.loading-header
+{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+
 .ru_maths, .panel.maths *
 {
     color: $ru_maths !important;
