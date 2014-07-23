@@ -62,6 +62,8 @@ define([
         $rootScope.$on("$stateChangeSuccess", function() {
             $rootScope.globalFlags.isLoading = false;
             $rootScope.globalFlags.displayLoadingMessage = false;
+
+            $(document).scrollTop(0);
         })
 
         $rootScope.$on("$stateChangeError", function() {
