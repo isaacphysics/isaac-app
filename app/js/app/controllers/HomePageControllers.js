@@ -111,7 +111,7 @@ define([], function() {
 				$location.hash(board.id);
 
 				lastHash = board.id;
-				
+
 			}).catch(function() {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
@@ -122,6 +122,7 @@ define([], function() {
 			if (newVal !== undefined && newVal === oldVal)
 				return; // Initialisation
 
+			$scope.shuffleStack.length = 0;
 			buildBreadCrumb();
 
 			setWarnings();
@@ -172,6 +173,21 @@ define([], function() {
 				$scope.breadCrumbSubject = "multiple_subjects";
 			}
 
+		}
+
+		$scope.shuffleStack = [];
+
+		$scope.shuffleBoard = function() {
+			$scope.shuffleStack.push($scope.gameBoard.id);
+			loadGameBoardFromFilter();
+		}
+
+		$scope.undoShuffle = function() {
+			newId = $scope.shuffleStack.pop();
+			if (newId) {
+				$location.hash(newId);
+				loadGameBoardById(newId);
+			}
 		}
 
 		$scope.getTagTitle = function(id) {
