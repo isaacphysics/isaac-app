@@ -210,6 +210,21 @@ $ru_nav_size : 7em;
     display: inline-block;
 }
 
+.ru-search-bg {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.ru-desktop-panel.search {
+    z-index: 2000;
+    position: relative;
+
+}
+
 .ru-desktop-search
 {
     padding-top: 16px;
@@ -252,7 +267,7 @@ label[for="ru-search-box"]
     position: absolute;
     right: 5px;
     top: 9px;
-    z-index: 200;
+    z-index: 3000;
     cursor: pointer;
 }
 
