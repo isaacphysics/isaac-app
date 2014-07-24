@@ -13,7 +13,7 @@ define(["app/MathJaxConfig"], function() {
 				// This must be done asynchronously. Content isn't actually in element yet. Don't really understand why...
 				setTimeout(function() {
 					MathJax.Hub.Queue(["Typeset",MathJax.Hub, element[0]]);      
-				}, 0);
+				}, 1000);
 				   
 			}
 		};

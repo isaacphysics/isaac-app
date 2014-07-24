@@ -101,11 +101,12 @@ define([
 		return {
 			link: function(scope, element, attrs) {
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
+					/*
 		            if (searchOpen) {
 		                element.fadeTo(300,0.15);
 		            } else {
 		                element.fadeTo(300,1);
-		            }
+		            }*/
 				})
 			}
 		}
