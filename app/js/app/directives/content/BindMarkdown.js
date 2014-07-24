@@ -1,7 +1,7 @@
 define(["showdown/showdown", "showdown/extensions/table"], function() {
 
 
-	return ["$parse", "$compile", function($parse, $compile) {
+	return ["$parse", "$compile", "$location", function($parse, $compile, $location) {
 
 
 		return {
@@ -21,9 +21,24 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 					}];
 				};
 
+				Showdown.extensions.links = function(converter) {
+					return [{
+						type: "lang",
+						regex: '\\\\link{([^}]*)}{([^}]*)}',
+						replace: '<a ng-click="markdownLinkGo(\'$2\')">$1</a>',
+					}]
+				};
+
 				var converter = new Showdown.converter({
-					extensions: ["table", "refs"],
+					extensions: ["table", "refs", "links"],
 				});
+
+				scope.markdownLinkGo = function(url) {
+					if (url.indexOf("http://") == 0)
+						document.location.href = url;
+					else
+						$location.url(url);
+				}
 
 				var parsed = $parse(attrs.bindMarkdown|| element.html());
 				var markdown = (parsed(scope) || "").toString();
