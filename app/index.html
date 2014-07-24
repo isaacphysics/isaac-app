@@ -23,8 +23,13 @@
         <div class='bg-wrap'>
             <div ng-include="'/partials/header.html'"></div>
 
-            <main class='ru-body' fade-on-search ui-view="body"></main>
-
+            <div class="row">
+              <div class="small-16 columns">
+                <div class="body-wrap">
+                  <main class='ru-body' fade-on-search ui-view="body"></main>
+                </div>
+              </div>
+            </div>
         </div>
         <div ng-include="'/partials/footer.html'"></div>
 

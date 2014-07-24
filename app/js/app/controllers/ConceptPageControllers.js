@@ -48,6 +48,7 @@ define([], function() {
 		}
 
 		$scope.figures = {};
+
 	}]
 
 	return {

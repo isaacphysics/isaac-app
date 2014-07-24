@@ -11,6 +11,7 @@
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "angular-resource": "1.2.x",
+    "angular-animate": "1.2.x",
     "foundation": "5.2.2",
     "react": "0.10.0",
     "angulartics": "0.15.17",

@@ -5,9 +5,10 @@
             <div class="ru_accordion_name">
                 <span class='ru_level' ng-if="c.level"></span> 
                 {{c.level}}
-                <span ng-if="!c.level">{{c.title}}</span>
+                <span ng-if="questionPage">Part {{$index | indexToPart}}</span>
+                <span ng-if="!questionPage && !c.level">&nbsp;</span>
             </div>
-            <span class="ru_accordion_title" ng-if="c.level">
+            <span class="ru_accordion_title">
                 {{c.title}}
             </span>
             <div class="ru_accordion_details">

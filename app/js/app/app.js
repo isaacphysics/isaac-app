@@ -9,6 +9,7 @@ define([
     "app/honest/responsive_video", 
     "angular", 
     "angular-resource", 
+    "angular-animate",
     "app/controllers", 
     "app/directives", 
     "app/services", 
@@ -34,6 +35,7 @@ define([
 		'isaac.controllers',
         'angulartics',
         'angulartics.google.analytics',
+        'ngAnimate',
 	])
 
 	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
@@ -57,12 +59,17 @@ define([
 
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
+            /*$(".body-wrap").slideUp(1000);*/
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
             $rootScope.globalFlags.isLoading = false;
             $rootScope.globalFlags.displayLoadingMessage = false;
 
+            /*setTimeout(function() {
+                $(".body-wrap").slideDown(1000);
+
+            },5000);*/
             $(document).scrollTop(0);
         })
 
