@@ -55,6 +55,14 @@ body
     opacity: 0;
 }
 
+.search-fade {
+    transition: 0.3s linear opacity;
+}
+
+.search-fade-active {
+    opacity: 0.1;
+}
+
 
 // Force footer to bottom
 $footer_height : 250px;

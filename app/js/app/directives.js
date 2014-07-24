@@ -100,13 +100,14 @@ define([
 	.directive('fadeOnSearch', [function() {
 		return {
 			link: function(scope, element, attrs) {
+				element.addClass("search-fade")
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
-					/*
+					
 		            if (searchOpen) {
-		                element.fadeTo(300,0.15);
+		                element.addClass("search-fade-active");
 		            } else {
-		                element.fadeTo(300,1);
-		            }*/
+		                element.removeClass("search-fade-active");
+		            }
 				})
 			}
 		}
