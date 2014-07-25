@@ -1,10 +1,8 @@
 define([], function() {
 
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth) {
 
-
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', function($scope, api, $location, tags, $sce, persistence, filterWarnings) {
-
-		$scope.userInformation = api.currentUserInformation.get();
+		$scope.user = auth.getUser();
 
 		$scope.filterPanelOpen = null;
 

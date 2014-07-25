@@ -147,7 +147,7 @@ define(["angular-ui-router"], function() {
                 }
             })
             .state('login', {
-                url: "/users/login",
+                url: "/login",
                 resolve: {
                     "authenticationEndpoint": ["api", "$stateParams", function(api, $stateParams) {
                         return api.authenticationEndpoint;
@@ -159,7 +159,19 @@ define(["angular-ui-router"], function() {
                         controller: "LoginPageController",
                     }
                 }
-            })                         
+            })
+            .state('logout', {
+                url: "/logout",
+                resolve: {
+                    done: ["auth", function(auth) {
+                        window.foo = auth.logout();
+                        return window.foo;
+                    }],
+                },
+                onEnter: ["$state", function($state) {
+                    document.location.href = "/";
+                }]
+            })
             .state('404', {
                 params: ["target"],
                 views: {

@@ -1,12 +1,16 @@
 define([], function() {
 
 
-	var Api = function ApiConstructor($resource, server) {
+	var Api = function ApiConstructor($resource, server, $http) {
 
 		this.pages = $resource(server + "/api/pages/:id");
+
 		this.pageFragments = $resource(server + "/api/pages/fragments/:id");
+
 		this.questionPages = $resource(server + "/api/pages/questions/:id");
+
 		this.conceptPages = $resource(server + "/api/pages/concepts/:id");
+
 		this.questionValidator = $resource(server + "/api/questions/:id/answer", {}, {
 			validate: {
 				method: "POST",
@@ -22,9 +26,13 @@ define([], function() {
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
-		this.currentUserInformation = $resource(server + "/api/users/current_user")
+		this.currentUser = $resource(server + "/api/users/current_user");
 
 		this.authenticationEndpoint = server+"/api/auth";
+
+		this.logout = function() {
+			return $http.post(this.authenticationEndpoint + "/logout");
+		};
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
