@@ -1,9 +1,9 @@
 {
-  "name": "angular-seed",
+  "name": "isaac-app",
   "private": true,
-  "version": "0.0.0",
-  "description": "A starter project for AngularJS",
-  "repository": "https://github.com/angular/angular-seed",
+  "version": "0.1.4-SNAPSHOT",
+  "description": "Physics. You work it out.",
+  "repository": "http://isaacphysics.org",
   "license": "MIT",
   "devDependencies": {
     "karma": "~0.10",
