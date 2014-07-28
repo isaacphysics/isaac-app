@@ -147,7 +147,7 @@ define(["angular-ui-router"], function() {
                 }
             })
             .state('login', {
-                url: "/login",
+                url: "/login?target",
                 resolve: {
                     "authenticationEndpoint": ["api", "$stateParams", function(api, $stateParams) {
                         return api.authenticationEndpoint;
@@ -157,6 +157,18 @@ define(["angular-ui-router"], function() {
                     "body": {
                         templateUrl: "/partials/states/login_page.html",
                         controller: "LoginPageController",
+                    }
+                }
+            })
+            .state('boards', {
+                url: "/boards",
+                resolve: {
+                    requireLogin: "authResolver",
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/my_boards.html",
+                        controller: "MyBoardsPageController",
                     }
                 }
             })
@@ -215,6 +227,9 @@ define(["angular-ui-router"], function() {
     .run(['$rootScope', '$state', function($rootScope, $state) {
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             console.warn("State change error:", error);
+
+            if (error == "require_login")
+                $state.go('login', {target: $state.href(toState, toParams)});
 
             if (error.status == 404)
                 $state.go('404', {target: $state.href(toState, toParams)});

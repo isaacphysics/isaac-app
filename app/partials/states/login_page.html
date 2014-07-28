@@ -19,11 +19,15 @@
 		see your email address and basic details. If you agree then your account will be created immediately.
         </p>
 
+        <p>
+        After login, you will be redirected to {{target}}.
+        </p>
+
 		<!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
         <p>
-            <a ng-click="auth.loginRedirect('google')"><img src="/assets/login-googleplus.svg" alt="google login" style="margin-right: 5px;" /></a>
-            <a ng-click="auth.loginRedirect('twitter')"><img src="/assets/login-twitter.svg" alt="twitter login" style="margin-right: 5px;" /></a>
-            <a ng-click="auth.loginRedirect('facebook')"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
+            <a ng-click="auth.loginRedirect('google', target)"><img src="/assets/login-googleplus.svg" alt="google login" style="margin-right: 5px;" /></a>
+            <a ng-click="auth.loginRedirect('twitter', target)"><img src="/assets/login-twitter.svg" alt="twitter login" style="margin-right: 5px;" /></a>
+            <a ng-click="auth.loginRedirect('facebook', target)"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
         </p>
 	</div>
 </div>

@@ -11,6 +11,7 @@ define([
 	"app/controllers/QuestionIndexControllers",
 	"app/controllers/QuestionPageControllers",
 	"app/controllers/HomePageControllers",
+	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginPageControllers",
 	"app/controllers/SearchControllers"
@@ -25,6 +26,8 @@ define([
 	var questionIndexControllers = require("app/controllers/QuestionIndexControllers");
 
 	var homePageControllers = require("app/controllers/HomePageControllers");
+
+	var myBoardsPageControllers = require("app/controllers/MyBoardsPageControllers");
 
 	var contentErrorController = require("app/controllers/ContentErrorControllers");
 
@@ -47,6 +50,8 @@ define([
 	.controller('QuestionPageController', questionPageControllers.PageController)
 
 	.controller('HomePageController', homePageControllers.PageController)
+
+	.controller('MyBoardsPageController', myBoardsPageControllers.PageController)
 
 	.controller('ContentErrorController', contentErrorController.PageController)
 

@@ -4,6 +4,7 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 
 	/* Services */
 
+	var auth = require("app/services/Auth");
 
 	// Demonstrate how to register services
 	// In this case it is a simple value service.
@@ -37,7 +38,9 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 
 	.service('persistence', require("app/services/Persistence"))
 
-	.service('auth', require("app/services/Auth"))
+	.service('auth', auth.service)
+
+	.service('authResolver', auth.resolver)
 
 
 

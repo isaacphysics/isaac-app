@@ -1,9 +1,10 @@
 define([], function() {
 
-	return ['api', '$window', function(api, $window) {
+	var service = ['api', '$window', function(api, $window) {
 
-		this.loginRedirect = function(provider) {
-			$window.location.href = api.authenticationEndpoint + '/' + provider +"/authenticate?redirect=http://" + $window.location.host;
+		this.loginRedirect = function(provider, target) {
+			
+			$window.location.href = api.authenticationEndpoint + '/' + provider +"/authenticate?redirect=http://" + $window.location.host + (target || "");
 		}
 
 		this.logout = function() {
@@ -20,4 +21,18 @@ define([], function() {
 		}
 
 	}];
+
+	var resolver = ['auth', function(auth) {
+
+		return auth.getUser().$promise.catch(function(r) {
+			if (r.status == 401)
+				return Promise.reject("require_login");
+			return Promise.reject("Something went wrong:", r);
+		});
+	}];
+
+	return {
+		service: service,
+		resolver: resolver,
+	}
 });
