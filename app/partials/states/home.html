@@ -10,9 +10,10 @@
         </div>
         <div class='medium-8 end columns text-right'>
             <h2 class='ru-welcome'>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Logout)</a></span></span></h2>
-            <span class='ru-challenge' ng-hide="filterPanelOpen == 'desktop-filter'">Get started by <br class='show-for-medium-only'> <a ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
+            <span class='ru-challenge' ng-if="!filterPanelOpen">Get started by <br class='show-for-medium-only'> <a ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
         </div>
         <div class='clearfix'></div>
+
         <div id='desktop-filter' class="down isdown" ng-show="filterPanelOpen == 'desktop-filter'">
             <div class='medium-9 large-10 columns' id='desktop-filter1'>
                 <div hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics"></div>
@@ -96,8 +97,15 @@
                             </div>
                         </li>
                         <li ng-if="filterPanelOpen == 'desktop-filter'">
-                            
                             <div class="get-started-pod-spacer-bottom"></div>
+                            
+                            <div class="panel ru_pod ru_pod_image">
+                                <div class='ru_pod_image_inner'>
+                                    <h5>Try some questions</h5>
+                                    <p>Once you have chosen topics to work on, start answering questions below.</p>
+                                    <a ng-click="scrollToQuestions()"><strong>Show questions</strong></a>
+                                </div>
+                            </div>
                         </li>
                         <li>
                             <div class="panel ru_pod ru_pod_image">

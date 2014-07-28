@@ -216,6 +216,11 @@ define([], function() {
 			$(window).off('hashchange', hashChanged);
         });
 
+        $scope.scrollToQuestions = function() {
+			$('html, body').animate({
+                scrollTop: $(".hexagon_wrap").offset().top
+            }, 1000);        }
+
 	}]
 
 	return {
