@@ -1,0 +1,84 @@
+<div desktop-panel>
+    <div class='ru-desktop-panel-content'>
+        <h1 class="h1-concept-index">Isaac Search</h1>
+    </div>
+</div>
+<div mobile-panel>
+    <div class='row'>
+        <div class='small-16 columns'>
+            <h5>Search:</h5>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class='large-16 medium-16 columns'>
+
+        <section class='ru-concept-search'>
+            <div class='row'>
+                <div class='medium-2 small-0 columns hide-for-small-only'>
+                    <h3>Search:</h3>
+                </div>
+                <div class='clearfix show-for-small-only'></div>
+                <div class='medium-14 small-13 columns'>
+                    <input type='text' ng-model="models.query">
+                    <div class="ru-search-list hide-for-small-only">
+                    </div>
+                </div>
+
+                <div class='medium-1 small-3 columns end'>
+                    <!--<button id='desktop-button' class='hide-for-small-only'>GO</button>-->
+                    <div id='mobile-button' class='hide-for-medium-up'>
+                        <img src='/assets/mobile-search.png'>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section>
+            <div class='row ru-mobile-searchbar-wrap'>
+                <div class='small-16 columns'>
+                    <div class="ru-search-result-bar">
+                        <h4 class="left">Search Results</h4>
+                        <div class="right">
+                            <span class='hide-for-small-only'>Filter</span>
+                            <input type="checkbox" id="includeProblems" ng-model="models.includeQuestions"><label for="includeProblems">Include problems</label>
+                            <input type="checkbox" id="includeConcepts" ng-model="models.includeConcepts"><label for="includeConcepts">Include concepts</label>
+                        </div>                        
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ru-concept-results">
+                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-click="goToState(result)">
+                    <div class='small-16 columns'>
+                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
+                            <div class="ru-search-result-content">
+                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
+                                <h4><span ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}">{{result.title}}</span></h4>
+                                    <p>{{result.summary}}</p>
+                                </h4>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ru-concept-pad">
+
+            </div>
+            <div class="ru-concept-result-controls">
+                <div class="row">
+                    <div class='small-16 columns show-for-small-only'>
+                        <button id="load-more">Load more</button>
+                    </div>
+                </div>
+                <div class="ru-concept-result-bullets hide-for-small-only text-center">
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

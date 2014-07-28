@@ -159,7 +159,31 @@ define(["angular-ui-router"], function() {
                         controller: "LoginPageController",
                     }
                 }
-            })                         
+            })
+            .state('searchResults', {
+                url: "/search?query&types&page",
+                resolve: {                    
+                    "query" :['$stateParams', function($stateParams){
+                        return $stateParams.query;
+                    }],
+                    
+                    "types" :['$stateParams', function($stateParams){
+                        return $stateParams.types.split(",");
+                    }],
+                    
+                    "pageIndex" :['$stateParams', function($stateParams){
+                        return parseInt($stateParams.page || "1") - 1;
+                    }]
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/search_results.html",
+                        controller: "SearchController",
+                    }
+                },
+                reloadOnSearch: false,
+            })
+
             .state('404', {
                 params: ["target"],
                 views: {
