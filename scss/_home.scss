@@ -233,7 +233,11 @@ ul.ru-crumb.multiple-subjects li
 .hexagon_wrap
 {
     background-color: transparent;
-    min-height: 500px;
+    min-height: 650px;
+
+    background-image: url(/assets/loading.gif);
+    background-position: center center;
+    background-repeat: no-repeat;
 }
 
 .hexagon_wrap * path

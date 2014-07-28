@@ -66,6 +66,23 @@
     margin-top: 6px;
 }
 
+.get-started-pod-spacer
+{
+    height: 180px;
+    background-position: center top;
+    background-image: url(/assets/get-started.png);        
+
+}
+
+.get-started-pod-spacer-bottom
+{
+    height: 360px;
+    background-position: center center;
+    background-image: url(/assets/try-questions.png);       
+    background-repeat: no-repeat; 
+
+}
+
 @media #{$small-only}
 {
     .ru_pod
