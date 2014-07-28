@@ -168,7 +168,11 @@ define(["angular-ui-router"], function() {
                     }],
                     
                     "types" :['$stateParams', function($stateParams){
-                        return $stateParams.types.split(",");
+                        if ($stateParams.types != null && $stateParams.types.length > 0) {
+                            return $stateParams.types.split(",");    
+                        } else {
+                            return [];
+                        }
                     }],
                     
                     "pageIndex" :['$stateParams', function($stateParams){

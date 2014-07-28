@@ -1,6 +1,6 @@
 define([], function() {
 
-	var defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: false, includeQuestions: false};
+	var defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
 
 	var doSearch = function(api, query, typesToInclude, $location) {
 		var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
@@ -26,16 +26,20 @@ define([], function() {
 		
 		// initialise scope
 		$scope.models = defaultSearchOptions;
-
 		$scope.models.query = query;
 		$scope.models.typesToInclude = types;
-
+		
 		// Initialise model booleans with input from router (type)
-		if(types.indexOf(conceptPage) != -1) {
-			$scope.models.includeConcepts = true;
-		}
-		if(types.indexOf(questionPage) != -1) {
-			$scope.models.includeQuestions = true;	
+		if ($scope.models.typesToInclude.length > 0){
+			$scope.models.includeConcepts = ($scope.models.typesToInclude.indexOf(conceptPage) != -1 ? true : false);
+			$scope.models.includeQuestions =  ($scope.models.typesToInclude.indexOf(questionPage) != -1 ? true : false);
+		} else {
+			if ($scope.models.includeConcepts) {
+				$scope.models.typesToInclude.push(conceptPage);
+			}
+			if ($scope.models.includeQuestions) {
+				$scope.models.typesToInclude.push(questionPage);
+			}
 		}
 
 		var timer = null;
