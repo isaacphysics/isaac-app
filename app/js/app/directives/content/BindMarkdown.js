@@ -43,7 +43,7 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 				var parsed = $parse(attrs.bindMarkdown|| element.html());
 				var markdown = (parsed(scope) || "").toString();
 				var converted = converter.makeHtml(markdown);
-				element.html($compile(converted)(scope));
+				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }"))(scope));
 			}
 		};
 	}];
