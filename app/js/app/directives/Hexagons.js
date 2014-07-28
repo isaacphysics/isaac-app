@@ -180,7 +180,9 @@ define(["app/honest/hexagon"],function(hexagon) {
                 }
 
                 $(window).on("resize", update);
-
+                scope.$on("$destroy", function() {
+                    $(window).off("resize", update);
+                })
 
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {

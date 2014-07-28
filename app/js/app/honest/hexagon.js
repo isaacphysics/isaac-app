@@ -53,6 +53,9 @@ define([ 'jquery','honest/d3.min'],
              */           
             calculateHexagons : function(where, _pad, _width, _aspect, items, equalRows)
             {
+                if (where.length == 0)
+                    return;
+
                 // Internal page width function
                 var pageWidth = function()
                 {
