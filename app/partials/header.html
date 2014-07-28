@@ -100,6 +100,7 @@
                     <div class="ru-search-bg" ng-show="globalFlags.siteSearchOpen" ng-click="globalFlags.siteSearchOpen = false"></div>
                     <div class="ru-desktop-panel search" ng-show="globalFlags.siteSearchOpen">
                         <div class='ru-desktop-search'>
+                            <form ng-submit="triggerSearch()">
                             <div class="row">
                                 <div class="large-2 medium-2 columns">
                                     <label for="ru-search-box" class=" text-center inline">Search</label>
@@ -114,7 +115,7 @@
                                             <input id="search-check1" ng-model="models.includeQuestions" name="checkbox2" type="checkbox">
                                             <label for='search-check1'></label>
                                         </span>
-                                        <label for="search-check1" class=''> Problems only</label>
+                                        <label for="search-check1" class=''> Search problems</label>
                                     </div>
                                 </div>
                                 <div class="large-4 medium-5  columns">
@@ -123,13 +124,14 @@
                                             <input id="search-check2" ng-model="models.includeConcepts" name="checkbox2" type="checkbox">
                                             <label for='search-check2'></label>
                                         </span>
-                                        <label for="search-check2" class=''> Concepts only</label>
+                                        <label for="search-check2" class=''> Search concepts</label>
                                     </div>
                                 </div>
                                 <div class="large-2 medium-3 medium-offset-0 columns end">
                                     <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now" ng-click="triggerSearch()">
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
 
