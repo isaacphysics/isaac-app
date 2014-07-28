@@ -6,23 +6,23 @@ body
 }
 
 
-.ng-hide-add {
+.hide-animate.ng-hide-add {
     transition:0.1s linear all;
     opacity: 1;
     display:block!important;
 }
 
-.ng-hide-add-active {
+.hide-animate.ng-hide-add-active {
     opacity: 0;
 }
 
-.ng-hide-remove {
+.hide-animate.ng-hide-remove {
     transition:0.1s linear all;
     opacity: 0;
     display:block!important;
 }
 
-.ng-hide-remove-active {
+.hide-animate.ng-hide-remove-active {
     opacity:1;
 }
 

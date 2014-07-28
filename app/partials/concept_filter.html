@@ -1,5 +1,5 @@
 <div id="conceptfilter">
-	<h3>Filter by Concept <a href=''><small>(What's this?)</small></a></h3>
+	<h3>Filter by Concept<!-- <a href=''><small>(What's this?)</small></a>--></h3>
 	<input type="text" placeholder="Concept title" ng-model="conceptInput">
 	<div id="concept-search-data">
 		<div ng-repeat="c in allConcepts.results | filter:removeSelected | filter:{title: conceptInput}:titleMatcher | limitTo:4" class='concept-search-result physics' ng-click="selectConcept(c.id)">

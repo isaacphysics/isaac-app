@@ -6,13 +6,12 @@ define([], function() {
 
 		$scope.filterPanelOpen = null;
 
-		$scope.openFilterPanel = function(panelNumberToOpen) {
-			if ($scope.filterPanelOpen === panelNumberToOpen) {
-				// it turns into a toggle
+		$scope.openFilterPanel = function(panelToOpen) {
+			if ($scope.filterPanelOpen === panelToOpen) {
 				$scope.filterPanelOpen = null;
-			}
-			else{
-				$scope.filterPanelOpen = panelNumberToOpen;
+
+			} else {
+				$scope.filterPanelOpen = panelToOpen;
 			}
 		}
 
