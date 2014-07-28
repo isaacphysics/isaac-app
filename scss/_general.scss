@@ -349,3 +349,13 @@ h6~.subheader { position: relative; bottom:  8px;}
 {
     margin-bottom: 30px;
 }
+
+.padded-left-float {
+    float: left;
+    padding-left: 0.9375rem;
+}
+
+.padded-right-float {
+    float: right;
+    padding-right: 0.9375rem;
+}

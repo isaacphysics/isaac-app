@@ -56,7 +56,7 @@ define([
 
         $rootScope.globalFlags = {
             siteSearchOpen: false,
-            isLoading: false,
+            isLoading: false
         };
 
         $rootScope.$state = $state;
@@ -105,10 +105,12 @@ define([
                                         'only screen and (min-width: 1024px) and (-o-min-device-pixel-ratio: 2/1),'+
                                         'only screen and (min-width: 1024px) and (min-device-pixel-ratio: 2),'+
                                         'only screen and (min-width: 1024px) and (min-resolution: 192dpi),'+
-                                        'only screen and (min-width: 1024px) and (min-resolution: 2dppx)'
+                                        'only screen and (min-width: 1024px) and (min-resolution: 2dppx)',
+                        medium_large :  'only screen and (min-width: 54.115em)'
                     }
                 }
             });
+
             $(document).foundation('interchange', 'reflow');
 
             // Global jQuery
