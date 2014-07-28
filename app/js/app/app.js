@@ -9,6 +9,7 @@ define([
     "app/honest/responsive_video", 
     "angular", 
     "angular-resource", 
+    "angular-animate",
     "app/controllers", 
     "app/directives", 
     "app/services", 
@@ -34,9 +35,13 @@ define([
 		'isaac.controllers',
         'angulartics',
         'angulartics.google.analytics',
+        'ngAnimate',
 	])
 
-	.config(['$locationProvider', 'apiProvider', function($locationProvider, apiProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
+
+        // Send session cookies with the API requests.
+        $httpProvider.defaults.withCredentials = true;
 
         // Only use html5 mode if we are on a real server, which should respect .htaccess
 		$locationProvider.html5Mode(document.location.hostname != "localhost").hashPrefix("!");
@@ -44,6 +49,7 @@ define([
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost")
             apiProvider.server("http://dev.isaacphysics.org");
+
 	}])
 
 	.run(['$rootScope', 'api', '$state', function($rootScope, api, $state) {
@@ -62,6 +68,7 @@ define([
         $rootScope.$on("$stateChangeSuccess", function() {
             $rootScope.globalFlags.isLoading = false;
             $rootScope.globalFlags.displayLoadingMessage = false;
+
 
             $(document).scrollTop(0);
         })

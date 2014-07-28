@@ -5,6 +5,65 @@ body
     position: relative;
 }
 
+
+.ng-hide-add {
+    transition:0.1s linear all;
+    opacity: 1;
+    display:block!important;
+}
+
+.ng-hide-add-active {
+    opacity: 0;
+}
+
+.ng-hide-remove {
+    transition:0.1s linear all;
+    opacity: 0;
+    display:block!important;
+}
+
+.ng-hide-remove-active {
+    opacity:1;
+}
+
+
+
+.ru-body.ng-leave, .ru-body.ng-enter {
+    transform-origin: center top; 
+    transition: 0.2s linear all;
+}
+
+.ru-body.ng-leave {
+    transform: perspective(1000px) rotateX(0);
+    position: absolute;
+    top: 0;
+    opacity: 1;
+}
+
+.ru-body.ng-enter {
+    transform: perspective(1000px) rotateX(-90deg);
+    opacity: 0;
+}
+
+.ru-body.ng-enter-active {
+    transform: perspective(1000px) rotateX(0);
+    opacity: 1;
+}
+
+.ru-body.ng-leave-active {
+    transform: perspective(1000px) rotateX(-90deg);
+    opacity: 0;
+}
+
+.search-fade {
+    transition: 0.3s linear opacity;
+}
+
+.search-fade-active {
+    opacity: 0.1;
+}
+
+
 // Force footer to bottom
 $footer_height : 250px;
 @media #{$medium-up}
@@ -284,4 +343,9 @@ h6~.subheader { position: relative; bottom:  8px;}
     @extend .text-center;
     border: 1px solid #ddd;
 
+}
+
+.extra-desktop-panel-gap
+{
+    margin-bottom: 30px;
 }

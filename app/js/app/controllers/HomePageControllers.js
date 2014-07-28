@@ -1,10 +1,8 @@
 define([], function() {
 
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth) {
 
-
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', function($scope, api, $location, tags, $sce, persistence, filterWarnings) {
-
-		$scope.userInformation = api.currentUserInformation.get();
+		$scope.user = auth.getUser();
 
 		$scope.filterPanelOpen = null;
 
@@ -217,6 +215,11 @@ define([], function() {
 		$scope.$on('$stateChangeStart', function() {
 			$(window).off('hashchange', hashChanged);
         });
+
+        $scope.scrollToQuestions = function() {
+			$('html, body').animate({
+                scrollTop: $(".hexagon_wrap").offset().top
+            }, 1000);        }
 
 	}]
 

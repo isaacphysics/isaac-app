@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Persistence", "app/services/FilterWarnings"], function() {
+define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Persistence", "app/services/FilterWarnings", "app/services/Auth"], function() {
 
 	/* Services */
 
@@ -26,16 +26,18 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 			server = value;
 		}
 
-		this.$get = ["$resource", function ApiFactory($resource) {
+		this.$get = ["$resource", "$http", function ApiFactory($resource, $http) {
 
 			var Api = require("app/services/Api");
 
-			return new Api($resource, server);
+			return new Api($resource, server, $http);
 				
 		}];
 	})
 
 	.service('persistence', require("app/services/Persistence"))
+
+	.service('auth', require("app/services/Auth"))
 
 
 

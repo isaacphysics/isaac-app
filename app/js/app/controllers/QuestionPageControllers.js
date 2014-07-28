@@ -3,8 +3,9 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout) {
 		$scope.page = page;
+		$scope.questionPage = page;
 		$scope.figures = {};
 
 		var pageTags = page.tags || [];
@@ -108,7 +109,6 @@ define([], function() {
 		$scope.backToBoard = function() {
 			$location.url("/#" + $stateParams.board)
 		}
-
 
 	}]
 

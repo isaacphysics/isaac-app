@@ -23,4 +23,11 @@ define(["angular", "showdown/showdown", "showdown/extensions/table"], function()
 		}
 	}])
 
+	.filter('indexToPart', [function() {
+
+		return function(input) {
+			return String.fromCharCode(65 + input);
+		}
+	}])
+
 });

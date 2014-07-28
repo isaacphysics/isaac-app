@@ -1,11 +1,8 @@
 define([], function() {
 
-	var PageController = ['$scope', '$window','authenticationEndpoint', function($scope, $window, authenticationEndpoint) {
-		$scope.authEndpoint = authenticationEndpoint;
+	var PageController = ['$scope', 'auth', function($scope, auth) {
 
-		$scope.redirectToProvider = function(provider, redirectUrl){
-			$window.location.href = authenticationEndpoint + '/' + provider +"/authenticate?redirect=" + redirectUrl;
-		};
+		$scope.auth = auth;
 	}]
 
 	return {
