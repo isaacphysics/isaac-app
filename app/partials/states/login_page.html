@@ -12,14 +12,19 @@
 	<div class='large-16 medium-16 columns'>
 		<p>
 		In order for us to give you a more personalised experience and for you to record your achievements you will need to create an account with us.
+        </p>
 
 		<p>
 		Creating an account is very easy if you have an account with one of these external services. All you  have to do is click the link below and login if prompted. You may see a message asking you to agree that we can
 		see your email address and basic details. If you agree then your account will be created immediately.
+        </p>
+
 		<!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
-		<ul>
-			<li><a ng-click="auth.loginRedirect('google')"><img src="/assets/google-signin.jpg" alt="google login"/></a></li>
-		</ul>
+        <p>
+            <a ng-click="auth.loginRedirect('google')"><img src="/assets/login-googleplus.svg" alt="google login" style="margin-right: 5px;" /></a>
+            <a ng-click="auth.loginRedirect('twitter')"><img src="/assets/login-twitter.svg" alt="twitter login" style="margin-right: 5px;" /></a>
+            <a ng-click="auth.loginRedirect('facebook')"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
+        </p>
 	</div>
 </div>
 
