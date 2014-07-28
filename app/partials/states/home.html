@@ -125,7 +125,7 @@
 
         <section>
             <div class="row">
-                <div class='ru-board-title show-for-large-up'>
+                <div class='ru-board-title show-for-medium-up'>
                     <div class="large-5 columns">
                         <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img"><h4>Undo Shuffle</h4></a>&nbsp;
                     </div>
@@ -140,21 +140,7 @@
                     </div>
 
                 </div>
-                <div class='ru-board-title hide-for-large-up'>
-                    <div class="small-8 columns">
-                        <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img"><h4>Undo Shuffle</h4></a>
-                    </div>
-                    <div class="small-8 columns">
-                        <div class="right">
-                            <a ng-click="shuffleBoard()"><h4>Shuffle Board</h4>
-                                <img src="/assets/icon-shuffle.png" class="ru-board-img"></a>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="small-16 columns text-center">
-                            <h2>My Board Title</h2>
-                        </div>
-                    </div>
+
                     <div class="clearfix"></div>
 
                     <div class="row">
@@ -170,14 +156,14 @@
                     <div class=''> 
                         <div class='ru-board-title hide-for-medium-up'>
                             <div class="small-8 columns">
-                                <a href=''>
+                                <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()">
                                     <img src="/assets/icon-undo-shuffle.png" class="ru-board-img">
                                     <h4>Undo Shuffle</h4>
                                 </a>
                             </div>
                             <div class="small-8 columns">
                                 <div class="right">
-                                    <a href=''>
+                                    <a ng-click="shuffleBoard()">
                                         <h4>Shuffle Board</h4>
                                         <img src="/assets/icon-shuffle.png" class="ru-board-img">
                                     </a>

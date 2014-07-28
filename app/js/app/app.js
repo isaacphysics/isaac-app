@@ -321,6 +321,19 @@ define([
 	// Bootstrap AngularJS
 	/////////////////////////////////////
 
+
+    if (document.location.hash == "#_=_") {
+        
+        // This is necessary because of Facebook's stupid hackery. See http://stackoverflow.com/a/7297873
+
+        if (document.location.hostname == "localhost")
+            document.location.hash = "#!";
+        else
+            document.location.hash = "";
+
+    }
+
+
 	var root = $("html");
 	angular.bootstrap(root, ['isaac']);
 
