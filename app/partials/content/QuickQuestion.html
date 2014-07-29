@@ -9,12 +9,13 @@
     <div class="small-14 small-offset-1 columns end">
         <div class='ru_answer_reveal {{pageSubject}}'>
             <div ng-click="isVisible=!isVisible"> 
-                <span ng-if="isVisible">Hide answer</span> 
-                <span ng-if="!isVisible">Show answer</span>
+                <span ng-if="isVisible" class="no-print">Hide answer</span>
+                <span ng-if="!isVisible" class="no-print">Show answer</span>
+                <span class="only-print">Answer</span>
             </div>
-            <div ng-show="isVisible">
+            <div ng-show="isVisible" class="force-print">
                 <div isaac-content-value-or-children encoding="doc.answer.encoding" value="doc.answer.value" children="doc.answer.children"></div>
-                <div ng-click="isVisible=!isVisible" class='ru_answer_close'></div>
+                <div ng-click="isVisible=!isVisible" class='ru_answer_close no-print'></div>
             </div>
         </div>
     </div>

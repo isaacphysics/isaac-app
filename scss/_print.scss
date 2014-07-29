@@ -1,0 +1,54 @@
+@media print {
+    a[href]:after {
+        content: none !important;
+    }
+
+    .no-print {
+        display: none;
+    }
+
+    .force-print, .only-print {
+        display: initial !important;
+    }
+
+    .ru-mobile-nav {
+        margin-top: 0;
+    }
+
+    .ru-answer-check {
+        @extend .no-print;
+   }
+
+    .tabs-content.ru_tabs.ru-answer .content.ru-answer, .tabs.ru_tabs dd.active.ru-answer a, .tabs.ru_tabs dd.ru-answer a, .tabs.ru_tabs dd.active.ru-answer a, .tabs.ru_tabs dd.ru-answer a:hover {
+        background-color: white !important;
+    }
+
+    div.ru-desktop-panel-content div.columns {
+        width: initial;
+    }
+
+    .print-float-right {
+        float: right;
+    }
+
+    .ru_share {
+        @extend .no-print;
+    }
+
+    .ru_share_link {
+        @extend .print-float-right;
+    }
+
+    .ru_answer_reveal div {
+        border: 0 !important;
+    }
+
+    p.ng-scope, ul.ng-scope, div.ng-scope form, .print-side-padding {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+.only-print {
+    display: none;
+}

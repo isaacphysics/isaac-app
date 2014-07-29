@@ -1,6 +1,6 @@
 <header>
     <!-- Desktop Header -->
-    <div class='ru-desktop-header'>
+    <div class='ru-desktop-header no-print'>
         <div class='ru-dekstop-nav'>
             <!-- Desktop Nav -->
             <nav class='row'>
@@ -38,7 +38,7 @@
     <!-- Mobile Header -->
     <div class='ru-mobile-header'>
         <!-- Mobile Fixed Header -->
-        <div class='ru-fixed-header fixed'>
+        <div class='ru-fixed-header fixed no-print'>
             <div class='row'>
                 <div class='small-8 columns'>
                     <div id='mobile-login' class='pointer'>
@@ -67,17 +67,17 @@
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
 
 
-                <a class='ru-mobile-nav-item'>  
+                <a class='ru-mobile-nav-item no-print'>
                     <div class='ru-mobile-nav-item-inner'>
                         <span>My Boards</span>
                     </div>
                 </a>
-                <a class='ru-mobile-nav-item' ui-sref='conceptIndex'>  
+                <a class='ru-mobile-nav-item no-print' ui-sref='conceptIndex'>
                     <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
                         <span>Concepts</span>
                     </div>
                 </a>
-                <a class='ru-mobile-nav-item' ui-sref='home'>  
+                <a class='ru-mobile-nav-item no-print' ui-sref='home'>
                     <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('home') || $state.includes('question')}">
                         <span>Problems</span>
                     </div>

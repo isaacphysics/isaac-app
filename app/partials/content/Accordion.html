@@ -11,13 +11,13 @@
             <span class="ru_accordion_title" math-jax>
                 {{c.title}}
             </span>
-            <div class="ru_accordion_details">
+            <div class="ru_accordion_details no-print">
                 <span class='ru-level-{{pageSubject}}-{{c.level || "0"}}'></span>    
                 <img src='/assets/icon-expand-arrow.png'>
             </div>
         </a>
-        <div ng-class="{content: true, active: openChildren[$index]}">
-            <div isaac-content doc="c"></div>
+        <div ng-class="{content: true, active: openChildren[$index]}" class="force-print">
+            <div isaac-content doc="c" class="print-side-padding"></div>
         </div>
     </dd>
 </dl>
