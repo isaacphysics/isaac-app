@@ -13,9 +13,10 @@ define(["mathjax"], function() {
 
 	MathJax.Hub.Config({
 		tex2jax: {
-		inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-		displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-		processEscapes: true,
+			inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+			displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+			processEscapes: true,
+			preview: ["---"],
 		},
 		TeX: {
 			Macros: {

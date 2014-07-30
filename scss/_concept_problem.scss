@@ -244,8 +244,34 @@
     font-style: italic;
 }
 
+.ru-answer-block button
+{
+    @include radius(3px);
+    box-shadow: none;
+    height: 2.7rem;
+    font-size: 1.6rem;
+    padding: 0 1.5rem 0 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    &:after {
+        content: "»";
+        position: absolute;
+        right: 0.3rem;
+        top: 0.5rem;
+        transform: rotate(90deg);
+    }
+}
+
+.ru-answer-block li
+{
+    height: 2.7rem;
+    font-size: 1.6rem;
+}
+
 .ru-answer-block .ru-answer-block-panel
 {
+    position: relative;
    margin-top: 0.5rem;
    padding: 0.3rem 0.3rem 0.7rem 0.3rem;
    @include radius(6px);

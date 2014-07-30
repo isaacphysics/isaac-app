@@ -11,9 +11,13 @@ define(["app/MathJaxConfig"], function() {
 			link: function(scope, element, attrs) {
 
 				// This must be done asynchronously. Content isn't actually in element yet. Don't really understand why...
-				setTimeout(function() {
-					MathJax.Hub.Queue(["Typeset",MathJax.Hub, element[0]]);      
-				}, 1000);
+				var first = true;
+				scope.$watch(function() {
+					setTimeout(function() {
+						MathJax.Hub.Queue(["Typeset",MathJax.Hub, element[0]]);      
+					}, first ? 1000: 0);
+					first = false;
+				})
 				   
 			}
 		};
