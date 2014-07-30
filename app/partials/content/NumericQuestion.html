@@ -13,7 +13,7 @@
 	                        <small>Please answer to three significant figures.</small>
 	                    </div>
 	                </li>
-	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctUnits === false}">
+	                <li ng-if="doc.requireUnits" ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctUnits === false}">
 	                    <div>Units</div>
 	                    <div class="ru-answer-block-panel">
 	                    	<button class="button" ng-click="toggleUnitsDropdown()"><span ng-bind="selectedUnitsDisplay" math-jax></span></button>
