@@ -16,8 +16,12 @@
 	                <li ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctUnits === false}">
 	                    <div>Units</div>
 	                    <div class="ru-answer-block-panel">
-	                        <input type="text" ng-model="selectedChoice.units">
-	                        <small>Please enter the unit of measurement, if any.</small>
+	                    	<button class="button" ng-click="toggleUnitsDropdown()"><span ng-bind="selectedUnitsDisplay" math-jax></span></button>
+	                    	<ul class="f-dropdown" ng-style="unitsDropdownStyle">
+								<li><a ng-click="selectUnit('')">None</a></li>
+								<li ng-repeat="u in unitOptions" math-jax><a ng-click="selectUnit(u)">$\units{ {{u}} }$</a></li>
+							</ul>
+	                        <small>Please choose the unit of measurement.</small>
 	                    </div>
 	                </li>
 	            </ul>
