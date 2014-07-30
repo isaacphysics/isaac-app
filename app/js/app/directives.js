@@ -28,7 +28,8 @@ define([
 	"app/directives/Hexagons",
 	"app/directives/HexFilter",
 	"app/directives/DifficultyFilter",
-	"app/directives/ConceptFilter",
+    "app/directives/ConceptFilter",
+    "app/directives/PrintButton",
 	], function() {
 
 	/* Directives */
@@ -46,8 +47,10 @@ define([
 	// General Directives
 
 	.directive('desktopPanel', require("app/directives/DesktopPanel"))
-	
+
 	.directive('mobilePanel', require("app/directives/MobilePanel"))
+
+    .directive('printButton', require("app/directives/PrintButton"))
 	
 	.directive('hexagons', require("app/directives/Hexagons"))
 	

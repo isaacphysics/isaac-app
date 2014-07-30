@@ -79,7 +79,7 @@
 
 @media #{$small-only}
 {
-    .ru_acrobat, .ru_share
+    .ru_acrobat, .ru_print, .ru_share
     {
         background-size: 40px 45px;
         width: 40px;
@@ -89,7 +89,7 @@
         margin-left: 4px;
     }
     
-    .ru_acrobat
+    .ru_acrobat, .ru_print
     {
 
     }

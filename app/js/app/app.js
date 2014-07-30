@@ -162,7 +162,7 @@ define([
                     // Follow link for tab on top level nav
                     if(e.which === 13)
                     {
-                        $link = $('a', $(this));
+                        var $link = $('a', $(this));
                         if(!$link.hasClass('active'))
                         {
                             window.location.href = $link.attr('href');
