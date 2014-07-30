@@ -1,13 +1,14 @@
 <div class="row">
     <div class="medium-14 medium-offset-1 small-16 columns end">
-        <dl class="tabs ru_tabs {{pageSubject}}" data-tab>
+        <dl class="tabs ru_tabs {{pageSubject}} no-print" data-tab>
             <dd ng-repeat="t in children" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">{{t.title}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs">
-            <div ng-repeat="t in children" ng-class="{content: true, active: $index == activeTab}">
+            <div ng-repeat="t in children" ng-class="{content: true, active: $index == activeTab}" class="force-print">
                 <div class='row'>
-                    <div class="medium-14 medium-offset-1 small-16 columns end">
-                        <div isaac-content doc="t"></div>
+                    <div class="medium-14 medium-offset-1 small-16 columns print-avoid-break">
+                        <h3>{{t.title}}</h3>
+                        <div isaac-content doc="t" class="small-side-padding"></div>
                     </div>
                 </div>
             </div>

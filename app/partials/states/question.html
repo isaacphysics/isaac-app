@@ -1,4 +1,4 @@
-<div desktop-panel>
+<div desktop-panel class="no-print">
     <div class='ru-desktop-panel-content'>
         <div class='medium-12 columns'>
             <ul ng-class='["ru-crumb", pageSubject]'>
@@ -16,7 +16,7 @@
         <div class='clearfix'></div>
     </div>
 </div>
-<div mobile-panel>
+<div mobile-panel class="no-print">
     <div class='row'>
         <div class='small-16 columns text-right'>
             <span class='ru-level-{{pageSubject}}-{{questionPage.level}} ru-level' aria-label='{{pageSubject}} Level {{questionPage.level}}'></span>  
@@ -34,13 +34,14 @@
 </div>
 
 <div class="row">
-    <div class='large-16 medium-16 columns'>
+    <div class='large-16 medium-16 columns print-no-side-padding'>
 
 
         <section>
             <div class="ru-border ru-concept">
-                <div class="row print-side-padding">
+                <div class="row">
                     <div class="small-14 small-offset-1 columns end">
+                        <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' src='/assets/isaac-logo.png'></a>
                         <div class="ru_share">
 
                         </div>
@@ -49,8 +50,8 @@
                                 http://issacphysics/2736
                             </div>
                         </div>
-                        <div class="ru_acrobat"></div>
-                        <h2>Q: <span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>       
+                        <div class="ru_print"></div>
+                        <h2>Q: <span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
                     </div>
                 </div>
                 <div class="clearfix"></div>

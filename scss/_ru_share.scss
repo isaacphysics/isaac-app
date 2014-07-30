@@ -62,6 +62,21 @@
     }
 }
 
+.ru_print
+{
+    background-image: url('/assets/print.svg');
+    width: 50px;
+    height: 80px;
+    float: right;
+    position: relative;
+    right: -40px;
+    background-repeat: no-repeat;
+    &:hover
+    {
+        opacity: 0.85;
+    }
+}
+
 @media #{$small-only}
 {
     .ru_acrobat, .ru_share

@@ -11,10 +11,6 @@
         display: initial !important;
     }
 
-    .ru-mobile-nav {
-        margin-top: 0;
-    }
-
     .ru-answer-check {
         @extend .no-print;
    }
@@ -43,9 +39,104 @@
         border: 0 !important;
     }
 
-    p.ng-scope, ul.ng-scope, div.ng-scope form, .print-side-padding {
-        padding-left: 30px;
-        padding-right: 30px;
+    p.ng-scope, ul.ng-scope, table.ng-scope, div.ng-scope form, div.ng-scope h3, div.ng-scope h4, .print-side-padding {
+        margin-left: 30px !important;
+        margin-right: 30px !important;
+    }
+
+    div.ng-scope h3 {
+        color: $ru_green !important;
+    }
+
+    .physics div.ng-scope h4 {
+        color: $ru_physics !important;
+    }
+
+
+    .maths div.ng-scope h4 {
+        color: $ru_maths !important;
+    }
+
+    div.ng-scope form h3 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .tabs-content.ru_tabs {
+        border: 0 !important;
+    }
+
+    .tabs-content.ru_tabs .content {
+        background-color: initial !important;
+    }
+
+    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name {
+        background-color: $ru_physics !important;
+        color: white !important;
+    }
+
+    .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name {
+        background-color: $ru_maths !important;
+        color: white !important;
+    }
+
+    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name span,
+    .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name span
+    {
+        color: white !important;
+    }
+
+    .print-avoid-break, div.panel, table {
+        page-break-inside: avoid;
+    }
+
+    .ac-custom label::before {
+        border-color: #000;
+    }
+
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title {
+        width: initial;
+    }
+
+    .small-side-padding {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .print-no-side-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    a.ru_accordion_titlebar {
+        text-decoration: none;
+    }
+
+    .ru-concept, .ru-concept-inner {
+        font-style: normal !important;
+        border: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .tabs-content.ru_tabs.ru-answer .content * p {
+        font-style: normal !important;
+        font-size: 1rem !important;
+    }
+
+    .bg-wrap {
+        padding-bottom: 0;
+    }
+
+    .print-logo {
+        position: relative;
+        top: -20px;
+        left: 0;
+    }
+
+    .print-logo img {
+        position: relative;
+        margin-right: 1em;
     }
 }
 

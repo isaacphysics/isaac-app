@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="medium-14 medium-offset-1 small-16 columns end">
-        <dl class="tabs ru_tabs {{pageSubject}} ru-answer" data-tab>
+        <dl class="tabs ru_tabs {{pageSubject}} ru-answer no-print" data-tab>
             <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer Now</a></dd>
             <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
         </dl>
@@ -20,7 +20,7 @@
                 </div>
 
                 <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap' style="display:block;" ng-show="answerVisible">
+                <div class='ru-answer-correct-wrap force-print' style="display:block;" ng-show="answerVisible">
                     <div class='ru-answer-correct-summary {{pageSubject}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end">
@@ -43,8 +43,9 @@
                 </div>
             </div>
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
-                <div class='row'>
-                    <div class="small-14 small-offset-1 columns end">
+                <div class='row'>'>
+                    <div class="small-14 small-offset-1 columns end print-avoid-break">
+                        <h3 class="only-print">Hint {{$index + 1}}</h3>
                         <div isaac-content doc="hint"></div>
                     </div>
                 </div>
