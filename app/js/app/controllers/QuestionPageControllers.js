@@ -32,7 +32,7 @@ define([], function() {
 					if (!pageField) {
 						pageField = fields[i].id;
 					} else {
-						pageField = null; // We found tags for more than one field.
+						pageField = "multiple_fields"; // We found tags for more than one field.
 					}
 				}
 			}
@@ -49,7 +49,7 @@ define([], function() {
 						if (!pageTopic) {
 							pageTopic = topics[i].id;
 						} else {
-							pageTopic = null; // We found tags for more than one topic.
+							pageTopic = "multiple_topics"; // We found tags for more than one topic.
 						}
 					}
 				}
@@ -70,6 +70,15 @@ define([], function() {
 		}
 
 		$scope.getTagTitle = function(id) {
+
+			switch(id) {
+				case "multiple_subjects":
+					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+				case "multiple_fields":
+					return $sce.trustAsHtml("Multiple Fields");
+				case "multiple_topics":
+					return $sce.trustAsHtml("Multiple Topics");
+			}
 
 			for (var i in tags) {
 				if (tags[i].id == id)

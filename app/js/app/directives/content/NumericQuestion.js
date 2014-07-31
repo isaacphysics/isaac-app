@@ -19,7 +19,6 @@ define(["app/honest/responsive_video"], function(rv) {
 		"rad\\,s^{-1}",
 		"rad\\,s^{-2}",
 		"s^{-1}",
-		"^\circ",
 		"cm",
 		"kg\\,m\\,s^{-1}",
 		"^{\circ }",
@@ -126,6 +125,12 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.chosenUnitsForDisplay = 
 					scope.unitsDropdownStyle = null;
 				}
+
+				scope.$watch("validationResponse", function(r) {
+					if (r && r.correct) {
+						scope.accordionSection.titleSuffix = "($\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$)";
+					}
+				})
 
 			}
 		};
