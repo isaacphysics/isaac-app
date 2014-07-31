@@ -37,6 +37,8 @@ define([], function() {
 			}
 		});
 
+		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
+
 
 		this.logout = function() {
 			return $http.post(this.authenticationEndpoint + "/logout");
