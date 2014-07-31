@@ -1,6 +1,6 @@
 <div class="clearfix"></div>
 <dl class="accordion ru_accordion {{pageSubject || 'maths'}}" data-accordion>
-    <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}" class="print-avoid-break">
+    <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}" class="print-avoid-break" ng-init="accordionSection = {titleSuffix: ''}">
         <a href="javascript:void(0)" ng-click="toggleChild($index)" class="ru_accordion_titlebar">
             <div class="ru_accordion_name">
                 <span class='ru_level' ng-if="c.level"></span> 
@@ -9,7 +9,7 @@
                 <span ng-if="!questionPage && !c.level">&nbsp;</span>
             </div>
             <span class="ru_accordion_title" math-jax>
-                {{c.title}}
+                {{c.title}} <span ng-bind="accordionSection.titleSuffix" math-jax></span>
             </span>
             <div class="ru_accordion_details no-print">
                 <span class='ru-level-{{pageSubject}}-{{c.level || "0"}}'></span>    

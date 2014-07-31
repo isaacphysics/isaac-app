@@ -126,6 +126,12 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.unitsDropdownStyle = null;
 				}
 
+				scope.$watch("validationResponse", function(r) {
+					if (r && r.correct) {
+						scope.accordionSection.titleSuffix = "($\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$)";
+					}
+				})
+
 			}
 		};
 	}];
