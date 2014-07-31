@@ -221,19 +221,21 @@ span.maths
     .ru-concept-search
     {
         background-color: white;
+        margin: 0 -0.9375rem;
+        padding: 0 0.9375rem;
     }
     .ru-mobile-searchbar-wrap
     {
         background-color: $ru_darkgrey;
     }
-    
+
     .ru-mobile-answer-wrap .ru-search-result
     {
-        padding-right: 10px;
-        padding-top: 12px;
-        padding-bottom: 8px;
+        padding: 12px 10px 8px 10px;
+        margin-left: -0.9375rem;
+        margin-right: -0.9375rem;
     }
-    
+
     .ru-mobile-answer-wrap
     {
         &:nth-child(2n+1)
@@ -285,7 +287,8 @@ span.maths
     {
         img
         {
-            padding-top: 14px;
+            padding-top: 7px;
+            padding-bottom: 7px;
         }
     }
 
