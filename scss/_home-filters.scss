@@ -264,7 +264,7 @@
 
 #difficulty-hexagons
 {
-    margin-top: 20px;
+    margin: 20px auto;
     width: 240px;
     height: auto;
     position: relative;
@@ -603,6 +603,11 @@ $hex_diff_levels : 6;
         height: 20px;
         transition: 0.6s;
     }
+}
+
+#mobile-filter2
+{
+    text-align: center;
 }
 
 #desktop-filter
