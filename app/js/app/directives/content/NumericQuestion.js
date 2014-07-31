@@ -19,7 +19,6 @@ define(["app/honest/responsive_video"], function(rv) {
 		"rad\\,s^{-1}",
 		"rad\\,s^{-2}",
 		"s^{-1}",
-		"^\circ",
 		"cm",
 		"kg\\,m\\,s^{-1}",
 		"^{\circ }",
