@@ -26,6 +26,54 @@ body
     opacity:1;
 }
 
+.slide-animate.ng-hide-add {
+    transition:0.1s linear all;
+
+    transform: scaleX(1);
+    -ms-transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+
+    transform-origin: right;
+    -ms-transform-origin: right;
+    -webkit-transform-origin: right;
+
+    display:block!important;
+}
+
+.slide-animate.ng-hide-add-active {
+    transform: scaleX(0);
+    -ms-transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+
+    transform-origin: right;
+    -ms-transform-origin: right;
+    -webkit-transform-origin: right;
+}
+
+.slide-animate.ng-hide-remove {
+    transition:0.1s linear all;
+
+    transform: scaleX(0);
+    -ms-transform: scaleX(0);
+    -webkit-transform: scaleX(0);
+
+    transform-origin: right;
+    -ms-transform-origin: right;
+    -webkit-transform-origin: right;
+
+    display:block!important;
+}
+
+.slide-animate.ng-hide-remove-active {
+    transform: scaleX(1);
+    -ms-transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+
+    transform-origin: right;
+    -ms-transform-origin: right;
+    -webkit-transform-origin: right;
+}
+
 
 
 .ru-body.ng-leave, .ru-body.ng-enter {

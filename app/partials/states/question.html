@@ -40,17 +40,15 @@
         <section>
             <div class="ru-border ru-concept">
                 <div class="row">
-                    <div class="small-14 small-offset-1 columns end">
+                    <div class="small-15 small-offset-1 columns end">
                         <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' src='/assets/isaac-logo.png'></a>
-                        <div class="ru_share">
-
-                        </div>
-                        <div class='ru_share_link'>
+                        <a print-button></a>
+                        <a share-button></a>
+                        <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                             <div>
-                                http://issacphysics/2736
+                                {{shareUrl}}
                             </div>
                         </div>
-                        <a print-button></a>
                         <h2>Q: <span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
                     </div>
                 </div>

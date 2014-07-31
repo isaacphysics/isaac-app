@@ -30,6 +30,7 @@ define([
 	"app/directives/DifficultyFilter",
     "app/directives/ConceptFilter",
     "app/directives/PrintButton",
+    "app/directives/ShareButton"
 	], function() {
 
 	/* Directives */
@@ -51,6 +52,8 @@ define([
 	.directive('mobilePanel', require("app/directives/MobilePanel"))
 
     .directive('printButton', require("app/directives/PrintButton"))
+
+    .directive('shareButton', require("app/directives/ShareButton"))
 	
 	.directive('hexagons', require("app/directives/Hexagons"))
 	

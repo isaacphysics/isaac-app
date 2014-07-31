@@ -21,15 +21,13 @@
                 <div class="ru-concept-inner ru-border">
                     <div class="small-15 small-offset-0 medium-14 medium-offset-1 columns end ru-concept-intro">
                         <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' src='/assets/isaac-logo.png'></a>
-                        <div class="ru_share">
-
-                        </div>
-                        <div class='ru_share_link'>
-                            <div>
-                                http://issacphysics/2736
-                            </div>
-                         </div>
                         <a print-button></a>
+                        <a share-button></a>
+                        <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                            <div>
+                                {{shareUrl}}
+                            </div>
+                        </div>
                         <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
                         <h3 class='subheader' ng-if="pageSubject == 'physics'"><strong>Physics Concept</strong></h3>
                         <h3 class='subheader' ng-if="pageSubject == 'maths'"><strong>Maths Concept</strong></h3>
