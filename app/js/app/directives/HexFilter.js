@@ -117,7 +117,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    {
 			        hexFilter.EnableVertical(element.find('#hexfilter-large').css('display') === 'none');
 			        hexFilter.ReDraw(true);
-			        element.height(element.find('#hexfilter-large').css('display') === 'none' ? 700 : 450);
+			        element.height(element.find('#hexfilter-large').css('display') === 'none' ? 740 : 450);
 			    };
 
 				hexFilterResize(element);
