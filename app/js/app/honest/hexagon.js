@@ -83,7 +83,7 @@ define([ 'jquery','honest/d3.min'],
                 else
                 {
                     // Maximum number of columns
-                    _maxCols = Math.floor(pageWidth() / (_width + _pad));
+                    _maxCols = Math.max(1, Math.floor(pageWidth() / (_width + _pad))); // Ensure _maxCols is at least 1
                     // Minimum number of columns
                     _minCols = _maxCols === 1 ? 1 : _maxCols - 1;
                 }
