@@ -82,7 +82,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                     var rand = Math.floor((Math.random() * 5) + 1);
                     var c = 'hex-'+d.subject+rand;
 
-                    if(d.type === 'wildcard')
+                    if(d.type === 'isaacWildcard')
                     {
                         c = 'hex-orange';   
                     }
