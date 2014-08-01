@@ -131,23 +131,14 @@ define(["app/honest/hexagon"],function(hexagon) {
         });
     };
 
-    var wildCard = {
-        "title": "Wild Card",
-        "uri": "",
-        "description": "Q. This is a wild card question",
-        "level": 3,
-        "type": "wildcard",
-        "state": "incorrect",
-        "subject": "physics"
-    }
-
 	return ["$state", function($state) {
 
 		return {
 
 			scope: {
 				questions: "=hexagons",
-                wildCardPosition: "=",
+				wildCard: "=",
+				wildCardPosition: "=",
                 loading: "=",
                 boardId: "="
 			},
@@ -215,7 +206,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            			} 
 	            		})
 
-	            		scope.questions.splice(scope.wildCardPosition,0,wildCard);
+	            		scope.questions.splice(scope.wildCardPosition, 0, scope.wildCard);
                         update();
 		    		} else {
                         update();
