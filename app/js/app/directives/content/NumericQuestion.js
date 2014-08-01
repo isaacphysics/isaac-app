@@ -1,65 +1,6 @@
 define(["app/honest/responsive_video"], function(rv) {
 
-	var allUnits = ["ns",
-		"m^{-1}",
-		"km\\,  s^ {-1}",
-		"kg\\,m^2",
-		"{m}\\,{s}^{-1}",
-		"m\\,s^{-1}",
-		"m \\, s^{-2}",
-		"kg, m\\,  s^{-2}",
-		"km\\,s^{-1}",
-		"g\\,m^{2}",
-		"s^2\\,m^{-3}",
-		"radians",
-		"rads",
-		"hours",
-		"kg\\,m^{2}\\,s^{-1}",
-		"m \\, s^{-1}",
-		"rad\\,s^{-1}",
-		"rad\\,s^{-2}",
-		"s^{-1}",
-		"cm",
-		"kg\\,m\\,s^{-1}",
-		"^{\circ }",
-		"N\\, m",
-		"m\\, s^{-1}",
-		"ms^{-1}",
-		"N",
-		"J\\, kg^{-1}",
-		"J",
-		"g\\,m^2",
-		"W",
-		"{rad}\\,{s}^{-1}",
-		"rad\\, s^{-1}",
-		"rad\\,s^{-2}",
-		"m\\, s^{-2}",
-		"mm",
-		"rad \\, s^{-1}",
-		"g",
-		"{m}\\,{s}^{-2}",
-		"m\\,s^{-2}",
-		"ms",
-		"m s^{-1}",
-		"\%",
-		"m",
-		"degrees",
-		"h",
-		"kg\\, m\\, s^{-1}",
-		"kg\\, m^2",
-		"s",
-		"mg\\,m^2",
-		"m\\,  s^ {-1}",
-		"kJ",
-		"kg\\,m^{2}",
-		"kg \\, s^{-1}",
-		"^{\circ}",
-		"km \\, h^{-1}",
-		"rad",
-		"ps"
-	];
-
-	return ["api", function(api) {
+	return ["api", "units", function(api, units) {
 
 		return {
 			scope: true,
@@ -91,25 +32,28 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.unitOptions = [];
 
-				// Add potential units to options list
-				for (var i in scope.doc.choices) {
-					var c = scope.doc.choices[i];
+				units.getUnits().then(function(allUnits) {
 
-					if (c.units && scope.unitOptions.indexOf(c.units) == -1) 
-						scope.unitOptions.push(c.units);
-				}
+					// Add potential units to options list
+					for (var i in scope.doc.choices) {
+						var c = scope.doc.choices[i];
 
-				var unitsPool = JSON.parse(JSON.stringify(allUnits));
+						if (c.units && scope.unitOptions.indexOf(c.units) == -1) 
+							scope.unitOptions.push(c.units);
+					}
 
-				while (scope.unitOptions.length < 6) {
-					var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0];
+					var unitsPool = JSON.parse(JSON.stringify(allUnits));
 
-					if (scope.unitOptions.indexOf(u) == -1)
-						scope.unitOptions.push(u);
-				}
+					while (scope.unitOptions.length < 6) {
+						var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
 
+						if (scope.unitOptions.indexOf(u) == -1)
+							scope.unitOptions.push(u);
+					}
 
-				scope.selectedUnitsDisplay = "";
+					scope.selectedUnitsDisplay = "";
+
+				})
 
 				scope.selectUnit = function(u) {
 					scope.selectedChoice.units = u;

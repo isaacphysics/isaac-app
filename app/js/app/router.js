@@ -211,6 +211,13 @@ define(["angular-ui-router"], function() {
                     document.location.href = "/";
                 }]
             })
+            .state('shareLink', {
+                url: "/s/:shortCode",
+                onEnter: ["$stateParams", function($stateParams) {
+                    document.location.href = "http://goo.gl/" + $stateParams.shortCode;
+                }]
+            })
+
             .state('404', {
                 params: ["target"],
                 views: {

@@ -12,12 +12,12 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.src = undefined;
+				scope.doc = undefined;
 				scope.path = undefined;
-				scope.$parent.$watch(attrs.isaacImage, function(newSrc) {
-					scope.src = newSrc;
+				scope.$parent.$watch(attrs.isaacImage, function(newDoc) {
+					scope.doc = newDoc;
 
-					scope.path = api.getImageUrl(scope.src);
+					scope.path = api.getImageUrl(scope.doc.src);
 				});
 
 			}
