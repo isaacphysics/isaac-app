@@ -220,6 +220,18 @@ define([], function() {
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
 
+        $scope.getGameboardTitle = function(gameboard) {
+        	// Find the most specific filter tag that is the only one at its level.
+
+        	// E.g. Physics > Mechanics > Dynamics = Dynamics
+        	//      Physics > Mechanics > Dynamics, Statics = Mechanics
+        	//      Physics > Mechanics = Mechanics
+        	// Include special case:
+        	//      Physics, Maths = Physics and Maths
+
+        	
+        }
+
 	}]
 
 	return {

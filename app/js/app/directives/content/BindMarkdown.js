@@ -34,6 +34,8 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 				});
 
 				scope.markdownLinkGo = function(url) {
+
+					// TODO: If the target is local, but doesn't exist, the 404 page redirects back iummediately. Work out why.
 					if (url.indexOf("http://") == 0)
 						document.location.href = url;
 					else
