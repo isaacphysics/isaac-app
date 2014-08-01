@@ -46,7 +46,9 @@ define([], function() {
 			console.debug("Loading game board by id: ", id)
 
 			$scope.gameBoardLoading = true;
-			$scope.gameBoard = api.gameBoards.get({id: id}).$promise.then(function(board) {
+			$scope.gameBoard = api.gameBoards.get({id: id})
+
+			$scope.gameBoard.$promise.then(function(board) {
 				$scope.gameBoardLoading = false;
 
 				clearFilterWatchers();
@@ -59,8 +61,6 @@ define([], function() {
 
 				addFilterWatchers();
 				setWarnings();
-
-				$scope.gameBoard = board;
 
 				buildBreadCrumb();
 

@@ -72,6 +72,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.$watch("validationResponse", function(r) {
 					
+					// TODO: Work out why scope.accordionSection is sometimes missing.
 					if(r) {
 						if (r.correct) {
 							scope.accordionSection.titleSuffix = "( $\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$ )";
