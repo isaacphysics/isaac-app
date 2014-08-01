@@ -204,7 +204,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            			} else if (q.tags.indexOf("shm") > -1) {
 	            				q.title = "SHM";
 	            			} 
-	            		})
+	            		});
 
 	            		scope.questions.splice(scope.wildCardPosition, 0, scope.wildCard);
                         update();
