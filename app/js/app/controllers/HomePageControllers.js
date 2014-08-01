@@ -46,7 +46,9 @@ define([], function() {
 			console.debug("Loading game board by id: ", id)
 
 			$scope.gameBoardLoading = true;
-			$scope.gameBoard = api.gameBoards.get({id: id}).$promise.then(function(board) {
+			$scope.gameBoard = api.gameBoards.get({id: id})
+
+			$scope.gameBoard.$promise.then(function(board) {
 				$scope.gameBoardLoading = false;
 
 				clearFilterWatchers();
@@ -59,8 +61,6 @@ define([], function() {
 
 				addFilterWatchers();
 				setWarnings();
-
-				$scope.gameBoard = board;
 
 				buildBreadCrumb();
 
@@ -219,6 +219,18 @@ define([], function() {
 			$('html, body').animate({
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
+
+        $scope.getGameboardTitle = function(gameboard) {
+        	// Find the most specific filter tag that is the only one at its level.
+
+        	// E.g. Physics > Mechanics > Dynamics = Dynamics
+        	//      Physics > Mechanics > Dynamics, Statics = Mechanics
+        	//      Physics > Mechanics = Mechanics
+        	// Include special case:
+        	//      Physics, Maths = Physics and Maths
+
+        	
+        }
 
 	}]
 
