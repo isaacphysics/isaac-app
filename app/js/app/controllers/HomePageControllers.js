@@ -43,7 +43,7 @@ define([], function() {
 
 		function loadGameBoardById(id) {
 
-			console.debug("Loading game board by id: ", id)
+			console.log("Loading game board by id: ", id)
 
 			$scope.gameBoardLoading = true;
 			$scope.gameBoard = api.gameBoards.get({id: id})
@@ -72,7 +72,7 @@ define([], function() {
 
 		function loadGameBoardFromFilter() {
 
-			console.debug("Loading game board based on filter settings.")
+			console.log("Loading game board based on filter settings.")
 
 			var params = {};
 
@@ -134,7 +134,7 @@ define([], function() {
 			if (hash == lastHash)
 				return;
 
-			console.debug("Hash changed:", hash);
+			console.log("Hash changed:", hash);
 			lastHash = hash;
 
 			if (hash) {
