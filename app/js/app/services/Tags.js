@@ -16,61 +16,61 @@ define([], function() {
 
 			{
 				id: "mechanics",
-				parent: "physics",
+				parent: "physics"
 			}, {
 				id: "waves",
 				parent: "physics",
-				comingSoon: true,
+				comingSoon: true
 			}, {
 				id: "fields",
 				parent: "physics",
-				comingSoon: true,
+				comingSoon: true
 			}, {
 				id: "circuits",
 				parent: "physics",
-				comingSoon: true,
+				comingSoon: true
 			},
 
 			// Mechanics topics
 
 			{
 				id: "statics",
-				parent: "mechanics",
+				parent: "mechanics"
 			}, {
 				id: "dynamics",
-				parent: "mechanics",
+				parent: "mechanics"
 			}, {
 				id: "shm",
 				title: "SHM",
-				parent: "mechanics",
-			}, , {
+				parent: "mechanics"
+			}, {
 				id: "angular_motion",
-				parent: "mechanics",
+				parent: "mechanics"
 			}, {
 				id: "circular_motion",
-				parent: "mechanics",
+				parent: "mechanics"
 			}, {
 				id: "kinematics",
-				parent: "mechanics",
+				parent: "mechanics"
 			},
 
 			// Maths fields
 
 			{
 				id: "geometry",
-				parent: "maths",
+				parent: "maths"
 			}, {
 				id: "calculus",
-				parent: "maths",
+				parent: "maths"
 			}, {
 				id: "algebra",
-				parent: "maths",
+				parent: "maths"
 			}, {
 				id: "functions",
-				parent: "maths",
+				parent: "maths"
 			}, {
 				id: "probability",
-				parent: "maths",
+				parent: "maths"
 			}, 
 
 			// Geometry topics
@@ -78,91 +78,109 @@ define([], function() {
 			{
 				id: "geom_vectors",
 				title: "Vectors",
-				parent: "geometry",
+				parent: "geometry"
 			}, {
 				id: "trigonometry",
-				parent: "geometry",
+				parent: "geometry"
 			}, {
 				id: "greek",
-				parent: "geometry",
+				parent: "geometry"
 			}, {
 				id: "symmetry",
-				parent: "geometry",
+				parent: "geometry"
 			},
 			
 			// Calculus topics
 
 			{
 				id: "integration",
-				parent: "calculus",
+				parent: "calculus"
 			}, {
 				id: "differentiation",
-				parent: "calculus",
+				parent: "calculus"
 			}, {
 				id: "differential_equations",
-				parent: "calculus",
+				parent: "calculus"
 			},
 
 			// Algebra topics
 
 			{
 				id: "simultaneous_equations",
-				parent: "algebra",
+				parent: "algebra"
 			}, {
 				id: "quadratics",
-				parent: "algebra",
+				parent: "algebra"
 			}, {
 				id: "manipulation",
-				parent: "algebra",
+				parent: "algebra"
 			}, {
 				id: "series",
-				parent: "algebra",
+				parent: "algebra"
 			},
 			
 			// Functions topics
 
 			{
 				id: "special",
-				parent: "functions",
+				parent: "functions"
 			}, {
 				id: "trigonometric",
-				parent: "functions",
+				parent: "functions"
 			}, {
 				id: "curve_sketching",
-				parent: "functions",
+				parent: "functions"
 			},
 
 			// Probability topics
 
 			{
 				id: "means",
-				parent: "probability",
+				parent: "probability"
 			}, {
 				id: "prob_functions",
 				title: "Functions",
-				parent: "probability",
+				parent: "probability"
 			}, {
 				id: "distributions",
-				parent: "probability",
+				parent: "probability"
 			},
 
 		];
 
-		var generateTitle = function(tag) {
+		var tagHeirarchy = ["subject", "field", "topic"];
 
+		var generateTitle = function(tag) {
 			if (tag.title)
 				return tag.title;
 
 			return tag.id.replace(/_/g, " ").replace(/\w*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-		}
+		};
+
+		var findTagById = function(id) {
+			for (var i in tags) {
+				if (tags[i].id === id) {
+					return tags[i];
+				}
+			}
+		};
 
 		for (var i in tags) {
 			tags[i].title = generateTitle(tags[i]);
+			var j = 0;
+			if (tags[i].parent) {
+				var parent = findTagById(tags[i].parent);
+				j++;
+				while (parent.parent) {
+					j++;
+					parent = findTagById(parent.parent);
+				}
+			}
+			tags[i].type = tagHeirarchy[j];
+			tags[i].level = j;
 		}
 
-
 		return tags;
-
 	}];
 
 	return TagsFactory;

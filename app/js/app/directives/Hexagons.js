@@ -135,7 +135,7 @@ define(["app/honest/hexagon"],function(hexagon) {
         });
     };
 
-	return ["$state", function($state) {
+	return ["$state", "tags", function($state, tags) {
 
 		return {
 
@@ -182,32 +182,54 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
 
-                        // TODO: Implement this based on the tags service.
 	            		$.each(scope.questions, function(i, q) {
-                            if (!q.tags) {
+				            var findTagById = function(id) {
+					            for (var i in tags) {
+						            if (tags[i].id === id) {
+							            return tags[i];
+						            }
+					            }
+				            };
+
+				            var findSubjectTag = function(tagArray) {
+					            if (tagArray == null) return null;
+
+					            for (var i in tagArray) {
+						            var tag = findTagById(tagArray[i]);
+						            if (tag != null && tag.type === "subject") {
+							            return tag;
+						            }
+					            }
+				            };
+
+				            var subjectTag = findSubjectTag(q.tags);
+                            if (!subjectTag) {
                                 q.subject = "";
-                            } else if (q.tags.indexOf("physics") > -1) {
-	            				q.subject = "physics";
-	            			} else if (q.tags.indexOf("maths") > -1) {
-	            				q.subject= "maths";
+                            } else {
+	            				q.subject = subjectTag.id;
 	            			}
 	            			q.description = q.title;
 
-	            			if (!q.tags) {
+				            var findDeepestTag = function(tagArray) {
+					            if (tagArray == null) return null;
+
+					            var deepestTag = null;
+					            for (var i in tagArray) {
+						            var tag = findTagById(tagArray[i]);
+						            if (deepestTag == null || tag.level > deepestTag.level) {
+							            deepestTag = tag;
+						            }
+					            }
+					            return deepestTag;
+				            };
+
+				            var deepestTag = findDeepestTag(q.tags);
+
+	            			if (!deepestTag) {
                                 q.title = "";
-                            } else if (q.tags.indexOf("angular_motion") > -1) {
-	            				q.title = "Angular Motion";
-	            			} else if (q.tags.indexOf("circular_motion") > -1) {
-	            				q.title = "Circular Motion";
-	            			} else if (q.tags.indexOf("dynamics") > -1) {
-	            				q.title = "Dynamics";
-	            			} else if (q.tags.indexOf("statics") > -1) {
-	            				q.title = "Statics";
-	            			} else if (q.tags.indexOf("kinematics") > -1) {
-	            				q.title = "Kinematics";
-	            			} else if (q.tags.indexOf("shm") > -1) {
-	            				q.title = "SHM";
-	            			} 
+                            } else {
+	            				q.title = deepestTag.title;
+	            			}
 	            		});
 
 	            		scope.questions.splice(scope.wildCardPosition, 0, scope.wildCard);
