@@ -181,28 +181,8 @@ define(["app/honest/hexagon"],function(hexagon) {
 
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
-
 	            		$.each(scope.questions, function(i, q) {
-				            var findTagById = function(id) {
-					            for (var i in tags) {
-						            if (tags[i].id === id) {
-							            return tags[i];
-						            }
-					            }
-				            };
-
-				            var findSubjectTag = function(tagArray) {
-					            if (tagArray == null) return null;
-
-					            for (var i in tagArray) {
-						            var tag = findTagById(tagArray[i]);
-						            if (tag != null && tag.type === "subject") {
-							            return tag;
-						            }
-					            }
-				            };
-
-				            var subjectTag = findSubjectTag(q.tags);
+				            var subjectTag = tags.getSubjectTag(q.tags);
                             if (!subjectTag) {
                                 q.subject = "";
                             } else {
@@ -210,20 +190,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            			}
 	            			q.description = q.title;
 
-				            var findDeepestTag = function(tagArray) {
-					            if (tagArray == null) return null;
-
-					            var deepestTag = null;
-					            for (var i in tagArray) {
-						            var tag = findTagById(tagArray[i]);
-						            if (deepestTag == null || tag.level > deepestTag.level) {
-							            deepestTag = tag;
-						            }
-					            }
-					            return deepestTag;
-				            };
-
-				            var deepestTag = findDeepestTag(q.tags);
+				            var deepestTag = tags.getDeepestTag(q.tags);
 
 	            			if (!deepestTag) {
                                 q.title = "";

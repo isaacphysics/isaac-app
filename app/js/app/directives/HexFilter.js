@@ -59,7 +59,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 
 				}
 
-				var config = buildHexFilterState(tags);
+				var config = buildHexFilterState(tags.tagArray);
 
 			    var hexFilter = new HexFilter(element, {
 			        // Replace with real function to get state

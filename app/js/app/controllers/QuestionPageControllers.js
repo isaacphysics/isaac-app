@@ -10,7 +10,7 @@ define([], function() {
 
 		var pageTags = page.tags || [];
 
-		var subjects = tags.filter(function(t) { return t && !t.parent; });
+		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
 		var pageSubject = "physics";
@@ -23,7 +23,7 @@ define([], function() {
 
 		if (pageSubject) {
 
-			var fields = tags.filter(function(t) { return t && t.parent == pageSubject; });
+			var fields = tags.tagArray.filter(function(t) { return t && t.parent == pageSubject; });
 
 			// Find field tags on page
 			var pageField = null;
@@ -40,7 +40,7 @@ define([], function() {
 
 			if (pageField) {
 
-				var topics = tags.filter(function(t) { return t && t.parent == pageField; });
+				var topics = tags.tagArray.filter(function(t) { return t && t.parent == pageField; });
 
 				// Find topic tags on page
 				var pageTopic = null;
@@ -80,9 +80,9 @@ define([], function() {
 					return $sce.trustAsHtml("Multiple Topics");
 			}
 
-			for (var i in tags) {
-				if (tags[i].id == id)
-					return $sce.trustAsHtml(tags[i].title);
+			for (var i in tags.tagArray) {
+				if (tags.tagArray[i].id == id)
+					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}
 		}
 

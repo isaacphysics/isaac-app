@@ -1,15 +1,14 @@
 define([], function() {
 
-	var TagsFactory = [function TagsFactory() {
-
-		var tags = [
+	var TagsFactory = function TagsFactory() {
+		this.tagArray = [
 
 			// Subjects
 
 			{
-				id: "physics",
+				id: "physics"
 			}, {
-				id: "maths",
+				id: "maths"
 			}, 
 
 			// Physics fields
@@ -144,9 +143,41 @@ define([], function() {
 			}, {
 				id: "distributions",
 				parent: "probability"
-			},
+			}
 
 		];
+
+		this.getById = function(id) {
+			for (var i in this.tagArray) {
+				if (this.tagArray[i].id === id) {
+					return this.tagArray[i];
+				}
+			}
+		};
+
+		this.getSubjectTag = function(tagArray) {
+			if (tagArray == null) return null;
+
+			for (var i in tagArray) {
+				var tag = this.getById(tagArray[i]);
+				if (tag != null && tag.type === "subject") {
+					return tag;
+				}
+			}
+		};
+
+		this.getDeepestTag = function(tagArray) {
+			if (tagArray == null) return null;
+
+			var deepestTag = null;
+			for (var i in tagArray) {
+				var tag = this.getById(tagArray[i]);
+				if (tag != null && (deepestTag == null || tag.level > deepestTag.level)) {
+					deepestTag = tag;
+				}
+			}
+			return deepestTag;
+		};
 
 		var tagHeirarchy = ["subject", "field", "topic"];
 
@@ -157,31 +188,23 @@ define([], function() {
 			return tag.id.replace(/_/g, " ").replace(/\w*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 		};
 
-		var findTagById = function(id) {
-			for (var i in tags) {
-				if (tags[i].id === id) {
-					return tags[i];
-				}
-			}
-		};
-
-		for (var i in tags) {
-			tags[i].title = generateTitle(tags[i]);
+		for (var i in this.tagArray) {
+			this.tagArray[i].title = generateTitle(this.tagArray[i]);
 			var j = 0;
-			if (tags[i].parent) {
-				var parent = findTagById(tags[i].parent);
+			if (this.tagArray[i].parent) {
+				var parent = this.getById(this.tagArray[i].parent);
 				j++;
 				while (parent.parent) {
 					j++;
-					parent = findTagById(parent.parent);
+					parent = this.getById(parent.parent);
 				}
 			}
-			tags[i].type = tagHeirarchy[j];
-			tags[i].level = j;
+			this.tagArray[i].type = tagHeirarchy[j];
+			this.tagArray[i].level = j;
 		}
 
-		return tags;
-	}];
+		return this;
+	};
 
 	return TagsFactory;
 });

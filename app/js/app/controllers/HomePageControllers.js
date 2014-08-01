@@ -198,9 +198,9 @@ define([], function() {
 					return $sce.trustAsHtml("Multiple Topics");
 			}
 
-			for (var i in tags) {
-				if (tags[i].id == id)
-					return $sce.trustAsHtml(tags[i].title);
+			for (var i in tags.tagArray) {
+				if (tags.tagArray[i].id == id)
+					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}
 		}
 
