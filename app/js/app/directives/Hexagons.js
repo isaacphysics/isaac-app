@@ -99,8 +99,12 @@ define(["app/honest/hexagon"],function(hexagon) {
                 $(this).click(function(e)
                 {
                     e.preventDefault();
-                    //window.location.href = d.uri;
-                    $state.go("question", {id: d.id, board: boardId});
+
+	                if (d.type === 'isaacWildcard') {
+		                window.location.href = d.url;
+	                } else {
+		                $state.go("question", {id: d.id, board: boardId});
+	                }
 
                 });
                 // Handle tab enter
