@@ -11,7 +11,7 @@ define(["app/honest/hexagon"],function(hexagon) {
             // Tick / Arrow
             plotdiv.each(function(d) 
             {
-                if(d.type === 'wildcard')
+                if(d.type === 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-home-content-wild');
                 }
@@ -24,7 +24,7 @@ define(["app/honest/hexagon"],function(hexagon) {
             // Level indicator
             plotdiv.append('div').each(function(d)
             {
-                if(d.type !== 'wildcard')
+                if(d.type !== 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-level-'+d.level); 
                 }
@@ -33,7 +33,7 @@ define(["app/honest/hexagon"],function(hexagon) {
             // Symbol
             plotdiv.append('div').each(function(d)
             {
-                if(d.type === 'wildcard')
+                if(d.type === 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-home-chat');
                 }
