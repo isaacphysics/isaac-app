@@ -79,6 +79,12 @@ define([], function() {
 				})
 			}
 		};
+
+		this.account = $resource(server + "/api/users", {}, {
+			saveSettings: {
+				method: "POST",
+			}
+		});
 	}
 
 	return Api;
