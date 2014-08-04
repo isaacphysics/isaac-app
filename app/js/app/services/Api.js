@@ -42,7 +42,7 @@ define([], function() {
 				method: "POST",
 			}
 		});
-		debugger;
+
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
 
