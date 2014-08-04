@@ -1,11 +1,25 @@
 <div desktop-panel>
 	<h1>Registration / Login</h1>
 	<h2 class="subheader">Join the community.</h2>
+	<form>
+        <input type="text" placeholder="Email address" />
+        <input type="text" placeholder="Password" />
+        <input class="button" type="submit" ng-click="auth.login('google', target)" value="Login" />
+        <input class="button" type="submit" ng-click="auth.register('google', target)" value="Sign up" />
+        <a>Forgotten your password?</a>
+    </form>
 </div>
 <div mobile-panel>
 	<img class='right' src='/assets/icon-share.png'>
 	<h1>Registration / Login</h1>
 	<h2 class='subheader'>Join the community.</h2>
+	<form>
+        <input type="text" placeholder="Email address" />
+        <input type="text" placeholder="Password" />
+        <input class="ru-concept-button" type="submit" value="Login" />
+        <input class="ru-concept-button" type="submit" value="Sign up" />
+        <a>Forgotten your password?</a>
+    </form>
 </div>
 
 <div class="row">
@@ -22,6 +36,7 @@
         <p>
         After login, you will be redirected to {{target}}.
         </p>
+
 
 		<!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
         <p>

@@ -71,23 +71,27 @@ define(["app/honest/responsive_video"], function(rv) {
 				}
 
 				scope.$watch("validationResponse", function(r, oldR) {
-					if (r === oldR)
-						return; // Init
+
+					if (!r) {
+						// Either initialising, or the user started changing their answer after a previous validation response.
+						return;
+					}
 					
-					console.debug("New VR:", scope.validationResponse);
-					
-					// TODO: Work out why scope.accordionSection is sometimes missing.
 					if(r) {
+
+						scope.selectedChoice.value = r.answer.value;
+						scope.selectUnit(r.answer.units);
+
 						if (r.correct) {
-							scope.accordionSection.titleSuffix = "( $\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$ )";
+							scope.accordionSection.titleSuffix = "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓";
 						} else {							
 							scope.accordionSection.titleSuffix = "";
 						}
+
+						scope.accordionSection.correctAnswerFlag.isCorrect = r.correct;
 					}
 
 				})
-
-
 
 			}
 		};
