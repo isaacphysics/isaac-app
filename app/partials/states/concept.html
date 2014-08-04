@@ -1,14 +1,14 @@
 <div desktop-panel arrow-block class="no-print">
     <a class='ru-panel-arrow' ng-click='go(sourceUrl)'> </a>
     <div class='ru-desktop-panel-content'>
-        <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
+        <p class='ru_green ru-panel-question'><em><a ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
     </div>
 </div>
 <div mobile-panel arrow-block class="no-print">
     <a class='ru-panel-arrow' ng-href="go(sourceUrl)"> </a>
     <div class='row'>
         <div class='small-16 columns'>
-            <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
+            <p class='ru_green ru-panel-question'><em><a ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
         </div>
     </div>
 </div>
