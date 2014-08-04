@@ -229,6 +229,18 @@ define(["angular-ui-router"], function() {
                     },
                 },
             })
+
+             .state('accountSettings', {
+                url: "/account",
+                resolve: {
+                    requireLogin: "authResolver",
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/account_settings.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
