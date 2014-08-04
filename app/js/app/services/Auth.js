@@ -21,13 +21,13 @@ define([], function() {
 		}
 
 		this.login = function(email, password) {
-			return new Promise(function(){
+			return new Promise(function(resolve, reject){
 				api.login(email, password).$promise.then(function(u){
-					this.user = u,
-					resolver(),
+					this.user = u;
+					resolve();
 				}).catch(function(u){
-					this.user = null,
-					reject(),
+					this.user = null;
+					reject();
 				});
 			});
 		}
