@@ -65,6 +65,7 @@ ul.ru-crumb li
     width: 112px;
     display: inline-block;
     text-align: center;
+    white-space: nowrap;
 
 }
 
@@ -73,7 +74,7 @@ ul.ru-crumb.physics li
     &:before
     {
         content: url(/assets/crumb-physics.png);
-        display: inline-block;
+        display: block;
         width: 112px;
         height: 28px;
         position: relative;
@@ -91,7 +92,7 @@ ul.ru-crumb.maths li
     &:before
     {
         content: url(/assets/crumb-maths.png);
-        display: inline-block;
+        display: block;
         width: 112px;
         height: 28px;
         position: relative;
