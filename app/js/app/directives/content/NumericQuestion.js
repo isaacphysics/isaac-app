@@ -70,7 +70,11 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.unitsDropdownStyle = null;
 				}
 
-				scope.$watch("validationResponse", function(r) {
+				scope.$watch("validationResponse", function(r, oldR) {
+					if (r === oldR)
+						return; // Init
+					
+					console.debug("New VR:", scope.validationResponse);
 					
 					// TODO: Work out why scope.accordionSection is sometimes missing.
 					if(r) {
@@ -82,6 +86,8 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 
 				})
+
+
 
 			}
 		};

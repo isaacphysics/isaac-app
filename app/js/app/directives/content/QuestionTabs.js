@@ -13,6 +13,11 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs, ctrls, transclude) {
 
+
+				if (scope.doc.bestAttempt) {
+					scope.validationResponse = scope.doc.bestAttempt;
+				}
+
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
 					rv.updateAll();					
@@ -36,7 +41,10 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 				}
 
-				scope.$watch("selectedChoice", function() {
+				scope.$watch("selectedChoice", function(newVal, oldVal) {
+					if (newVal === oldVal)
+						return; // Init
+
 					delete scope.validationResponse;
 				}, true);
 
