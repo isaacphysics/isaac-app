@@ -14,7 +14,8 @@ define([
 	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginPageControllers",
-	"app/controllers/SearchControllers"
+	"app/controllers/SearchControllers",
+	"app/controllers/AccountSettingsPageControllers"
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -34,6 +35,8 @@ define([
 	var loginPageControllers = require("app/controllers/LoginPageControllers");
 
 	var searchControllers = require("app/controllers/SearchControllers");
+
+	var accountSettingsPageControllers = require("app/controllers/AccountSettingsPageControllers");
 
 	/* Controllers */
 
@@ -72,5 +75,7 @@ define([
 			$timeout.cancel(timeout);
 		})
 	}])
+
+	.controller('AccountSettingsPageController', accountSettingsPageControllers.PageController)
 	
 });
