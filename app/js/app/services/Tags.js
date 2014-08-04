@@ -1,6 +1,6 @@
 define([], function() {
 
-	var TagsFactory = function TagsFactory() {
+	return function TagsConstructor() {
 		this.tagArray = [
 
 			// Subjects
@@ -105,7 +105,8 @@ define([], function() {
 			// Algebra topics
 
 			{
-				id: "simultaneous_equations",
+				id: "simultaneous",
+				title: "Simultaneous Equations",
 				parent: "algebra"
 			}, {
 				id: "quadratics",
@@ -202,9 +203,6 @@ define([], function() {
 			this.tagArray[i].type = tagHeirarchy[j];
 			this.tagArray[i].level = j;
 		}
-
-		return this;
 	};
 
-	return TagsFactory;
 });

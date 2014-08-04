@@ -1,4 +1,8 @@
 @media print {
+    body {
+        margin: 10mm 10mm 10mm 10mm;
+    }
+
     a[href]:after {
         content: none !important;
     }
