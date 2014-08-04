@@ -105,7 +105,8 @@ define([], function() {
 			// Algebra topics
 
 			{
-				id: "simultaneous_equations",
+				id: "simultaneous",
+				title: "Simultaneous Equations",
 				parent: "algebra"
 			}, {
 				id: "quadratics",
