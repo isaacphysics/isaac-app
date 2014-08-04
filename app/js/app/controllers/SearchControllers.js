@@ -1,12 +1,13 @@
 define([], function() {
-
 	var defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
 
 	var doSearch = function(api, query, typesToInclude, $location) {
-		var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-		$location.replace();
-		$location.search({query: query, types: typesToInclude.join(",")})
-		return response;
+		if (query != null) {
+			var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
+			$location.replace();
+			$location.search({query: query, types: typesToInclude.join(",")})
+			return response;			
+		}
 	}
 
 	var changeTypeState = function(modelName, typeName, api, query, typesToInclude, $location) {

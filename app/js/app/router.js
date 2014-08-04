@@ -229,6 +229,15 @@ define(["angular-ui-router"], function() {
                     },
                 },
             })
+
+             .state('accountSettings', {
+                url: "/account",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/account_settings.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

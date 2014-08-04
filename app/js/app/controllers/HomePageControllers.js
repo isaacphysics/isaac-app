@@ -15,6 +15,10 @@ define([], function() {
 			}
 		}
 
+		var recordCurrentGameboard = function() {
+			persistence.save("lastGameBoardId", $scope.gameBoard.id);
+		}
+
 		$scope.filterSubjects = ["physics"];
 		$scope.filterFields = [];
 		$scope.filterTopics = [];
@@ -63,10 +67,14 @@ define([], function() {
 				setWarnings();
 
 				buildBreadCrumb();
+				recordCurrentGameboard();
 
 			}).catch(function() {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
+
+				// Something went wrong. This gameboard probably doesn't exist anymore.
+				loadGameBoardFromFilter();
 			});
 		}
 
@@ -101,6 +109,8 @@ define([], function() {
 					$scope.gameBoard = null;
 					return;
 				}
+
+				recordCurrentGameboard();
 
 				if (!$location.hash()) {
 					$location.replace();
@@ -138,9 +148,28 @@ define([], function() {
 			lastHash = hash;
 
 			if (hash) {
+
+				// We have requested a specific game board in the URL. Load it.
 				loadGameBoardById(hash);
+
 			} else {
-				loadGameBoardFromFilter();
+
+				// We have not requested a specific game board in the URL.
+				// Load the last one we saw. This will adjust the filter
+				// settings to match.
+
+				var savedGameboardId = persistence.load("lastGameBoardId");
+
+				if (savedGameboardId) {
+
+					$location.replace();
+					$location.hash(savedGameboardId);
+
+					loadGameBoardById(savedGameboardId);
+
+				} else {
+					loadGameBoardFromFilter();
+				}
 			}
 		}
 
@@ -229,7 +258,7 @@ define([], function() {
         	// Include special case:
         	//      Physics, Maths = Physics and Maths
 
-        	
+        	// TODO: Implement this.
         }
 
 	}]

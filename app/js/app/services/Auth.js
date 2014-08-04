@@ -20,6 +20,22 @@ define([], function() {
 			return this.user;
 		}
 
+		this.login = function(email, password) {
+			return new Promise(function(resolve, reject){
+				api.login(email, password).$promise.then(function(u){
+					this.user = u;
+					resolve();
+				}).catch(function(u){
+					this.user = null;
+					reject();
+				});
+			});
+		}
+
+		this.register = function(email, password) {
+
+		}
+
 	}];
 
 	var resolver = ['auth', function(auth) {
