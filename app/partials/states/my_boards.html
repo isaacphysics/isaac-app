@@ -1,5 +1,6 @@
 My Boards
-{{boards.length}}
+<!-- TODO: Remove hash bang from URL, this will only work on local -->
+
 <div ng-repeat="board in boards">
-	[{{$index + 1}}] {{board.id}}
+	<a href="/#!/#{{board.id}}">{{board.title}}</a>
 </div>
