@@ -19,7 +19,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 
 				// We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
 				var buildHexFilterState = function(tags) {
-					tags = JSON.parse(JSON.stringify(tags));
+					tags = JSON.parse(JSON.stringify(tags)); // deep copy tags so as not to alter the original array
 
 					// TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
 

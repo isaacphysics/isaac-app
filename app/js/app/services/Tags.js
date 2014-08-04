@@ -1,6 +1,6 @@
 define([], function() {
 
-	var TagsFactory = function TagsFactory() {
+	return function TagsConstructor() {
 		this.tagArray = [
 
 			// Subjects
@@ -202,9 +202,6 @@ define([], function() {
 			this.tagArray[i].type = tagHeirarchy[j];
 			this.tagArray[i].level = j;
 		}
-
-		return this;
 	};
 
-	return TagsFactory;
 });

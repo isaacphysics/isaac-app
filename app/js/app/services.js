@@ -13,7 +13,7 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 	.value('version', '0.1')
 
 	// TODO: This should probably be a service rather than a factory
-	.factory('tags', require("app/services/Tags"))
+	.service('tags', require("app/services/Tags"))
 
 	.factory('units', require("app/services/Units"))
 
