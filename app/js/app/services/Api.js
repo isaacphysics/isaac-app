@@ -24,6 +24,8 @@ define([], function() {
 			}
 		});
 
+		this.userGameBoards = $resource(server + "/api/current_user/gameboards");
+
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
 		this.currentUser = $resource(server + "/api/users/current_user");
