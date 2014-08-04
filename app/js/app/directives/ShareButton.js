@@ -11,20 +11,15 @@ define([], function() {
 				scope.showShareUrl = false;
 				scope.shareUrl = null;
 
-                scope.getShareLink = function() {
-	                if (scope.showShareUrl) {
-		                scope.showShareUrl = false;
-		                scope.shareUrl = null;
-		                return;
-	                }
+				var data = {"longUrl": window.location.href};
+				$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
+					scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
+				}).catch(function() {
+					// Fail silently
+				});
 
-                    var data = {"longUrl": window.location.href};
-                    $http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
-	                    scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
-	                    scope.showShareUrl = true;
-                    }).catch(function() {
-						// Fail silently
-                    });
+                scope.getShareLink = function() {
+	                scope.showShareUrl = !scope.showShareUrl;
                 };
 			}
 
