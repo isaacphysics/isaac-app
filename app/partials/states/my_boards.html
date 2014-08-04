@@ -1,2 +1,5 @@
 My Boards
-{{boards}}
+{{boards.length}}
+<div ng-repeat="board in boards">
+	[{{$index + 1}}] {{board.id}}
+</div>
