@@ -37,6 +37,12 @@ define([], function() {
 			}
 		});
 
+		this.loginEndpoint = $resource(this.authenticationEndpoint + "/segue/authenticate", {}, {
+			login: {
+				method: "POST",
+			}
+		});
+		debugger;
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
 
