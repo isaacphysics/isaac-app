@@ -235,6 +235,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/account_settings.html",
+                        controller: "AccountSettingsPageController",
                     }
                 }
             })

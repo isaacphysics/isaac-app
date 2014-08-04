@@ -1,4 +1,4 @@
-<br/>
+<br class="no-print">
 <!-- TODO: This page is a hack. It's basically a copy of QuestionTabs.html, with the content included directly. -->
 <!-- This page was created so that symbolic questions render as full question blocks (with hints) rather than as quick questions. -->
 
@@ -9,7 +9,7 @@
             <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs ru-answer">
-            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}">
+            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="no-print">
 
                 <div class='ru-answer-area'>
 					<div class="row">
@@ -20,7 +20,7 @@
                 </div>
 
                 <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap force-print' style="display:block;" ng-show="answerVisible">
+                <div class='ru-answer-correct-wrap' style="display:block;" ng-show="answerVisible">
                     <div class='ru-answer-correct-summary {{pageSubject}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
-                <div class='row'>'>
+                <div class='row'>
                     <div class="small-14 small-offset-1 columns end print-avoid-break">
                         <h3 class="only-print">Hint {{$index + 1}}</h3>
                         <div isaac-content doc="hint"></div>
@@ -53,4 +53,4 @@
         </div>
     </div>
 </div>
-<br/>
+<br class="no-print">

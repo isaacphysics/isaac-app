@@ -1,14 +1,14 @@
 <div desktop-panel arrow-block class="no-print">
     <a class='ru-panel-arrow' ng-click='go(sourceUrl)'> </a>
     <div class='ru-desktop-panel-content'>
-        <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
+        <p class='ru_green ru-panel-question'><em><a ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
     </div>
 </div>
 <div mobile-panel arrow-block class="no-print">
     <a class='ru-panel-arrow' ng-href="go(sourceUrl)"> </a>
     <div class='row'>
         <div class='small-16 columns'>
-            <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
+            <p class='ru_green ru-panel-question'><em><a ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
         </div>
     </div>
 </div>
@@ -20,7 +20,12 @@
             <div class="row ru-concept">
                 <div class="ru-concept-inner ru-border">
                     <div class="small-15 small-offset-0 medium-14 medium-offset-1 columns end ru-concept-intro">
-                        <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' src='/assets/isaac-logo.png'></a>
+                        <div class="only-print print-header">
+                            <span class="{{pageSubject}}">{{shareUrl}}</span>
+                        </div>
+
+                        <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
+                                                                             src='/assets/isaac-logo-strap-print.svg'></a>
                         <a print-button></a>
                         <a share-button></a>
                         <div class='ru_share_link slide-animate' ng-show="showShareUrl">
