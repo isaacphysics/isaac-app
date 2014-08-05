@@ -237,6 +237,8 @@ ul.ru-crumb.multiple-subjects li
 {
     background-color: transparent;
     min-height: 650px;
+    margin-top: 15px;
+    position: relative;
 
     .loading {
         background-image: url(/assets/loading.gif);
