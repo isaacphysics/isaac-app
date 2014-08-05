@@ -111,7 +111,7 @@ ul.ru-crumb.multiple-subjects li
     &:before
     {
         content: url(/assets/crumb-physics.png);
-        display: inline-block;
+        display: block;
         width: 112px;
         height: 28px;
         position: relative;
