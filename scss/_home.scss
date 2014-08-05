@@ -238,9 +238,11 @@ ul.ru-crumb.multiple-subjects li
     background-color: transparent;
     min-height: 650px;
 
-    background-image: url(/assets/loading.gif);
-    background-position: center center;
-    background-repeat: no-repeat;
+    .loading {
+        background-image: url(/assets/loading.gif);
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
 }
 
 .no-background {
