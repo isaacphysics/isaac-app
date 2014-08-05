@@ -161,13 +161,13 @@ define(["app/honest/hexagon"],function(hexagon) {
             
 	            // Constants
 	            var _pad = 5;
-	            var _width = hexWidth();
 	            var _aspect = 1.2;
 	            // Always false for home hexagons - true used for testing
 	            var equalRows = false;
 
                 var update = function() {
                     // Calculate Hexagon info
+	                var _width = hexWidth(); // This should be recalculated every time the window is resized
                     var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions || [], equalRows);
 
                     draw(hex, scope.questions || [], $state, scope.boardId);        
