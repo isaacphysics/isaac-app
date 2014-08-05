@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row hide-for-small-only">
     <div class='large-16 medium-16 columns'>
         <div class="ru-desktop-panel">
 	       <h1>Login <span class="subheader">or</span> Sign up <span class="subheader">to</span> <span class="ru_green">issac.</span></h1>
@@ -10,7 +10,7 @@
 	<div class='large-16 medium-16 columns'>
         <div class="ru-desktop-panel">
             <div class="row">
-                <div class='large-8 medium-8 columns'>
+                <div class='large-7 medium-7 columns text-right small-only-text-center'>
                     <h6><span class="ru_green">Login</span> or <span class="ru_green">sign up</span> with:</h6>
                     <!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
                     <p>
@@ -19,13 +19,17 @@
                         <a ng-click="auth.loginRedirect('facebook', target)"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
                     </p>
                 </div>
-                <div class='large-8 medium-8 columns'>
-                    <form>
-                        <input type="text" placeholder="Email address" />
-                        <input type="text" placeholder="Password" />
-                        <input class="button" type="submit" ng-click="auth.login('google', target)" value="Login" />
-                        <input class="button" type="submit" ng-click="auth.register('google', target)" value="Sign up" />
-                        <a>Forgotten your password?</a>
+                <div class='large-1 medium-1 columns text-center'>
+                    <h3 class="ru_green">Or</h3>
+                </div>
+                <div class='large-7 medium-7 columns left '>
+                    <input type="text" placeholder="Email address" />
+                    <input type="text" placeholder="Password" />
+                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+                        <li><a class="button expand ru-drop-big-button" ng-click="auth.login('google', target)">Login</a></li>
+                        <li><a class="button expand ru-drop-big-button" ng-click="auth.login('google', target)">Sign up</a></li>
+                    </ul>
+                    <a>Forgotten your password?</a>
                     </form>
                 </div>
             </div>
