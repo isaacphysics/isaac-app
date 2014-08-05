@@ -1,0 +1,11 @@
+.boards-wrap {
+	margin: 0;
+
+	.panel {
+		margin:0;
+		border-color: #000;
+		&:hover {
+			border-color: #008dbb;
+		}
+	}
+}
