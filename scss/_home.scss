@@ -240,7 +240,7 @@ ul.ru-crumb.multiple-subjects li
     margin-top: 15px;
     position: relative;
 
-    .loading {
+    &.loading {
         background-image: url(/assets/loading.gif);
         background-position: center center;
         background-repeat: no-repeat;
