@@ -15,6 +15,13 @@ define([], function() {
 
 				scope.$parent.$watch(attrs.doc, function(newDoc) {
 					scope.doc = newDoc;
+
+					// Create a flag for each child that says whether that section contains a correctly answered question.
+					// This will only be used on question pages.
+
+					// We really only want to watch these flags while the page loads. After loading, we don't want to
+					// automatically collapse accordion sections any more.
+
 					scope.correctAnswerFlags = [];
 
 					for(var i in scope.doc.children) {
@@ -49,7 +56,7 @@ define([], function() {
 					if (a === b)
 						return; // Init
 
-					//scope.correctAnswerFlags[i].unwatch();
+					scope.correctAnswerFlags[i].unwatch();
 
 					console.debug("New correctAnswerFlags:", scope.correctAnswerFlags);
 

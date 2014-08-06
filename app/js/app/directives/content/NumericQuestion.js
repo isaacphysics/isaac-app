@@ -71,10 +71,9 @@ define(["app/honest/responsive_video"], function(rv) {
 				}
 
 				scope.$watch("validationResponse", function(r, oldR) {
-
-					if (!r) {
-						// Either initialising, or the user started changing their answer after a previous validation response.
-						return;
+					if (r === oldR) {
+						console.warn("Init validationResponse",r)
+						return; // Init
 					}
 					
 					if(r) {
@@ -89,6 +88,13 @@ define(["app/honest/responsive_video"], function(rv) {
 						}
 
 						scope.accordionSection.correctAnswerFlag.isCorrect = r.correct;
+					} else {
+
+						// The user started changing their answer after a previous validation response.
+
+						// Just in case this is the initialisation of scope.validationResponse, 
+						// remove any watch the accordion might have.
+						scope.accordionSection.correctAnswerFlag.unwatch();
 					}
 
 				})
