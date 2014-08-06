@@ -45,13 +45,17 @@
     		<strong>Last name</strong><span class="ru-form-required"></span>
     		<input type="text">
 		</label>
-            </li>
         </ul>
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><a class="button expand ru-drop-big-button" ng-click="save()">Save</a></li>
+            <li><a class="ru-button-big expand" ng-click="save()">Save</a></li>
             <!-- TODO: What is skip going to do? -->
-            <li><a class="button expand ru-drop-big-button" ng-click="save()">Skip this step</a></li>
+            <li><a class="ru-button-big expand secondary" ng-click="save()">Skip this step</a></li>
         </ul>
+        <form class="ac-custom ac-radio ac-fill physics ac-center" autocomplete="off">
+                                                                            <ul>
+                                                                                <li><input class='ru-answer-orbit-radio' name="or1" type="checkbox"><label for="or1">&nbsp;</label></li>
+                                                                            </ul>
+            </li>
 	</div>
 </div>
 

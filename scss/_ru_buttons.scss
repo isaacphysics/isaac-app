@@ -7,11 +7,19 @@
     padding-top: 0.3rem !important;
     padding-bottom: 0.3rem !important;
 }
-.ru-button.expand {
+.ru-button-big {
+	@include button;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    font-style: italic !important;
+    padding-top: 0.6rem !important;
+    padding-bottom: 0.6rem !important;
+}
+.ru-button.expand, .ru-button-big.expand {
 	padding-right: 0;
 	padding-left: 0;
 	width: 100%;
 }
-.ru-button.secondary {
+.ru-button.secondary, .ru-button-big.secondary {
 	background: #333;
 }
