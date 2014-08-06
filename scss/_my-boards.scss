@@ -1,6 +1,9 @@
 .boards-wrap {
 	margin: 10px -10px 0;
 
+	.row {
+		margin: 0;
+	}
 	.panel {
 		margin: 0;
 		border-color: #000;
@@ -8,11 +11,53 @@
 			border-color: #008dbb;
 		}
 	}
-	h3 a {
-		color: #333;
-		font-weight: bold;
-		&:hover {
-			color: #666;
+	h3 {
+		margin: 27px 0 0;
+		a {
+			color: #333;
+			font-weight: bold;
+			&:hover {
+				color: #666;
+			}
 		}
 	}
+}
+.board-percentage {
+	float: left;
+	width: 78px;
+	height: 93px;
+	position: relative;
+	z-index: 1;
+	font-size: 30px;
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+	span {
+		font-size: 17px;
+		vertical-align: top;
+	}
+}
+.subject-physics {
+	position: absolute;
+	top: 11px;
+	left: 0;
+	width: 71px;
+	height: 82px;
+	background: purple;
+	z-index: -1;
+}
+.subject-maths {
+	position: absolute;
+	top: 11px;
+	left: 0;
+	width: 71px;
+	height: 82px;
+	background: blue;
+	z-index: -2;
+}
+.subject-maths + .subject-physics {
+	left: auto;
+	top: 0;
+	right: 0;
 }

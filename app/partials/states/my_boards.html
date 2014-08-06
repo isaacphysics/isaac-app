@@ -4,7 +4,8 @@
 		<!-- TODO: this needs to be dynamicly generated -->
 		<p><strong>You have <a>18 boards</a> on the go with 5 boards completed, 4 shared boards with 3 boards completely untouched. Filter your boards....</strong></p>
 	</div>
-	<div>
+</div>
+<div>
 		<select>
 			<option>Boards</option>
 			<option>All</option>
@@ -19,12 +20,16 @@
 			<option>Level</option>
 		</select>
 	</div>
-</div>
 <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards">
    		<div class="panel">
-   			{{board.percentageCompleted}}%
+   			<div class="row">
+   				<div class="board-percentage">
+   					{{board.percentageCompleted}}<span>%</span>
+   					<span ng-repeat="subject in board.gameFilter.subjects.slice().reverse()" type="subject.type" close="board.gameFilter.subjects.splice(index, 1)" class="subject-{{subject}}"></span>
+   				</div>
+   			</div>
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
    			Level: {{board.gameFilter.levels}}<br />
    			Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
