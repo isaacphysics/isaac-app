@@ -97,7 +97,7 @@ define([], function() {
 				id: "trigonometry",
 				parent: "geometry"
 			}, {
-				id: "greek",
+				id: "shapes",
 				parent: "geometry"
 			}, {
 				id: "symmetry",
