@@ -7,9 +7,34 @@
 		font-size: 15px;
 		margin-bottom: 10px;
 	}
+	[class*="block-grid-"]>li {
+		padding-bottom: 0;
+	}
+}
+.login-separator p {
+	font-size: 34px;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
 }
 .login-form {
-	margin-top: 40px;
+	margin: 40px 0 20px;
+	input {
+		margin: 0 0 0.5rem 0;
+		font-style: italic;
+	}
+	.ru-button {
+		margin: 0 0 10px;
+	}
+}
+a.login-forgot-password {
+	font-size: 14px;
+	color: #333;
+	font-style: italic;
+	&:hover {
+		color: #468828;
+		text-decoration: underline; 
+	}
 }
 .login-social {
 	float: right;
@@ -52,10 +77,6 @@
 
 		h2 {
 			font-size: 23px;
-		}
-
-		[class*="block-grid-"]>li {
-			padding-bottom: 0;
 		}
 
 		.login-social { 
