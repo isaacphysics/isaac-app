@@ -16,6 +16,13 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				if (scope.doc.bestAttempt) {
 					scope.validationResponse = scope.doc.bestAttempt;
+				} else {
+
+					// We have to explicitly initialise to null so that the 
+					// validationResponse watcher fires on the question. This
+					// can allow it to remove the accordion watcher.
+
+					scope.validationResponse = null;
 				}
 
 				scope.activateTab = function(i) {
