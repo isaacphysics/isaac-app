@@ -2,8 +2,10 @@
 	<h1>My Boards</h1>
 </div>
 <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
-<ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-1 ru-pad">
-   	<li ng-repeat="board in boards">
-   		<a href="/#!/#{{board.id}}">test</a>
+<ul class="large-block-grid-3 boards-wrap">
+   	<li class="panel" ng-repeat="board in boards">
+   		<a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a>
+   		Level: {{board.gameFilter.levels}}<br />
+   		Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
    	</li>
 </ul>
