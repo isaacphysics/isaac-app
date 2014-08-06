@@ -114,10 +114,18 @@
     padding: 1.3rem 1rem;
     text-align: center;
     color: white;
+
     &:hover
     {
-        background-color: $ru_physics;
         color: white;
+
+        &.physics {
+            background-color: lighten($ru_physics, $ru_site_hover);
+        }
+
+        &.maths {
+            background-color: lighten($ru_maths, $ru_site_hover);
+        }
     }
 }
 
