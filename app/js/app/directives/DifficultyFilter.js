@@ -16,10 +16,10 @@ define(["app/honest/difficulty"], function(Difficulty) {
 			link: function(scope, element, attrs) {
 			    var config = [
 			    	{ level:1, selected:false, enabled:true },
-			        { level:3, selected:false, enabled:true },
-			        { level:5, selected:false, enabled:true },
 			        { level:2, selected:false, enabled:true },
+			        { level:3, selected:false, enabled:true },
 			        { level:4, selected:false, enabled:true },
+			        { level:5, selected:false, enabled:true },
 			        { level:6, selected:false, enabled:true }
 			    ];
 
