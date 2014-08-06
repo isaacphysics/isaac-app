@@ -3,9 +3,11 @@
 </div>
 <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
 <ul class="large-block-grid-3 boards-wrap">
-   	<li class="panel" ng-repeat="board in boards">
-   		<a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a>
-   		Level: {{board.gameFilter.levels}}<br />
-   		Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
+   	<li ng-repeat="board in boards">
+   		<div class="panel">
+   			<a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a>
+   			Level: {{board.gameFilter.levels}}<br />
+   			Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
+   		</div>
    	</li>
 </ul>
