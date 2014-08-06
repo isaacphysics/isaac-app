@@ -1,17 +1,16 @@
-.ru-button 
+.ru-button,
+.ru-button-big
 {
 	@include button;
     font-size: 1.25rem !important;
     font-weight: 600 !important;
     font-style: italic !important;
-    padding-top: 0.3rem !important;
+}
+.ru-button {
+	padding-top: 0.3rem !important;
     padding-bottom: 0.3rem !important;
 }
 .ru-button-big {
-	@include button;
-    font-size: 1.25rem !important;
-    font-weight: 600 !important;
-    font-style: italic !important;
     padding-top: 0.6rem !important;
     padding-bottom: 0.6rem !important;
 }
@@ -22,4 +21,7 @@
 }
 .ru-button.secondary, .ru-button-big.secondary {
 	background: #333;
+	&:hover {
+		background: #666;
+	}
 }

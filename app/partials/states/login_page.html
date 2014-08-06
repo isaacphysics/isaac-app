@@ -5,30 +5,43 @@
 
 <div class="row">
 	<div class='large-16 medium-16 columns'>
-        <div class="ru-desktop-panel">
+        <div class="login-wrap">
             <div class="row">
-                <div class='large-7 medium-7 columns text-right small-only-text-center'>
-                    <h6><span class="ru_green">Login</span> or <span class="ru_green">sign up</span> with:</h6>
-                    <!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
-                    <p>
-                        <a ng-click="auth.loginRedirect('google', target)"><img src="/assets/login-googleplus.svg" alt="google login" style="margin-right: 5px;" /></a>
-                        <a ng-click="auth.loginRedirect('twitter', target)"><img src="/assets/login-twitter.svg" alt="twitter login" style="margin-right: 5px;" /></a>
-                        <a ng-click="auth.loginRedirect('facebook', target)"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
-                    </p>
+                <div class='large-7 medium-7 columns small-only-text-center'>
+                    <div class="login-social">
+                        <h2><span class="ru_green">Login</span> or <span class="ru_green">sign up</span> with:</h2>
+                        <!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
+                        <p>
+                            <a ng-click="auth.loginRedirect('google', target)" class="login-social-google">Google+</a>
+                            <a ng-click="auth.loginRedirect('twitter', target)" class="login-social-twitter">Twitter</a>
+                            <a ng-click="auth.loginRedirect('facebook', target)" class="login-social-facebook">Facebook</a>
+                        </p>
+                    </div>
                 </div>
                 <div class='large-1 medium-1 columns text-center'>
                     <h2 class="ru_green">or</h2>
                 </div>
-                <div class='large-7 medium-7 columns left '>
+                <div class='large-7 medium-7 columns login-form left'>
                 <!-- TODO: Login needs wiring in -->
-                    <input type="text" placeholder="Email address" />
-                    <input type="text" placeholder="Password" />
-                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <input type="text" placeholder="Email address" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <input type="text" placeholder="Password" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
                         <li><a class="ru-button expand" ng-click="auth.login('google', target)">Login</a></li>
                         <li><a class="ru-button expand secondary" ng-click="auth.login('google', target)">Sign up</a></li>
                     </ul>
+                        </div>
+                    </div>
                     <a>Forgotten your password?</a>
-                    </form>
                 </div>
             </div>
         </div>

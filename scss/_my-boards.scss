@@ -1,11 +1,18 @@
 .boards-wrap {
-	margin: 0 -10px;
+	margin: 10px -10px 0;
 
 	.panel {
 		margin: 0;
 		border-color: #000;
 		&:hover {
-			border-color: #008dbb;
+			border-color: #008thanks thankdbb;
+		}
+	}
+	h3 a {
+		color: #333;
+		font-weight: bold;
+		&:hover {
+			color: #666;
 		}
 	}
 }
