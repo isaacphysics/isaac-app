@@ -24,7 +24,7 @@
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards">
    		<div class="panel">
-   			{{board.percentageCompleted}}
+   			{{board.percentageCompleted}}%
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
    			Level: {{board.gameFilter.levels}}<br />
    			Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
