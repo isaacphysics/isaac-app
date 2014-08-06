@@ -1,5 +1,5 @@
-<!-- TODO: Remove search -->
-<div class="ru-desktop-panel">
+<!-- TODO: Remove search on desktop -->
+<div desktop-panel>
 	<h1>Login <span class="subheader">or</span> Sign up <span class="subheader">to</span> <span class="ru_green">issac.</span></h1>
 </div>
 
@@ -16,17 +16,16 @@
                         <a ng-click="auth.loginRedirect('facebook', target)"><img src="/assets/login-facebook.svg" alt="facebook login" style="margin-right: 5px;" /></a>
                     </p>
                 </div>
-                <div class='large-1 medium-1 columns' style="height:100px">
-                    <div class="ru-separator">
-                        <h2 class="ru_green">or</h2>
-                    </div>
+                <div class='large-1 medium-1 columns text-center'>
+                    <h2 class="ru_green">or</h2>
                 </div>
                 <div class='large-7 medium-7 columns left '>
+                <!-- TODO: Login needs wiring in -->
                     <input type="text" placeholder="Email address" />
                     <input type="text" placeholder="Password" />
                     <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-                        <li><a class="button expand ru-drop-big-button" ng-click="auth.login('google', target)">Login</a></li>
-                        <li><a class="button expand ru-drop-big-button" ng-click="auth.login('google', target)">Sign up</a></li>
+                        <li><a class="ru-button expand" ng-click="auth.login('google', target)">Login</a></li>
+                        <li><a class="ru-button expand secondary" ng-click="auth.login('google', target)">Sign up</a></li>
                     </ul>
                     <a>Forgotten your password?</a>
                     </form>
