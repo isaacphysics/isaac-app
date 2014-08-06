@@ -48,10 +48,13 @@ a.login-forgot-password {
 	width: 79px;
 	height: 78px;
 	background: url(/assets/social-login-sprite.png) no-repeat 0 0;
-	margin-right: 13px;
+	margin-right: 10px;
 }
-.login-social-facebook:hover {
-	background-position: 0 -78px;
+.login-social-facebook {
+	margin-right: 0;
+	&:hover {
+		background-position: 0 -78px;
+	}
 }
 .login-social-google {
 	background-position: 0 -156px;
