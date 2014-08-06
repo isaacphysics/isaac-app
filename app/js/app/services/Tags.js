@@ -23,7 +23,6 @@ define([], function() {
 			}, {
 				id: "fields",
 				parent: "physics",
-				comingSoon: true
 			}, {
 				id: "circuits",
 				parent: "physics",
@@ -51,6 +50,22 @@ define([], function() {
 			}, {
 				id: "kinematics",
 				parent: "mechanics"
+			},
+
+			// Fields topics
+
+			{
+				id: "electric",
+				parent: "fields"
+			}, {
+				id: "magnetic",
+				parent: "fields"
+			}, {
+				id: "gravitational",
+				parent: "fields"
+			}, {
+				id: "combined",
+				parent: "fields"
 			},
 
 			// Maths fields
