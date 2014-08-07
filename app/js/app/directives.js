@@ -30,7 +30,8 @@ define([
 	"app/directives/DifficultyFilter",
     "app/directives/ConceptFilter",
     "app/directives/PrintButton",
-    "app/directives/ShareButton"
+    "app/directives/ShareButton",
+    "app/directives/SchoolDropdown",
 	], function() {
 
 	/* Directives */
@@ -64,6 +65,8 @@ define([
 	.directive('conceptFilter', require("app/directives/ConceptFilter"))
 
 	.directive('footerPods', require("app/directives/FooterPods"))
+
+	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
 
 	// Content Directives
 
