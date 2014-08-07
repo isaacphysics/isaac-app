@@ -89,6 +89,9 @@ define([], function() {
 		});
 
 		this.schools = $resource(server + "/api/schools");
+
+		this.environment = $resource(server + "/api/info/segue_environment");
+
 	}
 
 	return Api;
