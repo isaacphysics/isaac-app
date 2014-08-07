@@ -87,6 +87,8 @@ define([], function() {
 				method: "POST",
 			}
 		});
+
+		this.environment = $resource(server + "/api/info/segue_environment");
 	}
 
 	return Api;
