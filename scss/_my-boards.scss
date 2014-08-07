@@ -12,7 +12,8 @@
 		}
 	}
 	h3 {
-		margin: 27px 0 0;
+		margin: 27px 0 10px;
+		font-size: 23px;
 		a {
 			color: #333;
 			font-weight: bold;
@@ -33,31 +34,42 @@
 	font-weight: bold;
 	text-align: center;
 	color: #fff;
-	span {
+	.percent-symbol {
 		font-size: 17px;
+		line-height: 38px;
 		vertical-align: top;
 	}
 }
-.subject-physics {
-	position: absolute;
-	top: 11px;
-	left: 0;
-	width: 71px;
-	height: 82px;
-	background: purple;
-	z-index: -1;
-}
+.subject-physics,
 .subject-maths {
 	position: absolute;
 	top: 11px;
 	left: 0;
 	width: 71px;
 	height: 82px;
-	background: blue;
+	background: url(/assets/my-boards-sprite.png) no-repeat 0 0;
+	padding: 18px 0 0;
+}
+.subject-physics {
+	z-index: -1;
+}
+.subject-maths {
 	z-index: -2;
+	background-position: -71px 0;
 }
 .subject-maths + .subject-physics {
 	left: auto;
 	top: 0;
 	right: 0;
+}
+.board-info {
+	float: right;
+	margin: 18px 0 0 18px;
+	p {
+		font-size: 15px;
+		margin: 0;
+	}
+	strong {
+		font-style: italic;
+	}
 }
