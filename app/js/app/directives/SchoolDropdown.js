@@ -17,12 +17,16 @@ define([], function() {
 
 			 	// Load the initially selected school, if there is one.
 
-			 	if (scope.selectedSchoolUrn) {
-				 	api.schools.query({query: scope.selectedSchoolUrn}).$promise.then(function(s) {
-				 		if (s.length >= 1)
-				 			scope.selectedSchool = s[0];
-				 	});
-				}
+			 	scope.$watch("selectedSchoolUrn", function(newUrn, oldUrn) {
+			 		if (newUrn) {
+			 			api.schools.query({query: newUrn}).$promise.then(function(s) {
+				 			if (s.length >= 1)
+				 				scope.selection.school = s[0];
+				 		});
+			 		}
+			 	});
+				 	
+			
 
 				// When the search text changes to something longer than 2 chars, search school.
 				scope.$watch("searchText", function(newText) {
@@ -35,7 +39,10 @@ define([], function() {
 					}
 				})
 
-				scope.$watch("selection.school", function(newSchool) {
+				scope.$watch("selection.school", function(newSchool, oldSchool) {
+					if (newSchool === oldSchool)
+						return; // Init
+
 					if (newSchool) {
 						scope.selectedSchoolUrn = newSchool.urn;
 						scope.searchText = '';
