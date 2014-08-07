@@ -72,7 +72,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.$watch("validationResponse", function(r, oldR) {
 					if (r === oldR) {
-						console.warn("Init validationResponse",r)
 						return; // Init
 					}
 					
@@ -81,20 +80,24 @@ define(["app/honest/responsive_video"], function(rv) {
 						scope.selectedChoice.value = r.answer.value;
 						scope.selectUnit(r.answer.units);
 
-						if (r.correct) {
-							scope.accordionSection.titleSuffix = "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓";
-						} else {							
-							scope.accordionSection.titleSuffix = "";
-						}
+						if (scope.accordionSection) {
+							if (r.correct) {
+								scope.accordionSection.titleSuffix = "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓";
+							} else {							
+								scope.accordionSection.titleSuffix = "";
+							}
 
-						scope.accordionSection.correctAnswerFlag.isCorrect = r.correct;
+							scope.accordionSection.correctAnswerFlag.isCorrect = r.correct;
+						}
 					} else {
 
 						// The user started changing their answer after a previous validation response.
 
 						// Just in case this is the initialisation of scope.validationResponse, 
 						// remove any watch the accordion might have.
-						scope.accordionSection.correctAnswerFlag.unwatch();
+						
+						if (scope.accordionSection)
+							scope.accordionSection.correctAnswerFlag.unwatch();
 					}
 
 				})

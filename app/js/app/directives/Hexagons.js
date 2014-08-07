@@ -144,7 +144,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 				wildCard: "=",
 				wildCardPosition: "=",
                 loading: "=",
-                boardId: "="
+                boardId: "=",
 			},
 
 			restrict: "A",
@@ -168,9 +168,9 @@ define(["app/honest/hexagon"],function(hexagon) {
                 var update = function() {
                     // Calculate Hexagon info
 	                var _width = hexWidth(); // This should be recalculated every time the window is resized
-                    var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, scope.questions || [], equalRows);
+                    var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, augmentedQuestions || [], equalRows);
 
-                    draw(hex, scope.questions || [], $state, scope.boardId);        
+                    draw(hex, augmentedQuestions || [], $state, scope.boardId);        
 
                 }
 
@@ -179,9 +179,12 @@ define(["app/honest/hexagon"],function(hexagon) {
                     $(window).off("resize", update);
                 })
 
+                var augmentedQuestions = null;
+
 	            scope.$watch("questions", function() {
 	            	if (scope.questions) {
-	            		$.each(scope.questions, function(i, q) {
+                        augmentedQuestions = JSON.parse(JSON.stringify(scope.questions.slice(0)));
+	            		$.each(augmentedQuestions, function(i, q) {
 				            var subjectTag = tags.getSubjectTag(q.tags);
                             if (!subjectTag) {
                                 q.subject = "";
@@ -199,7 +202,9 @@ define(["app/honest/hexagon"],function(hexagon) {
 	            			}
 	            		});
 
-	            		scope.questions.splice(scope.wildCardPosition, 0, scope.wildCard);
+                        var augmentedWildcard = JSON.parse(JSON.stringify(scope.wildCard));
+	            		augmentedQuestions.splice(scope.wildCardPosition, 0, augmentedWildcard);
+
                         update();
 		    		} else {
                         update();

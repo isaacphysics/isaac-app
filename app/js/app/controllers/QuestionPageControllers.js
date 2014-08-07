@@ -92,6 +92,12 @@ define([], function() {
 			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
 			$scope.gameBoard.$promise.then(function(board) {
 
+
+				// Cause this board to be persisted for the current user. 
+				// This will fail if we're not logged in, but that doesn't matter.
+				
+				board.$save();
+
 				// Find the index of this question on the game board.
 
 				var thisIndex = null;
