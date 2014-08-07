@@ -8,15 +8,7 @@ define([], function() {
 			api.account.saveSettings($scope.user);
 		}
 
-		$scope.schools = api.schools;
-
-
-
-
-		// send back urn 
-
-
-		//$scope.$watch("sortOption", updateBoards);
+		$scope.globalFlags.noSearch = true;
 		
 	}]
 

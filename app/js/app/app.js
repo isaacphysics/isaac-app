@@ -56,13 +56,16 @@ define([
 
         $rootScope.globalFlags = {
             siteSearchOpen: false,
-            isLoading: false
+            isLoading: false,
+            noSearch: false
         };
 
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
+            // TODO: find a better way to hide the search
+            $rootScope.globalFlags.noSearch = false;
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {

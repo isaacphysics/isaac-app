@@ -4,6 +4,7 @@ define([], function() {
 
 		$scope.auth = auth;
 		$scope.target = $stateParams.target;
+		$scope.globalFlags.noSearch = true;
 		
 	}]
 

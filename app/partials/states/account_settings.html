@@ -67,7 +67,7 @@
             <li>
             <label>
     		<strong>Starting level</strong>
-            <select ng-model="user.level">
+            <select ng-model="user.defaultLevel">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -78,9 +78,10 @@
     		<input type="text">
 		</label>
 		<label>
-    		<strong>Last name</strong><span class="ru-form-required"></span>
-    		<input type="text">
-		</label>
+    		<strong>School</strong><span class="ru-form-required"></span>
+        </label>
+    		<div school-dropdown selected-school-urn="user.schoolId">
+            </div>
         </ul>
         {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
