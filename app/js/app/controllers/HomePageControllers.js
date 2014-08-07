@@ -65,9 +65,6 @@ define([], function() {
 
 				// TODO: Do this somewhere else.
 
-				if (!board.title)
-					board.title = generateGameBoardTitle(board);
-
 				addFilterWatchers();
 				setWarnings();
 
@@ -116,9 +113,6 @@ define([], function() {
 				}
 
 				recordCurrentGameboard();
-
-				if (!board.title)
-					board.title = generateGameBoardTitle(board);
 
 				if (!$location.hash()) {
 					$location.replace();
@@ -257,7 +251,7 @@ define([], function() {
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
 
-        var generateGameBoardTitle = function(gameBoard) {
+        $scope.generateGameBoardTitle = function(gameBoard) {
         	// Find the most specific filter tag that is the only one at its level.
 
         	// E.g. Physics > Mechanics > Dynamics = Dynamics
@@ -266,7 +260,8 @@ define([], function() {
         	// Include special case:
         	//      Physics, Maths = Physics & Maths
 
-        	console.debug(gameBoard);
+        	if (!gameBoard || !gameBoard.$resolved || !gameBoard.gameFilter)
+        		return "";
 
         	var filter = gameBoard.gameFilter;
 
@@ -294,6 +289,23 @@ define([], function() {
         		return "Physics & Maths" + level;
         	}
 
+        }
+
+        $scope.editedGameBoardTitle = null;
+
+        $scope.saveGameBoardTitle = function() {
+        	if (!$scope.editedGameBoardTitle)
+        		return;
+
+        	var oldTitle = $scope.gameBoard.title;
+        	$scope.gameBoard.title = $scope.editedGameBoardTitle;
+        	$scope.editedGameBoardTitle = null;
+
+        	$scope.gameBoard.$save({id: $scope.gameBoard.id}).then(function(gb) {
+        		$scope.gameBoard.title = gb.title;
+        	}).catch(function() {
+        		$scope.gameBoard.title = oldTitle;
+        	});
         }
 
 	}]
