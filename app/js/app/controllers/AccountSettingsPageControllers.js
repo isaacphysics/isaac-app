@@ -9,6 +9,14 @@ define([], function() {
 		}
 
 		$scope.schools = api.schools;
+
+
+
+
+		// send back urn 
+
+
+		//$scope.$watch("sortOption", updateBoards);
 		
 	}]
 
