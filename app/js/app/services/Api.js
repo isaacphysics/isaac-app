@@ -17,7 +17,7 @@ define([], function() {
 			}
 		});
 
-		this.gameBoards = $resource(server + "/api/gameboards/:id", {}, {
+		this.gameBoards = $resource(server + "/api/gameboards/:id", {id: "@id"}, {
 			filter: {
 				method: "GET",
 				url: server + "/api/gameboards",

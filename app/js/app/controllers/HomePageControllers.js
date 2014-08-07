@@ -263,13 +263,12 @@ define([], function() {
         	$scope.gameBoard.title = $scope.editedGameBoardTitle;
         	$scope.editedGameBoardTitle = null;
 
-        	$scope.gameBoard.$save({id: $scope.gameBoard.id}).then(function(gb) {
+        	$scope.gameBoard.$save().then(function(gb) {
         		$scope.gameBoard.title = gb.title;
         	}).catch(function() {
         		$scope.gameBoard.title = oldTitle;
         	});
         }
-
 	}]
 
 	return {
