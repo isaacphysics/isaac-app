@@ -1,6 +1,6 @@
 define([], function() {
 
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth) {
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles) {
 
 		$scope.user = auth.getUser();
 
@@ -251,45 +251,7 @@ define([], function() {
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
 
-        $scope.generateGameBoardTitle = function(gameBoard) {
-        	// Find the most specific filter tag that is the only one at its level.
-
-        	// E.g. Physics > Mechanics > Dynamics = Dynamics
-        	//      Physics > Mechanics > Dynamics, Statics = Mechanics
-        	//      Physics > Mechanics = Mechanics
-        	// Include special case:
-        	//      Physics, Maths = Physics & Maths
-
-        	if (!gameBoard || !gameBoard.$resolved || !gameBoard.gameFilter)
-        		return "";
-
-        	var filter = gameBoard.gameFilter;
-
-
-        	if (filter.levels && filter.levels.length == 1) {
-        		var level = ", Level " + filter.levels[0];
-        	} else {
-        		var level = "";
-        	}
-
-        	if (filter.topics && filter.topics.length == 1) {
-
-        		return $scope.getTagTitle(filter.topics[0]) + level;
-
-        	} else if (filter.fields && filter.fields.length == 1) {
-
-        		return $scope.getTagTitle(filter.fields[0]) + level;
-
-        	} else if (filter.subjects && filter.subjects.length == 1) {
-
-        		return $scope.getTagTitle(filter.subjects[0]) + level;
-
-        	} else {
-
-        		return "Physics & Maths" + level;
-        	}
-
-        }
+        $scope.generateGameBoardTitle = gameBoardTitles.generate;
 
         $scope.editedGameBoardTitle = null;
 
