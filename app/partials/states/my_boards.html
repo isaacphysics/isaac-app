@@ -6,19 +6,8 @@
 	</div>
 </div>
 <div>
-		<select>
-			<option>Boards</option>
-			<option>All</option>
-			<option>Completed</option>
-			<option>Incompleted</option>
-		</select>
-		<select>
-			<option>Sort By</option>
-			<option>Date Created</option>
-			<option>Date Accessed</option>
-			<option>Subject</option>
-			<option>Level</option>
-		</select>
+		<select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
+		<select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
 	</div>
 <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
@@ -45,3 +34,4 @@
    		</div>
    	</li>
 </ul>
+<button ng-click="loadMore()">Load more</button>
