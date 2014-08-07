@@ -7,6 +7,8 @@ define([], function() {
 		$scope.save = function() {
 			api.account.saveSettings($scope.user);
 		}
+
+		$scope.schools = api.schools;
 		
 	}]
 

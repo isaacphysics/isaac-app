@@ -15,30 +15,66 @@
             <li>
             	<label>
     				<strong>First Name</strong><span class="ru-form-required"></span>
-    				<input type="text">
+    				<input type="text" ng-model="user.givenName">
 				</label>
 				<label>
     				<strong>Last Name</strong><span class="ru-form-required"></span>
-    				<input type="text">
+    				<input type="text" ng-model="user.familyName">
 				</label>
 				<label>
     				<strong>Your Email Address</strong><span class="ru-form-required"></span>
-    				<input type="text">
+    				<input type="text" ng-model="user.email">
 				</label>
             </li>
             <li>
             <label>
-    		<strong>First name</strong><span class="ru-form-required"></span>
-    		<input type="text">
+            <strong>Change password</strong><span class="ru-form-required"></span>
+            <input type="password" ng-model="user.password" placeholder="***********">
+            <strong>Confirm password</strong><span class="ru-form-required"></span>
+            <input type="password" placeholder="***********" match="user.password" >
+        </label>
+            <label>
+                <input type="radio" ng-model="user.gender" value="MALE">  Male <br/>
+                <input type="radio" ng-model="user.gender" value="FEMALE"> Female <br/>
 		</label>
 		<label>
-    		<strong>Last name</strong><span class="ru-form-required"></span>
-    		<input type="text">
+    		 <select>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+             <select>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+             <select>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
 		</label>
             </li>
             <li>
             <label>
-    		<strong>First name</strong><span class="ru-form-required"></span>
+    		<strong>Starting level</strong>
+            <select ng-model="user.level">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
     		<input type="text">
 		</label>
 		<label>
@@ -46,6 +82,7 @@
     		<input type="text">
 		</label>
         </ul>
+        {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
             <li><a class="ru-button-big expand" ng-click="save()">Save</a></li>
             <!-- TODO: What is skip going to do? -->

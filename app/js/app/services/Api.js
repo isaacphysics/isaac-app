@@ -87,6 +87,8 @@ define([], function() {
 				method: "POST",
 			}
 		});
+
+		this.schools = $resource(server + "/api/schools");
 	}
 
 	return Api;

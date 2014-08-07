@@ -22,17 +22,26 @@
 	</div>
 <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
-   	<li ng-repeat="board in boards">
+   	<li ng-repeat="board in boards" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
    			<div class="row">
-   				<div class="board-percentage">
+   				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
    					{{board.percentageCompleted}}<span>%</span>
-   					<span ng-repeat="subject in board.gameFilter.subjects.slice().reverse()" type="subject.type" close="board.gameFilter.subjects.splice(index, 1)" class="subject-{{subject}}"></span>
+   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'"></span>
+   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'"></span>
+   				</div>
+   				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+   					<span class="subject-complete"></span>
    				</div>
    			</div>
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
    			Level: {{board.gameFilter.levels}}<br />
-   			Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
+   			Created: {{board.creationDate | date:'dd/MM/yyyy'}} <br />
+   			Last visited: {{board.lastVisited | date:'dd/MM/yyyy'}} 
+ 			<br />
+ 			Created by: 
+   			<span ng-if="board.ownerUserId == user._id">Me</span>
+   			<span ng-if="board.ownerUserId != user._id">someone else</span>
    		</div>
    	</li>
 </ul>
