@@ -128,7 +128,7 @@ define([
 
 				scope.env = api.environment.get();
 
-				element.attr("ng-hide", "!env.segueMode || env.segueEnvironment.toLowerCase() !='" + attrs["apiEnvironment"] + "'.toLowerCase()");
+				element.attr("ng-hide", "!env.segueEnvironment || env.segueEnvironment.toLowerCase() !='" + attrs["apiEnvironment"] + "'.toLowerCase()");
 				element.attr("api-environment", null);
 
 				$compile(element)(scope);
