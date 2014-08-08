@@ -113,7 +113,8 @@ define([], function() {
 				id: "differentiation",
 				parent: "calculus"
 			}, {
-				id: "differential_equations",
+				id: "differential_eq",
+				title: "Differential Equations",
 				parent: "calculus"
 			},
 
