@@ -41,7 +41,8 @@
 	}
 }
 .subject-physics,
-.subject-maths {
+.subject-maths,
+.subject-complete {
 	position: absolute;
 	top: 11px;
 	left: 0;
@@ -61,6 +62,9 @@
 	left: auto;
 	top: 0;
 	right: 0;
+}
+.subject-complete {
+	background-position: -142px 0;
 }
 .board-info {
 	float: right;
@@ -112,5 +116,22 @@
 	}
 	.level-6 {
 		left: 95px;
+	}
+}
+.board-creator {
+	font-weight: bold;
+	font-style: italic;
+	color: #509e2e;
+}
+.board-complete {
+	.panel {
+		background: #eee;
+	}
+	.board-creator {
+		color: #000;
+	}
+	.board-levels span {
+		background-position: -132px -82px;
+
 	}
 }

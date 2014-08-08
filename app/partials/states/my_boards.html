@@ -34,10 +34,11 @@
                </div>
    			</div>
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
- 			Created by: 
-   			<span ng-if="board.ownerUserId == user._id">Me</span>
-   			<span ng-if="board.ownerUserId != user._id">someone else</span>
+ 			   <p>Created by: 
+   			   <span class="board-creator" ng-if="board.ownerUserId == user._id">Me</span>
+   			   <span class="board-creator" ng-if="board.ownerUserId != user._id">someone else</span>
+            </p>
    		</div>
    	</li>
 </ul>
-<button ng-click="loadMore()">Load more</button>
+<a class="ru-button-big expand secondary" ng-click="loadMore()">Load more</a>
