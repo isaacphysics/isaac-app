@@ -13,26 +13,40 @@
 		<span ng-if="user.givenName"> {{user}}</span>
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
-            	<label>
-    				<strong>First Name</strong><span class="ru-form-required"></span>
-    				<input type="text" ng-model="user.givenName">
-				</label>
-				<label>
-    				<strong>Last Name</strong><span class="ru-form-required"></span>
-    				<input type="text" ng-model="user.familyName">
-				</label>
+                <div class="row">
+                    <div class="large-16 medium-8 columns">
+            	       <label>
+    				        <strong>First Name</strong><span class="ru-form-required"></span>
+    				        <input type="text" ng-model="user.givenName">
+				        </label>
+                    </div>
+                    <div class="large-16 medium-8 columns">
+				        <label>
+    				        <strong>Last Name</strong><span class="ru-form-required"></span>
+    				        <input type="text" ng-model="user.familyName">
+				        </label>
+                    </div>
+                </div>
 				<label>
     				<strong>Your Email Address</strong><span class="ru-form-required"></span>
     				<input type="text" ng-model="user.email">
 				</label>
             </li>
             <li>
-            <label>
-            <strong>Change password</strong><span class="ru-form-required"></span>
-            <input type="password" ng-model="user.password" placeholder="***********">
-            <strong>Confirm password</strong><span class="ru-form-required"></span>
-            <input type="password" placeholder="***********" match="user.password" >
-        </label>
+            <div class="row">
+                <div class="large-8 medium-8 columns">
+                    <label>
+                        <strong>Change password</strong>
+                        <input type="password" ng-model="user.password" placeholder="***********">        
+                    </label>
+                </div>
+                <div class="large-8 medium-8 columns">
+                    <label>
+                        <strong>Confirm password</strong>
+                        <input type="password" placeholder="***********" match="user.password" >
+                    </label>
+                </div>
+            </div>
             <label>
                 <input type="radio" ng-model="user.gender" value="MALE">  Male <br/>
                 <input type="radio" ng-model="user.gender" value="FEMALE"> Female <br/>

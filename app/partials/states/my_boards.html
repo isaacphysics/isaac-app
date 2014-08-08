@@ -2,7 +2,7 @@
 	<div class="">
 		<h1>My Boards</h1>
 		<!-- TODO: this needs to be dynamicly generated -->
-		<p><strong>You have <a>18 boards</a> on the go with 5 boards completed, 4 shared boards with 3 boards completely untouched. Filter your boards....</strong></p>
+		<p><strong>You have <span class="ru_green">18 boards</span> on the go with <span class="ru_green">5 boards</span> completed.</strong></p>
 	</div>
 </div>
 <div>
@@ -28,11 +28,12 @@
                <div class="board-info">
                   <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
                   <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
+                  <div class="board-levels">
+                     <span ng-repeat="level in board.gameFilter.levels" class="level-{{level}}">{{level}}</span>
+                  </div>
                </div>
    			</div>
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
-   			Level: {{board.gameFilter.levels}}<br />
- 			<br />
  			Created by: 
    			<span ng-if="board.ownerUserId == user._id">Me</span>
    			<span ng-if="board.ownerUserId != user._id">someone else</span>
