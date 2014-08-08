@@ -11,11 +11,17 @@
 		padding-bottom: 0;
 	}
 }
-.login-separator p {
-	font-size: 34px;
-	font-weight: bold;
-	font-style: italic;
-	text-align: center;
+.login-separator {
+	padding: 77px 0;
+	background: url(/assets/blank-1px-grey.png) repeat-y center 0;
+	p {
+		font-size: 34px;
+		font-weight: bold;
+		font-style: italic;
+		text-align: center;
+		background: #fff;
+		margin: 0;
+	}
 }
 .login-form {
 	margin: 40px 0 20px;
@@ -74,16 +80,27 @@ a.login-forgot-password {
 	.login-wrap {
 		background: #f6f6f6;
 		border: none;
-		border-top: #ccc 1px solid;
 		border-bottom: #ccc 1px solid;
 		margin: 0 -15px;
 
 		h2 {
 			font-size: 23px;
 		}
-
-		.login-social { 
-			float: none;
+	}
+	.login-social { 
+		float: none;
+		margin-top: 0;
+	}
+	.login-separator {
+		padding: 0;
+		background-repeat: repeat-x;
+		background-position: 0 center;
+		p {
+			font-size: 23px;
+			background: #f6f6f6;
 		}
+	}
+	.login-form {
+		margin-top: 5px;
 	}
 }
