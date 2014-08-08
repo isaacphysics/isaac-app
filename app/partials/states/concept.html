@@ -34,8 +34,11 @@
                             </div>
                         </div>
                         <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
-                        <h3 class='subheader' ng-if="pageSubject == 'physics'"><strong>Physics Concept</strong></h3>
-                        <h3 class='subheader' ng-if="pageSubject == 'maths'"><strong>Maths Concept</strong></h3>
+                        <h3 class='subheader'>
+                            <strong ng-if="pageSubject == 'physics'">Physics Concept</strong>
+                            <strong ng-if="pageSubject == 'maths'">Maths Concept</strong> 
+                            <span api-environment="dev">({{questionPage.published ? "Published" : "Unpublished"}})</span>
+                        </h3>
                     </div>
                     <div class="clearfix"></div>
 

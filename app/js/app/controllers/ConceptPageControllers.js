@@ -28,7 +28,7 @@ define([], function() {
 		}
 		$scope.sourceUrl = persistence.session.load("conceptPageSource");
 
-		if($scope.sourceUrl.indexOf("/questions") == 0) {
+		if($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions") == 0) {
 			$scope.backText = "Back to your question";
 		} else if ($scope.sourceUrl == "/concepts") {
 			$scope.backText = "Back to concepts";

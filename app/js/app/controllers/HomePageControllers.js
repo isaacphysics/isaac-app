@@ -1,6 +1,6 @@
 define([], function() {
 
-	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth) {
+	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles) {
 
 		$scope.user = auth.getUser();
 
@@ -62,6 +62,8 @@ define([], function() {
 				$scope.filterTopics = board.gameFilter.topics || [];
 				$scope.filterLevels = board.gameFilter.levels || [];
 				$scope.filterConcepts = board.gameFilter.concepts || [];
+
+				// TODO: Do this somewhere else.
 
 				addFilterWatchers();
 				setWarnings();
@@ -249,18 +251,24 @@ define([], function() {
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
 
-        $scope.getGameboardTitle = function(gameboard) {
-        	// Find the most specific filter tag that is the only one at its level.
+        $scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-        	// E.g. Physics > Mechanics > Dynamics = Dynamics
-        	//      Physics > Mechanics > Dynamics, Statics = Mechanics
-        	//      Physics > Mechanics = Mechanics
-        	// Include special case:
-        	//      Physics, Maths = Physics and Maths
+        $scope.editedGameBoardTitle = null;
 
-        	// TODO: Implement this.
+        $scope.saveGameBoardTitle = function() {
+        	if (!$scope.editedGameBoardTitle)
+        		return;
+
+        	var oldTitle = $scope.gameBoard.title;
+        	$scope.gameBoard.title = $scope.editedGameBoardTitle;
+        	$scope.editedGameBoardTitle = null;
+
+        	$scope.gameBoard.$save().then(function(gb) {
+        		$scope.gameBoard.title = gb.title;
+        	}).catch(function() {
+        		$scope.gameBoard.title = oldTitle;
+        	});
         }
-
 	}]
 
 	return {

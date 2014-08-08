@@ -17,7 +17,7 @@ require.config({
         "JSXTransformer": '../../bower_components/react/JSXTransformer',
         "angulartics": '../../bower_components/angulartics/src/angulartics',
         "angulartics-ga": '../../bower_components/angulartics/src/angulartics-ga',
-        "mathjax": 'http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML',
+        "mathjax": '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML',
         "fastclick" : '../../bower_components/fastclick/lib/fastclick',
         "angulartics": '../../bower_components/angulartics/src/angulartics',
         "angulartics-ga": '../../bower_components/angulartics/src/angulartics-ga',

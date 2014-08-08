@@ -1,6 +1,6 @@
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Units", "app/services/Persistence", "app/services/FilterWarnings", "app/services/Auth"], function() {
+define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Units", "app/services/Persistence", "app/services/FilterWarnings", "app/services/Auth", "app/services/GameBoardTitles"], function() {
 
 	/* Services */
 
@@ -18,6 +18,8 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 	.factory('units', require("app/services/Units"))
 
 	.factory('filterWarnings', require("app/services/FilterWarnings"))
+
+	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
 
 	.provider('api', function ApiProvider() {
 

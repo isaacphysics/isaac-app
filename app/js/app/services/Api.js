@@ -17,7 +17,7 @@ define([], function() {
 			}
 		});
 
-		this.gameBoards = $resource(server + "/api/gameboards/:id", {}, {
+		this.gameBoards = $resource(server + "/api/gameboards/:id", {id: "@id"}, {
 			filter: {
 				method: "GET",
 				url: server + "/api/gameboards",
@@ -87,6 +87,10 @@ define([], function() {
 				method: "POST",
 			}
 		});
+
+		this.environment = $resource(server + "/api/info/segue_environment");
+
+		this.schools = $resource(server + "/api/schools");
 	}
 
 	return Api;
