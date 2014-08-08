@@ -1,15 +1,15 @@
 <div desktop-panel>
-	<div class="">
-		<h1>My Boards</h1>
-		<!-- TODO: this needs to be dynamicly generated -->
-		<p><strong>You have <span class="ru_green">18 boards</span> on the go with <span class="ru_green">5 boards</span> completed.</strong></p>
-	</div>
+	<h1>My Boards</h1>
+	<!-- TODO: this needs to be dynamicly generated -->
+	<p><strong>You have <span class="ru_green">18 boards</span> on the go with <span class="ru_green">5 boards</span> completed.</strong></p>
+</div>
+<div mobile-panel>
+   <h5>Filter your Boards</h5>
 </div>
 <div>
 		<select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
 		<select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
 	</div>
-<!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
@@ -33,6 +33,7 @@
                   </div>
                </div>
    			</div>
+            <!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
  			   <p>Created by: 
    			   <span class="board-creator" ng-if="board.ownerUserId == user._id">Me</span>
