@@ -2,17 +2,17 @@
 .ru-button-big
 {
 	@include button;
-    font-size: 1.25rem !important;
-    font-weight: 600 !important;
-    font-style: italic !important;
+    font-size: 1.25rem;
+    font-weight: 600;
+    font-style: italic;
 }
 .ru-button {
-	padding-top: 0.3rem !important;
-    padding-bottom: 0.3rem !important;
+	padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
 }
 .ru-button-big {
-    padding-top: 0.6rem !important;
-    padding-bottom: 0.6rem !important;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
 }
 .ru-button.expand, .ru-button-big.expand {
 	padding-right: 0;

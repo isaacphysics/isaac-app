@@ -62,6 +62,10 @@ define([
 
         $rootScope.$state = $state;
 
+        $rootScope.cookiesAccepted = function() {
+            console.log('Cookies accepted');
+        }
+
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
             // TODO: find a better way to hide the search

@@ -99,3 +99,23 @@
     height: 48px;
     background-position: -5px -299px;
 }
+.ru-alert-box {
+    border-style: solid;
+    border-width: 1px;
+    display: block;
+    font-weight: normal;
+    position: relative;
+    padding: 0.875rem 1.5rem 0.875rem 0.875rem;
+    font-size: 11px;
+    font-family: Arial;
+    line-height: 14px;
+    transition: opacity 300ms ease-out;
+    background-color: #333;
+    color: #fff;
+    .ru-button {
+        font-size: 16px;
+        font-family: Arial;
+        font-style: normal;
+    }
+}
+
