@@ -71,7 +71,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				}
 
 				scope.$watch("validationResponse", function(r, oldR) {
-					if (r === oldR) {
+					if (!r && r === oldR) {
 						return; // Init
 					}
 					
