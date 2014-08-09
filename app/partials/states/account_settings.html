@@ -9,7 +9,7 @@
 </div>
 <div class="row account-settings-wrap">
 	<div class="panel">
-		<!--<span ng-if="user.givenName"> {{user}}</span>-->
+		<span ng-if="user.givenName"> {{user}}</span>
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
                 <div class="row">
@@ -81,12 +81,12 @@
             <label>
     		<strong>Starting level</strong>
             <select ng-model="user.defaultLevel">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
             </select>
     		<input type="text">
 		</label>

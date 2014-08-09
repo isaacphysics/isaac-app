@@ -21,16 +21,7 @@
         <div ng-include="'/partials/mobile_pre_header.html'"></div>
         <!-- Container for hexagon background -->
         <div class='bg-wrap'>
-          <div class="row">
-              <div class="small-16 columns">
-                <div data-alert class="ru-alert-box">
-                  <div>
-                  By continuing to use this site you consent to the use of cookies on your device as described in our <a href="#">cookie policy</a> unless you have disabled them. You can change your <a href="#">cookie settings</a> at any time but parts of our site will not function correctly without them.
-                  </div>
-                  <a ng-click="cookiesAccepted()" class="ru-button close">Accept</a>
-                </div>
-              </div>
-            </div>
+            <div ng-include="'/partials/cookie-message.html'"></div>
             <div ng-include="'/partials/header.html'"></div>
 
             <div class="row">
