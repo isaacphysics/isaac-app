@@ -125,10 +125,6 @@
         margin-bottom: 0;
     }
 }
-select {
-    background-image: url(/assets/select-chevron.png);
-    background-position: 95% center;
-}
 @media #{$small-only} { 
     .ru-alert-box {
         position: absolute;
@@ -158,3 +154,12 @@ select {
         }
     }
 }
+label {
+    font-size: 16px;
+    color: #000;
+}
+select {
+    background-image: url(/assets/select-chevron.png);
+    background-position: right center;
+}
+

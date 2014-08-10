@@ -14,7 +14,7 @@
 .login-separator {
 	padding: 77px 0;
 	background: url(/assets/blank-1px-grey.png) repeat-y center 0;
-	p {
+	span {
 		font-size: 34px;
 		font-weight: bold;
 		font-style: italic;
@@ -90,18 +90,23 @@ a.login-forgot-password {
 	}
 	.login-social { 
 		float: none;
-		margin-top: 0;
+		margin: 0 0 10px;
 	}
 	.login-separator {
-		padding: 0;
 		background-repeat: repeat-x;
 		background-position: 0 center;
-		p {
-			font-size: 23px;
+		padding: 0;
+		margin: 0 0 10px;
+		span {
+			font-size: 24px;
 			background: #f6f6f6;
+			padding: 0 20px;
 		}
 	}
 	.login-form {
 		margin-top: 5px;
+	}
+	.login-forgot-password {
+		font-weight: 600;
 	}
 }

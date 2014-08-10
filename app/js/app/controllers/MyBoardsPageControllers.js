@@ -5,15 +5,15 @@ define([], function() {
 
 
 		$scope.filterOptions = [
-			{label: "All", val: null},
-			{label: "Not started", val: "not_attempted"},
+			{label: "All Boards", val: null},
+			{label: "Not Started", val: "not_attempted"},
 			{label: "Incomplete", val: "in_progress"},
 			{label: "Completed", val: "completed"},
 		];
 
 		$scope.sortOptions = [
-			{label: "Date created", val: "created"},
-			{label: "Date visited", val: "visited"},
+			{label: "Date Created", val: "created"},
+			{label: "Date Visited", val: "visited"},
 			{label: "Subject", val: "subject"},
 		];
 

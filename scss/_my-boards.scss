@@ -135,3 +135,35 @@
 
 	}
 }
+.boards-filters {
+	margin-top: 5px;
+	label {
+		float: left;
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: 600;
+		color: #333;
+		margin: 8px 5px 0 10px;
+	}
+	li {
+		padding-bottom: 0;
+	}
+}
+@media #{$medium-up} {
+	.boards-filters {
+		float: right;
+		select {
+			float: left;
+			width: auto;
+			padding-right: 50px;
+		}
+		li {
+			width: auto;
+		}
+	}
+}
+@media #{$small-only} {
+	.board-info p {
+		font-size: 13px;
+	}
+}
