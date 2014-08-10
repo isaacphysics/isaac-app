@@ -50,7 +50,8 @@ a.login-forgot-password {
 .login-social-twitter,
 .login-social-facebook {
 	text-indent: -99999em;
-	float: left;
+	display: inline-block;
+	text-align: center;
 	width: 79px;
 	height: 78px;
 	background: url(/assets/social-login-sprite.png) no-repeat 0 0;
