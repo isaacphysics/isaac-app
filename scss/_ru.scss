@@ -100,12 +100,10 @@
     background-position: -5px -299px;
 }
 .ru-alert-box {
-    border-style: solid;
-    border-width: 1px;
     display: block;
     font-weight: normal;
     position: relative;
-    padding: 0.875rem 1.5rem 0.875rem 0.875rem;
+    padding: 0.875rem;
     font-size: 11px;
     font-family: Arial;
     line-height: 14px;
@@ -113,10 +111,31 @@
     background-color: #333;
     color: #fff;
     .ru-button {
+        float: right;
         font-size: 16px;
         font-family: Arial;
         font-style: normal;
+        font-weight: normal;
         margin-bottom: 0;
     }
 }
-
+select {
+    background-image: url(/assets/select-chevron.png);
+    background-position: 95% center;
+}
+@media #{$small-only} { 
+    .ru-alert-box {
+        position: absolute;
+        top: 42px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: rgba(76, 76, 76, 0.9); 
+        .ru-button {
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+            margin-top: 20px;
+        }
+    }
+}
