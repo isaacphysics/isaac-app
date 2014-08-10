@@ -99,8 +99,14 @@
     height: 48px;
     background-position: -5px -299px;
 }
+.ru-info-icon {
+    float: left;
+    width: 34px;
+    height: 39px;
+    background: url(/assets/information-icon.png) 0 0 no-repeat;
+}
 .ru-alert-box {
-    display: block;
+    z-index: 99;
     font-weight: normal;
     position: relative;
     padding: 0.875rem;
@@ -129,13 +135,26 @@ select {
         top: 42px;
         left: 0;
         right: 0;
-        z-index: 99;
         background: rgba(76, 76, 76, 0.9); 
         .ru-button {
             padding-left: 0;
             padding-right: 0;
             width: 100%;
             margin-top: 20px;
+            font-style: italic;
+            font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+            font-weight: 600;
+        }
+        .cookies-title {
+            font-size: 19px;
+            font-style: italic;
+            font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            img {
+                margin-right: 10px;
+            }
         }
     }
 }
