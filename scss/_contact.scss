@@ -1,0 +1,11 @@
+.ru-contact-form {
+    float: right;
+    margin-bottom: 20px;
+}
+
+@media #{$small-only} {
+    .ru-contact-form-container {
+        margin-left: -0.9375rem;
+        margin-right: -0.9375rem;
+    }
+}
