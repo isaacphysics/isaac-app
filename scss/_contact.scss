@@ -3,9 +3,25 @@
     margin-bottom: 20px;
 }
 
+.required-field {
+    color: $ru_green;
+    font-weight: bold;
+    font-size: 0.875rem;
+    float: right;
+}
+
+.ru-contact-form input.submit {
+    float: right;
+}
+
 @media #{$small-only} {
     .ru-contact-form-container {
         margin-left: -0.9375rem;
         margin-right: -0.9375rem;
+    }
+
+    .ru-contact-form input.submit {
+        width: 100%;
+        float: none;
     }
 }
