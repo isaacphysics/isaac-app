@@ -48,6 +48,7 @@ define(["angular-ui-router"], function() {
             .state('events', genericPageState("/events", "events_index"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
             .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
+	        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
             .state('bios', genericPageState("/bios", "bios"))
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
             .state('contact', staticPageState("/contact", "contact"))
