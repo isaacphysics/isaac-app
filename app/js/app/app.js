@@ -207,6 +207,7 @@ define([
                 FastClick.attach(document.body);
                 
                 // Mobile login drop down
+	            $("#mobile-login").off("click");
                 $("#mobile-login").click(function(e)
                 {
                     e.preventDefault();
@@ -214,6 +215,7 @@ define([
                 });
                 
                 // Mobile search drop down
+	            $("#mobile-search").off("click");
                 $("#mobile-search").click(function(e)
                 {
                     e.preventDefault();

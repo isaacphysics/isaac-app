@@ -1,7 +1,7 @@
 <div desktop-panel>
 	<h1>My Boards</h1>
 	<!-- TODO: this needs to be dynamicly generated -->
-	<p><strong>You have <span class="ru_green">18 boards</span> on the go with <span class="ru_green">5 boards</span> completed.</strong></p>
+	<p><strong>You have <span class="ru_green">{{boards.totalInProgress}} boards</span> on the go with <span class="ru_green">{{boards.totalCompleted}} boards</span> completed.</strong></p>
 </div>
 <div mobile-panel>
    <h5>Filter your Boards</h5>
@@ -19,7 +19,7 @@
    </ul>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
-   	<li ng-repeat="board in boards" ng-class="{'board-complete': board.percentageCompleted == '100'}">
+   	<li ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
    			<div class="row">
    				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">

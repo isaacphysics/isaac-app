@@ -18,15 +18,10 @@ define([], function() {
 		];
 
 		$scope.filterOption = $scope.filterOptions[0];
-
 		$scope.sortOption = $scope.sortOptions[0];
 
 		var updateBoards = function() {
-
-			$scope.boards = api.userGameBoards.query({
-				sort: $scope.sortOption.val,
-				show_only: $scope.filterOption.val,
-			});
+			$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val);
 		}
 
 		$scope.loadMore = function() {
@@ -41,7 +36,7 @@ define([], function() {
 		}
 
 
-		updateBoards();
+		//updateBoards();
 
 		$scope.$watch("filterOption", updateBoards);
 		$scope.$watch("sortOption", updateBoards);
