@@ -62,10 +62,6 @@ define([
 
         $rootScope.$state = $state;
 
-        $rootScope.cookiesAccepted = function() {
-            console.log('Cookies accepted');
-        }
-
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
             // TODO: find a better way to hide the search
@@ -123,7 +119,7 @@ define([
             // Global jQuery
             $(function()
             {
-
+                //$.cookie("test", 1);
                 // Mobile detection based on presence of mobile header
                 /**
                  * Are we on a mobile? (Safe on any browser without needing media queries via JS)
@@ -241,6 +237,36 @@ define([
     //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
     //                }
                 };
+                var cookie = {
+                    create: function(name,value,days) {
+                        if (days) {
+                            var date = new Date();
+                                date.setTime(date.getTime()+(days*24*60*60*1000));
+                            var expires = "; expires="+date.toGMTString();
+                        }
+                        else var expires = "";
+                        document.cookie = name+"="+value+expires+"; path=/";
+                    },
+                    read: function(name) {
+                        var nameEQ = name + "=";
+                        var ca = document.cookie.split(';');
+                        for(var i=0;i < ca.length;i++) {
+                            var c = ca[i];
+                            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                        }
+                        return null;
+                    }
+                }
+                var x = cookie.read('cookiesAccepted');
+                if (!x) {
+                    $(".cookies-message").show();
+                } else {
+                    $(".cookies-message").remove();
+                }
+                $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
+                    cookie.create('cookiesAccepted',1,720);
+                });
                 
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
