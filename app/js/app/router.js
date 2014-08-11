@@ -120,15 +120,15 @@ define(["angular-ui-router"], function() {
                 url: "/content/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.content.get({id: $stateParams.id}).$promise;
+                        return api.pages.get({id: $stateParams.id}).$promise;
                     }]
                 },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/generic_page.html",
                         controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.contentObject.id;
-                            $scope.doc = page.contentObject;
+                            $scope.title = "Content object: " + page.id;
+                            $scope.doc = page;
                         }],
                     }
                 }
