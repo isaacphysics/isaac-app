@@ -48,6 +48,7 @@ define(["angular-ui-router"], function() {
             .state('events', genericPageState("/events", "events_index"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
             .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
+	        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
             .state('bios', genericPageState("/bios", "bios"))
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
             .state('contact', staticPageState("/contact", "contact"))
@@ -119,15 +120,15 @@ define(["angular-ui-router"], function() {
                 url: "/content/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.content.get({id: $stateParams.id}).$promise;
+                        return api.pages.get({id: $stateParams.id}).$promise;
                     }]
                 },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/generic_page.html",
                         controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.contentObject.id;
-                            $scope.doc = page.contentObject;
+                            $scope.title = "Content object: " + page.id;
+                            $scope.doc = page;
                         }],
                     }
                 }
