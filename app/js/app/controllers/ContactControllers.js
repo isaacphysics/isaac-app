@@ -1,8 +1,6 @@
 define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
-		console.log("controller");
-
 		$scope.sendForm = function() {
 			var message = {
 				"firstName": form.firstName.value,
@@ -11,10 +9,10 @@ define([], function() {
 				"subject": form.subject.value,
 				"message": form.message.value
 			};
-			console.log(message);
 
 			api.contactForm.send({}, message).$promise.then(function(response) {
-				console.log(response);
+				console.log("Success");
+				// TODO: Inform user accordingly
 			}, function(e) {
 				console.error("Error submitting form", e);
 			});
