@@ -10,8 +10,12 @@
     float: right;
 }
 
-.ru-contact-form input.submit {
+.ru-contact-form button.submit {
     float: right;
+}
+
+.ng-invalid.ng-dirty {
+    background-color: #ffe9e9;
 }
 
 @media #{$small-only} {
@@ -20,7 +24,7 @@
         margin-right: -0.9375rem;
     }
 
-    .ru-contact-form input.submit {
+    .ru-contact-form button.submit {
         width: 100%;
         float: none;
     }

@@ -13,43 +13,45 @@
 		<p>Lorem ipsum dolor sit amen, consectetuer adipiscing elit. Aenean commodo ligual eget dolor. Cum sociis
 			natoque penatibus et magnis parturient montes</p>
 
-		<div class="large-6 medium-16 columns">
-			<span class="required-field show-for-small-only">* Required field</span>
-			<label>
-				<strong>First Name</strong><span class="ru-form-required"></span>
-				<input type="text">
-			</label>
-		</div>
-		<div class="large-6 medium-16 columns">
-			<label>
-				<strong>Last Name</strong><span class="ru-form-required"></span>
-				<input type="text">
-			</label>
-		</div>
-		<div class="large-6 medium-16 columns">
-			<label>
-				<strong>Your Email Address</strong><span class="ru-form-required"></span>
-				<input type="text">
-			</label>
-		</div>
-		<div class="large-6 medium-16 columns">
-			<label>
-				<strong>Message Subject</strong><span class="ru-form-required"></span>
-				<input type="text">
-			</label>
-		</div>
-		<div class="large-16 medium-16 columns">
-			<label>
-				<strong>Message Subject</strong><span class="ru-form-required"></span>
-				<textarea style="width: 100%;" rows="7"></textarea>
-			</label>
-			<div>
-				<input class="button ru-button submit" type="button" value="Submit">
+		<form name="form">
+			<div class="large-6 medium-16 columns">
+				<span class="required-field show-for-small-only">* Required field</span>
+				<label>
+					<strong>First Name</strong><span class="ru-form-required"></span>
+					<input type="text" name="firstName" ng-model="form.firstName.value" required>
+				</label>
 			</div>
-			<div class="ru-toppad-8 ru_green show-for-medium-up">
-				<label class="ru_green"><strong>* Required field</strong></label>
+			<div class="large-6 medium-16 columns">
+				<label>
+					<strong>Last Name</strong><span class="ru-form-required"></span>
+					<input type="text" name="lastName" ng-model="form.lastName.value" required>
+				</label>
 			</div>
-		</div>
+			<div class="large-6 medium-16 columns">
+				<label>
+					<strong>Your Email Address</strong><span class="ru-form-required"></span>
+					<input type="email" name="emailAddress" ng-model="form.emailAddress.value" required>
+				</label>
+			</div>
+			<div class="large-6 medium-16 columns">
+				<label>
+					<strong>Message Subject</strong><span class="ru-form-required"></span>
+					<input type="text" name="subject" ng-model="form.subject.value" required>
+				</label>
+			</div>
+			<div class="large-16 medium-16 columns">
+				<label>
+					<strong>Message</strong><span class="ru-form-required"></span>
+					<textarea style="width: 100%;" rows="7" name="message" ng-model="form.message.value" required></textarea>
+				</label>
+				<div>
+					<button class="button ru-button submit" type="button" ng-disabled="form.$invalid" ng-click="sendForm()">Submit</button>
+				</div>
+				<div class="ru-toppad-8 ru_green show-for-medium-up">
+					<label class="ru_green"><strong>* Required field</strong></label>
+				</div>
+			</div>
+		</form>
 	</div>
 	<div class='large-4 medium-16 columns' style="float: left;">
 		<h3>Our Upcoming Events</h3>

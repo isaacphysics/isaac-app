@@ -17,6 +17,12 @@ define([], function() {
 			}
 		});
 
+		this.contactForm = $resource(server + "/api/contact/", {}, {
+			send: {
+				method: "POST",
+			}
+		});
+
 		this.gameBoards = $resource(server + "/api/gameboards/:id", {id: "@id"}, {
 			filter: {
 				method: "GET",

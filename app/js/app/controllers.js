@@ -15,7 +15,8 @@ define([
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginPageControllers",
 	"app/controllers/SearchControllers",
-	"app/controllers/AccountSettingsPageControllers"
+	"app/controllers/AccountSettingsPageControllers",
+	"app/controllers/ContactControllers"
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -37,6 +38,8 @@ define([
 	var searchControllers = require("app/controllers/SearchControllers");
 
 	var accountSettingsPageControllers = require("app/controllers/AccountSettingsPageControllers");
+
+	var contactPageControllers = require("app/controllers/ContactControllers");
 
 	/* Controllers */
 
@@ -61,7 +64,10 @@ define([
 	.controller('LoginPageController', loginPageControllers.PageController)
 
 	.controller('SearchController', searchControllers.PageController)
+
 	.controller('GlobalSearchController', searchControllers.GlobalSearchController)
+
+	.controller('ContactController', contactPageControllers.PageController)
 
 	.controller("LoadingMessageController", ["$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
 
