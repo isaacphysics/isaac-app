@@ -152,11 +152,18 @@ define([ 'jquery','honest/d3.min'],
                         // Update X & Y
                         y += hex.height + hex.pad - hex.gap;
                         // X depends on even or odd
+	                    // Note: row is 0 based, therefore in 3 rows, the 2nd (middle row) is odd
                         x = (row % 2 === 0 ? hex.centre : hex.centre + ((hex.width + hex.pad) / 2));
                         // Are we the last hexagon on a new row with minWidth > 1?
                         if(i === len - 2 && hex.min > 1)
                         {
-                            x = (( hex.wrapWidth / 2) - ( hex.width / 2)) + (hex.pad * (1 + Math.floor(hex.max / 2)));
+	                        x = (hex.wrapWidth / 2) - (hex.width / 2) + (hex.pad * (1 + Math.floor(hex.max / 2)));
+
+	                        if (col % 2 !== 0) {
+		                        // Shift the hexagon leftwards to align with the row above if there are an odd number of
+		                        // heaxgons above
+		                        x -= (hex.width / 2) + hex.pad;
+	                        }
                         }
                         col = 0;
                         full_row = true;
