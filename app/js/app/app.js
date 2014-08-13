@@ -277,8 +277,9 @@ define([
                     }
                 }
 
-
-                if (!cookie.read('cookiesAccepted')) {
+                var cookiesAccepted = cookie.read('cookiesAccepted');
+            
+                if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
                     $(".cookies-message").show();
                 } else {

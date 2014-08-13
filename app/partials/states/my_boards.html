@@ -43,10 +43,15 @@
    			</div>
             <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
    			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
- 			   <p>Created by: 
-   			   <span class="board-creator" ng-if="board.ownerUserId == user._id">Me</span>
-   			   <span class="board-creator" ng-if="board.ownerUserId != user._id">someone else</span>
-            </p>
+ 			   Created by: 
+   			<span class="board-creator" ng-if="board.ownerUserId == user._id">Me</span>
+   			<span class="board-creator" ng-if="board.ownerUserId != user._id">someone else</span>
+            <a share-button></a>
+            <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+               <div>
+                  {{shareUrl}}
+               </div>
+            </div>
    		</div>
    	</li>
 </ul>
