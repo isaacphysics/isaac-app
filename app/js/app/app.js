@@ -64,14 +64,13 @@ define([
 
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
-            // TODO: find a better way to hide the search
-            $rootScope.globalFlags.noSearch = false;
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
             $rootScope.globalFlags.isLoading = false;
             $rootScope.globalFlags.displayLoadingMessage = false;
-
+            // TODO: find a better way to hide the search
+            $rootScope.globalFlags.noSearch = false;
 
             $(document).scrollTop(0);
         })

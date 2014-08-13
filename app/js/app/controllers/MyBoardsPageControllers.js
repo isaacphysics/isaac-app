@@ -21,22 +21,14 @@ define([], function() {
 		$scope.sortOption = $scope.sortOptions[0];
 
 		var updateBoards = function() {
-			$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val);
+			$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0);
 		}
 
 		$scope.loadMore = function() {
-			
-			api.userGameBoards.query({
-				sort: $scope.sortOption.val,
-				show_only: $scope.filterOption.val,
-				start_index: $scope.boards.length,
-			}).$promise.then(function(newBoards) {
-				$scope.boards = Array.prototype.concat.call($scope.boards,newBoards);
-			})
+			//api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards) {
+			//	$scope.boards = Array.prototype.concat.call($scope.boards,newBoards);
+			//})
 		}
-
-
-		//updateBoards();
 
 		$scope.$watch("filterOption", updateBoards);
 		$scope.$watch("sortOption", updateBoards);
