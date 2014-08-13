@@ -239,32 +239,54 @@ define([
     //                }
                 };
                 var cookie = {
-                    create: function(name,value,days) {
+                    create: function(name, value, days) {
+                        // Only do time calculation if a day has been passed in
                         if (days) {
                             var date = new Date();
-                                date.setTime(date.getTime()+(days*24*60*60*1000));
+                            var maxCookiesExpiry = days*24*60*60*1000;
+                            // convert day to a Unix timestamp
+                                date.setTime(date.getTime()+maxCookiesExpiry);
+                            // formate date ready to be passed to the DOM
                             var expires = "; expires="+date.toGMTString();
                         }
                         else var expires = "";
+                        // Build cookie and send to DOM
                         document.cookie = name+"="+value+expires+"; path=/";
                     },
                     read: function(name) {
                         var nameEQ = name + "=";
-                        var ca = document.cookie.split(';');
-                        for(var i=0;i < ca.length;i++) {
-                            var c = ca[i];
-                            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                        // Create array containing all cookies
+                        var cookieArray = document.cookie.split(';');
+
+                        // Loop through array of cookies checking each one
+                        for(var i=0; i < cookieArray.length; i++) {
+                            var cookie = cookieArray[i];
+
+                            // Check to see first character is a space
+                            while (cookie.charAt(0) == ' ') {
+                                // Strip any subsequent spaces until the first character is not a space 
+                                cookie = cookie.substring(1, cookie.length);
+                            }
+
+                            if (cookie.indexOf(nameEQ) == 0) {
+                                // Hurrah this is the cookie we wanted, now to return just the name
+                                return cookie.substring(nameEQ.length,cookie.length);
+                            }
                         }
                         return null;
                     }
                 }
-                var x = cookie.read('cookiesAccepted');
-                if (!x) {
+
+
+                if (!cookie.read('cookiesAccepted')) {
+                    // If cookies haven't been accepted show cookie message
                     $(".cookies-message").show();
                 } else {
+                    // If cookies have been accepted remove the cookie message from the DOM
                     $(".cookies-message").remove();
                 }
+
+                // Set cookie on click without overriding Foundations close function
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
                     cookie.create('cookiesAccepted',1,720);
                 });
