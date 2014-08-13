@@ -182,6 +182,17 @@ ul.ru-crumb.multiple-subjects li
         }
     }
 
+    .ru-mobile-crumb ul.maths li:not(:first-child)
+    {
+        &:before
+        {
+            content: '> ';
+            display: inline;
+            color: $ru_maths;
+            padding: 0px 2px;
+        }
+    }
+
 }
 .ru-welcome
 {
