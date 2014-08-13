@@ -51,6 +51,8 @@ define(["angular-ui-router"], function() {
 	        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
             .state('bios', genericPageState("/bios", "bios"))
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
+            .state('contact', staticPageState("/contact", "contact"))
+	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
             //.state('login', staticPageState("/users/login", "login_page"))
 
 	        .state('contact', {
