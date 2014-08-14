@@ -35,11 +35,11 @@ define(["app/honest/responsive_video"], function(rv) {
 				units.getUnits().then(function(allUnits) {
 
 					// Add potential units to options list
-					for (var i in scope.doc.choices) {
-						var c = scope.doc.choices[i];
+					for (var i in scope.doc.knownUnits) {
+						var unitsFromQuestion = scope.doc.knownUnits[i];
 
-						if (c.units && scope.unitOptions.indexOf(c.units) == -1) 
-							scope.unitOptions.push(c.units);
+						if (unitsFromQuestion && scope.unitOptions.indexOf(unitsFromQuestion) == -1) 
+							scope.unitOptions.push(unitsFromQuestion);
 					}
 
 					var unitsPool = JSON.parse(JSON.stringify(allUnits));
