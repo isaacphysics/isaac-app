@@ -1,47 +1,44 @@
 <!-- Mobile login -->
 <div class='ru-drop ru-drop-hide fixed no-print' id='mobile-login-form'>
-    <div class='row ru-toppad-6'>
-        <form>
-            <div class='small-16 columns'>
-
-                <label class='ru-drop-big-label'>Username
-                    <input type="text" placeholder="" />
-                </label>
-                <label class='ru-drop-big-label'>Password
-                    <input type="password" placeholder="" />
-                </label>
-            </div>
-            <div class='small-10 columns'>
-                <div class='ru-toppad-2'>
-                    <span class="ru-drop-check">
-                        <input id="checkbox1" name="checkbox1" type="checkbox" checked='checked'>
-                        <label for='checkbox1'></label>
-                    </span>
-                    <label class='ru-drop-mid-label'>Remember me</label>
+    <form ng-submit="login()" ng-controller="LoginPageController">
+    <div class="login-wrap">
+            <div class="row">
+                <div class='large-7 medium-7 columns small-only-text-center'>
+                    <div class="login-social">
+                        <h2><span class="ru_green">Login</span> or <span class="ru_green">sign up</span> with:</h2>
+                        <!--TODO: need to angularify this - for now I just need to check that it works on dev.-->
+                        <a ng-click="auth.loginRedirect('google', target)" class="login-social-google">Google+</a>
+                        <a ng-click="auth.loginRedirect('twitter', target)" class="login-social-twitter">Twitter</a>
+                        <a ng-click="auth.loginRedirect('facebook', target)" class="login-social-facebook">Facebook</a>
+                    </div>
+                </div>
+                <div class='large-2 medium-2 columns text-center login-separator'>
+                    <span class="ru_green">or</span>
+                </div>
+                <div class='large-6 medium-6 columns login-form left'>
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <input type="text" placeholder="Email address" ng-model="user.email" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <input type="password" placeholder="Password" ng-model="user.password" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='large-12 medium-14 columns'>
+                            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+                        <li><input class="ru-button expand" ng-click="login()" type="submit" value="login"></li>
+                        <li><a class="ru-button expand secondary" ui-sref="accountSettings">Sign up</a></li>
+                    </ul>
+                        </div>
+                    </div>
+                    <a class="login-forgot-password">Forgotten your password?</a>
                 </div>
             </div>
-            <div class='small-6 columns'>
-                <input class='button expand ru-drop-big-button ' type='button' value="Login">
-
-            </div>
-        </form>
-        <div class='clearfix'></div>
-        <div class='small-7 columns'>
-            <div class='ru-toppad-3'><strong><em>Sign in with:</em></strong></div>
         </div>
-        <div class='small-9 columns'>
-            <div class='right'>
-                <a class='ru ru-social-icon-google-40x40'></a>
-                <a class='ru ru-social-icon-facebook-40x40'></a>
-                <a class='ru ru-social-icon-twitter-40x40'></a>
-            </div>
-        </div>
-        <div class='small-16 columns'>
-            <h4 class='ru_green'>Not registered?</h4>
-            <small><a href='' class='ru-drop-small-link'>Register here to create your own challenge!</a></small>
-        </div>
-    </div>
-    <div class='ru-toppad-8'></div>
+    </form>
 </div>
 <!-- Mobile search -->
 <div class='ru-drop ru-drop-hide no-print' id='mobile-search-form'>

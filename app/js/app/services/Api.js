@@ -63,6 +63,13 @@ define([], function() {
 		this.userGameBoards = function(filter, sort, index){
 			return gameBoardsList.query({"filter" : (filter != null) ? '&show_only='+filter : '', "sort" : sort, "startIndex" : index});
 		}
+		
+		this.deleteGameBoard = $resource(server + "/users/current_user/gameboards/#e580813f-0001-48ba-a17f-13c5a1289f54", {}, {
+			saveSettings: {
+				method: "POST",
+			}
+		});
+	
 
 		this.getConceptList = function(){
 			return conceptList.query();

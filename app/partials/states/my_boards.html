@@ -21,6 +21,7 @@
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
+            <span ng-click="deleteBoard()">X</span>
    			<div class="row">
    				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
    					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">

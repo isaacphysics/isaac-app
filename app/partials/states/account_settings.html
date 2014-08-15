@@ -35,7 +35,8 @@
             <div class="row">
                 <div class="large-8 medium-8 columns">
                     <label>
-                        <strong>Change password</strong>
+                        <strong ng-if="user.hasSegueAccount">Change password</strong>
+                        <strong ng-if="!user.hasSegueAccount">Set password</strong>
                         <input type="password" ng-model="user.password" placeholder="***********">        
                     </label>
                 </div>
@@ -100,11 +101,6 @@
             <!-- TODO: What is skip going to do? -->
             <li><a class="ru-button-big expand secondary" ng-click="save()">Skip this step</a></li>
         </ul>
-        <form class="ac-custom ac-radio ac-fill physics ac-center" autocomplete="off">
-                                                                            <ul>
-                                                                                <li><input class='ru-answer-orbit-radio' name="or1" type="checkbox"><label for="or1">&nbsp;</label></li>
-                                                                            </ul>
-            </li>
 	</div>
 </div>
 

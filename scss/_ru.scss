@@ -159,8 +159,10 @@ label {
     color: #000;
 }
 select {
-    background-image: url(/assets/select-chevron.png);
-    background-position: right center;
+    background: #fff url(/assets/select-chevron.png) right center no-repeat;
+    option {
+        line-height: 20px;
+    }
 }
 .cookies-message {
     display: none;
