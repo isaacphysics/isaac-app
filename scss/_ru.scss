@@ -155,8 +155,17 @@
     }
 }
 label {
-    font-size: 16px;
     color: #000;
+}
+label.disabled {
+    color: #cacaca;
+}
+input {
+    box-shadow: none !important;
+}
+input:disabled {
+    border-color: #e0e0e0;
+    background-color: #fff !important;
 }
 select {
     background: #fff url(/assets/select-chevron.png) right center no-repeat;
