@@ -55,6 +55,16 @@ define(["angular-ui-router"], function() {
 	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
             //.state('login', staticPageState("/users/login", "login_page"))
 
+	        .state('contact', {
+		        url: "/contact",
+		        views: {
+			        "body": {
+				        templateUrl: "/partials/states/contact.html",
+				        controller: "ContactController",
+			        }
+		        }
+	        })
+
             .state('conceptIndex', {
                 url: "/concepts?page",
                 resolve: {
