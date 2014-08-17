@@ -20,8 +20,10 @@ define([], function() {
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[0];
 
+		$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0);
+
 		var updateBoards = function() {
-			$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0);
+			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0);
 		}
 
 		$scope.loadMore = function() {
