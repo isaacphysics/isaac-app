@@ -4,12 +4,10 @@ define([], function() {
 
 		$scope.user = auth.getUser();
 
-		$scope.save = function() {
-			api.account.saveSettings($scope.user);
-		}
-
+		// Remove search
 		$scope.globalFlags.noSearch = true;
 
+		// Create date of birth select options
 		$scope.dob = {
 			days: function(){
 				var i =1,
@@ -20,14 +18,11 @@ define([], function() {
 				}
 				return days;
 			},
-			months: function(){
-				var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-				return months;
-			},
+			months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 			years: function(){
 				var currentYear = new Date().getFullYear(),
-				years = [],
-				startYear = 1900;
+					years = [],
+					startYear = 1900;
 
 				while(startYear <= currentYear){
 					years.push(startYear++);
@@ -35,7 +30,13 @@ define([], function() {
 				return years.reverse();
 			}
 		}
-		
+		$scope.save = function() {
+			var valid = new Date(1990, 10, 30).getMonth() == 10;
+			alert(valid);
+			$scope.user.dateOfBirth = '10101990'
+			api.account.saveSettings($scope.user);
+		}
+
 	}]
 
 	return {

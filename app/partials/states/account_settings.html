@@ -48,9 +48,9 @@
             <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
         </select>
         <select>
-            <option ng-repeat="month in dob.months()" value="{{$index}}">{{month}}</option>
+            <option ng-repeat="month in dob.months" value="{{$index}}">{{month}}</option>
         </select>
-        <select>
+        <select ng-model="dobYear">
             <option ng-repeat="year in dob.years()" value="{{year}}">{{year}}</option>
         </select>
             </li>

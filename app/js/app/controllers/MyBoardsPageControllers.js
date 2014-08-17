@@ -29,6 +29,9 @@ define([], function() {
 			//	$scope.boards = Array.prototype.concat.call($scope.boards,newBoards);
 			//})
 		}
+		$scope.deleteBoard = function(){
+			api.deleteGameBoard();
+		}
 
 		$scope.$watch("filterOption", updateBoards);
 		$scope.$watch("sortOption", updateBoards);
