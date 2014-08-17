@@ -25,9 +25,9 @@ define([], function() {
 		}
 
 		$scope.loadMore = function() {
-			//api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards) {
-			//	$scope.boards = Array.prototype.concat.call($scope.boards,newBoards);
-			//})
+			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
+				$.merge($scope.boards.results, newBoards.results);
+			});
 		}
 		$scope.deleteBoard = function(){
 			api.deleteGameBoard();
