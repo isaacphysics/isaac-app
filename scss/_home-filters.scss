@@ -264,7 +264,7 @@
 
 #difficulty-hexagons
 {
-    margin: 20px auto;
+    margin: 0 auto 20px auto;
     width: 240px;
     height: auto;
     position: relative;
@@ -467,6 +467,10 @@ $hex_diff_levels : 6;
     padding: 10px 12px 10px 12px;
     color: white;
     cursor: pointer;
+}
+
+#desktop-filter h3 {
+    margin-bottom: 20px;
 }
 
 #desktop-filter a small
