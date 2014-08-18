@@ -163,6 +163,11 @@ label.disabled {
 input {
     box-shadow: none !important;
 }
+.ru-error-message {
+    float: right;
+    font-weight: bold;
+    color: #dc5757;
+}
 input:disabled {
     border-color: #e0e0e0;
     background-color: #fff !important;

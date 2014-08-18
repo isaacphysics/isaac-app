@@ -1,7 +1,7 @@
 <div>
 	<input ng-hide="selection.school" type="text" ng-model="searchText">
-	<div ng-show="selection.school">
-		<span>{{selection.school.name}}</span> (<span>{{selection.school.postcode}}</span>) <a href="javascript:void(0);" ng-click="selection.school = null">x</a>
+	<div ng-show="selection.school" class="account-school">
+		<span>{{selection.school.name}}</span> <span>{{selection.school.postcode}}</span> <a href="javascript:void(0);" ng-click="selection.school = null">x</a>
 	</div>
 	<ul>
 		<li ng-repeat="school in searchResults" ng-click="selection.school=school">

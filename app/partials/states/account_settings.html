@@ -2,24 +2,19 @@
 	<h1>Account Settings</h1>
 	<h2 class="subheader">Create/ update your <span class="ru_green">isaac</span> account</h2>
 </div>
-<div mobile-panel>
-	<img class='right' src='/assets/icon-share.png'>
-	<h1>Account settings</h1>
-	<h2 class='subheader'>Join the community.</h2>
-</div>
 <div class="row account-settings-wrap">
+    <div class="show-for-small-only small-16 columns">
+        <h1>Account settings</h1>
+        <h2 class='subheader'>Set up your <span class="ru_green">isaac</span> account</h2>
+    </div>
     <form class="panel" ng-submit="save()" name="account" novalidate>
-    {{user}}
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
                 <div class="row">
                     <div class="large-16 medium-8 columns">
-            	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span></label>
+            	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.firstname.$error.required">Required</span></label>
     				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
-                        <!--
-                        Validation to be styled and applied to all other required fields
-                        <small ng-show="submitted && account.firstname.$error.required" class="error">First Name required</small>-->
                     </div>
                     <div class="large-16 medium-8 columns">
 				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span></label>
@@ -50,17 +45,25 @@
                         <input ng-show="user.password" id="account-password2" type="password" placeholder="***********" match="user.password">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="large-16 medium-16 columns">
+                        <label><strong>Gender</strong></label>
+                    </div>
+                </div>
                 <div id="account-gender" class="row">
-                    <div class="large-8 medium-8 columns">
+                    <div class="large-8 medium-8 small-8 columns">
                         <input type="radio" ng-model="user.gender" value="MALE">  Male
                     </div>
-                    <div class="large-8 medium-8 columns">
+                    <div class="large-8 medium-8 small-8 columns">
                         <input type="radio" ng-model="user.gender" value="FEMALE"> Female
                     </div>
                 </div>
                 <div class="row">
                     <!-- Again this is due to the divisible by 3 issue -->
-                    <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                    <div class="large-16 medium-16 columns">
+                        <label><strong>Date of Birth</strong><span class="ru-form-required"></span></label>
+                    </div>
+                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad">
                         <li>
                             <select id="dob-day">
                                 <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
@@ -91,10 +94,9 @@
                     <option value="6">6</option>
                 </select>
 		<label>
-    		<strong>School</strong><span class="ru-form-required"></span>
+    		<strong>School/Accademy</strong>
         </label>
-    		<div school-dropdown selected-school-urn="user.schoolId">
-            </div>
+    		<div school-dropdown selected-school-urn="user.schoolId"></div>
         </ul>
         {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">

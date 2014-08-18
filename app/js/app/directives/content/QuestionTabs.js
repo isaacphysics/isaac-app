@@ -16,6 +16,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				if (scope.doc.bestAttempt) {
 					scope.validationResponse = scope.doc.bestAttempt;
+					scope.selectedChoice = scope.validationResponse.answer;
 				} else {
 
 					// We have to explicitly initialise to null so that the 
