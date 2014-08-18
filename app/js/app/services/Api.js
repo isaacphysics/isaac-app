@@ -71,7 +71,7 @@ define([], function() {
 		}
 		
 		this.deleteGameBoard = function(){
-     		$http.delete(server + "/users/current_user/gameboards/#e580813f-0001-48ba-a17f-13c5a1289f54").success(function(data) {
+     		$http.delete(server + "/api/users/current_user/gameboards/e580813f-0001-48ba-a17f-13c5a1289f54").success(function(data) {
         		//console.log(data);
       		});
 		}
