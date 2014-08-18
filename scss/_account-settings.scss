@@ -15,8 +15,25 @@ input.account-settings-input {
 	margin: 58px 0 30px;
 }
 .account-school {
+	position: relative;
 	border: #999 1px solid;
-	padding: 10px;
+	padding: 10px 30px 10px 10px;
+	span {
+		display: block;
+	}
+}
+.account-school-options {
+	
+}
+.account-school-remove {
+	float: left;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 22px;
+	height: 22px;
+	background: url(/assets/Close-button.jpg) 0 0 no-repeat;
+	text-indent: -9999em;
 }
 @media #{$small-only} { 
 	.account-settings-wrap {

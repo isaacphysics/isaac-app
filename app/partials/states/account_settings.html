@@ -7,6 +7,7 @@
         <h1>Account settings</h1>
         <h2 class='subheader'>Set up your <span class="ru_green">isaac</span> account</h2>
     </div>
+    {{user}}
     <form class="panel" ng-submit="save()" name="account" novalidate>
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
@@ -97,6 +98,7 @@
     		<strong>School/Accademy</strong>
         </label>
     		<div school-dropdown selected-school-urn="user.schoolId"></div>
+            <input ng-hide="user.schoolId" type="text" placeholder="Other">
         </ul>
         {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">

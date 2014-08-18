@@ -21,7 +21,7 @@
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
-            <a ng-click="deleteBoard()">X</a>
+            <span class="board-delete" ng-click="deleteBoard(board.id, board.wildCard.title)">X</span>
    			<div class="row">
    				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
    					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
@@ -43,14 +43,18 @@
                </div>
    			</div>
             <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
-   			<h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
- 			   Created by: 
-   			<span class="board-creator" ng-if="board.ownerUserId == user._id">Me</span>
-   			<span class="board-creator" ng-if="board.ownerUserId != user._id">someone else</span>
-            <a share-button></a>
-            <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-               <div>
-                  {{shareUrl}}
+            <div class="row">
+   			   <h3><a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a></h3>
+               <div class="board-creator">
+                  Created by:
+                  <span ng-if="board.ownerUserId == user._id">Me</span>
+                  <span ng-if="board.ownerUserId != user._id">someone else</span>
+               </div>
+               <a class="board-share" share-button></a>
+               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                  <div>
+                     {{shareUrl}}
+                  </div>
                </div>
             </div>
    		</div>

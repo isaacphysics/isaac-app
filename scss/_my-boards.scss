@@ -5,6 +5,7 @@
 		margin: 0;
 	}
 	.panel {
+		position: relative;
 		margin: 0;
 		border-color: #000;
 		&:hover {
@@ -22,6 +23,18 @@
 			}
 		}
 	}
+}
+.board-delete {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font-size: 22px;
+	color: #333;
+	font-family: arial;
+}
+.board-delete:hover {
+	color: #666;
+	cursor: pointer;
 }
 .board-percentage {
 	float: left;
@@ -119,9 +132,17 @@
 	}
 }
 .board-creator {
-	font-weight: bold;
-	font-style: italic;
-	color: #509e2e;
+	float: left;
+	span {
+		font-weight: bold;
+		font-style: italic;
+		color: #509e2e;
+	}
+}
+.board-share {
+	position: absolute;
+	right: 5px;
+	bottom: -5px;
 }
 .board-complete {
 	.panel {

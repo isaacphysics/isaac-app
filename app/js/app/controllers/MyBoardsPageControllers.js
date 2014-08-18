@@ -30,8 +30,11 @@ define([], function() {
 				$.merge($scope.boards.results, newBoards.results);
 			});
 		}
-		$scope.deleteBoard = function(){
-			api.deleteGameBoard();
+		$scope.deleteBoard = function(id, name){
+			var answer = confirm("You are about to delete "+name+" board?")
+			if (answer){
+       			api.deleteGameBoard(id);
+			}
 		}
 
 		$scope.$watch("filterOption", updateBoards);

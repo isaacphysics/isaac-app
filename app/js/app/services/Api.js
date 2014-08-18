@@ -70,10 +70,8 @@ define([], function() {
 			return gameBoardsList.query({"filter" : (filter != null) ? '&show_only='+filter : '', "sort" : sort, "startIndex" : index});
 		}
 		
-		this.deleteGameBoard = function(){
-     		$http.delete(server + "/api/users/current_user/gameboards/e580813f-0001-48ba-a17f-13c5a1289f54").success(function(data) {
-        		//console.log(data);
-      		});
+		this.deleteGameBoard = function(id){
+     		$http.delete(server + "/api/users/current_user/gameboards/"+id);
 		}
      
 	
