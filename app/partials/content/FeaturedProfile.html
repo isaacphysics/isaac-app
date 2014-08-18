@@ -1,17 +1,13 @@
-<section>
-    <br>
-    <h4 class='text-center'>Featured Profile</h4>
-    <br>
-    <div class='text-center'>
-        <figure>
-            <img ng-src='{{doc.image.src || "assets/nick.png"}}'>
-            <figcaption>
-                <h6>{{doc.title}}</h6>
-                <h6 class='subheader'>{{doc.subtitle}}</h6>
-                <div class='light' isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"> </div>
-                <a href='mailto: {{doc.emailAddress}}'><img src='assets/icon-mailto.png'></a>
-            </figcaption>
-        </figure>
-    </div>
-    <hr>
-</section>
+<div class="text-center" style="width: 33.33333%; float: left; clear: none;"
+    ng-style="{'clear': valueOrChildren.$index == 7 ? 'both' : 'none'}">
+	<!-- TODO: Sort out ugly hack that makes wrapping work -->
+    <figure style="padding: 10px 20px;">
+        <img ng-src='{{doc.image.src || "assets/nick.png"}}'>
+        <figcaption>
+            <h6>{{doc.title}}</h6>
+            <h6 class='subheader'>{{doc.subtitle}}</h6>
+            <div class='light' isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"> </div>
+            <a href='mailto: {{doc.emailAddress}}'><img src='assets/icon-mailto.png'></a>
+        </figcaption>
+    </figure>
+</div>
