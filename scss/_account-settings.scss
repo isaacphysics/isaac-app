@@ -10,13 +10,41 @@
 input.account-settings-input {
 	margin-bottom: 40px;
 }
-#password-wrap {
-	padding-right: 5px;
-}
-#password2-wrap {
-	padding-left: 5px;
-}
 #account-gender {
 	height: 40px;
-	margin: 58px 0 57px;
+	margin: 58px 0 30px;
+}
+.account-school {
+	border: #999 1px solid;
+	padding: 10px;
+}
+@media #{$small-only} { 
+	.account-settings-wrap {
+		background: #f6f6f6;
+		border-bottom: #ccc 1px solid;
+	}
+	.account-settings-wrap .panel {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+	}
+	input.account-settings-input {
+		margin-bottom: 15px;
+	}
+	.account-settings-wrap [class*="block-grid-"]>li {
+		padding-bottom: 0;
+	}
+	#account-gender {
+		height: auto;
+		margin: 0;
+	}
+}
+@media #{$large-only} {
+	#password-wrap {
+		padding-right: 5px;
+	}
+	#password2-wrap {
+		padding-left: 5px;
+	}
 }
