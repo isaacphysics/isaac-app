@@ -45,10 +45,13 @@ define(["app/honest/responsive_video"], function(rv) {
 					var unitsPool = JSON.parse(JSON.stringify(allUnits));
 
 					while (scope.unitOptions.length < 6) {
+						// Fill the unit options up with other random units
 						var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
 
-						if (scope.unitOptions.indexOf(u) == -1)
-							scope.unitOptions.push(u);
+						if (scope.unitOptions.indexOf(u) == -1) {
+							// Splice the randomly selected units into a randomly selected location
+							scope.unitOptions.splice(Math.floor(Math.random() * (scope.unitOptions.length + 1)), 0, u);
+						}
 					}
 
 					scope.selectedUnitsDisplay = "";
