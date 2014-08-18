@@ -10,11 +10,14 @@
     background-color: f6f6f6;
     height: 60px;
     border-top: #cccccc 1px solid !important;
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 .accordion-section-title-suffix 
 {
     float: right;
+    margin-top: 15px;
 }
 
 .ru_level:before
@@ -125,21 +128,12 @@
 // Ellipsis for title
 .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
 {
-    width: 600px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: inline-block;
     position: relative;
     top: 8px;
-}
-
-@media #{$medium-only}
-{
-    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
-    {
-        width: 300px;
-    }
 }
 
 .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title.safari
@@ -163,6 +157,10 @@
     {
         display: none;
     }
+
+    .accordion-section-title-suffix {
+        margin-top: 10px;
+    }
     
     .accordion.ru_accordion dd a.ru_accordion_titlebar
     {
@@ -174,7 +172,6 @@
     .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
     {
         padding-left: 0.4rem;
-        width: 180px;
         position: relative;
         top: 6px;
     }
