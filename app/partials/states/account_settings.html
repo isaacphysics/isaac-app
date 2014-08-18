@@ -8,51 +8,76 @@
 	<h2 class='subheader'>Join the community.</h2>
 </div>
 <div class="row account-settings-wrap">
-	<div class="panel">
-		<span ng-if="user.givenName"> {{user}}</span>
+    <form class="panel" ng-submit="save()" name="account" novalidate>
+    {{user}}
+        <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
                 <div class="row">
                     <div class="large-16 medium-8 columns">
             	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span></label>
-    				        <input id="account-firstname" type="text" ng-model="user.givenName" class="account-settings-input">
+    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
+                        <!--
+                        Validation to be styled and applied to all other required fields
+                        <small ng-show="submitted && account.firstname.$error.required" class="error">First Name required</small>-->
                     </div>
                     <div class="large-16 medium-8 columns">
 				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span></label>
     				    <input id="account-lastname" type="text" ng-model="user.familyName" class="account-settings-input">
                     </div>
                 </div>
-				<label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span></label>
-    			<input id="account-email" type="text" ng-model="user.email" class="account-settings-input">
+                <div class="row">
+                    <div class="large-16 columns">
+				        <label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span></label>
+    			         <input id="account-email" type="text" ng-model="user.email" class="account-settings-input">
+                    </div>
+                </div>
             </li>
             <li>
-            <div class="row">
-                <div class="large-8 medium-8 columns">
-                    <label for="account-password">
-                        <strong ng-if="user.hasSegueAccount">Change password</strong>
-                        <strong ng-if="!user.hasSegueAccount">Set password</strong>
-                    </label>
-                    <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                <div class="row">
+                    <div id="password-wrap" class="large-8 medium-8 columns">
+                        <label for="account-password">
+                            <!-- Change text if user doesn't have account -->
+                            <strong ng-if="user.hasSegueAccount">Change password</strong>
+                            <strong ng-if="!user.hasSegueAccount">Set password</strong>
+                        </label>
+                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                    </div>
+                    <div id="password2-wrap" class="large-8 medium-8 columns">
+                        <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
+                        <!-- TODO: must be a better way of removing disabled when password is added -->
+                        <input ng-show="!user.password" id="account-password2" type="password" placeholder="***********" match="user.password" disabled>
+                        <input ng-show="user.password" id="account-password2" type="password" placeholder="***********" match="user.password">
+                    </div>
                 </div>
-                <div class="large-8 medium-8 columns">
-                    <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                    <input ng-show="!user.password" id="account-password2" type="password" placeholder="***********" match="user.password" disabled>
-                    <input ng-show="user.password" id="account-password2" type="password" placeholder="***********" match="user.password">
+                <div id="account-gender" class="row">
+                    <div class="large-8 medium-8 columns">
+                        <input type="radio" ng-model="user.gender" value="MALE">  Male
+                    </div>
+                    <div class="large-8 medium-8 columns">
+                        <input type="radio" ng-model="user.gender" value="FEMALE"> Female
+                    </div>
                 </div>
-            </div>
-            <label>
-                <input type="radio" ng-model="user.gender" value="MALE">  Male <br/>
-                <input type="radio" ng-model="user.gender" value="FEMALE"> Female <br/>
-		</label>
-        <select>
-            <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
-        </select>
-        <select>
-            <option ng-repeat="month in dob.months" value="{{$index}}">{{month}}</option>
-        </select>
-        <select ng-model="dobYear">
-            <option ng-repeat="year in dob.years()" value="{{year}}">{{year}}</option>
-        </select>
+                <div class="row">
+                    <!-- Again this is due to the divisible by 3 issue -->
+                    <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                        <li>
+                            <select id="dob-day">
+                                <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select id="dob-month">
+                                <option ng-repeat="month in dob.months" value="{{$index}}">{{month}}</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select id="dob-year">
+                                <option ng-repeat="year in dob.years()" value="{{year}}">{{year}}</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li>
             <label>
@@ -73,10 +98,9 @@
         </ul>
         {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><a class="ru-button-big expand" ng-click="save()">Save</a></li>
+            <li><input class="ru-button-big expand" type="submit" value="Save" ng-click="submitted=true"></li>
             <!-- TODO: What is skip going to do? -->
             <li><a class="ru-button-big expand secondary" ng-click="save()">Skip this step</a></li>
         </ul>
-	</div>
+    </form>
 </div>
-

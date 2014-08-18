@@ -1,6 +1,10 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', '$stateParams', function($scope, auth, api, $stateParams) {
+		// Grab these for setting date later
+		var dobDay = document.getElementById('dob-day'),
+			dobMonth = document.getElementById('dob-month'),
+			dobYear = document.getElementById('dob-year');
 
 		$scope.user = auth.getUser();
 
@@ -31,9 +35,16 @@ define([], function() {
 			}
 		}
 		$scope.save = function() {
-			var valid = new Date(1990, 10, 30).getMonth() == 10;
-			alert(valid);
-			$scope.user.dateOfBirth = '10101990'
+			var dobDayValue = dobDay.options[dobDay.selectedIndex].value,
+				dobMonthValue = ++dobMonth.options[dobMonth.selectedIndex].value,
+				dobYearValue = dobYear.options[dobYear.selectedIndex].value,
+				// Check date is valid
+				valid = new Date(dobYearValue, dobMonthValue, dobDayValue).getMonth() == dobMonthValue;
+
+			alert('Date valid = '+valid +' ('+dobDayValue+dobMonthValue+dobYearValue+')');
+
+			// Set dob before posting to the API
+			$scope.user.dateOfBirth = dobDayValue+dobMonthValue+dobYearValue;
 			api.account.saveSettings($scope.user);
 		}
 
