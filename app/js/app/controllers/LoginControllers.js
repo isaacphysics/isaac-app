@@ -11,6 +11,9 @@ define([], function() {
 				$window.location.href = '/';
 			});
 		}
+		$scope.resetPassword = function(email){
+			api.resetPassword(email);
+		}
 		
 	}]
 

@@ -108,7 +108,7 @@ define([], function() {
 
 		this.environment = $resource(server + "/api/info/segue_environment");
 
-		this.resetPassword = $resource(server + "/users/resetpassword");
+		this.resetPassword = $resource(server + "/api/users/resetpassword");
 
 	}
 
