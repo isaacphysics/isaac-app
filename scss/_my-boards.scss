@@ -23,6 +23,13 @@
 			}
 		}
 	}
+	.ru_share_link {
+		position: absolute;
+		bottom: 17px;
+		right: 40px;
+		left: 40px;
+		font-size: 14px;
+	}
 }
 .board-delete {
 	position: absolute;
@@ -81,7 +88,7 @@
 }
 .board-info {
 	float: right;
-	margin: 18px 0 0 18px;
+	margin: 18px 0 0 10px;
 	p {
 		font-size: 15px;
 		margin: 0;
@@ -186,5 +193,14 @@
 @media #{$small-only} {
 	.board-info p {
 		font-size: 13px;
+	}
+	.boards-wrap {
+		.ru_share_link {
+			bottom: 20px;
+			right: 35px;
+		}
+		.board-share {
+			bottom: 20px;
+		}
 	}
 }

@@ -50,7 +50,8 @@
                   <span ng-if="board.ownerUserId == user._id">Me</span>
                   <span ng-if="board.ownerUserId != user._id">someone else</span>
                </div>
-               <a class="board-share" share-button></a>
+                <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
+               <a class="board-share" share-button sharelink="#!/#{{board.id}}"></a>
                <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>
                      {{shareUrl}}
