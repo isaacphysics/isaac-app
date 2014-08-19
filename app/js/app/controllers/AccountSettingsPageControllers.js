@@ -34,14 +34,12 @@ define([], function() {
 				return years.reverse();
 			}
 		}
+
 		$scope.save = function() {
+			// Retrieve dob
 			var dobDayValue = dobDay.options[dobDay.selectedIndex].value,
 				dobMonthValue = ++dobMonth.options[dobMonth.selectedIndex].value,
-				dobYearValue = dobYear.options[dobYear.selectedIndex].value,
-				// Check date is valid
-				valid = new Date(dobYearValue, dobMonthValue, dobDayValue).getMonth() == dobMonthValue;
-
-			alert('Date valid = '+valid +' ('+dobDayValue+dobMonthValue+dobYearValue+')');
+				dobYearValue = dobYear.options[dobYear.selectedIndex].value;
 
 			// Set dob before posting to the API
 			$scope.user.dateOfBirth = dobDayValue+dobMonthValue+dobYearValue;

@@ -6,15 +6,18 @@ define([], function() {
 		$scope.target = $stateParams.target; 
 		$scope.globalFlags.noSearch = true;
 
+		$scope.warnings = function(){
+			resetpassword: false;
+		}
+
 		$scope.login = function() {
-			api.loginEndpoint.login($scope.user, function() {
-				$window.location.href = '/';
-			});
+			api.login($scope.user);
+				//$window.location.href = '/';
 		}
 		$scope.resetPassword = function() {
-			if($scope.user.email){
+			if($scope.user != null){
 				api.password.reset({'email': $scope.user.email});
-				console.log($scope.user.email);
+				$scope.warnings.resetpassword = true;
 			}
 		}
 		
