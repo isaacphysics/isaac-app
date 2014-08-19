@@ -26,6 +26,9 @@
 	.ng-invalid.ng-dirty {
     	background: #fff !important;
 	}
+	input.error.submitted {
+		border-color: red;
+	}
 }
 input.account-settings-input {
 	margin-bottom: 40px;
@@ -51,6 +54,9 @@ input.account-settings-input {
 	height: 22px;
 	background: url(/assets/Close-button.jpg) 0 0 no-repeat;
 	text-indent: -9999em;
+}
+.account-level select {
+	width: 120px;
 }
 .linked-accounts {
 	a {

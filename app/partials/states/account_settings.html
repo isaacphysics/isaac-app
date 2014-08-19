@@ -15,17 +15,17 @@
                 <div class="row">
                     <div class="large-16 medium-8 columns">
             	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.firstname.$error.required">Required</span></label>
-    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
+    				    <input ng-class="{'submitted' : submitted , 'error' : account.firstname.$error.required}" id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
                     </div>
                     <div class="large-16 medium-8 columns">
-				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span></label>
-    				    <input id="account-lastname" type="text" ng-model="user.familyName" class="account-settings-input">
+				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.secondname.$error.required">Required</span></label>
+    				    <input ng-class="{'submitted' : submitted , 'error' : account.secondname.$error.required}" id="account-lastname" name="secondname" type="text" ng-model="user.familyName" class="account-settings-input" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-16 columns">
-				        <label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span></label>
-    			         <input id="account-email" type="text" ng-model="user.email" class="account-settings-input">
+				        <label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.email.$error.required">Required</span></label>
+    			         <input ng-class="{'submitted' : submitted , 'error' : account.email.$error.required}" id="account-email" name="email" type="text" ng-model="user.email" class="account-settings-input" required>
                     </div>
                 </div>
             </li>
@@ -82,16 +82,20 @@
                 </div>
             </li>
             <li>
-            <label>
-    		<strong>Starting level</strong></label>
-                <select ng-model="user.defaultLevel">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                </select>
+                <div class="row">
+                    <div class="large-16 medium-16 columns account-level">
+                        <label><strong>Starting level</strong></label>
+                        <select ng-model="user.defaultLevel">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+            
 		<label>
     		<strong>School/Accademy</strong>
         </label>
@@ -100,7 +104,6 @@
             {{schools}}
             {{user.linkedAccounts}}
         <div class="linked-accounts">
-            <!-- TODO: Find a less process intensive way to achive this -->
             <a class="account-google">
                 <span>Add<span>
             </a>
