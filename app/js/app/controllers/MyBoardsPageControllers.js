@@ -1,9 +1,10 @@
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', function($scope, auth, api, gameBoardTitles) {
 		$scope.user = auth.getUser();
 
-
+		$scope.generateGameBoardTitle = gameBoardTitles.generate;
+		
 		$scope.filterOptions = [
 			{label: "All Boards", val: null},
 			{label: "Not Started", val: "not_attempted"},
