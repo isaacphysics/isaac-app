@@ -21,7 +21,7 @@
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
    	<li ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
-            <span class="board-delete" ng-click="deleteBoard(board.id, board.wildCard.title)">X</span>
+            <span class="board-delete" ng-click="deleteBoard(board.id, board.title || generateGameBoardTitle(board))">X</span>
    			<div class="row">
    				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
    					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
@@ -50,7 +50,7 @@
                   <span ng-if="board.ownerUserId == user._id">Me</span>
                   <span ng-if="board.ownerUserId != user._id">someone else</span>
                </div>
-               
+
                 <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
                <a class="board-share" share-button sharelink="#!/#{{board.id}}"></a>
                <div class='ru_share_link slide-animate' ng-show="showShareUrl">
