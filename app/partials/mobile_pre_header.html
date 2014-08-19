@@ -1,48 +1,5 @@
 <!-- Mobile login -->
-<div class='ru-drop ru-drop-hide fixed no-print' id='mobile-login-form'>
-    <div class='row ru-toppad-6'>
-        <form>
-            <div class='small-16 columns'>
-
-                <label class='ru-drop-big-label'>Username
-                    <input type="text" placeholder="" />
-                </label>
-                <label class='ru-drop-big-label'>Password
-                    <input type="password" placeholder="" />
-                </label>
-            </div>
-            <div class='small-10 columns'>
-                <div class='ru-toppad-2'>
-                    <span class="ru-drop-check">
-                        <input id="checkbox1" name="checkbox1" type="checkbox" checked='checked'>
-                        <label for='checkbox1'></label>
-                    </span>
-                    <label class='ru-drop-mid-label'>Remember me</label>
-                </div>
-            </div>
-            <div class='small-6 columns'>
-                <input class='button expand ru-drop-big-button ' type='button' value="Login">
-
-            </div>
-        </form>
-        <div class='clearfix'></div>
-        <div class='small-7 columns'>
-            <div class='ru-toppad-3'><strong><em>Sign in with:</em></strong></div>
-        </div>
-        <div class='small-9 columns'>
-            <div class='right'>
-                <a class='ru ru-social-icon-google-40x40'></a>
-                <a class='ru ru-social-icon-facebook-40x40'></a>
-                <a class='ru ru-social-icon-twitter-40x40'></a>
-            </div>
-        </div>
-        <div class='small-16 columns'>
-            <h4 class='ru_green'>Not registered?</h4>
-            <small><a href='' class='ru-drop-small-link'>Register here to create your own challenge!</a></small>
-        </div>
-    </div>
-    <div class='ru-toppad-8'></div>
-</div>
+<div class='ru-drop ru-drop-hide fixed no-print' id='mobile-login-form' ng-include="'/partials/login.html'"></div>
 <!-- Mobile search -->
 <div class='ru-drop ru-drop-hide no-print' id='mobile-search-form'>
     <div class='row'>

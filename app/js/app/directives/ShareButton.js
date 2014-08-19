@@ -1,6 +1,6 @@
 define([], function() {
 
-    return ["$http", function($http) {
+    return ["$http", "$location", function($http, $location) {
 		return {
 
 			restrict: "A",
@@ -11,7 +11,13 @@ define([], function() {
 				scope.showShareUrl = false;
 				scope.shareUrl = null;
 
-				var data = {"longUrl": window.location.href};
+				// TODO: This part of bug #156
+				//if(attrs.sharelink) {
+				//	var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
+				//}
+				//else {
+					var data = {"longUrl": window.location.href};
+				//}
 				$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
 					scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
 				}).catch(function() {

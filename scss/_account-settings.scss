@@ -1,0 +1,130 @@
+.account-settings-wrap {
+	.panel {
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+	label {
+		font-size: 15px;
+		margin-bottom: 6px;
+	}
+	.ac-custom label::before {
+		border: #4b4b4b 1px solid;
+	}
+	.ac-custom svg path {
+		stroke: #509e2e;
+	}
+	.ac-custom label {
+		font-size: 16px;
+		font-weight: bold;
+		color: #000;
+		padding: 0 0 0 55px;
+	}
+	.ac-custom svg {
+		left: 19px;
+		height: 31px;
+	}
+	.ng-invalid.ng-dirty {
+    	background: #fff !important;
+	}
+	.ng-invalid.ng-dirty {
+    	background: #fff !important;
+	}
+	input.error.submitted {
+		border-color: #cc6666;
+		background: #fff;
+	}
+}
+input.account-settings-input {
+	margin-bottom: 40px;
+}
+.account-school {
+	position: relative;
+	border: #999 1px solid;
+	padding: 10px 30px 10px 10px;
+	background: #fff;
+	span {
+		display: block;
+	}
+}
+.account-school-options {
+	list-style: none;
+	margin: 0;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+}
+.account-school-remove {
+	float: left;
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	width: 22px;
+	height: 22px;
+	background: url(/assets/Close-button.jpg) 0 0 no-repeat;
+	text-indent: -9999em;
+}
+.account-level select {
+	width: 120px;
+}
+.linked-accounts {
+	a {
+		float: left;
+		height: 34px;
+		padding-left: 40px;
+		background: url(/assets/account-social-sprite.png) 0 0 no-repeat;
+		font-size: 12px;
+		font-weight: bold;
+		color: #333;
+	}
+	a.account-google {
+		background-position: 0 -136px;
+		&:hover {
+			background-position: 0 -170px;
+		}
+	}
+	a.account-facebook {
+		background-position: 0 -68px;
+		&:hover {
+			background-position: 0 -102px;
+		}
+	}
+	a.account-twitter:hover {
+		background-position: 0 -34px;
+	}
+}
+.dob-wrap li {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+@media #{$small-only} { 
+	.account-settings-wrap {
+		background: #f6f6f6;
+		border-bottom: #ccc 1px solid;
+		.ng-invalid.ng-dirty {
+    		background: transparent !important;
+		}
+	}
+	.account-settings-wrap .panel {
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: none;
+	}
+	input.account-settings-input {
+		margin-bottom: 15px;
+	}
+	.account-settings-wrap [class*="block-grid-"]>li {
+		padding-bottom: 0;
+	}
+}
+@media #{$large-only} {
+	#password-wrap {
+		padding-right: 5px;
+	}
+	#password2-wrap {
+		padding-left: 5px;
+	}
+	#account-gender {
+		margin-top: 60px;
+		margin-bottom: 40px;
+	}
+}

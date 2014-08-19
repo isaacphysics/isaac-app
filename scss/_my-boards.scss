@@ -1,11 +1,206 @@
 .boards-wrap {
-	margin: 0;
+	margin: 10px -10px 0;
 
+	.row {
+		margin: 0;
+	}
 	.panel {
-		margin:0;
+		position: relative;
+		margin: 0;
 		border-color: #000;
 		&:hover {
 			border-color: #008dbb;
+		}
+	}
+	h3 {
+		margin: 27px 0 10px;
+		font-size: 23px;
+		a {
+			color: #333;
+			font-weight: bold;
+			&:hover {
+				color: #666;
+			}
+		}
+	}
+	.ru_share_link {
+		position: absolute;
+		bottom: 17px;
+		right: 40px;
+		left: 40px;
+		font-size: 14px;
+	}
+}
+.board-delete {
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	font-size: 22px;
+	color: #333;
+	font-family: arial;
+}
+.board-delete:hover {
+	color: #666;
+	cursor: pointer;
+}
+.board-percentage {
+	float: left;
+	width: 78px;
+	height: 93px;
+	position: relative;
+	z-index: 1;
+	font-size: 30px;
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+	.percent-symbol {
+		font-size: 17px;
+		line-height: 38px;
+		vertical-align: top;
+	}
+}
+.subject-physics,
+.subject-maths,
+.subject-complete {
+	position: absolute;
+	top: 11px;
+	left: 0;
+	width: 71px;
+	height: 82px;
+	background: url(/assets/my-boards-sprite.png) no-repeat 0 0;
+	padding: 20px 0 0;
+}
+.subject-physics {
+	z-index: -1;
+}
+.subject-maths {
+	z-index: -2;
+	background-position: -71px 0;
+}
+.subject-maths + .subject-physics {
+	left: auto;
+	top: 0;
+	right: 0;
+}
+.subject-complete {
+	background-position: -142px 0;
+}
+.board-info {
+	float: right;
+	margin: 18px 0 0 10px;
+	p {
+		font-size: 15px;
+		margin: 0;
+	}
+	strong {
+		font-style: italic;
+	}
+}
+.board-levels {
+	float: left;
+	position: relative;
+	width: 110px;
+	height: 18px;
+	background: url(/assets/my-boards-sprite.png) no-repeat 0 -82px;
+	margin: 4px 0 0;
+	span {
+		font-size: 12px;
+		line-height: 15px;
+		font-weight: bold;
+		font-style: italic;
+		color: #fff;
+		text-align: left;
+		width: 16px;
+		height: 18px;
+		top: 0;
+		position: absolute;
+		padding: 2px 0 0 4px;
+		background: url(/assets/my-boards-sprite.png) no-repeat -114px -82px;
+	}
+	.level-1 {
+		left: 0;
+		padding-left: 5px;
+	}
+	.level-2 {
+		left: 19px;
+	}
+	.level-3 {
+		left: 38px;
+	}
+	.level-4 {
+		left: 57px;
+	}
+	.level-5 {
+		left: 76px;
+	}
+	.level-6 {
+		left: 95px;
+	}
+}
+.board-creator {
+	float: left;
+	span {
+		font-weight: bold;
+		font-style: italic;
+		color: #509e2e;
+	}
+}
+.board-share {
+	position: absolute;
+	right: 5px;
+	bottom: -5px;
+}
+.board-complete {
+	.panel {
+		background: #eee;
+	}
+	.board-creator {
+		color: #000;
+	}
+	.board-levels span {
+		background-position: -132px -82px;
+
+	}
+}
+.boards-filters {
+	margin-top: 5px;
+	label {
+		float: left;
+		font-size: 18px;
+		line-height: 20px;
+		font-weight: 600;
+		color: #333;
+		margin: 8px 5px 0 10px;
+	}
+	li {
+		padding-bottom: 0;
+	}
+}
+@media #{$medium-up} {
+	.boards-filters {
+		float: right;
+		select {
+			float: left;
+			width: auto;
+			padding-right: 50px;
+		}
+		li {
+			width: auto;
+		}
+	}
+}
+@media #{$small-only} {
+	.board-info p {
+		font-size: 13px;
+	}
+	.boards-wrap {
+		.ru_share_link {
+			bottom: 20px;
+			right: 35px;
+		}
+		.board-share {
+			bottom: 20px;
 		}
 	}
 }

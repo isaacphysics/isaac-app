@@ -99,3 +99,85 @@
     height: 48px;
     background-position: -5px -299px;
 }
+.ru-info-icon {
+    float: left;
+    width: 34px;
+    height: 39px;
+    background: url(/assets/information-icon.png) 0 0 no-repeat;
+}
+.ru-alert-box {
+    z-index: 99;
+    font-weight: normal;
+    position: relative;
+    padding: 0.875rem;
+    font-size: 11px;
+    font-family: Arial;
+    line-height: 14px;
+    transition: opacity 300ms ease-out;
+    background-color: #333;
+    color: #fff;
+    .ru-button {
+        float: right;
+        font-size: 16px;
+        font-family: Arial;
+        font-style: normal;
+        font-weight: normal;
+        margin-bottom: 0;
+    }
+}
+@media #{$small-only} { 
+    .ru-alert-box {
+        position: absolute;
+        top: 42px;
+        left: 0;
+        right: 0;
+        background: rgba(76, 76, 76, 0.9); 
+        .ru-button {
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+            margin-top: 15px;
+            font-style: italic;
+            font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+            font-weight: 600;
+        }
+        .cookies-title {
+            font-size: 19px;
+            font-style: italic;
+            font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            img {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+label {
+    color: #000;
+}
+label.disabled {
+    color: #cacaca;
+}
+input {
+    box-shadow: none !important;
+}
+.ru-error-message {
+    float: right;
+    font-weight: bold;
+    color: #dc5757;
+}
+input:disabled {
+    border-color: #e0e0e0;
+    background-color: #fff !important;
+}
+select {
+    background: #fff url(/assets/select-chevron.png) right center no-repeat;
+    option {
+        line-height: 20px;
+    }
+}
+.cookies-message {
+    display: none;
+}

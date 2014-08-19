@@ -30,8 +30,6 @@ define([], function() {
 			}
 		});
 
-		this.userGameBoards = $resource(server + "/api/users/current_user/gameboards");
-
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
 		this.currentUser = $resource(server + "/api/users/current_user");
@@ -61,10 +59,22 @@ define([], function() {
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
+		var gameBoardsList = $resource(server + "/api/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter", {}, {'query': {method: 'GET', isArray: false }});
+
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
 		}
+
+		this.userGameBoards = function(filter, sort, index){
+			return gameBoardsList.query({"filter" : (filter != null) ? '&show_only='+filter : '', "sort" : sort, "startIndex" : index});
+		}
+		
+		this.deleteGameBoard = function(id){
+     		$http.delete(server + "/api/users/current_user/gameboards/"+id);
+		}
+     
+	
 
 		this.getConceptList = function(){
 			return conceptList.query();
@@ -94,9 +104,16 @@ define([], function() {
 			}
 		});
 
+		this.schools = $resource(server + "/api/schools");
+
 		this.environment = $resource(server + "/api/info/segue_environment");
 
-		this.schools = $resource(server + "/api/schools");
+		this.password = $resource(server + "/api/users/resetpassword", {}, {
+			reset: {
+				method: "POST",
+			}
+		});
+
 	}
 
 	return Api;

@@ -1,11 +1,73 @@
 <div desktop-panel>
 	<h1>My Boards</h1>
+	<!-- TODO: this needs to be dynamicly generated -->
+	<p><strong>You have <span class="ru_green">{{boards.totalInProgress}} boards</span> on the go with <span class="ru_green">{{boards.totalCompleted}} boards</span> completed.</strong></p>
 </div>
-<!-- TODO: Remove hash bang wallop from URL, this will only work on local -->
-<ul class="large-block-grid-3 boards-wrap">
-   	<li class="panel" ng-repeat="board in boards">
-   		<a href="/#!/#{{board.id}}">{{board.wildCard.title}}</a>
-   		Level: {{board.gameFilter.levels}}<br />
-   		Created: {{board.creationDate | date:'dd/MM/yyyy'}} 
+<div mobile-panel>
+   <h5>Filter your Boards</h5>
+</div>
+<div class="boards-filters">
+   <ul class="small-block-grid-2">
+      <li>
+         <label class="hide-for-small-only">Show</label>
+         <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
+      </li>
+      <li>
+         <label class="hide-for-small-only">Sort by</label>
+         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+      </li>
+   </ul>
+</div>
+<ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
+   	<li ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
+   		<div class="panel">
+            <span class="board-delete" ng-click="deleteBoard(board.id, board.title || generateGameBoardTitle(board))">X</span>
+   			<div class="row">
+   				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
+   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                  </span>
+   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                  </span>
+   				</div>
+   				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+   					<span class="subject-complete"></span>
+   				</div>
+               <div class="board-info">
+                  <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                  <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
+                  <div class="board-levels">
+                     <span ng-repeat="level in board.gameFilter.levels" class="level-{{level}}">{{level}}</span>
+                  </div>
+               </div>
+   			</div>
+            <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
+            <div class="row">
+   			   <h3><a href="/#!/#{{board.id}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+               <div class="board-creator">
+                  Created by:
+                  <span ng-if="board.ownerUserId == user._id">Me</span>
+                  <span ng-if="board.ownerUserId != user._id">someone else</span>
+               </div>
+
+                <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
+               <a class="board-share" share-button sharelink="#!/#{{board.id}}"></a>
+               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                  <div>
+                     {{shareUrl}}
+                  </div>
+               </div>
+            </div>
+   		</div>
    	</li>
 </ul>
+<div class="row" ng-hide="boards.results.length == ''">
+  <div class="large-5 medium-6 small-centered columns">
+      <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
+      <a ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
+   </div>
+</div>
+<div class="row" ng-show="boards.results.length == ''">
+   <p class="text-center">No Results</p>
+</div>

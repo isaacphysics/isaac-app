@@ -19,7 +19,8 @@ define([], function() {
 				// Include special case:
 				//      Physics, Maths = Physics & Maths
 
-				if (!gameBoard || !gameBoard.$resolved || !gameBoard.gameFilter)
+				// TODO: I have removed !gameBoard.$resolved, not sure if this is required
+				if (!gameBoard || !gameBoard.gameFilter)
 					return "";
 
 				var filter = gameBoard.gameFilter;

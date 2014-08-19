@@ -13,7 +13,7 @@ define([
 	"app/controllers/HomePageControllers",
 	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
-	"app/controllers/LoginPageControllers",
+	"app/controllers/LoginControllers",
 	"app/controllers/SearchControllers",
 	"app/controllers/AccountSettingsPageControllers",
 	"app/controllers/ContactControllers"
@@ -33,7 +33,7 @@ define([
 
 	var contentErrorController = require("app/controllers/ContentErrorControllers");
 
-	var loginPageControllers = require("app/controllers/LoginPageControllers");
+	var loginControllers = require("app/controllers/LoginControllers");
 
 	var searchControllers = require("app/controllers/SearchControllers");
 
@@ -61,7 +61,7 @@ define([
 
 	.controller('ContentErrorController', contentErrorController.PageController)
 
-	.controller('LoginPageController', loginPageControllers.PageController)
+	.controller('LoginController', loginControllers.PageController)
 
 	.controller('SearchController', searchControllers.PageController)
 

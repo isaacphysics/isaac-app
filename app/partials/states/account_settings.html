@@ -1,57 +1,123 @@
 <div desktop-panel>
 	<h1>Account Settings</h1>
-	<!-- TODO: Switch between create/update for logged in / non logged in users -->
-	<h2 class="subheader"><span ng-if="!user.givenName">Create</span><span ng-if="user.givenName">update</span> your <span class="ru_green">isaac</span> account</h2>
+	<h2 class="subheader">Create/ update your <span class="ru_green">isaac</span> account</h2>
 </div>
-<div mobile-panel>
-	<img class='right' src='/assets/icon-share.png'>
-	<h1>Account settings</h1>
-	<h2 class='subheader'>Join the community.</h2>
-</div>
-<div class="row">
-	<div class="panel">
-		<span ng-if="user.givenName"> {{user}}</span>
+<div class="row account-settings-wrap">
+    <div class="show-for-small-only small-16 columns">
+        <h1>Account settings</h1>
+        <h2 class='subheader'>Set up your <span class="ru_green">isaac</span> account</h2>
+    </div>
+    <form class="panel" ng-submit="save()" name="account" novalidate>
+        <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
-            	<label>
-    				<strong>First Name</strong><span class="ru-form-required"></span>
-    				<input type="text">
-				</label>
-				<label>
-    				<strong>Last Name</strong><span class="ru-form-required"></span>
-    				<input type="text">
-				</label>
-				<label>
-    				<strong>Your Email Address</strong><span class="ru-form-required"></span>
-    				<input type="text">
-				</label>
+                <div class="row">
+                    <div class="large-16 medium-8 columns">
+            	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.firstname.$error.required">Required</span></label>
+    				    <input ng-class="{'submitted' : submitted , 'error' : account.firstname.$error.required}" id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
+                    </div>
+                    <div class="large-16 medium-8 columns">
+				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.secondname.$error.required">Required</span></label>
+    				    <input ng-class="{'submitted' : submitted , 'error' : account.secondname.$error.required}" id="account-lastname" name="secondname" type="text" ng-model="user.familyName" class="account-settings-input" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="large-16 columns">
+				        <label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.email.$error.required">Required</span></label>
+    			         <input ng-class="{'submitted' : submitted , 'error' : account.email.$error.required}" id="account-email" name="email" type="text" ng-model="user.email" class="account-settings-input" required>
+                    </div>
+                </div>
             </li>
             <li>
-            <label>
-    		<strong>First name</strong><span class="ru-form-required"></span>
-    		<input type="text">
-		</label>
-		<label>
-    		<strong>Last name</strong><span class="ru-form-required"></span>
-    		<input type="text">
-		</label>
+                <div class="row">
+                    <div id="password-wrap" class="large-8 medium-8 columns">
+                        <label for="account-password">
+                            <!-- Change text if user doesn't have account -->
+                            <strong ng-if="user.hasSegueAccount">Change password</strong>
+                            <strong ng-if="!user.hasSegueAccount">Set password</strong>
+                        </label>
+                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                    </div>
+                    <div id="password2-wrap" class="large-8 medium-8 columns">
+                        <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
+                        <!-- TODO: must be a better way of removing disabled when password is added -->
+                        <input ng-show="!user.password" id="account-password2" type="password" placeholder="***********" match="user.password" disabled>
+                        <input ng-show="user.password" id="account-password2" type="password" placeholder="***********" match="user.password">
+                    </div>
+                </div>
+                <div id="account-gender" class="ac-custom ac-radio ac-fill row">
+                    <div class="large-8 medium-8 small-8 columns">
+                        <label for="r1">Male</label>
+                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
+                    </div>
+                    <div class="large-8 medium-8 small-8 columns">
+                        <label for="r2">Female</label>
+                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <!-- Again this is due to the divisible by 3 issue -->
+                    <div class="large-16 medium-16 columns">
+                        <label><strong>Date of Birth</strong><span class="ru-form-required"></span></label>
+                    </div>
+                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
+                        <li>
+                            <select ng-model="dob.day"
+                                    ng-options="day for day in datePicker.days">
+                            </select>
+                        </li>
+                        <li>
+	                        <select ng-model="dob.month"
+	                                ng-options="month for month in datePicker.months">
+	                        </select>
+                        </li>
+                        <li>
+	                        <select ng-model="dob.year"
+	                                ng-options="year for year in datePicker.years">
+	                        </select>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li>
-            <label>
-    		<strong>First name</strong><span class="ru-form-required"></span>
-    		<input type="text">
-		</label>
+                <div class="row">
+                    <div class="large-16 medium-16 columns account-level">
+                        <label><strong>Starting level</strong></label>
+                        <select ng-model="user.defaultLevel">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+            
 		<label>
-    		<strong>Last name</strong><span class="ru-form-required"></span>
-    		<input type="text">
-		</label>
-            </li>
+    		<strong>School/Accademy</strong>
+        </label>
+    		<div school-dropdown selected-school-urn="user.schoolId"></div>
+            <input ng-hide="user.schoolId" type="text" placeholder="Other">
+            {{schools}}
+            {{user.linkedAccounts}}
+        <div class="linked-accounts">
+            <a class="account-google">
+                <span>Add<span>
+            </a>
+            <a class="account-twitter">
+                <span>Add<span>
+            </a>
+            <a class="account-facebook">
+                <span>Add<span>
+            </a>
+        </div>
         </ul>
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><a class="button expand ru-drop-big-button" ng-click="save()">Save</a></li>
+            <li><input class="ru-button-big expand" type="submit" value="Save" ng-click="submitted=true"></li>
             <!-- TODO: What is skip going to do? -->
-            <li><a class="button expand ru-drop-big-button" ng-click="save()">Skip this step</a></li>
+            <li><a class="ru-button-big expand secondary" ng-click="save()">Skip this step</a></li>
         </ul>
-	</div>
+    </form>
 </div>
-

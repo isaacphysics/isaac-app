@@ -17,6 +17,7 @@ define([
     "fastclick",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
+    "app/honest/anim_check",
     "angulartics", 
     "angulartics-ga",
     ], function() {
@@ -56,7 +57,8 @@ define([
 
         $rootScope.globalFlags = {
             siteSearchOpen: false,
-            isLoading: false
+            isLoading: false,
+            noSearch: false
         };
 
         $rootScope.$state = $state;
@@ -68,7 +70,8 @@ define([
         $rootScope.$on("$stateChangeSuccess", function() {
             $rootScope.globalFlags.isLoading = false;
             $rootScope.globalFlags.displayLoadingMessage = false;
-
+            // TODO: find a better way to hide the search
+            $rootScope.globalFlags.noSearch = false;
 
             $(document).scrollTop(0);
         })
@@ -116,7 +119,7 @@ define([
             // Global jQuery
             $(function()
             {
-
+                //$.cookie("test", 1);
                 // Mobile detection based on presence of mobile header
                 /**
                  * Are we on a mobile? (Safe on any browser without needing media queries via JS)
@@ -236,6 +239,59 @@ define([
     //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
     //                }
                 };
+                var cookie = {
+                    create: function(name, value, days) {
+                        // Only do time calculation if a day has been passed in
+                        if (days) {
+                            var date = new Date();
+                            var maxCookiesExpiry = days*24*60*60*1000;
+                            // convert day to a Unix timestamp
+                                date.setTime(date.getTime()+maxCookiesExpiry);
+                            // formate date ready to be passed to the DOM
+                            var expires = "; expires="+date.toGMTString();
+                        }
+                        else var expires = "";
+                        // Build cookie and send to DOM
+                        document.cookie = name+"="+value+expires+"; path=/";
+                    },
+                    read: function(name) {
+                        var nameEQ = name + "=";
+                        // Create array containing all cookies
+                        var cookieArray = document.cookie.split(';');
+
+                        // Loop through array of cookies checking each one
+                        for(var i=0; i < cookieArray.length; i++) {
+                            var cookie = cookieArray[i];
+
+                            // Check to see first character is a space
+                            while (cookie.charAt(0) == ' ') {
+                                // Strip any subsequent spaces until the first character is not a space 
+                                cookie = cookie.substring(1, cookie.length);
+                            }
+
+                            if (cookie.indexOf(nameEQ) == 0) {
+                                // Hurrah this is the cookie we wanted, now to return just the name
+                                return cookie.substring(nameEQ.length,cookie.length);
+                            }
+                        }
+                        return null;
+                    }
+                }
+
+                var cookiesAccepted = cookie.read('cookiesAccepted');
+            
+                if (!cookiesAccepted) {
+                    // If cookies haven't been accepted show cookie message
+                    $(".cookies-message").show();
+                } else {
+                    // If cookies have been accepted remove the cookie message from the DOM
+                    $(".cookies-message").remove();
+                }
+
+                // Set cookie on click without overriding Foundations close function
+                $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
+                    cookie.create('cookiesAccepted',1,720);
+                });
                 
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(

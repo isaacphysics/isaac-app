@@ -1,12 +1,12 @@
 <div>
-	<input ng-hide="selectedSchool" type="text" ng-model="searchText">
-	<div ng-show="selectedSchool">
-		<span>{{selectedSchool.name}}</span> (<span>{{selectedSchool.postcode}}</span>) <a href="javascript:void(0);" ng-click="selectedSchool = null">x</a>
+	<input ng-hide="selection.school" type="text" ng-model="searchText">
+	<div ng-show="selection.school" class="account-school">
+		<span>{{selection.school.name}}</span> <span>{{selection.school.postcode}}</span> <a href="javascript:void(0);" class="account-school-remove" ng-click="selection.school = null">x</a>
 	</div>
-	<ul>
-		<li ng-repeat="school in searchResults" ng-click="selectedSchool=school; searchText=''">
+	<ul class="account-school-options">
+		<li ng-repeat="school in searchResults" ng-click="selection.school=school">
 			<span>{{school.name}}</span>
-			<span class="green">{{school.postcode}}</span>
+			<span>{{school.postcode}}</span>
 		</li>
 	</ul>
 </div>
