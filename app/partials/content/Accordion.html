@@ -8,13 +8,12 @@
                 <span ng-if="questionPage">Part {{$index | indexToPart}}</span>
                 <span ng-if="!questionPage && !c.level">&nbsp;</span>
             </div>
-            <span class="ru_accordion_title" math-jax>
-                {{c.title}} <span class="accordion-section-title-suffix" ng-bind="accordionSection.titleSuffix" math-jax></span>
-            </span>
+            <span class="ru_accordion_title" math-jax>{{c.title}}</span>
             <div class="ru_accordion_details no-print">
                 <span class='ru-level-{{pageSubject}}-{{c.level || "0"}}'></span>    
                 <img src='/assets/icon-expand-arrow.png'>
             </div>
+	        <span class="accordion-section-title-suffix" ng-bind="accordionSection.titleSuffix" math-jax></span>
         </a>
         <div ng-class="{content: true, active: openChildren[$index]}" class="force-print">
             <div isaac-content doc="c"></div>

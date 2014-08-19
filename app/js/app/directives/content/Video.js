@@ -19,7 +19,7 @@ define([], function() {
 
 				scope.$parent.$watch(attrs.isaacVideo, function(newDoc) {
 					scope.doc = newDoc;
-					scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?theme=light&rel=0");
+					scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?theme=light&rel=0&fs=1");
 				})
 			}
 		};
