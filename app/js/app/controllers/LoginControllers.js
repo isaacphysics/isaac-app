@@ -7,18 +7,30 @@ define([], function() {
 		$scope.globalFlags.noSearch = true;
 
 		// Some basic warning flags for validation
-		$scope.warnings = function(){
-			resetpassword: false;
+		$scope.warnings = {
+			resetpassword: false,
+			email: false
 		}
 
 		$scope.login = function() {
-			api.loginEndpoint.login($scope.user).$promise.then(function(){
-				// Send user to homepage when login is successful
-				$window.location.href = '/';
-			});
+			// Either email or password haven't been set
+			if($scope.user == null || $scope.user.email == '' || $scope.user.password == '') {
+				$scope.warnings.email = true;		
+			}
+			else {
+				api.loginEndpoint.login($scope.user).$promise.then(function(){
+					// Send user to homepage when login is successful
+					$window.location.href = '/';
+				});
+			}
 		}
 		$scope.resetPassword = function() {
-			if($scope.user != null){
+			if($scope.user == null || $scope.user.email == '') {
+				// Show email required error message
+				$scope.warnings.email = true;
+			}
+			else {
+				// Send email and show message
 				api.password.reset({'email': $scope.user.email});
 				$scope.warnings.resetpassword = true;
 			}
