@@ -56,9 +56,6 @@ define([], function() {
 								}
 
 								currentChunk = [c];
-								if (c.type == "isaacFeaturedProfile") {
-									currentChunk.isAccordion = true;
-								}
 							} else if (c.layout == "accordion") {
 								if (currentChunk.length > 0)
 									scope.contentChunks.push(currentChunk);

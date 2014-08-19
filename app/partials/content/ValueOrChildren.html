@@ -9,14 +9,14 @@
 
 		<!-- This chunk is an accordion, render it outside the grid -->
 		<div ng-switch-when="true">
-			<div isaac-content ng-repeat="c in cc" doc="c" ng-init="valueOrChildren = {$index: $index}"></div>
+			<div isaac-content ng-repeat="c in cc" doc="c"></div>
 		</div>
 
 		<!-- This chunk is NOT an accordion, render it inside a grid row -->
 		<div ng-switch-default>
 			<div class="row">
 			    <div class="small-14 small-offset-1 columns end">
-					<div isaac-content ng-repeat="c in cc" doc="c"></div>
+					<div isaac-content ng-repeat="c in cc" doc="c" ng-init="valueOrChildren = {$index: $index}"></div>
     			</div>
     		</div>
     	</div>
