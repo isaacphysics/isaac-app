@@ -42,10 +42,24 @@ define([], function() {
 							throw new Error("Cannot render both value and children:\n\tVALUE:\n" +  JSON.stringify(scope.value, null, 2) + "\n\n\tCHILDREN:\n" + JSON.stringify(scope.children, null, 2));
 
 						scope.contentChunks = []; // One of these for each chunk of content, where accordions may only appear on their own in a chunk.
+			            var breakOnTypeChange = false;
+			            var lastType = "";
 						var currentChunk = [];
 						for (var i in scope.children) {
 							var c = scope.children[i];
-							if (c.layout == "accordion") {
+
+							if ((breakOnTypeChange && c.type != lastType) || (!breakOnTypeChange && c.type == "isaacFeaturedProfile")) {
+								breakOnTypeChange = !breakOnTypeChange; // toggle
+
+								if (currentChunk.length > 0) {
+									scope.contentChunks.push(currentChunk);
+								}
+
+								currentChunk = [c];
+								if (c.type == "isaacFeaturedProfile") {
+									currentChunk.isAccordion = true;
+								}
+							} else if (c.layout == "accordion") {
 								if (currentChunk.length > 0)
 									scope.contentChunks.push(currentChunk);
 								var accordionChunk = [c];
@@ -56,6 +70,8 @@ define([], function() {
 							} else {
 								currentChunk.push(c);
 							}
+
+							lastType = c.type;
 						}
 
 						if (currentChunk.length > 0)

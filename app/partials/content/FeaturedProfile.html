@@ -1,5 +1,5 @@
 <div class="text-center" style="width: 33.33333%; float: left; clear: none;"
-    ng-style="{'clear': valueOrChildren.$index == 7 ? 'both' : 'none'}">
+    ng-style="{'clear': valueOrChildren.$index % 3 == 0 ? 'both' : 'none'}">
 	<!-- TODO: Sort out ugly hack that makes wrapping work -->
     <figure style="padding: 10px 20px;">
         <img ng-src='{{doc.image.src || "assets/nick.png"}}'>
