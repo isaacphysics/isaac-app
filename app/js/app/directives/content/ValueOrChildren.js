@@ -49,6 +49,9 @@ define([], function() {
 							var c = scope.children[i];
 
 							if ((breakOnTypeChange && c.type != lastType) || (!breakOnTypeChange && c.type == "isaacFeaturedProfile")) {
+								// Split profiles into a separate content chunk
+								// This means the index when iterating over the profiles starts from 0
+								// and allows the multicolumn design to be more simply implemented
 								breakOnTypeChange = !breakOnTypeChange; // toggle
 
 								if (currentChunk.length > 0) {
