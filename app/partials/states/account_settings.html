@@ -64,19 +64,19 @@
                     </div>
                     <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
                         <li>
-                            <select id="dob-day">
-                                <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
+                            <select ng-model="dob.day"
+                                    ng-options="day for day in datePicker.days">
                             </select>
                         </li>
                         <li>
-                            <select id="dob-month">
-                                <option ng-repeat="month in dob.months" value="{{$index}}">{{month}}</option>
-                            </select>
+	                        <select ng-model="dob.month"
+	                                ng-options="month for month in datePicker.months">
+	                        </select>
                         </li>
                         <li>
-                            <select id="dob-year">
-                                <option ng-repeat="year in dob.years()" value="{{year}}">{{year}}</option>
-                            </select>
+	                        <select ng-model="dob.year"
+	                                ng-options="year for year in datePicker.years">
+	                        </select>
                         </li>
                     </ul>
                 </div>
