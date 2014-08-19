@@ -55,11 +55,6 @@ define([], function() {
 		this.logout = function() {
 			return $http.post(this.authenticationEndpoint + "/logout");
 		};
-		this.login = function(){
-			return $http.post(this.authenticationEndpoint + "/segue/authenticate").error(function(data, status, headers, config){
-				alert(data, status, headers, config);
-			});
-		};
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});

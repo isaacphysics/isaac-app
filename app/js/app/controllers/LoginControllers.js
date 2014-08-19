@@ -6,13 +6,16 @@ define([], function() {
 		$scope.target = $stateParams.target; 
 		$scope.globalFlags.noSearch = true;
 
+		// Some basic warning flags for validation
 		$scope.warnings = function(){
 			resetpassword: false;
 		}
 
 		$scope.login = function() {
-			api.login($scope.user);
-				//$window.location.href = '/';
+			api.loginEndpoint.login($scope.user).$promise.then(function(){
+				// Send user to homepage when login is successful
+				$window.location.href = '/';
+			});
 		}
 		$scope.resetPassword = function() {
 			if($scope.user != null){
