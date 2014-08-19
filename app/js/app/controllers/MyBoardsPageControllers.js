@@ -4,7 +4,7 @@ define([], function() {
 		$scope.user = auth.getUser();
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
-		
+
 		$scope.filterOptions = [
 			{label: "All Boards", val: null},
 			{label: "Not Started", val: "not_attempted"},
@@ -35,6 +35,7 @@ define([], function() {
 			var answer = confirm("You are about to delete "+name+" board?")
 			if (answer){
        			api.deleteGameBoard(id);
+       			$scope.boards.results.splice(id, 1);
 			}
 		}
 
