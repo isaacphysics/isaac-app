@@ -13,7 +13,7 @@ define([], function() {
 		}
 		$scope.resetPassword = function() {
 			if($scope.user.email){
-				api.password.reset($scope.user.email);
+				api.password.reset({'email': $scope.user.email});
 				console.log($scope.user.email);
 			}
 		}
