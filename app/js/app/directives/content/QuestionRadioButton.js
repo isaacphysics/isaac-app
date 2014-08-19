@@ -89,9 +89,29 @@ define([], function() {
 
 					reset(element[0]);
 
-					if(scope.selectedAnswer == scope.$index)
+					if(scope.selectedAnswer != null && scope.selectedAnswer == scope.$index)
 						draw(element[0], 'fill');
-				})
+				});
+
+				if (attrs.ngModel != null && attrs.ngModel.length > 0) {
+					var dotPos = attrs.ngModel.indexOf('.');
+
+					var watchCollection;
+					if (dotPos > -1) {
+						watchCollection = attrs.ngModel.substr(0, dotPos);
+					} else {
+						watchCollection = attrs.ngModel;
+					}
+
+					scope.$watchCollection(watchCollection, function() {
+						var selectedVal = scope.$eval(attrs.ngModel);
+						if (selectedVal != null && selectedVal.length > 0 && selectedVal === attrs.value) {
+							draw(element[0], 'fill');
+						} else {
+							reset(element[0]);
+						}
+					});
+				}
 			}
 		};
 	}];
