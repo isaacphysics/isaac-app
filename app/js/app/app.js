@@ -17,6 +17,7 @@ define([
     "fastclick",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
+    "app/honest/anim_check",
     "angulartics", 
     "angulartics-ga",
     ], function() {

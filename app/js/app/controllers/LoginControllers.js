@@ -11,8 +11,11 @@ define([], function() {
 				$window.location.href = '/';
 			});
 		}
-		$scope.resetPassword = function(email){
-			api.resetPassword(email);
+		$scope.resetPassword = function() {
+			if($scope.user.email){
+				api.password.reset($scope.user.email);
+				console.log($scope.user.email);
+			}
 		}
 		
 	}]

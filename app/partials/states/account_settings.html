@@ -46,25 +46,23 @@
                         <input ng-show="user.password" id="account-password2" type="password" placeholder="***********" match="user.password">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="large-16 medium-16 columns">
-                        <label><strong>Gender</strong></label>
-                    </div>
-                </div>
-                <div id="account-gender" class="row">
+                <div id="account-gender" class="ac-custom ac-radio ac-fill row">
                     <div class="large-8 medium-8 small-8 columns">
-                        <input type="radio" ng-model="user.gender" value="MALE">  Male
+                        <label for="r1">Male</label>
+                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE">
                     </div>
                     <div class="large-8 medium-8 small-8 columns">
-                        <input type="radio" ng-model="user.gender" value="FEMALE"> Female
+                        <label for="r2">Female</label>
+                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE">
                     </div>
+
                 </div>
                 <div class="row">
                     <!-- Again this is due to the divisible by 3 issue -->
                     <div class="large-16 medium-16 columns">
                         <label><strong>Date of Birth</strong><span class="ru-form-required"></span></label>
                     </div>
-                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad">
+                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
                         <li>
                             <select id="dob-day">
                                 <option ng-repeat="day in dob.days()" value="{{day}}">{{day}}</option>
@@ -99,8 +97,21 @@
         </label>
     		<div school-dropdown selected-school-urn="user.schoolId"></div>
             <input ng-hide="user.schoolId" type="text" placeholder="Other">
+            {{schools}}
+            {{user.linkedAccounts}}
+        <div class="linked-accounts">
+            <!-- TODO: Find a less process intensive way to achive this -->
+            <a class="account-google">
+                <span>Add<span>
+            </a>
+            <a class="account-twitter">
+                <span>Add<span>
+            </a>
+            <a class="account-facebook">
+                <span>Add<span>
+            </a>
+        </div>
         </ul>
-        {{schools}}
         <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
             <li><input class="ru-button-big expand" type="submit" value="Save" ng-click="submitted=true"></li>
             <!-- TODO: What is skip going to do? -->
