@@ -12,6 +12,7 @@
             <span class="ru_green">or</span>
         </div>
         <div class='large-6 medium-6 columns login-form left'>
+            <p ng-show="warnings.resetpassword">Your password request is being proccessed. Please check your email.</p>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
                     <input type="text" placeholder="Email address" ng-model="user.email" />

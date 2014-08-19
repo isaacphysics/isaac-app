@@ -36,6 +36,7 @@ define([], function() {
 			if (answer){
        			api.deleteGameBoard(id);
        			$scope.boards.results.splice(id, 1);
+       			$scope.boards.totalResults = $scope.boards.totalResults-1;
 			}
 		}
 
