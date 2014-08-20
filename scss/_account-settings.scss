@@ -7,6 +7,11 @@
 		font-size: 15px;
 		margin-bottom: 6px;
 	}
+	label.linked-accounts-title {
+		font-weight: bold;
+		font-style: italic;
+		font-size: 14px;
+	}
 	.ac-custom label::before {
 		border: #4b4b4b 1px solid;
 	}
@@ -56,14 +61,37 @@ input.account-settings-input {
 	width: 120px;
 }
 .linked-accounts {
+	list-style: none;
+	margin: 0;
+	li {
+		padding: 0;
+	}
 	a {
 		float: left;
 		height: 34px;
 		padding-left: 40px;
 		background: url(/assets/account-social-sprite.png) 0 0 no-repeat;
 		font-size: 12px;
+		line-height: 35px;
 		font-weight: bold;
 		color: #333;
+		&:hover {
+			color: #49902a;
+		}
+	}
+	.linked {
+		a {
+			font-weight: normal;
+		}
+		a.account-google {
+			background-position: 0 -170px;
+		}
+		a.account-facebook {
+			background-position: 0 -102px;
+		}
+		a.account-twitter {
+			background-position: 0 -34px;
+		}
 	}
 	a.account-google {
 		background-position: 0 -136px;
