@@ -1,6 +1,6 @@
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$stateParams', function($scope, auth, api, $stateParams) {
+	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$window', function($scope, auth, api, $stateParams, $window) {
 		// Create date of birth select options
 		$scope.datePicker = {
 			days: [],
@@ -59,6 +59,15 @@ define([], function() {
                 });
 			}
 			return linked;
+		}
+
+		$scope.removeLinkedAccount = function(provider) {
+			api.removeLinkedAccount(provider);
+		}
+		$scope.addLinkedAccount = function(provider) {
+			// Currently not working
+			var target = $window.location.host;
+			api.linkAccount(provider, target);
 		}
 
 		// Remove search

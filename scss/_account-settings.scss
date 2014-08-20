@@ -153,6 +153,9 @@ input.account-settings-input {
 		margin-top: 10px;
 		margin-bottom: 15px;
 	}
+	.linked-accounts {
+		margin: 8px 0 20px;
+	}
 }
 @media #{$large-up} {
 	#password-wrap {
@@ -164,5 +167,8 @@ input.account-settings-input {
 	#account-gender {
 		margin-top: 60px;
 		margin-bottom: 40px;
+	}
+	.linked-accounts {
+		margin: 0;
 	}
 }

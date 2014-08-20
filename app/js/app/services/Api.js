@@ -74,7 +74,13 @@ define([], function() {
      		$http.delete(server + "/api/users/current_user/gameboards/"+id);
 		}
      
-	
+		this.removeLinkedAccount = function(provider) {
+			$http.delete(server + "/api/auth/"+provider+"/link");
+		}
+
+		this.linkAccount = function(provider, target){
+			$http.get(server + "/api/auth/"+provider+"/link?redirect=http://" + target);
+		}
 
 		this.getConceptList = function(){
 			return conceptList.query();
