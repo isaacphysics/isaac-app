@@ -6,21 +6,28 @@ define([], function() {
 		$scope.target = $stateParams.target; 
 		$scope.globalFlags.noSearch = true;
 
-		// Some basic warning flags for validation
-		$scope.warnings = function(){
-			resetpassword: false;
-		}
+		
 
 		$scope.login = function() {
-			api.loginEndpoint.login($scope.user).$promise.then(function(){
-				// Send user to homepage when login is successful
-				$window.location.href = '/';
-			});
+			$scope.submitted = true;
+
+			// Only submit if form is valid
+			if($scope.form.$valid) {
+				api.loginEndpoint.login($scope.user).$promise.then(function(){
+					// On login redirect to home
+					$window.location.href = '/';
+				});
+			}
 		}
 		$scope.resetPassword = function() {
-			if($scope.user != null){
-				api.password.reset({'email': $scope.user.email});
-				$scope.warnings.resetpassword = true;
+			$scope.forgottenPassword = true;
+
+			// Only submit if an email has been entered
+			if($scope.form.email.$valid) {
+				api.password.reset({'email': $scope.user.email}).$promise.then(function(){
+					// Alert user that email has been sent
+					$scope.passwordRestFlag = true;
+				});
 			}
 		}
 		

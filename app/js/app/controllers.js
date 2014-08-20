@@ -16,7 +16,8 @@ define([
 	"app/controllers/LoginControllers",
 	"app/controllers/SearchControllers",
 	"app/controllers/AccountSettingsPageControllers",
-	"app/controllers/ContactControllers"
+	"app/controllers/ContactControllers",
+	"app/controllers/ResetPasswordControllers"
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -40,6 +41,8 @@ define([
 	var accountSettingsPageControllers = require("app/controllers/AccountSettingsPageControllers");
 
 	var contactPageControllers = require("app/controllers/ContactControllers");
+
+	var resetPasswordControllers = require("app/controllers/ResetPasswordControllers");
 
 	/* Controllers */
 
@@ -83,5 +86,7 @@ define([
 	}])
 
 	.controller('AccountSettingsPageController', accountSettingsPageControllers.PageController)
-	
+
+	.controller('ResetPasswordPageController', resetPasswordControllers.PageController)
+
 });

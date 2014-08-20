@@ -171,6 +171,15 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+	        .state('resetPassword', {
+		        url: "/resetpassword/:token",
+		        views: {
+			        "body": {
+				        templateUrl: "/partials/states/reset_password.html",
+				        controller: "ResetPasswordPageController",
+			        }
+		        }
+	        })
             .state('boards', {
                 url: "/boards",
                 resolve: {

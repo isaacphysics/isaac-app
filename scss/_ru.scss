@@ -181,3 +181,8 @@ select {
 .cookies-message {
     display: none;
 }
+input.error.submitted,
+input.ru-input-error {
+    border-color: #cc6666;
+    background: #fff;
+}

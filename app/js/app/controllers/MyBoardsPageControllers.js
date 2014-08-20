@@ -28,18 +28,22 @@ define([], function() {
 
 		$scope.loadMore = function() {
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
+				// Merge new boards into results 
 				$.merge($scope.boards.results, newBoards.results);
 			});
 		}
 		$scope.deleteBoard = function(id, name){
-			var answer = confirm("You are about to delete "+name+" board?")
-			if (answer){
+			// Warn user before deleting
+			var confirmation = confirm("You are about to delete "+name+" board?");
+			if (confirmation){
+				// Remove board and update current results
        			api.deleteGameBoard(id);
        			$scope.boards.results.splice(id, 1);
        			$scope.boards.totalResults = $scope.boards.totalResults-1;
 			}
 		}
 
+		// update boards when filters have been selected
 		$scope.$watch("filterOption", updateBoards);
 		$scope.$watch("sortOption", updateBoards);
 	}]
