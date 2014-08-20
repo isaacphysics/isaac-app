@@ -18,6 +18,10 @@ input.ng-invalid.ng-dirty {
     border-color: #cc6666;
 }
 
+.ru-contact-form-container h5 {
+    margin-bottom: 10px;
+}
+
 @media #{$small-only} {
     .ru-contact-form-container {
         margin-left: -0.9375rem;
