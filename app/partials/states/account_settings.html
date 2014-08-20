@@ -18,37 +18,21 @@
                             <span class="ru-form-required"></span>
                             <span 
                                 class="ru-error-message" 
-                                ng-show="account.firstname.$invalid && submitted">
+                                ng-show="account.firstname.$invalid && account.firstname.$dirty">
                                 Required
                             </span>
                         </label>
-    				    <input 
-                            id="account-firstname" 
-                            name="firstname" 
-                            type="text" 
-                            ng-model="user.givenName" 
-                            class="account-settings-input" 
-                            required
-                        >
+    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
                     </div>
                     <div class="large-16 medium-8 columns">
 				        <label for="account-lastname">
                             <strong>Last Name</strong>
                             <span class="ru-form-required"></span>
-                            <span 
-                                class="ru-error-message" 
-                                ng-show="account.secondname.$invalid && submitted">
+                            <span class="ru-error-message" ng-show="account.secondname.$invalid && account.secondname.$dirty">
                                 Required
                             </span>
                             </label>
-    				    <input 
-                            id="account-lastname" 
-                            name="secondname" 
-                            type="text" 
-                            ng-model="user.familyName" 
-                            class="account-settings-input" 
-                            required
-                        >
+    				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" class="account-settings-input" required>
                     </div>
                 </div>
                 <div class="row">
@@ -56,20 +40,11 @@
 				        <label for="account-email">
                             <strong>Your Email Address</strong>
                             <span class="ru-form-required"></span>
-                            <span 
-                                class="ru-error-message" 
-                                ng-show="account.email.$invalid && submitted">
+                            <span class="ru-error-message" ng-show="account.email.$invalid && account.email.$dirty">
                                 Enter a valid email
                             </span>
                             </label>
-    			         <input 
-                            id="account-email" 
-                            name="email" 
-                            type="email" 
-                            ng-model="user.email" 
-                            class="account-settings-input" 
-                            required
-                        >
+    			         <input id="account-email" name="email" type="email" ng-model="user.email" class="account-settings-input" required>
                     </div>
                 </div>
             </li>
@@ -81,12 +56,7 @@
                             <strong ng-if="user.hasSegueAccount">Change password</strong>
                             <strong ng-if="!user.hasSegueAccount">Set password</strong>
                         </label>
-                        <input 
-                            id="account-password" 
-                            type="password" 
-                            ng-model="user.password" 
-                            placeholder="***********"
-                        >        
+                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
                     </div>
                     <div id="password2-wrap" class="large-8 medium-8 columns">
                         <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
@@ -113,18 +83,15 @@
                     </div>
                     <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
                         <li>
-                            <select ng-model="dob.day"
-                                    ng-options="day for day in datePicker.days">
+                            <select ng-model="dob.day" ng-options="day for day in datePicker.days">
                             </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.month"
-	                                ng-options="month for month in datePicker.months">
+	                        <select ng-model="dob.month" ng-options="month for month in datePicker.months">
 	                        </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.year"
-	                                ng-options="year for year in datePicker.years">
+	                        <select ng-model="dob.year" ng-options="year for year in datePicker.years">
 	                        </select>
                         </li>
                     </ul>
@@ -155,11 +122,7 @@
 
                 <label class="linked-accounts-title">Linked accounts</label>
                 <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
-                    <li
-                        ng-repeat="(key, value) in socialAccounts()" 
-                        ng-class="{'linked': value == true}"
-                        ng-switch on="value"
-                    >
+                    <li ng-repeat="(key, value) in socialAccounts()" ng-class="{'linked': value == true}"ng-switch on="value">
                         <a ng-switch-when="true" class="account-{{key | lowercase}}">
                             <span>Remove</span>
                         </a>

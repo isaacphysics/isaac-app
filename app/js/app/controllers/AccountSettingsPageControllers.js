@@ -45,13 +45,14 @@ define([], function() {
 		});
 
 		$scope.socialAccounts = function(){
+			// object for linked account, nothing linked by default
 			var linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
 
 			if ($scope.user != null) {
 				// loop through linked accounts
 				angular.forEach($scope.user.linkedAccounts, function(account){
 					Object.keys(linked).forEach(function(key) {
-						// If there is a match update bool to true
+						// If there is a match update to true
     					if(key === account) linked[key] = true;
 					});
 					
@@ -64,8 +65,6 @@ define([], function() {
 		$scope.globalFlags.noSearch = true;
 
 		$scope.save = function() {
-			$scope.submitted = true;
-
 			// Only submit if form is valid
 			if($scope.account.$valid) {
 				api.account.saveSettings($scope.user).$promise.then(function(){

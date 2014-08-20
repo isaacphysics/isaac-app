@@ -40,6 +40,7 @@ input.account-settings-input {
 	span {
 		display: block;
 	}
+	margin-bottom: 36px;
 }
 .school-wrap {
 	position: relative;
@@ -55,7 +56,6 @@ input.account-settings-input {
 	background: #fff;
 	border-left: 1px solid #999;
 	border-right: 1px solid #999;
-	border-bottom: 1px solid #999;
 	li {
 		padding: 5px 10px;
 		&:hover {
@@ -148,7 +148,13 @@ input.account-settings-input {
 		padding-bottom: 0;
 	}
 }
-@media #{$large-only} {
+@media #{$small-up} {
+	#account-gender {
+		margin-top: 10px;
+		margin-bottom: 15px;
+	}
+}
+@media #{$large-up} {
 	#password-wrap {
 		padding-right: 5px;
 	}

@@ -9,7 +9,6 @@ define([], function() {
 		
 
 		$scope.login = function() {
-			$scope.submitted = true;
 
 			// Only submit if form is valid
 			if($scope.form.$valid) {
