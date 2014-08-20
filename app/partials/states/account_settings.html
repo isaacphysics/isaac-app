@@ -13,18 +13,63 @@
             <li>
                 <div class="row">
                     <div class="large-16 medium-8 columns">
-            	       <label for="account-firstname"><strong>First Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.firstname.$error.required">Required</span></label>
-    				    <input ng-class="{'submitted' : submitted , 'error' : account.firstname.$error.required}" id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
+            	       <label for="account-firstname">
+                            <strong>First Name</strong>
+                            <span class="ru-form-required"></span>
+                            <span 
+                                class="ru-error-message" 
+                                ng-show="account.firstname.$invalid && submitted">
+                                Required
+                            </span>
+                        </label>
+    				    <input 
+                            id="account-firstname" 
+                            name="firstname" 
+                            type="text" 
+                            ng-model="user.givenName" 
+                            class="account-settings-input" 
+                            required
+                        >
                     </div>
                     <div class="large-16 medium-8 columns">
-				        <label for="account-lastname"><strong>Last Name</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.secondname.$error.required">Required</span></label>
-    				    <input ng-class="{'submitted' : submitted , 'error' : account.secondname.$error.required}" id="account-lastname" name="secondname" type="text" ng-model="user.familyName" class="account-settings-input" required>
+				        <label for="account-lastname">
+                            <strong>Last Name</strong>
+                            <span class="ru-form-required"></span>
+                            <span 
+                                class="ru-error-message" 
+                                ng-show="account.secondname.$invalid && submitted">
+                                Required
+                            </span>
+                            </label>
+    				    <input 
+                            id="account-lastname" 
+                            name="secondname" 
+                            type="text" 
+                            ng-model="user.familyName" 
+                            class="account-settings-input" 
+                            required
+                        >
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-16 columns">
-				        <label for="account-email"><strong>Your Email Address</strong><span class="ru-form-required"></span><span class="ru-error-message" ng-show="submitted && account.email.$error.required">Required</span></label>
-    			         <input ng-class="{'submitted' : submitted , 'error' : account.email.$error.required}" id="account-email" name="email" type="text" ng-model="user.email" class="account-settings-input" required>
+				        <label for="account-email">
+                            <strong>Your Email Address</strong>
+                            <span class="ru-form-required"></span>
+                            <span 
+                                class="ru-error-message" 
+                                ng-show="account.email.$invalid && submitted">
+                                Enter a valid email
+                            </span>
+                            </label>
+    			         <input 
+                            id="account-email" 
+                            name="email" 
+                            type="email" 
+                            ng-model="user.email" 
+                            class="account-settings-input" 
+                            required
+                        >
                     </div>
                 </div>
             </li>
@@ -36,7 +81,12 @@
                             <strong ng-if="user.hasSegueAccount">Change password</strong>
                             <strong ng-if="!user.hasSegueAccount">Set password</strong>
                         </label>
-                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                        <input 
+                            id="account-password" 
+                            type="password" 
+                            ng-model="user.password" 
+                            placeholder="***********"
+                        >        
                     </div>
                     <div id="password2-wrap" class="large-8 medium-8 columns">
                         <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
@@ -95,29 +145,34 @@
                     </div>
                 </div>
             
-		<label>
-    		<strong>School/Accademy</strong>
-        </label>
-    		<div school-dropdown selected-school-urn="user.schoolId"></div>
-            <input ng-hide="user.schoolId" type="text" placeholder="Other">
-            {{schools}}
-            {{user.linkedAccounts}}
-        <div class="linked-accounts">
-            <a class="account-google">
-                <span>Add<span>
-            </a>
-            <a class="account-twitter">
-                <span>Add<span>
-            </a>
-            <a class="account-facebook">
-                <span>Add<span>
-            </a>
-        </div>
-        </ul>
-        <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><input class="ru-button-big expand" type="submit" value="Save" ng-click="submitted=true"></li>
-            <!-- TODO: What is skip going to do? -->
-            <li><a class="ru-button-big expand secondary" ng-click="save()">Skip this step</a></li>
-        </ul>
+		        <label>
+    		        <strong>School/Accademy</strong>
+                </label>
+    		    <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
+                    {{schools}}      
+                </div>
+                <input ng-hide="user.schoolId" type="text" placeholder="Other">
+
+                <label class="linked-accounts-title">Linked accounts</label>
+                <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
+                    <li
+                        ng-repeat="(key, value) in socialAccounts()" 
+                        ng-class="{'linked': value == true}"
+                        ng-switch on="value"
+                    >
+                        <a ng-switch-when="true" class="account-{{key | lowercase}}">
+                            <span>Remove</span>
+                        </a>
+                        <a ng-switch-default class="account-{{key | lowercase}}">
+                            <span>Add</span>
+                        </a>
+                    </li>
+                </ul>
+            </ul>
+            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
+                <li><input class="ru-button-big expand" type="submit" value="Save"></li>
+                <!-- TODO: What is skip going to do? -->
+                <li><a class="ru-button-big expand secondary">Skip this step</a></li>
+            </ul>
     </form>
 </div>
