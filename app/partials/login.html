@@ -18,37 +18,18 @@
             </strong></p>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label 
-                        class="ru-error-message" 
-                        ng-show="form.email.$invalid && form.email.$dirty || 
-                                 form.email.$invalid && forgottenPassword"
-                    >
+                    <label class="ru-error-message" ng-show="form.email.$invalid && form.email.$dirty || form.email.$invalid && forgottenPassword">
                         Enter a valid email
                     </label>
-                    <input 
-                        name="email"
-                        type="email" 
-                        placeholder="Email address" 
-                        ng-model="user.email" 
-                        required
-                    />
+                    <input name="email" type="email" placeholder="Email address" ng-model="user.email" required/>
                 </div>
             </div>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label 
-                        class="ru-error-message" 
-                        ng-show="form.password.$invalid && form.password.$dirty"
-                    >
+                    <label class="ru-error-message" ng-show="form.password.$invalid && form.password.$dirty">
                         Enter your password
                     </label>
-                    <input 
-                        name="password" 
-                        type="password" 
-                        placeholder="Password" 
-                        ng-model="user.password"
-                        required
-                    />
+                    <input name="password" type="password" placeholder="Password" ng-model="user.password" required/>
                 </div>
             </div>
             <div class="row">
