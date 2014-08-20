@@ -8,7 +8,7 @@ define([], function() {
 		$scope.submitted = false;
 
 		$scope.resetPassword = function() {
-			api.password.reset({'token': $stateParams.token}, $scope.user).$promise.then(function(response) {
+			api.password.reset({'token': $stateParams.token}, { 'password': $scope.user.password }).$promise.then(function(response) {
 				console.log(response);
 				$scope.submitted = true;
 				$scope.message = "Your password has been reset successfully, you may now log in with your new password.";
