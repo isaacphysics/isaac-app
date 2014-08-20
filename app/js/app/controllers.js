@@ -14,6 +14,7 @@ define([
 	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginControllers",
+	"app/controllers/LoginPageControllers",
 	"app/controllers/SearchControllers",
 	"app/controllers/AccountSettingsPageControllers",
 	"app/controllers/ContactControllers",
@@ -35,6 +36,8 @@ define([
 	var contentErrorController = require("app/controllers/ContentErrorControllers");
 
 	var loginControllers = require("app/controllers/LoginControllers");
+
+	var loginPageControllers = require("app/controllers/LoginPageControllers");
 
 	var searchControllers = require("app/controllers/SearchControllers");
 
@@ -65,6 +68,7 @@ define([
 	.controller('ContentErrorController', contentErrorController.PageController)
 
 	.controller('LoginController', loginControllers.PageController)
+	.controller('LoginPageController', loginPageControllers.PageController)
 
 	.controller('SearchController', searchControllers.PageController)
 

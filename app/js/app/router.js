@@ -167,7 +167,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/login_page.html",
-                        controller: "LoginController",
+                        controller: "LoginPageController",
                     }
                 }
             })

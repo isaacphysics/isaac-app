@@ -3,8 +3,7 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$window', function($scope, auth, api, $stateParams, $window) {
 
 		$scope.auth = auth;
-		$scope.target = $stateParams.target; 
-		$scope.globalFlags.noSearch = true;
+		$scope.target = $stateParams.target;
 
 		
 
