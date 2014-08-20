@@ -20,14 +20,13 @@ define([], function() {
 			}
 		}
 		$scope.resetPassword = function() {
-			$scope.submitted = false;
 			$scope.forgottenPassword = true;
 
 			// Only submit if an email has been entered
 			if($scope.form.email.$valid) {
 				api.password.reset({'email': $scope.user.email}).$promise.then(function(){
 					// Alert user that email has been sent
-					$scope.warning = true;
+					$scope.passwordRestFlag = true;
 				});
 			}
 		}

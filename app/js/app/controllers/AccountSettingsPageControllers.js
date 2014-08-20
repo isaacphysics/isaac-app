@@ -49,7 +49,7 @@ define([], function() {
 
 			if ($scope.user != null) {
 				// loop through linked accounts
-				angular.forEach($scope.user.linkedAccounts,function(account){
+				angular.forEach($scope.user.linkedAccounts, function(account){
 					Object.keys(linked).forEach(function(key) {
 						// If there is a match update bool to true
     					if(key === account) linked[key] = true;

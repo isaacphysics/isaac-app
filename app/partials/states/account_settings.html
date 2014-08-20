@@ -81,7 +81,12 @@
                             <strong ng-if="user.hasSegueAccount">Change password</strong>
                             <strong ng-if="!user.hasSegueAccount">Set password</strong>
                         </label>
-                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                        <input 
+                            id="account-password" 
+                            type="password" 
+                            ng-model="user.password" 
+                            placeholder="***********"
+                        >        
                     </div>
                     <div id="password2-wrap" class="large-8 medium-8 columns">
                         <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
@@ -143,20 +148,23 @@
 		        <label>
     		        <strong>School/Accademy</strong>
                 </label>
-    		    <div school-dropdown selected-school-urn="user.schoolId">
+    		    <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                     {{schools}}      
                 </div>
                 <input ng-hide="user.schoolId" type="text" placeholder="Other">
 
-                <ul class="linked-accounts">
+                <label class="linked-accounts-title">Linked accounts</label>
+                <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
                     <li
                         ng-repeat="(key, value) in socialAccounts()" 
                         ng-class="{'linked': value == true}"
+                        ng-switch on="value"
                     >
-                        <a 
-                            class="account-{{key | lowercase}}"
-                        >
-                            <span ng-hide="value == true">Add<span>
+                        <a ng-switch-when="true" class="account-{{key | lowercase}}">
+                            <span>Remove</span>
+                        </a>
+                        <a ng-switch-default class="account-{{key | lowercase}}">
+                            <span>Add</span>
                         </a>
                     </li>
                 </ul>
