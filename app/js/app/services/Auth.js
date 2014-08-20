@@ -7,6 +7,11 @@ define([], function() {
 			$window.location.href = api.authenticationEndpoint + '/' + provider +"/authenticate?redirect=http://" + $window.location.host + (target || "");
 		}
 
+		this.linkRedirect = function(provider, target) {
+			
+			$window.location.href = api.authenticationEndpoint + '/' + provider +"/link?redirect=http://" + $window.location.host + (target || "");
+		}
+
 		this.logout = function() {
 			this.user = null;
 			return api.logout();

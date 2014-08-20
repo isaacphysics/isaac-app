@@ -64,10 +64,8 @@ define([], function() {
 		$scope.removeLinkedAccount = function(provider) {
 			api.removeLinkedAccount(provider);
 		}
-		$scope.addLinkedAccount = function(provider) {
-			// Currently not working
-			var target = $window.location.host;
-			api.linkAccount(provider, target);
+		$scope.addLinkedAccount = function(provider, target) {
+			auth.linkRedirect(provider, target);
 		}
 
 		// Remove search
@@ -77,7 +75,6 @@ define([], function() {
 			// Only submit if form is valid
 			if($scope.account.$valid) {
 				api.account.saveSettings($scope.user).$promise.then(function(){
-					// Show account updated message
 				});
 			}
 		}
