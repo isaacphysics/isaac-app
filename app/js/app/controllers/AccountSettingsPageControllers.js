@@ -44,12 +44,36 @@ define([], function() {
 			}
 		});
 
+		$scope.socialAccounts = function(){
+			var linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
+
+			if ($scope.user != null) {
+				// loop through linked accounts
+				angular.forEach($scope.user.linkedAccounts,function(account){
+					Object.keys(linked).forEach(function(key) {
+						// If there is a match update bool to true
+    					if(key === account) linked[key] = true;
+					});
+					
+                });
+			}
+			return linked;
+		}
+
 		// Remove search
 		$scope.globalFlags.noSearch = true;
 
 		$scope.save = function() {
-			api.account.saveSettings($scope.user);
+			$scope.submitted = true;
+
+			// Only submit if form is valid
+			if($scope.account.$valid) {
+				api.account.saveSettings($scope.user).$promise.then(function(){
+					// Show account updated message
+				});
+			}
 		}
+
 
 	}]
 

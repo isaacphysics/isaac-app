@@ -14,8 +14,8 @@
     float: right;
 }
 
-.ng-invalid.ng-dirty {
-    background-color: #ffe9e9;
+input.ng-invalid.ng-dirty {
+    border-color: #cc6666;
 }
 
 @media #{$small-only} {

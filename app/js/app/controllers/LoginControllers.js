@@ -20,6 +20,7 @@ define([], function() {
 			}
 		}
 		$scope.resetPassword = function() {
+			$scope.submitted = false;
 			$scope.forgottenPassword = true;
 
 			// Only submit if an email has been entered
