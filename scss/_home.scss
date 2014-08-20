@@ -411,7 +411,7 @@ $col_values : 5;
     font-size: 1.5rem;
 }
 
-.ru-hex-home-msg-correct
+.ru-hex-home-msg
 {
     color: $ru_orange;
 }
@@ -425,7 +425,7 @@ $col_values : 5;
 
 @media #{$small-only}
 {
-    .ru-hex-home-content-wild, .ru-hex-home-content-correct
+    .ru-hex-home-content-wild, .ru-hex-home-content
     {
         background-size: 60% 60%;
     }

@@ -56,11 +56,15 @@ define(["app/honest/hexagon"],function(hexagon) {
             {
                 if(d.state === 'COMPLETED')
                 {
-                    $(this).text('Well Done!').addClass('ru-hex-home-msg-correct');
+                    $(this).text('Well Done!').addClass('ru-hex-home-msg');
                 }
                 else if (d.state === 'TRY_AGAIN')
                 {
-                    $(this).text('Try Again!').addClass('ru-hex-home-msg-incorrect');
+                    $(this).text('Try Again!').addClass('ru-hex-home-msg');
+                }
+                else if (d.state === 'IN_PROGRESS') 
+                {
+                    $(this).text('In Progress').addClass('ru-hex-home-msg');   
                 }
             });
             
