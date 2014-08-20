@@ -82,16 +82,7 @@ define([], function() {
 			restrict: 'A',
 
 			link: function(scope, element, attrs) {
-
-				initRadioButton(element[0]);					
-
-				scope.$watch("selectedAnswer", function() {
-
-					reset(element[0]);
-
-					if(scope.selectedAnswer != null && scope.selectedAnswer == scope.$index)
-						draw(element[0], 'fill');
-				});
+				initRadioButton(element[0]);
 
 				if (attrs.ngModel != null && attrs.ngModel.length > 0) {
 					var dotPos = attrs.ngModel.indexOf('.');
@@ -105,7 +96,9 @@ define([], function() {
 
 					scope.$watchCollection(watchCollection, function() {
 						var selectedVal = scope.$eval(attrs.ngModel);
-						if (selectedVal != null && selectedVal.length > 0 && selectedVal === attrs.value) {
+
+						// Use == to compare values as they may be different types
+						if (selectedVal != null && selectedVal == attrs.value) {
 							draw(element[0], 'fill');
 						} else {
 							reset(element[0]);

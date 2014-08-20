@@ -9,7 +9,7 @@
             <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint {{$index + 1}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs ru-answer">
-            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="no-print">
+            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="force-print">
 
                 <div class='ru-answer-area'>
 					<div class="row">
@@ -23,7 +23,7 @@
                 </div>
 
                 <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap' style="display:block;" ng-show="answerVisible">
+                <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="answerVisible">
                     <div class='ru-answer-correct-summary {{pageSubject}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end">
@@ -34,7 +34,7 @@
                 </div>
 
 
-                <div class='ru-answer-check'>
+                <div class='ru-answer-check no-print'>
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
                             <p>Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
