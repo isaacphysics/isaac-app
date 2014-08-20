@@ -1,5 +1,4 @@
 <form name="form" class="login-wrap" ng-submit="login()" ng-controller="LoginController" novalidate>
-{{form.$vaild}}
     <div class="row">
         <div class='large-7 medium-7 columns small-only-text-center'>
             <div class="login-social">
@@ -13,7 +12,7 @@
             <span class="ru_green">or</span>
         </div>
         <div class='large-6 medium-6 columns login-form left'>
-            <p ng-show="warning"><strong>
+            <p ng-show="passwordRestFlag"><strong>
                 Your password request is being proccessed. 
                 <span class="ru_green">Please check your email.</span>
             </strong></p>
@@ -21,7 +20,7 @@
                 <div class='large-12 medium-14 columns'>
                     <label 
                         class="ru-error-message" 
-                        ng-show="form.email.$invalid && submitted || 
+                        ng-show="form.email.$invalid && form.email.$dirty || 
                                  form.email.$invalid && forgottenPassword"
                     >
                         Enter a valid email
@@ -39,7 +38,7 @@
                 <div class='large-12 medium-14 columns'>
                     <label 
                         class="ru-error-message" 
-                        ng-show="form.password.$invalid && submitted"
+                        ng-show="form.password.$invalid && form.password.$dirty"
                     >
                         Enter your password
                     </label>
