@@ -16,8 +16,7 @@ define([], function() {
 				},
 				function(reason){
 					// Error
-					// TODO: output error message in the UI
-					console.log(reason.data.errorMessage);
+					$scope.errorMessage = reason.data.errorMessage;
 				});
 			}
 		}

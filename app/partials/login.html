@@ -12,10 +12,11 @@
             <span class="ru_green">or</span>
         </div>
         <div class='large-6 medium-6 columns login-form left'>
-            <p ng-show="passwordRestFlag"><strong>
-                Your password request is being proccessed. 
-                <span class="ru_green">Please check your email.</span>
+            <p ng-show="passwordRestFlag"><strong>Your password request is being proccessed. <span class="ru_green">Please check your email.</span>
             </strong></p>
+            <p ng-show="errorMessage">
+                {{errorMessage}}
+            </p>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
                     <label class="ru-error-message" ng-show="form.email.$invalid && form.email.$dirty || form.email.$invalid && forgottenPassword">
