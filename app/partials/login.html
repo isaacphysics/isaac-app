@@ -15,11 +15,11 @@
             <p ng-show="passwordRestFlag"><strong>Your password request is being proccessed. <span class="ru_green">Please check your email.</span>
             </strong></p>
             <p ng-show="errorMessage">
-                {{errorMessage}}
+                <strong class="ru_red">{{errorMessage}}</strong>
             </p>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label class="ru-error-message" ng-show="form.email.$invalid && form.email.$dirty || form.email.$invalid && forgottenPassword">
+                    <label class="ru-error-message" ng-show="form.email.$invalid && form.submitted || form.email.$invalid && forgottenPassword">
                         Enter a valid email
                     </label>
                     <input name="email" type="email" placeholder="Email address" ng-model="user.email" required/>
@@ -27,7 +27,7 @@
             </div>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label class="ru-error-message" ng-show="form.password.$invalid && form.password.$dirty">
+                    <label class="ru-error-message" ng-show="form.password.$invalid && form.submitted">
                         Enter your password
                     </label>
                     <input name="password" type="password" placeholder="Password" ng-model="user.password" required/>
@@ -36,7 +36,7 @@
             <div class="row">
                 <div class='large-12 medium-14 columns'>
                     <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-                        <li><input class="ru-button expand" type="submit" value="login" /></li>
+                        <li><input class="ru-button expand" type="submit" value="login" ng-click="form.submitted = true" /></li>
                         <li><a class="ru-button expand secondary" ui-sref="accountSettings">Sign up</a></li>
                     </ul>
                 </div>

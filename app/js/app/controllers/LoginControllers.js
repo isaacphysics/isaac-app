@@ -20,6 +20,16 @@ define([], function() {
 				});
 			}
 		}
+		$scope.socialLogin = function(provider, target) {
+			auth.loginRedirect(provider, target).$promise.then(function(){
+				// Success
+				console.log('Successful login');
+			},
+			function(reason){
+				// Error
+				console.log(reason.data.errorMessage);
+			});
+		}
 		$scope.resetPassword = function() {
 			$scope.forgottenPassword = true;
 
