@@ -36,10 +36,12 @@ define([], function() {
 			// Warn user before deleting
 			var confirmation = confirm("You are about to delete "+name+" board?");
 			if (confirmation){
-				// Remove board and update current results
-       			api.deleteGameBoard(id);
-       			$scope.boards.results.splice(id, 1);
-       			$scope.boards.totalResults = $scope.boards.totalResults-1;
+       			// TODO: This needs to be reviewed
+       			// Currently reloading boards after delete
+       			var inView = $scope.boards.results.length;
+       			api.deleteGameBoard(id).$promise.then(function(){
+       				$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, inView);
+       			});
 			}
 		}
 

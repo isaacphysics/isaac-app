@@ -8,12 +8,16 @@ define([], function() {
 		
 
 		$scope.login = function() {
-
 			// Only submit if form is valid
 			if($scope.form.$valid) {
 				api.loginEndpoint.login($scope.user).$promise.then(function(){
-					// On login redirect to home
+					// Success
 					$window.location.href = '/';
+				},
+				function(reason){
+					// Error
+					// TODO: output error message in the UI
+					console.log(reason.data.errorMessage);
 				});
 			}
 		}
