@@ -40,7 +40,9 @@ define([], function() {
        			// Currently reloading boards after delete
        			var inView = $scope.boards.results.length;
        			api.deleteGameBoard(id).$promise.then(function(){
-       				$scope.boards = api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, inView);
+       				api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, inView).$promise.then(function(boards) {
+						$scope.boards = boards;
+					});
        			});
 			}
 		}
