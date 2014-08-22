@@ -127,17 +127,17 @@
         <section>
             <div class="row">
                 <div class='ru-board-title show-for-medium-up'>
-                    <div class="large-5 columns">
+                    <div class="large-5 medium-5 columns">
                         <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img"><h4>Undo Shuffle</h4></a>&nbsp;
                     </div>
-                    <div class="large-6 columns text-center">
+                    <div class="large-6 medium-6 columns text-center">
                         <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=gameBoard.title || generateGameBoardTitle(gameBoard)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
                         <span ng-hide="editedGameBoardTitle==null">
                             <input type="text" ng-model="editedGameBoardTitle">
                             <button ng-click="saveGameBoardTitle()">Save</button>
                         </span>
                     </div>
-                    <div class="large-5 columns">
+                    <div class="large-5 medium-5 columns">
                         <div class="right">
                             <a ng-click="shuffleBoard()"><h4>Shuffle Board</h4>
                             <img src="/assets/icon-shuffle.png" class="ru-board-img"></a>
