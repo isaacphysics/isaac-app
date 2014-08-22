@@ -46,13 +46,19 @@
         <div class='ru-fixed-header fixed'>
             <div class='row'>
                 <div class='small-8 columns'>
-                    <div id='mobile-login' class='pointer'>
+                    <div ng-if='!user._id' id='mobile-login' class='pointer'>
                         <div class='ru-mobile-login'></div>
                         <span>
                             Log in
                         </span>
                         <div class='ru-mobile-down'></div>
                     </div>
+                    <a ng-if='user._id' ui-sref='accountSettings'>
+                        <div class='ru-mobile-login'></div>
+                        <span>
+                            My Account
+                        </span>
+                    </a>                    
                 </div>
                 <div class='small-8 columns'>
                     <div class='right pointer' id='mobile-search'>
