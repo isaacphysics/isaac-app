@@ -58,9 +58,7 @@
                     </div>
                     <div id="password2-wrap" class="large-8 medium-8 columns">
                         <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                        <!-- TODO: must be a better way of removing disabled when password is added -->
-                        <input ng-if="!user.password" id="account-password2" type="password" placeholder="***********" disabled>
-                        <input ng-if="user.password" id="account-password2" type="password" placeholder="***********">
+                        <input id="account-password2" type="password" placeholder="***********" ng-disabled="!user.password">
                     </div>
                 </div>
                 <div id="account-gender" class="ac-custom ac-radio ac-fill row">
