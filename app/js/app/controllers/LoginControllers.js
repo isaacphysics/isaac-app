@@ -5,8 +5,6 @@ define([], function() {
 		$scope.auth = auth;
 		$scope.target = $stateParams.target;
 
-		
-
 		$scope.login = function() {
 			// Only submit if form is valid
 			if($scope.form.$valid) {

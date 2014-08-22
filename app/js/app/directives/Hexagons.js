@@ -211,6 +211,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 
                         update();
 		    		} else {
+			            augmentedQuestions = null;
                         update();
                     }     	
 	            })

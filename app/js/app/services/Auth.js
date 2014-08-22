@@ -44,7 +44,6 @@ define([], function() {
 	}];
 
 	var resolver = ['auth', function(auth) {
-
 		return auth.getUser().$promise.catch(function(r) {
 			if (r.status == 401)
 				return Promise.reject("require_login");

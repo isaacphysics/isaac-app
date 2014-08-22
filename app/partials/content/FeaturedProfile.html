@@ -1,12 +1,12 @@
-<div class="text-center" style="width: 33.33333%; float: left; clear: none;"
-    ng-style="{'clear': valueOrChildren.$index % 3 == 0 ? 'both' : 'none'}">
+<div class="text-center featured-profile"
+     ng-class="{'featured-profile-new-row': valueOrChildren.$index % 3 == 0}">
     <figure style="padding: 10px 20px;">
         <img ng-src='{{doc.image.src || "assets/nick.png"}}'>
         <figcaption>
             <h6>{{doc.title}}</h6>
             <h6 class='subheader'>{{doc.subtitle}}</h6>
             <div class='light' isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"> </div>
-            <a ng-show='{{doc.emailAddress}}' href='mailto: {{doc.emailAddress}}'><img src='assets/icon-mailto.png'></a>
+            <a ng-show='doc.emailAddress' href='mailto: {{doc.emailAddress}}'><img src='assets/icon-mailto.png'></a>
         </figcaption>
     </figure>
 </div>

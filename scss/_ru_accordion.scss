@@ -124,6 +124,19 @@
     border-top: 3px solid lighten($ru_maths, $ru_site_hover);
 }
 
+.accordion.ru_accordion.general dd a.ru_accordion_titlebar .ru_accordion_name
+{
+    background-color: $ru_physics;
+    border-top: 3px solid $ru_physics;
+}
+
+.accordion.ru_accordion.general dd a.ru_accordion_titlebar:hover .ru_accordion_name
+{
+    background-color: lighten($ru_physics, $ru_site_hover);
+    border-top: 3px solid lighten($ru_physics, $ru_site_hover);
+}
+
+
 
 // Ellipsis for title
 .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title

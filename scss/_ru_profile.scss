@@ -1,0 +1,10 @@
+@media #{$medium-up} {
+	.featured-profile {
+		width: 33.33333%;
+		float: left;
+	}
+
+	.featured-profile-new-row {
+		clear: both;
+	}
+}
