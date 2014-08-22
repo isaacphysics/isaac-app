@@ -17,7 +17,6 @@ define([
     "fastclick",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
-    "app/honest/anim_check",
     "angulartics", 
     "angulartics-ga",
     ], function() {
@@ -292,6 +291,33 @@ define([
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
                     cookie.create('cookiesAccepted',1,720);
                 });
+
+                $(document).foundation({
+                        joyride: { 
+                            expose: true,
+                            next_button: false,
+                            prev_button: true,
+                            template : {
+                                link: ''
+                            },
+                            pre_ride_callback: function() {
+                                // add custom controls
+                                $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a></div></div>');
+                            },
+                            post_ride_callback: function() {
+                                // remove controls when tutorial has finished
+                                $('.joyride-custom-controls').detach();
+                            }
+                        }
+                    });
+
+                $('.trigger-tutorial').on('click', function(){
+                    $(document).foundation('joyride', 'start');
+                });
+                $('.joyride-close-tip').on('click', function(){
+                    console.log('close');
+                });
+
                 
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
