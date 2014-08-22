@@ -250,15 +250,25 @@ define(["angular-ui-router"], function() {
                 },
             })
 
-             .state('accountSettings', {
-                url: "/account",
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/account_settings.html",
-                        controller: "AccountSettingsPageController",
-                    }
-                }
-            })
+	        .state('accountSettings', {
+		        url: "/account",
+		        views: {
+			        "body": {
+				        templateUrl: "/partials/states/account_settings.html",
+				        controller: "AccountSettingsPageController",
+			        }
+		        }
+	        })
+
+	        .state('register', {
+		        url: "/register",
+		        views: {
+			        "body": {
+				        templateUrl: "/partials/states/register.html",
+				        controller: "AccountSettingsPageController",
+			        }
+		        }
+	        })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
