@@ -1,6 +1,6 @@
 <header class="no-print">
     <!-- Desktop Header -->
-    <div class='ru-desktop-header'>
+    <div class='ru-desktop-header' ng-controller="HeaderController">
         <div class='ru-dekstop-nav'>
             <!-- Desktop Nav -->
             <nav class='row'>
@@ -26,9 +26,14 @@
                             <span>My Boards</span>
                         </div>
                     </a>
-                    <a class='ru-desktop-nav-item' ui-sref='login'>  
+                    <a ng-if='!user._id' class='ru-desktop-nav-item' ui-sref='login'>  
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
-                            <span>Login</span>
+                            <span>Log in</span>
+                        </div>
+                    </a>
+                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='accountSettings'>  
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('accountSettings')}">
+                            <span>My Account</span>
                         </div>
                     </a>
                 </div>
@@ -36,7 +41,7 @@
         </div>
     </div>
     <!-- Mobile Header -->
-    <div class='ru-mobile-header'>
+    <div class='ru-mobile-header' ng-controller="HeaderController">
         <!-- Mobile Fixed Header -->
         <div class='ru-fixed-header fixed'>
             <div class='row'>
@@ -44,7 +49,7 @@
                     <div id='mobile-login' class='pointer'>
                         <div class='ru-mobile-login'></div>
                         <span>
-                            Login
+                            Log in
                         </span>
                         <div class='ru-mobile-down'></div>
                     </div>
