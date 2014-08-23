@@ -16,7 +16,10 @@ define([], function() {
 			link: function(scope, element, attrs) {
 
 				function matchSize() {
-					element.find("#concept-search-data").width(element.find('input').width());
+					var header = element.find("h3");
+					var input = element.find("input");
+					element.find("#concept-search-data").width(input.innerWidth());
+					element.find("#concept-search-data").css('top', header.outerHeight(true) + input.innerHeight());
 				}
 
 				// TODO: Make sure this happens properly on load.
@@ -38,6 +41,8 @@ define([], function() {
 						}
 					}
 
+					// Resize again to try and ensure it's correct
+					matchSize();
 				});
 
 				scope.removeSelected = function(c) {
