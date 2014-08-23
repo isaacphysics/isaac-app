@@ -99,6 +99,14 @@ define([], function() {
 				$state.go('searchResults', {query: $scope.models.query, types: $scope.models.typesToInclude});
 			}
 		}
+
+		$scope.hideMobileSearchForm = function() {
+			// Hide mobile search form if shown
+			// TODO: Find a better place for this, or just angularize the entire mobile search form
+			if ($("#mobile-search-form").hasClass('ru-drop-show')) {
+				$("#mobile-search-form").ruDropDownToggle();
+			}
+		}
 	}];
 
 	return {

@@ -4,7 +4,7 @@
 <div class='ru-drop ru-drop-hide no-print' id='mobile-search-form' ng-controller="GlobalSearchController">
     <div class='row'>
     <div class='small-16 columns ru-toppad-6'>
-        <form ng-submit="triggerSearch()">
+        <form ng-submit="hideMobileSearchForm(); triggerSearch()">
             <label class='ru-drop-big-label'>Search
                 <input type="text" ng-model="models.query" />
             </label>
