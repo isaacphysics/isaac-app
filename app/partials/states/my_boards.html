@@ -1,7 +1,12 @@
 <div desktop-panel>
 	<h1>My Boards</h1>
-	<!-- TODO: this needs to be dynamicly generated -->
-	<p><strong>You have <span class="ru_green">{{boards.totalInProgress}} board<span ng-if="boards.totalInProgress != 1">s</span></span> on the go with <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span> completed.</strong></p>
+	<p><strong>
+		You have
+		<span class="ru_green">{{boards.totalInProgress}} board<span ng-if="boards.totalInProgress != 1">s</span></span>
+		on the go with
+		<span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>
+		completed.
+	</strong></p>
 </div>
 <div mobile-panel>
    <h5>Filter your Boards</h5>
@@ -63,7 +68,7 @@
    		</div>
    	</li>
 </ul>
-<div class="row" ng-hide="boards.results.length == ''">
+<div class="row" ng-hide="boards == null || boards.results.length == ''">
   <div class="large-5 medium-6 small-centered columns">
       <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
       <a ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
