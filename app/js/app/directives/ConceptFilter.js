@@ -1,7 +1,7 @@
 define([], function() {
 
 
-	return ["$state", "api", function($state, api) {
+	return ["$state", "api", "tags", function($state, api, tags) {
 
 		return {
 
@@ -28,11 +28,14 @@ define([], function() {
 				scope.allConcepts = api.getConceptList();
 
 				scope.allConcepts.$promise.then(function(d) {
-
 					scope.conceptMap = {};
 
 					for(var i in d.results) {
 						scope.conceptMap[d.results[i].id] = d.results[i];
+						var subject = tags.getSubjectTag(d.results[i].tags);
+						if (subject != null) {
+							scope.conceptMap[d.results[i].id].subject = subject.id;
+						}
 					}
 
 				});
