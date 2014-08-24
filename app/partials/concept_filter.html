@@ -8,6 +8,9 @@
 		</div>
 	</div>
 	<div id="concept-results">
-		<div ng-repeat="id in selectedConceptIds" class='concept-search-result physics' ng-click="deselectConcept($index)"><div>{{conceptMap[id].title || id}}</div></div>
+		<div ng-repeat="id in selectedConceptIds" class='concept-search-result'
+		     ng-class="conceptMap[id].subject || 'physics'" ng-click="deselectConcept($index)">
+			<div>{{conceptMap[id].title || id}}</div>
+		</div>
 	</div>
 </div>

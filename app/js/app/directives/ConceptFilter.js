@@ -1,7 +1,7 @@
 define([], function() {
 
 
-	return ["$state", "api", function($state, api) {
+	return ["$state", "api", "tags", function($state, api, tags) {
 
 		return {
 
@@ -16,7 +16,10 @@ define([], function() {
 			link: function(scope, element, attrs) {
 
 				function matchSize() {
-					element.find("#concept-search-data").width(element.find('input').width());
+					var header = element.find("h3");
+					var input = element.find("input");
+					element.find("#concept-search-data").width(input.innerWidth());
+					element.find("#concept-search-data").css('top', header.outerHeight(true) + input.innerHeight());
 				}
 
 				// TODO: Make sure this happens properly on load.
@@ -28,13 +31,18 @@ define([], function() {
 				scope.allConcepts = api.getConceptList();
 
 				scope.allConcepts.$promise.then(function(d) {
-
 					scope.conceptMap = {};
 
 					for(var i in d.results) {
 						scope.conceptMap[d.results[i].id] = d.results[i];
+						var subject = tags.getSubjectTag(d.results[i].tags);
+						if (subject != null) {
+							scope.conceptMap[d.results[i].id].subject = subject.id;
+						}
 					}
 
+					// Resize again to try and ensure it's correct
+					matchSize();
 				});
 
 				scope.removeSelected = function(c) {
