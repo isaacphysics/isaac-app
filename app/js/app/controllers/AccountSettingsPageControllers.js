@@ -76,6 +76,7 @@ define([], function() {
 			if($scope.account.$valid) {
 				api.account.saveSettings($scope.user).$promise.then(function(){
 					// Show account updated message
+					$('#account-updated').foundation('reveal', 'open');
 				});
 			}
 		}

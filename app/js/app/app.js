@@ -296,7 +296,7 @@ define([
                         joyride: { 
                             expose: true,
                             next_button: false,
-                            prev_button: true,
+                            prev_button: false,
                             template : {
                                 link: ''
                             },
@@ -314,8 +314,8 @@ define([
                 $('.trigger-tutorial').on('click', function(){
                     $(document).foundation('joyride', 'start');
                 });
-                $('.joyride-close-tip').on('click', function(){
-                    console.log('close');
+                $('body').on('click', '.joyride-close-tip', function() {
+                    $('.joyride-custom-controls').detach();
                 });
 
                 
