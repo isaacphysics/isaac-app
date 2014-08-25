@@ -58,7 +58,7 @@
    			</div>
             <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
             <div class="row">
-   			   <h3><a href="/#!/#{{board.id}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+   			   <h3><a tabindex="0" href="/#!/#{{board.id}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
                   Created by:
                   <span ng-if="board.ownerUserId == user._id">Me</span>
@@ -79,7 +79,7 @@
 <div class="row" ng-hide="boards == null || boards.results.length == ''">
   <div class="large-5 medium-6 small-centered columns">
       <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
-      <a ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
+      <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
    </div>
 </div>
 <div class="row" ng-show="boards.results.length == ''">
