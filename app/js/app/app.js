@@ -311,14 +311,17 @@ define([
                         }
                     });
 
-                $('.trigger-tutorial').on('click', function(){
-                    $(document).foundation('joyride', 'start');
-                });
                 $('body').on('click', '.joyride-close-tip', function() {
+                    // remove controls if tut is closed part way through
                     $('.joyride-custom-controls').detach();
                 });
+                $('.desktop-tutorial-trigger').on('click', function() {
+                    $(document).foundation('joyride', 'start');
+                });
+                $('.mobile-tutorial-trigger').on('click', function() {
+                    $('#mobile-tutorial').foundation('joyride', 'start');
+                });
 
-                
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
                 {
