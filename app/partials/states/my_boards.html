@@ -60,7 +60,7 @@
    			</div>
             <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
             <div class="row">
-   			   <h3><a href="/#!/#{{board.id}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+   			   <h3><a ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
                   Created by:
                   <span ng-if="board.ownerUserId == user._id">Me</span>
@@ -68,7 +68,7 @@
                </div>
 
                 <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
-               <a class="board-share" share-button sharelink="#!/#{{board.id}}"></a>
+               <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
                <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>
                      {{shareUrl}}

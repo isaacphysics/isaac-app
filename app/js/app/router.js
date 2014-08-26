@@ -194,6 +194,13 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+            .state('board', {
+                url: "/board/:id",
+                onEnter: ["$stateParams", "$location", function($stateParams, $location) {
+                    $location.url("/#" + $stateParams.id);
+                    throw "Prevent entering board redirect state."
+                }],
+            })
             .state('searchResults', {
                 url: "/search?query&types&page",
                 resolve: {                    
