@@ -37,7 +37,7 @@
                 <div class='ru-answer-check no-print'>
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
-                            <p>Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
+                            <p ng-show="doc.hints && doc.hints.length > 0">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>&nbsp;
                         </div>
                         <div class="small-14 small-offset-1 medium-6 columns end">
                             <button class='expand ru-answer-button' ng-click="answerVisible=true" ng-hide="answerVisible">Show answer</button>
