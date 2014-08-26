@@ -71,7 +71,8 @@
     height: 180px;
     background-position: center top;
     background-image: url(/assets/get-started.png);        
-
+    background-repeat: no-repeat; 
+    cursor: pointer;
 }
 
 .get-started-pod-spacer-bottom
@@ -80,7 +81,7 @@
     background-position: center top;
     background-image: url(/assets/try-questions.png);       
     background-repeat: no-repeat; 
-
+    cursor: pointer;
 }
 
 @media #{$small-only}
