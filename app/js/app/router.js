@@ -9,8 +9,7 @@ define(["angular-ui-router"], function() {
 
         $urlRouterProvider.when("", "/");
         $urlRouterProvider.otherwise(function($injector, $location) {
-            var $state = $injector.get("$state");
-            $state.go("404", {target: $location.url()});
+            return "/not_found?target=" + $location.url();
         });
 
         var genericPageState = function(url, id) {
@@ -248,7 +247,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('404', {
-                params: ["target"],
+                url: "/not_found?target",
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
