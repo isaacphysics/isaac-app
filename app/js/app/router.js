@@ -47,6 +47,7 @@ define(["angular-ui-router"], function() {
             .state('about', genericPageState("/about", "about_us_index"))
             .state('events', genericPageState("/events", "events_index"))
             .state('glossary', genericPageState("/glossary", "glossary"))
+            .state('cookies', genericPageState("/cookies", "cookie_policy"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
             .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
 	        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
@@ -126,7 +127,7 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })            
-
+/*
             .state('randomContent', {
                 url: "/content/:id",
                 resolve: {
@@ -143,7 +144,7 @@ define(["angular-ui-router"], function() {
                         }],
                     }
                 }
-            })
+            })*/
             .state('contentErrors', {
                 url: "/admin/content_errors",
                 resolve: {
