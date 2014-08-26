@@ -7,11 +7,13 @@
 		<div ng-switch-default>
 			<h1>My Boards</h1>
 			<p><strong>
-				You have
-				<span class="ru_green">{{boards.totalInProgress}} board<span ng-if="boards.totalInProgress != 1">s</span></span>
-				on the go with
-				<span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>
-				completed.
+				You have completed 
+            <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>,
+            with
+				<span class="ru_green">{{boards.totalInProgress}}</span>
+				on the go and
+            <span class="ru_green">{{boards.totalNotStarted}}</span>
+            not started.
 			</strong></p>
 		</div>
 	</div>
