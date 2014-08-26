@@ -246,6 +246,15 @@
     {
         margin-top: 10px;
         font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .ru-difficulty-explanation-close
+    {
+        position: absolute;
+        right: 20px;
+        bottom: 100%;
+        cursor: pointer;
     }
 }
 
