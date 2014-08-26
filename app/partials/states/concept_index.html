@@ -52,7 +52,8 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="concept in allConcepts | filter:{$:searchText} | filter:subjectFilter" class='row ru-mobile-answer-wrap' ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" >
+                <a ng-repeat="concept in allConcepts | filter:{$:searchText} | filter:subjectFilter" class="ru-mobile-answer-wrap" ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" >
+                    <div class="row ">
                     <div class='small-16 columns'>
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
@@ -61,15 +62,17 @@
                                     <span class="maths" ng-show="maths">Maths</span>
                                     <span ng-show="maths && physics">&amp;</span>
                                     <span class="physics" ng-show="physics">Physics</span>
-                                    : {{concept.title}}</h4>
-
-                                    <p>{{concept.summary}}</p>
+                                    : {{concept.title}}
                                 </h4>
+
+                                <p>{{concept.summary}}</p>
+                                
                             </div>
                             <div class="clearfix"></div>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </a>
             </div>
             <div class="ru-concept-pad">
 
