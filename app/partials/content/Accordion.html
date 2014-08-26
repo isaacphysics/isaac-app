@@ -16,7 +16,11 @@
             <div class="ru_accordion_title" math-jax>{{c.title}}</div>
         </a>
         <div ng-class="{content: true, active: openChildren[$index]}" class="force-print">
-            <div isaac-content doc="c"></div>
+            <div class="row">
+                <div class="small-14 small-offset-1 columns end">
+                    <div isaac-content doc="c"></div>
+                </div>
+            </div>
         </div>
     </dd>
 </dl>

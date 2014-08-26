@@ -137,7 +137,9 @@
 }
 
 
-
+.accordion .content {
+    padding: 0;
+}
 // Ellipsis for title
 .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title
 {

@@ -20,7 +20,7 @@ define([], function() {
 					scope.doc = newDoc;
 
 					scope.figures[scope.doc.id] = Object.keys(scope.figures).length + 1;
-					
+
 					scope.figNum = scope.figures[scope.doc.id];
 
 					var src = api.getImageUrl(scope.doc.src);
