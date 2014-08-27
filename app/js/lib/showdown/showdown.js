@@ -647,7 +647,7 @@ var writeAnchorTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 	}
 
 	url = escapeCharacters(url,"*_");
-	var result = "<a href=\"" + url + "\"";
+	var result = "<a href=\"" + url + "\" rel=\"nofollow\"";
 
 	if (title != "") {
 		title = title.replace(/"/g,"&quot;");
