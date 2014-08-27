@@ -1,7 +1,6 @@
 define([], function() {
 
 	var service = ['api', '$window', '$cookies', '$location', '$state', function(api, $window, $cookies, $location, $state) {
-		var self = this;
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -26,7 +25,7 @@ define([], function() {
             api.authentication.getAuthResult(params).$promise.then(function(u) {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
-                self.user = u;
+                $rootScope.user = u;
 
                 $location.replace();
                 $location.url(next);
@@ -49,25 +48,25 @@ define([], function() {
 		}
 
 		this.logout = function() {
-			this.user = null;
+			$rootScope.user = null;
 			return api.authentication.logout().$promise;
 		}
 
 		this.getUser = function(forceRefresh) {
 
-			if (!this.user || forceRefresh)
-				this.user = api.currentUser.get();
+			if (!$rootScope.user || forceRefresh)
+				$rootScope.user = api.currentUser.get();
 
-			return this.user;
+			return $rootScope.user;
 		}
 
 		this.login = function(email, password) {
 			return new Promise(function(resolve, reject){
 				api.login(email, password).$promise.then(function(u){
-					this.user = u;
+					$rootScope.user = u;
 					resolve();
 				}).catch(function(u){
-					this.user = null;
+					$rootScope.user = null;
 					reject();
 				});
 			});

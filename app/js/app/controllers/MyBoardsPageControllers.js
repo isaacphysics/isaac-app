@@ -2,7 +2,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', function($scope, auth, api, gameBoardTitles) {
 		$scope.globalFlags.isLoading = true;
-		$scope.user = auth.getUser();
+		//$scope.user = auth.getUser();
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 

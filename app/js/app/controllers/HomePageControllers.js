@@ -2,7 +2,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles) {
 
-		$scope.user = auth.getUser();
+		//$scope.user = auth.getUser();
 
 		$scope.filterPanelOpen = null;
 
