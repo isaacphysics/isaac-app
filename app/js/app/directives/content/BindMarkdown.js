@@ -44,7 +44,7 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 
 				var parsed = $parse(attrs.bindMarkdown|| element.html());
 				var markdown = (parsed(scope) || "").toString();
-				var converted = converter.makeHtml(markdown);
+				var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
 				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }"))(scope));
 			}
 		};
