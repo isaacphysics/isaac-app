@@ -1,6 +1,6 @@
 define([], function() {
 
-	var service = ['api', '$window', '$cookies', '$location', '$state', '$rootScope', function(api, $window, $cookies, $location, $state, $rootScope) {
+	var service = ['api', '$window', '$cookies', '$location', '$state', '$rootScope', '$timeout', function(api, $window, $cookies, $location, $state, $rootScope, $timeout) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -57,7 +57,9 @@ define([], function() {
 			$rootScope.user = api.currentUser.get();
 
 			$rootScope.user.$promise.then(function() {
-				$rootScope.$apply();
+				$timeout(function() {
+					$rootScope.$apply();
+				});
 			})
 
 			return $rootScope.user.$promise;
