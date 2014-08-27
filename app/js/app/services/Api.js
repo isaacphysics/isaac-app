@@ -88,7 +88,7 @@ define([], function() {
 		}
      
 		this.removeLinkedAccount = function(provider) {
-			return $http.delete(server + "/api/auth/"+provider+"/link").$promise;
+			return $http.delete(server + "/api/auth/"+provider+"/link");
 		}
 
 		this.linkAccount = function(provider, target){
