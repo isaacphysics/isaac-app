@@ -47,6 +47,10 @@ define([], function() {
 				method: 'GET',
 				url: server+"/api/auth/:provider/callback",
 			},
+			'login': {
+				method: 'POST',
+				url: server+"/api/auth/segue/authenticate",
+			},
 			'logout': {
 				method: 'POST',
 				url: server+"/api/auth/logout",
@@ -60,11 +64,6 @@ define([], function() {
 			}
 		});
 
-		this.loginEndpoint = $resource(this.authenticationEndpoint + "/segue/authenticate", {}, {
-			login: {
-				method: "POST",
-			}
-		});
 
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 

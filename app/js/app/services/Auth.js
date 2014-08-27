@@ -1,10 +1,10 @@
 define([], function() {
 
-	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookieStore', function(api, $window, $location, $state, $rootScope, $timeout, $cookieStore) {
+	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', function(api, $window, $location, $state, $rootScope, $timeout, $cookies) {
 
 		this.loginRedirect = function(provider, target) {
 			
-			$cookieStore.put("afterAuth", target || "");
+			$cookies.afterAuth = target || "";
 
 			api.authentication.getAuthRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);
@@ -17,11 +17,11 @@ define([], function() {
 
 		this.providerCallback = function(provider, params) {
 
-            var next = $cookieStore.get("afterAuth");
+            var next = $cookies.afterAuth;
             next = next || "/";
             next = next.replace("#!", "");
 
-            $cookieStore.remove("afterAuth");
+            delete $cookies.afterAuth;
 
             params.provider = provider;
 
@@ -47,7 +47,7 @@ define([], function() {
 
 		this.linkRedirect = function(provider) {
 			
-			$cookieStore.put("afterAuth", "/account");
+			$cookies.afterAuth = "/account";
 
 			api.authentication.getLinkRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);

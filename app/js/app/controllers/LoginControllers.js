@@ -8,7 +8,7 @@ define([], function() {
 		$scope.login = function() {
 			// Only submit if form is valid
 			if($scope.form.$valid) {
-				api.loginEndpoint.login($scope.user).$promise.then(function(){
+				api.authentication.login($scope.user).$promise.then(function(){
 					// Success
 					$window.location.href = '/';
 				},
