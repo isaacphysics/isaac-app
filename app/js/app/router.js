@@ -281,6 +281,16 @@ define(["angular-ui-router"], function() {
                     auth.providerCallback($stateParams.provider, $location.search());
                 }]
             })
+
+            .state('authError', {
+                url: "/auth_error?errorMessage&statusText",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/auth_error.html",
+                        controller: "AuthErrorPageController",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

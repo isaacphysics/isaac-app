@@ -1,6 +1,6 @@
 define([], function() {
 
-	var service = ['api', '$window', '$cookies', '$location', function(api, $window, $cookies, $location) {
+	var service = ['api', '$window', '$cookies', '$location', '$state', function(api, $window, $cookies, $location, $state) {
 		var self = this;
 
 		this.loginRedirect = function(provider, target) {
@@ -31,7 +31,8 @@ define([], function() {
                 $location.replace();
                 $location.url(next);
             }).catch(function(e) {
-                console.error(e);
+                debugger;
+            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
             });
 
 		}
