@@ -52,12 +52,15 @@ define([], function() {
 			return api.authentication.logout().$promise;
 		}
 
-		this.getUser = function(forceRefresh) {
+		this.updateUser = function() {
 
-			if (!$rootScope.user || forceRefresh)
-				$rootScope.user = api.currentUser.get();
+			$rootScope.user = api.currentUser.get();
 
-			return $rootScope.user;
+			$rootScope.user.$promise.then(function() {
+				$rootScope.$apply();
+			})
+
+			return $rootScope.user.$promise;
 		}
 
 		this.login = function(email, password) {
@@ -78,8 +81,8 @@ define([], function() {
 
 	}];
 
-	var resolver = ['auth', function(auth) {
-		return auth.getUser().$promise.catch(function(r) {
+	var resolver = ['auth', '$rootScope', function(auth, $rootScope) {
+		return $rootScope.user.$promise.catch(function(r) {
 			if (r.status == 401)
 				return Promise.reject("require_login");
 			return Promise.reject("Something went wrong:", r);

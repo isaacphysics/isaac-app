@@ -55,7 +55,9 @@ define([
 
 	}])
 
-	.run(['$rootScope', 'api', '$state', function($rootScope, api, $state) {
+	.run(['$rootScope', 'api', '$state', 'auth', function($rootScope, api, $state, auth) {
+
+        auth.updateUser();
 
         $rootScope.globalFlags = {
             siteSearchOpen: false,
