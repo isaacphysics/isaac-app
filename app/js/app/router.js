@@ -259,7 +259,7 @@ define(["angular-ui-router"], function() {
             })
 
 	        .state('accountSettings', {
-		        url: "/account",
+		        url: "/account?next",
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/account_settings.html",
