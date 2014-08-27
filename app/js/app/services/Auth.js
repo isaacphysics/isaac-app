@@ -17,7 +17,7 @@ define([], function() {
 
 		this.providerCallback = function(provider, params) {
 
-            var next = $cookies.afterAuth;
+            var next = $cookieStore.get("afterAuth");
             next = next || "/";
             next = next.replace("#!", "");
 
