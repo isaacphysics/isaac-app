@@ -30,7 +30,8 @@ define([], function() {
                 $location.replace();
                 $location.url(next);
             }).catch(function(e) {
-            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
+
+            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
             });
 
 		}
