@@ -10,26 +10,34 @@ define([], function() {
 				console.log("Redirect data:", data);
 
 				$window.location.href = data.redirectUrl;
+			}).catch(function(e) {
+            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
 			})
 		}
 
 		this.providerCallback = function(provider, params) {
 
-            var next = $cookies.afterAuth || "/";
+            var next = $cookies.afterAuth;
+            next = next || "/";
             next = next.replace("#!", "");
 
-            $cookies.afterAuth = undefined;
+            delete $cookies.afterAuth;
 
             params.provider = provider;
 
             api.authentication.getAuthResult(params).$promise.then(function(u) {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
-	            
+
                 $rootScope.user = u;
 
-                $location.replace();
-                $location.url(next);
+                if (u.firstLogin) {
+                	$state.go("accountSettings", {next: next}, {location: "replace"});
+                } else {
+	                $location.replace();
+	                $location.url(next);
+                }
+
             }).catch(function(e) {
 
             	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
