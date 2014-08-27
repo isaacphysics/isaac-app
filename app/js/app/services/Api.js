@@ -50,7 +50,7 @@ define([], function() {
 			'login': {
 				method: 'POST',
 				url: server+"/api/auth/segue/authenticate",
-			}
+			},
 			'logout': {
 				method: 'POST',
 				url: server+"/api/auth/logout",
