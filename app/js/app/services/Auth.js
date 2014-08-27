@@ -31,15 +31,21 @@ define([], function() {
                 $location.replace();
                 $location.url(next);
             }).catch(function(e) {
-                debugger;
             	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
             });
 
 		}
 
-		this.linkRedirect = function(provider, target) {
+		this.linkRedirect = function(provider) {
 			
-			//$window.location.href = api.authenticationEndpoint + '/' + provider +"/link?redirect=http://" + $window.location.host;
+			$cookies.afterAuth = "/account";
+
+			api.authentication.getLinkRedirect({provider: provider}).$promise.then(function(data) {
+				console.log("Redirect data:", data);
+
+				$window.location.href = data.redirectUrl;
+			})
+
 		}
 
 		this.logout = function() {

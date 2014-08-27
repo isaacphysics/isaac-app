@@ -34,9 +34,14 @@ define([], function() {
 
 		this.currentUser = $resource(server + "/api/users/current_user");
 
-		this.authentication = $resource(server+"/api/auth/:provider/authenticate", {}, {
+		this.authentication = $resource("", {}, {
 			'getAuthRedirect': {
 				method: 'GET',
+				url: server+"/api/auth/:provider/authenticate"
+			},
+			'getLinkRedirect': {
+				method: 'GET',
+				url: server+"/api/auth/:provider/link",
 			},
 			'getAuthResult': {
 				method: 'GET',
