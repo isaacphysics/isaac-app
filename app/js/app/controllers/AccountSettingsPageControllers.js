@@ -21,15 +21,12 @@ define([], function() {
 
 		$scope.dob = {};
 
-		auth.getUser().$promise.then(function(user) {
-			$scope.user = user;
-			if ($scope.user.dateOfBirth != null) {
-				var date = new Date($scope.user.dateOfBirth);
-				$scope.dob.day = date.getDate();
-				$scope.dob.month = $scope.datePicker.months[date.getMonth()];
-				$scope.dob.year = date.getFullYear();
-			}
-		});
+		if ($scope.user.dateOfBirth != null) {
+			var date = new Date($scope.user.dateOfBirth);
+			$scope.dob.day = date.getDate();
+			$scope.dob.month = $scope.datePicker.months[date.getMonth()];
+			$scope.dob.year = date.getFullYear();
+		}
 
 		// Watch for changes to the DOB selection
 		$scope.$watchCollection('dob', function() {
