@@ -1,6 +1,7 @@
 define([], function() {
 
 	var service = ['api', '$window', '$cookies', '$location', function(api, $window, $cookies, $location) {
+		var self = this;
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -17,7 +18,7 @@ define([], function() {
 
             var next = $cookies.afterAuth || "/";
             next = next.replace("#!", "");
-            
+
             delete $cookies.afterAuth;
 
             params.provider = provider;
@@ -25,7 +26,7 @@ define([], function() {
             api.authentication.getAuthResult(params).$promise.then(function(u) {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
-                this.user = u;
+                self.user = u;
 
                 $location.replace();
                 $location.url(next);
