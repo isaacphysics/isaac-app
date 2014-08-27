@@ -1,6 +1,6 @@
 define([], function() {
 
-	var service = ['api', '$window', '$cookies', '$location', '$state', function(api, $window, $cookies, $location, $state) {
+	var service = ['api', '$window', '$cookies', '$location', '$state', '$rootScope', function(api, $window, $cookies, $location, $state, $rootScope) {
 
 		this.loginRedirect = function(provider, target) {
 			
