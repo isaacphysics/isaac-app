@@ -160,11 +160,6 @@ define(["angular-ui-router"], function() {
             })
             .state('login', {
                 url: "/login?target",
-                resolve: {
-                    "authenticationEndpoint": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.authenticationEndpoint;
-                    }]
-                },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/login_page.html",
@@ -277,6 +272,15 @@ define(["angular-ui-router"], function() {
 			        }
 		        }
 	        })
+
+            .state('authCallback', {
+                url: "/auth/:provider/callback",
+                onEnter: ["$stateParams", "$location", "auth", function($stateParams, $location, auth) {
+                    console.debug("Auth callback from", $stateParams.provider, "with params:", $location.search());
+
+                    auth.providerCallback($stateParams.provider, $location.search());
+                }]
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

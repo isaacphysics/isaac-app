@@ -1,20 +1,48 @@
 define([], function() {
 
-	var service = ['api', '$window', function(api, $window) {
+	var service = ['api', '$window', '$cookies', '$location', function(api, $window, $cookies, $location) {
 
 		this.loginRedirect = function(provider, target) {
 			
-			$window.location.href = api.authenticationEndpoint + '/' + provider +"/authenticate?redirect=http://" + $window.location.host + (target || "");
+			$cookies.afterAuth = target || "";
+
+			api.authentication.getAuthRedirect({provider: provider}).$promise.then(function(data) {
+				console.log("Redirect data:", data);
+
+				$window.location.href = data.redirectUrl;
+			})
+		}
+
+		this.providerCallback = function(provider, params) {
+
+            var next = $cookies.afterAuth || "/";
+            next = next.replace("#!", "");
+            
+            delete $cookies.afterAuth;
+
+            params.provider = provider;
+
+            api.authentication.getAuthResult(params).$promise.then(function(u) {
+                console.debug("Logged in user:", u);
+                console.debug("Redirecting to", next);
+                this.user = u;
+
+                $location.replace();
+                $location.url(next);
+            }).catch(function(e) {
+                console.error(e);
+            });
+
 		}
 
 		this.linkRedirect = function(provider, target) {
 			
-			$window.location.href = api.authenticationEndpoint + '/' + provider +"/link?redirect=http://" + $window.location.host;
+			//$window.location.href = api.authenticationEndpoint + '/' + provider +"/link?redirect=http://" + $window.location.host;
 		}
 
 		this.logout = function() {
 			this.user = null;
-			return api.logout();
+			return api.authentication.logout().$promise;
 		}
 
 		this.getUser = function(forceRefresh) {

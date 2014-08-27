@@ -10,6 +10,7 @@ define([
     "angular", 
     "angular-resource", 
     "angular-animate",
+    "angular-cookies",
     "app/controllers", 
     "app/directives", 
     "app/services", 
@@ -37,6 +38,7 @@ define([
         'angulartics',
         'angulartics.google.analytics',
         'ngAnimate',
+        'ngCookies',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {

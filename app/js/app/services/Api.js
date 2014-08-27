@@ -34,7 +34,19 @@ define([], function() {
 
 		this.currentUser = $resource(server + "/api/users/current_user");
 
-		this.authenticationEndpoint = server+"/api/auth";
+		this.authentication = $resource(server+"/api/auth/:provider/authenticate", {}, {
+			'getAuthRedirect': {
+				method: 'GET',
+			},
+			'getAuthResult': {
+				method: 'GET',
+				url: server+"/api/auth/:provider/callback",
+			},
+			'logout': {
+				method: 'POST',
+				url: server+"/api/auth/logout",
+			}
+		});
 		
 		this.searchEndpoint = $resource(server + "/api/search/:searchTerms?types=:types", {}, {
 			'search': {
@@ -51,10 +63,6 @@ define([], function() {
 
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
-
-		this.logout = function() {
-			return $http.post(this.authenticationEndpoint + "/logout");
-		};
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
