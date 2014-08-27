@@ -21,7 +21,9 @@ define([], function() {
             next = next || "/";
             next = next.replace("#!", "");
 
-            delete $cookies.afterAuth;
+            $rootScope.$apply(function() {
+            	delete $cookies.afterAuth;
+            });
 
             params.provider = provider;
 
