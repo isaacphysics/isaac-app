@@ -1,6 +1,6 @@
 define([], function() {
 
-	var service = ['api', '$window', '$cookies', '$location', '$state', '$rootScope', function(api, $window, $cookies, $location, $state, $rootScope) {
+	var service = ['api', '$window', '$cookies', '$location', '$state', function(api, $window, $cookies, $location, $state) {
 		var self = this;
 
 		this.loginRedirect = function(provider, target) {
@@ -27,7 +27,6 @@ define([], function() {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
                 self.user = u;
-                $rootScope.$apply();
 
                 $location.replace();
                 $location.url(next);
