@@ -59,7 +59,9 @@ define([], function() {
 		}
 
 		$scope.removeLinkedAccount = function(provider) {
-			api.removeLinkedAccount(provider);
+			api.removeLinkedAccount(provider).then(function() {
+				auth.updateUser();
+			});
 		}
 		$scope.addLinkedAccount = function(provider) {
 			auth.linkRedirect(provider);
