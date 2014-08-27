@@ -28,6 +28,24 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                 // Plot
                 hexagon.drawHexagons(element.find("#difficulty-hexagons"), hex, state, "ru-diff-hex", function(plotdiv)
                 {
+                    plotdiv.each(function(d){
+                        $(this).attr("href", "javascript:void(0)");
+
+                        $(this).click(function(e) {
+                            e.preventDefault();
+                            // Change state if needed
+                            for(var i = 0; i < state.length; i++)
+                            {
+                                if(state[i].level === parseInt($('path', $(this)).attr('data-level')) && state[i].enabled)
+                                {
+                                    state[i].selected = !state[i].selected;
+                                }
+                            }
+                            // Plot and call change callback
+                            us.plotHexagons(state);
+                            options.change(state);
+                        })
+                    })
                     // Title
                     plotdiv.append('div').text(function(d) { return d.level; }).each(function(d) 
                     {
@@ -60,26 +78,6 @@ define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
                             klass = d.selected ? 'diff-hex-selected' : 'diff-hex-unselected';
                         }
                         $(this).attr('class',klass).attr('data-level', d.level);
-                        // Click handler to navigate
-                        $(this).parent().parent().attr('tabindex', -1);
-                        $(this).parent().parent().bind('click keydown',function(e)
-                        {
-                            if(e.type === 'click' || (e.type === 'keydown' && e.which === 13))
-                            {
-                                e.preventDefault();
-                                // Change state if needed
-                                for(var i = 0; i < state.length; i++)
-                                {
-                                    if(state[i].level === parseInt($('path', $(this)).attr('data-level')) && state[i].enabled)
-                                    {
-                                        state[i].selected = !state[i].selected;
-                                    }
-                                }
-                                // Plot and call change callback
-                                us.plotHexagons(state);
-                                options.change(state);
-                            }
-                        });
                     }); 
                     return hexPath;
                 },

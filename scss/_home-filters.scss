@@ -260,7 +260,6 @@
 
 .ru-diff-hex
 {
-    pointer-events: none;
     position: relatlive;
     div
     {
@@ -289,11 +288,6 @@
     color: white;
     cursor: pointer;
     transition: 0.3s;
-    &:hover
-    {
-        fill: lighten($ru_green, $ru_site_hover);
-        stroke: lighten($ru_green, $ru_site_hover);
-    }
 }
 
 .diff-hex-unselected, .diff-hex-disabled
@@ -304,11 +298,6 @@
     stroke-linejoin: miter;
     cursor: pointer;
     transition: 0.3s;
-    &:hover
-    {
-        transition: 0.3s;
-        fill: #ededed;
-    }
 }
 
 .diff-hex-disabled
@@ -317,15 +306,11 @@
     opacity: 0.5;
     transition: 0.3s;
     color: #cecece;
-    &:hover
-    {
-        transition: 0.3s;
-        fill: white;
-    }
 }
 
-#difficulty-hexagons>div
+#difficulty-hexagons>a
 {
+    color: black;
     outline: none;
     &:focus
     {
@@ -342,6 +327,27 @@
         {
             fill: white;
         }
+    }
+
+    &:hover {
+        .diff-hex-selected
+        {
+            fill: lighten($ru_green, $ru_site_hover);
+            stroke: lighten($ru_green, $ru_site_hover);
+        }
+
+        .diff-hex-unselected, .diff-hex-disabled
+        {
+            transition: 0.3s;
+            fill: #ededed;
+        }
+
+        .diff-hex-disabled
+        {
+            transition: 0.3s;
+            fill: white;
+        }
+
     }
 }
 

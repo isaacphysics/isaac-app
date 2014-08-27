@@ -11,6 +11,13 @@ define(["app/honest/hexagon"],function(hexagon) {
             // Tick / Arrow
             plotdiv.each(function(d) 
             {
+
+                if (d.type == "isaacWildcard") {
+                    $(this).attr("href", d.url);
+                } else {
+                    $(this).attr("href", $state.href("question", {id: d.id, board: boardId}));
+                }
+
                 if(d.type === 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-home-content-wild');
@@ -66,7 +73,10 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     $(this).text('In Progress').addClass('ru-hex-home-msg');   
                 }
+
+
             });
+
             
             return plotdiv;
         },
@@ -98,28 +108,8 @@ define(["app/honest/hexagon"],function(hexagon) {
                 }
  
                 $(this).attr('class',c);
-                $(this).parent().parent().attr('tabindex', 0);
-                // Click handler to navigate
-                $(this).click(function(e)
-                {
-                    e.preventDefault();
 
-	                if (d.type === 'isaacWildcard') {
-		                window.location.href = d.url;
-	                } else {
-		                $state.go("question", {id: d.id, board: boardId});
-	                }
 
-                });
-                // Handle tab enter
-                $(this).parent().parent().keydown(function(e)
-                {
-                    if(e.which === 13)
-                    {
-                        e.preventDefault();
-                        //window.location.href = d.uri;
-                    }
-                });
             }); 
             return hexPath;
         },

@@ -192,13 +192,13 @@ define([ 'jquery','honest/d3.min'],
                 where.empty();
                 
                 // Create D3 enter for each item
-                var plot = d3.select(where[0]).selectAll("div")
+                var plot = d3.select(where[0]).selectAll("a")
                         .data(items).enter();
                 
                 // Create div for each item and position
                 var obj = {};
                 obj[divClass] = true;
-                var plotdiv = plot.append("div")
+                var plotdiv = plot.append("a")
                             .classed(obj)
                             .style('top', function(d) { return d.y+'px'; })
                             .style('left', function(d) { return d.x+'px'; })
@@ -206,16 +206,38 @@ define([ 'jquery','honest/d3.min'],
                             .style('z-index', '1')
                             .style('width', hex.width + 'px')
                             .style('height', hex.height + 'px');
-               
-               // Call user supplied function to add other items
-               plotdiv = divItems(plotdiv);
-               
+
                // Basic D3 Line function
                var lineFunction = d3.svg.line()
                                  .x(function(d) { return d.x; })
                                  .y(function(d) { return d.y; })
                                  .interpolate("linear");   
-                         
+
+                var hexplot = plotdiv.append('div')
+                            .style('top', 0)
+                            .style('left', 0)
+                            .style('position', 'absolute')
+                            .style('z-index', '-10')
+                            .style('width', hex.width + 'px')
+                            .style('height', (Math.ceil(hex.height)) + 'px')
+                            .append('svg')
+
+                var hexpath = hexplot.append("path")
+                                .attr("d", lineFunction(hex.hexagon));
+               
+               // Call user supplied function to add specific items to SVG 
+               hexplot = svgItems(hexplot);
+               hexplot.attr("viewBox", "0 0 " + hex.width + " " + (Math.ceil(hex.height)));
+
+               // Call user supplied function to add specific attributes to the Hexagon
+               hexpath = pathAttrs(hexpath);         
+
+
+               // Call user supplied function to add other items
+               plotdiv = divItems(plotdiv);
+               
+
+/*                         
                // Create and position SVG canvas for each Hexagon
                var hexplot = plot.append('div')
                             .style('top', function(d) { return d.y+'px'; })
@@ -234,8 +256,7 @@ define([ 'jquery','honest/d3.min'],
                var hexPath = hexplot.append("path")
                                 .attr("d", lineFunction(hex.hexagon));
                         
-               // Call user supplied function to add specific attributes to the Hexagon
-               hexPath = pathAttrs(hexPath);          
+*/
             },
             
             /**

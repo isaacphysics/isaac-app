@@ -273,7 +273,7 @@ $col_values : 5;
 @for $i from 1 through $col_values
 {
     // Note these filters are applied via JS, else FF baulks
-    .hexagon_wrap>div
+    .hexagon_wrap>a
     {
         outline: none;
         &:focus
@@ -297,46 +297,9 @@ $col_values : 5;
             }
         }
     }
-    .hex-physics#{$i}
-    {
-        fill: url('#physics') $ru_purple; 
-        //filter: url('#filter#{$i}');
-        &:hover
-        {
-            fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);
-            //filter: url('#filter#{$i}');
-        }
-    }
 
-    .hex-maths#{$i}
-    {
-        fill: url('#maths') $ru_maths;
-        //filter: url('#filter#{$i}');
-        &:hover
-        {
-            fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
-            //filter: url('#filter#{$i}');
-        }
-    }
 }
 
-.hex-orange
-{
-    fill: url(#wild) $ru_orange;
-    &:hover
-    {
-        fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
-    }
-}
-
-.hex-grey
-{
-    fill: url(#correct) $ru_darkgrey;
-    &:hover
-    {
-        fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
-    }
-}
 
 .ru-hex-home-content
 {
@@ -344,7 +307,56 @@ $col_values : 5;
     color: white;
     text-shadow: black 1px 1px 2px;
     font-style: italic;
-    pointer-events: none;
+    //pointer-events: none;
+
+    @for $i from 1 through $col_values
+    {
+        .hex-physics#{$i}
+        {
+            fill: url('#physics') $ru_purple; 
+        }
+
+        .hex-maths#{$i}
+        {
+            fill: url('#maths') $ru_maths;
+        }
+    }
+
+    .hex-orange
+    {
+        fill: url(#wild) $ru_orange;
+    }
+
+    .hex-grey
+    {
+        fill: url(#correct) $ru_darkgrey;
+    }
+
+    &:hover, &:focus {
+        color: white;
+
+        @for $i from 1 through $col_values
+        {
+            .hex-physics#{$i}
+            {
+                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);
+            }
+
+            .hex-maths#{$i}
+            {
+                fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
+            }
+        }
+        .hex-orange
+        {
+            fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
+        }
+
+        .hex-grey
+        {
+            fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
+        }
+    }
 }
 
 .ru-hex-home-title
