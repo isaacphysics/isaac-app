@@ -18,18 +18,18 @@ define([], function() {
             var next = $cookies.afterAuth || "/";
             next = next.replace("#!", "");
 
-            delete $cookies.afterAuth;
-
             params.provider = provider;
 
             api.authentication.getAuthResult(params).$promise.then(function(u) {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
+	            delete $cookies.afterAuth;
                 $rootScope.user = u;
 
                 $location.replace();
                 $location.url(next);
             }).catch(function(e) {
+	            delete $cookies.afterAuth;
 
             	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
             });
