@@ -1,6 +1,6 @@
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$window', function($scope, auth, api, $stateParams, $window) {
+	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$window', '$location', function($scope, auth, api, $stateParams, $window, $location) {
 		// Create date of birth select options
 		$scope.datePicker = {
 			days: [],
@@ -81,9 +81,23 @@ define([], function() {
 
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
-        if ($stateParams.next) {
-            $scope.nextPage = $stateParams.next;
+        $scope.showSkip = !!$stateParams.next;
+
+        $scope.save = function() {
+        	if ($scope.account.$valid) {
+	        	api.account.saveSettings($scope.user).$promise.then(function() {
+		        	$location.url($stateParams.next || "/")
+	        	})
+	        }
         }
+
+        $scope.skip = function() {
+        	$location.url($stateParams.next || "/");
+        }
+
+        $scope.$on("$destroy", function() {
+        	auth.updateUser();
+        })
 
 	}]
 

@@ -1,35 +1,43 @@
 define([], function() {
 
-	var service = ['api', '$window', '$cookies', '$location', '$state', '$rootScope', '$timeout', function(api, $window, $cookies, $location, $state, $rootScope, $timeout) {
+	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookieStore', function(api, $window, $location, $state, $rootScope, $timeout, $cookieStore) {
 
 		this.loginRedirect = function(provider, target) {
 			
-			$cookies.afterAuth = target || "";
+			$cookieStore.put("afterAuth", target || "");
 
 			api.authentication.getAuthRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);
 
 				$window.location.href = data.redirectUrl;
+			}).catch(function(e) {
+            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
 			})
 		}
 
 		this.providerCallback = function(provider, params) {
 
-            var next = $cookies.afterAuth || "/";
+            var next = $cookies.afterAuth;
+            next = next || "/";
             next = next.replace("#!", "");
 
-            $cookies.afterAuth = undefined;
+            $cookieStore.remove("afterAuth");
 
             params.provider = provider;
 
             api.authentication.getAuthResult(params).$promise.then(function(u) {
                 console.debug("Logged in user:", u);
                 console.debug("Redirecting to", next);
-	            
+
                 $rootScope.user = u;
 
-                $location.replace();
-                $location.url(next);
+                if (u.firstLogin) {
+                	$state.go("accountSettings", {next: next}, {location: "replace"});
+                } else {
+	                $location.replace();
+	                $location.url(next);
+                }
+
             }).catch(function(e) {
 
             	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
@@ -39,7 +47,7 @@ define([], function() {
 
 		this.linkRedirect = function(provider) {
 			
-			$cookies.afterAuth = "/account";
+			$cookieStore.put("afterAuth", "/account");
 
 			api.authentication.getLinkRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);
