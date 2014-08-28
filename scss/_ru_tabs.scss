@@ -158,7 +158,13 @@
 {
     background-color: #f6f6f6 !important;
     padding-top: 1em;
+
+    &:not(.ru-answer) {
+        padding-bottom: 1em;      
+    }
 }
+
+
 
 .tabs-content.ru_tabs.ru-answer .content
 {
@@ -241,8 +247,7 @@
     }
 }
 
-.tabs-content.ru_tabs:not(.ru-answer)
+.tabs-content.ru_tabs
 {
     margin-bottom: 20px;
-    padding-bottom: 20px;
 }
