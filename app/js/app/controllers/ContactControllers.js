@@ -1,7 +1,10 @@
 define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
-		$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};
+		if ($scope.user) {
+			$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};
+		}
+		
 		$scope.invalidForm = false;
 		$scope.formSubmitted = false;
 		$scope.errorDuringSubmit = false;
@@ -9,6 +12,13 @@ define([], function() {
 		$scope.sendForm = function() {
 			if($scope.form.$invalid) {
 				$scope.invalidForm = true;
+				$scope.form.$pristine= false;
+
+				// This will mark all invalid fields as dirty to highlight errors in the view.
+	        	for(var i in $scope.form.$error.required){
+	        		$scope.form.$error.required[i].$setViewValue($scope.form.$error.required[i].$viewValue);
+	        	}
+
 				return;
 			}
 
@@ -23,7 +33,6 @@ define([], function() {
 			api.contactForm.send({}, message).$promise.then(function(response) {
 				$scope.invalidForm = false;
 				$scope.formSubmitted = true;
-				// TODO: Inform user accordingly
 			}, function(e) {
 				console.error("Error submitting form", e);
 				$scope.errorDuringSubmit = true;
