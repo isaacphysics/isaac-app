@@ -58,8 +58,14 @@ define([], function() {
 		}
 
 		this.logout = function() {
-			$rootScope.user = null;
-			return api.authentication.logout().$promise;
+			var p = api.authentication.logout().$promise;
+
+			p.then(function() {
+				$rootScope.user = null;
+			}).catch(function(e) {
+				console.error("Failed to log out:", e)
+			})
+			return p;
 		}
 
 		this.updateUser = function() {
