@@ -78,7 +78,9 @@ define([], function() {
         	if ($scope.account.$valid) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
 		        	//$location.url($stateParams.next || "/")
-		        	// TODO: Display updated message
+		        	$scope.updateSuccess = true;
+	        	}).catch(function() {
+	        		$scope.updateFail = true;
 	        	})
 	        }
         }
@@ -86,6 +88,11 @@ define([], function() {
         $scope.skip = function() {
         	$location.url($stateParams.next || "/");
         }
+
+        $scope.$watchCollection("user", function() {
+        	$scope.updateSuccess = false;
+        	$scope.updateFail = false;
+        })
 
         $scope.$on("$destroy", function() {
         	auth.updateUser();
