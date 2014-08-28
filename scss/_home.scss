@@ -371,11 +371,18 @@ $col_values : 5;
     background-position: 50% 50%;
 }
 
-.ru-hex-home-content-correct
+.ru-hex-home-content-correct:before
 {
+    width: 200px;
+    height:200px;
+    position:absolute;
+    left:0px;
+    top:0px;
+
     background-image: url(/assets/tick-bg.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
+    background: red;
 }
 
 .ru-hex-home-bolt

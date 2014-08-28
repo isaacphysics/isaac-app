@@ -17,8 +17,10 @@
     background-color: $ru_physics !important;
     border-top: $ru_physics 1px solid;
     border-bottom: #ccc 1px solid;
-
-    &:hover
+}
+.tabs.ru_tabs.physics, .tabs.ru_tabs.general
+{
+    dd:not(.active) a:hover
     {
         background-color: lighten($ru_physics,$ru_site_hover) !important;
         border-top: lighten($ru_physics,$ru_site_hover) 1px solid;
@@ -30,8 +32,10 @@
     background-color: $ru_physics !important;
     border-top: $ru_physics 1px solid;
     border-bottom: $ru_footer 1px solid;
-    
-    &:hover
+}
+.tabs.ru_tabs.physics.ru-answer, .tabs.ru_tabs.general.ru-answer
+{
+    dd:not(.active) a:hover
     {
         background-color: lighten($ru_physics,$ru_site_hover) !important;
         border-top: lighten($ru_physics,$ru_site_hover) 1px solid;
@@ -43,6 +47,9 @@
     background-color: $ru_maths !important;
     border-top: $ru_maths 1px solid;
     border-bottom: #ccc 1px solid;
+}
+.tabs.ru_tabs.maths dd:not(.active) a
+{
     &:hover
     {
         background-color: lighten($ru_maths,$ru_site_hover) !important;
@@ -55,23 +62,34 @@
     background-color: $ru_maths !important;
     border-top: $ru_maths 1px solid;
     border-bottom: $ru_footer 1px solid;
+}
+.tabs.ru_tabs.maths.ru-answer dd:not(.active) a
+{
     &:hover
     {
         background-color: lighten($ru_maths,$ru_site_hover) !important;
         border-top: lighten($ru_maths,$ru_site_hover) 1px solid;
     }
 }
-.tabs.ru_tabs dd.ru-answer a
+
+.tabs.ru_tabs.physics.ru-answer dd.ru-answer a, 
+.tabs.ru_tabs.maths.ru-answer dd.ru-answer a
 {
     color: white;
     background-color: $ru_footer !important;
     border: $ru_footer 1px solid;
+}
+
+.tabs.ru_tabs.physics.ru-answer dd.ru-answer:not(.active) a, 
+.tabs.ru_tabs.maths.ru-answer dd.ru-answer:not(.active) a
+{
     &:hover
     {
         background-color: lighten($ru_footer,$ru_site_hover) !important;
         border: lighten($ru_footer,$ru_site_hover) 1px solid;
     }
 }
+
 
 .tabs.ru_tabs dd.active a, .tabs.ru_tabs dd.active a:hover
 {
@@ -223,7 +241,7 @@
     }
 }
 
-.tabs-content.ru_tabs
+.tabs-content.ru_tabs:not(.ru-answer)
 {
     margin-bottom: 20px;
     padding-bottom: 20px;
