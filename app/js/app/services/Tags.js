@@ -19,14 +19,17 @@ define([], function() {
 			}, {
 				id: "waves",
 				parent: "physics",
-				comingSoon: true
+				enabled: false,
+				comingSoon: true,
 			}, {
 				id: "fields",
 				parent: "physics",
+				comingSoon: true,
 			}, {
 				id: "circuits",
 				parent: "physics",
-				comingSoon: true
+				enabled: false,
+				comingSoon: true,
 			},
 
 			// Mechanics topics
@@ -101,7 +104,8 @@ define([], function() {
 				parent: "geometry"
 			}, {
 				id: "symmetry",
-				parent: "geometry"
+				parent: "geometry",
+				comingSoon: true,
 			},
 			
 			// Calculus topics
