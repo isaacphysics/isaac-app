@@ -12,49 +12,53 @@
 		<div ng-show="!formSubmitted">
 			<h3 class="ru_green">Send us a Message</h3>
 			<div isaac-page-fragment="contact_intro"> </div>
-			<form name="form">
-				<div class="large-6 medium-16 columns">
-					<span class="required-field show-for-small-only">* Required field</span>
-					<label>
-						<strong>First Name</strong><span class="ru-form-required"></span>
-						<input type="text" name="firstName" ng-model="contactForm.firstName" required>
-					</label>
-				</div>
-				<div class="large-6 medium-16 columns">
-					<label>
-						<strong>Last Name</strong><span class="ru-form-required"></span>
-						<input type="text" name="lastName" ng-model="contactForm.lastName" required>
-					</label>
-				</div>
-				<div class="large-6 medium-16 columns">
-					<label>
-						<strong>Your Email Address</strong><span class="ru-form-required"></span>
-						<input type="email" name="emailAddress" ng-model="contactForm.emailAddress" required>
-					</label>
-				</div>
-				<div class="large-6 medium-16 columns">
-					<label>
-						<strong>Message Subject</strong><span class="ru-form-required"></span>
-						<input type="text" name="subject" ng-model="contactForm.subject" required>
-					</label>
-				</div>
-				<div class="large-16 medium-16 columns">
-					<label>
-						<strong>Message</strong><span class="ru-form-required"></span>
-						<textarea style="width: 100%;" rows="7" name="message" ng-model="contactForm.message" required></textarea>
-					</label>
-					<div ng-show="invalidForm">
-						<span class="error">A required field is missing. Unable to send your message.</span>
+			<form name="form" novalidate ng-submit="sendForm()">
+				<div class="row">
+					<div class="large-8 medium-16 columns">
+						<span class="required-field show-for-small-only">* Required field</span>
+						<label>
+							<strong>First Name</strong><span class="ru-form-required"></span>
+							<input type="text" name="firstName" ng-model="contactForm.firstName" required>
+						</label>
 					</div>
-					<div ng-show="errorDuringSubmit">
-						<span class="error">There was an error while trying to submit the form to the server.</span>
+					<div class="large-8 medium-16 columns">
+						<label>
+							<strong>Last Name</strong><span class="ru-form-required"></span>
+							<input type="text" name="lastName" ng-model="contactForm.lastName" required>
+						</label>
 					</div>
-					<div>
-						<button class="button ru-button submit" type="button" ng-click="sendForm()">Submit</button>
+					<div class="large-8 medium-16 columns">
+						<label>
+							<strong>Your Email Address</strong><span class="ru-form-required"></span>
+							<input type="email" name="emailAddress" ng-model="contactForm.emailAddress" required>
+						</label>
 					</div>
-					<div class="ru-toppad-8 ru_green show-for-medium-up">
-						<label class="ru_green"><strong>* Required field</strong></label>
+					<div class="large-8 medium-16 columns end">
+						<label>
+							<strong>Message Subject</strong><span class="ru-form-required"></span>
+							<input type="text" name="subject" ng-model="contactForm.subject" required>
+						</label>
 					</div>
+				</div>
+				<div class="row">
+					<div class="large-16 medium-16 columns">
+						<label>
+							<strong>Message</strong><span class="ru-form-required"></span>
+							<textarea style="width: 100%;" rows="7" name="message" ng-model="contactForm.message" required></textarea>
+						</label>
+						<div ng-show="invalidForm">
+							<span class="error">A required field is missing. Unable to send your message.</span>
+						</div>
+						<div ng-show="errorDuringSubmit">
+							<span class="error">There was an error while trying to submit the form to the server.</span>
+						</div>
+						<div>
+							<button class="button ru-button submit" type="button" ng-click="sendForm()">Submit</button>
+						</div>
+						<div class="ru-toppad-8 ru_green show-for-medium-up">
+							<label class="ru_green"><strong>* Required field</strong></label>
+						</div>
+					</div>					
 				</div>
 			</form>			
 		</div>
@@ -63,19 +67,22 @@
 			<div isaac-page-fragment="contact_outro"> </div>
 		</div>
 	</div>
-	<div class='large-4 medium-16 columns' style="float: left;">
+	<div class='large-5 medium-16 columns' style="float: left;">
 		<h3>Our Upcoming Events</h3>
-		<p>If you'd like to find out more about our monthly upcoming events please drop us a mail
-			at</p>
-		<h5 class="ru_green" style="font-weight: bold;"><a href="mailto:events@isaacphysics.org">events@isaacphysics.org</a></h5>
+		<p>
+			If you'd like to find out more about our monthly upcoming events please drop us a mail
+			at <span class="contact-info-highlight"><a href="mailto:events@isaacphysics.org">events@isaacphysics.org</a></span>
+		</p>
 
 		<h3>Problems with the site?</h3>
-		<p>We always want to improve so please report any issues to</p>
-		<h5 class="ru_green" style="font-weight: bold;"><a href="mailto:webmaster@isaacphysics.org">webmaster@isaacphysics.org</a></h5>
+		<p>
+			We always want to improve so please report any issues to <span class="contact-info-highlight"><a href="mailto:webmaster@isaacphysics.org">webmaster@isaacphysics.org</a></span>
+		</p>
 
 		<h3>Call Us</h3>
-		<p>Give us a call on</p>
-		<h5 class="ru_green" style="font-weight: bold;"><a href="tel:+441223337066">01223 337066</a></h5>
+		<p>
+			Give us a call on <span class="contact-info-highlight"><a href="tel:+441223337066">01223 337066</a></span>
+		</p>
 	</div>
 	<div class="clearfix"></div>
 </div>

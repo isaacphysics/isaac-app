@@ -14,13 +14,18 @@
     float: right;
 }
 
-input.ng-invalid.ng-dirty {
+.ng-invalid.ng-dirty {
     border-color: #cc6666;
 }
 
-.ru-contact-form-container h5 {
-    margin-bottom: 10px;
-}
+.ru-contact-form-container {
+    span.contact-info-highlight {
+        font-size: 1.125em;
+        font-weight: bold;
+        display:block;
+        color: $ru_green;
+    }
+} 
 
 @media #{$small-only} {
     .ru-contact-form-container {
