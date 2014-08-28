@@ -25,7 +25,7 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 					return [{
 						type: "lang",
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
-						replace: '<a ng-click="markdownLinkGo(\'$2\')" rel="nofollow">$1</a>',
+						replace: '<a href="javascript:void(0)" ng-click="markdownLinkGo(\'$2\')" rel="nofollow">$1</a>',
 					}]
 				};
 
