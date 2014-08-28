@@ -180,6 +180,7 @@ select {
 }
 .cookies-message {
     display: none;
+    z-index: 999;
 }
 input.error.submitted,
 input.ru-input-error {

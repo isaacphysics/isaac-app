@@ -70,15 +70,6 @@ define([], function() {
 		// Remove search
 		$scope.globalFlags.noSearch = true;
 
-		$scope.save = function() {
-			// Only submit if form is valid
-			if($scope.account.$valid) {
-				api.account.saveSettings($scope.user).$promise.then(function(){
-					// Show account updated message
-				});
-			}
-		}
-
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
         $scope.showSkip = !!$stateParams.next;
@@ -86,7 +77,8 @@ define([], function() {
         $scope.save = function() {
         	if ($scope.account.$valid) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
-		        	$location.url($stateParams.next || "/")
+		        	//$location.url($stateParams.next || "/")
+		        	// TODO: Display updated message
 	        	})
 	        }
         }

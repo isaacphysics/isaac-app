@@ -116,4 +116,16 @@ a.login-forgot-password {
 	.login-forgot-password {
 		font-weight: 600;
 	}
+
+}
+@media only screen and (min-resolution: 192dpi) {
+    .login-social-google,
+    .login-social-twitter, 
+    .login-social-facebook
+{
+	width: 79px;
+	height: 78px;
+	background-image: url(/assets/social-login-sprite@2x.png);
+	background-size: 79px 468px;
+}
 }
