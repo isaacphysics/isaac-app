@@ -1,13 +1,15 @@
 define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
+		$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};
+
 		$scope.sendForm = function() {
 			var message = {
-				"firstName": form.firstName.value,
-				"lastName": form.lastName.value,
-				"emailAddress": form.emailAddress.value,
-				"subject": form.subject.value,
-				"message": form.message.value
+				"firstName": $scope.contactForm.firstName,
+				"lastName": $scope.contactForm.lastName,
+				"emailAddress": $scope.contactForm.emailAddress,
+				"subject": $scope.contactForm.subject,
+				"message": $scope.contactForm.message
 			};
 
 			api.contactForm.send({}, message).$promise.then(function(response) {

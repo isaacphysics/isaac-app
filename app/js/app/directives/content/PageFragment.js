@@ -9,7 +9,7 @@ define([], function() {
 
 			restrict: 'A',
 
-			template: '<isaac-content doc="content" />',
+			template: '<div isaac-content doc="content" />',
 
 			link: function(scope, element, attrs) {
 
