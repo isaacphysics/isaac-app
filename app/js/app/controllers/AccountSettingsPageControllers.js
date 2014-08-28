@@ -74,14 +74,24 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
 
-        $scope.save = function() {
+        $scope.save = function(next) {
+
         	if ($scope.account.$valid) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
-		        	//$location.url($stateParams.next || "/")
-		        	$scope.updateSuccess = true;
+	        		if (next) {
+			        	$location.url(next)
+	        		} else {
+			        	$scope.updateSuccess = true;
+	        		}
 	        	}).catch(function() {
 	        		$scope.updateFail = true;
 	        	})
+	        } else {
+	        	// The form is not valid, so display errors.
+	        	for(var i in $scope.account.$error.required){
+	        		$scope.account.$error.required[i].$dirty = true;
+        	}
+
 	        }
         }
 

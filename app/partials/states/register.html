@@ -7,7 +7,7 @@
         <h1>Register</h1>
         <h2 class='subheader'>Sign up to <span class="ru_green">isaac</span></h2>
     </div>
-    <form class="panel" ng-submit="save()" name="account" novalidate>
+    <form class="panel" ng-submit="save('/')" name="account" novalidate>
 	    <div>
 		    <div class="large-8 medium-8 small-16 columns">
 			    <label for="account-firstname">
@@ -36,12 +36,18 @@
                     <strong>Password</strong>
                 </label>
                 <input id="account-password" type="password" ng-model="user.password"
-                       placeholder="***********" required>
+                       placeholder="Enter password" required>
             </div>
             <div class="large-8 medium-8 small-16 columns">
-                <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                <input id="account-password2" type="password" placeholder="***********"
-                       ng-disabled="!user.password" required>
+                <label for="account-password2" ng-class="{'disabled' : !user.password}">
+                	<strong>Confirm password</strong>
+				    <span class="ru-form-required"></span>
+                    <span class="ru-error-message" ng-if="account.password2.$dirty && account.password2.$invalid">
+                        Passwords do not match
+                    </span>
+                </label>
+                <input id="account-password2" type="password" placeholder="Re-enter password"
+                       ng-disabled="!user.password" match="user.password" name="password2" ng-model="dummyForMatch" required>
             </div>
 	    </div>
 	    <div>
@@ -57,9 +63,13 @@
 		    </div>
 		    <div class="large-8 medium-8 small-16 columns">
 			    <label class="hide-for-small">&nbsp;</label>
-			    <input class="ru-button-big expand" type="submit" value="Save">
+			    <input class="ru-button-big expand" type="submit" value="Register Now">
 		    </div>
 	    </div>
 	    <div class="clearfix"></div>
     </form>
+    <ul class="small-block-grid-1 ru-pad" ng-if="updateFail">
+        <li class="text-center"><h4 style="color:#a00;">Registration Failed: </h4></li>
+    </ul>
+
 </div>
