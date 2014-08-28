@@ -164,7 +164,45 @@ define(["app/honest/hexagon"],function(hexagon) {
 	                var _width = hexWidth(); // This should be recalculated every time the window is resized
                     var hex = hexagon.calculateAndPositionHexagons($('.hexagon_wrap'), _pad, _width, _aspect, augmentedQuestions || [], equalRows);
 
-                    draw(hex, augmentedQuestions || [], $state, scope.boardId);        
+                    draw(hex, augmentedQuestions || [], $state, scope.boardId);   
+
+                    // Make background line up with hexagons on desktop.
+
+
+                    var hexs = $(".hexagon_wrap").find("a");
+
+                    $(".bg-wrap").css("background-position", "");                        
+                    if (hexs.size() > 0 && $("footer.hide-for-small-only").is(":visible")) {
+                        var maxTop = 0;
+                        var minLeft = 9999;
+                        hexs.each(function() {
+                            maxTop = Math.max(maxTop, $(this).offset().top);
+                            minLeft = Math.min(minLeft, $(this).offset().left);
+                        })
+                        console.debug("Max top:", maxTop)
+                        console.debug("Min left:", minLeft)
+
+                        var footerTop = $("footer:visible").offset().top;
+
+
+                        minLeft = minLeft % 235;
+
+                        var fromFooterTop = (footerTop - maxTop);
+
+                        console.debug("fromFooterTop", fromFooterTop);
+
+                        var offsety = (fromFooterTop % 193);
+
+                        //if (offsety > 35) {
+                            offsety -= 193;
+                        //}
+
+                        console.log("offsety", offsety);
+
+                        var s = "left top, left " + (minLeft - 123) + "px bottom " + Math.round($("footer:visible").outerHeight() + offsety) + "px";
+
+                        $(".bg-wrap").css("background-position", s);
+                    }
 
                 }
 
