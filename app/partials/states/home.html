@@ -10,7 +10,7 @@
         </div>
         <div class='medium-8 end columns text-right'>
             <h2 class='ru-welcome'>Welcome<span ng-if="!user.givenName"> to isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
-            <span class='ru-challenge' ng-hide="filterPanelOpen">Get started by <br class='show-for-medium-only'> <a ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
+            <span class='ru-challenge' ng-hide="filterPanelOpen">Get started by <br class='show-for-medium-only'> <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
         </div>
         <div class='clearfix'></div>
 
@@ -29,7 +29,7 @@
         </div>
         <div class='clearfix'></div>
     </div>
-    <div aria-label="Reveal Filters" id="desktop-reveal" ng-click="openFilterPanel('desktop-filter')" ng-class="{down: filterPanelOpen == 'desktop-filter'}"></div>
+    <a href="javascript:void(0)" aria-label="Reveal Filters" id="desktop-reveal" ng-click="openFilterPanel('desktop-filter')" ng-class="{down: filterPanelOpen == 'desktop-filter'}"></a>
 </div>
 <div mobile-panel class='no-print'>
     <div class='row'>
@@ -72,7 +72,6 @@
         <!-- Additional Information Panel -->
         <section ng-if="!user.givenName">
             <div class="row">
-
                 <div class='ru-concept-inner'>
                     <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
                         <li class="show-for-large-up">
@@ -87,13 +86,12 @@
                             </div>
                         </li>
                         <li ng-if="!filterPanelOpen">
-                            
                             <div class="get-started-pod-spacer get-started-pod-up-arrow" ng-click="openFilterPanel('desktop-filter')"></div>
                             <div class="panel ru_pod ru_pod_image ru_pod_get_started">
                                 <div class='ru_pod_image_inner'>
                                     <h5>Create your challenge</h5>
                                     <p>Click here to get started. You can choose questions by topic and difficulty.</p>
-                                    <a ng-click="openFilterPanel('desktop-filter')"><strong>Create your challenge</strong></a>
+                                    <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')"><strong>Create your challenge</strong></a>
                                 </div>
                             </div>
                         </li>
@@ -104,7 +102,7 @@
                                 <div class='ru_pod_image_inner'>
                                     <h5>Try some questions</h5>
                                     <p>Once you have chosen topics to work on, start answering questions below.</p>
-                                    <a ng-click="scrollToQuestions()"><strong>Show questions</strong></a>
+                                    <a href="javascript:void(0)" ng-click="scrollToQuestions()"><strong>Show questions</strong></a>
                                 </div>
                             </div>
                         </li>
@@ -128,7 +126,7 @@
             <div class="row">
                 <div class='ru-board-title show-for-medium-up'>
                     <div class="large-5 medium-5 columns">
-                        <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img"><h4>Undo Shuffle</h4></a>&nbsp;
+                        <a href="javascript:void(0)" ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img"><h4>Undo Shuffle</h4></a>&nbsp;
                     </div>
                     <div class="large-6 medium-6 columns text-center">
                         <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=gameBoard.title || generateGameBoardTitle(gameBoard)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
@@ -139,7 +137,7 @@
                     </div>
                     <div class="large-5 medium-5 columns">
                         <div class="right">
-                            <a ng-click="shuffleBoard()"><h4>Shuffle Board</h4>
+                            <a href="javascript:void(0)" ng-click="shuffleBoard()"><h4>Shuffle Board</h4>
                             <img src="/assets/icon-shuffle.png" class="ru-board-img"></a>
                         </div>
                     </div>
