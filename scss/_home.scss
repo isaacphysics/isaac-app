@@ -366,23 +366,26 @@ $col_values : 5;
 
 .ru-hex-home-content-wild
 {
+    width: 100%;
+    height:100%;
+    position:absolute;
+    z-index: -9;
+
     background-image: url(/assets/arrow-bg.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
 
-.ru-hex-home-content-correct:before
+.ru-hex-home-content-correct
 {
-    width: 200px;
-    height:200px;
+    width: 100%;
+    height:100%;
     position:absolute;
-    left:0px;
-    top:0px;
+    z-index: -9;
 
     background-image: url(/assets/tick-bg.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    background: red;
 }
 
 .ru-hex-home-bolt

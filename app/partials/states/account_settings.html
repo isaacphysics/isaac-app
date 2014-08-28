@@ -20,7 +20,7 @@
                                 Required
                             </span>
                         </label>
-    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" class="account-settings-input" required>
+    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
                     </div>
                     <div class="large-16 medium-8 columns">
 				        <label for="account-lastname">
@@ -30,7 +30,7 @@
                                 Required
                             </span>
                         </label>
-    				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" class="account-settings-input" required>
+    				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
                     </div>
                 </div>
                 <div class="row">
@@ -42,9 +42,18 @@
                                 Enter a valid email
                             </span>
                             </label>
-    			         <input id="account-email" name="email" type="email" ng-model="user.email" class="account-settings-input" required>
+    			         <input id="account-email" name="email" type="email" ng-model="user.email" required>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="large-16 columns">
+                        <label>
+                            <strong>Are you a teacher?</strong>
+                        </label>
+                        <a class="teacher-link" ui-sref="contact"><span class="underline">Contact us</span> for an upgraded account.</a>
+                    </div>
+                </div>
+
             </li>
             <li>
                 <div class="row">

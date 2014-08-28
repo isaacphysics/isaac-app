@@ -2,7 +2,9 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
 		if ($scope.user) {
-			$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};
+			$scope.user.$promise.then(function() {
+				$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				
+			})
 		}
 		
 		$scope.invalidForm = false;

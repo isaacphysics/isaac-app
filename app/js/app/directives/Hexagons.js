@@ -18,6 +18,10 @@ define(["app/honest/hexagon"],function(hexagon) {
                     $(this).attr("href", $state.href("question", {id: d.id, board: boardId}));
                 }
 
+            });
+            
+            plotdiv.append('div').each(function(d){
+                //$(this).addClass('hex-background');
                 if(d.type === 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-home-content-wild');
@@ -26,8 +30,8 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     $(this).addClass('ru-hex-home-content-correct');
                 }
-            });
-            
+
+            })
             // Level indicator
             plotdiv.append('div').each(function(d)
             {

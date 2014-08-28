@@ -130,6 +130,15 @@ input.account-settings-input {
 	padding-left: 5px;
 	padding-right: 5px;
 }
+
+.teacher-link {
+    font-size: 1rem;
+}
+//.account-settings-wrap ul {
+//    line-height: 1;
+//}
+
+
 @media #{$small-only} { 
 	.account-settings-wrap {
 		background: #f6f6f6;
