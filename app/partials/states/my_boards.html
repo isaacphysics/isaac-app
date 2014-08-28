@@ -38,27 +38,28 @@
    	<li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
    		<div class="panel">
             <span class="board-delete" ng-click="deleteBoard(board.id, board.title || generateGameBoardTitle(board))">X</span>
-   			<div class="row">
-   				<div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
-                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
-                  </span>
-   					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
-                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
-                  </span>
-   				</div>
-   				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
-   					<span class="subject-complete"></span>
-   				</div>
-               <div class="board-info">
-                  <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
-                  <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
-                  <div class="board-levels">
-                     <span ng-repeat="level in board.gameFilter.levels" class="level-{{level}}">{{level}}</span>
+   			<a ui-sref="board({'id':board.id})">
+               <div class="row">
+                  <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
+      					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                     </span>
+      					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                     </span>
+      				</div>
+      				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+      					<span class="subject-complete"></span>
+      				</div>
+                  <div class="board-info">
+                     <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                     <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
+                     <div class="board-levels">
+                        <span ng-repeat="level in board.gameFilter.levels" class="level-{{level}}">{{level}}</span>
+                     </div>
                   </div>
-               </div>
-   			</div>
-            <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
+      			</div>
+            </a>
             <div class="row">
    			   <h3><a ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
@@ -67,7 +68,6 @@
                   <span ng-if="board.ownerUserId != user._id">Someone else</span>
                </div>
 
-                <!-- TODO: Remove hash bang wallop! from URL, this will only work on local -->
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
                <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>
