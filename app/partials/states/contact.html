@@ -42,8 +42,14 @@
 					<strong>Message</strong><span class="ru-form-required"></span>
 					<textarea style="width: 100%;" rows="7" name="message" ng-model="contactForm.message" required></textarea>
 				</label>
+				<div ng-show="invalidForm">
+					<span class="error">A required field is missing. Unable to send your message.</span>
+				</div>
+				<div ng-show="errorDuringSubmit">
+					<span class="error">There was an error while trying to submit the form to the server.</span>
+				</div>
 				<div>
-					<button class="button ru-button submit" type="button" ng-disabled="form.$invalid" ng-click="sendForm()">Submit</button>
+					<button class="button ru-button submit" type="button" ng-click="sendForm()">Submit</button>
 				</div>
 				<div class="ru-toppad-8 ru_green show-for-medium-up">
 					<label class="ru_green"><strong>* Required field</strong></label>
