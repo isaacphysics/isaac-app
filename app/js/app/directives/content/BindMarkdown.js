@@ -27,10 +27,26 @@ define(["showdown/showdown", "showdown/extensions/table"], function() {
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
 						replace: '<a href="javascript:void(0)" ng-click="markdownLinkGo(\'$2\')" rel="nofollow">$1</a>',
 					}]
+				};				
+
+				Showdown.extensions.glossary = function(converter) {
+					return [{
+						type: "lang",
+						regex: '\\*\\*Glossary\\*\\*',
+						replace: '[**Glossary**](/glossary)',
+					}];
+				};
+
+				Showdown.extensions.concepts = function(converter) {
+					return [{
+						type: "lang",
+						regex: '\\*\\*Concepts\\*\\*',
+						replace: '[**Concepts**](/concepts)',
+					}];
 				};
 
 				var converter = new Showdown.converter({
-					extensions: ["table", "refs", "links"],
+					extensions: ["table", "refs", "links", "glossary", "concepts"],
 				});
 
 				scope.markdownLinkGo = function(url) {
