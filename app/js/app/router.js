@@ -126,10 +126,9 @@ define(["angular-ui-router"], function() {
                         controller: "QuestionPageController",
                     }
                 }
-            })            
-/*
-            .state('randomContent', {
-                url: "/content/:id",
+            })
+            .state('pages', {
+                url: "/pages/:id",
                 resolve: {
                     "page": ["api", "$stateParams", function(api, $stateParams) {
                         return api.pages.get({id: $stateParams.id}).$promise;
@@ -141,10 +140,10 @@ define(["angular-ui-router"], function() {
                         controller: ["$scope", "page", function($scope, page) {
                             $scope.title = "Content object: " + page.id;
                             $scope.doc = page;
-                        }],
+                        }]
                     }
                 }
-            })*/
+            })
             .state('contentErrors', {
                 url: "/admin/content_errors",
                 resolve: {
