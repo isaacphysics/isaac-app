@@ -572,6 +572,13 @@
     {
         font-size: 0.5rem !important;
     }
+    .ru-answer span {
++        display: block;
++    }
++    .ru-answer a,
++    .tabs.ru_tabs dd a {
++        padding: 6px !important;
++    }
 }
 
 .ru-answer-orbit-slide
