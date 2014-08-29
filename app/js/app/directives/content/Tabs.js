@@ -1,7 +1,7 @@
 define([], function() {
 
 
-	return [function() {
+	return ["api", function(api) {
 
 		return {
 
@@ -22,6 +22,19 @@ define([], function() {
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
+					if (scope.children[i].type == "isaacQuestion") {
+
+						var logData = {
+							type: "QUICK_QUESTION_TAB_VIEW",
+							quickQuestionId: scope.children[i].id,
+						};
+
+						if (scope.page) {
+							logData.pageId = scope.page.id;
+						}
+
+						api.logger.log(logData);
+					}
 				}
 			},
 		};
