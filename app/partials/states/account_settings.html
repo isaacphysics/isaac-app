@@ -4,15 +4,17 @@
     	   <h1>Account Settings</h1>
     	   <h2 class="subheader">Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
         </div>
-        <div class="medium-6 end columns text-right ru-welcome">
-            <a class="underline" ui-sref="logout">Log out</a>
+        <div class="medium-6 end columns text-right">
+            <h2 class="ru-welcome logout-link">
+                <a ui-sref="logout">Log out &raquo;</a>
+            </h2>
         </div>
     </div>
 </div>
 <div class="row account-settings-wrap">
     <div class="show-for-small-only small-16 columns">
         <h1>Account settings</h1>
-        <h2 class='subheader'>Set up your Isaac account</h2>
+        <h2 class='subheader'>Set up your Isaac account, or <a ui-sref="logout">Log out &raquo;</a></h2>
     </div>
     <form class="panel" ng-submit="save()" name="account" novalidate>
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
