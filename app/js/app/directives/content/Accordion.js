@@ -50,6 +50,12 @@ define([], function() {
 
 				scope.toggleChild = function(i) {
 					scope.openChildren[i] = !scope.openChildren[i];
+
+					if (scope.openChildren[i]) {
+						// This section was just opened.
+
+						scope.$emit("accordionsectionopen", i, scope.doc.children[i]);
+					}
 				}
 
 				var newCorrectAnswerFlags = function(i, a, b) {

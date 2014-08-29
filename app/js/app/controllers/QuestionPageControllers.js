@@ -125,6 +125,13 @@ define([], function() {
 			$location.url("/#" + $stateParams.board)
 		}
 
+		$scope.$on("accordionsectionopen", function(e, idx, doc) {
+			api.logger.log({
+				type: "QUESTION_PART_OPEN",
+				questionPageId: page.id,
+				questionPartIndex: idx,
+			})
+		});
 	}]
 
 	return {

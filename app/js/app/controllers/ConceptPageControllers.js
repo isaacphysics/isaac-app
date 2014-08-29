@@ -11,7 +11,7 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', function($scope, page, tags, $rootScope, persistence, $location, $window) {
+	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', function($scope, page, tags, $rootScope, persistence, $location, $window, api) {
 		$scope.page = page;
 
 		var pageTags = page.tags || [];
@@ -48,6 +48,15 @@ define([], function() {
 		}
 
 		$scope.figures = {};
+
+		$scope.$on("accordionsectionopen", function(e, idx, doc) {
+			api.logger.log({
+				type: "CONCEPT_SECTION_OPEN",
+				conceptPageId: page.id,
+				conceptSectionIndex: idx,
+				conceptSectionLevel: doc.level,
+			})
+		});
 
 	}]
 
