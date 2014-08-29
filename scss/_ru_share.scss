@@ -59,13 +59,16 @@
 
 @media #{$small-only}
 {
-    .ru_print, .ru_share
+    .ru_share
     {
         background-size: 40px 45px;
         width: 40px;
         height: 45px;
     }
 
+    .ru_print {
+        display: none;
+    }
     .ru_share_link
     {
         position: relative;
