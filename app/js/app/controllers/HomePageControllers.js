@@ -15,6 +15,11 @@ define([], function() {
 
 		var recordCurrentGameboard = function() {
 			persistence.save("lastGameBoardId", $scope.gameBoard.id);
+
+			api.logger.log({
+				type: "VIEW_GAMEBOARD_BY_ID",
+				gameBoardId: $scope.gameBoard.id, 
+			})
 		}
 
 		$scope.filterSubjects = ["physics"];
