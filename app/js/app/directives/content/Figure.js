@@ -19,9 +19,13 @@ define([], function() {
 				scope.$parent.$watch(attrs.isaacFigure, function(newDoc) {
 					scope.doc = newDoc;
 
-					scope.figures[scope.doc.id] = Object.keys(scope.figures).length + 1;
+					var nextNum = Object.keys(scope.figures).length + 1;
+					var figId = scope.doc.id || ("auto-fig-id-" + nextNum);
 
-					scope.figNum = scope.figures[scope.doc.id];
+					console.debug("Adding figure:", figId);
+					scope.figures[figId] = nextNum;
+
+					scope.figNum = scope.figures[figId];
 
 					var src = api.getImageUrl(scope.doc.src);
 					scope.imgSrc = src;

@@ -59,6 +59,8 @@ define([
 
         auth.updateUser();
 
+        $rootScope.figures = {};
+
         $rootScope.globalFlags = {
             siteSearchOpen: false,
             isLoading: false,
@@ -78,6 +80,7 @@ define([
             $rootScope.globalFlags.noSearch = false;
 
             $(document).scrollTop(0);
+            $rootScope.figures = {};
         })
 
         $rootScope.$on("$stateChangeError", function() {

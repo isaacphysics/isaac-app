@@ -47,7 +47,6 @@ define([], function() {
 			}
 		}
 
-		$scope.figures = {};
 
 		$scope.$on("accordionsectionopen", function(e, idx, doc) {
 			api.logger.log({

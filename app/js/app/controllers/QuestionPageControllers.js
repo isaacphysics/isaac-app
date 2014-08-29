@@ -6,7 +6,6 @@ define([], function() {
 	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout) {
 		$scope.page = page;
 		$scope.questionPage = page;
-		$scope.figures = {};
 
 		var pageTags = page.tags || [];
 
