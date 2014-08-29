@@ -132,6 +132,12 @@ define([], function() {
 			}
 		});
 
+		this.logger = $resource(server + "/api/log", {}, {
+			log : {
+				method: "POST",
+			}
+		})
+
 	}
 
 	return Api;

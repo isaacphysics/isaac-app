@@ -236,8 +236,20 @@ define(["angular-ui-router"], function() {
             })
             .state('shareLink', {
                 url: "/s/:shortCode",
-                onEnter: ["$stateParams", function($stateParams) {
-                    document.location.href = "http://goo.gl/" + $stateParams.shortCode;
+                onEnter: ["$stateParams", "api", function($stateParams, api) {
+                    var redirectURL = "http://goo.gl/" + $stateParams.shortCode;
+                    var doRedirect = function(){
+                        document.location.href = redirectURL;  
+                    }
+
+                    api.logger.log({
+                        type : "USE_SHARE_LINK",
+                        shortURL : redirectURL,
+                    }).$promise.then(function(){
+                        doRedirect();
+                    }).catch(function(){
+                        doRedirect();
+                    })
                 }]
             })
 

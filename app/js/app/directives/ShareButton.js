@@ -1,6 +1,6 @@
 define([], function() {
 
-    return ["$http", "$location", function($http, $location) {
+    return ["$http", "$location", "api", function($http, $location, api) {
 		return {
 
 			restrict: "A",
@@ -25,10 +25,14 @@ define([], function() {
 
                 scope.getShareLink = function() {
 	                scope.showShareUrl = !scope.showShareUrl;
+	                if (scope.showShareUrl) {
+	                	api.logger.log({
+		                	type: "SHOW_SHARE_URL",
+		                	shortURL : scope.shareUrl,
+		                });
+	                }
                 };
 			}
-
 		};
 	}]
-
 });

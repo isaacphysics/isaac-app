@@ -28,7 +28,15 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
-					rv.updateAll();					
+					rv.updateAll();
+
+					if (i > -1) {
+						api.logger.log({
+							type : "VIEW_HINT",
+							questionId : scope.doc.id,
+							hintIndex : i,
+						})
+					}		
 				}
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
