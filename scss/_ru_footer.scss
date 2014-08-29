@@ -51,7 +51,7 @@ footer
     font-style: italic;
 }
 
-@each $name in (google, facebook, twitter)
+@each $name in (google, facebook, twitter, youtube)
 {
     .ru-social-icon-#{$name}-48x48:hover
     {
@@ -59,6 +59,26 @@ footer
         @extend #{$var}; 
         display: inline-block;
     }
+}
+.ru-social-icon-youtube-48x48 {
+    width: 48px;
+    height: 48px;
+    background: url(/assets/ru.png) -63px -299px no-repeat;
+}
+.ru-social-icon-youtube-48x48:hover {
+    width: 48px;
+    height: 48px;
+    background-position: -124px -299px;
+}
+.ru-social-icon-youtube-40x40 {
+    width: 40px;
+    height: 40px;
+    background: url(/assets/ru.png) -191px -302px no-repeat;
+}
+.ru-social-icon-youtube-40x40:hover {
+    width: 40px;
+    height: 40px;
+    background-position: -247px -302px;
 }
 
 
