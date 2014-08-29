@@ -75,8 +75,10 @@ define([], function() {
         $scope.showSkip = !!$stateParams.next;
 
         $scope.save = function(next) {
-
-        	if ($scope.account.$valid) {
+        	if ($scope.account.password.$viewValue) {
+        		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
+        	}
+        	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
 	        		if (next) {
 			        	$location.url(next)
@@ -87,6 +89,7 @@ define([], function() {
 	        		$scope.updateFail = true;
 	        	})
 	        } else {
+
 	        	// The form is not valid, so display errors.
 	        	for(var i in $scope.account.$error.required){
 	        		$scope.account.$error.required[i].$dirty = true;

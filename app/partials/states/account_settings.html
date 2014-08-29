@@ -63,11 +63,14 @@
                             <strong ng-if="user.hasSegueAccount">Change password</strong>
                             <strong ng-if="!user.hasSegueAccount">Set password</strong>
                         </label>
-                        <input id="account-password" type="password" ng-model="user.password" placeholder="***********">        
+                        <input id="account-password" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
                     </div>
                     <div id="password2-wrap" class="large-8 medium-8 columns">
                         <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                        <input id="account-password2" type="password" placeholder="***********" ng-disabled="!user.password">
+                        <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
+                        <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
+                            Passwords do not match
+                        </span>
                     </div>
                 </div>
                 <div id="account-gender" class="ac-custom ac-radio ac-fill row">
