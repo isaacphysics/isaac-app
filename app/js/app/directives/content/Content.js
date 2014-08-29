@@ -21,6 +21,8 @@ define([], function() {
 	            		
 		            	if(scope.doc && scope.doc.layout=="right") {
 		            		iElement.css("float", "right").width(300);
+		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
+		            		iElement.css("float", "right").width("50%");
 		            	}
 	            	});
 
