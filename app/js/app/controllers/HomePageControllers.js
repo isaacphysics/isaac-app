@@ -210,7 +210,12 @@ define([], function() {
 
 		$scope.shuffleBoard = function() {
 			$scope.shuffleStack.push($scope.gameBoard.id);
+			api.logger.log({
+				type: "SHUFFLE_BOARD",
+			})
+			
 			loadGameBoardFromFilter();
+
 		}
 
 		$scope.undoShuffle = function() {
