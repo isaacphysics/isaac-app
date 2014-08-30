@@ -1,17 +1,21 @@
-<div desktop-panel arrow-block class="no-print">
-    <a class='ru-panel-arrow' href="javascript:void(0)" ng-click='go(sourceUrl)'> </a>
-    <div class='ru-desktop-panel-content'>
-        <p class='ru_green ru-panel-question'><em><a href="javascript:void(0)" ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
-    </div>
-</div>
-<div mobile-panel arrow-block class="no-print">
-    <a class='ru-panel-arrow' href="javascript:void(0)" ng-click="go(sourceUrl)"> </a>
-    <div class='row'>
-        <div class='small-16 columns'>
-            <p class='ru_green ru-panel-question'><em><a href="javascript:void(0)" ng-click='go(sourceUrl)'>{{backText}}</a></em></p>
+<a href="javascript:void(0)" ng-click="go(sourceUrl)">
+    <div desktop-panel arrow-block class="no-print">
+        <div class='ru-panel-arrow'> </div>
+        <div class='ru-desktop-panel-content'>
+            <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
         </div>
     </div>
-</div>
+</a>
+<a href="javascript:void(0)" ng-click="go(sourceUrl)">
+    <div mobile-panel arrow-block class="no-print">
+        <div class='ru-panel-arrow'> </div>
+        <div class='row'>
+            <div class='small-16 columns'>
+                <p class='ru_green ru-panel-question'><em>{{backText}}</em></p>
+            </div>
+        </div>        
+    </div>
+</a>
 
 <div class="row">
     <div class='large-16 medium-16 columns print-no-side-padding'>
