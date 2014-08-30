@@ -9,9 +9,30 @@ define([], function() {
 		};
 
 		// Populate days
-		for (var i = 1; i <= 31; i++) {
-			$scope.datePicker.days.push(i);
+		function daysInMonth(month, year) {
+			// Credit to: http://stackoverflow.com/questions/1184334/get-number-days-in-a-specified-month-using-javascript
+			// Month is 1 based
+			return new Date(year, month, 0).getDate();
 		}
+
+		var populateDays = function(month, year) {
+			$scope.datePicker.days = [];
+
+			// Default to 31
+			var days = 31;
+
+			if (month !== undefined && month > -1 && year !== undefined && year > -1) {
+				// Month is 0 based, so add 1 to it
+				days = daysInMonth(month + 1, year);
+			}
+
+			for (var i = 1; i <= days; i++) {
+				$scope.datePicker.days.push(i);
+			}
+		};
+
+		// Perform initial population
+		populateDays();
 
 		// Populate years
 		var currentYear = new Date().getFullYear();
@@ -36,6 +57,9 @@ define([], function() {
 				// User object hasn't been initialised yet
 				return;
 			}
+
+			// Restrict the number of days depended on the selected month and year
+			populateDays($scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.year);
 
 			var dob = new Date($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
 			if (!isNaN(dob.getTime())) {
