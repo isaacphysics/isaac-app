@@ -21,12 +21,14 @@ define([], function() {
 
 		$scope.dob = {};
 
-		if ($scope.user.dateOfBirth != null) {
-			var date = new Date($scope.user.dateOfBirth);
-			$scope.dob.day = date.getDate();
-			$scope.dob.month = $scope.datePicker.months[date.getMonth()];
-			$scope.dob.year = date.getFullYear();
-		}
+		$scope.user.$promise.then(function() {
+			if ($scope.user.dateOfBirth != null) {
+				var date = new Date($scope.user.dateOfBirth);
+				$scope.dob.day = date.getDate();
+				$scope.dob.month = $scope.datePicker.months[date.getMonth()];
+				$scope.dob.year = date.getFullYear();
+			}
+		});
 
 		// Watch for changes to the DOB selection
 		$scope.$watchCollection('dob', function() {
