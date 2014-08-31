@@ -14,8 +14,7 @@ define([], function() {
 
 		$scope.sortOptions = [
 			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"},
-			{label: "Subject", val: "subject"}
+			{label: "Date Visited", val: "visited"}
 		];
 
 		$scope.filterOption = $scope.filterOptions[0];
