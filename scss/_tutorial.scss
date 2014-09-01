@@ -67,12 +67,15 @@
 	padding-top: 0;
 }
 .joyride-expose-wrapper {
-	/*background: url(/assets/tutorial-circle.png) 0 0 no-repeat;*/
-	background: transparent;
-	background-size: cover;
+	background: url(/assets/circle.svg) center center no-repeat;
+	background-size: contain;
 	z-index: 1003;
 	box-shadow: none;
-	padding: 35px;
+	padding: 15px;
+	box-sizing: content-box;
+	margin-top: -15px;
+	margin-left: -15px;
+
 }
 .joyride-nub.right + .joyride-content-wrapper {
 	margin-left: -80px;
