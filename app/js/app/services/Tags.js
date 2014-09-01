@@ -99,10 +99,12 @@ define([], function() {
 				parent: "maths"
 			}, {
 				id: "functions",
-				parent: "maths"
+				parent: "maths",
+				comingSoon:true,
 			}, {
 				id: "probability",
-				parent: "maths"
+				parent: "maths",
+				comingSoon:true,
 			}, 
 
 			// Geometry topics
