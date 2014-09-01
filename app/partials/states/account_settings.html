@@ -156,7 +156,11 @@
         </ul>
          <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
             <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
-            <li ng-if="updateFail" class="text-center"><h4 style="color:#a00;">Settings could not be updated</h4></li>
+            <li ng-if="updateFail" class="text-center">
+	            <h4 style="color:#a00;">
+		            Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+	            </h4>
+            </li>
         </ul>
        
     </form>

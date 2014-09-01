@@ -69,7 +69,11 @@
 	    <div class="clearfix"></div>
     </form>
     <ul class="small-block-grid-1 ru-pad" ng-if="updateFail">
-        <li class="text-center"><h4 style="color:#a00;">Registration Failed</h4></li>
+        <li class="text-center">
+	        <h4 style="color:#a00;">
+		        Registration Failed<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+	        </h4>
+        </li>
     </ul>
 
 </div>

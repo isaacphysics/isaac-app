@@ -126,8 +126,13 @@ define([], function() {
 	        		} else {
 			        	$scope.updateSuccess = true;
 	        		}
-	        	}).catch(function() {
+	        	}).catch(function(error) {
 	        		$scope.updateFail = true;
+			        if (error.data != null && error.data.errorMessage != null) {
+				        $scope.errorMessage = error.data.errorMessage;
+			        } else {
+				        $scope.errorMessage = null;
+			        }
 	        	})
 	        } else {
 
