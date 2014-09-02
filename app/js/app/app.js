@@ -304,6 +304,16 @@ define([
                                 // add custom controls
                                 $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a></div></div>');
                             },
+                            post_expose_callback: function (index){
+                                // Work out what to wrap the exposed element with e.g. square, circle or rectangle
+                                var tutorial = document.getElementById('desktop-tutorial')
+                                                       .getElementsByTagName("li")[index]
+                                                       .getAttribute('data-shape');                       
+                                
+                                if(tutorial != null) {
+                                    $('.joyride-expose-wrapper').addClass(tutorial);
+                                }
+                            },
                             post_ride_callback: function() {
                                 // remove controls when tutorial has finished
                                 $('.joyride-custom-controls').detach();

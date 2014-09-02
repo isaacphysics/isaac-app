@@ -22,7 +22,7 @@
             <a ui-sref='bios'>Biographies of Real Physicists</a>
             <a api-environment="dev" ui-sref='questionIndex'>Question List</a>
             <a api-environment="dev" ui-sref='contentErrors'>Content Errors</a>
-            <a api-environment="dev" class="desktop-tutorial-trigger">Tutorial</a>
+            <a class="desktop-tutorial-trigger">Tutorial</a>
         </div>
         <div class='large-5 medium-5 columns footer_links'>
             <div class='right'>
@@ -139,11 +139,15 @@
     </div>
 </footer>
 
+<!-- This is all standard joyride apart from the 'data-shape' attr, this is the shape you want the exposed element to be wrapped with and can be circle, square or rectangle. If nothing or an invalide input is passed in it will default to circule -->
 <ul id="desktop-tutorial" class="joyride-list" data-joyride>
     <li data-id="desktop-reveal" data-options="tip_location: bottom;">
         <h4>Reveals the Board-filter where you can create your challenge</h4>
     </li>
-    <li data-id="tutorial-shuffle" data-options="tip_location: right;">
+    <li data-id="tutorial-shuffle" data-options="tip_location: right;" data-shape="square">
+        <h4>Search your board, concepts, problems & articles.</h4>
+    </li>
+    <li data-id="tutorial-search" data-options="tip_location: right;">
         <h4>Search your board, concepts, problems & articles.</h4>
     </li>
 </ul>

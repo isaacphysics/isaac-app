@@ -77,6 +77,14 @@
 	margin-left: -15px;
 
 }
+.joyride-expose-wrapper.square {
+	background: url(/assets/square.svg) center center no-repeat;
+	background-size: contain;
+}
+.joyride-expose-wrapper.rectangle {
+	background: url(/assets/rectangle.svg) center center no-repeat;
+	background-size: contain;
+}
 .joyride-nub.right + .joyride-content-wrapper {
 	margin-left: -80px;
 }
