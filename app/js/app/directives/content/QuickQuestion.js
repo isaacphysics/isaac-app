@@ -27,11 +27,6 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.doc = undefined;
-				scope.$parent.$watch(attrs.isaacQuickQuestion, function(newDoc) {
-					scope.doc = newDoc;
-				})
-
 				scope.$watch("isVisible", function(visible) {
 					if (visible) {
 						api.logger.log({

@@ -26,11 +26,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs) {
 
-				scope.doc = undefined;
-				scope.$parent.$watch(attrs.isaacSymbolicQuestion, function(newDoc) {
-					scope.doc = newDoc;
-				});
-
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
 					rv.updateAll();	

@@ -29,6 +29,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.selectedChoice = {
 					type: "quantity",
 				};
+				scope.selectedUnitsDisplay = "";
 
 				scope.toggleUnitsDropdown = function() {
 
@@ -69,8 +70,6 @@ define(["app/honest/responsive_video"], function(rv) {
 						}
 					}
 
-					scope.selectedUnitsDisplay = "";
-
 				})
 
 				scope.selectUnit = function(u) {
@@ -84,7 +83,6 @@ define(["app/honest/responsive_video"], function(rv) {
 					} else {
 						scope.selectedUnitsDisplay = "";
 					}
-					scope.chosenUnitsForDisplay = 
 					scope.unitsDropdownStyle = null;
 				}
 

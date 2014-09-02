@@ -27,13 +27,7 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.doc = undefined;
-				scope.path = undefined;
-				scope.$parent.$watch(attrs.isaacImage, function(newDoc) {
-					scope.doc = newDoc;
-
-					scope.path = api.getImageUrl(scope.doc.src);
-				});
+				scope.path = api.getImageUrl(scope.doc.src);
 
 			}
 		};

@@ -28,20 +28,15 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.children = undefined;
-				scope.$parent.$watch(attrs.children, function(newChildren) {
-					scope.children = newChildren;
-				});
-
 				scope.activeTab = 0;
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
-					if (scope.children[i].type == "isaacQuestion") {
+					if (scope.doc.children[i].type == "isaacQuestion") {
 
 						var logData = {
 							type: "QUICK_QUESTION_TAB_VIEW",
-							quickQuestionId: scope.children[i].id,
+							quickQuestionId: scope.doc.children[i].id,
 						};
 
 						if (scope.page) {

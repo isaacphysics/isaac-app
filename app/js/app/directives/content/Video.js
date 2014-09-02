@@ -19,9 +19,7 @@ define(["iframe_api"], function() {
 
 		return {
 
-			scope: {
-				doc: "=isaacVideo",
-			},
+			scope: true,
 
 			restrict: 'A',
 
@@ -29,11 +27,9 @@ define(["iframe_api"], function() {
 
 			link: function(scope, element, attrs) {
 
-				scope.doc = undefined;
 				scope.videoSrc = undefined;
 
 				var onPlayerStateChange = function(e) {
-					console.debug("Player state change:", e.data);
 
 					var logData = {
 						videoUrl: e.target.getVideoUrl(),
@@ -62,17 +58,14 @@ define(["iframe_api"], function() {
 					api.logger.log(logData);
 				}
 
-				scope.$parent.$watch(attrs.isaacVideo, function(newDoc) {
-					scope.doc = newDoc;
-					scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?enablejsapi=1&theme=light&rel=0&fs=1");
+				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?enablejsapi=1&theme=light&rel=0&fs=1");
 
-					var player = new YT.Player(element.find("iframe")[0], {
-						events: {
-							'onStateChange': onPlayerStateChange,
-						}
-					})
-
+				var player = new YT.Player(element.find("iframe")[0], {
+					events: {
+						'onStateChange': onPlayerStateChange,
+					}
 				})
+
 			}
 		};
 	}];

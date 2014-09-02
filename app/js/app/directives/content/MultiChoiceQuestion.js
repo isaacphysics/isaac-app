@@ -27,11 +27,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs) {
 
-				scope.doc = undefined;
-				scope.$parent.$watch(attrs.isaacMultiChoiceQuestion, function(newDoc) {
-					scope.doc = newDoc;
-				});
-
 				scope.$watch("selectedChoice", function() {
 					if (scope.selectedChoice === null) {
 						return;
