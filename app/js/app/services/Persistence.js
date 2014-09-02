@@ -21,20 +21,38 @@ define([], function() {
 	return ['$window', function PersistenceConstructor($window) {
 
 		this.save = function save(key, value) {
-			$window.localStorage[key] = value;
+			try {
+				$window.localStorage[key] = value;
+			} catch (e) {
+				console.error("Failed to save to local storage. This might be a browser restriction.", e);
+			}
 		}
 
 		this.load = function load(key) {
-			return $window.localStorage[key];
+			try {
+				return $window.localStorage[key];
+			} catch (e) {
+				console.error("Failed to read from local storage. This might be a browser restriction.", e);
+				return null;
+			}
 		}
 
 		this.session = {
 			save: function sessionSave(key, value) {
-				$window.sessionStorage[key] = value;
+				try {
+					$window.sessionStorage[key] = value;
+				} catch (e) {
+					console.error("Failed to save to session storage. This might be a browser restriction.", e);
+				}
 			},
 
 			load: function sessionLoad(key, value) {
-				return $window.sessionStorage[key];
+				try {
+					return $window.sessionStorage[key];
+				} catch (e) {
+					console.error("Failed to read from session storage. This might be a browser restriction.", e);
+					return null;
+				}
 			},
 		};
 
