@@ -225,9 +225,17 @@ define([], function() {
 
 		$scope.shuffleBoard = function() {
 			$scope.shuffleStack.push($scope.gameBoard.id);
-			api.logger.log({
+			var logMsg = {
 				type: "SHUFFLE_BOARD",
-			})
+				questions: {}
+			};
+
+			for (var i in $scope.gameBoard.questions) {
+				var q = $scope.gameBoard.questions[i];
+				logMsg.questions[q.id] = q.state;
+			}
+
+			api.logger.log(logMsg);
 			
 			loadGameBoardFromFilter();
 
