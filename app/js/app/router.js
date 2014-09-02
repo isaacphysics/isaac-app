@@ -278,6 +278,18 @@ define(["angular-ui-router"], function() {
                         }
                     },
                 },
+
+            })
+            .state('403', {
+                url: "/unauthorised?target",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/403.html",
+                        controller: function($scope, $stateParams) {
+                            $scope.target = $stateParams.target;
+                        }
+                    },
+                },
             })
 
 	        .state('accountSettings', {
@@ -329,6 +341,9 @@ define(["angular-ui-router"], function() {
 
             if (error.status == 404)
                 $state.go('404', {target: $state.href(toState, toParams)});
+
+            if (error.status == 403)
+                $state.go('403', {target: $state.href(toState, toParams)});
         });
 
     }])
