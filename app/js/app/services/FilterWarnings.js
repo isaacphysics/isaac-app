@@ -50,6 +50,35 @@ define([], function() {
 			if (contains(topics, "shm") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push("There are no SHM questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
 
+
+			if (contains(topics, "simultaneous") && !(contains(levels, 1) || levels.length == 0))
+				warnings.push("There are no Simultaneous Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "manipulation") && !(contains(levels, 1) || levels.length == 0))
+				warnings.push("There are no Algebraic Manipulation questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "quadratics") && !(contains(levels, 1) || levels.length == 0))
+				warnings.push("There are no Quadratics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+
+			if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+				warnings.push("There are no Series questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
+				warnings.push("There are no Differentiation questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "integration") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+				warnings.push("There are no Integration questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "differential_eq") && !(contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+				warnings.push("There are no Differential Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "vectors") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+				warnings.push("There are no Vectors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
+			if (contains(topics, "shapes") && !(contains(levels, 2) || levels.length == 0))
+				warnings.push("There are no Shapes questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels));
+
 			return warnings;
 		}
 
