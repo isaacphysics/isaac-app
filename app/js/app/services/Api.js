@@ -125,9 +125,9 @@ define([], function() {
 
 		this.admin = {
 			synchroniseDatastores: function() {
-				$.post(server + "/api/admin/synchronise_datastores").then(function() {
+				return $.post(server + "/api/admin/synchronise_datastores").then(function() {
 					console.warn("Synchronising Datastores. The next page load will take a while.");
-				})
+				});
 			}
 		};
 
@@ -150,6 +150,17 @@ define([], function() {
 		this.logger = $resource(server + "/api/log", {}, {
 			log : {
 				method: "POST",
+			}
+		})
+
+		this.contentVersion = $resource("", {version: "foo"}, {
+			"get": {
+				method: "GET",
+				url: server + "/api/info/content_versions/live_version",
+			},
+			"set": {
+				method: "POST",
+				url: server + "/api/admin/live_version/:version",
 			}
 		})
 

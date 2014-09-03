@@ -1,0 +1,20 @@
+<div desktop-panel>
+<h1>Isaac Administration</h1>
+</div>
+<div mobile-panel>
+<h1>Isaac Administration</h1>
+</div>
+
+<div class="row">
+    <div class="medium-5 columns text-right">
+       <label for="content-version">
+            <strong>Content Version</strong>
+        </label>
+    </div>
+	<div class="medium-7 columns">
+		<input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA">
+	</div>
+	<div class="medium-4 columns">
+		<button ng-click="setVersion()">Set Version</button>
+	</div>
+</div>

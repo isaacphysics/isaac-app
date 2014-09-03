@@ -36,6 +36,7 @@ define([
 	"app/controllers/ResetPasswordControllers",
 	"app/controllers/HeaderControllers",
 	"app/controllers/AuthErrorPageControllers",
+	"app/controllers/AdminPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -67,6 +68,8 @@ define([
 	var headerControllers = require("app/controllers/HeaderControllers");
 
 	var authErrorPageControllers = require("app/controllers/AuthErrorPageControllers");
+
+	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	/* Controllers */
 
@@ -117,4 +120,6 @@ define([
 	.controller('HeaderController', headerControllers.PageController)
 
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
+	
+	.controller('AdminPageController', adminPageControllers.PageController)
 });

@@ -330,6 +330,16 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('admin', {
+                url: "/admin",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin.html",
+                        controller: "AdminPageController",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
