@@ -1,4 +1,4 @@
-define(["jquery","honest/video"],
+define(["jquery","lib/honest/video"],
     /** 
     * A simple module for making videojs videos responsive.
     * video elements can support a data-aspect element to override the default aspect

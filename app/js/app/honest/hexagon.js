@@ -2,7 +2,7 @@
  * Library to render a series of hexagons from arbitrary data
  * Requires jQuery and D3
  */
-define([ 'jquery','honest/d3.min'],
+define([ 'jquery','lib/honest/d3.min'],
     function($, d3) 
     {  
         // NOTE this could be encapsulated further (into a Class) but all use cases

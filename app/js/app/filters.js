@@ -15,7 +15,7 @@
  */
 'use strict';
 
-define(["angular", "showdown/showdown", "showdown/extensions/table"], function() {
+define(["angular", "lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 
 	/* Filters */
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["mathjax"], function() {
+define([], function() {
 
 	// Allow labels and numbers to be reset:
 	// https://groups.google.com/forum/#!msg/mathjax-users/kzOOFw1qtxw/YdAEPJfCEXUJ
@@ -26,7 +26,11 @@ define(["mathjax"], function() {
 
 	// Allow inline maths with single $s
 
+
 	MathJax.Hub.Config({
+
+		config: ["TeX-AMS_HTML.js"],
+
 		tex2jax: {
 			inlineMath: [ ['$','$'], ["\\(","\\)"] ],
 			displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
@@ -53,16 +57,13 @@ define(["mathjax"], function() {
 	  "HTML-CSS": {
 	    availableFonts: [], preferredFont: null, // force Web fonts
 	    webFont: "Gyre-Termes",// "Latin-Modern"
-	  }
-
-	});
+	  },
 
 	// Fix font issues in Chrome 32
 	// https://groups.google.com/forum/#!msg/mathjax-users/S5x-RQDPJrI/p4nmRXJvoskJ
-
-	MathJax.Hub.Config({
-		extensions: ["MatchWebFonts.js"]
+	  extensions: ["MatchWebFonts.js"]
 	});
+
 
 	if (MathJax.Hub.Browser.isChrome) {
 		MathJax.Hub.Register.StartupHook(
@@ -70,6 +71,9 @@ define(["mathjax"], function() {
 			function () {MathJax.OutputJax["HTML-CSS"].FontFaceBug = true}
 		);
 	}
+
+	// Signal that we're done configuring MathJax.
+	MathJax.Hub.Configured();
 
 });
 

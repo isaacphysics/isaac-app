@@ -16,7 +16,7 @@
 'use strict';
 
 define([
-    "rsvp", 
+    "lib/rsvp", 
     "foundation", 
     "app/router", 
     "app/honest/responsive_video", 
@@ -34,6 +34,7 @@ define([
     "app/honest/anim_check",
     "angulartics", 
     "angulartics-ga",
+    "app/MathJaxConfig",
     ], function() {
 
     window.Promise = RSVP.Promise;

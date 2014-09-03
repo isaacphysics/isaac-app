@@ -2,7 +2,7 @@
  * Library to handle Hex Filter
  * Requires jQuery 
  */
-define([ 'jquery', 'app/honest/hexagon', 'honest/d3.min'],
+define([ 'jquery', 'app/honest/hexagon', 'lib/honest/d3.min'],
     function($, hexagon, d3) 
     { 
         /**

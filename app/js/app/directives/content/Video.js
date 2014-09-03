@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["iframe_api"], function() {
+define(["lib/iframe_api"], function() {
 
 	return ["api", "$sce", function(api, $sce) {
 
