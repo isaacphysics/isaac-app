@@ -31,6 +31,7 @@ require.config({
         "angular-animate": ["angular"],
         "angular-cookies": ["angular"],
         "showdown/extensions/table": ["showdown/showdown"],
+        "templates": ['angular'],
     }
 });
 

@@ -35,6 +35,7 @@ define([
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
+    "templates",
     ], function() {
 
     window.Promise = RSVP.Promise;
@@ -49,6 +50,7 @@ define([
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers',
+        'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
         'ngAnimate',
