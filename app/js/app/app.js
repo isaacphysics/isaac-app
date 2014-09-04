@@ -324,9 +324,6 @@ define([
                         {
                             rv.forceResize();
                             sliderResize();
-                            // Determine location of tabs content and then pause any child videos
-                            var obj = $($('a', tab).attr('href')).parent();
-                            rv.pauseVideos(obj);
                         }
                     }
                 }); 

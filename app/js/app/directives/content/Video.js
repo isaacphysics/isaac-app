@@ -60,11 +60,13 @@ define(["lib/iframe_api"], function() {
 
 				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?enablejsapi=1&theme=light&rel=0&fs=1");
 
-				var player = new YT.Player(element.find("iframe")[0], {
-					events: {
-						'onStateChange': onPlayerStateChange,
-					}
-				})
+				YT.ready(function() {
+					new YT.Player(element.find("iframe")[0], {
+						events: {
+							'onStateChange': onPlayerStateChange,
+						}
+					});				
+				});
 
 			}
 		};

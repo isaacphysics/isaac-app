@@ -66,6 +66,7 @@ module.exports = function(grunt) {
 
     requirejs: {
       options: {
+//        logLevel: 0, // Enable this line to see all debug output from requirejs optimiser
         baseUrl: 'app/js/',
         mainConfigFile: 'app/js/isaac.js',
 
