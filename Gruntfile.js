@@ -43,16 +43,16 @@ module.exports = function(grunt) {
         bootstrap: function(module, script) {
           return 'define([], function() { angular.module("isaac.templates",[]).run(["$templateCache", function($templateCache) {' + script + '}])});';
         },
-        htmlmin: {
-          collapseBooleanAttributes:      true,
+/*        htmlmin: {
+          collapseBooleanAttributes:      false,
           collapseWhitespace:             false, // This removes spaces before tags, which we often rely on. Maybe we shouldn't.
           removeAttributeQuotes:          true,
           removeEmptyAttributes:          true,
           removeComments:                 true,
           removeRedundantAttributes:      false, // This removes type="text" on inputs, which prevents CSS being applied properly.
           removeScriptTypeAttributes:     true,
-          removeStyleLinkTypeAttributes:  true
-        },
+          removeStyleLinkTypeAttributes:  false
+        },*/  // Do not run htmlmin at all. We don't need it - apache will compress the file for transfer anyway.
       },
       local: {
         src: 'app/partials/**/*.html',
