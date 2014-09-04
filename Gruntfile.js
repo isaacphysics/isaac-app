@@ -40,6 +40,7 @@ module.exports = function(grunt) {
             collapseBooleanAttributes:      true,
             collapseWhitespace:             true,
             removeAttributeQuotes:          true,
+            removeEmptyAttributes:          true,
             removeComments:                 true,
             removeRedundantAttributes:      true,
             removeScriptTypeAttributes:     true,

@@ -3,7 +3,6 @@ require.config({
     baseUrl: '/js',
 
     paths: {
-        "honest-lib": './honest',
         "jquery": '../bower_components/jquery/dist/jquery',
         "modernizr": '../bower_components/modernizr/modernizr',
         "foundation": '../bower_components/foundation/js/foundation',
@@ -13,7 +12,6 @@ require.config({
         "angular-recursion": '../bower_components/angular-recursion/angular-recursion',
         "angular-animate": '../bower_components/angular-animate/angular-animate',
         "angular-cookies": '../bower_components/angular-cookies/angular-cookies',
-        "react": '../bower_components/react/react-with-addons',
         "JSXTransformer": '../bower_components/react/JSXTransformer',
         "angulartics": '../bower_components/angulartics/src/angulartics',
         "angulartics-ga": '../bower_components/angulartics/src/angulartics-ga',
@@ -30,7 +28,7 @@ require.config({
         "angular-recursion": ["angular"],
         "angular-animate": ["angular"],
         "angular-cookies": ["angular"],
-        "showdown/extensions/table": ["showdown/showdown"],
+        "lib/showdown/extensions/table": ["lib/showdown/showdown"],
         "templates": ['angular'],
     }
 });
