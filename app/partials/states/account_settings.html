@@ -55,11 +55,17 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="large-16 columns">
+                    <div ng-show="!user.role || user.role == 'STUDENT'" class="large-16 columns">
                         <label>
                             <strong>Are you a teacher?</strong>
                         </label>
                         <a class="teacher-link" ui-sref="contact"><span class="underline">Contact us</span> for an upgraded account.</a>
+                    </div>
+                    <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')" class="large-16 columns">
+                        <label>
+                            <strong>Upgraded account:</strong>
+                        </label>
+                        <p>Your account has been assigned the {{user.role.toLowerCase()}} role.</p>
                     </div>
                 </div>
 
