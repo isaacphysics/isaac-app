@@ -4,5 +4,5 @@ node_modules/
 tmp
 .DS_Store
 .idea
-dist-app/
-dist-app.tar.gz
+dist/
+app.tar.gz

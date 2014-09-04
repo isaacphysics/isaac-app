@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
 
+  var distOutputDir = "dist";
+  var distOutputFile = "app.tar.gz";
+
   var requestLogger = function(req) {
     console.log('[%s] %s', (new Date).toUTCString(), req.url.cyan);
   }
@@ -57,7 +60,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: 'app/partials/**/*.html',
-        dest: 'dist-app/js/templates.js',
+        dest: distOutputDir + '/app/js/templates.js',
       }
     },
 
@@ -80,18 +83,18 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          out: "dist-app/js/isaac.js",
+          out: distOutputDir + "/app/js/isaac.js",
           optimize: "uglify",
           paths: {
-            "templates": "../../dist-app/js/templates",
+            "templates": "../../" + distOutputDir + "/app/js/templates",
           }
         },
       },
     },
 
     clean: {
-      dist: ["dist-app/**", "dist-app.tar.gz"],
-      distPartials: ["dist-app/partials/**"],
+      dist: [distOutputDir + "/**", distOutputFile],
+      distPartials: [distOutputDir + "/app/partials/**"],
     },
 
     copy: {
@@ -100,7 +103,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'app/',
           src: ['**'],
-          dest: 'dist-app/',
+          dest: distOutputDir + '/app/',
           filter: 'isFile',
           dot: true,
         }]
@@ -110,12 +113,12 @@ module.exports = function(grunt) {
     compress: {
       dist: {
         options: {
-          archive: 'dist-app.tar.gz',
+          archive: distOutputFile,
         },
         files: [{
           expand: true,
-          cwd: 'dist-app/',
-          src: ["**"],
+          cwd: distOutputDir + "/",
+          src: ['app/**'],
           dot: true,
           filter: 'isFile',
         }]
