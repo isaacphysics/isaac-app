@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var distOutputDir = "dist";
-  var distOutputFile = "app.tar.gz";
+  var distOutputFile = "isaac-app.tar.gz";
 
   var requestLogger = function(req) {
     console.log('[%s] %s', (new Date).toUTCString(), req.url.cyan);
