@@ -49,7 +49,7 @@ module.exports = function(grunt) {
           removeAttributeQuotes:          true,
           removeEmptyAttributes:          true,
           removeComments:                 true,
-          removeRedundantAttributes:      true,
+          removeRedundantAttributes:      false, // This removes type="text" on inputs, which prevents CSS being applied properly.
           removeScriptTypeAttributes:     true,
           removeStyleLinkTypeAttributes:  true
         },
