@@ -32,11 +32,41 @@ We have preconfigured the project with a simple development web server.  The sim
 this server is:
 
 ```
-npm start
+grunt server
 ```
 
-Now browse to the app at `http://localhost:8000/app/index.html`.
+Now browse to the Isaac app at `http://localhost:8000/`.
 
+### SASS Compilation
+
+To keep the CSS updated automatically, run:
+
+```
+grunt watch
+```
+
+### Local optimisation
+
+It is possible to test the optimisation build commands with the following grunt tasks:
+
+* `grunt ngtemplates:local` - Compile the angular partial HTML templates into a single JS file. Replaces the dummy `app/js/templates.js`.
+* `grunt requirejs:local` - Concatenate all JS into a single `app/js/isaac.js` file. Non-minified to aid debugging.
+
+
+## Deployment
+
+The `app` directory contains everything needed for the deployment, but there are some grunt tasks to help with packaging and optimisation.
+
+Short version: Run `grunt dist`, then unzip `app.tar.gz` into the root www directory of the production server.
+
+Long version:
+
+* `grunt clean:dist` - Removes all auto-generated files created by this process.
+* `grunt copy:dist` - Copies the `app` directory to `dist-app`.
+* `grunt ngtemplates:dist` - Compiles all the HTML partials into one JS file.
+* `grunt requirejs:dist` - Concatenates and uglifies all the JS, replacing `dist-app/js/isaac.js`
+* `grunt compress:dist` - Packages up the entire `dist-app` directory into `dist-app.tar.gz`
+* `grunt dist` - Run all the above commands in order.
 
 ## Testing
 
@@ -124,74 +154,6 @@ bower update
 ```
 
 This will find the latest versions that match the version ranges specified in the `bower.json` file.
-
-
-## Serving the Application Files
-
-While angular is client-side-only technology and it's possible to create angular webapps that
-don't require a backend server at all, we recommend serving the project files using a local
-webserver during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr,
-etc to function properly when an html page is opened via `file://` scheme instead of `http://`.
-
-
-### Running the App during Development
-
-The angular-seed project comes preconfigured with a local development webserver.  It is a node.js
-tool called [http-server][http-server].  You can start this webserver with `npm start` but you may choose to
-install the tool globally:
-
-```
-sudo npm install -g http-server
-```
-
-Then you can start your own development web server to serve static files from a folder by
-running:
-
-```
-http-server
-```
-
-Alternatively, you can choose to configure your own webserver, such as apache or nginx. Just
-configure your server to serve the files under the `app/` directory.
-
-
-### Running the App in Production
-
-This really depends on how complex is your app and the overall infrastructure of your system, but
-the general rule is that all you need in production are all the files under the `app/` directory.
-Everything else should be omitted.
-
-Angular apps are really just a bunch of static html, css and js files that just need to be hosted
-somewhere they can be accessed by browsers.
-
-If your Angular app is talking to the backend server via xhr or other means, you need to figure
-out what is the best way to host the static files to comply with the same origin policy if
-applicable. Usually this is done by hosting the files by the backend server or through
-reverse-proxying the backend server(s) and webserver(s).
-
-
-## Continuous Integration
-
-### Travis CI
-
-[Travis CI][travis] is a continuous integration service, which can monitor GitHub for new commits
-to your repository and execute scripts such as building the app or running tests. The angular-seed
-project contains a Travis configuration file, `.travis.yml`, which will cause Travis to run your
-tests when you push to GitHub.
-
-You will need to enable the integration between Travis and GitHub. See the Travis website for more
-instruction on how to do this.
-
-### CloudBees
-
-CloudBees have provided a CI/deployment setup:
-
-<a href="https://grandcentral.cloudbees.com/?CB_clickstart=https://raw.github.com/CloudBees-community/angular-js-clickstart/master/clickstart.json">
-<img src="https://d3ko533tu1ozfq.cloudfront.net/clickstart/deployInstantly.png"/></a>
-
-If you run this, you will get a cloned version of this repo to start working on in a private git repo,
-along with a CI service (in Jenkins) hosted that will run unit and end to end tests in both Firefox and Chrome.
 
 
 ## Contact
