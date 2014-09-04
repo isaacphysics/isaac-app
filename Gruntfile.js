@@ -96,6 +96,7 @@ module.exports = function(grunt) {
     clean: {
       dist: [distOutputDir + "/**", distOutputFile],
       distPartials: [distOutputDir + "/app/partials/**"],
+      localBackup: ["app/**/*.localbackup"],
     },
 
     copy: {
@@ -108,7 +109,21 @@ module.exports = function(grunt) {
           filter: 'isFile',
           dot: true,
         }]
+      },
+
+      backupLocal: {
+        files: {
+          "app/js/isaac.js.localbackup": "app/js/isaac.js", 
+          "app/js/templates.js.localbackup": "app/js/templates.js"
+        }
+      },
+      restoreLocal: {
+        files: {
+          "app/js/isaac.js": "app/js/isaac.js.localbackup", 
+          "app/js/templates.js": "app/js/templates.js.localbackup"
+        }
       }
+
     },
 
     compress: {
@@ -150,5 +165,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['sass']);
   grunt.registerTask('server', ['http-server']);
-  grunt.registerTask('dist', ['clean:dist', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist', 'compress:dist']);
+  grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist', 'compress:dist']);
+
+
 }

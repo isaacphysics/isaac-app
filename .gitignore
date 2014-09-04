@@ -6,3 +6,4 @@ tmp
 .idea
 dist/
 app.tar.gz
+*.localbackup
