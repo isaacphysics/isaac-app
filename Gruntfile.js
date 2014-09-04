@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         },
         htmlmin: {
           collapseBooleanAttributes:      true,
-          collapseWhitespace:             true,
+          collapseWhitespace:             false, // This removes spaces before tags, which we often rely on. Maybe we shouldn't.
           removeAttributeQuotes:          true,
           removeEmptyAttributes:          true,
           removeComments:                 true,
