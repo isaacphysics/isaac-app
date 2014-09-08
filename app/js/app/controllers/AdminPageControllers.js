@@ -21,7 +21,7 @@ define([], function() {
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
 			api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function() {
-				$scope.contentVersion.get().$promise.then(function(r) {
+				api.contentVersion.get().$promise.then(function(r) {
 					$scope.contentVersion = r;
 					$scope.versionChange = "SUCCESS";
 				});
