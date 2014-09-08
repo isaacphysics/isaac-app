@@ -326,7 +326,7 @@ define([
                     $('.joyride-custom-controls').detach();
                 });
                 $('.desktop-tutorial-trigger').on('click', function() {
-                    $(document).foundation('joyride', 'start');
+                    $('#desktop-tutorial').foundation('joyride', 'start');
                 });
                 $('.mobile-tutorial-trigger').on('click', function() {
                     $('#mobile-tutorial').foundation('joyride', 'start');
