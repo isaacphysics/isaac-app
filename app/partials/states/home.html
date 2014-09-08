@@ -29,7 +29,7 @@
         </div>
         <div class='clearfix'></div>
     </div>
-    <a href="javascript:void(0)" ng-click="scrollToQuestions()" class="filter-go-to-questions" ng-show="filterPanelOpen == 'desktop-filter'">Go to Questions...</a>
+    <a href="javascript:void(0)" ng-click="scrollToQuestions()" class="filter-go-to-questions" ng-show="gameBoard.questions && filterPanelOpen == 'desktop-filter'">Go to Questions...</a>
     <a href="javascript:void(0)" aria-label="Reveal Filters" id="desktop-reveal" ng-click="openFilterPanel('desktop-filter')" ng-class="{down: filterPanelOpen == 'desktop-filter'}"></a>
 </div>
 <div mobile-panel class='no-print'>
