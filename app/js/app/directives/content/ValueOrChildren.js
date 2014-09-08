@@ -74,7 +74,7 @@ define([], function() {
 								}
 
 								currentChunk = [c];
-							} else if (c.layout == "accordion") {
+							} else if (c.layout == "accordion" || c.layout == "tabs") {
 								if (currentChunk.length > 0)
 									scope.contentChunks.push(currentChunk);
 								var accordionChunk = [c];

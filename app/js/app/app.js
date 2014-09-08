@@ -22,7 +22,7 @@ define([
     "app/honest/responsive_video", 
     "angular", 
     "angular-resource", 
-    "angular-animate",
+//    "angular-animate",
     "angular-cookies",
     "app/controllers", 
     "app/directives", 
@@ -53,7 +53,7 @@ define([
         'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
-        'ngAnimate',
+//        'ngAnimate',
         'ngCookies',
 	])
 
