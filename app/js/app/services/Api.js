@@ -125,7 +125,7 @@ define([], function() {
 
 		this.admin = {
 			synchroniseDatastores: function() {
-				return $.post(server + "/api/admin/synchronise_datastores").then(function() {
+				return $http.post(server + "/api/admin/synchronise_datastores").then(function() {
 					console.warn("Synchronising Datastores. The next page load will take a while.");
 				});
 			}
