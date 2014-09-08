@@ -24,6 +24,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 				subjects: "=",
 				fields: "=",
 				topics: "=",
+				warnings: "=",
 			},
 
 			restrict: "A",
@@ -212,6 +213,16 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    		}
 
 			    	}
+
+			    	// Add warnings where necessary
+			    	var warnings = {};
+			    	for (var i in scope.warnings) {
+			    		warnings[scope.warnings[i][0]] = scope.warnings[i][1];
+			    	}
+
+			    	visitAll(config, function(obj) {
+			    		obj.warning = warnings[obj.id];
+			    	})
 
 			    	hexFilterResize();
 

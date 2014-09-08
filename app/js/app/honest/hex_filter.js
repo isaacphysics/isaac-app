@@ -386,6 +386,10 @@ define([ 'jquery', 'app/honest/hexagon', 'lib/honest/d3.min'],
                         (d.comingSoon ? '<p class="ru-hex-filter-inactive-text">Coming Soon</p>' : '')
                         +"</div>");
 
+                if (d.warning) {
+                    $(item).append("<div tabindex='0' title='" + d.warning + "' class='hex-filter-warning'></div>");
+                }
+
                 /*
                 // Add percentage
                 $(item).append("<div class='ru-hex-filter-circle "+

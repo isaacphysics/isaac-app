@@ -17,6 +17,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles) {
 
+		// TODO: Reset filterPanelOpen when resizing between mobile and desktop.
 		$scope.filterPanelOpen = null;
 
 		$scope.openFilterPanel = function(panelToOpen) {
@@ -284,6 +285,10 @@ define([], function() {
 			$('html, body').animate({
                 scrollTop: $(".hexagon_wrap").offset().top
             }, 1000);        }
+        $scope.scrollToWarnings = function() {
+			$('html, body').animate({
+                scrollTop: $(".warnings").offset().top
+            }, 1000);        }
 
         $scope.generateGameBoardTitle = gameBoardTitles.generate;
 
@@ -303,6 +308,13 @@ define([], function() {
         		$scope.gameBoard.title = oldTitle;
         	});
         }
+
+
+
+        $("body").on("click", ".hex-filter-warning", $scope.scrollToWarnings);
+        $scope.$on("destroy", function() {
+        	$("body").off("click", ".hex-filter-warning", $scope.scrollToWarnings);
+        })
 	}]
 
 	return {
