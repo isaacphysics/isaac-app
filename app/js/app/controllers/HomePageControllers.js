@@ -29,6 +29,9 @@ define([], function() {
 		}
 
 		var recordCurrentGameboard = function() {
+			if (!$scope.gameBoard)
+				return;
+			
 			persistence.save("lastGameBoardId", $scope.gameBoard.id);
 
 			api.logger.log({

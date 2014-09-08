@@ -10,7 +10,7 @@
         </div>
         <div class='medium-8 end columns text-right'>
             <h2 class='ru-welcome'>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
-            <span class='ru-challenge' ng-hide="filterPanelOpen">Get started by <br class='show-for-medium-only'> <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">creating your challenge!</a></span>
+            <span class='ru-challenge' ng-hide="filterPanelOpen">Get started by <br class='show-for-medium-only'> <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">choosing your questions</a></span>
         </div>
         <div class='clearfix'></div>
 
@@ -36,7 +36,7 @@
         <div class='small-16 columns bottom-grey'>
             <ul class='small-block-grid-3 ' id='buttons'>
                 <li id='button-hex' ng-click="openFilterPanel('mobile-filter1')" data-for="mobile-filter1" ng-class="{active: filterPanelOpen == 'mobile-filter1'}">
-                    <p><small>Your challenge</small></p>
+                    <p><small>Question Topics</small></p>
                 </li>
                 <li id='button-difficulty' ng-click="openFilterPanel('mobile-filter2')" data-for="mobile-filter2" ng-class="{active: filterPanelOpen == 'mobile-filter2'}">
                     <p><small>Difficulty</small></p>
@@ -76,7 +76,7 @@
                     <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
                         <li class="show-for-large-up">
                             <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img1.jpg'>
+                                <img src='/assets/pod_img_rainbow.jpg'>
                                 <div class='ru_pod_image_inner'>
                                     <h5>Extraordinary Problems</h5>
                                     <p>Explore the physics of chains, rainbows and more through sets of themed problems.</p>
@@ -89,9 +89,9 @@
                             <div class="get-started-pod-spacer get-started-pod-up-arrow" ng-click="openFilterPanel('desktop-filter')"></div>
                             <div class="panel ru_pod ru_pod_image ru_pod_get_started">
                                 <div class='ru_pod_image_inner'>
-                                    <h5>Create your challenge</h5>
-                                    <p>Click here to get started. You can choose questions by topic and difficulty.</p>
-                                    <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')"><strong>Create your challenge</strong></a>
+                                    <h5>Choose your questions</h5>
+                                    <p>Click here to get started. You can choose questions by topic, difficulty or concept.</p>
+                                    <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')"><strong>Choose your questions</strong></a>
                                 </div>
                             </div>
                         </li>
@@ -108,7 +108,7 @@
                         </li>
                         <li>
                             <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img2.jpg'>
+                                <img src='/assets/pod_img_events.jpg'>
                                 <div class='ru_pod_image_inner'>
                                     <h5>Upcoming Events</h5>
                                     <p>Information about our events with our partner schools. Find one nearby to get involved.</p>
@@ -187,7 +187,7 @@
                     <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
                         <li>
                             <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img1.jpg'>
+                                <img src='/assets/pod_img_rainbow.jpg'>
                                 <div class='ru_pod_image_inner'>
                                     <h5>Extraordinary Problems</h5>
                                     <p>Once you have chosen topics to work on, start answering questions below.</p>
@@ -208,7 +208,7 @@
                         </li>
                         <li>
                             <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img2.jpg'>
+                                <img src='/assets/pod_img_events.jpg'>
                                 <div class='ru_pod_image_inner'>
                                     <h5>Upcoming Events</h5>
                                     <p>Information about our events with our partner schools. Find one nearby to get involved.</p>
