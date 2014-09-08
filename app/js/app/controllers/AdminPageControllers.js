@@ -20,7 +20,7 @@ define([], function() {
 
 		$scope.setVersion = function() {
 			api.admin.synchroniseDatastores().then(function() {
-				api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).then(function(data) {
+				api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function(data) {
 					$scope.contentVersion = api.contentVersion.get();
 				});
 			})
