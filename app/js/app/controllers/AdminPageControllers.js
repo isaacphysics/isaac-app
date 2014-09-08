@@ -18,12 +18,19 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 		$scope.contentVersion = api.contentVersion.get();
 
+		$scope.$watch("contentVersion.liveVersion", function() {
+			$scope.versionChange = null;
+		});
+
 		$scope.setVersion = function() {
-			api.admin.synchroniseDatastores().then(function() {
-				api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function(data) {
-					$scope.contentVersion = api.contentVersion.get();
-				});
-			})
+			$scope.versionChange = "IN_PROGRESS"
+			api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function(data) {
+				$scope.contentVersion = api.contentVersion.get();
+				$scope.versionChange = "SUCCESS"
+			}).catch(function(e) {
+				console.error(e);
+				$scope.versionChange = "ERROR"
+			});
 		}
 	}]
 

@@ -8,13 +8,30 @@
 <div class="row">
     <div class="medium-5 columns text-right">
        <label for="content-version">
-            <strong>Content Version</strong>
+            <h4>Content Version</h4>
         </label>
     </div>
-	<div class="medium-7 columns">
+	<div class="medium-7 columns end">
 		<input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA">
 	</div>
-	<div class="medium-4 columns">
+	<div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
 		<button ng-click="setVersion()">Set Version</button>
 	</div>
 </div>
+<div class="row" ng-if="versionChange == 'IN_PROGRESS'">
+    <div class="medium-16 columns text-center">
+    	<h4>Updating...</h4>
+    	<img src="/assets/loading.gif">
+	</div>
+</div>
+<div class="row" ng-if="versionChange == 'SUCCESS'">
+    <div class="medium-16 columns text-center">
+    	<h4>Content version changed successfully.</h4>
+	</div>
+</div>
+<div class="row" ng-if="versionChange == 'ERROR'">
+    <div class="medium-16 columns text-center">
+    	<h4 style="color:#a00;">Error: Content version could not be changed.</h4>
+	</div>
+</div>
+
