@@ -35,8 +35,7 @@ define([], function() {
 
 				scope.figNum = scope.figures[figId];
 
-				var src = api.getImageUrl(scope.doc.src);
-				scope.imgSrc = src;
+				scope.path = api.getImageUrl(scope.doc.src);
 
 			}
 		};
