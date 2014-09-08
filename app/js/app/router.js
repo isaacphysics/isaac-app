@@ -333,6 +333,9 @@ define(["angular-ui-router"], function() {
 
             .state('admin', {
                 url: "/admin",
+                resolve: {
+                    requireLogin: "authResolver",
+                },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/admin.html",

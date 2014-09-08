@@ -153,7 +153,7 @@ define([], function() {
 			}
 		})
 
-		this.contentVersion = $resource("", {version: "foo"}, {
+		this.contentVersion = $resource("", {}, {
 			"get": {
 				method: "GET",
 				url: server + "/api/info/content_versions/live_version",
