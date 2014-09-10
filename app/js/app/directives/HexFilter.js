@@ -231,6 +231,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    scope.$watchCollection("subjects", configChanged);
 			    scope.$watchCollection("fields", configChanged);
 			    scope.$watchCollection("topics", configChanged);
+			    scope.$watchCollection("warnings", configChanged);
 
 			    configChanged();
 			}
