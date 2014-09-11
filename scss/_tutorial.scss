@@ -49,9 +49,7 @@
 	background: url(/assets/tutorial-arrow-right.png) 0 0 no-repeat;
 	border: none;
 	margin-bottom: -20px;
-	right: -5px !important;
 	left: 0;
-	
 }
 .joyride-modal-bg {
 	background: url(/assets/tutorial-bg.png);
@@ -75,8 +73,7 @@
 	box-sizing: content-box;
 	margin-top: -15px;
 	margin-left: -15px;
-	vector-effect: non-scaling-stroke;
-
+	-webkit-transform: translate3d(0,0,0);
 }
 .joyride-expose-wrapper.square {
 	background: url(/assets/square.svg) center center no-repeat;
@@ -87,5 +84,28 @@
 	background-size: contain;
 }
 .joyride-nub.right + .joyride-content-wrapper {
-	margin-left: -80px;
+	margin-left: -60px;
+
+}
+@media #{$small-only} { 
+	.joyride-custom-controls {
+		.custom-controls-wrap {
+			width: auto;
+			margin: 0 0 0 12px;
+		}
+	}
+	.joyride-nub.top,
+	.joyride-nub.bottom {
+		display: none;
+	}
+	.joyride-content-wrapper {
+		text-align: center;
+		h4 {
+			font-size: 1.2rem;
+		}
+	}
+	.joyride-expose-wrapper {
+		padding: 0;
+		margin: 0;
+	}
 }
