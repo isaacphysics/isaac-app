@@ -42,13 +42,13 @@
 	left: 0;
 }
 .joyride-nub.bottom {
-	display: block;
+	/*display: block;
 	position: relative;
 	width: 41px;
 	height: 84px;
 	background: url(/assets/tutorial-arrow-down.png) 0 0 no-repeat;
 	border: none;
-	bottom: -15px;
+	bottom: -15px;*/
 }
 .joyride-nub.right {
 	display: block;
@@ -56,6 +56,16 @@
 	width: 84px;
 	height: 41px;
 	background: url(/assets/tutorial-arrow-right.png) 0 0 no-repeat;
+	border: none;
+	margin-bottom: -20px;
+	left: 0;
+}
+.joyride-nub.left {
+	display: block;
+	position: relative;
+	width: 84px;
+	height: 41px;
+	background: url(/assets/tutorial-arrow-left.png) 0 0 no-repeat;
 	border: none;
 	margin-bottom: -20px;
 	left: 0;
@@ -95,8 +105,11 @@
 .joyride-nub.right + .joyride-content-wrapper {
 	margin-left: -60px;
 }
+.joyride-nub.left + .joyride-content-wrapper {
+	margin-left: 60px;
+}
 .joyride-nub.bottom + .joyride-content-wrapper {
-	margin-top: -100px;
+
 }
 @media #{$small-only} { 
 	.joyride-custom-controls {
