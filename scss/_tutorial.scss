@@ -76,7 +76,6 @@
 	z-index: 1002;
 }
 .joyride-tip-guide {
-	display: table;
 	background: transparent;
 	z-index: 1003;
 }
@@ -101,7 +100,7 @@
 	background-size: contain;
 }
 .joyride-expose-wrapper.rectangle {
-	background: url(/assets/rectangle.svg) center center no-repeat;
+	background: url(/assets/rectangle.svg) left center no-repeat;
 	background-size: contain;
 }
 .joyride-nub.right + .joyride-content-wrapper {
