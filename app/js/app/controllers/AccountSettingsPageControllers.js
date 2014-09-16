@@ -135,12 +135,10 @@ define([], function() {
 			        }
 	        	})
 	        } else {
-
 	        	// The form is not valid, so display errors.
-	        	for(var i in $scope.account.$error.required){
+	        	for(var i in $scope.account.$error.required) {
 	        		$scope.account.$error.required[i].$dirty = true;
-        	}
-
+        		}
 	        }
         }
 

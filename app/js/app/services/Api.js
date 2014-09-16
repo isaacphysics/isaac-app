@@ -79,6 +79,12 @@ define([], function() {
 			}
 		});
 
+		this.adminUserSearch = $resource(server + "/api/admin/users?email=:email", {}, {
+			'search': {
+				method: 'GET', 
+				isArray: true 
+			}
+		});
 
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 

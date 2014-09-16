@@ -30,6 +30,12 @@ define([], function() {
 				$scope.versionChange = "ERROR"
 			});
 		}
+		
+		$scope.hasSearched = false;
+		$scope.findUsers = function() {
+			$scope.userSearch.results = api.adminUserSearch.search({ 'email' : $scope.userSearch.searchTerms});
+			$scope.userSearch.hasSearched=true;
+		}
 	}]
 
 	return {

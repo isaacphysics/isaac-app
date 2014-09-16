@@ -1,8 +1,8 @@
 <div desktop-panel>
-<h1>Isaac Administration</h1>
+    <h1>Isaac Administration</h1>
 </div>
 <div mobile-panel>
-<h1>Isaac Administration</h1>
+    <h1>Isaac Administration</h1>
 </div>
 
 <div class="row">
@@ -35,3 +35,40 @@
 	</div>
 </div>
 
+<div class="row">
+    <div class="medium-5 columns text-right">
+       <label for="user-search">
+            <h4>User Management</h4>
+        </label>
+    </div>
+    <div class="medium-7 columns end">
+        <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
+    </div>
+    <div class="medium-4 columns end">
+        <button ng-click="findUsers()">Find user</button>
+    </div>
+</div>
+
+<!-- Results TODO: stolen from search page this needs tidying up -->
+<section ng-if="userSearch.hasSearched">
+    <div class="row">
+        <div class="small-16 columns">
+            <h4>User search results</h4>
+            <div class="ru-concept-results">
+                <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
+                    <div class='small-16 columns'>
+                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
+                            <div class="ru-search-result-content">
+                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
+                                <h4>
+                                    <span class="physics">{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
+                                </h4>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
