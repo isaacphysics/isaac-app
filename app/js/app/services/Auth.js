@@ -114,16 +114,18 @@ define([], function() {
 
 	}];
 
-	var resolver = ['auth', '$rootScope', function(auth, $rootScope) {
+	var promiseLoggedIn = ['auth', '$rootScope', function(auth, $rootScope) {
+
 		return $rootScope.user.$promise.catch(function(r) {
 			if (r.status == 401)
 				return Promise.reject("require_login");
 			return Promise.reject("Something went wrong:", r);
 		});
+
 	}];
 
 	return {
 		service: service,
-		resolver: resolver,
+		promiseLoggedIn: promiseLoggedIn,
 	}
 });

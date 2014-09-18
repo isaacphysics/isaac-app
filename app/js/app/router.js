@@ -194,7 +194,7 @@ define(["angular-ui-router"], function() {
             .state('boards', {
                 url: "/boards",
                 resolve: {
-                    requireLogin: "authResolver",
+                    requireLogin: "promiseLoggedIn",
                 },
                 views: {
                     "body": {
@@ -334,7 +334,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireLogin: "authResolver",
+                    requireLogin: "promiseLoggedIn",
                 },
                 views: {
                     "body": {

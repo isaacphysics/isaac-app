@@ -60,7 +60,7 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 
 	.service('auth', auth.service)
 
-	.service('authResolver', auth.resolver)
+	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
 
 
