@@ -24,6 +24,7 @@
             <a ui-sref='glossary'>Glossary</a>
             <a api-environment="dev" ui-sref='questionIndex'>Question List</a>
             <a api-environment="dev" ui-sref='contentErrors'>Content Errors</a>
+            <a id="tutorial-button" class="desktop-tutorial-trigger">Tutorial</a>
         </div>
         <div class='large-5 medium-5 columns footer_links'>
             <div class='right'>
@@ -134,6 +135,12 @@
             </div>
         </div>
         <hr>
+        <div class='row'>
+            <div class='small-16 columns'>
+                <a class="mobile-tutorial-trigger"><span>Tutorial</span><img src='/assets/icon-index-arrow.png'></a>
+            </div>
+        </div>
+        <hr>
     </div>
     <div class='row'>
         <div class='small-16 columns'>
@@ -143,3 +150,34 @@
         </div>
     </div>
 </footer>
+
+<!-- This is all standard joyride apart from the 'data-shape' attr, this is the shape you want the exposed element to be wrapped with and can be circle, square or rectangle. If nothing or an invalide input is passed in it will default to circule -->
+<div id="desktop-tutorial">
+    <ul class="joyride-list" data-joyride>
+        <li data-id="desktop-reveal" data-options="tip_location: bottom;">
+            <h4>Reveals the Board-filter where you can create your challenge</h4>
+        </li>
+        <li data-id="tutorial-search" data-options="tip_location: left;" data-shape="circle">
+            <h4>Search your board, concepts, problems & articles.</h4>
+        </li>
+        <li data-id="tutorial-shuffle" data-options="tip_location: right;" data-shape="rectangle">
+            <h4>Refreshes the current board to display another set of questions based on your board set-up</h4>
+        </li>
+        <li data-id="tutorial-button" data-options="tip_location: top;" data-shape="rectangle">
+            <h4>Want to see it again, launch tutorial</h4>
+        </li>
+    </ul>
+</div>
+<div id="mobile-tutorial">
+    <ul class="joyride-list" data-joyride>
+        <li data-id="button-hex" data-options="tip_location: bottom;" data-shape="square">
+            <h4>Set your challenge</h4>
+        </li>
+        <li data-id="button-difficulty" data-options="tip_location: bottom;" data-shape="circle">
+            <h4>Reveals difficulty</h4>
+        </li>
+        <li data-id="button-concept" data-options="tip_location: bottom;" data-shape="square">
+            <h4>Reveals concepts</h4>
+        </li>
+    </ul>
+</div>

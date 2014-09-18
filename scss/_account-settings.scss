@@ -156,6 +156,12 @@ input.account-settings-input {
 	.account-settings-wrap [class*="block-grid-"]>li {
 		padding-bottom: 0;
 	}
+	#account-updated.reveal-modal {
+		margin: 0 18px;
+		min-height: initial;
+		width: auto;
+		z-index: 9999;
+	}
 }
 @media #{$small-up} {
 	#account-gender {

@@ -88,6 +88,22 @@ $ru_nav_size : 7em;
     right: 15px;
     top: 19px;
     z-index: 200;
+    width: 62px;
+    height: 40px;
+    background: url(/assets/desktop-search-bg.png) 0 0 no-repeat;
+}
+
+.ru-desktop-search-icon {
+    position: absolute;
+    z-index: 202;
+    right: 15px;
+    top: 19px;
+    border: none;
+    outline: none;
+}
+
+#tutorial-search {
+    float: right;
 }
 
 .ru-desktop-panel-content

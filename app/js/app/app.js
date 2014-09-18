@@ -31,7 +31,6 @@ define([
     "fastclick",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
-    "app/honest/anim_check",
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
@@ -152,7 +151,6 @@ define([
                 {
                     return ($(".ru-mobile-header").css('display') !== 'none');
                 };
-                
                 // Fix ups for iOS
                 if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
                 {
@@ -315,6 +313,7 @@ define([
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
                     cookie.create('cookiesAccepted',1,720);
                 });
+
                 
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
@@ -325,9 +324,36 @@ define([
                             rv.forceResize();
                             sliderResize();
                         }
-                    }
+                    },
+                    joyride: { 
+                            expose: true,
+                            next_button: false,
+                            prev_button: false,
+                            template : {
+                                link: ''
+                            },
+                            pre_ride_callback: function() {
+                                // add custom controls
+                                $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a></div></div>');
+                            },
+                            post_expose_callback: function (index){
+                                // Work out what to wrap the exposed element with e.g. square, circle or rectangle
+                                	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
+                                                       .getElementsByTagName("li")[index]
+                                                       .getAttribute('data-shape');                    
+                                
+                                if(tutorial != null) {
+                                    $('.joyride-expose-wrapper').addClass(tutorial);
+                                }
+                                // Triggering a resize fixes inital positioning issue on chrome
+                                $(window).resize();
+                            },
+                            post_ride_callback: function() {
+                                // remove controls when tutorial has finished
+                                $('.joyride-custom-controls').detach();
+                            }
+                        }
                 }); 
-
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
                 {
@@ -389,13 +415,24 @@ define([
                         }
                     }
                 });
+
                                 
             });
 
         });
+		$('body').on('click', '.joyride-close-tip', function() {
+            // remove controls if tutorial is closed part way through
+            $('.joyride-custom-controls').detach();
+        });
+        $('body').on('click', '.desktop-tutorial-trigger', function() {
+          	$('#desktop-tutorial').foundation('joyride', 'start');
+        });
+        $('body').on('click', '.mobile-tutorial-trigger', function() {
+            $('#mobile-tutorial').foundation('joyride', 'start');
+        });
+
 
 	}]);
-
 
 	/////////////////////////////////////
 	// Bootstrap AngularJS

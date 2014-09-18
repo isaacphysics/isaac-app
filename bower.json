@@ -13,7 +13,7 @@
     "angular-resource": "1.2.x",
     "angular-animate": "1.2.x",
     "angular-cookies": "1.2.x",
-    "foundation": "5.2.2",
+    "foundation": "5.4.0",
     "react": "0.10.0",
     "angulartics": "0.15.17",
     "angular-recursion": "1.0.0",
