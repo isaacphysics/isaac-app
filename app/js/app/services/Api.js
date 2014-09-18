@@ -79,10 +79,14 @@ define([], function() {
 			}
 		});
 
-		this.adminUserSearch = $resource(server + "/api/admin/users?email=:email", {}, {
+		this.adminUserSearch = $resource(server + "/api/admin/users/:userId?email=:email", {}, {
 			'search': {
 				method: 'GET', 
 				isArray: true 
+			},
+			'get' : {
+				method: 'GET', 
+				isArray: false 
 			}
 		});
 

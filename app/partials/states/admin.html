@@ -56,7 +56,7 @@
             <h4>User search results</h4>
             <div class="ru-concept-results">
                 <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
-                    <div class='small-16 columns'>
+                    <div ui-sref="accountSettings({'userId' : result._id })" class='small-16 columns'>
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">

@@ -1,5 +1,5 @@
 <div desktop-panel>
-    <div class="row">
+    <div ng-if="editingSelf" class="row">
         <div class="medium-10 columns">
     	   <h1>Account Settings</h1>
     	   <h2 class="subheader">Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
@@ -10,12 +10,22 @@
             </h2>
         </div>
     </div>
+    <div ng-if="!editingSelf" class="row">
+        <div class="medium-10 columns">
+           <h1>Manage a user's account</h1>
+           <h2 class="subheader">Editing another user's <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
+        </div>
+    </div>    
 </div>
 <div class="row account-settings-wrap">
-    <div class="show-for-small-only small-16 columns">
+    <div ng-if="editingSelf" class="show-for-small-only small-16 columns">
         <h1>Account settings</h1>
         <h2 class='subheader'>Set up your Isaac account, or <a ui-sref="logout">Log out &raquo;</a></h2>
     </div>
+    <div ng-if="!editingSelf" class="show-for-small-only small-16 columns">
+        <h1>Manage a user's account</h1>
+        <h2 class='subheader'>Editing another user's Isaac account.</h2>
+    </div>    
     <form class="panel" ng-submit="save()" name="account" novalidate>
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
 		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
@@ -55,20 +65,30 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-show="!user.role || user.role == 'STUDENT'" class="large-16 columns">
+                    <div ng-show="!user.role && editingSelf" class="large-16 columns">
                         <label>
                             <strong>Are you a teacher?</strong>
                         </label>
                         <a class="teacher-link" ui-sref="contact"><span class="underline">Contact us</span> for an upgraded account.</a>
                     </div>
-                    <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')" class="large-16 columns">
+                    <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns">
                         <label>
                             <strong>Upgraded account:</strong>
                         </label>
                         <p>Your account has been assigned the {{user.role.toLowerCase()}} role.</p>
                     </div>
+                    <div ng-show="!editingSelf" class="large-16 columns">
+                        <label>
+                            <strong>Change user's role:</strong>
+                        </label>
+                        <select ng-model="user.role">
+                            <option value="">No role</option>
+                            <option value="TEACHER">Teacher</option>
+                            <option value="CONTENT_EDITOR">Content Editor</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                    </div>
                 </div>
-
             </li>
             <li>
                 <div class="row">

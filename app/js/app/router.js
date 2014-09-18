@@ -22,6 +22,19 @@ define(["angular-ui-router"], function() {
 
 	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
+        var getRolePromise = function(role) {
+            return ["promiseLoggedIn", function(promiseLoggedIn){
+                        
+                return promiseLoggedIn.then(function(u){
+                    if (u.role == role) {
+                        return Promise.resolve(u);
+                    } else {
+                        return Promise.reject("require_role");
+                    }                             
+                })
+            }]
+        }
+
         $urlRouterProvider.when("", "/");
         $urlRouterProvider.otherwise(function($injector, $location) {
             return "/not_found?target=" + $location.url();
@@ -293,7 +306,16 @@ define(["angular-ui-router"], function() {
             })
 
 	        .state('accountSettings', {
-		        url: "/account?next",
+		        url: "/account?next&userId",
+                resolve: {
+                    "userOfInterest" : ["$stateParams", "api", function($stateParams, api) {
+                        if ($stateParams.userId) {
+                            return api.adminUserSearch.get({"userId" : $stateParams.userId})    
+                        } else {
+                            return null;
+                        }
+                    }],
+                },                
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/account_settings.html",
@@ -334,7 +356,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireLogin: "promiseLoggedIn",
+                    requireRole: getRolePromise("ADMIN"),
                 },
                 views: {
                     "body": {
