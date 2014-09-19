@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$http", "$location", "api", function($http, $location, api) {
+    return ["$http", "$location", "api", "$timeout", function($http, $location, api, $timeout) {
 		return {
 
 			restrict: "A",
@@ -26,16 +26,20 @@ define([], function() {
 				scope.showShareUrl = false;
 				scope.shareUrl = null;
 
-				if(attrs.sharelink) {
-					var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
-				}
-				else {
-					var data = {"longUrl": window.location.href};
-				}
-				$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
-					scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
-				}).catch(function() {
-					// Fail silently
+				$timeout(function() {
+					// Do this asynchronously so that window.location has a chance to update first.
+					
+					if(attrs.sharelink) {
+						var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
+					}
+					else {
+						var data = {"longUrl": window.location.href};
+					}
+					$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
+						scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
+					}).catch(function() {
+						// Fail silently
+					});
 				});
 
                 scope.getShareLink = function() {

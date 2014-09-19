@@ -286,9 +286,9 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
-                        controller: function($scope, $stateParams) {
+                        controller: ["$scope", "$stateParams", function($scope, $stateParams) {
                             $scope.target = $stateParams.target;
-                        }
+                        }],
                     },
                 },
 
@@ -298,9 +298,9 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/403.html",
-                        controller: function($scope, $stateParams) {
+                        controller: ["$scope", "$stateParams", function($scope, $stateParams) {
                             $scope.target = $stateParams.target;
-                        }
+                        }],
                     },
                 },
             })
