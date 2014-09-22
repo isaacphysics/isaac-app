@@ -96,7 +96,7 @@
         </div>
     </div>
     <!-- Search button  MUST BE LAST-->
-    <div class="row" ng-controller="GlobalSearchController" ng-hide="globalFlags.noSearch">
+    <div class="row" ng-controller="GlobalSearchController" ng-if="!globalFlags.noSearch">
         <div class="small-16 columns">
 
             <div class='row hide-for-small-only site-search-row'>
