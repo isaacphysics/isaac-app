@@ -354,6 +354,27 @@ define([
                             }
                         }
                 }); 
+                var tutorialShown = cookie.read('tutorialShown');
+
+                if (!tutorialShown) {
+                    if ($.ru_IsMobile()) {
+                        if ($('#mobile-tutorial').length > 0) {
+                            setTimeout(function() {
+                                // Launch the tutorial asynchronously. No idea why this is required.
+                                $('#mobile-tutorial').foundation('joyride', 'start');
+                                cookie.create('tutorialShown',1,720);
+                            }, 1000)
+                        }
+
+                    } else {
+                        if ($('#desktop-tutorial').length > 0) {
+                            $('#desktop-tutorial').foundation('joyride', 'start');
+                            cookie.create('tutorialShown',1,720);
+                        }
+                    }
+
+                }
+
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
                 {
