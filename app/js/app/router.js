@@ -72,6 +72,9 @@ define(["angular-ui-router"], function() {
         $stateProvider
             .state('home', staticPageState("/", "home", "HomePageController"))
             .state('about', genericPageState("/about", "about_us_index"))
+            .state('mission', genericPageState("/mission", "mission"))
+            .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
+            .state('mission_students', genericPageState("/mission_students", "mission_students"))
             .state('events', genericPageState("/events", "events_index"))
             .state('glossary', genericPageState("/glossary", "glossary"))
             .state('cookies', genericPageState("/cookies", "cookie_policy"))
