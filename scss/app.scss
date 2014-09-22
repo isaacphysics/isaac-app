@@ -1,3 +1,11 @@
+@mixin rotate($d) {
+  -webkit-transform: rotate($d);
+     -moz-transform: rotate($d);
+      -ms-transform: rotate($d);
+       -o-transform: rotate($d);
+          transform: rotate($d);
+}
+
 // Foundation
 @import "settings";
 @import "foundation";
