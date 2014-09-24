@@ -1,5 +1,5 @@
 <div class="clearfix"></div>
-<dl class="accordion ru_accordion {{pageSubject || 'general'}}" data-accordion>
+<dl class="accordion ru_accordion {{pageSubject || 'general'}}">
     <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}" class="print-avoid-break" ng-init="accordionSection = {titleSuffix: '', $index: $index, correctAnswerFlag: correctAnswerFlags[$index]}">
         <a href="javascript:void(0)" ng-click="toggleChild($index)" class="ru_accordion_titlebar">
 	        <div class="ru_accordion_details no-print">
