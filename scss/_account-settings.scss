@@ -134,10 +134,11 @@ input.account-settings-input {
 .teacher-link {
     font-size: 1rem;
 }
-//.account-settings-wrap ul {
-//    line-height: 1;
-//}
 
+.account-settings-wrap .delete-account-text {
+	font-size: 0.7rem;
+	padding-top: 0.8rem;
+}
 
 @media #{$small-only} { 
 	.account-settings-wrap {
