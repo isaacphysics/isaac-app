@@ -686,6 +686,11 @@ $hex_diff_levels : 6;
     {
         background-image: url(/assets/reveal-down.png); 
     }
+
+    &:hover
+    {
+        opacity: 0.8;
+    }
 }
 
 .filter-go-to-questions
