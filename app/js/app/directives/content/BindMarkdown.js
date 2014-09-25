@@ -40,7 +40,7 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 					return [{
 						type: "lang",
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
-						replace: '<a href="javascript:void(0)" ng-click="markdownLinkGo(\'$2\')" rel="nofollow">$1</a>',
+						replace: '<a ng-href="<lbr><lbr>markdownLinkGo(\'$2\')<rbr><rbr>" rel="nofollow">$1</a>',
 					}]
 				};				
 
@@ -65,18 +65,25 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 				});
 
 				scope.markdownLinkGo = function(url) {
-
-					// TODO: If the target is local, but doesn't exist, the 404 page redirects back iummediately. Work out why.
-					if (url.indexOf("http://") == 0)
-						document.location.href = url;
-					else
-						$location.url(url);
+					// If the link is external go ahead and return it
+					if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
+						return url;
+					}
+					
+					// The link must be internal so add #! if required.
+					if ($location.host().indexOf("localhost") > -1) {
+						return "/#!" + url
+					} else {
+						return url;	
+					}
 				}
 
 				var parsed = $parse(attrs.bindMarkdown|| element.html());
 				var markdown = (parsed(scope) || "").toString();
 				var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
-				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }"))(scope));
+				
+				// we have to replace <lbr><lbr> and <rbr><rbr> with {{ }} before angular compiles. The need to add spaces to {{ }} is to cope with MathJax
+				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }").replace("<lbr><lbr>", "{{").replace("<rbr><rbr>", "}}"))(scope));
 			}
 		};
 	}];
