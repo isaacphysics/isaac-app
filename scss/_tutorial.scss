@@ -3,7 +3,7 @@
 	top: 28px;
 	left: 0;
 	right: 0;
-	z-index: 1004;
+	z-index: 99999;
 	.row {
 		position: relative;
 	}
@@ -29,6 +29,9 @@
 		top: 0;
 		right: 15px;
 	}
+}
+.joyride-expose-cover, .joyride-expose-wrapper{
+	cursor: pointer;
 }
 .joyride-nub.top {
 	display: block;
@@ -86,7 +89,6 @@
 	padding: 0;
 	max-width: 350px;
 }
-
 .joyride-expose-wrapper {
 	background: transparent;
 	z-index: 1003;
