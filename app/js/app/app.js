@@ -141,7 +141,18 @@ define([
             // Global jQuery
             $(function()
             {
-                //$.cookie("test", 1);
+                // IE console debug - bug fix
+                if(!(window.console)) {
+                    var noop = function(){};
+                    console = {
+                        log: noop, 
+                        debug: noop,
+                        info: noop,
+                        warn: noop,
+                        error: noop
+                    };
+                }
+
                 // Mobile detection based on presence of mobile header
                 /**
                  * Are we on a mobile? (Safe on any browser without needing media queries via JS)
