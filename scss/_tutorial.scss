@@ -29,6 +29,25 @@
 		top: 0;
 		right: 15px;
 	}
+
+	div.joyride-page-indicator {
+		position: absolute;
+		top: 70px;
+		left:0px;
+		width: 100%;
+		text-align: center;
+		color: white;
+
+		span.open-circle {
+			display:inline-block;
+			width: 15px;
+			height: 15px;
+			margin: 0 10px;
+			background: url(/assets/Circle.svg) center center no-repeat;
+			background-size: contain;
+		}
+
+	}
 }
 .joyride-expose-cover, .joyride-expose-wrapper{
 	cursor: pointer;
@@ -157,3 +176,4 @@
 			}
 	}
 }
+

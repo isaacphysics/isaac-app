@@ -307,7 +307,7 @@ define([
                     cookie.create('cookiesAccepted',1,720);
                 });
 
-                
+                var totalJoyridePageCount = 0;
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
                 {
@@ -327,9 +327,38 @@ define([
                             },
                             pre_ride_callback: function() {
                                 // add custom controls
-                                $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a></div></div>');
+                                $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
+                                if ($.ru_IsMobile()) {
+                                    totalJoyridePageCount = $("#mobile-tutorial .joyride-list").children().length;
+                                } else {
+                                    totalJoyridePageCount = $("#desktop-tutorial .joyride-list").children().length;
+                                }
+                            },
+                            pre_step_callback: function(index) {
+                                $(".joyride-page-indicator").empty();
+
+                                for (var i = 0; i < totalJoyridePageCount; i++) {
+                                    if (i <= index) {
+                                        $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-viewed.png">');
+                                    } else {
+                                        $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
+                                    }
+                                }
+
+                                if (index == 0) {
+                                    $(".joyride-prev-tip").css("visibility","hidden");
+                                } else {
+                                    $(".joyride-prev-tip").css("visibility","visible");
+                                }
+
+                                if (index == totalJoyridePageCount-1) {
+                                    $(".joyride-next-tip").css("visibility","hidden");
+                                } else {
+                                    $(".joyride-next-tip").css("visibility","visible");
+                                }
                             },
                             post_expose_callback: function (index){
+
                                 // Work out what to wrap the exposed element with e.g. square, circle or rectangle
                                 	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
                                                        .getElementsByTagName("li")[index]
@@ -338,6 +367,7 @@ define([
                                 if(tutorial != null) {
                                     $('.joyride-expose-wrapper').addClass(tutorial);
                                 }
+
                                 // Triggering a resize fixes inital positioning issue on chrome
                                 $(window).resize();
                             },
