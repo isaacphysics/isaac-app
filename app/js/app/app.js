@@ -444,7 +444,9 @@ define([
         $('body').on('click', '.mobile-tutorial-trigger', function() {
             $('#mobile-tutorial').foundation('joyride', 'start');
         });
-
+        $('body').on('click', '.joyride-expose-cover', function(){
+            $('.joyride-modal-bg').trigger('click');
+        });
 
 	}]);
 
