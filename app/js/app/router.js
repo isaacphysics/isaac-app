@@ -329,6 +329,9 @@ define(["angular-ui-router"], function() {
 
 	        .state('register', {
 		        url: "/register",
+                resolve: {
+                    "userOfInterest" : function(){return undefined},
+                },
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/register.html",
@@ -385,6 +388,4 @@ define(["angular-ui-router"], function() {
         });
 
     }])
-
-
 })
