@@ -112,6 +112,9 @@ body
     opacity: 0.1;
 }
 
+.invisible {
+    visibility: hidden;
+}
 
 // Force footer to bottom
 $footer_height : 250px;
