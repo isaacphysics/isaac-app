@@ -169,4 +169,19 @@ define([
 		};
 	}])
 
+	.directive('scrollToOnAccordionOpen', ['$timeout',function($timeout) {
+		return {
+			link: function(scope, element) {
+				scope.$on("accordionSectionOpened", function(e,i) {
+					if (scope.accordionSection == i) {
+						$timeout(function() {
+							$("body").animate({
+				                scrollTop: element.offset().top
+				            }, 1000);        
+						});
+					}
+				});
+			},
+		};
+	}])
 });

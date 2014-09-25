@@ -52,6 +52,7 @@ define([], function() {
 						// This section was just opened.
 
 						scope.$emit("accordionsectionopen", i, scope.doc.children[i]);
+						scope.$broadcast("accordionSectionOpened", i);
 					}
 				}
 
