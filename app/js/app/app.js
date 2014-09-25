@@ -158,13 +158,6 @@ define([
                     $('.ru-answer-orbit .ru-answer-orbit-content p').addClass('iphone');
                 }
                 
-                // Fix up for Firefox scroll to
-                if (navigator.userAgent.match(/firefox/i))
-                {
-                    $('html').css({overflow:'hidden', height:'100%'});
-                    $('body').css({overflow:'auto', height:'100%'});
-                }
-                
                 // Safari - accordion titles
                 if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0)
                 {
