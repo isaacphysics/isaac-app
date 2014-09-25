@@ -2,11 +2,13 @@
     <div class='ru-desktop-panel-content'>
         <div class='medium-7 columns'>
             <span ng-if="!breadCrumbSubject">&nbsp;</span>
-            <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, physics: breadCrumbSubject == 'physics', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
-                <li ng-if="breadCrumbSubject" ng-bind-html="getTagTitle(breadCrumbSubject)"></li>
-                <li ng-if="breadCrumbField" ng-bind-html="getTagTitle(breadCrumbField)"></li>
-                <li ng-if="breadCrumbTopic" ng-bind-html="getTagTitle(breadCrumbTopic)"></li>
-            </ul>
+            <a class="ru-crumb" ng-click="openFilterPanel('desktop-filter')" href="javascript:void(0)">
+                <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, physics: breadCrumbSubject == 'physics', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
+                    <li ng-if="breadCrumbSubject" ng-bind-html="getTagTitle(breadCrumbSubject)"></li>
+                    <li ng-if="breadCrumbField" ng-bind-html="getTagTitle(breadCrumbField)"></li>
+                    <li ng-if="breadCrumbTopic" ng-bind-html="getTagTitle(breadCrumbTopic)"></li>
+                </ul>
+            </a>
         </div>
         <div class='medium-8 end columns text-right'>
             <h2 class='ru-welcome'>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
