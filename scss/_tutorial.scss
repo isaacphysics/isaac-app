@@ -81,10 +81,12 @@
 	width:auto;
 }
 .joyride-content-wrapper {
-	float: left;
+	float: left !important;
 	text-align: center;
-	padding-top: 0;
+	padding: 0;
+	max-width: 350px;
 }
+
 .joyride-expose-wrapper {
 	background: transparent;
 	z-index: 1003;
