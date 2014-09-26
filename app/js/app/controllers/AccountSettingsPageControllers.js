@@ -130,6 +130,9 @@ define([], function() {
         	}
         	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
+	        		// we want to cause the internal user object to be updated just in case it has changed.
+	        		return auth.updateUser();
+	        	}).then(function(){
 	        		if (next) {
 			        	$location.url(next)
 	        		} else {
