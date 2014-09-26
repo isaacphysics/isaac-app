@@ -329,6 +329,7 @@ define(["angular-ui-router"], function() {
                             return null;
                         }
                     }],
+                    requireLogin: getLoggedInPromise,
                 },                
 		        views: {
 			        "body": {
