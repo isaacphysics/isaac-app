@@ -28,7 +28,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs, ctrls, transclude) {
 
-
 				if (scope.doc.bestAttempt) {
 					scope.validationResponse = scope.doc.bestAttempt;
 					scope.selectedChoice = scope.validationResponse.answer;
@@ -40,6 +39,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					scope.validationResponse = null;
 				}
+				scope.validationResponseSet = true;
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;

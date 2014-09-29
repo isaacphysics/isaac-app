@@ -45,6 +45,8 @@ define([], function() {
 					0: scope.contentChunkIndex == 0 || isOnQuestionPage,
 				};
 
+				scope.titleSuffixes = {};
+
 				scope.toggleChild = function(i) {
 					scope.openChildren[i] = !scope.openChildren[i];
 
@@ -56,43 +58,58 @@ define([], function() {
 					}
 				}
 
-				var newCorrectAnswerFlags = function(i, a, b) {
-					if (a === b)
-						return; // Init
+				// Assuming we have questions in every accordion section, we are guaranteed to get
+				// one newQuestionAnswer event per section on initialisation. The order is NOT guaranteed.
 
-					scope.correctAnswerFlags[i].unwatch();
+				var answersOnLoad = {};
 
-					var lastCorrect = -1;
-					for(var i in scope.correctAnswerFlags){
-						if (scope.correctAnswerFlags[i].isCorrect) {
-							lastCorrect = parseInt(i);
-						}
-						else {
+				var updateLoadedQuestions = function() {
+
+					var encounteredNotCorrect = false;
+					for (var i = 0; i < scope.doc.children.length; i++) {
+						if (!(i in answersOnLoad))
 							break;
+
+						var ans = answersOnLoad[i];
+
+						// If there is an answer, close the tab and display the answer.
+						if (ans) {
+							scope.openChildren[i] = false;
+							scope.titleSuffixes[i] = ans;
+						} else {
+							if (!encounteredNotCorrect) {
+								// This is the first incorrect or not-answered question part. Open it.
+								scope.openChildren[i] = true;
+							} else {
+								// This is NOT the first incorrect or not-answered question part. Close it.
+								scope.openChildren[i] = false;
+							}
+							encounteredNotCorrect = true;
 						}
 					}
+				};
 
-					for(var i = 0; i < scope.doc.children.length; i++) {
-						scope.openChildren[i] = i == (lastCorrect+1);
+				scope.$on("newQuestionAnswer", function(e, index, ans) {
+					// TODO: Make sure we can go "back" to this question. This accordion stuff only works on refresh
+
+					if (index in answersOnLoad) {
+						
+						// This is a change - someone has submitted an answer.
+						if (ans) {
+							// They got the answer right. Display the answer and if the next question isn't open, open it.
+							scope.titleSuffixes[index] = ans;
+							scope.openChildren[index+1] = true;
+						} else {
+							// They got the answer wrong. Don't change anything.
+						}
+
+					} else {
+						// We have not had any communication from this section before. This must be a page load.
+						answersOnLoad[index] = ans;
+
+						updateLoadedQuestions();
 					}
-
-				}
-				
-				// Create a flag for each child that says whether that section contains a correctly answered question.
-				// This will only be used on question pages.
-
-				// We really only want to watch these flags while the page loads. After loading, we don't want to
-				// automatically collapse accordion sections any more.
-
-				scope.correctAnswerFlags = [];
-
-				for(var i in scope.doc.children) {
-					var c = scope.doc.children[i];
-
-					scope.correctAnswerFlags.push({isCorrect: false});
-					scope.correctAnswerFlags[i].unwatch = scope.$watch("correctAnswerFlags[" + i + "].isCorrect", newCorrectAnswerFlags.bind(null, i));
-				}
-
+				});
 			}
 		};
 	}];
