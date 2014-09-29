@@ -107,11 +107,6 @@ define([], function() {
 				});
 			});
 		}
-
-		// this.register = function(email, password) {
-
-		// }
-
 	}];
 
 	// this should not be used in the router resolver property as it will only return once.
