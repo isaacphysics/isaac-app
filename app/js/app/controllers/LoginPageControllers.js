@@ -20,12 +20,7 @@ define([], function() {
 		$scope.globalFlags.noSearch = true;
 		
 		// Make sure the internal user object is up-to-date
-		auth.updateUser().then(function(user){
-			if (!user) {
-				// if we don't currently have a user then this is fine we can show them the login page.
-				return;
-			} 
-			
+		auth.updateUser().then(function(user){			
 			// We will only do this bit if the user is already logged in.
 			var target = $location.search().target;
 			if (target) {
