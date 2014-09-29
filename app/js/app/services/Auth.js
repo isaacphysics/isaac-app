@@ -31,7 +31,6 @@ define([], function() {
 		}
 
 		this.providerCallback = function(provider, params) {
-
             var next = $cookies.afterAuth;
             next = next || "/";
             next = next.replace("#!", "");
@@ -61,7 +60,6 @@ define([], function() {
 		}
 
 		this.linkRedirect = function(provider) {
-			
 			$cookies.afterAuth = "/account";
 
 			api.authentication.getLinkRedirect({provider: provider}).$promise.then(function(data) {

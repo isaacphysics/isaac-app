@@ -82,8 +82,11 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 				var markdown = (parsed(scope) || "").toString();
 				var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
 				
+				var findAllLbs = new RegExp('<lbr>', 'g');
+				var findAllRbs = new RegExp('<rbr>', 'g');
+
 				// we have to replace <lbr><lbr> and <rbr><rbr> with {{ }} before angular compiles. The need to add spaces to {{ }} is to cope with MathJax
-				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }").replace("<lbr><lbr>", "{{").replace("<rbr><rbr>", "}}"))(scope));
+				element.html($compile(converted.replace("{{", "{ {").replace("}}", "} }").replace(findAllLbs, "{").replace(findAllRbs, "}"))(scope));
 			}
 		};
 	}];
