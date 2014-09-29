@@ -1,12 +1,12 @@
 <div class="clearfix"></div>
 <dl class="accordion ru_accordion {{pageSubject || 'general'}}">
-    <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}" scroll-to-on-accordion-open class="print-avoid-break" ng-init="accordionSection = {titleSuffix: '', $index: $index, correctAnswerFlag: correctAnswerFlags[$index]}">
+    <dd ng-repeat="c in doc.children" ng-class="{active: openChildren[$index]}" scroll-to-on-accordion-open class="print-avoid-break" ng-init="accordionSection = $index">
         <a href="javascript:void(0)" ng-click="toggleChild($index)" class="ru_accordion_titlebar">
-	        <div class="ru_accordion_details no-print">
-		        <span class='ru-level-{{pageSubject}}-{{c.level || "0"}}'></span>
-		        <img src='/assets/icon-expand-arrow.png'>
-	        </div>
-	        <span class="accordion-section-title-suffix" ng-bind="accordionSection.titleSuffix" math-jax></span>
+            <div class="ru_accordion_details no-print">
+                <span class='ru-level-{{pageSubject}}-{{c.level || "0"}}'></span>
+                <img src='/assets/icon-expand-arrow.png'>
+            </div>
+            <span class="accordion-section-title-suffix" ng-bind="titleSuffixes[$index]" math-jax></span>
             <div class="ru_accordion_name" style="float: left;">
                 <span class='ru_level' ng-if="c.level"></span> 
                 {{c.level}}

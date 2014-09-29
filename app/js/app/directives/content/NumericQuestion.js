@@ -86,34 +86,35 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.unitsDropdownStyle = null;
 				}
 
+				// scope.validationResponse is explicitly set by QuestionTabs in the link function.
+				// QuestionTabs then sets scope.validationResponseSet, so we ignore any changes 
+				// to validationResponse before that gets set.
+
 				scope.$watch("validationResponse", function(r, oldR) {
-					if (!r && r === oldR) {
-						return; // Init
-					}
+					if (!scope.validationResponseSet)
+						return;
+
+					// If we get this far, r has really been explicitly set by QuestionTabs
 					
 					if(r) {
 
 						scope.selectedChoice.value = r.answer.value;
 						scope.selectUnit(r.answer.units);
 
-						if (scope.accordionSection) {
+						if (scope.accordionSection != null) {
 							if (r.correct) {
-								scope.accordionSection.titleSuffix = "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓";
+								scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓");
 							} else {							
-								scope.accordionSection.titleSuffix = "";
+								scope.$emit("newQuestionAnswer", scope.accordionSection);
 							}
-
-							scope.accordionSection.correctAnswerFlag.isCorrect = r.correct;
 						}
 					} else {
 
 						// The user started changing their answer after a previous validation response.
 
-						// Just in case this is the initialisation of scope.validationResponse, 
-						// remove any watch the accordion might have.
-						
-						if (scope.accordionSection)
-							scope.accordionSection.correctAnswerFlag.unwatch();
+						if (scope.accordionSection != null) {
+							scope.$emit("newQuestionAnswer", scope.accordionSection);
+						}
 					}
 
 				})
