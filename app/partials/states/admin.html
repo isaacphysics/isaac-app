@@ -11,12 +11,14 @@
             <h4>Content Version</h4>
         </label>
     </div>
-	<div class="medium-7 columns end">
-		<input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
-	</div>
-	<div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
-		<button ng-click="setVersion()">Set Version</button>
-	</div>
+	<form ng-submit="setVersion()">
+        <div class="medium-7 columns end">
+            <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
+        </div>
+        <div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
+            <button ng-click="setVersion()">Set Version</button>
+        </div>
+    </form>
 </div>
 <div class="row" ng-if="versionChange == 'IN_PROGRESS'">
     <div class="medium-16 columns text-center">
@@ -41,12 +43,14 @@
             <h4>User Management</h4>
         </label>
     </div>
-    <div class="medium-7 columns end">
-        <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
-    </div>
-    <div class="medium-4 columns end">
-        <button ng-click="findUsers()">Find user</button>
-    </div>
+    <form ng-submit="findUsers()">
+        <div class="medium-7 columns end">
+            <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
+        </div>
+        <div class="medium-4 columns end">
+            <button ng-click="findUsers()">Find user</button>
+        </div>        
+    </form>
 </div>
 
 <!-- Results TODO: stolen from search page this needs tidying up -->
