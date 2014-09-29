@@ -108,20 +108,20 @@ define([], function() {
 			});
 		}
 
-		this.register = function(email, password) {
+		// this.register = function(email, password) {
 
-		}
+		// }
 
 	}];
 
+	// this should not be used in the router resolver property as it will only return once.
+	// TODO should this be deprecated?
 	var promiseLoggedIn = ['auth', '$rootScope', function(auth, $rootScope) {
-
 		return $rootScope.user.$promise.catch(function(r) {
 			if (r.status == 401)
 				return Promise.reject("require_login");
 			return Promise.reject("Something went wrong:", r);
 		});
-
 	}];
 
 	return {

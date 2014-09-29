@@ -22,17 +22,28 @@ define(["angular-ui-router"], function() {
 
 	.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-        var getRolePromise = function(role) {
-            return ["promiseLoggedIn", function(promiseLoggedIn){
-                        
-                return promiseLoggedIn.then(function(u){
+        var getLoggedInPromise = function($rootScope) {
+                    return $rootScope.user.$promise.catch(function(r) {
+                        if (r.status == 401)
+                            return Promise.reject("require_login");
+                        return Promise.reject("Something went wrong:", r);
+                    });
+        }
+
+        getLoggedInPromise['$inject'] = ["$rootScope"];
+
+        var getRolePromiseInjectableFunction = function(role) {
+            var result = function($rootScope) {
+                return getLoggedInPromise($rootScope).then(function(u){
                     if (u.role == role) {
                         return Promise.resolve(u);
                     } else {
                         return Promise.reject("require_role");
                     }                             
                 })
-            }]
+            }
+            result["$inject"] = ['$rootScope']
+            return result;
         }
 
         $urlRouterProvider.when("", "/");
@@ -210,7 +221,7 @@ define(["angular-ui-router"], function() {
             .state('boards', {
                 url: "/boards",
                 resolve: {
-                    requireLogin: "promiseLoggedIn",
+                    requireLogin: getLoggedInPromise
                 },
                 views: {
                     "body": {
@@ -318,6 +329,7 @@ define(["angular-ui-router"], function() {
                             return null;
                         }
                     }],
+                    requireLogin: getLoggedInPromise,
                 },                
 		        views: {
 			        "body": {
@@ -362,7 +374,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromise("ADMIN"),
+                    requireRole: getRolePromiseInjectableFunction("ADMIN"),
                 },
                 views: {
                     "body": {
