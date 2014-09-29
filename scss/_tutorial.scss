@@ -107,6 +107,13 @@
 	text-align: center;
 	padding: 0;
 	max-width: 350px;
+
+	a {
+		color:$ru_orange;
+		&:hover{
+			color: scale-color($ru_orange, $lightness: -14%)
+		}
+	}
 }
 .joyride-expose-wrapper {
 	background: transparent;
