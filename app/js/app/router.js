@@ -96,7 +96,6 @@ define(["angular-ui-router"], function() {
             .state('bios', genericPageState("/bios", "bios"))
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
 	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
-            //.state('login', staticPageState("/users/login", "login_page"))
 
 	        .state('contact', {
 		        url: "/contact",

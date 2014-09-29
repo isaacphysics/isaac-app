@@ -18,7 +18,7 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', function($scope, auth, api, userOfInterest, $stateParams, $window, $location) {
 		// if the userOfInterest is set then we want to the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
 		// this is likely to be an administrator activity and could do with some extra security from the frontend.
-		if (userOfInterest){
+		if (userOfInterest) {
 			$scope.editingSelf = false;
 			$scope.user = userOfInterest;
 		} else {
