@@ -18,24 +18,17 @@ define([], function() {
 	return ["$filter", function($filter) {
 
 		return {
-			scope: true,
+			scope: {
+				questions: "=",
+				title: "=",
+			},
 
 			restrict: "A",
 
-			templateUrl: "/partials/footer_pods.html",
+			templateUrl: "/partials/question_pod.html",
 
 			link: function(scope, element, attrs) {
-
-				scope.relatedConcepts = $filter('filter')(scope.page.relatedContent, {type: "isaacConceptPage"});
-				scope.relatedQuestions = $filter('filter')(scope.page.relatedContent, {type: "isaacQuestionPage"});	
-
-				scope.relatedEasierQuestions = $filter('filter')(scope.page.relatedContent, function(value){
-					return value.type == "isaacFastTrackQuestionPage" && value.level < scope.page.level;
-				})
-
-				scope.relatedHarderQuestions = $filter('filter')(scope.page.relatedContent, function(value){
-					return value.type == "isaacFastTrackQuestionPage" && value.level >= scope.page.level;
-				})
+	
 			},
 		};
 	}];

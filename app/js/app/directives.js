@@ -47,6 +47,7 @@ define([
     "app/directives/PrintButton",
     "app/directives/ShareButton",
     "app/directives/SchoolDropdown",
+    "app/directives/QuestionPod",
 	], function() {
 
 	/* Directives */
@@ -82,6 +83,8 @@ define([
 	.directive('footerPods', require("app/directives/FooterPods"))
 
 	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
+
+	.directive('questionPod', require("app/directives/QuestionPod"))
 
 	// Content Directives
 

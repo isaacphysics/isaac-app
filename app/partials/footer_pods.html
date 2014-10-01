@@ -18,22 +18,13 @@
                     </ul>
                 </div>
             </li>
-            <li>
-                <div class="panel ru_pod">
-                    <div class='ru_pod_title ru_pod_questions'>
-                        <h5>Related Questions</h5>
-                    </div>
-                    <hr>
-                    <ul class="pod-scroll-list">
-                    	<li ng-repeat="c in relatedQuestions">
-                            <a ui-sref="question({id: c.id})">{{c.title}}</a>
-                            <h6>{{c.summary}}</h6>
-                    	</li>
-	                    <li ng-hide="relatedQuestions.length" class="text-center">- No related questions -</li>
-                    </ul>
-                </div>
-            </li>
-            <li>
+            <li ng-if="page.type !='isaacFastTrackQuestionPage'" question-pod questions="relatedQuestions" title="'Related Questions'"></li>
+
+            <li ng-if="page.type=='isaacFastTrackQuestionPage'" question-pod questions="relatedEasierQuestions" title="'Easier Questions'"></li>
+
+            <li ng-if="page.type=='isaacFastTrackQuestionPage' && page.level < 3" question-pod questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
+
+            <li ng-if="page.type !='isaacFastTrackQuestionPage' || page.level == 3 ">
                 <div class="panel ru_pod ru_pod_forum">
                     <div class='ru_pod_title'>
                         <h5>Events</h5>
