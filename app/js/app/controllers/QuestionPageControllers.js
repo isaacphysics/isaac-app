@@ -22,6 +22,8 @@ define([], function() {
 		$scope.page = page;
 		$scope.questionPage = page;
 
+		$rootScope.pageTitle = page.title;
+
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });

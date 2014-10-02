@@ -27,10 +27,11 @@ define([], function() {
         });	 
 	*/
 
-	var PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', function($scope, $state, conceptList, persistence, $location) {
+	var PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', '$rootScope', function($scope, $state, conceptList, persistence, $location, $rootScope) {
 
 		$scope.allConcepts = conceptList.results;
-
+		$rootScope.pageTitle = "Concept Index";
+		
 		$scope.includePhysics = true;
 		$scope.includeMaths = true;
 

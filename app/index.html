@@ -16,7 +16,7 @@
     <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
     <meta property="og:image" content="https://isaacphysics.org/assets/isaac-logo@2xWider.png" />
 
-    <title>Isaac Physics</title>
+    <title ng-bind="'Isaac Physics' + (pageTitle ? ' - ' + pageTitle : '' )">Isaac Physics</title>
     <link rel="icon" href="/assets/favicon/isaac-favicon-16x16.png"   sizes="16x16">
     <link rel="icon" href="/assets/favicon/isaac-favicon-32x32.png"   sizes="32x32">
     <link rel="icon" href="/assets/favicon/isaac-favicon-96x96.png"   sizes="96x96">

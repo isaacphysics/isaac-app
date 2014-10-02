@@ -15,9 +15,10 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'page', function($scope, page) {
+	var PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
 		$scope.doc = page;
 		$scope.page = page;
+		$rootScope.pageTitle = page.title;
 	}]
 
 	return {

@@ -15,8 +15,10 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', function($scope, auth, api, gameBoardTitles) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', function($scope, auth, api, gameBoardTitles, $rootScope) {
 		$scope.globalFlags.isLoading = true;
+		
+		$rootScope.pageTitle = "My Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 

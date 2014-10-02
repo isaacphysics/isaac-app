@@ -39,7 +39,7 @@ define([], function() {
 		var questionPage = "isaacQuestionPage";
 
 		$rootScope.globalFlags.siteSearchOpen = false;
-		
+		$rootScope.pageTitle = "Search Results";
 		// initialise scope
 		$scope.models = defaultSearchOptions;
 		$scope.models.query = query;

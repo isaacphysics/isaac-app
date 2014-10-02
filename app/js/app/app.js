@@ -86,6 +86,7 @@ define([
 
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.globalFlags.isLoading = true;
+            $rootScope.pageTitle = "";
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {

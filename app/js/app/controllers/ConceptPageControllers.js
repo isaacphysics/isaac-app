@@ -29,6 +29,8 @@ define([], function() {
 	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', function($scope, page, tags, $rootScope, persistence, $location, $window, api) {
 		$scope.page = page;
 
+		$rootScope.pageTitle = page.title;
+
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
