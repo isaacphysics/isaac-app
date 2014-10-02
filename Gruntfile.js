@@ -168,4 +168,7 @@ module.exports = function(grunt) {
   grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist', 'compress:dist']);
 
 
+  grunt.registerTask('segue-version', 'Get the version of the segue api that this package depends on.', function() {
+    grunt.log.write("segueVersion:" + grunt.file.readJSON('package.json').segueVersion);
+  });
 }
