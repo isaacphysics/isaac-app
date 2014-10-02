@@ -27,11 +27,11 @@ define([], function() {
 			templateUrl: '/partials/content/Tabs.html',
 
 			link: function(scope, element, attrs) {
-
 				scope.activeTab = 0;
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
+
 					if (scope.doc.children[i].type == "isaacQuestion") {
 
 						var logData = {
@@ -46,6 +46,20 @@ define([], function() {
 						api.logger.log(logData);
 					}
 				}
+
+
+				scope.$on("ensureVisible", function(e) {
+					if (e.targetScope == scope)
+						return;
+
+					e.stopPropagation();
+
+					var i = e.targetScope.tabIndex;
+
+					scope.activateTab(i);
+
+					scope.$emit("ensureVisible");
+				});
 			},
 		};
 	}];

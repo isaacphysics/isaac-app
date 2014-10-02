@@ -16,7 +16,7 @@
 define([], function() {
 
 
-	return [function() {
+	return ["$location", function($location) {
 
 		return {
 
@@ -64,6 +64,8 @@ define([], function() {
 				var answersOnLoad = {};
 
 				var updateLoadedQuestions = function() {
+					if ($location.hash())
+						return;
 
 					var encounteredNotCorrect = false;
 					for (var i = 0; i < scope.doc.children.length; i++) {
@@ -109,6 +111,19 @@ define([], function() {
 
 						updateLoadedQuestions();
 					}
+				});
+
+				scope.$on("ensureVisible", function(e) {
+
+					if (e.targetScope == scope)
+						return;
+
+					e.stopPropagation();
+					var section = e.targetScope.accordionSection;
+
+					scope.openChildren[section] = true;
+
+					scope.$emit("ensureVisible");
 				});
 			}
 		};

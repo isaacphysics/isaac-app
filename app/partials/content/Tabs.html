@@ -4,7 +4,7 @@
             <dd ng-repeat="t in doc.children" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">{{t.title}}</a></dd>
         </dl>
         <div class="tabs-content ru_tabs">
-            <div ng-repeat="t in doc.children" ng-class="{content: true, active: $index == activeTab}" class="force-print">
+            <div ng-repeat="t in doc.children" ng-class="{content: true, active: $index == activeTab}" class="force-print" ng-init="tabIndex = $index">
                 <div class='row'>
                     <div class="medium-14 medium-offset-1 small-16 columns print-avoid-break">
                         <h3>{{t.title}}</h3>
