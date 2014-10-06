@@ -22,26 +22,28 @@
         <section>
             <div class="row ru-concept">
                 <div class="ru-concept-inner ru-border">
-                    <div class="small-15 small-offset-0 medium-14 medium-offset-1 columns end ru-concept-intro">
-                        <div class="only-print print-header">
-                            <span class="{{pageSubject}}">{{shareUrl}}</span>
-                        </div>
-
-                        <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
-                                                                             src='/assets/isaac-logo-strap-print.svg'></a>
-                        <a print-button></a>
-                        <a share-button></a>
-                        <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                            <div>
-                                {{shareUrl}}
+                    <div class="row">
+                        <div class="small-15 small-offset-0 medium-14 medium-offset-1 columns end ru-concept-intro">
+                            <div class="only-print print-header">
+                                <span class="{{pageSubject}}">{{shareUrl}}</span>
                             </div>
+
+                            <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
+                                                                                 src='/assets/isaac-logo-strap-print.svg'></a>
+                            <a print-button></a>
+                            <a share-button></a>
+                            <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                                <div>
+                                    {{shareUrl}}
+                                </div>
+                            </div>
+                            <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
+                            <h3 class='subheader'>
+                                <strong ng-if="pageSubject == 'physics'">Physics Concept</strong>
+                                <strong ng-if="pageSubject == 'maths'">Maths Concept</strong> 
+                                <span api-environment="dev">({{questionPage.published ? "Published" : "Unpublished"}})</span>
+                            </h3>
                         </div>
-                        <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
-                        <h3 class='subheader'>
-                            <strong ng-if="pageSubject == 'physics'">Physics Concept</strong>
-                            <strong ng-if="pageSubject == 'maths'">Maths Concept</strong> 
-                            <span api-environment="dev">({{questionPage.published ? "Published" : "Unpublished"}})</span>
-                        </h3>
                     </div>
                     <div class="clearfix"></div>
 
