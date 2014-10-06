@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'api', function($scope, api) {
+	var PageController = ['$scope', 'api', '$state', function($scope, api, $state) {
 		if ($scope.user) {
 			$scope.user.$promise.then(function() {
 				$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				
@@ -55,6 +55,11 @@ define([], function() {
 				$scope.errorDuringSubmit = true;
 			});
 		}
+
+		$scope.launchTutorial = function() {
+			document.cookie = encodeURIComponent('tutorialShown') + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+			document.location.href = "/";
+		};
 	}];
 
 	return {
