@@ -32,6 +32,13 @@
 		font-size: 13px;
 	}
 }
+.board-title-link {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	line-height: 40px;
+}
 .board-delete {
 	position: absolute;
 	top: 5px;
