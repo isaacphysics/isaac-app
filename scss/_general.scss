@@ -226,12 +226,13 @@ p.ru-large
     font-size: 1.2rem !important;
 }
 
+body
+{
+    overflow-x: hidden;
+}
+    
 @media #{$small-only}
 {
-    body
-    {
-        overflow-x: hidden;
-    }
     p.ru-large
     {
         font-size: 1.05rem !important;
