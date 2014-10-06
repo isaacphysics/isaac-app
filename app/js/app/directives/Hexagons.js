@@ -61,11 +61,31 @@ define(["app/honest/hexagon"],function(hexagon) {
             {
                 if(d.type === 'isaacWildcard')
                 {
-                    $(this).addClass('ru-hex-home-chat');
+                    $(this).addClass('ru-hex-home-field');
+                    $(this).addClass('ru-hex-home-field-physics');
                 }
                 else
                 {
-                    $(this).addClass('ru-hex-home-bolt');
+                    $(this).addClass('ru-hex-home-field');
+                    if (d.tags.indexOf("mechanics") > -1) {
+                        $(this).addClass('ru-hex-home-field-mechanics');
+                    } else if (d.tags.indexOf("waves") > -1) {
+                        $(this).addClass('ru-hex-home-field-waves');
+                    } else if (d.tags.indexOf("fields") > -1) {
+                        $(this).addClass('ru-hex-home-field-fields');
+                    } else if (d.tags.indexOf("circuits") > -1) {
+                        $(this).addClass('ru-hex-home-field-circuits');
+                    } else if (d.tags.indexOf("geometry") > -1) {
+                        $(this).addClass('ru-hex-home-field-geometry');
+                    } else if (d.tags.indexOf("calculus") > -1) {
+                        $(this).addClass('ru-hex-home-field-calculus');
+                    } else if (d.tags.indexOf("algebra") > -1) {
+                        $(this).addClass('ru-hex-home-field-algebra');
+                    } else if (d.tags.indexOf("functions") > -1) {
+                        $(this).addClass('ru-hex-home-field-functions');
+                    } else if (d.tags.indexOf("probability") > -1) {
+                        $(this).addClass('ru-hex-home-field-probability');
+                    }
                 }
             });
             
