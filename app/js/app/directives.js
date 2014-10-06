@@ -30,6 +30,7 @@ define([
 	"app/directives/content/Video",
 	"app/directives/content/Tabs",
 	"app/directives/content/Accordion",
+	"app/directives/content/Horizontal",
 	"app/directives/content/FeaturedProfile",
 	"app/directives/content/QuestionTabs",
 	"app/directives/content/MultiChoiceQuestion",
@@ -109,6 +110,8 @@ define([
 	.directive('isaacTabs', require("app/directives/content/Tabs"))
 
 	.directive('isaacAccordion', require("app/directives/content/Accordion"))
+
+	.directive('isaacHorizontal', require("app/directives/content/Horizontal"))
 
 	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))	
 
