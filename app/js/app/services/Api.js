@@ -90,8 +90,13 @@ define([], function() {
 			}
 		});
 
-		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
+		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
+			'delete' : {
+				method: 'DELETE'
+			}
+		});
 
+		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
 		var questionsPerPage = 10;
 		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});

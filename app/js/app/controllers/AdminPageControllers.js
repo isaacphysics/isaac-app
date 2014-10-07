@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', '$window', function($scope, auth, api, $window) {
 		$scope.contentVersion = api.contentVersion.get();
 
 		$scope.setVersion = function() {
@@ -35,6 +35,19 @@ define([], function() {
 		$scope.findUsers = function() {
 			$scope.userSearch.results = api.adminUserSearch.search({ 'email' : $scope.userSearch.searchTerms});
 			$scope.userSearch.hasSearched=true;
+		}
+
+		$scope.deleteUser = function(userId) {
+			var deleteUser = $window.confirm('Are you sure you want to delete?');   
+
+			if (deleteUser) {
+					api.adminDeleteUser.delete({'userId' : userId}).$promise.then(function(){
+					$window.alert('User deleted');
+					$scope.findUsers();
+				});
+			} else {
+				return;
+			}
 		}
 	}]
 

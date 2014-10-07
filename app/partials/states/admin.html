@@ -60,14 +60,15 @@
             <h4>User search results</h4>
             <div class="ru-concept-results">
                 <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
-                    <div ui-sref="accountSettings({'userId' : result._id })" class='small-16 columns'>
+                    <div class='small-16 columns'>
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
-                            <div class="ru-search-result-content">
+                            <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
                                 <h4>
-                                    <span class="physics">{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
+                                    <span class="physics" >{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
                                 </h4>
                             </div>
+                            <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
                             <div class="clearfix"></div>
                         </div>
                     </div>
