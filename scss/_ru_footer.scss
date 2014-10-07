@@ -58,28 +58,14 @@ footer
         @extend #{$var}; 
         display: inline-block;
     }
-}
-.ru-social-icon-youtube-48x48 {
-    width: 48px;
-    height: 48px;
-    background: url(/assets/ru.png) -63px -299px no-repeat;
-}
-.ru-social-icon-youtube-48x48:hover {
-    width: 48px;
-    height: 48px;
-    background-position: -124px -299px;
-}
-.ru-social-icon-youtube-40x40 {
-    width: 40px;
-    height: 40px;
-    background: url(/assets/ru.png) -191px -302px no-repeat;
-}
-.ru-social-icon-youtube-40x40:hover {
-    width: 40px;
-    height: 40px;
-    background-position: -247px -302px;
-}
 
+    .ru-social-icon-#{$name}-40x40:hover
+    {
+        $var : '.ru-social-icon-#{$name}-hover-40x40'; 
+        @extend #{$var}; 
+        display: inline-block;
+    }
+}
 
 a[class^='ru ru-social-icon']
 {
@@ -193,4 +179,107 @@ img.ru-mobile-logo
 {
     color: #fff;
     font-style: italic;
+}
+
+// social pages icons
+
+.ru-social-icon-facebook-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -371px -5px;
+}
+
+.ru-social-icon-facebook-hover-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -371px -55px;
+}
+
+.ru-social-icon-facebook-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -371px -105px;
+}
+
+.ru-social-icon-facebook-hover-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -371px -163px;
+}
+
+.ru-social-icon-google-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -5px -221px;
+}
+
+.ru-social-icon-google-hover-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -55px -221px;
+}
+
+.ru-social-icon-google-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -105px -221px;
+}
+
+.ru-social-icon-google-hover-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -163px -221px;
+}
+
+.ru-social-icon-twitter-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -221px -221px;
+}
+
+.ru-social-icon-twitter-hover-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -271px -221px;
+}
+
+.ru-social-icon-twitter-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -321px -221px;
+}
+
+.ru-social-icon-twitter-hover {
+    width: 68px;
+    height: 68px;
+    background-position: -379px -221px;
+}
+
+.ru-social-icon-twitter-hover-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -5px -299px;
+}
+
+.ru-social-icon-youtube-48x48 {
+    width: 48px;
+    height: 48px;
+    background: url(/assets/ru.png) -63px -299px no-repeat;
+}
+
+.ru-social-icon-youtube-hover-48x48 {
+    width: 48px;
+    height: 48px;
+    background-position: -124px -299px;
+}
+
+.ru-social-icon-youtube-40x40 {
+    width: 40px;
+    height: 40px;
+    background: url(/assets/ru.png) -191px -302px no-repeat;
+}
+.ru-social-icon-youtube-hover-40x40 {
+    width: 40px;
+    height: 40px;
+    background-position: -247px -302px;
 }
