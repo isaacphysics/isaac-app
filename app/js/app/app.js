@@ -391,7 +391,7 @@ define([
                 }); 
                 var tutorialShown = cookie.read('tutorialShown');
 
-                if (!tutorialShown) {
+                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0) { // we don't want the google bot to see the tutorial.
                     if ($.ru_IsMobile()) {
                         if ($('#mobile-tutorial').length > 0) {
                             setTimeout(function() {
@@ -400,14 +400,12 @@ define([
                                 cookie.create('tutorialShown',1,720);
                             }, 1000)
                         }
-
                     } else {
                         if ($('#desktop-tutorial').length > 0) {
                             $('#desktop-tutorial').foundation('joyride', 'start');
                             cookie.create('tutorialShown',1,720);
                         }
                     }
-
                 }
 
                 // Toggle hide / show of share links
