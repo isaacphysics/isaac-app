@@ -16,7 +16,7 @@
 define([], function() {
 
 
-	return ["$compile", "RecursionHelper", function($compile, RecursionHelper) {
+	return ["$compile", "RecursionHelper", "$location", "$timeout", function($compile, RecursionHelper, $location, $timeout) {
 
 		return {
 
@@ -27,7 +27,7 @@ define([], function() {
 			templateUrl: '/partials/content/Content.html',
 
 			compile: function(element) {
-	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
 	            	// Post-link actions go here.
 
 	            	scope.doc = undefined;
@@ -39,7 +39,22 @@ define([], function() {
 		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
 		            		iElement.css("float", "right").width("50%");
 		            	}
+
+		            	if (scope.doc && scope.doc.id) {
+
+		            		if (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1) {
+
+		            			scope.$emit("ensureVisible");
+
+								$timeout(function() {
+									$("body").animate({
+						                scrollTop: iElement.offset().top
+						            }, 1000);        
+								});
+		            		}
+		            	}
 	            	});
+
 
 	            });
 	        }

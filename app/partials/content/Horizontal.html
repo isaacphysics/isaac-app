@@ -1,0 +1,6 @@
+<div class="clearfix"></div>
+<ul ng-class="['small-block-grid-1', 'medium-block-grid-' + doc.children.length]">
+	<li ng-repeat="c in doc.children">
+		<div isaac-content doc="c"></div>
+	</li>
+</ul>

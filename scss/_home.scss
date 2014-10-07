@@ -392,15 +392,48 @@ $col_values : 5;
     background-position: 50% 50%;
 }
 
-.ru-hex-home-bolt
+.ru-hex-home-field
 {
-   background-image: url(/assets/hex-bolt.png);
-   background-repeat: no-repeat; 
-   width: 32px;
-   height: 30px;
-   margin-top: 20px;
-   margin-left: auto;
-   margin-right: auto;
+    background-repeat: no-repeat; 
+    background-size: cover;
+    background-position: center;
+    width: 32px;
+    height: 30px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &.ru-hex-home-field-physics {
+        background-image: url(/assets/hex-icons/icon-hex-physics.png);
+    }
+    &.ru-hex-home-field-mechanics {
+        background-image: url(/assets/hex-icons/icon-hex-mechanics.png);
+    }
+    &.ru-hex-home-field-waves {
+        background-image: url(/assets/hex-icons/icon-hex-waves.png);
+    }
+    &.ru-hex-home-field-fields {
+        background-image: url(/assets/hex-icons/icon-hex-fields.png);
+    }
+    &.ru-hex-home-field-circuits {
+        background-image: url(/assets/hex-icons/icon-hex-circuits.png);
+    }
+    &.ru-hex-home-field-geometry {
+        background-image: url(/assets/hex-icons/icon-hex-geometry.png);
+    }
+    &.ru-hex-home-field-calculus {
+        background-image: url(/assets/hex-icons/icon-hex-calculus.png);
+    }
+    &.ru-hex-home-field-algebra {
+        background-image: url(/assets/hex-icons/icon-hex-algebra.png);
+    }
+    &.ru-hex-home-field-functions {
+        background-image: url(/assets/hex-icons/icon-hex-functions.png);
+    }
+    &.ru-hex-home-field-probability {
+        background-image: url(/assets/hex-icons/icon-hex-probability.png);
+    }
+
 }
 
 .ru-hex-home-chat

@@ -85,6 +85,19 @@ define(["app/honest/responsive_video"], function(rv) {
 					element.find(".transclude-here").append(clone);
 				})
 
+				scope.$on("ensureVisible", function(e) {
+					if (e.targetScope == scope)
+						return;
+
+					e.stopPropagation();
+
+					var i = e.targetScope.questionTabIndex;
+
+					scope.activateTab(i);
+
+					scope.$emit("ensureVisible");
+				});
+
 			}
 		};
 	}];

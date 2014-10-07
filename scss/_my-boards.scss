@@ -29,8 +29,15 @@
 		bottom: 17px;
 		right: 40px;
 		left: 40px;
-		font-size: 14px;
+		font-size: 13px;
 	}
+}
+.board-title-link {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	line-height: 40px;
 }
 .board-delete {
 	position: absolute;

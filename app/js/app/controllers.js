@@ -106,6 +106,7 @@ define([
 		
 		var timeout = $timeout(function() {
 			$rootScope.globalFlags.displayLoadingMessage = true;
+			$(document).scrollTop(0);
 		}, showLoadingMessageAfter);
 
 		$scope.$on("$destroy", function() {
