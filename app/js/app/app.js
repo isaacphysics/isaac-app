@@ -70,7 +70,7 @@ define([
 
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', function($rootScope, api, $state, auth) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , function($rootScope, api, $state, auth, $location) {
 
         auth.updateUser();
 
@@ -97,6 +97,7 @@ define([
 
             $(document).scrollTop(0);
             $rootScope.figures = {};
+            $rootScope.relativeCanonicalUrl = $location.path();
         })
 
         $rootScope.$on("$stateChangeError", function() {
