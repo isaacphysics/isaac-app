@@ -67,6 +67,11 @@ define(["app/honest/hexagon"],function(hexagon) {
                 else
                 {
                     $(this).addClass('ru-hex-home-field');
+                    if(!d.tags) {
+                        // check that this hexagon actually has some tags if not just return rather than explode.
+                        return; 
+                    }
+
                     if (d.tags.indexOf("mechanics") > -1) {
                         $(this).addClass('ru-hex-home-field-mechanics');
                     } else if (d.tags.indexOf("waves") > -1) {
