@@ -38,6 +38,8 @@ define([], function() {
 		            		iElement.css("float", "right").width(300);
 		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
 		            		iElement.css("float", "right").width("50%");
+		            	} else if(scope.doc && scope.doc.layout=="left") {
+		            		iElement.css("float", "left").width(300);
 		            	}
 
 		            	if (scope.doc && scope.doc.id) {
