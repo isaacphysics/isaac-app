@@ -1,7 +1,8 @@
 <div ng-class="['panel', pageSubject]">
     <figure class="ru_figure">
         <div class="text-center">
-        	<img ng-src="{{path}}" alt="{{doc.altText}}">
+        	<img ng-if="!doc.clickUrl" ng-src="{{path}}" alt="{{doc.altText}}">
+			<a ng-if="doc.clickUrl" ng-href="{{doc.clickUrl}}"> <img ng-src="{{path}}" alt="{{doc.altText}}"></a>
         </div>
 	</figure>
 	<div class="text-center caption">

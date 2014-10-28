@@ -3,8 +3,9 @@
         <figcaption><div><strong>Figure {{figNum}}</strong></div><!--<div>Sub title or caption</div>--></figcaption>
         <!--<img src="/assets/Concept-image.png" class="img-responsive">-->
         <div class="text-center">
-        	<img ng-src="{{path}}" alt="{{doc.altText}}">
+        	<img ng-if="!doc.clickUrl" ng-src="{{path}}" alt="{{doc.altText}}">
+			<a ng-if="doc.clickUrl" ng-href="{{doc.clickUrl}}"> <img ng-src="{{path}}" alt="{{doc.altText}}"></a>
         </div>
 	</figure>
-    <div class="text-center"><div isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div></div>
+    <div class="text-center caption"><div isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div></div>
 </div>

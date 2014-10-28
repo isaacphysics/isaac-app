@@ -33,7 +33,7 @@ define([], function() {
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
 	            		scope.doc = newDoc;
-	            		
+	            		//TODO: we should probably make this a scss rule.
 		            	if(scope.doc && scope.doc.layout=="right") {
 		            		iElement.css("float", "right").width(300);
 		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
