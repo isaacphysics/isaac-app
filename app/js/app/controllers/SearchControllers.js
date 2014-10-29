@@ -17,7 +17,7 @@ define([], function() {
 	var defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
 
 	var doSearch = function(api, query, typesToInclude, $location) {
-		if (query != null) {
+		if (query) {
 			var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
 			$location.replace();
 			$location.search({query: query, types: typesToInclude.join(",")})
