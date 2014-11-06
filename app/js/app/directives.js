@@ -51,6 +51,7 @@ define([
     "app/directives/SchoolDropdown",
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
+    "app/directives/equation_editor/EquationEditor",
     "app/directives/GlobalNavigation",
     "app/directives/d3/Donut",
     "app/directives/ProgressBar",
@@ -93,6 +94,8 @@ define([
 	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
 
 	.directive('questionPod', require("app/directives/QuestionPod"))
+
+	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
