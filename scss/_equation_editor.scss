@@ -1,4 +1,45 @@
 
-.editor-modal {
-	
+.equation-editor {
+	background: #ccf;
+    border: 1px solid #77d;
+    min-height: 100px;
+    overflow: hidden;
+    position: relative;
+    .top-menu {
+        border: 1px solid red;
+        background: #ccc;
+        position:absolute;
+        left: 0;
+        right: 0;
+        bottom: 100%;
+        z-index: 10;
+
+        .handle {
+            position: absolute;
+            top: 100%;
+            width: 60px;
+            display: inline-block;
+            border: 1px solid green;
+            text-align: center;
+
+            &.left {
+                left: 60px;
+            }
+
+            &.middle {
+                left: 120px;
+            }
+
+            &.right {
+                left: 180px;
+            }
+        }
+
+        &.active {
+            z-index: 20;
+        }
+    }
+
+
 }
+
