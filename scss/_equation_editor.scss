@@ -4,7 +4,7 @@ $menu-handle-width: 160px;
 .equation-editor {
 	background: #ccf;
     border: 1px solid #77d;
-    min-height: 300px;
+    min-height: 500px;
     overflow: hidden;
     position: relative;
     .top-menu {
@@ -24,6 +24,7 @@ $menu-handle-width: 160px;
             border: 1px solid green;
             text-align: center;
             left: 50%;
+            cursor: pointer;
 
             &.m1 {
                 margin-left: -$menu-handle-width*2;
@@ -47,6 +48,26 @@ $menu-handle-width: 160px;
         }
     }
 
+    .hex-button {
+        width: 90px;
+        height: 108px;
+        text-align: center;
+        border: 1px dashed #800;
+        position: absolute;
+        bottom: 18px;
+        cursor: pointer;
 
+        &.undo {
+            left: 18px;
+        }
+
+        &.redo {
+            left: 114px;
+        }
+
+        &.submit {
+            right: 18px;
+        }
+    }
 }
 
