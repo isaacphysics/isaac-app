@@ -1,16 +1,15 @@
-<div class="equation-editor">
+<div class="equation-editor" ng-click="editorClick()">
 	equation-editor
-    <div class="top-menu" ng-scope-element="menu1">
-        MENU1 CONTENT <br />
-        menu1 line 2
-        <div class="handle left" ng-click="clickHandle('menu1')">H1</div>
+    <div top-menu="numbers">
+        <h1>NUMBERS CONTENT</h1>
     </div>
-    <div class="top-menu" ng-scope-element="menu2">
+    <div top-menu="menu2">
         MENU2 CONTENT
-        <div class="handle middle" ng-click="clickHandle('menu2')">H2</div>
     </div>
-    <div class="top-menu" ng-scope-element="menu3">
+    <div top-menu="menu3">
         MENU3 CONTENT
-        <div class="handle right" ng-click="clickHandle('menu3')">H3</div>
+    </div>
+    <div top-menu="menu4">
+        MENU4 CONTENT
     </div>
 </div>

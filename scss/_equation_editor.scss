@@ -1,8 +1,10 @@
 
+$menu-handle-width: 160px;
+
 .equation-editor {
 	background: #ccf;
     border: 1px solid #77d;
-    min-height: 100px;
+    min-height: 300px;
     overflow: hidden;
     position: relative;
     .top-menu {
@@ -17,25 +19,30 @@
         .handle {
             position: absolute;
             top: 100%;
-            width: 60px;
+            width: $menu-handle-width;
             display: inline-block;
             border: 1px solid green;
             text-align: center;
+            left: 50%;
 
-            &.left {
-                left: 60px;
+            &.m1 {
+                margin-left: -$menu-handle-width*2;
             }
 
-            &.middle {
-                left: 120px;
+            &.m2 {
+                margin-left: -$menu-handle-width;
             }
 
-            &.right {
-                left: 180px;
+            &.m3 {
+                margin-left: 0;
+            }
+
+            &.m4 {
+                margin-left: $menu-handle-width;
             }
         }
 
-        &.active {
+        &.foreground {
             z-index: 20;
         }
     }

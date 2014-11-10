@@ -53,6 +53,7 @@ define([
     "app/directives/PodCarousel",
     "app/directives/equation_editor/EquationEditor",
     "app/directives/GlobalNavigation",
+    "app/directives/equation_editor/TopMenu",
     "app/directives/d3/Donut",
     "app/directives/ProgressBar",
     "app/directives/Toast",
@@ -96,6 +97,8 @@ define([
 	.directive('questionPod', require("app/directives/QuestionPod"))
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+
+	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
