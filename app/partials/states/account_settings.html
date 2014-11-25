@@ -156,12 +156,12 @@
                 </div>
             
 		        <label>
-    		        <strong>School</strong>
+    		        <strong>School (if in England)</strong>
                 </label>
     		    <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                     {{schools}}      
                 </div>
-                <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="Other">
+                <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
 
                 <label class="linked-accounts-title">Linked accounts</label>
                 <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
