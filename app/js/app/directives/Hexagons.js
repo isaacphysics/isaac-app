@@ -55,7 +55,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                     $(this).addClass('ru-hex-level-'+d.level); 
                 }
             });
-            
+
             // Symbol
             plotdiv.append('div').each(function(d)
             {
@@ -162,15 +162,18 @@ define(["app/honest/hexagon"],function(hexagon) {
             // No specific SVG functions
             return svg;
         });
-        
-        // Apply styles
-        $.each(['physics','maths'], function(i, name)
-        {
-            for(var i = 1; i <= 5; i++)
+
+        // Apply hexagon gradient styles (only if svg #svg-patterns - is accessible on the page. If not default to plain.)
+        if ($("#svg-patterns").length) {
+            $.each(['physics','maths'], function(i, name)
             {
-                $('.hex-'+name+i).css('filter','url(#filter'+i+')');
-            }
-        });
+                for(var i = 1; i <= 5; i++)
+                {
+
+                    $('.hex-'+name+i).css('filter','url(#filter'+i+')');
+                }
+            });
+        }
     };
 
 	return ["$state", "tags", function($state, tags) {
@@ -211,8 +214,6 @@ define(["app/honest/hexagon"],function(hexagon) {
                     draw(hex, augmentedQuestions || [], $state, scope.boardId);   
 
                     // Make background line up with hexagons on desktop.
-
-
                     var hexs = $(".hexagon_wrap").find("a");
 
                     $(".bg-wrap").css("background-position", "");                        

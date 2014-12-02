@@ -1,0 +1,54 @@
+<div desktop-panel>
+	<h1>Game Board Creator</h1>
+	<h2 class="subheader"></h2>
+</div>
+<div mobile-panel>
+	<div class='row'>
+		<div class='small-16 columns'>
+			<h1>Game Board Creator</h1>
+			<h2 class="subheader"></h2>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class='large-16 medium-16 columns'>
+		<div>
+			<form>
+				<div>
+					<h3>Questions</h3>
+	                <input type='text' ng-model="questionSearchText" placeholder="Enter question title here">
+	                <ul>
+	                	<li ng-repeat="question in list.results"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})">{{question.title}}</a> - Level {{question.level}}</label></li>
+	                </ul>
+
+				</div>	
+			</form>	
+		</div>
+	</div>
+</div>
+<section>
+    <div class="row">
+        <div ng-if="currentGameBoard.questions.length > 0" class='ru-board-title show-for-medium-up'>
+            <div class="large-6 medium-6 columns text-center">
+                <span>
+                    <input type="text" ng-model="currentGameBoard.title">
+                </span>
+            </div>
+        </div>
+
+            <div class="clearfix"></div>
+            <div class="row warnings">
+                <div class='small-16 columns text-center'>
+                    <div class='ru-score' ng-repeat="w in warnings">
+                        <strong>Warning:</strong> {{w[1]}}
+                    </div>
+                </div>
+            </div>
+
+			<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
+
+            <div class=''> 
+            	<button ng-if="currentGameBoard.questions.length > 0">Submit Board</button>
+            </div>
+        </div>
+    </section>
