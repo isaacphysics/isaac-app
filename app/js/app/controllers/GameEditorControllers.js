@@ -79,7 +79,10 @@ define([], function() {
 						alert("Error Gameboards can have a maximum of 10 questions - please remove a question if you wish to add another.");
 						$scope.enabledQuestions = oldThing;
 					} else {
-						newGameBoard.questions.push(getQuestionObject(questionId))	
+						var questionToAdd = getQuestionObject(questionId);
+						delete questionToAdd["type"];
+						delete questionToAdd["url"];
+						newGameBoard.questions.push(questionToAdd)	
 					}
 				} else if (gameBoardIndex != -1 && !$scope.enabledQuestions[questionId]){
 					newGameBoard.questions.splice(gameBoardIndex, 1)
@@ -87,18 +90,29 @@ define([], function() {
 			}
 			$scope.currentGameBoard = newGameBoard;
 		})
-
+		
+		// TODO: request a random wildcard from the server.
 		var wildCard = {
 	        "id": "16f256e0-52e0-4a52-a2d4-458f42e00b75",
 	        "title": "Why study physics?",
 	        "type": "isaacWildcard",
 	        "canonicalSourceFile": "content/wildcards/whyphysics.json",
-	        "children": [],
-	        "published": true,
-	        "tags": [],
-	        "description": "Why become a physicist?",
-	        "url": "/pages/why_physics"
+	        "description": "Why become a physicist?"
     	};
+
+        $scope.saveGameBoard = function() {
+        	var GameBoard = api.gameBoards;
+
+        	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
+        	gameBoardToSave.gameFilter = {subjects:["physics"]}
+        	var savedItem = gameBoardToSave.$save().then(function(gb) {
+        		$scope.currentGameBoard = gb;
+        		$state.go('board', {id: gb.id})
+        	}).catch(function() {
+        		alert("Game board Save operation failed.")
+        	});;
+        	// TODO: take the user to their new gameboard.
+        }
 
 	}]
 

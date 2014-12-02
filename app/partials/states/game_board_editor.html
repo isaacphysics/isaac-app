@@ -48,7 +48,7 @@
 			<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
 
             <div class=''> 
-            	<button ng-if="currentGameBoard.questions.length > 0">Submit Board</button>
+            	<button ng-if="currentGameBoard.questions.length > 0" ng-click="saveGameBoard()">Submit Board</button>
             </div>
         </div>
     </section>
