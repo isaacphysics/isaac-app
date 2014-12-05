@@ -18,9 +18,8 @@
 					<h3>Questions</h3>
 	                <input type='text' ng-model="questionSearchText" placeholder="Enter question title here">
 	                <ul>
-	                	<li ng-repeat="question in list.results"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})">{{question.title}}</a> - Level {{question.level}}</label></li>
+	                	<li ng-repeat="question in questionList track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})">{{question.title}}</a> - Level {{question.level}}</label></li>
 	                </ul>
-
 				</div>	
 			</form>	
 		</div>
@@ -31,6 +30,7 @@
         <div ng-if="currentGameBoard.questions.length > 0" class='ru-board-title show-for-medium-up'>
             <div class="large-6 medium-6 columns text-center">
                 <span>
+                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id optional - This must be unique and not contain spaces">
                     <input type="text" ng-model="currentGameBoard.title">
                 </span>
             </div>

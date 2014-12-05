@@ -18,32 +18,15 @@ define([], function() {
 	var PageController = ['$scope', 'pageIndex', '$state', 'list', 'api', '$timeout', function($scope, pageIndex, $state, list, api, $timeout) {
 		var defaultQuestions = list;
 		$scope.list = list; // the question search results
+		$scope.questionList = list.results;
+
 		$scope.questionSearchText = "";
 		$scope.pageNumber = pageIndex + 1;
 
 		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids.
 
-		var doQuestionSearch = function(searchQuery){
-			return api.searchEndpoint.search({searchTerms:searchQuery, types:"isaacQuestionPage"});
-		};
-
-		var timer = null;
-		$scope.$watch('questionSearchText', function() { 
-	        if (timer) {
-	        	$timeout.cancel(timer);
-	        	timer = null;
-	        }
-
-	        timer = $timeout(function() {
-	            if ($scope.questionSearchText != "") {
-	            	$scope.list = doQuestionSearch($scope.questionSearchText);	
-	            } else {
-	            	$scope.list = defaultQuestions
-	            }
-	        }, 500);
-		});
-		
+		// get the index of a question in a gameboard by id.
 		var getGameBoardIndex = function(questionId) {
 			var gameBoardQuestionsToSearch = $scope.currentGameBoard.questions;
 			for (var i = 0; i < gameBoardQuestionsToSearch.length; i++) {
@@ -55,8 +38,9 @@ define([], function() {
 			return -1;
 		}
 
+		// get a full question object by id from the current question list
 		var getQuestionObject = function(questionId) {
-			var questionList = $scope.list.results;
+			var questionList = $scope.questionList;
 			for (var i = 0; i < questionList.length; i++) {
 				if (questionList[i].id == questionId) {
 					return questionList[i];
@@ -65,11 +49,56 @@ define([], function() {
 			return -1;
 		}
 
-		// detect changes in the selected questions list.
+		// use the global search endpoint to find questions by the search query provided
+		var doQuestionSearch = function(searchQuery){
+			return api.searchEndpoint.search({searchTerms:searchQuery, types:"isaacQuestionPage"});
+		};
+
+		// merge the results of a question search with currently selected questions.
+		var mergeWithSelectedQuestions = function(questionList, newQuestions) {
+			arrayToReturn = [];
+
+			for (var i = 0; i < questionList.length; i++) {
+				if (questionList[i].id in $scope.enabledQuestions && $scope.enabledQuestions[questionList[i].id]){
+					arrayToReturn.push(questionList[i])	
+				}
+			}
+
+			for (var i=0; i < newQuestions.length; i++) {
+				if (!(newQuestions[i].id in $scope.enabledQuestions)) {
+					arrayToReturn.push(newQuestions[i])	
+				}
+			}
+
+			return arrayToReturn;
+		}
+
+		// timer for the search box to minimise number of requests sent to api
+		var timer = null;
+		$scope.$watch('questionSearchText', function() { 
+	        if (timer) {
+	        	$timeout.cancel(timer);
+	        	timer = null;
+	        }
+
+	        timer = $timeout(function() {
+	            if ($scope.questionSearchText != "") {
+	            	doQuestionSearch($scope.questionSearchText)
+	            	.$promise.then(function(questionsFromServer){
+	            		$scope.list = questionsFromServer;
+	            		$scope.questionList = mergeWithSelectedQuestions($scope.questionList, questionsFromServer.results);
+	            	});
+	            } else {
+	            	$scope.list = defaultQuestions.results;
+	            	$scope.questionList = mergeWithSelectedQuestions($scope.questionList, defaultQuestions.results);
+	            }
+	        }, 500);
+		});
+		
+		// detect changes in the selected questions list and update the gameboard
 		$scope.$watchCollection("enabledQuestions", function(newThing, oldThing){
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
-
 			var newGameBoard = {questions:questionCopies, wildCard: wildCard, title: $scope.currentGameBoard.title};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
@@ -80,8 +109,10 @@ define([], function() {
 						$scope.enabledQuestions = oldThing;
 					} else {
 						var questionToAdd = getQuestionObject(questionId);
+						// remove fields that don't mean anything to gameboards. 
 						delete questionToAdd["type"];
 						delete questionToAdd["url"];
+						delete questionToAdd["summary"];
 						newGameBoard.questions.push(questionToAdd)	
 					}
 				} else if (gameBoardIndex != -1 && !$scope.enabledQuestions[questionId]){
@@ -91,29 +122,28 @@ define([], function() {
 			$scope.currentGameBoard = newGameBoard;
 		})
 		
-		// TODO: request a random wildcard from the server.
+		// place holder wildcard - will be replaced by the server
 		var wildCard = {
-	        "id": "16f256e0-52e0-4a52-a2d4-458f42e00b75",
-	        "title": "Why study physics?",
+	        "title": "Random Wild Card",
 	        "type": "isaacWildcard",
-	        "canonicalSourceFile": "content/wildcards/whyphysics.json",
-	        "description": "Why become a physicist?"
+	        "description": "?"
     	};
 
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
 
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
-        	gameBoardToSave.gameFilter = {subjects:["physics"]}
+        	gameBoardToSave.gameFilter = {subjects:["physics"]} // TODO default to physics for now
+        	
+        	// clear placeholder wildcard so that server picks one.
+        	gameBoardToSave.wildCard = null
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
         		$state.go('board', {id: gb.id})
         	}).catch(function() {
         		alert("Game board Save operation failed.")
-        	});;
-        	// TODO: take the user to their new gameboard.
+        	});
         }
-
 	}]
 
 	return {
