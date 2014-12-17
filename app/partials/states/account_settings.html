@@ -1,8 +1,8 @@
 <div desktop-panel>
     <div ng-if="editingSelf" class="row">
         <div class="medium-10 columns">
-    	   <h1>Account Settings</h1>
-    	   <h2 class="subheader">Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
+           <h1>Account Settings</h1>
+           <h2 class="subheader">Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
         </div>
         <div class="medium-6 end columns text-right">
             <h2 class="ru-welcome logout-link">
@@ -28,40 +28,40 @@
     </div>    
     <form class="panel" ng-submit="save()" name="account" novalidate>
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
-		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+        <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
                 <div class="row">
                     <div class="large-16 medium-8 columns">
-            	       <label for="account-firstname">
+                       <label for="account-firstname">
                             <strong>First Name</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
                                 Required
                             </span>
                         </label>
-    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
+                        <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
                     </div>
                     <div class="large-16 medium-8 columns">
-				        <label for="account-lastname">
+                        <label for="account-lastname">
                             <strong>Last Name</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
                                 Required
                             </span>
                         </label>
-    				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
+                        <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-16 columns">
-				        <label for="account-email">
+                        <label for="account-email">
                             <strong>Your Email Address</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
                                 Enter a valid email
                             </span>
                             </label>
-    			         <input id="account-email" name="email" type="email" ng-model="user.email" required>
+                         <input id="account-email" name="email" type="email" ng-model="user.email" required>
                     </div>
                 </div>
                 <div class="row">
@@ -130,12 +130,12 @@
                             </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.month" ng-options="month for month in datePicker.months">
-	                        </select>
+                            <select ng-model="dob.month" ng-options="month for month in datePicker.months">
+                            </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.year" ng-options="year for year in datePicker.years">
-	                        </select>
+                            <select ng-model="dob.year" ng-options="year for year in datePicker.years">
+                            </select>
                         </li>
                     </ul>
                 </div>
@@ -155,10 +155,10 @@
                     </div>
                 </div>
             
-		        <label>
-    		        <strong>School</strong>
+                <label>
+                    <strong>School</strong>
                 </label>
-    		    <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
+                <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                     {{schools}}      
                 </div>
                 <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
@@ -174,23 +174,25 @@
                         </a>
                     </li>
                 </ul>
-			</li>
-        </ul>
-        <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
-            <li class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</li>
-            <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+            </li>
         </ul>
         <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
             <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
             <li ng-if="updateFail" class="text-center">
-	            <h4 style="color:#a00;">
-		            Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
-	            </h4>
+                <h4 style="color:#a00;">
+                    Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+                </h4>
             </li>
         </ul>
        
     </form>
+    <div class="large-16 columns text-center">
+        <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+            <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
+            <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+        </ul>
+        <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+    </div>
 </div>
 <div id="account-updated" class="reveal-modal" data-reveal>
     <h2>Your account has been successfully updated.</h2>
