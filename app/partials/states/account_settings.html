@@ -186,12 +186,19 @@
         </ul>
        
     </form>
-    <div class="large-16 columns text-center">
-        <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-            <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
-            <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
-        </ul>
-        <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+    <div class="account-reorder-wrap">
+        <div class="account-reorder-bottom">
+            <div class="large-16 columns account-warning">
+                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a href="/contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+            </div>
+        </div>
+        <div class="large-16 columns account-reorder-top">
+            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+                <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
+                <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+            </ul>
+            <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+        </div>
     </div>
     <div class="large-10 medium-16 columns">
         <div class="panel connect-form">
