@@ -90,7 +90,7 @@ define([], function() {
 			}
 		});
 
-		this.questionsEndpoint = $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {
+		this.questionsEndpoint = $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&levels=:levels&start_index=:startIndex&limit=:limit", {}, {
 			'query': {
 				method: 'GET', isArray: false 
 			}

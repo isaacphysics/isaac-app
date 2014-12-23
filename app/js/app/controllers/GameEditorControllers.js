@@ -21,6 +21,7 @@ define([], function() {
 		$scope.questionList = list.results;
 
 		$scope.questionSearchText = "";
+		$scope.questionSearchLevel = "1";
 		//$scope.pageNumber = pageIndex + 1;
 
 		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
@@ -50,8 +51,8 @@ define([], function() {
 		}
 
 		// use the global search endpoint to find questions by the search query provided
-		var doQuestionSearch = function(searchQuery){
-			return api.questionsEndpoint.query({searchString:searchQuery});
+		var doQuestionSearch = function(searchQuery, searchLevel){
+			return api.questionsEndpoint.query({searchString:searchQuery, levels:searchLevel});
 		};
 
 		// merge the results of a question search with currently selected questions.
@@ -75,15 +76,15 @@ define([], function() {
 
 		// timer for the search box to minimise number of requests sent to api
 		var timer = null;
-		$scope.$watch('questionSearchText', function() { 
+		$scope.$watch('questionSearchText + questionSearchLevel', function() { 
 	        if (timer) {
 	        	$timeout.cancel(timer);
 	        	timer = null;
 	        }
 
 	        timer = $timeout(function() {
-	            if ($scope.questionSearchText != "") {
-	            	doQuestionSearch($scope.questionSearchText)
+	            if ($scope.questionSearchText != "" || true) {
+	            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel)
 	            	.$promise.then(function(questionsFromServer){
 	            		$scope.list = questionsFromServer;
 	            		$scope.questionList = mergeWithSelectedQuestions($scope.questionList, questionsFromServer.results);
