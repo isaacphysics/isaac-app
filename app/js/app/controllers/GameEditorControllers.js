@@ -16,16 +16,23 @@
 define([], function() {
 
 	var PageController = ['$scope', '$state', 'list', 'api', '$timeout', function($scope, $state, list, api, $timeout) {
-		var defaultQuestions = list;
-		$scope.list = list; // the question search results
-		$scope.questionList = list.results;
 
+		// setup defaults.
+		var defaultQuestions = list;
+		$scope.searchResults = list.results;
 		$scope.questionSearchText = "";
-		$scope.questionSearchLevel = "1";
-		//$scope.pageNumber = pageIndex + 1;
+		$scope.questionSearchLevel = "";
+		//$scope.pageNumber = pageIndex + 1; // TODO: Pagination
+
+		// place holder wildcard - will be replaced by the server
+		var wildCard = {
+	        "title": "Random Wild Card",
+	        "type": "isaacWildcard",
+	        "description": "?"
+    	};
 
 		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
-		$scope.enabledQuestions = {}; // used to track the selected question ids.
+		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
 
 		// get the index of a question in a gameboard by id.
 		var getGameBoardIndex = function(questionId) {
@@ -41,7 +48,7 @@ define([], function() {
 
 		// get a full question object by id from the current question list
 		var getQuestionObject = function(questionId) {
-			var questionList = $scope.questionList;
+			var questionList = $scope.searchResults;
 			for (var i = 0; i < questionList.length; i++) {
 				if (questionList[i].id == questionId) {
 					return questionList[i];
@@ -55,25 +62,6 @@ define([], function() {
 			return api.questionsEndpoint.query({searchString:searchQuery, levels:searchLevel});
 		};
 
-		// merge the results of a question search with currently selected questions.
-		var mergeWithSelectedQuestions = function(questionList, newQuestions) {
-			arrayToReturn = [];
-
-			for (var i = 0; i < questionList.length; i++) {
-				if (questionList[i].id in $scope.enabledQuestions && $scope.enabledQuestions[questionList[i].id]){
-					arrayToReturn.push(questionList[i])	
-				}
-			}
-
-			for (var i=0; i < newQuestions.length; i++) {
-				if (!(newQuestions[i].id in $scope.enabledQuestions)) {
-					arrayToReturn.push(newQuestions[i])	
-				}
-			}
-
-			return arrayToReturn;
-		}
-
 		// timer for the search box to minimise number of requests sent to api
 		var timer = null;
 		$scope.$watch('questionSearchText + questionSearchLevel', function() { 
@@ -83,16 +71,10 @@ define([], function() {
 	        }
 
 	        timer = $timeout(function() {
-	            if ($scope.questionSearchText != "" || true) {
-	            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel)
-	            	.$promise.then(function(questionsFromServer){
-	            		$scope.list = questionsFromServer;
-	            		$scope.questionList = mergeWithSelectedQuestions($scope.questionList, questionsFromServer.results);
-	            	});
-	            } else {
-	            	$scope.list = defaultQuestions.results;
-	            	$scope.questionList = mergeWithSelectedQuestions($scope.questionList, defaultQuestions.results);
-	            }
+            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel)
+            	.$promise.then(function(questionsFromServer){
+            		$scope.searchResults = questionsFromServer.results;
+            	});
 	        }, 500);
 		});
 		
@@ -122,13 +104,6 @@ define([], function() {
 			}
 			$scope.currentGameBoard = newGameBoard;
 		})
-		
-		// place holder wildcard - will be replaced by the server
-		var wildCard = {
-	        "title": "Random Wild Card",
-	        "type": "isaacWildcard",
-	        "description": "?"
-    	};
 
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
@@ -138,11 +113,16 @@ define([], function() {
         	
         	// clear placeholder wildcard so that server picks one.
         	gameBoardToSave.wildCard = null
+
+        	if (gameBoardToSave.id == "") {
+        		gameBoardToSave.id = null;
+        	}
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
         		$state.go('board', {id: gb.id})
-        	}).catch(function() {
-        		alert("Game board Save operation failed.")
+        	}).catch(function(e) {
+        		alert("Game board Save operation failed. With error message: (" + e.status + ") " + e.data.errorMessage)
+        		gameBoardToSave.wildCard = wildCard
         	});
         }
 	}]
