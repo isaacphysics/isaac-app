@@ -387,13 +387,10 @@ define(["angular-ui-router"], function() {
             })
 
              .state('gameEditor', {
-                url: "/gameEditor?page",
+                url: "/gameEditor",
                 resolve: {
-                    "pageIndex" :['$stateParams', function($stateParams){
-                        return parseInt($stateParams.page || "1") - 1;
-                    }],
-                    "list" : ['api', 'pageIndex', function(api, pageIndex){
-                        return api.getQuestionList(pageIndex).$promise;
+                    "list" : ['api', function(api){
+                        return api.questionsEndpoint.query({"levels" : "1", "limit" : "10", "tags" : "physics"}).$promise;
                     }]
                 },
                 views: {

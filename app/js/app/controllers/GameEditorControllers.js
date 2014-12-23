@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'pageIndex', '$state', 'list', 'api', '$timeout', function($scope, pageIndex, $state, list, api, $timeout) {
+	var PageController = ['$scope', '$state', 'list', 'api', '$timeout', function($scope, $state, list, api, $timeout) {
 		var defaultQuestions = list;
 		$scope.list = list; // the question search results
 		$scope.questionList = list.results;
 
 		$scope.questionSearchText = "";
-		$scope.pageNumber = pageIndex + 1;
+		//$scope.pageNumber = pageIndex + 1;
 
 		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids.
@@ -51,7 +51,7 @@ define([], function() {
 
 		// use the global search endpoint to find questions by the search query provided
 		var doQuestionSearch = function(searchQuery){
-			return api.searchEndpoint.search({searchTerms:searchQuery, types:"isaacQuestionPage"});
+			return api.questionsEndpoint.query({searchString:searchQuery});
 		};
 
 		// merge the results of a question search with currently selected questions.
