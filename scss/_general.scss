@@ -253,6 +253,10 @@ body
 ul
 {
     list-style-image: url('../assets/hexagon.svg');
+    .no-bullet{
+        list-style-type: none;
+        list-style-image: none;
+    }
 }
 
 

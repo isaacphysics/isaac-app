@@ -90,6 +90,12 @@ define([], function() {
 			}
 		});
 
+		this.questionsEndpoint = $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&levels=:levels&start_index=:startIndex&limit=:limit", {}, {
+			'query': {
+				method: 'GET', isArray: false 
+			}
+		});
+
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
@@ -99,7 +105,7 @@ define([], function() {
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
 		var questionsPerPage = 10;
-		var questionList = $resource(server + "/api/pages/questions?start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var questionList = $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
 		var gameBoardsList = $resource(server + "/api/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var deleteBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});

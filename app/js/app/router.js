@@ -385,6 +385,21 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+             .state('gameEditor', {
+                url: "/game_editor",
+                resolve: {
+                    "list" : ['api', function(api){
+                        return api.questionsEndpoint.query({}).$promise;
+                    }]
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/game_board_editor.html",
+                        controller: "GameEditorControllers",
+                    }
+                }
+            })  
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
