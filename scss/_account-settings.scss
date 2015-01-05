@@ -287,6 +287,17 @@ input.account-settings-input {
 .account-reorder-bottom {
 	margin: 0 15px;
 }
+.ru-required-msg {
+	float: right;
+	font-size: 12px;
+	font-weight: 600;
+	color: #333;
+	margin:  0;
+
+	span {
+		color: #509e2e;
+	}
+}
 
 @media #{$small-only} { 
 	.account-settings-wrap {
@@ -358,6 +369,9 @@ input.account-settings-input {
 				display: block;
 			}
 		}
+	}
+	.ru-required-msg {
+		margin-right: 18px;
 	}
 	
 }
