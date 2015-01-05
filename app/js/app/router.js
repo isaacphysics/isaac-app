@@ -387,12 +387,7 @@ define(["angular-ui-router"], function() {
             })
 
              .state('gameEditor', {
-                url: "/game_editor",
-                resolve: {
-                    "list" : ['api', function(api){
-                        return api.questionsEndpoint.query({}).$promise;
-                    }]
-                },
+                url: "/game_builder",
                 views: {
                     "body": {
                         templateUrl: "/partials/states/game_board_editor.html",
