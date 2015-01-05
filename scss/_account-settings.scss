@@ -1,6 +1,7 @@
 
 .account-settings-wrap {
 	.panel {
+		padding-bottom: 0;
 		margin-left: 15px;
 		margin-right: 15px;
 		margin-bottom: 0;
@@ -286,6 +287,7 @@ input.account-settings-input {
 .account-reorder-bottom {
 	margin: 0 15px;
 }
+
 @media #{$small-only} { 
 	.account-settings-wrap {
 		background: #f6f6f6;
@@ -341,7 +343,7 @@ input.account-settings-input {
 	.account-reorder-bottom {
     	display: table-footer-group;
 	}
-	.account-warning{
+	.account-warning {
 		margin-top: 15px;
 		margin-bottom: 0;
 		border-bottom: none;
@@ -387,7 +389,12 @@ input.account-settings-input {
 		height: 138px;
 		overflow: scroll;
 	}
+	#account-firstname,
+	#account-lastname {
+		margin-bottom: 40px;
+	}
 }
+
 .logout-link {
 	margin-top:25px;
 }

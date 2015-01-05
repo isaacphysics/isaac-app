@@ -65,18 +65,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-show="!user.role && editingSelf" class="large-16 columns">
-                        <label>
-                            <strong>Are you a teacher?</strong>
-                        </label>
-                        <a class="teacher-link" ui-sref="contact"><span class="underline">Contact us</span> for an upgraded account.</a>
-                    </div>
-                    <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns">
-                        <label>
-                            <strong>Upgraded account:</strong>
-                        </label>
-                        <p>Your account has been assigned the {{user.role.toLowerCase()}} role.</p>
-                    </div>
                     <div ng-show="!editingSelf" class="large-16 columns">
                         <label>
                             <strong>Change user's role:</strong>
@@ -188,11 +176,11 @@
     </form>
     <div class="account-reorder-wrap">
         <div class="account-reorder-bottom">
-            <div ng-show="!user.role" class="large-16 columns account-warning">
+            <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
                 <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
             </div>
 
-            <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')" class="large-16 columns account-warning">
+            <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
                 <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
             </div>
         </div>
