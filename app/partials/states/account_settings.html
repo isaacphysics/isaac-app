@@ -188,8 +188,12 @@
     </form>
     <div class="account-reorder-wrap">
         <div class="account-reorder-bottom">
-            <div class="large-16 columns account-warning">
-                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a href="/contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+            <div ng-show="!user.role" class="large-16 columns account-warning">
+                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+            </div>
+
+            <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')" class="large-16 columns account-warning">
+                <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
             </div>
         </div>
         <div class="large-16 columns account-reorder-top">
@@ -202,7 +206,7 @@
     </div>
     <div class="large-10 medium-16 columns">
         <div class="panel connect-form">
-            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments <a href="#">What is this?</a></h3>
+            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments <a href="#"><span class="icon-help"></span></a></h3>
             <p>Enter the code given to connect with a teacher.</p>
             <form class="clearfix">
                 <input placeholder="Enter your code in here" class="connect-form-input" type="text" />
@@ -222,9 +226,9 @@
                 </ul>
 
                 <ul class="teachers-disconnected">
-                    <li><span class="person-icon"></span> Teacher Name 1 <a class="recconnect-teacher" href="#">Reconnect</a></li>
-                    <li><span class="person-icon"></span> Teacher Name 2 <a class="recconnect-teacher" href="#">Reconnect</a></li>
-                    <li><span class="person-icon"></span> Teacher Name 3 <a class="recconnect-teacher" href="#">Reconnect</a></li>
+                    <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                    <li><span class="person-icon"></span> Teacher Name 2 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                    <li><span class="person-icon"></span> Teacher Name 3 <a class="reconnect-teacher" href="#">Reconnect</a></li>
                 </ul>
             </div>
         </div>
