@@ -18,6 +18,10 @@ define([], function() {
                 	scope.$broadcast("closeMenus");
                 })
 
+                scope.$on("triggerResizeMenu", function() {
+                	scope.$broadcast("resizeMenu");
+                })
+
                 scope.state = {
 					symbols: { 
 						"ssym-0": {

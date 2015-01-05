@@ -13,6 +13,8 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name="TOPMENU"
 
+                scope.allSubMenus = [];
+
                 element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
 
                 scope.menuName = attrs.topMenu;
@@ -46,6 +48,13 @@ define([], function() {
                     }
                 }
 
+                var resizeMenu = function() {
+                    if (el.hasClass("foreground")) {
+                        var activeMenuHeight = el.height();
+                        $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
+                    }
+                }
+
                 scope.clickHandle = function(e) {
 
                     toggleThisMenu();
@@ -60,6 +69,7 @@ define([], function() {
                 }
 
                 scope.$on("closeMenus", closeMenus);
+                scope.$on("resizeMenu", resizeMenu);
 
                 if (allMenus.length == 2) {
                     $timeout(toggleThisMenu, 200);
