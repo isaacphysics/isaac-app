@@ -56,6 +56,8 @@ define([
     "app/directives/equation_editor/TopMenu",
     "app/directives/d3/Donut",
     "app/directives/ProgressBar",
+    "app/directives/equation_editor/DraggableSymbol",
+    "app/directives/equation_editor/SymbolMenu",
     "app/directives/Toast",
     "app/directives/LoadingOverlay",
     "app/directives/IsaacModal",
@@ -99,6 +101,10 @@ define([
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
 
 	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
+
+	.directive('draggableSymbol', require("app/directives/equation_editor/DraggableSymbol"))
+
+	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 

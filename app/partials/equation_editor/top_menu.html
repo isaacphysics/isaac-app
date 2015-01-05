@@ -1,4 +1,4 @@
 <div class="top-menu">
-    <div ng-transclude></div>
+    <div ng-transclude ng-click="clickContent($event)"></div>
     <div ng-class="['handle', menuPos]" ng-click="clickHandle($event)">{{menuName}}</div>
 </div>
