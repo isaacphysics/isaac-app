@@ -15,16 +15,15 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'list', 'api', '$timeout', function($scope, $state, list, api, $timeout) {
-
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', function($scope, $state, api, $timeout, $q) {
 		// setup defaults.
-		var defaultQuestions = list;
-		$scope.searchResults = list.results;
 		$scope.questionSearchText = "";
-		$scope.questionSearchLevel = "";
-		//$scope.pageNumber = pageIndex + 1; // TODO: Pagination
+		$scope.questionSearchLevel = "1";
+		$scope.loading = false;
 
-		// place holder wildcard - will be replaced by the server
+		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
+
+		// place holder wildcard - will be replaced by the server so we should remove it before submitting it.
 		var wildCard = {
 	        "title": "Random Wild Card",
 	        "type": "isaacWildcard",
@@ -57,9 +56,19 @@ define([], function() {
 			return -1;
 		}
 
-		// use the global search endpoint to find questions by the search query provided
+		// question finder code.
+		var httpCanceller = null;
 		var doQuestionSearch = function(searchQuery, searchLevel){
-			return api.questionsEndpoint.query({searchString:searchQuery, levels:searchLevel});
+			// if we have a current promise outstanding cancel it.
+			if (httpCanceller != null) {
+				httpCanceller.resolve();
+				httpCanceller = null;
+			}
+
+			// create a new promise so we can cancel it later.
+			httpCanceller = $q.defer();
+			var questionSearchResource = api.getQuestionsResource(httpCanceller);
+			return questionSearchResource.query({searchString:searchQuery, levels:searchLevel, limit:largeNumberOfResults});
 		};
 
 		// timer for the search box to minimise number of requests sent to api
@@ -71,9 +80,14 @@ define([], function() {
 	        }
 
 	        timer = $timeout(function() {
+            	$scope.loading = true;
+
             	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel)
             	.$promise.then(function(questionsFromServer){
-            		$scope.searchResults = questionsFromServer.results;
+					httpCanceller = null;
+        			// update the view
+        			$scope.searchResults = questionsFromServer.results;
+        			$scope.loading = false;
             	});
 	        }, 500);
 		});
@@ -92,7 +106,7 @@ define([], function() {
 						$scope.enabledQuestions = oldThing;
 					} else {
 						var questionToAdd = getQuestionObject(questionId);
-						// remove fields that don't mean anything to gameboards. 
+						// remove fields that don't mean anything to gameboards as otherwise the api will complain. 
 						delete questionToAdd["type"];
 						delete questionToAdd["url"];
 						delete questionToAdd["summary"];
@@ -107,7 +121,6 @@ define([], function() {
 
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
-
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
         	gameBoardToSave.gameFilter = {subjects:["physics"]} // TODO default to physics for now
         	

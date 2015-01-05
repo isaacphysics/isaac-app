@@ -1,0 +1,24 @@
+.game-editor {
+	.results-panel {
+		border: #cccccc 1px solid;
+	    background-color: white;
+	    padding: 15px;
+		margin-bottom: 15px;
+		
+		h4 {
+			margin-bottom: 5px;
+		}
+		
+		.results-list {
+			height: 250px;
+			overflow-y: scroll;
+			padding-top: 5px;
+		}
+
+		.selected-questions {
+			height: 250px;
+			overflow-y: auto;
+		}
+	}	
+}
+

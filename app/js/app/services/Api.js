@@ -90,17 +90,20 @@ define([], function() {
 			}
 		});
 
-		this.questionsEndpoint = $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&levels=:levels&start_index=:startIndex&limit=:limit", {}, {
-			'query': {
-				method: 'GET', isArray: false 
-			}
-		});
-
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
 			}
 		});
+
+		// allows the resource to be constructed with a promise that can be used to cancel a request
+		this.getQuestionsResource = function(canceller) {
+			return $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&levels=:levels&start_index=:startIndex&limit=:limit", {}, {
+				'query': {
+					method: 'GET', isArray: false, timeout: canceller.promise
+				}
+			})
+		};
 
 		this.getUnits = function() { return $http.get(server + "/api/content/units").then(function (r) { return r.data; }); };
 
