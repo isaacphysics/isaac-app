@@ -18,6 +18,7 @@ define([], function() {
 	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', function($scope, $state, api, $timeout, $q) {
 		// setup defaults.
 		$scope.questionSearchText = "";
+		$scope.questionSearchSubject = "";
 		$scope.questionSearchLevel = "1";
 		$scope.loading = false;
 
@@ -58,7 +59,7 @@ define([], function() {
 
 		// question finder code.
 		var httpCanceller = null;
-		var doQuestionSearch = function(searchQuery, searchLevel){
+		var doQuestionSearch = function(searchQuery, searchLevel, searchTags){
 			// if we have a current promise outstanding cancel it.
 			if (httpCanceller != null) {
 				httpCanceller.resolve();
@@ -68,12 +69,12 @@ define([], function() {
 			// create a new promise so we can cancel it later.
 			httpCanceller = $q.defer();
 			var questionSearchResource = api.getQuestionsResource(httpCanceller);
-			return questionSearchResource.query({searchString:searchQuery, levels:searchLevel, limit:largeNumberOfResults});
+			return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults});
 		};
 
 		// timer for the search box to minimise number of requests sent to api
 		var timer = null;
-		$scope.$watch('questionSearchText + questionSearchLevel', function() { 
+		$scope.$watch('questionSearchText + questionSearchLevel + questionSearchSubject', function() { 
 	        if (timer) {
 	        	$timeout.cancel(timer);
 	        	timer = null;
@@ -82,7 +83,7 @@ define([], function() {
 	        timer = $timeout(function() {
             	$scope.loading = true;
 
-            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel)
+            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
             	.$promise.then(function(questionsFromServer){
 					httpCanceller = null;
         			// update the view

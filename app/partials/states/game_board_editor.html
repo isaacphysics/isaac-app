@@ -20,11 +20,21 @@
 							<h2>Questions Search</h2>
 							<p>Find questions to add to your new game board...</p>
 						</div>
-						<div class="large-8 medium-8 small-16 columns">
+						<div class="small-16 columns">
 			                <label><strong>Question Title Search</strong></label>
 			                <input type='text' ng-model="questionSearchText" placeholder="Enter question title here">				
 						</div>
-						<div class="large-8 medium-8 small-16 columns">
+					</div>
+					<div class="row">
+						<div class="medium-8 small-16 columns">
+							<label><strong>Subject</strong></label>
+	                        <select ng-model="questionSearchSubject">
+	                            <option value="">Any Subject</option>
+	                            <option value="physics">Physics</option>
+	                            <option value="maths">Mathematics</option>
+	                        </select>
+						</div>
+						<div class="medium-8 small-16 columns">
 							<label><strong>Question Level</strong></label>
 	                        <select ng-model="questionSearchLevel">
 	                            <option value="">Any Level</option>
