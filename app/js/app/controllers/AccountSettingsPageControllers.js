@@ -117,9 +117,6 @@ define([], function() {
 			auth.linkRedirect(provider);
 		}
 
-		// Remove search
-		$scope.globalFlags.noSearch = true;
-
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
         $scope.showSkip = !!$stateParams.next;
