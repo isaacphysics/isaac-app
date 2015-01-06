@@ -31,14 +31,19 @@ define(["angular-ui-router"], function() {
         }
 
         getLoggedInPromise['$inject'] = ["$rootScope"];
-
-        var getRolePromiseInjectableFunction = function(role) {
+        
+        /*
+         * Function that can be used to ensure that a user belongs to one of a set of roles.
+         * If the current user does not belong to a supplied role the promise will be rejected.
+         * 
+         */
+        var getRolePromiseInjectableFunction = function(roles) {
             var result = function($rootScope) {
                 return getLoggedInPromise($rootScope).then(function(u){
-                    if (u.role == role) {
+                    if (roles.indexOf(u.role) > -1) {
                         return Promise.resolve(u);
                     } else {
-                        return Promise.reject("require_role");
+                        return Promise.reject("This route requires the user to have one of the following roles: " + roles);
                     }                             
                 })
             }
@@ -376,7 +381,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction("ADMIN"),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
                 },
                 views: {
                     "body": {
@@ -388,6 +393,9 @@ define(["angular-ui-router"], function() {
 
              .state('gameEditor', {
                 url: "/game_builder",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                },                
                 views: {
                     "body": {
                         templateUrl: "/partials/states/game_board_editor.html",
