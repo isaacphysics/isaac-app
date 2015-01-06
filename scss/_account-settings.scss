@@ -169,7 +169,7 @@ input.account-settings-input {
         float: left;
         width: 70%;
         font-size: 1rem;
-        border-color: #509e2e;
+        border-color: $ru_green;
     }
     .ru-button {
         float: left;
@@ -297,17 +297,6 @@ input.account-settings-input {
 }
 .account-reorder-bottom {
 	margin: 0 15px;
-}
-.ru-required-msg {
-	float: right;
-	font-size: 12px;
-	font-weight: 600;
-	color: #333;
-	margin:  0;
-
-	span {
-		color: #509e2e;
-	}
 }
 .account-single-btn li {
 	float: none;
