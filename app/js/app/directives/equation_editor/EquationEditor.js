@@ -64,6 +64,17 @@ define([], function() {
 					},
                 };
 
+                scope.symbolLibrary = {
+
+                	latinLetters: [
+                		"a", "b", "c",
+                	],
+
+                	greekLetters: [
+                		"α", "β", "γ",
+                	],
+                };
+
 
 			},
 

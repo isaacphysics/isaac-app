@@ -26,30 +26,32 @@ define([], function() {
 
                 var closing = false;
                 var closeMenus = function() {
-                    if (el.hasClass("foreground") && !closing) {
+                    if (el.hasClass("active-menu") && !closing) {
                         console.debug("CLOSE ALL")
 
                         closing = true;
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height()}, 200, function() {
-                            el.removeClass("foreground");
+                            el.removeClass("active-menu");
                             closing = false;
                         });
                     }
                 }
 
                 var toggleThisMenu = function() {
-                    if (el.hasClass("foreground")) {
+                    if (el.hasClass("active-menu")) {
                         closeMenus();
                     } else {
                         $(allMenus).removeClass("foreground");
+                        $(allMenus).removeClass("active-menu");
                         el.addClass("foreground");
+                        el.addClass("active-menu");
                         var activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
                     }
                 }
 
                 var resizeMenu = function() {
-                    if (el.hasClass("foreground")) {
+                    if (el.hasClass("active-menu")) {
                         var activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
                     }
@@ -71,9 +73,9 @@ define([], function() {
                 scope.$on("closeMenus", closeMenus);
                 scope.$on("resizeMenu", resizeMenu);
 
-                if (allMenus.length == 2) {
-                    $timeout(toggleThisMenu, 200);
-                }
+               // if (allMenus.length == 2) {
+                //    $timeout(toggleThisMenu, 200);
+                //}
 
 			},
 		};

@@ -1,5 +1,5 @@
-<div class="symbol-list-container">
+<div class="menu-list-container">
 	<ul>
-		<li draggable-symbol ng-repeat="m in menus" ng-click="selectMenu($event, $index)">{{m}}</li>
+		<li draggable-symbol ng-repeat="m in menus" ng-click="selectMenu($event, $index)" lock-vertical symbol="m"></li>
 	</ul>
 </div>

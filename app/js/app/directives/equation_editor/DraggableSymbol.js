@@ -4,16 +4,23 @@ define([], function() {
 	return [function() {
 
 		return {
-            scope: true,
+            scope: {
+                symbol: "=",
+            },
 			restrict: "A",
+            templateUrl: "/partials/equation_editor/draggable_symbol.html",
 			link: function(scope, element, attrs) {
                 scope.name="DRAGGABLESYMBOL"
+
+                scope.dragging = false;
 
                 var grabLocalX, grabLocalY;
 
                 var lastPageX = 0;
                 var lastPageY = 0;
                 var grab = function(pageX, pageY, e) {
+                    scope.dragging = true;
+                    scope.$apply();
 
                     var offset = $(e.target).offset();
                     grabLocalX = pageX - offset.left;
@@ -27,6 +34,9 @@ define([], function() {
                 }
 
                 var drag = function(pageX, pageY, e) {
+
+                    if ("lockVertical" in attrs)
+                        pageY = lastPageY;
 
                     // Tell our parents that we've moved.
                     scope.$emit("symbolDrag", pageX, pageY, pageX - lastPageX, pageY - lastPageY);
@@ -47,6 +57,8 @@ define([], function() {
                 }
 
                 var drop = function(pageX, pageY, e) {
+                    scope.dragging = false;
+                    scope.$apply();
 
                     element.css("left", 0);
                     element.css("top", 0);

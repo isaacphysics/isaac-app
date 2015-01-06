@@ -4,7 +4,9 @@ define([], function() {
 
 		return {
 			priority: 0,
-            scope: true,
+            scope: {
+            	symbols: "=",
+            },
 			restrict: "A",
 			templateUrl: "/partials/equation_editor/symbol_menu.html",
 			link: function(scope, element, attrs) {
@@ -22,7 +24,11 @@ define([], function() {
 						newLeft = 0;
 					}
 					else if (newLeft < element.width() - lst.width()) {
-						newLeft = element.width() - lst.width();
+						if (element.width() < lst.width()) {
+							newLeft = element.width() - lst.width();
+						} else {
+							newLeft = 0;
+						}
 					}
 
 					lst.css("left", newLeft);

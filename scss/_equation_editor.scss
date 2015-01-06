@@ -7,6 +7,8 @@ $menu-handle-width: 160px;
     min-height: 500px;
     overflow: hidden;
     position: relative;
+    z-index: 0;
+
     .top-menu {
         border: 1px solid red;
         background: #ccc;
@@ -14,10 +16,10 @@ $menu-handle-width: 160px;
         left: 0;
         right: 0;
         bottom: 100%;
-        z-index: 10;
+        visibility: hidden;
 
         &.foreground {
-            z-index: 20;
+            visibility: visible;
         }
 
         .handle {
@@ -29,6 +31,7 @@ $menu-handle-width: 160px;
             text-align: center;
             left: 50%;
             cursor: pointer;
+            visibility: visible;
 
             &.m1 {
                 margin-left: -$menu-handle-width*2;
@@ -47,7 +50,7 @@ $menu-handle-width: 160px;
             }
         }
 
-        .symbol-list-container {
+        .menu-list-container {
             width: 100%;
             height: 50px;
             white-space: nowrap;
@@ -63,6 +66,18 @@ $menu-handle-width: 160px;
                 line-height: 60px;
                 display: inline-block;
                 cursor: pointer;
+
+                &.dragging {
+                    font-weight: bold;
+                }
+            }
+
+            .dragging-background {
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                z-index: -1;
+                background: pink;
             }
             
             ul {
