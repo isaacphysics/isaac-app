@@ -63,7 +63,9 @@ define([], function() {
                     element.css("left", 0);
                     element.css("top", 0);
 
-                    scope.$emit("symbolDrop");
+                    var token = element.find(".symbol-token");
+                    var tokenOffset = token.offset();
+                    scope.$emit("symbolDrop", scope.symbol, tokenOffset.left, tokenOffset.top);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
                 }

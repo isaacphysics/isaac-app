@@ -78,6 +78,12 @@ $menu-handle-width: 160px;
                 position: absolute;
                 z-index: -1;
                 background: pink;
+
+                .symbol-token {
+                    position: absolute;
+                    left: -30px;
+                    top: -30px;
+                }
             }
             
             ul {
@@ -87,8 +93,49 @@ $menu-handle-width: 160px;
             }
         }
 
+        [sub-menu] li.active {
+            background: green;
+        }
+
         [sub-menu-item] {
             display: none;
+        }
+
+        [number-entry] {
+
+            .button-grid li {
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .input-exponent {
+                position: absolute;
+                right: 20px;
+                top: 0px;
+                display: inline-block;
+
+                &:before {
+                    content: "×";
+                    font-family: sans-serif;
+                }
+            }
+
+            .input-clear {
+                position: absolute;
+                left: 20px;
+                top: 0px;
+                font-family: sans-serif;
+                font-weight: bold;
+                color: red;
+                cursor: pointer;
+            }
+
+            input {
+                text-align: right;
+                transition: padding-right 0s;
+            }
+
+
         }
     }
 

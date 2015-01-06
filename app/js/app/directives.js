@@ -60,6 +60,7 @@ define([
     "app/directives/equation_editor/DraggableSymbol",
     "app/directives/equation_editor/SymbolMenu",
     "app/directives/Toast",
+    "app/directives/equation_editor/NumberEntry",
     "app/directives/LoadingOverlay",
     "app/directives/IsaacModal",
     "app/directives/JsonLdWriter",    
@@ -108,6 +109,8 @@ define([
 	.directive('draggableSymbol', require("app/directives/equation_editor/DraggableSymbol"))
 
 	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
+
+	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 

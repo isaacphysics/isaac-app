@@ -2,6 +2,8 @@ define([], function() {
 
 	return ["$timeout", function($timeout) {
 
+		var nextSymbolId = 0;
+
 		return {
 			scope: true,
 			restrict: "A",
@@ -12,15 +14,26 @@ define([], function() {
 
                 scope.editorClick = function() {
                     scope.$broadcast("closeMenus");
-                }
+                };
 
                 scope.$on("triggerCloseMenus", function() {
                 	scope.$broadcast("closeMenus");
-                })
+                });
 
                 scope.$on("triggerResizeMenu", function() {
                 	scope.$broadcast("resizeMenu");
-                })
+                });
+
+                scope.$on("spawnSymbol", function($e, symbolSpec, pageX, pageY) {
+                	var offset = element.offset();
+                	scope.state.symbols[nextSymbolId++] = {
+                		x: pageX - offset.left, 
+                		y: pageY - offset.top,
+                		spec: JSON.parse(JSON.stringify(symbolSpec)),
+                	}
+
+                	console.debug("Symbols:", scope.state.symbols);
+                });
 
                 scope.state = {
 					symbols: { 
@@ -64,15 +77,39 @@ define([], function() {
 					},
                 };
 
+                var stringSymbolSpecs = function(ss) {
+                	var symbolSpecs = [];
+                	for(var i in ss) {
+                		var s = ss[i];
+                		symbolSpecs.push({
+                			type: "string",
+                			token: s,
+                			label: s,
+                			fontSize: 48,
+                		});
+                	}
+
+                	return symbolSpecs;
+                }
+
                 scope.symbolLibrary = {
 
-                	latinLetters: [
-                		"a", "b", "c",
-                	],
+                	latinLetters: stringSymbolSpecs(["a", "b", "c",]),
 
-                	greekLetters: [
-                		"α", "β", "γ",
-                	],
+                	greekLetters: stringSymbolSpecs(["α", "β", "γ",]),
+
+                };
+
+                scope.latinLetterTitle = {
+                	fontSize: 48,
+                	type: "string",
+                	label: "abc",
+                };
+
+                scope.greekLetterTitle = {
+                	fontSize: 48,
+                	type: "string",
+                	label: "αβγ",
                 };
 
 

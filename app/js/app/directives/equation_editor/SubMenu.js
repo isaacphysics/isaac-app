@@ -13,11 +13,11 @@ define([], function() {
 
                 scope.menus = [];
                 items.each(function(i,e) {
-                	scope.menus.push($(e).attr("sub-menu-item"));
+                	scope.menus.push(scope.$eval($(e).attr("menu-title")));
                 });
 
                 scope.selectMenu = function(e, idx) {
-
+                	scope.activeIdx = idx;
 					element.siblings("[sub-menu-item]").hide();
 					$(element.siblings("[sub-menu-item]")[idx]).show();
 
