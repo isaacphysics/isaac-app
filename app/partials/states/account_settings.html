@@ -187,7 +187,7 @@
                 <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
             </div>
         </div>
-        <div class="large-16 columns account-reorder-top">
+        <div class="large-16 columns account-reorder-top" ng-class="{'account-single-btn': !showSkip}">
             <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
                 <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
                 <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
@@ -207,7 +207,7 @@
     </div>
     <div class="large-6 medium-16 columns">
         <div class="connect-list">
-            <h3><span class="person-icon-active"></span> Teacher connections:</h3>
+            <h3><span class="person-icon-active"></span> Teacher connections</h3>
 
             <div class="connect-list-inner">
                 <ul class="teachers-connected">

@@ -309,7 +309,10 @@ input.account-settings-input {
 		color: #509e2e;
 	}
 }
-
+.account-single-btn li {
+	float: none;
+	margin: 0 auto;
+}
 @media #{$small-only} { 
 	.account-settings-wrap {
 		background: #f6f6f6;
