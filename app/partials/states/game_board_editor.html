@@ -48,7 +48,7 @@
 		                </div>
 
 		                <ul ng-if="!loading" class="no-bullet results-list">
-		                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+		                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
 		                </ul>					
 					</div>
 				</div>
@@ -59,7 +59,7 @@
 					<div class="results-panel">
 						<h4>Currently Selected Questions ({{currentGameBoard.questions.length}}/10)</h4>
 		                <ul class="no-bullet selected-questions">
-		                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+		                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
 		                </ul>
 	               	</div>
 				</div>
