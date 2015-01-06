@@ -42,7 +42,7 @@
 			<div class="row">
 				<div class="small-16 columns">
 					<div class="results-panel">
-						<h4>Search Results</h4>
+						<h4>Search Results <span ng-show="!loading && searchResults">({{searchResults.length}})</span></h4>
 		                <div class="text-center" ng-if="loading">
 		                	<img src="/assets/loading.gif">
 		                </div>
