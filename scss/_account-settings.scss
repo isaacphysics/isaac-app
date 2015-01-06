@@ -152,6 +152,7 @@ input.account-settings-input {
     margin: 20px 0 0 !important;
     padding-left: 38px;
     padding-right: 35px;
+    padding-bottom: 20px !important;
 
     h3 {
     	a {
@@ -249,6 +250,15 @@ input.account-settings-input {
 	background: url(/assets/ru.png) -308px -302px no-repeat;
 	margin-left: 15px;
 	margin-right: 12px;
+}
+.icon-help {
+	display: inline-block;
+	width: 19px;
+	height: 22px;
+	background: url(/assets/ru.png) -308px -324px no-repeat;
+	margin-bottom: -4px;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 .account-warning {
 	@extend .clearfix;

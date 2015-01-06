@@ -51,6 +51,9 @@
 .underline {
     text-decoration: underline;
 }
+.has-tip, .has-tip:hover {
+    border: none;
+}
 
 @media #{$small-only} { 
     .ru-alert-box {
