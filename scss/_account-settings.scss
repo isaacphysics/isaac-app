@@ -297,7 +297,7 @@ input.account-settings-input {
 }
 .account-reorder-bottom {
 	margin: 0 15px;
-}
+}.connect-list-inner.connect-list-inner.connect-list-inner
 .account-single-btn li {
 	float: none;
 	margin: 0 auto;
@@ -404,7 +404,7 @@ input.account-settings-input {
 	}
 	.connect-list-inner {
 		height: 138px;
-		overflow: scroll;
+		overflow-y: scroll;
 	}
 	#account-firstname,
 	#account-lastname {
