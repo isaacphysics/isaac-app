@@ -15,7 +15,6 @@
  */
 define([], function() {
 
-
 	var Api = function ApiConstructor($resource, server, $http) {
 
 		this.pages = $resource(server + "/api/pages/:id");
@@ -98,9 +97,9 @@ define([], function() {
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {
-			return $resource(server + "/api/pages/questions?searchString=:searchString&tags=:tags&levels=:levels&start_index=:startIndex&limit=:limit", {}, {
+			return $resource(server + "/api/pages/questions", {}, {
 				'query': {
-					method: 'GET', isArray: false, timeout: canceller.promise
+					method: 'GET', isArray: false, timeout: canceller.promise, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", start_index:"@startIndex", limit:"@limit"}
 				}
 			})
 		};

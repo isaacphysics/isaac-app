@@ -37,7 +37,7 @@
 						<div class="medium-8 small-16 columns">
 							<label><strong>Question Level</strong></label>
 	                        <select ng-model="questionSearchLevel">
-	                            <option value="">Any Level</option>
+	                            <option value="{{null}}">Any Level</option>
 	                            <option value="1">1 (GCSE)</option>
 	                            <option value="2">2</option>
 	                            <option value="3">3</option>
@@ -78,23 +78,23 @@
 	</div>
 	<section ng-if="currentGameBoard.questions.length > 0">
 	    <div class="row">
-	            <div class="small-16 columns">
-	            	<h2>Game Board Preview and Options</h2>
-	            </div>
+            <div class="small-16 columns">
+            	<h2>Game Board Preview and Options</h2>
+            </div>
 	    </div>
 	    <div class="row">
-	            <div class="large-8 medium-8 small-16 columns text-center">
-	                <span>
-	                    <label><strong>Game board id for URL (must be unique and not contain spaces)</strong></label>
-	                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
-	                </span>
-	            </div>
-	            <div class="large-8 medium-8 small-16 columns text-center">
-	                <span>
-	                    <label><strong>Game board title</strong></label>
-	                    <input type="text" ng-model="currentGameBoard.title">
-	                </span>
-	            </div>
+            <div class="large-8 medium-8 small-16 columns text-center">
+                <span>
+                    <label><strong>Game board id for URL (must be unique and not contain spaces)</strong></label>
+                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
+                </span>
+            </div>
+            <div class="large-8 medium-8 small-16 columns text-center">
+                <span>
+                    <label><strong>Game board title</strong></label>
+                    <input type="text" ng-model="currentGameBoard.title">
+                </span>
+            </div>
 	    </div>
 
 	    <div class="row">
