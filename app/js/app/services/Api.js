@@ -89,6 +89,13 @@ define([], function() {
 			}
 		});
 
+		this.statisticsEndpoint = $resource(server + "/api/admin/stats/", {}, {
+			'get' : {
+				method: 'GET', 
+				isArray: false 
+			}
+		});
+
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'

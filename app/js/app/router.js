@@ -381,7 +381,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
                 },
                 views: {
                     "body": {

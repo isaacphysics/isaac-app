@@ -181,6 +181,13 @@ $footer_height : 250px;
     border: 1px solid $ru_maths !important;
 }
 
+.panel.white {
+    border: #cccccc 1px solid;
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
 .loading-header
 {
     padding-top: 40px;
@@ -253,9 +260,15 @@ body
 ul
 {
     list-style-image: url('../assets/hexagon.svg');
-    .no-bullet{
+    &.no-bullet {
         list-style-type: none;
         list-style-image: none;
+    }
+
+    &.horizontal-list li {
+        float:left;
+        display:inline;
+        margin-left:10px;
     }
 }
 
