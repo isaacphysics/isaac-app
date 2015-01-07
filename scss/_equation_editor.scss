@@ -134,8 +134,24 @@ $menu-handle-width: 160px;
                 text-align: right;
                 transition: padding-right 0s;
             }
+        }
+    }
 
+    [canvas-symbol] .canvas-symbol {
+        position: absolute;
+        cursor: pointer;
 
+        &.string {
+            z-index: 20;
+        }
+
+        &.container {
+            border: 1px dashed blue;
+            z-index: 10;
+        }
+
+        &.selected {
+            border: 1px dotted green;
         }
     }
 

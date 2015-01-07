@@ -12,8 +12,11 @@ define([], function() {
 
                 scope.equationEditorElement = element;
 
+                scope.selectedSymbols = [];
+
                 scope.editorClick = function() {
                     scope.$broadcast("closeMenus");
+                    scope.selectedSymbols.length = 0;
                 };
 
                 scope.$on("triggerCloseMenus", function() {
@@ -112,6 +115,21 @@ define([], function() {
                 	label: "αβγ",
                 };
 
+                scope.$on("symbol_click", function($e, s, e) {
+                	if (!e.ctrlKey) {
+	                	scope.selectedSymbols.length = 0;
+	                	scope.selectedSymbols.push(s);
+	                } else {
+	                	if (scope.selectedSymbols.indexOf(s) > -1) {
+	                		scope.selectedSymbols.splice(scope.selectedSymbols.indexOf(s),1);
+	                	} else {
+	                		scope.selectedSymbols.push(s);
+	                	}
+	                }
+
+	                e.preventDefault();
+	                e.stopPropagation();
+                })
 
 			},
 

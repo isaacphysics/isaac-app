@@ -14,9 +14,7 @@
         MENU4 CONTENT
     </div>
 
-    <div class="equation-canvas">
-        <div ng-repeat="s in state.symbols" draggable-symbol symbol="s.symbolSpec" ng-style="{left: s.x, top: s.y}"></div>
-    </div>
+    <div ng-repeat="s in state.symbols" canvas-symbol symbol="s" selected="selectedSymbols.indexOf(s) > -1"></div>
 
     <!-- BUTTONS -->
 

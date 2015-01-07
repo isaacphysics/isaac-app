@@ -57,17 +57,19 @@ define([], function() {
                 }
 
                 var drop = function(pageX, pageY, e) {
-                    scope.dragging = false;
-                    scope.$apply();
+
+                    var token = element.find(".symbol-token");
+                    var tokenOffset = token.offset();
 
                     element.css("left", 0);
                     element.css("top", 0);
 
-                    var token = element.find(".symbol-token");
-                    var tokenOffset = token.offset();
                     scope.$emit("symbolDrop", scope.symbol, tokenOffset.left, tokenOffset.top);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
+
+                    scope.dragging = false;
+                    scope.$apply();
                 }
 
                 var mousedown = function(e) {

@@ -1,0 +1,9 @@
+<div ng-switch="symbol.spec.type" ng-click="symbol_click($event)">
+	<div ng-switch-when="string" class="canvas-symbol string" ng-class="{selected: selected}" ng-style="{left: symbol.x, top: symbol.y, fontSize: symbol.spec.fontSize, lineHeight: symbol.spec.fontSize + 'px'}">
+		{{symbol.spec.token}}
+	</div>
+	<div ng-switch-when="container" class="canvas-symbol container" ng-class="{selected: selected}" ng-style="{left: symbol.x, top: symbol.y, width: symbol.spec.width, height: symbol.spec.height}">
+		&nbsp;
+	</div>
+
+</div>
