@@ -297,10 +297,21 @@ input.account-settings-input {
 }
 .account-reorder-bottom {
 	margin: 0 15px;
-}.connect-list-inner.connect-list-inner.connect-list-inner
+}
 .account-single-btn li {
 	float: none;
 	margin: 0 auto;
+}
+.ru-required-msg {
+	float: right;
+	font-size: 12px;
+	font-weight: 600;
+	color: #333;
+	margin:  0;
+
+	span {
+		color: #509e2e;
+	}
 }
 @media #{$small-only} { 
 	.account-settings-wrap {
