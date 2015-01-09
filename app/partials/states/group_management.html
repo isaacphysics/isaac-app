@@ -1,0 +1,34 @@
+<div desktop-panel>
+    <div class="row">
+        <div ng-if="editingSelf" class="medium-15 end columns text-right">
+            <h2>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
+        </div>
+    </div>    
+</div>
+<div class="row ru-page-heading">
+    <div class="medium-13 columns">
+        <h1>Manage Groups</h1>
+        <p>Keep track of your active and archived groups acrross the whole year.</p>
+    </div>
+    <div class="medium-3 columns text-right">
+        <span title="Information about current page" class="has-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
+    </div>
+</div>
+<div class="row">
+    <div class="large-6 columns">
+        <dl class="tabs ru_tabs no-print">
+            <dd ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Active Groups</a></dd>
+            <dd ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Archived  Groups</a></dd>
+        </dl>
+        <div class="tabs-content ru_tabs">
+            Content
+        </div>
+    </div>
+
+    <!-- Start desktop only -->
+    <div class="large-10 columns show-for-large-up">
+        <div class="panel" ng-include="'/partials/group_management_details.html'"></div>
+    </div>
+    <!-- End desktop only -->
+
+</div>

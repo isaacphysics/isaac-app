@@ -385,6 +385,19 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('groupManagment', {
+                url: "/groups",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/group_management.html",
+                        controller: "GroupManagmentPageController",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

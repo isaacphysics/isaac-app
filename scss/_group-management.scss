@@ -1,0 +1,43 @@
+.group-management-details {
+	h6 {
+		margin-bottom: 0;
+	}
+	p {
+		font-size: 14px;
+	}
+}
+
+// Group accordion styles
+.group-accordion {
+	margin: 0 0 1rem;
+
+	dd .group-accordion-header {
+		font-weight: 600;
+		color: $ru_green;
+		border-right: #999 1px solid;
+		border-left: #999 1px solid;
+		padding: 7px 12px;
+	}
+	dd:first-child .group-accordion-header {
+		border-top: #999 1px solid;
+	}
+}
+
+// Group table styles
+.group-table {
+	table-layout: auto;
+	border-collapse: collapse;
+	border: #999 1px solid;
+	margin: 0;
+
+	td {
+		color: #000;
+		font-weight: 600;
+		padding: 0 10px;
+		border-bottom: #999 1px solid;
+	}
+
+	.group-table-name {
+		color: $ru_green;
+	}
+}
