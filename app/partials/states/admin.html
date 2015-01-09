@@ -24,41 +24,48 @@
             <div class="small-16 columns">
                 <h2>Statistics at a glance</h2>
             </div>
-            <div class="medium-8 small-16 columns">
-                <ul>
-                    <li>
-                        <strong>Users (Total Registered: {{statistics.total_users}})</strong>
-                        <ul>
-                            <li>
-                                <strong>Gender</strong>
-                                <ul>
-                                    <li>Male: {{statistics.male_users}}</li>
-                                    <li>Female: {{statistics.female_users}}</li>
-                                    <li>Unknown: {{statistics.unknown_gender_users}}</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <strong>Role</strong>
-                                <ul>
-                                    <li>Student (unknown role): {{statistics.student_users}}</li>
-                                    <li>Teacher: {{statistics.teacher_users}}</li>
-                                    <li>Staff: {{statistics.staff_users}}</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="!statistics">
+                    <img src="/assets/loading.gif">
+                </div>    
             </div>
-            <div class="medium-8 small-16 columns">
-                <ul>
-                    <li>
-                        <strong>Events</strong>
-                        <ul>
-                            <li>Viewed Questions Events: {{statistics.view_question_events}}</li>
-                            <li># of Questions Answered Events: {{statistics.answered_question_events}}</li>
-                        </ul>
-                    </li> 
-                </ul>
+            <div ng-if="statistics">
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Users (Total Registered: {{statistics.total_users}})</strong>
+                            <ul>
+                                <li>
+                                    <strong>Gender</strong>
+                                    <ul>
+                                        <li>Male: {{statistics.male_users}}</li>
+                                        <li>Female: {{statistics.female_users}}</li>
+                                        <li>Unknown: {{statistics.unknown_gender_users}}</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Role</strong>
+                                    <ul>
+                                        <li>Student (unknown role): {{statistics.student_users}}</li>
+                                        <li>Teacher: {{statistics.teacher_users}}</li>
+                                        <li>Staff: {{statistics.staff_users}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Events</strong>
+                            <ul>
+                                <li>Viewed Questions Events: {{statistics.view_question_events}}</li>
+                                <li># of Questions Answered Events: {{statistics.answered_question_events}}</li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </div>                
             </div>
         </div>        
     </div>
