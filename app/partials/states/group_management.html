@@ -8,7 +8,7 @@
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
         <h1>Manage Groups</h1>
-        <p>Keep track of your active and archived groups acrross the whole year.</p>
+        <p class="hide-for-small-only">Keep track of your active and archived groups acrross the whole year.</p>
     </div>
     <div class="medium-3 columns text-right">
         <span title="Information about current page" class="has-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
@@ -21,7 +21,21 @@
             <dd ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Archived  Groups</a></dd>
         </dl>
         <div class="tabs-content ru_tabs">
-            Content
+
+            <div class="hide-for-large-up">
+                <h6>Create New Group</h6>
+                <input type="email" />
+            </div>
+
+            <ul class="group-management-nav">
+                <li class="active"><a href="#"><span class="group-icon"></span>Dolphins<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Tigers<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Monkeys<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Lions<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Elephants<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Panthers<span class="group-code">TKN@%@DD354</span></a></li>
+                <li><a href="#"><span class="group-icon"></span>Tigers<span class="group-code">TKN@%@DD354</span></a></li>
+            </ul>
         </div>
     </div>
 

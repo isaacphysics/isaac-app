@@ -7,6 +7,68 @@
 	}
 }
 
+// Group management navigation
+.group-management-nav {
+	float: left;
+	width: 100%;
+	padding: 20px;
+	margin: 0;
+
+	li {
+		float: left;
+		width: 100%;
+		list-style: none;
+		color: #333;
+		font-weight: 600;
+		line-height: 2.5em;
+		background-color: #f6f6f6;
+		padding: 0 10px;
+		border-bottom: #999 1px solid;
+		border-left: #999 1px solid;
+		border-right: #999 1px solid;
+
+		&:first-child {
+			border-top: #999 1px solid;
+		}
+
+		a {
+			float: left;
+			width: 100%;
+			color: #333;
+		}
+
+		&.active {
+			background-color: #fff;
+		}
+
+		&.active, &:hover {
+			a {
+				color: $ru_green;
+			}
+
+			.group-icon {
+				background-position: -330px -302px;
+			}
+		}
+	}
+
+	.group-code {
+		float: right;
+	}
+}
+.group-code {
+	font-size: 12px;
+	font-weight: 600;
+	color: #000;
+}
+.group-icon {
+	float: left;
+	width: 23px;
+	height: 19px;
+	background: url(/assets/ru.png) -330px -321px no-repeat;
+	margin: 10px 10px 10px 0;
+}
+
 // Group accordion styles
 .group-accordion {
 	margin: 0 0 1rem;
@@ -21,6 +83,18 @@
 	dd:first-child .group-accordion-header {
 		border-top: #999 1px solid;
 	}
+
+	.group_accordion_arrow {
+		float: right;
+		width: 14px;
+		height: 10px;
+		background: url(/assets/ru.png) -370px -313px no-repeat;
+		margin-top: 8px;
+	}
+
+	.active .group_accordion_arrow {
+		background-position: -370px -302px;
+	}
 }
 
 // Group table styles
@@ -33,11 +107,46 @@
 	td {
 		color: #000;
 		font-weight: 600;
+		line-height: 2.2rem;
 		padding: 0 10px;
 		border-bottom: #999 1px solid;
 	}
 
-	.group-table-name {
-		color: $ru_green;
+	.delete-icon,
+	.edit-icon {
+		float: right;
 	}
+}
+
+.archived {
+
+	&.group-accordion dd .group-accordion-header {
+		color: #666;
+	}
+	.group-table td {
+		color: #666;
+	}
+}
+.group-table-person {
+	float: left;
+	width: 11px;
+	height: 18px;
+	background: url(/assets/ru.png) -357px -320px no-repeat;
+	margin: 8px 10px 0 0;
+}
+a .group-table-person {
+	background-position: -357px -302px;
+}
+
+.delete-icon {
+	float: left;
+	width: 18px;
+	height: 16px;
+	background: url(/assets/ru.png) -370px -324px no-repeat;
+}
+.edit-icon {
+	float: left;
+	width: 16px;
+	height: 17px;
+	background: url(/assets/ru.png) -385px -302px no-repeat;
 }

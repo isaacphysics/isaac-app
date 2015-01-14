@@ -7,7 +7,7 @@
     <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
 
     <dl class="accordion group-accordion">
-        <dd>
+        <dd class="active">
             <a class="group-accordion-header">
                 3 Active members in this group
                 <span class="group_accordion_arrow"></span>
@@ -16,22 +16,22 @@
                 <table class="group-table">
                     <tbody>
                         <tr>
-                            <td class="group-table-name">David Simmons</td>
+                            <td><a href="#"><span class="group-table-person"></span>David Simmons</a></td>
                             <td>DaveyBoy@hotmail.com</td>
-                            <td>Edit</td>
-                            <td>x</td>
+                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                         <tr>
-                            <td class="group-table-name">Jane Brown</td>
+                            <td><a href="#"><span class="group-table-person"></span>Jane Brown</a></td>
                             <td>Jane123@googlemail.com</td>
-                            <td>Edit</td>
-                            <td>x</td>
+                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                         <tr>
-                            <td class="group-table-name">John Reece</td>
+                            <td><a href="#"><span class="group-table-person"></span>John Reece</a></td>
                             <td>JReece@gmail.com</td>
-                            <td>Edit</td>
-                            <td>x</td>
+                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,23 +46,66 @@
                 <table class="group-table">
                     <tbody>
                         <tr>
-                            <td>Jane123@googlemail.com</td>
-                            <td>Edit</td>
-                            <td>x</td>
+                            <td><span class="group-table-person"></span>Jane123@googlemail.com</td>
+                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                         <tr>
-                            <td>JReece@gmail.com</td>
-                            <td>Edit</td>
-                            <td>x</td>
+                            <td><span class="group-table-person"></span>JReece@gmail.com</td>
+                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </dd>
     </dl>
-
     <a class="ru-button-big expand">Save</a>
-    <div class="medium-16 columns text-right">
-       <a href="#">Archive this group</a><span title="Information about connecting" class="has-tip icon-help" data-tooltip></span>
-    </div>
+    
+    <h3 class="ru_green">Dolphins</h3>
+    <dl class="accordion group-accordion archived">
+        <dd class="active">
+            <a class="group-accordion-header">
+                3 Active members in this group
+                <span class="group_accordion_arrow"></span>
+            </a>
+            <div class="group-accordion-content">
+                <table class="group-table">
+                    <tbody>
+                        <tr>
+                            <td><span class="group-table-person"></span>David Simmons</td>
+                            <td>DaveyBoy@hotmail.com</td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-table-person"></span>Jane Brown</td>
+                            <td>Jane123@googlemail.com</td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-table-person"></span>John Reece</td>
+                            <td>JReece@gmail.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </dd>
+        <dd>
+            <a class="group-accordion-header">
+                2 Invitations not yet accepted in this group
+                <span class="group_accordion_arrow"></span>
+            </a>
+            <div class="group-accordion-content">
+                <table class="group-table">
+                    <tbody>
+                        <tr>
+                            <td><span class="group-table-person"></span>Jane123@googlemail.com</td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-table-person"></span>JReece@gmail.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </dd>
+    </dl>
+    <a class="ru-button-big secondary expand">Un-archive this group</a>
 </div>
