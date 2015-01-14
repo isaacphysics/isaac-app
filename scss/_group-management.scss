@@ -8,41 +8,22 @@
 }
 
 // Group management navigation
-.group-management-nav {
+.group-nav {
 	float: left;
 	width: 100%;
-	padding: 20px;
 	margin: 0;
 
-	li {
+	dd {
 		float: left;
 		width: 100%;
-		list-style: none;
-		color: #333;
-		font-weight: 600;
-		line-height: 2.5em;
-		background-color: #f6f6f6;
-		padding: 0 10px;
-		border-bottom: #999 1px solid;
-		border-left: #999 1px solid;
-		border-right: #999 1px solid;
+		margin: 0;
 
-		&:first-child {
+		&:first-child .group-nav-header {
 			border-top: #999 1px solid;
 		}
 
-		a {
-			float: left;
-			width: 100%;
-			color: #333;
-		}
-
-		&.active {
-			background-color: #fff;
-		}
-
 		&.active, &:hover {
-			a {
+			.group-nav-header {
 				color: $ru_green;
 			}
 
@@ -56,17 +37,57 @@
 		float: right;
 	}
 }
+.group-nav-header {
+	float: left;
+	width: 100%;
+	color: #333;
+	font-weight: 600;
+	line-height: 2.5em;
+	background-color: #f6f6f6;
+	border-bottom: #999 1px solid;
+	padding: 0 10px;
+}
+.group-nav-toggle {
+	float: right;
+}
+.group-nav-content {
+	padding: 20px;
+}
+
 .group-code {
 	font-size: 12px;
 	font-weight: 600;
 	color: #000;
 }
-.group-icon {
-	float: left;
-	width: 23px;
-	height: 19px;
-	background: url(/assets/ru.png) -330px -321px no-repeat;
-	margin: 10px 10px 10px 0;
+.group-nav-toggle {
+	margin: 3px 0 3px 10px;
+}
+
+// Group tabs styles 
+.group-tabs {
+	dd {
+		font-weight: 600;
+
+		&:first-child {
+			margin-right: 10px;
+		}
+
+		a {
+			border: #ccc solid 1px;
+			padding: 10px 20px;
+		}
+
+		&.active a {
+			color: $ru_green;
+			background-color: #fff;
+			border-bottom: #fff solid 1px;
+		}
+	}
+}
+.group-tabs-content {
+	background-color: #fff;
+	border-top: #ccc solid 1px;
+	margin-top: -1px;
 }
 
 // Group accordion styles
@@ -149,4 +170,44 @@ a .group-table-person {
 	width: 16px;
 	height: 17px;
 	background: url(/assets/ru.png) -385px -302px no-repeat;
+}
+@media #{$small-only} { 
+	.group-tabs-content,
+	.group-tabs {
+		width: auto;
+		margin-left: -0.9375rem;
+		margin-right: -0.9375rem;
+	}
+}
+@media #{$medium-up} { 
+	.group-icon {
+		float: left;
+		width: 23px;
+		height: 19px;
+		background: url(/assets/ru.png) -330px -321px no-repeat;
+		margin: 10px 10px 10px 0;
+	}
+	.group-tabs-content {
+		border-left: #ccc solid 1px;
+		border-right: #ccc solid 1px;
+	}
+}
+@media #{$large-up} { 
+	.group-nav {
+		padding: 20px;
+
+		dd.active .group-nav-header {
+			background-color: #fff;
+		}
+	}
+	.group-nav-header {
+		border-left: #999 1px solid;
+		border-right: #999 1px solid;
+	}
+	.group-nav-toggle {
+		display: none;
+	}
+	.group-tabs-content {
+		border-bottom: #ccc solid 1px;
+	}
 }
