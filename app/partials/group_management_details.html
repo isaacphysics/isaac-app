@@ -1,4 +1,6 @@
-<div class="group-management-details">
+<div class="group-management-wrap">
+
+    <!-- Start active group -->
     <h6>Create / Edit group name</h6>
     <input type="email" />
 
@@ -9,50 +11,71 @@
     <dl class="accordion group-accordion">
         <dd class="active">
             <a class="group-accordion-header">
-                3 Active members in this group
-                <span class="group_accordion_arrow"></span>
+                3 Active members
+                <span class="group-accordion-arrow"></span>
             </a>
             <div class="group-accordion-content">
                 <table class="group-table">
                     <tbody>
                         <tr>
                             <td><a href="#"><span class="group-table-person"></span>David Simmons</a></td>
-                            <td>DaveyBoy@hotmail.com</td>
-                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><span class="hide-for-small-only">DaveyBoy@hotmail.com</span></td>
+                            <td><a class="edit-icon show-for-small-only" href="#"></a></td>
                             <td><a class="delete-icon" href="#"></a></td>
                         </tr>
+                        <!-- Start edit email - mobile only -->
+                        <tr class="group-table-email-edit">
+                            <td colspan="4">
+                                <input type="email" value="Jane123@googlemail.com" />
+                            </td>
+                        </tr>
+                        <!-- End edit email -->
                         <tr>
                             <td><a href="#"><span class="group-table-person"></span>Jane Brown</a></td>
-                            <td>Jane123@googlemail.com</td>
-                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><span class="hide-for-small-only">Jane123@googlemail.com</span></td>
+                            <td><a class="edit-icon show-for-small-only" href="#"></a></td>
                             <td><a class="delete-icon" href="#"></a></td>
                         </tr>
+                        <!-- Start edit email - mobile only -->
+                        <tr class="group-table-email-edit">
+                            <td colspan="4">
+                                <input type="email" value="Jane123@googlemail.com" />
+                            </td>
+                        </tr>
+                        <!-- End edit email -->
                         <tr>
                             <td><a href="#"><span class="group-table-person"></span>John Reece</a></td>
-                            <td>JReece@gmail.com</td>
-                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><span class="hide-for-small-only">JReece@gmail.com</span></td>
+                            <td><a class="edit-icon show-for-small-only" href="#"></a></td>
                             <td><a class="delete-icon" href="#"></a></td>
                         </tr>
+                        <!-- Start edit email - mobile only -->
+                        <tr class="group-table-email-edit">
+                            <td colspan="4">
+                                <input type="email" value="JReece@gmail.com" />
+                            </td>
+                        </tr>
+                        <!-- End edit email -->
                     </tbody>
                 </table>
             </div>
         </dd>
         <dd>
             <a class="group-accordion-header">
-                2 Invitations not yet accepted in this group
-                <span class="group_accordion_arrow"></span>
+                2 Invitations not yet accepted
+                <span class="group-accordion-arrow"></span>
             </a>
             <div class="group-accordion-content">
                 <table class="group-table">
                     <tbody>
                         <tr>
                             <td><span class="group-table-person"></span>Jane123@googlemail.com</td>
-                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="edit-icon show-for-small-only" href="#"></a></td>
                             <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                         <tr>
                             <td><span class="group-table-person"></span>JReece@gmail.com</td>
-                            <td><a class="edit-icon" href="#"></a></td>
+                            <td><a class="edit-icon show-for-small-only" href="#"></a></td>
                             <td><a class="delete-icon" href="#"></a></td>
                         </tr>
                     </tbody>
@@ -61,13 +84,19 @@
         </dd>
     </dl>
     <a class="ru-button-big expand">Save</a>
+    <!-- End active group -->
     
-    <h3 class="ru_green">Dolphins</h3>
+
+
+
+    <!-- Start archived group -->
+    <h3 class="ru_green show-for-large-up">Dolphins</h3>
+
     <dl class="accordion group-accordion archived">
         <dd class="active">
             <a class="group-accordion-header">
-                3 Active members in this group
-                <span class="group_accordion_arrow"></span>
+                3 Active members
+                <span class="group-accordion-arrow"></span>
             </a>
             <div class="group-accordion-content">
                 <table class="group-table">
@@ -90,8 +119,8 @@
         </dd>
         <dd>
             <a class="group-accordion-header">
-                2 Invitations not yet accepted in this group
-                <span class="group_accordion_arrow"></span>
+                2 Invitations not yet accepted
+                <span class="group-accordion-arrow"></span>
             </a>
             <div class="group-accordion-content">
                 <table class="group-table">
@@ -108,4 +137,5 @@
         </dd>
     </dl>
     <a class="ru-button-big secondary expand">Un-archive this group</a>
+    <!-- End archived group -->
 </div>

@@ -8,7 +8,7 @@
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
         <h1>Manage Groups</h1>
-        <p class="hide-for-small-only">Keep track of your active and archived groups acrross the whole year.</p>
+        <p class="hide-for-small-only">Keep track of your active and archived groups across the whole year.</p>
     </div>
     <div class="medium-3 columns text-right">
         <span title="Information about current page" class="has-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
@@ -16,11 +16,11 @@
 </div>
 <div class="row">
     <div class="large-6 columns">
-        <dl class="tabs group-tabs no-print">
+        <dl class="tabs profile-tabs no-print">
             <dd class="active"><a href="#">Active Groups</a></dd>
             <dd><a href="#">Archived  Groups</a></dd>
         </dl>
-        <div class="tabs-content group-tabs-content">
+        <div class="tabs-content profile-tabs-content">
 
             <div class="hide-for-large-up">
                 <div class="large-16 columns">
@@ -29,13 +29,16 @@
                 </div>
             </div>
 
+
+
+            <!-- Active groups navigation -->
             <dl class="group-nav">
                 <dd class="active">
                     <a class="group-nav-header" href="#">
                         <span class="group-icon"></span>
                         Dolphins
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content hide-for-large-up" ng-include="'/partials/group_management_details.html'"></div>
                 </dd>
@@ -45,7 +48,7 @@
                         <span class="group-icon"></span>
                         Tigers
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
@@ -55,7 +58,7 @@
                         <span class="group-icon"></span>
                         Monkeys
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
@@ -65,7 +68,7 @@
                         <span class="group-icon"></span>
                         Lions
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
@@ -75,7 +78,7 @@
                         <span class="group-icon"></span>
                         Elephants
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
@@ -85,7 +88,7 @@
                         <span class="group-icon"></span>
                         Panthers
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
@@ -95,12 +98,91 @@
                         <span class="group-icon"></span>
                         Tigers
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                        <span class="group-code">TKN@%@DD354</span>
+                        <span class="group-nav-right"><strong>TKN@%@DD354</strong></span>
                     </a>
                     <div class="group-nav-content"></div>
                 </dd>
 
             </dl>
+
+
+
+            <!-- Archived groups navigation -->
+            <dl class="group-nav">
+                <dd class="active">
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Dolphins
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content hide-for-large-up" ng-include="'/partials/group_management_details.html'"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Tigers
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Monkeys
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Lions
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Elephants
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Panthers
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+                <dd>
+                    <a class="group-nav-header" href="#">
+                        <span class="group-icon"></span>
+                        Tigers
+                        <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
+                        <span class="group-nav-right">1st Nov 2014</span>
+                    </a>
+                    <div class="group-nav-content"></div>
+                </dd>
+
+            </dl>
+
+
+
         </div>
     </div>
 

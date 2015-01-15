@@ -1,4 +1,39 @@
-.group-management-details {
+/* 
+	Tab styles for profile pages
+*/
+.profile-tabs {
+	> dd {
+		width: 50%;
+		text-align: center;
+		font-weight: 600;
+
+		&:first-child {
+			padding-right: 10px;
+		}
+
+		a {
+			border: #ccc solid 1px;
+			padding: 10px 20px;
+		}
+
+		&.active a {
+			color: $ru_green;
+			background-color: #fff;
+			border-bottom: #fff solid 1px;
+		}
+	}
+}
+.profile-tabs-content {
+	background-color: #fff;
+	border-top: #ccc solid 1px;
+	margin-top: -1px;
+}
+
+
+/*
+	Group management page styles 
+*/
+.group-management-wrap {
 	h6 {
 		margin-bottom: 0;
 	}
@@ -7,7 +42,10 @@
 	}
 }
 
-// Group management navigation
+
+/*
+	Group management navigation styles 
+*/
 .group-nav {
 	float: left;
 	width: 100%;
@@ -32,10 +70,6 @@
 			}
 		}
 	}
-
-	.group-code {
-		float: right;
-	}
 }
 .group-nav-header {
 	float: left;
@@ -53,44 +87,20 @@
 .group-nav-content {
 	padding: 20px;
 }
-
-.group-code {
+.group-nav-toggle {
+	margin: 3px 0 3px 10px;
+}
+.group-nav-right {
+	float: right;
 	font-size: 12px;
 	font-weight: 600;
 	color: #000;
 }
-.group-nav-toggle {
-	margin: 3px 0 3px 10px;
-}
 
-// Group tabs styles 
-.group-tabs {
-	dd {
-		font-weight: 600;
 
-		&:first-child {
-			margin-right: 10px;
-		}
-
-		a {
-			border: #ccc solid 1px;
-			padding: 10px 20px;
-		}
-
-		&.active a {
-			color: $ru_green;
-			background-color: #fff;
-			border-bottom: #fff solid 1px;
-		}
-	}
-}
-.group-tabs-content {
-	background-color: #fff;
-	border-top: #ccc solid 1px;
-	margin-top: -1px;
-}
-
-// Group accordion styles
+/*
+	Group management accordion styles 
+*/
 .group-accordion {
 	margin: 0 0 1rem;
 
@@ -105,7 +115,7 @@
 		border-top: #999 1px solid;
 	}
 
-	.group_accordion_arrow {
+	.group-accordion-arrow {
 		float: right;
 		width: 14px;
 		height: 10px;
@@ -113,12 +123,15 @@
 		margin-top: 8px;
 	}
 
-	.active .group_accordion_arrow {
+	.active .group-accordion-arrow {
 		background-position: -370px -302px;
 	}
 }
 
-// Group table styles
+
+/*
+	Group management table styles 
+*/
 .group-table {
 	table-layout: auto;
 	border-collapse: collapse;
@@ -148,16 +161,6 @@
 		color: #666;
 	}
 }
-.group-table-person {
-	float: left;
-	width: 11px;
-	height: 18px;
-	background: url(/assets/ru.png) -357px -320px no-repeat;
-	margin: 8px 10px 0 0;
-}
-a .group-table-person {
-	background-position: -357px -302px;
-}
 
 .delete-icon {
 	float: left;
@@ -171,9 +174,12 @@ a .group-table-person {
 	height: 17px;
 	background: url(/assets/ru.png) -385px -302px no-repeat;
 }
+.group-table-email-edit {
+	display: none;
+}
 @media #{$small-only} { 
-	.group-tabs-content,
-	.group-tabs {
+	.profile-tabs-content,
+	.profile-tabs {
 		width: auto;
 		margin-left: -0.9375rem;
 		margin-right: -0.9375rem;
@@ -187,7 +193,19 @@ a .group-table-person {
 		background: url(/assets/ru.png) -330px -321px no-repeat;
 		margin: 10px 10px 10px 0;
 	}
-	.group-tabs-content {
+
+	.group-table-person {
+		float: left;
+		width: 11px;
+		height: 18px;
+		background: url(/assets/ru.png) -357px -320px no-repeat;
+		margin: 8px 10px 0 0;
+	}
+	a .group-table-person {
+		background-position: -357px -302px;
+	}
+
+	.profile-tabs-content {
 		border-left: #ccc solid 1px;
 		border-right: #ccc solid 1px;
 	}
@@ -207,7 +225,7 @@ a .group-table-person {
 	.group-nav-toggle {
 		display: none;
 	}
-	.group-tabs-content {
+	.profile-tabs-content {
 		border-bottom: #ccc solid 1px;
 	}
 }
