@@ -35,10 +35,15 @@
 */
 .group-management-wrap {
 	h6 {
+		font-style: normal;
 		margin-bottom: 0;
 	}
 	p {
 		font-size: 14px;
+		margin: 0;
+	}
+	input, textarea {
+		margin: 12px 0 20px;
 	}
 }
 
@@ -60,7 +65,8 @@
 			border-top: #999 1px solid;
 		}
 
-		&.active, &:hover {
+		/* Styles for active item */
+		&.active {
 			.group-nav-header {
 				color: $ru_green;
 			}
@@ -68,6 +74,19 @@
 			.group-icon {
 				background-position: -330px -302px;
 			}
+
+			/* Do nothing on hover if item is active */
+			&:hover {
+				.group-nav-header {
+					color: $ru_green;
+				}
+			}
+		}
+
+		/* Change all non-active items on hover */
+		&:hover .group-nav-header {
+			color: #333;
+			background-color: #e8e8e8;
 		}
 	}
 }
@@ -83,18 +102,19 @@
 }
 .group-nav-toggle {
 	float: right;
-}
-.group-nav-content {
-	padding: 20px;
-}
-.group-nav-toggle {
 	margin: 3px 0 3px 10px;
 }
 .group-nav-right {
 	float: right;
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: 500;
 	color: #000;
+}
+.group-nav-content {
+	float: left;
+	width: 100%;
+	padding: 20px;
+	border-bottom: #999 1px solid;
 }
 
 
