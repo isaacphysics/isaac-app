@@ -31,6 +31,40 @@
 
 
 /*
+	Toast message styles 
+*/
+.toast {
+	@extend .clearfix;
+}
+.toast-icon {
+	float: left;
+	background-color: #333;
+	padding: 12px 20px;
+	margin-right: 20px
+}
+.toast-complete-icon {
+	float: left;
+	width: 76px;
+	height: 90px;
+	background: url(/assets/ru.png) -401px -301px no-repeat;
+}
+.toast-message {
+	height: 114px;
+	padding: 15px 20px 20px;
+	background-color: #f6f6f6;
+	border: #999 1px solid;
+
+	h4 {
+		margin-bottom: 5px;
+	}
+
+	p {
+		line-height: 110%;
+	}
+}
+
+
+/*
 	Group management page styles 
 */
 .group-management-wrap {
@@ -51,6 +85,12 @@
 /*
 	Group management navigation styles 
 */
+.group-header {
+	@extend .clearfix;
+	font-size: 14px;
+	padding: 20px 30px 5px;
+}
+
 .group-nav {
 	float: left;
 	width: 100%;
@@ -181,12 +221,17 @@
 		color: #666;
 	}
 }
-
+.group-table-delete {
+	width: 18px;
+}
 .delete-icon {
 	float: left;
 	width: 18px;
 	height: 16px;
 	background: url(/assets/ru.png) -370px -324px no-repeat;
+}
+.group-table-edit {
+	width: 16px;
 }
 .edit-icon {
 	float: left;
@@ -196,6 +241,10 @@
 }
 .group-table-email-edit {
 	display: none;
+}
+.archive-group-btn {
+	float: right;
+	font-weight: 600;
 }
 @media #{$small-only} { 
 	.profile-tabs-content,
@@ -229,10 +278,18 @@
 		border-left: #ccc solid 1px;
 		border-right: #ccc solid 1px;
 	}
+
+	.toast-icon {
+		margin-right: 0;
+	}
+	.toast-message {
+		float: left;
+		width: 282px;
+	}
 }
 @media #{$large-up} { 
 	.group-nav {
-		padding: 20px;
+		padding: 0 20px 20px;
 
 		dd.active .group-nav-header {
 			background-color: #fff;

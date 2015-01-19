@@ -32,6 +32,10 @@
 
 
             <!-- Active groups navigation -->
+            <div class="group-header show-for-large-up">
+            	<span class="left">Group Name</span>
+            	<span class="right">Group CODE</span>
+            </div>
             <dl class="group-nav">
                 <dd class="active">
                     <a class="group-nav-header" href="#">
@@ -108,6 +112,10 @@
 
 
             <!-- Archived groups navigation -->
+            <div class="group-header show-for-large-up">
+            	<span class="left">Group Name</span>
+            	<span class="right">Archived</span>
+            </div>
             <dl class="group-nav">
                 <dd class="active">
                     <a class="group-nav-header" href="#">
@@ -116,7 +124,7 @@
                         <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
                         <span class="group-nav-right">1st Nov 2014</span>
                     </a>
-                    <div class="group-nav-content hide-for-large-up" ng-include="'/partials/group_management_details.html'"></div>
+
                 </dd>
 
                 <dd>
@@ -191,5 +199,16 @@
         <div class="panel" ng-include="'/partials/group_management_details.html'"></div>
     </div>
     <!-- End desktop only -->
+
+    <!-- Toast message -->
+    <div class="toast">
+    	<div class="toast-icon">
+    		<span class="toast-complete-icon"></span>
+    	</div>
+    	<div class="toast-message">
+    		<h4 class="ru_green">Group saved</h4>
+    		<p>A little bit more text about the function performed and next steps</p>
+    	</div>
+    </div>
 
 </div>
