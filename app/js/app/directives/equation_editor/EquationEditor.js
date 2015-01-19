@@ -131,6 +131,18 @@ define([], function() {
 	                e.stopPropagation();
                 })
 
+                var parser_message = function(e) {
+
+                };
+
+                scope.$watch("state.symbols", function() {
+                	
+					self.parser = new Worker("/js/lib/parser.js");
+					self.parser.onmessage = parser_message;
+					self.parser.postMessage({symbols: parserSymbols});
+
+                }, true);
+
 			},
 
 		};

@@ -153,6 +153,10 @@ $menu-handle-width: 160px;
         &.selected {
             border: 1px dotted green;
         }
+        
+        &.dragging {
+            font-weight: bold;
+        }
     }
 
     .hex-button {
