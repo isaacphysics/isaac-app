@@ -69,11 +69,13 @@
 */
 .group-management-wrap {
 	h6 {
+		/* This is needed due to inherit being set on "show-for-large-up" class */
+		display: inline;
 		font-style: normal;
 		margin-bottom: 0;
 	}
 	p {
-		font-size: 14px;
+		font-size: 13px;
 		margin: 0;
 	}
 	input, textarea {
@@ -165,6 +167,9 @@
 	margin: 0 0 1rem;
 
 	dd .group-accordion-header {
+		/* This is needed due to inherit being set on "show-for-medium-up" class */
+		display: inline-block;
+		width: 100%;
 		font-weight: 600;
 		color: $ru_green;
 		border-right: #999 1px solid;
@@ -254,7 +259,12 @@
 		margin-right: -0.9375rem;
 	}
 }
-@media #{$medium-up} { 
+@media #{$medium-up} {
+	.group-management-wrap {
+		p {
+			font-size: 14px;
+		}
+	} 
 	.group-icon {
 		float: left;
 		width: 23px;
