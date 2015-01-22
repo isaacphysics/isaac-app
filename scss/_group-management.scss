@@ -26,6 +26,7 @@
 .profile-tabs-content {
 	background-color: #fff;
 	border-top: #ccc solid 1px;
+	padding-top: 5px;
 	margin-top: -1px;
 }
 
@@ -73,13 +74,24 @@
 		display: inline;
 		font-style: normal;
 		margin-bottom: 0;
+		line-height: 100%;
 	}
 	p {
 		font-size: 13px;
+		line-height: 100%;
 		margin: 0;
 	}
-	input, textarea {
-		margin: 12px 0 20px;
+	input {
+		margin: 10px 0 15px;
+	}
+	textarea {
+		/* Remove horizontal resizing as this breaks layout */
+		resize: vertical;
+		margin: 10px 0 25px;
+	}
+
+	.panel {
+		padding: 10px 20px 20px;
 	}
 }
 
@@ -90,7 +102,7 @@
 .group-header {
 	@extend .clearfix;
 	font-size: 14px;
-	padding: 20px 30px 5px;
+	padding: 15px 10px 5px;
 }
 
 .group-nav {
@@ -298,8 +310,13 @@
 	}
 }
 @media #{$large-up} { 
+	.group-management-wrap {
+		textarea {
+			height: 100px;
+		}
+	}
 	.group-nav {
-		padding: 0 20px 20px;
+		padding: 0 0 20px;
 
 		dd.active .group-nav-header {
 			background-color: #fff;
@@ -313,6 +330,7 @@
 		display: none;
 	}
 	.profile-tabs-content {
+		padding: 0 20px;
 		border-bottom: #ccc solid 1px;
 	}
 }

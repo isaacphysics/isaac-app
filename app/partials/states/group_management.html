@@ -113,6 +113,9 @@
                 </dd>
 
             </dl>
+            <div class="show-for-large-up">
+                <a class="ru-button-big secondary expand">Create new group</a>
+            </div>
 
 
 
@@ -201,6 +204,16 @@
 
     <!-- Start desktop only -->
     <div class="large-10 columns show-for-large-up">
+        <div class="panel">
+            <h6>Create New Group</h6>
+            <input type="email" />
+
+            <h6>Invite Student<span class="show-for-medium-up"> to group</span> via email</h6>
+            <p>Email addresses MUST be seperated by a comma.</p>
+            <textarea></textarea>
+            <a class="ru-button-big expand">Save</a>
+        </div>
+
         <div class="panel" ng-include="'/partials/group_management_details.html'"></div>
     </div>
     <!-- End desktop only -->
