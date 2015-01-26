@@ -1,11 +1,11 @@
-<div class="row" ng-if="pods.$resolved && pods.length > 0">
+<div class="row" ng-if="pods.$resolved && pods.results.length > 0">
     <div class='ru-concept-inner'>
     	<a class="pod-carousel-nav previous" href="javascript:void(0)" ng-click="startPod = startPod - 1">&lt;</a>
     	<a class="pod-carousel-nav next" href="javascript:void(0)" ng-click="startPod = startPod + 1">&gt;</a>
         <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
-            <li isaac-pod="pods[ ((startPod      % pods.length) + pods.length) % pods.length]"></li>
-            <li isaac-pod="pods[(((startPod + 1) % pods.length) + pods.length) % pods.length]" class="show-for-large-up"></li>
-            <li isaac-pod="pods[(((startPod + 2) % pods.length) + pods.length) % pods.length]" class="show-for-large-up" ></li>
+            <li isaac-pod="pods.results[ ((startPod      % pods.results.length) + pods.results.length) % pods.results.length]"></li>
+            <li isaac-pod="pods.results[(((startPod + 1) % pods.results.length) + pods.results.length) % pods.results.length]" class="show-for-large-up"></li>
+            <li isaac-pod="pods.results[(((startPod + 2) % pods.results.length) + pods.results.length) % pods.results.length]" class="show-for-large-up" ></li>
         </ul>
     </div>
 </div>

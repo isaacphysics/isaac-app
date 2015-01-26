@@ -26,7 +26,7 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 				scope.startPod = 0;
-				scope.pods = api.pods.query();
+				scope.pods = api.pods.get();
 			},
 		};
 	}];
