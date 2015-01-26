@@ -74,53 +74,7 @@
 
         <!-- Additional Information Panel -->
         <section ng-if="!user.givenName">
-            <div class="row">
-                <div class='ru-concept-inner'>
-                    <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
-                        <li class="show-for-large-up">
-                            <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img_fasttrack.png' alt="Hand written solution to a mechanics question.">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Exam &amp; interview preparation</h5>
-                                    <p>Game boards of synoptic revision questions for core pure maths and mechanics practice.</p>
-                                    <a ui-sref='fast_track_14'><strong>More Info</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li ng-if="!filterPanelOpen">
-                            <div class="get-started-pod-spacer get-started-pod-up-arrow" ng-click="openFilterPanel('desktop-filter')"></div>
-                            <div class="panel ru_pod ru_pod_image ru_pod_get_started">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Choose your questions</h5>
-                                    <p>Click here to get started. You can choose questions by topic, difficulty or concept.</p>
-                                    <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')"><strong>Choose your questions</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li ng-if="filterPanelOpen == 'desktop-filter'">
-                            <div class="get-started-pod-spacer-bottom" ng-click="scrollToQuestions()"></div>
-                            
-                            <div class="panel ru_pod ru_pod_image">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Try some questions</h5>
-                                    <p>Once you have chosen topics to work on, start answering questions below.</p>
-                                    <a href="javascript:void(0)" ng-click="scrollToQuestions()"><strong>Show questions</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img_events.jpg' alt="Image of students problem solving during the Senior Physics Challenge.">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Upcoming Events</h5>
-                                    <p>Information about our events with our partner schools. Find one nearby to get involved.</p>
-                                    <a ui-sref='events'><strong>More Info</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <div pod-carousel></div>
         </section>
 
 
@@ -183,44 +137,7 @@
 
         <!-- Additional Information Panel -->
         <section ng-if="user.givenName">
-            <div class="row">
-
-                <div class='ru-concept-inner'>
-                    <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
-                        <li>
-                            <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img_rainbow.jpg' alt="Image of a double rainbow over Doctors Pond. Copyright Mark Seton.">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Extraordinary Problems</h5>
-                                    <p>Explore the physics of chains, rainbows and more through sets of themed problems.</p>
-                                    <a ui-sref='extraordinary_problems'><strong>More Info</strong></a>
-                                    <!-- TODO: Use API endpoint to retrieve random extraordinary problem, see: isaac-api/issues/22 -->
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img_fasttrack.png' alt="Hand written solution to a mechanics question.">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Exam &amp; interview preparation</h5>
-                                    <p>Game boards of synoptic revision questions for core pure maths and mechanics practice.</p>
-                                    <a ui-sref='fast_track_14'><strong>More Info</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="panel ru_pod ru_pod_image">
-                                <img src='/assets/pod_img_events.jpg' alt="Image of students problem solving during the Senior Physics Challenge.">
-                                <div class='ru_pod_image_inner'>
-                                    <h5>Upcoming Events</h5>
-                                    <p>Information about our events with our partner schools. Find one nearby to get involved.</p>
-                                    <a ui-sref='events'><strong>More Info</strong></a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <div pod-carousel></div>
         </section>
 
             <!-- SVG Patterns used in the hexagons -->

@@ -21,6 +21,8 @@ define([], function() {
 
 		this.pageFragments = $resource(server + "/api/pages/fragments/:id");
 
+		this.pods = $resource(server + "/api/pages/pods");
+
 		this.questionPages = $resource(server + "/api/pages/questions/:id");
 
 		this.conceptPages = $resource(server + "/api/pages/concepts/:id");

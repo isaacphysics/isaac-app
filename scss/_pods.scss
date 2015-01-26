@@ -177,3 +177,25 @@
     background-image:  url('/assets/icon-help-forum.png');
 }
 
+.pod-carousel-nav {
+
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    line-height: 60px;
+    font-weight: bold;
+    top: 121px;
+    background: white;
+    opacity: 0.9;
+    text-align: center;
+    font-family: verdana;
+
+    &.previous {
+        left: 15px;
+    }
+
+    &.next {
+        right: 15px;
+    }
+}
