@@ -29,7 +29,8 @@ define([], function() {
 				scope.pods = api.pods.get();
 
 				scope.pods.$promise.then(function(){
-					Array.prototype.sort.call(scope.pods,function(a,b) { return a.id < b.id; });
+					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
+					scope.$apply();
 				});
 
 				$timeout(function() {
