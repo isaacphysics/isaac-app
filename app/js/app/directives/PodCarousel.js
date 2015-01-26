@@ -29,7 +29,7 @@ define([], function() {
 				scope.pods = api.pods.get();
 
 				scope.pods.$promise.then(function(){
-					array.prototype.sort.call(scope.pods,function(a,b) { return a.id > b.id; });
+					Array.prototype.sort.call(scope.pods,function(a,b) { return a.id > b.id; });
 				});
 
 				$timeout(function() {
