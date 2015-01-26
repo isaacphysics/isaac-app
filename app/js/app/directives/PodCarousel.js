@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	return ["api", function(api) {
+	return ["api", "$timeout", function(api, $timeout) {
 
 		return {
 			scope: true,
@@ -27,6 +27,14 @@ define([], function() {
 			link: function(scope, element, attrs) {
 				scope.startPod = 0;
 				scope.pods = api.pods.get();
+
+				scope.pods.$promise.then(function(){
+					scope.pods.sort(function(a,b) { return a.id > b.id; });
+				});
+
+				$timeout(function() {
+					scope.startPod++;
+				}, 10000);
 			},
 		};
 	}];
