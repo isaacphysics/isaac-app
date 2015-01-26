@@ -30,7 +30,6 @@ define([], function() {
 
 				scope.pods.$promise.then(function(){
 					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
-					scope.$apply();
 				});
 
 				$timeout(function() {
