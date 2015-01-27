@@ -23,6 +23,11 @@ define([], function() {
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
 		$scope.statistics = api.statisticsEndpoint.get();
+		
+		$scope.statsLoading = true;
+		$scope.statistics.$promise.then(function(){
+			$scope.statsLoading = false;
+		});
 
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
