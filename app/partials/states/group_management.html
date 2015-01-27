@@ -1,10 +1,51 @@
-<div desktop-panel>
-    <div class="row">
-        <div ng-if="editingSelf" class="medium-15 end columns text-right">
-            <h2>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
+<div class="row">
+    <div class="large-16 columns">
+        <div class="dl-nav-wrap">
+            <button class="dl-toggle">Menu</button>
+            <nav class="dl-nav"> 
+                <ul class="dl-level1">
+                    <li>
+                        <h6>Profile Pages</h6>
+                        <ul class="dl-level2">
+                            <li class="dl-back show-for-small-only">Back</li>
+                            <li><a href="#">My Progress</a></li>
+                            <li><a href="#">My Boards</a></li>
+                            <li><a href="#">My Assignments</a></li>
+                            <li><a href="#">My Events</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h6>Admin Pages</h6>
+                        <ul class="dl-level2">
+                            <li class="dl-back show-for-small-only">Back</li>
+                            <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h6>Teacher Profile Pages</h6>
+                        <ul class="dl-level2">
+                            <li class="dl-back show-for-small-only">Back</li>
+                            <li><a href="#">Manage Groups</a></li>
+                            <li><a href="#">Set Assignments</a></li>
+                            <li><a href="#">Assignment Progess</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h6>Helpful informatiom</h6>
+                        <ul class="dl-level2">
+                            <li class="dl-back show-for-small-only">Back</li>
+                            <li><a href="#">Tutorial</a></li>
+                            <li><a href="#">Solving Problems</a></li>
+                            <li><a href="#">Applying to Uni</a></li>
+                            <li><a href="#">Events</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>    
+    </div>
 </div>
+
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
         <h1>Manage Groups</h1>
