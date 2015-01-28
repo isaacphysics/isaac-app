@@ -1,11 +1,10 @@
-<div class="row pod-carousel" ng-if="pods.$resolved && pods.results.length > 0">
+<div class="row pod-carousel" ng-if="pods.$resolved && pods.results.length > 0" ng-mouseenter="pauseCarousel()" ng-mouseleave="startCarousel()">
     <div class='ru-concept-inner'>
-    	<a class="pod-carousel-nav previous" href="javascript:void(0)" ng-click="startPod = startPod - 1">&lt;</a>
-    	<a class="pod-carousel-nav next" href="javascript:void(0)" ng-click="startPod = startPod + 1">&gt;</a>
+    	<a class="pod-carousel-nav previous" href="javascript:void(0)" ng-click="navigate(-1)">&lt;</a>
+    	<a class="pod-carousel-nav next" href="javascript:void(0)" ng-click="navigate(+1)">&gt;</a>
+
         <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
-            <li isaac-pod="pods.results[ ((startPod      % pods.results.length) + pods.results.length) % pods.results.length]"></li>
-            <li isaac-pod="pods.results[(((startPod + 1) % pods.results.length) + pods.results.length) % pods.results.length]" class="show-for-large-up"></li>
-            <li isaac-pod="pods.results[(((startPod + 2) % pods.results.length) + pods.results.length) % pods.results.length]" class="show-for-large-up" ></li>
+            <li ng-repeat="pod in pods.results | orderBy: comparitor" ng-if="isVisible(pod)" ng-class="{'show-for-large-up' : (visiblePods[1] == pod || visiblePods[2] == pod)}" isaac-pod="pod"></li>
         </ul>
     </div>
 </div>
