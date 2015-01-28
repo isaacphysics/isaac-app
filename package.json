@@ -1,7 +1,7 @@
 {
   "name": "isaac-app",
   "private": true,
-  "version": "1.0.28-SNAPSHOT",
+  "version": "1.0.28",
   "segueVersion": "1.0.23",
   "description": "Physics. You work it out.",
   "repository": "http://isaacphysics.org",
