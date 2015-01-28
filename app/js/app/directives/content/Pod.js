@@ -28,8 +28,8 @@ define([], function() {
 			templateUrl: "/partials/content/Pod.html",
 
 			link: function(scope, element, attrs) {
-				if(scope.isaacPod.image){
-					scope.isaacPod.image.src = api.getImageUrl(scope.isaacPod.image.src);	
+				scope.getImageUrl = function() {
+					return api.getImageUrl(scope.isaacPod.image.src);
 				}
 			}
 		};
