@@ -13,29 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+ define([], function() {
 
-	return ["api", "$timeout", function(api, $timeout) {
+ 	return ["api", "$interval", function(api, $interval) {
 
-		return {
-			scope: true,
+ 		return {
+ 			scope: true,
 
-			restrict: "A",
+ 			restrict: "A",
 
-			templateUrl: "/partials/pod_carousel.html",
+ 			templateUrl: "/partials/pod_carousel.html",
 
-			link: function(scope, element, attrs) {
-				scope.startPod = 0;
-				scope.pods = api.pods.get();
+ 			link: function(scope, element, attrs) {
+ 				var interval = null;
 
-				scope.pods.$promise.then(function(){
-					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
-				});
+ 				scope.startPod = 0;
+ 				scope.pods = api.pods.get();
 
-				$timeout(function() {
-					scope.startPod++;
-				}, 10000);
-			},
-		};
-	}];
-});
+ 				scope.pods.$promise.then(function(){
+ 					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
+ 					//create and start carousel.
+ 					interruptAndSetupNewInterval();
+ 				});
+
+ 				var interruptAndSetupNewInterval = function() {
+ 					if (interval != null) {
+
+ 						$interval.cancel(interval);
+ 						interval = null;
+ 					}
+
+ 					interval = $interval(function() {
+ 						scope.startPod++;
+ 					}, 10000);
+ 				}
+
+ 				scope.pauseCarousel = function() {
+ 					 if (interval != null) {
+ 						$interval.cancel(interval);
+ 						interval = null;
+ 					}
+ 				}
+
+ 				scope.startCarousel = function(){
+ 					interruptAndSetupNewInterval();
+ 				}
+
+ 				scope.navigate = function(positionAdjustment) {
+ 					scope.startPod = scope.startPod + positionAdjustment;
+ 					interruptAndSetupNewInterval();
+ 				}
+ 			},
+ 		};
+ 	}];
+ });
