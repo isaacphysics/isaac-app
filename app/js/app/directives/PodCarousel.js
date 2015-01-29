@@ -71,7 +71,11 @@
 				 * Function to navigate through the pods available.
 				 */
 				scope.navigate = function(positionAdjustment) {
-					scope.startPod = scope.startPod + positionAdjustment;
+					if ((scope.startPod + positionAdjustment) < 0){
+						scope.startPod = scope.pods.results.length - 1;
+					} else {
+						scope.startPod = (scope.startPod + positionAdjustment) % scope.pods.results.length;	
+					}
 					interruptAndSetupNewInterval();
 				}
 
