@@ -8,7 +8,6 @@
                     <li>
                         <h6>Profile Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">My Progress</a></li>
                             <li><a href="#">My Boards</a></li>
                             <li><a href="#">My Assignments</a></li>
@@ -18,14 +17,12 @@
                     <li>
                         <h6>Admin Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
                         </ul>
                     </li>
                     <li>
                         <h6>Teacher Profile Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Manage Groups</a></li>
                             <li><a href="#">Set Assignments</a></li>
                             <li><a href="#">Assignment Progess</a></li>
@@ -34,7 +31,6 @@
                     <li>
                         <h6>Helpful informatiom</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Tutorial</a></li>
                             <li><a href="#">Solving Problems</a></li>
                             <li><a href="#">Applying to Uni</a></li>
@@ -67,7 +63,7 @@
                     $submenu = $item.children('.dl-level2');
 
                 if( $submenu.length > 0 ) {
-                    $flyin = $submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
+                    $flyin = $submenu.clone().addClass('dl-clone').prepend('<li class="dl-back"><span></span>Back</li>').insertAfter('.dl-level1');
                     $('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
                         $(this).stop().hide(200).addClass('dl-hide').removeAttr('style');
                     });
