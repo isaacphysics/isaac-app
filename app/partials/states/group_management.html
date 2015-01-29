@@ -1,13 +1,14 @@
 <div class="row">
     <div class="large-16 columns">
+        <div class="status-panel">
         <div class="dl-nav-wrap">
-            <button class="dl-toggle">Menu</button>
+            <button class="dl-toggle"><span></span>Menu</button>
             <nav class="dl-nav"> 
                 <ul class="dl-level1">
                     <li>
                         <h6>Profile Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only">Back</li>
+                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">My Progress</a></li>
                             <li><a href="#">My Boards</a></li>
                             <li><a href="#">My Assignments</a></li>
@@ -17,14 +18,14 @@
                     <li>
                         <h6>Admin Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only">Back</li>
+                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
                         </ul>
                     </li>
                     <li>
                         <h6>Teacher Profile Pages</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only">Back</li>
+                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Manage Groups</a></li>
                             <li><a href="#">Set Assignments</a></li>
                             <li><a href="#">Assignment Progess</a></li>
@@ -33,7 +34,7 @@
                     <li>
                         <h6>Helpful informatiom</h6>
                         <ul class="dl-level2">
-                            <li class="dl-back show-for-small-only">Back</li>
+                            <li class="dl-back show-for-small-only"><span></span>Back</li>
                             <li><a href="#">Tutorial</a></li>
                             <li><a href="#">Solving Problems</a></li>
                             <li><a href="#">Applying to Uni</a></li>
@@ -43,8 +44,50 @@
                 </ul>
             </nav>
         </div>
+        </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var $flyin;
+
+        function isSmall() {
+            return matchMedia(Foundation.media_queries.small).matches &&
+            !matchMedia(Foundation.media_queries.medium).matches;
+        }
+
+        $('.dl-toggle').on('click', function(){
+            $(this).toggleClass('active');
+            $('.dl-nav').slideToggle(600);
+        });
+
+        $('.dl-nav h6').on('click', function(){
+            if(isSmall()){
+                var $item = $(this).parent(),
+                    $submenu = $item.children('.dl-level2');
+
+                if( $submenu.length > 0 ) {
+                    $flyin = $submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
+                    $('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
+                        $(this).stop().hide(200).addClass('dl-hide').removeAttr('style');
+                    });
+                    $flyin.animate({marginLeft: '0', opacity: 1}, 500);
+                }
+            }
+        });
+
+        $('.dl-nav').on('click', '.dl-back', function(){
+            $('.dl-level1').show(200, function(){
+                $(this).animate({marginLeft: '0', opacity: 1}, 500);
+                $flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
+                    $flyin.hide(200, function(){
+                        $flyin.remove();
+                    });
+                });
+            })
+        });  
+    });
+</script>
 
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
