@@ -3,6 +3,7 @@
 	@extend .clearfix;
 	border-top: $ru_green 1px solid;
 	border-bottom: $ru_green 1px solid;
+	background-color: #fff;
 	margin-top: 7px;
 	margin-bottom: 20px;
 }
@@ -18,7 +19,7 @@
 	color: #333;
 	background-color: transparent;
 	padding: 0 0 0 25px;
-	margin: 11px 0 9px 15px;
+	margin: 11px 0 9px 0;
 	outline: none;
 
 	&:hover, &:active, &:focus, &:visited {
@@ -68,7 +69,9 @@
 
 }
 .dl-nav {
+	float: left;
 	display: none;
+	position: relative;
 	border-top: $ru_green 1px solid;
 
 	h6 {
@@ -93,6 +96,9 @@
 		}
 	}
 }
+.dl-level1 li:last-child h6 {
+	border-bottom: none;
+}
 .dl-level1, .dl-level2 {
 	list-style: none;
 	padding: 0;
@@ -101,6 +107,10 @@
 .dl-level2 li {
 	padding: 6px 15px 9px;
 	border-bottom: $ru_green 1px solid;
+
+	&:last-child {
+		border-bottom: none;
+	}
 
 	&.dl-back {
 		padding-top: 7px;
@@ -157,7 +167,7 @@
 	}
 	.dl-hide {
 		margin-left: -100%;
-		opacity: 0;
+		display: none;
 	}
 }
 @media #{$medium-up} {
@@ -203,6 +213,7 @@
 		margin-bottom: 10px;
 	}
 	.dl-nav {
+		float: none;
 		z-index: 99;
 		position: absolute;
 		top: 64px;
