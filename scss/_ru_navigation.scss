@@ -1,12 +1,15 @@
 .status-panel {
-	@extend .clearfix;
-	border-top: #509e2e 1px solid;
-	border-bottom: #509e2e 1px solid;
-	margin-bottom: 20px;
-}
-.dl-nav-wrap {
 	position: relative;
 	@extend .clearfix;
+	border-top: $ru_green 1px solid;
+	border-bottom: $ru_green 1px solid;
+	margin-top: 7px;
+	margin-bottom: 20px;
+}
+.status {
+	font-size: 19px;
+	font-weight: 600;
+	margin-top: 20px;
 }
 .dl-toggle {
 	text-transform: uppercase;
@@ -15,7 +18,7 @@
 	color: #333;
 	background-color: transparent;
 	padding: 0 0 0 25px;
-	margin: 10px 0 6px 15px;
+	margin: 11px 0 9px 15px;
 	outline: none;
 
 	&:hover, &:active, &:focus, &:visited {
@@ -66,11 +69,11 @@
 }
 .dl-nav {
 	display: none;
-	border-top: #509e2e 1px solid;
+	border-top: $ru_green 1px solid;
 
 	h6 {
 		padding: 6px 15px 9px;
-		border-bottom: #509e2e 1px solid;
+		border-bottom: $ru_green 1px solid;
 	}
 	h6, a {
 		color: #000;
@@ -97,7 +100,7 @@
 }	
 .dl-level2 li {
 	padding: 6px 15px 9px;
-	border-bottom: #509e2e 1px solid;
+	border-bottom: $ru_green 1px solid;
 
 	&.dl-back {
 		padding-top: 7px;
@@ -119,6 +122,23 @@
 .dl-clone {
 	opacity: 0;
 	margin-right: -100%;
+}
+.dl-alert {
+	float: right;
+	font-size: 12px;
+	line-height: 21px;
+	color: #fff;
+	text-align: center;
+	width: 23px;
+	height: 23px;
+	border-radius: 50%;
+	border: #fff 2px solid;
+	background-color: $ru_green;
+	box-shadow: 0px 0px 1px 1px rgba(0,0,0,0.2);
+
+	&.overdue {
+		background-color: #ec6969;
+	}
 }
 @media #{$small-only} { 
 	.status-panel {
@@ -147,9 +167,8 @@
 		font-weight: 600;
 		border-top: $ru_green 1px solid;
 		border-left: $ru_green 1px solid;
-		border-bottom: $ru_green 1px solid;
-		padding: 20px 25px 20px 35px;
-		margin: -1px;
+		padding: 25px 25px 20px 35px;
+		margin: -1px -1px 0 -1rem;
 		z-index: 999;
 
 		&:hover, &:active, &:focus, &:visited {
@@ -163,7 +182,7 @@
 			border-bottom: #fafcf8 1px solid;
 		}
 		span {
-			top: 27px;
+			top: 31px;
 			left: 15px;
 		}
 		span, span:before, span:after {
@@ -180,13 +199,13 @@
 	.status-panel {
 		margin-top: 19px;
 		background: #fff;
-		border: #509e2e solid 1px;
+		border: $ru_green solid 1px;
 		margin-bottom: 10px;
 	}
 	.dl-nav {
 		z-index: 99;
 		position: absolute;
-		top: 59px;
+		top: 64px;
 		left: 0;
 		right: 0;
 		background-color: rgba(255, 255, 255,0.95);
@@ -235,7 +254,7 @@
 		display: table-cell;
 		height: 100%;
 		width: 25%;
-		border-left: #509e2e 1px solid;
+		border-left: $ru_green 1px solid;
 
 		&:first-child {
 			border-left: none;
@@ -246,8 +265,11 @@
 	}
 	.dl-level2 {
 		li {
+			line-height: 140%;
 			float: left;
 			width: 100%;
+			padding-top: 0;
+			padding-bottom: 6px;
 		}
 	}
 }

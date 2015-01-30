@@ -2,16 +2,22 @@
     <div class="large-16 columns">
         <div class="status-panel">
         <div class="dl-nav-wrap">
-            <button class="dl-toggle"><span></span>Menu</button>
+            <div class="medium-3 columns">
+                <button class="dl-toggle"><span></span>Menu</button>
+            </div>
+            <div class="medium-12 end columns text-right">
+                <h2 class="status hide-for-small-only">Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
+            </div>
+
             <nav class="dl-nav"> 
                 <ul class="dl-level1">
                     <li>
                         <h6>Profile Pages</h6>
                         <ul class="dl-level2">
                             <li><a href="#">My Progress</a></li>
-                            <li><a href="#">My Boards</a></li>
-                            <li><a href="#">My Assignments</a></li>
-                            <li><a href="#">My Events</a></li>
+                            <li><a href="#">My Boards</a> <span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li>
+                            <li><a href="#">My Assignments</a> <span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span></li>
+                            <li><a href="#">My Events</a> <span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li>
                         </ul>
                     </li>
                     <li>
@@ -29,7 +35,7 @@
                         </ul>
                     </li>
                     <li>
-                        <h6>Helpful informatiom</h6>
+                        <h6>Helpful Information</h6>
                         <ul class="dl-level2">
                             <li><a href="#">Tutorial</a></li>
                             <li><a href="#">Solving Problems</a></li>
@@ -47,18 +53,15 @@
     $(document).ready(function(){
         var $flyin;
 
-        function isSmall() {
-            return matchMedia(Foundation.media_queries.small).matches &&
-            !matchMedia(Foundation.media_queries.medium).matches;
-        }
-
         $('.dl-toggle').on('click', function(){
             $(this).toggleClass('active');
             $('.dl-nav').slideToggle(600);
         });
 
+
         $('.dl-nav h6').on('click', function(){
-            if(isSmall()){
+            // only run if mobile
+            if($.ru_IsMobile()){
                 var $item = $(this).parent(),
                     $submenu = $item.children('.dl-level2');
 
