@@ -19,13 +19,13 @@
                     <li><a href="#">My Events</a> <span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li>
                 </ul>
             </li>
-            <li>
+            <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
                 <h6>Admin Pages</h6>
                 <ul class="dl-level2">
                     <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
                 </ul>
             </li>
-            <li>
+            <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
                 <h6>Teacher Profile Pages</h6>
                 <ul class="dl-level2">
                     <li><a href="#">Manage Groups</a></li>
