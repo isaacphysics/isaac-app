@@ -80,6 +80,14 @@ $ru_nav_size : 7em;
     margin-bottom: 0px;
 }
 
+.ru-game-filter-panel{
+    margin-top: 15px;
+    padding: 8px 8px 8px 20px;
+    background: white;
+    border: $ru_green solid 1px;
+    margin-bottom: 10px;
+}
+
 .ru-desktop-panel-search
 {
     position: absolute;
@@ -89,6 +97,14 @@ $ru_nav_size : 7em;
     width: 63px;
     height: 27px;
     background: url(/assets/ru.png) -338px -342px no-repeat;
+}
+
+.top-pods{
+    margin-top:10px;
+
+    li {
+        padding-bottom: 0px;
+    }
 }
 
 .ru-desktop-search-icon {

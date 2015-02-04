@@ -1,26 +1,26 @@
-<div desktop-panel>
-	<div ng-switch="boards">
-		<div ng-switch-when="undefined">
-			<h1>&nbsp;</h1>
-			<p>&nbsp;</p>
-		</div>
-		<div ng-switch-default>
-			<h1>My Boards</h1>
-			<p><strong>
-				You have completed 
-            <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>,
-            with
-				<span class="ru_green">{{boards.totalInProgress}}</span>
-				on the go and
-            <span class="ru_green">{{boards.totalNotStarted}}</span>
-            not started.
-			</strong></p>
-		</div>
-	</div>
+<div class="row">
+   <div class="small-16 columns">
+      <div ng-switch="boards">
+         <div ng-switch-when="undefined">
+            <h1>&nbsp;</h1>
+            <p>&nbsp;</p>
+         </div>
+         <div ng-switch-default>
+            <h2>My Boards</h2>
+            <p class="hide-for-small-only"><strong>
+               You have completed 
+               <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>,
+               with
+               <span class="ru_green">{{boards.totalInProgress}}</span>
+               on the go and
+               <span class="ru_green">{{boards.totalNotStarted}}</span>
+               not started.
+            </strong></p>
+         </div>
+      </div>
+   </div>
 </div>
-<div mobile-panel>
-   <h5>Filter your Boards</h5>
-</div>
+
 <div class="boards-filters" ng-show="boards != null">
    <ul class="small-block-grid-2">
       <li>
