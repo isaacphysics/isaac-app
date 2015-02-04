@@ -97,7 +97,13 @@
 		&:hover {
 			cursor: pointer;
 		}
+
+		&.disabled {
+			pointer-events: none;
+			color: #ccc;
+		}
 	}
+	
 	ul li ul {
 		display: none;
 
@@ -267,10 +273,6 @@
 				color: $ru_green;
 			}
 
-			&.disabled {
-				pointer-events: none;
-				color: #ccc;
-			}
 		}
 
 		ul li ul {
