@@ -14,7 +14,7 @@
             <li>
                 <h6 ng-click="menuForward($event)">Profile Pages</h6>
                 <ul class="dl-level2">
-                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
+                	<li class="dl-back show-for-small-only" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">My Progress</a></li>
                     <li><a href="#">My Boards</a> <span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li>
                     <li><a href="#">My Assignments</a> <span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span></li>
@@ -24,14 +24,14 @@
             <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
                 <h6 ng-click="menuForward($event)">Admin Pages</h6>
                 <ul class="dl-level2">
-                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
+                	<li class="dl-back show-for-small-only" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
                 </ul>
             </li>
             <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
                 <h6 ng-click="menuForward($event)">Teacher Profile Pages</h6>
                 <ul class="dl-level2">
-                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
+                	<li class="dl-back show-for-small-only" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Manage Groups</a></li>
                     <li><a href="#">Set Assignments</a></li>
                     <li><a href="#">Assignment Progess</a></li>
@@ -40,7 +40,7 @@
             <li>
                 <h6 ng-click="menuForward($event)">Helpful Information</h6>
                 <ul class="dl-level2">
-                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
+                	<li class="dl-back show-for-small-only" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Tutorial</a></li>
                     <li><a href="#">Solving Problems</a></li>
                     <li><a href="#">Applying to Uni</a></li>
