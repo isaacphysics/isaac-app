@@ -1,0 +1,57 @@
+
+<!-- Global navigation -->
+<div class="status-panel">
+    <div class="medium-3 columns">
+        <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
+        <span title="Help information" class="show-for-small-only help-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
+    </div>
+    <div class="medium-12 end columns text-right">
+        <h2 class="status hide-for-small-only">Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
+    </div>
+
+    <nav class="dl-nav" role="navigation"> 
+        <ul class="dl-level1">
+            <li>
+                <h6 ng-click="menuForward($event)">Profile Pages</h6>
+                <ul class="dl-level2">
+                	<li class="dl-back show-for-small-only"><a href="#"><span></span>Back</a></li>
+                    <li><a href="#" class="disabled">My Progress</a></li>
+                    <li><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span>--></li>
+                    <li><a href="#" class="disabled">My Assignments</a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
+                    <li><a href="#" class="disabled">My Events</a> <!--<span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span>--></li>
+                    <li><a ui-sref="accountSettings">My Account</a></li>
+                </ul>
+            </li>
+            <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')">
+                <h6 ng-click="menuForward($event)">Admin Pages</h6>
+                <ul class="dl-level2">
+                	<li class="dl-back show-for-small-only"><a href="#"><span></span>Back</a></li>
+                    <li><a ui-sref="admin">Site Admin</a></li>
+                    <li><a ui-sref="contentErrors">Content Errors</a></li>
+                </ul>
+            </li>
+            <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')">
+                <h6 ng-click="menuForward($event)">Teacher Pages</h6>
+                <ul class="dl-level2">
+                	<li class="dl-back show-for-small-only"><a href="#"><span></span>Back</a></li>
+                    <li><a href="#" class="disabled">Manage Groups</a></li>
+                    <li><a href="#" class="disabled">Set Assignments</a></li>
+                    <li><a href="#" class="disabled">Assignment Progess</a></li>
+                    <li><a ui-sref="gameEditor">Gameboard Editor</a></li>
+                </ul>
+            </li>
+            <li>
+                <h6 ng-click="menuForward($event)">Helpful Information</h6>
+                <ul class="dl-level2">
+                	<li class="dl-back show-for-small-only"><a href="#"><span></span>Back</a></li>
+                    <li class="dl-back hide-for-small-only"><a href="javascript:void(0)" class="desktop-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>
+                    <li class="dl-back show-for-small-only"><a href="javascript:void(0)" class="mobile-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>
+                    <li><a ui-sref="solving_problems">Solving Problems</a></li>
+                    <li><a ui-sref="apply_uni">Applying to Uni</a></li>
+                    <li><a ui-sref="events">Events</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
+ 

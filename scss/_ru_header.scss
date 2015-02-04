@@ -78,6 +78,13 @@ $ru_nav_size : 7em;
     margin-top: -11px;
     padding: 8px 8px 8px 20px;
     margin-bottom: 0px;
+
+    &.search {
+        background: white;
+        border: $ru_green solid 1px;
+        margin-bottom: 10px;
+        margin-top: 19px;
+    }
 }
 
 .ru-game-filter-panel{
