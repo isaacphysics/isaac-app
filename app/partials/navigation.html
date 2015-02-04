@@ -1,18 +1,20 @@
-<div class="status-panel">
 
+<!-- Global navigation -->
+<div class="status-panel">
     <div class="medium-3 columns">
-        <button class="dl-toggle"><span></span>Menu</button>
+        <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
         <span title="Help information" class="show-for-small-only help-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
     </div>
     <div class="medium-12 end columns text-right">
         <h2 class="status hide-for-small-only">Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
     </div>
 
-    <nav class="dl-nav" role="navigation"> 
+    <nav class="dl-nav" role="navigation" ng-class="{open: !navCollapsed}"> 
         <ul class="dl-level1">
             <li>
-                <h6>Profile Pages</h6>
+                <h6 ng-click="menuForward($event)">Profile Pages</h6>
                 <ul class="dl-level2">
+                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">My Progress</a></li>
                     <li><a href="#">My Boards</a> <span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li>
                     <li><a href="#">My Assignments</a> <span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span></li>
@@ -20,22 +22,25 @@
                 </ul>
             </li>
             <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
-                <h6>Admin Pages</h6>
+                <h6 ng-click="menuForward($event)">Admin Pages</h6>
                 <ul class="dl-level2">
+                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Account Settings &amp; Teacher Connections</a></li>
                 </ul>
             </li>
             <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf">
-                <h6>Teacher Profile Pages</h6>
+                <h6 ng-click="menuForward($event)">Teacher Profile Pages</h6>
                 <ul class="dl-level2">
+                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Manage Groups</a></li>
                     <li><a href="#">Set Assignments</a></li>
                     <li><a href="#">Assignment Progess</a></li>
                 </ul>
             </li>
             <li>
-                <h6>Helpful Information</h6>
+                <h6 ng-click="menuForward($event)">Helpful Information</h6>
                 <ul class="dl-level2">
+                	<li class="dl-back" ng-click="menuBack()"><span></span>Back</li>
                     <li><a href="#">Tutorial</a></li>
                     <li><a href="#">Solving Problems</a></li>
                     <li><a href="#">Applying to Uni</a></li>
@@ -44,45 +49,5 @@
             </li>
         </ul>
     </nav>
-
 </div>
-<script type="text/javascript">
-    $(document).ready(function(){
-        var $flyin;
-
-        $('.dl-toggle').on('click', function(){
-            $(this).toggleClass('active');
-            $('.dl-nav').slideToggle(600);
-        });
-
-
-        $('.dl-nav h6').on('click', function(){
-            // only run if mobile
-            if($.ru_IsMobile()){
-                var $item = $(this).parent(),
-                    $submenu = $item.children('.dl-level2');
-
-                if( $submenu.length > 0 ) {
-                    $flyin = $submenu.clone().addClass('dl-clone').prepend('<li class="dl-back"><span></span>Back</li>').insertAfter('.dl-level1');
-                    $('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
-                        $(this).stop().hide(300, function(){
-                            $(this).addClass('dl-hide').removeAttr('style');
-                        })
-                    });
-                    $flyin.animate({marginLeft: '0', opacity: 1}, 500);
-                }
-            }
-        });
-
-        $('.dl-nav').on('click', '.dl-back', function(){
-            $('.dl-level1').show(300, function(){
-                $(this).animate({marginLeft: '0', opacity: 1}, 500);
-                $flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
-                    $flyin.hide(300, function(){
-                        $flyin.remove();
-                    });
-                });
-            })
-        });  
-    });
-</script>
+ 

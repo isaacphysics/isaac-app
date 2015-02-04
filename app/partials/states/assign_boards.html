@@ -1,0 +1,81 @@
+<div desktop-panel>
+</div>
+<div mobile-panel>
+   <h5>Filter your Boards</h5>
+</div>
+<div class="boards-filters" ng-show="boards != null">
+   <ul class="small-block-grid-2">
+      <li>
+         <label class="hide-for-small-only">Show</label>
+         <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
+      </li>
+      <li>
+         <label class="hide-for-small-only">Sort by</label>
+         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+      </li>
+   </ul>
+</div>
+<ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 assign-board-wrap">
+   	<li>
+   		<div class="panel">
+            <span class="board-delete">X</span>
+            <div class="row">
+               <div data-tooltip aria-haspopup="true" class="board-percentage has-tip" title="Information about current page">
+
+                  <!-- Remember to change subject class, this will change the colour -->
+      				<span class="groups-assigned subject-physics">
+                     <strong>5</strong> Groups Assigned
+                  </span>
+      			</div>
+
+               <div class="board-info">
+                  <p>Created: <strong>19/7/2014</strong></p>
+                  <p>By: <strong>Michael Lakeland</strong></p>
+               </div>
+      		</div>
+            <div class="row">
+
+   			   <h3><a tabindex="0" href="#">My first Physics Board</a></h3>
+
+               <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
+               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                  <div>
+                     {{shareUrl}}
+                  </div>
+               </div>
+
+               <div class="board-levels">
+                  <span class="level-3">3</span>
+                  <span class="level-6">6</span>
+               </div>
+
+            </div>
+            <div class="row board-overview">
+               <h6>Quick view...</h6>
+               <ol>
+                  <li>Car on Motorway</li>
+                  <li>Symmetry and Centre of Mass</li>
+                  <li>Cracking Eggs</li>
+               </ol>
+            </div>
+            <div class="row">
+               <a class="ru-button-big expand">Assign this board</a>
+               <h6>Assign Group:</h6>
+               <select>
+                  <option value="1">Select your group</option>
+               </select>
+               <a class="ru-button-big expand">Assign / Update</a>
+               <a class="ru-button-big expand">Edit Assigned Groups</a>
+            </div>
+   		</div>
+   	</li>
+</ul>
+<div class="row" ng-hide="boards == null || boards.results.length == ''">
+  <div class="large-5 medium-6 small-centered columns">
+      <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
+      <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
+   </div>
+</div>
+<div class="row" ng-show="boards.results.length == ''">
+   <p class="text-center">No Results</p>
+</div>

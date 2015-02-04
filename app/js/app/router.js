@@ -398,6 +398,18 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('assignBoards', {
+                url: "/set_assignments",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/assign_boards.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
