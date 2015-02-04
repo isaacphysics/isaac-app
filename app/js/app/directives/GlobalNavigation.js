@@ -20,16 +20,16 @@ define([], function() {
 
 			scope: true,
 			restrict: "A",
-            templateUrl: '/partials/navigation.html',
+            templateUrl: '/partials/global_navigation.html',
 
             link: function(scope, element, attrs) {
             	// Global var
-            	var $flyin;
+            	var flyin;
 
             	scope.menuToggle = function(e) {
             		scope.isVisible = ! scope.isVisible;
 
-            		$('.dl-nav').slideToggle(600);
+            		$('.dl-nav').slideToggle(200);
             	}
 
             	scope.menuForward = function(e) {
@@ -39,14 +39,14 @@ define([], function() {
 
                     	
                 		if(submenu.length) {
-                    		$flyin = submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
+                    		flyin = submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
 
                     		$('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
                         		$(this).stop().hide(300, function(){
                             		$(this).addClass('dl-hide').removeAttr('style');
                         		});
                     		});
-                    		$flyin.animate({marginLeft: '0', opacity: 1}, 500);
+                    		flyin.animate({marginLeft: '0', opacity: 1}, 500);
                 		}
             		}
             	}
@@ -54,16 +54,23 @@ define([], function() {
             	scope.menuBack = function() {
             		$('.dl-level1').show(300, function(){
                 		$(this).animate({marginLeft: '0', opacity: 1}, 500);
-                		$flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
-                    		$flyin.hide(300, function(){
-                        		$flyin.remove();
+                		flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
+                    		flyin.hide(300, function(){
+                        		flyin.remove();
                     		});
                 		});
             		});
             	}
 
-
                 element.on("click", ".dl-back", scope.menuBack);
+
+                scope.menuClose = function() {
+                    scope.isVisible = false;
+
+                    $('.dl-nav').hide();
+                }
+
+                scope.$on("$stateChangeStart", scope.menuClose);
             }
 
 		};

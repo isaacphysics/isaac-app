@@ -48,8 +48,8 @@
     	position: absolute;
     	display: block;
     	content: '';
-    	transition: all 400ms ease-in-out;
-    	-webkit-transition: all 400ms ease-in-out;
+    	transition: all 200ms ease-in-out;
+    	-webkit-transition: all 200ms ease-in-out;
 	}
 
 	span:before {
@@ -265,6 +265,11 @@
 
 			&:hover {
 				color: $ru_green;
+			}
+
+			&.disabled {
+				pointer-events: none;
+				color: #ccc;
 			}
 		}
 
