@@ -103,7 +103,7 @@
                 <div class='large-16 medium-16 columns'>
                     <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen"></div>
                     <!-- Important - this has been moved to fix an issue with the tutorial overlay -->
-                    <a id="tutorial-search" href="javascript:void(0)" class="ru-desktop-search-icon" tabindex="0" ng-click="globalFlags.siteSearchOpen = true">
+                    <a id="tutorial-search" href="javascript:void(0)" class="ru-desktop-search-icon" tabindex="0" ng-click="globalFlags.siteSearchOpen = true" ng-hide="globalFlags.siteSearchOpen">
                         <img src='/assets/desktop-search-icon.png' alt="Search">
                     </a>
                     <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
@@ -152,4 +152,11 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="small-16 columns">
+            <div global-navigation></div>
+        </div>
+    </div>
+
 </header>

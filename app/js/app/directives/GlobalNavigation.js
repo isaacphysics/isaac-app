@@ -61,6 +61,9 @@ define([], function() {
                 		});
             		});
             	}
+
+
+                element.on("click", ".dl-back", scope.menuBack);
             }
 
 		};
