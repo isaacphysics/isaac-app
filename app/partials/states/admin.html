@@ -6,74 +6,159 @@
 </div>
 
 <div class="row">
-    <div class="medium-5 columns text-right">
-       <label for="content-version">
-            <h4>Content Version</h4>
-        </label>
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <h2>Useful links</h4>
+            <ul class="no-bullet horizontal-list">
+                <li><a ui-sref="gameEditor">Game board builder</a></li>
+                <li><a ui-sref="contentErrors">Content Errors Page</a></li>
+                <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
+                <li><a href="/api/content/units" target="_blank">List of units</a></li>
+            </ul>            
+        </div>
     </div>
-	<form ng-submit="setVersion()">
-        <div class="medium-7 columns end">
-            <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
-        </div>
-        <div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
-            <button ng-click="setVersion()">Set Version</button>
-        </div>
-    </form>
 </div>
-<div class="row" ng-if="versionChange == 'IN_PROGRESS'">
-    <div class="medium-16 columns text-center">
-    	<h4>Updating...</h4>
-    	<img src="/assets/loading.gif">
-	</div>
-</div>
-<div class="row" ng-if="versionChange == 'SUCCESS'">
-    <div class="medium-16 columns text-center">
-    	<h4>Content version changed successfully.</h4>
-	</div>
-</div>
-<div class="row" ng-if="versionChange == 'ERROR'">
-    <div class="medium-16 columns text-center">
-    	<h4 style="color:#a00;">Error: Content version could not be changed.</h4>
-	</div>
-</div>
-
 <div class="row">
-    <div class="medium-5 columns text-right">
-       <label for="user-search">
-            <h4>User Management</h4>
-        </label>
-    </div>
-    <form ng-submit="findUsers()">
-        <div class="medium-7 columns end">
-            <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
-        </div>
-        <div class="medium-4 columns end">
-            <button ng-click="findUsers()">Find user</button>
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Statistics at a glance</h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="statsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!statsLoading">
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Users (Total Registered: {{statistics.total_users}})</strong>
+                            <ul>
+                                <li>
+                                    <strong>Gender</strong>
+                                    <ul>
+                                        <li>Male: {{statistics.male_users}}</li>
+                                        <li>Female: {{statistics.female_users}}</li>
+                                        <li>Unknown: {{statistics.unknown_gender_users}}</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Role</strong>
+                                    <ul>
+                                        <li>Student (unknown role): {{statistics.student_users}}</li>
+                                        <li>Teacher: {{statistics.teacher_users}}</li>
+                                        <li>Staff: {{statistics.staff_users}}</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Events</strong>
+                            <ul>
+                                <li>Viewed Questions Events: {{statistics.view_question_events}}</li>
+                                <li># of Questions Answered Events: {{statistics.answered_question_events}}</li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </div>                
+            </div>
         </div>        
-    </form>
+    </div>
 </div>
 
-<!-- Results TODO: stolen from search page this needs tidying up -->
-<section ng-if="userSearch.hasSearched">
+<div ng-show="isAdminUser">
     <div class="row">
         <div class="small-16 columns">
-            <h4>User search results</h4>
-            <div class="ru-concept-results">
-                <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
-                    <div class='small-16 columns'>
-                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
-                            <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
-                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
-                                <h4>
-                                    <span class="physics" >{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
-                                </h4>
-                            </div>
-                            <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
-                            <div class="clearfix"></div>
-                        </div>
+            <div class="panel white clearfix">
+                <div class="row">
+                    <div class="small-16 columns">
+                        <h2>Administrative tools</h2>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="small-16 columns">
+                       <h3>Manage site content <a name="content">&nbsp;</a></h3>
+                    </div>
+                    <div class="medium-5 columns text-right">
+                       <label for="content-version">
+                            <strong>Live Content Version</strong>
+                        </label>
+                    </div>
+                    <form ng-submit="setVersion()">
+                        <div class="medium-7 columns end">
+                            <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
+                        </div>
+                        <div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
+                            <button ng-click="setVersion()">Set Version</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" ng-if="versionChange == 'IN_PROGRESS'">
+                    <div class="medium-16 columns text-center">
+                        <h4>Updating...</h4>
+                        <img src="/assets/loading.gif">
+                    </div>
+                </div>
+                <div class="row" ng-if="versionChange == 'SUCCESS'">
+                    <div class="medium-16 columns text-center">
+                        <h4>Content version changed successfully.</h4>
+                    </div>
+                </div>
+                <div class="row" ng-if="versionChange == 'ERROR'">
+                    <div class="medium-16 columns text-center">
+                        <h4 style="color:#a00;">Error: Content version could not be changed.</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-16 columns">
+                       <h3>Manage user accounts <a name="users">&nbsp;</a></h3>
+                    </div>
+                    <div class="medium-5 columns text-right">
+                       <label for="user-search">
+                            <strong>Find a user by email</strong>
+                        </label>
+                    </div>
+                    <form ng-submit="findUsers()">
+                        <div class="medium-7 columns end">
+                            <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
+                        </div>
+                        <div class="medium-4 columns end">
+                            <button ng-click="findUsers()">Find user</button>
+                        </div>        
+                    </form>
+                </div>
+            
+                <!-- Results TODO: stolen from search page this needs tidying up -->
+                <section ng-if="userSearch.hasSearched">
+                    <div class="row">
+                        <div class="small-16 columns">
+                            <h4>User search results ({{userSearch.results.length}})</h4>
+                            <div class="ru-concept-results">
+                                <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
+                                    <div class='small-16 columns'>
+                                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
+                                            <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
+                                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
+                                                <h4>
+                                                    <span class="physics" >{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
+                                                </h4>
+                                            </div>
+                                            <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-</section>
+</div>
+

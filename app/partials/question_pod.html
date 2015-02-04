@@ -5,7 +5,7 @@
     <hr>
     <ul class="pod-scroll-list">
     	<li ng-repeat="c in questions">
-            <a ui-sref="question({id: c.id})">{{c.title}}</a>
+            <a ui-sref="question({id: c.id})">{{c.title}} (Level {{c.level}})</a>
             <h6>{{c.summary}}</h6>
     	</li>
         <li ng-hide="questions.length" class="text-center">- No related questions -</li>

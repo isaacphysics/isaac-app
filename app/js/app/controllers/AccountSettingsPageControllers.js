@@ -122,6 +122,11 @@ define([], function() {
         $scope.showSkip = !!$stateParams.next;
 
         $scope.save = function(next) {
+        	
+        	if ($scope.user.role == "") {
+        		$scope.user.role = null; // fix to stop invalid role being sent to the server
+        	}
+
         	if ($scope.account.password.$viewValue) {
         		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
         	}

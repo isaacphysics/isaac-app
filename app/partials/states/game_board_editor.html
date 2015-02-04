@@ -1,0 +1,115 @@
+<div class="game-editor">
+	<div desktop-panel>
+		<h1>Game Board Builder</h1>
+		<h2 class="subheader"></h2>
+	</div>
+	<div mobile-panel>
+		<div class='row'>
+			<div class='small-16 columns'>
+				<h1>Game Board Builder</h1>
+				<h2 class="subheader"></h2>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class='large-16 medium-16 columns'>
+			<div>
+				<form>
+					<div class="row">
+						<div class="small-16 columns">
+							<div isaac-page-fragment="game_builder_intro"> </div>
+
+							<h2>Question Search</h2>
+						</div>
+						<div class="small-16 columns">
+			                <label><strong>Search on Question Title or Topic</strong></label>
+			                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here">				
+						</div>
+					</div>
+					<div class="row">
+						<div class="medium-8 small-16 columns">
+							<label><strong>Subject</strong></label>
+	                        <select ng-model="questionSearchSubject">
+	                            <option value="">Any Subject</option>
+	                            <option value="physics">Physics</option>
+	                            <option value="maths">Mathematics</option>
+	                        </select>
+						</div>
+						<div class="medium-8 small-16 columns">
+							<label><strong>Question Level</strong></label>
+	                        <select ng-model="questionSearchLevel">
+	                            <option value="{{null}}">Any Level</option>
+	                            <option value="1">1 (GCSE)</option>
+	                            <option value="2">2</option>
+	                            <option value="3">3</option>
+	                            <option value="4">4</option>
+	                            <option value="5">5</option>
+	                            <option value="6">6 (Post A-Level)</option>
+	                        </select>
+						</div>
+					</div>				
+				</form>	
+			</div>
+			<div class="row">
+				<div class="small-16 columns">
+					<div class="results-panel">
+						<h4>Search Results <span ng-show="!loading && searchResults">({{searchResults.length}})</span></h4>
+		                <div class="text-center" ng-if="loading">
+		                	<img src="/assets/loading.gif">
+		                </div>
+
+		                <ul ng-if="!loading" class="no-bullet results-list">
+		                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+		                </ul>					
+					</div>
+				</div>
+			</div>
+				
+			<div class="row">
+				<div class="medium-16 show-for-medium-up columns" ng-if="currentGameBoard.questions.length > 0">
+					<div class="results-panel">
+						<h4>Currently Selected Questions ({{currentGameBoard.questions.length}}/10)</h4>
+		                <ul class="no-bullet selected-questions">
+		                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+		                </ul>
+	               	</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<section ng-if="currentGameBoard.questions.length > 0">
+	    <div class="row">
+            <div class="small-16 columns">
+            	<h2>Game Board Preview and Options</h2>
+            </div>
+	    </div>
+	    <div class="row">
+            <div class="large-8 medium-8 small-16 columns text-center">
+                <span>
+                    <label><strong>Game board id for URL (must be unique and not contain spaces)</strong></label>
+                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
+                </span>
+            </div>
+            <div class="large-8 medium-8 small-16 columns text-center">
+                <span>
+                    <label><strong>Game board title</strong></label>
+                    <input type="text" ng-model="currentGameBoard.title">
+                </span>
+            </div>
+	    </div>
+
+	    <div class="row">
+	    	<div class="small-16 columns">
+	    		<h2 class="text-center">{{currentGameBoard.title}}</h2>
+	    		<div class="clearfix"></div>
+
+				<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
+	        </div>
+	    </div>
+	    <div class="row">
+			<div class='small-8 small-centered columns'> 
+	        	<button ng-if="currentGameBoard.questions.length > 0" ng-click="saveGameBoard()" class="expand">Submit &amp; Save Board</button>
+	        </div>
+	    </div>
+	</section>
+</div>
