@@ -2,7 +2,7 @@
     <div class="medium-13 columns">
         <div ng-if="editingSelf">
            <h1>Account Settings</h1>
-           <p>Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</p>
+           <p>Update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</p>
         </div>
         <div ng-if="!editingSelf">
            <h1>Manage a user's account</h1>
@@ -129,7 +129,7 @@
             <li>
                 <div class="row">
                     <div class="large-16 medium-16 columns account-level">
-                        <label><strong>Starting level</strong><sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Information about level"></span></label>
+                        <label><strong>Starting level</strong><sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Select your preferred question level."></span></label>
                         <select ng-model="user.defaultLevel">
                             <option value="1">1 (GCSE)</option>
                             <option value="2">2</option>
@@ -190,7 +190,7 @@
             <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
         </div>
     </div>
-    <div class="large-10 medium-16 columns">
+    <div class="large-10 medium-16 columns" ng-if="false">
         <div class="panel connect-form">
             <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Information about connecting"></span></h3>
             <p>Enter the code given to connect with a teacher.</p>
@@ -200,7 +200,7 @@
             </form>
         </div>
     </div>
-    <div class="large-6 medium-16 columns">
+    <div class="large-6 medium-16 columns" ng-if="false">
         <div class="connect-list">
             <h3><span class="person-icon-active"></span> Teacher connections</h3>
 
