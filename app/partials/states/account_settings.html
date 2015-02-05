@@ -1,10 +1,3 @@
-<div desktop-panel>
-    <div class="row">
-        <div ng-if="editingSelf" class="medium-15 end columns text-right">
-            <h2>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
-        </div>
-    </div>    
-</div>
 <div class="row ru-page-heading hide-for-small-only">
     <div class="medium-13 columns">
         <div ng-if="editingSelf">
@@ -75,6 +68,7 @@
                         </label>
                         <select ng-model="user.role">
                             <option value="">No role</option>
+                            <option value="STUDENT">Student</option>
                             <option value="TEACHER">Teacher</option>
                             <option value="CONTENT_EDITOR">Content Editor</option>
                             <option value="ADMIN">Admin</option>

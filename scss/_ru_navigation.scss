@@ -30,7 +30,6 @@
 	background-color: transparent;
 	padding: 0 0 0 25px;
 	margin: 11px 0 9px 0;
-	outline: none;
 
 	&:hover, &:active, &:focus, &:visited {
 		color: #333;
@@ -48,8 +47,8 @@
     	position: absolute;
     	display: block;
     	content: '';
-    	transition: all 400ms ease-in-out;
-    	-webkit-transition: all 400ms ease-in-out;
+    	transition: all 200ms ease-in-out;
+    	-webkit-transition: all 200ms ease-in-out;
 	}
 
 	span:before {
@@ -137,6 +136,10 @@
 		height: 14px;
 		background: url(/assets/ru.png) -295px -331px no-repeat;
 		margin: 5px 6px 0 0;
+	}
+
+	a {
+		font-weight: inherit;
 	}
 }
 .dl-clone {
@@ -261,6 +264,15 @@
 
 			&:hover {
 				color: $ru_green;
+			}
+
+		}
+
+		.disabled {
+			
+			a {
+				color: #ccc;
+				pointer-events: none;
 			}
 		}
 

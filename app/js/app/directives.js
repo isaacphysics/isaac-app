@@ -38,6 +38,7 @@ define([
 	"app/directives/content/SymbolicQuestion",
 	"app/directives/content/QuickQuestion",
 	"app/directives/content/QuestionRadioButton",
+	"app/directives/content/Pod",
 	"app/directives/FooterPods",
 	"app/directives/DesktopPanel",
 	"app/directives/MobilePanel",
@@ -49,6 +50,7 @@ define([
     "app/directives/ShareButton",
     "app/directives/SchoolDropdown",
     "app/directives/QuestionPod",
+    "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
 	], function() {
 
@@ -90,6 +92,8 @@ define([
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
+	.directive('podCarousel', require("app/directives/PodCarousel"))
+
 	// Content Directives
 
 	.directive('mathJax', require("app/directives/content/MathJax"))
@@ -127,6 +131,8 @@ define([
 	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
 
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
+
+	.directive('isaacPod', require("app/directives/content/Pod"))
 
 	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))	
 

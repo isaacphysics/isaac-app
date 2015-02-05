@@ -15,8 +15,19 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$window', function($scope, auth, api, $window) {
+	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
 		$scope.contentVersion = api.contentVersion.get();
+		$scope.userSearch = {};
+		$scope.userSearch.searchTerms = "";
+
+		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+
+		$scope.statistics = api.statisticsEndpoint.get();
+		
+		$scope.statsLoading = true;
+		$scope.statistics.$promise.then(function(){
+			$scope.statsLoading = false;
+		});
 
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
@@ -33,8 +44,10 @@ define([], function() {
 		
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
-			$scope.userSearch.results = api.adminUserSearch.search({ 'email' : $scope.userSearch.searchTerms});
-			$scope.userSearch.hasSearched=true;
+			if ($scope.userSearch.searchTerms != "") {
+				$scope.userSearch.results = api.adminUserSearch.search({ 'email' : $scope.userSearch.searchTerms});
+				$scope.userSearch.hasSearched=true;
+			}
 		}
 
 		$scope.deleteUser = function(userId) {

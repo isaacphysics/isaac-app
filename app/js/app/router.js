@@ -31,14 +31,19 @@ define(["angular-ui-router"], function() {
         }
 
         getLoggedInPromise['$inject'] = ["$rootScope"];
-
-        var getRolePromiseInjectableFunction = function(role) {
+        
+        /*
+         * Function that can be used to ensure that a user belongs to one of a set of roles.
+         * If the current user does not belong to a supplied role the promise will be rejected.
+         * 
+         */
+        var getRolePromiseInjectableFunction = function(roles) {
             var result = function($rootScope) {
                 return getLoggedInPromise($rootScope).then(function(u){
-                    if (u.role == role) {
+                    if (roles.indexOf(u.role) > -1) {
                         return Promise.resolve(u);
                     } else {
-                        return Promise.reject("require_role");
+                        return Promise.reject("This route requires the user to have one of the following roles: " + roles);
                     }                             
                 })
             }
@@ -48,7 +53,8 @@ define(["angular-ui-router"], function() {
 
         $urlRouterProvider.when("", "/");
         $urlRouterProvider.otherwise(function($injector, $location) {
-            return "/not_found?target=" + $location.url();
+            var $state = $injector.get("$state");
+            $state.go("404", {target: $location.url()});
         });
 
         var genericPageState = function(url, id) {
@@ -298,7 +304,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('404', {
-                url: "/not_found?target",
+                params: ["target"],
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
@@ -310,7 +316,7 @@ define(["angular-ui-router"], function() {
 
             })
             .state('403', {
-                url: "/unauthorised?target",
+                params: ["target"],
                 views: {
                     "body": {
                         templateUrl: "/partials/states/403.html",
@@ -376,7 +382,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction("ADMIN"),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
                 },
                 views: {
                     "body": {
@@ -385,6 +391,19 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+             .state('gameEditor', {
+                url: "/game_builder",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/game_board_editor.html",
+                        controller: "GameEditorControllers",
+                    }
+                }
+            })  
 
             .state('groupManagment', {
                 url: "/groups",
@@ -398,7 +417,7 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
-
+            
             .state('assignBoards', {
                 url: "/set_assignments",
                 resolve: {
@@ -419,11 +438,11 @@ define(["angular-ui-router"], function() {
             if (error == "require_login")
                 $state.go('login', {target: $state.href(toState, toParams)});
 
+            if (error == "require_role")
+                $state.go('403', {target: $state.href(toState, toParams)});
+
             if (error.status == 404)
                 $state.go('404', {target: $state.href(toState, toParams)});
-
-            if (error.status == 403)
-                $state.go('403', {target: $state.href(toState, toParams)});
         });
 
     }])

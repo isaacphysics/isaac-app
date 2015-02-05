@@ -75,7 +75,20 @@ $ru_nav_size : 7em;
 
 .ru-desktop-panel
 {
-    margin-top: 19px;
+    margin-top: -11px;
+    padding: 8px 8px 8px 20px;
+    margin-bottom: 0px;
+
+    &.search {
+        background: white;
+        border: $ru_green solid 1px;
+        margin-bottom: 10px;
+        margin-top: 19px;
+    }
+}
+
+.ru-game-filter-panel{
+    margin-top: 15px;
     padding: 8px 8px 8px 20px;
     background: white;
     border: $ru_green solid 1px;
@@ -91,6 +104,14 @@ $ru_nav_size : 7em;
     width: 63px;
     height: 27px;
     background: url(/assets/ru.png) -338px -342px no-repeat;
+}
+
+.top-pods{
+    margin-top:10px;
+
+    li {
+        padding-bottom: 0px;
+    }
 }
 
 .ru-desktop-search-icon {
@@ -172,11 +193,11 @@ $ru_nav_size : 7em;
 
 .ru-mobile-panel
 {
-    border-top: 1px solid $ru_green;
-    border-bottom: 1px solid $ru_green;
-    background-color: white;
+    //border-top: 1px solid $ru_green;
+    //border-bottom: 1px solid $ru_green;
+    //background-color: white;
     width: auto;
-    margin: 2px -0.9375rem 10px -0.9375rem;
+    margin: -15px -0.9375rem 10px -0.9375rem;
     padding: 8px 0.9375rem;
     min-height: 40px;
 }
