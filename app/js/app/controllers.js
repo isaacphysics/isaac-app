@@ -38,6 +38,7 @@ define([
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
 	"app/controllers/GameEditorControllers",
+	"app/controllers/GroupManagmentPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -73,6 +74,7 @@ define([
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
+	var groupManagmentPageControllers = require("app/controllers/GroupManagmentPageControllers");
 
 	/* Controllers */
 
@@ -128,4 +130,5 @@ define([
 	.controller('AdminPageController', adminPageControllers.PageController)
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
+	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
 });

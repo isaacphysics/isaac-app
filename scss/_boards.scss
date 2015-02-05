@@ -1,3 +1,6 @@
+/*
+	Global boards styles 
+*/
 .boards-wrap {
 	margin: 10px -10px 0;
 
@@ -32,6 +35,8 @@
 		font-size: 13px;
 	}
 }
+
+
 .board-title-link {
 	overflow: hidden;
 	white-space: nowrap;
@@ -184,6 +189,92 @@
 		padding-bottom: 0;
 	}
 }
+
+
+/*
+	Styles for assign boards
+*/
+.assign-board-wrap {
+
+	.board-info {
+		float: left;
+		margin-top: 22px;
+
+		p {
+			font-size: 15px;
+			line-height: 135%;
+		}
+	}
+
+	.board-share {
+		top: 105px;
+		bottom: auto;
+	}
+
+	.panel {
+		position: relative;
+		border-color: #000;
+
+		.row {
+			margin: 0;
+		}
+	}
+
+	h3 {
+		padding-right: 50px;
+		line-height: 115%;
+
+		a {
+			color: #333;
+		}
+	}
+
+	.subject-physics,
+	.subject-maths {
+		top: 0;
+	}
+}
+.board-overview {
+	counter-reset: question;
+
+	h6 {
+		margin: 10px 0 6px;
+		font-style: normal;
+	}
+	ol {
+		list-style: none;
+		margin: 0;
+	}
+	li {
+		font-size: 15px;
+		line-height: 140%;
+	}
+	li:before {
+		font-weight: 600;
+		counter-increment: question;
+		content: "Q" counter(question) ". ";
+	}
+}
+
+.groups-assigned {
+	font-size: 12px;
+	line-height: 110%;
+	font-weight: 100;
+	font-style: normal;
+	padding-top: 18px;
+
+	strong {
+		display: block;
+		font-size: 15px;
+		font-weight: 600;
+		font-style: italic;
+		padding-bottom: 2px;
+	}
+}
+
+/* 
+	All media queries 
+*/
 @media #{$medium-up} {
 	.boards-filters {
 		float: right;

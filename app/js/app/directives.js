@@ -51,6 +51,7 @@ define([
     "app/directives/SchoolDropdown",
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
+    "app/directives/GlobalNavigation",
 	], function() {
 
 	/* Directives */
@@ -88,6 +89,8 @@ define([
 	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
 
 	.directive('questionPod', require("app/directives/QuestionPod"))
+
+	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 

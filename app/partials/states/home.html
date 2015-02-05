@@ -1,42 +1,65 @@
-<div desktop-panel class="extra-desktop-panel-gap hide-for-small-only">
-    <div class='ru-desktop-panel-content'>
-        <div class='medium-7 columns'>
-            <span ng-if="!breadCrumbSubject">&nbsp;</span>
-            <a class="ru-crumb" ng-click="openFilterPanel('desktop-filter')" href="javascript:void(0)">
-                <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, physics: breadCrumbSubject == 'physics', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
-                    <li ng-if="breadCrumbSubject" ng-bind-html="getTagTitle(breadCrumbSubject)"></li>
-                    <li ng-if="breadCrumbField" ng-bind-html="getTagTitle(breadCrumbField)"></li>
-                    <li ng-if="breadCrumbTopic" ng-bind-html="getTagTitle(breadCrumbTopic)"></li>
-                </ul>
-            </a>
-        </div>
-        <div class='medium-8 end columns text-right'>
-            <h2 class='ru-welcome'>Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
-            <span class='ru-challenge' ng-hide="filterPanelOpen">Get started by <br class='show-for-medium-only'> <a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">choosing your questions</a></span>
-        </div>
-        <div class='clearfix'></div>
-
-        <div id='desktop-filter' class="down isdown hide-animate" ng-show="filterPanelOpen == 'desktop-filter'">
-            <div class='medium-9 large-10 columns' id='desktop-filter1'>
-                <div hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings"></div>
-            </div>
-            <div class='medium-7 large-6 columns'>
-                <div id='desktop-filter2'>
-                    <div difficulty-filter="filterLevels"></div>
-                </div>
-                <div id='desktop-filter3'>
-                    <div concept-filter="filterConcepts"></div>
-                </div>
-            </div>
-        </div>
-        <div class='clearfix'></div>
-    </div>
-    <a href="javascript:void(0)" ng-click="scrollToQuestions()" class="filter-go-to-questions" ng-show="gameBoard.questions && filterPanelOpen == 'desktop-filter'">Go to Questions...</a>
-    <a href="javascript:void(0)" aria-label="Reveal Filters" id="desktop-reveal" ng-click="openFilterPanel('desktop-filter')" ng-class="{down: filterPanelOpen == 'desktop-filter'}"></a>
+<div class="row">
+    <div class="small-16 columns show-for-small-only">
+        <h1>Welcome to Isaac</h1>
+    </div>    
 </div>
-<div mobile-panel class='no-print'>
+
+<!-- Additional Information Panel - when NOT logged in -->
+<div class="row" ng-if="!user.givenName">
+    <div class="small-16 columns">
+        <section class="top-pods">
+            <div pod-carousel></div>
+        </section>
+    </div>
+</div>
+
+<!-- Medium to Large game board filter -->
+<div class='row hide-for-small-only'>
+    <div class='large-16 medium-16 columns'>
+        <div class='ru-desktop-panel ru-game-filter-panel extra-desktop-panel-gap'>
+                <div class='ru-desktop-panel-content'>
+                    <div class='medium-7 columns'>
+                        <span ng-if="!breadCrumbSubject">&nbsp;</span>
+                        <a class="ru-crumb" ng-click="openFilterPanel('desktop-filter')" href="javascript:void(0)">
+                            <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, physics: breadCrumbSubject == 'physics', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
+                                <li ng-if="breadCrumbSubject" ng-bind-html="getTagTitle(breadCrumbSubject)"></li>
+                                <li ng-if="breadCrumbField" ng-bind-html="getTagTitle(breadCrumbField)"></li>
+                                <li ng-if="breadCrumbTopic" ng-bind-html="getTagTitle(breadCrumbTopic)"></li>
+                            </ul>
+                        </a>
+                    </div>
+                    <div class='medium-8 end columns text-right'>
+                        <h2 class='ru-welcome'>Get started</h2>
+                        <span class='ru-challenge' ng-hide="filterPanelOpen"><a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">Choose your questions</a></span>
+                    </div>
+                    <div class='clearfix'></div>
+
+                    <div id='desktop-filter' class="down isdown hide-animate" ng-show="filterPanelOpen == 'desktop-filter'">
+                        <div class='medium-9 large-10 columns' id='desktop-filter1'>
+                            <div hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings"></div>
+                        </div>
+                        <div class='medium-7 large-6 columns'>
+                            <div id='desktop-filter2'>
+                                <div difficulty-filter="filterLevels"></div>
+                            </div>
+                            <div id='desktop-filter3'>
+                                <div concept-filter="filterConcepts"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='clearfix'></div>
+                </div>
+                <a href="javascript:void(0)" ng-click="scrollToQuestions()" class="filter-go-to-questions" ng-show="gameBoard.questions && filterPanelOpen == 'desktop-filter'">Go to Questions...</a>
+                <a href="javascript:void(0)" aria-label="Reveal Filters" id="desktop-reveal" ng-click="openFilterPanel('desktop-filter')" ng-class="{down: filterPanelOpen == 'desktop-filter'}"></a>
+        </div>
+    </div>
+</div>
+
+<!-- Small (Mobile) game board filter -->
+<div class="show-for-small-only no-print">
     <div class='row'>
         <div class='small-16 columns bottom-grey'>
+        <h2>Choose your questions</h2>
             <ul class='small-block-grid-3 ' id='buttons'>
                 <li id='button-hex' ng-click="openFilterPanel('mobile-filter1')" data-for="mobile-filter1" ng-class="{active: filterPanelOpen == 'mobile-filter1'}">
                     <p><small>Question Topics</small></p>
@@ -71,13 +94,6 @@
 
 <div class="row">
     <div class='large-16 medium-16 columns'>
-
-        <!-- Additional Information Panel -->
-        <section ng-if="!user.givenName">
-            <div pod-carousel></div>
-        </section>
-
-
         <section>
             <div class="row">
                 <div class='ru-board-title show-for-medium-up'>
@@ -135,7 +151,7 @@
             <div class="pad"></div>
             <div class='show-for-small-only pad'></div>     
 
-        <!-- Additional Information Panel -->
+        <!-- Additional Information Panel - when logged in -->
         <section ng-if="user.givenName">
             <div pod-carousel></div>
         </section>

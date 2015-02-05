@@ -51,7 +51,24 @@
 .underline {
     text-decoration: underline;
 }
-
+.has-tip, .has-tip:hover {
+    border: none;
+    color: $ru_green;
+}
+.ru-page-heading {
+    h1 {
+        line-height: 1.1;
+    }
+    p {
+        font-size: 18px;
+        font-style: italic;
+        margin-bottom: 0.7em;
+    }
+    .has-tip {
+        float: right;
+        margin-top: 13px
+    }
+}
 @media #{$small-only} { 
     .ru-alert-box {
         position: absolute;
@@ -78,6 +95,11 @@
             img {
                 margin-right: 10px;
             }
+        }
+    }
+    .ru-page-heading {
+        h1 {
+            margin-bottom: 10px;
         }
     }
 }

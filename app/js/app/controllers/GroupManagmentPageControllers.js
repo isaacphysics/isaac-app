@@ -15,10 +15,11 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
-	}];
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', function($scope, auth, $state, $location, $window) {
+	
+	}]
 
 	return {
-		PageController: PageController
+		PageController: PageController,
 	};
-});
+})

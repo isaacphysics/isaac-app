@@ -1,21 +1,17 @@
-<div desktop-panel>
-    <div ng-if="editingSelf" class="row">
-        <div class="medium-10 columns">
-    	   <h1>Account Settings</h1>
-    	   <h2 class="subheader">Create / update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
+<div class="row ru-page-heading hide-for-small-only">
+    <div class="medium-13 columns">
+        <div ng-if="editingSelf">
+           <h1>Account Settings</h1>
+           <p>Update your <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</p>
         </div>
-        <div class="medium-6 end columns text-right">
-            <h2 class="ru-welcome logout-link">
-                <a ui-sref="logout">Log out &raquo;</a>
-            </h2>
+        <div ng-if="!editingSelf">
+           <h1>Manage a user's account</h1>
+           <p>Editing another user's <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</p>
         </div>
     </div>
-    <div ng-if="!editingSelf" class="row">
-        <div class="medium-10 columns">
-           <h1>Manage a user's account</h1>
-           <h2 class="subheader">Editing another user's <a ui-sref="home"><span class="ru_green">Isaac</span></a> account</h2>
-        </div>
-    </div>    
+    <div class="medium-3 columns text-right">
+        <sapn data-tooltip aria-haspopup="true" class="has-tip" title="Information about connecting"><span class="icon-help"></span>Help</span>
+    </div>
 </div>
 <div class="row account-settings-wrap">
     <div ng-if="editingSelf" class="show-for-small-only small-16 columns">
@@ -28,55 +24,44 @@
     </div>    
     <form class="panel" ng-submit="save()" name="account" novalidate>
         <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
-		<ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+        <p class="ru-required-msg"><span>*</span> Required Field</p>
+        <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
             <li>
                 <div class="row">
                     <div class="large-16 medium-8 columns">
-            	       <label for="account-firstname">
+                       <label for="account-firstname">
                             <strong>First Name</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
                                 Required
                             </span>
                         </label>
-    				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
+                        <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
                     </div>
                     <div class="large-16 medium-8 columns">
-				        <label for="account-lastname">
+                        <label for="account-lastname">
                             <strong>Last Name</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
                                 Required
                             </span>
                         </label>
-    				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
+                        <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-16 columns">
-				        <label for="account-email">
+                        <label for="account-email">
                             <strong>Your Email Address</strong>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
                                 Enter a valid email
                             </span>
                             </label>
-    			         <input id="account-email" name="email" type="email" ng-model="user.email" required>
+                         <input id="account-email" name="email" type="email" ng-model="user.email" required>
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-show="!user.role && editingSelf" class="large-16 columns">
-                        <label>
-                            <strong>Are you a teacher?</strong>
-                        </label>
-                        <a class="teacher-link" ui-sref="contact"><span class="underline">Contact us</span> for an upgraded account.</a>
-                    </div>
-                    <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns">
-                        <label>
-                            <strong>Upgraded account:</strong>
-                        </label>
-                        <p>Your account has been assigned the {{user.role.toLowerCase()}} role.</p>
-                    </div>
                     <div ng-show="!editingSelf" class="large-16 columns">
                         <label>
                             <strong>Change user's role:</strong>
@@ -131,12 +116,12 @@
                             </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.month" ng-options="month for month in datePicker.months">
-	                        </select>
+                            <select ng-model="dob.month" ng-options="month for month in datePicker.months">
+                            </select>
                         </li>
                         <li>
-	                        <select ng-model="dob.year" ng-options="year for year in datePicker.years">
-	                        </select>
+                            <select ng-model="dob.year" ng-options="year for year in datePicker.years">
+                            </select>
                         </li>
                     </ul>
                 </div>
@@ -144,7 +129,7 @@
             <li>
                 <div class="row">
                     <div class="large-16 medium-16 columns account-level">
-                        <label><strong>Starting level</strong></label>
+                        <label><strong>Starting level</strong><sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Select your preferred question level."></span></label>
                         <select ng-model="user.defaultLevel">
                             <option value="1">1 (GCSE)</option>
                             <option value="2">2</option>
@@ -156,10 +141,10 @@
                     </div>
                 </div>
             
-		        <label>
-    		        <strong>School</strong>
+                <label>
+                    <strong>School</strong>
                 </label>
-    		    <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
+                <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                     {{schools}}      
                 </div>
                 <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
@@ -175,23 +160,65 @@
                         </a>
                     </li>
                 </ul>
-			</li>
-        </ul>
-        <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1 ru-pad">
-            <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
-            <li class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</li>
-            <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+            </li>
         </ul>
         <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
             <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
             <li ng-if="updateFail" class="text-center">
-	            <h4 style="color:#a00;">
-		            Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
-	            </h4>
+                <h4 style="color:#a00;">
+                    Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+                </h4>
             </li>
         </ul>
        
     </form>
+    <div class="account-reorder-wrap">
+        <div class="account-reorder-bottom">
+            <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
+                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+            </div>
+
+            <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
+                <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
+            </div>
+        </div>
+        <div class="large-16 columns account-reorder-top" ng-class="{'account-single-btn': !showSkip}">
+            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+                <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
+                <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+            </ul>
+            <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+        </div>
+    </div>
+    <div class="large-10 medium-16 columns" ng-if="false">
+        <div class="panel connect-form">
+            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Information about connecting"></span></h3>
+            <p>Enter the code given to connect with a teacher.</p>
+            <form class="clearfix">
+                <input placeholder="Enter your code in here" class="connect-form-input" type="text" />
+                <a class="ru-button">Apply Code</a>
+            </form>
+        </div>
+    </div>
+    <div class="large-6 medium-16 columns" ng-if="false">
+        <div class="connect-list">
+            <h3><span class="person-icon-active"></span> Teacher connections</h3>
+
+            <div class="connect-list-inner">
+                <ul class="teachers-connected">
+                    <li><span class="person-icon-active"></span> Teacher Name 1 <a class="revoke-teacher" href="#">Revoke</a></li>
+                    <li><span class="person-icon-active"></span> Teacher Name 2 <a class="revoke-teacher" href="#">Revoke</a></li>
+                    <li><span class="person-icon-active"></span> Teacher Name 3 <a class="revoke-teacher" href="#">Revoke</a></li>
+                </ul>
+
+                <ul class="teachers-disconnected">
+                    <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                    <li><span class="person-icon"></span> Teacher Name 2 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                    <li><span class="person-icon"></span> Teacher Name 3 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="account-updated" class="reveal-modal" data-reveal>
     <h2>Your account has been successfully updated.</h2>

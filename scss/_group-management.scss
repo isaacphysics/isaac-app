@@ -1,0 +1,339 @@
+/* 
+	Tab styles for profile pages
+*/
+.profile-tabs {
+	> dd {
+		width: 50%;
+		text-align: center;
+		font-weight: 600;
+
+		&:first-child {
+			padding-right: 10px;
+		}
+
+		a {
+			border: #ccc solid 1px;
+			padding: 10px 20px;
+		}
+
+		&.active a {
+			color: $ru_green;
+			background-color: #fff;
+			border-bottom: #fff solid 1px;
+		}
+	}
+}
+.profile-tabs-content {
+	background-color: #fff;
+	border-top: #ccc solid 1px;
+	padding-top: 5px;
+	margin-top: -1px;
+}
+
+
+/*
+	Toast message styles 
+*/
+.toast {
+	@extend .clearfix;
+}
+.toast-icon {
+	float: left;
+	background-color: #333;
+	padding: 12px 20px;
+	margin-right: 20px
+}
+.toast-complete-icon {
+	float: left;
+	width: 76px;
+	height: 90px;
+	background: url(/assets/ru.png) -401px -301px no-repeat;
+}
+.toast-message {
+	height: 114px;
+	padding: 15px 20px 20px;
+	background-color: #f6f6f6;
+	border: #999 1px solid;
+
+	h4 {
+		margin-bottom: 5px;
+	}
+
+	p {
+		line-height: 110%;
+	}
+}
+
+
+/*
+	Group management page styles 
+*/
+.group-management-wrap {
+	h6 {
+		/* This is needed due to inherit being set on "show-for-large-up" class */
+		display: inline;
+		font-style: normal;
+		margin-bottom: 0;
+		line-height: 100%;
+	}
+	p {
+		font-size: 13px;
+		line-height: 100%;
+		margin: 0;
+	}
+	input {
+		margin: 5px 0 10px;
+	}
+	textarea {
+		/* Remove horizontal resizing as this breaks layout */
+		resize: vertical;
+		margin: 10px 0 20px;
+	}
+
+	.panel {
+		padding: 10px 20px 20px;
+	}
+}
+
+
+/*
+	Group management navigation styles 
+*/
+.group-header {
+	@extend .clearfix;
+	font-size: 14px;
+	padding: 15px 10px 5px;
+}
+
+.group-nav {
+	float: left;
+	width: 100%;
+	margin: 0;
+
+	dd {
+		float: left;
+		width: 100%;
+		margin: 0;
+
+		&:first-child .group-nav-header {
+			border-top: #999 1px solid;
+		}
+
+		/* Styles for active item */
+		&.active {
+			.group-nav-header {
+				color: $ru_green;
+			}
+
+			.group-icon {
+				background-position: -330px -302px;
+			}
+
+			/* Do nothing on hover if item is active */
+			&:hover {
+				.group-nav-header {
+					color: $ru_green;
+				}
+			}
+		}
+
+		/* Change all non-active items on hover */
+		&:hover .group-nav-header {
+			color: #333;
+			background-color: #e8e8e8;
+		}
+	}
+}
+.group-nav-header {
+	float: left;
+	width: 100%;
+	color: #333;
+	font-weight: 600;
+	line-height: 2.5em;
+	background-color: #f6f6f6;
+	border-bottom: #999 1px solid;
+	padding: 0 10px 0 20px;
+}
+.group-nav-toggle {
+	float: right;
+	margin: 3px 0 3px 10px;
+}
+.group-nav-right {
+	float: right;
+	font-size: 12px;
+	font-weight: 500;
+	color: #000;
+}
+.group-nav-content {
+	float: left;
+	width: 100%;
+	padding: 10px 20px 20px;
+	border-bottom: #999 1px solid;
+}
+
+
+/*
+	Group management accordion styles 
+*/
+.group-accordion {
+	margin: 0 0 1rem;
+
+	dd .group-accordion-header {
+		/* This is needed due to inherit being set on "show-for-medium-up" class */
+		display: inline-block;
+		width: 100%;
+		font-weight: 600;
+		color: $ru_green;
+		border-right: #999 1px solid;
+		border-left: #999 1px solid;
+		padding: 7px 12px;
+	}
+	dd:first-child .group-accordion-header {
+		border-top: #999 1px solid;
+	}
+
+	.group-accordion-arrow {
+		float: right;
+		width: 14px;
+		height: 10px;
+		background: url(/assets/ru.png) -370px -313px no-repeat;
+		margin-top: 8px;
+	}
+
+	.active .group-accordion-arrow {
+		background-position: -370px -302px;
+	}
+}
+
+
+/*
+	Group management table styles 
+*/
+.group-table {
+	table-layout: auto;
+	border-collapse: collapse;
+	border: #999 1px solid;
+	margin: 0;
+
+	td {
+		color: #000;
+		font-weight: 600;
+		line-height: 2.2rem;
+		padding: 0 10px;
+		border-bottom: #999 1px solid;
+	}
+
+	.delete-icon,
+	.edit-icon {
+		float: right;
+	}
+}
+
+.archived {
+
+	&.group-accordion dd .group-accordion-header {
+		color: #666;
+	}
+	.group-table td {
+		color: #666;
+	}
+}
+.group-table-delete {
+	width: 18px;
+}
+.delete-icon {
+	float: left;
+	width: 18px;
+	height: 16px;
+	background: url(/assets/ru.png) -370px -324px no-repeat;
+}
+.group-table-edit {
+	width: 16px;
+}
+.edit-icon {
+	float: left;
+	width: 16px;
+	height: 17px;
+	background: url(/assets/ru.png) -385px -302px no-repeat;
+}
+.group-table-email-edit {
+	display: none;
+}
+.archive-group-btn {
+	float: right;
+	font-weight: 600;
+}
+@media #{$small-only} { 
+	.profile-tabs-content,
+	.profile-tabs {
+		width: auto;
+		margin-left: -0.9375rem;
+		margin-right: -0.9375rem;
+	}
+}
+@media #{$medium-up} {
+	.group-management-wrap {
+		p {
+			font-size: 14px;
+		}
+		input {
+			margin-top: 10px;
+			margin-bottom: 15px;
+		}
+		textarea {
+			height: 100px;
+			margin-bottom: 25px;
+		}
+	} 
+	.group-icon {
+		float: left;
+		width: 23px;
+		height: 19px;
+		background: url(/assets/ru.png) -330px -321px no-repeat;
+		margin: 10px 10px 10px 0;
+	}
+
+	.group-table-person {
+		float: left;
+		width: 11px;
+		height: 18px;
+		background: url(/assets/ru.png) -357px -320px no-repeat;
+		margin: 8px 10px 0 0;
+	}
+	a .group-table-person {
+		background-position: -357px -302px;
+	}
+
+	.profile-tabs-content {
+		border-left: #ccc solid 1px;
+		border-right: #ccc solid 1px;
+	}
+
+	.toast-icon {
+		margin-right: 0;
+	}
+	.toast-message {
+		float: left;
+		width: 282px;
+	}
+}
+@media #{$large-up} { 
+	.group-nav {
+		padding: 0 0 20px;
+
+		dd.active .group-nav-header {
+			background-color: #fff;
+		}
+	}
+	.group-nav-header {
+		border-left: #999 1px solid;
+		border-right: #999 1px solid;
+	}
+	.group-nav-toggle {
+		display: none;
+	}
+	.profile-tabs-content {
+		padding: 0 20px;
+		border-bottom: #ccc solid 1px;
+	}
+}
