@@ -17,7 +17,6 @@ define([], function() {
 
     return ["$location", function($location) {
 		return {
-
 			scope: true,
 			restrict: "A",
             templateUrl: '/partials/global_navigation.html',
@@ -25,6 +24,14 @@ define([], function() {
             link: function(scope, element, attrs) {
             	// Global var
             	var flyin;
+
+                // add some indication as to why the link is disabled.
+                $('.disabled').attr('title', "This feature is coming soon.");
+                $('.disabled').attr('data-tooltip', ""); 
+                $('.disabled').attr('aria-haspopup', "true");
+                
+                // we need this to make sure foundation tooltips work
+                $(element.find("nav")).foundation('tooltip', 'reflow'); 
 
             	scope.menuToggle = function(e) {
             		scope.isVisible = ! scope.isVisible;
