@@ -26,9 +26,9 @@ define([], function() {
             	var flyin;
 
                 // add some indication as to why the link is disabled.
-                $('.disabled').attr('title', "This feature is coming soon.");
-                $('.disabled').attr('data-tooltip', ""); 
-                $('.disabled').attr('aria-haspopup', "true");
+                $('.disabled a').attr('title', "This feature is coming soon.");
+                $('.disabled a').attr('data-tooltip', ""); 
+                $('.disabled a').attr('aria-haspopup', "true");
                 
                 // we need this to make sure foundation tooltips work
                 $(element.find("nav")).foundation('tooltip', 'reflow'); 
