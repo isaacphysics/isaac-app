@@ -1,8 +1,3 @@
-<div desktop-panel>
-</div>
-<div mobile-panel>
-   <h5>Filter your Boards</h5>
-</div>
 <div class="boards-filters" ng-show="boards != null">
    <ul class="small-block-grid-2">
       <li>
@@ -20,7 +15,7 @@
    		<div class="panel">
             <span class="board-delete">X</span>
             <div class="row">
-               <div data-tooltip aria-haspopup="true" class="board-percentage has-tip" title="Information about current page">
+               <div title="Monkeys, Rhinos, Sharks, Spiders and Eagles." class="board-percentage" aria-haspopup="true" data-tooltip="">
 
                   <!-- Remember to change subject class, this will change the colour -->
       				<span class="groups-assigned subject-physics">
@@ -58,14 +53,41 @@
                   <li>Cracking Eggs</li>
                </ol>
             </div>
-            <div class="row">
-               <a class="ru-button-big expand">Assign this board</a>
+            <a class="ru-button-big tertiary expand">Assign this board</a>
+            <div class="row board-assign-group">
                <h6>Assign Group:</h6>
                <select>
                   <option value="1">Select your group</option>
                </select>
+               <h6>Due Date (optional):</h6>
+               <input ui-date placeholder="Select your due date..." type="text" />
                <a class="ru-button-big expand">Assign / Update</a>
+               <!-- Change assign btn to this complete message -->
+               <span class="ru-button-big primary expand disabled">Group Assigned</span>
                <a class="ru-button-big expand">Edit Assigned Groups</a>
+            </div>
+            <div class="row board-remove-group">
+               <h6>Remove group or edit due dates</h6>
+               <table class="group-table">
+                  <tbody>
+                     <tr>
+                        <td>Monkeys</td>
+                        <td><span class="cal-icon"></span></td>
+                        <td><span class="del-icon"></span></td>
+                     </tr>
+                     <tr>
+                        <td>Lions</td>
+                        <td><span class="cal-icon"></span></td>
+                        <td><span class="del-icon"></span></td>
+                     </tr>
+                     <tr>
+                        <td>Bears</td>
+                        <td><span class="cal-icon"></span></td>
+                        <td><span class="del-icon"></span></td>
+                     </tr>
+                  </tbody>
+               </table>
+               <a class="ru-button-big tertiary expand">Close</a>
             </div>
    		</div>
    	</li>

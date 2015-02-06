@@ -24,6 +24,7 @@ define([
     "angular-resource", 
 //    "angular-animate",
     "angular-cookies",
+    "angular-ui-date",
     "app/controllers", 
     "app/directives", 
     "app/services", 
@@ -54,6 +55,7 @@ define([
         'angulartics.google.analytics',
 //        'ngAnimate',
         'ngCookies',
+        'ui.date',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {

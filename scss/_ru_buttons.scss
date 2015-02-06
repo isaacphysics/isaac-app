@@ -24,6 +24,9 @@
 		color: #333;
 		border: 1px solid #999;
     }
+    &.disabled {
+    	cursor: default;
+    }
 }
 .ru-button {
 	padding-top: 0.3rem;
