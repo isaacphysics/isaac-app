@@ -214,7 +214,8 @@
 	.panel {
 		position: relative;
 		border-color: #000;
-
+		padding-bottom: 0;
+		
 		.row {
 			margin: 0;
 		}
@@ -233,6 +234,24 @@
 	.subject-physics,
 	.subject-maths {
 		top: 0;
+	}
+
+	.group-table {
+		margin-bottom: 18px;
+
+		tr:hover {
+			background-color: #ecf8e7;
+		}
+		td{
+			color: #666;
+			font-family: "Source Sans Pro","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+			font-weight: 600;
+			font-size: 16px;
+		}
+	}
+
+	.group-table .icon-delete {
+		margin-top: 2px;
 	}
 }
 .board-overview {
@@ -290,20 +309,39 @@
 	/* 
 		These can't be grouped together otherwise they will be ignored
 	*/
-	::-webkit-input-placeholder { /* WebKit browsers */
+	::-webkit-input-placeholder {
 		color: rgba(0, 0, 0, 0.75);
 	}
-	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	:-moz-placeholder {
 		color: rgba(0, 0, 0, 0.75);
 	}
-	::-moz-placeholder { /* Mozilla Firefox 19+ */
+	::-moz-placeholder {
 		color: rgba(0, 0, 0, 0.75);
 	}
-	:-ms-input-placeholder { /* Internet Explorer 10+ */
+	:-ms-input-placeholder {
 		color: rgba(0, 0, 0, 0.75);
 	}
 }
-
+.icon-delete {
+	float: left;
+	width: 16px;
+	height: 16px;
+	background: url(/assets/ru.png) -371px -324px no-repeat;
+}
+.icon-complete {
+	display: inline-block;
+	width: 25px;
+	height: 20px;
+	background: url(/assets/ru.png) -357px -370px no-repeat;
+	margin-left: 10px;
+	margin-bottom: -4px;
+}
+.icon-cal--small {
+	float: left;
+	width: 17px;
+	height: 19px;
+	background: url(/assets/ru.png) -384px -369px no-repeat;
+}
 /* 
 	All media queries 
 */

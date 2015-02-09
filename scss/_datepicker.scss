@@ -1,16 +1,22 @@
 .ui-datepicker {
-	width: 17em;
-	padding: 0.2em 0.2em 0;
+	font-family: "Source Sans Pro","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+	font-weight: 200;
+	width: 307px;
+	box-shadow: 0px 0px 20px 1px rgba(0,0,0,0.2);
 }
 .ui-datepicker-header {
 	color: #fff;
-	font-size: 30px;
-	font-weight: 300;
+	font-size: 28px;
 	text-align: center;
 	background-color: #666;
+	padding: 10px 20px;
 
 	.ui-datepicker-prev {
 		float: left;
+		width: 14px;
+		height: 26px;
+		text-indent: -9999999em;
+		background: url(/assets/ru.png) no-repeat -276px -348px;
 	}
 	.ui-datepicker-next {
 		float: right;
@@ -21,6 +27,7 @@
 	}
 }
 .ui-datepicker-calendar {
+	border: none;
 	border-collapse: collapse;
 
 	thead {
@@ -30,7 +37,11 @@
 		th {
 			color: #fff;
 			font-size: 19px;
-			font-weight: 300;
+			font-weight: 200;
 		}
+	}
+	a {
+		font-size: 19px;
+		color: #333;
 	}
 }
