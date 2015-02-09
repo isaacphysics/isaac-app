@@ -54,19 +54,22 @@
                </ol>
             </div>
             <a class="ru-button-big tertiary expand">Assign this board</a>
-            <div class="row board-assign-group">
+            <div class="row board-section">
                <h6>Assign Group:</h6>
                <select>
-                  <option value="1">Select your group</option>
+                  <option>Select your group...</option>
+                  <option>Monkeys</option>
+                  <option>Lions</option>
+                  <option>Bears</option>
                </select>
                <h6>Due Date (optional):</h6>
                <input ui-date placeholder="Select your due date..." type="text" />
                <a class="ru-button-big expand">Assign / Update</a>
                <!-- Change assign btn to this complete message -->
-               <span class="ru-button-big primary expand disabled">Group Assigned</span>
-               <a class="ru-button-big expand">Edit Assigned Groups</a>
+               <div class="ru-button-big primary expand">Group Assigned<span class="icon-complete"></span></div>
+               <a class="ru-button-big tertiary expand">Edit Assigned Groups</a>
             </div>
-            <div class="row board-remove-group">
+            <div class="row board-section">
                <h6>Remove group or edit due dates</h6>
                <table class="group-table">
                   <tbody>

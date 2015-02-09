@@ -223,6 +223,7 @@
 	h3 {
 		padding-right: 50px;
 		line-height: 115%;
+		font-weight: 800;
 
 		a {
 			color: #333;
@@ -235,7 +236,8 @@
 	}
 }
 .board-overview {
-	counter-reset: question;
+	padding-bottom: 18px;
+	counter-reset: board-overview-question;
 
 	h6 {
 		margin: 10px 0 6px;
@@ -250,9 +252,9 @@
 		line-height: 140%;
 	}
 	li:before {
-		font-weight: 600;
-		counter-increment: question;
-		content: "Q" counter(question) ". ";
+		font-weight: 800;
+		counter-increment: board-overview-question;
+		content: "Q" counter(board-overview-question) ". ";
 	}
 }
 
@@ -269,6 +271,36 @@
 		font-weight: 600;
 		font-style: italic;
 		padding-bottom: 2px;
+	}
+}
+
+.board-section {
+	padding-top: 15px;
+	border-top: #000 1px dashed;
+
+	h6 {
+		font-style: normal;
+	}
+	input, select {
+		font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+		font-size: 18px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	/* 
+		These can't be grouped together otherwise they will be ignored
+	*/
+	::-webkit-input-placeholder { /* WebKit browsers */
+		color: rgba(0, 0, 0, 0.75);
+	}
+	:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		color: rgba(0, 0, 0, 0.75);
+	}
+	::-moz-placeholder { /* Mozilla Firefox 19+ */
+		color: rgba(0, 0, 0, 0.75);
+	}
+	:-ms-input-placeholder { /* Internet Explorer 10+ */
+		color: rgba(0, 0, 0, 0.75);
 	}
 }
 
