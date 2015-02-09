@@ -215,7 +215,7 @@
 		position: relative;
 		border-color: #000;
 		padding-bottom: 0;
-		
+
 		.row {
 			margin: 0;
 		}
@@ -299,6 +299,9 @@
 
 	h6 {
 		font-style: normal;
+	}
+	.lighter {
+		font-weight: 200;
 	}
 	input, select {
 		font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
