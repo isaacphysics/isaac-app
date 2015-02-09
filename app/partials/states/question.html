@@ -7,7 +7,7 @@
         </div>
         <div class='print-float-right'>
             <div class='medium-1 columns text-right'>
-                <span class='ru-level'>Level: </span>
+                <span ng-show="questionPage.level" class='ru-level'>Level: </span>
             </div>
             <div class='medium-2 end columns'>
                 <span class='ru-level-{{pageSubject}}-{{questionPage.level}} ru-level' aria-label='{{pageSubject}} Level {{questionPage.level}}'></span>
@@ -49,7 +49,7 @@
                                     <li ng-repeat="b in breadCrumbs" ng-bind-html="getTagTitle(b)" ng-class='[pageSubject]'></li>
                                 </ul>
 
-                                Level <span class="{{pageSubject}}">{{questionPage.level}}</span>
+                                <span ng-show="questionPage.level">Level</span> <span class="{{pageSubject}}">{{questionPage.level}}</span>
                             </div>
                             <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
                                                                                  src='/assets/isaac-logo-strap-print.svg'></a>
