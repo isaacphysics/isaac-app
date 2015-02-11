@@ -19,6 +19,7 @@ require.config({
         "angulartics": '../bower_components/angulartics/src/angulartics',
         "angulartics-ga": '../bower_components/angulartics/src/angulartics-ga',
         "fastclick" : '../bower_components/fastclick/lib/fastclick',
+        "angular-tipped" : '../bower_components/angular-tipped/tipped',
     },
 
     shim: {
@@ -34,6 +35,8 @@ require.config({
         "angular-cookies": ["angular"],
         "lib/showdown/extensions/table": ["lib/showdown/showdown"],
         "templates": ['angular'],
+        "lib/tipped": ['angular'],
+        "angular-tipped": ['lib/tipped'],
     }
 });
 

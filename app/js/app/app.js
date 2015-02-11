@@ -16,7 +16,7 @@
 'use strict';
 
 define([
-    "lib/rsvp", 
+    "lib/rsvp",
     "foundation", 
     "app/router", 
     "app/honest/responsive_video", 
@@ -35,6 +35,8 @@ define([
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
+    "lib/tipped",
+    "angular-tipped",
     "templates",
     ], function() {
 
@@ -56,6 +58,7 @@ define([
 //        'ngAnimate',
         'ngCookies',
         'ui.date',
+        'decipher.tipped',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
