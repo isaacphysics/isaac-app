@@ -5,7 +5,7 @@ require.config({
     /* TODO: Fix issue with route path and jquery ui core, then remove core.js from the /js directory */
     paths: {
         "jquery": '../bower_components/jquery/dist/jquery',
-        "jquery-ui" : '../bower_components/jquery-ui/ui/minified/datepicker.min',
+        "jquery-ui-datepicker" : '../bower_components/jquery-ui/ui/minified/datepicker.min',
         "modernizr": '../bower_components/modernizr/modernizr',
         "foundation": '../bower_components/foundation/js/foundation',
         "angular": '../bower_components/angular/angular',
@@ -26,7 +26,7 @@ require.config({
         "angular-resource": ['angular'],
         "angular-ui-router": ['angular'],
         "angular": ['jquery'],
-        "angular-ui-date": ['angular', 'jquery-ui'],
+        "angular-ui-date": ['angular', 'jquery-ui-datepicker'],
         "angulartics-ga": ["angulartics"],
         "angulartics": ["angular"],
         "angular-recursion": ["angular"],
