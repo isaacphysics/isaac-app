@@ -104,6 +104,28 @@ define([], function() {
 			}
 		});
 
+		this.groupManagementEndpoint = $resource(server + "/api/groups/:id", {id: "@id"}, {
+			'get' : {
+				method: 'GET', 
+				isArray: true 
+			},
+			'getMembers' : {
+				method: 'GET',
+				url: server + "/api/groups/:id/membership", 
+				isArray: true 
+			},
+			'deleteMember' : {
+				method: 'DELETE',
+				url: server + "/api/groups/:id/membership/:userId", 
+				isArray: true 
+			},			
+			'getToken' : {
+				method: 'GET',
+				url: server + "/api/authorisations/associations/token/:id", 
+				isArray: false 
+			}			
+		});
+
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {
 			return $resource(server + "/api/pages/questions", {}, {

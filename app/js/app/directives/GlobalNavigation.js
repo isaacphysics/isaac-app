@@ -29,7 +29,8 @@ define([], function() {
                 $('.disabled a').attr('title', "This feature is coming soon.");
                 $('.disabled a').attr('data-tooltip', ""); 
                 $('.disabled a').attr('aria-haspopup', "true");
-                
+                //TODO: fix weird jquery error that the above causes (ln 1430)
+
                 // we need this to make sure foundation tooltips work
                 $(element.find("nav")).foundation('tooltip', 'reflow'); 
 
