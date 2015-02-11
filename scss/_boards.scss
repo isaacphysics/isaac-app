@@ -206,6 +206,14 @@
 		}
 	}
 
+	.ru_share_link {
+		position: absolute;
+		top: 105px;
+		right: 35px;
+		left: 40px;
+		font-size: 13px;
+	}
+
 	.board-share {
 		top: 105px;
 		bottom: auto;
@@ -358,6 +366,11 @@
 		}
 		li {
 			width: auto;
+		}
+	}
+	.assign-board-wrap {
+		.ru_share_link {
+			right: 40px;
 		}
 	}
 }
