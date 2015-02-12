@@ -68,7 +68,6 @@ define([], function() {
 
                     $('.dl-nav').hide();
                 }
-
                 scope.$on("$stateChangeStart", scope.menuClose);
             }
 
