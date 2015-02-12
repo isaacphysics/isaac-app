@@ -18,15 +18,17 @@
             <!-- Start Mobile view only - this section is duplicated from the group_management_details partial as mobile needs it here. -->
             <div class="hide-for-large-up">
                 <div class="large-16 columns">
+                    <form ng-submit="saveGroup(false)">
                     <h6>Create New Group</h6>
-                    <input type="text" ng-model="newGroup.groupName"/>
-                    <div ng-if="emailInviteFeatureAvailable">
-                        <h6>Invite Student<span class="show-for-medium-up"> to group</span> via email</h6>
-                        <p>Email addresses MUST be seperated by a comma.</p>
-                        <textarea></textarea>                        
-                    </div>
+                        <input type="text" ng-model="newGroup.groupName"/>
+                        <div ng-if="emailInviteFeatureAvailable">
+                            <h6>Invite Student<span class="show-for-medium-up"> to group</span> via email</h6>
+                            <p>Email addresses MUST be seperated by a comma.</p>
+                            <textarea></textarea>                        
+                        </div>
 
-                    <a class="ru-button-big expand" ng-click="saveGroup(false)">Create group</a>
+                        <a class="ru-button-big expand" ng-click="saveGroup(false)">Create group</a>                        
+                    </form>
                 </div>
             </div>
             <!-- End Mobile view only -->

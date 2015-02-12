@@ -168,6 +168,39 @@ define([], function() {
         $scope.$on("$destroy", function() {
         	auth.updateUser();
         })
+		
+		// authorisation (token) stuff
+		$scope.token = null;
+        $scope.activeAuthorisations = api.authorisations.get();
+        
+        $scope.useToken = function() {
+        	if ($scope.token == null) {
+        		alert("You have to specify a token"); //TODO: we should use the new toast notification for this.
+        		return;
+        	}
+
+        	api.authorisations.useToken({token: $scope.token}).$promise.then(function(){
+        		$scope.activeAuthorisations = api.authorisations.get();
+        		$scope.token = null;
+        	}).catch(function(e){
+        		alert("Token operation failed. With error message: (" + e.status + ") " + e.data.errorMessage);
+        	})        		
+        }
+
+        $scope.revokeAuthorisation = function(userToRevoke){
+        	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+
+        	if(revoke) {
+	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
+	        		$scope.activeAuthorisations = api.authorisations.get();
+	        	}).catch(function(e){
+	        		alert("Revoke operation failed. With error message: (" + e.status + ") " + e.data.errorMessage);
+	        	})        		
+        	} else {
+        		return;
+        	}
+        }
+        // end authorisation stuff
 
 	}]
 
