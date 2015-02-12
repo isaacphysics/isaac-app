@@ -15,7 +15,7 @@
    		<div class="panel">
             <span class="board-delete">X</span>
             <div class="row">
-               <div tipped="{skin: 'black'}" title="Monkeys, Rhinos, Sharks, Spiders and Eagles." class="board-percentage">
+               <div data-ot="Monkeys, Rhinos, Sharks, Spiders and Eagles." class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->
       				<span class="groups-assigned subject-physics">
                      <strong>5</strong> Groups Assigned
@@ -62,7 +62,11 @@
                   <option>Bears</option>
                </select>
                <h6>Due Date <span class="lighter">(optional):</span></h6>
-               <input ui-date placeholder="Select your due date..." type="text" />
+
+               <div class="ui-date-wrap">
+                  <input ui-date="{showOn: 'button', buttonText: ''}" placeholder="Select your due date..." type="text" />
+               </div>
+
                <a class="ru-button-big expand">Assign / Update</a>
                <!-- Change assign btn to this complete message -->
                <div class="ru-button-big primary expand">Group Assigned<span class="icon-complete"></span></div>
@@ -74,18 +78,18 @@
                   <tbody>
                      <tr>
                         <td>Monkeys</td>
-                        <td class="group-table-cal"><a class="icon-cal--small" href="#"></a></td>
-                        <td class="group-table-delete"><a class="icon-delete" href="#"></a></td>
+                        <td class="group-table-cal"><a class="icon-cal--small" href="javascript:void(0)"></a></td>
+                        <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)"></a></td>
                      </tr>
                      <tr>
                         <td>Lions</td>
-                        <td class="group-table-cal"><a class="icon-cal--small" href="#"></a></td>
-                        <td class="group-table-delete"><a class="icon-delete" href="#"></a></td>
+                        <td class="group-table-cal"><a class="icon-cal--small" href="javascript:void(0)"></a></td>
+                        <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)"></a></td>
                      </tr>
                      <tr>
                         <td>Bears</td>
-                        <td class="group-table-cal"><a class="icon-cal--small" href="#"></a></td>
-                        <td class="group-table-delete"><a class="icon-delete" href="#"></a></td>
+                        <td class="group-table-cal"><a class="icon-cal--small" href="javascript:void(0)"></a></td>
+                        <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)"></a></td>
                      </tr>
                   </tbody>
                </table>

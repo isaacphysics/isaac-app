@@ -333,6 +333,24 @@
 		color: rgba(0, 0, 0, 0.75);
 	}
 }
+
+.ui-date-wrap {
+	position: relative;
+
+	.hasDatepicker {
+		padding-right: 35px;
+	}
+	.ui-datepicker-trigger {
+		top: 5px;
+		right: 6px;
+		position: absolute;
+		width: 23px;
+		height: 26px;
+		background:transparent url(/assets/ru.png) -315px -347px no-repeat;
+		padding: 0;
+		margin: 0;
+	}
+}
 .icon-delete {
 	float: left;
 	width: 16px;
