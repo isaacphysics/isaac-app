@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["lib/opentip-jquery"], function() {
 
     return ["$location", function($location) {
 		return {
@@ -25,6 +25,12 @@ define([], function() {
             	// Global var
             	var flyin;
 
+                var applyDisabledToolTips = function() {
+                    $('.disabled a').each(function(index, element){
+                        new Opentip(element, "This feature is coming soon.");
+                    })                    
+                }
+
             	scope.menuToggle = function(e) {
             		scope.isVisible = ! scope.isVisible;
 
@@ -35,7 +41,6 @@ define([], function() {
             		if($.ru_IsMobile()){
             			var item = e.currentTarget.parentNode,
                     		submenu = $(item).children('.dl-level2');
-
                     	
                 		if(submenu.length) {
                     		flyin = submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
@@ -47,6 +52,8 @@ define([], function() {
                     		});
                     		flyin.animate({marginLeft: '0', opacity: 1}, 500);
                 		}
+
+                        applyDisabledToolTips();
             		}
             	}
 
@@ -69,6 +76,8 @@ define([], function() {
                     $('.dl-nav').hide();
                 }
                 scope.$on("$stateChangeStart", scope.menuClose);
+
+                applyDisabledToolTips();
             }
 
 		};

@@ -3,7 +3,7 @@
 <div class="status-panel">
     <div class="medium-3 columns">
         <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
-        <span title="Help information" class="show-for-small-only help-tip" aria-haspopup="true" data-tooltip=""><span class="icon-help"></span>Help</span>
+        <span class="show-for-small-only help-tip" aria-haspopup="true" data-ot="Help information"><span class="icon-help"></span>Help</span>
     </div>
     <div class="medium-12 end columns text-right">
         <h2 class="status hide-for-small-only">Welcome<span ng-if="!user.givenName"> to Isaac</span><span class='green' ng-if="user.givenName"> {{user.givenName}} <span class="green"><a ui-sref="logout">(Log out)</a></span></span></h2>
@@ -15,10 +15,10 @@
                 <h6 ng-click="menuForward($event)">Profile Pages</h6>
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)" >My Progress</a></li>
+                    <li class="disabled"><a href="javascript:void(0)">My Progress</a></li>
                     <li><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip>1</span>--></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)">My Assignments</a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)">My Events</a> <!--<span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span>--></li>
+                    <li class="disabled"><a href="javascript:void(0)">My Assignments</a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
+                    <li class="disabled"><a href="javascript:void(0)">My Events</a> <!--<span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span>--></li>
                     <li><a ui-sref="accountSettings">My Account</a></li>
                 </ul>
             </li>
@@ -35,9 +35,9 @@
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li><a ui-sref='teachers'><span>Information for Teachers</span></a></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)">Manage Groups</a></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)">Set Assignments</a></li>
-                    <li class="disabled"><a tipped title="This feature is coming soon." href="javascript:void(0)">Assignment Progess</a></li>
+                    <li class="disabled"><a href="javascript:void(0)">Manage Groups</a></li>
+                    <li class="disabled"><a href="javascript:void(0)">Set Assignments</a></li>
+                    <li class="disabled"><a href="javascript:void(0)">Assignment Progess</a></li>
                     <li><a ui-sref="gameEditor">Gameboard Editor</a></li>
                 </ul>
             </li>

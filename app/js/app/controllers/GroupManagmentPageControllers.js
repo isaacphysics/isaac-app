@@ -15,8 +15,63 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', function($scope, auth, $state, $location, $window) {
-	
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', function($scope, auth, $state, $location, $window, api) {
+		// these flags represent whether features have been enabled yet.
+		$scope.archivedView = false;
+		$scope.emailInviteFeatureAvailable = false;
+
+		$scope.myGroups = api.groupManagementEndpoint.get();
+
+		$scope.selectedGroup = null;
+		$scope.selectedGroupMembers = null;
+		$scope.selectedGroupToken = null;
+
+		$scope.newGroup = {};
+
+		$scope.setSelectedGroup = function(group) {
+			if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
+				$scope.selectedGroup = null;
+				$scope.selectedGroupMembers = null;
+				$scope.selectedGroupToken = null;
+			} else {
+				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
+				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
+				$scope.selectedGroupToken = api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id});
+			}
+		}
+
+		$scope.saveGroup = function(isUpdate) {
+        	var Group = api.groupManagementEndpoint;
+        	var groupToSave = null;
+
+        	if($scope.selectedGroup && isUpdate) {
+        		groupToSave = new Group($scope.selectedGroup);
+        	} else {
+        		groupToSave = new Group($scope.newGroup);
+        	}
+
+        	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
+        		$scope.myGroups = api.groupManagementEndpoint.get();
+        		$scope.selectedGroup = grp;
+        		$scope.newGroup = {}
+        		
+        	}).catch(function(e) {
+        		alert("Group Save operation failed. With error message: (" + e.status + ") " + e.data.errorMessage)
+        	});
+		}
+
+		$scope.deleteMember = function(group, user) {
+			var deleteMember = $window.confirm('Are you sure you want to delete?');   
+			if (deleteMember) {
+				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user._id}).$promise.then(function(result){
+					$scope.selectedGroupMembers = result;
+				}).catch(function(e) {
+        			alert("Member delete operation failed. With error message: (" + e.status + ") " + e.data.errorMessage);
+				});
+			} else {
+				return;
+			}
+		}
 	}]
 
 	return {
