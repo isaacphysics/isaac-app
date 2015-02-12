@@ -152,7 +152,9 @@ define([
                 }
             });
 
+            // we need to tell foundation and opentip to reapply everytime new content may have been added
             $(document).foundation('interchange', 'reflow');
+            Opentip.findElements()
 
             // Global jQuery
             $(function()
