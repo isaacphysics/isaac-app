@@ -35,15 +35,16 @@ define([
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
-    "lib/tipped",
-    "angular-tipped",
+    "lib/opentip-jquery",
     "templates",
+
     ], function() {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
 	var rv = require("app/honest/responsive_video");
+
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
@@ -58,7 +59,6 @@ define([
 //        'ngAnimate',
         'ngCookies',
         'ui.date',
-        'decipher.tipped',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
@@ -72,10 +72,21 @@ define([
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost")
             apiProvider.server("https://localhost:8080/isaac-api");
-
 	}])
 
 	.run(['$rootScope', 'api', '$state', 'auth', '$location' , function($rootScope, api, $state, auth, $location) {
+
+        /* 
+            Tooltip settings
+        */
+        Opentip.lastZIndex = 9999; 
+        Opentip.styles.globalStyle = {
+            target: true,
+            background: '#333333',
+            borderColor: '#333333',
+            borderRadius: 0
+        };
+        Opentip.defaultStyle = "globalStyle";
 
         auth.updateUser();
 
@@ -148,6 +159,8 @@ define([
             // Global jQuery
             $(function()
             {
+                
+
                 // IE console debug - bug fix
                 if(!(window.console)) {
                     var noop = function(){};
@@ -474,9 +487,7 @@ define([
                             window.location.href = url;
                         }
                     }
-                });
-
-                                
+                });              
             });
 
         });
