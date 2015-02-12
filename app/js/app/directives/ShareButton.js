@@ -26,25 +26,23 @@ define([], function() {
 				scope.showShareUrl = false;
 				scope.shareUrl = null;
 
-				$timeout(function() {
-					// Do this asynchronously so that window.location has a chance to update first.
-					
-					if(attrs.sharelink) {
-						var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
-					}
-					else {
-						var data = {"longUrl": window.location.href};
-					}
-					$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
-						scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
-					}).catch(function() {
-						// Fail silently
-					});
-				});
-
                 scope.getShareLink = function() {
 	                scope.showShareUrl = !scope.showShareUrl;
 	                if (scope.showShareUrl) {
+
+						if(attrs.sharelink) {
+							var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
+						}
+						else {
+							var data = {"longUrl": window.location.href};
+						}
+
+						$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
+							scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
+						}).catch(function() {
+							// Fail silently
+						});
+
 	                	api.logger.log({
 		                	type: "SHOW_SHARE_URL",
 		                	shortURL : scope.shareUrl,
