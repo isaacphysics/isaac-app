@@ -190,17 +190,17 @@
             <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
         </div>
     </div>
-    <div class="large-10 medium-16 columns">
+    <div ng-if="editingSelf" class="large-10 medium-16 columns">
         <div class="panel connect-form">
             <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<sapn aria-haspopup="true" class="icon-help has-tip" data-ot="Information about connecting"></span></h3>
             <p>Enter the code given to connect with a teacher.</p>
             <form class="clearfix" ng-submit="useToken()">
-                <input ng-model="token" placeholder="Enter your code in here" class="connect-form-input" type="text" />
+                <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
                 <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Apply Code</a>
             </form>
         </div>
     </div>
-    <div class="large-6 medium-16 columns">
+    <div ng-if="editingSelf" class="large-6 medium-16 columns">
         <div class="connect-list">
             <h3><span class="person-icon-active"></span> Teacher connections</h3>
 
