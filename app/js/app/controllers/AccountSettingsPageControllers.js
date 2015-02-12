@@ -170,18 +170,18 @@ define([], function() {
         })
 		
 		// authorisation (token) stuff
-		$scope.token = null;
+		$scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
         
         $scope.useToken = function() {
-        	if ($scope.token == null) {
+        	if ($scope.authenticationToken.value == null) {
         		alert("You have to specify a token"); //TODO: we should use the new toast notification for this.
         		return;
         	}
 
-        	api.authorisations.useToken({token: $scope.token}).$promise.then(function(){
+        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
         		$scope.activeAuthorisations = api.authorisations.get();
-        		$scope.token = null;
+        		$scope.authenticationToken = {value: null};
         	}).catch(function(e){
         		alert("Token operation failed. With error message: (" + e.status + ") " + e.data.errorMessage);
         	})        		
@@ -201,7 +201,6 @@ define([], function() {
         	}
         }
         // end authorisation stuff
-
 	}]
 
 	return {
