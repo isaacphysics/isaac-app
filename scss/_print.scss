@@ -11,6 +11,8 @@
         content: none !important;
     }
 
+  
+
     .no-print {
         display: none;
     }
@@ -145,6 +147,8 @@
     .print-logo {
         position: relative;
         top: -20px;
+        overflow: auto;
+        width: 100%
     }
 
     .print-logo img {
@@ -157,6 +161,12 @@
         border-right: 1px solid #cccccc;
         border-bottom: 1px solid #cccccc;
     }
+
+    //Allows us to position the 'Q' for printing
+    .print-question{
+        position:absolute; 
+        margin-left:-20px
+    } 
 
     .print-header {
         float: right;
