@@ -88,6 +88,17 @@ define([
 
         auth.updateUser();
 
+        var mathjaxRenderTimeout = null;
+
+        $rootScope.requestMathjaxRender = function() {
+            if (mathjaxRenderTimeout)
+                clearTimeout(mathjaxRenderTimeout);
+
+            setTimeout(function() { 
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            }, 500);
+        }
+
         $rootScope.figures = {};
 
         $rootScope.globalFlags = {
