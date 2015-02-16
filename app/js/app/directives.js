@@ -199,4 +199,17 @@ define([
 			},
 		};
 	}])
+
+	.directive('ngContent', ["$rootScope", function() {
+		return {
+			scope: {
+				ngContent: "=",
+			},
+			link: function(scope, element, attrs) {
+				scope.$watch("ngContent", function(newContent) {
+					element.attr("content", newContent);
+				})
+			}
+		}
+	}])
 });
