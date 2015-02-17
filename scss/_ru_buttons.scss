@@ -11,18 +11,24 @@
 		width: 100%;
     }
     &.primary {
-    	background: #773d99;
+    	background-color: #773d99;
+        &:hover {
+            background-color: #8b5aa8;
+        }
     }
     &.secondary {
-    	background: #333;
+    	background-color: #333;
 		&:hover {
-			background: #666;
+			background-color: #666;
 		}
     }
     &.tertiary {
-    	background: #f5f5f5;
+    	background-color: #f5f5f5;
 		color: #333;
 		border: 1px solid #999;
+        &:hover {
+            background-color: #f6f6f6;
+        }
     }
 }
 .ru-button {

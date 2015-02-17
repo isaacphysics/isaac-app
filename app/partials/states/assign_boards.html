@@ -1,19 +1,13 @@
-<div class="boards-filters" ng-show="boards != null">
-   <ul class="small-block-grid-2">
-      <li>
-         <label class="hide-for-small-only">Show</label>
-         <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
-      </li>
-      <li>
-         <label class="hide-for-small-only">Sort by</label>
-         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
-      </li>
-   </ul>
+<div class="row ru-page-heading ng-scope">
+    <div class="medium-13 columns">
+        <h1>Assign a board</h1>
+        <p class="hide-for-small-only">Assign groups to boards and set due dates</p>
+    </div>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 assign-board-wrap">
    	<li>
    		<div class="panel">
-            <span class="board-delete">X</span>
+            <a href="javascript:void(0)" class="board-delete">X</a>
             <div class="row">
                <div data-ot="Monkeys, Rhinos, Sharks, Spiders and Eagles." data-ot-style="ru_boards" class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->
@@ -98,12 +92,3 @@
    		</div>
    	</li>
 </ul>
-<div class="row" ng-hide="boards == null || boards.results.length == ''">
-  <div class="large-5 medium-6 small-centered columns">
-      <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
-      <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
-   </div>
-</div>
-<div class="row" ng-show="boards.results.length == ''">
-   <p class="text-center">No Results</p>
-</div>

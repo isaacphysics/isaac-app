@@ -86,6 +86,14 @@ define([
             borderColor: '#333333',
             borderRadius: 0
         };
+        Opentip.styles.ru_boards = {
+            className: 'boards',
+            fixed: true,
+            stem: false,
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#814ba0',
+            borderRadius: 0
+        };
         Opentip.defaultStyle = "globalStyle";
 
         auth.updateUser();
