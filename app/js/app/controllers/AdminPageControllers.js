@@ -16,6 +16,8 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+		$rootScope.pageTitle = "Admin Page";
+
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.searchTerms = "";

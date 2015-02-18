@@ -15,7 +15,8 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'page', function($scope, page) {
+	var PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
+		$rootScope.pageTitle = "Content Error Page";
 		$scope.doc = page;
 	}]
 

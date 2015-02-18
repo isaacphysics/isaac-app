@@ -15,7 +15,8 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', function($scope, auth, $state, $location, $window) {
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', '$rootScope', function($scope, auth, $state, $location, $window, $rootScope) {
+		$rootScope.pageTitle = "Login";
 		// Hide search on Login page
 		$scope.globalFlags.noSearch = true;
 		
