@@ -54,6 +54,12 @@
                             <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
                                                                                  src='/assets/isaac-logo-strap-print.svg'></a>
                             <a print-button></a>
+                            <div class='ru_print_options slide-animate no-print' ng-show="printingOptionsVisible">
+                                <div>
+                                    <a ng-click="printWithHints(true)">With Hints</a>
+                                    <a ng-click="printWithHints(false)">No Hints</a>
+                                </div>
+                            </div>
                             <a share-button></a>
                             <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                                 <div>

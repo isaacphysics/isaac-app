@@ -148,6 +148,14 @@ define([], function() {
 				questionPartIndex: idx,
 			})
 		});
+
+		//Hide hints or answers when printing
+		$scope.hideForPrint = {
+			hints : false,
+			answers : false
+		};
+
+
 	}]
 
 	return {

@@ -20,11 +20,22 @@ define([], function() {
 
 			restrict: "A",
 
-            template: '<div class="ru_print" ng-click="printPage()"></div>',
+            template: '<div class="ru_print" ng-click="togglePrintingOptions()"></div>',
 
-			link: function(scope, element, attrs) {
-                scope.printPage = function() {
-                    window.print();
+			link: function(scope, element, attrs, shareButtonCtrl) {
+				scope.printingOptionsVisible = false;
+
+				scope.togglePrintingOptions = function(){
+					scope.printingOptionsVisible = !scope.printingOptionsVisible;
+				}
+
+                scope.printWithHints = function(showHints) {
+					scope.hideForPrint.hints = !showHints;
+
+					//Timeout required for page to update
+					setTimeout(function(){
+                    	window.print();
+					}, 0)
                 };
 			}
 
