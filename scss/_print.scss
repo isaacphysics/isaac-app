@@ -111,6 +111,13 @@
 
     .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title {
         width: initial;
+        top:0px !important;
+    }
+
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name{
+        padding-top:0px;
+        padding-bottom:0px;
+        height:30px !important;
     }
 
     .small-side-padding {
@@ -160,6 +167,7 @@
         border-top: 1px solid #cccccc;
         border-right: 1px solid #cccccc;
         border-bottom: 1px solid #cccccc;
+        height: 30px;
     }
 
     //Allows us to position the 'Q' for printing

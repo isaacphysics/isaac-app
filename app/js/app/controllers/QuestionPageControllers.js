@@ -150,9 +150,8 @@ define([], function() {
 		});
 
 		//Hide hints or answers when printing
-		$scope.hideForPrint = {
-			hints : false,
-			answers : false
+		$scope.printingVisibility = {
+			hints : false
 		};
 
 
