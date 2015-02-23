@@ -307,6 +307,12 @@
 		background-position: -357px -302px;
 	}
 
+	.profile-tabs {
+		.show-for-medium-up {
+			display: inline !important;
+		} 
+	}
+
 	.profile-tabs-content {
 		border-left: #ccc solid 1px;
 		border-right: #ccc solid 1px;

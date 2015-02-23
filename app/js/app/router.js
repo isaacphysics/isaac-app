@@ -429,6 +429,18 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('assignments', {
+                url: "/assignments",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/my_assignments.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

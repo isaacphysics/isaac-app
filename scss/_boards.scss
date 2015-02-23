@@ -371,6 +371,85 @@
 	height: 19px;
 	background: url(/assets/ru.png) -384px -369px no-repeat;
 }
+.icon-link {
+	float: right;
+	width: 28px;
+	height: 21px;
+	background: url(/assets/ru.png) -356px -369px no-repeat;
+	margin-left: 10px;
+}
+/*
+	Styles for My assignments 
+*/
+.assignments-wrap {
+	.assignment:first-child {
+		border-top: none;
+	}
+}
+.assignment {
+	position: relative;
+	@extend .clearfix;
+	margin: 0 15px;
+	border-top:#b1b1b1 1px solid;
+	padding: 20px 0;
+
+
+	h3 {
+		font-size: 18px;
+
+		a {
+			color: #333;
+		}
+	}
+	.board-percentage {
+		font-weight: 600;
+		line-height: 44px;
+		position: absolute;
+		left: 0;
+
+		.percent-symbol {
+			line-height: 22px;
+			font-size: 14px;
+			font-weight: 400;
+			padding-left: 2px;
+			margin-right: -2px;
+		}
+	}
+	.board-info {
+		float: left;
+		margin-top: 6px;
+		margin-left: 90px;
+	}
+
+	.board-levels {
+		float: none;
+		font-weight: 600;
+		margin-bottom: 6px;
+	}
+
+	.board-overview {
+		padding-bottom: 0;
+	}
+
+	.overdue {
+		color: #be4c4c;
+		font-weight: 600;
+	}
+
+}
+.board-link {
+	text-align: right;
+	font-size: 18px;
+	padding-right: 0;
+
+	a {
+		display: inline-block;
+	}
+
+	P {
+		font-size: 18px;
+	}
+}
 /* 
 	All media queries 
 */
@@ -408,4 +487,35 @@
 			padding-right: 40px;
 		}
 	}
+
+	.assignment {
+		.columns {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.board-overview {
+			padding-bottom: 20px;
+		}
+		.board-link {
+			text-align: left;
+
+			a {
+				@extend .ru-button-big;
+				@extend .ru-button-big.expand;
+				@extend .ru-button-big.tertiary;
+
+				color: $ru_green;
+				margin-bottom: 0;
+
+				&:hover {
+					@extend .ru-button-big.tertiary:hover;
+					color: $ru_green;
+				}
+			}
+		}
+		.icon-link {
+			display: none;
+		}
+	}
+
 }
