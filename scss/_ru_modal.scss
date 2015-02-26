@@ -1,0 +1,25 @@
+.reveal-modal-bg {
+    background-color: rgba(225, 225, 225, 0.95);
+}
+.reveal-modal {
+    max-width: 765px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+}
+.reveal-modal-head {
+    color: #fff;
+    font-size: 32px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 34px;
+    background-color: $ru_green;
+    padding: 12px 35px 15px;
+    border-left:$ru_green 1px solid;
+}
+.reveal-modal-body {
+    padding: 20px 35px;
+    border-right:#cecece 1px solid;
+    border-bottom:#cecece 1px solid;
+    border-left:#cecece 1px solid;
+}

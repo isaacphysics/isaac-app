@@ -1,0 +1,56 @@
+<div class="row ru-page-heading">
+    <div class="medium-13 columns">
+        <h1>My Progress</h1>
+        <p class="hide-for-small-only">Keep track of your progress acrross the whole year.</p>
+    </div>
+</div>
+<div class="progress-wrap">
+   <div class="row">
+      <div class="large-16 columns">
+         <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+            <li>
+               <h6>Questions answered <span class="ru_green">correctly</span></h6>
+               <div class="progress-bar">
+                  <div class="bar" style="width:70%">
+                     <span>127</span>
+                  </div>
+                  <span>8</span>
+               </div>
+            </li>
+            <li>
+               <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
+               <div class="progress-bar">
+                  <div class="bar" style="width:50%">
+                     <span>127</span>
+                  </div>
+                  <span>8</span>
+               </div>
+            </li>
+            <li>
+               <a class="ru-button-big right export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+            </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">level</span></h6>
+               <d3-donut data="test"></d3-donut>
+            </li>
+            <li>
+            <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+               <d3-donut data="data"></d3-donut>
+            </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">field</span></h6>
+               <d3-donut data="data"></d3-donut>
+            </li>
+         </ul>
+      </div>
+   </div>
+</div>
+<div id="exportModal" class="reveal-modal" data-reveal>
+   <div class="reveal-modal-head">
+      Export/Share my data
+      <a class="close-reveal-modal">&#215;</a>
+   </div>
+   <div class="reveal-modal-body">
+      <h2>Select the data you wish to export/share...</h2>
+   </div>
+</div>

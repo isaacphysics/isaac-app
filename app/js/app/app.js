@@ -30,6 +30,7 @@ define([
     "app/services", 
     "app/filters",
     "fastclick",
+    "d3",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
     "angulartics", 

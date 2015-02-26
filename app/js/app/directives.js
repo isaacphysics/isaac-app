@@ -52,6 +52,7 @@ define([
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
+    "app/directives/d3/Donut",
 	], function() {
 
 	/* Directives */
@@ -93,6 +94,8 @@ define([
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
+
+	.directive('d3Donut', require("app/directives/d3/Donut"))
 
 	// Content Directives
 
