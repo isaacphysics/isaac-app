@@ -60,7 +60,7 @@
             </div>
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab, 'force-print' : printingVisibility.hints}"  ng-init="questionTabIndex = $index">
                 <div class='row'>
-                    <div class="small-14 small-offset-1 columns end print-avoid-break">
+                    <div class="small-14 small-offset-1 columns end">
                         <h3 class="only-print">Hint {{$index + 1}}</h3>
                         <div isaac-content doc="hint" class="small-side-padding"></div>
                     </div>

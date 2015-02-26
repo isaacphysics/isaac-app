@@ -6,7 +6,7 @@
         <div class="tabs-content ru_tabs">
             <div ng-repeat="t in doc.children" ng-class="{content: true, active: $index == activeTab}" class="force-print" ng-init="tabIndex = $index">
                 <div class='row'>
-                    <div class="medium-14 medium-offset-1 small-16 columns print-avoid-break">
+                    <div class="medium-14 medium-offset-1 small-16 columns">
                         <h3>{{t.title}}</h3>
                         <div isaac-content doc="t" class="small-side-padding"></div>
                     </div>

@@ -151,7 +151,7 @@ define([], function() {
 
 		//Hide hints or answers when printing
 		$scope.printingVisibility = {
-			hints : false
+			hints : true
 		};
 
 
