@@ -3,6 +3,9 @@
         <h1>My Progress</h1>
         <p class="hide-for-small-only">Keep track of your progress acrross the whole year.</p>
     </div>
+    <div class="medium-3 columns text-right hide-for-small-only">
+        <span data-ot="Information about current page" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+    </div>
 </div>
 <div class="progress-wrap">
    <div class="row">
@@ -27,22 +30,22 @@
                </div>
             </li>
             <li class="show-for-medium-up">
-               <a class="ru-button-big right export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
             </li>
             <li>
                <h6>Questions attempted by <span class="ru_green">level</span></h6>
-               <d3-donut data="levelData"></d3-donut>
+               <div d3-donut data="levelData"></div>
             </li>
             <li>
             <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-               <d3-donut data="subjectData" colorPalette="subjects"></d3-donut>
+               <div d3-donut data="subjectData" colorPalette="subjects"></div>
             </li>
             <li>
                <h6>Questions attempted by <span class="ru_green">field</span></h6>
-               <d3-donut data="FieldData" colorPalette="fields"></d3-donut>
+               <div d3-donut data="FieldData" colorPalette="fields"></div>
             </li>
             <li class="hide-for-medium-up">
-               <a class="ru-button-big right export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
             </li>
          </ul>
       </div>
@@ -50,8 +53,8 @@
 </div>
 <div id="exportModal" class="reveal-modal" data-reveal>
    <div class="reveal-modal-head">
-      Export/Share my data
-      <a class="close-reveal-modal">Close &#215;</a>
+      <h2>Export/Share my data</h2>
+      <a class="close-reveal-modal">Close X</a>
    </div>
    <div class="reveal-modal-body">
       <h2>Select the data you wish to export/share...</h2>

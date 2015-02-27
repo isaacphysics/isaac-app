@@ -16,7 +16,7 @@
 define([], function() {
     return function() {
         return {
-            restrict: 'E',
+            restrict: 'A',
             link: function(scope, element, attrs) {
 
                 var data = scope[attrs.data], // get data
@@ -45,7 +45,6 @@ define([], function() {
                     .value(function (d) {
                         return d.val;
                     });
-
 
                 var arc = d3.svg.arc()
                     .innerRadius(radius - donutWidth)
@@ -76,6 +75,8 @@ define([], function() {
                     return function(t) { return arc(i(t)); };
                 }
 
+
+                // Settings for Key 
                 var keySpacing = 7,
                     keyRectSize = 22;
 

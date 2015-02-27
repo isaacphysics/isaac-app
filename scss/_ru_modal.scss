@@ -9,24 +9,34 @@
     box-shadow: 0 0 0;
 
     .close-reveal-modal {
+        top: 26px;
         font-size: 18px;
         font-weight: 200;
+        font-style: normal;
         color: #fff;
     }
 }
 .reveal-modal-head {
-    color: #fff;
-    font-size: 32px;
-    font-weight: 600;
-    font-style: italic;
-    line-height: 34px;
     background-color: $ru_green;
-    padding: 18px 35px 15px;
+    padding: 19px 15px 16px;
     border-left:$ru_green 1px solid;
+
+    h2 {
+        color: #fff;
+        font-weight: 600;
+        font-style: italic;
+    }
 }
 .reveal-modal-body {
     padding: 20px 35px;
     border-right:#cecece 1px solid;
     border-bottom:#cecece 1px solid;
     border-left:#cecece 1px solid;
+}
+
+@media #{$medium-up} { 
+    .reveal-modal-head {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
 }
