@@ -18,82 +18,92 @@ define([], function() {
         return {
             restrict: 'E',
             link: function(scope, element, attrs) {
-                
-                var data = scope[attrs.data];
 
-                alert(data);
+                var data = scope[attrs.data], // get data
+                    range = ['#d8e8c2', '#c6deaa', '#a6ce87', '#87c064', '#66b045', '#4d9e34']; // default colours
 
-                var dataset = {
-                    apples: [53245, 28479, 19697, 24037, 40245],
-                };
-
-                var donutWidth = 70;
+                // switch colours
+                switch($(element[0]).attr('colorPalette')) {
+                    case 'subjects':
+                        range = ['#6c388c', '#189ace'];
+                        break;
+                    case 'fields':
+                        range = ['#c5b2d7', '#9570af', '#7f529d', '#6c388c', '#a3d9ee'];
+                        break;
+                }
 
                 var width = 360,
                     height = 360,
-                    radius = Math.min(width, height) / 2;
+                    radius = Math.min(width, height) / 2,
+                    donutWidth = 70;
 
-                var color = d3.scale.category20();
+                var color = d3.scale.ordinal()
+                    .range(range);
 
                 var pie = d3.layout.pie()
-                    .sort(null);
+                    .sort(null)
+                    .value(function (d) {
+                        return d.val;
+                    });
+
 
                 var arc = d3.svg.arc()
                     .innerRadius(radius - donutWidth)
                     .outerRadius(radius);
 
+                // Add svg
                 var svg = d3.select(element[0])
                     .append("svg")
-                    .attr("width", '100%')
-                    .attr("height", '100%')
+                    .attr('class', 'd3-donut')
+                    .attr('width', '100%')
+                    .attr('height', '100%')
                     .attr('viewBox','0 0 '+Math.min(width,height)+' '+Math.min(width,height))
                     .attr('preserveAspectRatio','xMinYMin')
-                    .append("g")
-                    .attr("transform", "translate(" + Math.min(width,height) / 2 + "," + Math.min(width,height) / 2 + ")");
+                    .append('g')
+                    .attr('transform', 'translate(' + Math.min(width,height) / 2 + ',' + Math.min(width,height) / 2 + ')');
 
-                var path = svg.selectAll("path")
-                    .data(pie(dataset.apples))
-                    .enter().append("path")
+                var path = svg.selectAll('path')
+                    .data(pie(data))
+                    .enter().append('path')
                     .attr("fill", function(d, i) { return color(i); })
                     .transition()
-                    .ease("exp")
+                    .ease('exp')
                     .duration(700)
-                    .attrTween("d", tweenPie);
+                    .attrTween('d', tweenPie);
 
                 function tweenPie(b) {
                     var i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
                     return function(t) { return arc(i(t)); };
                 }
 
+                var keySpacing = 7,
+                    keyRectSize = 22;
 
-                var legendRectSize = 18;
-                var legendSpacing = 4;
-
-                var legend = svg.selectAll('.legend')
+                var key = svg.selectAll('.legend')
                     .data(color.domain())
                     .enter()
                     .append('g')
-                    .attr('class', 'legend')
+                    .attr('class', 'key')
                     .attr('transform', function(d, i) {
-                        var height = legendRectSize + legendSpacing;
+                        var height = keyRectSize + keySpacing;
                         var offset =  height * color.domain().length / 2;
-                        var horz = -2 * legendRectSize;
+                        var horz = -2 * keyRectSize;
                         var vert = i * height - offset;
                         return 'translate(' + horz + ',' + vert + ')';
                     });
 
                     // Add colours for Key
-                    legend.append('rect')
-                        .attr('width', legendRectSize)
-                        .attr('height', legendRectSize)
+                    key.append('rect')
+                        .attr('width', keyRectSize)
+                        .attr('height', keyRectSize)
                         .style('fill', color)
                         .style('stroke', color);
 
                     // Set label for Key
-                    legend.append('text')
-                        .attr('x', legendRectSize + legendSpacing)
-                        .attr('y', legendRectSize - legendSpacing)
-                        .text(function(d, i) { return scope.data[i].name; });
+                    key.append('text')
+                        .attr('x', keyRectSize + keySpacing)
+                        .attr('y', keyRectSize - keySpacing)
+                        .text(function(d, i) { return data[i].label; });
 
             }
         }

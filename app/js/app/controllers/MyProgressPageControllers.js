@@ -17,12 +17,30 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 
-		$scope.test = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
+		// dummy data for donut charts.
+
+		$scope.levelData = [
+			{label: 'Level 1 (30%)', val: 8},
+			{label: 'Level 2 (20%)', val: 8},
+			{label: 'Level 3 (19%)', val: 8},
+			{label: 'Level 4 (15%)', val: 8},
+			{label: 'Level 5 (8%)', val: 8},
+			{label: 'Level 6 (8%)', val: 8}
 		];
 
-		
+		$scope.subjectData = [
+			{label: 'Physics (80%)', val: 8},
+			{label: 'Maths (20%)', val: 2}
+		];
+
+		$scope.FieldData = [
+			{label: 'Mech (30%)', val: 8},
+			{label: 'Waves (25%)', val: 8},
+			{label: 'Feilds (20%)', val: 8},
+			{label: 'Circuits (15%)', val: 8},
+			{label: 'Gemetry (10%)', val: 8}
+		];
+
 	}];
 
 	return {

@@ -20,26 +20,29 @@
             <li>
                <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
                <div class="progress-bar">
-                  <div class="bar" style="width:50%">
-                     <span>127</span>
+                  <div class="bar" style="width:45%">
+                     <span>45</span>
                   </div>
-                  <span>8</span>
+                  <span>82</span>
                </div>
             </li>
-            <li>
+            <li class="show-for-medium-up">
                <a class="ru-button-big right export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
             </li>
             <li>
                <h6>Questions attempted by <span class="ru_green">level</span></h6>
-               <d3-donut data="test"></d3-donut>
+               <d3-donut data="levelData"></d3-donut>
             </li>
             <li>
             <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-               <d3-donut data="data"></d3-donut>
+               <d3-donut data="subjectData" colorPalette="subjects"></d3-donut>
             </li>
             <li>
                <h6>Questions attempted by <span class="ru_green">field</span></h6>
-               <d3-donut data="data"></d3-donut>
+               <d3-donut data="FieldData" colorPalette="fields"></d3-donut>
+            </li>
+            <li class="hide-for-medium-up">
+               <a class="ru-button-big right export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
             </li>
          </ul>
       </div>
@@ -48,7 +51,7 @@
 <div id="exportModal" class="reveal-modal" data-reveal>
    <div class="reveal-modal-head">
       Export/Share my data
-      <a class="close-reveal-modal">&#215;</a>
+      <a class="close-reveal-modal">Close &#215;</a>
    </div>
    <div class="reveal-modal-body">
       <h2>Select the data you wish to export/share...</h2>

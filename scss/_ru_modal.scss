@@ -6,15 +6,22 @@
     padding: 0;
     border: 0;
     border-radius: 0;
+    box-shadow: 0 0 0;
+
+    .close-reveal-modal {
+        font-size: 18px;
+        font-weight: 200;
+        color: #fff;
+    }
 }
 .reveal-modal-head {
     color: #fff;
     font-size: 32px;
-    font-weight: 800;
+    font-weight: 600;
     font-style: italic;
     line-height: 34px;
     background-color: $ru_green;
-    padding: 12px 35px 15px;
+    padding: 18px 35px 15px;
     border-left:$ru_green 1px solid;
 }
 .reveal-modal-body {
