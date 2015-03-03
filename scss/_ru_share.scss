@@ -15,15 +15,18 @@
     {
         opacity: 0.85;
     }
+
 }
 
 .ru_print
 {
     background-image: url('/assets/print.svg');
     width: 50px;
+    z-index: 101;
     height: 80px;
     background-repeat: no-repeat;
     float: right;
+    position:relative;
     margin-right: 20px;
 
     &:hover
@@ -54,6 +57,29 @@
         margin: 14px 30px 14px 6px;
         padding: 3px 6px;
         background-color: #ebf3e8;
+    }
+    //try to integrate these
+
+    .ru_print_options
+    {
+        position: relative;
+        height: 57px;
+        //width: 0px;
+        left: 25px;
+        z-index: 100;
+        background-color: white;
+        border: #a7a7a7 solid 1px;
+        overflow: hidden;
+        float: right;
+        margin-left: -25px;
+    }
+
+
+    .ru_print_options > div
+    {
+        margin: 14px 30px 14px 6px;
+        padding: 3px 6px;
+        background-color: white;
     }
 }
 

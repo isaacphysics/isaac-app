@@ -52,6 +52,7 @@ define([
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
+    "app/directives/ToastNotification",
 	], function() {
 
 	/* Directives */
@@ -93,6 +94,8 @@ define([
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
+
+	.directive('toastNotification', require("app/directives/ToastNotification"))
 
 	// Content Directives
 
@@ -198,5 +201,18 @@ define([
 				});
 			},
 		};
+	}])
+
+	.directive('ngContent', ["$rootScope", function() {
+		return {
+			scope: {
+				ngContent: "=",
+			},
+			link: function(scope, element, attrs) {
+				scope.$watch("ngContent", function(newContent) {
+					element.attr("content", newContent);
+				})
+			}
+		}
 	}])
 });

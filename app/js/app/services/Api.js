@@ -121,10 +121,31 @@ define([], function() {
 			},			
 			'getToken' : {
 				method: 'GET',
-				url: server + "/api/authorisations/associations/token/:id", 
+				url: server + "/api/authorisations/token/:id", 
 				isArray: false 
 			}			
 		});
+
+		this.authorisations = $resource(server + "/api/authorisations/", {}, {
+			'get' : {
+				method: 'GET', 
+				isArray: true 
+			},
+			'useToken' : {
+				method: 'POST',
+				url: server + "/api/authorisations/use_token/:token",
+				params: {token: '@token'}
+			},			
+			'revoke' : {
+				method: 'DELETE',
+				url: server + "/api/authorisations/:id" 
+			},			
+			'getOthers' : {
+				method: 'GET',
+				url: server + "/api/authorisations/other_users", 
+				isArray: true 
+			}			
+		});		
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {

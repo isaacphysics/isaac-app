@@ -408,7 +408,8 @@ define(["angular-ui-router"], function() {
             .state('groupManagment', {
                 url: "/groups",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    //requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR"]), // temporary fix to stop people using it.
                 },                
                 views: {
                     "body": {

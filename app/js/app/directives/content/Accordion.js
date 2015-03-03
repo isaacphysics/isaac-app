@@ -111,6 +111,9 @@ define([], function() {
 
 						updateLoadedQuestions();
 					}
+					setTimeout(function() {
+						$rootScope.requestMathjaxRender();
+					}, 0);
 				});
 
 				scope.$on("ensureVisible", function(e) {

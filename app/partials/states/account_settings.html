@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="medium-3 columns text-right">
-        <sapn data-tooltip aria-haspopup="true" class="has-tip" title="Information about connecting"><span class="icon-help"></span>Help</span>
+        <span aria-haspopup="true" class="has-tip" data-ot="Complete your information here to make the most of isaacphysics."><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="row account-settings-wrap">
@@ -129,7 +129,7 @@
             <li>
                 <div class="row">
                     <div class="large-16 medium-16 columns account-level">
-                        <label><strong>Starting level</strong><sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Select your preferred question level."></span></label>
+                        <label><strong>Starting level</strong><span aria-haspopup="true" class="icon-help has-tip" data-ot="Select your preferred question level."></span></label>
                         <select ng-model="user.defaultLevel">
                             <option value="1">1 (GCSE)</option>
                             <option value="2">2</option>
@@ -190,31 +190,27 @@
             <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
         </div>
     </div>
-    <div class="large-10 medium-16 columns" ng-if="false">
+    <div ng-if="editingSelf" class="large-10 medium-16 columns">
         <div class="panel connect-form">
-            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<sapn data-tooltip aria-haspopup="true" class="icon-help has-tip" title="Information about connecting"></span></h3>
+            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="This feature is coming soon."></span></h3>
             <p>Enter the code given to connect with a teacher.</p>
-            <form class="clearfix">
-                <input placeholder="Enter your code in here" class="connect-form-input" type="text" />
-                <a class="ru-button">Apply Code</a>
+            <form class="clearfix" ng-submit="useToken()">
+                <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
+                <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Apply Code</a>
             </form>
         </div>
     </div>
-    <div class="large-6 medium-16 columns" ng-if="false">
+    <div ng-if="editingSelf" class="large-6 medium-16 columns">
         <div class="connect-list">
             <h3><span class="person-icon-active"></span> Teacher connections</h3>
 
             <div class="connect-list-inner">
                 <ul class="teachers-connected">
-                    <li><span class="person-icon-active"></span> Teacher Name 1 <a class="revoke-teacher" href="#">Revoke</a></li>
-                    <li><span class="person-icon-active"></span> Teacher Name 2 <a class="revoke-teacher" href="#">Revoke</a></li>
-                    <li><span class="person-icon-active"></span> Teacher Name 3 <a class="revoke-teacher" href="#">Revoke</a></li>
+                    <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span> {{teacherUser.givenName}} {{teacherUser.familyName}} <a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
                 </ul>
-
-                <ul class="teachers-disconnected">
+                <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
+                <ul ng-if="false" class="teachers-disconnected">
                     <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
-                    <li><span class="person-icon"></span> Teacher Name 2 <a class="reconnect-teacher" href="#">Reconnect</a></li>
-                    <li><span class="person-icon"></span> Teacher Name 3 <a class="reconnect-teacher" href="#">Reconnect</a></li>
                 </ul>
             </div>
         </div>

@@ -117,8 +117,13 @@ define([], function() {
 			if ($scope.filterTopics.length > 0)
 				params.topics = $scope.filterTopics.join(",");
 
-			if ($scope.filterLevels.length > 0)
+			if ($scope.filterLevels.length > 0) {
 				params.levels = $scope.filterLevels.join(",");
+			}
+			else {
+				params.levels = "1,2,3,4,5,6";
+			}
+
 
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.join(",");
