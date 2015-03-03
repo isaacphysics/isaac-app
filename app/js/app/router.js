@@ -427,6 +427,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/assign_boards.html",
+                        controller: "AssignBoardsController",
                     }
                 }
             })

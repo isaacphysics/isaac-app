@@ -39,6 +39,7 @@ define([
 	"app/controllers/AdminPageControllers",
 	"app/controllers/GameEditorControllers",
 	"app/controllers/GroupManagmentPageControllers",
+	"app/controllers/AssignBoardsController",	
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -75,7 +76,7 @@ define([
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
 	var groupManagmentPageControllers = require("app/controllers/GroupManagmentPageControllers");
-
+	var assignBoardsController = require("app/controllers/AssignBoardsController")
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
@@ -131,4 +132,6 @@ define([
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
 	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
+
+	.controller('AssignBoardsController', assignBoardsController.PageController)
 });
