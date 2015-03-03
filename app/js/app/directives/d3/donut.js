@@ -20,7 +20,7 @@ define([], function() {
             link: function(scope, element, attrs) {
 
                 var data = scope[attrs.data], // get data
-                    range = ['#d8e8c2', '#c6deaa', '#a6ce87', '#87c064', '#66b045', '#4d9e34']; // default colours
+                    range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
 
                 // switch colours
                 switch($(element[0]).attr('colorPalette')) {
@@ -28,7 +28,7 @@ define([], function() {
                         range = ['#6c388c', '#189ace'];
                         break;
                     case 'fields':
-                        range = ['#c5b2d7', '#9570af', '#7f529d', '#6c388c', '#a3d9ee'];
+                        range = ['#6c388c', '#7f529d', '#9570af', '#c5b2d7', '#a3d9ee'];
                         break;
                 }
 

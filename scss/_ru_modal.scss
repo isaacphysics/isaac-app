@@ -7,9 +7,15 @@
     border: 0;
     border-radius: 0;
     box-shadow: 0 0 0;
+    background-color: transparent;
+
+    h2 {
+        padding-right: 32px;
+    }
 
     .close-reveal-modal {
-        top: 26px;
+        top: 16px;
+        right: 15px;
         font-size: 18px;
         font-weight: 200;
         font-style: normal;
@@ -18,7 +24,7 @@
 }
 .reveal-modal-head {
     background-color: $ru_green;
-    padding: 19px 15px 16px;
+    padding: 10px 15px;
     border-left:$ru_green 1px solid;
 
     h2 {
@@ -32,11 +38,32 @@
     border-right:#cecece 1px solid;
     border-bottom:#cecece 1px solid;
     border-left:#cecece 1px solid;
+    background-color: #fff;
 }
-
+.icon-close {
+    float: right;
+    width: 24px;
+    height: 23px;
+    background: url(/assets/ru.png) no-repeat -332px -375px;
+    margin-left: 12px;
+}
 @media #{$medium-up} { 
+    .reveal-modal {
+        .close-reveal-modal {
+            top: 25px;
+            right: 30px;
+
+            .hide-for-small-only {
+                display: inline !important;
+            }
+        }
+    }
     .reveal-modal-head {
         padding-left: 35px;
         padding-right: 35px;
+
+        h2 {
+            padding-right: 90px;
+        }
     }
 }
