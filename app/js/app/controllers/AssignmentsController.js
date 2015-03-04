@@ -30,7 +30,7 @@ define([], function() {
 			return levels;
 	}
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', function($scope, auth, api, gameBoardTitles, $rootScope, $window) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', function($scope, auth, api, gameBoardTitles, $rootScope, $window) {
 		$scope.globalFlags.isLoading = true;
 		
 		$rootScope.pageTitle = "Assign Boards";
@@ -204,7 +204,7 @@ define([], function() {
 		}];
 
 	return {
-		PageController: PageController,
+		SetAssignmentsPageController: SetAssignmentsPageController,
 		MyAssignmentsPageController: MyAssignmentsPageController
 	};
 })

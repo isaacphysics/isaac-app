@@ -23,8 +23,8 @@
                   <div class="board-levels">
                         <span ng-repeat="level in calculateBoardLevels(assignment.gameboard)" class="level-{{level}}">{{level}}</span>
                   </div>
-                  <p>Created: <strong>04/02/2015</strong></p>
-                  <p ng-if="false">By: <strong>Michael Lakeland</strong></p>
+                  <p>Created: <strong>{{assignment.gameboard.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                  <p ng-if="false">By: <strong>User Name</strong></p>
                </div>
             </div>
             <div class="medium-6 columns board-overview">
