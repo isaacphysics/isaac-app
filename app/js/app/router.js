@@ -440,6 +440,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/my_assignments.html",
+                        controller: "MyAssignmentsPageController",                        
                     }
                 }
             })

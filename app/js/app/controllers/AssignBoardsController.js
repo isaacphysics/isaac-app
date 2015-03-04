@@ -15,6 +15,21 @@
  */
 define([], function() {
 
+	var calculateBoardLevels = function(board){
+			levels = [];
+			for(i = 0; i < board.questions.length; i++) {
+				if (levels.indexOf(board.questions[i].level) == -1) {
+					levels.push(board.questions[i].level);
+				}
+			}
+
+			levels.sort(function (a, b) {
+   				return a > b ? 1 : a < b ? -1 : 0;
+			});
+
+			return levels;
+	}
+
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', function($scope, auth, api, gameBoardTitles, $rootScope, $window) {
 		$scope.globalFlags.isLoading = true;
 		
@@ -114,20 +129,7 @@ define([], function() {
 			}
 		}
 
-		$scope.calculateBoardLevels = function(board){
-			levels = [];
-			for(i = 0; i < board.questions.length; i++) {
-				if (levels.indexOf(board.questions[i].level) == -1) {
-					levels.push(board.questions[i].level);
-				}
-			}
-
-			levels.sort(function (a, b) {
-   				return a > b ? 1 : a < b ? -1 : 0;
-			});
-
-			return levels;
-		}
+		$scope.calculateBoardLevels = calculateBoardLevels;
 
 		var lookupAssignedGroups = function(board) {
 			var groups = api.assignments.getAssignedGroups({gameId: board.id});
@@ -166,7 +168,43 @@ define([], function() {
 		}
 	}];
 
+	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', function($scope, auth, api, gameBoardTitles, $rootScope) {
+			$scope.globalFlags.isLoading = true;
+			
+			$rootScope.pageTitle = "My Assignments";
+
+			$scope.generateGameBoardTitle = gameBoardTitles.generate;
+			
+			$scope.myAssignments = {};
+			
+			$scope.myAssignments.completed = [];
+			$scope.myAssignments.inProgress = [];
+
+			$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+
+			api.assignments.getMyAssignments().$promise.then(function(results) {
+				angular.forEach(results, function(assignment, index) {
+					if (assignment.gameboard.percentageCompleted < 100) {
+						$scope.myAssignments.inProgress.push(assignment);
+					} else {
+						$scope.myAssignments.completed.push(assignment);
+					}
+				})
+			});
+
+			$scope.toggleVisibleBoards = function(){
+				if ($scope.assignmentsVisible == $scope.myAssignments.inProgress) {
+					$scope.assignmentsVisible = $scope.myAssignments.completed;
+				} else {
+					$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+				}
+			}
+
+			$scope.calculateBoardLevels = calculateBoardLevels;
+		}];
+
 	return {
-		PageController: PageController
+		PageController: PageController,
+		MyAssignmentsPageController: MyAssignmentsPageController
 	};
 })

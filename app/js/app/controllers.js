@@ -134,4 +134,6 @@ define([
 	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
 
 	.controller('AssignBoardsController', assignBoardsController.PageController)
+
+	.controller('MyAssignmentsPageController', assignBoardsController.MyAssignmentsPageController)
 });
