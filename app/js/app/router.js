@@ -454,6 +454,18 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('assignmentProgress', {
+                url: "/assignment_progress",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/assignment_progress.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
