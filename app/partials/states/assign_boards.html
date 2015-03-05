@@ -17,7 +17,7 @@
    		<div class="panel">
             <a href="javascript:void(0)" class="board-delete" ng-click="deleteBoard(board.id, board.title || generateGameBoardTitle(board))">X</a>
             <div class="row">
-               <div data-ot="Monkeys, Rhinos, Sharks, Spiders and Eagles." data-ot-style="ru_boards" class="board-percentage test">
+               <div data-ot="{{getListOfGroups(groupAssignmentInfo[board.id])}}" data-ot-style="ru_boards" class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->
       				<span class="groups-assigned subject-physics">
                      <strong>{{groupAssignmentInfo[board.id].length || 0}}</strong> Groups Assigned

@@ -30,7 +30,7 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', function($scope, auth, api, gameBoardTitles, $rootScope, $window) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
 		$scope.globalFlags.isLoading = true;
 		
 		$rootScope.pageTitle = "Assign Boards";
@@ -97,6 +97,15 @@ define([], function() {
 			updateBoards();
 		});
 
+		// update tooltips when this changes.
+		$scope.$watch("boards.results", function(newVal, oldVal){
+			$timeout(function(){
+				Opentip.findElements();
+				//TODO: when an assignment is set the tooltip number doesn't update until a page refresh.
+			}, 500);
+			
+		}, true);
+
 		// Perform initial load
 		updateBoards();
 
@@ -139,7 +148,23 @@ define([], function() {
 		var updateGroupAssignmentMap = function(boardsToChange) {
 			angular.forEach(boardsToChange, function(board, key){
 				$scope.groupAssignmentInfo[board.id] = lookupAssignedGroups(board);
-			});		
+			});
+		}
+
+		$scope.getListOfGroups = function(listOfGroups) {
+			if (listOfGroups.length == 0) {
+				return "No groups have been assigned."
+			}
+
+			var listOfGroupsString = "Groups: ";
+
+			angular.forEach(listOfGroups, function(group, key){
+				listOfGroupsString = listOfGroupsString + group.groupName + ", ";
+			});
+
+			listOfGroupsString = listOfGroupsString.replace(/,\s*$/, "");
+
+			return listOfGroupsString;
 		}
 
 		$scope.assignBoard = function(board) {
