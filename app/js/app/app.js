@@ -16,7 +16,7 @@
 'use strict';
 
 define([
-    "lib/rsvp", 
+    "lib/rsvp",
     "foundation", 
     "app/router", 
     "app/honest/responsive_video", 
@@ -24,6 +24,7 @@ define([
     "angular-resource", 
 //    "angular-animate",
     "angular-cookies",
+    "angular-ui-date",
     "app/controllers", 
     "app/directives", 
     "app/services", 
@@ -57,6 +58,7 @@ define([
         'angulartics.google.analytics',
 //        'ngAnimate',
         'ngCookies',
+        'ui.date',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
@@ -82,6 +84,14 @@ define([
             target: true,
             background: '#333333',
             borderColor: '#333333',
+            borderRadius: 0
+        };
+        Opentip.styles.ru_boards = {
+            className: 'boards',
+            fixed: true,
+            stem: false,
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderColor: '#814ba0',
             borderRadius: 0
         };
         Opentip.defaultStyle = "globalStyle";
@@ -176,6 +186,8 @@ define([
             // Global jQuery
             $(function()
             {
+                
+
                 // IE console debug - bug fix
                 if(!(window.console)) {
                     var noop = function(){};

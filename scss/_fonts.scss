@@ -62,3 +62,35 @@
   src: local('Exo 2 Bold Italic'), local('Exo2-BoldItalic'), url('/assets/font/Exo2.0-BoldItalic-webfont.woff') format('woff'),
          url('/assets/font/Exo2.0-BoldItalic-webfont.svg#exo_2.0bold_italic') format('svg');
 }
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 200;
+  src: url('/assets/font/sourcesanspro-extralight-webfont.woff2') format('woff2'),
+       url('/assets/font/sourcesanspro-extralight-webfont.woff') format('woff'),
+       url('/assets/font/sourcesanspro-extralight-webfont.svg#source_sans_proextralight') format('svg');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/assets/font/sourcesanspro-regular-webfont.woff2') format('woff2'),
+       url('/assets/font/sourcesanspro-regular-webfont.woff') format('woff'),
+       url('/assets/font/sourcesanspro-regular-webfont.svg#source_sans_proregular') format('svg');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/assets/font/sourcesanspro-semibold-webfont.woff2') format('woff2'),
+       url('/assets/font/sourcesanspro-semibold-webfont.woff') format('woff'),
+       url('/assets/font/sourcesanspro-semibold-webfont.svg#source_sans_prosemibold') format('svg');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 800;
+  src: url('/assets/font/sourcesanspro-bold-webfont.woff2') format('woff2'),
+       url('/assets/font/sourcesanspro-bold-webfont.woff') format('woff'),
+       url('/assets/font/sourcesanspro-bold-webfont.svg#source_sans_probold') format('svg');
+}

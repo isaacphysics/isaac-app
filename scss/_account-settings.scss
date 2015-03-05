@@ -358,14 +358,17 @@ input.account-settings-input {
 	}
 
 	// reorder buttons and message
-	.account-reorder-wrap {
+	.account-reorder-wrap,
+	.reorder-wrap {
 		display: table;
 		width: 100%;
 	}
-	.account-reorder-top {
+	.account-reorder-top,
+	.reorder-top {
     	display: table-header-group; 
 	}
-	.account-reorder-bottom {
+	.account-reorder-bottom,
+	.reorder-bottom {
     	display: table-footer-group;
 	}
 	.account-warning {
