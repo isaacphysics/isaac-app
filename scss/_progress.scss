@@ -41,22 +41,69 @@
     Assignment progress styles 
 */
 .table-progress {
-    border-collapse:collapse; 
+    border: none;
+    table-layout: auto; 
+    border-collapse:collapse;
+
+    td {
+        color: #333;
+        font-size: 18px;
+        text-align: center;
+        padding: 0;
+    } 
 
     tbody {
         tr:nth-child(odd) {
             background-color: #f5f5f5;
         }
         td {
-            &:nth-child(odd) {
+            width: 65px;
+            padding-top: 10px;
+
+            &:first-child {
+                width: auto;
+                color: $ru_green;
+                font-weight: 600;
+                text-align: left;
+            }
+            &:nth-child(even) {
                 background-color: rgba(80, 158, 46, 0.1);
             }
-            &:hover {
-                background-color: #fff;
-                border-right: #666 1px solid;
-                border-left: #666 1px solid;
+            &:last-child {
+                background-color: transparent;
             }
         }
+    }
+
+    thead, tfoot {
+        tr {
+            background: #f2f2f2;
+            border: #999 1px solid;
+
+            td {
+                font-weight: 200;
+
+                &:first-child {
+                    color: #fff;
+                    font-weight: 600;
+                    background-color:#666;
+                }
+            }
+        }
+    }
+
+    .icon-x {
+        font-size: 35px;
+        color: #cc3333;
+    }
+    .icon-person {
+        font-size: 28px;
+    }
+    .icon-check {
+        font-size: 28px;
+    }
+    .icon-spinner {
+        font-size: 20px;
     }
 }
 /*
