@@ -103,7 +103,7 @@ define([], function() {
 
 				if ($scope.enabledQuestions[questionId] && gameBoardIndex == -1) {
 					if (newGameBoard.questions.length == 10) {
-        				$scope.showToast($scope.toastTypes.Success, "Too Many Questions", "There is a maximum of 10 questions per gameboard. Please remove one to add another.");
+        				$scope.showToast($scope.toastTypes.Failure, "Too Many Questions", "There is a maximum of 10 questions per gameboard. Please remove one to add another.");
 						$scope.enabledQuestions = oldThing;
 					} else {
 						var questionToAdd = getQuestionObject(questionId);
@@ -135,7 +135,7 @@ define([], function() {
         		$scope.currentGameBoard = gb;
         		$state.go('board', {id: gb.id})
         	}).catch(function(e) {
-        		$scope.showToast($scope.toastTypes.Success, "Save Operation Failed", "With error message: (" + e.status + ") " + e.data.errorMessage);
+        		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.data.errorMessage);
         		gameBoardToSave.wildCard = wildCard
         	});
         }

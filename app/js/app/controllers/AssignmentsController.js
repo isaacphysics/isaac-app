@@ -174,7 +174,7 @@ define([], function() {
 				updateGroupAssignmentMap([board]);
 				delete $scope.pendingAssignment[board.id]; // remove from pending list.
 			}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Success, "Board Assignment Failed", "Error " + e.data.errorMessage);
+        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error " + e.data.errorMessage);
 			})
 		}
 
@@ -185,7 +185,7 @@ define([], function() {
 				api.assignments.unassignBoard({gameId: board.id, groupId: group._id}).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
 				}).catch(function(e){
-        			$scope.showToast($scope.toastTypes.Success, "Board Unassignment Failed", "Error " + e.data.errorMessage);
+        			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", "Error " + e.data.errorMessage);
 				});				
 			}
 		}

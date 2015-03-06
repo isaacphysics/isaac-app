@@ -17,14 +17,14 @@
 
 
 	position:absolute;
-	bottom:0px;
 	width:100%;
+    top: 45%;
   	z-index: 9999;
 
     .innerToast{
-		border:thin solid white;
 		display: table;
 	    margin: 0 auto;
+	    box-shadow: 3px 3px 10px  #AAAAAA;
     }
 
 

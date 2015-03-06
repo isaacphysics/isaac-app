@@ -176,7 +176,7 @@ define([], function() {
         
         $scope.useToken = function() {
         	if ($scope.authenticationToken.value == null) {
-        		$scope.showToast($scope.toastTypes.Success, "No Token Value", "You have to enter a token value!");
+        		$scope.showToast($scope.toastTypes.Failure, "No Token Value", "You have to enter a token value!");
         		return;
         	}
 
@@ -184,7 +184,7 @@ define([], function() {
         		$scope.activeAuthorisations = api.authorisations.get();
         		$scope.authenticationToken = {value: null};
         	}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Success, "Token Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage);
+        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage);
         	})        		
         }
 
@@ -195,7 +195,7 @@ define([], function() {
 	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        	}).catch(function(e){
-        			$scope.showToast($scope.toastTypes.Success, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage);
+        			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage);
 	        	})        		
         	} else {
         		return;
