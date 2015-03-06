@@ -66,7 +66,46 @@ define([], function() {
 		}
 	}]
 
+	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+			$rootScope.pageTitle = "Statistics Page";
+
+			$scope.contentVersion = api.contentVersion.get();
+			$scope.userSearch = {};
+			$scope.userSearch.searchTerms = "";
+
+			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+
+			//$scope.statistics = api.statisticsEndpoint.get();
+			$scope.gameboardListData = [];
+			$scope.visibleStatsPanel = null;
+
+			$scope.statsLoading = false;
+
+			$scope.getGameboardListData = function() {
+				$scope.visibleStatsPanel = "gameboardList";
+				$scope.statsLoading = true;
+				var gameboardListPromise = api.statisticsEndpoint.getGameboardPopularity();
+
+				gameboardListPromise.$promise.then(function(result){
+					$scope.gameboardListData = result;
+					$scope.statsLoading = false;
+				});
+			}
+
+			$scope.getSchoolListData = function() {
+				$scope.visibleStatsPanel = "schoolList";
+				$scope.statsLoading = true;
+				var gameboardListPromise = api.statisticsEndpoint.getSchoolPopularity();
+
+				gameboardListPromise.$promise.then(function(result){
+					$scope.schoolListData = result;
+					$scope.statsLoading = false;
+				});
+			}			
+		}]
+
 	return {
 		PageController: PageController,
+		AdminStatsPageController: AdminStatsPageController,
 	};
 })

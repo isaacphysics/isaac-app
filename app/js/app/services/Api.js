@@ -95,7 +95,17 @@ define([], function() {
 			'get' : {
 				method: 'GET', 
 				isArray: false 
-			}
+			},
+			'getGameboardPopularity' : {
+				method: 'GET',
+				url: server + "/api/gameboards/popular", 
+				isArray: false 
+			},
+			'getSchoolPopularity' : {
+				method: 'GET',
+				url: server + "/api/admin/stats/schools/", 
+				isArray: true 
+			}			
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {

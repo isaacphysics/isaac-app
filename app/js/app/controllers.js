@@ -130,6 +130,8 @@ define([
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
+	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
+
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
 	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
