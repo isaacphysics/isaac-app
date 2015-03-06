@@ -98,12 +98,19 @@
 .opentip-container.ot-hidden {
   display: none;
 }
-.opentip-container .opentip {
-  position: relative;
-  font-size: 13px;
-  line-height: 120%;
-  padding: 9px 14px;
-  color: #ffffff;
+.opentip-container {
+  .opentip {
+    position: relative;
+    font-size: 13px;
+    line-height: 120%;
+    padding: 9px 14px;
+    color: #fff;
+  }
+  &.style-boards .opentip {
+    max-width: 337px;
+    color: #333;
+    font-weight: 600;
+  }
 }
 .opentip-container .opentip .header {
   margin: 0;

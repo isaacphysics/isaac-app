@@ -145,7 +145,35 @@ define([], function() {
 				url: server + "/api/authorisations/other_users", 
 				isArray: true 
 			}			
-		});		
+		});	
+
+		this.assignments = $resource(server + "/api/assignments/", {}, {
+			'getMyAssignments' : {
+				method: 'GET', 
+				isArray: true 
+			},
+			'getAssignmentsOwnedByMe' : {
+				method: 'GET', 
+				isArray: true,
+				url: server + "/api/assignments/assign", 
+			},
+			'getAssignedGroups' : {
+				method: 'GET', 
+				isArray: true,
+				url: server + "/api/assignments/assign/:gameId", 
+				params: {gameId: '@gameId'}
+			},					
+			'assignBoard' : {
+				method: 'POST',
+				url: server + "/api/assignments/assign/:gameId/:groupId",
+				params: {gameId: '@gameId', groupId: '@groupId'}
+			},			
+			'unassignBoard' : {
+				method: 'DELETE',
+				url: server + "/api/assignments/assign/:gameId/:groupId",
+				params: {gameId: '@gameId', groupId: '@groupId'}
+			}			
+		});				
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {

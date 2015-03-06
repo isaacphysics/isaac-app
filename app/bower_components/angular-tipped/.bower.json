@@ -1,0 +1,24 @@
+{
+  "name": "angular-tipped",
+  "version": "0.3.0",
+  "main": "tipped.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".idea"
+  ],
+  "homepage": "https://github.com/decipherinc/angular-tipped",
+  "_release": "0.3.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.3.0",
+    "commit": "fa7c7769a4751724b65e490ff79b18db377b7c4e"
+  },
+  "_source": "git://github.com/decipherinc/angular-tipped.git",
+  "_target": "~0.3.0",
+  "_originalSource": "angular-tipped",
+  "_direct": true
+}

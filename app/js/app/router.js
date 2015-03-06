@@ -427,6 +427,20 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/assign_boards.html",
+                        controller: "SetAssignmentsPageController",
+                    }
+                }
+            })
+
+            .state('assignments', {
+                url: "/assignments",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/my_assignments.html",
+                        controller: "MyAssignmentsPageController",                        
                     }
                 }
             })

@@ -1,0 +1,48 @@
+<div class="row ru-page-heading ng-scope">
+    <div class="medium-13 columns">
+        <h1>My Assignments</h1>
+        <p class="hide-for-small-only">Keep track of your homework</p>
+    </div>
+</div>
+<div class="row assignments-wrap">
+    <div class="large-16 columns">
+      <dl class="tabs profile-tabs no-print">
+         <dd ng-class="assignmentsVisible == myAssignments.inProgress ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Assignments </span>To do ({{myAssignments.inProgress.length || 0}})</a></dd>
+         <dd ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()">Completed <span class="show-for-medium-up">Assignments </span>({{myAssignments.completed.length || 0}})</span></a></dd>
+      </dl>
+      <div class="tabs-content profile-tabs-content">
+         <div ng-repeat="assignment in assignmentsVisible" class="assignment">
+            <div class="large-6 medium-7 columns">
+               <div class="board-percentage">
+                  <span class="subject-physics">
+                        {{assignment.gameboard.percentageCompleted}}<span class="percent-symbol">%</span>          
+                  </span>
+               </div>
+               <div class="board-info">
+                  <h3><a ui-sref="board({id: assignment.gameboard.id})" href="javascript:void(0)">{{assignment.gameboard.title || generateGameBoardTitle(assignment.gameboard)}}</a></h3>
+                  <div class="board-levels">
+                        <span ng-repeat="level in calculateBoardLevels(assignment.gameboard)" class="level-{{level}}">{{level}}</span>
+                  </div>
+                  <p>Assigned: <strong>{{assignment.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                  <p ng-if="false">By: <strong>User Name</strong></p>
+               </div>
+            </div>
+            <div class="medium-6 columns board-overview">
+               <h6>Quick view...</h6>
+               <ol>
+                  <li ng-show="assignment.gameboard.questions.length >= 1">{{assignment.gameboard.questions[0].title}}</li>
+                  <li ng-show="assignment.gameboard.questions.length >= 2">{{assignment.gameboard.questions[1].title}}</li>
+                  <li ng-show="assignment.gameboard.questions.length >= 3">{{assignment.gameboard.questions[2].title}}</li>
+               </ol>
+            </div>
+            <div class="large-4 medium-3 columns board-link reorder-wrap">
+               <a class="reorder-bottom" href="javascript:void(0)" ui-sref="board({id: assignment.gameboard.id})">View Board <span class="icon-link"></span></a>
+               <p ng-if="false" class="reorder-top"><span class="overdue">Overdue:</span> 21/01/2014</p>
+            </div>
+         </div>
+         <div ng-if="assignmentsVisible == null || assignmentsVisible.length == 0">
+            <p class="small-text-center">There are no assignments to display.</p>   
+         </div>
+      </div>
+   </div>
+</div>

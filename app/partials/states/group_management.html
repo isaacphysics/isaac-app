@@ -47,6 +47,9 @@
                     
                     <div ng-show="selectedGroup" class="group-nav-content hide-for-large-up" ng-class="{'hide-for-small-up': selectedGroup == null || selectedGroup._id != group._id}" ng-include="'/partials/group_management_details.html'"></div>
                 </dd>
+                <dd ng-if="myGroups == null || myGroups.length == 0">
+                    <p class="small-text-center show-for-large-up">You do not have any groups to display.</p>
+                </dd>
             </dl>
             <div class="show-for-large-up">
                 <a class="ru-button-big secondary expand" ng-click="setSelectedGroup(null)">Create new group</a>

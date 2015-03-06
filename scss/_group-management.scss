@@ -208,6 +208,9 @@
 .group-table-delete {
 	width: 18px;
 }
+.group-table-cal {
+	width: 16px;
+}
 .delete-icon {
 	float: left;
 	width: 18px;
@@ -269,6 +272,12 @@
 	}
 	a .group-table-person {
 		background-position: -357px -302px;
+	}
+
+	.profile-tabs {
+		.show-for-medium-up {
+			display: inline !important;
+		} 
 	}
 
 	.profile-tabs-content {

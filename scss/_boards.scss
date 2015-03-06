@@ -206,6 +206,14 @@
 		}
 	}
 
+	.ru_share_link {
+		position: absolute;
+		top: 105px;
+		right: 35px;
+		left: 40px;
+		font-size: 13px;
+	}
+
 	.board-share {
 		top: 105px;
 		bottom: auto;
@@ -214,6 +222,7 @@
 	.panel {
 		position: relative;
 		border-color: #000;
+		padding-bottom: 0;
 
 		.row {
 			margin: 0;
@@ -223,6 +232,7 @@
 	h3 {
 		padding-right: 50px;
 		line-height: 115%;
+		font-weight: 800;
 
 		a {
 			color: #333;
@@ -233,9 +243,28 @@
 	.subject-maths {
 		top: 0;
 	}
+
+	.group-table {
+		margin-bottom: 18px;
+
+		tr:hover {
+			background-color: #ecf8e7;
+		}
+		td{
+			color: #666;
+			font-family: "Source Sans Pro","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+			font-weight: 600;
+			font-size: 16px;
+		}
+	}
+
+	.group-table .icon-delete {
+		margin-top: 2px;
+	}
 }
 .board-overview {
-	counter-reset: question;
+	padding-bottom: 18px;
+	counter-reset: board-overview-question;
 
 	h6 {
 		margin: 10px 0 6px;
@@ -250,9 +279,9 @@
 		line-height: 140%;
 	}
 	li:before {
-		font-weight: 600;
-		counter-increment: question;
-		content: "Q" counter(question) ". ";
+		font-weight: 800;
+		counter-increment: board-overview-question;
+		content: "Q" counter(board-overview-question) ". ";
 	}
 }
 
@@ -272,9 +301,168 @@
 	}
 }
 
+.board-section {
+	padding-top: 15px;
+	border-top: #000 1px dashed;
+
+	h6 {
+		font-style: normal;
+	}
+	.lighter {
+		font-weight: 200;
+	}
+	input, select {
+		font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+		font-size: 18px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	/* 
+		These can't be grouped together otherwise they will be ignored
+	*/
+	::-webkit-input-placeholder {
+		color: rgba(0, 0, 0, 0.75);
+	}
+	:-moz-placeholder {
+		color: rgba(0, 0, 0, 0.75);
+	}
+	::-moz-placeholder {
+		color: rgba(0, 0, 0, 0.75);
+	}
+	:-ms-input-placeholder {
+		color: rgba(0, 0, 0, 0.75);
+	}
+}
+
+.ui-date-wrap {
+	position: relative;
+
+	.hasDatepicker {
+		padding-right: 35px;
+	}
+	.ui-datepicker-trigger {
+		top: 5px;
+		right: 6px;
+		position: absolute;
+		width: 23px;
+		height: 26px;
+		background:transparent url(/assets/ru.png) -315px -347px no-repeat;
+		padding: 0;
+		margin: 0;
+	}
+}
+.icon-delete {
+	float: left;
+	width: 16px;
+	height: 16px;
+	background: url(/assets/ru.png) -371px -324px no-repeat;
+}
+.icon-complete {
+	display: inline-block;
+	width: 25px;
+	height: 20px;
+	background: url(/assets/ru.png) -357px -370px no-repeat;
+	margin-left: 10px;
+	margin-bottom: -4px;
+}
+.icon-cal--small {
+	float: left;
+	width: 17px;
+	height: 19px;
+	background: url(/assets/ru.png) -384px -369px no-repeat;
+}
+.icon-link {
+	float: right;
+	width: 28px;
+	height: 21px;
+	background: url(/assets/ru.png) -356px -369px no-repeat;
+	margin-left: 10px;
+}
+/*
+	Styles for My assignments 
+*/
+.assignments-wrap {
+	.assignment:first-child {
+		border-top: none;
+	}
+}
+.assignment {
+	position: relative;
+	@extend .clearfix;
+	margin: 0 15px;
+	border-top:#b1b1b1 1px solid;
+	padding: 20px 0;
+
+
+	h3 {
+		font-size: 18px;
+
+		a {
+			color: #333;
+		}
+	}
+	.board-percentage {
+		font-weight: 600;
+		line-height: 44px;
+		position: absolute;
+		left: 0;
+
+		.percent-symbol {
+			line-height: 22px;
+			font-size: 14px;
+			font-weight: 400;
+			padding-left: 2px;
+			margin-right: -2px;
+		}
+	}
+	.board-info {
+		float: left;
+		margin-top: 6px;
+		margin-left: 90px;
+
+		p {
+			font-size: 15px;
+		}
+	}
+
+	.board-levels {
+		float: none;
+		font-weight: 600;
+		margin-bottom: 6px;
+	}
+
+	.board-overview {
+		padding-bottom: 0;
+	}
+
+	.overdue {
+		color: #be4c4c;
+		font-weight: 600;
+	}
+
+}
+.board-link {
+	text-align: right;
+	font-size: 18px;
+	padding-right: 0;
+
+	a {
+		display: inline-block;
+	}
+
+	P {
+		font-size: 18px;
+		margin: 0;
+	}
+}
 /* 
 	All media queries 
 */
+@media #{$large-up} {
+	.board-link {
+		margin-top: 45px;
+	}
+}
 @media #{$medium-up} {
 	.boards-filters {
 		float: right;
@@ -285,6 +473,24 @@
 		}
 		li {
 			width: auto;
+		}
+	}
+	.assign-board-wrap {
+		.ru_share_link {
+			right: 40px;
+		}
+	}
+	.board-link {
+		margin-top: 25px;
+	}
+}
+@media #{$medium-only} {
+	.assignment .board-info {
+		margin-left: 70px;
+	}
+	.assignment {
+		.icon-link {
+			display: none;
 		}
 	}
 }
@@ -304,4 +510,40 @@
 			padding-right: 40px;
 		}
 	}
+
+	.assignment {
+		.columns {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.board-overview {
+			padding-bottom: 20px;
+		}
+		.board-link {
+			text-align: left;
+
+			a {
+				font-size: 1.25rem;
+				font-weight: 600;
+				font-style: italic;
+				text-align: center;
+				color: $ru_green;
+				width: 100%;
+				background-color: #f5f5f5;
+				border: #999 1px solid;
+				padding-top: 0.6rem;
+				padding-bottom: 0.6rem;
+				margin-top: 25px;
+
+				&:hover {
+					color: $ru_green;
+				}
+			}
+			
+		}
+		.icon-link {
+			display: none;
+		}
+	}
+
 }

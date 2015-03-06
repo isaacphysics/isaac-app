@@ -1,27 +1,41 @@
 .ru-button,
-.ru-button-big
-{
-	@include button;
+.ru-button-big {
+ 	@include button;
     font-size: 1.25rem;
     font-weight: 600;
     font-style: italic;
+
+    &.expand {
+    	padding-right: 0;
+		padding-left: 0;
+		width: 100%;
+    }
+    &.primary {
+    	background-color: #773d99;
+        &:hover {
+            background-color: #8b5aa8;
+        }
+    }
+    &.secondary {
+    	background-color: #333;
+		&:hover {
+			background-color: #666;
+		}
+    }
+    &.tertiary {
+    	background-color: #f5f5f5;
+		color: #333;
+		border: 1px solid #999;
+        &:hover {
+            background-color: #f6f6f6;
+        }
+    }
 }
 .ru-button {
 	padding-top: 0.3rem;
     padding-bottom: 0.3rem;
 }
 .ru-button-big {
-    padding-top: 0.6rem;
+	padding-top: 0.6rem;
     padding-bottom: 0.6rem;
-}
-.ru-button.expand, .ru-button-big.expand {
-	padding-right: 0;
-	padding-left: 0;
-	width: 100%;
-}
-.ru-button.secondary, .ru-button-big.secondary {
-	background: #333;
-	&:hover {
-		background: #666;
-	}
 }
