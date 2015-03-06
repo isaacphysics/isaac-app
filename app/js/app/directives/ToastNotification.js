@@ -20,29 +20,35 @@
 
 			restrict: "A",
 
-			template: "<div ng-show='toastNotificationVisible' class='toast' ng-class='{error : toastTypeFailure}'> \
-					    	<div class='toast-icon'> \
-					    		<span class='toast-complete-icon'></span> \
-					    	</div> \
-					    	<div class='toast-message'> \
-					    		<h4>{{toastTitle}}</h4> \
-					    		<p>{{toastDescription}}</p> \
+			template: "<div class='toast' ng-class='{error : toastType === toastTypes.Failure, toastRevealAnimation : toastNotificationVisible}'> \
+							<div class='innerToast'> \
+						    	<div class='toast-icon'> \
+						    		<span class='toast-complete-icon'></span> \
+						    	</div> \
+						    	<div class='toast-message'> \
+						    		<h4>{{toastTitle}}</h4> \
+						    		<p>{{toastDescription}}</p> \
+						    	</div> \
 					    	</div> \
 					    </div>",
 
 			link: function(scope, elements, attrs){
+
+				//notes - removed ng-show to use animation instead
+
 				scope.toastNotificationVisible = false;
 				scope.toastTitle = "Title";
 				scope.toastDescription = "Description";
-				scope.toastTypeFailure = false;
+				scope.toastTypes = {'Success' : 1, 'Failure': 2};
+				scope.toastType = scope.toastTypes.Success; 
 
-				scope.showToast = function(isTypeFailure, title, description){
+				scope.showToast = function(toastType, title, description){
+					clearTimeout(scope.toastTimeouts);
 					scope.toastTitle = title;
 					scope.toastDescription = description;
-					scope.toastTypeFailure = isTypeFailure;
+					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
-					
-					//setTimeout(scope.hideToast, 2000);
+					scope.toastTimeouts = setTimeout(scope.hideToast, 3000);
 				};
 
 
