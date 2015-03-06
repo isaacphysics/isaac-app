@@ -56,7 +56,7 @@ define([], function() {
         		$scope.newGroup = {}
         		
         	}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Group Save operation failed", "With error message: (" + e.status + ") " + e.data.errorMessage);
+        			$scope.showToast($scope.toastTypes.Failure, "Group Save operation failed", "With error message: (" + e.status + ") " + ((e.data.errorMessage != undefined) ? e.data.errorMessage : "" )));
         	});
 		}
 
@@ -66,7 +66,7 @@ define([], function() {
 				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user._id}).$promise.then(function(result){
 					$scope.selectedGroupMembers = result;
 				}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Operation Failed", "With error message: (" + e.status + ") " + e.data.errorMessage);
+        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Operation Failed", "With error message: (" + e.status + ") " + ((e.data.errorMessage != undefined) ? e.data.errorMessage : "" )));
 				});
 			} else {
 				return;
