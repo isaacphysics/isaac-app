@@ -43,12 +43,12 @@
 				scope.toastType = scope.toastTypes.Success; 
 
 				scope.showToast = function(toastType, title, description){
+					clearTimeout(scope.toastTimeouts);
 					scope.toastTitle = title;
 					scope.toastDescription = description;
 					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
-					
-					setTimeout(scope.hideToast, 3000);
+					scope.toastTimeouts = setTimeout(scope.hideToast, 3000);
 				};
 
 
