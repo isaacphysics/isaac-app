@@ -135,7 +135,7 @@ define([], function() {
         		$scope.currentGameBoard = gb;
         		$state.go('board', {id: gb.id})
         	}).catch(function(e) {
-        		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + ((e.data.errorMessage != undefined) ? e.data.errorMessage : "" )));
+        		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         		gameBoardToSave.wildCard = wildCard
         	});
         }
