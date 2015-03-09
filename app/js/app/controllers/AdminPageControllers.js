@@ -66,7 +66,7 @@ define([], function() {
 		}
 	}]
 
-	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', function($scope, auth, api, $window, $rootScope, gameBoardTitles) {
 			$rootScope.pageTitle = "Statistics Page";
 
 			$scope.contentVersion = api.contentVersion.get();
@@ -80,6 +80,8 @@ define([], function() {
 			$scope.visibleStatsPanel = null;
 
 			$scope.statsLoading = false;
+
+			$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
 			$scope.getGameboardListData = function() {
 				$scope.visibleStatsPanel = "gameboardList";

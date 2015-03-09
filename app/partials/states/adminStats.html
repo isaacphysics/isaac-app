@@ -38,7 +38,7 @@
                 	</tr>
                 	<tr ng-repeat="item in gameboardListData.board_list">
                 		<td><a href="javascript:void(0)" ui-sref="board({id: item.gameboard.id})">{{item.gameboard.id}}</a></td>
-                		<td>{{item.gameboard.title}}</td>
+                		<td>{{item.gameboard.title || generateGameBoardTitle(item.gameboard)}}</td>
                 		<td>{{item.connections}}</td>
                 	</tr>
                 </table>
