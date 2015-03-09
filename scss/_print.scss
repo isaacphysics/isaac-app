@@ -72,8 +72,8 @@
         color: $ru_green !important;
     }
 
-    .physics div.ng-scope h4 {
-        color: $ru_physics !important;
+    .biology div.ng-scope h4 {
+        color: $ru_biology !important;
     }
 
 
@@ -95,9 +95,9 @@
     }
 
 
-    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
+    .accordion.ru_accordion.biology dd a.ru_accordion_titlebar .ru_accordion_name
     {
-        border: 0px solid $ru_physics;
+        border: 0px solid $ru_biology;
         background-color: transparent !important;
     }
 
@@ -107,9 +107,9 @@
         background-color: transparent !important;
     }
 
-    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
+    .accordion.ru_accordion.biology dd a.ru_accordion_titlebar:hover .ru_accordion_name
     {
-        border: 0px solid lighten($ru_physics, $ru_site_hover);
+        border: 0px solid lighten($ru_biology, $ru_site_hover);
     }
 
     .accordion.ru_accordion.maths dd a.ru_accordion_titlebar:hover .ru_accordion_name
@@ -242,8 +242,8 @@
             display: inline;
         }
 
-        li.physics:before, span.physics {
-            color: $ru_physics !important;
+        li.biology:before, span.biology {
+            color: $ru_biology !important;
         }
 
         li.maths:before, span.maths {

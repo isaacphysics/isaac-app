@@ -21,7 +21,7 @@
                     <div class='medium-7 columns'>
                         <span ng-if="!breadCrumbSubject">&nbsp;</span>
                         <a class="ru-crumb" ng-click="openFilterPanel('desktop-filter')" href="javascript:void(0)">
-                            <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, physics: breadCrumbSubject == 'physics', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
+                            <ul ng-if="breadCrumbSubject" ng-class="{'ru-crumb': true, biology: breadCrumbSubject == 'biology', maths: breadCrumbSubject == 'maths', 'multiple-subjects': breadCrumbSubject == 'multiple_subjects'}">
                                 <li ng-if="breadCrumbSubject" ng-bind-html="getTagTitle(breadCrumbSubject)"></li>
                                 <li ng-if="breadCrumbField" ng-bind-html="getTagTitle(breadCrumbField)"></li>
                                 <li ng-if="breadCrumbTopic" ng-bind-html="getTagTitle(breadCrumbTopic)"></li>
@@ -195,10 +195,10 @@
                         </feComponentTransfer>
                     </filter>
 
-                    <pattern id="physics" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <pattern id="biology" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-purple-bg.png" x="0" y="0" width="1" height="2" />
                     </pattern> 
-                    <pattern id="physics-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
+                    <pattern id="biology-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-purple-bg-hover.png" x="0" y="0" width="1" height="2" />
                     </pattern>
 

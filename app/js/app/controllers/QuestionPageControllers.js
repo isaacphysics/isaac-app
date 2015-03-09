@@ -29,7 +29,7 @@ define([], function() {
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = "physics";
+		var pageSubject = "biology";
 		for(var i in subjects) {
 			if (pageTags.indexOf(subjects[i].id) > -1) {
 				pageSubject = subjects[i].id;
@@ -89,7 +89,7 @@ define([], function() {
 
 			switch(id) {
 				case "multiple_subjects":
-					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+					return $sce.trustAsHtml("Biology&nbsp;&amp;&nbsp;Maths");
 				case "multiple_fields":
 					return $sce.trustAsHtml("Multiple Fields");
 				case "multiple_topics":

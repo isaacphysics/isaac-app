@@ -32,13 +32,13 @@ define([], function() {
 		$scope.allConcepts = conceptList.results;
 		$rootScope.pageTitle = "Concept Index";
 		
-		$scope.includePhysics = true;
+		$scope.includeBiology = true;
 		$scope.includeMaths = true;
 
 		$scope.subjectFilter = function(input) {
 			if (!input.tags)
 				return false;
-			return (input.tags.indexOf("physics") > -1 && $scope.includePhysics) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
+			return (input.tags.indexOf("biology") > -1 && $scope.includeBiology) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
 		}
 
 		persistence.session.save("conceptPageSource", $location.url());

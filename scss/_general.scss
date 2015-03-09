@@ -160,9 +160,9 @@ $footer_height : 250px;
 {
     color: #dc5757 !important;
 }
-.ru_physics, .panel.physics *
+.ru_biology, .panel.biology *
 {
-    color: $ru_physics !important;
+    color: $ru_biology !important;
 }
 
 .panel
@@ -171,9 +171,9 @@ $footer_height : 250px;
     //margin-right: 1.25rem;
 }
 
-.panel.physics
+.panel.biology
 {
-    border: 1px solid $ru_physics !important;
+    border: 1px solid $ru_biology !important;
 }
 
 .panel.maths
@@ -204,8 +204,8 @@ $footer_height : 250px;
 {
     font-weight: bold;
 
-    &.physics {
-        color: $ru_physics !important;
+    &.biology {
+        color: $ru_biology !important;
     }
 
     &.maths {

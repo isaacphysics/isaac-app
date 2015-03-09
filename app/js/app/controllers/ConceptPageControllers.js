@@ -36,7 +36,7 @@ define([], function() {
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = "physics";
+		var pageSubject = "biology";
 		for(var i in subjects) {
 			if (pageTags.indexOf(subjects[i].id) > -1) {
 				pageSubject = subjects[i].id;

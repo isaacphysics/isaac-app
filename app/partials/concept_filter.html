@@ -3,13 +3,13 @@
 	<h3>Filter by Concept<!-- <a href=''><small>(What's this?)</small></a>--></h3>
 	<input type="text" placeholder="Concept title" ng-model="conceptInput">
 	<div id="concept-search-data">
-		<div ng-repeat="c in allConcepts.results | filter:removeSelected | filter:{title: conceptInput}:titleMatcher | limitTo:4" class='concept-search-result physics' ng-click="selectConcept(c.id)">
+		<div ng-repeat="c in allConcepts.results | filter:removeSelected | filter:{title: conceptInput}:titleMatcher | limitTo:4" class='concept-search-result biology' ng-click="selectConcept(c.id)">
 			<div>{{ c.title }}</div>
 		</div>
 	</div>
 	<div id="concept-results">
 		<div ng-repeat="id in selectedConceptIds" class='concept-search-result'
-		     ng-class="conceptMap[id].subject || 'physics'" ng-click="deselectConcept($index)">
+		     ng-class="conceptMap[id].subject || 'biology'" ng-click="deselectConcept($index)">
 			<div>{{conceptMap[id].title || id}}</div>
 		</div>
 	</div>

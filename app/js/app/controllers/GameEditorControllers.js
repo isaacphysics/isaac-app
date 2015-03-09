@@ -123,7 +123,7 @@ define([], function() {
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
-        	gameBoardToSave.gameFilter = {subjects:["physics"]} // TODO default to physics for now
+        	gameBoardToSave.gameFilter = {subjects:["biology"]} // TODO default to biology for now
         	
         	// clear placeholder wildcard so that server picks one.
         	gameBoardToSave.wildCard = null

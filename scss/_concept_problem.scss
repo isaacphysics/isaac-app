@@ -119,8 +119,8 @@
     {
         color: white;
 
-        &.physics {
-            background-color: lighten($ru_physics, $ru_site_hover);
+        &.biology {
+            background-color: lighten($ru_biology, $ru_site_hover);
         }
 
         &.maths {
@@ -129,12 +129,12 @@
     }
 }
 
-.ru-problem-button.physics
+.ru-problem-button.biology
 {
-    background-color: $ru_physics;
+    background-color: $ru_biology;
     &:hover
     {
-        background-color: lighten($ru_physics, $ru_site_hover);
+        background-color: lighten($ru_biology, $ru_site_hover);
     }
 }
 
@@ -348,7 +348,7 @@
     }
 }
 
-.ru-answer-correct-summary.physics
+.ru-answer-correct-summary.biology
 {
     background-color: $ru_darkpurple;
 }
@@ -363,9 +363,9 @@
     padding: 1rem 0 1rem 0;
 }
 
-.ru-answer-correct.physics
+.ru-answer-correct.biology
 {
-    background-color: $ru_physics;   
+    background-color: $ru_biology;   
 }
 
 .ru-answer-correct.maths
@@ -453,7 +453,7 @@
     margin-left: 30px;
 }
 
-.ru-answer-orbit .ru-answer-orbit-prev a.physics:hover, .ru-answer-orbit .ru-answer-orbit-next a.physics:hover
+.ru-answer-orbit .ru-answer-orbit-prev a.biology:hover, .ru-answer-orbit .ru-answer-orbit-next a.biology:hover
 {
     background-image: url(/assets/icon-arrow-physics.png);
 }
@@ -532,7 +532,7 @@
     cursor: pointer;   
 }
 
-.ru-expand.physics div
+.ru-expand.biology div
 {
     background-image: url(/assets/icon-expand-physics.png);
 

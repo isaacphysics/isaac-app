@@ -87,16 +87,16 @@
     position: relative;
 }
 
-.accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
+.accordion.ru_accordion.biology dd a.ru_accordion_titlebar .ru_accordion_name
 {
-    background-color: $ru_physics;
-    border-top: 3px solid $ru_physics;
+    background-color: $ru_biology;
+    border-top: 3px solid $ru_biology;
 }
 
-.accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
+.accordion.ru_accordion.biology dd a.ru_accordion_titlebar:hover .ru_accordion_name
 {
-    background-color: lighten($ru_physics, $ru_site_hover);
-    border-top: 3px solid lighten($ru_physics, $ru_site_hover);
+    background-color: lighten($ru_biology, $ru_site_hover);
+    border-top: 3px solid lighten($ru_biology, $ru_site_hover);
 }
 
 .accordion.ru_accordion dd:not(.active) a.ru_accordion_titlebar .ru_accordion_name:after
@@ -126,14 +126,14 @@
 
 .accordion.ru_accordion.general dd a.ru_accordion_titlebar .ru_accordion_name
 {
-    background-color: $ru_physics;
-    border-top: 3px solid $ru_physics;
+    background-color: $ru_biology;
+    border-top: 3px solid $ru_biology;
 }
 
 .accordion.ru_accordion.general dd a.ru_accordion_titlebar:hover .ru_accordion_name
 {
-    background-color: lighten($ru_physics, $ru_site_hover);
-    border-top: 3px solid lighten($ru_physics, $ru_site_hover);
+    background-color: lighten($ru_biology, $ru_site_hover);
+    border-top: 3px solid lighten($ru_biology, $ru_site_hover);
 }
 
 
@@ -232,7 +232,7 @@
 // Ratings hexagons
 
 $ru_level_prefix : '/assets/isaac-level-marker-';
-$ru_types :(physics, maths);
+$ru_types :(biology, maths);
 $ru_levels : 6;
 $ru_inactive: 'inactive';
 

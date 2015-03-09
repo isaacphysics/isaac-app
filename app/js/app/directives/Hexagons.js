@@ -62,7 +62,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 if(d.type === 'isaacWildcard')
                 {
                     $(this).addClass('ru-hex-home-field');
-                    $(this).addClass('ru-hex-home-field-physics');
+                    $(this).addClass('ru-hex-home-field-biology');
                 }
                 else
                 {
@@ -165,7 +165,7 @@ define(["app/honest/hexagon"],function(hexagon) {
 
         // Apply hexagon gradient styles (only if svg #svg-patterns - is accessible on the page. If not default to plain.)
         if ($("#svg-patterns").length) {
-            $.each(['physics','maths'], function(i, name)
+            $.each(['biology','maths'], function(i, name)
             {
                 for(var i = 1; i <= 5; i++)
                 {

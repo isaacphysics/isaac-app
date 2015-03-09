@@ -73,7 +73,7 @@ ul.ru-crumb li
 
 }
 
-ul.ru-crumb.physics li
+ul.ru-crumb.biology li
 {
     &:before
     {
@@ -114,7 +114,7 @@ ul.ru-crumb.multiple-subjects li
 {
     &:before
     {
-        content: url(/assets/crumb-physics.png);
+        content: url(/assets/crumb-biology.png);
         display: block;
         width: 112px;
         height: 28px;
@@ -124,7 +124,7 @@ ul.ru-crumb.multiple-subjects li
     }
     &:last-child:before
     {
-        content: url(/assets/crumb-physics-end.png);
+        content: url(/assets/crumb-biology-end.png);
     }
 }
 
@@ -175,13 +175,13 @@ ul.ru-crumb.multiple-subjects li
         font-size: 0.8rem;
     }
 
-    .ru-mobile-crumb ul.physics li:not(:first-child)
+    .ru-mobile-crumb ul.biology li:not(:first-child)
     {
         &:before
         {
             content: '> ';
             display: inline;
-            color: $ru_physics;
+            color: $ru_biology;
             padding: 0px 2px;
         }
     }
@@ -282,9 +282,9 @@ $col_values : 5;
         outline: none;
         &:focus
         {
-            .hex-physics#{$i}
+            .hex-biology#{$i}
             {
-                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);           
+                fill: url('#biology-hover') lighten( $ru_purple, $ru_site_hover);           
             }
             .hex-maths#{$i}
             {
@@ -315,9 +315,9 @@ $col_values : 5;
 
     @for $i from 1 through $col_values
     {
-        .hex-physics#{$i}
+        .hex-biology#{$i}
         {
-            fill: url('#physics') $ru_purple; 
+            fill: url('#biology') $ru_purple; 
         }
 
         .hex-maths#{$i}
@@ -341,9 +341,9 @@ $col_values : 5;
 
         @for $i from 1 through $col_values
         {
-            .hex-physics#{$i}
+            .hex-biology#{$i}
             {
-                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);
+                fill: url('#biology-hover') lighten( $ru_purple, $ru_site_hover);
             }
 
             .hex-maths#{$i}
@@ -403,8 +403,8 @@ $col_values : 5;
     margin-left: auto;
     margin-right: auto;
 
-    &.ru-hex-home-field-physics {
-        background-image: url(/assets/hex-icons/icon-hex-physics.png);
+    &.ru-hex-home-field-biology {
+        background-image: url(/assets/hex-icons/icon-hex-biology.png);
     }
     &.ru-hex-home-field-mechanics {
         background-image: url(/assets/hex-icons/icon-hex-mechanics.png);

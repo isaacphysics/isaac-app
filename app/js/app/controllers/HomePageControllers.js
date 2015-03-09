@@ -41,10 +41,10 @@ define([], function() {
 			})
 		}
 
-		$scope.filterSubjects = ["physics"];
+		$scope.filterSubjects = ["biology"];
 		$scope.filterFields = [];
 		$scope.filterTopics = [];
-		$scope.filterLevels = [1];
+		$scope.filterLevels = [5,6];
 		$scope.filterConcepts = [];
 
 		function setWarnings() {
@@ -262,7 +262,7 @@ define([], function() {
 
 			switch(id) {
 				case "multiple_subjects":
-					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+					return $sce.trustAsHtml("Biology&nbsp;&amp;&nbsp;Maths");
 				case "multiple_fields":
 					return $sce.trustAsHtml("Multiple Fields");
 				case "multiple_topics":

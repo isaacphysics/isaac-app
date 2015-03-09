@@ -21,69 +21,46 @@ define([], function() {
 			// Subjects
 
 			{
-				id: "physics"
+				id: "biology"
 			}, {
 				id: "maths"
 			}, 
 
-			// Physics fields
+			// Biology fields
 
 			{
-				id: "mechanics",
-				parent: "physics"
+				id: "ecology",
+				parent: "biology"
 			}, {
-				id: "waves",
-				parent: "physics",
-				enabled: false,
-				comingSoon: true,
-			}, {
-				id: "fields",
-				parent: "physics",
-				comingSoon: true,
-			}, {
-				id: "circuits",
-				parent: "physics",
-				enabled: false,
-				comingSoon: true,
+				id: "genetics",
+				parent: "biology",
+				enabled: true,
+				comingSoon: false,
 			},
 
 			// Mechanics topics
 
 			{
-				id: "statics",
-				parent: "mechanics"
+				id: "populations",
+				parent: "ecology"
 			}, {
-				id: "dynamics",
-				parent: "mechanics"
-			}, {
-				id: "shm",
-				title: "SHM",
-				parent: "mechanics"
-			}, {
-				id: "angular_motion",
-				parent: "mechanics"
-			}, {
-				id: "circular_motion",
-				parent: "mechanics"
-			}, {
-				id: "kinematics",
-				parent: "mechanics"
+				id: "communities",
+				parent: "ecology"
 			},
 
 			// Fields topics
 
 			{
-				id: "electric",
-				parent: "fields"
+				id: "molecular_biology",
+				title: "Molecular Biology",
+				parent: "genetics",
+				enabled: false,
+				comingSoon: true,
 			}, {
-				id: "magnetic",
-				parent: "fields"
-			}, {
-				id: "gravitational",
-				parent: "fields"
-			}, {
-				id: "combined",
-				parent: "fields"
+				id: "transmission",
+				parent: "genetics",
+				enabled: false,
+				comingSoon: true,
 			},
 
 			// Maths fields

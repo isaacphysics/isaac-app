@@ -135,10 +135,10 @@
 
 #hexfilter-svg circle
 {
-    &.physics
+    &.biology
     {
-        fill: $ru_physics;
-        stroke: $ru_physics;
+        fill: $ru_biology;
+        stroke: $ru_biology;
     }
     &.maths
     {
@@ -156,14 +156,14 @@
 {
     transition: 0.3s;
     cursor: pointer;
-    &.physics.enabled
+    &.biology.enabled
     {
-        fill: $ru_physics;
-        stroke: $ru_physics;
+        fill: $ru_biology;
+        stroke: $ru_biology;
         &:hover
         {
-            fill: lighten($ru_physics, $ru_site_hover);
-            stroke: lighten($ru_physics, $ru_site_hover);
+            fill: lighten($ru_biology, $ru_site_hover);
+            stroke: lighten($ru_biology, $ru_site_hover);
         }
     }
     &.maths.enabled
@@ -432,7 +432,7 @@ $hex_diff_levels : 6;
     {
         background: #f3f3f3;
     }
-    &.physics:after
+    &.biology:after
     {
         position: absolute;
         content: url(/assets/physics-plus.png);
@@ -467,12 +467,12 @@ $hex_diff_levels : 6;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-    &.physics
+    &.biology
     {
-        background-color: $ru_physics;
+        background-color: $ru_biology;
         &:hover
         {
-            background-color: lighten($ru_physics, $ru_site_hover);
+            background-color: lighten($ru_biology, $ru_site_hover);
         }
     }
     &.maths

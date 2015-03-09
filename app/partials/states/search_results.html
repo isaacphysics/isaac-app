@@ -39,12 +39,12 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-click="goToState(result)">
+                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; biology = result.tags.indexOf('biology') > -1;" ng-class="{maths: maths && !biology, biology: biology && !maths, both: !biology && !maths}" ng-click="goToState(result)">
                     <div class='small-16 columns'>
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
-                                <h4><span ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}">{{result.title}}</span></h4>
+                                <h4><span ng-class="{maths: maths && !biology, biology: biology && !maths, both: biology && maths}">{{result.title}}</span></h4>
                                     <p>{{result.summary}}</p>
                                 </h4>
                             </div>

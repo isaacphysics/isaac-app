@@ -8,9 +8,9 @@ $ci_bottom_pad: 10px;
     font-weight: 200;
 }
 
-span.physics
+span.biology
 {
-    color: $ru_physics;
+    color: $ru_biology;
 }
 
 span.maths
@@ -125,9 +125,9 @@ span.maths
         padding-bottom: $ci_bottom_pad;
     }
     
-    .ru-mobile-answer-wrap.physics .ru-search-result:hover, .ru-mobile-answer-wrap.physics:focus .ru-search-result
+    .ru-mobile-answer-wrap.biology .ru-search-result:hover, .ru-mobile-answer-wrap.biology:focus .ru-search-result
     {
-        border: 1px solid $ru_physics;
+        border: 1px solid $ru_biology;
     }
     
     .ru-mobile-answer-wrap.maths .ru-search-result:hover, .ru-mobile-answer-wrap.maths:focus .ru-search-result

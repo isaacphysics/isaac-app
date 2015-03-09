@@ -58,7 +58,7 @@ define([], function() {
 
 				} else {
 
-					var title = "Physics & Maths";
+					var title = "Biology & Maths";
 				}
 
 				return title + (level || "");
