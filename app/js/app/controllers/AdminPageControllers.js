@@ -103,7 +103,18 @@ define([], function() {
 					$scope.schoolListData = result;
 					$scope.statsLoading = false;
 				});
-			}			
+			}
+
+			$scope.getSchoolUserListData = function(schoolId) {
+				$scope.visibleStatsPanel = "schoolUserList";
+				$scope.statsLoading = true;
+				var gameboardListPromise = api.statisticsEndpoint.getSchoolUsers({id: schoolId});
+
+				gameboardListPromise.$promise.then(function(result){
+					$scope.schoolUserListData = result;
+					$scope.statsLoading = false;
+				});
+			}					
 		}]
 
 	return {

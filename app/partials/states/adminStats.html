@@ -69,10 +69,44 @@
                 		<th># of users connected</th>
                 	</tr>
                 	<tr ng-repeat="item in schoolListData">
-                		<td><a href="javascript:void(0)">{{item.school.urn}}</a></td>
+                		<td><a href="javascript:void(0)" ng-click="getSchoolUserListData(item.school.urn)">{{item.school.urn}}</a></td>
                 		<td>{{item.school.name}}</td>
                 		<td>{{item.school.postcode}}</td>
                 		<td>{{item.connections}}</td>
+                	</tr>
+                </table>
+                </div>      
+            </div>
+        </div>        
+    </div>
+</div>
+
+
+<div class="row" ng-if="visibleStatsPanel == 'schoolUserList'">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Schools By User Links</h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="statsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!statsLoading">
+                <div class="small-16 columns">
+                <table>
+                	<tr>
+                		<th>Name</th>
+                		<th>Role</th>
+                		<th>Gender</th>
+                		<th>Registration Date</th>
+                	</tr>
+                	<tr ng-repeat="item in schoolUserListData">
+                		<td>{{item.familyName}}, {{item.givenName}}</td>
+                		<td>{{item.role || 'NOT_SET (Student)'}}</td>
+                		<td>{{item.gender}}</td>
+                		<td>{{item.registrationDate | date:'dd/MM/yyyy'}}</td>
                 	</tr>
                 </table>
                 </div>      

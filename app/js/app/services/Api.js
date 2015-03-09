@@ -105,7 +105,13 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/admin/stats/schools/", 
 				isArray: true 
-			}			
+			},
+			'getSchoolUsers' : {
+				method: 'GET',
+				url: server + "/api/admin/users/schools/:id", 
+				params: {id: '@id'},
+				isArray: true 
+			}		
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
