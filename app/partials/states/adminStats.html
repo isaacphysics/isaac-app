@@ -69,7 +69,7 @@
                 		<th># of users connected</th>
                 	</tr>
                 	<tr ng-repeat="item in schoolListData">
-                		<td><a href="javascript:void(0)" ng-click="getSchoolUserListData(item.school.urn)">{{item.school.urn}}</a></td>
+                		<td><a href="javascript:void(0)" ng-click="getSchoolUserListData(item.school.urn, item.school.name)">{{item.school.urn}}</a></td>
                 		<td>{{item.school.name}}</td>
                 		<td>{{item.school.postcode}}</td>
                 		<td>{{item.connections}}</td>
@@ -81,12 +81,11 @@
     </div>
 </div>
 
-
 <div class="row" ng-if="visibleStatsPanel == 'schoolUserList'">
     <div class="small-16 columns">
         <div class="panel white clearfix">
             <div class="small-16 columns">
-                <h2>Schools By User Links</h2>
+                <h2>User's at {{schoolSelected}}</h2>
             </div>
             <div class="small-16 columns">
                 <div class="text-center" ng-if="statsLoading">

@@ -105,11 +105,12 @@ define([], function() {
 				});
 			}
 
-			$scope.getSchoolUserListData = function(schoolId) {
+			$scope.getSchoolUserListData = function(schoolId, schoolName) {
 				$scope.visibleStatsPanel = "schoolUserList";
 				$scope.statsLoading = true;
 				var gameboardListPromise = api.statisticsEndpoint.getSchoolUsers({id: schoolId});
-
+				$scope.schoolSelected = schoolName;
+				
 				gameboardListPromise.$promise.then(function(result){
 					$scope.schoolUserListData = result;
 					$scope.statsLoading = false;
