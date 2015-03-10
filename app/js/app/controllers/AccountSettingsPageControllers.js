@@ -183,6 +183,7 @@ define([], function() {
         	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
         		$scope.activeAuthorisations = api.authorisations.get();
         		$scope.authenticationToken = {value: null};
+        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
         	}).catch(function(e){
         		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	})        		
@@ -194,6 +195,7 @@ define([], function() {
         	if(revoke) {
 	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
+	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
 	        	}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 	        	})        		

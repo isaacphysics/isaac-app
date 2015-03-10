@@ -63,9 +63,9 @@ define([], function() {
         		$scope.myGroups = api.groupManagementEndpoint.get();
         		$scope.selectedGroup = grp;
         		$scope.newGroup = {}
-        			$scope.showToast($scope.toastTypes.Success, groupToSave.groupName + " group has been saved successfully.");
+        			$scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
         	}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Group Save operation failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Group Save failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
 		}
 
@@ -74,8 +74,9 @@ define([], function() {
 			if (deleteMember) {
 				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user._id}).$promise.then(function(result){
 					$scope.selectedGroupMembers = result;
+					$scope.showToast($scope.toastTypes.Success, "User Removed", "The user has been removed successfully.");
 				}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Operation Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});
 			} else {
 				return;
