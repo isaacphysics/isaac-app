@@ -32,8 +32,10 @@
   </head>
   <body>
         <div ng-include="'/partials/mobile_pre_header.html'"></div>
-            <!-- Toast message -->
-            <div toast-notification></div>
+        
+        <!-- Toast message. Must be a child of root scope. -->
+        <div toast></div>
+
         <!-- Container for hexagon background -->
         <div class='bg-wrap'>
             <div ng-include="'/partials/cookie-message.html'"></div>
