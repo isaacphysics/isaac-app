@@ -392,6 +392,19 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('adminStats', {
+                url: "/admin/stats",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/adminStats.html",
+                        controller: "AdminStatsPageController",
+                    }
+                }
+            })
+
              .state('gameEditor', {
                 url: "/game_builder",
                 resolve: {
@@ -408,7 +421,8 @@ define(["angular-ui-router"], function() {
             .state('groupManagment', {
                 url: "/groups",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    //requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR"]), // temporary fix to stop people using it.
                 },                
                 views: {
                     "body": {
@@ -426,6 +440,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/assign_boards.html",
+                        controller: "SetAssignmentsPageController",
                     }
                 }
             })
@@ -438,6 +453,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/my_assignments.html",
+                        controller: "MyAssignmentsPageController",                        
                     }
                 }
             })

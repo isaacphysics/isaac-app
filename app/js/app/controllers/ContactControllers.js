@@ -15,7 +15,8 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'api', '$state', function($scope, api, $state) {
+	var PageController = ['$scope', 'api', '$state', '$rootScope', function($scope, api, $state, $rootScope) {
+		$rootScope.pageTitle = "Contact us";
 		if ($scope.user) {
 			$scope.user.$promise.then(function() {
 				$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				

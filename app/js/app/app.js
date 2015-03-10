@@ -99,6 +99,17 @@ define([
 
         auth.updateUser();
 
+        var mathjaxRenderTimeout = null;
+
+        $rootScope.requestMathjaxRender = function() {
+            if (mathjaxRenderTimeout)
+                clearTimeout(mathjaxRenderTimeout);
+
+            setTimeout(function() { 
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            }, 500);
+        }
+
         $rootScope.figures = {};
 
         $rootScope.globalFlags = {
@@ -123,6 +134,11 @@ define([
             $(document).scrollTop(0);
             $rootScope.figures = {};
             $rootScope.relativeCanonicalUrl = $location.path();
+
+            // we need to tell opentip to reapply everytime we change state
+            setTimeout(function(){
+                Opentip.findElements();
+            }, 0);
         })
 
         $rootScope.$on("$stateChangeError", function() {
@@ -163,10 +179,11 @@ define([
                 }
             });
 
-            // we need to tell foundation and opentip to reapply everytime new content may have been added
+            // we need to tell foundation to reapply everytime new content may have been added
             $(document).foundation('interchange', 'reflow');
-            Opentip.findElements()
-
+            // we also need to tell open tip to reinitialise when new content is added.
+            Opentip.findElements();
+            
             // Global jQuery
             $(function()
             {

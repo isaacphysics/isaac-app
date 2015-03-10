@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["lib/opentip-jquery"], function() {
+define([], function() {
 
     return ["$location", function($location) {
 		return {
@@ -26,7 +26,7 @@ define(["lib/opentip-jquery"], function() {
             	var flyin;
 
                 var applyDisabledToolTips = function() {
-                    $('.disabled a').each(function(index, element){
+                    element.find('.disabled a').each(function(index, element){
                         new Opentip(element, "This feature is coming soon.");
                     })                    
                 }

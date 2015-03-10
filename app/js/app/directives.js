@@ -53,6 +53,7 @@ define([
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
     "app/directives/d3/Donut",
+    "app/directives/ToastNotification",
 	], function() {
 
 	/* Directives */
@@ -96,6 +97,8 @@ define([
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
+
+	.directive('toastNotification', require("app/directives/ToastNotification"))
 
 	// Content Directives
 
@@ -201,5 +204,18 @@ define([
 				});
 			},
 		};
+	}])
+
+	.directive('ngContent', ["$rootScope", function() {
+		return {
+			scope: {
+				ngContent: "=",
+			},
+			link: function(scope, element, attrs) {
+				scope.$watch("ngContent", function(newContent) {
+					element.attr("content", newContent);
+				})
+			}
+		}
 	}])
 });

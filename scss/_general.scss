@@ -293,7 +293,7 @@ ol.ru_ol > li:before {
     color: $ru_green;
 }
 
-// Block adjustgments
+// Block adjustments
 
 figure
 {
@@ -438,4 +438,11 @@ h6~.subheader { position: relative; bottom:  8px;}
 
 .video-fix {
     margin: 0 -6.25% !important;
+}
+
+
+// Questions
+.question-prefix{
+    position:absolute;
+    margin-left:-30px
 }

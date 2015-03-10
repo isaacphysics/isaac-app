@@ -12,7 +12,7 @@
     <meta name="Description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.">
 
     <meta property="og:url" content="https://isaacphysics.org/" /> 
-    <meta property="og:title" content="Isaac Physics" />
+    <meta property="og:title" ng-content="'Isaac Physics' + (pageTitle ? ' - ' + pageTitle : '' )" />
     <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
     <meta property="og:image" content="https://isaacphysics.org/assets/isaac-logo@2xWider.png" />
 
@@ -24,13 +24,16 @@
     <link rel="icon" href="/assets/favicon/isaac-favicon-196x196.png" sizes="196x196">
     <link rel="stylesheet" href="/css/app.css" />
 
-    <!--script type="text/javascript" src="http://cdn.dtg.cl.cam.ac.uk/MathJax-2.4-latest/MathJax.js?delayStartupUntil=configured"> </script-->
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntil=configured"> </script>
+    <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.4/MathJax.js?delayStartupUntil=configured"> </script>
+
+    <!--script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?delayStartupUntil=configured"> </script-->
 
     <script src="/js/lib/require.js" data-main="/js/isaac.js"></script>
   </head>
   <body>
         <div ng-include="'/partials/mobile_pre_header.html'"></div>
+            <!-- Toast message -->
+            <div toast-notification></div>
         <!-- Container for hexagon background -->
         <div class='bg-wrap'>
             <div ng-include="'/partials/cookie-message.html'"></div>

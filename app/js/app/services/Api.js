@@ -95,7 +95,23 @@ define([], function() {
 			'get' : {
 				method: 'GET', 
 				isArray: false 
-			}
+			},
+			'getGameboardPopularity' : {
+				method: 'GET',
+				url: server + "/api/gameboards/popular", 
+				isArray: false 
+			},
+			'getSchoolPopularity' : {
+				method: 'GET',
+				url: server + "/api/admin/stats/schools/", 
+				isArray: true 
+			},
+			'getSchoolUsers' : {
+				method: 'GET',
+				url: server + "/api/admin/users/schools/:id", 
+				params: {id: '@id'},
+				isArray: true 
+			}		
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
@@ -121,10 +137,59 @@ define([], function() {
 			},			
 			'getToken' : {
 				method: 'GET',
-				url: server + "/api/authorisations/associations/token/:id", 
+				url: server + "/api/authorisations/token/:id", 
 				isArray: false 
 			}			
 		});
+
+		this.authorisations = $resource(server + "/api/authorisations/", {}, {
+			'get' : {
+				method: 'GET', 
+				isArray: true 
+			},
+			'useToken' : {
+				method: 'POST',
+				url: server + "/api/authorisations/use_token/:token",
+				params: {token: '@token'}
+			},			
+			'revoke' : {
+				method: 'DELETE',
+				url: server + "/api/authorisations/:id" 
+			},			
+			'getOthers' : {
+				method: 'GET',
+				url: server + "/api/authorisations/other_users", 
+				isArray: true 
+			}			
+		});	
+
+		this.assignments = $resource(server + "/api/assignments/", {}, {
+			'getMyAssignments' : {
+				method: 'GET', 
+				isArray: true 
+			},
+			'getAssignmentsOwnedByMe' : {
+				method: 'GET', 
+				isArray: true,
+				url: server + "/api/assignments/assign", 
+			},
+			'getAssignedGroups' : {
+				method: 'GET', 
+				isArray: true,
+				url: server + "/api/assignments/assign/:gameId", 
+				params: {gameId: '@gameId'}
+			},					
+			'assignBoard' : {
+				method: 'POST',
+				url: server + "/api/assignments/assign/:gameId/:groupId",
+				params: {gameId: '@gameId', groupId: '@groupId'}
+			},			
+			'unassignBoard' : {
+				method: 'DELETE',
+				url: server + "/api/assignments/assign/:gameId/:groupId",
+				params: {gameId: '@gameId', groupId: '@groupId'}
+			}			
+		});				
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {

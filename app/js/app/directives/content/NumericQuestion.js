@@ -78,8 +78,12 @@ define(["app/honest/responsive_video"], function(rv) {
 					if (scope.selectedChoice.units != undefined) {
 						if (scope.selectedChoice.units == "")
 							scope.selectedUnitsDisplay = "None";
-						else
+						else {
 							scope.selectedUnitsDisplay = "$\\units{" + scope.selectedChoice.units + "}$";
+							setTimeout(function() {
+								$rootScope.requestMathjaxRender();
+							}, 0);
+						}
 					} else {
 						scope.selectedUnitsDisplay = "";
 					}
@@ -104,6 +108,9 @@ define(["app/honest/responsive_video"], function(rv) {
 						if (scope.accordionSection != null) {
 							if (r.correct) {
 								scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓");
+								setTimeout(function() {
+									$rootScope.requestMathjaxRender();
+								}, 0);
 							} else {							
 								scope.$emit("newQuestionAnswer", scope.accordionSection);
 							}
