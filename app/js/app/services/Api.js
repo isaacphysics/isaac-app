@@ -48,7 +48,12 @@ define([], function() {
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
 
-		this.currentUser = $resource(server + "/api/users/current_user");
+		this.currentUser = $resource(server + "/api/users/current_user", {}, {
+			'getProgress': {
+				method: 'GET',
+				url: server + "/api/users/current_user/progress",
+			},
+		});
 
 		this.authentication = $resource("", {}, {
 			'getAuthRedirect': {
@@ -282,6 +287,7 @@ define([], function() {
 				url: server + "/api/admin/live_version/:version",
 			}
 		})
+
 
 	}
 

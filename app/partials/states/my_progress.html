@@ -1,0 +1,62 @@
+<div class="row ru-page-heading">
+    <div class="medium-13 columns">
+        <h1>My Progress</h1>
+        <p class="hide-for-small-only">Keep track of your progress acrross the whole year.</p>
+    </div>
+    <div class="medium-3 columns text-right hide-for-small-only">
+        <span data-ot="Information about current page" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+    </div>
+</div>
+<div class="progress-wrap">
+   <div class="row">
+      <div class="large-16 columns">
+         <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+            <li>
+               <h6>Questions answered <span class="ru_green">correctly</span></h6>
+               <div progress-bar class="progress-bar" value="progress.total_correct" max="progress.total_questions_attempted"></div>
+            </li>
+            <li>
+               <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
+               <div progress-bar class="progress-bar" value="progress.total_correct_first_time" max="progress.total_questions_attempted"></div>
+            </li>
+
+            <li class="show-for-medium-up">
+               <!--<a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>-->
+            </li>
+<!--
+            <li>
+            <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+               <div d3-donut data="subjectData" color-palette="subjects"></div>
+            </li>
+-->
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+               <div d3-donut data="subjectData" color-palette="subjects"></div>
+            </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Field</span></h6>
+               <div d3-donut data="fieldData" color-palette="fields"></div>
+            </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Level</span></h6>
+               <div d3-donut data="levelData" color-palette="levels"></div>
+            </li>
+
+            <li class="hide-for-medium-up">
+               <!--<a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>-->
+            </li>
+
+         </ul>
+      </div>
+   </div>
+</div>
+
+<div isaac-modal="export">
+  <div class="reveal-modal-head">
+    <h2>Export/Share my data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <h2>Select the data you wish to export/share...</h2>
+  </div>
+</div>

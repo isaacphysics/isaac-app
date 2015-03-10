@@ -39,6 +39,7 @@ define([
 	"app/controllers/AdminPageControllers",
 	"app/controllers/GameEditorControllers",
 	"app/controllers/GroupManagementPageControllers",
+	"app/controllers/MyProgressPageControllers",
 	"app/controllers/AssignmentsController",	
 	], function() {
 	
@@ -77,7 +78,9 @@ define([
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
 	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
 	
+	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
 	var assignmentsController = require("app/controllers/AssignmentsController")
+
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
@@ -120,8 +123,10 @@ define([
 
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
+
 	.controller('GroupManagementPageController', groupManagementPageControllers.PageController)
 
+	.controller('MyProgressPageController', myProgressPageControllers.PageController)
 	.controller('SetAssignmentsPageController', assignmentsController.SetAssignmentsPageController)
 
 	.controller('MyAssignmentsPageController', assignmentsController.MyAssignmentsPageController)

@@ -94,3 +94,9 @@
        url('/assets/font/sourcesanspro-bold-webfont.woff') format('woff'),
        url('/assets/font/sourcesanspro-bold-webfont.svg#source_sans_probold') format('svg');
 }
+@font-face {
+  font-family: 'icons';
+  font-style: normal;
+  src: url('/assets/font/icons.woff') format('woff'),
+       url('/assets/font/icons.svg#icons') format('svg');
+}

@@ -26,6 +26,7 @@
 @import "orbit_changes.scss";
 @import "ru_header.scss";
 @import "ru_navigation.scss";
+@import "icons.scss";
 @import "ru_footer.scss";
 @import "ru_accordion.scss";
 @import "ru_tabs.scss";
@@ -37,6 +38,7 @@
 @import "ru_buttons";
 @import "ru_profile";
 @import "ru_game_editor";
+@import "ru_modal";
 
 // Rutherford additional per page SCSS
 @import "concept_problem.scss";
@@ -47,6 +49,7 @@
 @import "account-settings.scss";
 @import "tutorial.scss";
 @import "group-management.scss";
+@import "progress.scss";
 
 // Code Pretification (v small)
 @import "code.scss";
