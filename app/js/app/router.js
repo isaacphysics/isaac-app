@@ -418,7 +418,7 @@ define(["angular-ui-router"], function() {
                 }
             })  
 
-            .state('groupManagment', {
+            .state('groups', {
                 url: "/groups",
                 resolve: {
                     //requireLogin: getLoggedInPromise,
@@ -432,7 +432,7 @@ define(["angular-ui-router"], function() {
                 }
             })
             
-            .state('assignBoards', {
+            .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
                     requireLogin: getLoggedInPromise,
