@@ -77,7 +77,6 @@ define([], function() {
 				updateGroupAssignmentMap($scope.boards.results)
 
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 			})
 		};
 
@@ -107,7 +106,9 @@ define([], function() {
 		}, true);
 
 		// Perform initial load
-		updateBoards();
+		$timeout(function() {
+			updateBoards();
+		})
 
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
@@ -120,7 +121,6 @@ define([], function() {
 
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 				mergeInProgress = false;
 			});
 		};

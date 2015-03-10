@@ -53,6 +53,7 @@ define([
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
     "app/directives/Toast",
+    "app/directives/LoadingOverlay",
 	], function() {
 
 	/* Directives */
@@ -96,6 +97,8 @@ define([
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
 	.directive('toast', require("app/directives/Toast"))
+
+	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
 
 	// Content Directives
 
