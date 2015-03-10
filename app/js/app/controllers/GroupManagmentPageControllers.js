@@ -61,7 +61,7 @@ define([], function() {
         		$scope.myGroups = api.groupManagementEndpoint.get();
         		$scope.selectedGroup = grp;
         		$scope.newGroup = {}
-        		
+        			$scope.showToast($scope.toastTypes.Success, groupToSave.groupName + " group has been saved successfully.");
         	}).catch(function(e) {
         			$scope.showToast($scope.toastTypes.Failure, "Group Save operation failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});

@@ -173,6 +173,7 @@ define([], function() {
 			api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
 				updateGroupAssignmentMap([board]);
 				delete $scope.pendingAssignment[board.id]; // remove from pending list.
+				$scope.showToast($scope.toastTypes.Success, "This assignment has been set successfully.");
 			}).catch(function(e){
         		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 			})
@@ -184,6 +185,7 @@ define([], function() {
 			if (unassignGroup){
 				api.assignments.unassignBoard({gameId: board.id, groupId: group._id}).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
+					$scope.showToast($scope.toastTypes.Success, "This assignment has been unset successfully.");
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});				
