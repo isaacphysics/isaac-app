@@ -17,29 +17,39 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 
-		// dummy data for donut charts.
+		setTimeout(function() {
 
-		$scope.levelData = [
-			{label: 'Level 1 (30%)', val: 8},
-			{label: 'Level 2 (20%)', val: 8},
-			{label: 'Level 3 (19%)', val: 8},
-			{label: 'Level 4 (15%)', val: 8},
-			{label: 'Level 5 (8%)', val: 8},
-			{label: 'Level 6 (8%)', val: 8}
-		];
+			// dummy data for donut charts.
+			$scope.totalQuestionsAttempted = 67;
 
-		$scope.subjectData = [
-			{label: 'Physics (80%)', val: 8},
-			{label: 'Maths (20%)', val: 2}
-		];
+			$scope.firstAttemptRightCount = 40;
 
-		$scope.FieldData = [
-			{label: 'Mech (30%)', val: 8},
-			{label: 'Waves (25%)', val: 8},
-			{label: 'Feilds (20%)', val: 8},
-			{label: 'Circuits (15%)', val: 8},
-			{label: 'Gemetry (10%)', val: 8}
-		];
+			$scope.correctCount = 23;
+
+			$scope.levelData = [
+				{label: 'Level 1 (30%)', val: 30},
+				{label: 'Level 2 (20%)', val: 20},
+				{label: 'Level 3 (19%)', val: 19},
+				{label: 'Level 4 (15%)', val: 15},
+				{label: 'Level 5 (8%)', val: 8},
+				{label: 'Level 6 (8%)', val: 8}
+			];
+
+			$scope.subjectData = [
+				{label: 'Physics (80%)', val: 80},
+				{label: 'Maths (20%)', val: 20}
+			];
+
+			$scope.FieldData = [
+				{label: 'Mech (30%)', val: 30},
+				{label: 'Waves (25%)', val: 25},
+				{label: 'Fields (20%)', val: 20},
+				{label: 'Circuits (15%)', val: 15},
+				{label: 'Gemetry (10%)', val: 10}
+			];
+
+			$scope.$apply();
+		}, 100);
 
 	}];
 

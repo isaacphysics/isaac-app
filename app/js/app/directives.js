@@ -53,8 +53,10 @@ define([
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
     "app/directives/d3/Donut",
+    "app/directives/ProgressBar",
     "app/directives/Toast",
     "app/directives/LoadingOverlay",
+    "app/directives/IsaacModal",
 	], function() {
 
 	/* Directives */
@@ -98,10 +100,14 @@ define([
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
+	
+	.directive('progressBar', require("app/directives/ProgressBar"))
 
 	.directive('toast', require("app/directives/Toast"))
 
 	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
+
+	.directive('isaacModal', require("app/directives/IsaacModal"))
 
 	// Content Directives
 

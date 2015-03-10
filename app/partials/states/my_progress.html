@@ -13,50 +13,45 @@
          <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
             <li>
                <h6>Questions answered <span class="ru_green">correctly</span></h6>
-               <div class="progress-bar">
-                  <div class="bar" style="width:70%">
-                     <span>127</span>
-                  </div>
-                  <span>8</span>
-               </div>
+               <div progress-bar class="progress-bar" value="correctCount" max="totalQuestionsAttempted"></div>
             </li>
             <li>
                <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
-               <div class="progress-bar">
-                  <div class="bar" style="width:45%">
-                     <span>45</span>
-                  </div>
-                  <span>82</span>
-               </div>
+               <div progress-bar class="progress-bar" value="firstAttemptRightCount" max="totalQuestionsAttempted"></div>
             </li>
+
             <li class="show-for-medium-up">
-               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <!--<a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>-->
             </li>
-            <li>
-               <h6>Questions attempted by <span class="ru_green">level</span></h6>
-               <div d3-donut data="levelData"></div>
-            </li>
+
             <li>
             <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-               <div d3-donut data="subjectData" colorPalette="subjects"></div>
+               <div d3-donut data="subjectData" color-palette="subjects"></div>
             </li>
             <li>
-               <h6>Questions attempted by <span class="ru_green">field</span></h6>
-               <div d3-donut data="FieldData" colorPalette="fields"></div>
+               <h6>Questions attempted by <span class="ru_green">Field</span></h6>
+               <div d3-donut data="FieldData" color-palette="fields"></div>
             </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Level</span></h6>
+               <div d3-donut data="levelData" color-palette="levels"></div>
+            </li>
+
             <li class="hide-for-medium-up">
-               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <!--<a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>-->
             </li>
+
          </ul>
       </div>
    </div>
 </div>
-<div id="exportModal" class="reveal-modal" data-reveal>
-   <div class="reveal-modal-head">
-      <h2>Export/Share my data</h2>
-      <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-   </div>
-   <div class="reveal-modal-body">
-      <h2>Select the data you wish to export/share...</h2>
-   </div>
+
+<div isaac-modal="export">
+  <div class="reveal-modal-head">
+    <h2>Export/Share my data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <h2>Select the data you wish to export/share...</h2>
+  </div>
 </div>
