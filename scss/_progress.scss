@@ -57,7 +57,7 @@
         font-weight: 600;
         color: #fff;
         background-color: $ru_green;
-        padding: 12px 12px 5px;
+        padding: 14px 12px 7px;
 
         .icon-group {
             font-size: 25px;
@@ -83,12 +83,14 @@
 
     .accordion-board-title {
         float: left;
-        width: 175px;
         font-size: 18px;
         line-height: 20px;
         vertical-align: top;
-        font-weight: 600;
-        padding: 12px 12px 5px;
+        padding: 14px 12px 14px;
+
+        &:before {
+            content: '1';
+        }
     }
 
     .accordion-board-summary {
