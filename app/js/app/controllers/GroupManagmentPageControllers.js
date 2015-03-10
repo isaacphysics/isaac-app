@@ -15,8 +15,10 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', function($scope, auth, $state, $location, $window, api, $timeout) {
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', function($scope, auth, $state, $location, $window, api, $timeout, $rootScope) {
 		// these flags represent whether features have been enabled yet.
+		$rootScope.pageTitle = "Group Management";
+
 		$scope.archivedView = false;
 		$scope.emailInviteFeatureAvailable = false;
 
