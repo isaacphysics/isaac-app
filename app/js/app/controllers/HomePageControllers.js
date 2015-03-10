@@ -97,6 +97,8 @@ define([], function() {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
 
+        		$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+
 				// Something went wrong. This gameboard probably doesn't exist anymore.
 				loadGameBoardFromFilter();
 			});
