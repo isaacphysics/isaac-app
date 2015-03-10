@@ -110,8 +110,11 @@ define([], function() {
 
 			var params = {};
 
-			if ($scope.filterSubjects.length > 0)
+			if ($scope.filterSubjects.length > 0) {
 				params.subjects = $scope.filterSubjects.join(",");
+			} else {
+				params.subjects = ["physics", "maths"];
+			}
 
 			if ($scope.filterFields.length > 0)
 				params.fields = $scope.filterFields.join(",");
