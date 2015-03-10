@@ -61,7 +61,7 @@ define([], function() {
 
         	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
         		$scope.myGroups = api.groupManagementEndpoint.get();
-        		$scope.selectedGroup = grp;
+        		$scope.setSelectedGroup(grp);
         		$scope.newGroup = {}
         			$scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
         	}).catch(function(e) {
