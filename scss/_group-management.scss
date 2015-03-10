@@ -202,7 +202,10 @@
 		td {
 			color: gray;
 		}
-		text-decoration: line-through;
+		
+		.revoked {
+			text-decoration: line-through;
+		}
 	}
 }
 
