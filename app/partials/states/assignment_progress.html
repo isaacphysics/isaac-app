@@ -14,94 +14,124 @@
             <dd><a href="javascript:void(0)">Archived <span class="show-for-medium-up">Groups</span></a></dd>
         </dl>
         <div class="tabs-content">
+            <!--
+                First level - groups accordion
+            -->
             <dl class="accordion-group">
                 <dd>
                     <a class="accordion-group-header">
-                        <span class="icon-group"></span>
-                        Dolphins
-                        <span class="group-nav-right"><strong></strong></span>
+                        <div class="accordion-group-title">
+                            <span class="icon-group"></span>
+                            Dolphin's
+                        </div>
+                        <div class="accordion-group-summary">
+                            <strong>3</strong> Active boards / <strong>13</strong> Completed boards
+                        </div>
                     </a>
-                    
                     <div class="accordion-group-content">
-                        <a href="#">View Board <span class="icon-link"></span></a>
-                        <table class="table-progress">
-                          <thead>
-                            <tr>
-                                <td>Class averge</td>
-                                <td>60%</td>
-                                <td>50%</td>
-                                <td>80%</td>
-                                <td>70%</td>
-                                <td>40%</td>
-                                <td>40%</td>
-                                <td>100%</td>
-                                <td>80%</td>
-                                <td>60%</td>
-                                <td>40%</td>
-                                <td></td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                                <td><span class="icon-person"></span>Jon Hopkins</td>
-                                <td><span class="icon-spinner"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-spinner"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td>7 / 10</td>
-                            </tr>
-                            <tr>
-                                <td><span class="icon-person"></span>Fletcher Drake</td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check ru_green"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td>Complete</td>
-                            </tr>
-                            <tr>
-                                <td><span class="icon-person"></span>Alfred Warner</td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-spinner"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-check"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-x"></span></td>
-                                <td><span class="icon-spinner"></span></td>
-                                <td>2 / 10</td>
-                            </tr>
-                          </tbody>
-                          <tfoot>
-                            <tr>
-                                <td>Class averge</td>
-                                <td>60%</td>
-                                <td>50%</td>
-                                <td>80%</td>
-                                <td>70%</td>
-                                <td>40%</td>
-                                <td>40%</td>
-                                <td>100%</td>
-                                <td>80%</td>
-                                <td>60%</td>
-                                <td>40%</td>
-                                <td></td>
-                            </tr>
-                          </tfoot>
-                        </table>
+                        <!--
+                            Second level - active boards accordion
+                        -->
+                        <dl class="accordion-board">
+                            <dd>
+                                <a class="accordion-board-header">
+                                    <div class="accordion-board-title">
+                                        <span class="icon-group"></span>
+                                        Dolphin's
+                                    </div>
+                                    <div class="accordion-board-summary">
+                                        <a href="#">View Board <span class="icon-link"></span></a>
+                                    </div>
+                                </a>
+                                <div class="accordion-board-content">
+                                    <!--
+                                        Third level - progress table
+                                    -->
+                                    <table class="table-progress">
+                                        <thead>
+                                            <tr>
+                                                <td>Class averge</td>
+                                                <td>60%</td>
+                                                <td>50%</td>
+                                                <td>80%</td>
+                                                <td>70%</td>
+                                                <td>40%</td>
+                                                <td>40%</td>
+                                                <td>100%</td>
+                                                <td>80%</td>
+                                                <td>60%</td>
+                                                <td>40%</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="icon-person"></span>Jon Hopkins</td>
+                                                <td><span class="icon-spinner"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-spinner"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td>7 / 10</td>
+                                            </tr>
+                                            <tr class="complete">
+                                                <td><span class="icon-person"></span>Fletcher Drake</td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check ru_green"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td>Complete</td>
+                                            </tr>
+                                            <tr class="fail">
+                                                <td><span class="icon-person"></span>Alfred Warner</td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-spinner"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-check"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-x"></span></td>
+                                                <td><span class="icon-spinner"></span></td>
+                                                <td>2 / 10</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>Class averge</td>
+                                                <td>60%</td>
+                                                <td>50%</td>
+                                                <td>80%</td>
+                                                <td>70%</td>
+                                                <td>40%</td>
+                                                <td>40%</td>
+                                                <td>100%</td>
+                                                <td>80%</td>
+                                                <td>60%</td>
+                                                <td>40%</td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </dd>
+                        </dl>
+                        <!--
+                            Second level - completed boards
+                        -->
+                        
                     </div>
                 </dd>
             </dl>

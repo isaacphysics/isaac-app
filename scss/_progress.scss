@@ -40,6 +40,64 @@
 /*
     Assignment progress styles 
 */
+.accordion-group {
+    .accordion-group-header {
+        @extend .clearfix;
+        display: block;
+        background-color: #fff;
+        border: #999 1px solid;
+    }
+
+    .accordion-group-title {
+        float: left;
+        width: 175px;
+        font-size: 18px;
+        line-height: 20px;
+        vertical-align: top;
+        font-weight: 600;
+        color: #fff;
+        background-color: $ru_green;
+        padding: 12px 12px 5px;
+
+        .icon-group {
+            font-size: 25px;
+            margin-right: 5px;
+        }
+    }
+
+    .accordion-group-summary {
+        float: right;
+        font-size: 18px;
+        line-height: 20px;
+        color: #333;
+    }
+}
+
+.accordion-board {
+    .accordion-board-header {
+        @extend .clearfix;
+        display: block;
+        background-color: #fff;
+        border: #999 1px solid;
+    }
+
+    .accordion-board-title {
+        float: left;
+        width: 175px;
+        font-size: 18px;
+        line-height: 20px;
+        vertical-align: top;
+        font-weight: 600;
+        padding: 12px 12px 5px;
+    }
+
+    .accordion-board-summary {
+        float: right;
+        font-size: 18px;
+        line-height: 20px;
+        color: #333;
+    }
+}
 .table-progress {
     border: none;
     table-layout: auto; 
@@ -70,7 +128,24 @@
                 background-color: rgba(80, 158, 46, 0.1);
             }
             &:last-child {
+                font-weight: 600;
+                text-transform: uppercase;
+                text-align: right;
                 background-color: transparent;
+            }
+        }
+        .complete {
+            td {
+                &:first-child, &:last-child {
+                    color: #944cbe;
+                }
+            }
+        }
+        .fail {
+            td {
+                &:first-child, &:last-child {
+                    color: #cc3333;
+                }
             }
         }
     }
