@@ -52,7 +52,7 @@ define([
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
-    "app/directives/ToastNotification",
+    "app/directives/Toast",
 	], function() {
 
 	/* Directives */
@@ -95,7 +95,7 @@ define([
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
-	.directive('toastNotification', require("app/directives/ToastNotification"))
+	.directive('toast', require("app/directives/Toast"))
 
 	// Content Directives
 

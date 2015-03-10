@@ -20,17 +20,7 @@
 
 			restrict: "A",
 
-			template: "<div class='toast' ng-class='{error : toastType === toastTypes.Failure, toastRevealAnimation : toastNotificationVisible}'> \
-							<div class='innerToast'> \
-						    	<div class='toast-icon'> \
-						    		<span class='toast-complete-icon'></span> \
-						    	</div> \
-						    	<div class='toast-message'> \
-						    		<h4>{{toastTitle}}</h4> \
-						    		<p>{{toastDescription}}</p> \
-						    	</div> \
-					    	</div> \
-					    </div>",
+			templateUrl: "/partials/toast.html",
 
 			link: function(scope, elements, attrs){
 
