@@ -16,7 +16,13 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
-
+		
+		$scope.progress = api.currentUser.getProgress();
+		
+		$scope.progress.$promise.then(function() {
+			console.debug($scope.progress);
+		});
+		/*
 		setTimeout(function() {
 
 			// dummy data for donut charts.
@@ -50,7 +56,7 @@ define([], function() {
 
 			$scope.$apply();
 		}, 100);
-
+*/
 	}];
 
 	return {

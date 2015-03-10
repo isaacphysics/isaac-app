@@ -31,7 +31,7 @@ define([], function() {
                 var rightSpan = element.children("span");
 
                 var update = function() {
-                    if (scope.value && scope.max) {
+                    if (scope.value != null && scope.max != null && scope.max > 0) {
                         leftSpan.text(scope.value + " of " + scope.max);
 
                         // Uncomment if we prefer "A vs B" instead of "A out of A+B"
