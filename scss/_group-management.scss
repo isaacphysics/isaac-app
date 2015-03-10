@@ -194,6 +194,16 @@
 	.edit-icon {
 		float: right;
 	}
+
+	.disabled {
+		group-table-person {
+			-webkit-filter:#{"grayscale(100%)"};
+		}
+		td {
+			color: gray;
+		}
+		text-decoration: line-through;
+	}
 }
 
 .archived {

@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', function($scope, auth, $state, $location, $window, api) {
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', function($scope, auth, $state, $location, $window, api, $timeout) {
 		// these flags represent whether features have been enabled yet.
 		$scope.archivedView = false;
 		$scope.emailInviteFeatureAvailable = false;
@@ -36,6 +36,13 @@ define([], function() {
 			} else {
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
+
+				$scope.selectedGroupMembers.$promise.then(function(){
+					$timeout(function(){
+						Opentip.findElements();
+					}, 500);
+				})
+
 				$scope.selectedGroupToken = api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id});
 			}
 		}
