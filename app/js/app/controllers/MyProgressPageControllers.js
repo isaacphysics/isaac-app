@@ -18,45 +18,32 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 		
 		$scope.progress = api.currentUser.getProgress();
-		
+
 		$scope.progress.$promise.then(function() {
 			console.debug($scope.progress);
-		});
-		/*
-		setTimeout(function() {
-
-			// dummy data for donut charts.
-			$scope.totalQuestionsAttempted = 67;
-
-			$scope.firstAttemptRightCount = 40;
-
-			$scope.correctCount = 23;
 
 			$scope.levelData = [
-				{label: 'Level 1 (30%)', val: 30},
-				{label: 'Level 2 (20%)', val: 20},
-				{label: 'Level 3 (19%)', val: 19},
-				{label: 'Level 4 (15%)', val: 15},
-				{label: 'Level 5 (8%)', val: 8},
-				{label: 'Level 6 (8%)', val: 8}
+				{label: 'Level 1', val: $scope.progress.attempts_by_level["1"] || 0},
+				{label: 'Level 2', val: $scope.progress.attempts_by_level["2"] || 0},
+				{label: 'Level 3', val: $scope.progress.attempts_by_level["3"] || 0},
+				{label: 'Level 4', val: $scope.progress.attempts_by_level["4"] || 0},
+				{label: 'Level 5', val: $scope.progress.attempts_by_level["5"] || 0},
+				{label: 'Level 6', val: $scope.progress.attempts_by_level["6"] || 0}
 			];
 
 			$scope.subjectData = [
-				{label: 'Physics (80%)', val: 80},
-				{label: 'Maths (20%)', val: 20}
+				{label: 'Physics', val: $scope.progress.attempts_by_tag["physics"] || 0},
+				{label: 'Maths', val: $scope.progress.attempts_by_tag["maths"] || 0}
 			];
 
-			$scope.FieldData = [
-				{label: 'Mech (30%)', val: 30},
-				{label: 'Waves (25%)', val: 25},
-				{label: 'Fields (20%)', val: 20},
-				{label: 'Circuits (15%)', val: 15},
-				{label: 'Gemetry (10%)', val: 10}
+			$scope.fieldData = [
+				{label: 'Mechanics', val: $scope.progress.attempts_by_tag["mechanics"] || 0},
+				{label: 'Waves', val: $scope.progress.attempts_by_tag["waves"] || 0},
+				{label: 'Fields', val: $scope.progress.attempts_by_tag["fields"] || 0},
+				{label: 'Circuits', val: $scope.progress.attempts_by_tag["circuits"] || 0},
 			];
 
-			$scope.$apply();
-		}, 100);
-*/
+		});
 	}];
 
 	return {
