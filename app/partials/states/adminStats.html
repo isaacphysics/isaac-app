@@ -21,7 +21,7 @@
     <div class="small-16 columns">
         <div class="panel white clearfix">
             <div class="small-16 columns">
-                <h2>Gameboards By Popularity ({{gameboardListData.shared_boards}} shared)</h2>
+                <h2>Gameboards By Popularity ({{gameboardListData.sharedBoards}} shared)</h2>
             </div>
             <div class="small-16 columns">
                 <div class="text-center" ng-if="statsLoading">
@@ -36,7 +36,7 @@
                 		<th>Gameboard Title</th>
                 		<th># of users connected</th>
                 	</tr>
-                	<tr ng-repeat="item in gameboardListData.board_list">
+                	<tr ng-repeat="item in gameboardListData.boardList">
                 		<td><a href="javascript:void(0)" ui-sref="board({id: item.gameboard.id})">{{item.gameboard.id}}</a></td>
                 		<td>{{item.gameboard.title || generateGameBoardTitle(item.gameboard)}}</td>
                 		<td>{{item.connections}}</td>

@@ -23,24 +23,24 @@ define([], function() {
 			console.debug($scope.progress);
 
 			$scope.levelData = [
-				{label: 'Level 1', val: $scope.progress.attempts_by_level["1"] || 0},
-				{label: 'Level 2', val: $scope.progress.attempts_by_level["2"] || 0},
-				{label: 'Level 3', val: $scope.progress.attempts_by_level["3"] || 0},
-				{label: 'Level 4', val: $scope.progress.attempts_by_level["4"] || 0},
-				{label: 'Level 5', val: $scope.progress.attempts_by_level["5"] || 0},
-				{label: 'Level 6', val: $scope.progress.attempts_by_level["6"] || 0}
+				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
+				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
+				{label: 'Level 3', val: $scope.progress.attemptsByLevel["3"] || 0},
+				{label: 'Level 4', val: $scope.progress.attemptsByLevel["4"] || 0},
+				{label: 'Level 5', val: $scope.progress.attemptsByLevel["5"] || 0},
+				{label: 'Level 6', val: $scope.progress.attemptsByLevel["6"] || 0}
 			];
 
 			$scope.subjectData = [
-				{label: 'Physics', val: $scope.progress.attempts_by_tag["physics"] || 0},
-				{label: 'Maths', val: $scope.progress.attempts_by_tag["maths"] || 0}
+				{label: 'Physics', val: $scope.progress.attemptsByTag["physics"] || 0},
+				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0}
 			];
 
 			$scope.fieldData = [
-				{label: 'Mechanics', val: $scope.progress.attempts_by_tag["mechanics"] || 0},
-				{label: 'Waves', val: $scope.progress.attempts_by_tag["waves"] || 0},
-				{label: 'Fields', val: $scope.progress.attempts_by_tag["fields"] || 0},
-				{label: 'Circuits', val: $scope.progress.attempts_by_tag["circuits"] || 0},
+				{label: 'Mechanics', val: $scope.progress.attemptsByTag["mechanics"] || 0},
+				{label: 'Waves', val: $scope.progress.attemptsByTag["waves"] || 0},
+				{label: 'Fields', val: $scope.progress.attemptsByTag["fields"] || 0},
+				{label: 'Circuits', val: $scope.progress.attemptsByTag["circuits"] || 0},
 			];
 
 		});
