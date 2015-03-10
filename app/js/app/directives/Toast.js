@@ -22,7 +22,7 @@
 
 			templateUrl: "/partials/toast.html",
 
-			link: function(scope, elements, attrs){
+			link: function(scope, element, attrs){
 
 				//notes - removed ng-show to use animation instead
 
@@ -39,6 +39,8 @@
 					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
 					scope.toastTimeouts = setTimeout(scope.hideToast, 3000);
+
+					element.children("div").css("visibility","visible");
 				};
 
 
@@ -46,6 +48,9 @@
 					scope.toastNotificationVisible = false;
 					toastNotificationText = "";
 					scope.$apply();
+					scope.toastTimeouts = setTimeout(function() {
+						element.children("div").css("visibility","hidden");
+					}, 500);
 				}
 			}
 
