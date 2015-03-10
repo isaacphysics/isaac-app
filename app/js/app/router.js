@@ -418,11 +418,10 @@ define(["angular-ui-router"], function() {
                 }
             })  
 
-            .state('groupManagment', {
+            .state('groups', {
                 url: "/groups",
                 resolve: {
-                    //requireLogin: getLoggedInPromise,
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR"]), // temporary fix to stop people using it.
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -432,10 +431,10 @@ define(["angular-ui-router"], function() {
                 }
             })
             
-            .state('assignBoards', {
+            .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {

@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', function($scope, auth, $state, $location, $window, api) {
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', function($scope, auth, $state, $location, $window, api, $timeout) {
 		// these flags represent whether features have been enabled yet.
 		$scope.archivedView = false;
 		$scope.emailInviteFeatureAvailable = false;
@@ -36,6 +36,13 @@ define([], function() {
 			} else {
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
+
+				$scope.selectedGroupMembers.$promise.then(function(){
+					$timeout(function(){
+						Opentip.findElements();
+					}, 500);
+				})
+
 				$scope.selectedGroupToken = api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id});
 			}
 		}
@@ -54,7 +61,7 @@ define([], function() {
         		$scope.myGroups = api.groupManagementEndpoint.get();
         		$scope.selectedGroup = grp;
         		$scope.newGroup = {}
-        		
+        			$scope.showToast($scope.toastTypes.Success, groupToSave.groupName + " group has been saved successfully.");
         	}).catch(function(e) {
         			$scope.showToast($scope.toastTypes.Failure, "Group Save operation failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});

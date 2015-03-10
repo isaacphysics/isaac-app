@@ -53,7 +53,8 @@ define([
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
     "app/directives/d3/Donut",
-    "app/directives/ToastNotification",
+    "app/directives/Toast",
+    "app/directives/LoadingOverlay",
 	], function() {
 
 	/* Directives */
@@ -98,7 +99,9 @@ define([
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
 
-	.directive('toastNotification', require("app/directives/ToastNotification"))
+	.directive('toast', require("app/directives/Toast"))
+
+	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
 
 	// Content Directives
 

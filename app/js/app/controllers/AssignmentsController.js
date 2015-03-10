@@ -77,7 +77,6 @@ define([], function() {
 				updateGroupAssignmentMap($scope.boards.results)
 
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 			})
 		};
 
@@ -107,7 +106,9 @@ define([], function() {
 		}, true);
 
 		// Perform initial load
-		updateBoards();
+		$timeout(function() {
+			updateBoards();
+		})
 
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
@@ -120,7 +121,6 @@ define([], function() {
 
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 				mergeInProgress = false;
 			});
 		};
@@ -168,14 +168,19 @@ define([], function() {
 		}
 
 		$scope.assignBoard = function(board) {
-			var groupToAssign = $scope.pendingAssignment[board.id]._id;
+			if ($scope.pendingAssignment[board.id]) {
+				var groupToAssign = $scope.pendingAssignment[board.id]._id;
 
-			api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
-				updateGroupAssignmentMap([board]);
-				delete $scope.pendingAssignment[board.id]; // remove from pending list.
-			}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-			})
+				api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
+					updateGroupAssignmentMap([board]);
+					delete $scope.pendingAssignment[board.id]; // remove from pending list.
+					$scope.showToast($scope.toastTypes.Success, "This assignment has been set successfully.");
+				}).catch(function(e){
+	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				})
+			} else {
+	        	$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error: Please choose a group.");
+	        }
 		}
 
 		$scope.unassignBoard = function(group, board) {
@@ -184,6 +189,7 @@ define([], function() {
 			if (unassignGroup){
 				api.assignments.unassignBoard({gameId: board.id, groupId: group._id}).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
+					$scope.showToast($scope.toastTypes.Success, "This assignment has been unset successfully.");
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});				

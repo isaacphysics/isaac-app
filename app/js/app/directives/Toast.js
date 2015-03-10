@@ -20,19 +20,9 @@
 
 			restrict: "A",
 
-			template: "<div class='toast' ng-class='{error : toastType === toastTypes.Failure, toastRevealAnimation : toastNotificationVisible}'> \
-							<div class='innerToast'> \
-						    	<div class='toast-icon'> \
-						    		<span class='toast-complete-icon'></span> \
-						    	</div> \
-						    	<div class='toast-message'> \
-						    		<h4>{{toastTitle}}</h4> \
-						    		<p>{{toastDescription}}</p> \
-						    	</div> \
-					    	</div> \
-					    </div>",
+			templateUrl: "/partials/toast.html",
 
-			link: function(scope, elements, attrs){
+			link: function(scope, element, attrs){
 
 				//notes - removed ng-show to use animation instead
 
@@ -49,6 +39,8 @@
 					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
 					scope.toastTimeouts = setTimeout(scope.hideToast, 3000);
+
+					element.children("div").css("visibility","visible");
 				};
 
 
@@ -56,6 +48,9 @@
 					scope.toastNotificationVisible = false;
 					toastNotificationText = "";
 					scope.$apply();
+					scope.toastTimeouts = setTimeout(function() {
+						element.children("div").css("visibility","hidden");
+					}, 500);
 				}
 			}
 

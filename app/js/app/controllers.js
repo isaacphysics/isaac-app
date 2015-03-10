@@ -111,20 +111,6 @@ define([
 
 	.controller('ContactController', contactPageControllers.PageController)
 
-	.controller("LoadingMessageController", ["$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
-
-		var showLoadingMessageAfter = 1000; // ms
-		
-		var timeout = $timeout(function() {
-			$rootScope.globalFlags.displayLoadingMessage = true;
-			$(document).scrollTop(0);
-		}, showLoadingMessageAfter);
-
-		$scope.$on("$destroy", function() {
-			$timeout.cancel(timeout);
-		})
-	}])
-
 	.controller('AccountSettingsPageController', accountSettingsPageControllers.PageController)
 
 	.controller('ResetPasswordPageController', resetPasswordControllers.PageController)

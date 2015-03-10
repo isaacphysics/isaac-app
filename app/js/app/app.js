@@ -75,7 +75,7 @@ define([
             apiProvider.server("http://localhost:8080/isaac-api");
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , function($rootScope, api, $state, auth, $location) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', function($rootScope, api, $state, auth, $location, $timeout) {
 
         /* 
             Tooltip settings
@@ -126,10 +126,13 @@ define([
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
-            $rootScope.globalFlags.isLoading = false;
-            $rootScope.globalFlags.displayLoadingMessage = false;
-            // TODO: find a better way to hide the search
-            $rootScope.globalFlags.noSearch = false;
+            $timeout(function() {
+                // Run this in a $timeout to make sure that $apply is called.
+                $rootScope.globalFlags.isLoading = false;
+                
+                // TODO: find a better way to hide the search
+                $rootScope.globalFlags.noSearch = false;
+            });
 
             $(document).scrollTop(0);
             $rootScope.figures = {};
