@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-	return ["api", "units", function(api, units) {
+	return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
 		return {
 			scope: true,

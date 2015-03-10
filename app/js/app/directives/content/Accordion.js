@@ -16,7 +16,7 @@
 define([], function() {
 
 
-	return ["$location", function($location) {
+	return ["$location", "$rootScope", function($location, $rootScope) {
 
 		return {
 
