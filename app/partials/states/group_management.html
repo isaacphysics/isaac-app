@@ -51,7 +51,7 @@
                     <p class="small-text-center show-for-large-up">You do not have any groups to display.</p>
                 </dd>
             </dl>
-            <div class="show-for-large-up">
+            <div ng-if="selectedGroup" class="show-for-large-up">
                 <a class="ru-button-big secondary expand" ng-click="setSelectedGroup(null)">Create new group</a>
             </div>
 

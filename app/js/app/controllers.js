@@ -38,7 +38,7 @@ define([
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
 	"app/controllers/GameEditorControllers",
-	"app/controllers/GroupManagmentPageControllers",
+	"app/controllers/GroupManagementPageControllers",
 	"app/controllers/MyProgressPageControllers",
 	"app/controllers/AssignmentsController",	
 	], function() {
@@ -76,8 +76,7 @@ define([
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
-
-	var groupManagmentPageControllers = require("app/controllers/GroupManagmentPageControllers");
+	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
 	
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
 	var assignmentsController = require("app/controllers/AssignmentsController")
@@ -125,7 +124,7 @@ define([
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
 
-	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
+	.controller('GroupManagementPageController', groupManagementPageControllers.PageController)
 
 	.controller('MyProgressPageController', myProgressPageControllers.PageController)
 	.controller('SetAssignmentsPageController', assignmentsController.SetAssignmentsPageController)

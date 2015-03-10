@@ -7,7 +7,7 @@
 <div class="row assignments-wrap">
     <div class="large-16 columns">
       <dl class="tabs profile-tabs no-print">
-         <dd ng-class="assignmentsVisible == myAssignments.inProgress ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Assignments </span>To do ({{myAssignments.inProgress.length || 0}})</a></dd>
+         <dd ng-class="assignmentsVisible == myAssignments.inProgress ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Assignments </span>To Do ({{myAssignments.inProgress.length || 0}})</a></dd>
          <dd ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()">Completed <span class="show-for-medium-up">Assignments </span>({{myAssignments.completed.length || 0}})</span></a></dd>
       </dl>
       <div class="tabs-content profile-tabs-content">

@@ -426,7 +426,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/group_management.html",
-                        controller: "GroupManagmentPageController",
+                        controller: "GroupManagementPageController",
                     }
                 }
             })
