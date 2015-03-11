@@ -40,6 +40,11 @@
 /*
     Assignment progress styles 
 */
+.progress-tabs-content {
+    width: auto;
+    margin-left: -0.9375rem;
+    margin-right: -0.9375rem;
+}
 .accordion-group {
     .accordion-group-header {
         @extend .clearfix;
@@ -70,6 +75,7 @@
         font-size: 18px;
         line-height: 20px;
         color: #333;
+        margin-top: 13px;
     }
 }
 
@@ -77,8 +83,15 @@
     .accordion-board-header {
         @extend .clearfix;
         display: block;
+        color: #333;
         background-color: #fff;
-        border: #999 1px solid;
+        border-left: #999 1px solid;
+        border-bottom: #999 1px solid;
+        border-right: #999 1px solid;
+
+        &:hover {
+            color: $ru_green;
+        }
     }
 
     .accordion-board-title {
@@ -88,9 +101,14 @@
         vertical-align: top;
         padding: 14px 12px 14px;
 
-        &:before {
-            content: '1';
-        }
+    }
+
+    .accordion-board-level {
+        float: left;
+    }
+
+    .accordion-board-date {
+        float: left;
     }
 
     .accordion-board-summary {
@@ -98,6 +116,29 @@
         font-size: 18px;
         line-height: 20px;
         color: #333;
+    }
+
+}
+.board-progress {
+    font-size: 18px;
+    line-height: 21px;
+    color: #fff;
+    text-align: center;
+    background-color: #333;
+    padding: 13px 20px 14px;
+
+    strong {
+        font-weight: 600;
+    }
+}
+.board-question {
+    font-size: 24px;
+    line-height: 24px;
+    text-align: center;
+    padding: 18px 0;
+
+    strong {
+        font-weight: 600;
     }
 }
 .table-progress {
@@ -108,8 +149,16 @@
     td {
         color: #333;
         font-size: 18px;
+        line-height: 28px;
+        vertical-align: top;
         text-align: center;
         padding: 0;
+
+        &.selected {
+            border-right: #666 1px solid;
+            border-left: #666 1px solid;
+            background-color: #fff !important;
+        }
     } 
 
     tbody {
@@ -134,6 +183,7 @@
                 text-transform: uppercase;
                 text-align: right;
                 background-color: transparent;
+                padding-right: 16px;
             }
         }
         .complete {
@@ -155,15 +205,35 @@
     thead, tfoot {
         tr {
             background: #f2f2f2;
-            border: #999 1px solid;
+            border-right: #999 1px solid;
+            border-left: #999 1px solid;
 
             td {
                 font-weight: 200;
+                padding: 12px 0;
+                border-top: #999 1px solid;
+                border-bottom: #999 1px solid;
 
                 &:first-child {
                     color: #fff;
                     font-weight: 600;
                     background-color:#666;
+                }
+
+                &.selected {
+                    color: $ru_green;
+                    font-weight: 600;
+                    border-top-color: #fff;
+                }
+            }
+        }
+    }
+
+    thead {
+        tr {
+            td {
+                &.selected {
+                    border-bottom-color: #fff;
                 }
             }
         }
@@ -191,6 +261,10 @@
         background-color: #fff;
         padding: 30px 20px;
         border:#999 1px solid;
+    }
+    .progress-tabs-content {
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 @media #{$medium-only} { 
