@@ -113,7 +113,7 @@ define([], function() {
 			if ($scope.filterSubjects.length > 0) {
 				params.subjects = $scope.filterSubjects.join(",");
 			} else {
-				params.subjects = ["physics", "maths"];
+				params.subjects = "physics,maths";
 			}
 
 			if ($scope.filterFields.length > 0)
