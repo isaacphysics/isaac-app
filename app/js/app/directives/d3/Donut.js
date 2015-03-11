@@ -24,9 +24,24 @@ define([], function() {
 
             link: function(scope, element, attrs) {
 
-                var updateDonuts = function() {
+                var updateDonut = function() {
 
                     element.empty();
+
+                    var allZero = true;
+
+                    for (var i = 0; i < scope.data.length; i++) {
+                        if (scope.data[i].val != 0) {
+                            allZero = false;
+                            break;
+                        }
+                    }
+
+                    if (allZero) {
+                        element.append("<div class='text-center'><i>No Data</i></div>");
+                        return;
+                    }
+
 
                     var range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
 
@@ -120,7 +135,7 @@ define([], function() {
 
                 scope.$watch("data", function(newData, oldData) {
                     if (newData)
-                        updateDonuts();
+                        updateDonut();
                 });
 
 
