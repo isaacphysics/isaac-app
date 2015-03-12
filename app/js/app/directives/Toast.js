@@ -23,9 +23,6 @@
 			templateUrl: "/partials/toast.html",
 
 			link: function(scope, element, attrs){
-
-				//notes - removed ng-show to use animation instead
-
 				scope.toastNotificationVisible = false;
 				scope.toastTitle = "Title";
 				scope.toastDescription = "Description";

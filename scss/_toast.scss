@@ -26,6 +26,7 @@
 	    box-shadow: 3px 3px 10px  #AAAAAA;
 	    overflow: hidden;
 	    text-overflow:ellipsis;
+		background-color: #333;
     }
 
 
@@ -44,8 +45,9 @@
 	}
 
 	.toast-message {
-		height: 114px;
-		padding: 15px 20px 20px;
+		min-height: 114px;
+		max-height:250px;
+		padding: 15px 20px 5px;
 		background-color: #f6f6f6;
 		border: #999 1px solid;
 
