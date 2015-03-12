@@ -28,6 +28,14 @@ define([], function() {
 			templateUrl: "/partials/question_pod.html",
 
 			link: function(scope, element, attrs) {
+
+				scope.questionComparer = function(a) {
+					var n = parseInt(a.title);
+
+					if (!isNaN(n))
+						return n;
+					return a.title;
+				}
 	
 			},
 		};
