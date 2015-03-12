@@ -417,7 +417,7 @@ $hex_diff_levels : 6;
     border-left: 1px solid $ru_lightgrey;
     border-right: 1px solid $ru_lightgrey;
     z-index: 20;
-    top: 75px;
+    top: 87px;
 }
 
 #concept-search-data .concept-search-result
@@ -433,14 +433,14 @@ $hex_diff_levels : 6;
     {
         background: #f3f3f3;
     }
-    &.physics:after
+    &.physics:not(.no-results):after
     {
         position: absolute;
         content: url(/assets/physics-plus.png);
         right: 8px;
         top: 8px;
     }
-    &.maths:after
+    &.maths:not(.no-results):after
     {
         position: absolute;
         content: url(/assets/maths-plus.png);
@@ -448,6 +448,13 @@ $hex_diff_levels : 6;
         top: 8px;
     }
     cursor: pointer;
+
+    &.no-results 
+    {
+        font-style: italic;
+        color: red;
+        text-align: center;
+    }
 }
 
 #concept-search-data .concept-search-result div
