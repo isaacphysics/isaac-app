@@ -76,7 +76,6 @@
 					} else {
 						scope.startPod = (scope.startPod + positionAdjustment) % scope.pods.results.length;	
 					}
-					interruptAndSetupNewInterval();
 				}
 
 				/**
