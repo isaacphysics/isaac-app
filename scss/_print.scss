@@ -55,7 +55,16 @@
         @extend .print-float-right;
     }
 
-    .ru_answer_reveal div {
+    .ru-question p{
+        font-size:1rem !important;
+        margin-bottom: 0px !important;
+    }
+
+    .ru_figure img{
+        max-height: 200px !important;
+    }
+
+    .ru_answer_reveal div { 
         border: 0 !important;
     }
 
@@ -63,7 +72,7 @@
         margin-left: 0px !important;
         margin-right: 0px !important;
         margin-bottom: 0px !important;
-        font-size: 1rem;
+        font-size: 1rem !important;
     }
 
     .video-fix{
