@@ -132,13 +132,16 @@
     }
 }
 .board-question {
-    font-size: 16px;
+    font-size: 17px;
     line-height: 18px;
     text-align: center;
+    font-weight: 600;
     padding: 18px 0;
+    background: #fff;
 
-    strong {
-        font-weight: 600;
+    p {
+        font-size: 11px;
+        margin: 0;
     }
 }
 .table-progress {
@@ -153,6 +156,10 @@
         vertical-align: top;
         text-align: center;
         padding: 0;
+
+        span {
+            vertical-align: top;
+        }
 
         &.selected {
             border-right: #666 1px solid;
@@ -213,7 +220,7 @@
 
             td {
                 font-weight: 200;
-                padding: 12px 0;
+                padding: 9px 0;
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
 
@@ -256,6 +263,9 @@
         font-size: 12px;
     }
 }
+.accordion-arrow {
+    float: right;
+}
 /*
     All media quires 
 */
@@ -276,6 +286,7 @@
     .board-question {
         font-size: 24px;
         line-height: 24px;
+        font-weight: 200;
 
         .show-for-medium-up {
             display: inline !important;
@@ -301,6 +312,19 @@
                 &:last-child {
                     font-weight: 600;
                 }
+
+                .show-for-medium-up {
+                    display: inline !important;
+                }
+            }
+        }
+
+        thead, tfoot {
+            tr {
+
+                td {
+                    padding: 12px 0;
+                }
             }
         }
 
@@ -321,5 +345,17 @@
 @media #{$medium-only} { 
     .export-btn {
         margin-top: 50%;
+    }
+}
+@media #{$large-up} { 
+    .table-progress {
+         tbody {
+
+            td {
+                .show-for-large-up {
+                    display: inline !important;
+                }
+            }
+        }
     }
 }
