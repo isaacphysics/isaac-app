@@ -23,21 +23,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-group:before {
-  content: "a";
-}
-.icon-link:before {
-  content: "b";
-}
 .icon-spinner:before {
   content: "d";
 }
 .icon-check:before {
   content: "e";
 }
+.icon-link:before {
+  content: "b";
+}
+.icon-arrow-left:before {
+  content: "i";
+}
+.icon-arrow-right:before {
+  content: "j";
+}
 .icon-x:before {
+  content: "k";
+}
+.icon-group:before {
   content: "f";
 }
 .icon-person:before {
-  content: "g";
+  content: "c";
+}
+.icon-calender:before {
+  content: "a";
 }

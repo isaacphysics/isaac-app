@@ -40,6 +40,7 @@ define([
 	"app/controllers/GameEditorControllers",
 	"app/controllers/GroupManagmentPageControllers",
 	"app/controllers/MyProgressPageControllers",
+	"app/controllers/AssignmentProgressPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -79,6 +80,8 @@ define([
 	var groupManagmentPageControllers = require("app/controllers/GroupManagmentPageControllers");
 
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
+
+	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
 
 	/* Controllers */
 
@@ -138,4 +141,6 @@ define([
 	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
 
 	.controller('MyProgressPageController', myProgressPageControllers.PageController)
+
+	.controller('AssignmentProgressPageController', assignmentProgressPageControllers.PageController)
 });

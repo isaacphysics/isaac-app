@@ -463,6 +463,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/assignment_progress.html",
+                        controller: "AssignmentProgressPageController",
                     }
                 }
             })

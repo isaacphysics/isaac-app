@@ -44,6 +44,7 @@
     width: auto;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
+    counter-reset: board-count;
 }
 .accordion-group {
     .accordion-group-header {
@@ -56,13 +57,13 @@
     .accordion-group-title {
         float: left;
         width: 175px;
-        font-size: 18px;
+        font-size: 16px;
         line-height: 20px;
         vertical-align: top;
         font-weight: 600;
         color: #fff;
         background-color: $ru_green;
-        padding: 14px 12px 7px;
+        padding: 11px 12px 4px;
 
         .icon-group {
             font-size: 25px;
@@ -72,8 +73,8 @@
 
     .accordion-group-summary {
         float: right;
-        font-size: 18px;
-        line-height: 20px;
+        font-size: 13px;
+        line-height: 16px;
         color: #333;
         margin-top: 13px;
     }
@@ -93,26 +94,41 @@
             color: $ru_green;
         }
     }
-
     .accordion-board-title {
-        float: left;
+        position: relative;
         font-size: 18px;
         line-height: 20px;
         vertical-align: top;
-        padding: 14px 12px 14px;
+        padding: 8px 12px 8px 36px;
+        border-bottom:#666 1px solid;
 
-    }
-
-    .accordion-board-level {
-        float: left;
+        &:before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            color: #fff;
+            font-weight: 600;
+            counter-increment: board-count;
+            content: counter(board-count) ". ";
+            background-color: $ru_green;
+            padding: 8px 6px 0;
+        }
     }
 
     .accordion-board-date {
         float: left;
+        width: 50%;
+        font-size: 14px;
+        text-align: center;
+        border-right:#666 1px solid;
     }
 
-    .accordion-board-summary {
+    .accordion-board-link {
         float: right;
+        width: 50%;
+        font-size: 14px;
+        text-align: center;
         font-size: 18px;
         line-height: 20px;
         color: #333;
@@ -132,6 +148,7 @@
     }
 }
 .board-question {
+    position: relative;
     font-size: 17px;
     line-height: 18px;
     text-align: center;
@@ -143,11 +160,34 @@
         font-size: 11px;
         margin: 0;
     }
+
+    .icon-arrow-left,
+    .icon-arrow-right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        color: #fff;
+        font-size: 26px;
+        background-color: #333;
+    }
+
+    .icon-arrow-left {
+        left: 0;
+    }
+    .icon-arrow-right {
+        right: 0;
+    }
+
+
+}
+.table-responsive {
+    overflow-x: auto;
 }
 .table-progress {
     border: none;
     table-layout: auto; 
     border-collapse:collapse;
+    margin: 0;
 
     td {
         color: #333;
@@ -265,10 +305,19 @@
 }
 .accordion-arrow {
     float: right;
+    margin: 3px 3px 0 10px;
 }
 /*
     All media quires 
 */
+@media #{$small-only} { 
+    .accordion-group {
+        .hide-for-medium-up {
+            display: inline !important;
+            vertical-align: top;
+        }
+    }
+}
 @media #{$medium-up} { 
     .progress-wrap {
         background-color: #fff;
@@ -290,6 +339,38 @@
 
         .show-for-medium-up {
             display: inline !important;
+        }
+    }
+    .accordion-group {
+        .accordion-group-title {
+            font-size: 18px;
+            padding: 14px 12px 7px;
+        }
+        .accordion-group-summary {
+            font-size: 18px;
+            line-height: 20px;
+        }
+        .show-for-medium-up {
+            display: inline !important;
+        }
+    }
+    .accordion-board {
+        .accordion-board-title {
+            float: left;
+            padding-top: 14px;
+            padding-bottom: 14px;
+            border-bottom: none;
+
+            &:before {
+                padding-top: 14px;
+            }
+        }
+        .accordion-board-date {
+            width: auto;
+            border-right: none;
+        }
+        .accordion-board-link {
+            width: auto;
         }
     }
 
@@ -340,6 +421,11 @@
         .icon-spinner {
             font-size: 20px;
         }
+    }
+
+    .accordion-arrow {
+        margin-top: 5px;
+        margin-right: 5px;
     }
 }
 @media #{$medium-only} { 
