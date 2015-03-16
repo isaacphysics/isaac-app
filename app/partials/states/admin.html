@@ -56,7 +56,14 @@
                                         <li>School provided: {{statistics.hasSchool}} ({{statistics.hasSchoolOther}} - from 'school other')</li>
                                         <li>No School Information: {{statistics.hasNoSchool}}</li>
                                     </ul>
-                                </li>                                
+                                </li> 
+                                <li>
+                                    <strong>Last Seen Data</strong>
+                                    <ul>
+                                        <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
+                                        <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastThirtyDays}}, Students: {{statistics.activeStudentsLastThirtyDays}})</li>
+                                    </ul>
+                                </li>                                                            
                             </ul>
                         </li>
                     </ul>
@@ -68,16 +75,9 @@
                             <ul>
                                 <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
                                 <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}}): <ul>
-                                    <li>Last 7 days: {{statistics.questionsAnsweredLastWeek}}</li>
-                                    <li>Last 30 days: {{statistics.questionsAnsweredLastThirtyDays}}</li>                                    
+                                    <li>Last 7 days: {{statistics.questionsAnsweredLastWeek}} (non-staff users)</li>
+                                    <li>Last 30 days: {{statistics.questionsAnsweredLastThirtyDays}} (non-staff users)</li>                    
                                 </ul></li>
-                            </ul>
-                        </li> 
-                        <li>
-                            <strong>Last Seen Data</strong>
-                            <ul>
-                                <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
-                                <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
                             </ul>
                         </li> 
                     </ul>
