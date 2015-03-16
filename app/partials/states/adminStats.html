@@ -100,12 +100,14 @@
                 		<th>Role</th>
                 		<th>Gender</th>
                 		<th>Registration Date</th>
+                        <th>Last Seen Date</th>
                 	</tr>
                 	<tr ng-repeat="item in schoolUserListData">
                 		<td>{{item.familyName}}, {{item.givenName}}</td>
                 		<td>{{item.role || 'NOT_SET (Student)'}}</td>
                 		<td>{{item.gender}}</td>
                 		<td>{{item.registrationDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.lastSeen | date:'dd/MM/yyyy'}}</td>
                 	</tr>
                 </table>
                 </div>      

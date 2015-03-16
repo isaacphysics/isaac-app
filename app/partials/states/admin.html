@@ -67,7 +67,17 @@
                             <strong>Events</strong>
                             <ul>
                                 <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
-                                <li># of Questions Answered Events: {{statistics.answeredQuestionEvents}}</li>
+                                <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}}): <ul>
+                                    <li>Last 7 days: {{statistics.questionsAnsweredLastWeek}}</li>
+                                    <li>Last 30 days: {{statistics.questionsAnsweredLastThirtyDays}}</li>                                    
+                                </ul></li>
+                            </ul>
+                        </li> 
+                        <li>
+                            <strong>Last Seen Data</strong>
+                            <ul>
+                                <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
+                                <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
                             </ul>
                         </li> 
                     </ul>
