@@ -67,12 +67,14 @@
                 		<th>School Name</th>
                 		<th>School PostCode</th>
                 		<th># of users connected</th>
+                        <th># of users active (last 7 days)</th>
                 	</tr>
                 	<tr ng-repeat="item in schoolListData">
                 		<td><a href="javascript:void(0)" ng-click="getSchoolUserListData(item.school.urn, item.school.name)">{{item.school.urn}}</a></td>
                 		<td>{{item.school.name}}</td>
                 		<td>{{item.school.postcode}}</td>
                 		<td>{{item.connections}}</td>
+                        <td>{{item.numberActiveLastSevenDays}}</td>
                 	</tr>
                 </table>
                 </div>      
