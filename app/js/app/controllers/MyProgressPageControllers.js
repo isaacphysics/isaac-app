@@ -15,12 +15,25 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', 'tags', function($scope, auth, api, tags) {
 		
 		$scope.progress = api.currentUser.getProgress();
 
 		$scope.progress.$promise.then(function() {
-			console.debug($scope.progress);
+
+			var attemptedFields = [];
+			$scope.fields = [];
+			for (var tid in $scope.progress.attemptsByTag) {
+				var t = tags.getById(tid);
+				if (t.level == 1) {
+					attemptedFields.push(t);
+					$scope.fields.push(t);
+				}
+			}
+
+			$scope.field = {
+				selection: tags.getById("mechanics"),
+			};
 
 			$scope.levelData = [
 				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
@@ -36,12 +49,21 @@ define([], function() {
 				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0}
 			];
 
-			$scope.fieldData = [
-				{label: 'Mechanics', val: $scope.progress.attemptsByTag["mechanics"] || 0},
-				{label: 'Waves', val: $scope.progress.attemptsByTag["waves"] || 0},
-				{label: 'Fields', val: $scope.progress.attemptsByTag["fields"] || 0},
-				{label: 'Circuits', val: $scope.progress.attemptsByTag["circuits"] || 0},
-			];
+
+			$scope.$watch("field.selection", function(newField) {
+
+				$scope.fieldData = [];
+
+				var topics = tags.getDescendents($scope.field.selection.id);
+				for(var i in topics) {
+					var t = topics[i];
+					$scope.fieldData.push({
+						label: t.title,
+						val: $scope.progress.attemptsByTag[t.id] || 0,
+					})
+				}
+
+			})
 
 		});
 	}];

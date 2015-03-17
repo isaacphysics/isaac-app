@@ -34,7 +34,9 @@
                <div d3-donut data="subjectData" color-palette="subjects"></div>
             </li>
             <li>
-               <h6>Questions attempted by <span class="ru_green">Field</span></h6>
+               <h6>Question attempts in &nbsp;
+                 <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
+               </h6>
                <div d3-donut data="fieldData" color-palette="fields"></div>
             </li>
             <li>
