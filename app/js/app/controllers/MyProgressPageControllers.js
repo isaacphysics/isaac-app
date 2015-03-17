@@ -16,6 +16,7 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+
 		$timeout(function() {
 			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
 			$scope.globalFlags.isLoading = true;
@@ -31,21 +32,6 @@ define([], function() {
 
 		$scope.progress.$promise.then(function() {
 			$scope.globalFlags.isLoading = false;
-
-			var attemptedFields = [];
-			$scope.fields = [];
-			for (var tid in $scope.progress.attemptsByTag) {
-				var t = tags.getById(tid);
-				if (t && t.level == 1) {
-					attemptedFields.push(t);
-					$scope.fields.push(t);
-				}
-			}
-
-			$scope.field = {
-				selection: tags.getById("mechanics"),
-			};
-
 			$scope.levelData = [
 				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
 				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
@@ -60,6 +46,26 @@ define([], function() {
 				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0}
 			];
 
+			var attemptedFields = [];
+			$scope.fields = [];
+			for (var tid in $scope.progress.attemptsByTag) {
+				var t = tags.getById(tid);
+				if (t && t.level == 1) {
+					attemptedFields.push(t);
+					$scope.fields.push(t);
+				}
+			}
+
+			if (attemptedFields.length == 0)
+				return;
+
+			$scope.field = {
+				selection: attemptedFields[0],
+			};
+
+			$scope.topicsSubject = attemptedFields[0].parent;
+
+
 
 			$scope.$watch("field.selection", function(newField) {
 
@@ -73,6 +79,8 @@ define([], function() {
 						val: $scope.progress.attemptsByTag[t.id] || 0,
 					})
 				}
+
+				$scope.topicsSubject = newField.parent;
 
 			})
 

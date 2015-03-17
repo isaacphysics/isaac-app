@@ -46,15 +46,27 @@ define([], function() {
                     var range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
 
                     // switch colours
-                    switch(attrs.colorPalette) {
+                    switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
                             range = ['#6c388c', '#189ace'];
                             break;
-                        case 'fields':
-                            range = ['#6c388c', '#7f529d', '#9570af', '#c5b2d7', '#e3d9ee'];
+                        case 'physics':
+                            range = [];
+                            for (var i = 0; i < scope.data.length; i++) {
+                                range.push("hsl(276, 31%, " + (90 - 80*i/scope.data.length) + "%)");
+                            }
+                            break;
+                        case 'maths':
+                            range = [];
+                            for (var i = 0; i < scope.data.length; i++) {
+                                range.push("hsl(197, 79%, " + (90 - 80*i/scope.data.length) + "%)");
+                            }
                             break;
                         case 'levels':
-                            range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2'];
+                            range = [];
+                            for (var i = 0; i < scope.data.length; i++) {
+                                range.push("hsl(106, 50%, " + (90-80*i/scope.data.length) + "%)");
+                            }
                             break;
                     }
 
