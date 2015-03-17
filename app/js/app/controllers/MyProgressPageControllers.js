@@ -34,7 +34,7 @@ define([], function() {
 			$scope.fields = [];
 			for (var tid in $scope.progress.attemptsByTag) {
 				var t = tags.getById(tid);
-				if (t.level == 1) {
+				if (t && t.level == 1) {
 					attemptedFields.push(t);
 					$scope.fields.push(t);
 				}
