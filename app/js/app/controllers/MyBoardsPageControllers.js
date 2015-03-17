@@ -92,6 +92,35 @@ define([], function() {
        			});
 			}
 		}
+
+		$scope.calculateBoardLevels = function(board) {
+			levels = [];
+			for(i = 0; i < board.questions.length; i++) {
+				if (levels.indexOf(board.questions[i].level) == -1) {
+					levels.push(board.questions[i].level);
+				}
+			}
+
+			levels.sort(function (a, b) {
+   				return a > b ? 1 : a < b ? -1 : 0;
+			});
+
+			return levels;
+		};
+
+		$scope.calculateBoardSubjects = function(board) {
+			subjects = [];
+			for(i = 0; i < board.questions.length; i++) {
+				var q = board.questions[i];
+
+				if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1)
+					subjects.push("maths");
+				else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1)
+					subjects.push("physics");
+			}
+
+			return subjects;
+		}
 	}];
 
 	return {

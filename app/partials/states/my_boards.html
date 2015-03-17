@@ -41,10 +41,10 @@
    			<a ui-sref="board({'id':board.id})">
                <div class="row">
                   <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-      					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
+      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
                      </span>
-      					<span ng-repeat="subject in board.gameFilter.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
                      </span>
       				</div>
@@ -55,7 +55,7 @@
                      <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
                      <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
                      <div class="board-levels">
-                        <span ng-repeat="level in board.gameFilter.levels" class="level-{{level}}">{{level}}</span>
+                        <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
                      </div>
                   </div>
       			</div>
