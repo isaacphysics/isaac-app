@@ -123,8 +123,19 @@ define([], function() {
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
-        	gameBoardToSave.gameFilter = {subjects:["physics"]} // TODO default to physics for now
-        	
+      	
+			gameBoardToSave.gameFilter = {subjects:[]} 
+        	// calculate subjects used in this gameboard
+        	angular.forEach($scope.currentGameBoard.questions, function(question, key){
+				if (question.tags.indexOf("physics") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("physics") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("physics")
+				}
+
+				if (question.tags.indexOf("maths") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("maths") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("maths")
+				}
+			});
+
         	// clear placeholder wildcard so that server picks one.
         	gameBoardToSave.wildCard = null
 
