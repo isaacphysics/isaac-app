@@ -1,6 +1,6 @@
 <!-- Start active group -->
-    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group</h6>
-    <p ng-show="selectedGroup"><strong>Group token:</strong> {{selectedGroupToken.token}}</p>
+    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup">Group token: {{selectedGroupToken.token}}</span></h6>
+
     <input ng-show="selectedGroup" type="text" ng-model="selectedGroup.groupName" />
     <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" />
     <div ng-if="emailInviteFeatureAvailable">
@@ -19,7 +19,7 @@
                 <table class="group-table">
                     <tbody>
                         <tr ng-repeat="member in selectedGroupMembers" ng-class="{disabled: !member.authorisedFullAccess}">
-                            <td ng-if="member.authorisedFullAccess"><a href="javascript:void(0)" data-ot="Viewing student data is coming soon."><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}}</a></td>
+                            <td ng-if="member.authorisedFullAccess"><a href="javascript:void(0)" ui-sref="userProgress({userId: member._id})" data-ot="Click to view this student's data."><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}}</a></td>
                             <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (access revoked)</span></td>
                             <td><span class="hide-for-small-only">{{member.email}}</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>

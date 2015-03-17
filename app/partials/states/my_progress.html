@@ -1,6 +1,7 @@
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
-        <h1>My Progress</h1>
+        <h1 ng-if="viewingOwnData">My Progress</h1>
+        <h1 ng-if="!viewingOwnData">Progress for user:  {{progress.userDetails.givenName + " " + progress.userDetails.familyName}}</h1>
         <p class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">

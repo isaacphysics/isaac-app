@@ -20,11 +20,13 @@ define([], function() {
 			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
 			$scope.globalFlags.isLoading = true;
 		});
-		
+
 		if ($stateParams.userId) {
 			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
+			$scope.viewingOwnData = false;
 		} else {
 			$scope.progress = api.currentUser.getProgress();
+			$scope.viewingOwnData = true;
 		}
 
 		$scope.progress.$promise.then(function() {
