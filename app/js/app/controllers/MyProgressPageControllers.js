@@ -15,7 +15,11 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', function($scope, auth, api, tags, $stateParams) {
+	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+		$timeout(function() {
+			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
+			$scope.globalFlags.isLoading = true;
+		});
 		
 		if ($stateParams.userId) {
 			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
@@ -24,6 +28,7 @@ define([], function() {
 		}
 
 		$scope.progress.$promise.then(function() {
+			$scope.globalFlags.isLoading = false;
 
 			var attemptedFields = [];
 			$scope.fields = [];
