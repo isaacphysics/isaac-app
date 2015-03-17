@@ -41,17 +41,28 @@
     Assignment progress styles 
 */
 .progress-tabs-content {
+    position: relative;
     width: auto;
+    border-top: #999 1px solid;
+    margin-top: -1px;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
-    counter-reset: board-count;
 }
 .accordion-group {
+    margin: 0;
+
+    > dd {
+        counter-reset: board-count;
+        margin: 0;
+    }
+
     .accordion-group-header {
         @extend .clearfix;
         display: block;
         background-color: #fff;
-        border: #999 1px solid;
+        border-right: #999 1px solid;
+        border-bottom: #999 1px solid;
+        border-left: #999 1px solid;
     }
 
     .accordion-group-title {
@@ -78,9 +89,35 @@
         color: #333;
         margin-top: 13px;
     }
+
+    .accordion-arrow {
+        float: right;
+        margin: 3px 3px 0 10px;
+        -webkit-transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    .active {
+        .accordion-arrow {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+    }
 }
 
 .accordion-board {
+    margin: 0;
+
+    dd {
+        margin: 0;
+    }
+
     .accordion-board-header {
         @extend .clearfix;
         display: block;
@@ -100,7 +137,6 @@
         line-height: 20px;
         vertical-align: top;
         padding: 8px 12px 8px 36px;
-        border-bottom:#666 1px solid;
 
         &:before {
             position: absolute;
@@ -117,21 +153,51 @@
     }
 
     .accordion-board-date {
+        display: none;
         float: left;
         width: 50%;
         font-size: 14px;
+        line-height: 16px;
         text-align: center;
+        vertical-align: top;
+        padding-top: 12px;
         border-right:#666 1px solid;
+        margin-bottom: -5px;
+
+        .icon-calender {
+            font-size: 40px;
+        }
     }
 
     .accordion-board-link {
+        display: none;
         float: right;
         width: 50%;
         font-size: 14px;
+        line-height: 16px;
         text-align: center;
-        font-size: 18px;
-        line-height: 20px;
+        vertical-align: top;
+        margin-top: 14px;
         color: #333;
+
+        span {
+            vertical-align: top;
+        }
+
+        .icon-link {
+            font-size: 32px;
+        }
+    }
+
+    .active {
+        .accordion-board-date,
+        .accordion-board-link {
+            display: block;
+        }
+        .accordion-board-title {
+            border-bottom: #666 1px solid;
+        }
+        
     }
 
 }
@@ -141,19 +207,18 @@
     color: #fff;
     text-align: center;
     background-color: #333;
-    padding: 13px 20px 14px;
+    padding: 13px 35px 14px;
 
     strong {
         font-weight: 600;
     }
 }
-.board-question {
-    position: relative;
+.board-question-wrap {
+    display: table;
     font-size: 17px;
     line-height: 18px;
     text-align: center;
     font-weight: 600;
-    padding: 18px 0;
     background: #fff;
 
     p {
@@ -161,14 +226,20 @@
         margin: 0;
     }
 
+    .board-question {
+        display: table-cell;
+        width: 100%;
+        padding: 12px 10px 10px;
+    }
+
     .icon-arrow-left,
     .icon-arrow-right {
-        position: absolute;
-        top: 0;
-        bottom: 0;
+        display: table-cell;
         color: #fff;
+        vertical-align: middle;
         font-size: 26px;
         background-color: #333;
+        padding-top: 5px;
     }
 
     .icon-arrow-left {
@@ -268,6 +339,8 @@
                     color: #fff;
                     font-weight: 600;
                     background-color:#666;
+                    min-width: 100px;
+                    padding: 9px 10px;
                 }
 
                 &.selected {
@@ -303,10 +376,6 @@
         font-size: 12px;
     }
 }
-.accordion-arrow {
-    float: right;
-    margin: 3px 3px 0 10px;
-}
 /*
     All media quires 
 */
@@ -331,15 +400,37 @@
     .board-progress {
         font-size: 18px;
         line-height: 21px;
+
+        .strong-mobile {
+            font-weight: 200;
+        }
     }
-    .board-question {
+    .board-question-wrap {
         font-size: 24px;
         line-height: 24px;
         font-weight: 200;
 
+        .board-question {
+            padding: 18px;
+        }
+
         .show-for-medium-up {
             display: inline !important;
         }
+
+        .icon-arrow-left,
+        .icon-arrow-right {
+            font-size: 45px;
+        }
+        .icon-arrow-left {
+            padding: 10px 5px 0 5px;
+        }
+        .icon-arrow-right {
+            padding: 10px 0 0 5px;
+        }
+    }
+    .strong-mobile {
+        font-weight: 200;
     }
     .accordion-group {
         .accordion-group-title {
@@ -353,24 +444,47 @@
         .show-for-medium-up {
             display: inline !important;
         }
+
+        .accordion-arrow {
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+
+        .active {
+            .accordion-board {
+                .accordion-board-title {
+                    border-bottom: none;
+                }
+            }
+        }
     }
     .accordion-board {
         .accordion-board-title {
             float: left;
             padding-top: 14px;
             padding-bottom: 14px;
-            border-bottom: none;
 
             &:before {
                 padding-top: 14px;
             }
         }
+
         .accordion-board-date {
+            font-size: 18px;
+            line-height: 20px;
+            display: inline;
             width: auto;
             border-right: none;
+            padding-top: 14px;
         }
         .accordion-board-link {
+            font-size: 18px;
+            line-height: 20px;
+            display: inline;
             width: auto;
+        }
+        .accordion-board-level {
+            margin: 0 40px;
         }
     }
 
@@ -385,6 +499,7 @@
 
             td {
                 min-width: 65px;
+                padding: 15px 0 0;
 
                 &:first-child {
                     font-weight: 600;
@@ -421,11 +536,6 @@
         .icon-spinner {
             font-size: 20px;
         }
-    }
-
-    .accordion-arrow {
-        margin-top: 5px;
-        margin-right: 5px;
     }
 }
 @media #{$medium-only} { 

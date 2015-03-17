@@ -15,15 +15,15 @@
         </dl>
         <div class="tabs-content progress-tabs-content">
             <!--
-                First level - groups accordion
+                FIRST LEVEL - groups accordion
             -->
             <dl class="accordion-group">
-                <dd>
+                <dd class="active">
                     <div class="accordion-group-header">
 
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
-                            Dolphin's <span class="hide-for-medium-up">(3)</span>
+                            Dolphins <span class="hide-for-medium-up">(3)</span>
                         </div>
 
                         <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
@@ -35,10 +35,10 @@
 
                     <div class="accordion-group-content">
                         <!--
-                            Second level - active boards accordion
+                            SECOND LEVEL - boards accordion
                         -->
                         <dl class="accordion-board">
-                            <dd>
+                            <dd class="active">
                                 <div class="accordion-board-header">
                                     <div class="accordion-board-title">
                                         Physics - Feilds - Mechanics
@@ -47,26 +47,42 @@
                                         </span>
                                     </div>
                                     <div class="accordion-board-date">
-                                        Due date <span class="icon-calender"></span>
+                                        Due Date <span class="icon-calender"></span>
                                     </div>
-                                    <div class="accordion-board-link">
-                                        <a href="javascript:void(0)">View <span class="show-for-medium-up">Board</span> <span class="icon-link"></span></a>
-                                    </div>
+                                    <a href="javascript:void(0)" class="accordion-board-link">
+                                        View <span class="show-for-medium-up">Board</span> <span class="icon-link"></span>
+                                    </a>
                                 </div>
 
+                                <!--
+                                    THIRD LEVEL - progress table
+                                -->
                                 <div class="accordion-board-content">
+
                                     <!--
-                                        Third level - progress table
+                                        Board progress overview
                                     -->
                                     <div class="board-progress">
-                                        <strong>25</strong> out of <strong>35</strong> students have completed the board <strong>Physics - Feilds - Mechanics - Level 2</strong> correctly.
+                                        <strong>25</strong> out of <strong>35</strong> students have completed the board <strong class="show-for-medium-up">Physics - Feilds - Mechanics - Level 2 </strong><strong class="strong-mobile">correctly</strong>.
                                     </div>
-                                    <div class="board-question">
-                                        <span class="icon-arrow-left"></span>
-                                        <strong class="show-for-medium-up">Question:</strong> A Car on the motorway
-                                        <p class="hidden-for-medium-up"><strong>Question 5</strong> out of <strong>10</strong></p>
-                                        <span class="icon-arrow-right"></span>
+
+                                    <!--
+                                        Question and control arrows
+                                    -->
+                                    <div class="board-question-wrap">
+                                        <a href="javascript:void(0)" class="icon-arrow-left"></a>
+
+                                        <div class="board-question">
+                                            <strong class="show-for-medium-up">Question:</strong> A Car on the motorway
+                                            <p class="hidden-for-medium-up"><strong>Question 3</strong> out of <strong>10</strong></p>
+                                        </div>
+
+                                        <a href="javascript:void(0)" class="icon-arrow-right"></a>
                                     </div>
+
+                                    <!--
+                                        Progress table 
+                                    -->
                                     <div class="table-responsive">
                                         <table class="table-progress">
                                             <thead>
@@ -149,11 +165,53 @@
                                     </div>
                                 </div>
                             </dd>
+                            <dd>
+                                <div class="accordion-board-header">
+                                    <div class="accordion-board-title">
+                                        Physics - Feilds - Mechanics
+                                        <span class="accordion-board-level">
+                                             <span class="hide-for-medium-up">- L</span><span class="show-for-medium-up">Level </span>2
+                                        </span>
+                                    </div>
+                                    <div class="accordion-board-date">
+                                        Due Date <span class="icon-calender"></span>
+                                    </div>
+                                    <a href="javascript:void(0)" class="accordion-board-link">
+                                        View <span class="show-for-medium-up">Board</span> <span class="icon-link"></span>
+                                    </a>
+                                </div>
+                            </dd>
                         </dl>
-                        <!--
-                            Second level - completed boards
-                        -->
-                        
+                    </div>
+                </dd>
+                <dd>
+                    <div class="accordion-group-header">
+
+                        <div class="accordion-group-title">
+                            <span class="icon-group"></span>
+                            Monkeys <span class="hide-for-medium-up">(3)</span>
+                        </div>
+
+                        <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
+
+                        <div class="accordion-group-summary">
+                            <span class="show-for-medium-up"><strong>3</strong> Active boards / </span><strong>13</strong> Completed <span class="show-for-medium-up">boards</span>
+                        </div>
+                    </div>
+                </dd>
+                <dd class="completed">
+                    <div class="accordion-group-header">
+
+                        <div class="accordion-group-title">
+                            <span class="icon-group"></span>
+                            Lions <span class="hide-for-medium-up">(3)</span>
+                        </div>
+
+                        <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
+
+                        <div class="accordion-group-summary">
+                            <span class="show-for-medium-up"><strong>3</strong> Active boards / </span><strong>13</strong> Completed <span class="show-for-medium-up">boards</span>
+                        </div>
                     </div>
                 </dd>
             </dl>
