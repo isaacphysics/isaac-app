@@ -15,9 +15,13 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'tags', function($scope, auth, api, tags) {
+	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', function($scope, auth, api, tags, $stateParams) {
 		
-		$scope.progress = api.currentUser.getProgress();
+		if ($stateParams.userId) {
+			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
+		} else {
+			$scope.progress = api.currentUser.getProgress();
+		}
 
 		$scope.progress.$promise.then(function() {
 

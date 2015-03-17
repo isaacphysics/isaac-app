@@ -55,6 +55,13 @@ define([], function() {
 			},
 		});
 
+		this.user = $resource("", { }, {
+			'getProgress': {
+				method: 'GET',
+				url: server + "/api/users/:userId/progress",
+			}
+		})
+
 		this.authentication = $resource("", {}, {
 			'getAuthRedirect': {
 				method: 'GET',

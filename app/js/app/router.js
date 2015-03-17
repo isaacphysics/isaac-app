@@ -470,6 +470,19 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('userProgress', {
+                url: "/progress/:userId",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/my_progress.html",
+                        controller: "MyProgressPageController",
+                    }
+                }
+            })
+
             .state('assignmentProgress', {
                 url: "/assignment_progress",
                 resolve: {
