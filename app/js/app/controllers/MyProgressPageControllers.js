@@ -74,6 +74,9 @@ define([], function() {
 
 			})
 
+		}).catch(function(e) {
+			console.error("Unable to load user progress:", e);
+			$scope.globalFlags.isLoading = false;
 		});
 	}];
 
