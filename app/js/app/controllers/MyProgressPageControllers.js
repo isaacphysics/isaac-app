@@ -86,7 +86,10 @@ define([], function() {
 
 		}).catch(function(e) {
 			console.error("Unable to load user progress:", e);
-			$scope.globalFlags.isLoading = false;
+			$timeout(function() {
+				// Call this asynchronously, so that it happens later than the previous asynchronous call (!)
+				$scope.globalFlags.isLoading = false;
+			});
 		});
 	}];
 
