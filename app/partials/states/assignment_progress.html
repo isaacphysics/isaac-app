@@ -109,7 +109,8 @@
                                                     <td ng-repeat="q in assignment.gameBoard.questions" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
                                                         <span ng-class="{
                                                             'icon-spinner': studentProgress.results[$index] == 'IN_PROGRESS',
-                                                            'icon-check': studentProgress.results[$index] == 'COMPLETE',
+                                                            'icon-check': studentProgress.results[$index] == 'COMPLETE' || studentProgress.results[$index] == 'PERFECT',
+                                                            'ru_green': studentProgress.results[$index] == 'PERFECT',
                                                             'icon-x': studentProgress.results[$index] == 'TRY_AGAIN',
                                                         }"></span>
                                                     </td>
