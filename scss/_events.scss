@@ -1,0 +1,20 @@
+.event-type {
+	position: relative;
+
+	h6{
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		color: #fff;
+		font-style: normal;
+		text-align: right;
+		background-color: rgba(51, 51, 51, 0.73);
+		padding: 0 15px 0;
+		margin: 0;
+	}
+	img {
+		width: 100%;
+		height: auto;
+	}
+}
