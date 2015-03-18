@@ -62,7 +62,7 @@ define([], function() {
         })
 
         scope.$watchCollection("assignmentExpanded", function() {
-            console.debug("EXPANDED:", scope.assignmentExpanded);
+
             for (var k in scope.assignmentExpanded) {
                 if (scope.assignmentExpanded[k] && !scope.assignmentProgress[k]) {
                     scope.globalFlags.isLoading = true;
@@ -119,8 +119,6 @@ define([], function() {
 
                 var td = tbl.find("tr:first td:eq(" + (asq[a]+1) + ")")
 
-                console.log(td.offset().left);
-
                 // If that cell is off the screen, scroll to it.
 
                 var newScrollLeft;
@@ -133,8 +131,6 @@ define([], function() {
                 tbl.animate({
                     scrollLeft: newScrollLeft,
                 },200);
-
-
             }
         });
 
