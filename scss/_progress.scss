@@ -70,6 +70,7 @@
         border-right: #999 1px solid;
         border-bottom: #999 1px solid;
         border-left: #999 1px solid;
+        cursor: pointer;
     }
 
     .accordion-group-title {
@@ -133,6 +134,7 @@
         border-left: #999 1px solid;
         border-bottom: #999 1px solid;
         border-right: #999 1px solid;
+        cursor: pointer;
 
         &:hover {
             color: $ru_green;
@@ -156,6 +158,8 @@
             content: counter(board-count) ". ";
             background-color: $ru_green;
             padding: 8px 6px 0;
+            min-width: 30px;
+            text-align: right;
         }
     }
 
@@ -227,6 +231,12 @@
     text-align: center;
     font-weight: 600;
     background: #fff;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     p {
         font-size: 11px;

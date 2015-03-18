@@ -200,6 +200,11 @@ define([], function() {
 				method: 'DELETE',
 				url: server + "/api/assignments/assign/:gameId/:groupId",
 				params: {gameId: '@gameId', groupId: '@groupId'}
+			},
+			'getProgress': {
+				method: 'GET',
+				url: server + "/api/assignments/assign/:assignmentId/progress",
+				isArray: true,
 			}			
 		});				
 
