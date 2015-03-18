@@ -1,10 +1,11 @@
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
-        <h1>My Progress</h1>
-        <p class="hide-for-small-only">Keep track of your progress acrross the whole year.</p>
+        <h1 ng-if="viewingOwnData">My Progress</h1>
+        <h1 ng-if="!viewingOwnData">Progress for user:  {{progress.userDetails.givenName + " " + progress.userDetails.familyName}}</h1>
+        <p class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Information about current page" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="View your progress on Isaac Physics." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="progress-wrap">
@@ -13,50 +14,52 @@
          <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
             <li>
                <h6>Questions answered <span class="ru_green">correctly</span></h6>
-               <div class="progress-bar">
-                  <div class="bar" style="width:70%">
-                     <span>127</span>
-                  </div>
-                  <span>8</span>
-               </div>
+               <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted"></div>
             </li>
             <li>
                <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
-               <div class="progress-bar">
-                  <div class="bar" style="width:45%">
-                     <span>45</span>
-                  </div>
-                  <span>82</span>
-               </div>
+               <div progress-bar class="progress-bar" value="progress.totalCorrectFirstTime" max="progress.totalQuestionsAttempted"></div>
             </li>
+
             <li class="show-for-medium-up">
-               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <!--<a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>-->
             </li>
-            <li>
-               <h6>Questions attempted by <span class="ru_green">level</span></h6>
-               <div d3-donut data="levelData"></div>
-            </li>
+<!--
             <li>
             <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-               <div d3-donut data="subjectData" colorPalette="subjects"></div>
+               <div d3-donut data="subjectData" color-palette="subjects"></div>
+            </li>
+-->
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+               <div d3-donut data="subjectData" color-palette="'subjects'"></div>
             </li>
             <li>
-               <h6>Questions attempted by <span class="ru_green">field</span></h6>
-               <div d3-donut data="FieldData" colorPalette="fields"></div>
+               <h6>Question attempts in &nbsp;
+                 <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
+               </h6>
+               <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
             </li>
+            <li>
+               <h6>Questions attempted by <span class="ru_green">Level</span></h6>
+               <div d3-donut data="levelData" color-palette="'levels'"></div>
+            </li>
+
             <li class="hide-for-medium-up">
-               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+               <!--<a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>-->
             </li>
+
          </ul>
       </div>
    </div>
 </div>
-<div id="exportModal" class="reveal-modal" data-reveal>
-   <div class="reveal-modal-head">
-      <h2>Export/Share my data</h2>
-      <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-   </div>
-   <div class="reveal-modal-body">
-      <h2>Select the data you wish to export/share...</h2>
-   </div>
+
+<div isaac-modal="export">
+  <div class="reveal-modal-head">
+    <h2>Export/Share my data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <h2>Select the data you wish to export/share...</h2>
+  </div>
 </div>

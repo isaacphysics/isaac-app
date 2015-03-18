@@ -15,9 +15,10 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'pageIndex', '$state', 'list', function($scope, pageIndex, $state, list) {
+	var PageController = ['$scope', 'pageIndex', '$state', 'list', '$rootScope', function($scope, pageIndex, $state, list, $rootScope) {
 		$scope.list = list;
 		$scope.pageNumber = pageIndex + 1;
+		$rootScope.pageTitle = "Question Index";
 	}]
 
 	return {

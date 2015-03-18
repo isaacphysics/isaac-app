@@ -1,10 +1,10 @@
 <div class="row ru-page-heading">
     <div class="medium-13 columns">
         <h1>Manage Groups</h1>
-        <p class="hide-for-small-only">Keep track of your active and archived groups across the whole year.</p>
+        <p class="hide-for-small-only">Keep track of your groups</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Information about current page" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="Use this page to manage groups. You can add users to a group by giving them the group token and asking them paste it into their account settings page." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="group-management-wrap row">
@@ -18,15 +18,17 @@
             <!-- Start Mobile view only - this section is duplicated from the group_management_details partial as mobile needs it here. -->
             <div class="hide-for-large-up">
                 <div class="large-16 columns">
+                    <form ng-submit="saveGroup(false)">
                     <h6>Create New Group</h6>
-                    <input type="text" ng-model="newGroup.groupName"/>
-                    <div ng-if="emailInviteFeatureAvailable">
-                        <h6>Invite Student<span class="show-for-medium-up"> to group</span> via email</h6>
-                        <p>Email addresses MUST be seperated by a comma.</p>
-                        <textarea></textarea>                        
-                    </div>
+                        <input type="text" ng-model="newGroup.groupName"/>
+                        <div ng-if="emailInviteFeatureAvailable">
+                            <h6>Invite Student<span class="show-for-medium-up"> to group</span> via email</h6>
+                            <p>Email addresses MUST be seperated by a comma.</p>
+                            <textarea></textarea>                        
+                        </div>
 
-                    <a class="ru-button-big expand" ng-click="saveGroup(false)">Create group</a>
+                        <a class="ru-button-big expand" ng-click="saveGroup(false)">Create group</a>                        
+                    </form>
                 </div>
             </div>
             <!-- End Mobile view only -->
@@ -45,8 +47,11 @@
                     
                     <div ng-show="selectedGroup" class="group-nav-content hide-for-large-up" ng-class="{'hide-for-small-up': selectedGroup == null || selectedGroup._id != group._id}" ng-include="'/partials/group_management_details.html'"></div>
                 </dd>
+                <dd ng-if="myGroups == null || myGroups.length == 0">
+                    <p class="small-text-center show-for-large-up">You do not have any groups to display.</p>
+                </dd>
             </dl>
-            <div class="show-for-large-up">
+            <div ng-if="selectedGroup" class="show-for-large-up">
                 <a class="ru-button-big secondary expand" ng-click="setSelectedGroup(null)">Create new group</a>
             </div>
 
@@ -131,15 +136,7 @@
     </div>
     <!-- End desktop only -->
 
-    <!-- Toast message -->
-    <div ng-hide="true" class="toast">
-    	<div class="toast-icon">
-    		<span class="toast-complete-icon"></span>
-    	</div>
-    	<div class="toast-message">
-    		<h4 class="ru_green">Group saved</h4>
-    		<p>A little bit more text about the function performed and next steps</p>
-    	</div>
-    </div>
+    
 
 </div>
+

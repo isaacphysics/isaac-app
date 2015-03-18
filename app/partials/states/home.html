@@ -101,7 +101,7 @@
                         <a href="javascript:void(0)" ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img" alt="Undo icon for Refresh board operation."><h4>Undo Refresh</h4></a>&nbsp;
                     </div>
                     <div class="large-6 medium-6 columns text-center">
-                        <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=gameBoard.title || generateGameBoardTitle(gameBoard)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
+                        <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user._id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
                         <span ng-hide="editedGameBoardTitle==null">
                             <input type="text" ng-model="editedGameBoardTitle">
                             <button ng-click="saveGameBoardTitle()">Save</button>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="large-5 medium-5 columns">
                         <div id="tutorial-shuffle" class="right">
-                            <a href="javascript:void(0)" ng-click="shuffleBoard()"><h4>Refresh Board</h4>
+                            <a href="javascript:void(0)" ng-click="shuffleBoard()" ng-hide="gameBoard.creationMethod === 'BUILDER'"><h4>Refresh Board</h4>
                             <img src="/assets/icon-shuffle.png" class="ru-board-img" alt="Refresh board icon."></a>
                         </div>
                     </div>

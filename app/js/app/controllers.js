@@ -38,8 +38,9 @@ define([
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
 	"app/controllers/GameEditorControllers",
-	"app/controllers/GroupManagmentPageControllers",
+	"app/controllers/GroupManagementPageControllers",
 	"app/controllers/MyProgressPageControllers",
+	"app/controllers/AssignmentsController",	
 	"app/controllers/AssignmentProgressPageControllers",
 	], function() {
 	
@@ -76,10 +77,10 @@ define([
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
-
-	var groupManagmentPageControllers = require("app/controllers/GroupManagmentPageControllers");
-
+	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
+	
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
+	var assignmentsController = require("app/controllers/AssignmentsController")
 
 	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
 
@@ -112,20 +113,6 @@ define([
 
 	.controller('ContactController', contactPageControllers.PageController)
 
-	.controller("LoadingMessageController", ["$scope", "$rootScope", "$timeout", function($scope, $rootScope, $timeout) {
-
-		var showLoadingMessageAfter = 1000; // ms
-		
-		var timeout = $timeout(function() {
-			$rootScope.globalFlags.displayLoadingMessage = true;
-			$(document).scrollTop(0);
-		}, showLoadingMessageAfter);
-
-		$scope.$on("$destroy", function() {
-			$timeout.cancel(timeout);
-		})
-	}])
-
 	.controller('AccountSettingsPageController', accountSettingsPageControllers.PageController)
 
 	.controller('ResetPasswordPageController', resetPasswordControllers.PageController)
@@ -135,12 +122,17 @@ define([
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
+	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
+
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
 
-	.controller('GroupManagmentPageController', groupManagmentPageControllers.PageController)
+	.controller('GroupManagementPageController', groupManagementPageControllers.PageController)
 
 	.controller('MyProgressPageController', myProgressPageControllers.PageController)
 
 	.controller('AssignmentProgressPageController', assignmentProgressPageControllers.PageController)
+	.controller('SetAssignmentsPageController', assignmentsController.SetAssignmentsPageController)
+
+	.controller('MyAssignmentsPageController', assignmentsController.MyAssignmentsPageController)
 });

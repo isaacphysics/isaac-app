@@ -37,7 +37,7 @@ define([], function() {
 							var data = {"longUrl": window.location.href};
 						}
 
-						$http.post('https://www.googleapis.com/urlshortener/v1/url', data, {withCredentials: false}).then(function(response) {
+						$http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
 							scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
 						}).catch(function() {
 							// Fail silently

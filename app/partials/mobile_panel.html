@@ -1,5 +1,4 @@
 <!-- Mobile panel MUST BE SECOND-->
 <div class='ru-mobile-panel show-for-small-only ru-mobile-panel-with-crumb no-print'>
-    <div ng-if="globalFlags.isLoading" ng-controller="LoadingMessageController"><h1 ng-show="globalFlags.displayLoadingMessage" class="loading-header"><img src="/assets/loading.gif"></h1></div>
-    <div ng-if="!globalFlags.displayLoadingMessage" ng-transclude></div>
+    <div ng-transclude></div>
 </div>

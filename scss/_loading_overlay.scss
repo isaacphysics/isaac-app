@@ -1,0 +1,15 @@
+[loading-overlay] {
+
+    position:fixed;
+    width: 64px;
+    height: 66px;
+    left: calc(50% - 32px);
+    top: calc(33% - 33px);
+    z-index: 9999;
+
+    background-image: url(/assets/loading.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+
+    display:none;
+}

@@ -15,32 +15,82 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
 
-		// dummy data for donut charts.
+		$timeout(function() {
+			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
+			$scope.globalFlags.isLoading = true;
+		});
 
-		$scope.levelData = [
-			{label: 'Level 1 (30%)', val: 8},
-			{label: 'Level 2 (20%)', val: 8},
-			{label: 'Level 3 (19%)', val: 8},
-			{label: 'Level 4 (15%)', val: 8},
-			{label: 'Level 5 (8%)', val: 8},
-			{label: 'Level 6 (8%)', val: 8}
-		];
+		if ($stateParams.userId) {
+			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
+			$scope.viewingOwnData = false;
+		} else {
+			$scope.progress = api.currentUser.getProgress();
+			$scope.viewingOwnData = true;
+		}
 
-		$scope.subjectData = [
-			{label: 'Physics (80%)', val: 8},
-			{label: 'Maths (20%)', val: 2}
-		];
+		$scope.progress.$promise.then(function() {
+			$scope.globalFlags.isLoading = false;
+			$scope.levelData = [
+				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
+				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
+				{label: 'Level 3', val: $scope.progress.attemptsByLevel["3"] || 0},
+				{label: 'Level 4', val: $scope.progress.attemptsByLevel["4"] || 0},
+				{label: 'Level 5', val: $scope.progress.attemptsByLevel["5"] || 0},
+				{label: 'Level 6', val: $scope.progress.attemptsByLevel["6"] || 0}
+			];
 
-		$scope.FieldData = [
-			{label: 'Mech (30%)', val: 8},
-			{label: 'Waves (25%)', val: 8},
-			{label: 'Feilds (20%)', val: 8},
-			{label: 'Circuits (15%)', val: 8},
-			{label: 'Gemetry (10%)', val: 8}
-		];
+			$scope.subjectData = [
+				{label: 'Physics', val: $scope.progress.attemptsByTag["physics"] || 0},
+				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0}
+			];
 
+			var attemptedFields = [];
+			$scope.fields = [];
+			for (var tid in $scope.progress.attemptsByTag) {
+				var t = tags.getById(tid);
+				if (t && t.level == 1) {
+					attemptedFields.push(t);
+					$scope.fields.push(t);
+				}
+			}
+
+			if (attemptedFields.length == 0)
+				return;
+
+			$scope.field = {
+				selection: attemptedFields[0],
+			};
+
+			$scope.topicsSubject = attemptedFields[0].parent;
+
+
+
+			$scope.$watch("field.selection", function(newField) {
+
+				$scope.fieldData = [];
+
+				var topics = tags.getDescendents($scope.field.selection.id);
+				for(var i in topics) {
+					var t = topics[i];
+					$scope.fieldData.push({
+						label: t.title,
+						val: $scope.progress.attemptsByTag[t.id] || 0,
+					})
+				}
+
+				$scope.topicsSubject = newField.parent;
+
+			})
+
+		}).catch(function(e) {
+			console.error("Unable to load user progress:", e);
+			$timeout(function() {
+				// Call this asynchronously, so that it happens later than the previous asynchronous call (!)
+				$scope.globalFlags.isLoading = false;
+			});
+		});
 	}];
 
 	return {

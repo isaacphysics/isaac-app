@@ -16,7 +16,7 @@
 define([], function() {
 
 
-	return ["$location", function($location) {
+	return ["$location", "$rootScope", function($location, $rootScope) {
 
 		return {
 
@@ -111,6 +111,9 @@ define([], function() {
 
 						updateLoadedQuestions();
 					}
+					setTimeout(function() {
+						$rootScope.requestMathjaxRender();
+					}, 0);
 				});
 
 				scope.$on("ensureVisible", function(e) {

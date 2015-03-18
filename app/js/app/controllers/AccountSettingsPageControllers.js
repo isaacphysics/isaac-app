@@ -15,7 +15,8 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', function($scope, auth, api, userOfInterest, $stateParams, $window, $location) {
+	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
+		$rootScope.pageTitle = "Account Settings";
 		// if the userOfInterest is set then we want to the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
 		// this is likely to be an administrator activity and could do with some extra security from the frontend.
 		if (userOfInterest) {
@@ -168,7 +169,41 @@ define([], function() {
         $scope.$on("$destroy", function() {
         	auth.updateUser();
         })
+		
+		// authorisation (token) stuff
+		$scope.authenticationToken = {value: null};
+        $scope.activeAuthorisations = api.authorisations.get();
+        
+        $scope.useToken = function() {
+        	if ($scope.authenticationToken.value == null) {
+        		$scope.showToast($scope.toastTypes.Failure, "No Token Value", "You have to enter a token value!");
+        		return;
+        	}
 
+        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
+        		$scope.activeAuthorisations = api.authorisations.get();
+        		$scope.authenticationToken = {value: null};
+        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
+        	}).catch(function(e){
+        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        	})        		
+        }
+
+        $scope.revokeAuthorisation = function(userToRevoke){
+        	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+
+        	if(revoke) {
+	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
+	        		$scope.activeAuthorisations = api.authorisations.get();
+	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
+	        	}).catch(function(e){
+        			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+	        	})        		
+        	} else {
+        		return;
+        	}
+        }
+        // end authorisation stuff
 	}]
 
 	return {

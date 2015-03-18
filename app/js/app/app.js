@@ -75,7 +75,7 @@ define([
             apiProvider.server("http://localhost:8080/isaac-api");
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , function($rootScope, api, $state, auth, $location) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', function($rootScope, api, $state, auth, $location, $timeout) {
 
         /* 
             Tooltip settings
@@ -99,6 +99,17 @@ define([
 
         auth.updateUser();
 
+        var mathjaxRenderTimeout = null;
+
+        $rootScope.requestMathjaxRender = function() {
+            if (mathjaxRenderTimeout)
+                clearTimeout(mathjaxRenderTimeout);
+
+            setTimeout(function() { 
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            }, 500);
+        }
+
         $rootScope.figures = {};
 
         $rootScope.globalFlags = {
@@ -115,14 +126,22 @@ define([
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
-            $rootScope.globalFlags.isLoading = false;
-            $rootScope.globalFlags.displayLoadingMessage = false;
-            // TODO: find a better way to hide the search
-            $rootScope.globalFlags.noSearch = false;
+            $timeout(function() {
+                // Run this in a $timeout to make sure that $apply is called.
+                $rootScope.globalFlags.isLoading = false;
+                
+                // TODO: find a better way to hide the search
+                $rootScope.globalFlags.noSearch = false;
+            });
 
             $(document).scrollTop(0);
             $rootScope.figures = {};
             $rootScope.relativeCanonicalUrl = $location.path();
+
+            // we need to tell opentip to reapply everytime we change state
+            setTimeout(function(){
+                Opentip.findElements();
+            }, 0);
         })
 
         $rootScope.$on("$stateChangeError", function() {
@@ -163,10 +182,11 @@ define([
                 }
             });
 
-            // we need to tell foundation and opentip to reapply everytime new content may have been added
+            // we need to tell foundation to reapply everytime new content may have been added
             $(document).foundation('interchange', 'reflow');
-            Opentip.findElements()
-
+            // we also need to tell open tip to reinitialise when new content is added.
+            Opentip.findElements();
+            
             // Global jQuery
             $(function()
             {
@@ -361,63 +381,86 @@ define([
                         }
                     },
                     joyride: { 
-                            expose: true,
-                            next_button: false,
-                            prev_button: false,
-                            template : {
-                                link: ''
-                            },
-                            pre_ride_callback: function() {
-                                // add custom controls
-                                $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
-                                if ($.ru_IsMobile()) {
-                                    totalJoyridePageCount = $("#mobile-tutorial .joyride-list").children().length;
-                                } else {
-                                    totalJoyridePageCount = $("#desktop-tutorial .joyride-list").children().length;
-                                }
-                            },
-                            pre_step_callback: function(index) {
-                                $(".joyride-page-indicator").empty();
-
-                                for (var i = 0; i < totalJoyridePageCount; i++) {
-                                    if (i <= index) {
-                                        $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-viewed.png">');
-                                    } else {
-                                        $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
-                                    }
-                                }
-
-                                if (index == 0) {
-                                    $(".joyride-prev-tip").css("visibility","hidden");
-                                } else {
-                                    $(".joyride-prev-tip").css("visibility","visible");
-                                }
-
-                                if (index == totalJoyridePageCount-1) {
-                                    $(".joyride-next-tip").css("visibility","hidden");
-                                } else {
-                                    $(".joyride-next-tip").css("visibility","visible");
-                                }
-                            },
-                            post_expose_callback: function (index){
-
-                                // Work out what to wrap the exposed element with e.g. square, circle or rectangle
-                                	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
-                                                       .getElementsByTagName("li")[index]
-                                                       .getAttribute('data-shape');                    
-                                
-                                if(tutorial != null) {
-                                    $('.joyride-expose-wrapper').addClass(tutorial);
-                                }
-
-                                // Triggering a resize fixes inital positioning issue on chrome
-                                $(window).resize();
-                            },
-                            post_ride_callback: function() {
-                                // remove controls when tutorial has finished
-                                $('.joyride-custom-controls').detach();
+                        expose: true,
+                        next_button: false,
+                        prev_button: false,
+                        template : {
+                            link: ''
+                        },
+                        pre_ride_callback: function() {
+                            // add custom controls
+                            $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
+                            if ($.ru_IsMobile()) {
+                                totalJoyridePageCount = $("#mobile-tutorial .joyride-list").children().length;
+                            } else {
+                                totalJoyridePageCount = $("#desktop-tutorial .joyride-list").children().length;
                             }
+                        },
+                        pre_step_callback: function(index) {
+                            $(".joyride-page-indicator").empty();
+
+                            for (var i = 0; i < totalJoyridePageCount; i++) {
+                                if (i <= index) {
+                                    $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-viewed.png">');
+                                } else {
+                                    $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
+                                }
+                            }
+
+                            if (index == 0) {
+                                $(".joyride-prev-tip").css("visibility","hidden");
+                            } else {
+                                $(".joyride-prev-tip").css("visibility","visible");
+                            }
+
+                            if (index == totalJoyridePageCount-1) {
+                                $(".joyride-next-tip").css("visibility","hidden");
+                            } else {
+                                $(".joyride-next-tip").css("visibility","visible");
+                            }
+                        },
+                        post_expose_callback: function (index){
+
+                            // Work out what to wrap the exposed element with e.g. square, circle or rectangle
+                            	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
+                                                   .getElementsByTagName("li")[index]
+                                                   .getAttribute('data-shape');                    
+                            
+                            if(tutorial != null) {
+                                $('.joyride-expose-wrapper').addClass(tutorial);
+                            }
+
+                            // Triggering a resize fixes inital positioning issue on chrome
+                            $(window).resize();
+                        },
+                        post_ride_callback: function() {
+                            // remove controls when tutorial has finished
+                            $('.joyride-custom-controls').detach();
                         }
+                    },
+                    reveal: {
+                        animation: 'none', // Can change back to 'fadeAndPop', but it's horribly jumpy.
+                          animation_speed: 500,
+                          close_on_background_click: true,
+                          dismiss_modal_class: 'close-reveal-modal',
+                          multiple_opened: false,
+                          bg_class: 'reveal-modal-bg',
+                          root_element: 'body',
+                          on_ajax_error: $.noop,
+                          bg : $('.reveal-modal-bg'),
+                          css : {
+                            open : {
+                              'opacity': 0,
+                              'visibility': 'visible',
+                              'display' : 'block'
+                            },
+                            close : {
+                              'opacity': 1,
+                              'visibility': 'hidden',
+                              'display': 'none'
+                            }
+                          }                  
+                    }
                 }); 
                 var tutorialShown = cookie.read('tutorialShown');
 

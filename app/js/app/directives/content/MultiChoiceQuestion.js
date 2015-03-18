@@ -43,6 +43,9 @@ define(["app/honest/responsive_video"], function(rv) {
 							break;
 						}
 					}
+
+					scope.$emit("newQuestionAnswer", scope.accordionSection, "✓");
+
 				});
 
 				scope.$watch("selectedAnswer", function() {

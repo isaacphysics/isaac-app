@@ -54,16 +54,22 @@
                             <a ui-sref='home' class='only-print print-logo'><img alt='Isaac. Physics. You work it out.'
                                                                                  src='/assets/isaac-logo-strap-print.svg'></a>
                             <a print-button></a>
+                            <div class='ru_print_options slide-animate no-print' ng-show="printingOptionsVisible">
+                                <div>
+                                    <a ng-click="printWithOptions(true)">With Hints</a> /
+                                    <a ng-click="printWithOptions(false)">No Hints</a>
+                                </div>
+                            </div>
                             <a share-button></a>
                             <div class='ru_share_link slide-animate' ng-show="showShareUrl">
                                 <div>
                                     {{shareUrl}}
                                 </div>
                             </div>
-                            <h2 style="position:absolute; right:100%;margin-right:-12px">Q:</h2>
+                            <h2 class="print-question question-prefix">Q:</h2>
                             <h2><span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}</h3>
-                            <br><br>
+                            <br class="no-print"><br class="no-print">
                         </div>
                     </div>
                     <div class="clearfix"></div>

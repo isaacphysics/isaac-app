@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', function($scope, auth, api, gameBoardTitles, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
 		$scope.globalFlags.isLoading = true;
 		
 		$rootScope.pageTitle = "My Boards";
@@ -42,7 +42,6 @@ define([], function() {
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 			})
 		};
 
@@ -63,7 +62,10 @@ define([], function() {
 		});
 
 		// Perform initial load
-		updateBoards();
+		$timeout(function() {
+			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
+			updateBoards();
+		});
 
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
@@ -74,7 +76,6 @@ define([], function() {
 				// Merge new boards into results 
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.globalFlags.isLoading = false;
-				$scope.globalFlags.displayLoadingMessage = false;
 				mergeInProgress = false;
 			});
 		};
@@ -90,6 +91,35 @@ define([], function() {
 			        updateBoards($scope.boards.results.length);
        			});
 			}
+		}
+
+		$scope.calculateBoardLevels = function(board) {
+			levels = [];
+			for(i = 0; i < board.questions.length; i++) {
+				if (levels.indexOf(board.questions[i].level) == -1) {
+					levels.push(board.questions[i].level);
+				}
+			}
+
+			levels.sort(function (a, b) {
+   				return a > b ? 1 : a < b ? -1 : 0;
+			});
+
+			return levels;
+		};
+
+		$scope.calculateBoardSubjects = function(board) {
+			subjects = [];
+			for(i = 0; i < board.questions.length; i++) {
+				var q = board.questions[i];
+
+				if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1)
+					subjects.push("maths");
+				else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1)
+					subjects.push("physics");
+			}
+
+			return subjects;
 		}
 	}];
 

@@ -392,6 +392,19 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('adminStats', {
+                url: "/admin/stats",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/adminStats.html",
+                        controller: "AdminStatsPageController",
+                    }
+                }
+            })
+
              .state('gameEditor', {
                 url: "/game_builder",
                 resolve: {
@@ -405,27 +418,28 @@ define(["angular-ui-router"], function() {
                 }
             })  
 
-            .state('groupManagment', {
+            .state('groups', {
                 url: "/groups",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
                         templateUrl: "/partials/states/group_management.html",
-                        controller: "GroupManagmentPageController",
+                        controller: "GroupManagementPageController",
                     }
                 }
             })
             
-            .state('assignBoards', {
+            .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
                         templateUrl: "/partials/states/assign_boards.html",
+                        controller: "SetAssignmentsPageController",
                     }
                 }
             })
@@ -438,12 +452,26 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/my_assignments.html",
+                        controller: "MyAssignmentsPageController",                        
                     }
                 }
             })
 
             .state('progress', {
                 url: "/progress",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/my_progress.html",
+                        controller: "MyProgressPageController",
+                    }
+                }
+            })
+
+            .state('userProgress', {
+                url: "/progress/:userId",
                 resolve: {
                     requireLogin: getLoggedInPromise,
                 },                

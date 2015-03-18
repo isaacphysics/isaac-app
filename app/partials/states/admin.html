@@ -12,6 +12,7 @@
                 <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
                 <li><a href="/api/content/units" target="_blank">List of units</a></li>
                 <li><a ui-sref='questionIndex'>Question List</a></li>
+                <li><a ui-sref='adminStats'>More stats</a></li>
             </ul>            
         </div>
     </div>
@@ -31,24 +32,38 @@
                 <div class="medium-8 small-16 columns">
                     <ul>
                         <li>
-                            <strong>Users (Total Registered: {{statistics.total_users}})</strong>
+                            <strong>Users (Total Registered: {{statistics.totalUsers}})</strong>
                             <ul>
                                 <li>
                                     <strong>Gender</strong>
                                     <ul>
-                                        <li>Male: {{statistics.male_users}}</li>
-                                        <li>Female: {{statistics.female_users}}</li>
-                                        <li>Unknown: {{statistics.unknown_gender_users}}</li>
+                                        <li>Male: {{statistics.maleUsers}}</li>
+                                        <li>Female: {{statistics.femaleUsers}}</li>
+                                        <li>Unknown: {{statistics.unknownGenderUsers}}</li>
                                     </ul>
                                 </li>
                                 <li>
                                     <strong>Role</strong>
                                     <ul>
-                                        <li>Student (unknown role): {{statistics.student_users}}</li>
-                                        <li>Teacher: {{statistics.teacher_users}}</li>
-                                        <li>Staff: {{statistics.staff_users}}</li>
+                                        <li>Student (unknown role): {{statistics.studentUsers}}</li>
+                                        <li>Teacher: {{statistics.teacherUsers}}</li>
+                                        <li>Staff: {{statistics.staffUsers}}</li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <strong>Profile Completion</strong>
+                                    <ul>
+                                        <li>School provided: {{statistics.hasSchool}} ({{statistics.hasSchoolOther}} - from 'school other')</li>
+                                        <li>No School Information: {{statistics.hasNoSchool}}</li>
+                                    </ul>
+                                </li> 
+                                <li>
+                                    <strong>Last Seen Data (non-staff)</strong>
+                                    <ul>
+                                        <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
+                                        <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastThirtyDays}}, Students: {{statistics.activeStudentsLastThirtyDays}})</li>
+                                    </ul>
+                                </li>                                                            
                             </ul>
                         </li>
                     </ul>
@@ -58,8 +73,11 @@
                         <li>
                             <strong>Events</strong>
                             <ul>
-                                <li>Viewed Questions Events: {{statistics.view_question_events}}</li>
-                                <li># of Questions Answered Events: {{statistics.answered_question_events}}</li>
+                                <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
+                                <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}}): <ul>
+                                    <li>Last 7 days: Teachers: {{statistics.questionsAnsweredLastWeekTeachers}}, Students: {{statistics.questionsAnsweredLastWeekStudents}}</li>
+                                    <li>Last 30 days: Teachers: {{statistics.questionsAnsweredLastThirtyDaysTeachers}}, Students: {{statistics.questionsAnsweredLastThirtyDaysStudents}}}</li>                    
+                                </ul></li>
                             </ul>
                         </li> 
                     </ul>

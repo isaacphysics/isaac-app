@@ -217,6 +217,19 @@ define([], function() {
 			return deepestTag;
 		};
 
+		this.getDescendents = function(tagId) {
+			var descs = [];
+
+			for (var i in this.tagArray) {
+				if (this.tagArray[i].parent == tagId) {
+					descs.push(this.tagArray[i]);
+					descs = descs.concat(this.getDescendents(this.tagArray[i].id));
+				}
+			}
+
+			return descs;
+		}
+
 		var tagHeirarchy = ["subject", "field", "topic"];
 
 		var generateTitle = function(tag) {

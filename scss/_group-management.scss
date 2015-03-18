@@ -31,39 +31,6 @@
 }
 
 
-/*
-	Toast message styles 
-*/
-.toast {
-	@extend .clearfix;
-}
-.toast-icon {
-	float: left;
-	background-color: #333;
-	padding: 12px 20px;
-	margin-right: 20px
-}
-.toast-complete-icon {
-	float: left;
-	width: 76px;
-	height: 90px;
-	background: url(/assets/ru.png) -401px -301px no-repeat;
-}
-.toast-message {
-	height: 114px;
-	padding: 15px 20px 20px;
-	background-color: #f6f6f6;
-	border: #999 1px solid;
-
-	h4 {
-		margin-bottom: 5px;
-	}
-
-	p {
-		line-height: 110%;
-	}
-}
-
 
 /*
 	Group management page styles 
@@ -93,6 +60,13 @@
 	.panel {
 		padding: 10px 20px 20px;
 	}
+
+	.access-token {
+		float:right;
+	}
+	h6 {
+		font-size: 1em;
+	}	
 }
 
 
@@ -227,6 +201,19 @@
 	.edit-icon {
 		float: right;
 	}
+
+	.disabled {
+		group-table-person {
+			-webkit-filter:#{"grayscale(100%)"};
+		}
+		td {
+			color: gray;
+		}
+		
+		.revoked {
+			text-decoration: line-through;
+		}
+	}
 }
 
 .archived {
@@ -316,14 +303,6 @@
 	.profile-tabs-content {
 		border-left: #ccc solid 1px;
 		border-right: #ccc solid 1px;
-	}
-
-	.toast-icon {
-		margin-right: 0;
-	}
-	.toast-message {
-		float: left;
-		width: 282px;
 	}
 }
 @media #{$large-up} { 

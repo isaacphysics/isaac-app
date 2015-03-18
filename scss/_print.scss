@@ -1,15 +1,20 @@
 @media print {
+
     @page {
-        margin-bottom: 10mm;
+        margin-top:20mm;
+        margin-bottom:5mm;
     }
 
     body {
-        margin: 10mm 10mm 10mm 10mm;
+        margin: 5mm 5mm 0mm 5mm;
+        height:auto;
+        padding-bottom: 0px;
     }
 
     a[href]:after {
         content: none !important;
     }
+  
 
     .no-print {
         display: none;
@@ -27,6 +32,13 @@
         background-color: white !important;
     }
 
+    //Padding between hints
+    .tabs-content.ru_tabs .content:not(.ru-answer){
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+
     div.ru-desktop-panel-content div.columns {
         width: initial;
     }
@@ -43,13 +55,28 @@
         @extend .print-float-right;
     }
 
-    .ru_answer_reveal div {
+    .ru-question p{
+        font-size:1rem !important;
+        margin-bottom: 0px !important;
+    }
+
+    .ru_figure img{
+        max-height: 200px !important;
+    }
+
+    .ru_answer_reveal div { 
         border: 0 !important;
     }
 
     p.ng-scope, ul.ng-scope, table.ng-scope, div.ng-scope form, div.ng-scope h3, div.ng-scope h4, .print-side-padding {
-        margin-left: 30px !important;
-        margin-right: 30px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        margin-bottom: 0px !important;
+        font-size: 1rem !important;
+    }
+
+    .video-fix{
+        margin:0px !important;
     }
 
     div.ng-scope h3 {
@@ -72,35 +99,42 @@
 
     .tabs-content.ru_tabs {
         border: 0 !important;
+        margin-bottom: 0px !important;
     }
 
     .tabs-content.ru_tabs .content {
         background-color: initial !important;
     }
 
+
     .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
     {
-        border: 3px solid $ru_physics;
+        border: 0px solid $ru_physics;
         background-color: transparent !important;
     }
 
     .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name
     {
-        border: 3px solid $ru_maths;
+        border: 0px solid $ru_maths;
         background-color: transparent !important;
     }
 
     .accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
     {
-        border: 3px solid lighten($ru_physics, $ru_site_hover);
+        border: 0px solid lighten($ru_physics, $ru_site_hover);
     }
 
     .accordion.ru_accordion.maths dd a.ru_accordion_titlebar:hover .ru_accordion_name
     {
-        border: 3px solid lighten($ru_maths, $ru_site_hover);
+        border: 0px solid lighten($ru_maths, $ru_site_hover);
     }
 
-    .print-avoid-break, div.panel, table {
+
+    .ng-scope.active{
+        padding-top: 20px
+    }
+
+    .panel{
         page-break-inside: avoid;
     }
 
@@ -110,6 +144,18 @@
 
     .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title {
         width: initial;
+        top:0px !important;
+        padding-top:0px !important;
+        height:30px !important;
+    }
+
+    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name{
+        padding-top:0px;
+        padding-bottom:0px;
+        padding-left:0px;
+        padding-right:0px;
+        height:30px !important;
+        min-width: 50px;
     }
 
     .small-side-padding {
@@ -133,6 +179,7 @@
         margin-right: 0;
     }
 
+
     .tabs-content.ru_tabs.ru-answer .content * p {
         font-style: normal !important;
         font-size: 1rem !important;
@@ -140,11 +187,14 @@
 
     .bg-wrap {
         padding-bottom: 0;
+        padding:0mm 10mm 0mm 10mm;
     }
 
     .print-logo {
         position: relative;
         top: -20px;
+        overflow: auto;
+        width: 100%
     }
 
     .print-logo img {
@@ -152,11 +202,39 @@
         height: 25mm;
     }
 
-    .accordion.ru_accordion dd a.ru_accordion_titlebar {
-        border-top: 1px solid #cccccc;
-        border-right: 1px solid #cccccc;
-        border-bottom: 1px solid #cccccc;
+     .accordion.ru_accordion dd.active a.ru_accordion_titlebar{
+        
+        border-top: 0px solid #cccccc !important; 
     }
+
+    .accordion.ru_accordion dd a.ru_accordion_titlebar {
+        border-top: 0px solid #cccccc !important;
+        border-right: 0px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+        border-left: 0px solid #cccccc;
+        height: 30px;
+    }
+
+    //Allows us to position the 'Q' for printing
+    .print-question{
+        position:absolute; 
+        margin-left:-25px
+    } 
+
+    li{
+        font-size: 1rem !important;
+        margin-left:40px !important;
+    }
+
+    //The green bullet points 
+    .ru-form-required
+    {
+        &:after {
+            padding-left: 10px !important;
+        }
+    }
+
+
 
     .print-header {
         float: right;

@@ -97,6 +97,8 @@ define([], function() {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
 
+        		$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+
 				// Something went wrong. This gameboard probably doesn't exist anymore.
 				loadGameBoardFromFilter();
 			});
@@ -108,8 +110,11 @@ define([], function() {
 
 			var params = {};
 
-			if ($scope.filterSubjects.length > 0)
+			if ($scope.filterSubjects.length > 0) {
 				params.subjects = $scope.filterSubjects.join(",");
+			} else {
+				params.subjects = "physics,maths";
+			}
 
 			if ($scope.filterFields.length > 0)
 				params.fields = $scope.filterFields.join(",");
@@ -117,8 +122,13 @@ define([], function() {
 			if ($scope.filterTopics.length > 0)
 				params.topics = $scope.filterTopics.join(",");
 
-			if ($scope.filterLevels.length > 0)
+			if ($scope.filterLevels.length > 0) {
 				params.levels = $scope.filterLevels.join(",");
+			}
+			else {
+				params.levels = "1,2,3,4,5,6";
+			}
+
 
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.join(",");

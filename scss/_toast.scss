@@ -1,0 +1,90 @@
+/*
+	Toast message styles 
+*/
+
+.toast.toastRevealAnimation{
+	opacity: 1;
+}
+
+.toast{
+	@extend .clearfix;
+	opacity: 0;
+    transition: opacity .25s ease-in-out;
+    -moz-transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+
+    visibility: hidden;
+    display:block;
+	position:fixed;
+	width:100%;
+    top: 45%;
+  	z-index: 9999;
+
+    .innerToast{
+		display: table;
+	    margin: 0 auto;
+	    box-shadow: 3px 3px 10px  #AAAAAA;
+	    overflow: hidden;
+	    text-overflow:ellipsis;
+		background-color: #333;
+    }
+
+
+	.toast-icon {
+		float: left;
+		background-color: #333;
+		padding: 12px 20px;
+		margin-right: 20px
+	}
+
+	.toast-complete-icon {
+		float: left;
+		width: 76px;
+		height: 90px;
+		background: url(/assets/ru.png) -401px -301px no-repeat;
+	}
+
+	.toast-message {
+		min-height: 114px;
+		max-height:250px;
+		padding: 15px 20px 5px;
+		background-color: #f6f6f6;
+		border: #999 1px solid;
+
+		h4 {
+			color: $ru_green;
+			margin-bottom: 5px;
+		}
+
+		p {
+			line-height: 110%;
+		}
+	}
+
+	&.error {
+
+		.toast-message {
+			h4 {
+				color: #be4c4c;
+			}
+		}
+		.toast-complete-icon {
+			background-position: -401px -391px
+		}
+
+	}
+}
+
+
+@media #{$medium-up} {
+
+	.toast {
+		.toast-icon {
+			margin-right: 0;
+		}
+		.toast-message {
+			float: left;
+			width: 282px;
+		}
+	}
+}

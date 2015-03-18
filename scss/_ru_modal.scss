@@ -67,3 +67,11 @@
         }
     }
 }
+
+[isaac-modal] {
+    display:none;
+}
+
+#isaacModal>[isaac-modal] {
+    display: block;
+}

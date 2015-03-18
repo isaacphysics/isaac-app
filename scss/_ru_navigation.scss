@@ -82,10 +82,12 @@
 	display: none;
 	position: relative;
 	border-top: $ru_green 1px solid;
+	margin-bottom: -1px;
 
 	h6 {
 		padding: 6px 15px 9px;
 		border-bottom: $ru_green 1px solid;
+		margin: 0;
 	}
 	h6, a {
 		color: #000;
@@ -112,9 +114,6 @@
 		}
 	}
 }
-.dl-level1 li:last-child h6 {
-	border-bottom: none;
-}
 .dl-level1, .dl-level2 {
 	list-style: none;
 	padding: 0;
@@ -123,10 +122,6 @@
 .dl-level2 li {
 	padding: 6px 15px 9px;
 	border-bottom: $ru_green 1px solid;
-
-	&:last-child {
-		border-bottom: none;
-	}
 
 	&.dl-back {
 		padding-top: 7px;
