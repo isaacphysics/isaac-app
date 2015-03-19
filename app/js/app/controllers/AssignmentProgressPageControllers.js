@@ -121,22 +121,19 @@ define([], function() {
         });
 
         scope.getStudentClass = function(studentProgress) {
-            var complete = true;
-            var failed = false;
+            var questionCount = studentProgress.results.length;
+            var stateCounts = {};
+
             for (var i in studentProgress.results) {
-                if (studentProgress.results[i] != "COMPLETE")
-                    complete = false;
-                if (studentProgress.results[i] == "FAILED")
-                    failed = true;
+                stateCounts[studentProgress.results[i]] = (stateCounts[studentProgress.results[i]] || 0) + 1; 
             }
 
-            if (failed)
-                return "fail";
-
-            if (complete)
+            if (stateCounts["PERFECT"] == questionCount)
                 return "complete";
-
-            return "";
+            else if (stateCounts["FAILED"] > (questionCount * 0.3))
+                return "fail"
+            else
+                return "";
         };
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {
