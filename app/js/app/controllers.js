@@ -41,6 +41,7 @@ define([
 	"app/controllers/GroupManagementPageControllers",
 	"app/controllers/MyProgressPageControllers",
 	"app/controllers/AssignmentsController",	
+	"app/controllers/AssignmentProgressPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -80,6 +81,8 @@ define([
 	
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
 	var assignmentsController = require("app/controllers/AssignmentsController")
+
+	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
 
 	/* Controllers */
 
@@ -127,6 +130,8 @@ define([
 	.controller('GroupManagementPageController', groupManagementPageControllers.PageController)
 
 	.controller('MyProgressPageController', myProgressPageControllers.PageController)
+
+	.controller('AssignmentProgressPageController', assignmentProgressPageControllers.PageController)
 	.controller('SetAssignmentsPageController', assignmentsController.SetAssignmentsPageController)
 
 	.controller('MyAssignmentsPageController', assignmentsController.MyAssignmentsPageController)
