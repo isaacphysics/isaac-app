@@ -126,7 +126,7 @@ define([], function() {
             for (var i in studentProgress.results) {
                 if (studentProgress.results[i] != "COMPLETE")
                     complete = false;
-                if (studentProgress.results[i] == "TRY_AGAIN")
+                if (studentProgress.results[i] == "FAILED")
                     failed = true;
             }
 

@@ -111,7 +111,7 @@
                                                             'icon-spinner': studentProgress.results[$index] == 'IN_PROGRESS',
                                                             'icon-check': studentProgress.results[$index] == 'COMPLETE' || studentProgress.results[$index] == 'PERFECT',
                                                             'ru_green': studentProgress.results[$index] == 'PERFECT',
-                                                            'icon-x': studentProgress.results[$index] == 'TRY_AGAIN',
+                                                            'icon-x': studentProgress.results[$index] == 'FAILED',
                                                         }"></span>
                                                     </td>
                                                     <td>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</td>

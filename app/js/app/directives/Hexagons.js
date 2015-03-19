@@ -41,7 +41,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     $(this).addClass('ru-hex-home-content-wild');
                 }
-                else if(d.state == 'COMPLETED' || d.state == 'PERFECT')
+                else if(d.state == 'PASSED' || d.state == 'PERFECT')
                 {
                     $(this).addClass('ru-hex-home-content-correct');
                 }
@@ -105,11 +105,13 @@ define(["app/honest/hexagon"],function(hexagon) {
                     .classed({"ru-hex-home-msg" : true})
                     .each(function(d)
             {
-                if(d.state === 'COMPLETED' || d.state === 'PERFECT')
+                if(d.state === 'PERFECT')
                 {
+                    $(this).text('Perfect!').addClass('ru-hex-home-msg');
+                } else if (d.state === 'PASSED') {
                     $(this).text('Well Done!').addClass('ru-hex-home-msg');
                 }
-                else if (d.state === 'TRY_AGAIN')
+                else if (d.state === 'FAILED')
                 {
                     $(this).text('Try Again!').addClass('ru-hex-home-msg');
                 }
@@ -144,7 +146,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                     {
                         c = 'hex-orange';   
                     }
-                    else if(d.state === 'COMPLETED' || d.state === 'PERFECT')
+                    else if(d.state === 'PASSED' || d.state === 'PERFECT')
                     {
                         c = 'hex-grey';
                     }
