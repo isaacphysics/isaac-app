@@ -13,12 +13,11 @@ module.exports = function(grunt) {
     sass: {
       options: {
         includePaths: ["app/bower_components/foundation/scss"],
-          sourceMap: true
       },
       dist: {
         options: {
           outputStyle: 'compressed',
-          sourceMap: true
+          sourceMap: true, // This causes everything to fail silently on errors. Set to false for troubleshooting.
         },
         files: {
           'app/css/app.css': 'scss/app.scss'

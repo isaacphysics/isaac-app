@@ -237,6 +237,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    width: 100%;
 
     p {
         font-size: 11px;
@@ -284,6 +285,11 @@
         vertical-align: top;
         text-align: center;
         padding: 0;
+
+        a {
+            color: inherit;
+            vertical-align: top;
+        }
 
         span {
             vertical-align: top;
