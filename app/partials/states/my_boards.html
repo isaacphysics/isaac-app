@@ -1,5 +1,5 @@
 <div class="row">
-   <div class="small-16 columns">
+   <div class="small-13 columns">
       <div ng-switch="boards">
          <div ng-switch-when="undefined">
             <h1>&nbsp;</h1>
@@ -19,6 +19,10 @@
          </div>
       </div>
    </div>
+   <div class="medium-3 columns text-right hide-for-small-only">
+      <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+   </div>
+
 </div>
 
 <div class="boards-filters" ng-show="boards != null">
