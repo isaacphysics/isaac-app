@@ -300,7 +300,7 @@
             border-left: #666 1px solid;
             background-color: #fff !important;
         }
-    } 
+    }
 
     tbody {
         tr:nth-child(odd) {
@@ -341,6 +341,17 @@
             td {
                 &:first-child, &:last-child {
                     color: #cc3333;
+                }
+            }
+        }
+        .revoked {
+            td {
+                &:first-child {
+                    color: gray;
+                    text-decoration: line-through;
+                }
+                &:last-child {
+                    display: none;
                 }
             }
         }

@@ -121,6 +121,9 @@ define([], function() {
         });
 
         scope.getStudentClass = function(studentProgress) {
+            if (!studentProgress.user.authorisedFullAccess)
+                return "revoked";
+
             var questionCount = studentProgress.results.length;
             var stateCounts = {};
 

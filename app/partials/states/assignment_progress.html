@@ -105,8 +105,18 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="studentProgress in assignmentProgress[assignment._id]" ng-class="getStudentClass(studentProgress)">
-                                                    <td><span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user._id})">{{studentProgress.user.givenName}} <span class="show-for-large-up">{{studentProgress.user.familyName}}</span></a></td>
-                                                    <td ng-repeat="q in assignment.gameBoard.questions" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
+                                                    <td>
+                                                        <span class="icon-person"></span>
+                                                        <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user._id})">
+                                                            {{studentProgress.user.givenName}} 
+                                                            <span class="show-for-large-up">{{studentProgress.user.familyName}}</span>
+                                                        </a>
+                                                    </td>
+                                                    
+                                                    <td ng-repeat="q in assignment.gameBoard.questions" 
+                                                        ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" 
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index">
+
                                                         <span ng-class="{
                                                             'icon-spinner': studentProgress.results[$index] == 'IN_PROGRESS',
                                                             'icon-check': studentProgress.results[$index] == 'COMPLETE' || studentProgress.results[$index] == 'PERFECT',
@@ -114,6 +124,7 @@
                                                             'icon-x': studentProgress.results[$index] == 'FAILED',
                                                         }"></span>
                                                     </td>
+
                                                     <td>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</td>
                                                 </tr>
                                             </tbody>
