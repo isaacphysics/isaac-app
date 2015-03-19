@@ -92,7 +92,7 @@ define([], function() {
                                     }
                                 }
 
-                                var tickPercent = Math.round(100 * (tickCount / questions.length));
+                                var tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
                             }
 
