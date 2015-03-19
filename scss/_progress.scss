@@ -348,9 +348,12 @@
             td {
                 &:first-child {
                     color: gray;
-                    text-decoration: line-through;
+                    
+                    a {
+                        text-decoration: line-through;
+                    }
                 }
-                &:last-child {
+                &:last-child span {
                     display: none;
                 }
             }
