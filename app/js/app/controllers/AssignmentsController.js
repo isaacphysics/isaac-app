@@ -223,7 +223,7 @@ define([], function() {
 				}
 			})
 			$timeout(function() {
-				$scope.globalFlags.isLoading = true;
+				$scope.globalFlags.isLoading = false;
 			})
 		});
 
