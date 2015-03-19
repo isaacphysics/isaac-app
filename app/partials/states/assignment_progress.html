@@ -25,17 +25,17 @@
 
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
-                            {{group.groupName}} <span class="hide-for-medium-up">({{assignments[group._id].length || 0}})</span>
+                            {{group.groupName}} <span class="hide-for-medium-up">({{groupAssignments[group._id].length || 0}})</span>
                         </div>
 
-                        <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" ng-style="{visibility: assignments[group._id].length ? 'visible':'hidden'}"/>
+                        <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" ng-style="{visibility: groupAssignments[group._id].length ? 'visible':'hidden'}"/>
 <!--
                         <div class="accordion-group-summary">
                             <span class="show-for-medium-up"><strong>3</strong> Active boards / </span><strong>13</strong> Completed <span class="show-for-medium-up">boards</span>
                         </div>
 -->
                         <div class="accordion-group-summary">
-                            <span><strong>{{assignments[group._id].length || 0}}</strong> Assignments</span>
+                            <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments</span>
                         </div>
                     </a>
 
@@ -45,7 +45,7 @@
                             SECOND LEVEL - boards accordion
                         -->
                         <dl class="accordion-board">
-                            <dd ng-repeat="assignment in assignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
+                            <dd ng-repeat="assignment in groupAssignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
                                 <div href="javascript:void(0)" class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
                                         {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}
@@ -73,8 +73,8 @@
                                     <!--
                                         Board progress overview
                                     -->
-                                    <div class="board-progress">
-                                        <strong>Some</strong> out of <strong>Many</strong> students have completed the board <strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong><strong class="strong-mobile">correctly</strong>.
+                                    <div class="board-progress" ng-show="assignment.gameBoard.studentsCorrect != null">
+                                        <strong>{{assignment.gameBoard.studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong><strong class="strong-mobile">correctly</strong>.
                                     </div>
 
                                     <!--
@@ -98,7 +98,7 @@
                                         <table class="table-progress">
                                             <thead>
                                                 <tr>
-                                                    <td>Class average</td>
+                                                    <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
                                                     <td></td>
                                                 </tr>
@@ -114,12 +114,12 @@
                                                             'icon-x': studentProgress.results[$index] == 'TRY_AGAIN',
                                                         }"></span>
                                                     </td>
-                                                    <td>{{getStudentCorrectCount(studentProgress)}} / {{assignment.gameBoard.questions.length}}</td>
+                                                    <td>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td>Class average</td>
+                                                    <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
                                                     <td></td>
                                                 </tr>
