@@ -176,7 +176,7 @@ define([], function() {
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
 				}).catch(function(e){
-	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", e.data.errorMessage || ("Error " + e.status));
 				})
 			} else {
 	        	$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error: Please choose a group.");
@@ -191,7 +191,7 @@ define([], function() {
 					updateGroupAssignmentMap([board]);
 					$scope.showToast($scope.toastTypes.Success, "Assignment Deleted", "This assignment has been unset successfully.");
 				}).catch(function(e){
-        			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", "Error " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", e.data.errorMessage || ("Error " + e.status));
 				});				
 			}
 		}
