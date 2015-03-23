@@ -96,18 +96,21 @@
     <div class='large-16 medium-16 columns'>
         <section>
             <div class="row">
-                <div class='ru-board-title show-for-medium-up'>
-                    <div class="large-5 medium-5 columns">
-                        <a href="javascript:void(0)" ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img" alt="Undo icon for Refresh board operation."><h4>Undo Refresh</h4></a>&nbsp;
+                <div class='ru-board-title'>
+                    <div class="large-5 medium-5 columns show-for-medium-up">
+                        <a class="" href="javascript:void(0)" ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img" alt="Undo icon for Refresh board operation."><h4>Undo Refresh</h4></a>&nbsp;
                     </div>
-                    <div class="large-6 medium-6 columns text-center">
+                    <div class="medium-6 small-16 columns text-center">
                         <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user._id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
+                        <br/>
+                        <strong><a ng-show="gameBoard.$resolved && editedGameBoardTitle == null" href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">Save this board</a></strong>
+
                         <span ng-hide="editedGameBoardTitle==null">
                             <input type="text" ng-model="editedGameBoardTitle">
                             <button ng-click="saveGameBoardTitle()">Save</button>
                         </span>
                     </div>
-                    <div class="large-5 medium-5 columns">
+                    <div class="large-5 small-5 columns show-for-medium-up">
                         <div id="tutorial-shuffle" class="right">
                             <a href="javascript:void(0)" ng-click="shuffleBoard()" ng-hide="gameBoard.creationMethod === 'BUILDER'"><h4>Refresh Board</h4>
                             <img src="/assets/icon-shuffle.png" class="ru-board-img" alt="Refresh board icon."></a>
@@ -116,36 +119,36 @@
 
                 </div>
 
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
-                    <div class="row warnings">
-                        <div class='small-16 columns text-center'>
-                            <div class='ru-score' ng-repeat="w in warnings">
-                                <strong>Warning:</strong> {{w[1]}}
-                            </div>
+                <div class="row warnings">
+                    <div class='small-16 columns text-center'>
+                        <div class='ru-score' ng-repeat="w in warnings">
+                            <strong>Warning:</strong> {{w[1]}}
                         </div>
                     </div>
+                </div>
 
-                    <div id="game-board-panel" class="small-16 columns" hexagons="gameBoard.questions" wild-card="gameBoard.wildCard" wild-card-position="gameBoard.wildCardPosition" loading="gameBoardLoading" board-id="gameBoard.id"></div>
+                <div id="game-board-panel" class="small-16 columns" hexagons="gameBoard.questions" wild-card="gameBoard.wildCard" wild-card-position="gameBoard.wildCardPosition" loading="gameBoardLoading" board-id="gameBoard.id"></div>
 
-                    <div class=''> 
-                        <div class='ru-board-title hide-for-medium-up'>
-                            <div class="small-8 columns">
-                                <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()">
-                                    <img src="/assets/icon-undo-shuffle.png" class="ru-board-img">
-                                    <h4>Undo Refresh</h4>
+                <div class=''> 
+                    <div class='ru-board-title hide-for-medium-up'>
+                        <div class="small-8 columns">
+                            <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()">
+                                <img src="/assets/icon-undo-shuffle.png" class="ru-board-img">
+                                <h4>Undo Refresh</h4>
+                            </a>
+                        </div>
+                        <div class="small-8 columns">
+                            <div class="right">
+                                <a ng-click="shuffleBoard()">
+                                    <h4>Refresh Board</h4>
+                                    <img id="tutorial-shuffle-mobile" src="/assets/icon-shuffle.png" class="ru-board-img">
                                 </a>
                             </div>
-                            <div class="small-8 columns">
-                                <div class="right">
-                                    <a ng-click="shuffleBoard()">
-                                        <h4>Refresh Board</h4>
-                                        <img id="tutorial-shuffle-mobile" src="/assets/icon-shuffle.png" class="ru-board-img">
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </section>
             <div class="pad"></div>
