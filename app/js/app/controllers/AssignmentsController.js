@@ -67,7 +67,7 @@ define([], function() {
 		];
 
 		$scope.filterOption = $scope.filterOptions[0];
-		$scope.sortOption = $scope.sortOptions[0];
+		$scope.sortOption = $scope.sortOptions[1];
 
 		var updateBoards = function(limit) {
 			$scope.globalFlags.isLoading = true;

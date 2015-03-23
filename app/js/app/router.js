@@ -495,6 +495,25 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('addBoard', {
+                url: "/add_gameboard/:boardId",
+                resolve: {
+                    requireLogin: getLoggedInPromise,
+                },                
+                onEnter: ['$stateParams', '$state', 'api', '$rootScope', function($stateParams, $state, api, $rootScope) {
+                    console.log("Adding board:", $stateParams.boardId);
+
+                    api.gameBoards.get({id: $stateParams.boardId}).$promise.then(function(board) {
+                        return board.$save()
+                    }).then(function() {
+                        $state.go("boards");
+                    }).catch(function(e) {
+                        console.error("Error saving board.");
+                        $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
+                    });
+                }],
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {
