@@ -503,9 +503,7 @@ define(["angular-ui-router"], function() {
                 },                
                 onEnter: ['$stateParams', '$state', 'api', '$rootScope', 'requireLogin', function($stateParams, $state, api, $rootScope, requireLogin) {
 
-                    api.gameBoards.get({id: $stateParams.boardId}).$promise.then(function(board) {
-                        return board.$save()
-                    }).then(function() {
+                    api.saveGameBoard($stateParams.boardId).$promise.then(function() {
                         if (requireLogin.role == "TEACHER" || requireLogin.role == "ADMIN") {
                             $state.go("setAssignments");
                         } else {
