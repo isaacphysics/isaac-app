@@ -111,7 +111,7 @@ define([], function() {
 
 				// Cause this board to be persisted for the current user. 
 				// This will fail if we're not logged in, but that doesn't matter.
-				api.saveGameBoard(board.id);
+				api.saveGameBoard(board._id);
 				// Find the index of this question on the game board.
 
 				var thisIndex = null;
