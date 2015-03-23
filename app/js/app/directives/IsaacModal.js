@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 define([], function() {
-    return function() {
+    return ['$compile', function($compile) {
         return {
             restrict: 'A',
 
             link: function(scope, element, attrs) {
 
+                var rawClone = element.clone();
+
                 scope.modals = scope.modals || {};
+
                 scope.modals[attrs.isaacModal] = {
                     show: function() {
-                        $("#isaacModal").empty().append(element.clone());
+                        $("#isaacModal").empty().append($compile(rawClone)(scope));
                         $("#isaacModal").foundation("reveal", "open");
+
+                        var modalHeight = $("#isaacModal").height();
+                        $("#isaacModal").css("top", "calc(33% - " + modalHeight + "px /2)");
                     },
                     hide: function() {
                         $("#isaacModal").foundation("reveal", "close");
@@ -32,5 +38,5 @@ define([], function() {
                 }
             }
         }
-    }
+    }];
 });

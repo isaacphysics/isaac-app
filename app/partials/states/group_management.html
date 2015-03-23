@@ -135,8 +135,15 @@
         <div class="panel" ng-include="'/partials/group_management_details.html'"></div>
     </div>
     <!-- End desktop only -->
-
-    
-
 </div>
 
+<div isaac-modal="shareCode">
+  <div class="reveal-modal-head">
+    <h2>Group Created</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body text-center ru-page-heading">
+    <p>Your group has been created. Share the following code with your students to have them join your group:</p>
+    <h3>{{selectedGroupToken.token || "Loading..."}}</h3>
+  </div>
+</div>

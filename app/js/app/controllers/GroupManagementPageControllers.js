@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', function($scope, auth, $state, $location, $window, api, $timeout, $rootScope) {
+	var PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', '$compile', function($scope, auth, $state, $location, $window, api, $timeout, $rootScope) {
 		// these flags represent whether features have been enabled yet.
 		$rootScope.pageTitle = "Group Management";
 
@@ -62,8 +62,13 @@ define([], function() {
         	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
         		$scope.myGroups = api.groupManagementEndpoint.get();
         		$scope.setSelectedGroup(grp);
-        		$scope.newGroup = {}
-        			$scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
+        		$scope.newGroup = {};
+
+                if (!isUpdate) {
+                    $scope.modals.shareCode.show();
+                } else {
+                    $scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
+                }
         	}).catch(function(e) {
         			$scope.showToast($scope.toastTypes.Failure, "Group Save failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
