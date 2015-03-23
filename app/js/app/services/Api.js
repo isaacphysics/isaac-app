@@ -239,7 +239,7 @@ define([], function() {
 		}
 
 		this.saveGameBoard = function(id) {
-			return saveBoard.query({"id": id});
+			return saveBoard.query({"id": id}, {});
 		}
      
 		this.removeLinkedAccount = function(provider) {
