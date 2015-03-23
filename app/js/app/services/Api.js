@@ -224,6 +224,7 @@ define([], function() {
 		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
 		var gameBoardsList = $resource(server + "/api/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var deleteBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+		var saveBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -235,6 +236,10 @@ define([], function() {
 		
 		this.deleteGameBoard = function(id){
 			return deleteBoard.query({"id" : id});
+		}
+
+		this.saveGameBoard = function(id) {
+			return saveBoard.query({"id": id});
 		}
      
 		this.removeLinkedAccount = function(provider) {
