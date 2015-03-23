@@ -1,5 +1,5 @@
 <!-- Start active group -->
-    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup">Group token: {{selectedGroupToken.token}}</span></h6>
+    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup">Group token: <a href="javascript:void(0)" ng-click="modals.shareCode.show()">{{selectedGroupToken.token}}</a></span></h6>
 
     <input ng-show="selectedGroup" type="text" ng-model="selectedGroup.groupName" />
     <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" />
