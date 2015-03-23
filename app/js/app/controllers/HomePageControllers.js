@@ -67,7 +67,7 @@ define([], function() {
 				w();
 		}
 
-		function loadGameBoardById(id) {
+		function loadGameBoardById(id, preventWarning) {
 
 			console.log("Loading game board by id: ", id)
 
@@ -97,7 +97,9 @@ define([], function() {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
 
-        		$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+				if (!preventWarning) {
+        			$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+				}
 
 				// Something went wrong. This gameboard probably doesn't exist anymore.
 				loadGameBoardFromFilter();
@@ -199,7 +201,7 @@ define([], function() {
 					$location.replace();
 					$location.hash(savedGameboardId);
 
-					loadGameBoardById(savedGameboardId);
+					loadGameBoardById(savedGameboardId, true);
 
 				} else {
 					loadGameBoardFromFilter();
