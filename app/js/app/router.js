@@ -501,13 +501,16 @@ define(["angular-ui-router"], function() {
                 resolve: {
                     requireLogin: getLoggedInPromise,
                 },                
-                onEnter: ['$stateParams', '$state', 'api', '$rootScope', function($stateParams, $state, api, $rootScope) {
-                    console.log("Adding board:", $stateParams.boardId);
+                onEnter: ['$stateParams', '$state', 'api', '$rootScope', 'requireLogin', function($stateParams, $state, api, $rootScope, requireLogin) {
 
                     api.gameBoards.get({id: $stateParams.boardId}).$promise.then(function(board) {
                         return board.$save()
                     }).then(function() {
-                        $state.go("boards");
+                        if (requireLogin.role == "TEACHER" || requireLogin.role == "ADMIN") {
+                            $state.go("setAssignments");
+                        } else {
+                            $state.go("boards");
+                        }
                     }).catch(function(e) {
                         console.error("Error saving board.");
                         $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
