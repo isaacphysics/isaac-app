@@ -105,6 +105,7 @@ define(["angular-ui-router"], function() {
 	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
             .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
             .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
+            .state('top_boards', genericPageState("/top_boards", "pop_boards"))
 
 	        .state('contact', {
 		        url: "/contact",
