@@ -80,7 +80,7 @@
                                     <!--
                                         Question and control arrows
                                     -->
-                                    <div class="board-question-wrap">
+                                    <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
                                         <a href="javascript:void(0)" class="icon-arrow-left" ng-show="assignmentSelectedQuestion[assignment._id] > 0" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
 
                                         <div class="board-question">
@@ -94,7 +94,7 @@
                                     <!--
                                         Progress table 
                                     -->
-                                    <div class="table-responsive" id="assignment-{{assignment._id}}-progress">
+                                    <div class="table-responsive" id="assignment-{{assignment._id}}-progress" ng-show="assignmentProgress[assignment._id].length > 0">
                                         <table class="table-progress">
                                             <thead>
                                                 <tr>
