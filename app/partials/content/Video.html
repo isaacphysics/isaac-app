@@ -1,7 +1,11 @@
-<div class="row video-fix">
-	<div class="small-16 columns flex-video no-print">
-		<iframe id="ytplayer" type="text/html" width="640" height="390"
-		        ng-src="{{videoSrc}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen/>
+<div class="row">
+	<div class="small-16 columns no-print">
+        <div class="video-fix">
+            <div class="flex-video">
+                <iframe id="ytplayer" type="text/html" width="640" height="390"
+                        ng-src="{{videoSrc}}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen/>
+            </div>
+        </div>
 	</div>
 	<div class="small-16 columns only-print">
     	<p class="ng-scope">Video hint</p>
