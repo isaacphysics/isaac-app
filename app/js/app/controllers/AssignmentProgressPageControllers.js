@@ -87,7 +87,7 @@ define([], function() {
                                 for (var j = 0; j < progress.length; j++) {
                                     var studentResults = progress[j].results;
 
-                                    if (studentResults[i] == "COMPLETE" || studentResults[i] == "PERFECT") {
+                                    if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
                                         tickCount++;
                                     }
                                 }
@@ -104,7 +104,7 @@ define([], function() {
 
                                 studentProgress.tickCount = 0;
                                 for (var i in studentProgress.results) {
-                                    if (studentProgress.results[i] == "COMPLETE" || studentProgress.results[i] == "PERFECT") {
+                                    if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
                                 }
