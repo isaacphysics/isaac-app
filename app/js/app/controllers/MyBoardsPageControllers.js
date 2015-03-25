@@ -96,7 +96,7 @@ define([], function() {
 		$scope.calculateBoardLevels = function(board) {
 			// TODO: this logic is duplicated in the assignments controller. We should refactor.
 			levels = [];
-			for(i = 0; i < board.questions.length; i++) {
+			for(var i = 0; i < board.questions.length; i++) {
 				if (levels.indexOf(board.questions[i].level) == -1 && board.questions[i].level != 0) {
 					levels.push(board.questions[i].level);
 				}
