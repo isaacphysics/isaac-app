@@ -18,7 +18,7 @@ define([], function() {
 	var calculateBoardLevels = function(board){
 			levels = [];
 			for(i = 1; i < board.questions.length; i++) {
-				if (levels.indexOf(board.questions[i].level) == -1) {
+				if (levels.indexOf(board.questions[i].level) == -1 && board.questions[i].level != 0) {
 					levels.push(board.questions[i].level);
 				}
 			}
