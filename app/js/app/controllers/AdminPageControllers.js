@@ -47,7 +47,12 @@ define([], function() {
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
 			if ($scope.userSearch.searchTerms != "") {
-				$scope.userSearch.results = api.adminUserSearch.search({ 'email' : $scope.userSearch.searchTerms});
+				var role = $scope.userSearch.searchTerms.role;
+
+				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
+					role = null;
+				}
+				$scope.userSearch.results = api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role});
 				$scope.userSearch.hasSearched=true;
 			}
 		}

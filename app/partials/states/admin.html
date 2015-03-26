@@ -134,16 +134,27 @@
                     <div class="small-16 columns">
                        <h3>Manage user accounts <a name="users">&nbsp;</a></h3>
                     </div>
-                    <div class="medium-5 columns text-right">
-                       <label for="user-search">
-                            <strong>Find a user by email</strong>
-                        </label>
-                    </div>
                     <form ng-submit="findUsers()">
-                        <div class="medium-7 columns end">
-                            <input id="user-search" type="text" ng-model="userSearch.searchTerms" placeholder="Enter user email" >
+                        <div class="medium-12 medium-centered columns end">
+                            <label for="user-search-familyName">
+                                <strong>Find a user by family name</strong>
+                            </label>                            
+                            <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user familyName" >
+                            <label for="user-search-email">
+                                <strong>Find a user by email</strong>
+                            </label>                            
+                            <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
+                            <label for="user-search-role">
+                                <strong>Find by user role:</strong>
+                            </label>
+                            <select id="user-search-role" ng-model="userSearch.searchTerms.role">
+                                <option value="">Any Role</option>
+                                <option value="TEACHER">Teacher</option>
+                                <option value="CONTENT_EDITOR">Content Editor</option>
+                                <option value="ADMIN">Admin</option>
+                            </select>                            
                         </div>
-                        <div class="medium-4 columns end">
+                        <div class="medium-12 medium-centered columns end">
                             <button ng-click="findUsers()">Find user</button>
                         </div>        
                     </form>
@@ -161,7 +172,10 @@
                                             <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
                                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
                                                 <h4>
-                                                    <span class="physics" >{{result.familyName}}, {{result.givenName}}, {{result.email}} Role: {{result.role || "NOT_SET"}}</span></h4>
+                                                    <span class="physics">{{result.familyName}}, {{result.givenName}}, {{result.email}}</span> 
+                                                    <br> Role: {{result.role || "NOT_SET"}} 
+                                                    <br> School Set: {{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }} 
+                                                    <br> Member Since: {{result.registrationDate | date:'dd/MM/yyyy'}} Last Seen: {{result.lastSeen | date:'dd/MM/yyyy'}}
                                                 </h4>
                                             </div>
                                             <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
