@@ -40,6 +40,7 @@ define([], function() {
 
                 	scope.currentSymbol = {
                 		type: "string",
+                        fontSize: 48,
                 		label: parseFloat(scope.currentNumber),
                 	}
 
@@ -57,7 +58,7 @@ define([], function() {
                 	}
 
 
-                	scope.currentSymbol.token = ("" + scope.currentSymbol.label).replace("×10^", "e");
+                	scope.currentSymbol.token = ("" + scope.currentSymbol.label).replace(/×10\^(.*)$/, "\\times 10^{$1}");
 
                 };
 

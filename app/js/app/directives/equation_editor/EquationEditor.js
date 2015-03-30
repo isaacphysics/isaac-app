@@ -2,6 +2,54 @@ define([], function() {
 
 	return ["$timeout", function($timeout) {
 
+        var toParserSymbol = function(k, s, element) {
+
+            var r = {id: k, type: "type/symbol"};
+
+            switch(s.spec.type) {
+                case "string":
+                    if (!element.length)
+                        return null;
+
+                    r.top = s.y - element.height() / 2;
+                    r.left = s.x - element.width() / 2;
+                    r.width = element.width();
+                    r.height = element.height();
+                    r.token = s.spec.token;
+
+                    break;
+                case "line":
+
+                    r.top = s.y - s.spec.length / 40;
+                    r.left = s.x - s.spec.length / 2;
+                    r.width = s.spec.length;
+                    r.height = s.spec.length / 20;
+                    r.token = ":line";
+
+                    break;
+                case "container":
+
+                    r.top = s.y;
+                    r.left = s.x;
+                    r.width = s.spec.width;
+                    r.height = s.spec.height;
+
+                    switch(s.spec.subType) {
+                        case "sqrt":
+                            r.token = ":sqrt";
+                            break;
+                        case "brackets":
+                            r.token = ":brackets";
+                            break;
+                    }
+
+                    break;
+            }
+
+            return r;
+        }
+
+
 		var nextSymbolId = 0;
 
 		return {
@@ -136,11 +184,21 @@ define([], function() {
                 };
 
                 scope.$watch("state.symbols", function() {
-                	/*
+
+                    var parserSymbols = [];
+
+                    for (var s in scope.state.symbols) {
+                        var ps = toParserSymbol(s, scope.state.symbols[s], $("#" + s).find(".measure-this"));
+                        if (ps) {
+                            parserSymbols.push(ps);
+                        }
+                    }
+
+                	
 					self.parser = new Worker("/js/lib/parser.js");
 					self.parser.onmessage = parser_message;
 					self.parser.postMessage({symbols: parserSymbols});
-*/
+
                 }, true);
 
 			},

@@ -14,7 +14,7 @@
         MENU4 CONTENT
     </div>
 
-    <div ng-repeat="s in state.symbols" canvas-symbol symbol="s" selected="selectedSymbols.indexOf(s) > -1"></div>
+    <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" id="{{sid}}" selected="selectedSymbols.indexOf(s) > -1"></div>
 
     <!-- BUTTONS -->
 

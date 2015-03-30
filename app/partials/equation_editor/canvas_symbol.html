@@ -1,6 +1,6 @@
 <div ng-switch="symbol.spec.type" ng-click="symbol_click($event)">
 	<div ng-switch-when="string" class="canvas-symbol string" ng-class="{selected: selected, dragging: dragging}" ng-style="{left: symbol.x, top: symbol.y, fontSize: symbol.spec.fontSize, lineHeight: symbol.spec.fontSize + 'px'}">
-		<span class="katex-render-target"></span>
+		<span class="katex-render-target measure-this"></span>
 	</div>
 	<div ng-switch-when="container" class="canvas-symbol container" ng-class="{selected: selected, dragging: dragging}" ng-style="{left: symbol.x, top: symbol.y, width: symbol.spec.width, height: symbol.spec.height}">
 		&nbsp;
