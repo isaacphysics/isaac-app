@@ -25,6 +25,7 @@
 	float: left;
 	text-transform: uppercase;
 	font-size: 19px;
+	font-weight: 600;
 	line-height: 100%;
 	color: #333;
 	background-color: transparent;
@@ -103,7 +104,14 @@
 			
 		a, a:hover {
 			color: #ccc;
-			cursor: default;
+			/*cursor: default;*/
+		}
+	}
+	.login-notification {
+		a {
+			float:none;
+			font-weight:800;
+			color:$ru_green;
 		}
 	}
 	ul li ul {
@@ -189,7 +197,6 @@
 	.dl-toggle {
 		float: left;
 		color: $ru_green;
-		font-weight: 600;
 		border-top: $ru_green 1px solid;
 		border-left: $ru_green 1px solid;
 		border-bottom: transparent 1px solid;
@@ -304,7 +311,6 @@
 @media #{$large-up} {
 	.dl-toggle {
 		padding-left: 45px;
-
 		span {
 			left: 25px;
 		}
