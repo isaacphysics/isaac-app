@@ -99,7 +99,7 @@ define([], function() {
 
                 	latinLetters: stringSymbolSpecs(["a", "b", "c",]),
 
-                	greekLetters: stringSymbolSpecs(["α", "β", "γ",]),
+                	greekLetters: stringSymbolSpecs(["\\alpha", "\\beta", "\\gamma", "\\int", "\\sqrt{x}"]),
 
                 };
 
@@ -136,11 +136,11 @@ define([], function() {
                 };
 
                 scope.$watch("state.symbols", function() {
-                	
+                	/*
 					self.parser = new Worker("/js/lib/parser.js");
 					self.parser.onmessage = parser_message;
 					self.parser.postMessage({symbols: parserSymbols});
-
+*/
                 }, true);
 
 			},

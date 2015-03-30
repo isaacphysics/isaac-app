@@ -79,10 +79,12 @@ $menu-handle-width: 160px;
                 z-index: -1;
                 background: pink;
 
-                .symbol-token {
+                .symbol-spec-token {
                     position: absolute;
-                    left: -30px;
-                    top: -30px;
+                    right: 100%;
+                    bottom: 100%;
+                    text-align: right;
+                    border: 1px dotted rgba(0,0,0,0.2);
                 }
             }
             
@@ -140,6 +142,7 @@ $menu-handle-width: 160px;
     [canvas-symbol] .canvas-symbol {
         position: absolute;
         cursor: pointer;
+        border: 1px solid rgba(0,0,0,0.3);
 
         &.string {
             z-index: 20;
@@ -151,11 +154,13 @@ $menu-handle-width: 160px;
         }
 
         &.selected {
-            border: 1px dotted green;
+            color: #080;
+            border-color: #080;
         }
         
         &.dragging {
-            font-weight: bold;
+            color: #00a;
+            border-color: #00a;
         }
     }
 

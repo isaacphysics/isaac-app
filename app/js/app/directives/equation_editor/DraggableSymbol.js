@@ -5,12 +5,17 @@ define([], function() {
 
 		return {
             scope: {
-                symbol: "=",
+                symbolSpec: "=",
             },
 			restrict: "A",
             templateUrl: "/partials/equation_editor/draggable_symbol.html",
 			link: function(scope, element, attrs) {
                 scope.name="DRAGGABLESYMBOL"
+
+                scope.$watch("symbolSpec.token", function(newt) {
+                    if (newt)
+                        katex.render(scope.symbolSpec.token, element.find(".symbol-spec-token>span")[0]);
+                });
 
                 scope.dragging = false;
 
@@ -58,13 +63,14 @@ define([], function() {
 
                 var drop = function(pageX, pageY, e) {
 
-                    var token = element.find(".symbol-token");
+                    var token = element.find(".symbol-spec-token");
                     var tokenOffset = token.offset();
 
                     element.css("left", 0);
                     element.css("top", 0);
 
-                    scope.$emit("symbolDrop", scope.symbol, tokenOffset.left, tokenOffset.top);
+                    // TODO: Work out why the "-1" is necessary here...
+                    scope.$emit("symbolDrop", scope.symbolSpec, tokenOffset.left + token.width() / 2 - 1, tokenOffset.top + token.height() / 2 - 1);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
 
