@@ -185,5 +185,18 @@ $menu-handle-width: 160px;
             right: 18px;
         }
     }
+
+    .result-preview {
+        position: absolute;
+        right: calc(18px + 90px / 2);
+        bottom: 18px;
+        height: 108px;
+        background: #fff;
+        border: 1px solid #00a;
+        padding-right: calc(90px/2 + 18px);
+        font-size: 36px;
+        line-height: 108px;
+        padding-left: 18px;
+    }
 }
 

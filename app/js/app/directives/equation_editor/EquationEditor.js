@@ -180,6 +180,12 @@ define([], function() {
                 })
 
                 var parser_message = function(e) {
+                    console.debug("Parser message:", e);
+
+                    var rp = $(".result-preview");
+
+                    rp.empty();
+                    katex.render(e.data.tex, rp[0]);
 
                 };
 
