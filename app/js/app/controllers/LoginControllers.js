@@ -23,14 +23,18 @@ define([], function() {
 		$scope.login = function() {
 			// Only submit if form is valid
 			if($scope.form.$valid) {
-				api.authentication.login($scope.user).$promise.then(function(){
-					// Success
-					$window.location.href = '/';
-				},
-				function(reason){
+				auth.login($scope.user).then(function(){
+					// Success		
+					if (!$scope.target) {
+						$window.location.href = '/';
+					} else {
+						$window.location.href = $scope.target;
+					}
+
+				}).catch(function(reason) {
 					// Error
 					$scope.errorMessage = reason.data.errorMessage;
-				});
+				})
 			}
 		}
 		$scope.socialLogin = function(provider, target) {
