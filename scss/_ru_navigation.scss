@@ -172,6 +172,12 @@
 	&.overdue {
 		background-color: #ec6969;
 	}
+
+	&.warning {
+		background-color: $ru_orange;
+		font-weight: bold;
+  		font-size: 1.1em;
+	}
 }
 @media #{$small-only} { 
 	.status-panel {
