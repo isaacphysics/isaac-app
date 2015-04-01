@@ -36,10 +36,13 @@ define([], function() {
 	            		//TODO: we should probably make this a scss rule.
 		            	if(scope.doc && scope.doc.layout=="right") {
 		            		iElement.css("float", "right").width(300);
+		            		iElement.css("margin-left", "30px");
 		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
 		            		iElement.css("float", "right").width("50%");
+		            		iElement.css("margin-left", "30px");
 		            	} else if(scope.doc && scope.doc.layout=="left") {
 		            		iElement.css("float", "left").width(300);
+		            		iElement.css("margin-right", "30px");
 		            	}
 
 		            	if (scope.doc && scope.doc.id) {
