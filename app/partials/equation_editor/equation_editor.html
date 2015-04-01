@@ -18,9 +18,9 @@
 
     <!-- BUTTONS -->
 
-    <div class="hex-button undo">UNDO</div>
-    <div class="hex-button redo">REDO</div>
+    <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0"></div>
+    <div class="hex-button redo" ng-click="redo()" ng-if="future.length > 0"></div>
 
     <div class="result-preview"><span></span></div>
-    <div class="hex-button submit">SUBMIT</div>
+    <div class="hex-button submit"></div>
 </div>

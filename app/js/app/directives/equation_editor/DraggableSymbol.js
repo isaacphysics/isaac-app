@@ -30,9 +30,11 @@ define([], function() {
                 var lastPageY = 0;
                 var grab = function(pageX, pageY, e) {
                     scope.dragging = true;
+                    element.addClass("dragging");
                     scope.$apply();
 
-                    var offset = $(e.target).offset();
+
+                    var offset = element.offset();
                     grabLocalX = pageX - offset.left;
                     grabLocalY = pageY - offset.top;
 
@@ -80,6 +82,7 @@ define([], function() {
                     $("body").off("mousemove", mousemove);
 
                     scope.dragging = false;
+                    element.removeClass("dragging");
                     scope.$apply();
                 }
 

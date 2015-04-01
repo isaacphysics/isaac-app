@@ -82,8 +82,10 @@ define([], function() {
                 		y: pageY - offset.top,
                     }, JSON.parse(JSON.stringify(symbol)));
 
+                    scope.$broadcast("historyCheckpoint");
                 	console.debug("Symbols:", scope.symbols);
                 });
+
 
                 scope.symbols = { 
 					"ssym-0": {
@@ -186,7 +188,7 @@ define([], function() {
 
                 var parser_message = function(e) {
                     console.debug("Parser message:", e);
-
+                    console.groupEnd();
                     var rp = $(".result-preview>span");
 
                     rp.empty();
@@ -196,8 +198,9 @@ define([], function() {
                     $(".result-preview").animate({width: w}, 200);
                 };
 
-                scope.$watch("symbols", function() {
+                scope.$watch("symbols", function(newSymbols, oldSymbols) {
                     $(".result-preview").animate({width: 0}, 200);
+
 
                     // Update asynchronously, as we need the DOM elements to exist for the new symbol.
                     setTimeout(function() {
@@ -213,13 +216,40 @@ define([], function() {
                         
                         self.parser = new Worker("/js/lib/parser.js");
                         self.parser.onmessage = parser_message;
+                        console.groupCollapsed("Parse");
                         self.parser.postMessage({symbols: parserSymbols});
 
                     });
 
                 }, true);
 
+                scope.history = [];
+                scope.future = [];
+                var nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
 
+                scope.$on("historyCheckpoint", function() {
+                    scope.future = [];
+                    scope.history.push(nextHistoryEntry);
+                    nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                    console.log("CHECKPOINT", scope.history);
+                });
+
+                scope.undo = function() {
+                    if (scope.history.length > 0) {
+                        scope.future.unshift(JSON.parse(JSON.stringify(scope.symbols)));
+                        scope.symbols = scope.history.pop();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                    }
+                    console.log("UNDO", scope.history);
+                }
+
+                scope.redo = function() {
+                    if (scope.future.length > 0) {
+                        scope.history.push(JSON.parse(JSON.stringify(scope.symbols)))
+                        scope.symbols = scope.future.shift();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                    }
+                }
 
 			},
 

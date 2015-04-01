@@ -54,7 +54,8 @@ define([], function() {
 
                 	if (scope.currentSymbol.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
                 		if (!isNaN(expNum)) {
-                			scope.currentSymbol.label += "\\times 10^{" + expNum + "}";
+                			scope.currentSymbol.label += "\n\\times 10^{" + expNum + "}";
+                            scope.currentSymbol.labelClass = "tiny";
                 		}
                 	}
 

@@ -2,8 +2,9 @@
 $menu-handle-width: 160px;
 
 .equation-editor {
-	background: #ccf;
-    border: 1px solid #77d;
+	background: url(/assets/equation_editor/bg.png);
+    background-position: -1px -1px;
+    border: 1px solid black;
     min-height: 500px;
     overflow: hidden;
     position: relative;
@@ -11,8 +12,7 @@ $menu-handle-width: 160px;
 
     .top-menu {
         z-index: 100;
-        border: 1px solid red;
-        background: #ccc;
+        background: #509e2e;
         position:absolute;
         left: 0;
         right: 0;
@@ -28,11 +28,14 @@ $menu-handle-width: 160px;
             top: 100%;
             width: $menu-handle-width;
             display: inline-block;
-            border: 1px solid green;
+            border: none;
             text-align: center;
             left: 50%;
             cursor: pointer;
             visibility: visible;
+            background: url(/assets/equation_editor/menu-handle.png) no-repeat bottom;
+            height: 80px;
+            color: white;
 
             &.m1 {
                 margin-left: -$menu-handle-width*2;
@@ -53,32 +56,36 @@ $menu-handle-width: 160px;
 
         .menu-list-container {
             width: 100%;
-            height: 50px;
+            height: 100px;
             white-space: nowrap;
             position: relative;
+
+            li {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
 
             [draggable-symbol] {
                 position: relative;
                 left: 0px;
                 top: 0px;
-                width: 60px;
-                height: 60px;
+                width: 90px;
+                height: 100px;
                 text-align: center;
-                line-height: 60px;
+                line-height: 80px;
                 display: inline-block;
                 cursor: pointer;
+                background: url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                color: #317115;
 
                 &.dragging {
-                    font-weight: bold;
+                    background: url(/assets/equation_editor/hex-menu-item-bordered.png) no-repeat center center;
                 }
             }
 
             .dragging-background {
-                width: 50px;
-                height: 50px;
                 position: absolute;
                 z-index: -1;
-                background: pink;
 
                 .symbol-token {
                     position: absolute;
@@ -96,8 +103,21 @@ $menu-handle-width: 160px;
             }
         }
 
-        [sub-menu] li.active {
-            background: green;
+        [sub-menu] {
+            background: #317115;
+
+            li
+            {
+                &:not(.active) {
+                    background: url(/assets/equation_editor/hex-menu-item-inactive.png) no-repeat center center !important;
+                    color: #fff !important;
+                }
+
+                &.active {
+                    background: #509e2e;
+                    background: #509e2e url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                }
+            }
         }
 
         [sub-menu-item] {
@@ -106,15 +126,28 @@ $menu-handle-width: 160px;
 
         [number-entry] {
 
-            .button-grid li {
-                text-align: center;
-                cursor: pointer;
+            .button-grid {
+                margin: 7px;
+                li {
+                    text-align: center;
+                    cursor: pointer;
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 30px;
+                    background: white;
+                    color: black;
+                    font-size: 48px;
+                    font-weight: bold;
+                    line-height: 65px;
+                    margin: 7px 7px;
+                }
             }
 
             .input-exponent {
                 position: absolute;
                 right: 20px;
-                top: 0px;
+                top: 55px;
+                font-size: 36px;
                 display: inline-block;
 
                 &:before {
@@ -126,16 +159,34 @@ $menu-handle-width: 160px;
             .input-clear {
                 position: absolute;
                 left: 20px;
-                top: 0px;
+                top: 30px;
+                font-size: 36px;
                 font-family: sans-serif;
                 font-weight: bold;
-                color: red;
+                color: #ccc;
                 cursor: pointer;
+
+                &:hover {
+                    color: red;
+                }
             }
 
             input {
                 text-align: right;
                 transition: padding-right 0s;
+                font-size: 48px;
+                border-radius: 10px;
+                border: 2px solid black;
+                margin-top: 25px;
+                height: 100px;
+            }
+
+            .symbol-label.tiny {
+                font-size: 14px;
+            }
+
+            .number-hex {
+                margin-top: 25px;
             }
         }
     }
@@ -169,31 +220,36 @@ $menu-handle-width: 160px;
         width: 90px;
         height: 108px;
         text-align: center;
-        border: 1px dashed #800;
+        border: none;
         position: absolute;
         bottom: 18px;
         cursor: pointer;
 
         &.undo {
             left: 18px;
+            background: url(/assets/equation_editor/hex-button-undo.png) no-repeat;
         }
 
         &.redo {
             left: 114px;
+            background: url(/assets/equation_editor/hex-button-redo.png) no-repeat;
         }
 
         &.submit {
             right: 18px;
+            background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
         }
     }
 
     .result-preview {
         position: absolute;
         right: calc(18px + 90px / 2);
-        bottom: 18px;
-        height: 108px;
+        bottom: 20px;
+        height: 106px;
         background: #fff;
-        border: 1px solid #00a;
+        border: 1px solid #509e2e;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
         font-size: 36px;
         line-height: 108px;
         overflow: hidden;
@@ -205,6 +261,10 @@ $menu-handle-width: 160px;
             padding-right: calc(90px/2 + 18px);
 
         }
+    }
+
+    .symbol-label {
+        font-size: 36px;
     }
 }
 
