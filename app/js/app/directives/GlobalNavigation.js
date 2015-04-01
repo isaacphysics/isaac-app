@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$location", function($location) {
+    return ["$location", "$timeout", function($location, $timeout) {
 		return {
 			scope: true,
 			restrict: "A",
@@ -24,11 +24,21 @@ define([], function() {
             link: function(scope, element, attrs) {
             	// Global var
             	var flyin;
+                var loginTooltips = [];
 
+                // disabled nav items due to not being logged in.
                 var applyDisabledToolTips = function() {
-                    element.find('.disabled a').each(function(index, element){
-                        new Opentip(element, "This feature is coming soon.");
-                    })                    
+                    if (!scope.user._id && loginTooltips.length == 0) {
+                        element.find('.login-required a').each(function(index, element){
+                            var ot = new Opentip(element, "Click to log in and use this feature.");
+                            loginTooltips.push(ot);
+                        })                                                                
+                    } else if (scope.user._id && loginTooltips.length != 0) {
+                        angular.forEach(loginTooltips, function(value, key){
+                            value.deactivate();
+                        })
+                        loginTooltips = [];
+                    }
                 }
 
             	scope.menuToggle = function(e) {
@@ -50,6 +60,7 @@ define([], function() {
                             		$(this).addClass('dl-hide').removeAttr('style');
                         		});
                     		});
+
                     		flyin.animate({marginLeft: '0', opacity: 1}, 500);
                 		}
 
@@ -77,9 +88,14 @@ define([], function() {
                 }
                 scope.$on("$stateChangeStart", scope.menuClose);
 
-                applyDisabledToolTips();
-            }
+                scope.$watch('user._id', function(){
+                    applyDisabledToolTips();                    
+                })
 
+                $timeout(function(){
+                    Opentip.findElements();
+                }, 1000)
+            }
 		};
 	}]
 });

@@ -42,6 +42,10 @@
 			font-weight: 600;
 		}
 	}
+	.dl-alert.field-marker{
+		display:inline-block !important;
+		float: none;
+	}
 }
 input.account-settings-input {
 	margin-bottom: 40px;
@@ -403,6 +407,10 @@ input.account-settings-input {
 }
 
 @media #{$large-up} {
+	label[for=account-gender] {
+		margin-left:-20px;
+	}
+
 	#password-wrap {
 		padding-right: 5px;
 	}
@@ -410,7 +418,7 @@ input.account-settings-input {
 		padding-left: 5px;
 	}
 	#account-gender {
-		margin-top: 60px;
+		margin-top: 32px;
 		margin-bottom: 40px;
 	}
 	.linked-accounts {

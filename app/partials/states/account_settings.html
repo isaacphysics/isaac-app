@@ -94,21 +94,31 @@
                         </span>
                     </div>
                 </div>
-                <div id="account-gender" class="ac-custom ac-radio ac-fill row">
-                    <div class="large-8 medium-8 small-8 columns">
-                        <label for="r1">Male</label>
-                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
-                    </div>
-                    <div class="large-8 medium-8 small-8 columns">
-                        <label for="r2">Female</label>
-                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
-                    </div>
-
+                <div>
+                    <div class="large-16 medium-16 columns">
+                        <label for="account-gender">
+                            <strong>Gender</strong>
+                            <span ng-if="!user.gender" data-ot="Providing your gender will enable us to monitor the use of Isaac resources." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                        </label>
+                    </div>                   
+                    <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
+                        <div class="large-8 medium-8 small-8 columns">
+                            <label for="r1">Male</label>
+                            <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
+                        </div>
+                        <div class="large-8 medium-8 small-8 columns">
+                            <label for="r2">Female</label>
+                            <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
+                        </div>
+                    </div>                    
                 </div>
                 <div class="row">
                     <!-- Again this is due to the divisible by 3 issue -->
                     <div class="large-16 medium-16 columns">
-                        <label><strong>Date of Birth</strong></label>
+                        <label>
+                            <strong>Date of Birth</strong>
+                            <span ng-if="!user.dateOfBirth" data-ot="Providing your date of birth will enable us to inform you of features and events for your year group." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                        </label>
                     </div>
                     <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
                         <li>
@@ -142,7 +152,9 @@
                 </div>
             
                 <label>
-                    <strong>School</strong>
+                    <strong>School</strong> 
+                     <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for UK schools and universities. Use the 'other' box if you study outside of the UK or to type 'none' if you are not at school."></span>
+                     <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                 </label>
                 <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
                     {{schools}}      

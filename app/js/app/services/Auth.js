@@ -94,9 +94,10 @@ define([], function() {
 			return $rootScope.user.$promise;
 		}
 
-		this.login = function(email, password) {
+		this.login = function(userPrototype) {
+			// expects the user object to contain an email and password property.
 			return new Promise(function(resolve, reject){
-				api.login(email, password).$promise.then(function(u){
+				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
 					resolve();
 				}).catch(function(u){
