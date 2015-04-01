@@ -191,21 +191,27 @@ define([], function() {
 
                 scope.$watch("state.symbols", function() {
 
-                    var parserSymbols = [];
+                    // Update asynchronously, as we need the DOM elements to exist for the new symbol.
+                    setTimeout(function() {
+                        var parserSymbols = [];
 
-                    for (var s in scope.state.symbols) {
-                        var ps = toParserSymbol(s, scope.state.symbols[s], $("#" + s).find(".measure-this"));
-                        if (ps) {
-                            parserSymbols.push(ps);
+                        for (var s in scope.state.symbols) {
+                            var ps = toParserSymbol(s, scope.state.symbols[s], $("#" + s).find(".measure-this"));
+                            if (ps) {
+                                parserSymbols.push(ps);
+                            }
                         }
-                    }
 
-                	
-					self.parser = new Worker("/js/lib/parser.js");
-					self.parser.onmessage = parser_message;
-					self.parser.postMessage({symbols: parserSymbols});
+                        
+                        self.parser = new Worker("/js/lib/parser.js");
+                        self.parser.onmessage = parser_message;
+                        self.parser.postMessage({symbols: parserSymbols});
+
+                    });
 
                 }, true);
+
+
 
 			},
 
