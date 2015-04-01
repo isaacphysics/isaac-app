@@ -24,6 +24,7 @@ define([], function() {
 					scope.$emit("triggerResizeMenu");
                 }
 
+                scope.activeIdx = 0;
 			},
 		};
 	}];

@@ -23,6 +23,12 @@ $menu-handle-width: 160px;
             visibility: visible;
         }
 
+        &.active-menu {
+            .handle {
+                background: url(/assets/equation_editor/menu-handle-active.png) no-repeat bottom;
+                }
+        }
+
         .handle {
             position: absolute;
             top: 100%;
@@ -36,6 +42,8 @@ $menu-handle-width: 160px;
             background: url(/assets/equation_editor/menu-handle.png) no-repeat bottom;
             height: 80px;
             color: white;
+            font-size: 24px;
+            padding-top: 5px;
 
             &.m1 {
                 margin-left: -$menu-handle-width*2;
@@ -121,7 +129,12 @@ $menu-handle-width: 160px;
         }
 
         [sub-menu-item] {
+
             display: none;
+
+            &:nth-child(2) {
+                display: initial;
+            }
         }
 
         [number-entry] {

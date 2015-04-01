@@ -17,7 +17,9 @@ define([], function() {
 
                 element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
 
-                scope.menuName = attrs.topMenu;
+                setTimeout(function() {
+                    katex.render(attrs.topMenu,element.find(".handle")[0]);
+                });
 
                 var el = element.find(".top-menu");
 
