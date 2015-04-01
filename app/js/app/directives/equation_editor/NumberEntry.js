@@ -41,24 +41,25 @@ define([], function() {
                 	scope.currentSymbol = {
                 		type: "string",
                         fontSize: 48,
-                		label: parseFloat(scope.currentNumber),
+                		label: scope.currentNumber,
+                        texLabel: true,
                 	}
 
                 	var expNum = parseFloat(scope.currentExponent);
 
-                	if (scope.currentNumber == "" || isNaN(scope.currentSymbol.label)) {
+                	if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.label))) {
                 		scope.currentSymbol = null;
                 		return;
                 	}
 
                 	if (scope.currentSymbol.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
                 		if (!isNaN(expNum)) {
-                			scope.currentSymbol.label += "×10^" + expNum;
+                			scope.currentSymbol.label += "\\times 10^{" + expNum + "}";
                 		}
                 	}
 
 
-                	scope.currentSymbol.token = ("" + scope.currentSymbol.label).replace(/×10\^(.*)$/, "\\times 10^{$1}");
+                	scope.currentSymbol.token = scope.currentSymbol.label;
 
                 };
 

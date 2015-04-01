@@ -10,6 +10,7 @@ $menu-handle-width: 160px;
     z-index: 0;
 
     .top-menu {
+        z-index: 100;
         border: 1px solid red;
         background: #ccc;
         position:absolute;
