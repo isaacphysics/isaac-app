@@ -137,13 +137,13 @@ define([], function() {
 
                 	latinLetters: stringSymbols(["a", "b", "c",]),
 
-                	greekLetters: stringSymbols(["\\alpha", "\\beta", "\\gamma", "\\int"]),
+                	greekLetters: stringSymbols(["\\alpha", "\\beta", "\\gamma"]),
 
                     operators: [{
                         type: "container",
                         subType: "sqrt",
-                        width: 48,
-                        height: 48,
+                        width: 148,
+                        height: 148,
                         label: "\\sqrt{x}",
                         texLabel: true,
                     }]
@@ -187,14 +187,17 @@ define([], function() {
                 var parser_message = function(e) {
                     console.debug("Parser message:", e);
 
-                    var rp = $(".result-preview");
+                    var rp = $(".result-preview>span");
 
                     rp.empty();
                     katex.render(e.data.tex, rp[0]);
-
+                    var w =  e.data.tex ? rp.outerWidth() : 0;
+                    $(".result-preview").stop(true);
+                    $(".result-preview").animate({width: w}, 200);
                 };
 
                 scope.$watch("symbols", function() {
+                    $(".result-preview").animate({width: 0}, 200);
 
                     // Update asynchronously, as we need the DOM elements to exist for the new symbol.
                     setTimeout(function() {
