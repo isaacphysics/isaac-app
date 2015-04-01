@@ -1,66 +1,175 @@
 <div class="row ru-page-heading">
-    <div class="medium-13 columns">
+    <div class="large-6 medium-8 columns">
         <h1>Events (All)</h1>
         <p class="hide-for-small-only">Keep up-to-date with related ecents</p>
     </div>
-    <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Information about current page" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
-        <ul class="small-block-grid-2">
-      <li>
-         <label class="hide-for-small-only">Show</label>
-         <select>
-            <option>Option 1</option>
-            <option>Option 2</option>
-            <option>Option 3</option>
-         </select>
-      </li>
-      <li>
-         <label class="hide-for-small-only">Sort by</label>
-         <select>
-            <option>Option 1</option>
-            <option>Option 2</option>
-            <option>Option 3</option>
-         </select>
-      </li>
-   </ul>
+    <div class="large-10 medium-8 columns text-right">
+        <span data-ot="Information about current page" class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <!-- Events filters -->
+        <div class="events-filters">
+          <label class="show-for-large-up">Filter by</label>
+          <select>
+            <option>All Events</option>
+          </select>
+          <label class="show-for-large-up">Sort by</label>
+          <select>
+            <option>Location</option>
+          </select>
+        </div>
     </div>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
-   <li>
+   <li class="event">
       <div class="event-type">
+         <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-teacher"></span>
+         </span>
          <h6>Teacher event</h6>
-         <img src="http://placehold.it/350x150" alt="" />
+         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+         <img src="http://placehold.it/500x276" alt="" />
       </div>
-   	<div class="panel">
-         <h3>Topology, geometry and life in three dimensions</h3>
-         <p>(Friday Evening Discourse)</p>
-         <table>
-            <tbody>
-               <tr>
-                  <td>Field:</td>
-                  <td>Physics</td>
-               </tr>
-               <tr>
-                  <td>When:</td>
-                  <td>Friday 19th Dec 2014 <small>7.50pm - 9.15pm</small></td>
-               </tr>
-               <tr>
-                  <td>Location:</td>
-                  <td>The Royal Insititution London</td>
-               </tr>
-            </tbody>
-         </table>
-         <a href="javascript:void(0)">View details</a>
-   	</div>
+     	<div class="panel">
+           <h3>Topology, geometry and life in three dimensions</h3>
+           <p>(Friday Evening Discourse)</p>
+           <table class="event-table">
+              <tbody>
+                 <tr>
+                    <td>Field:</td>
+                    <td>Physics</td>
+                 </tr>
+                 <tr>
+                    <td>When:</td>
+                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+                 </tr>
+                 <tr>
+                    <td>Location:</td>
+                    <td>The Royal Insititution London</td>
+                 </tr>
+              </tbody>
+           </table>
+           <a class="event-link" href="javascript:void(0)">View details</a>
+           <div class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Attending
+           </div>
+     	</div>
    </li>
-   <li>
+   <li class="event">
+      <div class="event-type">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-teacher"></span>
+         </span>
+         <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-virtual"></span>
+         </span>
+         <h6>Teacher event (virtual)</h6>
+         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+         <img src="http://placehold.it/500x276" alt="" />
+      </div>
       <div class="panel">
-         test
+           <h3>Teaching Energy - A new approach</h3>
+           <p>(Friday Evening Discourse)</p>
+           <table class="event-table">
+              <tbody>
+                 <tr>
+                    <td>Field:</td>
+                    <td>Physics</td>
+                 </tr>
+                 <tr>
+                    <td>When:</td>
+                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+                 </tr>
+                 <tr>
+                    <td>Where:</td>
+                    <td>Google Hangouts</td>
+                 </tr>
+              </tbody>
+           </table>
+           <a class="event-link" href="javascript:void(0)">View details</a>
       </div>
    </li>
-   <li>
+   <li class="event">
+      <div class="event-type">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-student"></span>
+         </span>
+         <h6>Student event</h6>
+         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+         <img src="http://placehold.it/500x276" alt="" />
+      </div>
       <div class="panel">
-         test
+           <h3>Topology, geometry and life in three dimensions</h3>
+           <p>(Friday Evening Discourse)</p>
+           <table class="event-table">
+              <tbody>
+                 <tr>
+                    <td>Field:</td>
+                    <td>Physics</td>
+                 </tr>
+                 <tr>
+                    <td>When:</td>
+                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+                 </tr>
+                 <tr>
+                    <td>Location:</td>
+                    <td>The Royal Insititution London</td>
+                 </tr>
+              </tbody>
+           </table>
+           <a class="event-link" href="javascript:void(0)">View details</a>
+           <div class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Attending
+           </div>
+      </div>
+   </li>
+   <li class="event expired">
+      <div class="event-type">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-student"></span>
+         </span>
+         <h6>This event has expired</h6>
+         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+         <img src="http://placehold.it/500x276" alt="" />
+      </div>
+      <div class="panel">
+           <h3>Topology, geometry and life in three dimensions</h3>
+           <p>(Friday Evening Discourse)</p>
+           <table class="event-table">
+              <tbody>
+                 <tr>
+                    <td>Field:</td>
+                    <td>Physics</td>
+                 </tr>
+                 <tr>
+                    <td>When:</td>
+                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+                 </tr>
+                 <tr>
+                    <td>Location:</td>
+                    <td>The Royal Insititution London</td>
+                 </tr>
+              </tbody>
+           </table>
+           <a class="event-link" href="javascript:void(0)">View details</a>
+           <div class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Attended
+           </div>
       </div>
    </li>
 </ul>

@@ -23,6 +23,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-stack {
+
+}
 .icon-spinner:before {
   content: "d";
 }
@@ -49,4 +52,16 @@
 }
 .icon-calender:before {
   content: "a";
+}
+.icon-teacher:before {
+  content: "g";
+}
+.icon-hexagon:before {
+  content: "h";
+}
+.icon-virtual:before {
+  content: "l";
+}
+.icon-student:before {
+  content: "m";
 }
