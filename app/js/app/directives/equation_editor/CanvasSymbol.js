@@ -12,10 +12,10 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name+="CANVAS SYMBOL"
 
-                scope.$watch("symbol.spec.token", function(newt) {
+                scope.$watch("symbol.token", function(newt) {
 
                     if (newt) {
-                        katex.render(scope.symbol.spec.token, element.find(".katex-render-target")[0]);
+                        katex.render(scope.symbol.token, element.find(".katex-render-target")[0]);
 
                         $timeout(function() {
                             var el = element.find(".canvas-symbol");

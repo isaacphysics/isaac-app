@@ -6,7 +6,7 @@ define([], function() {
 
             var r = {id: k, type: "type/symbol"};
 
-            switch(s.spec.type) {
+            switch(s.type) {
                 case "string":
                     if (!element.length)
                         return null;
@@ -15,26 +15,26 @@ define([], function() {
                     r.left = s.x - element.width() / 2;
                     r.width = element.width();
                     r.height = element.height();
-                    r.token = s.spec.token;
+                    r.token = s.token;
 
                     break;
                 case "line":
 
-                    r.top = s.y - s.spec.length / 40;
-                    r.left = s.x - s.spec.length / 2;
-                    r.width = s.spec.length;
-                    r.height = s.spec.length / 20;
+                    r.top = s.y - s.length / 40;
+                    r.left = s.x - s.length / 2;
+                    r.width = s.length;
+                    r.height = s.length / 20;
                     r.token = ":line";
 
                     break;
                 case "container":
 
-                    r.top = s.y;
-                    r.left = s.x;
-                    r.width = s.spec.width;
-                    r.height = s.spec.height;
+                    r.top = s.y - s.height / 2;
+                    r.left = s.x - s.width / 2;
+                    r.width = s.width;
+                    r.height = s.height;
 
-                    switch(s.spec.subType) {
+                    switch(s.subType) {
                         case "sqrt":
                             r.token = ":sqrt";
                             break;
@@ -75,80 +75,78 @@ define([], function() {
                 	scope.$broadcast("resizeMenu");
                 });
 
-                scope.$on("spawnSymbol", function($e, symbolSpec, pageX, pageY) {
+                scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
-                	scope.state.symbols[nextSymbolId++] = {
+                	scope.symbols[nextSymbolId++] = $.extend({
                 		x: pageX - offset.left, 
                 		y: pageY - offset.top,
-                		spec: JSON.parse(JSON.stringify(symbolSpec)),
-                	}
+                    }, JSON.parse(JSON.stringify(symbol)));
 
-                	console.debug("Symbols:", scope.state.symbols);
+                	console.debug("Symbols:", scope.symbols);
                 });
 
-                scope.state = {
-					symbols: { 
-						"ssym-0": {
-							x: 330,
-							y: 242,
-							spec: {
-								fontSize: 48,
-								token: "x",
-								type: "string"
-							}
-						},
-						"ssym-1": {
-							x: 370,
-							y: 206,
-							spec: {
-								fontSize: 48,
-								token: "y",
-								type: "string"
-							}
-						},
-						"ssym-2": {
-							x: 309.5,
-							y: 210,
-							spec: {
-								width: 157,
-								height: 128,
-								type: "container",
-								subType: "sqrt"
-							}
-						},
-						"ssym-3": {
-							x: 285,
-							y: 233,
-							spec: {
-								fontSize: 48,
-								token: "3",
-								type: "string"
-							}
-						},				
+                scope.symbols = { 
+					"ssym-0": {
+						x: 330,
+						y: 242,
+						fontSize: 48,
+						token: "x",
+						type: "string"
 					},
+					"ssym-1": {
+						x: 370,
+						y: 206,
+						fontSize: 48,
+						token: "y",
+						type: "string"
+					},
+					"ssym-2": {
+						x: 309.5,
+						y: 210,
+						width: 157,
+						height: 128,
+						type: "container",
+						subType: "sqrt"
+					},
+					"ssym-3": {
+						x: 285,
+						y: 233,
+						fontSize: 48,
+						token: "3",
+						type: "string"
+					},				
                 };
 
-                var stringSymbolSpecs = function(ss) {
-                	var symbolSpecs = [];
+                var stringSymbols = function(ss) {
+                	var symbols = [];
                 	for(var i in ss) {
                 		var s = ss[i];
-                		symbolSpecs.push({
+                		symbols.push({
                 			type: "string",
                 			token: s,
                 			label: s,
                 			fontSize: 48,
+                            texLabel: true,
                 		});
                 	}
 
-                	return symbolSpecs;
+                	return symbols;
                 }
 
                 scope.symbolLibrary = {
 
-                	latinLetters: stringSymbolSpecs(["a", "b", "c",]),
+                	latinLetters: stringSymbols(["a", "b", "c",]),
 
-                	greekLetters: stringSymbolSpecs(["\\alpha", "\\beta", "\\gamma", "\\int", "\\sqrt{x}"]),
+                	greekLetters: stringSymbols(["\\alpha", "\\beta", "\\gamma", "\\int"]),
 
+                    operators: [{
+                        type: "container",
+                        subType: "sqrt",
+                        width: 48,
+                        height: 48,
+                        label: "\\sqrt{x}",
+                        texLabel: true,
+                    }]
                 };
 
                 scope.latinLetterTitle = {
@@ -160,8 +158,15 @@ define([], function() {
                 scope.greekLetterTitle = {
                 	fontSize: 48,
                 	type: "string",
-                	label: "αβγ",
+                	label: "\\alpha\\beta",
+                    texLabel: true,
                 };
+
+                scope.operatorMenuTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "\\sqrt{x}",
+                }
 
                 scope.$on("symbol_click", function($e, s, e) {
                 	if (!e.ctrlKey) {
@@ -189,14 +194,14 @@ define([], function() {
 
                 };
 
-                scope.$watch("state.symbols", function() {
+                scope.$watch("symbols", function() {
 
                     // Update asynchronously, as we need the DOM elements to exist for the new symbol.
                     setTimeout(function() {
                         var parserSymbols = [];
 
-                        for (var s in scope.state.symbols) {
-                            var ps = toParserSymbol(s, scope.state.symbols[s], $("#" + s).find(".measure-this"));
+                        for (var s in scope.symbols) {
+                            var ps = toParserSymbol(s, scope.symbols[s], $("#" + s).find(".measure-this"));
                             if (ps) {
                                 parserSymbols.push(ps);
                             }

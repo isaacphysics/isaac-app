@@ -38,12 +38,12 @@ define([], function() {
 					}
 				}
 
-				var abortSymbolDrag = function($e, symbolSpec, pageX, pageY) {
+				var abortSymbolDrag = function($e, symbol, pageX, pageY) {
 					bufferedLeft = parseFloat(lst.css("left"));
 
                     // If we've dropped outside the menu, spawn this symbol.
                     if (pageY > element.offset().top + element.height()) {
-                        scope.$emit("spawnSymbol", symbolSpec, pageX, pageY);
+                        scope.$emit("spawnSymbol", symbol, pageX, pageY);
                     }
 				}
 

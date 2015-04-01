@@ -8,13 +8,13 @@
         <div sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
     </div>
     <div top-menu="operators">
-        MENU3 CONTENT
+        <div symbol-menu symbols="symbolLibrary.operators"></div>
     </div>
     <div top-menu="functions">
         MENU4 CONTENT
     </div>
 
-    <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" id="{{sid}}" selected="selectedSymbols.indexOf(s) > -1"></div>
+    <div ng-repeat="(sid, s) in symbols" canvas-symbol symbol="s" id="{{sid}}" selected="selectedSymbols.indexOf(s) > -1"></div>
 
     <!-- BUTTONS -->
 

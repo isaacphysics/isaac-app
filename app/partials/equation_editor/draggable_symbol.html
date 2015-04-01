@@ -1,4 +1,7 @@
-<div class="dragging-background" ng-show="dragging">
-	<div class="symbol-spec-token" ng-style="{fontSize: symbolSpec.fontSize, lineHeight: symbolSpec.fontSize + 'px'}"><span></span></div>
+<div ng-switch="symbol.type" class="dragging-background" ng-show="dragging">
+	<div ng-switch-when="string" class="symbol-token" ng-style="{fontSize: symbol.fontSize, lineHeight: symbol.fontSize + 'px'}"><span></span></div>
+    <div ng-switch-when="container" class="container symbol-token" ng-style="{width: symbol.width, height: symbol.height}">
+        &nbsp;
+    </div>
 </div>
-{{symbolSpec.label}}
+<span class="symbol-label">{{symbol.label}}</span>
