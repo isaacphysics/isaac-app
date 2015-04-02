@@ -500,6 +500,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/events_page.html",
+                        controller: "EventsPageController"
                     }
                 }
             })

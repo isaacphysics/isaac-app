@@ -219,6 +219,7 @@ define([], function() {
 		var conceptList = $resource(server + "/api/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
 		var gameBoardsList = $resource(server + "/api/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var deleteBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+		var eventsList = $resource(server + "/api/events");
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -242,6 +243,10 @@ define([], function() {
 
 		this.getConceptList = function(){
 			return conceptList.query();
+		}
+
+		this.getEventsList = function(startIndex, limit) {
+			return eventsList.get({start_index: startIndex, limit: limit});
 		}
 
 		this.getImageUrl = function(path) {

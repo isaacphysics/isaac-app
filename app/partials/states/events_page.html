@@ -1,11 +1,11 @@
 <div class="row ru-page-heading">
     <div class="large-6 medium-8 columns">
-        <h1>Events (All)</h1>
-        <p class="hide-for-small-only">Keep up-to-date with related ecents</p>
+        <h1>Events</h1>
+        <p class="hide-for-small-only">Keep up-to-date with related events</p>
     </div>
+    <!--
     <div class="large-10 medium-8 columns text-right">
         <span data-ot="Information about current page" class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span>Help</span>
-        <!-- Events filters -->
         <div class="events-filters">
           <label class="show-for-large-up">Filter by</label>
           <select>
@@ -17,38 +17,54 @@
           </select>
         </div>
     </div>
+    -->
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
-   <li class="event">
+    <li class="event" ng-repeat="event in events" ng-class="{expired: event.expired}">
       <div class="event-type">
-         <span class="icon-stack">
-            <span class="icon-hexagon"></span>
-            <span class="icon-teacher"></span>
-         </span>
-         <h6>Teacher event</h6>
-         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-         <img src="http://placehold.it/500x276" alt="" />
+        <span class="icon-stack" ng-if="event.teacher">
+          <span class="icon-hexagon"></span>
+          <span class="icon-teacher"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.student">
+          <span class="icon-hexagon"></span>
+          <span class="icon-student"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.virtual">
+          <span class="icon-hexagon"></span>
+          <span class="icon-virtual"></span>
+        </span>
+        <h6 ng-if="!event.expired">&nbsp;<span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+        <h6 ng-if="event.expired">This event has expired</h6>
+        <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+        <img src="http://placehold.it/500x276" alt="" />
       </div>
-     	<div class="panel">
-           <h3>Topology, geometry and life in three dimensions</h3>
-           <p>(Friday Evening Discourse)</p>
+      <div class="panel">
+           <h3>{{event.title}}</h3>
+           <p>{{event.subtitle}}</p>
            <table class="event-table">
               <tbody>
+<!--
                  <tr>
                     <td>Field:</td>
                     <td>Physics</td>
                  </tr>
+-->
                  <tr>
                     <td>When:</td>
+<!--
                     <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+-->
+                    <td><time>{{event.date | date : 'EEE d MMM yyyy'}} <span>{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
                  <tr>
                     <td>Location:</td>
-                    <td>The Royal Insititution London</td>
+                    <td>{{event.location.addressLine1}}<span ng-if="event.location.town">,</span> {{event.location.town}}</td>
                  </tr>
               </tbody>
            </table>
            <a class="event-link" href="javascript:void(0)">View details</a>
+<!--
            <div class="event-attend">
               <span class="icon-stack">
                 <span class="icon-hexagon"></span>
@@ -56,125 +72,12 @@
               </span>
               Attending
            </div>
-     	</div>
-   </li>
-   <li class="event">
-      <div class="event-type">
-        <span class="icon-stack">
-            <span class="icon-hexagon"></span>
-            <span class="icon-teacher"></span>
-         </span>
-         <span class="icon-stack">
-            <span class="icon-hexagon"></span>
-            <span class="icon-virtual"></span>
-         </span>
-         <h6>Teacher event (virtual)</h6>
-         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-         <img src="http://placehold.it/500x276" alt="" />
+-->
       </div>
-      <div class="panel">
-           <h3>Teaching Energy - A new approach</h3>
-           <p>(Friday Evening Discourse)</p>
-           <table class="event-table">
-              <tbody>
-                 <tr>
-                    <td>Field:</td>
-                    <td>Physics</td>
-                 </tr>
-                 <tr>
-                    <td>When:</td>
-                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
-                 </tr>
-                 <tr>
-                    <td>Where:</td>
-                    <td>Google Hangouts</td>
-                 </tr>
-              </tbody>
-           </table>
-           <a class="event-link" href="javascript:void(0)">View details</a>
-      </div>
-   </li>
-   <li class="event">
-      <div class="event-type">
-        <span class="icon-stack">
-            <span class="icon-hexagon"></span>
-            <span class="icon-student"></span>
-         </span>
-         <h6>Student event</h6>
-         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-         <img src="http://placehold.it/500x276" alt="" />
-      </div>
-      <div class="panel">
-           <h3>Topology, geometry and life in three dimensions</h3>
-           <p>(Friday Evening Discourse)</p>
-           <table class="event-table">
-              <tbody>
-                 <tr>
-                    <td>Field:</td>
-                    <td>Physics</td>
-                 </tr>
-                 <tr>
-                    <td>When:</td>
-                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
-                 </tr>
-                 <tr>
-                    <td>Location:</td>
-                    <td>The Royal Insititution London</td>
-                 </tr>
-              </tbody>
-           </table>
-           <a class="event-link" href="javascript:void(0)">View details</a>
-           <div class="event-attend">
-              <span class="icon-stack">
-                <span class="icon-hexagon"></span>
-                <span class="icon-check"></span>
-              </span>
-              Attending
-           </div>
-      </div>
-   </li>
-   <li class="event expired">
-      <div class="event-type">
-        <span class="icon-stack">
-            <span class="icon-hexagon"></span>
-            <span class="icon-student"></span>
-         </span>
-         <h6>This event has expired</h6>
-         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-         <img src="http://placehold.it/500x276" alt="" />
-      </div>
-      <div class="panel">
-           <h3>Topology, geometry and life in three dimensions</h3>
-           <p>(Friday Evening Discourse)</p>
-           <table class="event-table">
-              <tbody>
-                 <tr>
-                    <td>Field:</td>
-                    <td>Physics</td>
-                 </tr>
-                 <tr>
-                    <td>When:</td>
-                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
-                 </tr>
-                 <tr>
-                    <td>Location:</td>
-                    <td>The Royal Insititution London</td>
-                 </tr>
-              </tbody>
-           </table>
-           <a class="event-link" href="javascript:void(0)">View details</a>
-           <div class="event-attend">
-              <span class="icon-stack">
-                <span class="icon-hexagon"></span>
-                <span class="icon-check"></span>
-              </span>
-              Attended
-           </div>
-      </div>
-   </li>
+    </li>
 </ul>
 <div class="row">
   <div class="large-5 medium-6 small-centered columns">
-      <a tabindex="0" class="ru-button-big secondary">Load more events</a>
+      <a href="javascript:void(0)" tabindex="0" class="ru-button-big secondary" ng-click="loadMore()" ng-hide="noMoreResults">Load more events</a>
    </div>
 </div>
