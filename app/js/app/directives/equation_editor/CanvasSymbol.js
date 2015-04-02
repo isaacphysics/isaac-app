@@ -6,6 +6,7 @@ define([], function() {
             scope: {
             	symbol: "=",
             	selected: "=",
+                symbolId: "=",
             },
 			restrict: "A",
 			templateUrl: "/partials/equation_editor/canvas_symbol.html",
@@ -23,7 +24,7 @@ define([], function() {
                             fontSize: scope.symbol.fontSize,
                             lineHeight: scope.symbol.lineHeight,
                         });
-                        
+
                         katex.render(scope.symbol.token, rt[0]);
 
                         el.css({
@@ -34,7 +35,7 @@ define([], function() {
                 })
 
                 scope.symbol_click = function(e) {
-                	scope.$emit("symbol_click", scope.symbol, e);
+                	scope.$emit("symbol_click", scope.symbolId, e);
                 }
 
                 var dbf = function() {
@@ -86,14 +87,14 @@ define([], function() {
                     grab(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
-                    e.preventDefault();
+                    //e.preventDefault();
                 }
 
                 var mouseup = function(e) {
                     drop(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
-                    e.preventDefault();
+                    //e.preventDefault();
                 }
 
                 var mousemove = function(e) {

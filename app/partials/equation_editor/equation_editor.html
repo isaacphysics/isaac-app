@@ -1,4 +1,4 @@
-<div class="equation-editor" ng-click="editorClick()">
+<div class="equation-editor" ng-click="editorClick()" tabindex="0">
     <div top-menu="123">
         <div number-entry></div>
     </div>
@@ -14,7 +14,7 @@
         MENU4 CONTENT
     </div>
 
-    <div ng-repeat="(sid, s) in symbols" canvas-symbol symbol="s" id="{{sid}}" selected="selectedSymbols.indexOf(s) > -1"></div>
+    <div ng-repeat="(sid, s) in symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}" selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
 
     <!-- BUTTONS -->
 

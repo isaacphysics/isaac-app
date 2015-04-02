@@ -176,15 +176,15 @@ define([], function() {
                     label: "\\sqrt{x}",
                 }
 
-                scope.$on("symbol_click", function($e, s, e) {
+                scope.$on("symbol_click", function($e, sid, e) {
                 	if (!e.ctrlKey) {
 	                	scope.selectedSymbols.length = 0;
-	                	scope.selectedSymbols.push(s);
+	                	scope.selectedSymbols.push(sid);
 	                } else {
-	                	if (scope.selectedSymbols.indexOf(s) > -1) {
-	                		scope.selectedSymbols.splice(scope.selectedSymbols.indexOf(s),1);
+	                	if (scope.selectedSymbols.indexOf(sid) > -1) {
+	                		scope.selectedSymbols.splice(scope.selectedSymbols.indexOf(sid),1);
 	                	} else {
-	                		scope.selectedSymbols.push(s);
+	                		scope.selectedSymbols.push(sid);
 	                	}
 	                }
 
@@ -199,7 +199,10 @@ define([], function() {
                     var rp = $(".result-preview>span");
 
                     rp.empty();
-                    katex.render(e.data.tex, rp[0]);
+                    if (e.data.tex) {
+                        katex.render(e.data.tex, rp[0]);
+                    }
+
                     var w =  e.data.tex ? rp.outerWidth() : 0;
                     $(".result-preview").stop(true);
                     $(".result-preview").animate({width: w}, 200);
@@ -207,7 +210,6 @@ define([], function() {
 
                 scope.$watch("symbols", function(newSymbols, oldSymbols) {
                     $(".result-preview").animate({width: 0}, 200);
-
 
                     // Update asynchronously, as we need the DOM elements to exist for the new symbol.
                     setTimeout(function() {
@@ -238,7 +240,6 @@ define([], function() {
                     scope.future = [];
                     scope.history.push(nextHistoryEntry);
                     nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
-                    console.log("CHECKPOINT", scope.history);
                 });
 
                 scope.undo = function() {
@@ -247,7 +248,6 @@ define([], function() {
                         scope.symbols = scope.history.pop();
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
                     }
-                    console.log("UNDO", scope.history);
                 }
 
                 scope.redo = function() {
@@ -257,6 +257,20 @@ define([], function() {
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
                     }
                 }
+
+                element.on("keydown", function(e) {
+                    console.log("KeyDown", e.which);
+
+                    switch(e.which) {
+                        case 46: // DELETE
+                            for (var i in scope.selectedSymbols) {
+                                delete scope.symbols[scope.selectedSymbols[i]];
+                            }
+                            scope.selectedSymbols.length = 0;
+                            scope.$apply();
+                        break;
+                    }
+                });
 
 			},
 

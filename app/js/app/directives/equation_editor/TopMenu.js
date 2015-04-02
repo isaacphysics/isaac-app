@@ -85,6 +85,10 @@ define([], function() {
                 //    $timeout(toggleThisMenu, 200);
                 //}
 
+                element.on("keydown", function(e) {
+                    e.stopPropagation();
+                });
+
 			},
 		};
 	}];
