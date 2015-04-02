@@ -8,9 +8,9 @@ define([], function() {
                 symbol: "=",
             },
 			restrict: "A",
-            templateUrl: "/partials/equation_editor/draggable_symbol.html",
+            templateUrl: "/partials/equation_editor/menu_symbol.html",
 			link: function(scope, element, attrs) {
-                scope.name="DRAGGABLESYMBOL"
+                scope.name="MENUSYMBOL"
 
                 scope.$watch("symbol.token", function(newt) {
                     if (newt)
@@ -45,7 +45,10 @@ define([], function() {
                     $("body").on("mousemove", mousemove);
                 }
 
-                var drag = function(pageX, pageY, e) {
+                var drag = function(pageX, pageY) {
+
+                    pageX = pageX || lastPageX;
+                    pageY = pageY || lastPageY;
 
                     if ("lockVertical" in attrs)
                         pageY = lastPageY;
@@ -101,13 +104,18 @@ define([], function() {
                 }
 
                 var mousemove = function(e) {
-                    drag(e.pageX, e.pageY, e);
+                    drag(e.pageX, e.pageY);
 
                     e.stopPropagation();
                     e.preventDefault();
                 }
 
                 element.on("mousedown", mousedown);
+
+                scope.$on("menuMoved", function() {
+                    if (scope.dragging)
+                        drag();
+                })
 			},
 		};
 	}];

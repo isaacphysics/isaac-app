@@ -15,13 +15,21 @@ define([], function() {
                 scope.$watch("symbol.token", function(newt) {
 
                     if (newt) {
-                        katex.render(scope.symbol.token, element.find(".katex-render-target")[0]);
+                        var el = element.find(".canvas-symbol");
+                        var rt = el.find(".katex-render-target");
 
-                        $timeout(function() {
-                            var el = element.find(".canvas-symbol");
-                            el.css("marginLeft", -el.width()/2);
-                            el.css("marginTop", -el.height()/2);
-                        })
+                        // Set style here as ng-style has not been processed yet, so measurements will be wrong otherwise.
+                        el.css({
+                            fontSize: scope.symbol.fontSize,
+                            lineHeight: scope.symbol.lineHeight,
+                        });
+                        
+                        katex.render(scope.symbol.token, rt[0]);
+
+                        el.css({
+                            marginLeft: -el.width()/2,
+                            marginTop: -el.height()/2
+                        });
                     }
                 })
 

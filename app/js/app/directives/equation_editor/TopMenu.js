@@ -32,9 +32,15 @@ define([], function() {
                         console.debug("CLOSE ALL")
 
                         closing = true;
-                        $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height()}, 200, function() {
-                            el.removeClass("active-menu");
-                            closing = false;
+                        $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height()}, {
+                            duration: 200, 
+                            progress: function() {
+                                scope.$root.$broadcast("menuMoved");
+                            },
+                            complete: function() {
+                                el.removeClass("active-menu");
+                                closing = false;
+                            }
                         });
                     }
                 }
