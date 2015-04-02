@@ -193,6 +193,7 @@ define([], function() {
                 })
 
                 var parser_message = function(e) {
+                    e.currentTarget.terminate();
                     console.debug("Parser message:", e);
                     console.groupEnd();
                     var rp = $(".result-preview>span");
