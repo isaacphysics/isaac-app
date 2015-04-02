@@ -15,13 +15,41 @@
  */
 define([], function() {
 
-    var ListController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+    var ListController = ['$scope', 'api', '$timeout', function($scope, api, $timeout) {
 
         $timeout(function() {
             // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-            $scope.globalFlags.isLoading = true;
+            $scope.loadMore();
         });
 
+        var startIndex = 0;
+        var eventsPerPage = 6;
+        $scope.events = [];
+
+
+        $scope.loadMore = function() {
+            $scope.globalFlags.isLoading = true;
+            api.getEventsList(startIndex, eventsPerPage).$promise.then(function(result) {
+                $scope.globalFlags.isLoading = false;
+                
+                for(var i in result.results) {
+                    var e = result.results[i];
+                    e.expired = Date.now() > e.date;
+
+                    e.teacher = e.tags.indexOf("teacher") > -1;
+                    e.student = e.tags.indexOf("student") > -1;
+                    e.virtual = e.tags.indexOf("virtual") > -1;
+
+                    $scope.events.push(e);
+                }
+
+                startIndex += result.results.length;
+
+                if (startIndex >= result.totalResults) {
+                    $scope.noMoreResults = true;
+                }
+            });
+        }
     }];
 
     var DetailController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
