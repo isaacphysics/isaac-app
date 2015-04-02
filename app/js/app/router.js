@@ -503,6 +503,15 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
+
+            .state('eventDetail', {
+                url: "/events/detail",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/event_detail.html",
+                    }
+                }
+            })
 	}])
 
     .run(['$rootScope', '$state', function($rootScope, $state) {

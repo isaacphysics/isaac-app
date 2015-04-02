@@ -164,6 +164,26 @@
 	}
 }
 
+.event-detail {
+	@extend .clearfix;
+	background-color: #fff;
+	border: #ccc 1px solid;
+	margin-right: 0;
+	margin-left: 0;
+
+	h1 {
+		font-size: 25px;
+		line-height: 1.1;
+		font-style: normal;
+		font-weight: 200;
+		margin-top: 12px;
+	}
+
+	.event-type {
+		margin-left: -0.9375rem;
+		margin-right: -0.9375rem;
+	}
+}
 
 @media #{$medium-up} { 
 	.events-filters {
@@ -179,4 +199,28 @@
 		}
 
 	}
+
+	.event-detail {
+		padding: 30px 15px;
+		margin-top: 8px;
+
+		h1 {
+			font-size: 32px;
+			margin-top: 0;
+		}
+
+		.event-type {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
+@media #{$large-up} { 
+	.event-detail {
+		h1 {
+			font-size: 40px;
+		}
+	}	
+
 }
