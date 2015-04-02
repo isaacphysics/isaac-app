@@ -13,7 +13,7 @@ define([], function() {
 				scope.name="SYMBOLMENU"
 
 				var lst = element.find("ul");
-
+				var bufferedLeft = 0;
 				var absorbSymbolDrag = function($e, pageX, pageY, deltaX, deltaY) {
 
 					bufferedLeft += deltaX;
@@ -23,9 +23,9 @@ define([], function() {
 					if (newLeft > 0) {
 						newLeft = 0;
 					}
-					else if (newLeft < element.width() - lst.width()) {
-						if (element.width() < lst.width()) {
-							newLeft = element.width() - lst.width();
+					else if (newLeft < element.width() - lst.outerWidth()) {
+						if (element.width() < lst.outerWidth()) {
+							newLeft = element.width() - lst.outerWidth();
 						} else {
 							newLeft = 0;
 						}

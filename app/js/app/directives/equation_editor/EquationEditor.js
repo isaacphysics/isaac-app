@@ -151,6 +151,12 @@ define([], function() {
                     }]
                 };
 
+                scope.blurgh ={
+                    fontSize: 38,
+                    type: "string",
+                    label: "B",
+                }
+
                 scope.latinLetterTitle = {
                 	fontSize: 48,
                 	type: "string",
