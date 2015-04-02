@@ -78,7 +78,9 @@ define([], function() {
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
 
-                    scope.$emit("historyCheckpoint");
+                    if (grabPageX != pageX || grabPageY != pageY) {
+                        scope.$emit("historyCheckpoint");
+                    }
                     scope.dragging = false;
                     scope.$apply();
                 }
