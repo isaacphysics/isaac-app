@@ -163,7 +163,6 @@
   		left: 15px;
 	}
 }
-
 .event-detail {
 	@extend .clearfix;
 	background-color: #fff;
@@ -178,13 +177,49 @@
 		font-weight: 200;
 		margin-top: 12px;
 	}
+	h3 {
+		font-size: 16px;
+		font-style: italic;
+		font-weight: 800;
+	}
+	h4 {
+		font-size: 17px;
+		font-style: normal;
+		font-weight: 800;
+		margin-bottom: 8px;
+	}
 
 	.event-type {
 		margin-left: -0.9375rem;
 		margin-right: -0.9375rem;
 	}
 }
+.event-map {
+	h3 {
+		margin-bottom: 8px;
+	}
+	p {
+		font-size: 14px;
+		margin-top: 10px;
+	}
+}
+.event-resources {
+	ul {
+		list-style: none;
+		margin: 5px 0 20px;
+	}
+	li {
+		font-size: 15px;
+		margin-bottom: 5px;
 
+		a {
+			float: right;
+		}
+	}
+}
+.event-attendees {
+	
+}
 @media #{$medium-up} { 
 	.events-filters {
 		float: right;
