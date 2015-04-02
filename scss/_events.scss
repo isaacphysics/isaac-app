@@ -30,14 +30,6 @@
 		font-size: 14px;
 	}
 
-	time {
-		span {
-			display: block;
-			font-style: normal;
-			font-weight: 400;
-		}
-	}
-
 	&.expired {
 		h3, p, time, .event-table td, .event-link, .event-type .icon-teacher, .event-type .icon-virtual, .event-type .icon-student, .event-attend, .event-attend .icon-hexagon {
 			color: #999;
@@ -94,7 +86,7 @@
 		line-height: 0.7;
 	}
 
-	h6{
+	h6 {
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -128,6 +120,14 @@
 			width: 70%;
 			font-style: italic;
 			font-weight: 800;
+		}
+	}
+
+	time {
+		span {
+			display: block;
+			font-style: normal;
+			font-weight: 400;
 		}
 	}
 }
@@ -200,7 +200,7 @@
 	}
 	p {
 		font-size: 14px;
-		margin-top: 10px;
+		margin: 10px 0 0;
 	}
 }
 .event-resources {
@@ -218,7 +218,38 @@
 	}
 }
 .event-attendees {
-	
+	margin: 12px 0 20px;
+
+	h3 {
+		margin-bottom: 5px;
+	}
+	ul {
+		list-style: none;
+		margin: 0;
+	}
+	li {
+		vertical-align: top;
+		margin-left: -7px;
+	}
+	.icon-person {
+		display: inline-block;
+		color: $ru_green;
+		font-size: 25px;
+		line-height: 1;
+	}
+}
+@media #{$small-only} {  
+	.event-detail {
+		.ru-button-big {
+			text-align: center;
+			width: 100%;
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+	.event-map {
+		margin-bottom: 25px;
+	}
 }
 @media #{$medium-up} { 
 	.events-filters {
@@ -247,6 +278,10 @@
 		.event-type {
 			margin-left: 0;
 			margin-right: 0;
+		}
+
+		.ru-button-big { 
+			margin-right: 10px;
 		}
 	}
 }
