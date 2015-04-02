@@ -15,6 +15,14 @@
  */
 define([], function() {
 
+    var augmentEvent = function(e) {
+        e.expired = Date.now() > e.date;
+
+        e.teacher = e.tags.indexOf("teacher") > -1;
+        e.student = e.tags.indexOf("student") > -1;
+        e.virtual = e.tags.indexOf("virtual") > -1;
+    }
+
     var ListController = ['$scope', 'api', '$timeout', function($scope, api, $timeout) {
 
         $timeout(function() {
@@ -34,12 +42,7 @@ define([], function() {
                 
                 for(var i in result.results) {
                     var e = result.results[i];
-                    e.expired = Date.now() > e.date;
-
-                    e.teacher = e.tags.indexOf("teacher") > -1;
-                    e.student = e.tags.indexOf("student") > -1;
-                    e.virtual = e.tags.indexOf("virtual") > -1;
-
+                    augmentEvent(e);
                     $scope.events.push(e);
                 }
 
@@ -52,13 +55,25 @@ define([], function() {
         }
     }];
 
-    var DetailController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', function($scope, api, $timeout, $stateParams, $state) {
 
+        var loaded = false;
         $timeout(function() {
             // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-            $scope.globalFlags.isLoading = true;
+            $scope.globalFlags.isLoading = !loaded;
         });
 
+        $scope.event = api.events.get({id: $stateParams.id});
+
+        $scope.event.$promise.then(function(e) {
+            loaded = true;
+            $scope.globalFlags.isLoading = false;
+
+            augmentEvent(e);
+        }).catch(function() {
+            $scope.globalFlags.isLoading = false;
+            $state.go('404', {target: $state.href("event", $stateParams)});
+        });
     }];
 
     return {

@@ -201,7 +201,9 @@ define([], function() {
 				url: server + "/api/assignments/assign/:gameId/:groupId",
 				params: {gameId: '@gameId', groupId: '@groupId'}
 			}			
-		});				
+		});			
+
+		this.events = $resource(server + "/api/events/:id");	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {

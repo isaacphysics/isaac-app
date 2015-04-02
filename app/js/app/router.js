@@ -505,11 +505,12 @@ define(["angular-ui-router"], function() {
                 }
             })
 
-            .state('eventDetail', {
-                url: "/events/detail",               
+            .state('event', {
+                url: "/events/:id",               
                 views: {
                     "body": {
                         templateUrl: "/partials/states/event_detail.html",
+                        controller: "EventDetailController"
                     }
                 }
             })
