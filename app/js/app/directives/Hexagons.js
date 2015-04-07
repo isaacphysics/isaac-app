@@ -28,7 +28,17 @@ define(["app/honest/hexagon"],function(hexagon) {
             {
 
                 if (d.type == "isaacWildcard") {
-                    $(this).attr("href", d.url);
+                    // yes I found urls with spaces in the front of them... I will sanitize both here in the api.
+                    var trimmedUrl = d.url.trim();
+
+                    $(this).attr("href", trimmedUrl);
+
+                    // if this looks like an external link then open in a new tab
+                    if (trimmedUrl.indexOf("http://") === 0 || trimmedUrl.indexOf("https://") === 0) {
+                        $(this).attr("target", "_blank");
+                        $(this).attr("rel", "nofollow");
+                    }
+
                 } else {
                     $(this).attr("href", $state.href("question", {id: d.id, board: boardId}));
                 }
