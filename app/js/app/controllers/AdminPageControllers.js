@@ -20,7 +20,8 @@ define([], function() {
 
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
-		$scope.userSearch.searchTerms = "";
+		$scope.userSearch.isLoading = false;
+		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
@@ -52,8 +53,14 @@ define([], function() {
 				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
 					role = null;
 				}
-				$scope.userSearch.results = api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role});
-				$scope.userSearch.hasSearched=true;
+				
+				$scope.userSearch.isLoading = true;
+				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role}).$promise.then(function(result){
+					$scope.userSearch.results = result;
+					$scope.userSearch.isLoading = false;
+				});
+				
+				$scope.userSearch.hasSearched = true;
 			}
 		}
 

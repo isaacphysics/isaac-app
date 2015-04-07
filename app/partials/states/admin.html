@@ -7,11 +7,9 @@
         <div class="panel white clearfix">
             <h2>Useful links</h4>
             <ul class="no-bullet horizontal-list">
-                <li><a ui-sref="gameEditor">Game board builder</a></li>
                 <li><a ui-sref="contentErrors">Content Errors Page</a></li>
                 <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
                 <li><a href="/api/content/units" target="_blank">List of units</a></li>
-                <li><a ui-sref='questionIndex'>Question List</a></li>
                 <li><a ui-sref='adminStats'>More stats</a></li>
             </ul>            
         </div>
@@ -162,7 +160,14 @@
             
                 <!-- Results TODO: stolen from search page this needs tidying up -->
                 <section ng-if="userSearch.hasSearched">
-                    <div class="row">
+                    <div class="small-16 columns" ng-if="userSearch.isLoading">
+                            <h4>User search results</h4>                        
+                        <div class="text-center" >
+                            <img src="/assets/loading.gif">
+                        </div>    
+                    </div>
+
+                    <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
                         <div class="small-16 columns">
                             <h4>User search results ({{userSearch.results.length}})</h4>
                             <div class="ru-concept-results">
