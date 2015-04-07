@@ -28,7 +28,8 @@ define([], function() {
 		var wildCard = {
 	        "title": "Random Wild Card",
 	        "type": "isaacWildcard",
-	        "description": "?"
+	        "description": "?",
+	        "url" : ""
     	};
 
 		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
