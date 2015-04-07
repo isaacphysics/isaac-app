@@ -193,8 +193,14 @@
 		margin-left: -0.9375rem;
 		margin-right: -0.9375rem;
 	}
+	.event-attend {
+		margin-top: 10px;
+	}
 }
 .event-map {
+	float: left;
+	width: 100%;
+
 	h3 {
 		margin-bottom: 8px;
 	}
@@ -204,20 +210,38 @@
 	}
 }
 .event-resources {
+	float: left;
+	width: 100%;
+
 	ul {
+		float: left;
+		width: 100%;
 		list-style: none;
-		margin: 5px 0 20px;
+		margin: 8px 0 20px;
 	}
 	li {
-		font-size: 15px;
-		margin-bottom: 5px;
+		float: left;
+		width: 100%;
+		border: #ccc 1px solid;
+		margin-bottom: 6px;
 
 		a {
-			float: right;
+			float: left;
+			width: 100%;
+			padding: 5px 15px;
+
+			span {
+				float: right;
+				font-size: 12px;
+				line-height: 2.1;
+				font-weight: 600;
+			}
 		}
 	}
 }
 .event-attendees {
+	float: left;
+	width: 62%;
 	margin: 12px 0 20px;
 
 	h3 {
@@ -236,6 +260,31 @@
 		color: $ru_green;
 		font-size: 25px;
 		line-height: 1;
+	}
+}
+.event-share {
+	float: left;
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+.event-share-title {
+	float: left;
+	line-height: 2.2;	
+}
+.event-share-icon {
+	display: inline-block;
+	width: 35px;
+	height: 35px; 
+	color: #333;
+	font-size: 20px;
+	line-height: 1.7;
+	text-align: center;
+	border: #333 1px solid;
+	border-radius: 50%;
+	margin-left: 7px;
+
+	&:hover {
+		border-color: $ru_green;
 	}
 }
 @media #{$small-only} {  
@@ -284,6 +333,27 @@
 			margin-right: 10px;
 		}
 	}
+
+	.event-resources {
+
+		ul {
+			list-style: none;
+			margin: 8px 0 20px;
+		}
+		li {
+			border: none;
+
+			a {
+				float: right;
+				width: auto;
+				padding: 0;
+			}
+		}
+	}
+
+	.event-attendees {
+		width: 65%;
+	}
 }
 
 @media #{$large-up} { 
@@ -292,5 +362,8 @@
 			font-size: 40px;
 		}
 	}	
+	.event-share {
+		float: right;
+	}
 
 }
