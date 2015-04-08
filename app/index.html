@@ -11,13 +11,15 @@
 		<meta name="msapplication-TileColor" content="#FFFFFF">
     <meta name="Description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.">
 
-    <meta property="og:url" content="https://isaacphysics.org/" /> 
-    <meta property="og:title" ng-content="'Isaac Physics' + (pageTitle ? ' - ' + pageTitle : '' )" />
+    <meta property="og:url" content="https://isaacphysics.org{{relativeCanonicalUrl}}" /> 
+    <meta property="og:site_name" content="Isaac Physics" />
+    <meta property="og:title" ng-content="(pageTitle ? pageTitle : 'Isaac Physics' )" />
     <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
     <meta property="og:image" content="https://isaacphysics.org/assets/isaac-logo@2xWider.png" />
+    <meta property="fb:app_id" content="760382960667256" />
 
     <title ng-bind="'Isaac Physics' + (pageTitle ? ' - ' + pageTitle : '' )">Isaac Physics</title>
-    <link rel="canonical" ng-href="{{relativeCanonicalUrl}}" />
+    <link rel="canonical" ng-href="https://isaacphysics.org{{relativeCanonicalUrl}}" />
     <link rel="icon" href="/assets/favicon/isaac-favicon-16x16.png"   sizes="16x16">
     <link rel="icon" href="/assets/favicon/isaac-favicon-32x32.png"   sizes="32x32">
     <link rel="icon" href="/assets/favicon/isaac-favicon-96x96.png"   sizes="96x96">
