@@ -344,15 +344,25 @@
 			border: none;
 
 			a {
-				float: right;
-				width: auto;
+				color: #333;
 				padding: 0;
+
+				span {
+					color: $ru_green;
+					font-size: 15px;
+					line-height: 1.5;
+					font-weight: 400;
+				}
 			}
 		}
 	}
 
 	.event-attendees {
 		width: 65%;
+	}
+
+	.event-share {
+		float: right;
 	}
 }
 
@@ -361,9 +371,6 @@
 		h1 {
 			font-size: 40px;
 		}
-	}	
-	.event-share {
-		float: right;
 	}
 
 }
