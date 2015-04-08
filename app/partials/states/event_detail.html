@@ -6,11 +6,19 @@
 <div class="event-detail">
   <div class="medium-7 large-6 columns">
     <div class="event-type">
-      <span class="icon-stack">
-        <span class="icon-hexagon"></span>
-        <span class="icon-teacher"></span>
-      </span>
-      <h6>Teacher event</h6>
+        <span class="icon-stack" ng-if="event.teacher">
+          <span class="icon-hexagon"></span>
+          <span class="icon-teacher"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.student">
+          <span class="icon-hexagon"></span>
+          <span class="icon-student"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.virtual">
+          <span class="icon-hexagon"></span>
+          <span class="icon-virtual"></span>
+        </span>
+      <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
       <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
       <img src="http://placehold.it/500x276" alt="" />
     </div>
@@ -22,7 +30,7 @@
     <!--
         Attendees
     -->
-    <div class="event-attendees">
+    <div class="event-attendees" ng-if="false">
       <h3>Also attending:</h3>
       <ul>
         <li><span class="icon-person"></span>Joe Blogger</li>
@@ -64,7 +72,7 @@
         Map
     -->
     <div class="event-map">
-      <h4>Mayfair, London W1S 4BS</h4>
+      <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
       <img src="http://placehold.it/604x644" alt="" />
       <p><strong>Transit:</strong> Green Park</p>
     </div>
@@ -100,7 +108,7 @@
         </tr>
         <tr>
           <td>Location:</td>
-          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}} </td>
+          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
         </tr>
       </tbody>
     </table>
