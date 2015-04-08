@@ -4,10 +4,69 @@
     </div>
 </div>
 <div class="event-detail">
-  <div class="medium-16 large-6 columns">
+  <div class="medium-16 large-10 columns event-detail-main">
+    <div class="event-type hide-for-medium-up">
+      <span class="icon-stack" ng-if="event.teacher">
+        <span class="icon-hexagon"></span>
+        <span class="icon-teacher"></span>
+      </span>
+      <span class="icon-stack" ng-if="event.student">
+        <span class="icon-hexagon"></span>
+        <span class="icon-student"></span>
+      </span>
+      <span class="icon-stack" ng-if="event.virtual">
+        <span class="icon-hexagon"></span>
+        <span class="icon-virtual"></span>
+      </span>
+      <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+      <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+      <img src="http://placehold.it/500x276" alt="" />
+    </div>
+    <!--
+      Title
+    -->
+    <h1>{{event.title}}</h1>
+    <p>{{event.subtitle}}</p>
+
+    <a href="javascript:void(0)" ui-sref="contact" class="ru-button-big left">Contact us to book</a>
+    <!--
+      Social shares
+    -->
+    <div class="event-share">
+      <span class="event-share-title">Share</span>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-facebook"></span></a>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-gplus"></span></a>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-twitter"></span></a>
+    </div>
+    <!--
+        Key event info - location, date etc
+    -->
+    <table class="event-table">
+      <tbody>
+        <tr>
+          <td>Field:</td>
+          <td>Physics</td>
+        </tr>
+        <tr>
+          <td>When:</td>
+          <td><time datetime="{{event.date | date:'yyyy-mm-dd'}}">{{event.date | date:'dd/MM/yyyy'}} <span>{{event.date | date:'hh:mm'}}</span></time></td>
+        </tr>
+        <tr>
+          <td>Location:</td>
+          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!--
+        Event body copy 
+    -->
+    <div isaac-content doc="event"></div>
+    <a href="javascript:void(0)" ui-sref="contact" class="ru-button-big">Contact us to book</a><a href="javascript:void(0)" class="ru-button-big secondary">Back to all events</a>
+  </div>
+  <div class="medium-16 large-6 columns event-detail-aside">
     <div class="row">
       <div class="medium-8 large-16 columns">
-        <div class="event-type">
+        <div class="event-type show-for-medium-up">
           <span class="icon-stack" ng-if="event.teacher">
             <span class="icon-hexagon"></span>
             <span class="icon-teacher"></span>
@@ -24,11 +83,6 @@
           <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
           <img src="http://placehold.it/500x276" alt="" />
         </div>
-        <!--
-            Title for mobile
-        -->
-        <h1 class="hide-for-medium-up">{{event.title}}</h1>
-        <p class="hide-for-medium-up">{{event.subtitle}}</p>
         <!--
             Attendees
         -->
@@ -68,52 +122,11 @@
             Map
         -->
         <div class="event-map">
-          <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
           <img src="http://placehold.it/604x644" alt="" />
+          <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
           <p><strong>Transit:</strong> Green Park</p>
         </div>
       </div>
     </div>
-  </div>
-  <div class="medium-16 large-10 columns">
-    <!--
-        Title for desktop
-    -->
-    <h1 class="hide-for-small-only">{{event.title}}</h1>
-    <p class="hide-for-small-only">{{event.subtitle}}</p>
-    <a href="javascript:void(0)" ui-sref="contact" class="ru-button-big left">Contact us to book</a>
-    <!--
-      Social shares
-    -->
-    <div class="event-share">
-      <span class="event-share-title">Share</span>
-      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-facebook"></span></a>
-      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-gplus"></span></a>
-      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-twitter"></span></a>
-    </div>
-    <!--
-        Key event info - location, date etc
-    -->
-    <table class="event-table">
-      <tbody>
-        <tr>
-          <td>Field:</td>
-          <td>Physics</td>
-        </tr>
-        <tr>
-          <td>When:</td>
-          <td><time datetime="{{event.date | date:'yyyy-mm-dd'}}">{{event.date | date:'dd/MM/yyyy'}} <span>{{event.date | date:'hh:mm'}}</span></time></td>
-        </tr>
-        <tr>
-          <td>Location:</td>
-          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <!--
-        Event body copy 
-    -->
-    <div isaac-content doc="event"></div>
-    <a href="javascript:void(0)" ui-sref="contact" class="ru-button-big">Contact us to book</a><a href="javascript:void(0)" class="ru-button-big secondary">Back to all events</a>
   </div>
 </div>
