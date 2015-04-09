@@ -116,6 +116,20 @@ body
     visibility: hidden;
 }
 
+.show-for-old-browser-only {
+    display: none;
+}
+
+.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10{
+    .show-for-old-browser-only {
+        display: block;
+    }
+
+    .hide-for-old-browser-only {
+        display: none;
+    }
+}
+
 // Force footer to bottom
 $footer_height : 250px;
 @media #{$medium-up}

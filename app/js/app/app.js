@@ -464,7 +464,10 @@ define([
                 }); 
                 var tutorialShown = cookie.read('tutorialShown');
 
-                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0) { // we don't want the google bot to see the tutorial.
+                var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
+                
+                // we don't want the google bot or out of date browsers to see the tutorial.
+                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
                     if ($.ru_IsMobile()) {
                         if ($('#mobile-tutorial').length > 0) {
                             setTimeout(function() {

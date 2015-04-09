@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie10 lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" class="no-js lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" class="no-js lt-ie10 lt-ie9"> <![endif]-->
+<!--[if IE 9]>         <html lang="en" class="no-js lt-ie10"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
   <head lang="en">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
@@ -34,21 +35,22 @@
         <div ng-include="'/partials/mobile_pre_header.html'"></div>
 
         <!-- Toast message. Must be a child of root scope. -->
-        <div toast></div>
+        <div class="hide-for-old-browser-only" toast></div>
 
         <div loading-overlay></div>
 
         <!-- Container for hexagon background -->
         <div class='bg-wrap'>
-            <div ng-include="'/partials/cookie-message.html'"></div>
-            <div ng-include="'/partials/header.html'"></div>
+            <div class="hide-for-old-browser-only" ng-include="'/partials/cookie-message.html'"></div>
+            <div class="hide-for-old-browser-only" ng-include="'/partials/header.html'"></div>
 
             <div class="row">
               <div class="small-16 columns">
                 <div class="body-wrap">
-                  <main class='ru-body' fade-on-search ui-view="body"></main>
+                  <main class='ru-body hide-for-old-browser-only' fade-on-search ui-view="body"></main>
                   <noscript>
                     <h1><img alt='Isaac. Physics. You work it out.' class='ru-desktop-menu-img' src='/assets/isaac-logo-strap.png' /></h1>
+                    <h2>Isaac Physics</h2>
                     <p>
                       Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.
                     </p>
@@ -58,11 +60,22 @@
                     </p>
                     <a style="display:none;" href="https://plus.google.com/118214242928754076411" rel="publisher"></a>
                   </noscript>
+                  <div class="show-for-old-browser-only">
+                    <h1><img alt='Isaac. Physics. You work it out.' class='ru-desktop-menu-img' src='/assets/isaac-logo-strap.png' /></h1>
+                    <h2>Isaac Physics</h2>
+                    <p>
+                      Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.
+                    </p>
+                    <h2>Your browser is out of date</h2>
+                    <p>
+                      Your browser is out of date. Isaac Physics supports the latest version of Chrome, Firefox, Safari and Internet Explorer 10 and above. Please <a href="https://browser-update.org/update.html" target="_blank" rel="nofollow">update your browser</a>.
+                    </p>                    
+                  </div>
                 </div>
               </div>
             </div>
         </div>
-        <div ng-include="'/partials/footer.html'"></div>
+        <div class="hide-for-old-browser-only" ng-include="'/partials/footer.html'"></div>
 
         <div id="isaacModal" class="reveal-modal" data-reveal></div>
         
