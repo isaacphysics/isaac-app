@@ -15,12 +15,14 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', function($scope, $state, api, $timeout, $q) {
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', function($scope, $state, api, $timeout, $q, $stateParams) {
 		// setup defaults.
-		$scope.questionSearchText = "";
-		$scope.questionSearchSubject = "";
-		$scope.questionSearchLevel = "1";
+		$scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
+		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
+		$scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
 		$scope.loading = false;
+
+		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
 		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
 
@@ -89,6 +91,12 @@ define([], function() {
 					httpCanceller = null;
         			// update the view
         			$scope.searchResults = questionsFromServer.results;
+        			// try to sort the results if requested.
+        			if (sortField) {
+	        			$scope.searchResults.sort(function(a,b) {
+	        				return a[sortField] > b[sortField] ? 1 : -1;
+	        			})        				
+        			}
         			$scope.loading = false;
             	});
 	        }, 500);
@@ -151,6 +159,10 @@ define([], function() {
         		gameBoardToSave.wildCard = wildCard
         	});
         }
+
+		api.logger.log({
+			type: "VIEW_BOARD_BUILDER"
+		})        
 	}]
 
 	return {

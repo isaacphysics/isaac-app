@@ -253,7 +253,6 @@ define(["angular-ui-router"], function() {
                     "query" :['$stateParams', function($stateParams){
                         return $stateParams.query;
                     }],
-                    
                     "types" :['$stateParams', function($stateParams){
                         if ($stateParams.types != null && $stateParams.types.length > 0) {
                             return $stateParams.types.split(",");    
@@ -408,7 +407,7 @@ define(["angular-ui-router"], function() {
             })
 
              .state('gameEditor', {
-                url: "/game_builder",
+                url: "/game_builder?query&subject&level&sort",
                 resolve: {
                     requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
                 },                
