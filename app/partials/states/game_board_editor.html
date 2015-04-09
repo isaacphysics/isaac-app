@@ -57,9 +57,11 @@
 		                	<img src="/assets/loading.gif">
 		                </div>
 
+		                <p class="small-text-center" ng-if="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided.</p>
+
 		                <ul ng-if="!loading" class="no-bullet results-list">
 		                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
-		                </ul>					
+		                </ul>
 					</div>
 				</div>
 			</div>
