@@ -23,7 +23,7 @@ define([], function() {
         e.virtual = e.tags.indexOf("virtual") > -1;
     }
 
-    var ListController = ['$scope', 'api', '$timeout', function($scope, api, $timeout) {
+    var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
 
         $timeout(function() {
             // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
@@ -32,12 +32,13 @@ define([], function() {
 
         var startIndex = 0;
         var eventsPerPage = 6;
-        $scope.events = [];
+        var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
 
+        $scope.events = [];
 
         $scope.loadMore = function() {
             $scope.globalFlags.isLoading = true;
-            api.getEventsList(startIndex, eventsPerPage).$promise.then(function(result) {
+            api.getEventsList(startIndex, eventsPerPage, showActiveOnly).$promise.then(function(result) {
                 $scope.globalFlags.isLoading = false;
                 
                 for(var i in result.results) {
