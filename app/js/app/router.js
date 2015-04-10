@@ -93,7 +93,6 @@ define(["angular-ui-router"], function() {
             .state('mission', genericPageState("/mission", "mission"))
             .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
             .state('mission_students', genericPageState("/mission_students", "mission_students"))
-            .state('events', genericPageState("/events", "events_index"))
             .state('glossary', genericPageState("/glossary", "glossary"))
             .state('cookies', genericPageState("/cookies", "cookie_policy"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
@@ -493,6 +492,26 @@ define(["angular-ui-router"], function() {
                     "body": {
                         templateUrl: "/partials/states/assignment_progress.html",
                         controller: "AssignmentProgressPageController",
+                    }
+                }
+            })
+
+            .state('events', {
+                url: "/events?show_active_only&show_inactive_only",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/events_page.html",
+                        controller: "EventsPageController"
+                    }
+                }
+            })
+
+            .state('event', {
+                url: "/events/:id",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/event_detail.html",
+                        controller: "EventDetailController"
                     }
                 }
             })
