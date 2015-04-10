@@ -20,7 +20,9 @@ define([], function() {
 
         e.teacher = e.tags.indexOf("teacher") > -1;
         e.student = e.tags.indexOf("student") > -1;
-        e.virtual = e.tags.indexOf("virtual") > -1;
+        e.virtual =  e.tags.indexOf("virtual") > -1;
+
+        e.field = e.tags.indexOf("physics") > -1 ? "physics" : (e.tags.indexOf("maths") > -1 ? "maths" : undefined);
     }
 
     var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
