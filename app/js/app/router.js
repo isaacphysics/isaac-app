@@ -382,7 +382,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
                 },
                 views: {
                     "body": {
@@ -408,7 +408,7 @@ define(["angular-ui-router"], function() {
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -421,7 +421,7 @@ define(["angular-ui-router"], function() {
             .state('groups', {
                 url: "/groups",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -434,7 +434,7 @@ define(["angular-ui-router"], function() {
             .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {

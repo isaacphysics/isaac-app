@@ -25,13 +25,6 @@ define([], function() {
 
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-		$scope.statistics = api.statisticsEndpoint.get();
-		
-		$scope.statsLoading = true;
-		$scope.statistics.$promise.then(function(){
-			$scope.statsLoading = false;
-		});
-
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
 			api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function() {
@@ -87,7 +80,13 @@ define([], function() {
 
 			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-			//$scope.statistics = api.statisticsEndpoint.get();
+			$scope.statistics = api.statisticsEndpoint.get();
+			
+			$scope.generalStatsLoading = true;
+			$scope.statistics.$promise.then(function(){
+				$scope.generalStatsLoading = false;
+			});
+
 			$scope.gameboardListData = [];
 			$scope.visibleStatsPanel = null;
 
