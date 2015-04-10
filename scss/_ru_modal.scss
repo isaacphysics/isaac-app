@@ -47,6 +47,60 @@
     background: url(/assets/ru.png) no-repeat -332px -375px;
     margin-left: 12px;
 }
+
+.congrats-msg {
+    clear: both;
+    height: 180px;
+    border: #b4b4b4 1px solid;
+    margin: 20px 20px 20px 100px;
+
+    h3 {
+        font-size: 32px;
+        color: $ru_green;
+    }
+
+    p {
+        font-size: 18px;
+        font-weight: 600;
+        font-style: italic;
+    }
+
+    .icon-stack {
+        float: left;
+        width: 280px;
+        position: relative;
+        margin-left: -162px;
+    }
+    .icon-hexagon {
+        font-size: 320px;
+        line-height: 0.642;
+        color: $ru_green;
+    }
+    .icon-board-complete, 
+    .icon-question-complete {
+        position: absolute;
+        top: 93px;
+        color: #fff;
+        font-size: 205px;
+        left: 36px;
+        right: 0;
+        text-align: center;
+    }
+
+    &.physics {
+        h3,
+        .icon-hexagon {
+            color: $ru_purple;
+        }
+    }
+
+    &.maths {
+        h3,
+        .icon-hexagon {
+            color: $ru_blue;
+        }
+    }
+}
 @media #{$medium-up} { 
     .reveal-modal {
         .close-reveal-modal {
