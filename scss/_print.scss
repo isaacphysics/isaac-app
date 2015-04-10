@@ -104,16 +104,23 @@
         background-color: initial !important;
     }
 
-    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
+    .accordion.ru_accordion.general dd a.ru_accordion_titlebar .ru_accordion_name
     {
-        border: 0px solid $ru_physics;
-        background-color: transparent !important;
+        display: none !important;
     }
 
     .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name
     {
         border: 0px solid $ru_maths;
         background-color: transparent !important;
+        padding-right: 10px;
+    }
+
+    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
+    {
+        border: 0px solid $ru_maths;
+        background-color: transparent !important;
+        padding-right: 10px;
     }
 
     .accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
@@ -143,6 +150,7 @@
         top:0px !important;
         padding-top:0px !important;
         height:30px !important;
+        padding-left:0 !important;
     }
 
     .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name{
@@ -152,6 +160,7 @@
         padding-right:0px;
         height:30px !important;
         min-width: 50px;
+        margin-top:0px;
     }
 
     .small-side-padding {
