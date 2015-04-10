@@ -496,7 +496,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('events', {
-                url: "/events?show_active_only",               
+                url: "/events?show_active_only&show_inactive_only",               
                 views: {
                     "body": {
                         templateUrl: "/partials/states/events_page.html",

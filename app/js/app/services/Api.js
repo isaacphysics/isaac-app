@@ -247,8 +247,8 @@ define([], function() {
 			return conceptList.query();
 		}
 
-		this.getEventsList = function(startIndex, limit, showActiveOnly) {
-			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly});
+		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly) {
+			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly});
 		}
 
 		this.getImageUrl = function(path) {

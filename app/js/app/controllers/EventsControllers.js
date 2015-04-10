@@ -33,12 +33,13 @@ define([], function() {
         var startIndex = 0;
         var eventsPerPage = 6;
         var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
+        var showInactiveOnly = $stateParams.show_inactive_only ? $stateParams.show_inactive_only : false;
 
         $scope.events = [];
 
         $scope.loadMore = function() {
             $scope.globalFlags.isLoading = true;
-            api.getEventsList(startIndex, eventsPerPage, showActiveOnly).$promise.then(function(result) {
+            api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly).$promise.then(function(result) {
                 $scope.globalFlags.isLoading = false;
                 
                 for(var i in result.results) {
