@@ -31,12 +31,6 @@ define([], function() {
     }
 
     var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
-
-        $timeout(function() {
-            // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-            $scope.loadMore();
-        });
-
         var startIndex = 0;
         var eventsPerPage = 6;
         var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
@@ -65,7 +59,7 @@ define([], function() {
 
             startIndex = 0;
             $scope.events = [];
-            $scope.loadMore()
+            $scope.loadMore();
         });
 
         $scope.events = [];
