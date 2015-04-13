@@ -84,6 +84,8 @@ define([], function() {
 
                 if (startIndex >= result.totalResults) {
                     $scope.noMoreResults = true;
+                } else {
+                    $scope.noMoreResults = false;
                 }
             });
         }
