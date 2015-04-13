@@ -40,7 +40,7 @@
         <a ui-sref="event({id: event.id})"><img src="{{event.eventThumbnail.src || 'http://placehold.it/500x276'}}" alt="" /></a>
       </div>
       <div class="panel">
-           <h3>{{event.title}}</h3>
+           <h3><a ui-sref="event({id: event.id})">{{event.title}}</a></h3>
            <p>{{event.subtitle}}</p>
            <table class="event-table">
               <tbody>
