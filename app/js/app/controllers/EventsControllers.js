@@ -95,7 +95,7 @@ define([], function() {
         }
     }];
 
-    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', function($scope, api, $timeout, $stateParams, $state) {
+    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', function($scope, api, $timeout, $stateParams, $state, $filter) {
         var loaded = false;
         $timeout(function() {
             // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
@@ -106,15 +106,40 @@ define([], function() {
         
         $scope.toTitleCase = toTitleCase;
 
+        $scope.jsonLd = {};
+
         $scope.event.$promise.then(function(e) {
             loaded = true;
             $scope.globalFlags.isLoading = false;
+            
+            $scope.jsonLd = {
+              "@context" : "http://schema.org",
+              "@type" : "EducationEvent",
+              "name" : e.title,
+              "description" : e.subtitle,
+              "startDate" : $filter('date')(e.date, 'yyyy-MM-ddTH:mm'),
+              "location" : {
+                "@type": "Place",
+                "name": e.location.addressLine1,
+                "address": {
+                    "name": e.location.addressLine1,
+                    "streetAddress": e.location.addressLine2,
+                    "addressLocality": e.location.town,
+                    "postalCode": e.location.postalCode
+                }
+              },
+              "offers" : {
+                "price":"0.00",
+                "priceCurrency": "GBP",
+                "url" : "https://isaacphysics.org/events/" + e.id
+              }
+            }
 
             augmentEvent(e, api);
         }).catch(function() {
             $scope.globalFlags.isLoading = false;
             $state.go('404', {target: $state.href("event", $stateParams)});
-        });
+        });        
     }];
 
     return {

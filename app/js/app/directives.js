@@ -57,11 +57,10 @@ define([
     "app/directives/Toast",
     "app/directives/LoadingOverlay",
     "app/directives/IsaacModal",
+    "app/directives/JsonLdWriter",    
 	], function() {
 
 	/* Directives */
-
-
 	angular.module('isaac.directives', 
 		['RecursionHelper'])
 
@@ -108,6 +107,9 @@ define([
 	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
 
 	.directive('isaacModal', require("app/directives/IsaacModal"))
+
+	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
+
 
 	// Content Directives
 
