@@ -26,15 +26,20 @@ define([], function() {
 
 		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
 
+        $scope.wildCardList = api.gameBoards.wildcards();
+
+        // set default wildcard to the random one.
+        $scope.userSelectedBoardWildCardId = "RANDOM";
+
 		// place holder wildcard - will be replaced by the server so we should remove it before submitting it.
-		var wildCard = {
+		var randomWildCard = {
 	        "title": "Random Wild Card",
 	        "type": "isaacWildcard",
 	        "description": "?",
 	        "url" : ""
     	};
 
-		$scope.currentGameBoard = {questions:[], wildCard: wildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
+		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
 
 		// get the index of a question in a gameboard by id.
@@ -102,18 +107,32 @@ define([], function() {
 	        }, 500);
 		});
 		
-		// detect changes in the selected questions list and update the gameboard
-		$scope.$watchCollection("enabledQuestions", function(newThing, oldThing){
+		var updateWildCard = function(){
+			angular.forEach($scope.wildCardList, function(wildCard, key){
+				
+				if(wildCard.id == $scope.userSelectedBoardWildCardId) {
+					$scope.currentGameBoard.wildCard = wildCard;
+				}
+
+				if ($scope.userSelectedBoardWildCardId == "RANDOM") {
+					$scope.currentGameBoard.wildCard = randomWildCard;
+				}
+			});
+		}
+
+		var updateGameBoardPreview = function(newThing, oldQuestionData) {
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
-			var newGameBoard = {questions:questionCopies, wildCard: wildCard, title: $scope.currentGameBoard.title};
+			updateWildCard();
+
+			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
 
 				if ($scope.enabledQuestions[questionId] && gameBoardIndex == -1) {
 					if (newGameBoard.questions.length == 10) {
         				$scope.showToast($scope.toastTypes.Failure, "Too Many Questions", "There is a maximum of 10 questions per gameboard. Please remove one to add another.");
-						$scope.enabledQuestions = oldThing;
+						$scope.enabledQuestions = oldQuestionData;
 					} else {
 						var questionToAdd = getQuestionObject(questionId);
 						// remove fields that don't mean anything to gameboards as otherwise the api will complain. 
@@ -127,7 +146,11 @@ define([], function() {
 				}
 			}
 			$scope.currentGameBoard = newGameBoard;
-		})
+		}
+
+		// detect changes in the selected questions list and update the gameboard
+		$scope.$watchCollection("enabledQuestions", updateGameBoardPreview);
+		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
 
         $scope.saveGameBoard = function() {
         	var GameBoard = api.gameBoards;
@@ -137,22 +160,27 @@ define([], function() {
         	// calculate subjects used in this gameboard
         	angular.forEach($scope.currentGameBoard.questions, function(question, key){
 				if (question.tags.indexOf("physics") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("physics") == -1) {
-					gameBoardToSave.gameFilter.subjects.push("physics")
+					gameBoardToSave.gameFilter.subjects.push("physics");
 				}
 
 				if (question.tags.indexOf("maths") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("maths") == -1) {
-					gameBoardToSave.gameFilter.subjects.push("maths")
+					gameBoardToSave.gameFilter.subjects.push("maths");
 				}
 			});
 
         	// clear placeholder wildcard so that server picks one.
-        	gameBoardToSave.wildCard = null
+        	if (gameBoardToSave.wildCard === randomWildCard) {
+        		gameBoardToSave.wildCard = null;
+        	}
 
+        	// empty the id field if not set so the server can create one
         	if (gameBoardToSave.id == "") {
         		gameBoardToSave.id = null;
         	}
+
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
+				$scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
         		$state.go('board', {id: gb.id})
         	}).catch(function(e) {
         		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
