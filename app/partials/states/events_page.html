@@ -24,15 +24,15 @@
       <div class="event-type">
         <span class="icon-stack" ng-if="event.teacher">
           <span class="icon-hexagon"></span>
-          <span class="icon-teacher"></span>
+          <span class="icon-teacher" title="Teacher Event"></span>
         </span>
         <span class="icon-stack" ng-if="event.student">
           <span class="icon-hexagon"></span>
-          <span class="icon-student"></span>
+          <span class="icon-student" title="Student Event"></span>
         </span>
         <span class="icon-stack" ng-if="event.virtual">
           <span class="icon-hexagon"></span>
-          <span class="icon-virtual"></span>
+          <span class="icon-virtual" title="Virtual Event"></span>
         </span>
         <h6 ng-if="!event.expired">&nbsp;<span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
         <h6 ng-if="event.expired">This event has expired</h6>
@@ -54,7 +54,7 @@
 <!--
                     <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
 -->
-                    <td><time>{{event.date | date : 'EEE d MMM yyyy'}} <span>{{event.date | date : 'shortTime'}}</span></time></td>
+                    <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span>{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
                  <tr>
                     <td>Location:</td>

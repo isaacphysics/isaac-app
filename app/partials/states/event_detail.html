@@ -8,15 +8,15 @@
     <div class="event-type hide-for-medium-up">
       <span class="icon-stack" ng-if="event.teacher">
         <span class="icon-hexagon"></span>
-        <span class="icon-teacher"></span>
+        <span class="icon-teacher" title="Teacher Event"></span>
       </span>
       <span class="icon-stack" ng-if="event.student">
         <span class="icon-hexagon"></span>
-        <span class="icon-student"></span>
+        <span class="icon-student" title="Student Event"></span>
       </span>
       <span class="icon-stack" ng-if="event.virtual">
         <span class="icon-hexagon"></span>
-        <span class="icon-virtual"></span>
+        <span class="icon-virtual" title="Virtual Event"></span>
       </span>
       <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
       <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
@@ -49,7 +49,7 @@
         </tr>
         <tr>
           <td>When:</td>
-          <td><time datetime="{{event.date | date:'yyyy-mm-dd'}}">{{event.date | date:'dd/MM/yyyy'}} <span>{{event.date | date:'shortTime'}}</span></time></td>
+          <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span>{{event.date | date:'shortTime'}}</span></time></td>
         </tr>
         <tr>
           <td>Location:</td>
