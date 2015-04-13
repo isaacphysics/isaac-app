@@ -43,6 +43,11 @@ define([], function() {
 			filter: {
 				method: "GET",
 				url: server + "/api/gameboards",
+			},
+			wildcards: {
+				method: "GET",
+				url: server + "/api/gameboards/wildcards",
+				isArray: true 
 			}
 		});
 
@@ -228,6 +233,7 @@ define([], function() {
 		var deleteBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 		var eventsList = $resource(server + "/api/events");
+
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
