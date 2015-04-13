@@ -36,12 +36,37 @@ define([], function() {
         var eventsPerPage = 6;
         var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
         var showInactiveOnly = $stateParams.show_inactive_only ? $stateParams.show_inactive_only : false;
+        var filterEventsByType = null;
+
+        var showByTag = null;
+
+        $scope.filterEventsByStatus = "UPCOMING";
+        $scope.filterEventsByType = "all";
+
+        $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
+            if ($scope.filterEventsByStatus == "UPCOMING") {
+                showActiveOnly = true;
+                showInactiveOnly = false;
+            } else {
+                showActiveOnly = false;
+                showInactiveOnly = false;
+            }
+
+            if ($scope.filterEventsByType == "all") {
+                filterEventsByType = null;
+            } else {
+                filterEventsByType = $scope.filterEventsByType
+            }
+
+            startIndex = 0;
+            $scope.events = [];
+            $scope.loadMore()
+        });
 
         $scope.events = [];
-
         $scope.loadMore = function() {
             $scope.globalFlags.isLoading = true;
-            api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly).$promise.then(function(result) {
+            api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType).$promise.then(function(result) {
                 $scope.globalFlags.isLoading = false;
                 
                 for(var i in result.results) {
@@ -60,7 +85,6 @@ define([], function() {
     }];
 
     var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', function($scope, api, $timeout, $stateParams, $state) {
-
         var loaded = false;
         $timeout(function() {
             // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.

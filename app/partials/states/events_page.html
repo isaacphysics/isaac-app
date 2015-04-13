@@ -3,21 +3,21 @@
         <h1>Events</h1>
         <p class="hide-for-small-only">Keep up-to-date with related events</p>
     </div>
-    <!--
     <div class="large-10 medium-8 columns text-right">
-        <span data-ot="Information about current page" class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="Follow the links below to find out more about our FREE events." class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span>Help</span>
         <div class="events-filters">
           <label class="show-for-large-up">Filter by</label>
-          <select>
-            <option>All Events</option>
+          <select ng-model="filterEventsByStatus">
+            <option value="UPCOMING">Upcoming Events</option>
+            <option value="ALL">All Events</option>
           </select>
-          <label class="show-for-large-up">Sort by</label>
-          <select>
-            <option>Location</option>
+          <select ng-model="filterEventsByType">
+            <option value="all">All Events</option>
+            <option value="student">Student Events</option>
+            <option value="teacher">Teacher Events</option>
           </select>
         </div>
     </div>
-    -->
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
     <li class="event" ng-repeat="event in events" ng-class="{expired: event.expired}">
@@ -79,5 +79,9 @@
 <div class="row">
   <div class="large-5 medium-6 small-centered columns">
       <a href="javascript:void(0)" tabindex="0" class="ru-button-big secondary" ng-click="loadMore()" ng-hide="noMoreResults">Load more events</a>
-   </div>
+  </div>
+  
+  <div ng-show="events.length == 0" class="small-16 text-center columns">
+      <p>Sorry, we can not find any events that match your filter settings.</p>
+  </div>
 </div>
