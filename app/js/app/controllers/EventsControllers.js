@@ -27,6 +27,9 @@ define([], function() {
         // we have to fix the event image url.
         if(e.eventThumbnail) {
             e.eventThumbnail.src = api.getImageUrl(e.eventThumbnail.src);
+        } else {
+            e.eventThumbnail.src = 'http://placehold.it/500x276';
+            e.eventThumbnail.altText = 'placeholder image.';
         }
     }
 
