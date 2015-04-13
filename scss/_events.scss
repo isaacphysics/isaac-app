@@ -34,7 +34,7 @@
 	}
 
 	&.expired {
-		h3, p, time, .event-table td, .event-link, .event-type .icon-teacher, .event-type .icon-virtual, .event-type .icon-student, .event-attend, .event-attend .icon-hexagon {
+		h3, h3 > a , p, time, .event-table td, .event-link, .event-type .icon-teacher, .event-type .icon-virtual, .event-type .icon-student, .event-attend, .event-attend .icon-hexagon {
 			color: #999;
 		}
 	}
