@@ -48,41 +48,47 @@
     margin-left: 12px;
 }
 
-.congrats-msg {
+.congrats {
     clear: both;
-    height: 180px;
+    height: 112px;
     border: #b4b4b4 1px solid;
-    margin: 20px 20px 20px 100px;
+    margin: 0 -20px 0 30px;
+    padding-right: 10px;
 
     h3 {
-        font-size: 32px;
+        font-size: 18px;
+        line-height: 1;
         color: $ru_green;
+        margin-top: 5px;
     }
 
     p {
-        font-size: 18px;
+        font-size: 14px;
+        line-height: 1;
         font-weight: 600;
         font-style: italic;
+        margin: 0; 
     }
 
     .icon-stack {
         float: left;
-        width: 280px;
+        width: 165px;
+        height: 112px;
         position: relative;
-        margin-left: -162px;
+        margin-left: -102px;
     }
     .icon-hexagon {
-        font-size: 320px;
+        font-size: 200px;
         line-height: 0.642;
         color: $ru_green;
     }
     .icon-board-complete, 
     .icon-question-complete {
         position: absolute;
-        top: 93px;
+        top: 55px;
         color: #fff;
-        font-size: 205px;
-        left: 36px;
+        font-size: 135px;
+        left: 32px;
         right: 0;
         text-align: center;
     }
@@ -100,6 +106,16 @@
             color: $ru_blue;
         }
     }
+}
+.congrats-msg {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+
 }
 @media #{$medium-up} { 
     .reveal-modal {
@@ -120,8 +136,70 @@
             padding-right: 90px;
         }
     }
-}
+    .congrats {
+        height: 150px;
+        padding-right: 15px;
+        margin: 15px 0 15px 65px;
 
+        h3 {
+            font-size: 28px;
+            line-height: 1.1;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.1;
+        }
+        .icon-stack {
+            width: 220px;
+            height: 150px;
+            margin-left: -136px
+        }
+        .icon-hexagon {
+            font-size: 268px;
+        }
+
+        .icon-board-complete, 
+        .icon-question-complete {
+            font-size: 180px;
+            top: 75px;
+            left: 42px;
+
+        }
+    }
+}
+@media #{$large-up} { 
+    .congrats {
+        height: 180px;
+        padding-right: 20px;
+        margin: 20px 20px 20px 100px;
+
+        h3 {
+            font-size: 32px;
+            line-height: 1.2;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        .icon-stack {
+            width: 280px;
+            height: 180px;
+            margin-left: -162px
+        }
+        .icon-hexagon {
+            font-size: 320px;
+        }
+
+        .icon-board-complete, 
+        .icon-question-complete {
+            font-size: 205px;
+            top: 93px;
+            left: 36px;
+
+        }
+    }
+}
 [isaac-modal] {
     display:none;
 }
