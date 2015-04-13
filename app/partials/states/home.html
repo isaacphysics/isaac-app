@@ -103,7 +103,7 @@
                     <div class="medium-6 small-16 columns text-center">
                         <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user._id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
                         <br/>
-                        <strong><a ng-show="gameBoard.$resolved && editedGameBoardTitle == null" href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">Save this board</a></strong>
+                        <strong><a ng-show="gameBoard.$resolved && editedGameBoardTitle == null" href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">Add to My Boards</a></strong>
 
                         <span ng-hide="editedGameBoardTitle==null">
                             <input type="text" ng-model="editedGameBoardTitle">

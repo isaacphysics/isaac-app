@@ -33,10 +33,20 @@
 		font-size: 14px;
 	}
 
+	p.event-subtitle {
+		font-size: 17px;
+		font-weight: 400;
+		line-height: 1.3;
+	}
+
 	&.expired {
 		h3, h3 > a , p, time, .event-table td, .event-link, .event-type .icon-teacher, .event-type .icon-virtual, .event-type .icon-student, .event-attend, .event-attend .icon-hexagon {
 			color: #999;
 		}
+	}
+
+	table tr {
+		background: transparent !important;
 	}
 }
 
@@ -195,6 +205,12 @@
 		margin: 8px 0 0;
 	}
 
+	p.event-subtitle {
+		font-size: 20px;
+		font-weight: 400;
+		line-height: 1.3;
+	}
+
 	.event-type {
 		margin-left: -0.9375rem;
 		margin-right: -0.9375rem;
@@ -205,6 +221,9 @@
 
 	.small-offset-1 {
 		margin-left: 0 !important;
+	}
+	table tr {
+		background: transparent !important;
 	}
 }
 .event-map {
