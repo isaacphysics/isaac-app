@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var augmentEvent = function(e) {
+    var augmentEvent = function(e, api) {
         e.expired = Date.now() > e.date;
 
         e.teacher = e.tags.indexOf("teacher") > -1;
@@ -23,6 +23,11 @@ define([], function() {
         e.virtual =  e.tags.indexOf("virtual") > -1;
 
         e.field = e.tags.indexOf("physics") > -1 ? "physics" : (e.tags.indexOf("maths") > -1 ? "maths" : undefined);
+
+        // we have to fix the event image url.
+        if(e.eventThumbnail) {
+            e.eventThumbnail.src = api.getImageUrl(e.eventThumbnail.src);
+        }
     }
 
     var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
@@ -71,7 +76,7 @@ define([], function() {
                 
                 for(var i in result.results) {
                     var e = result.results[i];
-                    augmentEvent(e);
+                    augmentEvent(e, api);
                     $scope.events.push(e);
                 }
 
@@ -97,7 +102,7 @@ define([], function() {
             loaded = true;
             $scope.globalFlags.isLoading = false;
 
-            augmentEvent(e);
+            augmentEvent(e, api);
         }).catch(function() {
             $scope.globalFlags.isLoading = false;
             $state.go('404', {target: $state.href("event", $stateParams)});
