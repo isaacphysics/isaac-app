@@ -44,10 +44,9 @@
            <p>{{event.subtitle}}</p>
            <table class="event-table">
               <tbody>
-
                  <tr ng-if="event.field">
                     <td>Field:</td>
-                    <td>{{event.field}}</td>
+                    <td>{{toTitleCase(event.field)}}</td>
                  </tr>
 
                  <tr>
@@ -78,10 +77,10 @@
 </ul>
 <div class="row">
   <div class="large-5 medium-6 small-centered columns">
-      <a href="javascript:void(0)" tabindex="0" class="ru-button-big secondary" ng-click="loadMore()" ng-hide="noMoreResults">Load more events</a>
+      <a href="javascript:void(0)" tabindex="0" class="ru-button-big secondary" ng-click="loadMore()" ng-if="!noMoreResults && events">Load more events</a>
   </div>
   
-  <div ng-show="events.length == 0" class="small-16 text-center columns">
+  <div ng-if="!globalFlags.isLoading && events.length == 0" class="small-16 text-center columns">
       <p>Sorry, we can not find any events that match your filter settings.</p>
   </div>
 </div>

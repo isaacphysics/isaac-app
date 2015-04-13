@@ -30,7 +30,12 @@ define([], function() {
         }
     }
 
+    var toTitleCase = function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
     var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
+
         var startIndex = 0;
         var eventsPerPage = 6;
         var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
@@ -41,6 +46,8 @@ define([], function() {
 
         $scope.filterEventsByStatus = "UPCOMING";
         $scope.filterEventsByType = "all";
+
+        $scope.toTitleCase = toTitleCase;
 
         $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
             if ($scope.filterEventsByStatus == "UPCOMING") {
@@ -59,7 +66,10 @@ define([], function() {
 
             startIndex = 0;
             $scope.events = [];
-            $scope.loadMore();
+            $timeout(function() {
+                // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
+                $scope.loadMore();
+            });
         });
 
         $scope.events = [];
@@ -93,6 +103,8 @@ define([], function() {
         });
 
         $scope.event = api.events.get({id: $stateParams.id});
+        
+        $scope.toTitleCase = toTitleCase;
 
         $scope.event.$promise.then(function(e) {
             loaded = true;
