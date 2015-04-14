@@ -17,7 +17,7 @@ module.exports = function(grunt) {
       dist: {
         options: {
           outputStyle: 'compressed',
-          sourceMap: false, // This causes everything to fail silently on errors. Set to false for troubleshooting.
+          sourceMap: true, // This causes everything to fail silently on errors. Set to false for troubleshooting.
         },
         files: {
           'app/css/app.css': 'scss/app.scss'
