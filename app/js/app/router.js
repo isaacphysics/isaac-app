@@ -43,7 +43,8 @@ define(["angular-ui-router"], function() {
                     if (roles.indexOf(u.role) > -1) {
                         return Promise.resolve(u);
                     } else {
-                        return Promise.reject("This route requires the user to have one of the following roles: " + roles);
+                        console.warn("This route requires the user to have one of the following roles: " + roles)
+                        return Promise.reject("require_role");
                     }                             
                 })
             }
