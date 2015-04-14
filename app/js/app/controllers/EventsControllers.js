@@ -115,6 +115,7 @@ define([], function() {
             loaded = true;
             $scope.globalFlags.isLoading = false;
             
+            // usage instructions defined at - https://developers.google.com/structured-data/rich-snippets/events
             $scope.jsonLd = {
               "@context" : "http://schema.org",
               "@type" : "EducationEvent",
@@ -128,7 +129,8 @@ define([], function() {
                     "name": e.location.addressLine1,
                     "streetAddress": e.location.addressLine2,
                     "addressLocality": e.location.town,
-                    "postalCode": e.location.postalCode
+                    "postalCode": e.location.postalCode,
+                    "addressCountry": "GB"
                 }
               },
               "offers" : {
