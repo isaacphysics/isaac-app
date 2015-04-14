@@ -39,7 +39,7 @@ define([], function() {
 	        "url" : ""
     	};
 
-		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: "Game board title"} // used for rendering the current version of the gameBoard
+		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
 
 		// get the index of a question in a gameboard by id.

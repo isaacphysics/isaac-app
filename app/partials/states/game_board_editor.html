@@ -79,7 +79,7 @@
 		</div>
 	</div>
 	<section ng-show="currentGameBoard.questions.length > 0">
-	    <form>
+	    <form data-abide ng-submit="saveGameBoard()">
 		    <div class="row">
 	            <div class="small-16 columns">
 	            	<h2>Game Board Preview and Options</h2>
@@ -95,7 +95,8 @@
 	            <div class="large-8 medium-8 small-16 columns text-center">
 	                <span>
 	                    <label><strong>Game board title</strong></label>
-	                    <input type="text" ng-model="currentGameBoard.title">
+	                    <input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required>
+                        <small class="error">The title is required.</small>
 	                </span>
 	            </div>
 		    </div>
@@ -118,7 +119,7 @@
 		    </div>
 		    <div class="row">
 				<div class='small-8 small-centered columns'> 
-		        	<button ng-if="currentGameBoard.questions.length > 0" ng-click="saveGameBoard()" class="expand">Submit &amp; Save Board</button>
+		        	<button ng-if="currentGameBoard.questions.length > 0" type="submit" class="expand">Submit &amp; Save Board</button>
 		        </div>
 		    </div>
 	    </form>
