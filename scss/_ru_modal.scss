@@ -57,6 +57,7 @@
 
     h3 {
         font-size: 18px;
+        font-weight: 800;
         line-height: 1;
         color: $ru_green;
         margin-top: 5px;
@@ -64,6 +65,7 @@
 
     p {
         font-size: 14px;
+        font-weight: 800;
         line-height: 1;
         font-weight: 600;
         font-style: italic;
@@ -116,6 +118,11 @@
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
 
+}
+.congrats-subhead {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 10px 0;
 }
 @media #{$medium-up} { 
     .reveal-modal {
@@ -199,6 +206,7 @@
 
         }
     }
+
 }
 [isaac-modal] {
     display:none;
@@ -206,4 +214,48 @@
 
 #isaacModal>[isaac-modal] {
     display: block;
+}
+
+// Fix cross browser icon line-height issues 
+
+// Target firefox only
+@-moz-document url-prefix() {
+    .congrats {
+        .icon-hexagon {
+            line-height: 0.51;
+        }
+    }
+    @media #{$medium-up} { 
+        .congrats {
+            .icon-board-complete, 
+            .icon-question-complete {
+                top: 65px;
+            }
+        }
+    }
+    @media #{$large-up} { 
+        .congrats {
+            .icon-board-complete, 
+            .icon-question-complete {
+                top: 79px;
+            }
+        }
+    }
+}
+
+// Target IE 7-9
+.lt-ie10 {
+    .congrats {
+        .icon-hexagon {
+            line-height: 0.68;
+        }
+    }
+}
+// Target IE 10+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .congrats {
+        .icon-hexagon {
+            line-height: 0.68;
+        }
+    }
 }

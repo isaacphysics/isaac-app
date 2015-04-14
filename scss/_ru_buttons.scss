@@ -30,6 +30,12 @@
             background-color: #f6f6f6;
         }
     }
+    &.quaternary {
+        background-color: #009acd;
+        &:hover {
+            background-color: #6eb4cd;
+        }
+    }
 }
 .ru-button {
 	padding-top: 0.3rem;
