@@ -233,7 +233,7 @@ $menu-handle-width: 160px;
     [canvas-symbol] .canvas-symbol {
         position: absolute;
         cursor: pointer;
-        border: 1px solid rgba(0,0,0,0.3);
+        //border: 1px solid rgba(0,0,0,0.3);
 
         &.string {
             z-index: -2;
@@ -273,7 +273,7 @@ $menu-handle-width: 160px;
                     stroke-width:0.05;
 
                     &:hover {
-                        fill: #ddffcc;
+                        fill: hsl(102, 55%, 95%);
                     }
                 }
 
