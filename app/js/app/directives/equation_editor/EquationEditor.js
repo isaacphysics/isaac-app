@@ -115,7 +115,8 @@ define([], function() {
 						y: 233,
 						fontSize: 48,
 						token: "3",
-						type: "string"
+						type: "string",
+                        fromCalc: true,
 					},				
                 };
 

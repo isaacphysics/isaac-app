@@ -253,6 +253,32 @@ $menu-handle-width: 160px;
             color: #00a;
             border-color: #00a;
         }
+
+        [symbol-handle] {
+            position: absolute;
+            left: 100%;
+            top: 100%;
+            pointer-events: none;
+
+            svg {
+                cursor: default;
+                overflow: visible;
+                // shape-rendering: crispEdges;
+
+                polygon {
+                    fill: white;
+                    cursor: pointer;
+                    pointer-events: initial;
+                    stroke:black;
+                    stroke-width:0.05;
+
+                    &:hover {
+                        fill: #ddffcc;
+                    }
+                }
+
+            }
+        }
     }
 
     .hex-button {

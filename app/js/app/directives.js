@@ -64,6 +64,7 @@ define([
     "app/directives/LoadingOverlay",
     "app/directives/equation_editor/CanvasSymbol",
     "app/directives/IsaacModal",
+    "app/directives/equation_editor/SymbolHandle",
     "app/directives/JsonLdWriter",    
 	], function() {
 
@@ -114,6 +115,8 @@ define([
 	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
 
 	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
+
+	.directive('symbolHandle', require("app/directives/equation_editor/SymbolHandle"))
 
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 

@@ -61,7 +61,7 @@ define([], function() {
 
 
                 	scope.currentSymbol.token = scope.currentSymbol.label;
-
+                    scope.currentSymbol.fromCalc = true;
                 };
 
                 scope.$watch("currentNumber", updateSymbol);
