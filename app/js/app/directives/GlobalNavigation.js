@@ -37,6 +37,7 @@ define([], function() {
                         angular.forEach(loginTooltips, function(value, key){
                             value.hide();
                             value.deactivate();
+                            value.disable();
                         })
                         loginTooltips = [];
                     }
