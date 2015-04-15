@@ -100,7 +100,7 @@
 	                </span>
 	            </div>
 		    </div>
-			<div class="row" ng-if="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
+			<div class="row" ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
 				<div class="small-16 columns">
 					<label><strong>Wildcard</strong></label>
 	                <select ng-model="userSelectedBoardWildCardId">
