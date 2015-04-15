@@ -20,7 +20,7 @@
 
 .login-separator {
 	padding: 77px 0;
-	background: url(/assets/blank-1px-grey.png) repeat-y center 0;
+	background: url(../assets/blank-1px-grey.png) repeat-y center 0;
 	span {
 		font-size: 34px;
 		font-weight: bold;
@@ -61,7 +61,7 @@ a.login-forgot-password {
 	text-align: center;
 	width: 79px;
 	height: 78px;
-	background: url(/assets/social-login-sprite.png) no-repeat 0 0;
+	background: url(../assets/social-login-sprite.png) no-repeat 0 0;
 	margin-right: 10px;
 }
 .login-social-facebook {
@@ -125,7 +125,7 @@ a.login-forgot-password {
 {
 	width: 79px;
 	height: 78px;
-	background-image: url(/assets/social-login-sprite@2x.png);
+	background-image: url(../assets/social-login-sprite@2x.png);
 	background-size: 79px 468px;
 }
 }

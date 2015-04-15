@@ -3,10 +3,6 @@ module.exports = function(grunt) {
   var distOutputDir = "dist";
   var distOutputFile = "isaac-app.tar.gz";
 
-  var requestLogger = function(req) {
-    console.log('[%s] %s', (new Date).toUTCString(), req.url.cyan);
-  }
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -17,7 +13,7 @@ module.exports = function(grunt) {
       dist: {
         options: {
           outputStyle: 'compressed',
-          sourceMap: true, // This causes everything to fail silently on errors. Set to false for troubleshooting.
+          sourceMap: true,
         },
         files: {
           'app/css/app.css': 'scss/app.scss'
@@ -139,15 +135,6 @@ module.exports = function(grunt) {
         }]
       }
     },
-
-    'http-server': {
-      dev: {
-        root: "app/",
-        port: 8000,
-        runInBackground: false,
-        logFn: requestLogger,
-      }
-    }
     
   });
 
@@ -160,10 +147,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.loadNpmTasks('grunt-http-server');
 
   grunt.registerTask('build', ['sass']);
-  grunt.registerTask('server', ['http-server']);
   grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist', 'compress:dist']);
 
 

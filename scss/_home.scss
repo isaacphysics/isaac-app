@@ -77,7 +77,7 @@ ul.ru-crumb.physics li
 {
     &:before
     {
-        content: url(/assets/crumb-physics.png);
+        content: url(../assets/crumb-physics.png);
         display: block;
         width: 112px;
         height: 28px;
@@ -87,7 +87,7 @@ ul.ru-crumb.physics li
     }
     &:last-child:before
     {
-        content: url(/assets/crumb-physics-end.png);
+        content: url(../assets/crumb-physics-end.png);
     }
 }
 
@@ -95,7 +95,7 @@ ul.ru-crumb.maths li
 {
     &:before
     {
-        content: url(/assets/crumb-maths.png);
+        content: url(../assets/crumb-maths.png);
         display: block;
         width: 112px;
         height: 28px;
@@ -105,7 +105,7 @@ ul.ru-crumb.maths li
     }
     &:last-child:before
     {
-        content: url(/assets/crumb-maths-end.png);
+        content: url(../assets/crumb-maths-end.png);
     }
 }
 
@@ -114,7 +114,7 @@ ul.ru-crumb.multiple-subjects li
 {
     &:before
     {
-        content: url(/assets/crumb-physics.png);
+        content: url(../assets/crumb-physics.png);
         display: block;
         width: 112px;
         height: 28px;
@@ -124,7 +124,7 @@ ul.ru-crumb.multiple-subjects li
     }
     &:last-child:before
     {
-        content: url(/assets/crumb-physics-end.png);
+        content: url(../assets/crumb-physics-end.png);
     }
 }
 
@@ -256,7 +256,7 @@ ul.ru-crumb.multiple-subjects li
     position: relative;
 
     &.loading {
-        background-image: url(/assets/loading.gif);
+        background-image: url(../assets/loading.gif);
         background-position: center center;
         background-repeat: no-repeat;
     }
@@ -375,7 +375,7 @@ $col_values : 5;
     position:absolute;
     z-index: -9;
 
-    background-image: url(/assets/arrow-bg.png);
+    background-image: url(../assets/arrow-bg.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
@@ -387,7 +387,7 @@ $col_values : 5;
     position:absolute;
     z-index: -9;
 
-    background-image: url(/assets/tick-bg.png);
+    background-image: url(../assets/tick-bg.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
@@ -404,41 +404,41 @@ $col_values : 5;
     margin-right: auto;
 
     &.ru-hex-home-field-physics {
-        background-image: url(/assets/hex-icons/icon-hex-physics.png);
+        background-image: url(../assets/hex-icons/icon-hex-physics.png);
     }
     &.ru-hex-home-field-mechanics {
-        background-image: url(/assets/hex-icons/icon-hex-mechanics.png);
+        background-image: url(../assets/hex-icons/icon-hex-mechanics.png);
     }
     &.ru-hex-home-field-waves {
-        background-image: url(/assets/hex-icons/icon-hex-waves.png);
+        background-image: url(../assets/hex-icons/icon-hex-waves.png);
     }
     &.ru-hex-home-field-fields {
-        background-image: url(/assets/hex-icons/icon-hex-fields.png);
+        background-image: url(../assets/hex-icons/icon-hex-fields.png);
     }
     &.ru-hex-home-field-circuits {
-        background-image: url(/assets/hex-icons/icon-hex-circuits.png);
+        background-image: url(../assets/hex-icons/icon-hex-circuits.png);
     }
     &.ru-hex-home-field-geometry {
-        background-image: url(/assets/hex-icons/icon-hex-geometry.png);
+        background-image: url(../assets/hex-icons/icon-hex-geometry.png);
     }
     &.ru-hex-home-field-calculus {
-        background-image: url(/assets/hex-icons/icon-hex-calculus.png);
+        background-image: url(../assets/hex-icons/icon-hex-calculus.png);
     }
     &.ru-hex-home-field-algebra {
-        background-image: url(/assets/hex-icons/icon-hex-algebra.png);
+        background-image: url(../assets/hex-icons/icon-hex-algebra.png);
     }
     &.ru-hex-home-field-functions {
-        background-image: url(/assets/hex-icons/icon-hex-functions.png);
+        background-image: url(../assets/hex-icons/icon-hex-functions.png);
     }
     &.ru-hex-home-field-probability {
-        background-image: url(/assets/hex-icons/icon-hex-probability.png);
+        background-image: url(../assets/hex-icons/icon-hex-probability.png);
     }
 
 }
 
 .ru-hex-home-chat
 {
-   background-image: url(/assets/hex-chat.png);
+   background-image: url(../assets/hex-chat.png);
    background-repeat: no-repeat; 
    width: 32px;
    height: 30px;
@@ -522,8 +522,8 @@ $hex_levels : 6;
     @for $j from 1 through $hex_levels
     {
         $pos_list : append($pos_list, ($j - 1) * 100% / $hex_levels );
-        @if $hex_levels - $i < $j { $bg_list : append($bg_list, url('/assets/hex-level-on.png')); }
-        @if $hex_levels - $i >= $j { $bg_list : append($bg_list, url('/assets/hex-level-off.png')); }
+        @if $hex_levels - $i < $j { $bg_list : append($bg_list, url('../assets/hex-level-on.png')); }
+        @if $hex_levels - $i >= $j { $bg_list : append($bg_list, url('../assets/hex-level-off.png')); }
     }
     .ru-hex-level-#{$i}:after
     {

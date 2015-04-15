@@ -13,7 +13,7 @@
 {
     .ru-hex-filter-back-#{$name}
     {
-        background-image: url(/assets/ISAAC-symbol-bg-#{$name}.png);
+        background-image: url(../assets/ISAAC-symbol-bg-#{$name}.png);
         background-size: 54px 54px;
         background-repeat: no-repeat;
         background-position: 10px 13px;
@@ -27,7 +27,7 @@
     height: 32px;
     right: 0px;
     top: -10px;
-    background: url(/assets/warning.png);
+    background: url(../assets/warning.png);
     pointer-events: all;
     outline: none;
     cursor: pointer;
@@ -61,17 +61,17 @@
         display: table;
         right: -17.5px;
         top: 0px;
-        background-image: url(/assets/hex-percent-green.png);
+        background-image: url(../assets/hex-percent-green.png);
         width: 35px;
         height: 35px;
         background-repeat: no-repeat;
         &.ru-hex-filter-circle-hundred
         {
-            background-image: url(/assets/hex-percent-tick.png);
+            background-image: url(../assets/hex-percent-tick.png);
         }
         &.ru-hex-filter-circle-zero
         {
-            background-image: url(/assets/hex-percent-grey.png);
+            background-image: url(../assets/hex-percent-grey.png);
         }
         div
         {
@@ -372,8 +372,8 @@ $hex_diff_levels : 6;
     @for $j from 1 through $hex_diff_levels
     {
         $pos_list : append($pos_list, ($j - 1) * 100% / $hex_diff_levels );
-        @if $i > ($hex_diff_levels - $j) { $bg_list : append($bg_list, url('/assets/hex-filter-yellow.png')); }
-        @if $i <= ($hex_diff_levels - $j) { $bg_list : append($bg_list, url('/assets/hex-filter-grey.png')); }
+        @if $i > ($hex_diff_levels - $j) { $bg_list : append($bg_list, url('../assets/hex-filter-yellow.png')); }
+        @if $i <= ($hex_diff_levels - $j) { $bg_list : append($bg_list, url('../assets/hex-filter-grey.png')); }
     }
     .ru-diff-hex-level-#{$i}:after
     {
@@ -402,7 +402,7 @@ $hex_diff_levels : 6;
 #concept-input
 {
     padding-left: 32px;
-    background-image: url(/assets/isaac-filter-search.png);
+    background-image: url(../assets/isaac-filter-search.png);
     background-repeat: no-repeat;
     background-position: 2px 50%;
     margin-top: 8px;
@@ -436,14 +436,14 @@ $hex_diff_levels : 6;
     &.physics:not(.no-results):after
     {
         position: absolute;
-        content: url(/assets/physics-plus.png);
+        content: url(../assets/physics-plus.png);
         right: 8px;
         top: 8px;
     }
     &.maths:not(.no-results):after
     {
         position: absolute;
-        content: url(/assets/maths-plus.png);
+        content: url(../assets/maths-plus.png);
         right: 8px;
         top: 8px;
     }
@@ -494,7 +494,7 @@ $hex_diff_levels : 6;
     &:after
     {
         position: absolute;
-        content: url(/assets/isaac-filter-remove.png);
+        content: url(../assets/isaac-filter-remove.png);
         right: 8px;
         top: 7px;
     }
@@ -565,28 +565,28 @@ $hex_diff_levels : 6;
 
 #button-hex
 {
-    background-image: url(/assets/isaac-mobile-your-challenge-off.png);
+    background-image: url(../assets/isaac-mobile-your-challenge-off.png);
     &.active
     {
-        background-image: url(/assets/isaac-mobile-your-challenge-on.png); 
+        background-image: url(../assets/isaac-mobile-your-challenge-on.png); 
     }
 }
 
 #button-difficulty
 {
-    background-image: url(/assets/isaac-mobile-your-difficulty-off.png);
+    background-image: url(../assets/isaac-mobile-your-difficulty-off.png);
     &.active
     {
-        background-image: url(/assets/isaac-mobile-your-difficulty-on.png); 
+        background-image: url(../assets/isaac-mobile-your-difficulty-on.png); 
     }
 }
 
 #button-concept
 {
-    background-image: url(/assets/isaac-mobile-concept-filter-off.png);
+    background-image: url(../assets/isaac-mobile-concept-filter-off.png);
     &.active
     {
-        background-image: url(/assets/isaac-mobile-concept-filter-on.png); 
+        background-image: url(../assets/isaac-mobile-concept-filter-on.png); 
     }
 }
 
@@ -685,14 +685,14 @@ $hex_diff_levels : 6;
     left: 48%;
     bottom: -32px;
     position: absolute;
-    background-image: url(/assets/reveal-up.png); 
+    background-image: url(../assets/reveal-up.png); 
     background-position: 50% top;
     background-repeat: no-repeat;
     cursor: pointer;
     z-index: 10;
     &.down
     {
-        background-image: url(/assets/reveal-down.png); 
+        background-image: url(../assets/reveal-down.png); 
     }
 
     &:hover
@@ -736,7 +736,7 @@ $hex_diff_levels : 6;
 
 #mobile-base.bottom-grey #mobile-hide
 {
-    background-image: url(/assets/reveal-down.png); 
+    background-image: url(../assets/reveal-down.png); 
     background-position: 50% top;
     background-repeat: no-repeat;
 }

@@ -81,7 +81,7 @@
 	left: 0;
 	width: 71px;
 	height: 82px;
-	background: url(/assets/my-boards-sprite.png) no-repeat 0 0;
+	background: url(../assets/my-boards-sprite.png) no-repeat 0 0;
 	padding: 20px 0 0;
 }
 .subject-physics {
@@ -115,7 +115,7 @@
 	position: relative;
 	width: 110px;
 	height: 18px;
-	background: url(/assets/my-boards-sprite.png) no-repeat 0 -82px;
+	background: url(../assets/my-boards-sprite.png) no-repeat 0 -82px;
 	margin: 4px 0 0;
 	span {
 		font-size: 12px;
@@ -129,7 +129,7 @@
 		top: 0;
 		position: absolute;
 		padding: 2px 0 0 4px;
-		background: url(/assets/my-boards-sprite.png) no-repeat -114px -82px;
+		background: url(../assets/my-boards-sprite.png) no-repeat -114px -82px;
 	}
 	.level-1 {
 		left: 0;
@@ -346,7 +346,7 @@
 		position: absolute;
 		width: 23px;
 		height: 26px;
-		background:transparent url(/assets/ru.png) -315px -347px no-repeat;
+		background:transparent url(../assets/ru.png) -315px -347px no-repeat;
 		padding: 0;
 		margin: 0;
 	}
@@ -355,13 +355,13 @@
 	float: left;
 	width: 16px;
 	height: 16px;
-	background: url(/assets/ru.png) -371px -324px no-repeat;
+	background: url(../assets/ru.png) -371px -324px no-repeat;
 }
 .icon-complete {
 	display: inline-block;
 	width: 25px;
 	height: 20px;
-	background: url(/assets/ru.png) -357px -370px no-repeat;
+	background: url(../assets/ru.png) -357px -370px no-repeat;
 	margin-left: 10px;
 	margin-bottom: -4px;
 }
@@ -369,7 +369,7 @@
 	float: left;
 	width: 17px;
 	height: 19px;
-	background: url(/assets/ru.png) -384px -369px no-repeat;
+	background: url(../assets/ru.png) -384px -369px no-repeat;
 }
 /*
 	Styles for My assignments 
