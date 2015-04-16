@@ -213,7 +213,23 @@ define([], function() {
 			}			
 		});			
 
-		this.events = $resource(server + "/api/events/:id");	
+        this.events = $resource(server + "/api/events/:id");
+
+		this.eventBookings = $resource(server + "/api/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
+			'getBookings' : {
+				url: server + "/api/events/:eventId/bookings",
+				method: 'GET', 
+				isArray: true
+			},
+			'makeBooking' : {
+				method: 'POST', 
+				url: server + "/api/events/:eventId/bookings/:userId"			
+			},
+			'deleteBooking' : {
+				method: 'DELETE', 
+				url: server + "/api/events/:eventId/bookings/:userId"			
+			}
+		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {

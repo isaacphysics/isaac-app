@@ -406,6 +406,19 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('adminEvents', {
+                url: "/admin/events",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_events.html",
+                        controller: "AdminEventBookingController",
+                    }
+                }
+            })            
+
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",
                 resolve: {

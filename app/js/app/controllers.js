@@ -126,6 +126,7 @@ define([
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
 	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
+	.controller('AdminEventBookingController', adminPageControllers.AdminEventBookingController)
 
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
