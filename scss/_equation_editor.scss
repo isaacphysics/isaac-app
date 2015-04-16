@@ -22,6 +22,14 @@ $menu-handle-width: 160px;
         outline: none;
     }
 
+    .selection-box {
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+        border: 1px dotted #007;
+        background: rgba(0,0,255,0.1);
+    }
+
     [selection-handle] {
         position: absolute;
         pointer-events: none;

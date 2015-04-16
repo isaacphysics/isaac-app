@@ -45,7 +45,7 @@ define([], function() {
 
 
                 var mousedown = function(e) {
-                    scope.$emit("selection_grab", scope.symbolId, e.pageX, e.pageY, "move", e);
+                    scope.$emit("selection_grab", scope.symbolId, "move", e);
                 }
 
                 element.on("mousedown", mousedown);

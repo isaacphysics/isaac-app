@@ -67,11 +67,6 @@ define([], function() {
                     showMove: true,
                 };
 
-                scope.editorClick = function(e) {
-                    scope.$broadcast("closeMenus");
-                    scope.selectedSymbols.length = 0;
-                };
-
                 scope.$on("triggerCloseMenus", function() {
                 	scope.$broadcast("closeMenus");
                 });
@@ -328,15 +323,11 @@ define([], function() {
                 scope.dragging = false;
                 var dragLastPageX, dragLastPageY;
                 var dragTotalDx = 0, dragTotalDy = 0;
-                var grabPageX, grabPageY;
 
-                var grabSelection = function(pageX, pageY, e) {
+                var grab = function(pageX, pageY, e) {
 
                     dragLastPageX = pageX;
                     dragLastPageY = pageY;
-
-                    grabPageX = pageX;
-                    grabPageY = pageY;
 
                     dragTotalDx = 0;
                     dragTotalDy = 0;
@@ -386,6 +377,31 @@ define([], function() {
                                     break;
                             }
                         }
+                    } else if (scope.dragMode == "selectionBox") {
+                        var off = element.offset();
+
+                        var originX = pageX - dragTotalDx - off.left;
+                        var originY = pageY - dragTotalDy - off.top;
+
+                        var width = dragTotalDx;
+                        var height = dragTotalDy;
+
+                        if (width < 0) {
+                            width = -width;
+                            originX -= width;
+                        }
+
+                        if (height < 0) {
+                            height = -height;
+                            originY -= height;
+                        }
+
+                        element.find(".selection-box").css({
+                            left: originX,
+                            top: originY,
+                            width: width,
+                            height: height,
+                        });
                     }
 
                     // Only call digest, not apply. This avoids a complete recursive update from $rootScope. Probably.
@@ -398,9 +414,29 @@ define([], function() {
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
 
-                    if (dragTotalDx != 0 || dragTotalDy != 0) {
+                    if ((dragTotalDx != 0 || dragTotalDy != 0) && (scope.dragMode == "move" || scope.dragMode == "resize")) {
                         // We have dragged
                         scope.$emit("historyCheckpoint");
+                    }
+
+                    if (scope.dragMode == "selectionBox") {
+
+                        var off = element.find(".selection-box").offset();
+                        var eOff = element.offset();
+
+                        var minX = off.left - eOff.left;
+                        var maxX = minX + element.find(".selection-box").width();
+
+                        var minY = off.top - eOff.top;
+                        var maxY = minY + element.find(".selection-box").height();
+
+                        scope.selectedSymbols.length = 0;
+                        for (var sid in scope.symbols) {
+                            var s = scope.symbols[sid];
+                            if (s.x > minX && s.x < maxX && s.y > minY && s.y < maxY) {
+                                scope.selectedSymbols.push(sid);
+                            }
+                        }
                     }
 
                     scope.dragging = false;
@@ -408,7 +444,7 @@ define([], function() {
                     scope.$apply();
                 }
 
-                scope.$on("selection_grab", function(_, symbolId, pageX, pageY, mode, e) {
+                scope.$on("selection_grab", function(_, symbolId, mode, e) {
                     scope.dragMode = mode;
 
                     if (symbolId && mode == "move" && scope.selectedSymbols.indexOf(symbolId) == -1) {
@@ -425,7 +461,7 @@ define([], function() {
                         }
                     }
 
-                    grabSelection(pageX, pageY, e);
+                    grab(e.pageX, e.pageY, e);
 
                     scope.$digest();
 
@@ -434,12 +470,32 @@ define([], function() {
                 });
 
                 scope.$on("selection_calc", function(_, e) {
-                    
+
 
 
                     e.stopPropagation();
                     e.preventDefault();
                 });
+
+                scope.editorClick = function(e) {
+                    scope.$broadcast("closeMenus");
+                    scope.selectedSymbols.length = 0;
+
+                    scope.dragMode = "selectionBox";
+                    $(".selection-box").css({
+                        left: -10,
+                        top: -10,
+                        width: 0,
+                        height: 0,
+                    });
+
+
+                    grab(e.pageX, e.pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                };
+
 
 
 			},

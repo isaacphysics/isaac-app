@@ -9,11 +9,11 @@ define([], function() {
             link: function(scope, element, attrs) {
 
                 element.on("mousedown", "polygon.handle-move", function(e) {
-                    scope.$emit("selection_grab", null, e.pageX, e.pageY, "move", e);
+                    scope.$emit("selection_grab", null, "move", e);
                 });
 
                 element.on("mousedown", "polygon.handle-resize", function(e) {
-                    scope.$emit("selection_grab", null, e.pageX, e.pageY, "resize", e);
+                    scope.$emit("selection_grab", null, "resize", e);
                 });
 
                 element.on("mousedown", "polygon.handle-calc", function(e) {

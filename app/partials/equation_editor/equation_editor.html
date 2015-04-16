@@ -18,6 +18,8 @@
     
     <div ng-show="selectedSymbols.length" selection-handle></div>
 
+    <div ng-show="dragMode=='selectionBox'" class="selection-box"></div>
+
     <!-- BUTTONS -->
 
     <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0"></div>
