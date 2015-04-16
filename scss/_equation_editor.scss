@@ -22,6 +22,31 @@ $menu-handle-width: 160px;
         outline: none;
     }
 
+    [selection-handle] {
+        position: absolute;
+        pointer-events: none;
+
+        svg {
+            cursor: default;
+            overflow: visible;
+            // shape-rendering: crispEdges;
+
+            polygon {
+                fill: white;
+                cursor: pointer;
+                pointer-events: initial;
+                stroke:black;
+                stroke-width:0.05;
+
+                &:hover {
+                    fill: hsl(102, 55%, 95%);
+                }
+            }
+
+        }
+    }
+
+
     .top-menu {
 
         /* Giving this any z-index at all prevents .dragging-background from going behind it. */
@@ -254,31 +279,6 @@ $menu-handle-width: 160px;
             border-color: #00a;
         }
 
-        [symbol-handle] {
-            position: absolute;
-            left: 100%;
-            top: 100%;
-            pointer-events: none;
-
-            svg {
-                cursor: default;
-                overflow: visible;
-                // shape-rendering: crispEdges;
-
-                polygon {
-                    fill: white;
-                    cursor: pointer;
-                    pointer-events: initial;
-                    stroke:black;
-                    stroke-width:0.05;
-
-                    &:hover {
-                        fill: hsl(102, 55%, 95%);
-                    }
-                }
-
-            }
-        }
     }
 
     .hex-button {

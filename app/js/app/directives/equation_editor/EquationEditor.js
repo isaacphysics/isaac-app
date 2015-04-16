@@ -61,8 +61,13 @@ define([], function() {
                 scope.equationEditorElement = element;
 
                 scope.selectedSymbols = [];
+                scope.selectionHandleFlags = {
+                    showCalc: false,
+                    showResize: true,
+                    showMove: true,
+                };
 
-                scope.editorClick = function() {
+                scope.editorClick = function(e) {
                     scope.$broadcast("closeMenus");
                     scope.selectedSymbols.length = 0;
                 };
@@ -177,22 +182,6 @@ define([], function() {
                     label: "\\sqrt{x}",
                 }
 
-                scope.$on("symbol_click", function($e, sid, e) {
-                	if (!e.ctrlKey) {
-	                	scope.selectedSymbols.length = 0;
-	                	scope.selectedSymbols.push(sid);
-	                } else {
-	                	if (scope.selectedSymbols.indexOf(sid) > -1) {
-	                		scope.selectedSymbols.splice(scope.selectedSymbols.indexOf(sid),1);
-	                	} else {
-	                		scope.selectedSymbols.push(sid);
-	                	}
-	                }
-
-	                e.preventDefault();
-	                e.stopPropagation();
-                })
-
                 var parser_message = function(e) {
                     e.currentTarget.terminate();
                     console.debug("Parser message:", e);
@@ -209,11 +198,10 @@ define([], function() {
                     $(".result-preview").animate({width: w}, 200);
                 };
 
-                scope.$watch("symbols", function(newSymbols, oldSymbols) {
-                    $(".result-preview").animate({width: 0}, 200);
+                var parseTimeout = null;
 
-                    // Update asynchronously, as we need the DOM elements to exist for the new symbol.
-                    setTimeout(function() {
+                var requestParse = function() {
+                    var parse = function() {
                         var parserSymbols = [];
 
                         for (var s in scope.symbols) {
@@ -222,14 +210,28 @@ define([], function() {
                                 parserSymbols.push(ps);
                             }
                         }
-
                         
                         self.parser = new Worker("/js/lib/parser.js");
                         self.parser.onmessage = parser_message;
                         console.groupCollapsed("Parse");
                         self.parser.postMessage({symbols: parserSymbols});
 
-                    });
+                        updateSelectionRender();
+                    }
+
+                    if (parseTimeout) {
+                        clearTimeout(parseTimeout);
+                    }
+
+                    parseTimeout = setTimeout(parse, 500);
+                }
+
+                scope.$watch("symbols", function(newSymbols, oldSymbols) {
+                    $(".result-preview").animate({width: 0}, 200);
+
+                    requestParse();
+
+                    updateSelectionRender();
 
                 }, true);
 
@@ -272,6 +274,165 @@ define([], function() {
                         break;
                     }
                 });
+
+                var updateSelectionRender = function() {
+                    var selectionHandle = element.find("[selection-handle]");
+                    var canvasOffset = element.offset();
+
+                    var maxX = 0;
+                    var maxY = 0;
+
+                    for(var i in scope.selectedSymbols) {
+                        var sid = scope.selectedSymbols[i];
+                        var e = $("#" + sid + " .canvas-symbol");
+                        var offset = e.offset();
+
+                        var localPos = {
+                            left: offset.left - canvasOffset.left,
+                            top: offset.top - canvasOffset.top,
+                            width: e.width(),
+                            height: e.height(),
+                        }
+
+                        maxX = Math.max(maxX, localPos.left + localPos.width);
+                        maxY = Math.max(maxY, localPos.top + localPos.height);
+                    }
+
+                    selectionHandle.css({
+                        left: maxX,
+                        top: maxY,
+                    });
+
+                    scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.symbols[scope.selectedSymbols[0]].fromCalc;
+                    scope.selectionHandleFlags.showResize = scope.selectedSymbols.length == 1;
+
+                }
+
+                scope.$watchCollection("selectedSymbols", updateSelectionRender);
+
+                var mousemove = function(e) {
+                    drag(e.pageX, e.pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
+
+                scope.dragging = false;
+                var dragLastPageX, dragLastPageY;
+                var dragTotalDx = 0, dragTotalDy = 0;
+                var grabPageX, grabPageY;
+
+                var grabSelection = function(pageX, pageY, e) {
+
+                    dragLastPageX = pageX;
+                    dragLastPageY = pageY;
+
+                    grabPageX = pageX;
+                    grabPageY = pageY;
+
+                    dragTotalDx = 0;
+                    dragTotalDy = 0;
+
+                    $("body").on("mouseup", mouseup);
+                    $("body").on("mousemove", mousemove);
+                }
+
+                var drag = function drag(pageX, pageY, e) {
+                    scope.dragging = true;
+
+                    var dx = pageX - dragLastPageX;
+                    var dy = pageY - dragLastPageY;
+
+                    dragLastPageX = pageX;
+                    dragLastPageY = pageY;
+
+                    dragTotalDx += dx;
+                    dragTotalDy += dy;
+
+                    if (scope.dragMode == "move") {
+
+                        for (var i in scope.selectedSymbols) {
+                            var sid = scope.selectedSymbols[i];
+                            var s = scope.symbols[sid];
+                            s.x += dx;
+                            s.y += dy;
+                        }
+                    } else if (scope.dragMode == "resize") {
+
+                        for (var i in scope.selectedSymbols) {
+                            var sid = scope.selectedSymbols[i];
+                            var s = scope.symbols[sid];
+
+                            switch (s.type) {
+                                case "string":
+                                    s.fontSize += dy*2*0.67 // TODO: Work out why I need this factor of 0.67...
+                                    break;
+                                case "container":
+                                    s.width += dx;
+                                    s.height += dy;
+                                    s.x += dx/2;
+                                    s.y += dy/2;
+                                    break;
+                                default:
+                                    console.warn("Resizing unknown symbol type:", s.type);
+                                    break;
+                            }
+                        }
+                    }
+
+                    // Only call digest, not apply. This avoids a complete recursive update from $rootScope. Probably.
+                    scope.$digest();
+
+                }
+
+                var drop = function(pageX, pageY, e) {
+
+                    $("body").off("mouseup", mouseup);
+                    $("body").off("mousemove", mousemove);
+
+                    if (dragTotalDx != 0 || dragTotalDy != 0) {
+                        // We have dragged
+                        scope.$emit("historyCheckpoint");
+                    }
+
+                    scope.dragging = false;
+                    scope.$apply();
+                }
+
+                scope.$on("selection_grab", function(_, symbolId, pageX, pageY, mode, e) {
+                    scope.dragMode = mode;
+
+                    if (symbolId && mode == "move" && scope.selectedSymbols.indexOf(symbolId) == -1) {
+                        if (e.ctrlKey) {
+                            if (scope.selectedSymbols.indexOf(symbolId) > -1) {
+                                scope.selectedSymbols.splice(scope.selectedSymbols.indexOf(symbolId),1);
+                            } else {
+                                scope.selectedSymbols.push(symbolId);
+                            }
+
+                        } else {
+                            scope.selectedSymbols.length = 0;
+                            scope.selectedSymbols.push(symbolId);
+                        }
+                    }
+
+                    grabSelection(pageX, pageY, e);
+
+                    scope.$digest();
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                var mouseup = function(e) {
+
+                    drop(e.pageX, e.pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
 
 			},
 
