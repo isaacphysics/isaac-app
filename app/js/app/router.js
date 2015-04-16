@@ -400,7 +400,7 @@ define(["angular-ui-router"], function() {
                 },
                 views: {
                     "body": {
-                        templateUrl: "/partials/states/adminStats.html",
+                        templateUrl: "/partials/states/admin_stats.html",
                         controller: "AdminStatsPageController",
                     }
                 }
