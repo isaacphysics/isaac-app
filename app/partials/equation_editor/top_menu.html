@@ -1,5 +1,5 @@
 <div class="top-menu">
-    <div ng-transclude ng-click="clickContent($event)"></div>
-    <div ng-class="['handle', menuPos]" ng-click="clickHandle($event)">H</div>
+    <div ng-transclude ng-mousedown="clickContent($event)"></div>
+    <div ng-class="['handle', menuPos]" ng-mousedown="clickHandle($event)">H</div>
     <div class="top-menu-above"></div>
 </div>

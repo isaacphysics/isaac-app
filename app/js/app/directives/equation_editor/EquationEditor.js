@@ -317,6 +317,13 @@ define([], function() {
                     e.preventDefault();
                 }
 
+                var mouseup = function(e) {
+
+                    drop(e.pageX, e.pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
 
                 scope.dragging = false;
                 var dragLastPageX, dragLastPageY;
@@ -397,6 +404,7 @@ define([], function() {
                     }
 
                     scope.dragging = false;
+                    scope.dragMode = null;
                     scope.$apply();
                 }
 
@@ -425,13 +433,13 @@ define([], function() {
                     e.preventDefault();
                 });
 
-                var mouseup = function(e) {
+                scope.$on("selection_calc", function(_, e) {
+                    
 
-                    drop(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                });
 
 
 			},

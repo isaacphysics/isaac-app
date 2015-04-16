@@ -16,6 +16,10 @@ define([], function() {
                     scope.$emit("selection_grab", null, e.pageX, e.pageY, "resize", e);
                 });
 
+                element.on("mousedown", "polygon.handle-calc", function(e) {
+                    scope.$emit("selection_calc", e);
+                });
+
             },
         };
     }];

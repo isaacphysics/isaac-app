@@ -25,6 +25,7 @@ $menu-handle-width: 160px;
     [selection-handle] {
         position: absolute;
         pointer-events: none;
+        z-index: -1;
 
         svg {
             cursor: default;
@@ -41,8 +42,12 @@ $menu-handle-width: 160px;
                 &:hover {
                     fill: hsl(102, 55%, 95%);
                 }
+
             }
 
+            .handle-fade {
+                opacity: 0.5;
+            }
         }
     }
 
