@@ -492,8 +492,6 @@ define([], function() {
 
                     grab(e.pageX, e.pageY, e);
 
-                    e.stopPropagation();
-                    e.preventDefault();
                 };
 
 
