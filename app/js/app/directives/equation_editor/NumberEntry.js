@@ -7,7 +7,7 @@ define([], function() {
 			restrict: "A",
 			templateUrl: "/partials/equation_editor/number_entry.html",
 			link: function(scope, element, attrs) {
-                scope.name+="NUMBER ENTRY"
+                scope.name="NUMBER ENTRY"
 
                 scope.currentNumber = "";
                 scope.currentExponent = null;
@@ -38,12 +38,17 @@ define([], function() {
 
                 var updateSymbol = function() {
 
-                	scope.currentSymbol = {
-                		type: "string",
-                        fontSize: 48,
-                		label: scope.currentNumber,
-                        texLabel: true,
-                	}
+                    if (scope.editSymbol) {
+                        scope.currentSymbol = scope.editSymbol;
+                        scope.currentSymbol.label = scope.currentNumber;
+                    } else {
+                        scope.currentSymbol = {
+                            type: "string",
+                            fontSize: 48,
+                            label: scope.currentNumber,
+                            texLabel: true,
+                        }
+                    }
 
                 	var expNum = parseFloat(scope.currentExponent);
 
@@ -62,6 +67,10 @@ define([], function() {
 
                 	scope.currentSymbol.token = scope.currentSymbol.label;
                     scope.currentSymbol.fromCalc = true;
+                    scope.currentSymbol.editable = {
+                        currentNumber: scope.currentNumber,
+                        currentExponent: scope.currentExponent,
+                    };
                 };
 
                 scope.$watch("currentNumber", updateSymbol);
@@ -79,6 +88,21 @@ define([], function() {
                 		scope.$emit("spawnSymbol", symbolSpec, pageX, pageY);
                 	}
                 });
+
+                scope.$on("editNumber", function(_,s) {
+                    scope.editSymbol = s;
+                    scope.currentNumber = s.editable.currentNumber;
+                    scope.currentExponent = s.editable.currentExponent;
+                })
+
+                scope.dismiss = function() {
+                    scope.$emit("triggerCloseMenus");
+                }
+
+                scope.$on("closeMenus", function() {
+                    delete scope.editSymbol;
+                    scope.clearInput();
+                })
 			},
 		};
 	}];

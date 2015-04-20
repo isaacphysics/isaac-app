@@ -55,6 +55,7 @@ define([], function() {
                         el.addClass("active-menu");
                         var activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
+                        scope.$emit("menuOpened");
                     }
                 }
 
@@ -89,6 +90,12 @@ define([], function() {
                     e.stopPropagation();
                 });
 
+                if (attrs.topMenu == "123") {
+                    // Only do this for number entry menu.
+                    scope.$on("editNumber", function(_,s) {
+                        toggleThisMenu();
+                    })
+                }
 			},
 		};
 	}];

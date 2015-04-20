@@ -21,10 +21,13 @@
 		<div class="input-clear" ng-click="clearInput()">&times;</div>
 	</div>
 	<div class="small-3 columns">
-		<div ng-show="currentSymbol != null" class="menu-list-container number-hex">
+		<div ng-show="!editSymbol && currentSymbol != null" class="menu-list-container number-hex">
 		    <ul>
 		        <li menu-symbol symbol="currentSymbol"></li>
 		    </ul>
+		</div>
+		<div ng-show="editSymbol && currentSymbol != null">
+			<a href="javascript:void(0)" ng-click="dismiss()" class="menu-dismiss hex-button" style=""></a>
 		</div>
 	</div>
 </div>

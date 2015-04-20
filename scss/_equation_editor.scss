@@ -265,6 +265,13 @@ $menu-handle-width: 160px;
             .number-hex {
                 margin-top: 25px;
             }
+
+            .menu-dismiss {
+                bottom: initial;
+                top:20px;
+                left: 40px;
+                background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
+            }
         }
     }
 

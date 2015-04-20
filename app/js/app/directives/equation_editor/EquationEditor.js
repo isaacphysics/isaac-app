@@ -115,6 +115,10 @@ define([], function() {
 						y: 233,
 						fontSize: 48,
 						token: "3",
+                        editable: {
+                            currentNumber: "3",
+                            currentExponent: null,
+                        },
 						type: "string",
                         fromCalc: true,
 					},				
@@ -463,6 +467,8 @@ define([], function() {
 
                     grab(e.pageX, e.pageY, e);
 
+                    scope.$broadcast("closeMenus");
+
                     scope.$digest();
 
                     e.stopPropagation();
@@ -471,7 +477,16 @@ define([], function() {
 
                 scope.$on("selection_calc", function(_, e) {
 
+                    // If we got here, there should be precisely one symbol selected.
 
+                    if (scope.selectedSymbols.length != 1) {
+                        console.error(new Error("Can only edit single numbers"));
+                        debugger;
+                    }
+
+                    scope.$broadcast("editNumber", scope.symbols[scope.selectedSymbols[0]]);
+
+                    scope.$digest();
 
                     e.stopPropagation();
                     e.preventDefault();
@@ -494,6 +509,9 @@ define([], function() {
 
                 };
 
+                scope.$on("menuOpened", function() {
+                    scope.selectedSymbols.length = 0;
+                })
 
 
 			},
