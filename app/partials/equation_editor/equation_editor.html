@@ -25,6 +25,8 @@
     <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="future.length > 0"></div>
 
+    <div ng-show="selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
+
     <div class="result-preview"><span></span></div>
     <div class="hex-button submit"></div>
 </div>

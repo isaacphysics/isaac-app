@@ -326,6 +326,22 @@ $menu-handle-width: 160px;
         }
     }
 
+    .trash-button {
+        width: 70px;
+        height: 160px;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 80px);
+        background: url(/assets/equation_editor/trash-active.png) no-repeat;
+        opacity: 0.5;
+        cursor: pointer;
+        z-index: -20;
+
+        &:hover, &.active {
+            opacity: 1;
+        }
+    }
+
     .result-preview {
         position: absolute;
         right: calc(18px + 90px / 2);

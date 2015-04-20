@@ -265,10 +265,7 @@ define([], function() {
 
                     switch(e.which) {
                         case 46: // DELETE
-                            for (var i in scope.selectedSymbols) {
-                                delete scope.symbols[scope.selectedSymbols[i]];
-                            }
-                            scope.selectedSymbols.length = 0;
+                            scope.trash();
                             scope.$apply();
                         break;
                     }
@@ -360,6 +357,12 @@ define([], function() {
                             s.x += dx;
                             s.y += dy;
                         }
+
+                        var tOff = element.find(".trash-button").offset();
+                        var tWidth = element.find(".trash-button").width();
+                        var tHeight = element.find(".trash-button").height();
+                        scope.trashActive = (pageX > tOff.left && pageX < tOff.left + tWidth && pageY > tOff.top && pageY < tOff.top + tHeight);
+
                     } else if (scope.dragMode == "resize") {
 
                         for (var i in scope.selectedSymbols) {
@@ -418,7 +421,7 @@ define([], function() {
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
 
-                    if ((dragTotalDx != 0 || dragTotalDy != 0) && (scope.dragMode == "move" || scope.dragMode == "resize")) {
+                    if ((dragTotalDx != 0 || dragTotalDy != 0) && (scope.dragMode == "move" || scope.dragMode == "resize") && !scope.trashActive) {
                         // We have dragged
                         scope.$emit("historyCheckpoint");
                     }
@@ -443,6 +446,11 @@ define([], function() {
                         }
                     }
 
+                    if (scope.trashActive) {
+                        scope.trash();
+                    }
+
+                    scope.trashActive = false;
                     scope.dragging = false;
                     scope.dragMode = null;
                     scope.$apply();
@@ -511,7 +519,18 @@ define([], function() {
 
                 scope.$on("menuOpened", function() {
                     scope.selectedSymbols.length = 0;
-                })
+                });
+
+                scope.trash = function() {
+                    if (scope.selectedSymbols.length > 0) {
+                        for (var i in scope.selectedSymbols){
+                            var sid = scope.selectedSymbols[i];
+                            delete scope.symbols[sid];
+                        }
+                        scope.selectedSymbols.length = 0;
+                        scope.$emit("historyCheckpoint");
+                    }
+                }
 
 
 			},
