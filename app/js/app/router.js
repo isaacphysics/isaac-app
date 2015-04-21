@@ -400,11 +400,24 @@ define(["angular-ui-router"], function() {
                 },
                 views: {
                     "body": {
-                        templateUrl: "/partials/states/adminStats.html",
+                        templateUrl: "/partials/states/admin_stats.html",
                         controller: "AdminStatsPageController",
                     }
                 }
             })
+
+            .state('adminEvents', {
+                url: "/admin/events",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_events.html",
+                        controller: "AdminEventBookingController",
+                    }
+                }
+            })            
 
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",
