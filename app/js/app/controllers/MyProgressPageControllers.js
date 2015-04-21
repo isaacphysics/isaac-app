@@ -16,6 +16,7 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+		$scope.dummyData = {"ANSWER_QUESTION":{"2014-09-04":2,"2015-03-21":2,"2014-08-21":3,"2015-02-20":2,"2014-10-02":4,"2014-09-11":1,"2014-09-29":15,"2015-03-11":1,"2015-03-17":12,"2014-08-28":26,"2014-09-24":1,"2014-08-26":4,"2015-03-16":2,"2014-12-03":1,"2014-08-29":6,"2015-03-19":12,"2014-10-01":4,"2014-09-03":5,"2014-08-20":12,"2014-08-23":5,"2014-11-10":1,"2014-09-02":19,"2014-08-27":1,"2015-03-20":7,"2014-08-22":4,"2015-02-19":2,"2014-09-10":1,"2014-10-06":1}};
 
 		$timeout(function() {
 			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.

@@ -413,6 +413,13 @@
         font-size: 12px;
     }
 }
+.d3-line {
+    .domain {
+        stroke: #c4c5c7;
+        stroke-width: 1;
+        fill: none;
+    }
+}
 /*
     All media quires 
 */

@@ -53,6 +53,7 @@ define([
     "app/directives/PodCarousel",
     "app/directives/GlobalNavigation",
     "app/directives/d3/Donut",
+    "app/directives/d3/Line",
     "app/directives/ProgressBar",
     "app/directives/Toast",
     "app/directives/LoadingOverlay",
@@ -100,6 +101,8 @@ define([
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
+
+	.directive('d3Line', require("app/directives/d3/Line"))
 	
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
