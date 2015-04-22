@@ -329,6 +329,11 @@
 		margin-bottom: 25px;
 	}
 }
+@media #{$medium-only} { 
+	.event-map {
+		margin-top: 0;
+	}
+}
 @media #{$medium-up} { 
 	.events-filters {
 		float: right;
