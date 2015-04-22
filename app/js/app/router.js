@@ -107,6 +107,7 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
+            .state('equality', staticPageState("/equality", "equation_editor", null))
 
 	        .state('contact', {
 		        url: "/contact",
