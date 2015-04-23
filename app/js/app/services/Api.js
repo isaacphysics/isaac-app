@@ -43,6 +43,11 @@ define([], function() {
 			filter: {
 				method: "GET",
 				url: server + "/api/gameboards",
+			},
+			wildcards: {
+				method: "GET",
+				url: server + "/api/gameboards/wildcards",
+				isArray: true 
 			}
 		});
 
@@ -206,7 +211,25 @@ define([], function() {
 				url: server + "/api/assignments/assign/:assignmentId/progress",
 				isArray: true,
 			}			
-		});				
+		});			
+
+        this.events = $resource(server + "/api/events/:id");
+
+		this.eventBookings = $resource(server + "/api/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
+			'getBookings' : {
+				url: server + "/api/events/:eventId/bookings",
+				method: 'GET', 
+				isArray: true
+			},
+			'makeBooking' : {
+				method: 'POST', 
+				url: server + "/api/events/:eventId/bookings/:userId"			
+			},
+			'deleteBooking' : {
+				method: 'DELETE', 
+				url: server + "/api/events/:eventId/bookings/:userId"			
+			}
+		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {
@@ -225,6 +248,8 @@ define([], function() {
 		var gameBoardsList = $resource(server + "/api/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var deleteBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(server + "/api/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
+		var eventsList = $resource(server + "/api/events");
+
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -252,6 +277,10 @@ define([], function() {
 
 		this.getConceptList = function(){
 			return conceptList.query();
+		}
+
+		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags) {
+			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags});
 		}
 
 		this.getImageUrl = function(path) {

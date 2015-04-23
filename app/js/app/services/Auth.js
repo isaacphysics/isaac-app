@@ -71,7 +71,7 @@ define([], function() {
 		}
 
 		this.logout = function() {
-			var p = api.authentication.logout().$promise;
+			var p = api.authentication.logout({}).$promise;
 
 			p.then(function() {
 				$rootScope.user = null;

@@ -1,0 +1,187 @@
+<div class="small-16 columns">
+    <h1>Isaac Statistics</h1>
+</div>
+
+<div class="row">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <h2>Statistics Menu</h4>
+            <ul class="no-bullet horizontal-list">
+                <li><a href="javascript:void(0)" ng-click="getSchoolListData()">Show School Data</a></li>
+                <li><a href="javascript:void(0)" ng-click="getGameboardListData()">Show Gameboard Data</a></li>
+            </ul>            
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Statistics at a glance</h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="generalStatsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!generalStatsLoading">
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Users (Total Registered: {{statistics.totalUsers}})</strong>
+                            <ul>
+                                <li>
+                                    <strong>Gender</strong>
+                                    <ul>
+                                        <li>Male: {{statistics.maleUsers}}</li>
+                                        <li>Female: {{statistics.femaleUsers}}</li>
+                                        <li>Unknown: {{statistics.unknownGenderUsers}}</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Role</strong>
+                                    <ul>
+                                        <li>Student (unknown role): {{statistics.studentUsers}}</li>
+                                        <li>Teacher: {{statistics.teacherUsers}}</li>
+                                        <li>Staff: {{statistics.staffUsers}}</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <strong>Profile Completion</strong>
+                                    <ul>
+                                        <li>School provided: {{statistics.hasSchool}} ({{statistics.hasSchoolOther}} - from 'school other')</li>
+                                        <li>No School Information: {{statistics.hasNoSchool}}</li>
+                                    </ul>
+                                </li> 
+                                <li>
+                                    <strong>Last Seen Data (non-staff)</strong>
+                                    <ul>
+                                        <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
+                                        <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastThirtyDays}}, Students: {{statistics.activeStudentsLastThirtyDays}})</li>
+                                    </ul>
+                                </li>                                                            
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="medium-8 small-16 columns">
+                    <ul>
+                        <li>
+                            <strong>Events</strong>
+                            <ul>
+                                <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
+                                <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}}): <ul>
+                                    <li>Last 7 days: Teachers: {{statistics.questionsAnsweredLastWeekTeachers}}, Students: {{statistics.questionsAnsweredLastWeekStudents}}</li>
+                                    <li>Last 30 days: Teachers: {{statistics.questionsAnsweredLastThirtyDaysTeachers}}, Students: {{statistics.questionsAnsweredLastThirtyDaysStudents}}</li>                    
+                                </ul></li>
+                            </ul>
+                        </li> 
+                    </ul>
+                </div>                
+            </div>
+        </div>        
+    </div>
+</div>
+<div class="row" ng-if="visibleStatsPanel == 'gameboardList'">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Gameboards By Popularity <span ng-if="gameboardListData">({{gameboardListData.sharedBoards}} shared)</span></h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="statsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!statsLoading">
+                <div class="small-16 columns">
+                <table>
+                	<tr>
+                		<th>Gameboard Id</th>
+                		<th>Gameboard Title</th>
+                		<th><a href="javascript:void(0);" ng-click="gameboardListSortPredicate = 'connections'; reverse=!reverse"># of users connected</a></th>
+                        <th><a href="javascript:void(0);" ng-click="gameboardListSortPredicate = 'gameboard.ownerUserInformation.familyName'; reverse=!reverse">Creator (if available)</a></th>
+                	</tr>
+                	<tr ng-repeat="item in gameboardListData.boardList | orderBy:gameboardListSortPredicate:reverse">
+                		<td><a href="javascript:void(0)" ui-sref="board({id: item.gameboard.id})">{{item.gameboard.id}}</a></td>
+                		<td>{{item.gameboard.title || generateGameBoardTitle(item.gameboard)}}</td>
+                		<td>{{item.connections}}</td>
+                        <td>{{item.gameboard.ownerUserInformation.familyName + ", " + item.gameboard.ownerUserInformation.givenName}}</td>
+                	</tr>
+                </table>
+                </div>      
+            </div>
+        </div>        
+    </div>
+</div>
+
+<div class="row" ng-if="visibleStatsPanel == 'schoolList'">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Schools By User Links <span ng-if="schoolListData">({{schoolListData.length}} schools)</span></h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="statsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!statsLoading">
+                <div class="small-16 columns">
+                <table>
+                	<tr>
+                		<th>School URN</th>
+                		<th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'school.name'; reverse=!reverse">School Name</a></th>
+                		<th>School PostCode</th>
+                		<th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'connections'; reverse=!reverse"># of users connected</a></th>
+                        <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'numberActiveLastThirtyDays'; reverse=!reverse"># of users active (last 30 days)</a></th>
+                	</tr>
+                	<tr ng-repeat="item in schoolListData | orderBy:schoolListSortPredicate:reverse">
+                		<td><a href="javascript:void(0)" ng-click="getSchoolUserListData(item.school.urn, item.school.name)">{{item.school.urn}}</a></td>
+                		<td>{{item.school.name}}</td>
+                		<td>{{item.school.postcode}}</td>
+                		<td>{{item.connections}}</td>
+                        <td>{{item.numberActiveLastThirtyDays}}</td>
+                	</tr>
+                </table>
+                </div>      
+            </div>
+        </div>        
+    </div>
+</div>
+
+<div class="row" ng-if="visibleStatsPanel == 'schoolUserList'">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Users at {{schoolSelected}}</h2>
+            </div>
+            <div class="small-16 columns">
+                <div class="text-center" ng-if="statsLoading">
+                    <img src="/assets/loading.gif">
+                </div>    
+            </div>
+            <div ng-if="!statsLoading">
+                <div class="small-16 columns">
+                <table>
+                	<tr>
+                		<th>Name</th>
+                		<th>Role</th>
+                		<th>Gender</th>
+                		<th>Registration Date</th>
+                        <th>Last Seen Date</th>
+                	</tr>
+                	<tr ng-repeat="item in schoolUserListData">
+                		<td>{{item.familyName}}, {{item.givenName}}</td>
+                		<td>{{item.role || 'NOT_SET (Student)'}}</td>
+                		<td>{{item.gender}}</td>
+                		<td>{{item.registrationDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.lastSeen | date:'dd/MM/yyyy'}}</td>
+                	</tr>
+                </table>
+                </div>      
+            </div>
+        </div>        
+    </div>
+</div>

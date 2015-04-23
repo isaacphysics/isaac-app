@@ -10,78 +10,9 @@
                 <li><a ui-sref="contentErrors">Content Errors Page</a></li>
                 <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
                 <li><a href="/api/content/units" target="_blank">List of units</a></li>
-                <li><a ui-sref='adminStats'>More stats</a></li>
+                <li><a ui-sref='adminStats'>Statistics</a></li>
             </ul>            
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="small-16 columns">
-        <div class="panel white clearfix">
-            <div class="small-16 columns">
-                <h2>Statistics at a glance</h2>
-            </div>
-            <div class="small-16 columns">
-                <div class="text-center" ng-if="statsLoading">
-                    <img src="/assets/loading.gif">
-                </div>    
-            </div>
-            <div ng-if="!statsLoading">
-                <div class="medium-8 small-16 columns">
-                    <ul>
-                        <li>
-                            <strong>Users (Total Registered: {{statistics.totalUsers}})</strong>
-                            <ul>
-                                <li>
-                                    <strong>Gender</strong>
-                                    <ul>
-                                        <li>Male: {{statistics.maleUsers}}</li>
-                                        <li>Female: {{statistics.femaleUsers}}</li>
-                                        <li>Unknown: {{statistics.unknownGenderUsers}}</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <strong>Role</strong>
-                                    <ul>
-                                        <li>Student (unknown role): {{statistics.studentUsers}}</li>
-                                        <li>Teacher: {{statistics.teacherUsers}}</li>
-                                        <li>Staff: {{statistics.staffUsers}}</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <strong>Profile Completion</strong>
-                                    <ul>
-                                        <li>School provided: {{statistics.hasSchool}} ({{statistics.hasSchoolOther}} - from 'school other')</li>
-                                        <li>No School Information: {{statistics.hasNoSchool}}</li>
-                                    </ul>
-                                </li> 
-                                <li>
-                                    <strong>Last Seen Data (non-staff)</strong>
-                                    <ul>
-                                        <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
-                                        <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastThirtyDays}}, Students: {{statistics.activeStudentsLastThirtyDays}})</li>
-                                    </ul>
-                                </li>                                                            
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="medium-8 small-16 columns">
-                    <ul>
-                        <li>
-                            <strong>Events</strong>
-                            <ul>
-                                <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
-                                <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}}): <ul>
-                                    <li>Last 7 days: Teachers: {{statistics.questionsAnsweredLastWeekTeachers}}, Students: {{statistics.questionsAnsweredLastWeekStudents}}</li>
-                                    <li>Last 30 days: Teachers: {{statistics.questionsAnsweredLastThirtyDaysTeachers}}, Students: {{statistics.questionsAnsweredLastThirtyDaysStudents}}</li>                    
-                                </ul></li>
-                            </ul>
-                        </li> 
-                    </ul>
-                </div>                
-            </div>
-        </div>        
     </div>
 </div>
 
@@ -170,25 +101,26 @@
                     <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
                         <div class="small-16 columns">
                             <h4>User search results ({{userSearch.results.length}})</h4>
-                            <div class="ru-concept-results">
-                                <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
-                                    <div class='small-16 columns'>
-                                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
-                                            <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
-                                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
-                                                <h4>
-                                                    <span class="physics">{{result.familyName}}, {{result.givenName}}, {{result.email}}</span> 
-                                                    <br> Role: {{result.role || "NOT_SET"}} 
-                                                    <br> School Set: {{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }} 
-                                                    <br> Member Since: {{result.registrationDate | date:'dd/MM/yyyy'}} Last Seen: {{result.lastSeen | date:'dd/MM/yyyy'}}
-                                                </h4>
-                                            </div>
-                                            <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <table>
+                                <tr>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastName'; reverse=!reverse">Name</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
+                                    <th>School Set</th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
+                                    <th>Actions</th>
+                                </tr>
+                                <tr ng-repeat="result in userSearch.results | orderBy:userSearchSortPredicate:reverse">
+                                    <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
+                                    <td>{{result.email}}</td>                                    
+                                    <td>{{result.role || "NOT_SET"}}</td>
+                                    <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
+                                    <td><a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id)">Delete</a></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </section>

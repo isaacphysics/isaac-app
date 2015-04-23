@@ -17,7 +17,7 @@
     display: inline-block;
     &:after
     {
-        content: url('/assets/white-arrow.png');
+        content: url('../assets/white-arrow.png');
         display: inline-block;
         position: absolute;
         left: -30px;
@@ -438,7 +438,7 @@
 
 .ru-answer-orbit .ru-answer-orbit-prev a, .ru-answer-orbit .ru-answer-orbit-next a
 {
-    background-image: url(/assets/icon-arrow-white.png);
+    background-image: url(../assets/icon-arrow-white.png);
     background-repeat: no-repeat;
 }
 
@@ -455,12 +455,12 @@
 
 .ru-answer-orbit .ru-answer-orbit-prev a.physics:hover, .ru-answer-orbit .ru-answer-orbit-next a.physics:hover
 {
-    background-image: url(/assets/icon-arrow-physics.png);
+    background-image: url(../assets/icon-arrow-physics.png);
 }
 
 .ru-answer-orbit .ru-answer-orbit-prev a.maths:hover, .ru-answer-orbit .ru-answer-orbit-next a.maths:hover
 {
-    background-image: url(/assets/icon-arrow-maths.png);
+    background-image: url(../assets/icon-arrow-maths.png);
 }
 
 
@@ -534,13 +534,13 @@
 
 .ru-expand.physics div
 {
-    background-image: url(/assets/icon-expand-physics.png);
+    background-image: url(../assets/icon-expand-physics.png);
 
 }
 
 .ru-expand.maths div
 {
-    background-image: url(/assets/icon-expand-maths.png);
+    background-image: url(../assets/icon-expand-maths.png);
 }
 
 @media #{$small-only}
@@ -595,14 +595,14 @@
         height: 14px;
         width: 13px;
         margin: 4px;
-        background-image: url('/assets/bullet-unselected.png');
+        background-image: url('../assets/bullet-unselected.png');
         background-repeat: no-repeat;
         display: inline-block;
         cursor: pointer;
     }
     div.active
     {
-        background-image: url('/assets/bullet-selected.png');
+        background-image: url('../assets/bullet-selected.png');
     }
 }
 

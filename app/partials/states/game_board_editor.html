@@ -46,7 +46,7 @@
 	                            <option value="6">6 (Post A-Level)</option>
 	                        </select>
 						</div>
-					</div>				
+					</div>									
 				</form>	
 			</div>
 			<div class="row">
@@ -57,9 +57,11 @@
 		                	<img src="/assets/loading.gif">
 		                </div>
 
+		                <p class="small-text-center" ng-if="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided.</p>
+
 		                <ul ng-if="!loading" class="no-bullet results-list">
 		                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - Tags: <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
-		                </ul>					
+		                </ul>
 					</div>
 				</div>
 			</div>
@@ -76,39 +78,50 @@
 			</div>
 		</div>
 	</div>
-	<section ng-if="currentGameBoard.questions.length > 0">
-	    <div class="row">
-            <div class="small-16 columns">
-            	<h2>Game Board Preview and Options</h2>
-            </div>
-	    </div>
-	    <div class="row">
-            <div class="large-8 medium-8 small-16 columns text-center">
-                <span>
-                    <label><strong>Game board id for URL (must be unique and not contain spaces)</strong></label>
-                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
-                </span>
-            </div>
-            <div class="large-8 medium-8 small-16 columns text-center">
-                <span>
-                    <label><strong>Game board title</strong></label>
-                    <input type="text" ng-model="currentGameBoard.title">
-                </span>
-            </div>
-	    </div>
+	<section ng-show="currentGameBoard.questions.length > 0">
+	    <form data-abide ng-submit="saveGameBoard()">
+		    <div class="row">
+	            <div class="small-16 columns">
+	            	<h2>Game Board Preview and Options</h2>
+	            </div>
+		    </div>
+		    <div class="row">
+	            <div class="large-8 medium-8 small-16 columns text-center">
+	                <span>
+	                    <label><strong>Game board id for URL (must be unique and not contain spaces)</strong></label>
+	                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
+	                </span>
+	            </div>
+	            <div class="large-8 medium-8 small-16 columns text-center">
+	                <span>
+	                    <label><strong>Game board title</strong></label>
+	                    <input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required>
+                        <small class="error">The title is required.</small>
+	                </span>
+	            </div>
+		    </div>
+			<div class="row" ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
+				<div class="small-16 columns">
+					<label><strong>Wildcard</strong></label>
+	                <select ng-model="userSelectedBoardWildCardId">
+	                    <option value="RANDOM">Random Wildcard</option>
+	                    <option ng-repeat="wildCard in wildCardList" ng-value="wildCard.id">{{wildCard.title}}</option>
+	                </select>
+				</div>
+			</div>	    
+		    <div class="row">
+		    	<div class="small-16 columns">
+		    		<h2 class="text-center">{{currentGameBoard.title}}</h2>
+		    		<div class="clearfix"></div>
 
-	    <div class="row">
-	    	<div class="small-16 columns">
-	    		<h2 class="text-center">{{currentGameBoard.title}}</h2>
-	    		<div class="clearfix"></div>
-
-				<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
-	        </div>
-	    </div>
-	    <div class="row">
-			<div class='small-8 small-centered columns'> 
-	        	<button ng-if="currentGameBoard.questions.length > 0" ng-click="saveGameBoard()" class="expand">Submit &amp; Save Board</button>
-	        </div>
-	    </div>
+					<div id="game-board-panel" class="small-16 columns" hexagons="currentGameBoard.questions" wild-card="currentGameBoard.wildCard" wild-card-position="1" loading="gameBoardLoading" board-id="1"></div>
+		        </div>
+		    </div>
+		    <div class="row">
+				<div class='small-8 small-centered columns'> 
+		        	<button ng-if="currentGameBoard.questions.length > 0" type="submit" class="expand">Submit &amp; Save Board</button>
+		        </div>
+		    </div>
+	    </form>
 	</section>
 </div>

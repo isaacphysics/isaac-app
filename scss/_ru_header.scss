@@ -32,7 +32,7 @@ $ru_nav_size : 7em;
 }
 
 .ru-desktop-nav-item-inner {
-    background-image: url(/assets/ru.png);
+    background-image: url(../assets/ru.png);
     background-position: -127px -5px;
     height: 188px;
 	width: 7em;
@@ -102,7 +102,7 @@ $ru_nav_size : 7em;
     z-index: 200;
     width: 63px;
     height: 27px;
-    background: url(/assets/ru.png) -338px -342px no-repeat;
+    background: url(../assets/ru.png) -338px -342px no-repeat;
 }
 
 .top-pods{
@@ -178,7 +178,7 @@ $ru_nav_size : 7em;
     {
         height: 42px;
         width: 28px;
-        background-image: url('/assets/ru-mobile-#{$name}.png');
+        background-image: url('../assets/ru-mobile-#{$name}.png');
         background-repeat: none;
         display: inline-block;
         @if $name == down { cursor: pointer;}
@@ -220,14 +220,14 @@ $ru_nav_size : 7em;
 .ru-mobile-nav-item-inner {
 	width: 72px;
 	height: 129px;
-	background-image: url('/assets/menu-mobile-inactive.png');
+	background-image: url('../assets/menu-mobile-inactive.png');
 	position: relative;
     background-repeat: no-repeat;
 }
 
 .ru-mobile-nav-item-inner.active
 {
-    background-image: url('/assets/menu-mobile-active.png'); 
+    background-image: url('../assets/menu-mobile-active.png'); 
     color: white;
     background-repeat: no-repeat;
     z-index: 2;

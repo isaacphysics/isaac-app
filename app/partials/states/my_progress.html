@@ -2,13 +2,13 @@
     <div class="medium-13 columns">
         <h1 ng-if="viewingOwnData">My Progress</h1>
         <h1 ng-if="!viewingOwnData">Progress for user:  {{progress.userDetails.givenName + " " + progress.userDetails.familyName}}</h1>
-        <p class="hide-for-small-only">Keep track of your progress.</p>
+        <p ng-if="viewingOwnData" class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
         <span data-ot="View your progress on Isaac Physics." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
-<div class="progress-wrap">
+<div ng-show="progress.totalQuestionsAttempted != 0" class="progress-wrap">
    <div class="row">
       <div class="large-16 columns">
          <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
@@ -54,6 +54,14 @@
           Line Graph
         -->
         <div d3-line data="dummyData"></div>
+      </div>
+   </div>
+</div>
+
+<div ng-show="progress.totalQuestionsAttempted == 0" class="progress-wrap" >
+   <div class="row">
+      <div class="small-16 text-center columns">
+         <p>You have not answered any questions yet. There are no statistics to display.</p>
       </div>
    </div>
 </div>

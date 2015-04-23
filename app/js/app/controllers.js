@@ -42,6 +42,7 @@ define([
 	"app/controllers/MyProgressPageControllers",
 	"app/controllers/AssignmentsController",	
 	"app/controllers/AssignmentProgressPageControllers",
+	"app/controllers/EventsControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -84,6 +85,8 @@ define([
 
 	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
 
+	var eventsControllers = require("app/controllers/EventsControllers");
+
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
@@ -123,6 +126,7 @@ define([
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
 	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
+	.controller('AdminEventBookingController', adminPageControllers.AdminEventBookingController)
 
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
@@ -135,4 +139,7 @@ define([
 	.controller('SetAssignmentsPageController', assignmentsController.SetAssignmentsPageController)
 
 	.controller('MyAssignmentsPageController', assignmentsController.MyAssignmentsPageController)
+
+	.controller('EventsPageController', eventsControllers.ListController)
+	.controller('EventDetailController', eventsControllers.DetailController)
 });

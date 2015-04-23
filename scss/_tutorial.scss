@@ -11,7 +11,7 @@
 		float: left;
 		width: 70px;
 		height: 59px;
-		background: url(/assets/tutorial-buttons.png) 0 0 no-repeat;
+		background: url(../assets/tutorial-buttons.png) 0 0 no-repeat;
 	}
 	.custom-controls-wrap {
 		width: 150px;
@@ -43,7 +43,7 @@
 			width: 15px;
 			height: 15px;
 			margin: 0 10px;
-			background: url(/assets/Circle.svg) center center no-repeat;
+			background: url(../assets/Circle.svg) center center no-repeat;
 			background-size: contain;
 		}
 
@@ -57,7 +57,7 @@
 	position: relative;
 	width: 41px;
 	height: 84px;
-	background: url(/assets/tutorial-arrow-up.png) 0 0 no-repeat;
+	background: url(../assets/tutorial-arrow-up.png) 0 0 no-repeat;
 	border: none;
 	margin-bottom: -20px;
 	top: -15px;
@@ -69,7 +69,7 @@
 	position: relative;
 	width: 41px;
 	height: 84px;
-	background: url(/assets/tutorial-arrow-down.png) 0 0 no-repeat;
+	background: url(../assets/tutorial-arrow-down.png) 0 0 no-repeat;
 	border: none;
 	bottom: -15px;
 }
@@ -78,7 +78,7 @@
 	position: relative;
 	width: 84px;
 	height: 41px;
-	background: url(/assets/tutorial-arrow-right.png) 0 0 no-repeat;
+	background: url(../assets/tutorial-arrow-right.png) 0 0 no-repeat;
 	border: none;
 	margin-bottom: -20px;
 	left: 0;
@@ -88,13 +88,13 @@
 	position: relative;
 	width: 84px;
 	height: 41px;
-	background: url(/assets/tutorial-arrow-left.png) 0 0 no-repeat;
+	background: url(../assets/tutorial-arrow-left.png) 0 0 no-repeat;
 	border: none;
 	margin-bottom: -20px;
 	left: 0;
 }
 .joyride-modal-bg {
-	background: url(/assets/tutorial-bg.png);
+	background: url(../assets/tutorial-bg.png);
 	z-index: 1002;
 }
 .joyride-tip-guide {
@@ -126,15 +126,15 @@
 	-webkit-transform: translate3d(0,0,0);
 }
 .joyride-expose-wrapper.circle {
-	background: url(/assets/Circle.svg) center center no-repeat;
+	background: url(../assets/Circle.svg) center center no-repeat;
 	background-size: contain;
 }
 .joyride-expose-wrapper.square {
-	background: url(/assets/square.svg) center center no-repeat;
+	background: url(../assets/square.svg) center center no-repeat;
 	background-size: contain;
 }
 .joyride-expose-wrapper.rectangle {
-	background: url(/assets/rectangle.svg) left center no-repeat;
+	background: url(../assets/rectangle.svg) left center no-repeat;
 	background-size: contain;
 }
 .joyride-nub.right + .joyride-content-wrapper {

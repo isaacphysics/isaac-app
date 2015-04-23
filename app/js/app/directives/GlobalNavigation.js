@@ -35,6 +35,7 @@ define([], function() {
                         })                                                                
                     } else if (scope.user._id && loginTooltips.length != 0) {
                         angular.forEach(loginTooltips, function(value, key){
+                            value.hide();
                             value.deactivate();
                         })
                         loginTooltips = [];
@@ -88,7 +89,7 @@ define([], function() {
                 }
                 scope.$on("$stateChangeStart", scope.menuClose);
 
-                scope.$watch('user._id', function(){
+                scope.$watch('user._id + isVisible', function(){
                     applyDisabledToolTips();                    
                 })
 

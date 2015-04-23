@@ -72,7 +72,7 @@
 {
     height: 180px;
     background-position: center top;
-    background-image: url(/assets/get-started.png);        
+    background-image: url(../assets/get-started.png);        
     background-repeat: no-repeat; 
     cursor: pointer;
 }
@@ -81,7 +81,7 @@
 {
     height: 180px;
     background-position: center top;
-    background-image: url(/assets/try-questions.png);       
+    background-image: url(../assets/try-questions.png);       
     background-repeat: no-repeat; 
     cursor: pointer;
 }
@@ -164,17 +164,17 @@
 
 .ru_pod_concepts
 {
-    background-image:  url('/assets/icon-books.png');
+    background-image:  url('../assets/icon-books.png');
 }
 
 .ru_pod_questions
 {
-    background-image:  url('/assets/icon-search-concepts.png');
+    background-image:  url('../assets/icon-search-concepts.png');
 }
 
 .ru_pod_forum .ru_pod_title
 {
-    background-image:  url('/assets/icon-help-forum.png');
+    background-image:  url('../assets/icon-help-forum.png');
 }
 
 .pod-carousel {

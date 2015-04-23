@@ -51,18 +51,24 @@ define([
     "app/directives/SchoolDropdown",
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
+    "app/directives/equation_editor/EquationEditor",
     "app/directives/GlobalNavigation",
+    "app/directives/equation_editor/TopMenu",
     "app/directives/d3/Donut",
-    "app/directives/d3/Line",
+    "app/directives/equation_editor/SubMenu",
     "app/directives/ProgressBar",
+    "app/directives/equation_editor/MenuSymbol",
+    "app/directives/equation_editor/SymbolMenu",
     "app/directives/Toast",
+    "app/directives/equation_editor/NumberEntry",
     "app/directives/LoadingOverlay",
+    "app/directives/equation_editor/CanvasSymbol",
     "app/directives/IsaacModal",
+    "app/directives/equation_editor/SelectionHandle",
+    "app/directives/JsonLdWriter",    
 	], function() {
 
 	/* Directives */
-
-
 	angular.module('isaac.directives', 
 		['RecursionHelper'])
 
@@ -96,13 +102,27 @@ define([
 
 	.directive('questionPod', require("app/directives/QuestionPod"))
 
+	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+
+	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
+
+	.directive('subMenu', require("app/directives/equation_editor/SubMenu"))
+
+	.directive('menuSymbol', require("app/directives/equation_editor/MenuSymbol"))
+
+	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
+
+	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
+
+	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
+
+	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
+
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
-
-	.directive('d3Line', require("app/directives/d3/Line"))
 	
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
@@ -111,6 +131,9 @@ define([
 	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
 
 	.directive('isaacModal', require("app/directives/IsaacModal"))
+
+	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
+
 
 	// Content Directives
 
@@ -230,4 +253,22 @@ define([
 			}
 		}
 	}])
+
+	.directive("ngScopeElement", [function () {
+	  var directiveDefinitionObject = {
+
+	    restrict: "A",
+
+	    compile: function compile(tElement, tAttrs, transclude) {
+	      return {
+	          pre: function preLink(scope, iElement, iAttrs, controller) {
+	            scope[iAttrs.ngScopeElement] = iElement;
+	          }
+	        };
+	    }
+	  };
+
+	  return directiveDefinitionObject;
+	}])
+	
 });

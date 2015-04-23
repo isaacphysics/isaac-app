@@ -20,8 +20,8 @@ The control icons are from a custom font. Each icon corresponds to a character
 */
 @font-face {
   font-family: 'VideoJS';
-  src: url('/assets/font/vjs.eot');
-  src: url('/assets/font/vjs.eot?#iefix') format('embedded-opentype'), url('/assets/font/vjs.woff') format('woff'), url('/assets/font/vjs.ttf') format('truetype');
+  src: url('../assets/font/vjs.eot');
+  src: url('../assets/font/vjs.eot?#iefix') format('embedded-opentype'), url('../assets/font/vjs.woff') format('woff'), url('../assets/font/vjs.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }

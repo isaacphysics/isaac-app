@@ -1,0 +1,134 @@
+<div class="row ru-page-heading">
+    <div class="medium-16 columns text-right hide-for-small-only">
+        <span data-ot="Please find additional information about the event in the page below." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+    </div>
+</div>
+<div class="event-detail">
+  <div class="medium-16 large-10 columns event-detail-main">
+    <div class="event-type hide-for-medium-up">
+      <span class="icon-stack" ng-if="event.teacher">
+        <span class="icon-hexagon"></span>
+        <span class="icon-teacher" title="Teacher Event"></span>
+      </span>
+      <span class="icon-stack" ng-if="event.student">
+        <span class="icon-hexagon"></span>
+        <span class="icon-student" title="Student Event"></span>
+      </span>
+      <span class="icon-stack" ng-if="event.virtual">
+        <span class="icon-hexagon"></span>
+        <span class="icon-virtual" title="Virtual Event"></span>
+      </span>
+      <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+      <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+      <img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
+    </div>
+    <!--
+      Title
+    -->
+    <h1>{{event.title}}</h1>
+    <p class="event-subtitle">{{event.subtitle}}</p>
+
+    <a ng-if="false" href="javascript:void(0)" ui-sref="contact" class="ru-button-big left">Contact us to book</a>
+    <!--
+    <div class="event-share">
+      <span class="event-share-title">Share</span>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-facebook"></span></a>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-gplus"></span></a>
+      <a class="event-share-icon" href="javascript:void(0)"><span class="icon-twitter"></span></a>
+    </div>
+    -->
+    <!--
+        Key event info - location, date etc
+    -->
+    <table class="event-table">
+      <tbody>
+        <tr ng-if="event.field">
+          <td>Field:</td>
+          <td>{{toTitleCase(event.field)}}</td>
+        </tr>
+        <tr>
+          <td>When:</td>
+          <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span>{{event.date | date:'shortTime'}}</span></time></td>
+        </tr>
+        <tr>
+          <td>Location:</td>
+          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!--
+        Event body copy 
+    -->
+    <div isaac-content doc="event"></div>
+    <a ng-if="false" href="javascript:void(0)" ui-sref="contact" class="ru-button-big">Contact us to book</a><a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
+  </div>
+  <div class="medium-16 large-6 columns event-detail-aside">
+    <div class="row">
+      <div class="medium-8 large-16 columns">
+        <div class="event-type show-for-medium-up">
+          <span class="icon-stack" ng-if="event.teacher">
+            <span class="icon-hexagon"></span>
+            <span class="icon-teacher"></span>
+          </span>
+          <span class="icon-stack" ng-if="event.student">
+            <span class="icon-hexagon"></span>
+            <span class="icon-student"></span>
+          </span>
+          <span class="icon-stack" ng-if="event.virtual">
+            <span class="icon-hexagon"></span>
+            <span class="icon-virtual"></span>
+          </span>
+          <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+          <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+          <img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
+        </div>
+      <!--
+        <div class="event-attendees">
+          <h3>Also attending:</h3>
+          <ul>
+            <li><span class="icon-person"></span>Joe Blogger</li>
+            <li><span class="icon-person"></span>Daniel Smith</li>
+            <li><span class="icon-person"></span>Jenny Blake</li>
+          </ul>
+        </div>
+
+        <div class="event-attend">
+          <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-check"></span>
+          </span>
+          Attending
+        </div>
+        -->
+
+      <!--
+        <div class="event-resources">
+          <h3>Resources:</h3>
+          <ul>
+            <li><a href="javascript:void(0)">Conference Brochure <span>PDF Download</span></a></li>
+            <li><a href="javascript:void(0)">Directions &amp; transport <span>PDF Download</span></a></li>
+            <li><a href="javascript:void(0)">Accomodation <span>PDF Download</span></a></li>
+          </ul>
+        </div>
+        -->
+      </div>
+
+      <div class="medium-8 large-16 columns">
+        <!--
+            Map
+        -->
+        <div class="event-map">
+          <a target="_blank" href="https://www.google.com/maps?q={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}">
+            <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=604x644&maptype=roadmap&key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y&markers={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}" alt="" />
+          </a>
+          <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
+<!--
+          <p><strong>Transit:</strong> Green Park</p>
+-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div json-ld-writer script="jsonLd"></div>

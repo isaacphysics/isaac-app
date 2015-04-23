@@ -1,0 +1,108 @@
+<div class="small-16 columns">
+    <h1>Isaac Event Booking Administration</h1>
+</div>
+<div ng-show="isAdminUser">
+    <div class="row">
+        <div class="small-16 columns">
+            <div class="panel white clearfix">
+                <div class="row">
+                    <div class="small-16 columns">
+                        <h2>Step 1: Choose your event</h2>
+                        <label for="eventToBook">
+                            <strong>Select your event:</strong>
+                        </label>
+                        <select id="eventToBook" ng-model="eventIdForBooking">
+                            <option ng-repeat="event in events" value="{{event.id}}">{{event.title}} - {{event.subtitle}} @ {{event.location.addressLine1}} on {{event.date | date:'dd/MM/yyyy'}}</option>
+                        </select>
+                    </div>
+                    
+                    <div ng-if="eventIdForBooking" class="small-16 columns">
+                        <h3>Step 2: Review current bookings ({{bookings.length}})</h3>
+                        <table ng-show="bookings.length > 0">
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Date booked</th>                                
+                                <th>Actions</th>
+                            </tr>
+                            <tr ng-repeat="booking in bookings | orderBy:'userBooked.familyName'">
+                                <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
+                                <td>{{booking.userBooked.email}}</td>
+                                <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
+                                <td><a href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked._id)">Unbook</a></td>
+                            </tr>
+                        </table>
+                        <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
+                    </div>
+                    
+                    <div ng-if="eventIdForBooking" class="small-16 columns">
+                       <h3>Step 3: Find user account(s)</h3>
+
+                        <form ng-submit="findUsers()">
+                            <div class="medium-12 medium-centered columns end">
+                                <label for="user-search-familyName">
+                                    <strong>Find a user by family name</strong>
+                                </label>                            
+                                <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user familyName" >
+                                <label for="user-search-email">
+                                    <strong>Find a user by email</strong>
+                                </label>                            
+                                <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
+                                <label for="user-search-role">
+                                    <strong>Find by user role:</strong>
+                                </label>
+                                <select id="user-search-role" ng-model="userSearch.searchTerms.role">
+                                    <option value="">Any Role</option>
+                                    <option value="TEACHER">Teacher</option>
+                                    <option value="CONTENT_EDITOR">Content Editor</option>
+                                    <option value="ADMIN">Admin</option>
+                                </select>                            
+                            </div>
+                            <div class="medium-12 medium-centered columns end">
+                                <button ng-click="findUsers()">Find user</button>
+                            </div>        
+                        </form>
+                    </div>
+                </div>
+            
+                <!-- Results TODO: stolen from search page this needs tidying up -->
+                <section ng-if="userSearch.hasSearched">
+                    <div class="small-16 columns" ng-if="userSearch.isLoading">
+                            <h4>User search results</h4>                        
+                        <div class="text-center" >
+                            <img src="/assets/loading.gif">
+                        </div>    
+                    </div>
+
+                    <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
+                        <div class="small-16 columns">
+                            <h4>User search results ({{userSearch.results.length}})</h4>
+                            <table>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>User Role</th>
+                                    <th>School Set</th>
+                                    <th>Member Since</th>
+                                    <th>Last Seen</th>
+                                    <th>Actions</th>
+                                </tr>
+                                <tr ng-repeat="result in userSearch.results">
+                                    <td>{{result.familyName}}, {{result.givenName}}</td>
+                                    <td>{{result.email}}</td>                                    
+                                    <td>{{result.role || "NOT_SET"}}</td>
+                                    <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                            <a ng-show="userBookings.indexOf(result._id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result._id)">Unbook from event</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+

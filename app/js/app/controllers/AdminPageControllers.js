@@ -25,13 +25,6 @@ define([], function() {
 
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-		$scope.statistics = api.statisticsEndpoint.get();
-		
-		$scope.statsLoading = true;
-		$scope.statistics.$promise.then(function(){
-			$scope.statsLoading = false;
-		});
-
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
 			api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function() {
@@ -45,6 +38,8 @@ define([], function() {
 			});
 		}
 		
+		$scope.userSearchSortPredicate = "lastName";
+
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
 			if ($scope.userSearch.searchTerms != "") {
@@ -87,13 +82,21 @@ define([], function() {
 
 			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-			//$scope.statistics = api.statisticsEndpoint.get();
+			$scope.statistics = api.statisticsEndpoint.get();
+			
+			$scope.generalStatsLoading = true;
+			$scope.statistics.$promise.then(function(){
+				$scope.generalStatsLoading = false;
+			});
+
 			$scope.gameboardListData = [];
 			$scope.visibleStatsPanel = null;
 
 			$scope.statsLoading = false;
 
 			$scope.generateGameBoardTitle = gameBoardTitles.generate;
+
+			$scope.gameboardListSortPredicate = null;
 
 			$scope.getGameboardListData = function() {
 				$scope.visibleStatsPanel = "gameboardList";
@@ -105,6 +108,8 @@ define([], function() {
 					$scope.statsLoading = false;
 				});
 			}
+
+			$scope.schoolListSortPredicate = "school.name"
 
 			$scope.getSchoolListData = function() {
 				$scope.visibleStatsPanel = "schoolList";
@@ -130,8 +135,88 @@ define([], function() {
 			}					
 		}]
 
+	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
+	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+		$rootScope.pageTitle = "Admin Page";
+
+		$scope.contentVersion = api.contentVersion.get();
+		$scope.userSearch = {};
+		$scope.userSearch.isLoading = false;
+		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
+
+		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+		
+		$scope.globalFlags.isLoading = true;
+
+		$scope.hasSearched = false;
+		$scope.events = [];
+
+		$scope.bookings = [];
+		$scope.userBookings = [];
+		$scope.eventIdForBooking = null;
+
+
+		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
+                $scope.globalFlags.isLoading = false;
+                
+				$scope.events = result.results;
+        });
+
+		var updateBookingInfo = function(){
+    		api.eventBookings.getBookings({eventId: $scope.eventIdForBooking}).$promise.then(function(result){
+				$scope.bookings = result;
+				$scope.userBookings = [];
+
+				angular.forEach($scope.bookings, function(booking, key){
+					$scope.userBookings.push(booking.userBooked._id);
+				});
+    		})				
+		}
+
+        $scope.$watch('eventIdForBooking', function(){
+        	if ($scope.eventIdForBooking) {
+				updateBookingInfo();
+        	}        	
+        })
+
+		$scope.findUsers = function() {
+			if ($scope.userSearch.searchTerms != "") {
+				var role = $scope.userSearch.searchTerms.role;
+
+				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
+					role = null;
+				}
+				
+				$scope.userSearch.isLoading = true;
+				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role}).$promise.then(function(result){
+					$scope.userSearch.results = result;
+					$scope.userSearch.isLoading = false;
+				});
+				
+				$scope.userSearch.hasSearched = true;
+			}
+		}
+
+		$scope.bookUserOnEvent = function(eventId, userId){
+			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+				updateBookingInfo();
+			});
+		}
+		
+		$scope.unbookUserFromEvent = function(eventId, userId){
+			var deleteBooking = $window.confirm('Are you sure you want to unbook this user?');   
+
+			if (deleteBooking) {
+				api.eventBookings.deleteBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					updateBookingInfo();
+				});
+			}
+		}		
+	}]
+
 	return {
 		PageController: PageController,
 		AdminStatsPageController: AdminStatsPageController,
+		AdminEventBookingController : AdminEventBookingController,
 	};
 })

@@ -43,7 +43,8 @@ define(["angular-ui-router"], function() {
                     if (roles.indexOf(u.role) > -1) {
                         return Promise.resolve(u);
                     } else {
-                        return Promise.reject("This route requires the user to have one of the following roles: " + roles);
+                        console.warn("This route requires the user to have one of the following roles: " + roles)
+                        return Promise.reject("require_role");
                     }                             
                 })
             }
@@ -93,7 +94,6 @@ define(["angular-ui-router"], function() {
             .state('mission', genericPageState("/mission", "mission"))
             .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
             .state('mission_students', genericPageState("/mission_students", "mission_students"))
-            .state('events', genericPageState("/events", "events_index"))
             .state('glossary', genericPageState("/glossary", "glossary"))
             .state('cookies', genericPageState("/cookies", "cookie_policy"))
             .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
@@ -107,6 +107,7 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
+            .state('equality', staticPageState("/equality", "equation_editor", null))
 
 	        .state('contact', {
 		        url: "/contact",
@@ -253,7 +254,6 @@ define(["angular-ui-router"], function() {
                     "query" :['$stateParams', function($stateParams){
                         return $stateParams.query;
                     }],
-                    
                     "types" :['$stateParams', function($stateParams){
                         if ($stateParams.types != null && $stateParams.types.length > 0) {
                             return $stateParams.types.split(",");    
@@ -384,7 +384,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
                 },
                 views: {
                     "body": {
@@ -401,16 +401,29 @@ define(["angular-ui-router"], function() {
                 },
                 views: {
                     "body": {
-                        templateUrl: "/partials/states/adminStats.html",
+                        templateUrl: "/partials/states/admin_stats.html",
                         controller: "AdminStatsPageController",
                     }
                 }
             })
 
-             .state('gameEditor', {
-                url: "/game_builder",
+            .state('adminEvents', {
+                url: "/admin/events",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_events.html",
+                        controller: "AdminEventBookingController",
+                    }
+                }
+            })            
+
+             .state('gameEditor', {
+                url: "/game_builder?query&subject&level&sort",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -423,7 +436,7 @@ define(["angular-ui-router"], function() {
             .state('groups', {
                 url: "/groups",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -436,7 +449,7 @@ define(["angular-ui-router"], function() {
             .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
@@ -498,6 +511,26 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('events', {
+                url: "/events?show_active_only&show_inactive_only",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/events_page.html",
+                        controller: "EventsPageController"
+                    }
+                }
+            })
+
+            .state('event', {
+                url: "/events/:id",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/event_detail.html",
+                        controller: "EventDetailController"
+                    }
+                }
+            })
+
             .state('addBoard', {
                 url: "/add_gameboard/:boardId",
                 resolve: {
@@ -507,9 +540,9 @@ define(["angular-ui-router"], function() {
 
                     api.saveGameBoard($stateParams.boardId).$promise.then(function() {
                         if (requireLogin.role == "TEACHER" || requireLogin.role == "ADMIN") {
-                            $state.go("setAssignments");
+                            $state.go("setAssignments", {}, {location: "replace"});
                         } else {
-                            $state.go("boards");
+                            $state.go("boards", {}, {location: "replace"});
                         }
                     }).catch(function(e) {
                         console.error("Error saving board.");

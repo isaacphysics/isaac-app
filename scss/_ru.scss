@@ -3,7 +3,7 @@ table {
 }
 
 .ru {
-    background-image: url(/assets/ru.png);
+    background-image: url(../assets/ru.png);
     background-repeat: no-repeat;
     display: block;
 }
@@ -30,7 +30,7 @@ table {
     float: left;
     width: 34px;
     height: 39px;
-    background: url(/assets/information-icon.png) 0 0 no-repeat;
+    background: url(../assets/information-icon.png) 0 0 no-repeat;
 }
 .ru-alert-box {
     z-index: 99;
@@ -70,7 +70,6 @@ table {
     }
     .has-tip {
         float: right;
-        margin-top: 13px
     }
 }
 @media #{$small-only} { 
@@ -126,7 +125,7 @@ input:disabled {
     background-color: #fff !important;
 }
 select {
-    background: #fff url(/assets/select-chevron.png) right center no-repeat;
+    background: #fff url(../assets/select-chevron.png) right center no-repeat;
     option {
         line-height: 20px;
     }

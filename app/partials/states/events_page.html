@@ -1,0 +1,86 @@
+<div class="row ru-page-heading">
+    <div class="large-6 medium-8 columns">
+        <h1>Events</h1>
+        <p class="hide-for-small-only">Keep up-to-date with related events</p>
+    </div>
+    <div class="large-10 medium-8 columns text-right">
+        <span data-ot="Follow the links below to find out more about our FREE events." class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <div class="events-filters">
+          <label class="show-for-large-up">Filter by</label>
+          <select ng-model="filterEventsByStatus">
+            <option value="ALL">All Events</option>
+            <option value="UPCOMING">Upcoming Events</option>
+          </select>
+          <select ng-model="filterEventsByType">
+            <option value="all">All Events</option>
+            <option value="student">Student Events</option>
+            <option value="teacher">Teacher Events</option>
+          </select>
+        </div>
+    </div>
+</div>
+<ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+    <li class="event" ng-repeat="event in events" ng-class="{expired: event.expired}">
+      <div class="event-type">
+        <span class="icon-stack" ng-if="event.teacher">
+          <span class="icon-hexagon"></span>
+          <span class="icon-teacher" title="Teacher Event"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.student">
+          <span class="icon-hexagon"></span>
+          <span class="icon-student" title="Student Event"></span>
+        </span>
+        <span class="icon-stack" ng-if="event.virtual">
+          <span class="icon-hexagon"></span>
+          <span class="icon-virtual" title="Virtual Event"></span>
+        </span>
+        <h6 ng-if="!event.expired">&nbsp;<span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+        <h6 ng-if="event.expired">This event has expired</h6>
+        <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+        <a ui-sref="event({id: event.id})"><img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" /></a>
+      </div>
+      <div class="panel">
+           <h3><a ui-sref="event({id: event.id})">{{event.title}}</a></h3>
+           <p class="event-subtitle">{{event.subtitle}}</p>
+           <table class="event-table">
+              <tbody>
+                 <tr ng-if="event.field">
+                    <td>Field:</td>
+                    <td>{{toTitleCase(event.field)}}</td>
+                 </tr>
+
+                 <tr>
+                    <td>When:</td>
+<!--
+                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
+-->
+                    <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span>{{event.date | date : 'shortTime'}}</span></time></td>
+                 </tr>
+                 <tr>
+                    <td>Location:</td>
+                    <td>{{event.location.addressLine1}}<span ng-if="event.location.town">,</span> {{event.location.town}}</td>
+                 </tr>
+              </tbody>
+           </table>
+           <a class="event-link" ui-sref="event({id: event.id})">View details</a>
+<!--
+           <div class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Attending
+           </div>
+-->
+      </div>
+    </li>
+</ul>
+<div class="row">
+  <div class="large-5 medium-6 small-centered columns">
+      <a href="javascript:void(0)" tabindex="0" class="ru-button-big secondary" ng-click="loadMore()" ng-if="!noMoreResults && events">Load more events</a>
+  </div>
+  
+  <div ng-if="!globalFlags.isLoading && events.length == 0" class="small-16 text-center columns">
+      <p>Sorry, we can not find any events that match your filter settings.</p>
+  </div>
+</div>

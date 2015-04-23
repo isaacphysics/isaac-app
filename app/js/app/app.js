@@ -67,8 +67,7 @@ define([
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
 
-        // Only use html5 mode if we are on a real server, which should respect .htaccess
-		$locationProvider.html5Mode(document.location.hostname != "localhost").hashPrefix("!");
+		$locationProvider.html5Mode(true).hashPrefix("!");
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost")
@@ -464,7 +463,10 @@ define([
                 }); 
                 var tutorialShown = cookie.read('tutorialShown');
 
-                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0) { // we don't want the google bot to see the tutorial.
+                var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
+                
+                // we don't want the google bot or out of date browsers to see the tutorial.
+                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
                     if ($.ru_IsMobile()) {
                         if ($('#mobile-tutorial').length > 0) {
                             setTimeout(function() {
