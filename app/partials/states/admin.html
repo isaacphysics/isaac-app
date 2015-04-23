@@ -103,16 +103,16 @@
                             <h4>User search results ({{userSearch.results.length}})</h4>
                             <table>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>User Role</th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastName'; reverse=!reverse">Name</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
                                     <th>School Set</th>
-                                    <th>Member Since</th>
-                                    <th>Last Seen</th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
                                     <th>Actions</th>
                                 </tr>
-                                <tr ng-repeat="result in userSearch.results">
-                                    <td>{{result.familyName}}, {{result.givenName}}</td>
+                                <tr ng-repeat="result in userSearch.results | orderBy:userSearchSortPredicate:reverse">
+                                    <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
                                     <td>{{result.email}}</td>                                    
                                     <td>{{result.role || "NOT_SET"}}</td>
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>

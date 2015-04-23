@@ -38,6 +38,8 @@ define([], function() {
 			});
 		}
 		
+		$scope.userSearchSortPredicate = "lastName";
+
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
 			if ($scope.userSearch.searchTerms != "") {
