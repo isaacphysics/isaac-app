@@ -96,6 +96,8 @@ define([], function() {
 
 			$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
+			$scope.gameboardListSortPredicate = null;
+
 			$scope.getGameboardListData = function() {
 				$scope.visibleStatsPanel = "gameboardList";
 				$scope.statsLoading = true;
@@ -106,6 +108,8 @@ define([], function() {
 					$scope.statsLoading = false;
 				});
 			}
+
+			$scope.schoolListSortPredicate = "school.name"
 
 			$scope.getSchoolListData = function() {
 				$scope.visibleStatsPanel = "schoolList";
