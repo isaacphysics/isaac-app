@@ -111,7 +111,8 @@ define([], function() {
                     var xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
-                        .ticks(5);
+                        .ticks(5)
+                        .tickFormat(d3.time.format("%b"));
 
                     //Define Y axis
                     var yAxis = d3.svg.axis()
@@ -158,7 +159,7 @@ define([], function() {
                           .attr("height",30)
                           .attr("width",100)
                           .style("fill", color_hash[String(i)][1])
-                          .text(color_hash[String(i)][0]);
+                          .text(scope.data);
 
                     });
                 });
