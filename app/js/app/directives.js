@@ -182,12 +182,32 @@ define([
 			link: function(scope, element, attrs) {
 				element.addClass("search-fade")
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
+	            if (searchOpen) {
+	                element.addClass("search-fade-active");
+	            } else {
+	                element.removeClass("search-fade-active");
+	            }
+
+				})
+			}
+		}
+	}])
+
+	.directive('syncSearchFocus', [function() {
+		return {
+			link: function(scope, element, attrs) {
+				element.addClass("search-fade")
+				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
 					
-		            if (searchOpen) {
-		                element.addClass("search-fade-active");
-		            } else {
-		                element.removeClass("search-fade-active");
-		            }
+	            if (searchOpen) {
+	            	setTimeout(function(){
+	                	element[0].focus();
+	                	console.log("FOCUSED" + element[0]);
+	            	}, 1);
+	            } else {
+	                element[0].blur();
+	            }
+
 				})
 			}
 		}

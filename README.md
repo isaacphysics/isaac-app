@@ -32,7 +32,7 @@ We have preconfigured the project with a simple development web server.  The sim
 this server is:
 
 ```
-grunt server
+npm start
 ```
 
 Now browse to the Isaac app at `http://localhost:8000/`.
