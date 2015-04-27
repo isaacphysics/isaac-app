@@ -1,0 +1,25 @@
+.book-levels {
+	a {
+		float: left;
+		width: 100%;
+		color: $ru_burgundy;
+		font-size: 22px;
+		line-height: 1;
+		font-weight: 600;
+		font-style: italic;
+		background-color: #e1e1e1;
+
+		.icon-hexagon {
+			color: #fff;
+			
+			&:before {
+				color: #000;
+			}
+		}
+
+		&:hover {
+			color: #fff;
+			background-color: $ru_burgundy;
+		}
+	}
+}

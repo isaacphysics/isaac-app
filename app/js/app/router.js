@@ -530,6 +530,15 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('book', {
+                url: "/book",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/book_index.html",
+                    }
+                }
+            })
+
             .state('addBoard', {
                 url: "/add_gameboard/:boardId",
                 resolve: {
