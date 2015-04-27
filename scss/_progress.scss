@@ -416,8 +416,19 @@
 .d3-line {
     .domain {
         stroke: #c4c5c7;
-        stroke-width: 1;
+        stroke-width: 0.6;
         fill: none;
+    }
+    .d3-line-data {
+        stroke-width: 2;
+    }
+    text {
+        font-size: 10px;
+    }
+    .axis {
+        line {
+            stroke: #c4c5c7;
+        }
     }
 }
 /*

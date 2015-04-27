@@ -29,11 +29,11 @@ define([], function() {
                         w = 500,
                         h = 300,
                         padding = 30,
-                        color_hash = {  
-                            0 : ["apple", "#00bbf2"],
-                            1 : ["mango", "orange"],
-                            2 : ["cherry", "red"]
-                        }; 
+                        color_hash = [
+                            "#00bbf2",
+                            "orange",
+                            "red",
+                        ]; 
 
                     var minX = Number.MAX_VALUE,
                         maxX = -Number.MAX_VALUE,
@@ -42,6 +42,8 @@ define([], function() {
 
                     for(series in scope.data) {
                         var ds = [];
+                        ds.color = color_hash[data.length];
+                        ds.title = series;
                         for(key in scope.data[series]){
                             var x = Date.parse(key),
                                 y = scope.data[series][key];
@@ -55,13 +57,13 @@ define([], function() {
                             ds.push({
                                 x: x, 
                                 y: y,
+                                color: ds.color,
                             });
                         }
                         ds.sort(function(a, b){return a.x > b.x ? 1 : (a.x < b.x ? -1 : 0)});
                         data.push(ds);
                     }
 
-        
                     // Define axis ranges & scales        
                     var xScale = d3.time.scale()
                         .domain([minX, maxX])
@@ -83,12 +85,14 @@ define([], function() {
 
                     // Define lines
                     var line = d3.svg.line();
+    
 
                     var pathContainers = svg.selectAll('g.line').data(data);
                     
                     pathContainers.enter().append('g')
+                        .attr('class', 'd3-line-data')
                         .attr("style", function(d) {
-                            return "fill: none; stroke:"+ color_hash[data.indexOf(d)][1]; 
+                            return "fill: none; stroke:"+ d.color; 
                         });
 
                     pathContainers.selectAll('path')
@@ -105,7 +109,10 @@ define([], function() {
                         .enter().append('circle')
                         .attr('cx', function (d) { return xScale(d.x); })
                         .attr('cy', function (d) { return yScale(d.y); })
-                        .attr('r', 3);
+                        .attr('fill', function (d) { return d.color; })
+                        .attr('stroke', function (d) { return d.color; })
+                        .attr('stroke-width', 3)
+                        .attr('r', 2);
       
                     //Define X axis
                     var xAxis = d3.svg.axis()
@@ -119,6 +126,7 @@ define([], function() {
                         .scale(yScale)
                         .orient("left")
                         .ticks(5);
+       
 
                     //Add X axis
                     svg.append("g")
@@ -131,7 +139,6 @@ define([], function() {
                     .attr("class", "axis")
                     .attr("transform", "translate(" + padding + ",0)")
                     .call(yAxis);
-
 
                     // Add legend   
                     var legend = svg.append("g")
@@ -151,15 +158,14 @@ define([], function() {
                           .attr("y", i*25)
                           .attr("width", 10)
                           .attr("height", 10)
-                          .style("fill", color_hash[String(i)][1]);
+                          .style("fill", function (d) { return d.color; });
                         
                         g.append("text")
                           .attr("x", w - 50)
                           .attr("y", i * 25 + 8)
                           .attr("height",30)
                           .attr("width",100)
-                          .style("fill", color_hash[String(i)][1])
-                          .text(scope.data);
+                          .text(function (d) { return d.title; });
 
                     });
                 });
