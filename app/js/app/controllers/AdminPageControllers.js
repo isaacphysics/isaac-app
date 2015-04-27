@@ -38,7 +38,7 @@ define([], function() {
 			});
 		}
 		
-		$scope.userSearchSortPredicate = "lastName";
+		$scope.userSearchSortPredicate = "familyName";
 
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
@@ -106,11 +106,11 @@ define([], function() {
 				gameboardListPromise.$promise.then(function(result){
 					$scope.gameboardListData = result;
 					$scope.statsLoading = false;
+					$scope.reverse = false;
 				});
 			}
 
-			$scope.schoolListSortPredicate = "school.name"
-
+			$scope.schoolListSortPredicate = "numberActiveLastThirtyDays"
 			$scope.getSchoolListData = function() {
 				$scope.visibleStatsPanel = "schoolList";
 				$scope.statsLoading = true;
@@ -119,6 +119,7 @@ define([], function() {
 				gameboardListPromise.$promise.then(function(result){
 					$scope.schoolListData = result;
 					$scope.statsLoading = false;
+					$scope.reverse = true;
 				});
 			}
 
@@ -131,6 +132,7 @@ define([], function() {
 				gameboardListPromise.$promise.then(function(result){
 					$scope.schoolUserListData = result;
 					$scope.statsLoading = false;
+					$scope.reverse = false;
 				});
 			}					
 		}]
