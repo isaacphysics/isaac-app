@@ -16,7 +16,7 @@ define([], function() {
                 var renderToken = function() {
                     var newt = scope.symbol.token;
 
-                    if (newt) {
+                    if (newt && scope.symbol.type == "string") {
                         var el = element.find(".canvas-symbol");
                         var rt = el.find(".katex-render-target");
 

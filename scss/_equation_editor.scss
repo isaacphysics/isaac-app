@@ -163,6 +163,10 @@ $menu-handle-width: 160px;
                     bottom: 100%;
                     text-align: right;
                     border: 1px dotted rgba(0,0,0,0.2);
+
+                    &.line {
+                        background: black;
+                    }
                 }
             }
             

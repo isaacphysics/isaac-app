@@ -110,18 +110,25 @@ define([], function() {
 						type: "container",
 						subType: "sqrt"
 					},
-					"ssym-3": {
-						x: 285,
-						y: 233,
-						fontSize: 48,
-						token: "3",
+                    "ssym-3": {
+                        x: 285,
+                        y: 233,
+                        fontSize: 48,
+                        token: "3",
                         editable: {
                             currentNumber: "3",
                             currentExponent: null,
                         },
-						type: "string",
+                        type: "string",
                         fromCalc: true,
-					},				
+                    },              
+                    "ssym-4": {
+                        x: 100,
+                        y: 200,
+                        length: 100,
+                        token: ":line",
+                        type: "line",
+                    },              
                 };
 
                 var stringSymbols = function(ss) {
@@ -142,11 +149,27 @@ define([], function() {
 
                 scope.symbolLibrary = {
 
-                	latinLetters: stringSymbols(["a", "b", "c",]),
+                    latinLetters: stringSymbols(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]),
 
-                	greekLetters: stringSymbols(["\\alpha", "\\beta", "\\gamma"]),
+                    latinLettersUpper: stringSymbols(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]),
+
+                    greekLetters: stringSymbols(["\\alpha","\\beta","\\gamma","\\delta","\\epsilon","\\zeta","\\eta","\\theta","\\iota","\\kappa","\\lambda","\\mu","\\nu","\\xi","\\omicron","\\pi","\\rho","\\sigma","\\tau","\\upsilon","\\phi","\\chi","\\psi","\\omega"]),
+                    
+                    greekLettersUpper: stringSymbols(["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"]),
 
                     operators: [{
+                        type: "string",
+                        label: "+",
+                        token: "+",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "line",
+                        label: "-",
+                        token: ":line",
+                        length: 40,
+                        texLabel: true,
+                    },{
                         type: "container",
                         subType: "sqrt",
                         width: 148,
@@ -163,15 +186,28 @@ define([], function() {
                 }
 
                 scope.latinLetterTitle = {
-                	fontSize: 48,
-                	type: "string",
-                	label: "abc",
+                    fontSize: 48,
+                    type: "string",
+                    label: "abc",
+                };
+
+                scope.latinLetterUpperTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "ABC",
                 };
 
                 scope.greekLetterTitle = {
-                	fontSize: 48,
-                	type: "string",
-                	label: "\\alpha\\beta",
+                    fontSize: 48,
+                    type: "string",
+                    label: "\\alpha\\beta",
+                    texLabel: true,
+                };
+
+                scope.greekLetterUpperTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "\\Gamma\\Sigma",
                     texLabel: true,
                 };
 
@@ -378,6 +414,9 @@ define([], function() {
                                     s.height += dy;
                                     s.x += dx/2;
                                     s.y += dy/2;
+                                    break;
+                                case "line":
+                                    s.length += dx;
                                     break;
                                 default:
                                     console.warn("Resizing unknown symbol type:", s.type);
