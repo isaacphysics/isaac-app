@@ -150,7 +150,7 @@ define([], function() {
                         type: "container",
                         subType: "sqrt",
                         width: 148,
-                        height: 148,
+                        height: 60,
                         label: "\\sqrt{x}",
                         texLabel: true,
                     }]

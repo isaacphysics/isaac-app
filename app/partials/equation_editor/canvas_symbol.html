@@ -3,15 +3,6 @@
 		<span class="katex-render-target measure-this"></span>
     </div>
 	<div ng-switch-when="container" class="canvas-symbol container" ng-class="{selected: selected, dragging: dragging}" ng-style="{left: symbol.x - symbol.width/2, top: symbol.y-symbol.height/2, width: symbol.width, height: symbol.height}">
-		<div ng-switch="symbol.subType" style="width:100%;height:100%;">
-            <div ng-switch-when="sqrt" style="width:100%;height:100%;">
-                <svg style="width:100%;height:100%;overflow:visible; fill:none;" ng-style="{stroke: selected ? 'green' : 'black'}" viewbox="0 0 80 80" preserveAspectRatio="none">
-                    <!-- Use non-scaling-stroke here, but use a plausible size for IE, which doesn't support it. -->
-                    <polyline vector-effect="non-scaling-stroke" style="stroke-width:4" points="0,64 8,80" />
-                    <polyline vector-effect="non-scaling-stroke" style="stroke-width:2" points="8,80 16,0 80,0" />
-                </svg>
-            </div>
-            <div ng-switch-default>&nbsp;</div>
-        </div>
+        <div ng-include="'/partials/equation_editor/symbols/containers.html'" style="width:100%;height:100%;"></div>
 	</div>
 </div>
