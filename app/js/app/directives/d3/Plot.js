@@ -28,7 +28,7 @@ define([], function() {
                 scope.$watch('data', function(){
                     var data = [],
                         w = 500,
-                        h = 300,
+                        h = 225,
                         padding = 30,
                         color_hash = [
                             "#00bbf2",
@@ -125,6 +125,11 @@ define([], function() {
 
                     // add circles for line graph
                     if(scope.type != 'area'){
+
+                        var d3tooltip = d3.select("body").append("div")  
+                            .attr("class", "d3-tooltip")               
+                            .style("opacity", 0);
+
                         pathContainers.selectAll('circle')
                             .data(function (d) { return d; })
                             .enter().append('circle')
@@ -133,7 +138,21 @@ define([], function() {
                             .attr('fill', function (d) { return d.color; })
                             .attr('stroke', function (d) { return d.color; })
                             .attr('stroke-width', 3)
-                            .attr('r', 2);
+                            .attr('r', 2)
+                            .on("mouseover", function(d) {      
+                                d3tooltip.transition()        
+                                    .duration(200)      
+                                    .style("opacity", .9);
+
+                                d3tooltip.html(d.y)  
+                                    .style("left", (d3.event.pageX) + "px")     
+                                    .style("top", (d3.event.pageY - 28) + "px");    
+                            })                  
+                            .on("mouseout", function(d) {       
+                                d3tooltip.transition()        
+                                    .duration(500)      
+                                    .style("opacity", 0);   
+                            });
                     }
       
                     //Define X axis
@@ -141,6 +160,8 @@ define([], function() {
                         .scale(xScale)
                         .orient("bottom")
                         .ticks(5)
+                        // Add bg lines to graph
+                        //.tickSize(-h).tickSubdivide(true)
                         .tickFormat(d3.time.format("%b"));
 
                     //Define Y axis
@@ -172,7 +193,7 @@ define([], function() {
                       .each(function(d, i) {
                         var g = d3.select(this);
                         g.append("text")
-                          .attr("x", w - 115)
+                          .attr("x", w - 40)
                           .attr("y", i * 15 + 7)
                           .attr("height",30)
                           .attr("width",100)
