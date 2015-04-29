@@ -25,149 +25,63 @@ define([], function() {
             link: function(scope, element, attrs) {
                     
                 scope.$watch('data', function(){
-                    var data = [],
-                        w = 500,
-                        h = 300,
-                        padding = 30,
-                        color_hash = [
-                            "#00bbf2",
-                            "#80d4f7",
-                            "#b1e2fa",
-                        ]; 
 
-                    var minX = Number.MAX_VALUE,
-                        maxX = -Number.MAX_VALUE,
-                        minY = Number.MAX_VALUE,
-                        maxY = -Number.MAX_VALUE;
+                    var w = 960,
+                        h = 500
 
-                    for(series in scope.data) {
-                        var ds = [];
-                        ds.color = color_hash[data.length];
-                        ds.title = series;
-                        for(key in scope.data[series]){
-                            var x = Date.parse(key),
-                                y = scope.data[series][key];
-
-                            minX = Math.min(minX, x);
-                            minY = Math.min(minY, y);
-
-                            maxX = Math.max(maxX, x);
-                            maxY = Math.max(maxY, y);
-
-                            ds.push({
-                                x: x, 
-                                y: y,
-                                color: ds.color,
-                            });
-                        }
-                        ds.sort(function(a, b){return a.x > b.x ? 1 : (a.x < b.x ? -1 : 0)});
-                        data.push(ds);
-                    }
-
-                    // Define axis ranges & scales        
-                    var xScale = d3.time.scale()
-                        .domain([minX, maxX])
-                        .range([padding, w - padding * 2]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([0, maxY])
-                       .range([h - padding, padding]);
-
-
-                    // Create SVG element
+                    // create canvas
                     var svg = d3.select(element[0])
                         .append("svg")
-                        .attr('class', 'd3-line')
+                        .attr("class", "chart")
                         .attr("width", '100%')
                         .attr("height", '100%')
                         .attr('viewBox','0 0 '+w+' '+h)
-                        .attr('preserveAspectRatio','xMinYMin');
+                        .attr('preserveAspectRatio','xMinYMin')
+                        .append("svg:g")
+                        .attr("transform", "translate(10,470)");
 
-                    // Define lines
-                    var line = d3.svg.line();
-    
+                    x = d3.scale.ordinal().rangeRoundBands([0, w-50])
+                    y = d3.scale.linear().range([0, h-50])
+                    z = d3.scale.ordinal().range(['#4fa446', '#7dc571', '#bbdda9']);
 
-                    var pathContainers = svg.selectAll('g.line').data(data);
-                    
-                    pathContainers.enter().append('g')
-                        .attr('class', 'd3-line-data')
-                        .attr("style", function(d) {
-                            return "fill: none; stroke:"+ d.color; 
-                        });
+                    var matrix = [
+                        [ 1,  5871, 8916, 2868],
+                        [ 2, 10048, 2060, 6171],
+                        [ 3, 16145, 8090, 8045],
+                        [ 4,   990,  940, 6907]
+                    ];
 
-                    pathContainers.selectAll('path')
-                        .data(function (d) { return [d]; }) // continues the data from the pathContainer
-                        .enter().append('path')
-                            .attr('d', d3.svg.line()
-                                .x(function (d) { return xScale(d.x); })
-                                .y(function (d) { return yScale(d.y); })
-                            );
-
-                    // add circles
-                    pathContainers.selectAll('circle')
-                        .data(function (d) { return d; })
-                        .enter().append('circle')
-                        .attr('cx', function (d) { return xScale(d.x); })
-                        .attr('cy', function (d) { return yScale(d.y); })
-                        .attr('fill', function (d) { return d.color; })
-                        .attr('stroke', function (d) { return d.color; })
-                        .attr('stroke-width', 3)
-                        .attr('r', 2);
-      
-                    //Define X axis
-                    var xAxis = d3.svg.axis()
-                        .scale(xScale)
-                        .orient("bottom")
-                        .ticks(5)
-                        .tickFormat(d3.time.format("%b"));
-
-                    //Define Y axis
-                    var yAxis = d3.svg.axis()
-                        .scale(yScale)
-                        .orient("left")
-                        .ticks(5);
-       
-
-                    //Add X axis
-                    svg.append("g")
-                    .attr("class", "x-axis")
-                    .attr("transform", "translate(0," + (h - padding) + ")")
-                    .call(xAxis);
-
-                    //Add Y axis
-                    svg.append("g")
-                    .attr("class", "y-axis")
-                    .attr("transform", "translate(" + padding + ",0)")
-                    .call(yAxis);
-
-                    // Add legend   
-                    var legend = svg.append("g")
-                      .attr("class", "legend")
-                      .attr("x", w - 65)
-                      .attr("y", 25)
-                      .attr("height", 100)
-                      .attr("width", 100);
-
-                    legend.selectAll('g').data(data)
-                      .enter()
-                      .append('g')
-                      .each(function(d, i) {
-                        var g = d3.select(this);
-                        g.append("rect")
-                          .attr("x", w - 65)
-                          .attr("y", i*25)
-                          .attr("width", 10)
-                          .attr("height", 10)
-                          .style("fill", function (d) { return d.color; });
-                        
-                        g.append("text")
-                          .attr("x", w - 50)
-                          .attr("y", i * 25 + 8)
-                          .attr("height",30)
-                          .attr("width",100)
-                          .text(function (d) { return d.title; });
-
+                    var remapped =["c1","c2","c3"].map(function(dat,i){
+                        return matrix.map(function(d,ii){
+                            return {x: ii, y: d[i+1] };
+                        })
                     });
+                    console.log(remapped)
+
+                    var stacked = d3.layout.stack()(remapped)
+                    console.log(stacked)
+
+                    x.domain(stacked[0].map(function(d) { return d.x; }));
+                    y.domain([0, d3.max(stacked[stacked.length - 1], function(d) { return d.y0 + d.y; })]);
+
+
+                    // Add a group for each column.
+                    var valgroup = svg.selectAll("g.valgroup")
+                        .data(stacked)
+                        .enter().append("svg:g")
+                        .attr("class", "valgroup")
+                        .style("fill", function(d, i) { return z(i); })
+                        .style("stroke", function(d, i) { return d3.rgb(z(i)).darker(); });
+
+                    // Add a rect for each date.
+                    var rect = valgroup.selectAll("rect")
+                        .data(function(d){return d;})
+                        .enter().append("svg:rect")
+                        .attr("x", function(d) { return x(d.x); })
+                        .attr("y", function(d) { return -y(d.y0) - y(d.y); })
+                        .attr("height", function(d) { return y(d.y); })
+                        .attr("width", x.rangeBand());
+
                 });
             
             }     
