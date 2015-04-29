@@ -1,7 +1,10 @@
 <div ng-switch="symbol.type" class="dragging-background" ng-show="dragging">
 	<div ng-switch-when="string" class="symbol-token" ng-style="{fontSize: symbol.fontSize, lineHeight: symbol.fontSize + 'px'}"><span></span></div>
     <div ng-switch-when="container" class="container symbol-token" ng-style="{width: symbol.width, height: symbol.height}">
-        &nbsp;
+        <div ng-include="'/partials/equation_editor/symbols/containers.html'" style="width:100%;height:100%;"></div>
+    </div>
+    <div ng-switch-when="line" class="symbol-token">
+        <div ng-include="'/partials/equation_editor/symbols/lines.html'" ng-style="{width:symbol.width,height:'100%'}"></div>
     </div>
 </div>
 <span class="symbol-label" ng-class="symbol.labelClass">{{symbol.label}}</span>

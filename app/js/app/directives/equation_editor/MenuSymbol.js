@@ -13,7 +13,7 @@ define([], function() {
                 scope.name="MENUSYMBOL"
 
                 scope.$watch("symbol.token", function(newt) {
-                    if (newt)
+                    if (newt && scope.symbol.type == "string")
                         katex.render(scope.symbol.token, element.find(".symbol-token>span")[0]);
                 });
 

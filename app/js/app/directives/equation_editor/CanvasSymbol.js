@@ -16,7 +16,7 @@ define([], function() {
                 var renderToken = function() {
                     var newt = scope.symbol.token;
 
-                    if (newt) {
+                    if (newt && scope.symbol.type == "string") {
                         var el = element.find(".canvas-symbol");
                         var rt = el.find(".katex-render-target");
 
@@ -47,7 +47,13 @@ define([], function() {
                 var mousedown = function(e) {
                     scope.$emit("selection_grab", scope.symbolId, "move", e);
                 }
+                
+                var touchStart = function(e) {
+                    if(e.touches.length == 1) 
+                        scope.$emit("selection_grab", scope.symbolId, "move", e);
+                }
 
+                element.on("mousedown", mousedown);
                 element.on("mousedown", mousedown);
 
 			},
