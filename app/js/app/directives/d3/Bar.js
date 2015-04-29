@@ -19,8 +19,7 @@ define([], function() {
             restrict: 'A',
 
             scope: {
-                data: "=",
-                type: "@",
+                data: "="
             },
 
             link: function(scope, element, attrs) {
@@ -62,20 +61,6 @@ define([], function() {
                             });
                         }
                         ds.sort(function(a, b){return a.x > b.x ? 1 : (a.x < b.x ? -1 : 0)});
-
-                        if(scope.type === 'area'){
-                            ds.unshift({
-                                x: minX, 
-                                y: 0,
-                                color: ds.color,
-                            });
-                            ds.push({
-                                x: maxX, 
-                                y: 0,
-                                color: ds.color,
-                            });
-                        }
-
                         data.push(ds);
                     }
 
@@ -86,7 +71,7 @@ define([], function() {
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
-                        .range([h - padding, 5]);
+                       .range([h - padding, padding]);
 
 
                     // Create SVG element
@@ -107,12 +92,7 @@ define([], function() {
                     pathContainers.enter().append('g')
                         .attr('class', 'd3-line-data')
                         .attr("style", function(d) {
-                            if(scope.type === 'area'){
-                                return "fill:"+d.color+"; stroke:"+ d.color; 
-                            }
-                            else{
-                                return "fill: none; stroke:"+ d.color; 
-                            }
+                            return "fill: none; stroke:"+ d.color; 
                         });
 
                     pathContainers.selectAll('path')
@@ -123,18 +103,16 @@ define([], function() {
                                 .y(function (d) { return yScale(d.y); })
                             );
 
-                    // add circles for line graph
-                    if(scope.type != 'area'){
-                        pathContainers.selectAll('circle')
-                            .data(function (d) { return d; })
-                            .enter().append('circle')
-                            .attr('cx', function (d) { return xScale(d.x); })
-                            .attr('cy', function (d) { return yScale(d.y); })
-                            .attr('fill', function (d) { return d.color; })
-                            .attr('stroke', function (d) { return d.color; })
-                            .attr('stroke-width', 3)
-                            .attr('r', 2);
-                    }
+                    // add circles
+                    pathContainers.selectAll('circle')
+                        .data(function (d) { return d; })
+                        .enter().append('circle')
+                        .attr('cx', function (d) { return xScale(d.x); })
+                        .attr('cy', function (d) { return yScale(d.y); })
+                        .attr('fill', function (d) { return d.color; })
+                        .attr('stroke', function (d) { return d.color; })
+                        .attr('stroke-width', 3)
+                        .attr('r', 2);
       
                     //Define X axis
                     var xAxis = d3.svg.axis()
@@ -164,26 +142,30 @@ define([], function() {
 
                     // Add legend   
                     var legend = svg.append("g")
-                      .attr("class", "legend");
+                      .attr("class", "legend")
+                      .attr("x", w - 65)
+                      .attr("y", 25)
+                      .attr("height", 100)
+                      .attr("width", 100);
 
                     legend.selectAll('g').data(data)
                       .enter()
                       .append('g')
                       .each(function(d, i) {
                         var g = d3.select(this);
+                        g.append("rect")
+                          .attr("x", w - 65)
+                          .attr("y", i*25)
+                          .attr("width", 10)
+                          .attr("height", 10)
+                          .style("fill", function (d) { return d.color; });
+                        
                         g.append("text")
-                          .attr("x", w - 115)
-                          .attr("y", i * 15 + 7)
+                          .attr("x", w - 50)
+                          .attr("y", i * 25 + 8)
                           .attr("height",30)
                           .attr("width",100)
                           .text(function (d) { return d.title; });
-
-                        g.append("rect")
-                          .attr("x", w - 35)
-                          .attr("y", i*15)
-                          .attr("width", 25)
-                          .attr("height", 10)
-                          .style("fill", function (d) { return d.color; });
 
                     });
                 });
