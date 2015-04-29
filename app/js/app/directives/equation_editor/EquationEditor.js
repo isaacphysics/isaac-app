@@ -358,13 +358,19 @@ define([], function() {
                 }
 
                 var touchMove = function(e) {
-                    if (e.touches.length == 1)
+                    if (e.touches.length == 1) {
                         drag(e.touches[0].pageX, e.touches[0].pageY, e);
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
                 }
 
                 var touchEnd = function(e) {
-                    if (e.changedTouches.length == 1) 
+                    if (e.changedTouches.length == 1) {
                         drop(e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
                 }
 
                 var touchCancel = function(e) {
