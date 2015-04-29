@@ -423,11 +423,20 @@
         stroke-width: 2;
     }
     text {
-        font-size: 10px;
+        font-size: 18px;
     }
-    .axis {
+    .x-axis,
+    .y-axis {
+        text {
+            fill: #717275;
+        }
         line {
             stroke: #c4c5c7;
+        }
+    }
+    .x-axis{
+        text {
+            font-weight: 400;
         }
     }
 }
@@ -592,6 +601,11 @@
             font-size: 20px;
         }
     }
+    .d3-line {
+        text {
+            font-size: 12px;
+        }
+    }
 }
 @media #{$medium-only} { 
     .export-btn {
@@ -608,6 +622,11 @@
                     display: inline !important;
                 }
             }
+        }
+    }
+    .d3-line {
+        text {
+            font-size: 10px;
         }
     }
 }

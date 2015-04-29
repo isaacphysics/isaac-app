@@ -19,7 +19,8 @@ define([], function() {
             restrict: 'A',
 
             scope: {
-                data: "="
+                data: "=",
+                type: "@",
             },
 
             link: function(scope, element, attrs) {
@@ -31,8 +32,8 @@ define([], function() {
                         padding = 30,
                         color_hash = [
                             "#00bbf2",
-                            "orange",
-                            "red",
+                            "#80d4f7",
+                            "#b1e2fa",
                         ]; 
 
                     var minX = Number.MAX_VALUE,
@@ -61,6 +62,20 @@ define([], function() {
                             });
                         }
                         ds.sort(function(a, b){return a.x > b.x ? 1 : (a.x < b.x ? -1 : 0)});
+
+                        if(scope.type === 'area'){
+                            ds.unshift({
+                                x: minX, 
+                                y: 0,
+                                color: ds.color,
+                            });
+                            ds.push({
+                                x: maxX, 
+                                y: 0,
+                                color: ds.color,
+                            });
+                        }
+
                         data.push(ds);
                     }
 
@@ -71,7 +86,7 @@ define([], function() {
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
-                       .range([h - padding, padding]);
+                        .range([h - padding, 5]);
 
 
                     // Create SVG element
@@ -92,7 +107,12 @@ define([], function() {
                     pathContainers.enter().append('g')
                         .attr('class', 'd3-line-data')
                         .attr("style", function(d) {
-                            return "fill: none; stroke:"+ d.color; 
+                            if(scope.type === 'area'){
+                                return "fill:"+d.color+"; stroke:"+ d.color; 
+                            }
+                            else{
+                                return "fill: none; stroke:"+ d.color; 
+                            }
                         });
 
                     pathContainers.selectAll('path')
@@ -103,16 +123,18 @@ define([], function() {
                                 .y(function (d) { return yScale(d.y); })
                             );
 
-                    // add circles
-                    pathContainers.selectAll('circle')
-                        .data(function (d) { return d; })
-                        .enter().append('circle')
-                        .attr('cx', function (d) { return xScale(d.x); })
-                        .attr('cy', function (d) { return yScale(d.y); })
-                        .attr('fill', function (d) { return d.color; })
-                        .attr('stroke', function (d) { return d.color; })
-                        .attr('stroke-width', 3)
-                        .attr('r', 2);
+                    // add circles for line graph
+                    if(scope.type != 'area'){
+                        pathContainers.selectAll('circle')
+                            .data(function (d) { return d; })
+                            .enter().append('circle')
+                            .attr('cx', function (d) { return xScale(d.x); })
+                            .attr('cy', function (d) { return yScale(d.y); })
+                            .attr('fill', function (d) { return d.color; })
+                            .attr('stroke', function (d) { return d.color; })
+                            .attr('stroke-width', 3)
+                            .attr('r', 2);
+                    }
       
                     //Define X axis
                     var xAxis = d3.svg.axis()
@@ -130,23 +152,19 @@ define([], function() {
 
                     //Add X axis
                     svg.append("g")
-                    .attr("class", "axis")
+                    .attr("class", "x-axis")
                     .attr("transform", "translate(0," + (h - padding) + ")")
                     .call(xAxis);
 
                     //Add Y axis
                     svg.append("g")
-                    .attr("class", "axis")
+                    .attr("class", "y-axis")
                     .attr("transform", "translate(" + padding + ",0)")
                     .call(yAxis);
 
                     // Add legend   
                     var legend = svg.append("g")
-                      .attr("class", "legend")
-                      .attr("x", w - 65)
-                      .attr("y", 25)
-                      .attr("height", 100)
-                      .attr("width", 100);
+                      .attr("class", "legend");
 
                     legend.selectAll('g').data(data)
                       .enter()

@@ -55,7 +55,8 @@ define([
     "app/directives/GlobalNavigation",
     "app/directives/equation_editor/TopMenu",
     "app/directives/d3/Donut",
-    "app/directives/d3/Line",
+    "app/directives/d3/Plot",
+    "app/directives/d3/Bar",
     "app/directives/equation_editor/SubMenu",
     "app/directives/ProgressBar",
     "app/directives/equation_editor/MenuSymbol",
@@ -125,7 +126,9 @@ define([
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
 
-	.directive('d3Line', require("app/directives/d3/Line"))
+	.directive('d3Plot', require("app/directives/d3/Plot"))
+
+	.directive('d3Bar', require("app/directives/d3/Bar"))
 	
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
