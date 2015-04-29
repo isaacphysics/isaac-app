@@ -24,8 +24,12 @@ define([], function() {
             },
 
             link: function(scope, element, attrs) {
+
+                scope.$watch('data', function(newData){
+                    if (!newData) {
+                        return;
+                    }
                     
-                scope.$watch('data', function(){
                     var data = [],
                         w = 500,
                         h = 300,
@@ -88,7 +92,7 @@ define([], function() {
                         .domain([0, maxY])
                         .range([h - padding, 5]);
 
-
+                    element.empty();
                     // Create SVG element
                     var svg = d3.select(element[0])
                         .append("svg")

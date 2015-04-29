@@ -64,6 +64,10 @@ define([], function() {
 			'getProgress': {
 				method: 'GET',
 				url: server + "/api/users/:userId/progress",
+			},
+			'getEventsOverTime' : {
+				method: 'GET',
+				url: server + "/api/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
 			}
 		})
 
@@ -128,7 +132,11 @@ define([], function() {
 				url: server + "/api/admin/users/schools/:id", 
 				params: {id: '@id'},
 				isArray: true 
-			}		
+			},
+			'getEventsOverTime' : {
+				method: 'GET',
+				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
+			}					
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
