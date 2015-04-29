@@ -47,7 +47,13 @@ define([], function() {
                 var mousedown = function(e) {
                     scope.$emit("selection_grab", scope.symbolId, "move", e);
                 }
+                
+                var touchStart = function(e) {
+                    if(e.touches.length == 1) 
+                        scope.$emit("selection_grab", scope.symbolId, "move", e);
+                }
 
+                element.on("mousedown", mousedown);
                 element.on("mousedown", mousedown);
 
 			},

@@ -357,6 +357,21 @@ define([], function() {
                     e.preventDefault();
                 }
 
+                var touchMove = function(e) {
+                    if (e.touches.length == 1)
+                        drag(e.touches[0].pageX, e.touches[0].pageY, e);
+                }
+
+                var touchEnd = function(e) {
+                    if (e.changedTouches.length == 1) 
+                        drop(e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);
+                }
+
+                var touchCancel = function(e) {
+                    console.warn("Touch cancelled. This shouldn't have happened.", e);
+                }
+
+
                 scope.dragging = false;
                 var dragLastPageX, dragLastPageY;
                 var dragTotalDx = 0, dragTotalDy = 0;
@@ -371,6 +386,8 @@ define([], function() {
 
                     $("body").on("mouseup", mouseup);
                     $("body").on("mousemove", mousemove);
+                    $("body").on("touchMove", touchMove);
+                    $("body").on("touchEnd", touchEnd);
                 }
 
                 var drag = function drag(pageX, pageY, e) {
@@ -512,7 +529,11 @@ define([], function() {
                         }
                     }
 
-                    grab(e.pageX, e.pageY, e);
+                    if (e.touches) {
+                        grab(e.touches[0].pageX, e.touches[0].pageY, e);
+                    } else {
+                        grab(e.pageX, e.pageY, e);
+                    }
 
                     scope.$broadcast("closeMenus");
 
