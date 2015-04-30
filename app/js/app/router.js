@@ -539,6 +539,15 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('bookQuestion', {
+                url: "/book/question",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/book_question.html",
+                    }
+                }
+            })
+
             .state('addBoard', {
                 url: "/add_gameboard/:boardId",
                 resolve: {
