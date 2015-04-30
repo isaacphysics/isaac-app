@@ -42,10 +42,11 @@ define([], function() {
 
 		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION"}).$promise.then(function(result){
 			$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
-			$scope.globalFlags.isLoading = false;
+			$scope.globalFlags.isLoading = !$scope.subjectData;
 		})
 
 		$scope.progress.$promise.then(function() {
+			$scope.globalFlags.isLoading = !$scope.questionsAnsweredOverTime && $scope.progress != null;
 			$scope.levelData = [
 				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
 				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
