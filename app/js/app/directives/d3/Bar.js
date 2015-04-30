@@ -56,7 +56,6 @@ define([], function() {
                             return {x: ii, y: d[i+1] };
                         })
                     });
-                    console.log(remapped)
 
                     var stacked = d3.layout.stack()(remapped)
 
@@ -102,8 +101,22 @@ define([], function() {
                         .call(yAxis);
 
                     // add next and previous
-                    d3.select(element[0]).append("div").attr("class", "d3-bar-prev") 
+                    d3.select(element[0]).append("div").attr("class", "d3-bar-prev"); 
                     d3.select(element[0]).append("div").attr("class", "d3-bar-next");
+
+                    // Add total count
+                    var total = d3.select(element[0]).append("p")
+                        .attr("class", "d3-bar-total")
+                        .html('6 month total: <strong>45 hours</strong>');
+
+                    // Add key
+                    var key = d3.select(element[0]).append("ul")
+                        .attr("class", "d3-bar-key");
+
+                    key.selectAll("li")
+                        .data(stacked)
+                        .enter().append("li")
+                        .html(function(d, i) { return '<span style="background-color:'+z(i)+'"></span> Title';});
 
                 });
             

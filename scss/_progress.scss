@@ -482,7 +482,7 @@ div[d3-bar] {
         text {
             fill: #999;
             font-size: 25px;
-            font-weight: 600;
+            font-weight: 700;
             text-anchor: middle !important;
         }
     }
@@ -520,6 +520,30 @@ div[d3-bar] {
     -moz-transform: rotate(180deg) translateY(50%);
     -ms-transform: rotate(180deg) translateY(50%);
     transform: rotate(180deg) translateY(50%);
+}
+.d3-bar-key {
+    list-style: none;
+    margin-top: 10px;
+    margin-left: 10px;
+
+    li {
+        font-size: 12px;
+        margin-bottom: 7px;
+
+        span {
+            float: left;
+            width: 15px;
+            height: 15px;
+            margin-right: 8px;
+        }
+    }
+}
+.d3-bar-total {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    margin: 0;
 }
 /*
     All media quires 
