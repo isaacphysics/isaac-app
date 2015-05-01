@@ -307,7 +307,17 @@ define([], function() {
 			}
 		});
 
-		this.schools = $resource(server + "/api/schools");
+		this.schools = $resource(server + "/api/schools", {}, {
+			'get': {
+				method: 'GET', 
+				isArray: false 
+			},
+			'getSchoolOther' : {
+				url: server + "/api/users/schools_other",
+				method: 'GET', 
+				isArray: true
+			}
+		})
 
 		this.environment = $resource(server + "/api/info/segue_environment");
 
