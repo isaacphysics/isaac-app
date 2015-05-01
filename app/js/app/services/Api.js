@@ -128,7 +128,12 @@ define([], function() {
 				url: server + "/api/admin/users/schools/:id", 
 				params: {id: '@id'},
 				isArray: true 
-			}		
+			},
+			'getUserLocations' : {
+				method: 'GET',
+				url: server + "/api/admin/stats/users/last_locations", 
+				isArray: true 
+			}						
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {

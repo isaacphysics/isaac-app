@@ -9,6 +9,7 @@
             <ul class="no-bullet horizontal-list">
                 <li><a href="javascript:void(0)" ng-click="getSchoolListData()">Show School Data</a></li>
                 <li><a href="javascript:void(0)" ng-click="getGameboardListData()">Show Gameboard Data</a></li>
+                <li><a href="javascript:void(0)" ng-click="getLocationData()">Show Location Data</a></li>
             </ul>            
         </div>
     </div>
@@ -20,12 +21,7 @@
             <div class="small-16 columns">
                 <h2>Statistics at a glance</h2>
             </div>
-            <div class="small-16 columns">
-                <div class="text-center" ng-if="generalStatsLoading">
-                    <img src="/assets/loading.gif">
-                </div>    
-            </div>
-            <div ng-if="!generalStatsLoading">
+            <div ng-if="statistics.totalUsers">
                 <div class="medium-8 small-16 columns">
                     <ul>
                         <li>
@@ -77,24 +73,28 @@
                                 </ul></li>
                             </ul>
                         </li> 
-                    </ul>
+                    </ul>      
                 </div>                
             </div>
         </div>        
     </div>
 </div>
-<div class="row" ng-if="visibleStatsPanel == 'gameboardList'">
+<div class="row" ng-if="visibleStatsPanel == 'locationMap' && !globalFlags.isLoading">
+    <div class="small-16 columns">
+        <h2>Last user locations (in the last month)</h2>
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+            <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
+            </ui-gmap-markers>
+        </ui-gmap-google-map>
+    </div>
+</div>
+<div class="row" ng-if="visibleStatsPanel == 'gameboardList' && !globalFlags.isLoading">
     <div class="small-16 columns">
         <div class="panel white clearfix">
             <div class="small-16 columns">
                 <h2>Gameboards By Popularity <span ng-if="gameboardListData">({{gameboardListData.sharedBoards}} shared)</span></h2>
             </div>
-            <div class="small-16 columns">
-                <div class="text-center" ng-if="statsLoading">
-                    <img src="/assets/loading.gif">
-                </div>    
-            </div>
-            <div ng-if="!statsLoading">
+            <div ng-if="!globalFlags.isLoading">
                 <div class="small-16 columns">
                 <table>
                 	<tr>
@@ -116,18 +116,13 @@
     </div>
 </div>
 
-<div class="row" ng-if="visibleStatsPanel == 'schoolList'">
+<div class="row" ng-if="visibleStatsPanel == 'schoolList' && !globalFlags.isLoading">
     <div class="small-16 columns">
         <div class="panel white clearfix">
             <div class="small-16 columns">
                 <h2>Schools By User Links <span ng-if="schoolListData">({{schoolListData.length}} schools)</span></h2>
             </div>
-            <div class="small-16 columns">
-                <div class="text-center" ng-if="statsLoading">
-                    <img src="/assets/loading.gif">
-                </div>    
-            </div>
-            <div ng-if="!statsLoading">
+            <div ng-if="!globalFlags.isLoading">
                 <div class="small-16 columns">
                 <table>
                 	<tr>
@@ -153,18 +148,13 @@
     </div>
 </div>
 
-<div class="row" ng-if="visibleStatsPanel == 'schoolUserList'">
+<div class="row" ng-if="visibleStatsPanel == 'schoolUserList' && !globalFlags.isLoading">
     <div class="small-16 columns">
         <div class="panel white clearfix">
             <div class="small-16 columns">
                 <h2>Users at {{schoolSelected}}</h2>
             </div>
-            <div class="small-16 columns">
-                <div class="text-center" ng-if="statsLoading">
-                    <img src="/assets/loading.gif">
-                </div>    
-            </div>
-            <div ng-if="!statsLoading">
+            <div ng-if="!globalFlags.isLoading">
                 <div class="small-16 columns">
                 <table>
                 	<tr>
