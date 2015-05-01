@@ -23,6 +23,8 @@ define([], function() {
 		$scope.userSearch.isLoading = false;
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
+		$scope.schoolOtherEntries = api.schools.getSchoolOther();
+
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
 		$scope.setVersion = function() {
@@ -44,13 +46,18 @@ define([], function() {
 		$scope.findUsers = function() {
 			if ($scope.userSearch.searchTerms != "") {
 				var role = $scope.userSearch.searchTerms.role;
+				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
 
 				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
 					role = null;
 				}
 				
+				if ($scope.userSearch.searchTerms.schoolOther == "") {
+					schoolOther = null;
+				}
+
 				$scope.userSearch.isLoading = true;
-				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role}).$promise.then(function(result){
+				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 'schoolOther': schoolOther}).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 				});
