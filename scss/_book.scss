@@ -1,20 +1,28 @@
+.book-cover {
+	display: block;
+	margin: 15px auto;
+	width: 170px;
+	height: 244px;
+}
 .book-levels {
 	margin: 18px -0.625rem 0 -0.625rem;
 
 	a {
 		float: left;
+		position: relative;
 		width: 100%;
 		color: $ru_burgundy;
 		font-size: 22px;
-		line-height: 2;
+		line-height: 1.2;
 		font-weight: 600;
 		font-style: italic;
 		background-color: #e1e1e1;
-		padding: 10px 0 7px;
+		padding: 18px 0 17px 65px;
 
 		.icon-stack {
-			position: relative;
-			float: left;
+			position: absolute;
+			top: 10px;
+			left: 0;
 		}
 		.icon-hexagon {
 			float: left;
@@ -29,6 +37,7 @@
   			left: 0;
   			right: 0;
   			text-align: center;
+  			line-height: 2;
   			color: #fff;
   			text-transform: uppercase;
 		}
@@ -39,7 +48,34 @@
 		}
 	}
 }
-
+// fix alignment in Firefox and IE
+@-moz-document url-prefix() {
+	.book-levels {
+		a {
+			.icon-stack {
+				top: 5px;
+			}
+			.count {
+				line-height: 2.4;
+			}
+		}
+	}
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) { 
+	.book-levels {
+		a {
+			.icon-stack {
+				top: 12px;
+			}
+			.count {
+				line-height: 1.9;
+			}
+		}
+	}
+}
+.breadcrumb {
+	border-bottom: #ccc 1px solid;
+}
 .book-breadcrumb {
 	float: left;
 	width: 100%;
@@ -56,6 +92,9 @@
 	}
 }
 .book-accordion {
+	margin-left: -0.9375rem;
+	margin-right: -0.9375rem;
+
 	.title {
 		display: block;
 		position: relative;
@@ -76,13 +115,22 @@
 	.content {
 		background-color: #fff;
 		border: $ru_burgundy 2px solid;
+		padding: 20px;
+
+		p {
+			font-size: 21px;
+			font-weight: 400;
+			font-style: italic;
+			letter-spacing: -0.5px;
+		}
 	}
 
 	&.answers {
+		margin-top: 20px;
+
 		.content {
 			color: #fff;
 			background-color: #333;
-			padding: 20px;
 			border: none;
 		}
 
@@ -100,16 +148,35 @@
 					font-size: 18px;
 					line-height: 1.3;
 					padding: 0;
-				}
 
-				td:first-child {
-					width: 80px;
-					padding-right: 20px;
-					font-style: italic;
-					font-weight: 400;
+					&:first-child {
+						width: 60px;
+						font-style: italic;
+						font-weight: 400;
+					}
+					&:last-child {
+						border-bottom: #999 1px solid;
+					}
+
+					// remove underline when question has been completed
+					&.complete {
+						&:last-child {
+							border-bottom: none;
+						}
+					}
 				}
 			}
 		}
+	}
+}
+.book-glossary {
+	margin: 0;
+	border: #ddd 1px solid;
+	color: #858585;
+	background-color: #fff;
+
+	li {
+		padding: 15px;
 	}
 }
 .accordion.ru_accordion.book {
@@ -120,6 +187,7 @@
 	dd {
 		a.ru_accordion_titlebar {
 			.ru_accordion_name {
+				font-weight: 600;
   				background-color: $ru_burgundy;
   				border-top: 3px solid $ru_burgundy;
   			}
@@ -133,7 +201,98 @@
   				margin-right: 7px;
   			}
   		}
+
+  		.content {
+  			padding-left: 20px;
+  			padding-right: 20px;
+
+  			p {
+  				font-size: 21px;
+				font-weight: 400;
+				font-style: italic;
+				letter-spacing: -0.5px;
+  			}
+  		}
 	}
 
+	.button, button {
+		background-color: $ru_burgundy;
+	}
 
+	.ru-answer-block {
+		li {
+			height: auto;
+		}
+	}
+
+	.tabs-content {
+		&.ru-answer {
+			padding: 0 0.9375rem;
+			border: #333333 solid 2px;
+		}
+	}
+}
+.ru-answer-block button,
+.ru-answer-block input {
+	margin-bottom: 0;
+}
+.book-table {
+	border-collapse: collapse;
+	border: none;
+	border-left: #ddd 1px solid;
+	border-top: #ddd 1px solid;
+
+	tr {
+		td {
+			color: #666;
+			font-size: 14px;
+			line-height: 1.3;
+			font-weight: 600;
+			text-align: center;
+			border-right: #ddd 1px solid;
+			border-bottom: #ddd 1px solid;
+
+			input {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			td {
+				font-size: 18px;
+				font-weight: 400;
+				font-family: times new roman;
+
+				input {
+					font-family: arial;
+				}
+			}
+		}
+	}
+}
+.book-subhead {
+	float: left;
+	font-size: 16px;
+	font-style: italic;
+}
+@media #{$medium-up} { 
+	.book-cover {
+		float: right;
+		display: inline-block;
+		margin-top: 5px;
+		margin-bottom: 0;
+		margin-left: 15px;
+	}
+	.breadcrumb {
+		border-bottom: none;
+	}
+	.book-accordion {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.book-accordion { 
+		margin-top: 20px;
+	}
 }
