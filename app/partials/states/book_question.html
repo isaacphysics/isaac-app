@@ -4,8 +4,8 @@
       Breadcrumb 
     -->
     <ul class="book-breadcrumb">
-      <li><a href="javascript:void(0)">Physics Workbook</a> ></li>
-      <li><a href="javascript:void(0)">Mechanics</a> ></li>
+      <li><a href="javascript:void(0)">Physics Workbook</a></li>
+      <li><a href="javascript:void(0)">Mechanics</a></li>
       <li><a href="javascript:void(0)">Statics</a></li>
     </ul>
   </div>
@@ -14,9 +14,14 @@
       Skill level
     -->
     <div class="book-skill">
-      Skill master = 
+      <span class="book-skill-title">Skill master =</span>
       <span class="book-skill-level">
-        9/12
+        <span class="icon-hexagon"></span>
+        <span class="count">
+          <span class="count-score">12</span>
+          <span class="count-break">/</span>
+          <span class="count-total">12</span>
+        </span>
       </span>
     </div>
   </div>
@@ -153,11 +158,12 @@
               </dl>
               <div class="tabs-content ru_tabs ru-answer">
 
+
                 <!--
                   Question/answer layout 1 
                 -->
                 <div class="row">
-                  <div class="large-9 columns">
+                  <div class="large-9 columns ru-question-block">
                     <p><strong class="ru_burgundy">A1.1</strong>  F = 3:0 N, m = 2:0 kg, what is a?</p>
                   </div>
                   <div class="large-7 columns ru-answer-block">
@@ -167,22 +173,47 @@
                     </ul>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="large-9 columns ru-question-block">
+                    <p><strong class="ru_burgundy">A1.2</strong>  I = 0:20 A, t = 200 s, what is Q?</p>
+                  </div>
+                  <div class="large-7 columns ru-answer-block">
+                    <ul class="small-block-grid-2">
+                      <li><span class="book-subhead">Value</span><input type="text" maxlength="20"></li>
+                      <li><span class="book-subhead">Units</span><button class="button burgundy"></button></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="large-9 columns ru-question-block">
+                    <p><strong class="ru_burgundy">A1.3</strong>  Calculate the resistance needed if you want 0:030 A to flow through a
+component when a 9:0 V battery is connected to it.</p>
+                  </div>
+                  <div class="large-7 columns ru-answer-block">
+                    <ul class="small-block-grid-2">
+                      <li><span class="book-subhead">Value</span><input type="text" maxlength="20"></li>
+                      <li><span class="book-subhead">Units</span><button class="button burgundy"></button></li>
+                    </ul>
+                  </div>
+                </div>
 
+
+                <br><br>
                 <!--
                   Question/answer layout 2
                 -->
-                <div class="row">
+                <div class="row book-table-wrap">
                   <table class="book-table">
                     <thead>
                       <tr>
-                        <td>Diameter<br />(mm)</td>
-                        <td>Cross sectional<br />area (m2)</td>
-                        <td>Original length<br />(m)</td>
-                        <td>Tension<br />(N)</td>
-                        <td>Extension<br />(mm)</td>
-                        <td>Stress<br />(MPa)</td>
-                        <td>Strain<br />(%)</td>
-                        <td>Young’s modulus<br />(GPa)</td>
+                        <td>Diameter (mm)</td>
+                        <td>Cross sectional area (m2)</td>
+                        <td>Original length (m)</td>
+                        <td>Tension (N)</td>
+                        <td>Extension (mm)</td>
+                        <td>Stress (MPa)</td>
+                        <td>Strain (%)</td>
+                        <td>Young’s modulus (GPa)</td>
                       </tr>
                     </thead>
                     <tbody>
@@ -209,6 +240,49 @@
                     </tbody>
                   </table>
                 </div>
+                <script>
+                /* 
+                  Stacktable.js http://johnpolacek.github.io/stacktable.js/
+                */
+                !function(t){t.fn.cardtable=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0,headIndex:0},d=t.extend({},e,a);return headIndex=a&&a.headIndex?a.headIndex:0,s.each(function(){if($table=t(this),!$table.hasClass("stacktable")){var a=t(this).prop("class"),s=t("<div></div>");"undefined"!=typeof d.myClass&&s.addClass(d.myClass);var e="";$table.addClass("stacktable large-only"),$caption=$table.find("caption").clone(),$topRow=$table.find("tr").eq(0),$table.find("tbody tr").each(function(){headMarkup="",bodyMarkup="",tr_class=t(this).prop("class"),t(this).find("td,th").each(function(a){""!==t(this).html()&&(bodyMarkup+='<tr class="'+tr_class+'">',bodyMarkup+=$topRow.find("td,th").eq(a).html()?'<td class="st-key">'+$table.find("thead th").eq(a).html()+"</td>":'<td class="st-key"></td>',bodyMarkup+='<td class="st-val '+t(this).prop("class")+'">'+t(this).html()+"</td>",bodyMarkup+="</tr>")}),e+='<table class=" '+a+" "+d.id+'"><tbody>'+headMarkup+bodyMarkup+"</tbody></table>"}),$table.find("tfoot tr td").each(function(s,l){""!==t.trim(t(l).text())&&(e+='<table class="'+a+" "+d.id+'"><tbody><tr><td>'+t(l).html()+"</td></tr></tbody></table>")}),s.prepend($caption),s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()}})},t.fn.stacktable=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0,headIndex:0},d=t.extend({},e,a);return headIndex=a&&a.headIndex?a.headIndex:0,s.each(function(){var a=t(this).prop("class"),s=t('<table class="'+a+" "+d.id+'"><tbody></tbody></table>');"undefined"!=typeof d.myClass&&s.addClass(d.myClass);var e="";$table=t(this),$table.addClass("stacktable large-only"),$caption=$table.find("caption").clone(),$topRow=$table.find("tr").eq(0),$table.find("tr").each(function(a){headMarkup="",bodyMarkup="",tr_class=t(this).prop("class"),0===a?e+='<tr class=" '+tr_class+' "><th class="st-head-row st-head-row-main" colspan="2">'+t(this).find("th,td").eq(headIndex).html()+"</th></tr>":(t(this).find("td,th").each(function(a){a===headIndex?headMarkup='<tr class="'+tr_class+'"><th class="st-head-row" colspan="2">'+t(this).html()+"</th></tr>":""!==t(this).html()&&(bodyMarkup+='<tr class="'+tr_class+'">',bodyMarkup+=$topRow.find("td,th").eq(a).html()?'<td class="st-key">'+$topRow.find("td,th").eq(a).html()+"</td>":'<td class="st-key"></td>',bodyMarkup+='<td class="st-val '+t(this).prop("class")+'">'+t(this).html()+"</td>",bodyMarkup+="</tr>")}),e+=headMarkup+bodyMarkup)}),s.prepend($caption),s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()})},t.fn.stackcolumns=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0},d=t.extend({},e,a);return s.each(function(){$table=t(this);var a=$table.find("tr").eq(0).find("td,th").length;if(!(3>a)){var s=t('<table class="'+d.id+'"></table>');"undefined"!=typeof d.myClass&&s.addClass(d.myClass),$table.addClass("stacktable large-only");for(var e=t("<tbody></tbody>"),l=1;a>l;)$table.find("tr").each(function(a){var s=t("<tr></tr>");0===a&&s.addClass("st-head-row st-head-row-main"),first=t(this).find("td,th").eq(0).clone().addClass("st-key");var d=l;if(t(this).find("*[colspan]").length){var n=0;t(this).find("td,th").each(function(){var a=t(this).attr("colspan");return a?(a=parseInt(a,10),d-=a-1,n+a>l&&(d+=n+a-l-1),n+=a):n++,n>l?!1:void 0})}second=t(this).find("td,th").eq(d).clone().addClass("st-val").removeAttr("colspan"),s.append(first,second),e.append(s)}),++l;s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()}})}}(jQuery);
+
+
+                  $('.book-table').stacktable({myClass:'show-for-small-only'});
+                </script>
+
+
+                <br><br>
+                <!--
+                    Question/answer layout 3
+                  -->
+                <div class="row">
+                  <div class="large-16 columns">
+                    <h4 class="ru_burgundy">Figure 1.0</h4>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="large-8 columns book-figure">
+                      <img src="http://placehold.it/600x350" alt="">
+                      <div class="book-answer-row ru-answer-block">
+                        <ul class="small-block-grid-2">
+                          <li><input type="text" maxlength="20"></li>
+                          <li><button class="button burgundy"></button></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="large-8 columns book-figure">
+                      <img src="http://placehold.it/600x350" alt="">
+                      <div class="book-answer-row ru-answer-block">
+                        <ul class="small-block-grid-2">
+                          <li><input type="text" maxlength="20"></li>
+                          <li><button class="button burgundy"></button></li>
+                        </ul>
+                      </div>
+                    </div>
+                </div>
+
+
+
               </div>
             </div>
           </div>
