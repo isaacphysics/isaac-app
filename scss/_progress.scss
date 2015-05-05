@@ -463,7 +463,8 @@
     border-radius: 4px;           
     pointer-events: none;         
 }
-div[d3-bar] {
+div[d3-bar],
+div[d3-plot] {
     position: relative;
 }
 .d3-bar {
@@ -539,6 +540,31 @@ div[d3-bar] {
             width: 15px;
             height: 15px;
             margin-right: 8px;
+        }
+    }
+}
+.d3-plot-key {
+    float: right;
+    list-style: none;
+    margin-top: -10px;
+    margin-left: 10px;
+
+    li {
+        position: relative;
+        font-size: 12px;
+        text-align: right;
+        padding-right: 50px;
+        margin-bottom: 7px;
+
+        span {
+            position: absolute;
+            top: -1px;
+            right: 0;
+            width: 44px;
+            height: 18px;
+            display: inline-block;
+            margin-left: 5px;
+
         }
     }
 }
@@ -715,6 +741,9 @@ div[d3-bar] {
             font-size: 12px;
         }
     }
+    .d3-plot-key {
+        margin-top: -25px;
+    }
 }
 @media #{$medium-only} { 
     .export-btn {
@@ -734,15 +763,24 @@ div[d3-bar] {
         }
     }
     .d3-line {
+        width: 715px;
+
         text {
             font-size: 10px;
         }
+    }
+    .d3-plot-key {
+        position: absolute;
+        margin-top: 0;
+        width: 200px;
+        top: 0;
+        right: 0;
     }
 }
 
 .progress-wrap {
     h6 {
-        height:40px;
+        height: 40px;
     }
 
     select {
