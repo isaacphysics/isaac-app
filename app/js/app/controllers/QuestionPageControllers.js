@@ -24,6 +24,8 @@ define([], function() {
 
 		$rootScope.pageTitle = page.title;
 
+		$scope.state = {};
+
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
@@ -108,6 +110,7 @@ define([], function() {
 			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
 			$scope.gameBoard.$promise.then(function(board) {
 
+				console.debug("Question is from board:", board);
 				// Cause this board to be persisted for the current user. 
 				// This will fail if we're not logged in, but that doesn't matter.
 				api.saveGameBoard(board.id);
