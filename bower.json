@@ -14,6 +14,7 @@
     "angular-animate": "1.2.x",
     "angular-cookies": "1.2.x",
     "angular-google-maps": "2.1.x",
+    "lodash": "2.4.2",
     "foundation": "5.5.1",
     "react": "0.10.0",
     "angulartics": "0.15.17",
