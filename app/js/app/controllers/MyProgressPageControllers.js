@@ -40,8 +40,15 @@ define([], function() {
 			userOfInterest = $scope.user._id;
 		}
 
-		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION"}).$promise.then(function(result){
+		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result){
 			$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
+			for (var property in $scope.questionsAnsweredOverTime) {
+			    // remove underscores in series label.
+			    if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
+			        $scope.questionsAnsweredOverTime[property.replace("_", " ")] = $scope.questionsAnsweredOverTime[property];
+			        delete $scope.questionsAnsweredOverTime[property];
+			    }
+			}			
 			$scope.globalFlags.isLoading = !$scope.subjectData;
 		})
 

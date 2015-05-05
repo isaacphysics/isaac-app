@@ -97,7 +97,6 @@ define([], function() {
 				$scope.globalFlags.isLoading = true;
 
 				api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
-
 					for(var i = 0; i < result.length; i++) {
 						result[i].id = i;
 					}
