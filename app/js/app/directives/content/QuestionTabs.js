@@ -63,6 +63,31 @@ define(["app/honest/responsive_video"], function(rv) {
 
 						s.$promise.then(function foo(r) {
 							scope.validationResponse = r;
+
+							if (scope.gameBoard) {
+
+								// Re-load the game board to check for updated progress
+
+								var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
+
+								api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
+
+									scope.state.gameBoardPercentComplete = board.percentageCompleted;
+
+									if (initialGameBoardPercent < board.percentageCompleted) {
+										// Something has actually changed. We must have either completed a question, or a question AND the board.
+										scope.modals["congrats"].show();
+/*
+										if (board.percentageCompleted == 100) {
+											// We completed the board.
+
+										} else {
+											// We completed a question.
+										}*/
+									}
+
+								});
+							}
 						}, function bar(e) {
 							console.error("Error validating answer:", e);
 						});

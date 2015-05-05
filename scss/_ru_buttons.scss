@@ -33,6 +33,12 @@
     &.burgundy {
         background-color: $ru_burgundy;
     }
+    &.quaternary {
+        background-color: #009acd;
+        &:hover {
+            background-color: #6eb4cd;
+        }
+    }
 }
 .ru-button {
 	padding-top: 0.3rem;

@@ -99,3 +99,42 @@
         <section footer-pods related-content="questionPage.relatedContent"></section>
     </div>
 </div>
+
+<div isaac-modal="congrats">
+  <div class="reveal-modal-head">
+    <h2>Congratulations!</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <!-- 
+        Physics question
+    -->
+    <div ng-class="['congrats', pageSubject]">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span ng-class="state.gameBoardPercentComplete == 100 ? 'icon-board-complete' : 'icon-question-complete'"></span>
+        </span>
+        <div ng-show="state.gameBoardPercentComplete == 100" class="congrats-msg">
+            <p>You've completed your board</p>
+            <h3>{{gameBoard.title}}</h3>
+        </div>
+        <div ng-show="state.gameBoardPercentComplete < 100" class="congrats-msg">
+            <p>You've completed this question</p>
+            <h3>{{questionPage.title}}</h3>
+        </div>
+    </div>
+    <div ng-show="nextQuestion" class="row">
+        <div class="text-center columns">
+            <h4 class="congrats-subhead">Next question:</h4>
+        </div>
+        <div class="text-center columns">
+            <a class="ru-button-big" ui-sref="question({id: nextQuestion.id})" ng-click="modals.congrats.hide()">{{nextQuestion.title}}</a>
+        </div>
+    </div>
+    <div ng-show="!nextQuestion" class="row">
+        <div class="text-center columns">
+            <a class="ru-button-big" ng-click="modals.congrats.hide(); backToBoard();">Back to Board</a>
+        </div>
+    </div>
+  </div>
+</div>

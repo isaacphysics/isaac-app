@@ -44,6 +44,10 @@
         font-size: 13px;
     }
 }
+.graph-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+}
 /*
     Assignment progress styles 
 */
@@ -413,6 +417,164 @@
         font-size: 12px;
     }
 }
+.d3-line {
+    .domain {
+        stroke: #c4c5c7;
+        stroke-width: 0.6;
+        fill: none;
+    }
+    .d3-line-data {
+        stroke-width: 2;
+    }
+    text {
+        font-size: 18px;
+    }
+    .x-axis,
+    .y-axis {
+        text {
+            fill: #717275;
+        }
+        line {
+            stroke: #c4c5c7;
+        }
+    }
+    .x-axis{
+        text {
+            font-weight: 400;
+        }
+    }
+    .legend {
+        text {
+            font-size: 7px;
+            text-anchor: end;
+        }
+    }
+}
+.d3-tooltip {   
+    position: absolute;           
+    text-align: center;           
+    width: 50px;                  
+    height: 28px;                 
+    padding: 5px 0 3px;             
+    font-size: 12px;        
+    background: #333;
+    color: #fff;   
+    border: 0;      
+    border-radius: 4px;           
+    pointer-events: none;         
+}
+div[d3-bar],
+div[d3-plot] {
+    position: relative;
+}
+.d3-bar {
+
+    .x-axis,
+    .y-axis {
+        path {
+            fill: none;
+        }
+    }
+    .y-axis {
+        text {
+            fill: #333;
+            font-size: 22px;
+            font-weight: 600;
+            text-anchor: middle !important;
+        }
+    }
+    .x-axis {
+        text {
+            fill: #999;
+            font-size: 25px;
+            font-weight: 700;
+            text-anchor: middle !important;
+        }
+    }
+}
+
+.d3-bar-prev,
+.d3-bar-next {
+    position: absolute;
+    top: 36%;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(31, 31, 31, 0.21);
+    background-repeat: no-repeat;
+    background-position: 18px;
+    background-image: url(/assets/white-arrow.png);
+    border-radius: 2px;
+    border: #c4c4c4 1px solid;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(31, 31, 31, 0.5);
+        border: #8c8c8c 1px solid;
+    }
+}
+.d3-bar-prev {
+    left: 0;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.d3-bar-next {
+    right: 0;
+    -webkit-transform: rotate(180deg) translateY(50%);
+    -moz-transform: rotate(180deg) translateY(50%);
+    -ms-transform: rotate(180deg) translateY(50%);
+    transform: rotate(180deg) translateY(50%);
+}
+.d3-bar-key {
+    list-style: none;
+    margin-top: 10px;
+    margin-left: 10px;
+
+    li {
+        font-size: 12px;
+        margin-bottom: 7px;
+
+        span {
+            float: left;
+            width: 15px;
+            height: 15px;
+            margin-right: 8px;
+        }
+    }
+}
+.d3-plot-key {
+    float: right;
+    list-style: none;
+    margin-top: -10px;
+    margin-left: 10px;
+
+    li {
+        position: relative;
+        font-size: 12px;
+        text-align: right;
+        padding-right: 50px;
+        margin-bottom: 7px;
+
+        span {
+            position: absolute;
+            top: -1px;
+            right: 0;
+            width: 44px;
+            height: 18px;
+            display: inline-block;
+            margin-left: 5px;
+
+        }
+    }
+}
+.d3-bar-total {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    margin: 0;
+}
 /*
     All media quires 
 */
@@ -574,6 +736,14 @@
             font-size: 20px;
         }
     }
+    .d3-line {
+        text {
+            font-size: 12px;
+        }
+    }
+    .d3-plot-key {
+        margin-top: -25px;
+    }
 }
 @media #{$medium-only} { 
     .export-btn {
@@ -592,11 +762,25 @@
             }
         }
     }
+    .d3-line {
+        width: 715px;
+
+        text {
+            font-size: 10px;
+        }
+    }
+    .d3-plot-key {
+        position: absolute;
+        margin-top: 0;
+        width: 200px;
+        top: 0;
+        right: 0;
+    }
 }
 
 .progress-wrap {
     h6 {
-        height:40px;
+        height: 40px;
     }
 
     select {

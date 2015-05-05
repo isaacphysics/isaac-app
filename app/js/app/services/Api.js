@@ -30,13 +30,13 @@ define([], function() {
 		this.questionValidator = $resource(server + "/api/questions/:id/answer", {}, {
 			validate: {
 				method: "POST",
-			}
+			},
 		});
 
 		this.contactForm = $resource(server + "/api/contact/", {}, {
 			send: {
 				method: "POST",
-			}
+			},
 		});
 
 		this.gameBoards = $resource(server + "/api/gameboards/:id", {id: "@id"}, {
@@ -48,7 +48,7 @@ define([], function() {
 				method: "GET",
 				url: server + "/api/gameboards/wildcards",
 				isArray: true 
-			}
+			},
 		});
 
 		this.contentProblems = $resource(server + "/api/admin/content_problems");
@@ -64,7 +64,11 @@ define([], function() {
 			'getProgress': {
 				method: 'GET',
 				url: server + "/api/users/:userId/progress",
-			}
+			},
+			'getEventsOverTime' : {
+				method: 'GET',
+				url: server + "/api/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
+			},
 		})
 
 		this.authentication = $resource("", {}, {
@@ -87,14 +91,14 @@ define([], function() {
 			'logout': {
 				method: 'POST',
 				url: server+"/api/auth/logout",
-			}
+			},
 		});
 		
 		this.searchEndpoint = $resource(server + "/api/search/:searchTerms?types=:types", {}, {
 			'search': {
 				method: 'GET', 
 				isArray: false 
-			}
+			},
 		});
 
 		this.adminUserSearch = $resource(server + "/api/admin/users/:userId?email=:email", {}, {
@@ -105,7 +109,7 @@ define([], function() {
 			'get' : {
 				method: 'GET', 
 				isArray: false 
-			}
+			},
 		});
 
 		this.statisticsEndpoint = $resource(server + "/api/admin/stats/", {}, {
@@ -128,13 +132,22 @@ define([], function() {
 				url: server + "/api/admin/users/schools/:id", 
 				params: {id: '@id'},
 				isArray: true 
-			}		
+			},
+			'getEventsOverTime' : {
+				method: 'GET',
+				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data:bin_data"
+			},
+			'getUserLocations' : {
+				method: 'GET',
+				url: server + "/api/admin/stats/users/last_locations", 
+				isArray: true 
+			},
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
-			}
+			},
 		});
 
 		this.groupManagementEndpoint = $resource(server + "/api/groups/:id", {id: "@id"}, {
@@ -156,7 +169,7 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/authorisations/token/:id", 
 				isArray: false 
-			}			
+			},
 		});
 
 		this.authorisations = $resource(server + "/api/authorisations/", {}, {
@@ -177,7 +190,7 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/authorisations/other_users", 
 				isArray: true 
-			}			
+			},
 		});	
 
 		this.assignments = $resource(server + "/api/assignments/", {}, {
@@ -210,7 +223,7 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/assignments/assign/:assignmentId/progress",
 				isArray: true,
-			}			
+			},
 		});			
 
         this.events = $resource(server + "/api/events/:id");
@@ -228,7 +241,7 @@ define([], function() {
 			'deleteBooking' : {
 				method: 'DELETE', 
 				url: server + "/api/events/:eventId/bookings/:userId"			
-			}
+			},
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
@@ -307,20 +320,30 @@ define([], function() {
 			}
 		});
 
-		this.schools = $resource(server + "/api/schools");
+		this.schools = $resource(server + "/api/schools", {}, {
+			'get': {
+				method: 'GET', 
+				isArray: false 
+			},
+			'getSchoolOther' : {
+				url: server + "/api/users/schools_other",
+				method: 'GET', 
+				isArray: true
+			},
+		})
 
 		this.environment = $resource(server + "/api/info/segue_environment");
 
 		this.password = $resource(server + "/api/users/resetpassword/:token", null, {
 			reset: {
 				method: "POST",
-			}
+			},
 		});
 
 		this.logger = $resource(server + "/api/log", {}, {
 			log : {
 				method: "POST",
-			}
+			},
 		})
 
 		this.contentVersion = $resource("", {}, {
@@ -331,7 +354,7 @@ define([], function() {
 			"set": {
 				method: "POST",
 				url: server + "/api/admin/live_version/:version",
-			}
+			},
 		})
 
 

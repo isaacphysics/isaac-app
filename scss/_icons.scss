@@ -23,9 +23,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-stack {
-
-}
 .icon-spinner:before {
   content: "d";
 }
@@ -73,4 +70,10 @@
 }
 .icon-twitter:before {
   content: "p";
+}
+.icon-board-complete:before {
+  content: "q";
+}
+.icon-question-complete:before {
+  content: "r";
 }

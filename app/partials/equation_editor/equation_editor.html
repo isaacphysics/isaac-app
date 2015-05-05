@@ -1,0 +1,34 @@
+<div class="equation-editor" ng-mousedown="editorClick($event)" tabindex="0">
+    <div top-menu="123">
+        <div number-entry></div>
+    </div>
+    <div top-menu="abc\,\, \alpha \beta \gamma">
+        <div sub-menu></div>
+        <div sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
+        <div sub-menu-item menu-title="latinLetterUpperTitle" symbol-menu symbols="symbolLibrary.latinLettersUpper"></div>
+        <div sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
+        <div sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
+    </div>
+    <div top-menu="+\, -\, \sqrt{x}">
+        <div symbol-menu symbols="symbolLibrary.operators"></div>
+    </div>
+    <div top-menu="\sin\,\, \int">
+        MENU4 CONTENT
+    </div>
+
+    <div ng-repeat="(sid, s) in symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}" selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
+    
+    <div ng-show="selectedSymbols.length" selection-handle></div>
+
+    <div ng-show="dragMode=='selectionBox'" class="selection-box"></div>
+
+    <!-- BUTTONS -->
+
+    <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0"></div>
+    <div class="hex-button redo" ng-click="redo()" ng-if="future.length > 0"></div>
+
+    <div ng-show="selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
+
+    <div class="result-preview"><span></span></div>
+    <div class="hex-button submit"></div>
+</div>

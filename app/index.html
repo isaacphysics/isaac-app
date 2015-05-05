@@ -26,6 +26,9 @@
     <link rel="icon" href="/assets/favicon/isaac-favicon-96x96.png"   sizes="96x96">
     <link rel="icon" href="/assets/favicon/isaac-favicon-196x196.png" sizes="196x196">
 
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.2.0/katex.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.2.0/katex.min.js"></script>
+    
     <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.4/MathJax.js?delayStartupUntil=configured"> </script>
 
     <link rel="stylesheet" href="/css/app.css" />
@@ -89,5 +92,13 @@
           ga('create', 'UA-51129534-1', { 'cookieDomain': 'none' });
 
         </script>
+
+        <div id="equationModal" class="reveal-modal" data-reveal>
+          <div class="reveal-modal-body">
+            <div style="position:fixed;left:0;top:0;right:0;bottom:0;">
+                <div equation-editor style="height:100%"></div>
+            </div>
+          </div>
+        </div>
   </body>
 </html>

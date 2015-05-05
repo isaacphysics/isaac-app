@@ -73,6 +73,15 @@
                                 <strong>Find a user by email</strong>
                             </label>                            
                             <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
+
+                            <label for="user-school-other">
+                                <strong>Find by manually entered school:</strong>
+                            </label>
+                            <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
+                                <option value="">Any School</option>
+                                <option ng-repeat="school in schoolOtherEntries" ng-value="school.name">{{school.name}}</option>
+                            </select> 
+
                             <label for="user-search-role">
                                 <strong>Find by user role:</strong>
                             </label>
@@ -101,25 +110,26 @@
                     <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
                         <div class="small-16 columns">
                             <h4>User search results ({{userSearch.results.length}})</h4>
-                            <div class="ru-concept-results">
-                                <div ng-repeat="result in userSearch.results" class='row ru-mobile-answer-wrap' class="physics">
-                                    <div class='small-16 columns'>
-                                        <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
-                                            <div ui-sref="accountSettings({'userId' : result._id })" class="ru-search-result-content">
-                                                <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
-                                                <h4>
-                                                    <span class="physics">{{result.familyName}}, {{result.givenName}}, {{result.email}}</span> 
-                                                    <br> Role: {{result.role || "NOT_SET"}} 
-                                                    <br> School Set: {{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }} 
-                                                    <br> Member Since: {{result.registrationDate | date:'dd/MM/yyyy'}} Last Seen: {{result.lastSeen | date:'dd/MM/yyyy'}}
-                                                </h4>
-                                            </div>
-                                            <a href="javascript:void(0);" class="right" ng-click="deleteUser(result._id)">Delete user</a>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <table>
+                                <tr>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'familyName'; reverse=!reverse">Name</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
+                                    <th>School Set</th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
+                                    <th>Actions</th>
+                                </tr>
+                                <tr ng-repeat="result in userSearch.results | orderBy:userSearchSortPredicate:reverse">
+                                    <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
+                                    <td>{{result.email}}</td>                                    
+                                    <td>{{result.role || "NOT_SET"}}</td>
+                                    <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
+                                    <td><a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id)">Delete</a></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </section>

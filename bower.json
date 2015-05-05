@@ -13,6 +13,7 @@
     "angular-resource": "1.2.x",
     "angular-animate": "1.2.x",
     "angular-cookies": "1.2.x",
+    "angular-google-maps": "2.1.x",
     "foundation": "5.5.1",
     "react": "0.10.0",
     "angulartics": "0.15.17",
