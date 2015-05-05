@@ -4,7 +4,6 @@ node_modules/
 tmp
 .DS_Store
 .idea
-dist/
 app.tar.gz
 *.localbackup
 app/npm-debug.log
