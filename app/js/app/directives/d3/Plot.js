@@ -167,8 +167,7 @@ define([], function() {
                     var xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
-                        //.ticks(5)
-                        // Add bg lines to graph
+                        .ticks(5)
                         .tickSize(-h).tickSubdivide(true)
                         .tickFormat(d3.time.format("%b"));
 
