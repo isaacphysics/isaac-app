@@ -135,7 +135,7 @@ define([], function() {
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
-				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data:bin_data"
+				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
 			},
 			'getUserLocations' : {
 				method: 'GET',

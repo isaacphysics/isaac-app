@@ -106,6 +106,21 @@ define([], function() {
 				});
 			}
 
+			$scope.questionsAnsweredOverTime = null;
+			$scope.getEventsGraph = function() {
+					$scope.globalFlags.isLoading = true;
+					$scope.visibleStatsPanel = "eventsGraph";
+
+					// start and end dates for line graphs
+					var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
+					dataStartDate = dataStartDate.getTime();
+					var dataEndDate = new Date().getTime();
+
+				api.statisticsEndpoint.getEventsOverTime({from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION,VIEW_QUESTION", bin_data:true}).$promise.then(function(result){
+					$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
+					$scope.globalFlags.isLoading = false;
+				});
+			}
 
 			$scope.map = { center: { latitude: 53.670680, longitude: -1.582031 }, zoom: 5 };
 

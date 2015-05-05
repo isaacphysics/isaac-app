@@ -10,6 +10,7 @@
                 <li><a href="javascript:void(0)" ng-click="getSchoolListData()">Show School Data</a></li>
                 <li><a href="javascript:void(0)" ng-click="getGameboardListData()">Show Gameboard Data</a></li>
                 <li><a href="javascript:void(0)" ng-click="getLocationData()">Show Location Data</a></li>
+                <li><a href="javascript:void(0)" ng-click="getEventsGraph()">Show Graph</a></li>                
             </ul>            
         </div>
     </div>
@@ -80,14 +81,30 @@
     </div>
 </div>
 <div class="row" ng-if="visibleStatsPanel == 'locationMap' && !globalFlags.isLoading">
-    <div class="small-16 columns">
-        <h2>Last user locations (in the last month)</h2>
-        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-            <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
-            </ui-gmap-markers>
-        </ui-gmap-google-map>
-    </div>
+        <div class="small-16 columns">
+            <div class="panel white clearfix">
+                <div class="small-16 columns">
+                    <h2>Last user locations (in the last month)</h2>
+                    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                        <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
+                        </ui-gmap-markers>
+                    </ui-gmap-google-map>
+                </div>            
+            </div>
+        </div>
 </div>
+<div class="row" ng-if="visibleStatsPanel == 'eventsGraph' && !globalFlags.isLoading">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Questions answered over time</h2>
+                <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            </div>
+        </div>
+    </div> 
+</div>    
+
+
 <div class="row" ng-if="visibleStatsPanel == 'gameboardList' && !globalFlags.isLoading">
     <div class="small-16 columns">
         <div class="panel white clearfix">
