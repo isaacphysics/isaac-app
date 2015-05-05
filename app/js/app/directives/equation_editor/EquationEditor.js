@@ -262,6 +262,10 @@ define([], function() {
                 }
 
                 scope.$watch("symbols", function(newSymbols, oldSymbols) {
+                    
+                    if (JSON.stringify(newSymbols) == JSON.stringify(oldSymbols))
+                        return;
+
                     $(".result-preview").animate({width: 0}, 200);
 
                     requestParse();
