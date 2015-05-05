@@ -155,6 +155,8 @@
             <div class="pad"></div>
             <div class='show-for-small-only pad'></div>     
 
+            <a href="javascript:void(0)" ng-click="modals.congrats.show()">open Congratulations message</a>
+
         <!-- Additional Information Panel - when logged in -->
         <section ng-if="user.givenName">
             <div pod-carousel></div>
@@ -229,4 +231,67 @@
             </svg>
         </div>
     </div>
+</div>
+
+
+<div isaac-modal="congrats">
+  <div class="reveal-modal-head">
+    <h2>Congratulations!</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <!-- 
+        Physics question
+    -->
+    <div class="congrats physics">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-question-complete"></span>
+        </span>
+        <div class="congrats-msg">
+            <p>You've completed your board</p>
+            <h3>My first physics board</h3>
+        </div>
+    </div>
+    <!-- 
+        Maths question
+    -->
+    <div class="congrats maths">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-question-complete"></span>
+        </span>
+        <div class="congrats-msg">
+            <p>You've completed your board</p>
+            <h3>My first physics board</h3>
+        </div>
+    </div>
+    <!-- 
+        Board complete
+    -->
+    <div class="congrats">
+        <span class="icon-stack">
+            <span class="icon-hexagon"></span>
+            <span class="icon-board-complete"></span>
+        </span>
+        <div class="congrats-msg">
+            <p>You've completed your board</p>
+            <h3>My first physics board</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center columns">
+            <h4 class="congrats-subhead">Now maybe try</h4>
+        </div>
+        <div class="text-center columns">
+            <a class="ru-button-big" href="javascript:void(0)">Angular Equations of motion</a>
+        </div>
+        <div class="text-center columns">
+            <a class="ru-button-big primary" href="javascript:void(0)">Angular Equations of motion</a>
+        </div>
+        <div class="text-center columns">
+            <a class="ru-button-big quaternary" href="javascript:void(0)">Angular Equations of motion</a>
+        </div>
+    </div>
+  </div>
 </div>

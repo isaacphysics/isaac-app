@@ -29,8 +29,12 @@ define([], function() {
                         $("#isaacModal").empty().append($compile(rawClone)(scope));
                         $("#isaacModal").foundation("reveal", "open");
 
-                        var modalHeight = $("#isaacModal").height();
-                        $("#isaacModal").css("top", "calc(33% - " + modalHeight + "px /2)");
+                        var windowHeight = $(window).height(),
+                            modalHeight = $("#isaacModal").height(),
+                            modalPosition = (33/100*windowHeight) - (modalHeight/2);
+
+                        $("#isaacModal").css("top", modalPosition > 0 ? modalPosition+'px' : 0);
+                        
                     },
                     hide: function() {
                         $("#isaacModal").foundation("reveal", "close");
