@@ -33,11 +33,12 @@ define([], function() {
                     var data = [],
                         w = 500,
                         h = 225,
-                        padding = 30,
+                        padding = 55,
                         color_hash = [
-                            "#00bbf2",
-                            "#80d4f7",
-                            "#b1e2fa",
+                            "#b2e2f9",
+                            "#3db2e7",
+                            "#17668f",
+                            "#0e212f"
                         ]; 
 
                     var minX = Number.MAX_VALUE,
@@ -49,6 +50,7 @@ define([], function() {
                         var ds = [];
                         ds.color = color_hash[data.length];
                         ds.title = series;
+
                         for(key in scope.data[series]){
                             var x = Date.parse(key),
                                 y = scope.data[series][key];
@@ -86,7 +88,9 @@ define([], function() {
                     // Define axis ranges & scales        
                     var xScale = d3.time.scale()
                         .domain([minX, maxX])
-                        .range([padding, w]);
+                        .range([padding, w - 30]);
+
+                        console.log('Start date = ' + new Date(minX).toString());
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
@@ -163,7 +167,7 @@ define([], function() {
                     var xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
-                        .ticks(5)
+                        //.ticks(5)
                         // Add bg lines to graph
                         .tickSize(-h).tickSubdivide(true)
                         .tickFormat(d3.time.format("%b"));
