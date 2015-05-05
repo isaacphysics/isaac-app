@@ -241,13 +241,67 @@ component when a 9:0 V battery is connected to it.</p>
                   </table>
                 </div>
                 <script>
-                /* 
-                  Stacktable.js http://johnpolacek.github.io/stacktable.js/
-                */
-                !function(t){t.fn.cardtable=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0,headIndex:0},d=t.extend({},e,a);return headIndex=a&&a.headIndex?a.headIndex:0,s.each(function(){if($table=t(this),!$table.hasClass("stacktable")){var a=t(this).prop("class"),s=t("<div></div>");"undefined"!=typeof d.myClass&&s.addClass(d.myClass);var e="";$table.addClass("stacktable large-only"),$caption=$table.find("caption").clone(),$topRow=$table.find("tr").eq(0),$table.find("tbody tr").each(function(){headMarkup="",bodyMarkup="",tr_class=t(this).prop("class"),t(this).find("td,th").each(function(a){""!==t(this).html()&&(bodyMarkup+='<tr class="'+tr_class+'">',bodyMarkup+=$topRow.find("td,th").eq(a).html()?'<td class="st-key">'+$table.find("thead th").eq(a).html()+"</td>":'<td class="st-key"></td>',bodyMarkup+='<td class="st-val '+t(this).prop("class")+'">'+t(this).html()+"</td>",bodyMarkup+="</tr>")}),e+='<table class=" '+a+" "+d.id+'"><tbody>'+headMarkup+bodyMarkup+"</tbody></table>"}),$table.find("tfoot tr td").each(function(s,l){""!==t.trim(t(l).text())&&(e+='<table class="'+a+" "+d.id+'"><tbody><tr><td>'+t(l).html()+"</td></tr></tbody></table>")}),s.prepend($caption),s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()}})},t.fn.stacktable=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0,headIndex:0},d=t.extend({},e,a);return headIndex=a&&a.headIndex?a.headIndex:0,s.each(function(){var a=t(this).prop("class"),s=t('<table class="'+a+" "+d.id+'"><tbody></tbody></table>');"undefined"!=typeof d.myClass&&s.addClass(d.myClass);var e="";$table=t(this),$table.addClass("stacktable large-only"),$caption=$table.find("caption").clone(),$topRow=$table.find("tr").eq(0),$table.find("tr").each(function(a){headMarkup="",bodyMarkup="",tr_class=t(this).prop("class"),0===a?e+='<tr class=" '+tr_class+' "><th class="st-head-row st-head-row-main" colspan="2">'+t(this).find("th,td").eq(headIndex).html()+"</th></tr>":(t(this).find("td,th").each(function(a){a===headIndex?headMarkup='<tr class="'+tr_class+'"><th class="st-head-row" colspan="2">'+t(this).html()+"</th></tr>":""!==t(this).html()&&(bodyMarkup+='<tr class="'+tr_class+'">',bodyMarkup+=$topRow.find("td,th").eq(a).html()?'<td class="st-key">'+$topRow.find("td,th").eq(a).html()+"</td>":'<td class="st-key"></td>',bodyMarkup+='<td class="st-val '+t(this).prop("class")+'">'+t(this).html()+"</td>",bodyMarkup+="</tr>")}),e+=headMarkup+bodyMarkup)}),s.prepend($caption),s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()})},t.fn.stackcolumns=function(a){var s=this,e={id:"stacktable small-only",hideOriginal:!0},d=t.extend({},e,a);return s.each(function(){$table=t(this);var a=$table.find("tr").eq(0).find("td,th").length;if(!(3>a)){var s=t('<table class="'+d.id+'"></table>');"undefined"!=typeof d.myClass&&s.addClass(d.myClass),$table.addClass("stacktable large-only");for(var e=t("<tbody></tbody>"),l=1;a>l;)$table.find("tr").each(function(a){var s=t("<tr></tr>");0===a&&s.addClass("st-head-row st-head-row-main"),first=t(this).find("td,th").eq(0).clone().addClass("st-key");var d=l;if(t(this).find("*[colspan]").length){var n=0;t(this).find("td,th").each(function(){var a=t(this).attr("colspan");return a?(a=parseInt(a,10),d-=a-1,n+a>l&&(d+=n+a-l-1),n+=a):n++,n>l?!1:void 0})}second=t(this).find("td,th").eq(d).clone().addClass("st-val").removeAttr("colspan"),s.append(first,second),e.append(s)}),++l;s.append(t(e)),$table.before(s),d.hideOriginal||$table.show()}})}}(jQuery);
+                /**
+                  NG Responsive Tables v1.0 - Modified by Luke McLean
+                **/
+                ;(function ( $ ) {
+                  $.fn.ngResponsiveTables = function(options) {
+                    var defaults = {
+                    smallPaddingCharNo: 5,
+                    mediumPaddingCharNo: 10,
+                    largePaddingCharNo: 15
+                    },
+                    $selElement = this,
+                    ngResponsiveTables = {
+                      opt: '',
+                      dataContent: '',
+                      globalWidth: 0,
+                    init: function(){
+                      this.opt = $.extend( defaults, options );
+                      ngResponsiveTables.targetTable();
+                    },
+                    targetTable: function(){
+                      var that = this;
+                      $selElement.find('tr').each(function(){
+                        $(this).find('td').each(function(i, v){
+                          that.checkForTableHead( $(this), i );
+                          $(this).addClass('tdno' + i);
 
+                          // Hide empty fields on mobile
+                          if(!$.trim($(this).html())){
+                            $(this).addClass('empty');
+                          }
+                        });
+                      });
+                    },
+                    checkForTableHead: function(element, index){
+                      if( $selElement.find('th').length ){
+                        this.dataContent = $selElement.find('th')[index].textContent;
+                      }else{
+                        this.dataContent = $selElement.find('tr:first td')[index].textContent;
+                      }
+                      // This padding is for large texts inside header of table
+                      // Use small, medium and large paddingMax values from defaults to set-up offsets for each class
+                      if( this.opt.smallPaddingCharNo > $.trim(this.dataContent).length ){
+                        element.addClass('small-padding');
+                      }else if( this.opt.mediumPaddingCharNo > $.trim(this.dataContent).length ){
+                        element.addClass('medium-padding');
+                      }else{
+                        element.addClass('large-padding');
+                      }
+                      element.attr('data-content', this.dataContent);
+                    }
+                  };
 
-                  $('.book-table').stacktable({myClass:'show-for-small-only'});
+                  $(function(){
+                    ngResponsiveTables.init();
+                  });
+                    return this;
+                  };
+
+                }( jQuery ));
+
+                $('.book-table').ngResponsiveTables();
                 </script>
 
 
