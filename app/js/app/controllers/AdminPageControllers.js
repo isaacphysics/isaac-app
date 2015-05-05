@@ -23,6 +23,8 @@ define([], function() {
 		$scope.userSearch.isLoading = false;
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
+		$scope.schoolOtherEntries = api.schools.getSchoolOther();
+
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
 		$scope.setVersion = function() {
@@ -44,13 +46,18 @@ define([], function() {
 		$scope.findUsers = function() {
 			if ($scope.userSearch.searchTerms != "") {
 				var role = $scope.userSearch.searchTerms.role;
+				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
 
 				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
 					role = null;
 				}
 				
+				if ($scope.userSearch.searchTerms.schoolOther == "") {
+					schoolOther = null;
+				}
+
 				$scope.userSearch.isLoading = true;
-				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role}).$promise.then(function(result){
+				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 'schoolOther': schoolOther}).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 				});
@@ -73,7 +80,7 @@ define([], function() {
 		}
 	}]
 
-	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', function($scope, auth, api, $window, $rootScope, gameBoardTitles) {
+	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout' , function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout) {
 			$rootScope.pageTitle = "Statistics Page";
 
 			$scope.contentVersion = api.contentVersion.get();
@@ -82,30 +89,51 @@ define([], function() {
 
 			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-			$scope.statistics = api.statisticsEndpoint.get();
+			$scope.statistics = null;
 			
-			$scope.generalStatsLoading = true;
-			$scope.statistics.$promise.then(function(){
-				$scope.generalStatsLoading = false;
+			$scope.locations = [];
+			$scope.getLocationData = function() {
+				$scope.visibleStatsPanel = "locationMap";
+				$scope.globalFlags.isLoading = true;
+
+				api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
+
+					for(var i = 0; i < result.length; i++) {
+						result[i].id = i;
+					}
+
+					$scope.locations = result;
+					$scope.globalFlags.isLoading = false;
+				});
+			}
+
+
+			$scope.map = { center: { latitude: 53.670680, longitude: -1.582031 }, zoom: 5 };
+
+			$timeout(function() {
+				// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
+				$scope.globalFlags.isLoading = $scope.statistics == null;
+			});
+
+			api.statisticsEndpoint.get().$promise.then(function(result){
+				$scope.globalFlags.isLoading = false;
+				$scope.statistics = result;
 			});
 
 			$scope.gameboardListData = [];
 			$scope.visibleStatsPanel = null;
-
-			$scope.statsLoading = false;
-
 			$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
 			$scope.gameboardListSortPredicate = null;
 
 			$scope.getGameboardListData = function() {
 				$scope.visibleStatsPanel = "gameboardList";
-				$scope.statsLoading = true;
+				$scope.globalFlags.isLoading = true;
 				var gameboardListPromise = api.statisticsEndpoint.getGameboardPopularity();
 
 				gameboardListPromise.$promise.then(function(result){
 					$scope.gameboardListData = result;
-					$scope.statsLoading = false;
+					$scope.globalFlags.isLoading = false;
 					$scope.reverse = false;
 				});
 			}
@@ -113,25 +141,25 @@ define([], function() {
 			$scope.schoolListSortPredicate = "numberActiveLastThirtyDays"
 			$scope.getSchoolListData = function() {
 				$scope.visibleStatsPanel = "schoolList";
-				$scope.statsLoading = true;
+				$scope.globalFlags.isLoading = true;
 				var gameboardListPromise = api.statisticsEndpoint.getSchoolPopularity();
 
 				gameboardListPromise.$promise.then(function(result){
 					$scope.schoolListData = result;
-					$scope.statsLoading = false;
+					$scope.globalFlags.isLoading = false;
 					$scope.reverse = true;
 				});
 			}
 
 			$scope.getSchoolUserListData = function(schoolId, schoolName) {
 				$scope.visibleStatsPanel = "schoolUserList";
-				$scope.statsLoading = true;
+				$scope.globalFlags.isLoading = true;
 				var gameboardListPromise = api.statisticsEndpoint.getSchoolUsers({id: schoolId});
 				$scope.schoolSelected = schoolName;
 				
 				gameboardListPromise.$promise.then(function(result){
 					$scope.schoolUserListData = result;
-					$scope.statsLoading = false;
+					$scope.globalFlags.isLoading = false;
 					$scope.reverse = false;
 				});
 			}					

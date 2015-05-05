@@ -38,6 +38,7 @@ define([
     "app/MathJaxConfig",
     "lib/opentip-jquery",
     "templates",
+    "angular-google-maps",
 
     ], function() {
 
@@ -57,6 +58,7 @@ define([
         'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
+        'uiGmapgoogle-maps',
 //        'ngAnimate',
         'ngCookies',
         'ui.date',

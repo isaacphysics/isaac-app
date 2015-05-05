@@ -73,6 +73,15 @@
                                 <strong>Find a user by email</strong>
                             </label>                            
                             <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
+
+                            <label for="user-school-other">
+                                <strong>Find by manually entered school:</strong>
+                            </label>
+                            <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
+                                <option value="">Any School</option>
+                                <option ng-repeat="school in schoolOtherEntries" ng-value="school.name">{{school.name}}</option>
+                            </select> 
+
                             <label for="user-search-role">
                                 <strong>Find by user role:</strong>
                             </label>
