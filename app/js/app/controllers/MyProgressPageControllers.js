@@ -16,6 +16,14 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+		// start and end dates for line graphs
+		var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
+		dataStartDate = dataStartDate.getTime();
+		var dataEndDate = new Date().getTime();
+
+		var userOfInterest = $scope.user._id;
+
+		$scope.questionsAnsweredOverTime = null;
 
 		$timeout(function() {
 			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
@@ -25,13 +33,20 @@ define([], function() {
 		if ($stateParams.userId) {
 			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
 			$scope.viewingOwnData = false;
+			userOfInterest = $stateParams.userId;
 		} else {
 			$scope.progress = api.currentUser.getProgress();
 			$scope.viewingOwnData = true;
+			userOfInterest = $scope.user._id;
 		}
 
+		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION"}).$promise.then(function(result){
+			$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
+			$scope.globalFlags.isLoading = !$scope.subjectData;
+		})
+
 		$scope.progress.$promise.then(function() {
-			$scope.globalFlags.isLoading = false;
+			$scope.globalFlags.isLoading = !$scope.questionsAnsweredOverTime && $scope.progress != null;
 			$scope.levelData = [
 				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
 				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},

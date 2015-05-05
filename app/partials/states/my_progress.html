@@ -48,10 +48,35 @@
             <li class="hide-for-medium-up">
                <!--<a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>-->
             </li>
-
          </ul>
+
+        <!-- 
+          Line graph
+        -->
+        <h6>Questions answered <span class="ru_green">over time</span></h6>
+        <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+
+        <!-- 
+          Area graph
+        -->
+<!--         <h6>Area graph <span class="ru_green">title</span></h6>
+        <div d3-plot data="dummyData" type="area"></div> -->
+        <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+          <li>
+            <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+            <div d3-bar></div>
+          </li>
+          <li>
+            <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+            <div d3-bar></div>
+          </li>
+          <li>
+            <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+            <div d3-bar></div>
+          </li>
+        </ul>
       </div>
-   </div>
+  </div>
 </div>
 
 <div ng-show="progress.totalQuestionsAttempted == 0" class="progress-wrap" >
