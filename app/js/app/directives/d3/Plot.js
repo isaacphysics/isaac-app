@@ -86,7 +86,7 @@ define([], function() {
                     // Define axis ranges & scales        
                     var xScale = d3.time.scale()
                         .domain([minX, maxX])
-                        .range([padding, w - padding * 2]);
+                        .range([padding, w]);
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
@@ -165,7 +165,7 @@ define([], function() {
                         .orient("bottom")
                         .ticks(5)
                         // Add bg lines to graph
-                        //.tickSize(-h).tickSubdivide(true)
+                        .tickSize(-h).tickSubdivide(true)
                         .tickFormat(d3.time.format("%b"));
 
                     //Define Y axis
@@ -187,30 +187,15 @@ define([], function() {
                     .attr("transform", "translate(" + padding + ",0)")
                     .call(yAxis);
 
-                    // Add legend   
-                    var legend = svg.append("g")
-                      .attr("class", "legend");
 
-                    legend.selectAll('g').data(data)
-                      .enter()
-                      .append('g')
-                      .each(function(d, i) {
-                        var g = d3.select(this);
-                        g.append("text")
-                          .attr("x", w - 40)
-                          .attr("y", i * 15 + 7)
-                          .attr("height",30)
-                          .attr("width",100)
-                          .text(function (d) { return d.title; });
+                    // Add key
+                    var key = d3.select(element[0]).append("ul")
+                        .attr("class", "d3-plot-key");
 
-                        g.append("rect")
-                          .attr("x", w - 35)
-                          .attr("y", i*15)
-                          .attr("width", 25)
-                          .attr("height", 10)
-                          .style("fill", function (d) { return d.color; });
-
-                    });
+                    key.selectAll("li")
+                        .data(data)
+                        .enter().append("li")
+                        .html(function (d) { return d.title + ' <span style="background-color:'+d.color+'"></span>';});
                 });
             
             }     
