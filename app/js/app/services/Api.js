@@ -142,6 +142,10 @@ define([], function() {
 				url: server + "/api/admin/stats/users/last_locations", 
 				isArray: true 
 			},
+			'getLogEventTypes' : {
+				method: 'GET',
+				url: server + "/api/info/log_event_types",
+			},			
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {

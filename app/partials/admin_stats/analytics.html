@@ -1,0 +1,21 @@
+<div class="panel white clearfix analytics">
+    <div ng-if="!globalFlags.loading">
+        <h2>Last user locations (in the last month)</h2>
+        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+            <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
+            </ui-gmap-markers>
+        </ui-gmap-google-map>        
+    </div>
+
+    <div class="results-panel">
+        <h2>Data collection events over time <a ng-click="editingGraph=!editingGraph">Change Graph Data</a></h2>
+        <div ng-show="editingGraph">
+            <h3>Select your events of interest</h3>
+            <ul class="no-bullet results-list">
+                <li ng-repeat="eventType in eventsAvailable.results | orderBy: eventType"> <input type="checkbox" ng-model="eventsSelected[eventType]"><label>{{eventType}}</label></li>
+            </ul>                        
+        </div>
+        <hr/>
+        <div d3-plot data="questionsAnsweredOverTime" type="line"></div>        
+    </div>
+</div>
