@@ -254,6 +254,68 @@
 		margin-left: -0.9375rem;
 	}
 
+	.ru-answer-check {
+		padding: 15px;
+		margin-right: -0.9375rem;
+		margin-left: -0.9375rem;
+
+		button {
+			font-size: 18px;
+			max-width: 100%;
+			margin-bottom: 0;
+		}
+	}
+
+	.ru-answer-wrong {
+		display: block;
+		margin-right: -17px;
+		margin-left: -17px;
+		padding-top: 15px;
+
+		h2, h5 {
+			color: #fff;
+			line-height: 1;
+		}
+		h5 {
+			margin-bottom: 30px;
+		}
+
+		p {
+			font-size: 18px !important;
+			line-height: 1.2;
+			margin-bottom: 15px;
+			color: #fff;
+		}
+	}
+
+
+	.ru-answer-correct-wrap {
+		display: block;
+		margin-right: -17px;
+		margin-left: -17px;
+
+		.ru-answer-correct {
+			background-color: #991846;
+			padding: 30px 0 0;
+
+			h1 {
+				color: #fff;
+			}
+		}
+		.ru-answer-correct-summary {
+			background-color: #7b0730;
+			padding: 15px 0;
+
+			p {
+				color: #fff;
+				font-size: 2.25rem !important;
+				line-height: 1;
+				font-family: 'desyrel';
+				margin: 0;
+			}
+		}
+	}
+
 	dd {
 		a.ru_accordion_titlebar {
 			.ru_accordion_name {
@@ -288,6 +350,10 @@
 
 	.button, button {
 		background-color: $ru_burgundy;
+	}
+
+	input:focus {
+		border-color: $ru_burgundy;
 	}
 
 	.ru-answer-block {
@@ -520,6 +586,11 @@
 			margin-right: 0;
 			margin-left: 0;
 		}
+
+		.ru-answer-wrong {
+			padding-top: 30px;
+		}
+
 		dd {
 			a.ru_accordion_titlebar {
 				.content {
