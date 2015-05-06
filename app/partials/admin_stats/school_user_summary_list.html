@@ -14,7 +14,7 @@
                 <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'numberActiveLastThirtyDays'; reverse=!reverse"># of users active (last 30 days)</a></th>
             </tr>
             <tr ng-repeat="item in dataToShow | orderBy:schoolListSortPredicate:reverse">
-                <td><a ng-hide="item.school.dataSource == 'USER_ENTERED'" href="javascript:void(0)" ui-sref="adminStats.schoolUsersDetail({schoolId:item.school.urn})" ng-click="getSchoolUserListData(item.school.urn, item.school.name)">{{item.school.urn}}</a><span ng-show="item.school.dataSource == 'USER_ENTERED'">NON-DFE</span></td>
+                <td><a ng-hide="item.school.dataSource == 'USER_ENTERED'" href="javascript:void(0)" target="_blank" ui-sref="adminStats.schoolUsersDetail({schoolId:item.school.urn})">{{item.school.urn}}</a><span ng-show="item.school.dataSource == 'USER_ENTERED'">NON-DFE</span></td>
                 <td>{{item.school.name}}</td>
                 <td>{{item.school.postcode}}</td>
                 <td>{{item.teachers}}</td>
