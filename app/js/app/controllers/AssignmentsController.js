@@ -31,7 +31,7 @@ define([], function() {
 	}
 
 	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
-		$scope.globalFlags.isLoading = true;
+		$scope.setLoading(true);
 		
 		$rootScope.pageTitle = "Assign Boards";
 
@@ -70,13 +70,13 @@ define([], function() {
 		$scope.sortOption = $scope.sortOptions[1];
 
 		var updateBoards = function(limit) {
-			$scope.globalFlags.isLoading = true;
+			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 
 				updateGroupAssignmentMap($scope.boards.results)
 
-				$scope.globalFlags.isLoading = false;
+				$scope.setLoading(false);
 			})
 		};
 
@@ -106,21 +106,19 @@ define([], function() {
 		}, true);
 
 		// Perform initial load
-		$timeout(function() {
-			updateBoards();
-		})
+		updateBoards();
 
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
 			if (mergeInProgress) return;
 			mergeInProgress = true;
-			$scope.globalFlags.isLoading = true;
+			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Merge new boards into results 
 				updateGroupAssignmentMap(newBoards.results)
 
 				$.merge($scope.boards.results, newBoards.results);
-				$scope.globalFlags.isLoading = false;
+				$scope.setLoading(false);
 				mergeInProgress = false;
 			});
 		};
@@ -131,7 +129,7 @@ define([], function() {
 			if (confirmation){
        			// TODO: This needs to be reviewed
        			// Currently reloading boards after delete
-				$scope.globalFlags.isLoading = true;
+				$scope.setLoading(true);
        			api.deleteGameBoard(id).$promise.then(function(){
 			        updateBoards($scope.boards.results.length);
        			});
@@ -199,9 +197,7 @@ define([], function() {
 
 	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
 
-		$timeout(function() {
-			$scope.globalFlags.isLoading = true;
-		})
+		$scope.setLoading(true);
 		
 		$rootScope.pageTitle = "My Assignments";
 
@@ -222,9 +218,7 @@ define([], function() {
 					$scope.myAssignments.completed.push(assignment);
 				}
 			})
-			$timeout(function() {
-				$scope.globalFlags.isLoading = false;
-			})
+			$scope.setLoading(false);
 		});
 
 		$scope.toggleVisibleBoards = function(){

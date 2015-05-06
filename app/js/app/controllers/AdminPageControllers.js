@@ -190,7 +190,7 @@ define([], function() {
 
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 		
-		$scope.globalFlags.isLoading = true;
+		$scope.setLoading(true);
 
 		$scope.hasSearched = false;
 		$scope.events = [];
@@ -201,7 +201,7 @@ define([], function() {
 
 
 		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
-                $scope.globalFlags.isLoading = false;
+                $scope.setLoading(false);
                 
 				$scope.events = result.results;
         });

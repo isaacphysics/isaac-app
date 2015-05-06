@@ -113,23 +113,38 @@ define([
 
         $rootScope.figures = {};
 
+        var loadingRefCount = 0;
+        $rootScope.setLoading = function(isLoadingOrIncrement) {
+
+            if (typeof(isLoadingOrIncrement) == "number") {
+                loadingRefCount += isLoadingOrIncrement;
+            } else {
+                loadingRefCount += isLoadingOrIncrement ? 1 : -1;
+            }
+
+            if (loadingRefCount < 0)
+                loadingRefCount = 0;
+
+            $rootScope.globalFlags.loading = loadingRefCount > 0;
+        }
+
         $rootScope.globalFlags = {
             siteSearchOpen: false,
-            isLoading: false,
+            loading: false,
             noSearch: false
         };
 
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {
-            $rootScope.globalFlags.isLoading = true;
+            $rootScope.setLoading(true);
             $rootScope.pageTitle = "";
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
             $timeout(function() {
                 // Run this in a $timeout to make sure that $apply is called.
-                $rootScope.globalFlags.isLoading = false;
+                $rootScope.setLoading(false);
                 
                 // TODO: find a better way to hide the search
                 $rootScope.globalFlags.noSearch = false;
