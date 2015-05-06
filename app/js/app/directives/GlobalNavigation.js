@@ -32,7 +32,12 @@ define([], function() {
                         element.find('.login-required a').each(function(index, element){
                             var ot = new Opentip(element, "Click to log in and use this feature.");
                             loginTooltips.push(ot);
-                        })                                                                
+                        })
+
+                        $timeout(function(){
+                            Opentip.findElements();
+                        }, 1000)
+
                     } else if (scope.user._id && loginTooltips.length != 0) {
                         angular.forEach(loginTooltips, function(value, key){
                             value.hide();
@@ -89,13 +94,9 @@ define([], function() {
                 }
                 scope.$on("$stateChangeStart", scope.menuClose);
 
-                scope.$watch('user._id + isVisible', function(){
+                scope.$watch('user._id', function(){
                     applyDisabledToolTips();                    
                 })
-
-                $timeout(function(){
-                    Opentip.findElements();
-                }, 1000)
             }
 		};
 	}]
