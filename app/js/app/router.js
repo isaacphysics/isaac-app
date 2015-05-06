@@ -419,8 +419,10 @@ define(["angular-ui-router"], function() {
                         controller: ["$scope", "api", function($scope, api) {
                             // general stats
                             $scope.statistics = null;
+                            $scope.setLoading(true)
                             api.statisticsEndpoint.get().$promise.then(function(result){
                                 $scope.statistics = result;
+                                $scope.setLoading(false)
                             });
 
                         }]
