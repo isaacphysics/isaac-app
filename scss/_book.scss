@@ -235,7 +235,7 @@
 	}
 }
 .ru-question-block {
-	margin: 0.5rem 0;
+	margin: 20px 0 0;
 
 	p {
 		margin: 0;
@@ -248,10 +248,8 @@
 	margin-right: -0.9375rem;
 	margin-left: -0.9375rem;
 
-	.tabs,
-	.tabs-content {
-		margin-right: -0.9375rem;
-		margin-left: -0.9375rem;
+	.ru-answer span {
+		display: inline;
 	}
 
 	.ru-answer-check {
@@ -335,8 +333,6 @@
   		}
 
   		.content {
-  			padding-left: 20px;
-  			padding-right: 20px;
 
   			p {
   				font-size: 18px;
@@ -352,17 +348,30 @@
 		background-color: $ru_burgundy;
 	}
 
-	input:focus {
-		border-color: $ru_burgundy;
+	input {
+		&:focus{
+			border-color: $ru_burgundy;
+		}
+
+		&.error {
+			border: #f40000 3px solid;
+		}
 	}
 
 	.ru-answer-block {
+		margin: 0;
+
 		ul {
-			max-width: 480px;
+			max-width: 300px;
 		}
 		li {
 			height: auto;
 			padding-bottom: 0;
+		}
+
+		button,
+		input {
+			margin-bottom: 0;
 		}
 	}
 
@@ -378,16 +387,10 @@
 		}
 	}
 }
-.ru-answer-block button,
-.ru-answer-block input {
-	margin-bottom: 0;
-}
 .book-table {
 	border-collapse: collapse;
 	width: 100%;
 	border: none;
-	border-left: #ddd 1px solid;
-	border-top: #ddd 1px solid;
 	margin: 0;
 
 	thead {
@@ -395,6 +398,10 @@
 	}
 
 	tr {
+		display: block;
+		margin: 0 15px 30px;
+		border: 1px solid #ccc;
+
 		td {
 			position: relative;
 			min-height: 60px;
@@ -405,8 +412,7 @@
 			line-height: 1.3;
 			font-weight: 600;
 			text-align: left;
-			border-right: #ddd 1px solid;
-			border-bottom: #ddd 1px solid;
+			border-bottom: 1px solid #eee;
 			background-color: #fff;
 
 			&:before {
@@ -414,6 +420,9 @@
 				width: 40%;
 				left: 10px;
 				content: attr(data-content);
+			}
+			&:last-child {
+				border-bottom: 0;
 			}
 
 			input {
@@ -440,7 +449,6 @@
 	}
 }
 .book-subhead {
-	float: left;
 	font-size: 16px;
 	line-height: 2.5;
 	font-style: italic;
@@ -457,15 +465,41 @@
 
 	ul {
 		max-width: 400px;
-		margin: 0 auto;
 		li {
 			padding-bottom: 0;
 			height: 2.7rem !important;
 		}
 	}
 }
+.book-figure-wrap {
+	counter-reset: figureCount;
+}
 .book-figure {
-	margin: 15px 0;
+	margin: 15px 0 0;
+	counter-increment: figureCount;
+
+	.book-answer-row {
+		position: relative;
+
+		ul {
+			padding-left: 22px;
+
+			li {
+				&:first-child {
+					&:before {
+						position: absolute;
+						top: 22px;
+						left: 12px;
+						content: counter(figureCount, lower-alpha);
+						color: #fff;
+						font-weight: 800;
+						font-style: italic;
+						text-transform: uppercase;
+					}
+				}
+			}
+		}
+	}
 }
 // fix alignment in Firefox and IE
 @-moz-document url-prefix() {
@@ -578,11 +612,13 @@
 		margin-right: 0;
 		margin-left: 0;
 
+
 		.tabs,
 		.tabs-content {
-			margin-right: 0;
-			margin-left: 0;
-		}
+			width: auto;
+			margin-right: 0.9375rem;
+			margin-left: 0.9375rem;
+		}	
 
 		.ru-answer-wrong {
 			padding-top: 30px;
@@ -590,18 +626,28 @@
 
 		dd {
 			a.ru_accordion_titlebar {
-				.content {
-	  				padding-left: 20px;
-	  				padding-right: 20px;
-
-	  				p {
-	  					font-size: 21px;
-	  				}
-	  			}
 	  			.arrow {
 	  				margin-top: 11px;
 	  			}
 	  		}
+	  		.content {
+	  			padding-left: 20px;
+	  			padding-right: 20px;
+
+	  			p {
+	  				font-size: 21px;
+	  			}
+	  		}
+		}
+
+		.ru-answer-block {
+			ul {
+				max-width: 360px;
+			}
+		}
+
+		button, input {
+			max-width: 100%;
 		}
 	}
 	.book-accordion {
@@ -612,19 +658,31 @@
 		}
 	}
 	.book-table { 
+		border-top: #ddd 1px solid;
+		border-left: #ddd 1px solid;
+
 		thead {
 			display: table-header-group;
 		}
 
 		tr {
+			display: table-row;
+			border: none;
+
 			td {
 				display: table-cell;
 				padding-left: 10px;
 				text-align: center;
 				height: auto;
+				border-right: #ddd 1px solid;
+				border-bottom: #ddd 1px solid;
 
 				&:before {
 					content: '';
+				}
+
+				&:last-child {
+					border-bottom: #ddd 1px solid;
 				}
 
 				&.empty {
@@ -641,9 +699,12 @@
 			}
 		}
 	}
-}
-@media #{$large-up} { 
+	.ru-answer-block {
+		margin: 0.5rem 0;
+	}
 	.ru-question-block {
+		margin: 0.5rem 0;
+
 		p {
 			padding-top: 48px;
 		}
