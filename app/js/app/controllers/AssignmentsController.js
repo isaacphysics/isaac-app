@@ -31,8 +31,6 @@ define([], function() {
 	}
 
 	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
-		$scope.setLoading(true);
-		
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
