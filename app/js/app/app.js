@@ -161,7 +161,7 @@ define([
         })
 
         $rootScope.$on("$stateChangeError", function() {
-            $rootScope.globalFlags.isLoading = false;
+            $rootScope.setLoading(false);
         })
 
         $rootScope.$on("$includeContentLoaded", function() {

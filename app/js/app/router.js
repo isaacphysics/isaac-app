@@ -257,8 +257,9 @@ define(["angular-ui-router"], function() {
             })
             .state('board', {
                 url: "/board/:id",
-                onEnter: ["$stateParams", "$location", function($stateParams, $location) {
+                onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
                     $location.url("/#" + $stateParams.id);
+                    $rootScope.setLoading(false);
                     throw "Prevent entering board redirect state."
                 }],
             })
