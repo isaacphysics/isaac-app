@@ -25,7 +25,7 @@ define([], function() {
         e.field = e.tags.indexOf("physics") > -1 ? "physics" : (e.tags.indexOf("maths") > -1 ? "maths" : undefined);
 
         // we have to fix the event image url.
-        if(e.eventThumbnail) {
+        if(e.eventThumbnail && e.eventThumbnail.src) {
             e.eventThumbnail.src = api.getImageUrl(e.eventThumbnail.src);
         } else {
             e.eventThumbnail.src = 'http://placehold.it/500x276';
