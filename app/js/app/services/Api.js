@@ -338,6 +338,17 @@ define([], function() {
 
 		this.environment = $resource(server + "/api/info/segue_environment");
 
+		this.segueInfo = $resource(server + "/api/search/:searchTerms?types=:types", {}, {
+			"segueVersion": {
+				method: "GET",
+				url: server + "/api/info/segue_version",
+			},
+			"cachedVersion": {
+				method: "GET",
+				url: server + "/api/info/content_versions/cached",
+			},
+		});
+
 		this.password = $resource(server + "/api/users/resetpassword/:token", null, {
 			reset: {
 				method: "POST",
@@ -359,6 +370,14 @@ define([], function() {
 				method: "POST",
 				url: server + "/api/admin/live_version/:version",
 			},
+			"currentIndexQueue" : {
+				method: "GET",
+				url: server + "/api/admin/content_index_queue",
+			},
+			"emptyIndexQueue" : {
+				method: "DELETE",
+				url: server + "/api/admin/content_index_queue",
+			}			
 		})
 
 

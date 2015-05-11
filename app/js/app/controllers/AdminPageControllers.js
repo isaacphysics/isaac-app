@@ -15,13 +15,31 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
 		$rootScope.pageTitle = "Admin Page";
 
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.isLoading = false;
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
+
+		$scope.indexQueue = null;
+		$scope.segueVersion = api.segueInfo.segueVersion();
+		$scope.cachedVersions = api.segueInfo.cachedVersion();
+		var updateIndexerQueue = function(){
+			api.contentVersion.currentIndexQueue().$promise.then(function(result){
+				$scope.indexQueue = result;		
+			});
+		}
+		
+		updateIndexerQueue();
+
+		$interval(updateIndexerQueue, 30000)
+		$scope.clearIndexQueue = function(){
+			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
+				$scope.indexQueue = result;
+			});
+		}
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
