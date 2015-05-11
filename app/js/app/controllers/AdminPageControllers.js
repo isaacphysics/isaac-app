@@ -122,8 +122,8 @@ define([], function() {
 			var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
 			dataStartDate = dataStartDate.getTime();
 			var dataEndDate = new Date().getTime();
-
-			$scope.eventsSelected = {"ANSWER_QUESTION" : true}
+			$scope.editingGraph = true;
+			$scope.eventsSelected = {}
 			$scope.questionsAnsweredOverTime = null;
 			$scope.eventsAvailable = {};
 
@@ -132,21 +132,28 @@ define([], function() {
 				$scope.setLoading(false);
 			});
 			
-			var updateGraph = function() {
+			$scope.updateGraph = function() {
 				var eventsForGraph = [];
 				for (var eventType in $scope.eventsSelected) {
 					if ($scope.eventsSelected[eventType]) {
 						eventsForGraph.push(eventType);
 					}
 				}
+				
+				if (eventsForGraph.length < 1) {
+					return;
+				}
+
 				$scope.setLoading(true);
+				$scope.editingGraph = false;
 				api.statisticsEndpoint.getEventsOverTime({from_date: dataStartDate, to_date:dataEndDate, events:eventsForGraph.join(), bin_data:true}).$promise.then(function(result){
-					$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
+					if (result){
+						$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));	
+					}
+					
 					$scope.setLoading(false);
 				});
 			}
-
-			$scope.$watchCollection("eventsSelected", updateGraph);
 		}]		
 
 	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.

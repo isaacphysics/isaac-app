@@ -13,9 +13,12 @@
             <h3>Select your events of interest</h3>
             <ul class="no-bullet results-list">
                 <li ng-repeat="eventType in eventsAvailable.results | orderBy: eventType"> <input type="checkbox" ng-model="eventsSelected[eventType]"><label>{{eventType}}</label></li>
-            </ul>                        
+            </ul>
+            <a href="javascript:void(0)" ng-click="updateGraph()" class="button small">Update Graph</a>                        
         </div>
         <hr/>
-        <div d3-plot data="questionsAnsweredOverTime" type="line"></div>        
+        <div ng-show="questionsAnsweredOverTime">
+            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>            
+        </div>
     </div>
 </div>
