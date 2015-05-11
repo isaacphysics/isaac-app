@@ -123,7 +123,7 @@ define([], function() {
 			dataStartDate = dataStartDate.getTime();
 			var dataEndDate = new Date().getTime();
 
-			$scope.eventsSelected = {"ANSWER_QUESTION" : true, "VIEW_QUESTION": true}
+			$scope.eventsSelected = {"ANSWER_QUESTION" : true}
 			$scope.questionsAnsweredOverTime = null;
 			$scope.eventsAvailable = {};
 
