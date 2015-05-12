@@ -34,12 +34,18 @@ define([], function() {
 		
 		updateIndexerQueue();
 
-		$interval(updateIndexerQueue, 30000)
+		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
 		$scope.clearIndexQueue = function(){
 			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
 				$scope.indexQueue = result;
 			});
 		}
+
+		$scope.$on("$destroy", function() {
+	        if (indexQueueInterval) {
+	            $interval.cancel(indexQueueInterval);
+	        }
+	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
