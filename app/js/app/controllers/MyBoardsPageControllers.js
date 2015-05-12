@@ -84,6 +84,7 @@ define([], function() {
        			// Currently reloading boards after delete
 				$scope.setLoading(true);
        			api.deleteGameBoard(id).$promise.then(function(){
+       				$scope.setLoading(false);
 			        updateBoards($scope.boards.results.length);
        			});
 			}
