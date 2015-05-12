@@ -139,10 +139,6 @@
         border-bottom: #999 1px solid;
         border-right: #999 1px solid;
         cursor: pointer;
-
-        &:hover {
-            color: $ru_green;
-        }
     }
     .accordion-board-title {
         position: relative;
@@ -193,7 +189,6 @@
         text-align: center;
         vertical-align: top;
         margin-top: 14px;
-        color: #333;
 
         span {
             vertical-align: top;
