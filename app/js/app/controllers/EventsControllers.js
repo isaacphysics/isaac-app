@@ -49,7 +49,7 @@ define([], function() {
 
         $scope.filterEventsByStatus = "UPCOMING";
         $scope.filterEventsByType = "all";
-
+        $scope.moreResults = false;
         $scope.toTitleCase = toTitleCase;
 
         $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
@@ -90,9 +90,9 @@ define([], function() {
                 startIndex += result.results.length;
 
                 if (startIndex >= result.totalResults) {
-                    $scope.noMoreResults = true;
+                    $scope.moreResults = false;
                 } else {
-                    $scope.noMoreResults = false;
+                    $scope.moreResults = true;
                 }
             });
         }
