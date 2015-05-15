@@ -130,6 +130,7 @@ define([], function() {
 				$scope.setLoading(true);
        			api.deleteGameBoard(id).$promise.then(function(){
 			        updateBoards($scope.boards.results.length);
+			        $scope.setLoading(false);
        			});
 			}
 		}
