@@ -8,7 +8,6 @@
 	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help Video</a>
 	    </div>
 	</div>	
-	<div class="row">
 		<div class='small-16 columns'>
 			<form ng-submit="saveGameBoard()">
 				<div class="row">
@@ -71,12 +70,7 @@
 								</div>	  									
 							</li>
 							<li>
-						        <span><strong>Save your board</strong></span>										
-								<div class="row">
-									<div class='small-16 small-centered medium-uncentered columns'> 							        	
-							        	<button ng-disabled="currentGameBoard.questions.length == 0" type="submit" class="expand">Save Board</button>
-							        </div>													
-								</div>
+							    <button ng-disabled="currentGameBoard.questions.length == 0" type="submit" class="expand">Save this board</button>
 							</li>								
 						</ol>
 					</div>
@@ -107,10 +101,11 @@
 				               	</div>									
 							</div>
 						</div>					
-					</div>							
+					</div>
+				</div>							
 			</form>	
 		</div>
-	</div>
+
 	<section ng-show="currentGameBoard.questions.length > 0">
 	    <form data-abide ng-submit="saveGameBoard()">
 		    <div class="row">
