@@ -125,7 +125,7 @@ define([], function() {
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
 			updateWildCard();
 
-			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title};
+			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title, id: $scope.currentGameBoard.id};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
 
