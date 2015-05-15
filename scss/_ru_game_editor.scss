@@ -13,6 +13,10 @@
 			height: 160px;
 			overflow-y: scroll;
 			padding-top: 5px;
+
+			label input {
+  				margin-right: 5px;			
+			}
 		}
 
 		.selected-questions {
@@ -31,8 +35,9 @@
 
 		.builder-steps li, .builder-steps label {
 			font-weight: bold;
-		
 		}
+
+
 	}	
 }
 

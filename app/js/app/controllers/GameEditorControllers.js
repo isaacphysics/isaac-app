@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', function($scope, $state, api, $timeout, $q, $stateParams) {
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', function($scope, $state, api, $timeout, $q, $stateParams, $window) {
 		// setup defaults.
 		$scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
@@ -153,6 +153,12 @@ define([], function() {
 		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
 
         $scope.saveGameBoard = function() {
+        	var saveConfirmed = $window.confirm('Are you sure you want save this game board?');   
+
+        	if (!saveConfirmed) {
+        		return;
+        	}
+
         	var GameBoard = api.gameBoards;
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
       	

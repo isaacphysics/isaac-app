@@ -56,7 +56,7 @@
 								</div>
 							</li>
 							<li>
-								<label>Choose your questions <span class="arrow-indicator show-for-medium-up text-right">&#8594;</span><span class="show-for-small-only">below</span></label>
+								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
 							</li>
 							<li ng-if="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
 								<label><strong>Choose your Wildcard</strong></label>									
@@ -76,7 +76,7 @@
 					</div>
 					<div class="small-16 medium-10 columns">
 						<div class="row">
-							<div class="small-16 columns">
+							<div class="small-16">
 								<div class="results-panel">
 									<h4>Choose your questions <span ng-show="!loading && searchResults">({{searchResults.length}})</span></h4>
 					                <div class="text-center" ng-if="loading">
@@ -86,17 +86,17 @@
 					                <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided.</p>
 
 					                <ul ng-if="!loading" class="no-bullet results-list" ng-show="!loading && searchResults.length > 0">
-					                	<li ng-repeat="question in searchResults track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+					                	<li ng-repeat="question in searchResults track by $index"><label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
 					                </ul>
 								</div>									
 							</div>
 						</div>
 						<div class="row" ng-show="currentGameBoard.questions.length > 0">
-							<div class="small-16 columns">
+							<div class="small-16">
 								<div class="results-panel">
 									<h4>Currently Selected Questions ({{currentGameBoard.questions.length}}/10)</h4>
 					                <ul class="no-bullet selected-questions">
-					                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
+					                	<li ng-repeat="question in currentGameBoard.questions track by $index"> <label for="{{question.id}}"><a ui-sref="question({id: question.id})" target="_blank"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"> {{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>
 					                </ul>
 				               	</div>									
 							</div>
