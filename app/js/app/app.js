@@ -478,27 +478,28 @@ define([
                           }                  
                     }
                 }); 
-                var tutorialShown = cookie.read('tutorialShown');
+                // var tutorialShown = cookie.read('tutorialShown');
 
                 var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
                 
                 // we don't want the google bot or out of date browsers to see the tutorial.
-                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
-                    if ($.ru_IsMobile()) {
-                        if ($('#mobile-tutorial').length > 0) {
-                            setTimeout(function() {
-                                // Launch the tutorial asynchronously. No idea why this is required.
-                                $('#mobile-tutorial').foundation('joyride', 'start');
-                                cookie.create('tutorialShown',1,720);
-                            }, 1000)
-                        }
-                    } else {
-                        if ($('#desktop-tutorial').length > 0) {
-                            $('#desktop-tutorial').foundation('joyride', 'start');
-                            cookie.create('tutorialShown',1,720);
-                        }
-                    }
-                }
+                // stop tutorial from loading for new users as no one reads it anyway.
+                // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
+                //     if ($.ru_IsMobile()) {
+                //         if ($('#mobile-tutorial').length > 0) {
+                //             setTimeout(function() {
+                //                 // Launch the tutorial asynchronously. No idea why this is required.
+                //                 $('#mobile-tutorial').foundation('joyride', 'start');
+                //                 cookie.create('tutorialShown',1,720);
+                //             }, 1000)
+                //         }
+                //     } else {
+                //         if ($('#desktop-tutorial').length > 0) {
+                //             $('#desktop-tutorial').foundation('joyride', 'start');
+                //             cookie.create('tutorialShown',1,720);
+                //         }
+                //     }
+                // }
 
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
