@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="small-16 medium-6 columns results-panel">
 						<h4>Create your board</h4>
-						<ol>
+						<ol class="builder-steps">
 							<li>
 				                <span>
 				                    <label class="ru-form-required"><strong>Name your board</strong></label>
@@ -56,7 +56,7 @@
 								</div>
 							</li>
 							<li>
-								<span><strong>Choose your questions</strong> <span class="arrow-indicator show-for-medium-up">&#8594;</span></span>
+								<label>Choose your questions <span class="arrow-indicator show-for-medium-up text-right">&#8594;</span><span class="show-for-small-only">below</span></label>
 							</li>
 							<li ng-if="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
 								<label><strong>Choose your Wildcard</strong></label>									

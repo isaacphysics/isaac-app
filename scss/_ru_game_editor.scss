@@ -22,7 +22,16 @@
 
 		.arrow-indicator {
 			font-size: 2em;
+
+		}
+
+		.builder-steps label {
+			display: inline;
+		}
+
+		.builder-steps li, .builder-steps label {
 			font-weight: bold;
+		
 		}
 	}	
 }
