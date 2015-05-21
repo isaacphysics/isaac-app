@@ -8,7 +8,7 @@
 	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help Video</a>
 	    </div>
 	</div>	
-		<div class='small-16 columns'>
+		<div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
 			<form ng-submit="saveGameBoard()">
 				<div class="row">
 					<div class="small-16 medium-6 columns results-panel">
@@ -105,12 +105,18 @@
 				</div>							
 			</form>	
 		</div>
-
+		<div class='small-16 columns' ng-show="boardCreatedSuccessfully">
+			<h3>Your board has been created successfully</h3>
+            <a class="ru-button-big" ui-sref="groups()">Create a new group</a>
+            <a class="ru-button-big" ng-show="!hasGroups" ui-sref="setAssignments()">Assign boards to groups</a>
+            <a class="ru-button-big" ng-click="resetForm(); modals.gameCreated.hide();">Create another board</a>
+		</div>
 	<section ng-show="currentGameBoard.questions.length > 0">
 	    <form data-abide ng-submit="saveGameBoard()">
 		    <div class="row">
 	            <div class="small-16 columns">
-	            	<h2>Game Board Preview</h2>
+	            	<h2 ng-show="!boardCreatedSuccessfully">Game Board Preview</h2>
+	            	<h2 ng-show="boardCreatedSuccessfully">Game Board (<a ui-sref="board({id:currentGameBoard.id})">view</a>)</h2>
 	            </div>
 		    </div>    
 		    <div class="row">
@@ -132,5 +138,24 @@
   </div>
   <div class="reveal-modal-body">
 		<div isaac-page-fragment="game_builder_intro"> </div>
+  </div>
+</div>
+
+<div isaac-modal="gameCreated">
+  <div class="reveal-modal-head">
+    <h2>Game Board Created</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+    <div class="row">
+        <div class="text-center columns">
+            <h4 class="congrats-subhead">Your game board has now been created. Why not try one of these next steps?</h4>
+        </div>
+        <div class="text-center columns">
+            <a class="ru-button-big" ng-show="!hasGroups" ui-sref="groups()" ng-click="modals.gameCreated.hide();">Create a new group</a>
+            <a class="ru-button-big" ng-show="hasGroups" ui-sref="setAssignments()" ng-click="modals.gameCreated.hide();">Assign boards to groups</a>
+            <a class="ru-button-big" ng-click="resetForm(); modals.gameCreated.hide();">Create another board</a>
+        </div>
+    </div>
   </div>
 </div>

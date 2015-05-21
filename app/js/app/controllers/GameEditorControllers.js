@@ -26,6 +26,15 @@ define([], function() {
 
 		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
 
+		$scope.hasGroups = false;
+		$scope.boardCreatedSuccessfully = false;
+
+		api.groupManagementEndpoint.get().$promise.then(function(results){
+			if (results.length > 0) {
+				$scope.hasGroups = true;
+			}
+		});
+
         $scope.wildCardList = api.gameBoards.wildcards();
 
         // set default wildcard to the random one.
@@ -148,6 +157,12 @@ define([], function() {
 			$scope.currentGameBoard = newGameBoard;
 		}
 
+		$scope.resetForm = function() {
+			$scope.boardCreatedSuccessfully = false;
+			$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
+			$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
+		}
+
 		// detect changes in the selected questions list and update the gameboard
 		$scope.$watchCollection("enabledQuestions", updateGameBoardPreview);
 		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
@@ -186,8 +201,11 @@ define([], function() {
 
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
-				$scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
-        		$state.go('setAssignments')
+
+        		$scope.modals.gameCreated.show();
+				$scope.boardCreatedSuccessfully = true;
+				// $scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
+    //     		$state.go('setAssignments')
         	}).catch(function(e) {
         		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         		gameBoardToSave.wildCard = wildCard
