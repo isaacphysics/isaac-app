@@ -133,7 +133,7 @@ define([], function() {
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
 			updateWildCard();
-
+			
 			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title, id: $scope.currentGameBoard.id};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
