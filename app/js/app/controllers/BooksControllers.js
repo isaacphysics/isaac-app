@@ -24,6 +24,9 @@ define([], function() {
 				$scope.selectedChapterId = chapterId;
 				$scope.modals.bookChapterOptions.show();
             	$scope.setLoading(false);
+			}).catch(function(e){
+				$scope.setLoading(false);
+        		$scope.showToast($scope.toastTypes.Failure, "Unable to load the chapter your requested", "Error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 			})
 		}
 	}];
