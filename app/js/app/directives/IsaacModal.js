@@ -24,6 +24,10 @@ define([], function() {
 
                 scope.modals = scope.modals || {};
 
+                scope.$on("$stateChangeStart", function() {
+                    $("#isaacModal").foundation("reveal", "close");
+                });
+
                 scope.modals[attrs.isaacModal] = {
                     show: function() {
                         $("#isaacModal").empty().append($compile(rawClone)(scope));
@@ -37,7 +41,7 @@ define([], function() {
                         
                         // make sure the top of the modal is in view.
                         $location.hash('isaacModal');
-                        $anchorScroll();                      
+                        $anchorScroll();
                     },
                     hide: function() {
                         $("#isaacModal").foundation("reveal", "close");
