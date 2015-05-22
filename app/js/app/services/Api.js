@@ -159,6 +159,11 @@ define([], function() {
 				method: 'GET', 
 				isArray: true 
 			},
+			'delete' :{
+				method: 'DELETE',
+				url: server + "/api/groups/:id", 
+				isArray: true
+			},
 			'getMembers' : {
 				method: 'GET',
 				url: server + "/api/groups/:id/membership", 

@@ -93,6 +93,10 @@
 			border-top: #999 1px solid;
 		}
 
+		&:first-child .group-nav-delete {
+			border-top: #999 1px solid;
+		}
+
 		/* Styles for active item */
 		&.active {
 			.group-nav-header {
@@ -120,7 +124,7 @@
 }
 .group-nav-header {
 	float: left;
-	width: 100%;
+	width: 80%;
 	color: #333;
 	font-weight: 600;
 	line-height: 2.5em;
@@ -128,6 +132,19 @@
 	border-bottom: #999 1px solid;
 	padding: 0 10px 0 20px;
 }
+
+.group-nav-delete {
+	float: left;
+	width: 20%;
+	color: #333;
+	font-weight: 600;
+	line-height: 2.5em;
+	background-color: #f6f6f6;
+	border-bottom: #999 1px solid;
+	text-align: center;
+}
+
+
 .group-nav-toggle {
 	float: right;
 	margin: 3px 0 3px 10px;
@@ -315,6 +332,8 @@
 	}
 	.group-nav-header {
 		border-left: #999 1px solid;
+	}
+	.group-nav-delete {
 		border-right: #999 1px solid;
 	}
 	.group-nav-toggle {

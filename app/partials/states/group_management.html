@@ -43,6 +43,9 @@
                         {{group.groupName}}
                         <!--img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" /-->
                         <span class="group-nav-right"><strong></strong></span>
+                    </a> 
+                    <a class="group-nav-delete" ng-click="deleteSelectedGroup(group)">
+                        X
                     </a>
                     
                     <div ng-show="selectedGroup" class="group-nav-content hide-for-large-up" ng-class="{'hide-for-small-up': selectedGroup == null || selectedGroup._id != group._id}" ng-include="'/partials/group_management_details.html'"></div>

@@ -57,6 +57,32 @@ define([], function() {
 			}
 		}
 
+		$scope.deleteSelectedGroup = function(group){
+			if (group == null){
+				$scope.showToast($scope.toastTypes.Failure, "Group Delete Failed", "No group selected"); 
+			} 
+			else{
+				if($scope.selectedGroup && group._id == $scope.selectedGroup._id) {
+					$scope.selectedGroup = null;
+					$scope.selectedGroupMembers = null;
+					$scope.selectedGroupToken = null;
+				}
+
+				var deleteGroup = $window.confirm('Are you sure you want to delete ' + group.groupName + '?'); 
+				if(deleteGroup){
+					api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(result){
+						$scope.myGroups = api.groupManagementEndpoint.get();
+					}).catch(function(e) {
+        				$scope.showToast($scope.toastTypes.Failure, "Group Delete Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+					});
+				}
+				else{
+					return;
+				}
+			}
+
+		}
+
 		$scope.saveGroup = function(isUpdate) {
         	var Group = api.groupManagementEndpoint;
         	var groupToSave = null;
