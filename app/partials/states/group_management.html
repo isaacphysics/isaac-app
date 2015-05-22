@@ -145,5 +145,7 @@
   <div class="reveal-modal-body text-center ru-page-heading">
     <p>Your group has been created. Share the following code with your students to have them join your group:</p>
     <h3>{{selectedGroupToken.token || "Loading..."}}</h3>
+    <a class="ru-button-big" ng-click="modals.shareCode.hide()" href="/game_builder">Create a new assignment to set for this group</a>
+    <a class="ru-button-big" ng-show="hasExistingAssignments" ng-click="modals.shareCode.hide()" href="/set_assignments">Set an existing assignment for this group</a>
   </div>
 </div>

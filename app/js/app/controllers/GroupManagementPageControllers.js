@@ -30,6 +30,14 @@ define([], function() {
 
 		$scope.newGroup = {};
 
+		$scope.hasExistingAssignments = false;
+
+		api.userGameBoards(null, null, 0, 1).$promise.then(function(boards) {
+			if(boards.totalResults > 0){
+				$scope.hasExistingAssignments = true;
+			}
+		})
+
 		$scope.setSelectedGroup = function(group) {
 			if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
 				$scope.selectedGroup = null;
@@ -87,6 +95,7 @@ define([], function() {
 				return;
 			}
 		}
+
 	}]
 
 	return {
