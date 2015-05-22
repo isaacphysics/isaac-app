@@ -113,23 +113,38 @@ define([
 
         $rootScope.figures = {};
 
+        var loadingRefCount = 0;
+        $rootScope.setLoading = function(isLoadingOrIncrement) {
+
+            if (typeof(isLoadingOrIncrement) == "number") {
+                loadingRefCount += isLoadingOrIncrement;
+            } else {
+                loadingRefCount += isLoadingOrIncrement ? 1 : -1;
+            }
+
+            if (loadingRefCount < 0)
+                loadingRefCount = 0;
+
+            $rootScope.globalFlags.loading = loadingRefCount > 0;
+        }
+
         $rootScope.globalFlags = {
             siteSearchOpen: false,
-            isLoading: false,
+            loading: false,
             noSearch: false
         };
 
         $rootScope.$state = $state;
 
         $rootScope.$on("$stateChangeStart", function() {
-            $rootScope.globalFlags.isLoading = true;
+            $rootScope.setLoading(true);
             $rootScope.pageTitle = "";
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
             $timeout(function() {
                 // Run this in a $timeout to make sure that $apply is called.
-                $rootScope.globalFlags.isLoading = false;
+                $rootScope.setLoading(false);
                 
                 // TODO: find a better way to hide the search
                 $rootScope.globalFlags.noSearch = false;
@@ -146,7 +161,7 @@ define([
         })
 
         $rootScope.$on("$stateChangeError", function() {
-            $rootScope.globalFlags.isLoading = false;
+            $rootScope.setLoading(false);
         })
 
         $rootScope.$on("$includeContentLoaded", function() {
@@ -463,27 +478,28 @@ define([
                           }                  
                     }
                 }); 
-                var tutorialShown = cookie.read('tutorialShown');
+                // var tutorialShown = cookie.read('tutorialShown');
 
                 var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
                 
                 // we don't want the google bot or out of date browsers to see the tutorial.
-                if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
-                    if ($.ru_IsMobile()) {
-                        if ($('#mobile-tutorial').length > 0) {
-                            setTimeout(function() {
-                                // Launch the tutorial asynchronously. No idea why this is required.
-                                $('#mobile-tutorial').foundation('joyride', 'start');
-                                cookie.create('tutorialShown',1,720);
-                            }, 1000)
-                        }
-                    } else {
-                        if ($('#desktop-tutorial').length > 0) {
-                            $('#desktop-tutorial').foundation('joyride', 'start');
-                            cookie.create('tutorialShown',1,720);
-                        }
-                    }
-                }
+                // stop tutorial from loading for new users as no one reads it anyway.
+                // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
+                //     if ($.ru_IsMobile()) {
+                //         if ($('#mobile-tutorial').length > 0) {
+                //             setTimeout(function() {
+                //                 // Launch the tutorial asynchronously. No idea why this is required.
+                //                 $('#mobile-tutorial').foundation('joyride', 'start');
+                //                 cookie.create('tutorialShown',1,720);
+                //             }, 1000)
+                //         }
+                //     } else {
+                //         if ($('#desktop-tutorial').length > 0) {
+                //             $('#desktop-tutorial').foundation('joyride', 'start');
+                //             cookie.create('tutorialShown',1,720);
+                //         }
+                //     }
+                // }
 
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
@@ -568,19 +584,6 @@ define([
 	/////////////////////////////////////
 	// Bootstrap AngularJS
 	/////////////////////////////////////
-
-
-    if (document.location.hash == "#_=_") {
-        
-        // This is necessary because of Facebook's stupid hackery. See http://stackoverflow.com/a/7297873
-
-        if (document.location.hostname == "localhost")
-            document.location.hash = "#!";
-        else
-            document.location.hash = "";
-
-    }
-
 
 	var root = $("html");
 	angular.bootstrap(root, ['isaac']);

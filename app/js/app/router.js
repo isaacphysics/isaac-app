@@ -257,8 +257,9 @@ define(["angular-ui-router"], function() {
             })
             .state('board', {
                 url: "/board/:id",
-                onEnter: ["$stateParams", "$location", function($stateParams, $location) {
+                onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
                     $location.url("/#" + $stateParams.id);
+                    $rootScope.setLoading(false);
                     throw "Prevent entering board redirect state."
                 }],
             })
@@ -416,10 +417,54 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
-                        controller: "AdminStatsPageController",
+                        controller: ["$scope", "api", function($scope, api) {
+                            // general stats
+                            $scope.statistics = null;
+                            $scope.setLoading(true)
+                            api.statisticsEndpoint.get().$promise.then(function(result){
+                                $scope.statistics = result;
+                                $scope.setLoading(false)
+                            });
+
+                        }]
                     }
                 }
             })
+            .state('adminStats.schoolUserSummaryList', {
+                url: "/schools",
+                templateUrl: '/partials/admin_stats/school_user_summary_list.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getSchoolPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            })
+            .state('adminStats.schoolUsersDetail', {
+                url: "/schools/:schoolId/user_list",
+                templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+                resolve: {
+                    "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.statisticsEndpoint.getSchoolUsers({id: $stateParams.schoolId});
+                    }]
+                },
+                controller: "AdminStatsPageController"
+            })            
+            .state('adminStats.popularGameboards', {
+                url: "/popular_gameboards",
+                templateUrl: '/partials/admin_stats/popular_gameboards.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getGameboardPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            })
+            .state('adminStats.isaacAnalytics', {
+                url: "/isaac_analytics",
+                templateUrl: '/partials/admin_stats/analytics.html',
+                controller: "AnalyticsPageController",
+            })                    
 
             .state('adminEvents', {
                 url: "/admin/events",

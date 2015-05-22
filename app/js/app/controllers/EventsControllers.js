@@ -25,7 +25,7 @@ define([], function() {
         e.field = e.tags.indexOf("physics") > -1 ? "physics" : (e.tags.indexOf("maths") > -1 ? "maths" : undefined);
 
         // we have to fix the event image url.
-        if(e.eventThumbnail) {
+        if(e.eventThumbnail && e.eventThumbnail.src) {
             e.eventThumbnail.src = api.getImageUrl(e.eventThumbnail.src);
         } else {
             e.eventThumbnail.src = 'http://placehold.it/500x276';
@@ -49,7 +49,7 @@ define([], function() {
 
         $scope.filterEventsByStatus = "UPCOMING";
         $scope.filterEventsByType = "all";
-
+        $scope.moreResults = false;
         $scope.toTitleCase = toTitleCase;
 
         $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
@@ -77,9 +77,9 @@ define([], function() {
 
         $scope.events = [];
         $scope.loadMore = function() {
-            $scope.globalFlags.isLoading = true;
+            $scope.setLoading(true);
             api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType).$promise.then(function(result) {
-                $scope.globalFlags.isLoading = false;
+                $scope.setLoading(false);
                 
                 for(var i in result.results) {
                     var e = result.results[i];
@@ -90,20 +90,17 @@ define([], function() {
                 startIndex += result.results.length;
 
                 if (startIndex >= result.totalResults) {
-                    $scope.noMoreResults = true;
+                    $scope.moreResults = false;
                 } else {
-                    $scope.noMoreResults = false;
+                    $scope.moreResults = true;
                 }
             });
         }
     }];
 
     var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', function($scope, api, $timeout, $stateParams, $state, $filter) {
-        var loaded = false;
-        $timeout(function() {
-            // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-            $scope.globalFlags.isLoading = !loaded;
-        });
+
+        $scope.setLoading(true);
 
         $scope.event = api.events.get({id: $stateParams.id});
         
@@ -112,8 +109,7 @@ define([], function() {
         $scope.jsonLd = {};
 
         $scope.event.$promise.then(function(e) {
-            loaded = true;
-            $scope.globalFlags.isLoading = false;
+            $scope.setLoading(false);
             
             // usage instructions defined at - https://developers.google.com/structured-data/rich-snippets/events
             $scope.jsonLd = {
@@ -142,7 +138,7 @@ define([], function() {
 
             augmentEvent(e, api);
         }).catch(function() {
-            $scope.globalFlags.isLoading = false;
+            $scope.setLoading(false);
             $state.go('404', {target: $state.href("event", $stateParams)});
         });        
     }];

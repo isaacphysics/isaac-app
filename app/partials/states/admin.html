@@ -15,7 +15,20 @@
         </div>
     </div>
 </div>
-
+<div class="row">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="small-16 columns">
+                <h2>Admin Console</h2>
+                <ul>
+                    <li ng-show="segueVersion"><strong>API Version:</strong> {{segueVersion.segueVersion}}</li>                    
+                    <li ng-show="indexQueue" title="{{indexQueue.queue}}"><strong>Current Index Queue Size:</strong> {{indexQueue.queue.length}} <span ng-show="indexQueue.queue.length > 0">[<a href="javascript:void(0)" ng-click="clearIndexQueue()">Clear Unstarted jobs</a>]</span></li>
+                    <li ng-show="cachedVersions" title="{{cachedVersions.cachedVersions}}"><strong>Content Versions Cached:</strong> {{cachedVersions.cachedVersions.length}}</li>   
+                </ul>                
+            </div>
+        </div>            
+    </div>
+</div>
 <div ng-show="isAdminUser">
     <div class="row">
         <div class="small-16 columns">
@@ -127,7 +140,7 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id)">Delete</a></td>
+                                    <td><a target="_blank" ui-sref="userProgress({'userId' : result._id })">View</a> <a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id)">Delete</a></td>
                                 </tr>
                             </table>
                         </div>

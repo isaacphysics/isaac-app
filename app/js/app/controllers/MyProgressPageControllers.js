@@ -25,10 +25,7 @@ define([], function() {
 
 		$scope.questionsAnsweredOverTime = null;
 
-		$timeout(function() {
-			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-			$scope.globalFlags.isLoading = true;
-		});
+		$scope.setLoading(2);
 
 		if ($stateParams.userId) {
 			$scope.progress = api.user.getProgress({ userId: $stateParams.userId });
@@ -49,11 +46,11 @@ define([], function() {
 			        delete $scope.questionsAnsweredOverTime[property];
 			    }
 			}			
-			$scope.globalFlags.isLoading = !$scope.subjectData;
+			$scope.setLoading(false);
 		})
 
 		$scope.progress.$promise.then(function() {
-			$scope.globalFlags.isLoading = !$scope.questionsAnsweredOverTime && $scope.progress != null;
+			$scope.setLoading(false);
 			$scope.levelData = [
 				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
 				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
@@ -110,7 +107,7 @@ define([], function() {
 			console.error("Unable to load user progress:", e);
 			$timeout(function() {
 				// Call this asynchronously, so that it happens later than the previous asynchronous call (!)
-				$scope.globalFlags.isLoading = false;
+				$scope.setLoading(false);
 			});
 		});
 	}];

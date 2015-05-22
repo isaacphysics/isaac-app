@@ -16,10 +16,7 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
-        $timeout(function() {
-            // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-            scope.globalFlags.isLoading = true;
-        });
+        scope.setLoading(true);
 
         scope.generateGameBoardTitle = gameBoardTitles.generate;
 
@@ -58,7 +55,7 @@ define([], function() {
             }
 
             Promise.all(gameboardPromises).then(function() {
-                scope.globalFlags.isLoading = false;
+                scope.setLoading(false);
                 scope.$apply();
             });
 
@@ -68,11 +65,11 @@ define([], function() {
 
             for (var k in scope.assignmentExpanded) {
                 if (scope.assignmentExpanded[k] && !scope.assignmentProgress[k]) {
-                    scope.globalFlags.isLoading = true;
+                    scope.setLoading(true);
                     scope.assignmentProgress[k] = api.assignments.getProgress({assignmentId: k});
 
                     scope.assignmentProgress[k].$promise.then(function(progress) {
-                        scope.globalFlags.isLoading = false;
+                        scope.setLoading(false);
 
                         scope.assignments[k].gameBoard.$promise.then(function(gameBoard) {
 

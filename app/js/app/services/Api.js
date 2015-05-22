@@ -135,13 +135,17 @@ define([], function() {
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
-				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data:bin_data"
+				url: server + "/api/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
 			},
 			'getUserLocations' : {
 				method: 'GET',
 				url: server + "/api/admin/stats/users/last_locations", 
 				isArray: true 
 			},
+			'getLogEventTypes' : {
+				method: 'GET',
+				url: server + "/api/info/log_event_types",
+			},			
 		});
 
 		this.adminDeleteUser = $resource(server + "/api/admin/users/:userId", {}, {
@@ -334,6 +338,17 @@ define([], function() {
 
 		this.environment = $resource(server + "/api/info/segue_environment");
 
+		this.segueInfo = $resource(server + "/api/search/:searchTerms?types=:types", {}, {
+			"segueVersion": {
+				method: "GET",
+				url: server + "/api/info/segue_version",
+			},
+			"cachedVersion": {
+				method: "GET",
+				url: server + "/api/info/content_versions/cached",
+			},
+		});
+
 		this.password = $resource(server + "/api/users/resetpassword/:token", null, {
 			reset: {
 				method: "POST",
@@ -355,6 +370,14 @@ define([], function() {
 				method: "POST",
 				url: server + "/api/admin/live_version/:version",
 			},
+			"currentIndexQueue" : {
+				method: "GET",
+				url: server + "/api/admin/content_index_queue",
+			},
+			"emptyIndexQueue" : {
+				method: "DELETE",
+				url: server + "/api/admin/content_index_queue",
+			}			
 		})
 
 

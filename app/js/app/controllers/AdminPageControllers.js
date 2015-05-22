@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 Ian Davies
+ * Copyright 2014 Ian Davies & Stephen Cummins
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,37 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
 		$rootScope.pageTitle = "Admin Page";
 
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.isLoading = false;
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
+
+		$scope.indexQueue = null;
+		$scope.segueVersion = api.segueInfo.segueVersion();
+		$scope.cachedVersions = api.segueInfo.cachedVersion();
+		var updateIndexerQueue = function(){
+			api.contentVersion.currentIndexQueue().$promise.then(function(result){
+				$scope.indexQueue = result;		
+			});
+		}
+		
+		updateIndexerQueue();
+
+		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
+		$scope.clearIndexQueue = function(){
+			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
+				$scope.indexQueue = result;
+			});
+		}
+
+		$scope.$on("$destroy", function() {
+	        if (indexQueueInterval) {
+	            $interval.cancel(indexQueueInterval);
+	        }
+	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
@@ -80,7 +104,7 @@ define([], function() {
 		}
 	}]
 
-	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout' , function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout) {
+	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {
 			$rootScope.pageTitle = "Statistics Page";
 
 			$scope.contentVersion = api.contentVersion.get();
@@ -89,80 +113,72 @@ define([], function() {
 
 			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
-			$scope.statistics = null;
-			
-			$scope.locations = [];
-			$scope.getLocationData = function() {
-				$scope.visibleStatsPanel = "locationMap";
-				$scope.globalFlags.isLoading = true;
+			$scope.dataToShow = null;
 
-				api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
-					for(var i = 0; i < result.length; i++) {
-						result[i].id = i;
-					}
+			$scope.reverse = false;
+			$scope.setLoading(true)
+			dataToShow.$promise.then(function(result){
+				$scope.dataToShow = JSON.parse(angular.toJson(result));
+				$scope.setLoading(false);
+			})
+		}]
 
-					$scope.locations = result;
-					$scope.globalFlags.isLoading = false;
-				});
-			}
+	var AnalyticsPageController = ['$scope', 'api',  '$rootScope', function($scope, api, $rootScope) {
+			$rootScope.pageTitle = "Analytics Page";
 
+			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+
+			$scope.reverse = false;
+			$scope.setLoading(2); // making 2 async calls below.
 
 			$scope.map = { center: { latitude: 53.670680, longitude: -1.582031 }, zoom: 5 };
+			$scope.locations = []
+			api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
+				for(var i = 0; i < result.length; i++) {
+					result[i].id = i;
+				}
 
-			$timeout(function() {
-				// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-				$scope.globalFlags.isLoading = $scope.statistics == null;
+				$scope.locations = result;
+				$scope.setLoading(false);
+			});				
+
+			// start and end dates for line graphs
+			var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
+			dataStartDate = dataStartDate.getTime();
+			var dataEndDate = new Date().getTime();
+			$scope.editingGraph = true;
+			$scope.eventsSelected = {}
+			$scope.questionsAnsweredOverTime = null;
+			$scope.eventsAvailable = {};
+
+			api.statisticsEndpoint.getLogEventTypes().$promise.then(function(result){
+				$scope.eventsAvailable = JSON.parse(angular.toJson(result));
+				$scope.setLoading(false);
 			});
-
-			api.statisticsEndpoint.get().$promise.then(function(result){
-				$scope.globalFlags.isLoading = false;
-				$scope.statistics = result;
-			});
-
-			$scope.gameboardListData = [];
-			$scope.visibleStatsPanel = null;
-			$scope.generateGameBoardTitle = gameBoardTitles.generate;
-
-			$scope.gameboardListSortPredicate = null;
-
-			$scope.getGameboardListData = function() {
-				$scope.visibleStatsPanel = "gameboardList";
-				$scope.globalFlags.isLoading = true;
-				var gameboardListPromise = api.statisticsEndpoint.getGameboardPopularity();
-
-				gameboardListPromise.$promise.then(function(result){
-					$scope.gameboardListData = result;
-					$scope.globalFlags.isLoading = false;
-					$scope.reverse = false;
-				});
-			}
-
-			$scope.schoolListSortPredicate = "numberActiveLastThirtyDays"
-			$scope.getSchoolListData = function() {
-				$scope.visibleStatsPanel = "schoolList";
-				$scope.globalFlags.isLoading = true;
-				var gameboardListPromise = api.statisticsEndpoint.getSchoolPopularity();
-
-				gameboardListPromise.$promise.then(function(result){
-					$scope.schoolListData = result;
-					$scope.globalFlags.isLoading = false;
-					$scope.reverse = true;
-				});
-			}
-
-			$scope.getSchoolUserListData = function(schoolId, schoolName) {
-				$scope.visibleStatsPanel = "schoolUserList";
-				$scope.globalFlags.isLoading = true;
-				var gameboardListPromise = api.statisticsEndpoint.getSchoolUsers({id: schoolId});
-				$scope.schoolSelected = schoolName;
+			
+			$scope.updateGraph = function() {
+				var eventsForGraph = [];
+				for (var eventType in $scope.eventsSelected) {
+					if ($scope.eventsSelected[eventType]) {
+						eventsForGraph.push(eventType);
+					}
+				}
 				
-				gameboardListPromise.$promise.then(function(result){
-					$scope.schoolUserListData = result;
-					$scope.globalFlags.isLoading = false;
-					$scope.reverse = false;
+				if (eventsForGraph.length < 1) {
+					return;
+				}
+
+				$scope.setLoading(true);
+				$scope.editingGraph = false;
+				api.statisticsEndpoint.getEventsOverTime({from_date: dataStartDate, to_date:dataEndDate, events:eventsForGraph.join(), bin_data:true}).$promise.then(function(result){
+					if (result){
+						$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));	
+					}
+					
+					$scope.setLoading(false);
 				});
-			}					
-		}]
+			}
+		}]		
 
 	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
 	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
@@ -175,7 +191,7 @@ define([], function() {
 
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 		
-		$scope.globalFlags.isLoading = true;
+		$scope.setLoading(true);
 
 		$scope.hasSearched = false;
 		$scope.events = [];
@@ -186,7 +202,7 @@ define([], function() {
 
 
 		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
-                $scope.globalFlags.isLoading = false;
+                $scope.setLoading(false);
                 
 				$scope.events = result.results;
         });
@@ -246,6 +262,7 @@ define([], function() {
 	return {
 		PageController: PageController,
 		AdminStatsPageController: AdminStatsPageController,
+		AnalyticsPageController : AnalyticsPageController,		
 		AdminEventBookingController : AdminEventBookingController,
 	};
 })

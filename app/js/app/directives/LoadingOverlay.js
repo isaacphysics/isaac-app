@@ -22,7 +22,7 @@
 
             link: function(scope, element, attrs){
 
-                scope.$watch("globalFlags.isLoading", function(loading, old) {
+                scope.$watch("globalFlags.loading", function(loading, old) {
 
                     if (loading === old)
                         return; // Init

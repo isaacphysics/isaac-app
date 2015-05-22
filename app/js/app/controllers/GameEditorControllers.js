@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', function($scope, $state, api, $timeout, $q, $stateParams) {
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', function($scope, $state, api, $timeout, $q, $stateParams, $window) {
 		// setup defaults.
 		$scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
@@ -25,6 +25,15 @@ define([], function() {
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
 		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
+
+		$scope.hasGroups = false;
+		$scope.boardCreatedSuccessfully = false;
+
+		api.groupManagementEndpoint.get().$promise.then(function(results){
+			if (results.length > 0) {
+				$scope.hasGroups = true;
+			}
+		});
 
         $scope.wildCardList = api.gameBoards.wildcards();
 
@@ -124,8 +133,8 @@ define([], function() {
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
 			updateWildCard();
-
-			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title};
+			
+			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title, id: $scope.currentGameBoard.id};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
 
@@ -148,11 +157,23 @@ define([], function() {
 			$scope.currentGameBoard = newGameBoard;
 		}
 
+		$scope.resetForm = function() {
+			$scope.boardCreatedSuccessfully = false;
+			$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
+			$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
+		}
+
 		// detect changes in the selected questions list and update the gameboard
 		$scope.$watchCollection("enabledQuestions", updateGameBoardPreview);
 		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
 
         $scope.saveGameBoard = function() {
+        	var saveConfirmed = $window.confirm('Are you sure you want save this game board?');   
+
+        	if (!saveConfirmed) {
+        		return;
+        	}
+
         	var GameBoard = api.gameBoards;
         	var gameBoardToSave = new GameBoard($scope.currentGameBoard);
       	
@@ -180,8 +201,11 @@ define([], function() {
 
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
-				$scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
-        		$state.go('board', {id: gb.id})
+
+        		$scope.modals.gameCreated.show();
+				$scope.boardCreatedSuccessfully = true;
+				// $scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
+    //     		$state.go('setAssignments')
         	}).catch(function(e) {
         		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         		gameBoardToSave.wildCard = wildCard

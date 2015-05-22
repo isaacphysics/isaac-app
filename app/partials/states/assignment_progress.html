@@ -59,9 +59,8 @@
                                     <div class="accordion-board-date">
                                         Due Date <span class="icon-calender"></span>
                                     </div>
--->
-                                    <a href="javascript:void(0)" class="accordion-board-link" ui-sref="board({'id':assignment.gameBoard.id})">
-                                        View <span class="show-for-medium-up">Board</span> <span class="icon-link"></span>
+-->                                 <a href="javascript:void(0)" class="accordion-board-link">
+                                        View <span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </a>
                                 </div>
 
@@ -74,7 +73,7 @@
                                         Board progress overview
                                     -->
                                     <div class="board-progress" ng-show="assignment.gameBoard.studentsCorrect != null">
-                                        <strong>{{assignment.gameBoard.studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong><strong class="strong-mobile">correctly</strong>.
+                                        <strong>{{assignment.gameBoard.studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <a target="_blank" ui-sref="board({'id':assignment.gameBoard.id})"><strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong></a><strong class="strong-mobile">correctly</strong>.
                                     </div>
 
                                     <!--

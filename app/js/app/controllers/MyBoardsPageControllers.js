@@ -16,7 +16,6 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
-		$scope.globalFlags.isLoading = true;
 		
 		$rootScope.pageTitle = "My Boards";
 
@@ -38,10 +37,10 @@ define([], function() {
 		$scope.sortOption = $scope.sortOptions[1];
 
 		var updateBoards = function(limit) {
-			$scope.globalFlags.isLoading = true;
+			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
-				$scope.globalFlags.isLoading = false;
+				$scope.setLoading(false);
 			})
 		};
 
@@ -61,21 +60,18 @@ define([], function() {
 			updateBoards();
 		});
 
-		// Perform initial load
-		$timeout(function() {
-			// Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
-			updateBoards();
-		});
+		
+		updateBoards();
 
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
 			if (mergeInProgress) return;
 			mergeInProgress = true;
-			$scope.globalFlags.isLoading = true;
+			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Merge new boards into results 
 				$.merge($scope.boards.results, newBoards.results);
-				$scope.globalFlags.isLoading = false;
+				$scope.setLoading(false);
 				mergeInProgress = false;
 			});
 		};
@@ -86,8 +82,9 @@ define([], function() {
 			if (confirmation){
        			// TODO: This needs to be reviewed
        			// Currently reloading boards after delete
-				$scope.globalFlags.isLoading = true;
+				$scope.setLoading(true);
        			api.deleteGameBoard(id).$promise.then(function(){
+       				$scope.setLoading(false);
 			        updateBoards($scope.boards.results.length);
        			});
 			}

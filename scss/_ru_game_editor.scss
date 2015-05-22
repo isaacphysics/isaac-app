@@ -1,4 +1,4 @@
-.game-editor {
+.game-editor, .analytics {
 	.results-panel {
 		border: #cccccc 1px solid;
 	    background-color: white;
@@ -10,15 +10,34 @@
 		}
 		
 		.results-list {
-			height: 250px;
+			height: 160px;
 			overflow-y: scroll;
 			padding-top: 5px;
+
+			label input {
+  				margin-right: 5px;			
+			}
 		}
 
 		.selected-questions {
-			height: 250px;
+			height: 110px;
 			overflow-y: auto;
 		}
+
+		.arrow-indicator {
+			font-size: 2em;
+
+		}
+
+		.builder-steps label {
+			display: inline;
+		}
+
+		.builder-steps li, .builder-steps label {
+			font-weight: bold;
+		}
+
+
 	}	
 }
 
