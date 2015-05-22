@@ -17,6 +17,18 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 		$scope.selectedChapterId = null;
+		$scope.setLoading(true);
+
+		$scope.introText = null;
+
+		api.pageFragments.get({id: "physics_skills_14_intro"}).$promise.then(function(result){
+				$scope.introText = result;
+            	$scope.setLoading(false);
+			}).catch(function(e){
+				$scope.setLoading(false);
+				console.log("Error unable to load intro text " + e)
+			})
+
 		$scope.selectChapter = function(chapterId) {
             $scope.setLoading(true);
 			api.pageFragments.get({id: chapterId}).$promise.then(function(result){

@@ -1,9 +1,10 @@
 <div class="medium-16 columns">
-  <h1 class="book-heading">Mastering essential pre-university physics</h1>
+  <h1 class="book-heading">{{introText.title}}</h1>
+  <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
   <img class="book-cover" src="assets/skills-book-cover.png" width="150" alt="">
-  <div isaac-page-fragment="physics_skills_14_intro"> </div>
+  <div isaac-content doc="introText" />
 
-  <h4>A2-Level (or equivalent)</h4>
+  <h4>AS-Level (or equivalent)</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
     <li>
       <a href="javascript:void(0)" ng-click="selectChapter('ch_a_boards')">
