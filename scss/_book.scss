@@ -1,3 +1,56 @@
+.book-chapter-options{
+	text-align: center;
+	font-size: 14px;
+}
+
+
+.book-chapter-options dl{
+	display:inline-block;
+	overflow: auto;
+	min-width: 250px;
+}
+
+
+.book-chapter-options dt{
+    float:left;
+    font-size:12px;
+    line-height:26px;
+    width:45px;
+    height:48px;
+    margin-top:4px;
+}
+
+.book-chapter-options dd{   
+	margin: 0;
+    margin-top:4px;
+	padding-left:10px;
+    float:left;
+    font-size:12px;
+    line-height:26px;
+    height:48px;
+    width:200px;
+  	text-align: left;
+}
+
+.book-chapter-options p{
+	line-height: 1.2;
+	font-size: 14px;
+}
+
+.book-chapter-options a{
+	line-height: 1.2;
+	font-size: 14px;
+}
+
+.book-chapter-options ul{
+	margin-left:0rem;
+}
+
+.book-chapter-options li{
+	text-align:left;
+}
+
+
 .book-heading {
 	margin-bottom: 20px;
 }
