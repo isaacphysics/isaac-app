@@ -124,6 +124,14 @@
     font-weight: 800;
     margin: 10px 0;
 }
+@media #{$small-only} { 
+
+    .reveal-modal-body {
+        padding: 20px 0px;
+    }
+    
+}
+
 @media #{$medium-up} { 
     .reveal-modal {
         .close-reveal-modal {
