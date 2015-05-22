@@ -1,8 +1,10 @@
 <div class="medium-16 columns">
-  <h1 class="book-heading">{{introText.title}}</h1>
-  <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
-  <img class="book-cover" src="assets/skills-book-cover.png" width="150" alt="">
-  <div isaac-content doc="introText" />
+  <div class="book-intro">
+    <h1 class="book-heading">{{introText.title}}</h1>
+    <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
+    <img class="book-cover" src="assets/skills-book-cover.png" width="150" alt="Clip art style image of the book.">
+    <div isaac-content doc="introText" />
+  </div>
 
   <h4>AS-Level (or equivalent)</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">

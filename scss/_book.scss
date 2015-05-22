@@ -433,6 +433,9 @@
 	}
 }
 @media #{$medium-up} { 
+	.book-intro {
+		margin-bottom: 100px;
+	}	
 	.book-cover {
 		float: right;
 		display: inline-block;
