@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 define([], function() {
-    return ['$compile', function($compile) {
+    return ['$compile', '$location', '$anchorScroll', function($compile, $location, $anchorScroll) {
         return {
             restrict: 'A',
 
@@ -35,6 +35,9 @@ define([], function() {
 
                         $("#isaacModal").css("top", modalPosition > 0 ? modalPosition+'px' : 0);
                         
+                        // make sure the top of the modal is in view.
+                        $location.hash('isaacModal');
+                        $anchorScroll();                      
                     },
                     hide: function() {
                         $("#isaacModal").foundation("reveal", "close");
