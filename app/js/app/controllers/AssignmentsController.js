@@ -50,6 +50,9 @@ define([], function() {
 			} else {
 				$scope.openedAssignPanels.splice(indexOfBoard, 1);
 			}
+
+			if($scope.myGroups.length == 0)
+           		$scope.modals.groupsWarning.show();
 		}
 
 		$scope.filterOptions = [
