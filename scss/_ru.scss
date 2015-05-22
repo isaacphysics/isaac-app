@@ -140,3 +140,16 @@ input.ru-input-error {
     border-color: #cc6666;
     background: #fff;
 }
+
+svg.book-page-icon {
+
+    polygon {
+        fill: #4E9934;
+    }
+
+    text {
+        font-style: normal;
+        fill: white;
+        text-anchor: middle; 
+    }
+}
