@@ -595,6 +595,7 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/book_index.html",
+                        controller: "BooksControllers",
                     }
                 }
             })

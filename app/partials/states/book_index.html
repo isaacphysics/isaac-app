@@ -1,20 +1,12 @@
 <div class="medium-16 columns">
   <h1 class="book-heading">Mastering essential pre-university physics</h1>
   <img class="book-cover" src="assets/skills-book-cover.png" width="150" alt="">
-  <h4>Isaac Physics Skills</h4>
-  <p><strong>By A. C. Machacek and J. J. Crowter</strong><br /> This area of our platform aims to provide an opportunity to practise the material that features directly in school exams.</p>
-  <h4>How to use this area of Isaac?</h4>
-  <p>Our intention is that having worked through the problems from the Machacek and Crowter book, you come to this part of Isaac to check your answers.</p>
-  <ol>
-    <li>Clicking on one of the chapter links below will take you to a hexagon board with each hexagon representing a page of the book.</li>
-    <li>When you reach this board click on the hexagon corresponding to the page of questions you want to check.</li>
-    <li>The final page will present you with the questions and answer boxes to enter you your answers and check them.</li>
-  </ol>
+  <div isaac-page-fragment="physics_skills_14_intro"> </div>
 
   <h4>A2-Level (or equivalent)</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter1.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_a_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">a</span>
@@ -23,7 +15,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter2.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_b_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">b</span>
@@ -32,7 +24,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter3.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_c_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">c</span>
@@ -41,7 +33,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter4.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_d_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">d</span>
@@ -50,7 +42,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter5.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_e_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">e</span>
@@ -63,7 +55,7 @@
   <h4>A2-Level (or equivalent)</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter6.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_f_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">f</span>
@@ -72,7 +64,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter7.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_g_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">g</span>
@@ -81,7 +73,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter8.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_h_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">h</span>
@@ -90,7 +82,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter9.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_i_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">i</span>
@@ -99,7 +91,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter10.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_j_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">j</span>
@@ -108,7 +100,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter11.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_k_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">k</span>
@@ -117,7 +109,7 @@
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="modals.chapter12.show()">
+      <a href="javascript:void(0)" ng-click="selectChapter('ch_l_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">l</span>
@@ -127,99 +119,12 @@
     </li>
   </ul>
 </div>
-<div isaac-modal="chapter1">
+<div isaac-modal="bookChapterOptions">
   <div class="reveal-modal-head">
-    <h2>General Questions</h2>
+    <h2>{{modalContent.title}}</h2>
     <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
   </div>
   <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter2">
-  <div class="reveal-modal-head">
-    <h2>Mechanics</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter3">
-  <div class="reveal-modal-head">
-    <h2>Electric Circuits</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter4">
-  <div class="reveal-modal-head">
-    <h2>Waves</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter5">
-  <div class="reveal-modal-head">
-    <h2>Uncertainties</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter6">
-  <div class="reveal-modal-head">
-    <h2>Mechanics</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter7">
-  <div class="reveal-modal-head">
-    <h2>Gases</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter8">
-  <div class="reveal-modal-head">
-    <h2>Fields</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter9">
-  <div class="reveal-modal-head">
-    <h2>Capacitors</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter10">
-  <div class="reveal-modal-head">
-    <h2>Nuclear Physics</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter11">
-  <div class="reveal-modal-head">
-    <h2>Modelling the Universe</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
-  </div>
-</div>
-<div isaac-modal="chapter12">
-  <div class="reveal-modal-head">
-    <h2>Fact Sheets</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
+    <div isaac-content doc="modalContent" />
   </div>
 </div>
