@@ -34,10 +34,12 @@ define([], function() {
 
                 scope.$on("anvilAppMessage", function(_, data) {
                     if (data.msg == "answer") {
-                        scope.selectedChoice = {
-                          "value": "AnvilAnswer",
-                          "type": "choice",
-                        };
+                        if (!scope.selectedChoice) {
+                            scope.selectedChoice = {
+                              "value": "AnvilAnswer",
+                              "type": "choice",
+                            };
+                        }
                     }
                 })
             },
