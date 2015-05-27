@@ -40,6 +40,7 @@ define([
 	"app/directives/content/QuestionRadioButton",
 	"app/directives/content/Pod",
 	"app/directives/content/AnvilApp",
+	"app/directives/content/AnvilQuestion",
 	"app/directives/FooterPods",
 	"app/directives/DesktopPanel",
 	"app/directives/MobilePanel",
@@ -183,6 +184,8 @@ define([
 	.directive('isaacPod', require("app/directives/content/Pod"))
 
 	.directive('anvilApp', require("app/directives/content/AnvilApp"))
+
+	.directive('isaacAnvilQuestion', require("app/directives/content/AnvilQuestion"))
 
 	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))	
 

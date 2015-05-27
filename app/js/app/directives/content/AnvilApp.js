@@ -20,7 +20,10 @@ define([], function() {
 
         return {
 
-            scope: true,
+            scope: {
+                app: "=",
+                params: "=",
+            },
 
             restrict: 'A',
 
@@ -28,7 +31,28 @@ define([], function() {
 
             link: function(scope, element, attrs) {
 
-                scope.src = $sce.trustAsResourceUrl("https://anvil.works/apps/" + scope.doc.appId + "/" + scope.doc.appAccessKey + "/app");
+                var url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app";
+
+                if (scope.params) {
+                    url += "#?" + $.param(scope.params);
+                }
+                scope.src = $sce.trustAsResourceUrl(url);
+
+                var iframe = element.find("iframe")[0];
+
+                var onMessage = function(e) {
+                    if (e.originalEvent.source !== iframe.contentWindow) { return; }
+
+                    var data = e.originalEvent.data;
+                    console.debug("Anvil app message:", data);
+                    scope.$emit("anvilAppMessage", data);
+                };
+
+                $(window).on("message", onMessage);
+
+                scope.$on("$destroy", function() {
+                    $(window).off("message", onMessage);
+                })
             }
         };
     }];
