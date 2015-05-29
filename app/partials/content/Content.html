@@ -7,7 +7,8 @@
 	<div ng-switch-when="isaacMultiChoiceQuestion" isaac-multi-choice-question></div>
 	<div ng-switch-when="isaacNumericQuestion" isaac-numeric-question></div>
 	<div ng-switch-when="isaacSymbolicQuestion" isaac-symbolic-question></div>
-	<div ng-switch-when="anvilApp" anvil-app></div>
+	<div ng-switch-when="isaacAnvilQuestion" isaac-anvil-question></div>
+	<div ng-switch-when="anvilApp" anvil-app app="doc"></div>
 
 	<div ng-switch-default ng-switch="doc.layout">
 			<div ng-switch-when="tabs" isaac-tabs></div>
