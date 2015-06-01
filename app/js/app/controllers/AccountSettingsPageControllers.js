@@ -179,15 +179,29 @@ define([], function() {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Value", "You have to enter a token value!");
         		return;
         	}
+        	
+        	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
+				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + result.givenName + " " + result.familyName + " (" + result.email + "}")
 
-        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
-        		$scope.activeAuthorisations = api.authorisations.get();
-        		$scope.authenticationToken = {value: null};
-        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-        	}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-        	})        		
+				if (confirm) {
+		        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
+		        		$scope.activeAuthorisations = api.authorisations.get();
+		        		$scope.authenticationToken = {value: null};
+		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
+		        	}).catch(function(e){
+		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+		        	})  						
+				}
+        	});
         }
+
+        // if an auth token has been provided assume we want to add it.
+        if ($stateParams.authToken && $scope.editingSelf) {
+			$scope.authenticationToken = {value: $stateParams.authToken}
+			$scope.useToken();
+		} else if ($stateParams.authToken && !$scope.editingSelf) {
+			$scope.showToast($scope.toastTypes.Failure, "Access Denied", "You are not allowed to grant permissions (using a token) on behalf of another user.");
+		}
 
         $scope.revokeAuthorisation = function(userToRevoke){
         	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   

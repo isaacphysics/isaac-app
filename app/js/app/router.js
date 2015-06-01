@@ -345,7 +345,7 @@ define(["angular-ui-router"], function() {
             })
 
 	        .state('accountSettings', {
-		        url: "/account?next&userId",
+		        url: "/account?next&userId&authToken",
                 resolve: {
                     "userOfInterest" : ["$stateParams", "api", function($stateParams, api) {
                         if ($stateParams.userId) {

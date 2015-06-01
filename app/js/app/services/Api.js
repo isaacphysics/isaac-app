@@ -178,7 +178,7 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/authorisations/token/:id", 
 				isArray: false 
-			},
+			},		
 		});
 
 		this.authorisations = $resource(server + "/api/authorisations/", {}, {
@@ -200,6 +200,11 @@ define([], function() {
 				url: server + "/api/authorisations/other_users", 
 				isArray: true 
 			},
+			'getTokenOwner' : {
+				method: 'GET',
+				url: server + "/api/authorisations/token/:token/owner", 
+				isArray: false 
+			},				
 		});	
 
 		this.assignments = $resource(server + "/api/assignments/", {}, {
