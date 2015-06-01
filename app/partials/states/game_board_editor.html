@@ -50,7 +50,7 @@
 				                        </select>
 									</div>									
 									<div class="small-16 columns">
-						                <label><strong>or by Question Title or Topic</strong></label>
+						                <label><strong>and by Question Title or Topic</strong></label>
 						                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">														
 									</div>
 								</div>
@@ -83,7 +83,7 @@
 					                	<img src="/assets/loading.gif">
 					                </div>
 
-					                <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided.</p>
+					                <p class="small-text-center" ng-show="!loading && searchResults.length == 0">Sorry we could not find any questions for the search criteria provided. <a href="javascript:void(0)" ng-click="doNotFilterByLevelOrSubject()" ng-show="questionSearchLevel != '' || questionSearchSubject != ''"><br/>Click to search all Questions</a>.</p>
 
 					                <ul ng-if="!loading" class="no-bullet results-list" ng-show="!loading && searchResults.length > 0">
 					                	<li ng-repeat="question in searchResults track by $index"><label for="{{question.id}}"><input id="{{question.id}}" type="checkbox" ng-model="enabledQuestions[question.id]"><a ui-sref="question({id: question.id})" target="_blank">{{question.title}}</a> - Level {{question.level}} - <span ng-repeat="tag in question.tags">{{tag}}{{$last ? '' : ', '}} </span></label></li>

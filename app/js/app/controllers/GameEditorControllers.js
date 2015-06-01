@@ -48,6 +48,11 @@ define([], function() {
 	        "url" : ""
     	};
 
+    	$scope.doNotFilterByLevelOrSubject = function() {
+			$scope.questionSearchSubject = "";
+			$scope.questionSearchLevel = "";    		
+    	}
+
 		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
 
