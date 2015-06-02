@@ -58,7 +58,8 @@
 
 .ru_pod_image img
 {
-    //min-width: 1000px;
+    display:block;
+    margin:auto;
     height: 180px;
     overflow: hidden;
 }
@@ -179,27 +180,4 @@
 
 .pod-carousel {
     position: relative;
-}
-
-.pod-carousel-nav {
-
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    font-size: 30px;
-    line-height: 60px;
-    font-weight: bold;
-    top: 121px;
-    background: white;
-    opacity: 0.9;
-    text-align: center;
-    font-family: verdana;
-
-    &.previous {
-        left: 15px;
-    }
-
-    &.next {
-        right: 16px;
-    }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Ian Davies
+ * Copyright 2015 Ian Davies, Alistair Stead
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,76 +25,48 @@
  			templateUrl: "/partials/pod_carousel.html",
 
  			link: function(scope, element, attrs) {
- 				var intervalReference = null;
- 				var intervalValue = 10000; //ms
- 				
- 				scope.startPod = 0;
- 				scope.pods = api.pods.get();
 
- 				scope.visiblePods = [];
+ 				scope.intervalValue = 10000; //ms
 
- 				var calculateVisiblePods = function() {
- 					scope.visiblePods = [
-	 					scope.pods.results[scope.startPod % scope.pods.results.length],
-	 					scope.pods.results[(scope.startPod + 1) % scope.pods.results.length],
-	 					scope.pods.results[(scope.startPod + 2) % scope.pods.results.length]
- 					]
- 				}
+ 				// Owl options - see owl.carousel.js
+ 				var defaultOptions = {
+					"nav" : true,
+					"loop": false,
+ 					"lazyLoad": true,
+ 					"navText": ['<', '>'],
+ 					"autoplay": true,
+ 					"autoplayTimeout": scope.intervalValue,
+ 					"autoplayHoverPause":true,
+ 					"margin":10,
+ 					"dots":true,
+ 					"smartSpeed": 0,
+ 					"navRewind": true,
+ 					"responsive":{
+ 						0:{
+ 							"items":1,
+ 						},
+ 						600:{
+ 							"items":2,
+ 						},
+ 						900:{
+ 							"items":3,
+ 						}
+ 					}
+                };
 
-				var interruptAndSetupNewInterval = function() {
-					if (intervalReference != null) {
-						$interval.cancel(intervalReference);
-						interval = null;
-					}
+                var customOptions = scope.$eval($(element).attr('data-options'));
 
-					intervalReference = $interval(function() {
-						scope.startPod++;
-					}, 10000);
-				}
+                // Combine the two options objects
+                for(var key in customOptions) {
+                    defaultOptions[key] = customOptions[key];
+                }
 
-				scope.pods.$promise.then(function(){
-					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
-					calculateVisiblePods();
-					interruptAndSetupNewInterval();
-				});
+ 				// Function to initialise the Carousel
+				scope.initCarousel = function() {
+					$(element).owlCarousel(defaultOptions);
+				};
 
-				scope.pauseCarousel = function() {
-					if (intervalReference != null) {
-						$interval.cancel(intervalReference);
-						intervalReference = null;
-					}
-				}
-
-				scope.startCarousel = interruptAndSetupNewInterval;
-				
-				/**
-				 * Function to navigate through the pods available.
-				 */
-				scope.navigate = function(positionAdjustment) {
-					if ((scope.startPod + positionAdjustment) < 0){
-						scope.startPod = scope.pods.results.length - 1;
-					} else {
-						scope.startPod = (scope.startPod + positionAdjustment) % scope.pods.results.length;	
-					}
-				}
-
-				/**
-				 * Function to determine whether a given pod should be visible or not.
-				 * This assumes desktop resolution.
-				 */
-				scope.isVisible = function(pod) {
-					calculateVisiblePods();
-
-					if (scope.visiblePods.indexOf(pod) != -1 ) {
-						return true;
-					}
-					
-					return false;
-				}
-
-				/**
-				 * Function to determine the order of pods to be displayed.
-				 */
+				// Function to determine the order of pods to be displayed.
 				scope.comparitor = function(pod) {
 					var pos = scope.visiblePods.indexOf(pod);
 					if(pos != -1) {
@@ -103,6 +75,17 @@
 
 					return scope.pods.results.length;
 				}
+
+ 				scope.pods = api.pods.get();
+
+				scope.pods.$promise.then(function(){
+					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
+				});
+
+				// Cleanup
+				scope.$on('$destroy', function(){
+					$(element).owlCarousel('destroy');
+				});
 			},
 		};
 	}];

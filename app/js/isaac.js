@@ -22,10 +22,12 @@ require.config({
         "angulartics-ga": '../bower_components/angulartics/src/angulartics-ga',
         "fastclick" : '../bower_components/fastclick/lib/fastclick',
         "d3" : '../bower_components/d3/d3',
+        "owl-carousel2" : "../bower_components/owl-carousel2/dist/owl.carousel",
     },
 
     shim: {
         "foundation": ['jquery', 'modernizr'],
+        "owl-carousel2" : ['jquery', 'angular', 'foundation'],
         "angular-resource": ['angular'],
         "angular-ui-router": ['angular'],
         "angular": ['jquery'],
