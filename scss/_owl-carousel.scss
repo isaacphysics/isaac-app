@@ -1,0 +1,82 @@
+.owl-theme {
+	// controls container
+	.owl-controls {
+		margin-top: 0px;
+		text-align: center;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	// Styling Next and Prev buttons
+	.owl-controls {
+		.owl-nav {
+			[class*='owl-'] {
+			position: absolute;
+		    width: 60px;
+		    height: 60px;
+		    line-height: 60px;
+		    font-weight: bold;
+		    top: 121px;
+		    opacity: 0.9;
+		    text-align: center;
+		    font-family: verdana;
+			color: $ru_green;
+			font-size: 30px;
+			margin: 0px;
+			padding: 0px;
+			background: white;
+			display: inline-block;
+			cursor: pointer;
+			border-radius:0px;
+			&:hover {
+				background: #EEE;
+				color:$ru_green;
+				text-decoration: none;
+				}
+			}
+			.disabled {
+				opacity: $nav-disabled-opacity;
+				cursor: default;
+			}
+		}
+	}
+
+	// Styling dots
+	.owl-dots {
+		.owl-dot {
+			display: inline-block;
+			zoom: 1;
+			*display: inline;
+
+			span {
+				width: $dot-width;
+				height: $dot-height;
+				margin: $dot-margin;
+				background: $dot-background;
+				display: block;
+				-webkit-backface-visibility: visible;
+				@include transition(opacity, 200ms, ease);
+				@include rounded($dot-rounded);
+			}
+
+			&.active,
+			&:hover {
+				span {
+					background: $ru_green;
+				}
+			}
+		}
+	}
+
+	.owl-prev{
+    	left:1px;
+	}
+
+	.owl-next{
+	    right:1px;
+	}
+}
+
+.owl-carousel .owl-item img{
+	width: inherit;
+	transform-style:inherit;
+}

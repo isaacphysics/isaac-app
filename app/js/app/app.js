@@ -31,6 +31,7 @@ define([
     "app/filters",
     "fastclick",
     "d3",
+    "owl-carousel2",
     "app/honest/dropdown",
     "app/honest/answer_reveal",
     "angulartics", 

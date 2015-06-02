@@ -53,6 +53,7 @@ define([
     "app/directives/SchoolDropdown",
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
+    "app/directives/PodCarouselItem",
     "app/directives/equation_editor/EquationEditor",
     "app/directives/GlobalNavigation",
     "app/directives/equation_editor/TopMenu",
@@ -125,6 +126,8 @@ define([
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
+
+	.directive('podCarouselItem', require("app/directives/PodCarouselItem"))
 
 	.directive('d3Donut', require("app/directives/d3/Donut"))
 
