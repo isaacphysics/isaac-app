@@ -60,7 +60,7 @@
                                         Due Date <span class="icon-calender"></span>
                                     </div>
 -->                                 <a href="javascript:void(0)" class="accordion-board-link">
-                                        View <span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
+                                        <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </a>
                                 </div>
 
@@ -142,6 +142,20 @@
                     </div>
                 </dd>
             </dl>
+            <div class="assignment-progress-key show-for-medium-up panel">
+                <dl>
+                    <dt class="icon-check ru_green"></dt>
+                    <dd>All parts correct</dd>
+                    <dt class="icon-check"></dt>
+                    <dd>Pass mark achieved</dd>
+                    <dt class="icon-spinner"></dt>
+                    <dd>In progress</dd>
+                    <dt class="icon-x"></dt>
+                    <dd>Incorrect</dd>
+                    <dt><span class="blank-even">&nbsp;</span><span class="blank-odd">&nbsp;</span></dt>
+                    <dd>Not attempted</dd>                
+                </dl>
+            </div>            
         </div>
     </div>
 </div>

@@ -784,3 +784,38 @@ div[d3-plot] {
         margin-bottom:0;
     }
 }
+
+.assignment-progress-key {
+
+    dt, dd {
+        display:inline;
+        line-height:20px;
+        vertical-align: middle;
+    }
+
+    dt {
+        font-size:20px;
+    }
+
+    dd {
+        margin-right: 15px;
+    }
+
+    .blank-even, .blank-odd {
+        border: 1px solid black;
+        padding-left:20px;
+    }
+    .icon-x {
+        color: #cc3333;
+        font-size: 35px;
+        display:inline-block;
+        height:15px;
+    }
+    .blank-even {
+        background-color: rgba(80, 158, 46, 0.1);
+    }
+
+    .blank-odd {
+        background-color: #f5f5f5;
+    }
+}
