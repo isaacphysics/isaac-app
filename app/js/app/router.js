@@ -118,9 +118,6 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/equation_editor.html",
                     },
                 },
-                onEnter: [function() {
-                    $("#equationModal").foundation("reveal", "open");
-                }],
             })
 
 	        .state('contact', {
