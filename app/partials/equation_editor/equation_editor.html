@@ -16,7 +16,7 @@
         MENU4 CONTENT
     </div>
 
-    <div ng-repeat="(sid, s) in symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}" selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
+    <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}" selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
     
     <div ng-show="selectedSymbols.length" selection-handle></div>
 
@@ -29,6 +29,8 @@
 
     <div ng-show="selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
 
+    <div class="question-reminder" ng-if="questionDoc"><div isaac-content doc="questionDoc"></div></div>
+
     <div class="result-preview"><span></span></div>
-    <div class="hex-button submit"></div>
+    <div class="hex-button submit" ng-click="submit()"></div>
 </div>

@@ -49,12 +49,37 @@ define([], function() {
                 }
                 
                 var touchStart = function(e) {
-                    if(e.touches.length == 1) 
+                    e = e.originalEvent;
+                    if(e.touches.length == 1) {
                         scope.$emit("selection_grab", scope.symbolId, "move", e);
+                        element.on("touchmove", touchMove);
+                        element.on("touchend", touchEnd);
+                    }
+                }
+
+                var touchMove = function(e) {
+                    e = e.originalEvent;
+                    if (e.touches.length == 1) {
+                        scope.$emit("selection_drag", e.touches[0].pageX, e.touches[0].pageY, e);
+                        e.stopPropagation();
+                        e.preventDefault();
+                    }
+                }
+
+                var touchEnd = function(e) {
+                    e = e.originalEvent;
+                    if (e.changedTouches.length == 1) {
+                        scope.$emit("selection_drop", e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        element.off("touchmove", touchMove);
+                        element.off("touchend", touchEnd);
+                    }
                 }
 
                 element.on("mousedown", mousedown);
-                element.on("mousedown", mousedown);
+                element.on("touchstart", touchStart);
 
 			},
 		};

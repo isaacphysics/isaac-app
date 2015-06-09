@@ -107,6 +107,7 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
+            .state('teacher_features', staticPageState("/teacher_features", "teacher_features", "TeacherFeaturesPageController"))
 
             .state('equality', {
                 url: "/equality",
@@ -116,15 +117,17 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": { 
                         templateUrl: "/partials/states/equation_editor.html",
+                        controller: ["$scope", function($scope) {
+                            $scope.eqnState = {
+                                symbols: {},
+                            };
+                        }],
                     },
                 },
-                onEnter: [function() {
-                    $("#equationModal").foundation("reveal", "open");
-                }],
             })
 
 	        .state('contact', {
-		        url: "/contact",
+		        url: "/contact?preset",
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/contact.html",

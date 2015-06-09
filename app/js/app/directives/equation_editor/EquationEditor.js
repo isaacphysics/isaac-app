@@ -1,6 +1,55 @@
 define([], function() {
 
-	return ["$timeout", function($timeout) {
+	return ["$timeout", "$rootScope", function($timeout, $rootScope) {
+
+        /*
+        equationEditorState = {
+            symbols: { 
+                "ssym-0": {
+                    x: 330,
+                    y: 242,
+                    fontSize: 48,
+                    token: "x",
+                    type: "string"
+                },
+                "ssym-1": {
+                    x: 370,
+                    y: 206,
+                    fontSize: 48,
+                    token: "y",
+                    type: "string"
+                },
+                "ssym-2": {
+                    x: 309.5,
+                    y: 210,
+                    width: 157,
+                    height: 128,
+                    type: "container",
+                    subType: "sqrt"
+                },
+                "ssym-3": {
+                    x: 285,
+                    y: 233,
+                    fontSize: 48,
+                    token: "3",
+                    editable: {
+                        currentNumber: "3",
+                        currentExponent: null,
+                    },
+                    type: "string",
+                    fromCalc: true,
+                },              
+                "ssym-4": {
+                    x: 100,
+                    y: 200,
+                    length: 100,
+                    token: ":line",
+                    type: "line",
+                },              
+            },
+        }
+*/
+
 
         var toParserSymbol = function(k, s, element) {
 
@@ -77,59 +126,42 @@ define([], function() {
 
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
-                	scope.symbols[nextSymbolId++] = $.extend({
+                	scope.state.symbols[nextSymbolId++] = $.extend({
                 		x: pageX - offset.left, 
                 		y: pageY - offset.top,
                     }, JSON.parse(JSON.stringify(symbol)));
 
                     scope.$broadcast("historyCheckpoint");
-                	console.debug("Symbols:", scope.symbols);
+                	console.debug("Symbols:", scope.state.symbols);
                 });
 
+                $rootScope.showEquationEditor = function(initialState, questionDoc) {
 
-                scope.symbols = { 
-					"ssym-0": {
-						x: 330,
-						y: 242,
-						fontSize: 48,
-						token: "x",
-						type: "string"
-					},
-					"ssym-1": {
-						x: 370,
-						y: 206,
-						fontSize: 48,
-						token: "y",
-						type: "string"
-					},
-					"ssym-2": {
-						x: 309.5,
-						y: 210,
-						width: 157,
-						height: 128,
-						type: "container",
-						subType: "sqrt"
-					},
-                    "ssym-3": {
-                        x: 285,
-                        y: 233,
-                        fontSize: 48,
-                        token: "3",
-                        editable: {
-                            currentNumber: "3",
-                            currentExponent: null,
-                        },
-                        type: "string",
-                        fromCalc: true,
-                    },              
-                    "ssym-4": {
-                        x: 100,
-                        y: 200,
-                        length: 100,
-                        token: ":line",
-                        type: "line",
-                    },              
-                };
+                    return new Promise(function(resolve, reject) {
+
+                        $("#equationModal").one("opened.fndtn.reveal", function() {
+                            element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
+                        });
+                        
+                        $("#equationModal").foundation("reveal", "open");
+                        scope.state = initialState || { symbols: {}, };
+                        scope.questionDoc = questionDoc;
+
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
+                        scope.history = [];
+                        scope.future = [];
+
+                        for (var sid in scope.state.symbols) {
+                            nextSymbolId = Math.max(nextSymbolId, parseInt(sid))+1;
+                        }
+
+
+                        $("#equationModal").one("closed.fndtn.reveal", function() {
+                            resolve(scope.state);
+                        })
+
+                    });
+                }
 
                 var stringSymbols = function(ss) {
                 	var symbols = [];
@@ -179,12 +211,6 @@ define([], function() {
                     }]
                 };
 
-                scope.blurgh ={
-                    fontSize: 38,
-                    type: "string",
-                    label: "B",
-                }
-
                 scope.latinLetterTitle = {
                     fontSize: 48,
                     type: "string",
@@ -224,8 +250,10 @@ define([], function() {
                     var rp = $(".result-preview>span");
 
                     rp.empty();
+                    delete scope.state.result;
                     if (e.data.tex) {
                         katex.render(e.data.tex, rp[0]);
+                        scope.state.result = e.data;
                     }
 
                     var w =  e.data.tex ? rp.outerWidth() : 0;
@@ -239,8 +267,8 @@ define([], function() {
                     var parse = function() {
                         var parserSymbols = [];
 
-                        for (var s in scope.symbols) {
-                            var ps = toParserSymbol(s, scope.symbols[s], $("#" + s).find(".measure-this"));
+                        for (var s in scope.state.symbols) {
+                            var ps = toParserSymbol(s, scope.state.symbols[s], $("#" + s).find(".measure-this"));
                             if (ps) {
                                 parserSymbols.push(ps);
                             }
@@ -261,7 +289,7 @@ define([], function() {
                     parseTimeout = setTimeout(parse, 500);
                 }
 
-                scope.$watch("symbols", function(newSymbols, oldSymbols) {
+                scope.$watch("state.symbols", function(newSymbols, oldSymbols) {
                     
                     if (JSON.stringify(newSymbols) == JSON.stringify(oldSymbols))
                         return;
@@ -274,30 +302,32 @@ define([], function() {
 
                 }, true);
 
-                scope.history = [];
-                scope.future = [];
-                var nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                var nextHistoryEntry;
 
                 scope.$on("historyCheckpoint", function() {
                     scope.future = [];
                     scope.history.push(nextHistoryEntry);
-                    nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                    nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                 });
 
                 scope.undo = function() {
                     if (scope.history.length > 0) {
-                        scope.future.unshift(JSON.parse(JSON.stringify(scope.symbols)));
-                        scope.symbols = scope.history.pop();
-                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                        scope.future.unshift(JSON.parse(JSON.stringify(scope.state.symbols)));
+                        scope.state.symbols = scope.history.pop();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
                 }
 
                 scope.redo = function() {
                     if (scope.future.length > 0) {
-                        scope.history.push(JSON.parse(JSON.stringify(scope.symbols)))
-                        scope.symbols = scope.future.shift();
-                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.symbols));
+                        scope.history.push(JSON.parse(JSON.stringify(scope.state.symbols)))
+                        scope.state.symbols = scope.future.shift();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
+                }
+
+                scope.submit = function() {
+                    $("#equationModal").foundation("reveal", "close");
                 }
 
                 element.on("keydown", function(e) {
@@ -339,7 +369,7 @@ define([], function() {
                         top: maxY,
                     });
 
-                    scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.symbols[scope.selectedSymbols[0]].fromCalc;
+                    scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].fromCalc;
                     scope.selectionHandleFlags.showResize = scope.selectedSymbols.length == 1;
 
                 }
@@ -361,26 +391,6 @@ define([], function() {
                     e.preventDefault();
                 }
 
-                var touchMove = function(e) {
-                    if (e.touches.length == 1) {
-                        drag(e.touches[0].pageX, e.touches[0].pageY, e);
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-                }
-
-                var touchEnd = function(e) {
-                    if (e.changedTouches.length == 1) {
-                        drop(e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-                }
-
-                var touchCancel = function(e) {
-                    console.warn("Touch cancelled. This shouldn't have happened.", e);
-                }
-
 
                 scope.dragging = false;
                 var dragLastPageX, dragLastPageY;
@@ -396,8 +406,6 @@ define([], function() {
 
                     $("body").on("mouseup", mouseup);
                     $("body").on("mousemove", mousemove);
-                    $("body").on("touchMove", touchMove);
-                    $("body").on("touchEnd", touchEnd);
                 }
 
                 var drag = function drag(pageX, pageY, e) {
@@ -416,7 +424,7 @@ define([], function() {
 
                         for (var i in scope.selectedSymbols) {
                             var sid = scope.selectedSymbols[i];
-                            var s = scope.symbols[sid];
+                            var s = scope.state.symbols[sid];
                             s.x += dx;
                             s.y += dy;
                         }
@@ -430,7 +438,7 @@ define([], function() {
 
                         for (var i in scope.selectedSymbols) {
                             var sid = scope.selectedSymbols[i];
-                            var s = scope.symbols[sid];
+                            var s = scope.state.symbols[sid];
 
                             switch (s.type) {
                                 case "string":
@@ -504,8 +512,8 @@ define([], function() {
                         var maxY = minY + element.find(".selection-box").height();
 
                         scope.selectedSymbols.length = 0;
-                        for (var sid in scope.symbols) {
-                            var s = scope.symbols[sid];
+                        for (var sid in scope.state.symbols) {
+                            var s = scope.state.symbols[sid];
                             if (s.x > minX && s.x < maxX && s.y > minY && s.y < maxY) {
                                 scope.selectedSymbols.push(sid);
                             }
@@ -553,6 +561,14 @@ define([], function() {
                     e.preventDefault();
                 });
 
+                scope.$on("selection_drag", function(_, pageX, pageY, e) {
+                    drag(pageX, pageY, e);
+                });
+
+                scope.$on("selection_drop", function(_, pageX, pageY, e) {
+                    drop(pageX, pageY, e);
+                });
+
                 scope.$on("selection_calc", function(_, e) {
 
                     // If we got here, there should be precisely one symbol selected.
@@ -562,7 +578,7 @@ define([], function() {
                         debugger;
                     }
 
-                    scope.$broadcast("editNumber", scope.symbols[scope.selectedSymbols[0]]);
+                    scope.$broadcast("editNumber", scope.state.symbols[scope.selectedSymbols[0]]);
 
                     scope.$digest();
 
@@ -595,7 +611,7 @@ define([], function() {
                     if (scope.selectedSymbols.length > 0) {
                         for (var i in scope.selectedSymbols){
                             var sid = scope.selectedSymbols[i];
-                            delete scope.symbols[sid];
+                            delete scope.state.symbols[sid];
                         }
                         scope.selectedSymbols.length = 0;
                         scope.$emit("historyCheckpoint");

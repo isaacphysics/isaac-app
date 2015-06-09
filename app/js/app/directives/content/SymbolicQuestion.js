@@ -25,20 +25,39 @@ define(["app/honest/responsive_video"], function(rv) {
 			templateUrl: "/partials/content/SymbolicQuestion.html",
 
 			link: function(scope, element, attrs) {
+				scope.selectedChoice = {
+					type: "choice",
+				};
 
-				scope.activateTab = function(i) {
-					scope.activeTab = i;
-					rv.updateAll();	
-					if (i > -1) {
-						api.logger.log({
-							type : "VIEW_HINT",
-							questionId : scope.doc.id,
-							hintIndex : i,
-						})
-					}					
-				}
+				scope.eqnState = { symbols: {} };
 
-				scope.activateTab(-1); // Activate "Answer now" tab by default.
+				scope.$watch("eqnState", function(s, oldS) {
+					scope.selectedChoice.value = JSON.stringify(s);
+				}, true);
+
+				scope.$watch("validationResponse", function(r, oldR) {
+					if (!scope.validationResponseSet)
+						return;
+
+					// If we get this far, r has really been explicitly set by QuestionTabs
+					
+					if(r && r.answer.value) {
+
+						scope.eqnState = JSON.parse(r.answer.value);
+						scope.selectedChoice.value = r.answer.value;
+
+					}
+				})
+
+				scope.$watch("doc", function(d) {
+					if (d) {
+						scope.plainDoc = JSON.parse(JSON.stringify(d));
+						scope.plainDoc.type = "content";
+					} else {
+						scope.plainDoc = null;
+					}
+				}, true)
+
 			}
 		};
 	}];

@@ -129,19 +129,23 @@ define([], function() {
 			$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 
 			$scope.reverse = false;
-			$scope.setLoading(2); // making 2 async calls below.
+			$scope.setLoading(1); // making 1 async calls below.
 
 			$scope.map = { center: { latitude: 53.670680, longitude: -1.582031 }, zoom: 5 };
 			$scope.locations = []
-			api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
-				for(var i = 0; i < result.length; i++) {
-					result[i].id = i;
-				}
+			
+			$scope.getLocationData = function(){
+				$scope.setLoading(true);
+				api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
+					for(var i = 0; i < result.length; i++) {
+						result[i].id = i;
+					}
 
-				$scope.locations = result;
-				$scope.setLoading(false);
-			});				
-
+					$scope.locations = result;
+					$scope.setLoading(false);
+				});				
+			}
+				
 			// start and end dates for line graphs
 			var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
 			dataStartDate = dataStartDate.getTime();

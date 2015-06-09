@@ -1,10 +1,13 @@
 <div class="panel white clearfix analytics">
     <div ng-if="!globalFlags.loading">
         <h2>Last user locations (in the last month)</h2>
-        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-            <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
-            </ui-gmap-markers>
-        </ui-gmap-google-map>        
+        <button ng-show="locations.length == 0" ng-click="getLocationData()">Generate Location Data</button>
+        <div ng-show="locations.length != 0">
+            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
+                <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
+                </ui-gmap-markers>
+            </ui-gmap-google-map>              
+        </div>
     </div>
 
     <div class="results-panel">
