@@ -1,59 +1,12 @@
-<br class="no-print">
-<!-- TODO: This page is a hack. It's basically a copy of QuestionTabs.html, with the content included directly. -->
-<!-- This page was created so that symbolic questions render as full question blocks (with hints) rather than as quick questions. -->
-
-<div class="row">
-    <div class="medium-14 medium-offset-1 small-16 columns end">
-        <dl class="tabs ru_tabs {{pageSubject}} ru-answer no-print" data-tab>
-            <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer <span>Now</span></a></dd>
-            <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint <span>{{$index + 1}}</span></a></dd>
-        </dl>
-        <div class="tabs-content ru_tabs ru-answer">
-            <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="force-print">
-
-                <div class='ru-answer-area'>
-					<div class="row">
-					    <div class="small-14 small-offset-1 columns end">
-					        <h3>
-						        <span class="ru_green only-print">Question</span>
-						        <div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div>
-					        </h3>
-					    </div>
-					</div>
-                </div>
-
-                <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="answerVisible">
-                    <div class='ru-answer-correct-summary {{pageSubject}}'>
-                        <div class='row'>
-                            <div class="small-14 small-offset-1 columns end">
-                				<div isaac-content-value-or-children encoding="doc.answer.encoding" value="doc.answer.value" children="doc.answer.children"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class='ru-answer-check no-print'>
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
-                            <p ng-show="doc.hints && doc.hints.length > 0">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>&nbsp;
-                        </div>
-                        <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button class='expand ru-answer-button' ng-click="answerVisible=true" ng-hide="answerVisible">Show answer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab}">
-                <div class='row'>
-                    <div class="small-14 small-offset-1 columns end">
-                        <h3 class="only-print">Hint {{$index + 1}}</h3>
-                        <div isaac-content doc="hint"></div>
-                    </div>
-                </div>
-            </div>
+<div isaac-question-tabs>
+    <div class="row">
+        <div class="small-14 small-offset-1 columns end">
+            <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-14 medium-offset-1 columns end no-print">
+            <div equation-input state="eqnState" question-doc="plainDoc"></div>
         </div>
     </div>
 </div>
-<br class="no-print">

@@ -70,6 +70,7 @@ define([
     "app/directives/equation_editor/CanvasSymbol",
     "app/directives/IsaacModal",
     "app/directives/equation_editor/SelectionHandle",
+    "app/directives/equation_editor/EquationInput",
     "app/directives/JsonLdWriter",    
 	], function() {
 
@@ -108,6 +109,8 @@ define([
 	.directive('questionPod', require("app/directives/QuestionPod"))
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+
+	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
 
 	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
 

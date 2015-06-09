@@ -117,11 +117,13 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": { 
                         templateUrl: "/partials/states/equation_editor.html",
+                        controller: ["$scope", function($scope) {
+                            $scope.eqnState = {
+                                symbols: {},
+                            };
+                        }],
                     },
                 },
-                onEnter: [function() {
-                    $("#equationModal").foundation("reveal", "open");
-                }],
             })
 
 	        .state('contact', {
