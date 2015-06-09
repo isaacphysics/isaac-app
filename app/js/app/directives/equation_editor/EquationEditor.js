@@ -2,7 +2,7 @@ define([], function() {
 
 	return ["$timeout", "$rootScope", function($timeout, $rootScope) {
 
-        var equationEditorState = {};
+        /*
         equationEditorState = {
             symbols: { 
                 "ssym-0": {
@@ -48,21 +48,8 @@ define([], function() {
                 },              
             },
         }
+*/
 
-
-        $rootScope.showEquationEditor = function(initialState) {
-
-            return new Promise(function(resolve, reject) {
-
-                $("#equationModal").foundation("reveal", "open");
-                equationEditorState = initialState;
-
-                $("#equationModal").one("closed.fndtn.reveal", function() {
-                    resolve(equationEditorState);
-                })
-
-            });
-        }
 
         var toParserSymbol = function(k, s, element) {
 
@@ -139,7 +126,7 @@ define([], function() {
 
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
-                	scope.symbols[nextSymbolId++] = $.extend({
+                	scope.state.symbols[nextSymbolId++] = $.extend({
                 		x: pageX - offset.left, 
                 		y: pageY - offset.top,
                     }, JSON.parse(JSON.stringify(symbol)));
@@ -148,7 +135,23 @@ define([], function() {
                 	console.debug("Symbols:", scope.state.symbols);
                 });
 
-                scope.state = equationEditorState;
+                $rootScope.showEquationEditor = function(initialState) {
+
+                    return new Promise(function(resolve, reject) {
+
+                        $("#equationModal").foundation("reveal", "open");
+                        scope.state = initialState || { symbols: {}, };
+
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
+                        scope.history = [];
+                        scope.future = [];
+
+                        $("#equationModal").one("closed.fndtn.reveal", function() {
+                            resolve(scope.state);
+                        })
+
+                    });
+                }
 
                 var stringSymbols = function(ss) {
                 	var symbols = [];
@@ -197,12 +200,6 @@ define([], function() {
                         texLabel: true,
                     }]
                 };
-
-                scope.blurgh ={
-                    fontSize: 38,
-                    type: "string",
-                    label: "B",
-                }
 
                 scope.latinLetterTitle = {
                     fontSize: 48,
@@ -294,29 +291,27 @@ define([], function() {
 
                 }, true);
 
-                scope.history = [];
-                scope.future = [];
-                var nextHistoryEntry = JSON.parse(JSON.stringify(scope.state));
+                var nextHistoryEntry;
 
                 scope.$on("historyCheckpoint", function() {
                     scope.future = [];
                     scope.history.push(nextHistoryEntry);
-                    nextHistoryEntry = JSON.parse(JSON.stringify(scope.state));
+                    nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                 });
 
                 scope.undo = function() {
                     if (scope.history.length > 0) {
-                        scope.future.unshift(JSON.parse(JSON.stringify(scope.state)));
-                        scope.state = scope.history.pop();
-                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state));
+                        scope.future.unshift(JSON.parse(JSON.stringify(scope.state.symbols)));
+                        scope.state.symbols = scope.history.pop();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
                 }
 
                 scope.redo = function() {
                     if (scope.future.length > 0) {
-                        scope.history.push(JSON.parse(JSON.stringify(scope.state)))
-                        scope.state = scope.future.shift();
-                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state));
+                        scope.history.push(JSON.parse(JSON.stringify(scope.state.symbols)))
+                        scope.state.symbols = scope.future.shift();
+                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
                 }
 

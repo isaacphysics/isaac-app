@@ -25,20 +25,43 @@ define(["app/honest/responsive_video"], function(rv) {
 			templateUrl: "/partials/content/SymbolicQuestion.html",
 
 			link: function(scope, element, attrs) {
+				scope.selectedChoice = {
+					type: "quantity",
+				};
 
-				scope.activateTab = function(i) {
-					scope.activeTab = i;
-					rv.updateAll();	
-					if (i > -1) {
-						api.logger.log({
-							type : "VIEW_HINT",
-							questionId : scope.doc.id,
-							hintIndex : i,
-						})
-					}					
-				}
+				scope.$watch("validationResponse", function(r, oldR) {
+					if (!scope.validationResponseSet)
+						return;
 
-				scope.activateTab(-1); // Activate "Answer now" tab by default.
+					// If we get this far, r has really been explicitly set by QuestionTabs
+					
+					if(r) {
+
+						scope.eqnState = r.answer.value;
+						scope.selectedChoice.value = r.answer.value;
+						scope.selectUnit(r.answer.units);
+
+						if (scope.accordionSection != null) {
+							if (r.correct) {
+								scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓");
+								setTimeout(function() {
+									$rootScope.requestMathjaxRender();
+								}, 0);
+							} else {							
+								scope.$emit("newQuestionAnswer", scope.accordionSection);
+							}
+						}
+					} else {
+
+						// The user started changing their answer after a previous validation response.
+
+						if (scope.accordionSection != null) {
+							scope.$emit("newQuestionAnswer", scope.accordionSection);
+						}
+					}
+
+				})
+
 			}
 		};
 	}];
