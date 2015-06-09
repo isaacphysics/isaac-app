@@ -43,7 +43,8 @@ define([
 	"app/controllers/AssignmentsController",	
 	"app/controllers/AssignmentProgressPageControllers",
 	"app/controllers/EventsControllers",
-	"app/controllers/BooksControllers",	
+	"app/controllers/BooksControllers",
+	"app/controllers/TeacherFeaturesPageController",			
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -89,6 +90,8 @@ define([
 	var eventsControllers = require("app/controllers/EventsControllers");
 
 	var booksControllers = require("app/controllers/BooksControllers");
+
+	var teacherFeaturesPageController = require("app/controllers/TeacherFeaturesPageController");
 
 	/* Controllers */
 
@@ -147,4 +150,5 @@ define([
 	.controller('EventDetailController', eventsControllers.DetailController)
 
 	.controller('BooksControllers', booksControllers.PageController)
+	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
 });

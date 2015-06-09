@@ -1,0 +1,86 @@
+<div class="row">
+	<div class='small-16 columns'>
+		<h1>Teacher Features</h1>
+		<h2 class="subheader">Isaac for teachers</h2>
+	</div>	
+</div>
+<div class="small-16 columns">
+	<div class="teacher-feature-body">	
+		<div class="row">
+			<a ui-sref="contact({preset:'teacherRequest'})">
+				<div class="panel small-16 large-5 columns" ng-class="{disabled: isTeacher}">
+					<span class="icon icon-teacher small-text-center"></span><span class="description small-text-center">1. Tell us you are a teacher</span>
+				</div>
+			</a>
+			<a ui-sref="groups">
+				<div class="panel small-16 large-5 columns" ng-class="{disabled: !isTeacher}">
+					<span class="icon icon-group small-text-center"></span><span class="description small-text-center">2. Create and manage groups</span>
+				</div>
+			</a>
+			<a ng-click="modals.setAssignmentModal.show()">
+				<div class="panel small-16 large-5 columns end" ng-class="{disabled: !isTeacher}">
+					<span class="icon icon-gameboard-icon small-text-center"></span><span class="description small-text-center">3. Set Assignments</span>
+				</div>
+			</a>
+			<a ui-sref="assignmentProgress">
+				<div class="panel small-16 large-5 columns" ng-class="{disabled: !isTeacher}">
+					<span class="icon check-progress small-text-center"> <span class="icon-check"></span><span class="icon-x"></span> </span><span class="description small-text-center">4. Track group progress</span>
+				</div>
+			</a>
+			<a href="javascript:void(0)">
+				<div class="panel small-16 large-5 columns end" ng-class="{disabled: !isTeacher}">
+					<span class="icon use-isaac small-text-center"><span class="icon-hexagon"></span><span class="icon-group"></span> </span><span class="description small-text-center">5. Using isaacphysics.org with your class</span>
+				</div>
+			</a>
+		</div>
+		<div class="row">
+			<h3>Other Isaac Activities</h3>	
+			<a ui-sref="events">
+				<div class="panel small-16 large-5 columns">
+					<span class="icon icon-calendar-grid small-text-center"></span><span class="description small-text-center">Teacher and Student Events</span>
+				</div>
+			</a>
+			<a ui-sref="book">
+				<div class="panel small-16 large-5 columns">
+					<span class="icon small-text-center"><img src="assets/skills-book-cover.png" width="150" alt="Clip art style image of the book."></span><span class="description small-text-center">Book of problems for A-Level</span>
+				</div>
+			</a>
+			<a href="javascript:void(0)">
+				<div class="panel small-16 large-5 columns end">
+					<span class="icon icon-speach-bubble small-text-center"></span><span class="description small-text-center">Teacher forum</span>
+				</div>
+			</a>		
+		</div>				
+	</div>	
+</div>
+
+
+<div isaac-modal="setAssignmentModal">
+  <div class="reveal-modal-head">
+    <h2>Set an assignment</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body text-center ru-page-heading">
+  	<div class="row">
+  		<div class="small-16 columns">
+  			<p>Please select an option from the list below.</p>
+  		</div>  		
+  	</div>
+  	<div class="row">
+  		<div class="small-8 columns">
+  			<button ui-sref="book">Set work from our book</button>	
+  		</div>
+		<div class="small-8 columns">
+  			<button ui-sref="top_boards">Select from our popular boards</button>	
+  		</div>  		
+  	</div>
+  	<div class="row">
+  		<div class="small-8 columns">
+  			<button ui-sref="gameEditor">Create a new board</button>	
+  		</div>
+		<div class="small-8 columns">
+  			<button ui-sref="setAssignments">Set one of my boards</button>	
+  		</div>  		
+  	</div>  	
+  </div>
+</div>
