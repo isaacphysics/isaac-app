@@ -124,7 +124,7 @@ define(["angular-ui-router"], function() {
             })
 
 	        .state('contact', {
-		        url: "/contact",
+		        url: "/contact?preset",
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/contact.html",
