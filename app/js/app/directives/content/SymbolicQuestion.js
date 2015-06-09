@@ -26,8 +26,14 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs) {
 				scope.selectedChoice = {
-					type: "quantity",
+					type: "choice",
 				};
+
+				scope.eqnState = { symbols: {} };
+
+				scope.$watch("eqnState", function(s, oldS) {
+					scope.selectedChoice.value = JSON.stringify(s);
+				}, true);
 
 				scope.$watch("validationResponse", function(r, oldR) {
 					if (!scope.validationResponseSet)
@@ -35,31 +41,12 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					// If we get this far, r has really been explicitly set by QuestionTabs
 					
-					if(r) {
+					if(r && r.answer.value) {
 
-						scope.eqnState = r.answer.value;
+						scope.eqnState = JSON.parse(r.answer.value);
 						scope.selectedChoice.value = r.answer.value;
-						scope.selectUnit(r.answer.units);
 
-						if (scope.accordionSection != null) {
-							if (r.correct) {
-								scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓");
-								setTimeout(function() {
-									$rootScope.requestMathjaxRender();
-								}, 0);
-							} else {							
-								scope.$emit("newQuestionAnswer", scope.accordionSection);
-							}
-						}
-					} else {
-
-						// The user started changing their answer after a previous validation response.
-
-						if (scope.accordionSection != null) {
-							scope.$emit("newQuestionAnswer", scope.accordionSection);
-						}
 					}
-
 				})
 
 			}
