@@ -29,6 +29,8 @@
 
     <div ng-show="selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
 
+    <div class="question-reminder" ng-if="questionDoc"><div isaac-content doc="questionDoc"></div></div>
+
     <div class="result-preview"><span></span></div>
     <div class="hex-button submit" ng-click="submit()"></div>
 </div>

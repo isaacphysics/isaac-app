@@ -49,6 +49,15 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 				})
 
+				scope.$watch("doc", function(d) {
+					if (d) {
+						scope.plainDoc = JSON.parse(JSON.stringify(d));
+						scope.plainDoc.type = "content";
+					} else {
+						scope.plainDoc = null;
+					}
+				}, true)
+
 			}
 		};
 	}];

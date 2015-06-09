@@ -5,13 +5,14 @@ define([], function() {
         return {
             scope: {
                 state: "=",
+                questionDoc: "=",
             },
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
 
                 scope.edit = function() {
-                    $rootScope.showEquationEditor(scope.state);
+                    $rootScope.showEquationEditor(scope.state, scope.questionDoc);
                 }
 
                 scope.$watch("state", function(s) {
@@ -19,7 +20,7 @@ define([], function() {
                     if (s.result && s.result.tex) {
                         katex.render(s.result.tex, element.find(".eqn-preview")[0]);
                     } else {
-                        element.find(".eqn-preview").text("Click here to enter equation");                        
+                        element.find(".eqn-preview").html("&nbsp;");                        
                     }
                 }, true);
 

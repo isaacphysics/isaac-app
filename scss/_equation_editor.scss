@@ -372,5 +372,18 @@ $menu-handle-width: 160px;
     .symbol-label {
         font-size: 36px;
     }
+
+    .question-reminder {
+        position: absolute;
+        bottom: 140px;
+        left: 250px;
+        right: 250px;
+        text-align:center;
+        border-radius: 20px;
+        background-color: rgba(0,0,0,0.6);
+        color: white;
+        padding-top: 1.25rem;
+        pointer-events: none;
+    }
 }
 

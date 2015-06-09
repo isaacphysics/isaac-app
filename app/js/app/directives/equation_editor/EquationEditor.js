@@ -135,16 +135,26 @@ define([], function() {
                 	console.debug("Symbols:", scope.state.symbols);
                 });
 
-                $rootScope.showEquationEditor = function(initialState) {
+                $rootScope.showEquationEditor = function(initialState, questionDoc) {
 
                     return new Promise(function(resolve, reject) {
 
+                        $("#equationModal").one("opened.fndtn.reveal", function() {
+                            element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
+                        });
+                        
                         $("#equationModal").foundation("reveal", "open");
                         scope.state = initialState || { symbols: {}, };
+                        scope.questionDoc = questionDoc;
 
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                         scope.history = [];
                         scope.future = [];
+
+                        for (var sid in scope.state.symbols) {
+                            nextSymbolId = Math.max(nextSymbolId, parseInt(sid))+1;
+                        }
+
 
                         $("#equationModal").one("closed.fndtn.reveal", function() {
                             resolve(scope.state);
@@ -240,6 +250,7 @@ define([], function() {
                     var rp = $(".result-preview>span");
 
                     rp.empty();
+                    delete scope.state.result;
                     if (e.data.tex) {
                         katex.render(e.data.tex, rp[0]);
                         scope.state.result = e.data;
