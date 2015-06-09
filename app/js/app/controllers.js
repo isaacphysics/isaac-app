@@ -34,6 +34,7 @@ define([
 	"app/controllers/AccountSettingsPageControllers",
 	"app/controllers/ContactControllers",
 	"app/controllers/ResetPasswordControllers",
+	"app/controllers/VerifyEmailPageControllers",
 	"app/controllers/HeaderControllers",
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
@@ -72,6 +73,8 @@ define([
 
 	var resetPasswordControllers = require("app/controllers/ResetPasswordControllers");
 
+	var verifyEmailPageControllers = require("app/controllers/VerifyEmailPageControllers");
+
 	var headerControllers = require("app/controllers/HeaderControllers");
 
 	var authErrorPageControllers = require("app/controllers/AuthErrorPageControllers");
@@ -79,9 +82,11 @@ define([
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
+
 	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
 	
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
+
 	var assignmentsController = require("app/controllers/AssignmentsController")
 
 	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
@@ -122,6 +127,8 @@ define([
 	.controller('AccountSettingsPageController', accountSettingsPageControllers.PageController)
 
 	.controller('ResetPasswordPageController', resetPasswordControllers.PageController)
+
+	.controller('VerifyEmailPageController', verifyEmailPageControllers.PageController)
 
 	.controller('HeaderController', headerControllers.PageController)
 

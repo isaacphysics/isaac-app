@@ -243,6 +243,15 @@ define(["angular-ui-router"], function() {
 			        }
 		        }
 	        })
+            .state('verifyEmail', {
+                url: "/verifyemail/*token",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/verify_email.html",
+                        controller: "VerifyEmailPageController",
+                    }
+                }
+            })
             .state('boards', {
                 url: "/boards",
                 resolve: {
