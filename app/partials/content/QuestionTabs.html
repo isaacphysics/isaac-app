@@ -13,7 +13,7 @@
                 <div class='ru-answer-area transclude-here'></div>
 
                 <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-wrong no-print' style="display:block;" ng-show="validationResponse.correct==false && doc.type!='isaacAnvilQuestion'">
+                <div class='ru-answer-wrong no-print' style="display:block;" ng-show="validationResponse.correct==false && doc.type!='isaacAnvilQuestion' && doc.type!='isaacSymbolicQuestion'">
                     <div class='row'>
                         <div class="small-14 small-offset-1 columns end text-center">
                             <h2>incorrect</h2>
@@ -47,7 +47,7 @@
                 </div>
 
 
-                <div class='ru-answer-check no-print' ng-hide="validationResponse.correct==true || doc.type=='isaacAnvilQuestion'">
+                <div class='ru-answer-check no-print' ng-hide="validationResponse.correct==true || doc.type=='isaacAnvilQuestion' || (validationResponse && doc.type=='isaacSymbolicQuestion')">
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
                             <p ng-show="doc.hints && doc.hints.length > 0">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>&nbsp;
@@ -58,9 +58,9 @@
                     </div>
                 </div>
 
-                <div class='ru-answer-check no-print' ng-show="validationResponse && doc.type=='isaacAnvilQuestion'">
+                <div class='ru-answer-check no-print' ng-show="validationResponse && (doc.type=='isaacAnvilQuestion' || doc.type=='isaacSymbolicQuestion')">
                     <div class='row'>
-                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
+                        <div class="medium-14 medium-offset-1 columns text-center">
                             <div isaac-content doc="doc.answer"></div>
                         </div>
                     </div>
