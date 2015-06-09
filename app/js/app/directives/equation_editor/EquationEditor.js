@@ -391,26 +391,6 @@ define([], function() {
                     e.preventDefault();
                 }
 
-                var touchMove = function(e) {
-                    if (e.touches.length == 1) {
-                        drag(e.touches[0].pageX, e.touches[0].pageY, e);
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-                }
-
-                var touchEnd = function(e) {
-                    if (e.changedTouches.length == 1) {
-                        drop(e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }
-                }
-
-                var touchCancel = function(e) {
-                    console.warn("Touch cancelled. This shouldn't have happened.", e);
-                }
-
 
                 scope.dragging = false;
                 var dragLastPageX, dragLastPageY;
@@ -426,8 +406,6 @@ define([], function() {
 
                     $("body").on("mouseup", mouseup);
                     $("body").on("mousemove", mousemove);
-                    $("body").on("touchMove", touchMove);
-                    $("body").on("touchEnd", touchEnd);
                 }
 
                 var drag = function drag(pageX, pageY, e) {
@@ -583,6 +561,14 @@ define([], function() {
                     e.preventDefault();
                 });
 
+                scope.$on("selection_drag", function(_, pageX, pageY, e) {
+                    drag(pageX, pageY, e);
+                });
+
+                scope.$on("selection_drop", function(_, pageX, pageY, e) {
+                    drop(pageX, pageY, e);
+                });
+
                 scope.$on("selection_calc", function(_, e) {
 
                     // If we got here, there should be precisely one symbol selected.
@@ -592,7 +578,7 @@ define([], function() {
                         debugger;
                     }
 
-                    scope.$broadcast("editNumber", scope.symbols[scope.selectedSymbols[0]]);
+                    scope.$broadcast("editNumber", scope.state.symbols[scope.selectedSymbols[0]]);
 
                     scope.$digest();
 

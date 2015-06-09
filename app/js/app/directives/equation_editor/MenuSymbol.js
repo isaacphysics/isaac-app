@@ -43,6 +43,8 @@ define([], function() {
 
                     $("body").on("mouseup", mouseup)
                     $("body").on("mousemove", mousemove);
+                    $("body").on("touchend", touchend);
+                    $("body").on("touchmove", touchmove);
                 }
 
                 var drag = function(pageX, pageY) {
@@ -83,6 +85,8 @@ define([], function() {
                     scope.$emit("symbolDrop", scope.symbol, tokenOffset.left + token.width() / 2 - 1, tokenOffset.top + token.height() / 2 - 1);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
+                    $("body").off("touchend", touchend);
+                    $("body").off("touchmove", touchmove);
 
                     scope.dragging = false;
                     element.removeClass("dragging");
@@ -110,7 +114,32 @@ define([], function() {
                     e.preventDefault();
                 }
 
+                var touchstart = function(e) {
+                    var ts = e.originalEvent.touches;
+                    grab(ts[0].pageX, ts[0].pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
+                var touchend = function(e) {
+                    var ts = e.originalEvent.touches;
+                    drop(null, null, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
+                var touchmove = function(e) {
+                    var ts = e.originalEvent.touches;
+                    drag(ts[0].pageX, ts[0].pageY, e);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
                 element.on("mousedown", mousedown);
+                element.on("touchstart", touchstart);
 
                 scope.$on("menuMoved", function() {
                     if (scope.dragging)
