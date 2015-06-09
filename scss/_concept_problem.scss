@@ -575,6 +575,9 @@
     .ru-answer span {
         display: block;
     }
+    .ru-answer .katex span, .ru-answer .text-center span {
+        display: initial;
+    }
     .ru-answer a,
     .tabs.ru_tabs dd a {
         padding: 6px !important;

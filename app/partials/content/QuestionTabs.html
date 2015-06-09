@@ -27,7 +27,7 @@
                 <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="validationResponse.correct==true">
                     <div class='ru-answer-correct {{pageSubject}}'>
                         <div class='row'>
-                            <div class="small-14 small-offset-1 medium-14 medium-offset-1 columns end text-center">
+                            <div class="small-14 small-offset-1 columns end text-center">
                                 <h1>Correct!</h1>
                             </div><!--
                             <div class='small-15  medium-9  columns'>
@@ -60,7 +60,7 @@
 
                 <div class='ru-answer-check no-print' ng-show="validationResponse && (doc.type=='isaacAnvilQuestion' || doc.type=='isaacSymbolicQuestion')">
                     <div class='row'>
-                        <div class="medium-14 medium-offset-1 columns text-center">
+                        <div class="small-14 small-offset-1 columns text-center">
                             <div isaac-content doc="doc.answer"></div>
                         </div>
                     </div>
