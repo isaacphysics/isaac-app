@@ -207,7 +207,13 @@ $menu-handle-width: 160px;
 
         [number-entry] {
 
+            height: 162px;
+
             .button-grid {
+                position: absolute;
+                left: 0px;
+                width: 450px;
+                display: block;
                 margin: 7px;
                 li {
                     text-align: center;
@@ -224,58 +230,84 @@ $menu-handle-width: 160px;
                 }
             }
 
-            .input-exponent {
+            .number-input-panel {
                 position: absolute;
-                right: 20px;
-                top: 55px;
-                font-size: 36px;
-                display: inline-block;
+                left: 460px;
+                right: 100px;
 
-                &:before {
-                    content: "×";
+                .input-exponent {
+                    position: absolute;
+                    right: 20px;
+                    top: 45px;
+                    font-size: 36px;
+                    display: inline-block;
+
+                    &:before {
+                        content: "×";
+                        font-family: sans-serif;
+                    }
+                }
+
+                .input-clear {
+                    position: absolute;
+                    left: 20px;
+                    top: 45px;
+                    font-size: 36px;
                     font-family: sans-serif;
+                    font-weight: bold;
+                    color: #ccc;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: red;
+                    }
+                }
+
+                input {
+                    text-align: right;
+                    transition: padding-right 0s;
+                    font-size: 48px;
+                    border-radius: 10px;
+                    border: 2px solid black;
+                    margin-top: 25px;
+                    height: 100px;
+                }
+
+                @media (max-width: 700px) {
+                    input {
+                        display:none;
+                    }
                 }
             }
 
-            .input-clear {
+
+
+            .number-entry-symbol {
+
                 position: absolute;
-                left: 20px;
-                top: 30px;
-                font-size: 36px;
-                font-family: sans-serif;
-                font-weight: bold;
-                color: #ccc;
-                cursor: pointer;
+                right: 0px;
+                width: 100px;
 
-                &:hover {
-                    color: red;
+                .symbol-label.tiny {
+                    font-size: 14px;
+                }
+
+                .number-hex {
+                    margin-top: 25px;
+
+                    ul {
+                        padding: 0px 7px;
+                    }
+                }
+
+                .menu-dismiss {
+                    bottom: initial;
+                    top:20px;
+                    left: 10px;
+                    background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
                 }
             }
 
-            input {
-                text-align: right;
-                transition: padding-right 0s;
-                font-size: 48px;
-                border-radius: 10px;
-                border: 2px solid black;
-                margin-top: 25px;
-                height: 100px;
-            }
-
-            .symbol-label.tiny {
-                font-size: 14px;
-            }
-
-            .number-hex {
-                margin-top: 25px;
-            }
-
-            .menu-dismiss {
-                bottom: initial;
-                top:20px;
-                left: 40px;
-                background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
-            }
         }
     }
 

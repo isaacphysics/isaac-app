@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="small-8 columns">
+	<div class="small-16 columns">
 		<ul class="small-block-grid-6 button-grid">
 			<li ng-click="buttonClick('1')">1</li>
 			<li ng-click="buttonClick('2')">2</li>
@@ -14,20 +14,22 @@
 			<li ng-click="buttonClick('0')">0</li>
 			<li ng-click="buttonClick('^')">^</li>
 		</ul>
-	</div>
-	<div class="small-5 columns">
-		<input name="number" type="text" ng-model="currentNumber"/>
-		<div class="input-exponent" ng-if="currentExponent != null"><span>10<sup>{{currentExponent}}</sup></span></div>
-		<div class="input-clear" ng-click="clearInput()">&times;</div>
-	</div>
-	<div class="small-3 columns">
-		<div ng-show="!editSymbol && currentSymbol != null" class="menu-list-container number-hex">
-		    <ul>
-		        <li menu-symbol symbol="currentSymbol"></li>
-		    </ul>
+
+		<div class="number-input-panel">
+			<input name="number" type="text" ng-model="currentNumber"/>
+			<div class="input-exponent" ng-if="currentExponent != null"><span>10<sup>{{currentExponent}}</sup></span></div>
+			<div class="input-clear" ng-click="clearInput()">&times;</div>
 		</div>
-		<div ng-show="editSymbol && currentSymbol != null">
-			<a href="javascript:void(0)" ng-click="dismiss()" class="menu-dismiss hex-button" style=""></a>
+
+		<div class="number-entry-symbol">
+			<div ng-show="!editSymbol && currentSymbol != null" class="menu-list-container number-hex">
+			    <ul>
+			        <li menu-symbol symbol="currentSymbol"></li>
+			    </ul>
+			</div>
+			<div ng-show="editSymbol && currentSymbol != null">
+				<a href="javascript:void(0)" ng-click="dismiss()" class="menu-dismiss hex-button" style=""></a>
+			</div>
 		</div>
 	</div>
 </div>

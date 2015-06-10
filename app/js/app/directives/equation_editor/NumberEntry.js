@@ -32,7 +32,7 @@ define([], function() {
 
                 var updateInputPadding = function() {
                 	$timeout(function() {
-                		$(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 10);
+                		$(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
                 	});
                 };
 
