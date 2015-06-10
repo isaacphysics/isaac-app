@@ -1,3 +1,4 @@
+"use strict";
 define([], function() {
 
 	return ["$timeout", "$rootScope", function($timeout, $rootScope) {
@@ -107,6 +108,8 @@ define([], function() {
 			templateUrl: "/partials/equation_editor/equation_editor.html",
 			link: function(scope, element, attrs) {
 
+                scope.canvasOffset = { }
+
                 scope.equationEditorElement = element;
 
                 scope.selectedSymbols = [];
@@ -126,9 +129,11 @@ define([], function() {
 
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
+                    var width = element.width();
+                    var height = element.height();
                 	scope.state.symbols[nextSymbolId++] = $.extend({
-                		x: pageX - offset.left, 
-                		y: pageY - offset.top,
+                		x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft, 
+                		y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
                     }, JSON.parse(JSON.stringify(symbol)));
 
                     scope.$broadcast("historyCheckpoint");
@@ -151,11 +156,29 @@ define([], function() {
                         scope.history = [];
                         scope.future = [];
 
+                        var sumX = 0;
+                        var sumY = 0;
+                        var count = 0;
                         for (var sid in scope.state.symbols) {
                             nextSymbolId = Math.max(nextSymbolId, parseInt(sid))+1;
+                            sumX += scope.state.symbols[sid].x;
+                            sumY += scope.state.symbols[sid].y;
+                            count++;
                         }
 
+                        if (count > 0) {
+                            scope.canvasOffset = {
+                                marginLeft: -sumX / count,
+                                marginTop: -sumY / count,
+                            }
+                        } else {
+                            scope.canvasOffset = {
+                                marginLeft: 0,
+                                marginTop: 0,
+                            }
+                        }
 
+                        console.debug("Set canvas offset:", scope.canvasOffset);
                         $("#equationModal").one("closed.fndtn.reveal", function() {
                             resolve(scope.state);
                         })
@@ -505,10 +528,12 @@ define([], function() {
                         var off = element.find(".selection-box").offset();
                         var eOff = element.offset();
 
-                        var minX = off.left - eOff.left;
+                        var w = element.width();
+                        var h = element.height();
+                        var minX = off.left - eOff.left - w/2 - scope.canvasOffset.marginLeft;
                         var maxX = minX + element.find(".selection-box").width();
 
-                        var minY = off.top - eOff.top;
+                        var minY = off.top - eOff.top - h/2 - scope.canvasOffset.marginTop;
                         var maxY = minY + element.find(".selection-box").height();
 
                         scope.selectedSymbols.length = 0;

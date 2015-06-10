@@ -13,10 +13,12 @@
         <div symbol-menu symbols="symbolLibrary.operators"></div>
     </div>
     <div top-menu="\sin\,\, \int">
-        MENU4 CONTENT
+        Functions coming soon...
     </div>
 
-    <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}" selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
+    <div class="canvas-offsetter" ng-style="canvasOffset">
+        <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
+    </div>
     
     <div ng-show="selectedSymbols.length" selection-handle></div>
 

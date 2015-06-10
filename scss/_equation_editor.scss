@@ -22,6 +22,12 @@ $menu-handle-width: 160px;
         outline: none;
     }
 
+    .canvas-offsetter {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+
     .selection-box {
         position: absolute;
         z-index: -1;
