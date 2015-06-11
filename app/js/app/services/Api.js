@@ -367,7 +367,7 @@ define([], function() {
 
 		this.email = $resource(server + "/api/users/verifypassword/:token", null, {
 			verify: {
-				method: "POST",
+				method: "POST"
 			}
 		});
 

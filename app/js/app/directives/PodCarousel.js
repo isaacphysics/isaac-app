@@ -84,7 +84,7 @@
 
 				// Cleanup
 				scope.$on('$destroy', function(){
-					$(element).owlCarousel('destroy');
+					$('.owl-carousel').trigger('destroy');
 				});
 			},
 		};

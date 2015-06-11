@@ -68,11 +68,13 @@
 	}
 
 	.owl-prev{
-    	left:1px;
+    	left:0px;
+    	border-left: 1px solid #e3e3e3;
 	}
 
 	.owl-next{
-	    right:1px;
+	    right:0px;
+    	border-right: 1px solid #e3e3e3;
 	}
 }
 
