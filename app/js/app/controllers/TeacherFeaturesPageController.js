@@ -16,11 +16,16 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
-		$scope.isLoggedIn = $scope.user != null;
+		$scope.isLoggedIn = false;
+		$scope.isTeacher = false;
 
-		$scope.isTeacher = $scope.user && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
-
-
+		$scope.user.$promise.then(function(){
+			$scope.isLoggedIn = $scope.user != null;
+			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
+		}).catch(function(){
+			$scope.isLoggedIn = false;
+			$scope.isTeacher = false;
+		});
 	}];
 
 	return {
