@@ -7,7 +7,12 @@
         <span data-ot="Click on your groups to see the assignments you have set. View your students' progress by question." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="groups.length == 0">
+    <div class="large-6 medium-6 small-centered columns text-center">
+      <h3><a ui-sref="groups">Manage Groups</a> can be used to add groups to which assignments can be set.</h3>
+    </div>
+</div>
+<div class="row" ng-show="groups.length > 0">
     <div class="large-16 columns">
 <!--
         <dl class="tabs profile-tabs no-print">
@@ -35,7 +40,7 @@
                         </div>
 -->
                         <div class="accordion-group-summary">
-                            <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments</span>
+                            <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments set</span>
                         </div>
                     </a>
 
