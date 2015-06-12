@@ -107,7 +107,16 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
-            .state('teacher_features', staticPageState("/teacher_features", "teacher_features", "TeacherFeaturesPageController"))
+            .state('teacher_features', {
+                url:"/teacher_features?redirectModal",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/teacher_features.html",
+                        controller: "TeacherFeaturesPageController",
+                    }
+                },
+                reloadOnSearch: false,
+            })
 
             .state('equality', {
                 url: "/equality",
