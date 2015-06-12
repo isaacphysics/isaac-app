@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', '$state', function($scope, auth, api, $state) {
 		$scope.isLoggedIn = false;
 		$scope.isTeacher = false;
 
@@ -26,6 +26,23 @@ define([], function() {
 			$scope.isLoggedIn = false;
 			$scope.isTeacher = false;
 		});
+
+		$scope.setAssignmentModal = function() {
+			if ($scope.isTeacher) {
+				$scope.modals.setAssignmentModal.show()	
+			} else {
+				alert("You must first be registered as a teacher to use this function.");
+			}
+		}
+
+		$scope.navigateToStateIfTeacher = function(stateName) {
+			if ($scope.isTeacher) {
+				$state.go(stateName);
+			} else {
+				alert("You must first be registered as a teacher to use this function.");
+			}
+		}
+
 	}];
 
 	return {

@@ -1,35 +1,41 @@
 <div class="row">
-	<div class='small-16 columns'>
+	<div class='medium-13 columns'>
 		<h1>Teacher Features</h1>
-		<h2 class="subheader">Isaac for teachers</h2>
+		<h2 class="subheader">Isaac for teachers</h2>		
 	</div>	
+    <div class="medium-3 columns text-right hide-for-small-only">
+        <a ng-click="modals.teacherFeaturesHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help Video</a>
+    </div>		
 </div>
 <div class="small-16 columns">
 	<div class="teacher-feature-body">	
 		<div class="row">
-			<a ui-sref="contact({preset:'teacherRequest'})">
-				<div class="panel small-16 large-5 columns" ng-class="{disabled: isTeacher}">
+			<a ng-show="!isTeacher" ui-sref="contact({preset:'teacherRequest'})">
+				<div class="panel small-16 large-5 columns">
 					<span class="icon icon-teacher small-text-center"></span><span class="description small-text-center">1. Tell us you are a teacher</span>
 				</div>
 			</a>
-			<a ui-sref="groups">
+			<div ng-show="isTeacher" class="panel small-16 large-5 columns disabled">
+				<span class="icon icon-teacher small-text-center"></span><span class="description small-text-center">1. You are now a teacher!</span>
+			</div>		
+			<a ng-click="navigateToStateIfTeacher('groups')">
 				<div class="panel small-16 large-5 columns" ng-class="{disabled: !isTeacher}">
 					<span class="icon icon-group small-text-center"></span><span class="description small-text-center">2. Create and manage groups</span>
 				</div>
 			</a>
-			<a ng-click="modals.setAssignmentModal.show()">
+			<a ng-click="setAssignmentModal()">
 				<div class="panel small-16 large-5 columns end" ng-class="{disabled: !isTeacher}">
 					<span class="icon icon-gameboard-icon small-text-center"></span><span class="description small-text-center">3. Set Assignments</span>
 				</div>
 			</a>
-			<a ui-sref="assignmentProgress">
+			<a ng-click="navigateToStateIfTeacher('assignmentProgress')">
 				<div class="panel small-16 large-5 columns" ng-class="{disabled: !isTeacher}">
 					<span class="icon check-progress small-text-center"> <span class="icon-check"></span><span class="icon-x"></span> </span><span class="description small-text-center">4. Track group progress</span>
 				</div>
 			</a>
-			<a href="javascript:void(0)">
+			<a ng-if="false" href="javascript:void(0)">
 				<div class="panel small-16 large-5 columns end" ng-class="{disabled: !isTeacher}">
-					<span class="icon use-isaac small-text-center"><span class="icon-hexagon"></span><span class="icon-group"></span> </span><span class="description small-text-center">5. Using isaacphysics.org with your class</span>
+					<span class="icon use-isaac small-text-center"><span class="icon-hexagon"></span><span class="icon-group"></span> </span><span class="description small-text-center">5. Using isaac physics with your class</span>
 				</div>
 			</a>
 		</div>
@@ -42,10 +48,10 @@
 			</a>
 			<a ui-sref="book">
 				<div class="panel small-16 large-5 columns">
-					<span class="icon book-img small-text-center"><img src="assets/skills-book-cover.png" width="150" alt="Clip art style image of the book."></span><span class="description small-text-center">Book of problems for A-Level</span>
+					<span class="icon book-img small-text-center"><img src="assets/skills-book-cover.png" width="150" alt="Clip art style image of the book."></span><span class="description small-text-center">Book of core skills problems</span>
 				</div>
 			</a>
-			<a href="javascript:void(0)">
+			<a ng-if="false" href="javascript:void(0)">
 				<div class="panel small-16 large-5 columns end">
 					<span class="icon icon-speach-bubble small-text-center"></span><span class="description small-text-center">Teacher forum</span>
 				</div>
@@ -82,5 +88,14 @@
   			<button ui-sref="setAssignments">Set one of my boards</button>	
   		</div>  		
   	</div>  	
+  </div>
+</div>
+<div isaac-modal="teacherFeaturesHelp">
+  <div class="reveal-modal-head">
+    <h2>Features for Teachers Help</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+		<div isaac-page-fragment="teacher_feature_help"> </div>
   </div>
 </div>

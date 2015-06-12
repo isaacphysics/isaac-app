@@ -572,7 +572,7 @@ define(["angular-ui-router"], function() {
             .state('assignmentProgress', {
                 url: "/assignment_progress",
                 resolve: {
-                    requireLogin: getLoggedInPromise,
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
                 },                
                 views: {
                     "body": {
