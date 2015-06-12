@@ -15,11 +15,33 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
-		$scope.isLoggedIn = $scope.user != null;
+	var PageController = ['$scope', 'auth', 'api', '$state', function($scope, auth, api, $state) {
+		$scope.isLoggedIn = false;
+		$scope.isTeacher = false;
 
-		$scope.isTeacher = $scope.user && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
+		$scope.user.$promise.then(function(){
+			$scope.isLoggedIn = $scope.user != null;
+			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
+		}).catch(function(){
+			$scope.isLoggedIn = false;
+			$scope.isTeacher = false;
+		});
 
+		$scope.setAssignmentModal = function() {
+			if ($scope.isTeacher) {
+				$scope.modals.setAssignmentModal.show()	
+			} else {
+				alert("You must first be registered as a teacher to use this function.");
+			}
+		}
+
+		$scope.navigateToStateIfTeacher = function(stateName) {
+			if ($scope.isTeacher) {
+				$state.go(stateName);
+			} else {
+				alert("You must first be registered as a teacher to use this function.");
+			}
+		}
 
 	}];
 

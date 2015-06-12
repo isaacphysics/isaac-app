@@ -148,7 +148,28 @@
   <div class="reveal-modal-body text-center ru-page-heading">
     <p>Your group has been created. Share the following code with your students to have them join your group:</p>
     <h3>{{selectedGroupToken.token || "Loading..."}}</h3>
-    <a class="ru-button-big" ng-click="modals.shareCode.hide()" href="/game_builder">Create a new assignment to set for this group</a>
-    <a class="ru-button-big" ng-show="hasExistingAssignments" ng-click="modals.shareCode.hide()" href="/set_assignments">Set an existing assignment for this group</a>
+
+    <div class="row">
+            <div class="small-16 columns">
+                <p>Please select an option from the list below.</p>
+            </div>          
+        </div>
+        <div class="row">
+            <div class="small-8 columns">
+                <button ng-click="modals.shareCode.hide()" ui-sref="book">Set work from our book</button>  
+            </div>
+            <div class="small-8 columns">
+                <button ng-click="modals.shareCode.hide()" ui-sref="top_boards">Select from our popular boards</button>    
+            </div>          
+        </div>
+        <div class="row">
+            <div class="small-8 columns">
+                <button ng-click="modals.shareCode.hide()" ui-sref="setAssignments">Set one of my boards</button>  
+            </div>          
+            <div class="small-8 columns">
+                <button ng-click="modals.shareCode.hide()" ui-sref="gameEditor">Create a new board</button>    
+            </div>
+        </div>      
+      </div>    
   </div>
 </div>

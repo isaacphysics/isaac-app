@@ -14,7 +14,7 @@
 		}
 
 		margin-right:10px;
-		height: 330px;
+		height: 300px;
 		.icon {
 			color:$ru_green;
 			position: relative;
@@ -22,7 +22,6 @@
 			display:inline-block;
 			width:100%;
 			vertical-align: middle;
-
 
 			&.icon-teacher {
 				font-size:300px;
@@ -44,7 +43,7 @@
 				}				
 			}
 			&.icon-calendar-grid {
-				font-size:170px;
+				font-size:130px;
 				margin: 60px 0 0 0;
 			}
 			&.icon-gameboard-icon {
@@ -52,8 +51,8 @@
 				margin: 35px 0 0 0;
 			}
 			&.icon-speach-bubble {
-				font-size:140px;
-				margin: 35px 0 0 0;				
+				font-size:120px;
+				margin: 60px 0 0 0;				
 			}
 			&.check-progress {
 				margin-top:35px;
@@ -67,16 +66,20 @@
 					position: relative;						
 				}			
 			}
-
+			&.book-img img {
+				width: 100px;
+				top: 25px;
+				position: relative;
+			}
 			&.use-isaac {
 				margin-top:15px;
 				.icon-hexagon {
-					font-size:185px;			
+					font-size:170px;			
 				}						
 				.icon-group {
 					font-size:140px;
 					left: -55px;
-					top: 45px;
+					top: 30px;
 					position: relative;						
 				}			
 			}
