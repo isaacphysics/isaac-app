@@ -214,6 +214,12 @@ define([], function() {
 
                     operators: [{
                         type: "string",
+                        label: "=",
+                        token: "=",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
                         label: "+",
                         token: "+",
                         fontSize: 48,
@@ -231,7 +237,34 @@ define([], function() {
                         height: 60,
                         label: "\\sqrt{x}",
                         texLabel: true,
-                    }]
+                    },{
+                        type: "container",
+                        subType: "brackets",
+                        width: 148,
+                        height: 60,
+                        label: "(x)",
+                        texLabel: true,
+                    }],
+
+                    functions: [{
+                        type: "string",
+                        label: "\\sin",
+                        token: "\\sin",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\cos",
+                        token: "\\cos",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\tan",
+                        token: "\\tan",
+                        fontSize: 48,
+                        texLabel: true,
+                    },]
                 };
 
                 scope.latinLetterTitle = {
