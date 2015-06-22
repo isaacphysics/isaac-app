@@ -12,31 +12,31 @@
             <span class="ru_green">or</span>
         </div>
         <div class='large-6 medium-6 columns login-form left'>
-            <p ng-show="passwordRestFlag"><strong>Your password request is being proccessed. <span class="ru_green">Please check your email.</span>
+            <p ng-show="passwordResetFlag"><strong>Your password request is being processed. <span class="ru_green">Please check your email.</span>
             </strong></p>
             <p ng-show="errorMessage">
                 <strong class="ru_red">{{errorMessage}}</strong>
             </p>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label class="ru-error-message" ng-show="form.email.$invalid && form.submitted || form.email.$invalid && forgottenPassword">
+                    <label class="ru-error-message" ng-show="form.email.$invalid && loginAttempted || form.email.$invalid && forgottenPassword">
                         Enter a valid email
                     </label>
-                    <input name="email" type="email" placeholder="Email address" ng-model="user.email" required/>
+                    <input name="email" type="email" placeholder="Email address" ng-model="$root.user.email" required/>
                 </div>
             </div>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
-                    <label class="ru-error-message" ng-show="form.password.$invalid && form.submitted">
+                    <label class="ru-error-message" ng-show="form.password.$invalid && loginAttempted">
                         Enter your password
                     </label>
-                    <input name="password" type="password" placeholder="Password" ng-model="user.password" required/>
+                    <input name="password" type="password" placeholder="Password" ng-model="$root.user.password" required/>
                 </div>
             </div>
             <div class="row">
                 <div class='large-12 medium-14 columns'>
                     <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-                        <li><input class="ru-button expand" type="submit" value="Log in" ng-click="form.submitted = true" /></li>
+                        <li><input class="ru-button expand" type="submit" value="Log in"/></li>
                         <li><a class="ru-button expand secondary" ui-sref="register" ng-click="hideMobileForm()">Sign up</a></li>
                     </ul>
                 </div>

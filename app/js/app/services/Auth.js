@@ -100,9 +100,9 @@ define([], function() {
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
 					resolve();
-				}).catch(function(u){
+				}).catch(function(e){
 					$rootScope.user = null;
-					reject();
+					reject(e);
 				});
 			});
 		}

@@ -21,6 +21,9 @@ define([], function() {
 		$scope.target = $stateParams.target;
 
 		$scope.login = function() {
+
+			$scope.loginAttempted = true;
+			delete $scope.errorMessage;
 			// Only submit if form is valid
 			if($scope.form.$valid) {
 				auth.login($scope.user).then(function(){
@@ -34,6 +37,7 @@ define([], function() {
 				}).catch(function(reason) {
 					// Error
 					$scope.errorMessage = reason.data.errorMessage;
+					$scope.$apply();
 				})
 			}
 		}
@@ -54,7 +58,7 @@ define([], function() {
 			if($scope.form.email.$valid) {
 				api.password.reset({'email': $scope.user.email}).$promise.then(function(){
 					// Alert user that email has been sent
-					$scope.passwordRestFlag = true;
+					$scope.passwordResetFlag = true;
 				});
 			}
 		}
