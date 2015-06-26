@@ -33,9 +33,16 @@ define([], function() {
 
                 var url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app";
 
-                if (scope.params) {
-                    url += "#?" + $.param(scope.params);
+                var ps = {};
+
+                if (scope.user && scope.user.email) {
+                    ps.username = scope.user.email;
                 }
+
+                ps = $.extend(ps, scope.params);
+                    
+                url += "#?" + $.param(ps);
+
                 scope.src = $sce.trustAsResourceUrl(url);
 
                 var iframe = element.find("iframe")[0];
