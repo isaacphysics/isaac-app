@@ -45,7 +45,12 @@ define([], function() {
 
                     var data = e.originalEvent.data;
                     console.debug("Anvil app message:", data);
-                    scope.$emit("anvilAppMessage", data);
+
+                    if (data.fn == "newAppHeight") {
+                        $(iframe).height(data.newHeight+15);
+                    } else {
+                        scope.$emit("anvilAppMessage", data);
+                    }
                 };
 
                 $(window).on("message", onMessage);
