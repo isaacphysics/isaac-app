@@ -35,8 +35,8 @@ define([], function() {
 
                 var ps = {};
 
-                if (scope.user && scope.user.email) {
-                    ps.username = scope.user.email;
+                if (scope.$root.user && scope.$root.user.email) {
+                    ps.username = scope.$root.user.email;
                 }
 
                 ps = $.extend(ps, scope.params);
