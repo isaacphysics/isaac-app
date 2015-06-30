@@ -56,9 +56,13 @@
 -->
                     <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span>{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
-                 <tr>
+                 <tr ng-show="event.location">
                     <td>Location:</td>
                     <td>{{event.location.addressLine1}}<span ng-if="event.location.town">,</span> {{event.location.town}}</td>
+                 </tr>
+                 <tr ng-show="!event.location && event.virtual">
+                    <td>Location:</td>
+                    <td>Online</td>
                  </tr>
               </tbody>
            </table>

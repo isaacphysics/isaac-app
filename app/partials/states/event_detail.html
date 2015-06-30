@@ -50,7 +50,7 @@
           <td>When:</td>
           <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span>{{event.date | date:'shortTime'}}</span></time></td>
         </tr>
-        <tr>
+        <tr ng-show="event.location">
           <td>Location:</td>
           <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
         </tr>
@@ -113,7 +113,7 @@
         -->
       </div>
 
-      <div class="medium-8 large-16 columns">
+      <div class="medium-8 large-16 columns" ng-show="event.location">
         <!--
             Map
         -->

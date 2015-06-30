@@ -118,22 +118,25 @@ define([], function() {
               "name" : e.title,
               "description" : e.subtitle,
               "startDate" : $filter('date')(e.date, 'yyyy-MM-ddTH:mm'),
-              "location" : {
-                "@type": "Place",
-                "name": e.location.addressLine1,
-                "address": {
-                    "name": e.location.addressLine1,
-                    "streetAddress": e.location.addressLine2,
-                    "addressLocality": e.location.town,
-                    "postalCode": e.location.postalCode,
-                    "addressCountry": "GB"
-                }
-              },
               "offers" : {
                 "price":"0.00",
                 "priceCurrency": "GBP",
                 "url" : "https://isaacphysics.org/events/" + e.id
               }
+            }
+
+            if (e.location) {
+                $scope.jsonLd["location"] = {
+                    "@type": "Place",
+                    "name": e.location.addressLine1,
+                    "address": {
+                        "name": e.location.addressLine1,
+                        "streetAddress": e.location.addressLine2,
+                        "addressLocality": e.location.town,
+                        "postalCode": e.location.postalCode,
+                        "addressCountry": "GB"
+                    }
+                }
             }
 
             augmentEvent(e, api);
