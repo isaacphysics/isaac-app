@@ -187,7 +187,7 @@
     <div class="account-reorder-wrap">
         <div class="account-reorder-bottom">
             <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
-                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
+                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
             </div>
 
             <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
