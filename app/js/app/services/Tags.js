@@ -38,8 +38,7 @@ define([], function() {
 				comingSoon: true,
 			}, {
 				id: "fields",
-				parent: "physics",
-				comingSoon: true,
+				parent: "physics"
 			}, {
 				id: "circuits",
 				parent: "physics",
