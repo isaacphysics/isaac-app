@@ -27,6 +27,7 @@ define([], function() {
 		$scope.selectedGroup = null;
 		$scope.selectedGroupMembers = null;
 		$scope.selectedGroupToken = null;
+		$scope.groupJoinURL = null;
 
 		$scope.newGroup = {};
 
@@ -43,6 +44,7 @@ define([], function() {
 				$scope.selectedGroup = null;
 				$scope.selectedGroupMembers = null;
 				$scope.selectedGroupToken = null;
+				$scope.groupJoinURL = null;
 			} else {
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
@@ -53,7 +55,10 @@ define([], function() {
 					}, 500);
 				})
 
-				$scope.selectedGroupToken = api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id});
+				api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id}).$promise.then(function(result){
+					$scope.selectedGroupToken = result;
+					$scope.groupJoinURL = $state.href('accountSettings', {"authToken":$scope.selectedGroupToken.token}, {absolute: true});	
+				});
 			}
 		}
 
@@ -66,6 +71,7 @@ define([], function() {
 					$scope.selectedGroup = null;
 					$scope.selectedGroupMembers = null;
 					$scope.selectedGroupToken = null;
+					$scope.groupJoinURL = null;
 				}
 
 				var deleteGroup = $window.confirm('Are you sure you want to delete ' + group.groupName + '?'); 
