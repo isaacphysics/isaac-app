@@ -140,7 +140,7 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a target="_blank" ui-sref="userProgress({'userId' : result._id })">View</a> <a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id)">Delete</a></td>
+                                    <td><a target="_blank" ui-sref="userProgress({'userId' : result._id })">View</a> <a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id, result.email)">Delete</a></td>
                                 </tr>
                             </table>
                         </div>

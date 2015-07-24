@@ -90,8 +90,8 @@ define([], function() {
 			}
 		}
 
-		$scope.deleteUser = function(userId) {
-			var deleteUser = $window.confirm('Are you sure you want to delete?');   
+		$scope.deleteUser = function(userId, email) {
+			var deleteUser = $window.confirm('Are you sure you want to delete the account with email address: ' + email + '?');   
 
 			if (deleteUser) {
 					api.adminDeleteUser.delete({'userId' : userId}).$promise.then(function(){
