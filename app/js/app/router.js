@@ -446,7 +446,9 @@ define(["angular-ui-router"], function() {
                                 $scope.statistics = result;
                                 $scope.setLoading(false)
                             });
-
+                            api.eventBookings.getAllBookings().$promise.then(function(result){
+                                $scope.eventBookings = result;
+                            })
                         }]
                     }
                 }

@@ -243,6 +243,11 @@ define([], function() {
         this.events = $resource(server + "/api/events/:id");
 
 		this.eventBookings = $resource(server + "/api/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
+			'getAllBookings' : {
+				url: server + "/api/events/bookings",
+				method: 'GET', 
+				isArray: true
+			},
 			'getBookings' : {
 				url: server + "/api/events/:eventId/bookings",
 				method: 'GET', 
