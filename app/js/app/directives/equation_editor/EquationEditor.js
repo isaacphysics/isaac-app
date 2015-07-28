@@ -330,7 +330,7 @@ define([], function() {
                             }
                         }
                         
-                        self.parser = new Worker("/js/lib/parser.js");
+                        self.parser = new Worker("/js/lib/equation_parser.js");
                         self.parser.onmessage = parser_message;
                         console.groupCollapsed("Parse");
                         self.parser.postMessage({symbols: parserSymbols});

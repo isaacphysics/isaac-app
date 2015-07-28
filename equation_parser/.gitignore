@@ -1,0 +1,15 @@
+/target
+/lib
+/classes
+/checkouts
+pom.xml
+*.jar
+*.class
+.lein-deps-sum
+.lein-failures
+.lein-plugins
+.lein-env
+resources/public/js/parser.js
+.sass-cache/
+Thumbs.db
+resources/public/css/
