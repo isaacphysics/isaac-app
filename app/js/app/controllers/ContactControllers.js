@@ -17,27 +17,24 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', '$state', '$rootScope', '$stateParams', function($scope, api, $state, $rootScope, $stateParams) {
 		$rootScope.pageTitle = "Contact us";
-		if ($scope.user) {
-			$scope.user.$promise.then(function() {
-				$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				
-			
-				if ($stateParams.preset == 'teacherRequest') {
-					
-					if ($scope.user.role != 'TEACHER') {
-						$scope.contactForm.subject = "Teacher Account Request",
-						$scope.contactForm.message = "Hello,\n\nPlease could you convert my isaac physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
-					} else {
-						alert("Your account has already been upgraded to a teacher account.")
-					}
-				} 
-			})
-		} 
 
-		if ($scope.user.email == null && $stateParams.preset == 'teacherRequest') {
-			$state.go('login', {target:"/contact?preset=teacherRequest"})
+		$scope.user.$promise.then(function() {
+			$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				
 		
-		}
-		
+			if ($stateParams.preset == 'teacherRequest') {
+				if ($scope.user.role != 'TEACHER') {
+					$scope.contactForm.subject = "Teacher Account Request",
+					$scope.contactForm.message = "Hello,\n\nPlease could you convert my isaac physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+				} else {
+					alert("Your account has already been upgraded to a teacher account.")
+				}
+			} 
+		}).catch(function(){
+			if (!$scope.user.email && $stateParams.preset == 'teacherRequest') {
+				$state.go('login', {target:"/contact?preset=teacherRequest"})
+			}
+		})
+
 		$scope.invalidForm = false;
 		$scope.formSubmitted = false;
 		$scope.errorDuringSubmit = false;
