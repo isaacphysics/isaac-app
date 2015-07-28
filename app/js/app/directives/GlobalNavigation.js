@@ -26,9 +26,21 @@ define([], function() {
             	var flyin;
                 var loginTooltips = [];
 
-                // disabled nav items due to not being logged in.
+                // determine whether we should disable any global nav links
                 var applyDisabledToolTips = function() {
-                    if (!scope.user._id && loginTooltips.length == 0) {
+                    
+                    // as the user logged in?
+                    scope.user.$promise.then(function(result){
+                        // if we are logged in we can remove the tooltips
+                        if (result._id && loginTooltips.length != 0) {
+                            angular.forEach(loginTooltips, function(value, key){
+                                value.hide();
+                                value.deactivate();
+                            })
+                            loginTooltips = [];                        
+                        } 
+                    }).catch(function(){
+                        // if we are not logged in we need to disable the links
                         element.find('.login-required a').each(function(index, element){
                             var ot = new Opentip(element, "Click to log in and use this feature.");
                             loginTooltips.push(ot);
@@ -37,18 +49,11 @@ define([], function() {
                         $timeout(function(){
                             Opentip.findElements();
                         }, 1000)
-
-                    } else if (scope.user._id && loginTooltips.length != 0) {
-                        angular.forEach(loginTooltips, function(value, key){
-                            value.hide();
-                            value.deactivate();
-                        })
-                        loginTooltips = [];
-                    }
+                    })
                 }
 
             	scope.menuToggle = function(e) {
-            		scope.isVisible = ! scope.isVisible;
+            		scope.isVisible = !scope.isVisible;
 
             		$('.dl-nav').slideToggle(200);
             	}
@@ -94,7 +99,7 @@ define([], function() {
                 }
                 scope.$on("$stateChangeStart", scope.menuClose);
 
-                scope.$watch('user._id', function(){
+                scope.$watch('isVisible', function(){
                     applyDisabledToolTips();                    
                 })
             }
