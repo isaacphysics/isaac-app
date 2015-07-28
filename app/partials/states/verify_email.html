@@ -1,5 +1,24 @@
 <div class='small-16 columns' ng-controller="ResetPasswordPageController">
 	<h2>Email Address Verification</h2>
-	<h3 class="subheader">{{message}}</h3>
-	<h3 ng-show="success">Continue to <a href="/">Isaac Physics</a>
+	<div class="panel white clearfix verifyContainer">
+        <h2 ng-class="{'icon-check ru_green' : verificationState==verificationStates.SUCCESS, 'icon-x ru_red': verificationState==verificationStates.FAILED_INVALID || verificationState==verificationStates.FAILED_ALREADY_VERIFIED}" class="verification_icon_large"></h2>    
+        <h2 class="subheader">{{message}}</h2>         
+
+       	<h3 ng-show="verificationState==verificationStates.SUCCESS || verificationState==verificationStates.FAILED_ALREADY_VERIFIED">
+       		Continue to <a href='/';>Isaac Physics</a></h3>
+
+       	<h3 ng-show="verificationState==verificationStates.FAILED_INVALID && isUserLoggedIn">
+       		Click <a ng-click="requestFurtherVerification()";>here</a> to request a new Verification Email</h3>
+
+       	<h3 ng-show="verificationState==verificationStates.FAILED_INVALID && !isUserLoggedIn">
+       		Please <a href='/login';>login</a> to request a new Verification Email</h3>
+       		
+       	<p ng-show="verificationState==verificationStates.FAILED_INVALID && furtherVerificationRequested">
+       		<strong>Your verification request is being processed. <br>
+       		<span class="ru_green">Please check your email.</span></strong>
+    	</p>
+    </div>
+	
+	
+		
 </div>

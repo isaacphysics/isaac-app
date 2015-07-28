@@ -15,49 +15,53 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$location', '$timeout', function($scope, auth, api, $stateParams, $location, $timeout) {
+	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$timeout', function($scope, auth, api, $stateParams, $location, $timeout) {
 		
+		$scope.verificationStates = {
+			IN_PROGRESS: 0,
+			SUCCESS : 1,
+			FAILED_INVALID: 2,
+			FAILED_ALREADY_VERIFIED: 3
+		};
 
-		$scope.success = false;
+		$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
+		$scope.message = "Verifying...";
+		$scope.furtherVerificationRequested = false;
 
-		var token = $location.path().split("/")[2];
+		$scope.isUserLoggedIn = false;
 
-		$scope.message = "";
+		$scope.user.$promise.then(function(){
+			$scope.isUserLoggedIn = $scope.user != null;
+		}).catch(function(){
+			$scope.isUserLoggedIn = false;
+		});
 
-		$scope.dots = 1;
+		api.verifyEmailWithToken.verify({'token': $stateParams.token}).$promise.then(function(response){
+			console.log("Success:" + response);
+			$scope.message = ("Email successfully verified!");
+			$scope.verificationState = $scope.verificationStates.SUCCESS;
+		}, function(error){
+			console.log(error);
+			$scope.message = ("Email verification failed - " + error.data.errorMessage);
 
-		$scope.animate = true;
+			if($scope.message.indexOf("Email already verified.") > -1){
+				$scope.verificationState = $scope.verificationStates.FAILED_ALREADY_VERIFIED;
+			}
+			else{
+				$scope.verificationState = $scope.verificationStates.FAILED_INVALID;
+			}
+		});
 
-		$scope.animateDots = function(){
-			if($scope.animate){
-				$scope.dots = ($scope.dots + 1) % 4;
-				$scope.message = "Verifying"
-				for(var i = 0; i < $scope.dots; i++)
-					$scope.message += ".";
-	        		$timeout($scope.animateDots, 300);
-        	}
-		}
-
-		$scope.animateDots();
-
-		//Verification not needed
-		//$scope.message = ("This email address has already been verified.");
-
-		$scope.verifyEmail = function(token){
-			api.email.verify({'token': token}).$promise.then(function(response){
-				console.log(response);
-				$scope.animate = false;
-				$scope.message = ("Email address successfully verified!");
-				$scope.success = true;
+		$scope.requestFurtherVerification = function(){
+			console.log("Requested further verification");
+			$scope.furtherVerificationRequested = true;
+			//TODO call the endpoint and show a popup with the result
+			api.verifyEmail.requestFurtherVerification().$promise.then(function(response){
+				
 			}, function(error){
 				console.log(error);
-				$scope.animate = false;
-				$scope.message = ("Email address verification failed. Please try again");
-				$scope.success = false;
 			});
 		}
-
-		$scope.verifyEmail();
 
 	}];
 
