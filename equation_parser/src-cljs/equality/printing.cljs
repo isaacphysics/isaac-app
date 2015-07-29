@@ -23,6 +23,9 @@
 (defmethod expr-str :type/sub [expr]
   (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " - " (expr-str (:right-op expr))))
 
+(defmethod expr-str :type/pm [expr]
+  (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " ± " (expr-str (:right-op expr))))
+
 (defmethod expr-str :type/mult [expr]
   (str (if (:certain (meta expr)) "@" "") "[" (expr-str (:left-op expr)) " " (expr-str (:right-op expr)) "]"))
 
@@ -37,6 +40,9 @@
 
 (defmethod expr-str :type/bracket [expr]
   (str (if (:certain (meta expr)) "@" "") "(" (expr-str (:child expr)) ")"))
+
+(defmethod expr-str :type/bracket [expr]
+  (str (if (:certain (meta expr)) "@" "") "|" (expr-str (:child expr)) "|"))
 
 (defn print-expr [expr]
   (js/console.log (expr-str expr)))
@@ -68,6 +74,9 @@
 (defmethod mathml-inner :type/sub [expr]
   (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">-</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
 
+(defmethod mathml-inner :type/pm [expr]
+  (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">±</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
+
 (defmethod mathml-inner :type/mult [expr]
   (str "<mrow>" (mathml-inner (:left-op expr)) (mathml-inner (:right-op expr)) "</mrow>"))
 
@@ -85,6 +94,9 @@
 
 (defmethod mathml-inner :type/bracket [expr]
   (str "<mfenced id=\"" (:id expr) "\"><mrow>" (mathml-inner (:child expr)) "</mrow></mfenced>"))
+
+(defmethod mathml-inner :type/abs [expr]
+  (str "<mrow id=\"" (:id expr) "\"><mo>|</mo>" (mathml-inner (:child expr)) "<mo>|</mo></mrow>"))
 
 (defn mathml [expr]
   (when expr
@@ -118,6 +130,9 @@
 (defmethod tex-inner :type/sub [expr]
   (str "{" (tex-inner (:left-op expr)) "}-{" (tex-inner (:right-op expr)) "}"))
 
+(defmethod tex-inner :type/pm [expr]
+  (str "{" (tex-inner (:left-op expr)) "}\\pm{" (tex-inner (:right-op expr)) "}"))
+
 (defmethod tex-inner :type/mult [expr]
   (str (tex-inner (:left-op expr)) " " (tex-inner (:right-op expr))))
 
@@ -135,6 +150,9 @@
 
 (defmethod tex-inner :type/bracket [expr]
   (str "(" (tex-inner (:child expr)) ")"))
+
+(defmethod tex-inner :type/abs [expr]
+  (str "|" (tex-inner (:child expr)) "|"))
 
 (defn tex [expr]
   (when expr

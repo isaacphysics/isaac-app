@@ -90,6 +90,12 @@
        (< (bbox-right contained) (bbox-right container))
        (< (bbox-bottom contained) (bbox-bottom container))))
 
+(defn box-mostly-contains-box [container contained]
+  (and (> (+ (:left contained) (* 0.35 (:width contained))) (:left container))
+       (> (+ (:top contained) (* 0.35 (:height contained))) (:top container))
+       (< (- (bbox-right contained) (* 0.35 (:width contained))) (bbox-right container))
+       (< (- (bbox-bottom contained) (* 0.35 (:height contained))) (bbox-bottom container))))
+
 (defn all-pairs [coll]
   (distinct (for [a coll
                   b coll

@@ -12,5 +12,12 @@
             <path vector-effect="non-scaling-stroke" style="stroke-width:4" d="M10 0 Q0 40, 10 80 M70 0 Q80,40 70 80" />
         </svg>
     </div>
+    <div ng-switch-when="abs" style="width:100%;height:100%;">
+        <svg style="width:100%;height:100%;overflow:visible; fill:none;" ng-style="{stroke: selected ? 'green' : 'black'}" viewbox="0 0 80 80" preserveAspectRatio="none">
+            <!-- Use non-scaling-stroke here, but use a plausible size for IE, which doesn't support it. -->
+            <polyline vector-effect="non-scaling-stroke" style="stroke-width:4" points="0,0 0,80" />
+            <polyline vector-effect="non-scaling-stroke" style="stroke-width:4" points="80,0 80,80" />
+        </svg>
+    </div>
     <div ng-switch-default>&nbsp;</div>
 </div>

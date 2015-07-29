@@ -29,6 +29,7 @@
     :type/var 999
     :type/add 5
     :type/sub 5
+    :type/pm 4
     :type/mult 10
     :type/eq 1
     :type/frac 15
@@ -61,6 +62,9 @@
 (defmethod symbols :type/sub [expr]
   (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
 
+(defmethod symbols :type/pm [expr]
+  (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
+
 (defmethod symbols :type/mult [expr]
   (concat (symbols (:left-op expr)) (symbols (:right-op expr)) (when (:id expr) (symbols (:src expr)))))
 
@@ -77,6 +81,9 @@
   (concat (symbols (:src expr)) (symbols (:radicand expr))))
 
 (defmethod symbols :type/bracket [expr]
+  (concat (symbols (:src expr)) (symbols (:child expr))))
+
+(defmethod symbols :type/abs [expr]
   (concat (symbols (:src expr)) (symbols (:child expr))))
 
 ;(defmethod symbols :type/function-application [expr]
@@ -146,10 +153,10 @@
                                   (= (:token %) token)) input)]
       (map (fn [c]
              (let [remaining-input (disj input c)
-                   contained-items (filter #(geom/box-contains-box c %) remaining-input)]
+                   contained-items (filter #(geom/box-mostly-contains-box c %) remaining-input)]
                (set contained-items))) containers))))
 
-(def non-var-symbols #{"+" "-" "="})
+(def non-var-symbols #{"+" "-" "=" "\\pm"})
 
 ;; Each rule has an :apply function, which takes a set of entities and returns a list of sets of entities, where
 ;; each element of the list is a transformation of the input set, hopefully with some entities combined into bigger ones.
@@ -258,9 +265,11 @@
    "adjacent-mult" {:apply (fn [input]
 
                              ;; Potential coefficients are expressions that have higher precedence than :type/mult
+                             ;; and are not factorials.
 
                              (let [potential-left-ops (filter #(and (isa? (:type %) :type/expr)
-                                                                    (> (precedence (:type %)) (precedence :type/mult))) input)
+                                                                    (> (precedence (:type %)) (precedence :type/mult))
+                                                                    (not= (:token %)  "!")) input)
                                    result-sets-list (for [left potential-left-ops
                                                           :let [remaining-input (disj input left)
 
@@ -332,6 +341,8 @@
                :divide (fn [input] #{})}
    "subtraction" {:apply (binary-op-rule "-" :type/sub)
                   :divide (fn [input] #{})}
+   "plus-or-minus" {:apply (binary-op-rule "\\pm" :type/pm)
+                    :divide (fn [input] #{})}
    "equals" {:apply (binary-op-rule "=" :type/eq)
              :divide (fn [input]
                        (let [eqs (filter #(and (isa? (:type %) :type/symbol)
@@ -347,22 +358,22 @@
                               result-sets-list (for [t frac-lines
                                                      :let [remaining-input (disj input t)
                                                            ;; Numerators/denominators must be expressions above/below the fraction line
-                                                           ;; that do not overhang the ends of the line by more than 10% of their width.
+                                                           ;; that do not overhang the ends of the line by more than 20% of their width.
 
                                                            potential-numerators (filter #(and (isa? (:type %) :type/expr)
                                                                                               (geom/line-intersects-box? {:x (:left t)
                                                                                                                           :dx (:width t)
-                                                                                                                          :y (- (:top t) (:height %))
+                                                                                                                          :y (- (:top t) (* 0.7 (:height %)))
                                                                                                                           :dy 0} %)
-                                                                                              (> (:left %) (- (:left t) (* 0.1 (:width %))))
-                                                                                              (< (geom/bbox-right %) (+ (geom/bbox-right t) (* 0.1 (:width %))))) remaining-input)
+                                                                                              (> (:left %) (- (:left t) (* 0.2 (:width %))))
+                                                                                              (< (geom/bbox-right %) (+ (geom/bbox-right t) (* 0.2 (:width %))))) remaining-input)
                                                            potential-denominators (filter #(and (isa? (:type %) :type/expr)
                                                                                                 (geom/line-intersects-box? {:x (:left t)
                                                                                                                             :dx (:width t)
-                                                                                                                            :y (+ (geom/bbox-bottom t) (:height %))
+                                                                                                                            :y (+ (geom/bbox-bottom t) (* 0.7 (:height %)))
                                                                                                                             :dy 0} %)
-                                                                                                (> (:left %) (- (:left t) (* 0.1 (:width %))))
-                                                                                                (< (geom/bbox-right %) (+ (geom/bbox-right t) (* 0.1 (:width %))))) remaining-input)]
+                                                                                                (> (:left %) (- (:left t) (* 0.2 (:width %))))
+                                                                                                (< (geom/bbox-right %) (+ (geom/bbox-right t) (* 0.2 (:width %))))) remaining-input)]
                                                      :when (and (= 1 (count potential-numerators))
                                                                 (= 1 (count potential-denominators)))]
                                                  (for [numerator potential-numerators
@@ -385,7 +396,7 @@
                           result-sets-list (for [r radicals
                                                  :let [remaining-input (disj input r)
                                                        potential-radicands (filter #(and (isa? (:type %) :type/expr)
-                                                                                         (geom/box-contains-box r %)) remaining-input)]
+                                                                                         (geom/box-mostly-contains-box r %)) remaining-input)]
                                                  :when (= 1 (count potential-radicands))]
                                              (for [radicand potential-radicands
                                                    :let [remaining-input (disj remaining-input radicand)]]
@@ -397,15 +408,33 @@
                                                                             (geom/bbox-combine r radicand)))))]
                       (apply concat result-sets-list)))
            :divide (container-divide-fn :sqrt)}
+   "abs" {:apply (fn [input]
+                    (let [abs (filter #(and (isa? (:type %) :type/symbol)
+                                                 (= (:token %) :abs)) input)
+                          result-sets-list (for [a abs
+                                                 :let [remaining-input (disj input a)
+                                                       potential-children (filter #(and (isa? (:type %) :type/expr)
+                                                                                         (geom/box-mostly-contains-box a %)) remaining-input)]
+                                                 :when (= 1 (count potential-children))]
+                                             (for [child potential-children
+                                                   :let [remaining-input (disj remaining-input child)]]
+                                               (conj remaining-input (merge {:id (:id a)
+                                                                             :type :type/abs
+                                                                             :src r
+                                                                             :child child
+                                                                             :symbol-count (+ 1 (:symbol-count child))}
+                                                                            (geom/bbox-combine a child)))))]
+                      (apply concat result-sets-list)))
+           :divide (container-divide-fn :abs)}
    "brackets" {:apply (fn [input]
                         (let [brackets (filter #(and (isa? (:type %) :type/symbol)
                                                      (= (:token %) :brackets)) input)
                               result-sets-list (for [b brackets
                                                      :let [remaining-input (disj input b)
 
-                                                           contained-symbols (set (filter #(geom/box-contains-box b %) (apply concat (map symbols remaining-input))))
+                                                           contained-symbols (set (filter #(geom/box-mostly-contains-box b %) (apply concat (map symbols remaining-input))))
                                                            potential-children (filter #(and (isa? (:type %) :type/expr)
-                                                                                            (geom/box-contains-box b %)) remaining-input)]
+                                                                                            (geom/box-mostly-contains-box b %)) remaining-input)]
                                                      :when (not-empty potential-children)]
                                                  (for [child potential-children
                                                        :let [remaining-input (disj remaining-input child)]]

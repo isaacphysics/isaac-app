@@ -91,6 +91,9 @@ define([], function() {
                         case "brackets":
                             r.token = ":brackets";
                             break;
+                        case "abs":
+                            r.token = ":abs";
+                            break;
                     }
 
                     break;
@@ -231,6 +234,18 @@ define([], function() {
                         length: 40,
                         texLabel: true,
                     },{
+                        type: "string",
+                        label: "\\pm",
+                        token: "\\pm",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\times",
+                        token: "\\times",
+                        length: 40,
+                        texLabel: true,
+                    },{
                         type: "container",
                         subType: "sqrt",
                         width: 148,
@@ -243,6 +258,19 @@ define([], function() {
                         width: 148,
                         height: 60,
                         label: "(x)",
+                        texLabel: true,
+                    },{
+                        type: "container",
+                        subType: "abs",
+                        width: 148,
+                        height: 60,
+                        label: "|x|",
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "!",
+                        token: "!",
+                        fontSize: 48,
                         texLabel: true,
                     }],
 
