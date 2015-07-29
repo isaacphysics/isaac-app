@@ -30,6 +30,7 @@
     :type/add 5
     :type/sub 5
     :type/pm 4
+    :type/cross 8
     :type/mult 10
     :type/eq 1
     :type/frac 15
@@ -63,6 +64,9 @@
   (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
 
 (defmethod symbols :type/pm [expr]
+  (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
+
+(defmethod symbols :type/cross [expr]
   (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
 
 (defmethod symbols :type/mult [expr]
@@ -156,7 +160,7 @@
                    contained-items (filter #(geom/box-mostly-contains-box c %) remaining-input)]
                (set contained-items))) containers))))
 
-(def non-var-symbols #{"+" "-" "=" "\\pm"})
+(def non-var-symbols #{"+" "-" "=" "\\pm" "\\wedge"})
 
 ;; Each rule has an :apply function, which takes a set of entities and returns a list of sets of entities, where
 ;; each element of the list is a transformation of the input set, hopefully with some entities combined into bigger ones.
@@ -342,6 +346,8 @@
    "subtraction" {:apply (binary-op-rule "-" :type/sub)
                   :divide (fn [input] #{})}
    "plus-or-minus" {:apply (binary-op-rule "\\pm" :type/pm)
+                    :divide (fn [input] #{})}
+   "cross" {:apply (binary-op-rule "\\wedge" :type/cross)
                     :divide (fn [input] #{})}
    "equals" {:apply (binary-op-rule "=" :type/eq)
              :divide (fn [input]

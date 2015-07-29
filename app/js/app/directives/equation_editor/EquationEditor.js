@@ -241,9 +241,9 @@ define([], function() {
                         texLabel: true,
                     },{
                         type: "string",
-                        label: "\\times",
-                        token: "\\times",
-                        length: 40,
+                        label: "\\wedge",
+                        token: "\\wedge",
+                        fontSize: 48,
                         texLabel: true,
                     },{
                         type: "container",

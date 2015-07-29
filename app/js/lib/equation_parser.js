@@ -22310,6 +22310,9 @@ cljs.core._add_method.call(null, equality.printing.expr_str, new cljs.core.Keywo
 cljs.core._add_method.call(null, equality.printing.expr_str, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), function(expr) {
   return[cljs.core.str(cljs.core.truth_((new cljs.core.Keyword(null, "certain", "certain", 1682833428)).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null, expr))) ? "@" : ""), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(" \u00b1 "), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)))].join("")
 });
+cljs.core._add_method.call(null, equality.printing.expr_str, new cljs.core.Keyword("type", "cross", "type/cross", 1339983158), function(expr) {
+  return[cljs.core.str(cljs.core.truth_((new cljs.core.Keyword(null, "certain", "certain", 1682833428)).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null, expr))) ? "@" : ""), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(" \u00d7 "), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)))].join("")
+});
 cljs.core._add_method.call(null, equality.printing.expr_str, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), function(expr) {
   return[cljs.core.str(cljs.core.truth_((new cljs.core.Keyword(null, "certain", "certain", 1682833428)).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null, expr))) ? "@" : ""), cljs.core.str("["), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(" "), cljs.core.str(equality.printing.expr_str.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), 
   cljs.core.str("]")].join("")
@@ -22364,6 +22367,10 @@ cljs.core._add_method.call(null, equality.printing.mathml_inner, new cljs.core.K
 });
 cljs.core._add_method.call(null, equality.printing.mathml_inner, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), function(expr) {
   return[cljs.core.str("\x3cmrow\x3e"), cljs.core.str(equality.printing.mathml_inner.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str('\x3cmo id\x3d"'), cljs.core.str((new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(expr)), cljs.core.str('"\x3e\u00b1\x3c/mo\x3e'), cljs.core.str(equality.printing.mathml_inner.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), 
+  cljs.core.str("\x3c/mrow\x3e")].join("")
+});
+cljs.core._add_method.call(null, equality.printing.mathml_inner, new cljs.core.Keyword("type", "cross", "type/cross", 1339983158), function(expr) {
+  return[cljs.core.str("\x3cmrow\x3e"), cljs.core.str(equality.printing.mathml_inner.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str('\x3cmo id\x3d"'), cljs.core.str((new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(expr)), cljs.core.str('"\x3e\u00d7\x3c/mo\x3e'), cljs.core.str(equality.printing.mathml_inner.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), 
   cljs.core.str("\x3c/mrow\x3e")].join("")
 });
 cljs.core._add_method.call(null, equality.printing.mathml_inner, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), function(expr) {
@@ -22425,6 +22432,9 @@ cljs.core._add_method.call(null, equality.printing.tex_inner, new cljs.core.Keyw
 });
 cljs.core._add_method.call(null, equality.printing.tex_inner, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), function(expr) {
   return[cljs.core.str("{"), cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str("}\\pm{"), cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str("}")].join("")
+});
+cljs.core._add_method.call(null, equality.printing.tex_inner, new cljs.core.Keyword("type", "cross", "type/cross", 1339983158), function(expr) {
+  return[cljs.core.str("{"), cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str("}\\wedge{"), cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str("}")].join("")
 });
 cljs.core._add_method.call(null, equality.printing.tex_inner, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), function(expr) {
   return[cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(" "), cljs.core.str(equality.printing.tex_inner.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)))].join("")
@@ -23168,23 +23178,23 @@ goog.require("clojure.set");
 goog.require("equality.printing");
 cljs.core._STAR_print_newline_STAR_ = false;
 cljs.core._STAR_print_fn_STAR_ = function() {
-  var G__10514__delegate = function(args) {
+  var G__11846__delegate = function(args) {
     return console.log.apply(console, cljs.core.into_array.call(null, args))
   };
-  var G__10514 = function(var_args) {
+  var G__11846 = function(var_args) {
     var args = null;
     if(arguments.length > 0) {
       args = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0)
     }
-    return G__10514__delegate.call(this, args)
+    return G__11846__delegate.call(this, args)
   };
-  G__10514.cljs$lang$maxFixedArity = 0;
-  G__10514.cljs$lang$applyTo = function(arglist__10515) {
-    var args = cljs.core.seq(arglist__10515);
-    return G__10514__delegate(args)
+  G__11846.cljs$lang$maxFixedArity = 0;
+  G__11846.cljs$lang$applyTo = function(arglist__11847) {
+    var args = cljs.core.seq(arglist__11847);
+    return G__11846__delegate(args)
   };
-  G__10514.cljs$core$IFn$_invoke$arity$variadic = G__10514__delegate;
-  return G__10514
+  G__11846.cljs$core$IFn$_invoke$arity$variadic = G__11846__delegate;
+  return G__11846
 }();
 cljs.core.derive.call(null, new cljs.core.Keyword("type", "num", "type/num", 1242796656), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
 cljs.core.derive.call(null, new cljs.core.Keyword("type", "var", "type/var", 1242805709), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
@@ -23196,47 +23206,51 @@ cljs.core.derive.call(null, new cljs.core.Keyword("type", "pow", "type/pow", 124
 cljs.core.derive.call(null, new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
 cljs.core.derive.call(null, new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
 equality.parser.precedence = function precedence(type) {
-  var G__10517 = type;
-  if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), G__10517)) {
+  var G__11849 = type;
+  if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), G__11849)) {
     return 4
   }else {
-    if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), G__10517)) {
+    if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), G__11849)) {
       return 10
     }else {
-      if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), G__10517)) {
+      if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), G__11849)) {
         return 20
       }else {
-        if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "num", "type/num", 1242796656), G__10517)) {
+        if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "num", "type/num", 1242796656), G__11849)) {
           return 999
         }else {
-          if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "eq", "type/eq", 1242952002), G__10517)) {
+          if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "eq", "type/eq", 1242952002), G__11849)) {
             return 1
           }else {
-            if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), G__10517)) {
+            if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), G__11849)) {
               return 999
             }else {
-              if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "add", "type/add", 1242850635), G__10517)) {
+              if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "add", "type/add", 1242850635), G__11849)) {
                 return 5
               }else {
-                if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "var", "type/var", 1242805709), G__10517)) {
+                if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "var", "type/var", 1242805709), G__11849)) {
                   return 999
                 }else {
-                  if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), G__10517)) {
+                  if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), G__11849)) {
                     return 999
                   }else {
-                    if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), G__10517)) {
+                    if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), G__11849)) {
                       return 15
                     }else {
-                      if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438), G__10517)) {
+                      if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438), G__11849)) {
                         return 999
                       }else {
-                        if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "sub", "type/sub", 1242799926), G__10517)) {
+                        if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "sub", "type/sub", 1242799926), G__11849)) {
                           return 5
                         }else {
-                          if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
-                            throw new Error([cljs.core.str("No matching clause: "), cljs.core.str(type)].join(""));
+                          if(cljs.core._EQ_.call(null, new cljs.core.Keyword("type", "cross", "type/cross", 1339983158), G__11849)) {
+                            return 8
                           }else {
-                            return null
+                            if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
+                              throw new Error([cljs.core.str("No matching clause: "), cljs.core.str(type)].join(""));
+                            }else {
+                              return null
+                            }
                           }
                         }
                       }
@@ -23280,6 +23294,9 @@ cljs.core._add_method.call(null, equality.parser.symbols, new cljs.core.Keyword(
 cljs.core._add_method.call(null, equality.parser.symbols, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), function(expr) {
   return cljs.core.concat.call(null, equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "src", "src", 1014018390)).cljs$core$IFn$_invoke$arity$1(expr)), equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr)), equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)))
 });
+cljs.core._add_method.call(null, equality.parser.symbols, new cljs.core.Keyword("type", "cross", "type/cross", 1339983158), function(expr) {
+  return cljs.core.concat.call(null, equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "src", "src", 1014018390)).cljs$core$IFn$_invoke$arity$1(expr)), equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr)), equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)))
+});
 cljs.core._add_method.call(null, equality.parser.symbols, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), function(expr) {
   return cljs.core.concat.call(null, equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr)), equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr)), cljs.core.truth_((new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(expr)) ? equality.parser.symbols.call(null, (new cljs.core.Keyword(null, "src", "src", 
   1014018390)).cljs$core$IFn$_invoke$arity$1(expr)) : null)
@@ -23307,51 +23324,51 @@ equality.parser.numeric_QMARK_ = function numeric_QMARK_(str) {
 };
 equality.parser.binary_op_rule = function binary_op_rule(token, type) {
   return function(input) {
-    var ops = cljs.core.filter.call(null, function(p1__10518_SHARP_) {
-      return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10518_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10518_SHARP_), token)
+    var ops = cljs.core.filter.call(null, function(p1__11850_SHARP_) {
+      return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11850_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11850_SHARP_), token)
     }, input);
     var result_sets_list = function() {
       var iter__3811__auto__ = function(ops) {
-        return function iter__10551(s__10552) {
+        return function iter__11883(s__11884) {
           return new cljs.core.LazySeq(null, function(ops) {
             return function() {
-              var s__10552__$1 = s__10552;
+              var s__11884__$1 = s__11884;
               while(true) {
-                var temp__4092__auto__ = cljs.core.seq.call(null, s__10552__$1);
+                var temp__4092__auto__ = cljs.core.seq.call(null, s__11884__$1);
                 if(temp__4092__auto__) {
-                  var s__10552__$2 = temp__4092__auto__;
-                  if(cljs.core.chunked_seq_QMARK_.call(null, s__10552__$2)) {
-                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10552__$2);
+                  var s__11884__$2 = temp__4092__auto__;
+                  if(cljs.core.chunked_seq_QMARK_.call(null, s__11884__$2)) {
+                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11884__$2);
                     var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                    var b__10554 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                    var b__11886 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                     if(function() {
-                      var i__10553 = 0;
+                      var i__11885 = 0;
                       while(true) {
-                        if(i__10553 < size__3810__auto__) {
-                          var t = cljs.core._nth.call(null, c__3809__auto__, i__10553);
+                        if(i__11885 < size__3810__auto__) {
+                          var t = cljs.core._nth.call(null, c__3809__auto__, i__11885);
                           var remaining_input = cljs.core.disj.call(null, input, t);
-                          var potential_left_ops = cljs.core.filter.call(null, function(i__10553, s__10552__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
-                            return function(p1__10519_SHARP_) {
-                              var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.left_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__10519_SHARP_);
+                          var potential_left_ops = cljs.core.filter.call(null, function(i__11885, s__11884__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
+                            return function(p1__11851_SHARP_) {
+                              var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.left_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__11851_SHARP_);
                               if(cljs.core.truth_(and__3117__auto__)) {
-                                return equality.geometry.bbox_right.call(null, p1__10519_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && equality.geometry.bbox_right.call(null, p1__10519_SHARP_) < (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_) && cljs.core.isa_QMARK_.call(null, 
-                                (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_)) > equality.parser.precedence.call(null, type)
+                                return equality.geometry.bbox_right.call(null, p1__11851_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && equality.geometry.bbox_right.call(null, p1__11851_SHARP_) < (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_) && cljs.core.isa_QMARK_.call(null, 
+                                (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_)) > equality.parser.precedence.call(null, type)
                               }else {
                                 return and__3117__auto__
                               }
                             }
-                          }(i__10553, s__10552__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops), remaining_input);
-                          var potential_right_ops = cljs.core.filter.call(null, function(i__10553, s__10552__$1, remaining_input, potential_left_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
-                            return function(p1__10520_SHARP_) {
-                              var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__10520_SHARP_);
+                          }(i__11885, s__11884__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops), remaining_input);
+                          var potential_right_ops = cljs.core.filter.call(null, function(i__11885, s__11884__$1, remaining_input, potential_left_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
+                            return function(p1__11852_SHARP_) {
+                              var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__11852_SHARP_);
                               if(cljs.core.truth_(and__3117__auto__)) {
-                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) > equality.geometry.bbox_right.call(null, t) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) && 
-                                cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_)) >= equality.parser.precedence.call(null, type)
+                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) > equality.geometry.bbox_right.call(null, t) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) && 
+                                cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_)) >= equality.parser.precedence.call(null, type)
                               }else {
                                 return and__3117__auto__
                               }
                             }
-                          }(i__10553, s__10552__$1, remaining_input, potential_left_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops), remaining_input);
+                          }(i__11885, s__11884__$1, remaining_input, potential_left_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops), remaining_input);
                           if(cljs.core.truth_(function() {
                             var and__3117__auto__ = cljs.core.not_empty.call(null, potential_left_ops);
                             if(cljs.core.truth_(and__3117__auto__)) {
@@ -23360,41 +23377,41 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                               return and__3117__auto__
                             }
                           }())) {
-                            cljs.core.chunk_append.call(null, b__10554, function() {
-                              var iter__3811__auto__ = function(i__10553, s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
-                                return function iter__10567(s__10568) {
-                                  return new cljs.core.LazySeq(null, function(i__10553, s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
+                            cljs.core.chunk_append.call(null, b__11886, function() {
+                              var iter__3811__auto__ = function(i__11885, s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
+                                return function iter__11899(s__11900) {
+                                  return new cljs.core.LazySeq(null, function(i__11885, s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
                                     return function() {
-                                      var s__10568__$1 = s__10568;
+                                      var s__11900__$1 = s__11900;
                                       while(true) {
-                                        var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10568__$1);
+                                        var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11900__$1);
                                         if(temp__4092__auto____$1) {
                                           var xs__4579__auto__ = temp__4092__auto____$1;
                                           var left = cljs.core.first.call(null, xs__4579__auto__);
-                                          var iterys__3807__auto__ = function(s__10568__$1, i__10553, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
-                                            return function iter__10569(s__10570) {
-                                              return new cljs.core.LazySeq(null, function(s__10568__$1, i__10553, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops) {
+                                          var iterys__3807__auto__ = function(s__11900__$1, i__11885, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
+                                            return function iter__11901(s__11902) {
+                                              return new cljs.core.LazySeq(null, function(s__11900__$1, i__11885, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops) {
                                                 return function() {
-                                                  var s__10570__$1 = s__10570;
+                                                  var s__11902__$1 = s__11902;
                                                   while(true) {
-                                                    var temp__4092__auto____$2 = cljs.core.seq.call(null, s__10570__$1);
+                                                    var temp__4092__auto____$2 = cljs.core.seq.call(null, s__11902__$1);
                                                     if(temp__4092__auto____$2) {
-                                                      var s__10570__$2 = temp__4092__auto____$2;
-                                                      if(cljs.core.chunked_seq_QMARK_.call(null, s__10570__$2)) {
-                                                        var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10570__$2);
+                                                      var s__11902__$2 = temp__4092__auto____$2;
+                                                      if(cljs.core.chunked_seq_QMARK_.call(null, s__11902__$2)) {
+                                                        var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__11902__$2);
                                                         var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                                        var b__10572 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                                        var b__11904 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                                         if(function() {
-                                                          var i__10571 = 0;
+                                                          var i__11903 = 0;
                                                           while(true) {
-                                                            if(i__10571 < size__3810__auto____$1) {
-                                                              var right = cljs.core._nth.call(null, c__3809__auto____$1, i__10571);
+                                                            if(i__11903 < size__3810__auto____$1) {
+                                                              var right = cljs.core._nth.call(null, c__3809__auto____$1, i__11903);
                                                               var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, left, right);
-                                                              cljs.core.chunk_append.call(null, b__10572, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, 
+                                                              cljs.core.chunk_append.call(null, b__11904, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, 
                                                               "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, 
                                                               left, right, t))));
-                                                              var G__10579 = i__10571 + 1;
-                                                              i__10571 = G__10579;
+                                                              var G__11911 = i__11903 + 1;
+                                                              i__11903 = G__11911;
                                                               continue
                                                             }else {
                                                               return true
@@ -23402,16 +23419,16 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                                             break
                                                           }
                                                         }()) {
-                                                          return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10572), iter__10569.call(null, cljs.core.chunk_rest.call(null, s__10570__$2)))
+                                                          return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11904), iter__11901.call(null, cljs.core.chunk_rest.call(null, s__11902__$2)))
                                                         }else {
-                                                          return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10572), null)
+                                                          return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11904), null)
                                                         }
                                                       }else {
-                                                        var right = cljs.core.first.call(null, s__10570__$2);
+                                                        var right = cljs.core.first.call(null, s__11902__$2);
                                                         var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, left, right);
                                                         return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, "left-op", 
                                                         "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, 
-                                                        left, right, t))), iter__10569.call(null, cljs.core.rest.call(null, s__10570__$2)))
+                                                        left, right, t))), iter__11901.call(null, cljs.core.rest.call(null, s__11902__$2)))
                                                       }
                                                     }else {
                                                       return null
@@ -23419,15 +23436,15 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                                     break
                                                   }
                                                 }
-                                              }(s__10568__$1, i__10553, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops), null, null)
+                                              }(s__11900__$1, i__11885, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops), null, null)
                                             }
-                                          }(s__10568__$1, i__10553, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops);
+                                          }(s__11900__$1, i__11885, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops);
                                           var fs__3808__auto__ = cljs.core.seq.call(null, iterys__3807__auto__.call(null, potential_right_ops));
                                           if(fs__3808__auto__) {
-                                            return cljs.core.concat.call(null, fs__3808__auto__, iter__10567.call(null, cljs.core.rest.call(null, s__10568__$1)))
+                                            return cljs.core.concat.call(null, fs__3808__auto__, iter__11899.call(null, cljs.core.rest.call(null, s__11900__$1)))
                                           }else {
-                                            var G__10580 = cljs.core.rest.call(null, s__10568__$1);
-                                            s__10568__$1 = G__10580;
+                                            var G__11912 = cljs.core.rest.call(null, s__11900__$1);
+                                            s__11900__$1 = G__11912;
                                             continue
                                           }
                                         }else {
@@ -23436,17 +23453,17 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                         break
                                       }
                                     }
-                                  }(i__10553, s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops), null, null)
+                                  }(i__11885, s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops), null, null)
                                 }
-                              }(i__10553, s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__10554, s__10552__$2, temp__4092__auto__, ops);
+                              }(i__11885, s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, c__3809__auto__, size__3810__auto__, b__11886, s__11884__$2, temp__4092__auto__, ops);
                               return iter__3811__auto__.call(null, potential_left_ops)
                             }());
-                            var G__10581 = i__10553 + 1;
-                            i__10553 = G__10581;
+                            var G__11913 = i__11885 + 1;
+                            i__11885 = G__11913;
                             continue
                           }else {
-                            var G__10582 = i__10553 + 1;
-                            i__10553 = G__10582;
+                            var G__11914 = i__11885 + 1;
+                            i__11885 = G__11914;
                             continue
                           }
                         }else {
@@ -23455,35 +23472,35 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                         break
                       }
                     }()) {
-                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10554), iter__10551.call(null, cljs.core.chunk_rest.call(null, s__10552__$2)))
+                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11886), iter__11883.call(null, cljs.core.chunk_rest.call(null, s__11884__$2)))
                     }else {
-                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10554), null)
+                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11886), null)
                     }
                   }else {
-                    var t = cljs.core.first.call(null, s__10552__$2);
+                    var t = cljs.core.first.call(null, s__11884__$2);
                     var remaining_input = cljs.core.disj.call(null, input, t);
-                    var potential_left_ops = cljs.core.filter.call(null, function(s__10552__$1, remaining_input, t, s__10552__$2, temp__4092__auto__, ops) {
-                      return function(p1__10519_SHARP_) {
-                        var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.left_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__10519_SHARP_);
+                    var potential_left_ops = cljs.core.filter.call(null, function(s__11884__$1, remaining_input, t, s__11884__$2, temp__4092__auto__, ops) {
+                      return function(p1__11851_SHARP_) {
+                        var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.left_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__11851_SHARP_);
                         if(cljs.core.truth_(and__3117__auto__)) {
-                          return equality.geometry.bbox_right.call(null, p1__10519_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && equality.geometry.bbox_right.call(null, p1__10519_SHARP_) < (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_) && cljs.core.isa_QMARK_.call(null, 
-                          (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10519_SHARP_)) > equality.parser.precedence.call(null, type)
+                          return equality.geometry.bbox_right.call(null, p1__11851_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && equality.geometry.bbox_right.call(null, p1__11851_SHARP_) < (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_) && cljs.core.isa_QMARK_.call(null, 
+                          (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11851_SHARP_)) > equality.parser.precedence.call(null, type)
                         }else {
                           return and__3117__auto__
                         }
                       }
-                    }(s__10552__$1, remaining_input, t, s__10552__$2, temp__4092__auto__, ops), remaining_input);
-                    var potential_right_ops = cljs.core.filter.call(null, function(s__10552__$1, remaining_input, potential_left_ops, t, s__10552__$2, temp__4092__auto__, ops) {
-                      return function(p1__10520_SHARP_) {
-                        var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__10520_SHARP_);
+                    }(s__11884__$1, remaining_input, t, s__11884__$2, temp__4092__auto__, ops), remaining_input);
+                    var potential_right_ops = cljs.core.filter.call(null, function(s__11884__$1, remaining_input, potential_left_ops, t, s__11884__$2, temp__4092__auto__, ops) {
+                      return function(p1__11852_SHARP_) {
+                        var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, t, 1.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(t)), p1__11852_SHARP_);
                         if(cljs.core.truth_(and__3117__auto__)) {
-                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) > equality.geometry.bbox_right.call(null, t) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_) && 
-                          cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10520_SHARP_)) >= equality.parser.precedence.call(null, type)
+                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, t)) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) > equality.geometry.bbox_right.call(null, t) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_) && 
+                          cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11852_SHARP_)) >= equality.parser.precedence.call(null, type)
                         }else {
                           return and__3117__auto__
                         }
                       }
-                    }(s__10552__$1, remaining_input, potential_left_ops, t, s__10552__$2, temp__4092__auto__, ops), remaining_input);
+                    }(s__11884__$1, remaining_input, potential_left_ops, t, s__11884__$2, temp__4092__auto__, ops), remaining_input);
                     if(cljs.core.truth_(function() {
                       var and__3117__auto__ = cljs.core.not_empty.call(null, potential_left_ops);
                       if(cljs.core.truth_(and__3117__auto__)) {
@@ -23493,40 +23510,40 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                       }
                     }())) {
                       return cljs.core.cons.call(null, function() {
-                        var iter__3811__auto__ = function(s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops) {
-                          return function iter__10573(s__10574) {
-                            return new cljs.core.LazySeq(null, function(s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops) {
+                        var iter__3811__auto__ = function(s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops) {
+                          return function iter__11905(s__11906) {
+                            return new cljs.core.LazySeq(null, function(s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops) {
                               return function() {
-                                var s__10574__$1 = s__10574;
+                                var s__11906__$1 = s__11906;
                                 while(true) {
-                                  var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10574__$1);
+                                  var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11906__$1);
                                   if(temp__4092__auto____$1) {
                                     var xs__4579__auto__ = temp__4092__auto____$1;
                                     var left = cljs.core.first.call(null, xs__4579__auto__);
-                                    var iterys__3807__auto__ = function(s__10574__$1, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops) {
-                                      return function iter__10575(s__10576) {
-                                        return new cljs.core.LazySeq(null, function(s__10574__$1, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops) {
+                                    var iterys__3807__auto__ = function(s__11906__$1, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops) {
+                                      return function iter__11907(s__11908) {
+                                        return new cljs.core.LazySeq(null, function(s__11906__$1, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops) {
                                           return function() {
-                                            var s__10576__$1 = s__10576;
+                                            var s__11908__$1 = s__11908;
                                             while(true) {
-                                              var temp__4092__auto____$2 = cljs.core.seq.call(null, s__10576__$1);
+                                              var temp__4092__auto____$2 = cljs.core.seq.call(null, s__11908__$1);
                                               if(temp__4092__auto____$2) {
-                                                var s__10576__$2 = temp__4092__auto____$2;
-                                                if(cljs.core.chunked_seq_QMARK_.call(null, s__10576__$2)) {
-                                                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10576__$2);
+                                                var s__11908__$2 = temp__4092__auto____$2;
+                                                if(cljs.core.chunked_seq_QMARK_.call(null, s__11908__$2)) {
+                                                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11908__$2);
                                                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                                  var b__10578 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                                  var b__11910 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                                   if(function() {
-                                                    var i__10577 = 0;
+                                                    var i__11909 = 0;
                                                     while(true) {
-                                                      if(i__10577 < size__3810__auto__) {
-                                                        var right = cljs.core._nth.call(null, c__3809__auto__, i__10577);
+                                                      if(i__11909 < size__3810__auto__) {
+                                                        var right = cljs.core._nth.call(null, c__3809__auto__, i__11909);
                                                         var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, left, right);
-                                                        cljs.core.chunk_append.call(null, b__10578, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, 
+                                                        cljs.core.chunk_append.call(null, b__11910, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, 
                                                         "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, 
                                                         left, right, t))));
-                                                        var G__10583 = i__10577 + 1;
-                                                        i__10577 = G__10583;
+                                                        var G__11915 = i__11909 + 1;
+                                                        i__11909 = G__11915;
                                                         continue
                                                       }else {
                                                         return true
@@ -23534,16 +23551,16 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                                       break
                                                     }
                                                   }()) {
-                                                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10578), iter__10575.call(null, cljs.core.chunk_rest.call(null, s__10576__$2)))
+                                                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11910), iter__11907.call(null, cljs.core.chunk_rest.call(null, s__11908__$2)))
                                                   }else {
-                                                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10578), null)
+                                                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11910), null)
                                                   }
                                                 }else {
-                                                  var right = cljs.core.first.call(null, s__10576__$2);
+                                                  var right = cljs.core.first.call(null, s__11908__$2);
                                                   var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, left, right);
                                                   return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), type, new cljs.core.Keyword(null, "src", "src", 1014018390), t, new cljs.core.Keyword(null, "left-op", "left-op", 
                                                   1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right, 
-                                                  t))), iter__10575.call(null, cljs.core.rest.call(null, s__10576__$2)))
+                                                  t))), iter__11907.call(null, cljs.core.rest.call(null, s__11908__$2)))
                                                 }
                                               }else {
                                                 return null
@@ -23551,15 +23568,15 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                               break
                                             }
                                           }
-                                        }(s__10574__$1, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops), null, null)
+                                        }(s__11906__$1, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops), null, null)
                                       }
-                                    }(s__10574__$1, s__10552__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops);
+                                    }(s__11906__$1, s__11884__$1, left, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops);
                                     var fs__3808__auto__ = cljs.core.seq.call(null, iterys__3807__auto__.call(null, potential_right_ops));
                                     if(fs__3808__auto__) {
-                                      return cljs.core.concat.call(null, fs__3808__auto__, iter__10573.call(null, cljs.core.rest.call(null, s__10574__$1)))
+                                      return cljs.core.concat.call(null, fs__3808__auto__, iter__11905.call(null, cljs.core.rest.call(null, s__11906__$1)))
                                     }else {
-                                      var G__10584 = cljs.core.rest.call(null, s__10574__$1);
-                                      s__10574__$1 = G__10584;
+                                      var G__11916 = cljs.core.rest.call(null, s__11906__$1);
+                                      s__11906__$1 = G__11916;
                                       continue
                                     }
                                   }else {
@@ -23568,14 +23585,14 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
                                   break
                                 }
                               }
-                            }(s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops), null, null)
+                            }(s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops), null, null)
                           }
-                        }(s__10552__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__10552__$2, temp__4092__auto__, ops);
+                        }(s__11884__$1, remaining_input, potential_left_ops, potential_right_ops, t, s__11884__$2, temp__4092__auto__, ops);
                         return iter__3811__auto__.call(null, potential_left_ops)
-                      }(), iter__10551.call(null, cljs.core.rest.call(null, s__10552__$2)))
+                      }(), iter__11883.call(null, cljs.core.rest.call(null, s__11884__$2)))
                     }else {
-                      var G__10585 = cljs.core.rest.call(null, s__10552__$2);
-                      s__10552__$1 = G__10585;
+                      var G__11917 = cljs.core.rest.call(null, s__11884__$2);
+                      s__11884__$1 = G__11917;
                       continue
                     }
                   }
@@ -23595,80 +23612,83 @@ equality.parser.binary_op_rule = function binary_op_rule(token, type) {
 };
 equality.parser.container_divide_fn = function container_divide_fn(token) {
   return function(input) {
-    var containers = cljs.core.filter.call(null, function(p1__10586_SHARP_) {
-      return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10586_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10586_SHARP_), token)
+    var containers = cljs.core.filter.call(null, function(p1__11918_SHARP_) {
+      return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11918_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11918_SHARP_), token)
     }, input);
     return cljs.core.map.call(null, function(c) {
       var remaining_input = cljs.core.disj.call(null, input, c);
       var contained_items = cljs.core.filter.call(null, function(remaining_input) {
-        return function(p1__10587_SHARP_) {
-          return equality.geometry.box_mostly_contains_box.call(null, c, p1__10587_SHARP_)
+        return function(p1__11919_SHARP_) {
+          return equality.geometry.box_mostly_contains_box.call(null, c, p1__11919_SHARP_)
         }
       }(remaining_input), remaining_input);
       return cljs.core.set.call(null, contained_items)
     }, containers)
   }
 };
-equality.parser.non_var_symbols = cljs.core.PersistentHashSet.fromArray(["+", null, "-", null, "\\pm", null, "\x3d", null], true);
-equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fraction", "horiz-line", "power", "num", "var", "brackets", "abs", "subtraction", "plus-or-minus", "adjacent-mult", "addition", "equals"], [cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var radicals = cljs.core.filter.call(null, function(p1__10599_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10599_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10599_SHARP_), new cljs.core.Keyword(null, "sqrt", "sqrt", 1017442450))
+equality.parser.non_var_symbols = cljs.core.PersistentHashSet.fromArray(["+", null, "-", null, "\\wedge", null, "\\pm", null, "\x3d", null], true);
+equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["cross", "sqrt", "fraction", "horiz-line", "power", "num", "var", "brackets", "abs", "subtraction", "plus-or-minus", "adjacent-mult", "addition", "equals"], [cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), equality.parser.binary_op_rule.call(null, "\\wedge", new cljs.core.Keyword("type", "cross", "type/cross", 1339983158)), new cljs.core.Keyword(null, "divide", "divide", 3977408491), 
+function(input) {
+  return cljs.core.PersistentHashSet.EMPTY
+}], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
+  var radicals = cljs.core.filter.call(null, function(p1__11931_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11931_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11931_SHARP_), new cljs.core.Keyword(null, "sqrt", "sqrt", 1017442450))
   }, input);
   var result_sets_list = function() {
     var iter__3811__auto__ = function(radicals) {
-      return function iter__10606(s__10607) {
+      return function iter__11938(s__11939) {
         return new cljs.core.LazySeq(null, function(radicals) {
           return function() {
-            var s__10607__$1 = s__10607;
+            var s__11939__$1 = s__11939;
             while(true) {
-              var temp__4092__auto__ = cljs.core.seq.call(null, s__10607__$1);
+              var temp__4092__auto__ = cljs.core.seq.call(null, s__11939__$1);
               if(temp__4092__auto__) {
-                var s__10607__$2 = temp__4092__auto__;
-                if(cljs.core.chunked_seq_QMARK_.call(null, s__10607__$2)) {
-                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10607__$2);
+                var s__11939__$2 = temp__4092__auto__;
+                if(cljs.core.chunked_seq_QMARK_.call(null, s__11939__$2)) {
+                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11939__$2);
                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                  var b__10609 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                  var b__11941 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                   if(function() {
-                    var i__10608 = 0;
+                    var i__11940 = 0;
                     while(true) {
-                      if(i__10608 < size__3810__auto__) {
-                        var r = cljs.core._nth.call(null, c__3809__auto__, i__10608);
+                      if(i__11940 < size__3810__auto__) {
+                        var r = cljs.core._nth.call(null, c__3809__auto__, i__11940);
                         var remaining_input = cljs.core.disj.call(null, input, r);
-                        var potential_radicands = cljs.core.filter.call(null, function(i__10608, s__10607__$1, remaining_input, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals) {
-                          return function(p1__10600_SHARP_) {
-                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10600_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                        var potential_radicands = cljs.core.filter.call(null, function(i__11940, s__11939__$1, remaining_input, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals) {
+                          return function(p1__11932_SHARP_) {
+                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11932_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                             if(and__3117__auto__) {
-                              return equality.geometry.box_mostly_contains_box.call(null, r, p1__10600_SHARP_)
+                              return equality.geometry.box_mostly_contains_box.call(null, r, p1__11932_SHARP_)
                             }else {
                               return and__3117__auto__
                             }
                           }
-                        }(i__10608, s__10607__$1, remaining_input, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals), remaining_input);
+                        }(i__11940, s__11939__$1, remaining_input, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals), remaining_input);
                         if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_radicands))) {
-                          cljs.core.chunk_append.call(null, b__10609, function() {
-                            var iter__3811__auto__ = function(i__10608, s__10607__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals) {
-                              return function iter__10618(s__10619) {
-                                return new cljs.core.LazySeq(null, function(i__10608, s__10607__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals) {
+                          cljs.core.chunk_append.call(null, b__11941, function() {
+                            var iter__3811__auto__ = function(i__11940, s__11939__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals) {
+                              return function iter__11950(s__11951) {
+                                return new cljs.core.LazySeq(null, function(i__11940, s__11939__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals) {
                                   return function() {
-                                    var s__10619__$1 = s__10619;
+                                    var s__11951__$1 = s__11951;
                                     while(true) {
-                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10619__$1);
+                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11951__$1);
                                       if(temp__4092__auto____$1) {
-                                        var s__10619__$2 = temp__4092__auto____$1;
-                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__10619__$2)) {
-                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10619__$2);
+                                        var s__11951__$2 = temp__4092__auto____$1;
+                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__11951__$2)) {
+                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__11951__$2);
                                           var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                          var b__10621 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                          var b__11953 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                           if(function() {
-                                            var i__10620 = 0;
+                                            var i__11952 = 0;
                                             while(true) {
-                                              if(i__10620 < size__3810__auto____$1) {
-                                                var radicand = cljs.core._nth.call(null, c__3809__auto____$1, i__10620);
+                                              if(i__11952 < size__3810__auto____$1) {
+                                                var radicand = cljs.core._nth.call(null, c__3809__auto____$1, i__11952);
                                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, radicand);
-                                                cljs.core.chunk_append.call(null, b__10621, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", 
+                                                cljs.core.chunk_append.call(null, b__11953, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", 
                                                 "src", 1014018390), r, new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))));
-                                                var G__10738 = i__10620 + 1;
-                                                i__10620 = G__10738;
+                                                var G__12070 = i__11952 + 1;
+                                                i__11952 = G__12070;
                                                 continue
                                               }else {
                                                 return true
@@ -23676,15 +23696,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                               break
                                             }
                                           }()) {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10621), iter__10618.call(null, cljs.core.chunk_rest.call(null, s__10619__$2)))
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11953), iter__11950.call(null, cljs.core.chunk_rest.call(null, s__11951__$2)))
                                           }else {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10621), null)
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11953), null)
                                           }
                                         }else {
-                                          var radicand = cljs.core.first.call(null, s__10619__$2);
+                                          var radicand = cljs.core.first.call(null, s__11951__$2);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, radicand);
                                           return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", "src", 1014018390), 
-                                          r, new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))), iter__10618.call(null, cljs.core.rest.call(null, s__10619__$2)))
+                                          r, new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))), iter__11950.call(null, cljs.core.rest.call(null, s__11951__$2)))
                                         }
                                       }else {
                                         return null
@@ -23692,17 +23712,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                       break
                                     }
                                   }
-                                }(i__10608, s__10607__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals), null, null)
+                                }(i__11940, s__11939__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals), null, null)
                               }
-                            }(i__10608, s__10607__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__10609, s__10607__$2, temp__4092__auto__, radicals);
+                            }(i__11940, s__11939__$1, remaining_input, potential_radicands, r, c__3809__auto__, size__3810__auto__, b__11941, s__11939__$2, temp__4092__auto__, radicals);
                             return iter__3811__auto__.call(null, potential_radicands)
                           }());
-                          var G__10739 = i__10608 + 1;
-                          i__10608 = G__10739;
+                          var G__12071 = i__11940 + 1;
+                          i__11940 = G__12071;
                           continue
                         }else {
-                          var G__10740 = i__10608 + 1;
-                          i__10608 = G__10740;
+                          var G__12072 = i__11940 + 1;
+                          i__11940 = G__12072;
                           continue
                         }
                       }else {
@@ -23711,48 +23731,48 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                       break
                     }
                   }()) {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10609), iter__10606.call(null, cljs.core.chunk_rest.call(null, s__10607__$2)))
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11941), iter__11938.call(null, cljs.core.chunk_rest.call(null, s__11939__$2)))
                   }else {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10609), null)
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11941), null)
                   }
                 }else {
-                  var r = cljs.core.first.call(null, s__10607__$2);
+                  var r = cljs.core.first.call(null, s__11939__$2);
                   var remaining_input = cljs.core.disj.call(null, input, r);
-                  var potential_radicands = cljs.core.filter.call(null, function(s__10607__$1, remaining_input, r, s__10607__$2, temp__4092__auto__, radicals) {
-                    return function(p1__10600_SHARP_) {
-                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10600_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                  var potential_radicands = cljs.core.filter.call(null, function(s__11939__$1, remaining_input, r, s__11939__$2, temp__4092__auto__, radicals) {
+                    return function(p1__11932_SHARP_) {
+                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11932_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                       if(and__3117__auto__) {
-                        return equality.geometry.box_mostly_contains_box.call(null, r, p1__10600_SHARP_)
+                        return equality.geometry.box_mostly_contains_box.call(null, r, p1__11932_SHARP_)
                       }else {
                         return and__3117__auto__
                       }
                     }
-                  }(s__10607__$1, remaining_input, r, s__10607__$2, temp__4092__auto__, radicals), remaining_input);
+                  }(s__11939__$1, remaining_input, r, s__11939__$2, temp__4092__auto__, radicals), remaining_input);
                   if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_radicands))) {
                     return cljs.core.cons.call(null, function() {
-                      var iter__3811__auto__ = function(s__10607__$1, remaining_input, potential_radicands, r, s__10607__$2, temp__4092__auto__, radicals) {
-                        return function iter__10622(s__10623) {
-                          return new cljs.core.LazySeq(null, function(s__10607__$1, remaining_input, potential_radicands, r, s__10607__$2, temp__4092__auto__, radicals) {
+                      var iter__3811__auto__ = function(s__11939__$1, remaining_input, potential_radicands, r, s__11939__$2, temp__4092__auto__, radicals) {
+                        return function iter__11954(s__11955) {
+                          return new cljs.core.LazySeq(null, function(s__11939__$1, remaining_input, potential_radicands, r, s__11939__$2, temp__4092__auto__, radicals) {
                             return function() {
-                              var s__10623__$1 = s__10623;
+                              var s__11955__$1 = s__11955;
                               while(true) {
-                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10623__$1);
+                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11955__$1);
                                 if(temp__4092__auto____$1) {
-                                  var s__10623__$2 = temp__4092__auto____$1;
-                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__10623__$2)) {
-                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10623__$2);
+                                  var s__11955__$2 = temp__4092__auto____$1;
+                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__11955__$2)) {
+                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11955__$2);
                                     var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                    var b__10625 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                    var b__11957 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                     if(function() {
-                                      var i__10624 = 0;
+                                      var i__11956 = 0;
                                       while(true) {
-                                        if(i__10624 < size__3810__auto__) {
-                                          var radicand = cljs.core._nth.call(null, c__3809__auto__, i__10624);
+                                        if(i__11956 < size__3810__auto__) {
+                                          var radicand = cljs.core._nth.call(null, c__3809__auto__, i__11956);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, radicand);
-                                          cljs.core.chunk_append.call(null, b__10625, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", "src", 
+                                          cljs.core.chunk_append.call(null, b__11957, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", "src", 
                                           1014018390), r, new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))));
-                                          var G__10741 = i__10624 + 1;
-                                          i__10624 = G__10741;
+                                          var G__12073 = i__11956 + 1;
+                                          i__11956 = G__12073;
                                           continue
                                         }else {
                                           return true
@@ -23760,15 +23780,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                         break
                                       }
                                     }()) {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10625), iter__10622.call(null, cljs.core.chunk_rest.call(null, s__10623__$2)))
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11957), iter__11954.call(null, cljs.core.chunk_rest.call(null, s__11955__$2)))
                                     }else {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10625), null)
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11957), null)
                                     }
                                   }else {
-                                    var radicand = cljs.core.first.call(null, s__10623__$2);
+                                    var radicand = cljs.core.first.call(null, s__11955__$2);
                                     var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, radicand);
                                     return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(r), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "sqrt", "type/sqrt", 1247797206), new cljs.core.Keyword(null, "src", "src", 1014018390), r, 
-                                    new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))), iter__10622.call(null, cljs.core.rest.call(null, s__10623__$2)))
+                                    new cljs.core.Keyword(null, "radicand", "radicand", 982261498), radicand, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(radicand)], true), equality.geometry.bbox_combine.call(null, r, radicand))), iter__11954.call(null, cljs.core.rest.call(null, s__11955__$2)))
                                   }
                                 }else {
                                   return null
@@ -23776,14 +23796,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                 break
                               }
                             }
-                          }(s__10607__$1, remaining_input, potential_radicands, r, s__10607__$2, temp__4092__auto__, radicals), null, null)
+                          }(s__11939__$1, remaining_input, potential_radicands, r, s__11939__$2, temp__4092__auto__, radicals), null, null)
                         }
-                      }(s__10607__$1, remaining_input, potential_radicands, r, s__10607__$2, temp__4092__auto__, radicals);
+                      }(s__11939__$1, remaining_input, potential_radicands, r, s__11939__$2, temp__4092__auto__, radicals);
                       return iter__3811__auto__.call(null, potential_radicands)
-                    }(), iter__10606.call(null, cljs.core.rest.call(null, s__10607__$2)))
+                    }(), iter__11938.call(null, cljs.core.rest.call(null, s__11939__$2)))
                   }else {
-                    var G__10742 = cljs.core.rest.call(null, s__10607__$2);
-                    s__10607__$1 = G__10742;
+                    var G__12074 = cljs.core.rest.call(null, s__11939__$2);
+                    s__11939__$1 = G__12074;
                     continue
                   }
                 }
@@ -23800,38 +23820,38 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
   }();
   return cljs.core.apply.call(null, cljs.core.concat, result_sets_list)
 }, new cljs.core.Keyword(null, "divide", "divide", 3977408491), equality.parser.container_divide_fn.call(null, new cljs.core.Keyword(null, "sqrt", "sqrt", 1017442450))], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var frac_lines = cljs.core.filter.call(null, function(p1__10596_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10596_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10596_SHARP_), new cljs.core.Keyword(null, "frac", "frac", 1017055584))
+  var frac_lines = cljs.core.filter.call(null, function(p1__11928_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11928_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11928_SHARP_), new cljs.core.Keyword(null, "frac", "frac", 1017055584))
   }, input);
   var result_sets_list = function() {
     var iter__3811__auto__ = function(frac_lines) {
-      return function iter__10626(s__10627) {
+      return function iter__11958(s__11959) {
         return new cljs.core.LazySeq(null, function(frac_lines) {
           return function() {
-            var s__10627__$1 = s__10627;
+            var s__11959__$1 = s__11959;
             while(true) {
-              var temp__4092__auto__ = cljs.core.seq.call(null, s__10627__$1);
+              var temp__4092__auto__ = cljs.core.seq.call(null, s__11959__$1);
               if(temp__4092__auto__) {
-                var s__10627__$2 = temp__4092__auto__;
-                if(cljs.core.chunked_seq_QMARK_.call(null, s__10627__$2)) {
-                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10627__$2);
+                var s__11959__$2 = temp__4092__auto__;
+                if(cljs.core.chunked_seq_QMARK_.call(null, s__11959__$2)) {
+                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11959__$2);
                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                  var b__10629 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                  var b__11961 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                   if(function() {
-                    var i__10628 = 0;
+                    var i__11960 = 0;
                     while(true) {
-                      if(i__10628 < size__3810__auto__) {
-                        var t = cljs.core._nth.call(null, c__3809__auto__, i__10628);
+                      if(i__11960 < size__3810__auto__) {
+                        var t = cljs.core._nth.call(null, c__3809__auto__, i__11960);
                         var remaining_input = cljs.core.disj.call(null, input, t);
-                        var potential_numerators = cljs.core.filter.call(null, function(i__10628, s__10627__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
-                          return function(p1__10597_SHARP_) {
-                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                        var potential_numerators = cljs.core.filter.call(null, function(i__11960, s__11959__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
+                          return function(p1__11929_SHARP_) {
+                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                             if(and__3117__auto__) {
                               var and__3117__auto____$1 = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "y", "y", 1013904363), (new cljs.core.Keyword(null, 
-                              "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(t) - 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__10597_SHARP_);
+                              "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(t) - 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__11929_SHARP_);
                               if(cljs.core.truth_(and__3117__auto____$1)) {
-                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_) && equality.geometry.bbox_right.call(null, p1__10597_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", 
-                                "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_)
+                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_) && equality.geometry.bbox_right.call(null, p1__11929_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", 
+                                "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_)
                               }else {
                                 return and__3117__auto____$1
                               }
@@ -23839,16 +23859,16 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                               return and__3117__auto__
                             }
                           }
-                        }(i__10628, s__10627__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines), remaining_input);
-                        var potential_denominators = cljs.core.filter.call(null, function(i__10628, s__10627__$1, remaining_input, potential_numerators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
-                          return function(p1__10598_SHARP_) {
-                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                        }(i__11960, s__11959__$1, remaining_input, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines), remaining_input);
+                        var potential_denominators = cljs.core.filter.call(null, function(i__11960, s__11959__$1, remaining_input, potential_numerators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
+                          return function(p1__11930_SHARP_) {
+                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                             if(and__3117__auto__) {
                               var and__3117__auto____$1 = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "y", "y", 1013904363), equality.geometry.bbox_bottom.call(null, 
-                              t) + 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__10598_SHARP_);
+                              t) + 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__11930_SHARP_);
                               if(cljs.core.truth_(and__3117__auto____$1)) {
-                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_) && equality.geometry.bbox_right.call(null, p1__10598_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", 
-                                "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_)
+                                return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_) && equality.geometry.bbox_right.call(null, p1__11930_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", 
+                                "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_)
                               }else {
                                 return and__3117__auto____$1
                               }
@@ -23856,43 +23876,43 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                               return and__3117__auto__
                             }
                           }
-                        }(i__10628, s__10627__$1, remaining_input, potential_numerators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines), remaining_input);
+                        }(i__11960, s__11959__$1, remaining_input, potential_numerators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines), remaining_input);
                         if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_numerators)) && cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_denominators))) {
-                          cljs.core.chunk_append.call(null, b__10629, function() {
-                            var iter__3811__auto__ = function(i__10628, s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
-                              return function iter__10642(s__10643) {
-                                return new cljs.core.LazySeq(null, function(i__10628, s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
+                          cljs.core.chunk_append.call(null, b__11961, function() {
+                            var iter__3811__auto__ = function(i__11960, s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
+                              return function iter__11974(s__11975) {
+                                return new cljs.core.LazySeq(null, function(i__11960, s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
                                   return function() {
-                                    var s__10643__$1 = s__10643;
+                                    var s__11975__$1 = s__11975;
                                     while(true) {
-                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10643__$1);
+                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11975__$1);
                                       if(temp__4092__auto____$1) {
                                         var xs__4579__auto__ = temp__4092__auto____$1;
                                         var numerator = cljs.core.first.call(null, xs__4579__auto__);
-                                        var iterys__3807__auto__ = function(s__10643__$1, i__10628, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
-                                          return function iter__10644(s__10645) {
-                                            return new cljs.core.LazySeq(null, function(s__10643__$1, i__10628, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines) {
+                                        var iterys__3807__auto__ = function(s__11975__$1, i__11960, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
+                                          return function iter__11976(s__11977) {
+                                            return new cljs.core.LazySeq(null, function(s__11975__$1, i__11960, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines) {
                                               return function() {
-                                                var s__10645__$1 = s__10645;
+                                                var s__11977__$1 = s__11977;
                                                 while(true) {
-                                                  var temp__4092__auto____$2 = cljs.core.seq.call(null, s__10645__$1);
+                                                  var temp__4092__auto____$2 = cljs.core.seq.call(null, s__11977__$1);
                                                   if(temp__4092__auto____$2) {
-                                                    var s__10645__$2 = temp__4092__auto____$2;
-                                                    if(cljs.core.chunked_seq_QMARK_.call(null, s__10645__$2)) {
-                                                      var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10645__$2);
+                                                    var s__11977__$2 = temp__4092__auto____$2;
+                                                    if(cljs.core.chunked_seq_QMARK_.call(null, s__11977__$2)) {
+                                                      var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__11977__$2);
                                                       var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                                      var b__10647 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                                      var b__11979 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                                       if(function() {
-                                                        var i__10646 = 0;
+                                                        var i__11978 = 0;
                                                         while(true) {
-                                                          if(i__10646 < size__3810__auto____$1) {
-                                                            var denominator = cljs.core._nth.call(null, c__3809__auto____$1, i__10646);
+                                                          if(i__11978 < size__3810__auto____$1) {
+                                                            var denominator = cljs.core._nth.call(null, c__3809__auto____$1, i__11978);
                                                             var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, numerator, denominator);
-                                                            cljs.core.chunk_append.call(null, b__10647, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, 
+                                                            cljs.core.chunk_append.call(null, b__11979, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, 
                                                             "src", "src", 1014018390), t, new cljs.core.Keyword(null, "numerator", "numerator", 2761239035), numerator, new cljs.core.Keyword(null, "denominator", "denominator", 3325597144), denominator, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(numerator) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
                                                             2231450636)).cljs$core$IFn$_invoke$arity$1(denominator)], true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))));
-                                                            var G__10743 = i__10646 + 1;
-                                                            i__10646 = G__10743;
+                                                            var G__12075 = i__11978 + 1;
+                                                            i__11978 = G__12075;
                                                             continue
                                                           }else {
                                                             return true
@@ -23900,16 +23920,16 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                                           break
                                                         }
                                                       }()) {
-                                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10647), iter__10644.call(null, cljs.core.chunk_rest.call(null, s__10645__$2)))
+                                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11979), iter__11976.call(null, cljs.core.chunk_rest.call(null, s__11977__$2)))
                                                       }else {
-                                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10647), null)
+                                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11979), null)
                                                       }
                                                     }else {
-                                                      var denominator = cljs.core.first.call(null, s__10645__$2);
+                                                      var denominator = cljs.core.first.call(null, s__11977__$2);
                                                       var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, numerator, denominator);
                                                       return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, "src", "src", 
                                                       1014018390), t, new cljs.core.Keyword(null, "numerator", "numerator", 2761239035), numerator, new cljs.core.Keyword(null, "denominator", "denominator", 3325597144), denominator, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(numerator) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(denominator)], 
-                                                      true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))), iter__10644.call(null, cljs.core.rest.call(null, s__10645__$2)))
+                                                      true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))), iter__11976.call(null, cljs.core.rest.call(null, s__11977__$2)))
                                                     }
                                                   }else {
                                                     return null
@@ -23917,15 +23937,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                                   break
                                                 }
                                               }
-                                            }(s__10643__$1, i__10628, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines), null, null)
+                                            }(s__11975__$1, i__11960, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines), null, null)
                                           }
-                                        }(s__10643__$1, i__10628, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines);
+                                        }(s__11975__$1, i__11960, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines);
                                         var fs__3808__auto__ = cljs.core.seq.call(null, iterys__3807__auto__.call(null, potential_denominators));
                                         if(fs__3808__auto__) {
-                                          return cljs.core.concat.call(null, fs__3808__auto__, iter__10642.call(null, cljs.core.rest.call(null, s__10643__$1)))
+                                          return cljs.core.concat.call(null, fs__3808__auto__, iter__11974.call(null, cljs.core.rest.call(null, s__11975__$1)))
                                         }else {
-                                          var G__10744 = cljs.core.rest.call(null, s__10643__$1);
-                                          s__10643__$1 = G__10744;
+                                          var G__12076 = cljs.core.rest.call(null, s__11975__$1);
+                                          s__11975__$1 = G__12076;
                                           continue
                                         }
                                       }else {
@@ -23934,17 +23954,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                       break
                                     }
                                   }
-                                }(i__10628, s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines), null, null)
+                                }(i__11960, s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines), null, null)
                               }
-                            }(i__10628, s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__10629, s__10627__$2, temp__4092__auto__, frac_lines);
+                            }(i__11960, s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, c__3809__auto__, size__3810__auto__, b__11961, s__11959__$2, temp__4092__auto__, frac_lines);
                             return iter__3811__auto__.call(null, potential_numerators)
                           }());
-                          var G__10745 = i__10628 + 1;
-                          i__10628 = G__10745;
+                          var G__12077 = i__11960 + 1;
+                          i__11960 = G__12077;
                           continue
                         }else {
-                          var G__10746 = i__10628 + 1;
-                          i__10628 = G__10746;
+                          var G__12078 = i__11960 + 1;
+                          i__11960 = G__12078;
                           continue
                         }
                       }else {
@@ -23953,22 +23973,22 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                       break
                     }
                   }()) {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10629), iter__10626.call(null, cljs.core.chunk_rest.call(null, s__10627__$2)))
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11961), iter__11958.call(null, cljs.core.chunk_rest.call(null, s__11959__$2)))
                   }else {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10629), null)
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11961), null)
                   }
                 }else {
-                  var t = cljs.core.first.call(null, s__10627__$2);
+                  var t = cljs.core.first.call(null, s__11959__$2);
                   var remaining_input = cljs.core.disj.call(null, input, t);
-                  var potential_numerators = cljs.core.filter.call(null, function(s__10627__$1, remaining_input, t, s__10627__$2, temp__4092__auto__, frac_lines) {
-                    return function(p1__10597_SHARP_) {
-                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                  var potential_numerators = cljs.core.filter.call(null, function(s__11959__$1, remaining_input, t, s__11959__$2, temp__4092__auto__, frac_lines) {
+                    return function(p1__11929_SHARP_) {
+                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                       if(and__3117__auto__) {
                         var and__3117__auto____$1 = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "y", "y", 1013904363), (new cljs.core.Keyword(null, 
-                        "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(t) - 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__10597_SHARP_);
+                        "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(t) - 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__11929_SHARP_);
                         if(cljs.core.truth_(and__3117__auto____$1)) {
-                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_) && equality.geometry.bbox_right.call(null, p1__10597_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", "width", 
-                          1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10597_SHARP_)
+                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_) && equality.geometry.bbox_right.call(null, p1__11929_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", "width", 
+                          1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11929_SHARP_)
                         }else {
                           return and__3117__auto____$1
                         }
@@ -23976,16 +23996,16 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                         return and__3117__auto__
                       }
                     }
-                  }(s__10627__$1, remaining_input, t, s__10627__$2, temp__4092__auto__, frac_lines), remaining_input);
-                  var potential_denominators = cljs.core.filter.call(null, function(s__10627__$1, remaining_input, potential_numerators, t, s__10627__$2, temp__4092__auto__, frac_lines) {
-                    return function(p1__10598_SHARP_) {
-                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                  }(s__11959__$1, remaining_input, t, s__11959__$2, temp__4092__auto__, frac_lines), remaining_input);
+                  var potential_denominators = cljs.core.filter.call(null, function(s__11959__$1, remaining_input, potential_numerators, t, s__11959__$2, temp__4092__auto__, frac_lines) {
+                    return function(p1__11930_SHARP_) {
+                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                       if(and__3117__auto__) {
                         var and__3117__auto____$1 = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "y", "y", 1013904363), equality.geometry.bbox_bottom.call(null, 
-                        t) + 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__10598_SHARP_);
+                        t) + 0.7 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_), new cljs.core.Keyword(null, "dy", "dy", 1013907463), 0], true), p1__11930_SHARP_);
                         if(cljs.core.truth_(and__3117__auto____$1)) {
-                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_) && equality.geometry.bbox_right.call(null, p1__10598_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", "width", 
-                          1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10598_SHARP_)
+                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(t) - 0.2 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_) && equality.geometry.bbox_right.call(null, p1__11930_SHARP_) < equality.geometry.bbox_right.call(null, t) + 0.2 * (new cljs.core.Keyword(null, "width", "width", 
+                          1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11930_SHARP_)
                         }else {
                           return and__3117__auto____$1
                         }
@@ -23993,43 +24013,43 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                         return and__3117__auto__
                       }
                     }
-                  }(s__10627__$1, remaining_input, potential_numerators, t, s__10627__$2, temp__4092__auto__, frac_lines), remaining_input);
+                  }(s__11959__$1, remaining_input, potential_numerators, t, s__11959__$2, temp__4092__auto__, frac_lines), remaining_input);
                   if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_numerators)) && cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_denominators))) {
                     return cljs.core.cons.call(null, function() {
-                      var iter__3811__auto__ = function(s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines) {
-                        return function iter__10648(s__10649) {
-                          return new cljs.core.LazySeq(null, function(s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines) {
+                      var iter__3811__auto__ = function(s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines) {
+                        return function iter__11980(s__11981) {
+                          return new cljs.core.LazySeq(null, function(s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines) {
                             return function() {
-                              var s__10649__$1 = s__10649;
+                              var s__11981__$1 = s__11981;
                               while(true) {
-                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10649__$1);
+                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11981__$1);
                                 if(temp__4092__auto____$1) {
                                   var xs__4579__auto__ = temp__4092__auto____$1;
                                   var numerator = cljs.core.first.call(null, xs__4579__auto__);
-                                  var iterys__3807__auto__ = function(s__10649__$1, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines) {
-                                    return function iter__10650(s__10651) {
-                                      return new cljs.core.LazySeq(null, function(s__10649__$1, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines) {
+                                  var iterys__3807__auto__ = function(s__11981__$1, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines) {
+                                    return function iter__11982(s__11983) {
+                                      return new cljs.core.LazySeq(null, function(s__11981__$1, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines) {
                                         return function() {
-                                          var s__10651__$1 = s__10651;
+                                          var s__11983__$1 = s__11983;
                                           while(true) {
-                                            var temp__4092__auto____$2 = cljs.core.seq.call(null, s__10651__$1);
+                                            var temp__4092__auto____$2 = cljs.core.seq.call(null, s__11983__$1);
                                             if(temp__4092__auto____$2) {
-                                              var s__10651__$2 = temp__4092__auto____$2;
-                                              if(cljs.core.chunked_seq_QMARK_.call(null, s__10651__$2)) {
-                                                var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10651__$2);
+                                              var s__11983__$2 = temp__4092__auto____$2;
+                                              if(cljs.core.chunked_seq_QMARK_.call(null, s__11983__$2)) {
+                                                var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11983__$2);
                                                 var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                                var b__10653 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                                var b__11985 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                                 if(function() {
-                                                  var i__10652 = 0;
+                                                  var i__11984 = 0;
                                                   while(true) {
-                                                    if(i__10652 < size__3810__auto__) {
-                                                      var denominator = cljs.core._nth.call(null, c__3809__auto__, i__10652);
+                                                    if(i__11984 < size__3810__auto__) {
+                                                      var denominator = cljs.core._nth.call(null, c__3809__auto__, i__11984);
                                                       var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, numerator, denominator);
-                                                      cljs.core.chunk_append.call(null, b__10653, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, 
+                                                      cljs.core.chunk_append.call(null, b__11985, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, 
                                                       "src", "src", 1014018390), t, new cljs.core.Keyword(null, "numerator", "numerator", 2761239035), numerator, new cljs.core.Keyword(null, "denominator", "denominator", 3325597144), denominator, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(numerator) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
                                                       2231450636)).cljs$core$IFn$_invoke$arity$1(denominator)], true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))));
-                                                      var G__10747 = i__10652 + 1;
-                                                      i__10652 = G__10747;
+                                                      var G__12079 = i__11984 + 1;
+                                                      i__11984 = G__12079;
                                                       continue
                                                     }else {
                                                       return true
@@ -24037,16 +24057,16 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                                     break
                                                   }
                                                 }()) {
-                                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10653), iter__10650.call(null, cljs.core.chunk_rest.call(null, s__10651__$2)))
+                                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11985), iter__11982.call(null, cljs.core.chunk_rest.call(null, s__11983__$2)))
                                                 }else {
-                                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10653), null)
+                                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11985), null)
                                                 }
                                               }else {
-                                                var denominator = cljs.core.first.call(null, s__10651__$2);
+                                                var denominator = cljs.core.first.call(null, s__11983__$2);
                                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, numerator, denominator);
                                                 return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(t), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "frac", "type/frac", 1248266376), new cljs.core.Keyword(null, "src", "src", 1014018390), 
                                                 t, new cljs.core.Keyword(null, "numerator", "numerator", 2761239035), numerator, new cljs.core.Keyword(null, "denominator", "denominator", 3325597144), denominator, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(numerator) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(denominator)], 
-                                                true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))), iter__10650.call(null, cljs.core.rest.call(null, s__10651__$2)))
+                                                true), equality.geometry.bbox_combine.call(null, t, numerator, denominator))), iter__11982.call(null, cljs.core.rest.call(null, s__11983__$2)))
                                               }
                                             }else {
                                               return null
@@ -24054,15 +24074,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                             break
                                           }
                                         }
-                                      }(s__10649__$1, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines), null, null)
+                                      }(s__11981__$1, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines), null, null)
                                     }
-                                  }(s__10649__$1, s__10627__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines);
+                                  }(s__11981__$1, s__11959__$1, numerator, xs__4579__auto__, temp__4092__auto____$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines);
                                   var fs__3808__auto__ = cljs.core.seq.call(null, iterys__3807__auto__.call(null, potential_denominators));
                                   if(fs__3808__auto__) {
-                                    return cljs.core.concat.call(null, fs__3808__auto__, iter__10648.call(null, cljs.core.rest.call(null, s__10649__$1)))
+                                    return cljs.core.concat.call(null, fs__3808__auto__, iter__11980.call(null, cljs.core.rest.call(null, s__11981__$1)))
                                   }else {
-                                    var G__10748 = cljs.core.rest.call(null, s__10649__$1);
-                                    s__10649__$1 = G__10748;
+                                    var G__12080 = cljs.core.rest.call(null, s__11981__$1);
+                                    s__11981__$1 = G__12080;
                                     continue
                                   }
                                 }else {
@@ -24071,14 +24091,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                 break
                               }
                             }
-                          }(s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines), null, null)
+                          }(s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines), null, null)
                         }
-                      }(s__10627__$1, remaining_input, potential_numerators, potential_denominators, t, s__10627__$2, temp__4092__auto__, frac_lines);
+                      }(s__11959__$1, remaining_input, potential_numerators, potential_denominators, t, s__11959__$2, temp__4092__auto__, frac_lines);
                       return iter__3811__auto__.call(null, potential_numerators)
-                    }(), iter__10626.call(null, cljs.core.rest.call(null, s__10627__$2)))
+                    }(), iter__11958.call(null, cljs.core.rest.call(null, s__11959__$2)))
                   }else {
-                    var G__10749 = cljs.core.rest.call(null, s__10627__$2);
-                    s__10627__$1 = G__10749;
+                    var G__12081 = cljs.core.rest.call(null, s__11959__$2);
+                    s__11959__$1 = G__12081;
                     continue
                   }
                 }
@@ -24097,8 +24117,8 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
 }, new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
   return cljs.core.PersistentHashSet.EMPTY
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var line = cljs.core.first.call(null, cljs.core.filter.call(null, function(p1__10588_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10588_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10588_SHARP_), new cljs.core.Keyword(null, "line", "line", 1017226086))
+  var line = cljs.core.first.call(null, cljs.core.filter.call(null, function(p1__11920_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11920_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11920_SHARP_), new cljs.core.Keyword(null, "line", "line", 1017226086))
   }, input));
   if(cljs.core.truth_(line)) {
     var remaining_input = cljs.core.disj.call(null, input, line);
@@ -24110,64 +24130,64 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
 }, new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
   return cljs.core.PersistentHashSet.EMPTY
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var potential_bases = cljs.core.filter.call(null, function(p1__10589_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10589_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10589_SHARP_)) > equality.parser.precedence.call(null, new cljs.core.Keyword("type", "pow", "type/pow", 1242794782))
+  var potential_bases = cljs.core.filter.call(null, function(p1__11921_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11921_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11921_SHARP_)) > equality.parser.precedence.call(null, new cljs.core.Keyword("type", "pow", "type/pow", 1242794782))
   }, input);
   return cljs.core.apply.call(null, cljs.core.concat, function() {
-    var iter__3811__auto__ = function iter__10654(s__10655) {
+    var iter__3811__auto__ = function iter__11986(s__11987) {
       return new cljs.core.LazySeq(null, function() {
-        var s__10655__$1 = s__10655;
+        var s__11987__$1 = s__11987;
         while(true) {
-          var temp__4092__auto__ = cljs.core.seq.call(null, s__10655__$1);
+          var temp__4092__auto__ = cljs.core.seq.call(null, s__11987__$1);
           if(temp__4092__auto__) {
-            var s__10655__$2 = temp__4092__auto__;
-            if(cljs.core.chunked_seq_QMARK_.call(null, s__10655__$2)) {
-              var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10655__$2);
+            var s__11987__$2 = temp__4092__auto__;
+            if(cljs.core.chunked_seq_QMARK_.call(null, s__11987__$2)) {
+              var c__3809__auto__ = cljs.core.chunk_first.call(null, s__11987__$2);
               var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-              var b__10657 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+              var b__11989 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
               if(function() {
-                var i__10656 = 0;
+                var i__11988 = 0;
                 while(true) {
-                  if(i__10656 < size__3810__auto__) {
-                    var b = cljs.core._nth.call(null, c__3809__auto__, i__10656);
+                  if(i__11988 < size__3810__auto__) {
+                    var b = cljs.core._nth.call(null, c__3809__auto__, i__11988);
                     var remaining_input = cljs.core.disj.call(null, input, b);
-                    var potential_exponents = cljs.core.filter.call(null, function(i__10656, s__10655__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__) {
-                      return function(p1__10590_SHARP_) {
+                    var potential_exponents = cljs.core.filter.call(null, function(i__11988, s__11987__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__) {
+                      return function(p1__11922_SHARP_) {
                         var and__3117__auto__ = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), equality.geometry.bbox_right.call(null, b), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "y", "y", 1013904363), (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b), 
-                        new cljs.core.Keyword(null, "dy", "dy", 1013907463), -(new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b)], true), p1__10590_SHARP_);
+                        new cljs.core.Keyword(null, "dy", "dy", 1013907463), -(new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b)], true), p1__11922_SHARP_);
                         if(cljs.core.truth_(and__3117__auto__)) {
-                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b) && (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) + (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) < 
-                          (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(b) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
+                          return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b) && (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) + (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) < 
+                          (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(b) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
                         }else {
                           return and__3117__auto__
                         }
                       }
-                    }(i__10656, s__10655__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__), remaining_input);
+                    }(i__11988, s__11987__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__), remaining_input);
                     if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_exponents))) {
-                      cljs.core.chunk_append.call(null, b__10657, function() {
-                        var iter__3811__auto__ = function(i__10656, s__10655__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__) {
-                          return function iter__10666(s__10667) {
-                            return new cljs.core.LazySeq(null, function(i__10656, s__10655__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__) {
+                      cljs.core.chunk_append.call(null, b__11989, function() {
+                        var iter__3811__auto__ = function(i__11988, s__11987__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__) {
+                          return function iter__11998(s__11999) {
+                            return new cljs.core.LazySeq(null, function(i__11988, s__11987__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__) {
                               return function() {
-                                var s__10667__$1 = s__10667;
+                                var s__11999__$1 = s__11999;
                                 while(true) {
-                                  var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10667__$1);
+                                  var temp__4092__auto____$1 = cljs.core.seq.call(null, s__11999__$1);
                                   if(temp__4092__auto____$1) {
-                                    var s__10667__$2 = temp__4092__auto____$1;
-                                    if(cljs.core.chunked_seq_QMARK_.call(null, s__10667__$2)) {
-                                      var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10667__$2);
+                                    var s__11999__$2 = temp__4092__auto____$1;
+                                    if(cljs.core.chunked_seq_QMARK_.call(null, s__11999__$2)) {
+                                      var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__11999__$2);
                                       var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                      var b__10669 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                      var b__12001 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                       if(function() {
-                                        var i__10668 = 0;
+                                        var i__12000 = 0;
                                         while(true) {
-                                          if(i__10668 < size__3810__auto____$1) {
-                                            var e = cljs.core._nth.call(null, c__3809__auto____$1, i__10668);
+                                          if(i__12000 < size__3810__auto____$1) {
+                                            var e = cljs.core._nth.call(null, c__3809__auto____$1, i__12000);
                                             var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, e);
-                                            cljs.core.chunk_append.call(null, b__10669, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
+                                            cljs.core.chunk_append.call(null, b__12001, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
                                             2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))));
-                                            var G__10750 = i__10668 + 1;
-                                            i__10668 = G__10750;
+                                            var G__12082 = i__12000 + 1;
+                                            i__12000 = G__12082;
                                             continue
                                           }else {
                                             return true
@@ -24175,15 +24195,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                           break
                                         }
                                       }()) {
-                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10669), iter__10666.call(null, cljs.core.chunk_rest.call(null, s__10667__$2)))
+                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12001), iter__11998.call(null, cljs.core.chunk_rest.call(null, s__11999__$2)))
                                       }else {
-                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10669), null)
+                                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12001), null)
                                       }
                                     }else {
-                                      var e = cljs.core.first.call(null, s__10667__$2);
+                                      var e = cljs.core.first.call(null, s__11999__$2);
                                       var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, e);
                                       return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 
-                                      (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))), iter__10666.call(null, cljs.core.rest.call(null, s__10667__$2)))
+                                      (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))), iter__11998.call(null, cljs.core.rest.call(null, s__11999__$2)))
                                     }
                                   }else {
                                     return null
@@ -24191,17 +24211,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                   break
                                 }
                               }
-                            }(i__10656, s__10655__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__), null, null)
+                            }(i__11988, s__11987__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__), null, null)
                           }
-                        }(i__10656, s__10655__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__10657, s__10655__$2, temp__4092__auto__);
+                        }(i__11988, s__11987__$1, remaining_input, potential_exponents, b, c__3809__auto__, size__3810__auto__, b__11989, s__11987__$2, temp__4092__auto__);
                         return iter__3811__auto__.call(null, potential_exponents)
                       }());
-                      var G__10751 = i__10656 + 1;
-                      i__10656 = G__10751;
+                      var G__12083 = i__11988 + 1;
+                      i__11988 = G__12083;
                       continue
                     }else {
-                      var G__10752 = i__10656 + 1;
-                      i__10656 = G__10752;
+                      var G__12084 = i__11988 + 1;
+                      i__11988 = G__12084;
                       continue
                     }
                   }else {
@@ -24210,50 +24230,50 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                   break
                 }
               }()) {
-                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10657), iter__10654.call(null, cljs.core.chunk_rest.call(null, s__10655__$2)))
+                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11989), iter__11986.call(null, cljs.core.chunk_rest.call(null, s__11987__$2)))
               }else {
-                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10657), null)
+                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__11989), null)
               }
             }else {
-              var b = cljs.core.first.call(null, s__10655__$2);
+              var b = cljs.core.first.call(null, s__11987__$2);
               var remaining_input = cljs.core.disj.call(null, input, b);
-              var potential_exponents = cljs.core.filter.call(null, function(s__10655__$1, remaining_input, b, s__10655__$2, temp__4092__auto__) {
-                return function(p1__10590_SHARP_) {
+              var potential_exponents = cljs.core.filter.call(null, function(s__11987__$1, remaining_input, b, s__11987__$2, temp__4092__auto__) {
+                return function(p1__11922_SHARP_) {
                   var and__3117__auto__ = equality.geometry.line_intersects_box_QMARK_.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "x", "x", 1013904362), equality.geometry.bbox_right.call(null, b), new cljs.core.Keyword(null, "dx", "dx", 1013907462), (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "y", "y", 1013904363), (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b), 
-                  new cljs.core.Keyword(null, "dy", "dy", 1013907463), -(new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b)], true), p1__10590_SHARP_);
+                  new cljs.core.Keyword(null, "dy", "dy", 1013907463), -(new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b)], true), p1__11922_SHARP_);
                   if(cljs.core.truth_(and__3117__auto__)) {
-                    return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b) && (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) + (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_) < 
-                    (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(b) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10590_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
+                    return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) > (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(b) && (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) + (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_) < 
+                    (new cljs.core.Keyword(null, "top", "top", 1014019271)).cljs$core$IFn$_invoke$arity$1(b) + 0.5 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(b) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11922_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
                   }else {
                     return and__3117__auto__
                   }
                 }
-              }(s__10655__$1, remaining_input, b, s__10655__$2, temp__4092__auto__), remaining_input);
+              }(s__11987__$1, remaining_input, b, s__11987__$2, temp__4092__auto__), remaining_input);
               if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_exponents))) {
                 return cljs.core.cons.call(null, function() {
-                  var iter__3811__auto__ = function(s__10655__$1, remaining_input, potential_exponents, b, s__10655__$2, temp__4092__auto__) {
-                    return function iter__10670(s__10671) {
-                      return new cljs.core.LazySeq(null, function(s__10655__$1, remaining_input, potential_exponents, b, s__10655__$2, temp__4092__auto__) {
+                  var iter__3811__auto__ = function(s__11987__$1, remaining_input, potential_exponents, b, s__11987__$2, temp__4092__auto__) {
+                    return function iter__12002(s__12003) {
+                      return new cljs.core.LazySeq(null, function(s__11987__$1, remaining_input, potential_exponents, b, s__11987__$2, temp__4092__auto__) {
                         return function() {
-                          var s__10671__$1 = s__10671;
+                          var s__12003__$1 = s__12003;
                           while(true) {
-                            var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10671__$1);
+                            var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12003__$1);
                             if(temp__4092__auto____$1) {
-                              var s__10671__$2 = temp__4092__auto____$1;
-                              if(cljs.core.chunked_seq_QMARK_.call(null, s__10671__$2)) {
-                                var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10671__$2);
+                              var s__12003__$2 = temp__4092__auto____$1;
+                              if(cljs.core.chunked_seq_QMARK_.call(null, s__12003__$2)) {
+                                var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12003__$2);
                                 var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                var b__10673 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                var b__12005 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                 if(function() {
-                                  var i__10672 = 0;
+                                  var i__12004 = 0;
                                   while(true) {
-                                    if(i__10672 < size__3810__auto__) {
-                                      var e = cljs.core._nth.call(null, c__3809__auto__, i__10672);
+                                    if(i__12004 < size__3810__auto__) {
+                                      var e = cljs.core._nth.call(null, c__3809__auto__, i__12004);
                                       var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, e);
-                                      cljs.core.chunk_append.call(null, b__10673, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
+                                      cljs.core.chunk_append.call(null, b__12005, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
                                       2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))));
-                                      var G__10753 = i__10672 + 1;
-                                      i__10672 = G__10753;
+                                      var G__12085 = i__12004 + 1;
+                                      i__12004 = G__12085;
                                       continue
                                     }else {
                                       return true
@@ -24261,15 +24281,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                     break
                                   }
                                 }()) {
-                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10673), iter__10670.call(null, cljs.core.chunk_rest.call(null, s__10671__$2)))
+                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12005), iter__12002.call(null, cljs.core.chunk_rest.call(null, s__12003__$2)))
                                 }else {
-                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10673), null)
+                                  return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12005), null)
                                 }
                               }else {
-                                var e = cljs.core.first.call(null, s__10671__$2);
+                                var e = cljs.core.first.call(null, s__12003__$2);
                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, e);
                                 return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "pow", "type/pow", 1242794782), new cljs.core.Keyword(null, "base", "base", 1016920643), b, new cljs.core.Keyword(null, "exponent", "exponent", 3382701601), e, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), (new cljs.core.Keyword(null, 
-                                "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))), iter__10670.call(null, cljs.core.rest.call(null, s__10671__$2)))
+                                "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(b) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(e)], true), equality.geometry.bbox_combine.call(null, b, e))), iter__12002.call(null, cljs.core.rest.call(null, s__12003__$2)))
                               }
                             }else {
                               return null
@@ -24277,14 +24297,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                             break
                           }
                         }
-                      }(s__10655__$1, remaining_input, potential_exponents, b, s__10655__$2, temp__4092__auto__), null, null)
+                      }(s__11987__$1, remaining_input, potential_exponents, b, s__11987__$2, temp__4092__auto__), null, null)
                     }
-                  }(s__10655__$1, remaining_input, potential_exponents, b, s__10655__$2, temp__4092__auto__);
+                  }(s__11987__$1, remaining_input, potential_exponents, b, s__11987__$2, temp__4092__auto__);
                   return iter__3811__auto__.call(null, potential_exponents)
-                }(), iter__10654.call(null, cljs.core.rest.call(null, s__10655__$2)))
+                }(), iter__11986.call(null, cljs.core.rest.call(null, s__11987__$2)))
               }else {
-                var G__10754 = cljs.core.rest.call(null, s__10655__$2);
-                s__10655__$1 = G__10754;
+                var G__12086 = cljs.core.rest.call(null, s__11987__$2);
+                s__11987__$1 = G__12086;
                 continue
               }
             }
@@ -24338,69 +24358,69 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
 }, new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
   return cljs.core.PersistentHashSet.EMPTY
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var brackets = cljs.core.filter.call(null, function(p1__10603_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10603_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10603_SHARP_), new cljs.core.Keyword(null, "brackets", "brackets", 978574397))
+  var brackets = cljs.core.filter.call(null, function(p1__11935_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11935_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11935_SHARP_), new cljs.core.Keyword(null, "brackets", "brackets", 978574397))
   }, input);
   var result_sets_list = function() {
     var iter__3811__auto__ = function(brackets) {
-      return function iter__10674(s__10675) {
+      return function iter__12006(s__12007) {
         return new cljs.core.LazySeq(null, function(brackets) {
           return function() {
-            var s__10675__$1 = s__10675;
+            var s__12007__$1 = s__12007;
             while(true) {
-              var temp__4092__auto__ = cljs.core.seq.call(null, s__10675__$1);
+              var temp__4092__auto__ = cljs.core.seq.call(null, s__12007__$1);
               if(temp__4092__auto__) {
-                var s__10675__$2 = temp__4092__auto__;
-                if(cljs.core.chunked_seq_QMARK_.call(null, s__10675__$2)) {
-                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10675__$2);
+                var s__12007__$2 = temp__4092__auto__;
+                if(cljs.core.chunked_seq_QMARK_.call(null, s__12007__$2)) {
+                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12007__$2);
                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                  var b__10677 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                  var b__12009 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                   if(function() {
-                    var i__10676 = 0;
+                    var i__12008 = 0;
                     while(true) {
-                      if(i__10676 < size__3810__auto__) {
-                        var b = cljs.core._nth.call(null, c__3809__auto__, i__10676);
+                      if(i__12008 < size__3810__auto__) {
+                        var b = cljs.core._nth.call(null, c__3809__auto__, i__12008);
                         var remaining_input = cljs.core.disj.call(null, input, b);
-                        var contained_symbols = cljs.core.set.call(null, cljs.core.filter.call(null, function(i__10676, s__10675__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets) {
-                          return function(p1__10604_SHARP_) {
-                            return equality.geometry.box_mostly_contains_box.call(null, b, p1__10604_SHARP_)
+                        var contained_symbols = cljs.core.set.call(null, cljs.core.filter.call(null, function(i__12008, s__12007__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets) {
+                          return function(p1__11936_SHARP_) {
+                            return equality.geometry.box_mostly_contains_box.call(null, b, p1__11936_SHARP_)
                           }
-                        }(i__10676, s__10675__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets), cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, remaining_input))));
-                        var potential_children = cljs.core.filter.call(null, function(i__10676, s__10675__$1, remaining_input, contained_symbols, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets) {
-                          return function(p1__10605_SHARP_) {
-                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10605_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                        }(i__12008, s__12007__$1, remaining_input, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets), cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, remaining_input))));
+                        var potential_children = cljs.core.filter.call(null, function(i__12008, s__12007__$1, remaining_input, contained_symbols, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets) {
+                          return function(p1__11937_SHARP_) {
+                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11937_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                             if(and__3117__auto__) {
-                              return equality.geometry.box_mostly_contains_box.call(null, b, p1__10605_SHARP_)
+                              return equality.geometry.box_mostly_contains_box.call(null, b, p1__11937_SHARP_)
                             }else {
                               return and__3117__auto__
                             }
                           }
-                        }(i__10676, s__10675__$1, remaining_input, contained_symbols, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets), remaining_input);
+                        }(i__12008, s__12007__$1, remaining_input, contained_symbols, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets), remaining_input);
                         if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_children))) {
-                          cljs.core.chunk_append.call(null, b__10677, function() {
-                            var iter__3811__auto__ = function(i__10676, s__10675__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets) {
-                              return function iter__10686(s__10687) {
-                                return new cljs.core.LazySeq(null, function(i__10676, s__10675__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets) {
+                          cljs.core.chunk_append.call(null, b__12009, function() {
+                            var iter__3811__auto__ = function(i__12008, s__12007__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets) {
+                              return function iter__12018(s__12019) {
+                                return new cljs.core.LazySeq(null, function(i__12008, s__12007__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets) {
                                   return function() {
-                                    var s__10687__$1 = s__10687;
+                                    var s__12019__$1 = s__12019;
                                     while(true) {
-                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10687__$1);
+                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12019__$1);
                                       if(temp__4092__auto____$1) {
-                                        var s__10687__$2 = temp__4092__auto____$1;
-                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__10687__$2)) {
-                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10687__$2);
+                                        var s__12019__$2 = temp__4092__auto____$1;
+                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__12019__$2)) {
+                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__12019__$2);
                                           var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                          var b__10689 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                          var b__12021 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                           if(function() {
-                                            var i__10688 = 0;
+                                            var i__12020 = 0;
                                             while(true) {
-                                              if(i__10688 < size__3810__auto____$1) {
-                                                var child = cljs.core._nth.call(null, c__3809__auto____$1, i__10688);
+                                              if(i__12020 < size__3810__auto____$1) {
+                                                var child = cljs.core._nth.call(null, c__3809__auto____$1, i__12020);
                                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
-                                                cljs.core.chunk_append.call(null, b__10689, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, 
+                                                cljs.core.chunk_append.call(null, b__12021, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, 
                                                 "src", "src", 1014018390), b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))));
-                                                var G__10755 = i__10688 + 1;
-                                                i__10688 = G__10755;
+                                                var G__12087 = i__12020 + 1;
+                                                i__12020 = G__12087;
                                                 continue
                                               }else {
                                                 return true
@@ -24408,15 +24428,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                               break
                                             }
                                           }()) {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10689), iter__10686.call(null, cljs.core.chunk_rest.call(null, s__10687__$2)))
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12021), iter__12018.call(null, cljs.core.chunk_rest.call(null, s__12019__$2)))
                                           }else {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10689), null)
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12021), null)
                                           }
                                         }else {
-                                          var child = cljs.core.first.call(null, s__10687__$2);
+                                          var child = cljs.core.first.call(null, s__12019__$2);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
                                           return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, "src", "src", 1014018390), 
-                                          b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))), iter__10686.call(null, cljs.core.rest.call(null, s__10687__$2)))
+                                          b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))), iter__12018.call(null, cljs.core.rest.call(null, s__12019__$2)))
                                         }
                                       }else {
                                         return null
@@ -24424,17 +24444,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                       break
                                     }
                                   }
-                                }(i__10676, s__10675__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets), null, null)
+                                }(i__12008, s__12007__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets), null, null)
                               }
-                            }(i__10676, s__10675__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__10677, s__10675__$2, temp__4092__auto__, brackets);
+                            }(i__12008, s__12007__$1, remaining_input, contained_symbols, potential_children, b, c__3809__auto__, size__3810__auto__, b__12009, s__12007__$2, temp__4092__auto__, brackets);
                             return iter__3811__auto__.call(null, potential_children)
                           }());
-                          var G__10756 = i__10676 + 1;
-                          i__10676 = G__10756;
+                          var G__12088 = i__12008 + 1;
+                          i__12008 = G__12088;
                           continue
                         }else {
-                          var G__10757 = i__10676 + 1;
-                          i__10676 = G__10757;
+                          var G__12089 = i__12008 + 1;
+                          i__12008 = G__12089;
                           continue
                         }
                       }else {
@@ -24443,53 +24463,53 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                       break
                     }
                   }()) {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10677), iter__10674.call(null, cljs.core.chunk_rest.call(null, s__10675__$2)))
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12009), iter__12006.call(null, cljs.core.chunk_rest.call(null, s__12007__$2)))
                   }else {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10677), null)
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12009), null)
                   }
                 }else {
-                  var b = cljs.core.first.call(null, s__10675__$2);
+                  var b = cljs.core.first.call(null, s__12007__$2);
                   var remaining_input = cljs.core.disj.call(null, input, b);
-                  var contained_symbols = cljs.core.set.call(null, cljs.core.filter.call(null, function(s__10675__$1, remaining_input, b, s__10675__$2, temp__4092__auto__, brackets) {
-                    return function(p1__10604_SHARP_) {
-                      return equality.geometry.box_mostly_contains_box.call(null, b, p1__10604_SHARP_)
+                  var contained_symbols = cljs.core.set.call(null, cljs.core.filter.call(null, function(s__12007__$1, remaining_input, b, s__12007__$2, temp__4092__auto__, brackets) {
+                    return function(p1__11936_SHARP_) {
+                      return equality.geometry.box_mostly_contains_box.call(null, b, p1__11936_SHARP_)
                     }
-                  }(s__10675__$1, remaining_input, b, s__10675__$2, temp__4092__auto__, brackets), cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, remaining_input))));
-                  var potential_children = cljs.core.filter.call(null, function(s__10675__$1, remaining_input, contained_symbols, b, s__10675__$2, temp__4092__auto__, brackets) {
-                    return function(p1__10605_SHARP_) {
-                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10605_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                  }(s__12007__$1, remaining_input, b, s__12007__$2, temp__4092__auto__, brackets), cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, remaining_input))));
+                  var potential_children = cljs.core.filter.call(null, function(s__12007__$1, remaining_input, contained_symbols, b, s__12007__$2, temp__4092__auto__, brackets) {
+                    return function(p1__11937_SHARP_) {
+                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11937_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                       if(and__3117__auto__) {
-                        return equality.geometry.box_mostly_contains_box.call(null, b, p1__10605_SHARP_)
+                        return equality.geometry.box_mostly_contains_box.call(null, b, p1__11937_SHARP_)
                       }else {
                         return and__3117__auto__
                       }
                     }
-                  }(s__10675__$1, remaining_input, contained_symbols, b, s__10675__$2, temp__4092__auto__, brackets), remaining_input);
+                  }(s__12007__$1, remaining_input, contained_symbols, b, s__12007__$2, temp__4092__auto__, brackets), remaining_input);
                   if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_children))) {
                     return cljs.core.cons.call(null, function() {
-                      var iter__3811__auto__ = function(s__10675__$1, remaining_input, contained_symbols, potential_children, b, s__10675__$2, temp__4092__auto__, brackets) {
-                        return function iter__10690(s__10691) {
-                          return new cljs.core.LazySeq(null, function(s__10675__$1, remaining_input, contained_symbols, potential_children, b, s__10675__$2, temp__4092__auto__, brackets) {
+                      var iter__3811__auto__ = function(s__12007__$1, remaining_input, contained_symbols, potential_children, b, s__12007__$2, temp__4092__auto__, brackets) {
+                        return function iter__12022(s__12023) {
+                          return new cljs.core.LazySeq(null, function(s__12007__$1, remaining_input, contained_symbols, potential_children, b, s__12007__$2, temp__4092__auto__, brackets) {
                             return function() {
-                              var s__10691__$1 = s__10691;
+                              var s__12023__$1 = s__12023;
                               while(true) {
-                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10691__$1);
+                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12023__$1);
                                 if(temp__4092__auto____$1) {
-                                  var s__10691__$2 = temp__4092__auto____$1;
-                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__10691__$2)) {
-                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10691__$2);
+                                  var s__12023__$2 = temp__4092__auto____$1;
+                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__12023__$2)) {
+                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12023__$2);
                                     var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                    var b__10693 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                    var b__12025 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                     if(function() {
-                                      var i__10692 = 0;
+                                      var i__12024 = 0;
                                       while(true) {
-                                        if(i__10692 < size__3810__auto__) {
-                                          var child = cljs.core._nth.call(null, c__3809__auto__, i__10692);
+                                        if(i__12024 < size__3810__auto__) {
+                                          var child = cljs.core._nth.call(null, c__3809__auto__, i__12024);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
-                                          cljs.core.chunk_append.call(null, b__10693, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, "src", 
+                                          cljs.core.chunk_append.call(null, b__12025, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, "src", 
                                           "src", 1014018390), b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))));
-                                          var G__10758 = i__10692 + 1;
-                                          i__10692 = G__10758;
+                                          var G__12090 = i__12024 + 1;
+                                          i__12024 = G__12090;
                                           continue
                                         }else {
                                           return true
@@ -24497,15 +24517,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                         break
                                       }
                                     }()) {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10693), iter__10690.call(null, cljs.core.chunk_rest.call(null, s__10691__$2)))
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12025), iter__12022.call(null, cljs.core.chunk_rest.call(null, s__12023__$2)))
                                     }else {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10693), null)
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12025), null)
                                     }
                                   }else {
-                                    var child = cljs.core.first.call(null, s__10691__$2);
+                                    var child = cljs.core.first.call(null, s__12023__$2);
                                     var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
                                     return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(b), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "bracket", "type/bracket", 1382453582), new cljs.core.Keyword(null, "src", "src", 1014018390), 
-                                    b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))), iter__10690.call(null, cljs.core.rest.call(null, s__10691__$2)))
+                                    b, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, b, child))), iter__12022.call(null, cljs.core.rest.call(null, s__12023__$2)))
                                   }
                                 }else {
                                   return null
@@ -24513,14 +24533,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                 break
                               }
                             }
-                          }(s__10675__$1, remaining_input, contained_symbols, potential_children, b, s__10675__$2, temp__4092__auto__, brackets), null, null)
+                          }(s__12007__$1, remaining_input, contained_symbols, potential_children, b, s__12007__$2, temp__4092__auto__, brackets), null, null)
                         }
-                      }(s__10675__$1, remaining_input, contained_symbols, potential_children, b, s__10675__$2, temp__4092__auto__, brackets);
+                      }(s__12007__$1, remaining_input, contained_symbols, potential_children, b, s__12007__$2, temp__4092__auto__, brackets);
                       return iter__3811__auto__.call(null, potential_children)
-                    }(), iter__10674.call(null, cljs.core.rest.call(null, s__10675__$2)))
+                    }(), iter__12006.call(null, cljs.core.rest.call(null, s__12007__$2)))
                   }else {
-                    var G__10759 = cljs.core.rest.call(null, s__10675__$2);
-                    s__10675__$1 = G__10759;
+                    var G__12091 = cljs.core.rest.call(null, s__12007__$2);
+                    s__12007__$1 = G__12091;
                     continue
                   }
                 }
@@ -24537,64 +24557,64 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
   }();
   return cljs.core.apply.call(null, cljs.core.concat, result_sets_list)
 }, new cljs.core.Keyword(null, "divide", "divide", 3977408491), equality.parser.container_divide_fn.call(null, new cljs.core.Keyword(null, "brackets", "brackets", 978574397))], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var abs = cljs.core.filter.call(null, function(p1__10601_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10601_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10601_SHARP_), new cljs.core.Keyword(null, "abs", "abs", 1014000612))
+  var abs = cljs.core.filter.call(null, function(p1__11933_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11933_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11933_SHARP_), new cljs.core.Keyword(null, "abs", "abs", 1014000612))
   }, input);
   var result_sets_list = function() {
     var iter__3811__auto__ = function(abs) {
-      return function iter__10694(s__10695) {
+      return function iter__12026(s__12027) {
         return new cljs.core.LazySeq(null, function(abs) {
           return function() {
-            var s__10695__$1 = s__10695;
+            var s__12027__$1 = s__12027;
             while(true) {
-              var temp__4092__auto__ = cljs.core.seq.call(null, s__10695__$1);
+              var temp__4092__auto__ = cljs.core.seq.call(null, s__12027__$1);
               if(temp__4092__auto__) {
-                var s__10695__$2 = temp__4092__auto__;
-                if(cljs.core.chunked_seq_QMARK_.call(null, s__10695__$2)) {
-                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10695__$2);
+                var s__12027__$2 = temp__4092__auto__;
+                if(cljs.core.chunked_seq_QMARK_.call(null, s__12027__$2)) {
+                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12027__$2);
                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                  var b__10697 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                  var b__12029 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                   if(function() {
-                    var i__10696 = 0;
+                    var i__12028 = 0;
                     while(true) {
-                      if(i__10696 < size__3810__auto__) {
-                        var a = cljs.core._nth.call(null, c__3809__auto__, i__10696);
+                      if(i__12028 < size__3810__auto__) {
+                        var a = cljs.core._nth.call(null, c__3809__auto__, i__12028);
                         var remaining_input = cljs.core.disj.call(null, input, a);
-                        var potential_children = cljs.core.filter.call(null, function(i__10696, s__10695__$1, remaining_input, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs) {
-                          return function(p1__10602_SHARP_) {
-                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10602_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                        var potential_children = cljs.core.filter.call(null, function(i__12028, s__12027__$1, remaining_input, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs) {
+                          return function(p1__11934_SHARP_) {
+                            var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11934_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                             if(and__3117__auto__) {
-                              return equality.geometry.box_mostly_contains_box.call(null, a, p1__10602_SHARP_)
+                              return equality.geometry.box_mostly_contains_box.call(null, a, p1__11934_SHARP_)
                             }else {
                               return and__3117__auto__
                             }
                           }
-                        }(i__10696, s__10695__$1, remaining_input, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs), remaining_input);
+                        }(i__12028, s__12027__$1, remaining_input, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs), remaining_input);
                         if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_children))) {
-                          cljs.core.chunk_append.call(null, b__10697, function() {
-                            var iter__3811__auto__ = function(i__10696, s__10695__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs) {
-                              return function iter__10706(s__10707) {
-                                return new cljs.core.LazySeq(null, function(i__10696, s__10695__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs) {
+                          cljs.core.chunk_append.call(null, b__12029, function() {
+                            var iter__3811__auto__ = function(i__12028, s__12027__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs) {
+                              return function iter__12038(s__12039) {
+                                return new cljs.core.LazySeq(null, function(i__12028, s__12027__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs) {
                                   return function() {
-                                    var s__10707__$1 = s__10707;
+                                    var s__12039__$1 = s__12039;
                                     while(true) {
-                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10707__$1);
+                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12039__$1);
                                       if(temp__4092__auto____$1) {
-                                        var s__10707__$2 = temp__4092__auto____$1;
-                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__10707__$2)) {
-                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10707__$2);
+                                        var s__12039__$2 = temp__4092__auto____$1;
+                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__12039__$2)) {
+                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__12039__$2);
                                           var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                          var b__10709 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                          var b__12041 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                           if(function() {
-                                            var i__10708 = 0;
+                                            var i__12040 = 0;
                                             while(true) {
-                                              if(i__10708 < size__3810__auto____$1) {
-                                                var child = cljs.core._nth.call(null, c__3809__auto____$1, i__10708);
+                                              if(i__12040 < size__3810__auto____$1) {
+                                                var child = cljs.core._nth.call(null, c__3809__auto____$1, i__12040);
                                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
-                                                cljs.core.chunk_append.call(null, b__10709, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", 
+                                                cljs.core.chunk_append.call(null, b__12041, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", 
                                                 "src", 1014018390), equality.parser.r, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))));
-                                                var G__10760 = i__10708 + 1;
-                                                i__10708 = G__10760;
+                                                var G__12092 = i__12040 + 1;
+                                                i__12040 = G__12092;
                                                 continue
                                               }else {
                                                 return true
@@ -24602,15 +24622,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                               break
                                             }
                                           }()) {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10709), iter__10706.call(null, cljs.core.chunk_rest.call(null, s__10707__$2)))
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12041), iter__12038.call(null, cljs.core.chunk_rest.call(null, s__12039__$2)))
                                           }else {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10709), null)
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12041), null)
                                           }
                                         }else {
-                                          var child = cljs.core.first.call(null, s__10707__$2);
+                                          var child = cljs.core.first.call(null, s__12039__$2);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
                                           return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", "src", 1014018390), 
-                                          equality.parser.r, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))), iter__10706.call(null, cljs.core.rest.call(null, s__10707__$2)))
+                                          equality.parser.r, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))), iter__12038.call(null, cljs.core.rest.call(null, s__12039__$2)))
                                         }
                                       }else {
                                         return null
@@ -24618,17 +24638,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                       break
                                     }
                                   }
-                                }(i__10696, s__10695__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs), null, null)
+                                }(i__12028, s__12027__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs), null, null)
                               }
-                            }(i__10696, s__10695__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__10697, s__10695__$2, temp__4092__auto__, abs);
+                            }(i__12028, s__12027__$1, remaining_input, potential_children, a, c__3809__auto__, size__3810__auto__, b__12029, s__12027__$2, temp__4092__auto__, abs);
                             return iter__3811__auto__.call(null, potential_children)
                           }());
-                          var G__10761 = i__10696 + 1;
-                          i__10696 = G__10761;
+                          var G__12093 = i__12028 + 1;
+                          i__12028 = G__12093;
                           continue
                         }else {
-                          var G__10762 = i__10696 + 1;
-                          i__10696 = G__10762;
+                          var G__12094 = i__12028 + 1;
+                          i__12028 = G__12094;
                           continue
                         }
                       }else {
@@ -24637,48 +24657,48 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                       break
                     }
                   }()) {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10697), iter__10694.call(null, cljs.core.chunk_rest.call(null, s__10695__$2)))
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12029), iter__12026.call(null, cljs.core.chunk_rest.call(null, s__12027__$2)))
                   }else {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10697), null)
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12029), null)
                   }
                 }else {
-                  var a = cljs.core.first.call(null, s__10695__$2);
+                  var a = cljs.core.first.call(null, s__12027__$2);
                   var remaining_input = cljs.core.disj.call(null, input, a);
-                  var potential_children = cljs.core.filter.call(null, function(s__10695__$1, remaining_input, a, s__10695__$2, temp__4092__auto__, abs) {
-                    return function(p1__10602_SHARP_) {
-                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10602_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
+                  var potential_children = cljs.core.filter.call(null, function(s__12027__$1, remaining_input, a, s__12027__$2, temp__4092__auto__, abs) {
+                    return function(p1__11934_SHARP_) {
+                      var and__3117__auto__ = cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11934_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231));
                       if(and__3117__auto__) {
-                        return equality.geometry.box_mostly_contains_box.call(null, a, p1__10602_SHARP_)
+                        return equality.geometry.box_mostly_contains_box.call(null, a, p1__11934_SHARP_)
                       }else {
                         return and__3117__auto__
                       }
                     }
-                  }(s__10695__$1, remaining_input, a, s__10695__$2, temp__4092__auto__, abs), remaining_input);
+                  }(s__12027__$1, remaining_input, a, s__12027__$2, temp__4092__auto__, abs), remaining_input);
                   if(cljs.core._EQ_.call(null, 1, cljs.core.count.call(null, potential_children))) {
                     return cljs.core.cons.call(null, function() {
-                      var iter__3811__auto__ = function(s__10695__$1, remaining_input, potential_children, a, s__10695__$2, temp__4092__auto__, abs) {
-                        return function iter__10710(s__10711) {
-                          return new cljs.core.LazySeq(null, function(s__10695__$1, remaining_input, potential_children, a, s__10695__$2, temp__4092__auto__, abs) {
+                      var iter__3811__auto__ = function(s__12027__$1, remaining_input, potential_children, a, s__12027__$2, temp__4092__auto__, abs) {
+                        return function iter__12042(s__12043) {
+                          return new cljs.core.LazySeq(null, function(s__12027__$1, remaining_input, potential_children, a, s__12027__$2, temp__4092__auto__, abs) {
                             return function() {
-                              var s__10711__$1 = s__10711;
+                              var s__12043__$1 = s__12043;
                               while(true) {
-                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10711__$1);
+                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12043__$1);
                                 if(temp__4092__auto____$1) {
-                                  var s__10711__$2 = temp__4092__auto____$1;
-                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__10711__$2)) {
-                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10711__$2);
+                                  var s__12043__$2 = temp__4092__auto____$1;
+                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__12043__$2)) {
+                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12043__$2);
                                     var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                    var b__10713 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                    var b__12045 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                     if(function() {
-                                      var i__10712 = 0;
+                                      var i__12044 = 0;
                                       while(true) {
-                                        if(i__10712 < size__3810__auto__) {
-                                          var child = cljs.core._nth.call(null, c__3809__auto__, i__10712);
+                                        if(i__12044 < size__3810__auto__) {
+                                          var child = cljs.core._nth.call(null, c__3809__auto__, i__12044);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
-                                          cljs.core.chunk_append.call(null, b__10713, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", "src", 
+                                          cljs.core.chunk_append.call(null, b__12045, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", "src", 
                                           1014018390), equality.parser.r, new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))));
-                                          var G__10763 = i__10712 + 1;
-                                          i__10712 = G__10763;
+                                          var G__12095 = i__12044 + 1;
+                                          i__12044 = G__12095;
                                           continue
                                         }else {
                                           return true
@@ -24686,15 +24706,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                         break
                                       }
                                     }()) {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10713), iter__10710.call(null, cljs.core.chunk_rest.call(null, s__10711__$2)))
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12045), iter__12042.call(null, cljs.core.chunk_rest.call(null, s__12043__$2)))
                                     }else {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10713), null)
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12045), null)
                                     }
                                   }else {
-                                    var child = cljs.core.first.call(null, s__10711__$2);
+                                    var child = cljs.core.first.call(null, s__12043__$2);
                                     var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, child);
                                     return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "id", "id", 1013907597), (new cljs.core.Keyword(null, "id", "id", 1013907597)).cljs$core$IFn$_invoke$arity$1(a), new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "abs", "type/abs", 1242850556), new cljs.core.Keyword(null, "src", "src", 1014018390), equality.parser.r, 
-                                    new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))), iter__10710.call(null, cljs.core.rest.call(null, s__10711__$2)))
+                                    new cljs.core.Keyword(null, "child", "child", 1108535438), child, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1 + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(child)], true), equality.geometry.bbox_combine.call(null, a, child))), iter__12042.call(null, cljs.core.rest.call(null, s__12043__$2)))
                                   }
                                 }else {
                                   return null
@@ -24702,14 +24722,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                 break
                               }
                             }
-                          }(s__10695__$1, remaining_input, potential_children, a, s__10695__$2, temp__4092__auto__, abs), null, null)
+                          }(s__12027__$1, remaining_input, potential_children, a, s__12027__$2, temp__4092__auto__, abs), null, null)
                         }
-                      }(s__10695__$1, remaining_input, potential_children, a, s__10695__$2, temp__4092__auto__, abs);
+                      }(s__12027__$1, remaining_input, potential_children, a, s__12027__$2, temp__4092__auto__, abs);
                       return iter__3811__auto__.call(null, potential_children)
-                    }(), iter__10694.call(null, cljs.core.rest.call(null, s__10695__$2)))
+                    }(), iter__12026.call(null, cljs.core.rest.call(null, s__12027__$2)))
                   }else {
-                    var G__10764 = cljs.core.rest.call(null, s__10695__$2);
-                    s__10695__$1 = G__10764;
+                    var G__12096 = cljs.core.rest.call(null, s__12027__$2);
+                    s__12027__$1 = G__12096;
                     continue
                   }
                 }
@@ -24730,70 +24750,70 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), equality.parser.binary_op_rule.call(null, "\\pm", new cljs.core.Keyword("type", "pm", "type/pm", 1242951415)), new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
   return cljs.core.PersistentHashSet.EMPTY
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), function(input) {
-  var potential_left_ops = cljs.core.filter.call(null, function(p1__10591_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10591_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10591_SHARP_)) > equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.not_EQ_.call(null, (new cljs.core.Keyword(null, 
-    "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10591_SHARP_), "!")
+  var potential_left_ops = cljs.core.filter.call(null, function(p1__11923_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11923_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11923_SHARP_)) > equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.not_EQ_.call(null, (new cljs.core.Keyword(null, 
+    "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11923_SHARP_), "!")
   }, input);
   var result_sets_list = function() {
     var iter__3811__auto__ = function(potential_left_ops) {
-      return function iter__10714(s__10715) {
+      return function iter__12046(s__12047) {
         return new cljs.core.LazySeq(null, function(potential_left_ops) {
           return function() {
-            var s__10715__$1 = s__10715;
+            var s__12047__$1 = s__12047;
             while(true) {
-              var temp__4092__auto__ = cljs.core.seq.call(null, s__10715__$1);
+              var temp__4092__auto__ = cljs.core.seq.call(null, s__12047__$1);
               if(temp__4092__auto__) {
-                var s__10715__$2 = temp__4092__auto__;
-                if(cljs.core.chunked_seq_QMARK_.call(null, s__10715__$2)) {
-                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10715__$2);
+                var s__12047__$2 = temp__4092__auto__;
+                if(cljs.core.chunked_seq_QMARK_.call(null, s__12047__$2)) {
+                  var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12047__$2);
                   var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                  var b__10717 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                  var b__12049 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                   if(function() {
-                    var i__10716 = 0;
+                    var i__12048 = 0;
                     while(true) {
-                      if(i__10716 < size__3810__auto__) {
-                        var left = cljs.core._nth.call(null, c__3809__auto__, i__10716);
+                      if(i__12048 < size__3810__auto__) {
+                        var left = cljs.core._nth.call(null, c__3809__auto__, i__12048);
                         var remaining_input = cljs.core.disj.call(null, input, left);
-                        var potential_right_ops = cljs.core.filter.call(null, function(i__10716, s__10715__$1, remaining_input, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops) {
-                          return function(p1__10592_SHARP_) {
+                        var potential_right_ops = cljs.core.filter.call(null, function(i__12048, s__12047__$1, remaining_input, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops) {
+                          return function(p1__11924_SHARP_) {
                             var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, left, 1.5 * function() {
                               var x__3438__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(left);
-                              var y__3439__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_);
+                              var y__3439__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_);
                               return x__3438__auto__ < y__3439__auto__ ? x__3438__auto__ : y__3439__auto__
-                            }(), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(left)), p1__10592_SHARP_);
+                            }(), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(left)), p1__11924_SHARP_);
                             if(cljs.core.truth_(and__3117__auto__)) {
-                              return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) > equality.geometry.bbox_right.call(null, left) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, 
-                              left)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_)) >= equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
+                              return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) > equality.geometry.bbox_right.call(null, left) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, 
+                              left)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_)) >= equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
                             }else {
                               return and__3117__auto__
                             }
                           }
-                        }(i__10716, s__10715__$1, remaining_input, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops), remaining_input);
+                        }(i__12048, s__12047__$1, remaining_input, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops), remaining_input);
                         if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_right_ops))) {
-                          cljs.core.chunk_append.call(null, b__10717, function() {
-                            var iter__3811__auto__ = function(i__10716, s__10715__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops) {
-                              return function iter__10726(s__10727) {
-                                return new cljs.core.LazySeq(null, function(i__10716, s__10715__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops) {
+                          cljs.core.chunk_append.call(null, b__12049, function() {
+                            var iter__3811__auto__ = function(i__12048, s__12047__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops) {
+                              return function iter__12058(s__12059) {
+                                return new cljs.core.LazySeq(null, function(i__12048, s__12047__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops) {
                                   return function() {
-                                    var s__10727__$1 = s__10727;
+                                    var s__12059__$1 = s__12059;
                                     while(true) {
-                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10727__$1);
+                                      var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12059__$1);
                                       if(temp__4092__auto____$1) {
-                                        var s__10727__$2 = temp__4092__auto____$1;
-                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__10727__$2)) {
-                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__10727__$2);
+                                        var s__12059__$2 = temp__4092__auto____$1;
+                                        if(cljs.core.chunked_seq_QMARK_.call(null, s__12059__$2)) {
+                                          var c__3809__auto____$1 = cljs.core.chunk_first.call(null, s__12059__$2);
                                           var size__3810__auto____$1 = cljs.core.count.call(null, c__3809__auto____$1);
-                                          var b__10729 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
+                                          var b__12061 = cljs.core.chunk_buffer.call(null, size__3810__auto____$1);
                                           if(function() {
-                                            var i__10728 = 0;
+                                            var i__12060 = 0;
                                             while(true) {
-                                              if(i__10728 < size__3810__auto____$1) {
-                                                var right = cljs.core._nth.call(null, c__3809__auto____$1, i__10728);
+                                              if(i__12060 < size__3810__auto____$1) {
+                                                var right = cljs.core._nth.call(null, c__3809__auto____$1, i__12060);
                                                 var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, right);
-                                                cljs.core.chunk_append.call(null, b__10729, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", 
+                                                cljs.core.chunk_append.call(null, b__12061, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", 
                                                 "symbol-count", 2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))));
-                                                var G__10765 = i__10728 + 1;
-                                                i__10728 = G__10765;
+                                                var G__12097 = i__12060 + 1;
+                                                i__12060 = G__12097;
                                                 continue
                                               }else {
                                                 return true
@@ -24801,15 +24821,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                               break
                                             }
                                           }()) {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10729), iter__10726.call(null, cljs.core.chunk_rest.call(null, s__10727__$2)))
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12061), iter__12058.call(null, cljs.core.chunk_rest.call(null, s__12059__$2)))
                                           }else {
-                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10729), null)
+                                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12061), null)
                                           }
                                         }else {
-                                          var right = cljs.core.first.call(null, s__10727__$2);
+                                          var right = cljs.core.first.call(null, s__12059__$2);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, right);
                                           return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
-                                          2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))), iter__10726.call(null, cljs.core.rest.call(null, s__10727__$2)))
+                                          2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))), iter__12058.call(null, cljs.core.rest.call(null, s__12059__$2)))
                                         }
                                       }else {
                                         return null
@@ -24817,17 +24837,17 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                       break
                                     }
                                   }
-                                }(i__10716, s__10715__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops), null, null)
+                                }(i__12048, s__12047__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops), null, null)
                               }
-                            }(i__10716, s__10715__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__10717, s__10715__$2, temp__4092__auto__, potential_left_ops);
+                            }(i__12048, s__12047__$1, remaining_input, potential_right_ops, left, c__3809__auto__, size__3810__auto__, b__12049, s__12047__$2, temp__4092__auto__, potential_left_ops);
                             return iter__3811__auto__.call(null, potential_right_ops)
                           }());
-                          var G__10766 = i__10716 + 1;
-                          i__10716 = G__10766;
+                          var G__12098 = i__12048 + 1;
+                          i__12048 = G__12098;
                           continue
                         }else {
-                          var G__10767 = i__10716 + 1;
-                          i__10716 = G__10767;
+                          var G__12099 = i__12048 + 1;
+                          i__12048 = G__12099;
                           continue
                         }
                       }else {
@@ -24836,53 +24856,53 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                       break
                     }
                   }()) {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10717), iter__10714.call(null, cljs.core.chunk_rest.call(null, s__10715__$2)))
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12049), iter__12046.call(null, cljs.core.chunk_rest.call(null, s__12047__$2)))
                   }else {
-                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10717), null)
+                    return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12049), null)
                   }
                 }else {
-                  var left = cljs.core.first.call(null, s__10715__$2);
+                  var left = cljs.core.first.call(null, s__12047__$2);
                   var remaining_input = cljs.core.disj.call(null, input, left);
-                  var potential_right_ops = cljs.core.filter.call(null, function(s__10715__$1, remaining_input, left, s__10715__$2, temp__4092__auto__, potential_left_ops) {
-                    return function(p1__10592_SHARP_) {
+                  var potential_right_ops = cljs.core.filter.call(null, function(s__12047__$1, remaining_input, left, s__12047__$2, temp__4092__auto__, potential_left_ops) {
+                    return function(p1__11924_SHARP_) {
                       var and__3117__auto__ = equality.geometry.boxes_intersect_QMARK_.call(null, equality.geometry.right_box.call(null, left, 1.5 * function() {
                         var x__3438__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(left);
-                        var y__3439__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_);
+                        var y__3439__auto__ = (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_);
                         return x__3438__auto__ < y__3439__auto__ ? x__3438__auto__ : y__3439__auto__
-                      }(), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(left)), p1__10592_SHARP_);
+                      }(), 0.3 * (new cljs.core.Keyword(null, "height", "height", 4087841945)).cljs$core$IFn$_invoke$arity$1(left)), p1__11924_SHARP_);
                       if(cljs.core.truth_(and__3117__auto__)) {
-                        return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) > equality.geometry.bbox_right.call(null, left) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, 
-                        left)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_)) >= equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10592_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
+                        return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) > equality.geometry.bbox_right.call(null, left) - 0.5 * (new cljs.core.Keyword(null, "width", "width", 1127031096)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) && (new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, 
+                        left)) && equality.parser.precedence.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_)) >= equality.parser.precedence.call(null, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718)) && cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11924_SHARP_), new cljs.core.Keyword("type", "expr", "type/expr", 1248175231))
                       }else {
                         return and__3117__auto__
                       }
                     }
-                  }(s__10715__$1, remaining_input, left, s__10715__$2, temp__4092__auto__, potential_left_ops), remaining_input);
+                  }(s__12047__$1, remaining_input, left, s__12047__$2, temp__4092__auto__, potential_left_ops), remaining_input);
                   if(cljs.core.truth_(cljs.core.not_empty.call(null, potential_right_ops))) {
                     return cljs.core.cons.call(null, function() {
-                      var iter__3811__auto__ = function(s__10715__$1, remaining_input, potential_right_ops, left, s__10715__$2, temp__4092__auto__, potential_left_ops) {
-                        return function iter__10730(s__10731) {
-                          return new cljs.core.LazySeq(null, function(s__10715__$1, remaining_input, potential_right_ops, left, s__10715__$2, temp__4092__auto__, potential_left_ops) {
+                      var iter__3811__auto__ = function(s__12047__$1, remaining_input, potential_right_ops, left, s__12047__$2, temp__4092__auto__, potential_left_ops) {
+                        return function iter__12062(s__12063) {
+                          return new cljs.core.LazySeq(null, function(s__12047__$1, remaining_input, potential_right_ops, left, s__12047__$2, temp__4092__auto__, potential_left_ops) {
                             return function() {
-                              var s__10731__$1 = s__10731;
+                              var s__12063__$1 = s__12063;
                               while(true) {
-                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__10731__$1);
+                                var temp__4092__auto____$1 = cljs.core.seq.call(null, s__12063__$1);
                                 if(temp__4092__auto____$1) {
-                                  var s__10731__$2 = temp__4092__auto____$1;
-                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__10731__$2)) {
-                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10731__$2);
+                                  var s__12063__$2 = temp__4092__auto____$1;
+                                  if(cljs.core.chunked_seq_QMARK_.call(null, s__12063__$2)) {
+                                    var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12063__$2);
                                     var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                                    var b__10733 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                                    var b__12065 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                                     if(function() {
-                                      var i__10732 = 0;
+                                      var i__12064 = 0;
                                       while(true) {
-                                        if(i__10732 < size__3810__auto__) {
-                                          var right = cljs.core._nth.call(null, c__3809__auto__, i__10732);
+                                        if(i__12064 < size__3810__auto__) {
+                                          var right = cljs.core._nth.call(null, c__3809__auto__, i__12064);
                                           var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, right);
-                                          cljs.core.chunk_append.call(null, b__10733, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", 
+                                          cljs.core.chunk_append.call(null, b__12065, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", 
                                           "symbol-count", 2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))));
-                                          var G__10768 = i__10732 + 1;
-                                          i__10732 = G__10768;
+                                          var G__12100 = i__12064 + 1;
+                                          i__12064 = G__12100;
                                           continue
                                         }else {
                                           return true
@@ -24890,15 +24910,15 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                         break
                                       }
                                     }()) {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10733), iter__10730.call(null, cljs.core.chunk_rest.call(null, s__10731__$2)))
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12065), iter__12062.call(null, cljs.core.chunk_rest.call(null, s__12063__$2)))
                                     }else {
-                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10733), null)
+                                      return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12065), null)
                                     }
                                   }else {
-                                    var right = cljs.core.first.call(null, s__10731__$2);
+                                    var right = cljs.core.first.call(null, s__12063__$2);
                                     var remaining_input__$1 = cljs.core.disj.call(null, remaining_input, right);
                                     return cljs.core.cons.call(null, cljs.core.conj.call(null, remaining_input__$1, cljs.core.merge.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "type", "type", 1017479852), new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), new cljs.core.Keyword(null, "left-op", "left-op", 1069299929), left, new cljs.core.Keyword(null, "right-op", "right-op", 3872744100), right, new cljs.core.Keyword(null, "symbol-count", "symbol-count", 
-                                    2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))), iter__10730.call(null, cljs.core.rest.call(null, s__10731__$2)))
+                                    2231450636), (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(left) + (new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636)).cljs$core$IFn$_invoke$arity$1(right)], true), equality.geometry.bbox_combine.call(null, left, right))), iter__12062.call(null, cljs.core.rest.call(null, s__12063__$2)))
                                   }
                                 }else {
                                   return null
@@ -24906,14 +24926,14 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                                 break
                               }
                             }
-                          }(s__10715__$1, remaining_input, potential_right_ops, left, s__10715__$2, temp__4092__auto__, potential_left_ops), null, null)
+                          }(s__12047__$1, remaining_input, potential_right_ops, left, s__12047__$2, temp__4092__auto__, potential_left_ops), null, null)
                         }
-                      }(s__10715__$1, remaining_input, potential_right_ops, left, s__10715__$2, temp__4092__auto__, potential_left_ops);
+                      }(s__12047__$1, remaining_input, potential_right_ops, left, s__12047__$2, temp__4092__auto__, potential_left_ops);
                       return iter__3811__auto__.call(null, potential_right_ops)
-                    }(), iter__10714.call(null, cljs.core.rest.call(null, s__10715__$2)))
+                    }(), iter__12046.call(null, cljs.core.rest.call(null, s__12047__$2)))
                   }else {
-                    var G__10769 = cljs.core.rest.call(null, s__10715__$2);
-                    s__10715__$1 = G__10769;
+                    var G__12101 = cljs.core.rest.call(null, s__12047__$2);
+                    s__12047__$1 = G__12101;
                     continue
                   }
                 }
@@ -24934,40 +24954,40 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), equality.parser.binary_op_rule.call(null, "+", new cljs.core.Keyword("type", "add", "type/add", 1242850635)), new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
   return cljs.core.PersistentHashSet.EMPTY
 }], true), cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "apply", "apply", 1106933472), equality.parser.binary_op_rule.call(null, "\x3d", new cljs.core.Keyword("type", "eq", "type/eq", 1242952002)), new cljs.core.Keyword(null, "divide", "divide", 3977408491), function(input) {
-  var eqs = cljs.core.filter.call(null, function(p1__10593_SHARP_) {
-    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10593_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__10593_SHARP_), "\x3d")
+  var eqs = cljs.core.filter.call(null, function(p1__11925_SHARP_) {
+    return cljs.core.isa_QMARK_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__11925_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438)) && cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "token", "token", 1124445547)).cljs$core$IFn$_invoke$arity$1(p1__11925_SHARP_), "\x3d")
   }, input);
   return cljs.core.apply.call(null, cljs.core.concat, function() {
-    var iter__3811__auto__ = function iter__10734(s__10735) {
+    var iter__3811__auto__ = function iter__12066(s__12067) {
       return new cljs.core.LazySeq(null, function() {
-        var s__10735__$1 = s__10735;
+        var s__12067__$1 = s__12067;
         while(true) {
-          var temp__4092__auto__ = cljs.core.seq.call(null, s__10735__$1);
+          var temp__4092__auto__ = cljs.core.seq.call(null, s__12067__$1);
           if(temp__4092__auto__) {
-            var s__10735__$2 = temp__4092__auto__;
-            if(cljs.core.chunked_seq_QMARK_.call(null, s__10735__$2)) {
-              var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10735__$2);
+            var s__12067__$2 = temp__4092__auto__;
+            if(cljs.core.chunked_seq_QMARK_.call(null, s__12067__$2)) {
+              var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12067__$2);
               var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-              var b__10737 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+              var b__12069 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
               if(function() {
-                var i__10736 = 0;
+                var i__12068 = 0;
                 while(true) {
-                  if(i__10736 < size__3810__auto__) {
-                    var eq = cljs.core._nth.call(null, c__3809__auto__, i__10736);
+                  if(i__12068 < size__3810__auto__) {
+                    var eq = cljs.core._nth.call(null, c__3809__auto__, i__12068);
                     var remaining_input = cljs.core.disj.call(null, input, eq);
-                    var left_children = cljs.core.filter.call(null, function(i__10736, remaining_input, eq, c__3809__auto__, size__3810__auto__, b__10737, s__10735__$2, temp__4092__auto__) {
-                      return function(p1__10594_SHARP_) {
-                        return equality.geometry.bbox_right.call(null, p1__10594_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
+                    var left_children = cljs.core.filter.call(null, function(i__12068, remaining_input, eq, c__3809__auto__, size__3810__auto__, b__12069, s__12067__$2, temp__4092__auto__) {
+                      return function(p1__11926_SHARP_) {
+                        return equality.geometry.bbox_right.call(null, p1__11926_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
                       }
-                    }(i__10736, remaining_input, eq, c__3809__auto__, size__3810__auto__, b__10737, s__10735__$2, temp__4092__auto__), remaining_input);
-                    var right_children = cljs.core.filter.call(null, function(i__10736, remaining_input, left_children, eq, c__3809__auto__, size__3810__auto__, b__10737, s__10735__$2, temp__4092__auto__) {
-                      return function(p1__10595_SHARP_) {
-                        return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10595_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
+                    }(i__12068, remaining_input, eq, c__3809__auto__, size__3810__auto__, b__12069, s__12067__$2, temp__4092__auto__), remaining_input);
+                    var right_children = cljs.core.filter.call(null, function(i__12068, remaining_input, left_children, eq, c__3809__auto__, size__3810__auto__, b__12069, s__12067__$2, temp__4092__auto__) {
+                      return function(p1__11927_SHARP_) {
+                        return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11927_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
                       }
-                    }(i__10736, remaining_input, left_children, eq, c__3809__auto__, size__3810__auto__, b__10737, s__10735__$2, temp__4092__auto__), remaining_input);
-                    cljs.core.chunk_append.call(null, b__10737, cljs.core.PersistentVector.fromArray([cljs.core.set.call(null, left_children), cljs.core.set.call(null, right_children)], true));
-                    var G__10770 = i__10736 + 1;
-                    i__10736 = G__10770;
+                    }(i__12068, remaining_input, left_children, eq, c__3809__auto__, size__3810__auto__, b__12069, s__12067__$2, temp__4092__auto__), remaining_input);
+                    cljs.core.chunk_append.call(null, b__12069, cljs.core.PersistentVector.fromArray([cljs.core.set.call(null, left_children), cljs.core.set.call(null, right_children)], true));
+                    var G__12102 = i__12068 + 1;
+                    i__12068 = G__12102;
                     continue
                   }else {
                     return true
@@ -24975,24 +24995,24 @@ equality.parser.rules = cljs.core.PersistentHashMap.fromArrays(["sqrt", "fractio
                   break
                 }
               }()) {
-                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10737), iter__10734.call(null, cljs.core.chunk_rest.call(null, s__10735__$2)))
+                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12069), iter__12066.call(null, cljs.core.chunk_rest.call(null, s__12067__$2)))
               }else {
-                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10737), null)
+                return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12069), null)
               }
             }else {
-              var eq = cljs.core.first.call(null, s__10735__$2);
+              var eq = cljs.core.first.call(null, s__12067__$2);
               var remaining_input = cljs.core.disj.call(null, input, eq);
-              var left_children = cljs.core.filter.call(null, function(remaining_input, eq, s__10735__$2, temp__4092__auto__) {
-                return function(p1__10594_SHARP_) {
-                  return equality.geometry.bbox_right.call(null, p1__10594_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
+              var left_children = cljs.core.filter.call(null, function(remaining_input, eq, s__12067__$2, temp__4092__auto__) {
+                return function(p1__11926_SHARP_) {
+                  return equality.geometry.bbox_right.call(null, p1__11926_SHARP_) < (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
                 }
-              }(remaining_input, eq, s__10735__$2, temp__4092__auto__), remaining_input);
-              var right_children = cljs.core.filter.call(null, function(remaining_input, left_children, eq, s__10735__$2, temp__4092__auto__) {
-                return function(p1__10595_SHARP_) {
-                  return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__10595_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
+              }(remaining_input, eq, s__12067__$2, temp__4092__auto__), remaining_input);
+              var right_children = cljs.core.filter.call(null, function(remaining_input, left_children, eq, s__12067__$2, temp__4092__auto__) {
+                return function(p1__11927_SHARP_) {
+                  return(new cljs.core.Keyword(null, "left", "left", 1017222009)).cljs$core$IFn$_invoke$arity$1(p1__11927_SHARP_) > (new cljs.core.Keyword(null, "x", "x", 1013904362)).cljs$core$IFn$_invoke$arity$1(equality.geometry.bbox_middle.call(null, eq))
                 }
-              }(remaining_input, left_children, eq, s__10735__$2, temp__4092__auto__), remaining_input);
-              return cljs.core.cons.call(null, cljs.core.PersistentVector.fromArray([cljs.core.set.call(null, left_children), cljs.core.set.call(null, right_children)], true), iter__10734.call(null, cljs.core.rest.call(null, s__10735__$2)))
+              }(remaining_input, left_children, eq, s__12067__$2, temp__4092__auto__), remaining_input);
+              return cljs.core.cons.call(null, cljs.core.PersistentVector.fromArray([cljs.core.set.call(null, left_children), cljs.core.set.call(null, right_children)], true), iter__12066.call(null, cljs.core.rest.call(null, s__12067__$2)))
             }
           }else {
             return null
@@ -25010,8 +25030,8 @@ equality.parser.expr_set_str = function expr_set_str(set) {
 equality.parser.log_indent = 0;
 equality.parser.log = function() {
   var log__delegate = function(args) {
-    return cljs.core.apply.call(null, cljs.core.print, cljs.core.apply.call(null, cljs.core.str, cljs.core.repeat.call(null, equality.parser.log_indent, "    ")), cljs.core.map.call(null, function(p1__10771_SHARP_) {
-      return clojure.string.replace.call(null, [cljs.core.str(p1__10771_SHARP_)].join(""), "\n", cljs.core.apply.call(null, cljs.core.str, "\n ", cljs.core.repeat.call(null, equality.parser.log_indent, "    ")))
+    return cljs.core.apply.call(null, cljs.core.print, cljs.core.apply.call(null, cljs.core.str, cljs.core.repeat.call(null, equality.parser.log_indent, "    ")), cljs.core.map.call(null, function(p1__12103_SHARP_) {
+      return clojure.string.replace.call(null, [cljs.core.str(p1__12103_SHARP_)].join(""), "\n", cljs.core.apply.call(null, cljs.core.str, "\n ", cljs.core.repeat.call(null, equality.parser.log_indent, "    ")))
     }, args))
   };
   var log = function(var_args) {
@@ -25022,8 +25042,8 @@ equality.parser.log = function() {
     return log__delegate.call(this, args)
   };
   log.cljs$lang$maxFixedArity = 0;
-  log.cljs$lang$applyTo = function(arglist__10772) {
-    var args = cljs.core.seq(arglist__10772);
+  log.cljs$lang$applyTo = function(arglist__12104) {
+    var args = cljs.core.seq(arglist__12104);
     return log__delegate(args)
   };
   log.cljs$core$IFn$_invoke$arity$variadic = log__delegate;
@@ -25033,23 +25053,23 @@ equality.parser.parse = function parse(input) {
   var i = 0;
   var seen = cljs.core.PersistentArrayMap.EMPTY;
   var results = cljs.core.PersistentHashSet.EMPTY;
-  var G__10801 = cljs.core.PersistentVector.fromArray([input], true);
-  var vec__10802 = G__10801;
-  var head = cljs.core.nth.call(null, vec__10802, 0, null);
-  var queue = cljs.core.nthnext.call(null, vec__10802, 1);
-  var full_input = vec__10802;
+  var G__12133 = cljs.core.PersistentVector.fromArray([input], true);
+  var vec__12134 = G__12133;
+  var head = cljs.core.nth.call(null, vec__12134, 0, null);
+  var queue = cljs.core.nthnext.call(null, vec__12134, 1);
+  var full_input = vec__12134;
   var i__$1 = i;
   var seen__$1 = seen;
   var results__$1 = results;
-  var G__10801__$1 = G__10801;
+  var G__12133__$1 = G__12133;
   while(true) {
     var i__$2 = i__$1;
     var seen__$2 = seen__$1;
     var results__$2 = results__$1;
-    var vec__10803 = G__10801__$1;
-    var head__$1 = cljs.core.nth.call(null, vec__10803, 0, null);
-    var queue__$1 = cljs.core.nthnext.call(null, vec__10803, 1);
-    var full_input__$1 = vec__10803;
+    var vec__12135 = G__12133__$1;
+    var head__$1 = cljs.core.nth.call(null, vec__12135, 0, null);
+    var queue__$1 = cljs.core.nthnext.call(null, vec__12135, 1);
+    var full_input__$1 = vec__12135;
     var generation = function() {
       var or__3126__auto__ = (new cljs.core.Keyword(null, "generation", "generation", 1319607434)).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null, head__$1));
       if(cljs.core.truth_(or__3126__auto__)) {
@@ -25075,48 +25095,48 @@ equality.parser.parse = function parse(input) {
         return new_results
       }else {
         if(cljs.core.truth_(queue__$1)) {
-          var G__10825 = i__$2 + 1;
-          var G__10826 = cljs.core.assoc.call(null, seen__$2, head__$1, true);
-          var G__10827 = new_results;
-          var G__10828 = queue__$1;
-          i__$1 = G__10825;
-          seen__$1 = G__10826;
-          results__$1 = G__10827;
-          G__10801__$1 = G__10828;
+          var G__12157 = i__$2 + 1;
+          var G__12158 = cljs.core.assoc.call(null, seen__$2, head__$1, true);
+          var G__12159 = new_results;
+          var G__12160 = queue__$1;
+          i__$1 = G__12157;
+          seen__$1 = G__12158;
+          results__$1 = G__12159;
+          G__12133__$1 = G__12160;
           continue
         }else {
           return new_results
         }
       }
     }else {
-      var subtrees = cljs.core.reverse.call(null, cljs.core.sort_by.call(null, cljs.core.count, cljs.core.filter.call(null, function(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
-        return function(p1__10773_SHARP_) {
-          return cljs.core.count.call(null, p1__10773_SHARP_) > 1
+      var subtrees = cljs.core.reverse.call(null, cljs.core.sort_by.call(null, cljs.core.count, cljs.core.filter.call(null, function(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
+        return function(p1__12105_SHARP_) {
+          return cljs.core.count.call(null, p1__12105_SHARP_) > 1
         }
-      }(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), cljs.core.apply.call(null, cljs.core.concat, function() {
-        var iter__3811__auto__ = function(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
-          return function iter__10804(s__10805) {
-            return new cljs.core.LazySeq(null, function(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
+      }(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), cljs.core.apply.call(null, cljs.core.concat, function() {
+        var iter__3811__auto__ = function(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
+          return function iter__12136(s__12137) {
+            return new cljs.core.LazySeq(null, function(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
               return function() {
-                var s__10805__$1 = s__10805;
+                var s__12137__$1 = s__12137;
                 while(true) {
-                  var temp__4092__auto__ = cljs.core.seq.call(null, s__10805__$1);
+                  var temp__4092__auto__ = cljs.core.seq.call(null, s__12137__$1);
                   if(temp__4092__auto__) {
-                    var s__10805__$2 = temp__4092__auto__;
-                    if(cljs.core.chunked_seq_QMARK_.call(null, s__10805__$2)) {
-                      var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10805__$2);
+                    var s__12137__$2 = temp__4092__auto__;
+                    if(cljs.core.chunked_seq_QMARK_.call(null, s__12137__$2)) {
+                      var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12137__$2);
                       var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                      var b__10807 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                      var b__12139 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                       if(function() {
-                        var i__10806 = 0;
+                        var i__12138 = 0;
                         while(true) {
-                          if(i__10806 < size__3810__auto__) {
-                            var vec__10810 = cljs.core._nth.call(null, c__3809__auto__, i__10806);
-                            var k = cljs.core.nth.call(null, vec__10810, 0, null);
-                            var r = cljs.core.nth.call(null, vec__10810, 1, null);
-                            cljs.core.chunk_append.call(null, b__10807, (new cljs.core.Keyword(null, "divide", "divide", 3977408491)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$1));
-                            var G__10829 = i__10806 + 1;
-                            i__10806 = G__10829;
+                          if(i__12138 < size__3810__auto__) {
+                            var vec__12142 = cljs.core._nth.call(null, c__3809__auto__, i__12138);
+                            var k = cljs.core.nth.call(null, vec__12142, 0, null);
+                            var r = cljs.core.nth.call(null, vec__12142, 1, null);
+                            cljs.core.chunk_append.call(null, b__12139, (new cljs.core.Keyword(null, "divide", "divide", 3977408491)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$1));
+                            var G__12161 = i__12138 + 1;
+                            i__12138 = G__12161;
                             continue
                           }else {
                             return true
@@ -25124,15 +25144,15 @@ equality.parser.parse = function parse(input) {
                           break
                         }
                       }()) {
-                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10807), iter__10804.call(null, cljs.core.chunk_rest.call(null, s__10805__$2)))
+                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12139), iter__12136.call(null, cljs.core.chunk_rest.call(null, s__12137__$2)))
                       }else {
-                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10807), null)
+                        return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12139), null)
                       }
                     }else {
-                      var vec__10811 = cljs.core.first.call(null, s__10805__$2);
-                      var k = cljs.core.nth.call(null, vec__10811, 0, null);
-                      var r = cljs.core.nth.call(null, vec__10811, 1, null);
-                      return cljs.core.cons.call(null, (new cljs.core.Keyword(null, "divide", "divide", 3977408491)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$1), iter__10804.call(null, cljs.core.rest.call(null, s__10805__$2)))
+                      var vec__12143 = cljs.core.first.call(null, s__12137__$2);
+                      var k = cljs.core.nth.call(null, vec__12143, 0, null);
+                      var r = cljs.core.nth.call(null, vec__12143, 1, null);
+                      return cljs.core.cons.call(null, (new cljs.core.Keyword(null, "divide", "divide", 3977408491)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$1), iter__12136.call(null, cljs.core.rest.call(null, s__12137__$2)))
                     }
                   }else {
                     return null
@@ -25140,12 +25160,12 @@ equality.parser.parse = function parse(input) {
                   break
                 }
               }
-            }(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), null, null)
+            }(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), null, null)
           }
-        }(i__$1, seen__$1, results__$1, G__10801__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1);
+        }(i__$1, seen__$1, results__$1, G__12133__$1, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1);
         return iter__3811__auto__.call(null, equality.parser.rules)
       }()))));
-      var disjoint_subtrees = cljs.core.reduce.call(null, function(i__$1, seen__$1, results__$1, G__10801__$1, subtrees, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
+      var disjoint_subtrees = cljs.core.reduce.call(null, function(i__$1, seen__$1, results__$1, G__12133__$1, subtrees, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
         return function(acc, subtree) {
           var acc_items = cljs.core.apply.call(null, clojure.set.union, acc);
           if(cljs.core.empty_QMARK_.call(null, clojure.set.intersection.call(null, subtree, acc_items))) {
@@ -25154,26 +25174,26 @@ equality.parser.parse = function parse(input) {
             return acc
           }
         }
-      }(i__$1, seen__$1, results__$1, G__10801__$1, subtrees, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), cljs.core.PersistentVector.fromArray([cljs.core.first.call(null, subtrees)], true), cljs.core.next.call(null, subtrees));
+      }(i__$1, seen__$1, results__$1, G__12133__$1, subtrees, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), cljs.core.PersistentVector.fromArray([cljs.core.first.call(null, subtrees)], true), cljs.core.next.call(null, subtrees));
       var head__$2 = function() {
         var i__$3 = 0;
         var new_head = head__$1;
-        var G__10813 = disjoint_subtrees;
-        var vec__10814 = G__10813;
-        var st = cljs.core.nth.call(null, vec__10814, 0, null);
-        var sts = cljs.core.nthnext.call(null, vec__10814, 1);
+        var G__12145 = disjoint_subtrees;
+        var vec__12146 = G__12145;
+        var st = cljs.core.nth.call(null, vec__12146, 0, null);
+        var sts = cljs.core.nthnext.call(null, vec__12146, 1);
         var i__$4 = i__$3;
         var new_head__$1 = new_head;
-        var G__10813__$1 = G__10813;
+        var G__12145__$1 = G__12145;
         while(true) {
           var i__$5 = i__$4;
           var new_head__$2 = new_head__$1;
-          var vec__10815 = G__10813__$1;
-          var st__$1 = cljs.core.nth.call(null, vec__10815, 0, null);
-          var sts__$1 = cljs.core.nthnext.call(null, vec__10815, 1);
+          var vec__12147 = G__12145__$1;
+          var st__$1 = cljs.core.nth.call(null, vec__12147, 0, null);
+          var sts__$1 = cljs.core.nthnext.call(null, vec__12147, 1);
           if(cljs.core.truth_(st__$1)) {
             equality.parser.log.call(null, "\x3e\x3e\x3e\x3e\x3e\x3e\x3e\x3e\x3e\x3e\x3e\x3e  Parsing subtree:", equality.parser.expr_set_str.call(null, st__$1));
-            var log_indent10816 = equality.parser.log_indent;
+            var log_indent12148 = equality.parser.log_indent;
             try {
               equality.parser.log_indent = equality.parser.log_indent + 1;
               var result = cljs.core.first.call(null, parse.call(null, st__$1));
@@ -25181,16 +25201,16 @@ equality.parser.parse = function parse(input) {
               if(cljs.core.not_EQ_.call(null, 1, cljs.core.count.call(null, result))) {
                 return null
               }else {
-                var G__10830 = i__$5 + 1;
-                var G__10831 = cljs.core.conj.call(null, clojure.set.difference.call(null, new_head__$2, st__$1), cljs.core.first.call(null, result));
-                var G__10832 = sts__$1;
-                i__$4 = G__10830;
-                new_head__$1 = G__10831;
-                G__10813__$1 = G__10832;
+                var G__12162 = i__$5 + 1;
+                var G__12163 = cljs.core.conj.call(null, clojure.set.difference.call(null, new_head__$2, st__$1), cljs.core.first.call(null, result));
+                var G__12164 = sts__$1;
+                i__$4 = G__12162;
+                new_head__$1 = G__12163;
+                G__12145__$1 = G__12164;
                 continue
               }
             }finally {
-              equality.parser.log_indent = log_indent10816
+              equality.parser.log_indent = log_indent12148
             }
           }else {
             return new_head__$2
@@ -25205,33 +25225,33 @@ equality.parser.parse = function parse(input) {
       }else {
         if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
           var head_results = cljs.core.apply.call(null, cljs.core.concat, function() {
-            var iter__3811__auto__ = function(i__$1, seen__$1, results__$1, G__10801__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
-              return function iter__10817(s__10818) {
-                return new cljs.core.LazySeq(null, function(i__$1, seen__$1, results__$1, G__10801__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
+            var iter__3811__auto__ = function(i__$1, seen__$1, results__$1, G__12133__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
+              return function iter__12149(s__12150) {
+                return new cljs.core.LazySeq(null, function(i__$1, seen__$1, results__$1, G__12133__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
                   return function() {
-                    var s__10818__$1 = s__10818;
+                    var s__12150__$1 = s__12150;
                     while(true) {
-                      var temp__4092__auto__ = cljs.core.seq.call(null, s__10818__$1);
+                      var temp__4092__auto__ = cljs.core.seq.call(null, s__12150__$1);
                       if(temp__4092__auto__) {
-                        var s__10818__$2 = temp__4092__auto__;
-                        if(cljs.core.chunked_seq_QMARK_.call(null, s__10818__$2)) {
-                          var c__3809__auto__ = cljs.core.chunk_first.call(null, s__10818__$2);
+                        var s__12150__$2 = temp__4092__auto__;
+                        if(cljs.core.chunked_seq_QMARK_.call(null, s__12150__$2)) {
+                          var c__3809__auto__ = cljs.core.chunk_first.call(null, s__12150__$2);
                           var size__3810__auto__ = cljs.core.count.call(null, c__3809__auto__);
-                          var b__10820 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
+                          var b__12152 = cljs.core.chunk_buffer.call(null, size__3810__auto__);
                           if(function() {
-                            var i__10819 = 0;
+                            var i__12151 = 0;
                             while(true) {
-                              if(i__10819 < size__3810__auto__) {
-                                var vec__10823 = cljs.core._nth.call(null, c__3809__auto__, i__10819);
-                                var k = cljs.core.nth.call(null, vec__10823, 0, null);
-                                var r = cljs.core.nth.call(null, vec__10823, 1, null);
-                                cljs.core.chunk_append.call(null, b__10820, cljs.core.map.call(null, function(i__10819, i__$1, seen__$1, results__$1, G__10801__$1, vec__10823, k, r, c__3809__auto__, size__3810__auto__, b__10820, s__10818__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
-                                  return function(p1__10774_SHARP_) {
-                                    return cljs.core.with_meta.call(null, p1__10774_SHARP_, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "generation", "generation", 1319607434), 1 + generation, new cljs.core.Keyword(null, "parent", "parent", 4313447452), i__$2, new cljs.core.Keyword(null, "rule", "rule", 1017416302), k], true))
+                              if(i__12151 < size__3810__auto__) {
+                                var vec__12155 = cljs.core._nth.call(null, c__3809__auto__, i__12151);
+                                var k = cljs.core.nth.call(null, vec__12155, 0, null);
+                                var r = cljs.core.nth.call(null, vec__12155, 1, null);
+                                cljs.core.chunk_append.call(null, b__12152, cljs.core.map.call(null, function(i__12151, i__$1, seen__$1, results__$1, G__12133__$1, vec__12155, k, r, c__3809__auto__, size__3810__auto__, b__12152, s__12150__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
+                                  return function(p1__12106_SHARP_) {
+                                    return cljs.core.with_meta.call(null, p1__12106_SHARP_, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "generation", "generation", 1319607434), 1 + generation, new cljs.core.Keyword(null, "parent", "parent", 4313447452), i__$2, new cljs.core.Keyword(null, "rule", "rule", 1017416302), k], true))
                                   }
-                                }(i__10819, i__$1, seen__$1, results__$1, G__10801__$1, vec__10823, k, r, c__3809__auto__, size__3810__auto__, b__10820, s__10818__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), (new cljs.core.Keyword(null, "apply", "apply", 1106933472)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$2)));
-                                var G__10833 = i__10819 + 1;
-                                i__10819 = G__10833;
+                                }(i__12151, i__$1, seen__$1, results__$1, G__12133__$1, vec__12155, k, r, c__3809__auto__, size__3810__auto__, b__12152, s__12150__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), (new cljs.core.Keyword(null, "apply", "apply", 1106933472)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$2)));
+                                var G__12165 = i__12151 + 1;
+                                i__12151 = G__12165;
                                 continue
                               }else {
                                 return true
@@ -25239,19 +25259,19 @@ equality.parser.parse = function parse(input) {
                               break
                             }
                           }()) {
-                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10820), iter__10817.call(null, cljs.core.chunk_rest.call(null, s__10818__$2)))
+                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12152), iter__12149.call(null, cljs.core.chunk_rest.call(null, s__12150__$2)))
                           }else {
-                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__10820), null)
+                            return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__12152), null)
                           }
                         }else {
-                          var vec__10824 = cljs.core.first.call(null, s__10818__$2);
-                          var k = cljs.core.nth.call(null, vec__10824, 0, null);
-                          var r = cljs.core.nth.call(null, vec__10824, 1, null);
-                          return cljs.core.cons.call(null, cljs.core.map.call(null, function(i__$1, seen__$1, results__$1, G__10801__$1, vec__10824, k, r, s__10818__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
-                            return function(p1__10774_SHARP_) {
-                              return cljs.core.with_meta.call(null, p1__10774_SHARP_, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "generation", "generation", 1319607434), 1 + generation, new cljs.core.Keyword(null, "parent", "parent", 4313447452), i__$2, new cljs.core.Keyword(null, "rule", "rule", 1017416302), k], true))
+                          var vec__12156 = cljs.core.first.call(null, s__12150__$2);
+                          var k = cljs.core.nth.call(null, vec__12156, 0, null);
+                          var r = cljs.core.nth.call(null, vec__12156, 1, null);
+                          return cljs.core.cons.call(null, cljs.core.map.call(null, function(i__$1, seen__$1, results__$1, G__12133__$1, vec__12156, k, r, s__12150__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
+                            return function(p1__12106_SHARP_) {
+                              return cljs.core.with_meta.call(null, p1__12106_SHARP_, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "generation", "generation", 1319607434), 1 + generation, new cljs.core.Keyword(null, "parent", "parent", 4313447452), i__$2, new cljs.core.Keyword(null, "rule", "rule", 1017416302), k], true))
                             }
-                          }(i__$1, seen__$1, results__$1, G__10801__$1, vec__10824, k, r, s__10818__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), (new cljs.core.Keyword(null, "apply", "apply", 1106933472)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$2)), iter__10817.call(null, cljs.core.rest.call(null, s__10818__$2)))
+                          }(i__$1, seen__$1, results__$1, G__12133__$1, vec__12156, k, r, s__12150__$2, temp__4092__auto__, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), (new cljs.core.Keyword(null, "apply", "apply", 1106933472)).cljs$core$IFn$_invoke$arity$1(r).call(null, head__$2)), iter__12149.call(null, cljs.core.rest.call(null, s__12150__$2)))
                         }
                       }else {
                         return null
@@ -25259,35 +25279,35 @@ equality.parser.parse = function parse(input) {
                       break
                     }
                   }
-                }(i__$1, seen__$1, results__$1, G__10801__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), null, null)
+                }(i__$1, seen__$1, results__$1, G__12133__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), null, null)
               }
-            }(i__$1, seen__$1, results__$1, G__10801__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1);
+            }(i__$1, seen__$1, results__$1, G__12133__$1, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1);
             return iter__3811__auto__.call(null, equality.parser.rules)
           }());
-          var head_results__$1 = cljs.core.filter.call(null, function(i__$1, seen__$1, results__$1, G__10801__$1, head_results, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
+          var head_results__$1 = cljs.core.filter.call(null, function(i__$1, seen__$1, results__$1, G__12133__$1, head_results, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
             return function(result) {
               return!cljs.core.contains_QMARK_.call(null, seen__$2, result)
             }
-          }(i__$1, seen__$1, results__$1, G__10801__$1, head_results, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), head_results);
+          }(i__$1, seen__$1, results__$1, G__12133__$1, head_results, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), head_results);
           var new_queue = cljs.core.sort_by.call(null, cljs.core.count, cljs.core.distinct.call(null, cljs.core.concat.call(null, queue__$1, head_results__$1)));
           if(cljs.core.truth_(cljs.core.not_empty.call(null, head_results__$1))) {
-            equality.parser.log.call(null, "New hypotheses:\n ", cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, "\n  ", cljs.core.map.call(null, function(i__$1, seen__$1, results__$1, G__10801__$1, head_results, head_results__$1, new_queue, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1) {
+            equality.parser.log.call(null, "New hypotheses:\n ", cljs.core.apply.call(null, cljs.core.str, cljs.core.interpose.call(null, "\n  ", cljs.core.map.call(null, function(i__$1, seen__$1, results__$1, G__12133__$1, head_results, head_results__$1, new_queue, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1) {
               return function(r) {
                 return[cljs.core.str(equality.parser.expr_set_str.call(null, r)), cljs.core.str("\t\t(RULE: "), cljs.core.str((new cljs.core.Keyword(null, "rule", "rule", 1017416302)).cljs$core$IFn$_invoke$arity$1(cljs.core.meta.call(null, r))), cljs.core.str(")")].join("")
               }
-            }(i__$1, seen__$1, results__$1, G__10801__$1, head_results, head_results__$1, new_queue, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__10803, head__$1, queue__$1, full_input__$1), head_results__$1))))
+            }(i__$1, seen__$1, results__$1, G__12133__$1, head_results, head_results__$1, new_queue, new_results, subtrees, disjoint_subtrees, head__$2, generation, parent, return_on_first_result, i__$2, seen__$2, results__$2, vec__12135, head__$1, queue__$1, full_input__$1), head_results__$1))))
           }else {
             equality.parser.log.call(null, "No further results. Discarding hypothesis.")
           }
           if(cljs.core.truth_(cljs.core.not_empty.call(null, new_queue))) {
-            var G__10834 = i__$2 + 1;
-            var G__10835 = cljs.core.assoc.call(null, seen__$2, head__$2, true);
-            var G__10836 = new_results;
-            var G__10837 = new_queue;
-            i__$1 = G__10834;
-            seen__$1 = G__10835;
-            results__$1 = G__10836;
-            G__10801__$1 = G__10837;
+            var G__12166 = i__$2 + 1;
+            var G__12167 = cljs.core.assoc.call(null, seen__$2, head__$2, true);
+            var G__12168 = new_results;
+            var G__12169 = new_queue;
+            i__$1 = G__12166;
+            seen__$1 = G__12167;
+            results__$1 = G__12168;
+            G__12133__$1 = G__12169;
             continue
           }else {
             return new_results
@@ -25302,10 +25322,10 @@ equality.parser.parse = function parse(input) {
 };
 equality.parser.to_clj_input = function to_clj_input(input) {
   return cljs.core.set.call(null, cljs.core.map.call(null, function(m) {
-    return cljs.core.apply.call(null, cljs.core.merge, cljs.core.cons.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1], true), cljs.core.map.call(null, function(p__10840) {
-      var vec__10841 = p__10840;
-      var k = cljs.core.nth.call(null, vec__10841, 0, null);
-      var v = cljs.core.nth.call(null, vec__10841, 1, null);
+    return cljs.core.apply.call(null, cljs.core.merge, cljs.core.cons.call(null, cljs.core.PersistentArrayMap.fromArray([new cljs.core.Keyword(null, "symbol-count", "symbol-count", 2231450636), 1], true), cljs.core.map.call(null, function(p__12172) {
+      var vec__12173 = p__12172;
+      var k = cljs.core.nth.call(null, vec__12173, 0, null);
+      var v = cljs.core.nth.call(null, vec__12173, 1, null);
       if(cljs.core._EQ_.call(null, new cljs.core.Keyword(null, "type", "type", 1017479852), k)) {
         return cljs.core.PersistentArrayMap.fromArray([k, cljs.core.keyword.call(null, v)], true)
       }else {
@@ -25323,20 +25343,20 @@ equality.parser.to_clj_input = function to_clj_input(input) {
   }, cljs.core.js__GT_clj.call(null, input, new cljs.core.Keyword(null, "keywordize-keys", "keywordize-keys", 4191781672), true)))
 };
 equality.parser.without_overlap = function without_overlap(s) {
-  return cljs.core.set.call(null, cljs.core.filter.call(null, function(p1__10842_SHARP_) {
-    return cljs.core.not.call(null, (new cljs.core.Keyword(null, "overlap", "overlap", 4217583545)).cljs$core$IFn$_invoke$arity$1(p1__10842_SHARP_))
+  return cljs.core.set.call(null, cljs.core.filter.call(null, function(p1__12174_SHARP_) {
+    return cljs.core.not.call(null, (new cljs.core.Keyword(null, "overlap", "overlap", 4217583545)).cljs$core$IFn$_invoke$arity$1(p1__12174_SHARP_))
   }, s))
 };
 equality.parser.map_with_meta = function map_with_meta(f, m) {
   return cljs.core.with_meta.call(null, cljs.core.map.call(null, f, m), cljs.core.meta.call(null, m))
 };
 equality.parser.compare_raw_symbol_count = function compare_raw_symbol_count(a, b) {
-  var symbol_count_a = cljs.core.count.call(null, cljs.core.filter.call(null, function(p1__10843_SHARP_) {
-    return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10843_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
+  var symbol_count_a = cljs.core.count.call(null, cljs.core.filter.call(null, function(p1__12175_SHARP_) {
+    return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__12175_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
   }, cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, a))));
   var symbol_count_b = cljs.core.count.call(null, cljs.core.filter.call(null, function(symbol_count_a) {
-    return function(p1__10844_SHARP_) {
-      return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10844_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
+    return function(p1__12176_SHARP_) {
+      return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__12176_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
     }
   }(symbol_count_a), cljs.core.apply.call(null, cljs.core.concat, cljs.core.map.call(null, equality.parser.symbols, b))));
   if(symbol_count_a > symbol_count_b) {
@@ -25373,13 +25393,13 @@ equality.parser.get_best_results = function get_best_results(input) {
         }else {
           if(new cljs.core.Keyword(null, "else", "else", 1017020587)) {
             var symbol_count_a = cljs.core.count.call(null, cljs.core.filter.call(null, function(input__$1, all_symbols, result, best_result) {
-              return function(p1__10845_SHARP_) {
-                return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10845_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
+              return function(p1__12177_SHARP_) {
+                return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__12177_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
               }
             }(input__$1, all_symbols, result, best_result), equality.parser.symbols.call(null, a)));
             var symbol_count_b = cljs.core.count.call(null, cljs.core.filter.call(null, function(symbol_count_a, input__$1, all_symbols, result, best_result) {
-              return function(p1__10846_SHARP_) {
-                return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__10846_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
+              return function(p1__12178_SHARP_) {
+                return cljs.core._EQ_.call(null, (new cljs.core.Keyword(null, "type", "type", 1017479852)).cljs$core$IFn$_invoke$arity$1(p1__12178_SHARP_), new cljs.core.Keyword("type", "symbol", "type/symbol", 4654393438))
               }
             }(symbol_count_a, input__$1, all_symbols, result, best_result), equality.parser.symbols.call(null, b)));
             if(symbol_count_a > symbol_count_b) {

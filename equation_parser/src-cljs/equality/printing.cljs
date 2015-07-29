@@ -26,6 +26,9 @@
 (defmethod expr-str :type/pm [expr]
   (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " ± " (expr-str (:right-op expr))))
 
+(defmethod expr-str :type/cross [expr]
+  (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " × " (expr-str (:right-op expr))))
+
 (defmethod expr-str :type/mult [expr]
   (str (if (:certain (meta expr)) "@" "") "[" (expr-str (:left-op expr)) " " (expr-str (:right-op expr)) "]"))
 
@@ -76,6 +79,9 @@
 
 (defmethod mathml-inner :type/pm [expr]
   (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">±</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
+
+(defmethod mathml-inner :type/cross [expr]
+  (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">×</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
 
 (defmethod mathml-inner :type/mult [expr]
   (str "<mrow>" (mathml-inner (:left-op expr)) (mathml-inner (:right-op expr)) "</mrow>"))
@@ -132,6 +138,9 @@
 
 (defmethod tex-inner :type/pm [expr]
   (str "{" (tex-inner (:left-op expr)) "}\\pm{" (tex-inner (:right-op expr)) "}"))
+
+(defmethod tex-inner :type/cross [expr]
+  (str "{" (tex-inner (:left-op expr)) "}\\wedge{" (tex-inner (:right-op expr)) "}"))
 
 (defmethod tex-inner :type/mult [expr]
   (str (tex-inner (:left-op expr)) " " (tex-inner (:right-op expr))))
