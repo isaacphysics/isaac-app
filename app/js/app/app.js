@@ -77,7 +77,7 @@ define([
             apiProvider.server("https://dev.isaacphysics.org");
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', function($rootScope, api, $state, auth, $location, $timeout) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
 
         /* 
             Tooltip settings
@@ -579,6 +579,45 @@ define([
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');
         });
+
+        var checkForNotifications = function() {
+            
+            $rootScope.user.$promise.then(function() {
+                // We are logged in
+
+                var lastNotificationTime = persistence.load("lastNotificationTime") || 0;
+
+                if (Date.now() - $rootScope.user.registrationDate > 2*24*60*60*1000) {
+                    // User registration was at least two days ago
+
+                    if (Date.now() - lastNotificationTime > 24*60*60*1000) {
+                        // Last notification was at least one day ago
+
+                        api.notifications.query().$promise.then(function(ns) {
+
+                            if (ns.length > 0) {
+
+                                $rootScope.notificationDoc = ns[0];
+
+                                $rootScope.modals.notification.show();
+
+                                persistence.save("lastNotificationTime", Date.now());
+                            }
+                        })
+                    }
+                }
+            })
+
+            // Check again in five minutes
+            $timeout(checkForNotifications, 300000);
+        }
+
+        $timeout(checkForNotifications, 5000);
+
+        $rootScope.notificationResponse = function(notification, response) {
+            api.notifications.respond({id: notification.id, response: response}, {});
+            $rootScope.modals.notification.hide();
+        }
 
 	}]);
 

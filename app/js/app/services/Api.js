@@ -399,6 +399,13 @@ define([], function() {
 				method: "DELETE",
 				url: server + "/api/admin/content_index_queue",
 			}			
+		});
+
+		this.notifications = $resource(server + "/api/notifications", {}, {
+			"respond": {
+				method: "POST",
+				url: server + "/api/notifications/:id/:response",
+			}
 		})
 
 

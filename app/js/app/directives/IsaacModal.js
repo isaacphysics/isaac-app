@@ -40,8 +40,10 @@ define([], function() {
                         $("#isaacModal").css("top", modalPosition > 0 ? modalPosition+'px' : 0);
                         
                         // make sure the top of the modal is in view.
-                        $location.hash('isaacModal');
-                        $anchorScroll();
+                        if (!('noHash' in attrs)) {
+                            $location.hash('isaacModal');
+                            $anchorScroll();
+                        }
                     },
                     hide: function() {
                         $("#isaacModal").foundation("reveal", "close");
