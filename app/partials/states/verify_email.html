@@ -1,22 +1,30 @@
 <div class='small-16 columns' ng-controller="ResetPasswordPageController">
 	<h2>Email Address Verification</h2>
-	<div class="panel white clearfix verifyContainer">
-        <h2 ng-class="{'icon-check ru_green' : verificationState==verificationStates.SUCCESS, 'icon-x ru_red': verificationState==verificationStates.FAILED_INVALID || verificationState==verificationStates.FAILED_ALREADY_VERIFIED}" class="verification_icon_large"></h2>    
-        <h2 class="subheader">{{message}}</h2>         
+	<div class="panel white clearfix verificationContainer">
 
-       	<h3 ng-show="verificationState==verificationStates.SUCCESS || verificationState==verificationStates.FAILED_ALREADY_VERIFIED">
+		<h2 ng-if="verificationState==verificationStates.FAILED_INVALID || 
+		           verificationState==verificationStates.FAILED_ALREADY_VERIFIED" class="icon-x ru_red verification_icon_large"></h2>
+
+        <h2 ng-if="verificationState==verificationStates.SUCCESS" class="icon-check ru_green verification_icon_large"></h2>
+
+
+        <img ng-if="verificationState==verificationStates.FAILED_INVALID || 
+       	            verificationState==verificationStates.REQUESTED ||
+       	            verificationState==verificationStates.CAN_REQUEST ||
+       	            verificationState==verificationStates.FURTHER_VERIFICATION_FAILED || 
+       	            verificationState==verificationStates.REQUESTED" src="assets/icon-mailto.png"/> 
+        <h3 class="subheader">{{verificationState}}</h3>         
+        <h3 ng-if="verificationState==verificationStates.FAILED_INVALID ||
+                   verificationState==verificationStates.FURTHER_VERIFICATION_FAILED" class="subheader">{{errorMessage}}</h3>   
+
+       	<h3 ng-if="verificationState==verificationStates.SUCCESS || verificationState==verificationStates.FAILED_ALREADY_VERIFIED">
        		Continue to <a href='/';>Isaac Physics</a></h3>
 
-       	<h3 ng-show="verificationState==verificationStates.FAILED_INVALID && isUserLoggedIn">
-       		Click <a ng-click="requestFurtherVerification()";>here</a> to request a new Verification Email</h3>
-
-       	<h3 ng-show="verificationState==verificationStates.FAILED_INVALID && !isUserLoggedIn">
-       		Please <a href='/login';>login</a> to request a new Verification Email</h3>
-       		
-       	<p ng-show="verificationState==verificationStates.FAILED_INVALID && furtherVerificationRequested">
-       		<strong>Your verification request is being processed. <br>
-       		<span class="ru_green">Please check your email.</span></strong>
-    	</p>
+       	<h3 ng-if="(verificationState==verificationStates.FAILED_INVALID || 
+       	            verificationState==verificationStates.REQUESTED ||
+       	            verificationState==verificationStates.CAN_REQUEST ||
+       	            verificationState==verificationStates.FURTHER_VERIFICATION_FAILED)  && email != null">
+       		Click <a ng-click="requestFurtherVerification()";>here</a> to request a new verification email</h3>
     </div>
 	
 	

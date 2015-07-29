@@ -26,6 +26,7 @@ define([], function() {
 			delete $scope.errorMessage;
 			// Only submit if form is valid
 			if($scope.form.$valid) {
+				$scope.userEmail = $scope.user.email;
 				auth.login($scope.user).then(function(){
 					// Success		
 					if (!$scope.target) {
@@ -37,6 +38,10 @@ define([], function() {
 				}).catch(function(reason) {
 					// Error
 					$scope.errorMessage = reason.data.errorMessage;
+					console.log($scope.errorMessage);
+					if($scope.errorMessage.indexOf("Email verification required.") > -1){
+						$window.location.href = "/verifyemail?email=" + $scope.userEmail + "&requested";
+					}
 					$scope.$apply();
 				})
 			}
