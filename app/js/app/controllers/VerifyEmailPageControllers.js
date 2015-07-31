@@ -18,64 +18,58 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$timeout', function($scope, auth, api, $stateParams, $location, $timeout) {
 		
 		$scope.verificationStates = {
-			CAN_REQUEST: '',
-			REQUESTED: 'Email address not verified. Please check your email.',
-			IN_PROGRESS: 'Verifying...',
-			SUCCESS : 'Email successfully verified!',
-			FAILED_INVALID: 'Email verification failed.',
-			FAILED_ALREADY_VERIFIED: 'Email verification failed - already verified.',
-			FURTHER_VERIFICATION_FAILED: 'Request for verification email failed.'
+			CAN_REQUEST: 0,
+			IN_PROGRESS: 1,
+			FAILED: 2,
+			SUCCESS: 3,
 		};
 
 		$scope.email = $stateParams.email;
 		$scope.verificationState = $scope.verificationStates.CAN_REQUEST;
-		$scope.errorMessage = "test";
+		$scope.message = "";
 
-		$scope.verifyWithToken = function(token){
+		$scope.verifyWithToken = function(userid, email, token){
 			$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
-			api.verifyEmailWithToken.verify({'token': $stateParams.token}).$promise.then(function(response){
+			console.log("Params:" + userid + ", " + email + ", " + token);
+			api.emailVerification.verify({'userid' : userid, 'email': email, 'token': token}).$promise.then(function(response){
 				$scope.verificationState = $scope.verificationStates.SUCCESS;
+				$scope.message = "Account verified";
 			}, function(error){
-				$scope.errorMessage = error.errorMessage;
-				if(error.data.errorMessage.indexOf("Email already verified.") > -1){
-					$scope.verificationState = $scope.verificationStates.FAILED_ALREADY_VERIFIED;
-				}
-				else{
-					$scope.verificationState = $scope.verificationStates.FAILED_INVALID;
-				}
+				$scope.verificationState = $scope.verificationStates.FAILED;
+				$scope.message = "Failed - " + error.data.errorMessage;
 			});
 		}
 
 
 		//If the user requests a further verification email, request one from the endpoint
 		$scope.requestFurtherVerification = function(){
-			console.log("Requested further verification");
-			api.verifyEmail.requestEmailVerification($scope.email).$promise.then(function(response){
-				$scope.verificationState = $scope.verificationStates.REQUESTED;
+			console.log("Requested further verification - " + $stateParams.email);
+			api.verifyEmail.requestEmailVerification({'email': $stateParams.email}).$promise.then(function(response){
+				$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
 			}, function(error){
-				$scope.errorMessage = error.statusText;
-				$scope.verificationState = $scope.verificationStates.FURTHER_VERIFICATION_FAILED;
-				console.log(error);
+				$scope.verificationState = $scope.verificationStates.FAILED;
+				$scope.message = "Failed - " + error.data.errorMessage;
 			});
 		}
 
-
 		//If we get a token, check it
-		if($stateParams.token != null){
-			$scope.verifyWithToken($stateParams.token);
+		console.log($stateParams);
+		if($stateParams.userid != null && $stateParams.email != null && $stateParams.token != null){
+			console.log("Attempted to verify using token")
+			$scope.verifyWithToken($stateParams.userid, $stateParams.email, $stateParams.token);
 		}
 		else if($stateParams.email != null){
-			$scope.email = $stateParams.email;
 			//Allow them to request a token
 			if($stateParams.requested){
-				$scope.verificationState = $scope.verificationStates.REQUESTED;
+				$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
 			}
 			else{
 				$scope.verificationState = $scope.verificationStates.CAN_REQUEST;
 			}
 		}
 		else{
-			$scope.verificationState = $scope.verificationStates.FAILED_INVALID;
+			$scope.verificationState = $scope.verificationStates.FAILED;
+				$scope.message = "Failed - bad parameters";
 		}
 
 

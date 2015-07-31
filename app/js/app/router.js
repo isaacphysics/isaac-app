@@ -256,7 +256,7 @@ define(["angular-ui-router"], function() {
 		        }
 	        })
             .state('verifyEmail', {
-                url: "/verifyemail?token&email&requested",
+                url: "/verifyemail?userid&token&email&requested",
                 views: {
                     "body": {
                         templateUrl: "/partials/states/verify_email.html",
