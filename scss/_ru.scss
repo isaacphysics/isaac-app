@@ -135,6 +135,25 @@ select {
     display: none;
     z-index: 999;
 }
+.verification-message{
+    .row {
+        height:60px;
+        .verification-content{
+            position: relative;
+            height:100%;
+            width:90%;
+            text-align: center;
+            p{
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-right: -50%;
+                transform: translate(-50%, -50%)
+            }
+        }
+    }
+}
 input.error.submitted,
 input.ru-input-error {
     border-color: #cc6666;
