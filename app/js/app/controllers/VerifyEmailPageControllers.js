@@ -27,10 +27,10 @@ define([], function() {
 		$scope.email = $stateParams.email;
 		$scope.verificationState = $scope.verificationStates.CAN_REQUEST;
 		$scope.message = "";
+		$scope.isUserLoggedIn = false;
 
 		$scope.verifyWithToken = function(userid, email, token){
 			$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
-			console.log("Params:" + userid + ", " + email + ", " + token);
 			api.emailVerification.verify({'userid' : userid, 'email': email, 'token': token}).$promise.then(function(response){
 				$scope.verificationState = $scope.verificationStates.SUCCESS;
 				$scope.message = "Account verified";
@@ -40,10 +40,14 @@ define([], function() {
 			});
 		}
 
+		$scope.user.$promise.then(function(){
+			$scope.isUserLoggedIn = $scope.user != null;
+		}).catch(function(){
+			$scope.isUserLoggedIn = false;
+		});
 
 		//If the user requests a further verification email, request one from the endpoint
 		$scope.requestFurtherVerification = function(){
-			console.log("Requested further verification - " + $stateParams.email);
 			api.verifyEmail.requestEmailVerification({'email': $stateParams.email}).$promise.then(function(response){
 				$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
 			}, function(error){
@@ -53,9 +57,7 @@ define([], function() {
 		}
 
 		//If we get a token, check it
-		console.log($stateParams);
 		if($stateParams.userid != null && $stateParams.email != null && $stateParams.token != null){
-			console.log("Attempted to verify using token")
 			$scope.verifyWithToken($stateParams.userid, $stateParams.email, $stateParams.token);
 		}
 		else if($stateParams.email != null){
@@ -69,7 +71,7 @@ define([], function() {
 		}
 		else{
 			$scope.verificationState = $scope.verificationStates.FAILED;
-				$scope.message = "Failed - bad parameters";
+			$scope.message = "Failed - bad parameters";
 		}
 
 

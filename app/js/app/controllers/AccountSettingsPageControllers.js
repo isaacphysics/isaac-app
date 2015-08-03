@@ -125,19 +125,6 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
 
-        $scope.saveAndLogout = function(next){
-        	console.log("Save and logout function");
-        	//This is where verification starts
-        	$scope.save();
-        	//logout
-        	$scope.user = null;
-        	auth.logout().then(function(){
-        		console.log("Logout successful?");
-        		$location.url(next);
-        	});
-        	
-        }
-
         $scope.save = function(next) {
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
@@ -147,21 +134,10 @@ define([], function() {
         		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
         	}
 
-        	console.log("Old email:" + emailBeforeEditing);
-        	console.log("New email:" + $scope.user.email);
         	if($scope.user._id != null && $scope.user.email != emailBeforeEditing){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
         		if(promptResponse){
-        			//Request verification for the new email address
-        			//api.verifyEmail.requestEmailVerification({'email': $scope.user.email}).$promise.then(function(response){
-						//continue
-					//}, function(error){
-					//	$scope.showToast($scope.toastTypes.Failure, "Failed to request new email verification!");
-					//	console.log(error);
-					//});
-
-					//Keep the old address until the user verifies with the new one
-        			//$scope.user.email = emailBeforeEditing;
+        			
         		}
         		else{
         			$scope.user.email = emailBeforeEditing;
@@ -208,7 +184,7 @@ define([], function() {
         $scope.$on("$destroy", function() {
         	auth.updateUser();
         })
-		
+
 		// authorisation (token) stuff
 		$scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();

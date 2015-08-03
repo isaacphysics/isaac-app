@@ -17,7 +17,10 @@
       <h3 ng-if="verificationState==verificationStates.FAILED">or<h3>
       <h3 ng-if="verificationState==verificationStates.FAILED ||
                  verificationState==verificationStates.SUCCESS">
-      Continue to <a href='/';>Isaac Physics</a></h3>
+        <span ng-if="isUserLoggedIn">Continue to <a href='/'> Isaac Physics</a></span>
+        <span ng-if="!isUserLoggedIn">Login to <a href="/login"> Isaac Physics</a></span>
+
+      </h3>
     </div>
 	
 	
