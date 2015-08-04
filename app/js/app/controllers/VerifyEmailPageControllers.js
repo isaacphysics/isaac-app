@@ -63,12 +63,7 @@ define([], function() {
 		}
 		else if($stateParams.email != null){
 			//Allow them to request a token
-			if($stateParams.requested){
-				$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
-			}
-			else{
-				$scope.verificationState = $scope.verificationStates.CAN_REQUEST;
-			}
+			$scope.verificationState = $scope.verificationStates.CAN_REQUEST;
 		}
 		else{
 			$scope.verificationState = $scope.verificationStates.FAILED;

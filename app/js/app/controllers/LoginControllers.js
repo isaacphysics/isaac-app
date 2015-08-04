@@ -36,12 +36,8 @@ define([], function() {
 					}
 
 				}).catch(function(reason) {
-					console.log(reason);
 					// Error
 					$scope.errorMessage = reason.data.errorMessage;
-					if($scope.errorMessage.indexOf("Email verification required.") > -1){
-						$window.location.href = "/verifyemail?email=" + $scope.userEmail + "&requested";
-					}
 					$scope.$apply();
 				})
 			}
