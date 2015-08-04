@@ -34,6 +34,7 @@ define([], function() {
 			api.emailVerification.verify({'userid' : userid, 'email': email, 'token': token}).$promise.then(function(response){
 				$scope.verificationState = $scope.verificationStates.SUCCESS;
 				$scope.message = "Account verified";
+				$scope.user.emailVerificationStatus = "VERIFIED";
 			}, function(error){
 				$scope.verificationState = $scope.verificationStates.FAILED;
 				$scope.message = "Failed - " + error.data.errorMessage;

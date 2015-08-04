@@ -161,6 +161,14 @@ define([
             }, 0);
         })
 
+        $rootScope.requestEmailVerification = function(){
+            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
+                console.log("Email verification request succeeded.");
+            }, function(error){
+                console.log("Email verification request failed.");
+            });
+        }
+
         $rootScope.$on("$stateChangeError", function() {
             $rootScope.setLoading(false);
         })
