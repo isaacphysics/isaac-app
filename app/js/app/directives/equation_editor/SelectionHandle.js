@@ -20,6 +20,24 @@ define([], function() {
                     scope.$emit("selection_calc", e);
                 });
 
+                element.on("mousedown touchstart", "polygon.handle-show-symbol-mod-menu", function(e) {
+                    scope.selectionHandleFlags.symbolModMenuOpen = true;
+                    scope.$apply();
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                element.on("mousedown touchstart", "polygon.handle-bold", function(e) {
+                    scope.$emit("selection_mod", "bold", e);
+                });
+                element.on("mousedown touchstart", "polygon.handle-dot", function(e) {
+                    scope.$emit("selection_mod", "dot", e);
+                });
+                element.on("mousedown touchstart", "polygon.handle-prime", function(e) {
+                    scope.$emit("selection_mod", "prime", e);
+                });
+
                 var touchStart = function(mode, e) {
                     e = e.originalEvent;
                     if(e.touches.length == 1) {

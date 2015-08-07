@@ -134,10 +134,16 @@ define([], function() {
                 	var offset = element.offset();
                     var width = element.width();
                     var height = element.height();
-                	scope.state.symbols[nextSymbolId++] = $.extend({
-                		x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft, 
-                		y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
+
+                    var newSymbol = $.extend({
+                        x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft, 
+                        y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
                     }, JSON.parse(JSON.stringify(symbol)));
+
+                    // Store the original token so that we can modify it with dots, primes, etc.
+                    newSymbol.baseToken = newSymbol.token;
+
+                	scope.state.symbols[nextSymbolId++] = newSymbol;
 
                     scope.$broadcast("historyCheckpoint");
                 	console.debug("Symbols:", scope.state.symbols);
@@ -199,6 +205,7 @@ define([], function() {
                 			label: s,
                 			fontSize: 48,
                             texLabel: true,
+                            enableMods: true,
                 		});
                 	}
 
@@ -455,7 +462,8 @@ define([], function() {
 
                     scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].fromCalc;
                     scope.selectionHandleFlags.showResize = scope.selectedSymbols.length == 1;
-
+                    scope.selectionHandleFlags.enableSymbolModMenu = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].enableMods;
+                    //scope.selectionHandleFlags.symbolModMenuOpen = false
                 }
 
                 scope.$watchCollection("selectedSymbols", updateSelectionRender);
@@ -598,6 +606,8 @@ define([], function() {
                         var maxY = minY + element.find(".selection-box").height();
 
                         scope.selectedSymbols.length = 0;
+                        scope.selectionHandleFlags.symbolModMenuOpen = false
+
                         for (var sid in scope.state.symbols) {
                             var s = scope.state.symbols[sid];
                             if (s.x > minX && s.x < maxX && s.y > minY && s.y < maxY) {
@@ -631,6 +641,8 @@ define([], function() {
                             scope.selectedSymbols.length = 0;
                             scope.selectedSymbols.push(symbolId);
                         }
+                        scope.selectionHandleFlags.symbolModMenuOpen = false
+
                     }
 
                     if (e.touches) {
@@ -672,9 +684,91 @@ define([], function() {
                     e.preventDefault();
                 });
 
+                var rebuildSymbolToken = function(s) {
+                    s.token = s.baseToken;
+
+                    if(s.bold) {
+                        s.token = "\\mathbf{" + s.token + "}";
+                    }
+
+                    if (s.dot == 1) {
+                        s.token = "\\dot{" + s.token + "}";
+                    } else if (s.dot == 2) {
+                        s.token = "\\ddot{" + s.token + "}";
+                    }
+
+                    for (var i = 0; i < s.prime || 0; i++) {
+                        s.token += "'";
+                    }
+
+                };
+
+                scope.$on("selection_mod", function(_, type, e) {
+
+                    // If we got here, there should be precisely one symbol selected.
+                    if (scope.selectedSymbols.length != 1) {
+                        console.error(new Error("Can only modify single symbols"));
+                        debugger;
+                    }
+
+                    var s = scope.state.symbols[scope.selectedSymbols[0]];
+                    console.debug("Add mod:", type, s);
+
+                    switch(type) {
+                        case "dot":
+                            s.dot = s.dot || 0;
+                            s.dot = (s.dot + 1) % 3;
+                            rebuildSymbolToken(s);
+                            break;
+
+                            var hasPrime = s.token.indexOf("'") > -1;
+                            s.token = s.token.replace("'","");
+                            if (s.token.indexOf("\\dot") > -1) {
+                                s.token = s.token.replace("\\dot{", "\\ddot{");
+                            } else if (s.token.indexOf("\\ddot") > -1) {
+                                s.token = s.token.replace("\\ddot{", "");
+                                s.token = s.token.replace("}", ""); // Yes, I know this will only replace one. That's what I want.
+                            } else {
+                                s.token = "\\dot{" + s.token + "}";
+                            }
+                            if (hasPrime){
+                                s.token += "'";
+                            }
+                            break;
+                        case "prime":
+
+                            s.prime = s.prime || 0;
+                            s.prime = (s.prime + 1) % 3;
+                            rebuildSymbolToken(s);
+                            break;
+                            if (s.token.indexOf("'") > -1) {
+                                s.token = s.token.replace("'", "");
+                            } else {
+                                s.token += "'";
+                            }
+                            break;
+                        case "bold":
+                            s.bold = !s.bold;
+                            rebuildSymbolToken(s);
+                            break;
+                            if (s.token.indexOf("\\mathbf") > -1) {
+                                s.token = s.token.replace("\\mathbf{", "");
+                                s.token = s.token.replace("}", ""); // Yes, I know this will only replace one. That's what I want.
+                            } else {
+                                s.token = "\\mathbf{" + s.token + "}";
+                            }
+                            break;
+                    }
+                    scope.$apply();
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                })
+
                 scope.editorClick = function(e) {
                     scope.$broadcast("closeMenus");
                     scope.selectedSymbols.length = 0;
+                    scope.selectionHandleFlags.symbolModMenuOpen = false
 
                     scope.dragMode = "selectionBox";
                     $(".selection-box").css({
@@ -691,6 +785,7 @@ define([], function() {
 
                 scope.$on("menuOpened", function() {
                     scope.selectedSymbols.length = 0;
+                    scope.selectionHandleFlags.symbolModMenuOpen = false
                 });
 
                 scope.trash = function() {
@@ -700,6 +795,7 @@ define([], function() {
                             delete scope.state.symbols[sid];
                         }
                         scope.selectedSymbols.length = 0;
+                        scope.selectionHandleFlags.symbolModMenuOpen = false
                         scope.$emit("historyCheckpoint");
                     }
                 }
