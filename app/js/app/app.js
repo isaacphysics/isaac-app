@@ -375,7 +375,7 @@ define([
                     }
                 }
 
-                var cookiesAccepted = cookie.read('cookiesAccepted');
+                var cookiesAccepted = cookie.read('isaacCookiesAccepted');
             
                 if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
@@ -385,14 +385,17 @@ define([
                     $(".cookies-message").remove();
                 }
 
+                // delete old cookies
+                cookie.remove("cookiesAccepted");
+
                 // Set cookie on click without overriding Foundations close function
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
-                    if (!cookie.read('cookiesAccepted'))
+                    if (!cookie.read('isaacCookiesAccepted'))
                     {
                         api.logger.log({
                             type: "ACCEPT_COOKIES"
                         })
-                        cookie.create('cookiesAccepted',1,720);
+                        cookie.create('isaacCookiesAccepted',1,720);
                     }
                 });
 
