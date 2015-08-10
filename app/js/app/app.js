@@ -383,7 +383,13 @@ define([
 
                 // Set cookie on click without overriding Foundations close function
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
-                    cookie.create('cookiesAccepted',1,720);
+                    if (!cookie.read('cookiesAccepted'))
+                    {
+                        api.logger.log({
+                            type: "ACCEPT_COOKIES"
+                        })
+                        cookie.create('cookiesAccepted',1,720);
+                    }
                 });
 
                 var totalJoyridePageCount = 0;
