@@ -209,8 +209,7 @@ define([], function() {
 
         		$scope.modals.gameCreated.show();
 				$scope.boardCreatedSuccessfully = true;
-				// $scope.showToast($scope.toastTypes.Success, "Board created", "Your game board has been created. Redirecting to it now.");
-    //     		$state.go('setAssignments')
+
         	}).catch(function(e) {
         		$scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         		gameBoardToSave.wildCard = wildCard
