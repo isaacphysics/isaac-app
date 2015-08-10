@@ -43,14 +43,23 @@ define(["app/honest/responsive_video"], function(rv) {
 							break;
 						}
 					}
-
-					scope.$emit("newQuestionAnswer", scope.accordionSection, "✓");
-
+					
 				});
 
 				scope.$watch("selectedAnswer", function() {
 					scope.selectedChoice = scope.doc.choices[scope.selectedAnswer];
-				})
+				});
+
+				//Add the accordion tick after validation
+				scope.$watch("validationResponse", function(r, oldR) {
+					if(r){
+						if(r.correct)
+							scope.$emit("newQuestionAnswer", scope.accordionSection, "✓");
+					}
+					else{} if(scope.accordionSection != null){
+						scope.$emit("newQuestionAnswer", scope.accordionSection); 
+					}
+				});
 			}
 		};
 	}];
