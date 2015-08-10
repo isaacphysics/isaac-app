@@ -219,7 +219,43 @@ define([], function() {
 
 		api.logger.log({
 			type: "VIEW_BOARD_BUILDER"
-		})        
+		})
+
+        var pageUnloadMessage = 'If you leave this page you are going to lose all unsaved changes.';
+
+		$window.onbeforeunload = function (event) {        
+		    //Check if there was any change, if no changes, then simply let the user leave
+		    if ((!$scope.currentGameBoard.title && $scope.currentGameBoard.questions.length < 1) || $scope.boardCreatedSuccessfully){
+		      return;
+		    }
+
+		    if (typeof event == 'undefined') {
+		      event = window.event;
+		    }
+		    if (event) {
+		      event.returnValue = pageUnloadMessage;
+		    }
+
+		    return pageUnloadMessage;
+		}
+
+        //This works only when user changes routes via angularUI, not when user refreshes the browsers, goes to previous page or try to close the browser
+        $scope.$on('$stateChangeStart', function( event ) {    
+            if ((!$scope.currentGameBoard.title && $scope.currentGameBoard.questions.length < 1) || $scope.boardCreatedSuccessfully) 
+        	   return;
+
+            var answer = confirm(pageUnloadMessage + " Are you sure you would like to continue?")
+            if (!answer) {
+                event.preventDefault();
+                // fix to prevent loading icon appearing forever.
+                $scope.setLoading(false)
+            }
+        });	
+
+        $scope.$on('$destroy', function() {
+            delete window.onbeforeunload;
+        });
+
 	}]
 
 	return {
