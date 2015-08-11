@@ -74,7 +74,11 @@ define(["angular-ui-router"], function() {
                 }
             };
         }
-
+        /**
+         * @param url is the route to bind to
+         * @param state is the template name to load
+         * @param controller is the controller to use
+         */
         var staticPageState = function(url, state, controller) {
             return {
                 url: url,
@@ -104,9 +108,10 @@ define(["angular-ui-router"], function() {
             .state('why_physics', genericPageState("/why_physics", "why_physics"))
 	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
             .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
-            .state('physics_skills_14', genericPageState("/physics_skills_14", "physics_skills_14_index"))
+            .state('physics_skills_14', staticPageState("/physics_skills_14", "book_index" , "BooksControllers"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
+            
             .state('teacher_features', {
                 url:"/teacher_features?redirectModal",
                 views: {
