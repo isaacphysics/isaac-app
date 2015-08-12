@@ -94,9 +94,6 @@ define(["app/honest/responsive_video"], function(rv) {
 										scope.state.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
 										scope.modals["congrats"].show();
 									}
-									else if(initialGameBoardPercent < board.percentageCompleted){
-										scope.modals["congrats"].show();
-									}
 
 									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one 
 									// question for a gameboard and the question has been passed, not completed. See issue #419
