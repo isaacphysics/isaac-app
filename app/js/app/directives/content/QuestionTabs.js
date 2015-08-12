@@ -56,6 +56,9 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
+				scope.state.gameBoardCompletedPassed = false;
+				scope.state.gameBoardCompletedPerfect = false;
+
 				scope.checkAnswer = function() {
 					if (scope.selectedChoice != null) {
 
@@ -64,30 +67,43 @@ define(["app/honest/responsive_video"], function(rv) {
 						s.$promise.then(function foo(r) {
 							scope.validationResponse = r;
 
+							// Check the gameboard progress 
 							if (scope.gameBoard) {
-
 								// Re-load the game board to check for updated progress
-
 								var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
+								var gameBoardCompletedPassed =  true;
+								var gameBoardCompletedPerfect =  true;
 
 								api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
-
 									scope.state.gameBoardPercentComplete = board.percentageCompleted;
 
-									if (initialGameBoardPercent < board.percentageCompleted) {
-										// Something has actually changed. We must have either completed a question, or a question AND the board.
-										scope.modals["congrats"].show();
-/*
-										if (board.percentageCompleted == 100) {
-											// We completed the board.
-
-										} else {
-											// We completed a question.
-										}*/
+									//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
+									for(var i = 0; i < board.questions.length; i++){
+										if(board.questions[i].state != "PERFECT" ){
+											gameBoardCompletedPerfect = false;
+										}
+										if(board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
+											gameBoardCompletedPassed = false;
+										}
 									}
+
+									// If things have changed, show the modal
+									if(gameBoardCompletedPassed != scope.state.gameBoardCompletedPassed || 
+														gameBoardCompletedPerfect != scope.state.gameBoardCompletedPerfect){
+										scope.state.gameBoardCompletedPassed = gameBoardCompletedPassed;
+										scope.state.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
+										scope.modals["congrats"].show();
+									}
+									else if(initialGameBoardPercent < board.percentageCompleted){
+										scope.modals["congrats"].show();
+									}
+
+									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one 
+									// question for a gameboard and the question has been passed, not completed. See issue #419
 
 								});
 							}
+
 						}, function bar(e) {
 							console.error("Error validating answer:", e);
 						});
