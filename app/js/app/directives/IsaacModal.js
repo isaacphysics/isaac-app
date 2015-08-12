@@ -32,17 +32,18 @@ define([], function() {
                     show: function() {
                         $("#isaacModal").empty().append($compile(rawClone)(scope));
                         $("#isaacModal").foundation("reveal", "open");
-
+                        debugger
                         var windowHeight = $(window).height(),
                             modalHeight = $("#isaacModal").height(),
                             modalPosition = (33/100*windowHeight) - (modalHeight/2);
 
-                        $("#isaacModal").css("top", modalPosition > 0 ? modalPosition+'px' : 0);
+                        var scrollPos = $(window).scrollTop();
+
+                        $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : scrollPos);
                         
                         // make sure the top of the modal is in view.
                         if (!('noHash' in attrs)) {
                             $location.hash('isaacModal');
-                            $anchorScroll();
                         }
                     },
                     hide: function() {
