@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$location", "$timeout", function($location, $timeout) {
+    return ["$location", "$timeout", "api", function($location, $timeout, api) {
 		return {
 			scope: true,
 			restrict: "A",
@@ -25,6 +25,14 @@ define([], function() {
             	// Global var
             	var flyin;
                 var loginTooltips = [];
+                scope.contentProblems = 0;
+                scope.user.$promise.then(function(user) {
+                    if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'ADMIN') {
+                        api.contentProblems.get().$promise.then(function(result){
+                            scope.contentProblems = result.totalErrors;
+                        })
+                    }
+                });
 
                 // determine whether we should disable any global nav links
                 var applyDisabledToolTips = function() {
