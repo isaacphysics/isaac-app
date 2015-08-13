@@ -17,7 +17,9 @@ define([], function() {
 
 	var PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
 		$rootScope.pageTitle = "Content Error Page";
-		$scope.doc = page;
+		$scope.errorMap = page;
+
+		$scope.editorPath = "http://editor.isaacphysics.org/#!/edit/master/"
 	}]
 
 	return {

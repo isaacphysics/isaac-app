@@ -1,10 +1,20 @@
 <div class='small-16 columns'>
 	<h1>Content Problem List</h1>
-	<h2 class='subheader'>{{doc.subtitle}}</h2>
 </div>
 
-<div class="row">
+
 	<div class='large-16 medium-16 columns'>
-		<div isaac-accordion doc="doc"></div>
+		<p><strong>Critical errors:</strong> {{errorMap.failedFiles}}, <strong>Files with errors:</strong> {{errorMap.brokenFiles}}, <strong>Total errors:</strong> {{errorMap.totalErrors}} - <strong>Content Version:</strong> {{errorMap.currentLiveVersion}}</p>
+		<table>
+			<tr>
+				<th><a href="javascript:void(0);" ng-click="searchSortPredicate = 'partialContent.title'; reverse=!reverse">Title / Filename</a></th>	
+				<th title="This means something with this id is available in the api"><a href="javascript:void(0);" ng-click="searchSortPredicate = 'successfulIngest'; reverse=!reverse">Successful Ingest</a></th>
+				<th>List of Error Messages</th>
+			</tr>
+			<tr ng-repeat="errorRecord in errorMap.errorsList | orderBy:searchSortPredicate:reverse">
+				<td class="error"><a href="{{editorPath + errorRecord.partialContent.canonicalSourceFile}}" target="_blank">{{errorRecord.partialContent.title}}</a></td>
+				<td>{{errorRecord.successfulIngest}}</td>
+				<td style="height:100px; overflow:scroll;"><ul><li style="width:500px;" ng-repeat="error in errorRecord.listOfErrors">{{error}}</li></ul></td>
+			</tr>
+		</table>
 	</div>
-</div>
