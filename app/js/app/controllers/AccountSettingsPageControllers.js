@@ -134,7 +134,7 @@ define([], function() {
         		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
         	}
 
-        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing){
+        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
         		if(promptResponse){
         			
