@@ -17,7 +17,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
 		$rootScope.pageTitle = "Account Settings";
-		// if the userOfInterest is set then we want to the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
+		// if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
 		// this is likely to be an administrator activity and could do with some extra security from the frontend.
 		if (userOfInterest) {
 			$scope.editingSelf = false;
@@ -25,6 +25,9 @@ define([], function() {
 		} else {
 			$scope.editingSelf = true;
 		}
+
+		var emailBeforeEditing = $scope.user.email;
+		console.log("emailBeforeEditing:" + emailBeforeEditing + ", editingSelf:" + $scope.editingSelf);
 
 		// Create date of birth select options
 		$scope.datePicker = {
@@ -123,7 +126,6 @@ define([], function() {
         $scope.showSkip = !!$stateParams.next;
 
         $scope.save = function(next) {
-        	
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
         	}
@@ -131,6 +133,19 @@ define([], function() {
         	if ($scope.account.password.$viewValue) {
         		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
         	}
+
+        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing){
+        		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
+        		if(promptResponse){
+        			
+        		}
+        		else{
+        			$scope.user.email = emailBeforeEditing;
+        			return;
+        		}
+        	}
+
+
         	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
 	        	api.account.saveSettings($scope.user).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
@@ -169,7 +184,7 @@ define([], function() {
         $scope.$on("$destroy", function() {
         	auth.updateUser();
         })
-		
+
 		// authorisation (token) stuff
 		$scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();

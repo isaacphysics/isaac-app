@@ -370,9 +370,15 @@ define([], function() {
 			},
 		});
 
-		this.email = $resource(server + "/api/users/verifypassword/:token", null, {
+		this.emailVerification = $resource(server + "/api/users/verifyemail/:userid/:email/:token", null, {
 			verify: {
-				method: "POST"
+				method: "GET"
+			},
+		});
+
+		this.verifyEmail = $resource(server + "/api/users/verifyemail/:email", null, {
+			requestEmailVerification: {
+				method: "GET"
 			}
 		});
 

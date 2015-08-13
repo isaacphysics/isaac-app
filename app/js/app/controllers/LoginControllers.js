@@ -26,6 +26,7 @@ define([], function() {
 			delete $scope.errorMessage;
 			// Only submit if form is valid
 			if($scope.form.$valid) {
+				$scope.userEmail = $scope.user.email;
 				auth.login($scope.user).then(function(){
 					// Success		
 					if (!$scope.target) {
