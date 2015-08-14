@@ -32,7 +32,7 @@ define([], function() {
                     show: function() {
                         $("#isaacModal").empty().append($compile(rawClone)(scope));
                         $("#isaacModal").foundation("reveal", "open");
-                        debugger
+
                         var windowHeight = $(window).height(),
                             modalHeight = $("#isaacModal").height(),
                             modalPosition = (33/100*windowHeight) - (modalHeight/2);
