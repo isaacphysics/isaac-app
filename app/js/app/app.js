@@ -161,6 +161,10 @@ define([
             }, 0);
         })
 
+        $rootScope.snoozeEmailVerification = function(){
+            $(".verification-message").remove();
+        }
+
         $rootScope.requestEmailVerification = function(){
             api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
                 $rootScope.showToast($rootScope.toastTypes.Success, "Email verification request succeeded.", "Please follow the verification link given in the email sent to your address. ");
