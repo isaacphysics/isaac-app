@@ -99,16 +99,13 @@ define([], function() {
     }];
 
     var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', function($scope, api, $timeout, $stateParams, $state, $filter) {
-
         $scope.setLoading(true);
 
-        $scope.event = api.events.get({id: $stateParams.id});
-        
         $scope.toTitleCase = toTitleCase;
 
         $scope.jsonLd = {};
 
-        $scope.event.$promise.then(function(e) {
+        api.events.get({id: $stateParams.id}).$promise.then(function(e) {
             $scope.setLoading(false);
             
             // usage instructions defined at - https://developers.google.com/structured-data/rich-snippets/events
@@ -140,6 +137,8 @@ define([], function() {
             }
 
             augmentEvent(e, api);
+
+            $scope.event = e;
         }).catch(function() {
             $scope.setLoading(false);
             $state.go('404', {target: $state.href("event", $stateParams)});

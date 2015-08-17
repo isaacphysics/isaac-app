@@ -3,8 +3,8 @@
         <span data-ot="Please find additional information about the event in the page below." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
-<div class="event-detail">
-  <div class="medium-16 large-10 columns event-detail-main">
+<div class="event-detail" >
+  <div class="medium-16 large-10 columns event-detail-main" ng-class="{expired: event.expired}">
     <div class="event-type hide-for-medium-up">
       <span class="icon-stack" ng-if="event.teacher">
         <span class="icon-hexagon"></span>
@@ -20,7 +20,7 @@
       </span>
       <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
       <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-      <img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
+      <img class="event-img" ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
     </div>
     <!--
       Title
@@ -48,7 +48,7 @@
         </tr>
         <tr>
           <td>When:</td>
-          <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span>{{event.date | date:'shortTime'}}</span></time></td>
+          <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span>{{event.date | date:'shortTime'}}</span></time> <span ng-if="event.expired" class="error">This event is in the past.</span></td>
         </tr>
         <tr ng-show="event.location">
           <td>Location:</td>
@@ -62,9 +62,9 @@
     <div isaac-content doc="event"></div>
     <a ng-if="false" href="javascript:void(0)" ui-sref="contact" class="ru-button-big">Contact us to book</a><a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
   </div>
-  <div class="medium-16 large-6 columns event-detail-aside">
+  <div class="medium-16 large-6 columns event-detail-aside" ng-class="{expired: event.expired}">
     <div class="row">
-      <div class="medium-8 large-16 columns">
+      <div class="medium-8 large-16 columns" >
         <div class="event-type show-for-medium-up">
           <span class="icon-stack" ng-if="event.teacher">
             <span class="icon-hexagon"></span>
@@ -80,7 +80,7 @@
           </span>
           <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
           <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-          <img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
+          <img class="event-img" ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
         </div>
       <!--
         <div class="event-attendees">

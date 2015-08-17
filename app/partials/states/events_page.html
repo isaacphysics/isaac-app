@@ -37,7 +37,7 @@
         <h6 ng-if="!event.expired">&nbsp;<span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
         <h6 ng-if="event.expired">This event has expired</h6>
         <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-        <a ui-sref="event({id: event.id})"><img ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" /></a>
+        <a ui-sref="event({id: event.id})"><img class="event-img" ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" /></a>
       </div>
       <div class="panel">
            <h3><a ui-sref="event({id: event.id})">{{event.title}}</a></h3>

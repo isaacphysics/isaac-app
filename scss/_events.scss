@@ -20,6 +20,25 @@
 		}
 	}
 }
+
+@mixin expired-event {
+	h3, h3 > a , p, time, .event-table td, .event-link, .icon-teacher, .icon-virtual, .icon-student, .event-attend, .event-attend .icon-hexagon {
+		color: #999;
+	}
+
+	h6 {
+		z-index:5;
+	}
+
+
+
+	.event-img {
+		filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+	    filter: gray;
+	    -webkit-filter: grayscale(1);
+	}
+}
+
 .event {
 	h3 {
 		font-weight: 800;
@@ -40,9 +59,7 @@
 	}
 
 	&.expired {
-		h3, h3 > a , p, time, .event-table td, .event-link, .event-type .icon-teacher, .event-type .icon-virtual, .event-type .icon-student, .event-attend, .event-attend .icon-hexagon {
-			color: #999;
-		}
+		@include expired-event;
 	}
 
 	table tr {
@@ -185,6 +202,10 @@
 	border: #ccc 1px solid;
 	margin-right: 0;
 	margin-left: 0;
+
+	.expired .event-type {
+		@include expired-event;
+	}
 
 	h1 {
 		font-size: 25px;
