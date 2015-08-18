@@ -60,6 +60,8 @@ define([], function() {
 				api.password.reset({'email': $scope.user.email}).$promise.then(function(){
 					// Alert user that email has been sent
 					$scope.passwordResetFlag = true;
+				}).catch(function(e){
+					$scope.showToast($scope.toastTypes.Failure, "Password Reset Request Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});
 			}
 		}

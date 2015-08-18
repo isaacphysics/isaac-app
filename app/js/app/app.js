@@ -168,8 +168,8 @@ define([
         $rootScope.requestEmailVerification = function(){
             api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
                 $rootScope.showToast($rootScope.toastTypes.Success, "Email verification request succeeded.", "Please follow the verification link given in the email sent to your address. ");
-            }, function(error){
-                $rootScope.showToast($rootScope.toastTypes.Failure, "Email verification request failed.", "Sending an email to your address failed.");
+            }, function(e){
+                $rootScope.showToast($rootScope.toastTypes.Failure, "Email verification request failed.", "Sending an email to your address failed with error message: " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
             });
         }
 

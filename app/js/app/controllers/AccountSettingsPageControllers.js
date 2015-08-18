@@ -204,9 +204,12 @@ define([], function() {
 		        		$scope.authenticationToken = {value: null};
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
 		        	}).catch(function(e){
+		        		// this is likely to be a throttling error message.
 		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 		        	})  						
 				}
+        	}).catch(function(e){
+        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
         }
 
