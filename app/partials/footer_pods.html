@@ -22,9 +22,9 @@
 
             <li ng-if="page.type=='isaacFastTrackQuestionPage'" question-pod questions="relatedEasierQuestions" title="'Easier Questions'"></li>
 
-            <li ng-if="page.type=='isaacFastTrackQuestionPage' && page.level < 3" question-pod questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
+            <li ng-if="page.type=='isaacFastTrackQuestionPage' && relatedHarderQuestions.length > 0" question-pod questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
 
-            <li ng-if="page.type !='isaacFastTrackQuestionPage' || page.level == 3 ">
+            <li ng-if="page.type !='isaacFastTrackQuestionPage' || relatedHarderQuestions.length == 0 ">
                 <div class="panel ru_pod ru_pod_forum">
                     <div class='ru_pod_title'>
                         <h5>Events</h5>
