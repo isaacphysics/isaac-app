@@ -93,9 +93,9 @@
               <div isaac-content doc="notificationDoc"></div>
               <!-- TODO: Add response buttons here -->
               <div class="text-right">
+                <button ng-click="notificationResponse(notificationDoc, 'DISMISSED')">Yes, view questionnaire</button>                  
                 <button ng-click="notificationResponse(notificationDoc, 'DISABLED')">No thanks</button>  
                 <button ng-click="notificationResponse(notificationDoc, 'POSTPONED')">Ask me later</button>  
-                <button ng-click="notificationResponse(notificationDoc, 'DISMISSED')">Yes, view questionnaire</button>  
               </div>
           </div>
         </div>
