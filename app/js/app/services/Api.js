@@ -210,7 +210,8 @@ define([], function() {
 		this.assignments = $resource(server + "/api/assignments/", {}, {
 			'getMyAssignments' : {
 				method: 'GET', 
-				isArray: true 
+				isArray: true,
+				params: {assignmentStatus: '@assignmentStatus'}
 			},
 			'getAssignmentsOwnedByMe' : {
 				method: 'GET', 
