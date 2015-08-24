@@ -641,6 +641,12 @@ define([
 
         $rootScope.notificationResponse = function(notification, response) {
             api.notifications.respond({id: notification.id, response: response}, {});
+
+            // if they respond with dismissed then it means we should show them the external link if there is one
+            if (response == 'DISMISSED' && notification.externalReference.url) {
+                window.open(notification.externalReference.url, "_blank");
+            }
+
             $rootScope.modals.notification.hide();
         }
 
