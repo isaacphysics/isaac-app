@@ -26,13 +26,8 @@ define([], function() {
             	var flyin;
                 var loginTooltips = [];
                 scope.contentProblems = 0;
-                scope.user.$promise.then(function(user) {
-                    if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'ADMIN') {
-                        api.contentProblems.get().$promise.then(function(result){
-                            scope.contentProblems = result.totalErrors;
-                        })
-                    }
-                });
+                
+                scope.myIncompleteAssignments = 0;
 
                 // determine whether we should disable any global nav links
                 var applyDisabledToolTips = function() {
@@ -62,6 +57,23 @@ define([], function() {
 
             	scope.menuToggle = function(e) {
             		scope.isVisible = !scope.isVisible;
+
+                    if (scope.isVisible) {
+                        // NOTE: in reality the api considers IN_PROGRESS as including NOT_STARTED for assignments
+                        // The intension here is to get all that haven't been completed.
+                        api.assignments.getMyAssignments({assignmentStatus:"IN_PROGRESS"}).$promise.then(function(results) {
+                            scope.myIncompleteAssignments = results.length;
+
+                        });                    
+
+                        scope.user.$promise.then(function(user) {
+                            if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'ADMIN') {
+                                api.contentProblems.get().$promise.then(function(result){
+                                    scope.contentProblems = result.totalErrors;
+                                })
+                            }
+                        });
+                    }
 
             		$('.dl-nav').slideToggle(200);
             	}
