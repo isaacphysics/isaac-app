@@ -644,7 +644,18 @@ define([
 
             // if they respond with dismissed then it means we should show them the external link if there is one
             if (response == 'DISMISSED' && notification.externalReference.url) {
-                window.open(notification.externalReference.url, "_blank");
+                var userIdToken = "{{currentUserId}}";
+
+                // if they have a token representing the user id then replace it.
+                if (notification.externalReference.url.indexOf(userIdToken) != -1) {
+                    $rootScope.user.$promise.then(function(user){
+                        var newUrl = notification.externalReference.url.replace(userIdToken, user._id);
+
+                        window.open(newUrl, "_blank");
+                    });
+                } else {
+                    window.open(notification.externalReference.url, "_blank");
+                }
             }
 
             $rootScope.modals.notification.hide();
