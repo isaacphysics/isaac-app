@@ -46,7 +46,7 @@
         <!-- Container for hexagon background -->
         <div class='bg-wrap'>
             <div class="hide-for-old-browser-only" ng-include="'/partials/cookie-message.html'"></div>
-            <div class="hide-for-old-browser-only" ng-if="user._id!=null && user.emailVerificationStatus!='VERIFIED' && user.hasSegueAccount" ng-include="'/partials/verification-message.html'"></div>
+            <div class="hide-for-old-browser-only" ng-if="user._id!=null && user.emailVerificationStatus!='VERIFIED'" ng-include="'/partials/verification-message.html'"></div>
             <div class="hide-for-old-browser-only" ng-include="'/partials/header.html'"></div>
 
             <div class="row">

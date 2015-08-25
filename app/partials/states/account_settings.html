@@ -53,7 +53,7 @@
                     <div class="large-16 columns">
                         <label for="account-email">
                             <strong>Your Email Address</strong>
-                            <span ng-if="user.emailVerificationStatus != 'VERIFIED' && user.hasSegueAccount" data-ot="Verifying your email address allows us to make sure Isaac is run for legitimate users." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                            <span ng-if="user.emailVerificationStatus != 'VERIFIED'" data-ot="Verifying your email address allows us to make sure Isaac is run for legitimate users." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                             <span class="ru-form-required"></span>
                             <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
                                 Enter a valid email
