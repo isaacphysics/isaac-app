@@ -31,6 +31,14 @@ $ru_nav_size : 7em;
     height: 136px;
 }
 
+.ru-desktop-logo-dev
+{
+  color:red;
+  position:relative;
+  top:-40px;
+  left:100px;
+}
+
 .ru-desktop-nav-item-inner {
     background-image: url(../assets/ru.png);
     background-position: -127px -5px;
@@ -215,6 +223,14 @@ $ru_nav_size : 7em;
 {
     @extend .left;
     width: 72px;
+}
+
+.ru-mobile-logo-dev
+{
+  color:red;
+  position:relative;
+  top:80px;
+  left:0px;
 }
 
 .ru-mobile-nav-item-inner {

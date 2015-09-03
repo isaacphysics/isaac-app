@@ -9,6 +9,7 @@
                         <img alt="isaac logo" title='Isaac. Physics. You work it out.' class='ru-desktop-menu-img' src='' 
                              data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
                              [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
+                         <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev">Non-Prod</div>      
                 </div>
                 <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='home'>
@@ -71,7 +72,7 @@
             <nav class='row'>
                 <a ui-sref='home'><img alt="isaac logo" title='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' 
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
-
+                <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod</div>                
                 <a class='ru-mobile-nav-item' ui-sref='top_boards'>
                     <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('top_boards')}">
                         <span>Top Boards</span>
