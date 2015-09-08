@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, $window, $location, $state, $rootScope, $timeout, $cookies, $interval) {
+	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -45,7 +45,7 @@ define([], function() {
 
                 $rootScope.user = u;
                 $rootScope.user.$promise.then(function(u){
-                	setupUserConsistencyCheck();
+                	setupUserConsistencyCheck();			
                 });
 
                 if (u.firstLogin) {
@@ -77,7 +77,7 @@ define([], function() {
 
 		this.logout = function() {
 			var p = api.authentication.logout({}).$promise;
-
+			
 			p.then(function() {
 				$rootScope.user = null;
 
@@ -97,6 +97,8 @@ define([], function() {
 					setupUserConsistencyCheck();
 					$rootScope.$apply();
 				});
+			}).catch(function(){
+				cancelUserConsistencyCheck();
 			})
 
 			return $rootScope.user.$promise;
@@ -121,20 +123,22 @@ define([], function() {
 
 		var setupUserConsistencyCheck = function() {
 			cancelUserConsistencyCheck();
-			$cookies.currentUserId = $rootScope.user._id
+			// Note: Had to use local storage rather than cookies for this because cookies sometimes did not update across browser tabs in chrome.
+			// This is especially so when using third party authenticators for some reason.
+			persistence.save("currentUserId", $rootScope.user._id)
 
 			interval = $interval(function() {
-
-	            if ($rootScope.user._id != $cookies.currentUserId) {	
-	            	$rootScope.modals.userConsistencyError.show();
+				var currentId = persistence.load("currentUserId")
+				if (currentId != $rootScope.user._id) {
 	            	cancelUserConsistencyCheck();
+	            	$rootScope.modals.userConsistencyError.show();
 	            	$rootScope.user = api.currentUser.get();
-	            }
+				}
 	        }, 1000)		
 		}
 
 		var cancelUserConsistencyCheck = function() {
-	        delete $cookies.currentUserId
+	       	persistence.save("currentUserId", null)
 	        if (interval) {
 	        	$interval.cancel(interval);
 	        	interval = null;
