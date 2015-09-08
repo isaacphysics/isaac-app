@@ -44,7 +44,7 @@ define([], function() {
                 console.debug("Redirecting to", next);
 
                 $rootScope.user = u;
-                $rootScope.$promise.then(function(u){
+                $rootScope.user.$promise.then(function(u){
                 	setupUserConsistencyCheck();
                 });
 
