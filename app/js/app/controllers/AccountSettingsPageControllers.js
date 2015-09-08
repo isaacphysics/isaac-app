@@ -196,7 +196,7 @@ define([], function() {
         	}
         	
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) : null) + ". " + result.familyName + " (" + result.email + "}")
+				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) : null) + ". " + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
 
 				if (confirm) {
 		        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
