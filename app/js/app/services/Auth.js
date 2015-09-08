@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', function(api, $window, $location, $state, $rootScope, $timeout, $cookies) {
+	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, $window, $location, $state, $rootScope, $timeout, $cookies, $interval) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -44,6 +44,9 @@ define([], function() {
                 console.debug("Redirecting to", next);
 
                 $rootScope.user = u;
+                $rootScope.$promise.then(function(u){
+                	setupUserConsistencyCheck();
+                });
 
                 if (u.firstLogin) {
                 	$state.go("accountSettings", {next: next}, {location: "replace"});
@@ -53,8 +56,8 @@ define([], function() {
                 }
 
             }).catch(function(e) {
-
             	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
+            	cancelUserConsistencyCheck()
             });
 
 		}
@@ -70,42 +73,73 @@ define([], function() {
 
 		}
 
+		var interval = null;
+
 		this.logout = function() {
 			var p = api.authentication.logout({}).$promise;
 
 			p.then(function() {
 				$rootScope.user = null;
+
 			}).catch(function(e) {
 				console.error("Failed to log out:", e)
+
 			})
+			cancelUserConsistencyCheck();
 			return p;
 		}
 
 		this.updateUser = function() {
-
 			$rootScope.user = api.currentUser.get();
-
+			
 			$rootScope.user.$promise.then(function() {
 				$timeout(function() {
+					setupUserConsistencyCheck();
 					$rootScope.$apply();
 				});
 			})
 
 			return $rootScope.user.$promise;
 		}
+		
+
 
 		this.login = function(userPrototype) {
 			// expects the user object to contain an email and password property.
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
+		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){
 					$rootScope.user = null;
+			        cancelUserConsistencyCheck();
 					reject(e);
 				});
 			});
 		}
+
+		var setupUserConsistencyCheck = function() {
+			cancelUserConsistencyCheck();
+			$cookies.currentUserId = $rootScope.user._id
+
+			interval = $interval(function() {
+
+	            if ($rootScope.user._id != $cookies.currentUserId) {	
+	            	$rootScope.modals.userConsistencyError.show();
+	            	cancelUserConsistencyCheck();
+	            	$rootScope.user = api.currentUser.get();
+	            }
+	        }, 1000)		
+		}
+
+		var cancelUserConsistencyCheck = function() {
+	        delete $cookies.currentUserId
+	        if (interval) {
+	        	$interval.cancel(interval);
+	        	interval = null;
+	        }   
+		}		
 	}];
 
 	// this should not be used in the router resolver property as it will only return once.
