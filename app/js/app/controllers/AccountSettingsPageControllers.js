@@ -190,8 +190,8 @@ define([], function() {
         $scope.activeAuthorisations = api.authorisations.get();
         
         $scope.useToken = function() {
-        	if ($scope.authenticationToken.value == null) {
-        		$scope.showToast($scope.toastTypes.Failure, "No Token Value", "You have to enter a token value!");
+        	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
+        		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
         	
