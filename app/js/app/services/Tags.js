@@ -44,6 +44,13 @@ define([], function() {
 				parent: "physics",
 				enabled: false,
 				comingSoon: true,
+			}, 
+			{
+				id: "chemphysics",
+				title: "Chemical Physics",
+				parent: "physics",
+				enabled: false,
+				comingSoon: true
 			},
 
 			// Mechanics topics
