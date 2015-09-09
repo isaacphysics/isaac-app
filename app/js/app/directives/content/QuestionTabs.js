@@ -56,8 +56,11 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
-				scope.state.gameBoardCompletedPassed = false;
-				scope.state.gameBoardCompletedPerfect = false;
+				// prevent undefined errors when we don't know which gameboard a person is working on.
+				if(scope.gameBoard){
+					scope.state.gameBoardCompletedPassed = false;
+					scope.state.gameBoardCompletedPerfect = false;					
+				}
 
 				scope.checkAnswer = function() {
 					if (scope.selectedChoice != null) {
