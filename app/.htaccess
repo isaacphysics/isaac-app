@@ -1,3 +1,9 @@
+## STOP REFERRER SPAM
+RewriteCond %{HTTP_REFERER} success\-seo\.com [NC,OR]
+RewriteCond %{HTTP_REFERER} semalt\.com [NC,OR]
+RewriteCond %{HTTP_REFERER} best\-seo\-solution\.com [NC,OR]
+RewriteCond %{HTTP_REFERER} best\-seo\-offer\.com [NC]
+RewriteRule .* - [F]
 
 RewriteEngine On
 RewriteBase /
