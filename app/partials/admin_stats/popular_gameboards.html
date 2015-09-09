@@ -10,12 +10,14 @@
                 <th>Gameboard Title</th>
                 <th><a href="javascript:void(0);" ng-click="gameboardListSortPredicate = 'connections'; reverse=!reverse"># of users connected</a></th>
                 <th><a href="javascript:void(0);" ng-click="gameboardListSortPredicate = 'gameboard.ownerUserInformation.familyName'; reverse=!reverse">Creator (if available)</a></th>
+                <th><a href="javascript:void(0);" ng-click="gameboardListSortPredicate = 'gameboard.creationDate'; reverse=!reverse">Creation Date</a></th>
             </tr>
             <tr ng-repeat="item in dataToShow.boardList | orderBy:gameboardListSortPredicate:reverse">
                 <td><a href="javascript:void(0)" ui-sref="board({id: item.gameboard.id})">{{item.gameboard.id}}</a></td>
                 <td>{{item.gameboard.title || generateGameBoardTitle(item.gameboard)}}</td>
                 <td>{{item.connections}}</td>
                 <td>{{item.gameboard.ownerUserInformation.familyName + ", " + item.gameboard.ownerUserInformation.givenName}}</td>
+                <td>{{item.gameboard.creationDate | date:'dd/MM/yyyy'}}</td>
             </tr>
         </table>
         </div>      
