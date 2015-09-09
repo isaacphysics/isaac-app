@@ -132,6 +132,10 @@ define([], function() {
 				if (currentId != $rootScope.user._id) {
 	            	cancelUserConsistencyCheck();
 	            	$rootScope.modals.userConsistencyError.show();
+					// we want to know how often this happens.
+					api.logger.log({
+						type: "USER_CONSISTENCY_WARNING_SHOWN"
+					});
 	            	$rootScope.user = api.currentUser.get();
 				}
 	        }, 1000)		
