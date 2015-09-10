@@ -35,6 +35,8 @@ define([], function() {
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
+		$scope.backButtonVisible = false;
+
 		// Find subject tags on page.
 		var pageSubject = "physics";
 		for(var i in subjects) {
@@ -44,15 +46,14 @@ define([], function() {
 			}
 		}
 		$scope.sourceUrl = persistence.session.load("conceptPageSource");
-
+		console.log($scope.sourceUrl);
 		if($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions") == 0) {
 			$scope.backText = "Back to your question";
+			$scope.backButtonVisible = true;
 		} else if ($scope.sourceUrl == "/concepts") {
 			$scope.backText = "Back to concepts";
-		} else {
-			$scope.backText = "Back";
-			$scope.sourceUrl = "BACK"
-		}
+			$scope.backButtonVisible = true;
+		} 
 
 		$rootScope.pageSubject = pageSubject;
 

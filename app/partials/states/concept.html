@@ -1,4 +1,4 @@
-<a href="javascript:void(0)" ng-click="go(sourceUrl)">
+<a ng-if="backButtonVisible" href="javascript:void(0)" ng-click="go(sourceUrl)">
     <div desktop-panel arrow-block class="no-print">
         <div class='ru-panel-arrow'> </div>
         <div class='ru-desktop-panel-content'>
@@ -6,7 +6,7 @@
         </div>
     </div>
 </a>
-<a href="javascript:void(0)" ng-click="go(sourceUrl)">
+<a ng-if="backButtonVisible" href="javascript:void(0)" ng-click="go(sourceUrl)">
     <div mobile-panel arrow-block class="no-print">
         <div class='ru-panel-arrow'> </div>
         <div class='row'>
