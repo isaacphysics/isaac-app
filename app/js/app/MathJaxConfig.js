@@ -56,8 +56,9 @@ define([], function() {
 			extensions: ["mhchem.js"],
 		},
 	  "HTML-CSS": {
-	    availableFonts: [], preferredFont: null, // force Web fonts
-	    webFont: "Gyre-Termes",// "Latin-Modern"
+	    availableFonts: [], 
+	    preferredFont: null, // force Web fonts
+	    webFont: "STIX-Web"
 	  },
 
 	// Fix font issues in Chrome 32
