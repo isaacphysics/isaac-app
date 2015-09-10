@@ -119,7 +119,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 {
                     $(this).text('Perfect!').addClass('ru-hex-home-msg');
                 } else if (d.state === 'PASSED') {
-                    $(this).text('Well Done!').addClass('ru-hex-home-msg');
+                    $(this).text('Master!').addClass('ru-hex-home-msg');
                 }
                 else if (d.state === 'FAILED')
                 {
