@@ -131,6 +131,9 @@
 	background-color: #f6f6f6;
 	border-bottom: #999 1px solid;
 	padding: 0 10px 0 20px;
+	white-space: nowrap;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .group-nav-delete {
@@ -205,6 +208,7 @@
 	border-collapse: collapse;
 	border: #999 1px solid;
 	margin: 0;
+	width:100%;
 
 	td {
 		color: #000;
