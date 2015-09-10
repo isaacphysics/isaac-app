@@ -320,6 +320,7 @@ $menu-handle-width: 160px;
     [canvas-symbol] .canvas-symbol {
         position: absolute;
         cursor: pointer;
+        z-index: -2;
 
         .measure-this {
             //border: 1px dashed rgba(0,0,150,0.5);

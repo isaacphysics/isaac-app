@@ -16,11 +16,27 @@
 define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 
 
-	return ["$parse", "$compile", "$location", function($parse, $compile, $location) {
+	return ["$parse", "$compile", "$location", "$rootScope", function($parse, $compile, $location, $rootScope) {
 
+
+		$rootScope.markdownLinkGo = function(url) {
+			// If the link is external go ahead and return it
+			if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
+				return url;
+			}
+			
+			// The link must be internal so add #! if required.
+			if ($location.host().indexOf("localhost") > -1) {
+				return "/#!" + url
+			} else {
+				return url;	
+			}
+		}
 
 		return {
-
+			scope: {
+				md: "=",
+			},
 			restrict: 'A',
 			priority: 0,
 
@@ -64,32 +80,23 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 					extensions: ["table", "refs", "links", "glossary", "concepts"],
 				});
 
-				scope.markdownLinkGo = function(url) {
-					// If the link is external go ahead and return it
-					if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
-						return url;
-					}
+				scope.$watch("md", function(markdown) {
+
+					var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
 					
-					// The link must be internal so add #! if required.
-					if ($location.host().indexOf("localhost") > -1) {
-						return "/#!" + url
-					} else {
-						return url;	
-					}
-				}
+					var findAllLbs = /<lbr>/g;
+					var findAllRbs = /<rbr>/g;
+					var findAllDoubleLeftBraces = /{{/g;
+					var findAllDoubleRightBraces= /}}/g;
 
-				var parsed = $parse(attrs.bindMarkdown|| element.html());
-				var markdown = (parsed(scope) || "").toString();
-				var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
-				
-				var findAllLbs = /<lbr>/g;
-				var findAllRbs = /<rbr>/g;
-				var findAllDoubleLeftBraces = /{{/g;
-				var findAllDoubleRightBraces= /}}/g;
+					// we have to replace <lbr><lbr> and <rbr><rbr> with {{ }} before angular compiles. The need to add spaces to {{ }} is to cope with MathJax
+					var replaced = converted.replace(findAllDoubleLeftBraces, "{ {").replace(findAllDoubleRightBraces, "} }").replace(findAllLbs, "{").replace(findAllRbs, "}")
+					element.html($compile(replaced)(scope));
 
-				// we have to replace <lbr><lbr> and <rbr><rbr> with {{ }} before angular compiles. The need to add spaces to {{ }} is to cope with MathJax
-				var replaced = converted.replace(findAllDoubleLeftBraces, "{ {").replace(findAllDoubleRightBraces, "} }").replace(findAllLbs, "{").replace(findAllRbs, "}")
-				element.html($compile(replaced)(scope));
+					$rootScope.requestMathjaxRender();
+
+				});
+
 			}
 		};
 	}];

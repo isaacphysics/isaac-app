@@ -1,6 +1,6 @@
-<div math-jax ng-if="value != null" ng-switch="encoding">
-	<div ng-switch-when="markdown" bind-markdown="value"></div>
-	<div ng-switch-when="html" ng-bind-html="safeValue"></div>
+<div ng-if="value != null" ng-switch="encoding">
+	<div ng-switch-when="markdown" bind-markdown md="value"></div>
+	<div ng-switch-when="html" math-jax ng-bind-html="safeValue"></div>
 	<div ng-switch-default>[CONTENT WITH UNKNOWN ENCODING: <i>{{encoding}}</i>]</div>
 </div>
 
