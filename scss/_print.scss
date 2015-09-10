@@ -104,33 +104,50 @@
         background-color: initial !important;
     }
 
-    .accordion.ru_accordion.general dd a.ru_accordion_titlebar .ru_accordion_name
-    {
-        display: none !important;
+    .accordion dd{
+        page-break-inside: avoid;
     }
 
-    .accordion.ru_accordion.maths dd a.ru_accordion_titlebar .ru_accordion_name
-    {
-        border: 0px solid $ru_maths;
-        background-color: transparent !important;
-        padding-right: 10px;
+    .accordion.ru_accordion.general {
+        dd {
+            a.ru_accordion_titlebar {
+                .ru_accordion_name {
+                    display: none !important;
+                }
+            }
+        }
     }
-
-    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar .ru_accordion_name
-    {
-        border: 0px solid $ru_maths;
-        background-color: transparent !important;
-        padding-right: 10px;
+    .accordion.ru_accordion.maths {
+        dd {
+            a.ru_accordion_titlebar {
+                .ru_accordion_name {
+                    border: 0px solid $ru_maths;
+                    background-color: transparent !important;
+                    padding-right: 10px;
+                }
+            }
+            a.ru_accordion_titlebar:hover {
+                .ru_accordion_name {
+                    border: 0px solid lighten($ru_maths, $ru_site_hover);
+                }
+            }
+        }
     }
-
-    .accordion.ru_accordion.physics dd a.ru_accordion_titlebar:hover .ru_accordion_name
-    {
-        border: 0px solid lighten($ru_physics, $ru_site_hover);
-    }
-
-    .accordion.ru_accordion.maths dd a.ru_accordion_titlebar:hover .ru_accordion_name
-    {
-        border: 0px solid lighten($ru_maths, $ru_site_hover);
+    .accordion.ru_accordion.physics {
+        dd {
+            a.ru_accordion_titlebar {
+                .ru_accordion_name {
+                    border: 0px solid $ru_maths;
+                    background-color: transparent !important;
+                    padding-right: 10px;
+                }
+            }
+            a.ru_accordion_titlebar:hover {
+                .ru_accordion_name {
+                    border: 0px solid lighten($ru_physics, $ru_site_hover);
+                }
+            }
+        }
     }
 
     .ng-scope.active{
@@ -145,23 +162,30 @@
         border-color: #000;
     }
 
-    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title {
-        width: initial;
-        top:0px !important;
-        padding-top:0px !important;
-        height:30px !important;
-        padding-left:0 !important;
+    .accordion.ru_accordion {
+        dd {
+            a.ru_accordion_titlebar {
+                .ru_accordion_title {
+                    width: initial;
+                    top:0px !important;
+                    padding-top:0px !important;
+                    height:30px !important;
+                    padding-left:0 !important;
+                }
+                .ru_accordion_name {
+                    padding-top:0px;
+                    padding-bottom:0px;
+                    padding-left:0px;
+                    padding-right:0px;
+                    height:30px !important;
+                    min-width: 50px;
+                    margin-top:0px;
+                }
+            }
+        }
     }
 
-    .accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_name{
-        padding-top:0px;
-        padding-bottom:0px;
-        padding-left:0px;
-        padding-right:0px;
-        height:30px !important;
-        min-width: 50px;
-        margin-top:0px;
-    }
+
 
     .accordion-section-title-suffix{
         margin-top:0px;
@@ -210,18 +234,28 @@
         height: 25mm;
     }
 
-     .accordion.ru_accordion dd.active a.ru_accordion_titlebar{
-        
-        border-top: 0px solid #cccccc !important; 
+    .accordion.ru_accordion {
+        dd.active {
+            a.ru_accordion_titlebar {
+                border-top: 0px solid #cccccc !important;
+            }
+        }
+        dd {
+            a.ru_accordion_titlebar {
+                border-top: 0px solid #cccccc !important;
+                border-right: 0px solid #cccccc;
+                border-bottom: 1px solid #cccccc;
+                border-left: 0px solid #cccccc;
+                height: 30px;
+            }
+        }
     }
 
-    .accordion.ru_accordion dd a.ru_accordion_titlebar {
-        border-top: 0px solid #cccccc !important;
-        border-right: 0px solid #cccccc;
-        border-bottom: 1px solid #cccccc;
-        border-left: 0px solid #cccccc;
-        height: 30px;
+    .accordion .accordion-navigation>.content, .accordion dd>.content{
+        padding:0px !important;
     }
+
+
 
     //Allows us to position the 'Q' for printing
     .print-question{
