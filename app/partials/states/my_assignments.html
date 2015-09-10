@@ -17,9 +17,12 @@
          <div ng-repeat="assignment in assignmentsVisible" class="assignment">
             <div class="large-6 medium-7 columns">
                <div class="board-percentage">
-                  <span class="subject-physics">
+                  <span ng-if="assignment.gameboard.percentageCompleted != 100" class="subject-physics">
                         {{assignment.gameboard.percentageCompleted}}<span class="percent-symbol">%</span>          
                   </span>
+                  <span ng-if="assignment.gameboard.percentageCompleted == 100" class="subject-complete">
+                        &nbsp;
+                  </span>                  
                </div>
                <div class="board-info">
                   <h3><a ui-sref="board({id: assignment.gameboard.id})" href="javascript:void(0)">{{assignment.gameboard.title || generateGameBoardTitle(assignment.gameboard)}}</a></h3>
