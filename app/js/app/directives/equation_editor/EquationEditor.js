@@ -112,6 +112,7 @@ define([], function() {
 			link: function(scope, element, attrs) {
 
                 scope.canvasOffset = { }
+                scope.draggingNewSymbol = false;
 
                 scope.equationEditorElement = element;
 
@@ -130,10 +131,35 @@ define([], function() {
                 	scope.$broadcast("resizeMenu");
                 });
 
+                scope.$on("newSymbolDrag", function(_, pageX, pageY) {
+
+                    scope.draggingNewSymbol = true;
+
+                    var tOff = element.find(".trash-button").offset();
+                    var tWidth = element.find(".trash-button").width();
+                    var tHeight = element.find(".trash-button").height();
+                    scope.trashActive = (pageX > tOff.left && pageX < tOff.left + tWidth && pageY > tOff.top && pageY < tOff.top + tHeight);
+                    scope.$digest();
+
+                });
+
+                scope.$on("newSymbolAbortDrag", function() {
+                    if (scope.draggingNewSymbol) {
+                        scope.draggingNewSymbol = false;
+                        scope.$digest();
+                    }
+                })
+
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
                     var width = element.width();
                     var height = element.height();
+
+                    scope.draggingNewSymbol = false;
+
+                    if (scope.trashActive) {
+                        return;
+                    }
 
                     var newSymbol = $.extend({
                         x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft, 

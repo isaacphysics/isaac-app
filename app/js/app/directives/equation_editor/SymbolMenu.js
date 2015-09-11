@@ -36,6 +36,8 @@ define([], function() {
 					if (pageY > element.offset().top + element.height()) {
 						scope.$emit("triggerCloseMenus");
 					}
+
+					scope.$emit("newSymbolDrag", pageX, pageY);
 				}
 
 				var abortSymbolDrag = function($e, symbol, pageX, pageY) {
@@ -44,6 +46,8 @@ define([], function() {
                     // If we've dropped outside the menu, spawn this symbol.
                     if (pageY > element.offset().top + element.height()) {
                         scope.$emit("spawnSymbol", symbol, pageX, pageY);
+                    } else {
+                    	scope.$emit("newSymbolAbortDrag");
                     }
 				}
 

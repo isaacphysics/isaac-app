@@ -81,12 +81,16 @@ define([], function() {
 					if (pageY > element.offset().top + element.height()) {
 						scope.$emit("triggerCloseMenus");
 					}
+
+                    scope.$emit("newSymbolDrag", pageX, pageY);
 				})
 
                 scope.$on("symbolDrop", function($e, symbolSpec, pageX, pageY) {
                 	if (pageY > element.offset().top + element.height()) {
                 		scope.$emit("spawnSymbol", symbolSpec, pageX, pageY);
                 	}
+
+                    scope.$emit("newSymbolAbortDrag");
                 });
 
                 scope.$on("editNumber", function(_,s) {
