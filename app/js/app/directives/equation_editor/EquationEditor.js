@@ -74,7 +74,7 @@ define([], function() {
                     r.left = s.x - s.length / 2;
                     r.width = s.length;
                     r.height = s.length / 20;
-                    r.token = ":line";
+                    r.token = s.token;
 
                     break;
                 case "container":
@@ -237,19 +237,25 @@ define([], function() {
                     },{
                         type: "line",
                         label: "-",
-                        token: ":line",
+                        token: "-",
+                        length: 40,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\times",
+                        token: "\\times",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "line",
+                        label: "\\frac{a}{b}",
+                        token: ":frac",
                         length: 40,
                         texLabel: true,
                     },{
                         type: "string",
                         label: "\\pm",
                         token: "\\pm",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\wedge",
-                        token: "\\wedge",
                         fontSize: 48,
                         texLabel: true,
                     },{
