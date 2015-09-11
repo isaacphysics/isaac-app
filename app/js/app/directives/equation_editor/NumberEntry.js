@@ -105,7 +105,6 @@ define([], function() {
                 })
 
                 element.find("[katex]").each(function(i,e) {
-                    console.log(e);
                     katex.render($(e).html(), e);
                 })
 			},

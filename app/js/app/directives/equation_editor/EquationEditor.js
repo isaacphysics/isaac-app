@@ -443,7 +443,10 @@ define([], function() {
                     console.log("KeyDown", e.which);
 
                     switch(e.which) {
-                        case 46: // DELETE
+                        case 8: // Backspace. Deliberately fall through.
+                        case 46: // Delete
+                            e.stopPropagation();
+                            e.preventDefault();
                             scope.trash();
                             scope.$apply();
                         break;
