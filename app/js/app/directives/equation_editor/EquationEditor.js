@@ -305,7 +305,19 @@ define([], function() {
                         token: "\\tan",
                         fontSize: 48,
                         texLabel: true,
-                    },]
+                    },{
+                        type: "string",
+                        label: "\\int",
+                        token: "\\int",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\mathrm{d}",
+                        token: "\\mathrm{d}",
+                        fontSize: 48,
+                        texLabel: true,
+                    }]
                 };
 
                 scope.latinLetterTitle = {
