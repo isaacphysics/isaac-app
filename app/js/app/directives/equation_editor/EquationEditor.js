@@ -553,15 +553,20 @@ define([], function() {
                             switch (s.type) {
                                 case "string":
                                     s.fontSize += dy*2*0.67 // TODO: Work out why I need this factor of 0.67...
+                                    s.fontSize = Math.max(10, s.fontSize);
                                     break;
                                 case "container":
                                     s.width += dx;
                                     s.height += dy;
                                     s.x += dx/2;
                                     s.y += dy/2;
+
+                                    s.width = Math.max(10, s.width);
+                                    s.height = Math.max(10, s.height);
                                     break;
                                 case "line":
                                     s.length += dx;
+                                    s.length = Math.max(s.length, 10);
                                     break;
                                 default:
                                     console.warn("Resizing unknown symbol type:", s.type);
