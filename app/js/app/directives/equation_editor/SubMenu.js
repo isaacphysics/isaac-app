@@ -11,11 +11,6 @@ define([], function() {
 
                 var items = element.siblings("[sub-menu-item]");
 
-                scope.menus = [];
-                items.each(function(i,e) {
-                	scope.menus.push(JSON.parse(JSON.stringify(scope.$eval($(e).attr("menu-title")))));
-                });
-
                 scope.selectMenu = function(e, idx) {
                 	scope.activeIdx = idx;
 					element.siblings("[sub-menu-item]").hide();
@@ -23,6 +18,11 @@ define([], function() {
 
 					scope.$emit("triggerResizeMenu");
                 }
+
+                scope.menus = [];
+                items.each(function(i,e) {
+                    scope.menus.push(JSON.parse(JSON.stringify(scope.$eval($(e).attr("menu-title")))));
+                });
 
                 scope.activeIdx = 0;
 
@@ -50,6 +50,7 @@ define([], function() {
 
                 var abortSymbolDrag = function($e, symbol, pageX, pageY) {
                     bufferedLeft = parseFloat(lst.css("left"));
+                    scope.selectMenu($e, scope.menus.indexOf(symbol));
                 }
 
                 scope.$on("symbolDrag", absorbSymbolDrag)
