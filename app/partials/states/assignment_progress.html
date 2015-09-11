@@ -109,7 +109,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="studentProgress in assignmentProgress[assignment._id]" ng-class="getStudentClass(studentProgress)">
-                                                    <td>
+                                                    <td class="student-name" >
                                                         <span class="icon-person"></span>
                                                         <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user._id})">
                                                             {{studentProgress.user.givenName}} 
