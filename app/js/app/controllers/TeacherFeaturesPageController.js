@@ -24,10 +24,6 @@ define([], function() {
 			$scope.isLoggedIn = $scope.user != null;
 			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
 
-			if($scope.redirectModal && $scope.isTeacher && $scope.redirectModal == "setAssignmentsModal"){
-				$scope.setAssignmentModal();
-				$location.search('redirectModal', null)
-			}
 		}).catch(function(){
 			$scope.isLoggedIn = false;
 			$scope.isTeacher = false;
@@ -35,7 +31,7 @@ define([], function() {
 
 		$scope.setAssignmentModal = function() {
 			if ($scope.isTeacher) {
-				$scope.modals.setAssignmentModal.show()	
+				$state.go("setAssignments");
 			} else {
 				alert("You must first be registered as a teacher to use this function.");
 			}

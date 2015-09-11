@@ -192,8 +192,26 @@
 
 
 /*
-	Styles for assign boards
+	Styles for set assignments
 */
+
+.set-assign-header {
+	.subtitle {
+		margin-top:10px;
+	}
+	.button-menu{
+		padding-top:10px;
+
+		button {
+			margin-right:10px;
+			margin-bottom:0px;
+			width:100%;
+			margin-bottom:10px;
+		}
+		
+	}
+}
+
 .assign-board-wrap {
 
 	.board-info {

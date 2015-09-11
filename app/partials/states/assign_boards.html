@@ -1,14 +1,33 @@
-<div class="row ru-page-heading ng-scope">
-    <div class="medium-13 columns">
-        <h1>Assign a board</h1>
-         <p ng-if="boards.results" class="hide-for-small-only">
-            You have 
-            <strong>{{boards.totalResults}} board<span ng-if="boards.totalResults != 1">s</span></strong>
-            available to assign.
-         </p>
+<div class="ru-page-heading ng-scope set-assign-header">
+    <div class="row">
+      <div class="medium-13 columns">
+          <h1>Set Assignments</h1>
+          <h3 class="subtitle">Add a board from ... </h3>
+      </div>
+      <div class="medium-3 columns text-right hide-for-small-only">
+          <span data-ot="Assign any of the boards you have created to your groups." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+      </div>      
     </div>
-    <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Assign any of the boards you have created to your groups." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+    <div class="row button-menu">
+      <div class="small-16 medium-4 columns">
+        <button ui-sref="book">our book</button>
+      </div> 
+      <div class="small-16 medium-4 columns">
+        <button ui-sref="top_boards">our top boards</button>
+      </div> 
+      <div class="small-16 medium-4 columns">
+        <button ui-sref="gameEditor">create a board</button>
+      </div> 
+      <div class="small-16 medium-4 columns">
+        &nbsp;
+      </div> 
+    </div>
+
+    <div class="row">
+      <div class="small-16 columns">
+        <h3 ng-show="boards && boards.totalResults > 0">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
+        <h3 ng-show="boards.totalResults == 0">You have no boards to assign; select an option above to add a board.</h3>        
+      </div>
     </div>
 </div>
 <div class="boards-filters" ng-show="boards != null && boards.results.length > 0">
@@ -58,9 +77,9 @@
                   <li ng-show="board.questions.length >= 3">{{board.questions[2].title}}</li>
                </ol>
             </div>
-            <a class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)" ng-show="openedAssignPanels.indexOf(board.id) == -1">Assign this board</a>
+            <a class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)" ng-show="openedAssignPanels.indexOf(board.id) == -1">Assign / Unassign</a>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
-               <h6>Assign Group:</h6>
+               <h6>Group:</h6>
                <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups"></select>
                <div ng-if="false">
                   <h6>Due Date <span class="lighter">(optional):</span></h6>
@@ -70,7 +89,7 @@
                   </div>
                </div>
 
-               <a href="javascript:void(0)" class="ru-button-big expand" ng-click="assignBoard(board)">Assign this board</a>
+               <a href="javascript:void(0)" class="ru-button-big expand" ng-click="assignBoard(board)">Assign to group</a>
                <!-- Change assign btn to this complete message -->
                <div ng-if="false" class="ru-button-big primary expand">Group Assigned<span class="icon-complete"></span></div>
                <a ng-if="false" class="ru-button-big tertiary expand">Edit Assigned Groups</a>
@@ -82,7 +101,7 @@
                      <tr ng-repeat="groupsAssigned in groupAssignmentInfo[board.id]">
                         <td>{{groupsAssigned.groupName}}</td>
                         <td class="group-table-cal"><a ng-if="false" class="icon-cal--small" href="javascript:void(0)"></a></td>
-                        <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)" ng-click="unassignBoard(groupsAssigned, board)"></a></td>
+                        <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)" title="Unassign this group" ng-click="unassignBoard(groupsAssigned, board)"></a></td>
                      </tr>
                   </tbody>
                </table>
@@ -96,12 +115,6 @@
   <div class="large-5 medium-6 small-centered columns">
       <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
       <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
-   </div>
-</div>
-
-<div class="row" ng-show="boards.results && boards.results.length == ''">
-  <div class="large-6 medium-6 small-centered columns text-center">
-      <h3><a ui-sref="gameEditor">The Game Board Builder</a> can be used to create boards.</h3>
    </div>
 </div>
 
