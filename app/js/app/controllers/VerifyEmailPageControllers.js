@@ -33,7 +33,7 @@ define([], function() {
 			$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
 			api.emailVerification.verify({'userid' : userid, 'email': email, 'token': token}).$promise.then(function(response){
 				$scope.verificationState = $scope.verificationStates.SUCCESS;
-				$scope.message = "Account verified";
+				$scope.message = "E-mail address verified";
 				$scope.user.emailVerificationStatus = "VERIFIED";
 			}, function(error){
 				$scope.verificationState = $scope.verificationStates.FAILED;
