@@ -337,6 +337,10 @@
     {
         color: $ru_red;
     }
+
+    &.instruction-text {
+        background-color: transparent;
+    }
 }
 
 .ru-answer-correct-summary
