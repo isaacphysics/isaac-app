@@ -35,6 +35,13 @@ define([], function() {
 			}
 		});
 
+		$scope.findBookQuestions = function() {
+			$scope.questionSearchText = "book";
+			$scope.questionSearchSubject = "";
+			$scope.questionSearchLevel = "0";
+			sortField = "title"	;
+		}
+
         $scope.wildCardList = api.gameBoards.wildcards();
 
         // set default wildcard to the random one.
@@ -50,7 +57,7 @@ define([], function() {
 
     	$scope.doNotFilterByLevelOrSubject = function() {
 			$scope.questionSearchSubject = "";
-			$scope.questionSearchLevel = "";    		
+			$scope.questionSearchLevel = "";
     	}
 
 		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
