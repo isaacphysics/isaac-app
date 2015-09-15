@@ -331,7 +331,7 @@
         }
         .complete {
             td {
-                &:first-child, &:last-child {
+                &:first-child, &:last-child, a {
                     color: #944cbe;
                 }
             }
