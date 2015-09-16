@@ -44,6 +44,9 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 
 				var pageId = scope.page ? scope.page.id : "";
 
+				// since we are in an isolated scope we need access to this function.
+				scope.markdownLinkGo = $rootScope.markdownLinkGo;
+
 				Showdown.extensions.refs = function(converter) {
 					return [{
 						type: "lang",
