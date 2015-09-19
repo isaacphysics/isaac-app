@@ -104,8 +104,10 @@ define([], function() {
                 }
 
                 scope.$on("closeMenus", function() {
-                    delete scope.editSymbol;
-                    scope.clearInput();
+                    if (scope.editSymbol) {
+                        delete scope.editSymbol;
+                        scope.clearInput();
+                    }
                 })
 
                 element.find("[katex]").each(function(i,e) {
