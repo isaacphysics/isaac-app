@@ -19,6 +19,7 @@
 (derive :type/pow :type/expr)
 (derive :type/sqrt :type/expr)
 (derive :type/bracket :type/expr)
+(derive :type/subscript :type/expr)
 ;(derive :type/function-application :type/expr)
 ;; NOTE: :type/eq is not an expr!
 
@@ -35,6 +36,7 @@
     :type/eq 1
     :type/frac 15
     :type/pow 20
+    :type/subscript 50
     :type/sqrt 999
 ;    :type/func 8
 ;    :type/function-application 999
@@ -89,6 +91,9 @@
 
 (defmethod symbols :type/abs [expr]
   (concat (symbols (:src expr)) (symbols (:child expr))))
+
+(defmethod symbols :type/subscript [expr]
+  (concat (symbols (:article expr)) (symbols (:subscript expr))))
 
 ;(defmethod symbols :type/function-application [expr]
 ;  (concat (symbols (:func expr)) (symbols (:arg expr))))
@@ -262,6 +267,40 @@
                                   (conj remaining-input (merge {:type :type/pow
                                                                 :base b
                                                                 :exponent e
+                                                                :symbol-count (+ (:symbol-count b)
+                                                                                 (:symbol-count e))}
+                                                               (geom/bbox-combine b e))))))))
+           :divide (fn [input] #{})}
+
+   "subscript" {:apply (fn [input]
+
+                     ;; A potential article is any expression which has higher precedence than :type/subscript
+
+                     (let [potential-articles (filter #(and (isa? (:type %) :type/var)
+                                                         (> (precedence (:type %)) (precedence :type/subscript))) input)]
+                       (apply concat
+                              (for [b potential-articles
+                                    :let [remaining-input (disj input b)
+
+                                          ;; A potential exponent is any expression
+                                          ;; which is touched by a north-east line from the top-right corner of the base
+                                          ;; and which does not extend below or left of the centre of the base
+
+                                          potential-subscripts (filter #(and (geom/line-intersects-box? {:x (geom/bbox-right b) :dx (:width b)
+                                                                                                         :y (geom/bbox-bottom b) :dy (:width b)} %)
+                                                                            (> (:left %) (+ (:left b) (* 0.5 (:width b))))
+                                                                            (> (:top %) (+ (:top b) (* 0.5 (:height b))))
+                                                                            (isa? (:type %) :type/expr)) remaining-input)]
+                                    :when (not-empty potential-subscripts)]
+                                (for [e potential-subscripts
+                                      :let [remaining-input (disj remaining-input e)]]
+
+                                  ;; Now we have found b^e and removed b and e from our input.
+                                  ;; Create a new :type/pow which refers to them, and add it to the set of results
+
+                                  (conj remaining-input (merge {:type :type/subscript
+                                                                :article b
+                                                                :subscript e
                                                                 :symbol-count (+ (:symbol-count b)
                                                                                  (:symbol-count e))}
                                                                (geom/bbox-combine b e))))))))

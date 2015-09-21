@@ -44,8 +44,11 @@
 (defmethod expr-str :type/bracket [expr]
   (str (if (:certain (meta expr)) "@" "") "(" (expr-str (:child expr)) ")"))
 
-(defmethod expr-str :type/bracket [expr]
+(defmethod expr-str :type/abs [expr]
   (str (if (:certain (meta expr)) "@" "") "|" (expr-str (:child expr)) "|"))
+
+(defmethod expr-str :type/subscript [expr]
+  (str (if (:certain (meta expr)) "@" "") (expr-str (:article expr)) "_" (expr-str (:subscript expr))))
 
 (defn print-expr [expr]
   (js/console.log (expr-str expr)))
@@ -103,6 +106,9 @@
 
 (defmethod mathml-inner :type/abs [expr]
   (str "<mrow id=\"" (:id expr) "\"><mo>|</mo>" (mathml-inner (:child expr)) "<mo>|</mo></mrow>"))
+
+(defmethod mathml-inner :type/subscript [expr]
+  (str "<mrow id=\"" (:id expr) "\">" (mathml-inner (:article expr)) "<mo>_</mo>" (mathml-inner (:subscript expr)) "</mrow>"))
 
 (defn mathml [expr]
   (when expr
@@ -162,6 +168,9 @@
 
 (defmethod tex-inner :type/abs [expr]
   (str "|" (tex-inner (:child expr)) "|"))
+
+(defmethod tex-inner :type/subscript [expr]
+  (str "{" (tex-inner (:article expr)) "}_{" (tex-inner (:subscript expr)) "}"))
 
 (defn tex [expr]
   (when expr
