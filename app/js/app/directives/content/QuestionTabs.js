@@ -65,6 +65,13 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.checkAnswer = function() {
 					if (scope.selectedChoice != null) {
 
+						if (scope.doc.type == "isaacSymbolicQuestion") {
+							var symbols = JSON.parse(scope.selectedChoice.value).symbols;
+							if (Object.keys(symbols).length == 0) {
+								return;
+							}
+						}
+
 						var s = api.questionValidator.validate({id: scope.doc.id}, scope.selectedChoice);
 
 						s.$promise.then(function foo(r) {
