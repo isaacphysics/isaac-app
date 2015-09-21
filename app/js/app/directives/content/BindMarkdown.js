@@ -42,7 +42,10 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 
 			link: function(scope, element, attrs) {
 
-				var pageId = scope.page ? scope.page.id : "";
+				var pageId = scope.$parent.page ? scope.$parent.page.id : "";
+
+				// since we are in an isolated scope we need access to this function.
+				scope.markdownLinkGo = $rootScope.markdownLinkGo;
 
 				// since we are in an isolated scope we need access to this function.
 				scope.markdownLinkGo = $rootScope.markdownLinkGo;
