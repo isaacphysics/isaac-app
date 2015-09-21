@@ -29,10 +29,10 @@ define([], function() {
 			link: function(scope, element, attrs) {
 
 				var update = function() {
-					scope.figNum = scope.figures[attrs.isaacFigureRef];					
+					scope.figNum = scope.$root.figures[attrs.isaacFigureRef];
 				}
 
-				scope.$watchCollection("figures", update);
+				scope.$root.$watchCollection("figures", update);
 				update();
 			}
 		};

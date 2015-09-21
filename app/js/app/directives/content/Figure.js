@@ -28,15 +28,16 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				var nextNum = Object.keys(scope.figures).length + 1;
+				var nextNum = Object.keys(scope.$root.figures).length + 1;
 				var figId = scope.doc.id || ("auto-fig-id-" + nextNum);
 
-				scope.figures[figId] = nextNum;
+				figId = figId.replace(/.*?([^\|]*)$/g,'$1');
+
+				scope.$root.figures[figId] = nextNum;
 
 				scope.figNum = scope.figures[figId];
 
 				scope.path = api.getImageUrl(scope.doc.src);
-
 			}
 		};
 	}];

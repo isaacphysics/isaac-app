@@ -54,7 +54,7 @@ define(["lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
 					return [{
 						type: "lang",
 						regex: '(~D)?\\\\ref{([^}]*)}(~D)?',
-						replace: '<span isaac-figure-ref="' + pageId + '|$2"></span>',
+						replace: '<span isaac-figure-ref="$2"></span>',
 					}];
 				};
 
