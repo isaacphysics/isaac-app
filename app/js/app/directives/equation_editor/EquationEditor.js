@@ -739,9 +739,13 @@ define([], function() {
                 var rebuildSymbolToken = function(s) {
                     s.token = s.baseToken;
 
-                    if(s.bold) {
+                    if(s.vector== 1) {
                         s.token = "\\mathbf{" + s.token + "}";
+                    } else if (s.vector == 2) {
+                        s.token = "\\mathbf{\\hat " + s.token + "}";
                     }
+
+                    
 
                     if (s.dot == 1) {
                         s.token = "\\dot{" + s.token + "}";
@@ -772,43 +776,16 @@ define([], function() {
                             s.dot = (s.dot + 1) % 3;
                             rebuildSymbolToken(s);
                             break;
-
-                            var hasPrime = s.token.indexOf("'") > -1;
-                            s.token = s.token.replace("'","");
-                            if (s.token.indexOf("\\dot") > -1) {
-                                s.token = s.token.replace("\\dot{", "\\ddot{");
-                            } else if (s.token.indexOf("\\ddot") > -1) {
-                                s.token = s.token.replace("\\ddot{", "");
-                                s.token = s.token.replace("}", ""); // Yes, I know this will only replace one. That's what I want.
-                            } else {
-                                s.token = "\\dot{" + s.token + "}";
-                            }
-                            if (hasPrime){
-                                s.token += "'";
-                            }
-                            break;
                         case "prime":
 
                             s.prime = s.prime || 0;
                             s.prime = (s.prime + 1) % 3;
                             rebuildSymbolToken(s);
                             break;
-                            if (s.token.indexOf("'") > -1) {
-                                s.token = s.token.replace("'", "");
-                            } else {
-                                s.token += "'";
-                            }
-                            break;
-                        case "bold":
-                            s.bold = !s.bold;
+                        case "vector":
+                            s.vector = s.vector || 0;
+                            s.vector = (s.vector + 1) % 3;
                             rebuildSymbolToken(s);
-                            break;
-                            if (s.token.indexOf("\\mathbf") > -1) {
-                                s.token = s.token.replace("\\mathbf{", "");
-                                s.token = s.token.replace("}", ""); // Yes, I know this will only replace one. That's what I want.
-                            } else {
-                                s.token = "\\mathbf{" + s.token + "}";
-                            }
                             break;
                     }
                     scope.$apply();

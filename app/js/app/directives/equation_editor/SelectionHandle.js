@@ -28,8 +28,8 @@ define([], function() {
                     e.preventDefault();
                 });
 
-                element.on("mousedown touchstart", "polygon.handle-bold", function(e) {
-                    scope.$emit("selection_mod", "bold", e);
+                element.on("mousedown touchstart", "polygon.handle-vector", function(e) {
+                    scope.$emit("selection_mod", "vector", e);
                 });
                 element.on("mousedown touchstart", "polygon.handle-dot", function(e) {
                     scope.$emit("selection_mod", "dot", e);
