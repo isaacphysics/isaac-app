@@ -13,6 +13,8 @@ define([], function() {
                 scope.currentExponent = null;
                 scope.currentSymbol = null;
 
+                scope.clearOnClose = true;
+
                 scope.buttonClick = function(btn) {
                 	if (btn == "^") {
                 		scope.currentExponent = "";
@@ -79,7 +81,9 @@ define([], function() {
 
 				scope.$on("symbolDrag", function($e, pageX, pageY, deltaX, deltaY) {
 					if (pageY > element.offset().top + element.height()) {
+                        scope.clearOnClose = false;
 						scope.$emit("triggerCloseMenus");
+                        scope.clearOnClose = true;
 					}
 
                     scope.$emit("newSymbolDrag", pageX, pageY);
@@ -91,6 +95,7 @@ define([], function() {
                 	}
 
                     scope.$emit("newSymbolAbortDrag");
+                    scope.clearInput();
                 });
 
                 scope.$on("editNumber", function(_,s) {
@@ -104,7 +109,7 @@ define([], function() {
                 }
 
                 scope.$on("closeMenus", function() {
-                    if (scope.editSymbol) {
+                    if (scope.clearOnClose) {
                         delete scope.editSymbol;
                         scope.clearInput();
                     }

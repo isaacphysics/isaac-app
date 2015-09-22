@@ -516,7 +516,8 @@
       ;; head should have either one or many elements.
 
 
-      (if (= 1 (count head))
+      (if (and (= 1 (count head))
+               (not= (:type (first head)) :type/symbol))
         ;; If it's one, we don't need to do anything, just add it to results and move on (or possibly short-circuit and return).
         (do
           (log "SINGLETON HEAD:" (expr-set-str head) "\n")

@@ -276,7 +276,7 @@ define([], function() {
                         type: "line",
                         label: "\\frac{a}{b}",
                         token: ":frac",
-                        length: 40,
+                        length: 100,
                         texLabel: true,
                     },{
                         type: "string",
