@@ -152,7 +152,8 @@ define([
             });
 
             $(document).scrollTop(0);
-            $rootScope.figures = {};
+            $rootScope.figurePaths = {};
+            $rootScope.figureNumbers = {};
             $rootScope.relativeCanonicalUrl = $location.path();
 
             // we need to tell opentip to reapply everytime we change state
@@ -674,6 +675,27 @@ define([
             }
         });
         $rootScope.isLandscape = isLandscape();
+
+        $rootScope.updateFigureNumbers = function() {
+
+            var figures = [];
+            for (var id in $rootScope.figurePaths)
+                figures.push({id: id, path: $rootScope.figurePaths[id]});
+
+            figures.sort(function(a,b) {
+                if (a.path < b.path)
+                    return -1;
+                else if (a.path > b.path)
+                    return 1;
+                else
+                    return 0;
+            });
+
+            $rootScope.figureNumbers = {};
+            for (var i in figures) {
+                $rootScope.figureNumbers[figures[i].id] = parseInt(i)+1;
+            }
+        }
 
 	}]);
 

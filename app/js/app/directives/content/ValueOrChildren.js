@@ -33,7 +33,7 @@ define([], function() {
 	            	scope.value = undefined;
 	            	scope.children = undefined;
 	            	scope.encoding = undefined;
-	            	
+
 	            	scope.$parent.$watch(iAttrs.value, function(newValue) {
 	            		scope.value = newValue;
 	            		update();
@@ -62,6 +62,7 @@ define([], function() {
 						var currentChunk = [];
 						for (var i in scope.children) {
 							var c = scope.children[i];
+							c.contentChildIndex = i;
 
 							if ((breakOnTypeChange && c.type != lastType) || (!breakOnTypeChange && c.type == "isaacFeaturedProfile")) {
 								// Split profiles into a separate content chunk

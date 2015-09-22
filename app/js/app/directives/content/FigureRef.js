@@ -28,12 +28,7 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-				var update = function() {
-					scope.figNum = scope.$root.figures[attrs.isaacFigureRef];
-				}
-
-				scope.$root.$watchCollection("figures", update);
-				update();
+				scope.figId = attrs.isaacFigureRef;
 			}
 		};
 	}];

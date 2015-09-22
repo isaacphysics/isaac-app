@@ -29,10 +29,18 @@ define([], function() {
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
 	            	// Post-link actions go here.
+	            	
+	            	scope.$root.getIndexPath = function() { return ""; };
+	            	scope.getIndexPath = function() {
+	            		return scope.$parent.getIndexPath() + "" + scope.contentChildIndex;// + ":" + scope.doc.type + (scope.doc.layout ? "(" + scope.doc.layout + ")" : "");
+	            	};
 
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
 	            		scope.doc = newDoc;
+	            		if (newDoc)
+	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || 0;
+
 	            		//TODO: we should probably make this a scss rule.
 		            	if(scope.doc && scope.doc.layout=="right") {
 		            		iElement.css("float", "right").width(300);
