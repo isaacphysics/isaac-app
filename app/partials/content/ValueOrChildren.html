@@ -16,10 +16,10 @@
 		<!-- This chunk is NOT an accordion, give it some margins if we are top-level -->
 		<div ng-switch-default>
 			<div class="row">
-			    <div ng-if="accordionSection" class="small-16 columns end">
+			    <div ng-if="accordionSection != null" class="small-16 columns end">
 					<div isaac-content ng-repeat="c in cc" doc="c" ng-init="valueOrChildren = {$index: $index}"></div>
     			</div>
-			    <div ng-if="!accordionSection" class="small-14 small-offset-1 columns end">
+			    <div ng-if="accordionSection == null" class="small-14 small-offset-1 columns end">
 					<div isaac-content ng-repeat="c in cc" doc="c" ng-init="valueOrChildren = {$index: $index}"></div>
     			</div>
     		</div>
