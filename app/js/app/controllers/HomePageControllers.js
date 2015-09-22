@@ -200,6 +200,7 @@ define([], function() {
 
 					$location.replace();
 					$location.hash(savedGameboardId);
+					lastHash = savedGameboardId;
 
 					loadGameBoardById(savedGameboardId, true);
 
