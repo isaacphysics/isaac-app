@@ -267,12 +267,14 @@ define([
 		return {
 			link: function(scope, element) {
 				scope.$on("accordionSectionOpened", function(e,i) {
-					if (scope.accordionSection == i) {
+					if (scope.accordionSection == i && !e.foundSection) {
 						$timeout(function() {
 							$("body").animate({
 				                scrollTop: element.offset().top
 				            }, 1000);        
 						});
+						// Prevent nested accordions from also scrolling.
+						e.foundSection = true;
 					}
 				});
 			},
