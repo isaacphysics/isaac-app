@@ -33,7 +33,6 @@ define([
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
-    "app/honest/answer_reveal",
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
