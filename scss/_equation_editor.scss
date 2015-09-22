@@ -426,5 +426,19 @@ $menu-handle-width: 160px;
         padding-top: 1.25rem;
         pointer-events: none;
     }
+
+    .orientation-warning {
+        position: absolute;
+        left: 10%;
+        right: 10%;
+        top: 40%;
+        padding: 1em;
+        text-align:center;
+        border-radius: 20px;
+        background-color: rgba(0,0,0,0.6);
+        color: white;
+        padding-top: 1.25rem;
+        pointer-events: none;
+    }
 }
 

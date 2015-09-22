@@ -661,6 +661,20 @@ define([
             $rootScope.modals.notification.hide();
         }
 
+
+        var isLandscape = function() {
+            return window.innerWidth > window.innerHeight || window.innerWidth > 640;
+        };
+
+        $(window).on("resize", function(e) {
+            var newLandscape = isLandscape();
+            if (newLandscape != $rootScope.isLandscape) {
+                $rootScope.isLandscape = newLandscape
+                $rootScope.$apply();
+            }
+        });
+        $rootScope.isLandscape = isLandscape();
+
 	}]);
 
 	/////////////////////////////////////

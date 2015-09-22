@@ -1,38 +1,40 @@
 <div class="equation-editor" ng-mousedown="editorClick($event)" tabindex="0">
-    <div top-menu="123">
+    <div top-menu="123" ng-show="isLandscape">
         <div number-entry></div>
     </div>
-    <div top-menu="abc\,\, \alpha \beta \gamma">
+    <div top-menu="abc\,\, \alpha \beta \gamma" ng-show="isLandscape">
         <div sub-menu></div>
         <div sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
         <div sub-menu-item menu-title="latinLetterUpperTitle" symbol-menu symbols="symbolLibrary.latinLettersUpper"></div>
         <div sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
         <div sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
     </div>
-    <div top-menu="+\, -\, \sqrt{x}">
+    <div top-menu="+\, -\, \sqrt{x}" ng-show="isLandscape">
         <div symbol-menu symbols="symbolLibrary.operators"></div>
     </div>
-    <div top-menu="\sin\,\, \int">
+    <div top-menu="\sin\,\, \int" ng-show="isLandscape">
         <div symbol-menu symbols="symbolLibrary.functions"></div>
     </div>
 
-    <div class="canvas-offsetter" ng-style="canvasOffset">
+    <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
         <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
     </div>
     
-    <div ng-show="selectedSymbols.length" selection-handle></div>
+    <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
 
-    <div ng-show="dragMode=='selectionBox'" class="selection-box"></div>
+    <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
 
     <!-- BUTTONS -->
 
-    <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0"></div>
-    <div class="hex-button redo" ng-click="redo()" ng-if="future.length > 0"></div>
+    <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0 && isLandscape"></div>
+    <div class="hex-button redo" ng-click="redo()" ng-if="future.length > 0 && isLandscape"></div>
 
     <div ng-show="draggingNewSymbol || selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
 
-    <div class="question-reminder show-for-large-up" ng-if="questionDoc"><div isaac-content doc="questionDoc"></div></div>
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape"><div isaac-content doc="questionDoc"></div></div>
 
-    <div class="result-preview"><span></span></div>
+    <div class="orientation-warning" ng-if="!isLandscape">The Isaac Equation Editor may only be used in landscape mode. Please rotate your device.</div>
+
+    <div class="result-preview" ng-if="isLandscape"><span></span></div>
     <div class="hex-button submit" ng-click="submit()"></div>
 </div>

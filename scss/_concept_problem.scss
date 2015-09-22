@@ -175,7 +175,7 @@
 
 @media #{$small-only} {
     .ru-answer-area>div.row:first-child {
-        overflow-x: auto;
+       // overflow-x: auto;
     }
 }
 
@@ -577,7 +577,7 @@
         font-size: 0.5rem !important;
     }
     .ru-answer span {
-        display: block;
+        // display: block;
     }
     .ru-answer .katex span, .ru-answer .text-center span {
         display: initial;

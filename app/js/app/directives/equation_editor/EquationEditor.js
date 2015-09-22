@@ -131,6 +131,10 @@ define([], function() {
                 	scope.$broadcast("resizeMenu");
                 });
 
+                $(window).on("resize", function() {
+                    element.find(".top-menu").css({"bottom": scope.equationEditorElement.height()}).removeClass("active-menu");
+                });
+
                 scope.$on("newSymbolDrag", function(_, pageX, pageY) {
 
                     scope.draggingNewSymbol = true;
