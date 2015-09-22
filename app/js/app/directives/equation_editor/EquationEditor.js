@@ -294,8 +294,8 @@ define([], function() {
                     },{
                         type: "container",
                         subType: "brackets",
-                        width: 148,
-                        height: 60,
+                        width: 220,
+                        height: 70,
                         label: "(x)",
                         texLabel: true,
                     },{
