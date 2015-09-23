@@ -22,45 +22,246 @@ define([], function() {
 
 			{
 				id: "biology"
-			}, {
+			}, 
+			{
 				id: "maths"
 			}, 
 
 			// Biology fields
 
 			{
-				id: "ecology",
+				id: "biodiversity",
+				title: "Biodiversity",
 				parent: "biology"
-			}, {
-				id: "genetics",
+			}, 
+			{
+				id: "biophysics",
+				title: "Biophysics",
 				parent: "biology",
 				enabled: true,
 				comingSoon: false,
 			},
-
-			// Mechanics topics
-
 			{
-				id: "populations",
-				parent: "ecology"
-			}, {
-				id: "communities",
-				parent: "ecology"
+				id: "molbiol_biochem",
+				title: "Molecular Biology &amp; Biochemistry",
+				parent: "biology",
+				enabled: true,
+				comingSoon: false,
 			},
-
-			// Fields topics
-
 			{
-				id: "molecular_biology",
-				title: "Molecular Biology",
+				id: "genetics",
+				title: "Genetics",
+				parent: "biology",
+				enabled: true,
+				comingSoon: false,
+			},
+			{
+				id: "cell_microbiol",
+				title: "Cell &amp; Microbiology",
+				parent: "biology",
+				enabled: true,
+				comingSoon: false,
+			},
+			{
+				id: "organisms",
+				parent: "biology",
+				enabled: true,
+				comingSoon: false,
+			},												
+
+			// biodiversity topics
+			{
+				id: "ecology",
+				parent: "biodiversity",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "conservation",
+				parent: "biodiversity",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "taxonomy",
+				parent: "biodiversity",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "evolution",
+				parent: "biodiversity",
+				enabled: true,
+				comingSoon: false,
+			},		
+
+			// biophysics topics
+			{
+				id: "energy",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "water",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "gases",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "molecular_biophys",
+				title:"Molecular biophysics",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},	
+			{
+				id: "quantitative_biochem",
+				title:"Quantitative biochemistry",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},	
+			{
+				id: "sepsci_massspec",
+				title:"Separation science and mass spec",
+				parent: "biophysics",
+				enabled: true,
+				comingSoon: false,
+			},				
+
+			// Molecular Biology and Biochemistry topics
+			{
+				id: "carbohydrates",
+				parent: "molbiol_biochem",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "lipids",
+				parent: "molbiol_biochem",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "proteins",
+				parent: "molbiol_biochem",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "nucleic_acids",
+				title:"Nucleic Acids",
+				parent: "molbiol_biochem",
+				enabled: true,
+				comingSoon: false,
+			},	
+			{
+				id: "monomers_polymers",
+				title:"Monomers and polymers",
+				parent: "molbiol_biochem",
+				enabled: true,
+				comingSoon: false,
+			},	
+
+			// Genetics topics
+			{
+				id: "heredity",
 				parent: "genetics",
-				enabled: false,
-				comingSoon: true,
-			}, {
-				id: "transmission",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "molecular_gen",
+				title:"Molecular genetics",				
 				parent: "genetics",
-				enabled: false,
-				comingSoon: true,
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "population_gen",
+				title:"Population genetics",				
+				parent: "genetics",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "developmental_gen",
+				title:"Developmental genetics",
+				parent: "genetics",
+				enabled: true,
+				comingSoon: false,
+			},	
+
+			// Cell and Microbiology topics
+			{
+				id: "cell_biol",
+				title:"Cell Biology",				
+				parent: "cell_microbiol",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "parasites",
+				parent: "cell_microbiol",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "fungi",
+				parent: "cell_microbiol",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "viruses",
+				parent: "cell_microbiol",
+				enabled: true,
+				comingSoon: false,
+			},	
+			{
+				id: "bacteria",
+				parent: "cell_microbiol",
+				enabled: true,
+				comingSoon: false,
+			},	
+
+			// Organisms topics
+			{
+				id: "physiology",			
+				parent: "organisms",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "immunology",
+				parent: "organisms",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "behaviour",
+				parent: "organisms",
+				enabled: true,
+				comingSoon: false,
+			},		
+			{
+				id: "anatomy",
+				parent: "organisms",
+				enabled: true,
+				comingSoon: false,
+			},	
+			{
+				id: "pathophysiology",
+				parent: "organisms",
+				enabled: true,
+				comingSoon: false,
 			},
 
 			// Maths fields
@@ -79,7 +280,8 @@ define([], function() {
 				parent: "maths",
 				comingSoon:true,
 			}, {
-				id: "probability",
+				id: "prob_stats",
+				title:"Probability and statistics",
 				parent: "maths",
 				comingSoon:true,
 			}, 
@@ -149,15 +351,33 @@ define([], function() {
 			// Probability topics
 
 			{
-				id: "means",
-				parent: "probability"
-			}, {
-				id: "prob_functions",
-				title: "Functions",
-				parent: "probability"
-			}, {
 				id: "distributions",
-				parent: "probability"
+				parent: "prob_stats"
+			}, 
+			{
+				id: "probability",
+				title: "Functions",
+				parent: "prob_stats"
+			}, 
+			{
+				id: "parametric",
+				title: "Parametric tests",				
+				parent: "prob_stats"
+			}, 
+			{
+				id: "nonparametric",
+				title: "Non-parametric tests",				
+				parent: "prob_stats"
+			}, 
+			{
+				id: "corr_regress",
+				title: "Correlation and regression",					
+				parent: "prob_stats"
+			}, 
+			{
+				id: "rep_data",
+				title: "Representing data",					
+				parent: "prob_stats"
 			}
 
 		];
