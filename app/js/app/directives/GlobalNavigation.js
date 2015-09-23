@@ -24,34 +24,25 @@ define([], function() {
             link: function(scope, element, attrs) {
             	// Global var
             	var flyin;
-                var loginTooltips = [];
                 scope.contentProblems = 0;
                 
                 scope.myIncompleteAssignments = 0;
 
+
                 // determine whether we should disable any global nav links
                 var applyDisabledToolTips = function() {
                     
-                    // as the user logged in?
+                    // is the user logged in?
                     scope.user.$promise.then(function(result){
                         // if we are logged in we can remove the tooltips
-                        if (result._id && loginTooltips.length != 0) {
-                            angular.forEach(loginTooltips, function(value, key){
-                                value.hide();
-                                value.deactivate();
-                            })
-                            loginTooltips = [];                        
-                        } 
+                        element.find(".login-required a[data-ot]").removeAttr("data-ot");
+
+                        $timeout(Opentip.findElements, 0);
                     }).catch(function(){
                         // if we are not logged in we need to disable the links
-                        element.find('.login-required a').each(function(index, element){
-                            var ot = new Opentip(element, "Click to log in and use this feature.");
-                            loginTooltips.push(ot);
-                        })
+                        element.find('.login-required a').attr("data-ot", "Click to log in and use this feature.");
 
-                        $timeout(function(){
-                            Opentip.findElements();
-                        }, 1000)
+                        $timeout(Opentip.findElements, 0);
                     })
                 }
 

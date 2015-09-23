@@ -73,7 +73,7 @@ define([
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost")
-            apiProvider.server("https://dev.isaacphysics.org");
+            apiProvider.server("http://localhost:8080/isaac-api");
 
         NProgress.configure({ showSpinner: false });
 	}])
@@ -88,7 +88,8 @@ define([
             target: true,
             background: '#333333',
             borderColor: '#333333',
-            borderRadius: 0
+            borderRadius: 0,
+            removeElementsOnHide: true,
         };
         Opentip.styles.ru_boards = {
             className: 'boards',
@@ -96,7 +97,8 @@ define([
             stem: false,
             background: 'rgba(255, 255, 255, 0.95)',
             borderColor: '#814ba0',
-            borderRadius: 0
+            borderRadius: 0,
+            removeElementsOnHide: true,
         };
         Opentip.defaultStyle = "globalStyle";
 

@@ -1441,6 +1441,10 @@ Opentip.prototype.debug = function() {
 };
 
 Opentip.findElements = function() {
+  for (var i in Opentip.tips) {
+    Opentip.tips[i].deactivate();
+  }
+  Opentip.tips.length = 0;
   var adapter, content, element, optionName, optionValue, options, _i, _len, _ref, _results;
   adapter = Opentip.adapter;
   _ref = adapter.findAll(document.body, "[data-ot]");
@@ -1448,12 +1452,13 @@ Opentip.findElements = function() {
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     element = _ref[_i];
     options = {};
-    content = adapter.data(element, "ot");
+    content = adapter.attr(element, "data-ot");
     if (content === "" || content === "true" || content === "yes") {
       content = adapter.attr(element, "title");
       adapter.attr(element, "title", "");
     }
     content = content || "";
+    console.debug(element, content);
     for (optionName in Opentip.styles.standard) {
       optionValue = adapter.data(element, "ot" + (Opentip.prototype.ucfirst(optionName)));
       if (optionValue != null) {
