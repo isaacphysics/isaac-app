@@ -278,12 +278,10 @@ define([], function() {
 			}, {
 				id: "functions",
 				parent: "maths",
-				comingSoon:true,
 			}, {
 				id: "prob_stats",
 				title:"Probability and statistics",
 				parent: "maths",
-				comingSoon:true,
 			}, 
 
 			// Geometry topics
