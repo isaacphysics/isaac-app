@@ -96,21 +96,25 @@
                     </div>
                 </div>
                 <div>
-                    <div class="large-16 medium-16 columns">
+                    <div class="small-16 columns">
                         <label for="account-gender">
                             <strong>Gender</strong>
                             <span ng-if="!user.gender" data-ot="Providing your gender will enable us to monitor the use of Isaac resources." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                         </label>
                     </div>                   
                     <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
-                        <div class="large-8 medium-8 small-8 columns">
-                            <label for="r1">Male</label>
+                        <div class="small-5 columns">
+                            <label for="r1"><span>Male</span></label>
                             <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
                         </div>
-                        <div class="large-8 medium-8 small-8 columns">
-                            <label for="r2">Female</label>
+                        <div class="small-5 columns">
+                            <label for="r2"><span class="centeral-label">Female</span></label>
                             <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
                         </div>
+                        <div class="small-6 columns">
+                            <label for="r3"><span>Other</span></label>
+                            <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" question-radio-button>
+                        </div>                        
                     </div>                    
                 </div>
                 <div class="row">
