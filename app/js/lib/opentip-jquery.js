@@ -1458,7 +1458,6 @@ Opentip.findElements = function() {
       adapter.attr(element, "title", "");
     }
     content = content || "";
-    console.debug(element, content);
     for (optionName in Opentip.styles.standard) {
       optionValue = adapter.data(element, "ot" + (Opentip.prototype.ucfirst(optionName)));
       if (optionValue != null) {
