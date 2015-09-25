@@ -41,7 +41,7 @@
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 assign-board-wrap">
       <li ng-repeat="board in boards.results">
    		<div class="panel">
-            <a href="javascript:void(0)" class="board-delete" ng-click="deleteBoard(board.id, board.title || generateGameBoardTitle(board))">X</a>
+            <a href="javascript:void(0)" class="board-delete" ng-click="deleteBoard(board)">X</a>
             <div class="row">
                <div ng-click="toggleAssignPanel(board)" data-ot="{{getListOfGroups(groupAssignmentInfo[board.id])}}" data-ot-style="ru_boards" class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->

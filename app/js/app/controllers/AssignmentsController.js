@@ -123,18 +123,28 @@ define([], function() {
 			});
 		};
 
-		$scope.deleteBoard = function(id, name){
-			// Warn user before deleting
-			var confirmation = confirm("You are about to delete "+name+" board?");
-			if (confirmation){
-       			// TODO: This needs to be reviewed
-       			// Currently reloading boards after delete
-				$scope.setLoading(true);
-       			api.deleteGameBoard(id).$promise.then(function(){
-			        updateBoards($scope.boards.results.length);
-			        $scope.setLoading(false);
-       			});
-			}
+		$scope.deleteBoard = function(board){
+			lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
+				if (groupsAssigned != null && groupsAssigned.length != 0){
+					alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to see the board in your Assigned Boards or My boards page.")	
+				}
+				
+				var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
+				// Warn user before deleting
+				var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
+				if (confirmation){
+	       			// TODO: This needs to be reviewed
+	       			// Currently reloading boards after delete
+					$scope.setLoading(true);
+	       			api.deleteGameBoard(board.id).$promise.then(function(){
+				        updateBoards($scope.boards.results.length);
+				        $scope.setLoading(false);
+				        $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
+	       			}).catch(function(e){
+						$scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+	       			});
+				}
+			})
 		}
 
 		$scope.calculateBoardLevels = calculateBoardLevels;
