@@ -6,8 +6,8 @@
         <!--span class="show-for-small-only help-tip" aria-haspopup="true" data-ot="Help information"><span class="icon-help"></span>Help</span-->
     </div>
     <div class="medium-12 end columns text-right">
-        <h2 class="status hide-for-small-only">Welcome<span ng-if="!user._id"> to Isaac</span>
-        <span class='green' ng-if="user.givenName && user._id"> {{user.givenName}}
+        <h2 class="status hide-for-small-only">Welcome<span ng-if="!user._id"> to Isaac</span>  
+        <span class='green' ng-if="user.givenName && user._id" ng-class="{physics:user.role=='ADMIN'}"> {{user.givenName}}
             <span class="green"><a ui-sref="logout">(Log out)</a></span>
         </span></h2>
     </div>
