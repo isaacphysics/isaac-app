@@ -108,7 +108,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id]" ng-class="getStudentClass(studentProgress)">
+                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress)">
                                                     <td class="student-name" >
                                                         <span class="icon-person"></span>
                                                         <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user._id})">
