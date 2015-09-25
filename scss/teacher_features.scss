@@ -11,6 +11,12 @@
 			.icon {
 				color: #ccc;				
 			}
+
+			img {
+				-webkit-filter: grayscale(100%); 
+				filter: grayscale(100%);
+				opacity: .5;
+			}
 		}
 
 		margin-right:10px;
