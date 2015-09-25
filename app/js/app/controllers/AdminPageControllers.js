@@ -95,7 +95,7 @@ define([], function() {
 
 			if (deleteUser) {
 					api.adminDeleteUser.delete({'userId' : userId}).$promise.then(function(){
-					$scope.showToast($scope.toastTypes.Success, "User Deletion Successful", "You have successfully deleted the user with e-mail: " + email);
+					$scope.showToast($scope.toastTypes.Success, "User Deleted", "You have successfully deleted the user with e-mail: " + email);
 					$scope.findUsers();
 				}).catch(function(e){
 					$scope.showToast($scope.toastTypes.Failure, "User Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
