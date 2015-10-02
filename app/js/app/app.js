@@ -685,6 +685,10 @@ define([
         });
         $rootScope.isLandscape = isLandscape();
 
+        $rootScope.padIndex = function(index) {
+            return ("0000"+index).slice(-4);
+        }
+
         $rootScope.updateFigureNumbers = function() {
 
             var figures = [];

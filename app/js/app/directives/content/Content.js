@@ -39,7 +39,7 @@ define([], function() {
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
 	            		scope.doc = newDoc;
 	            		if (newDoc)
-	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || 0;
+	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || "0000";
 
 	            		//TODO: we should probably make this a scss rule.
 		            	if(scope.doc && scope.doc.layout=="right") {

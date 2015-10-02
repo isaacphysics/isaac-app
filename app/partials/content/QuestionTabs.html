@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab, 'force-print' : printingVisibility.hints}"  ng-init="questionTabIndex = $index">
+            <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab, 'force-print' : printingVisibility.hints}"  ng-init="questionTabIndex = $index; contentChildIndex = padIndex($index)">
                 <div class='row'>
                     <div class="small-14 small-offset-1 columns end">
                         <h3 class="only-print">Hint {{$index + 1}}</h3>
