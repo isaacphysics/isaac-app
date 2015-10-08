@@ -33,24 +33,18 @@ define([], function() {
 				parent: "physics"
 			}, {
 				id: "waves",
-				parent: "physics",
-				enabled: false,
-				comingSoon: true,
+				parent: "physics"
 			}, {
 				id: "fields",
 				parent: "physics"
 			}, {
 				id: "circuits",
-				parent: "physics",
-				enabled: false,
-				comingSoon: true,
+				parent: "physics"
 			}, 
 			{
 				id: "chemphysics",
 				title: "Chemical Physics",
-				parent: "physics",
-				enabled: false,
-				comingSoon: true
+				parent: "physics"
 			},
 
 			// Mechanics topics
@@ -90,6 +84,43 @@ define([], function() {
 			}, {
 				id: "combined",
 				parent: "fields"
+			},
+
+			// Circuits topics
+
+			{
+			    id: "resistors",
+			    parent: "circuits"
+			}, {
+			    id: "capacitors",
+			    parent: "circuits",
+			    enabled: false,
+				comingSoon: true
+			}, {
+			    id: "general_circuits",
+			    parent: "circuits",
+			    title: "General Circuits"
+			},
+
+			// Waves topics:
+
+			{
+			    id: "optics",
+			    parent: "waves"
+			}, {
+			    id: "superposition",
+			    parent: "waves"
+			}, {
+			    id: "wave_motion",
+			    parent: "waves",
+			    title: "Wave Motion"
+			},
+
+			// ChemPhys topics:
+
+			{
+			    id: "thermodynamics",
+			    parent: "chemphysics"
 			},
 
 			// Maths fields
