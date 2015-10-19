@@ -2,9 +2,8 @@
 .account-settings-wrap {
 	.panel {
 		padding-bottom: 0;
-		margin-left: 15px;
-		margin-right: 15px;
 		margin-bottom: 0;
+		border-style: none;
 	}
 	label {
 		font-size: 15px;
@@ -272,7 +271,6 @@ input.account-settings-input {
 	border-left: #e3e3e3 1px solid;
 	background-color: #fff;
 	padding: 10px 20px;
-	margin-bottom: 30px;
 
 	.icon-warning {
 		position: absolute;

@@ -22,179 +22,233 @@
         <h1>Manage a user's account</h1>
         <h2 class='subheader'>Editing another user's Isaac account.</h2>
     </div>    
-    <form class="panel" ng-submit="save()" name="account" novalidate>
-        <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
-        <p class="ru-required-msg"><span>*</span> Required Field</p>
-        <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
-            <li>
-                <div class="row">
-                    <div class="large-16 medium-8 columns">
-                       <label for="account-firstname">
-                            <strong>First Name</strong>
-                            <span class="ru-form-required"></span>
-                            <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
-                                Required
-                            </span>
-                        </label>
-                        <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
-                    </div>
-                    <div class="large-16 medium-8 columns">
-                        <label for="account-lastname">
-                            <strong>Last Name</strong>
-                            <span class="ru-form-required"></span>
-                            <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
-                                Required
-                            </span>
-                        </label>
-                        <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="large-16 columns">
-                        <label for="account-email">
-                            <strong>Your Email Address</strong>
-                            <span ng-if="user.emailVerificationStatus != 'VERIFIED'" data-ot="Verifying your email address allows us to make sure Isaac is run for legitimate users." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                            <span class="ru-form-required"></span>
-                            <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
-                                Enter a valid email
-                            </span>
+
+
+
+
+    <div class="small-16 columns end">
+
+        <dl class="tabs ru_tabs ru-answer no-print" data-tab="">
+            <dd class="tabs-account-settings active" ng-click="activateTab(0)"><a href="javascript:void(0);">Personal <span>Information {{activeTab}}</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
+        </dl>
+
+        <div class="tabs-content ru_tabs ru-answer">
+
+            <div class="account-settings-personal-information" ng-class="{content: true, active: 0 == activeTab}">
+
+                <form class="panel" ng-submit="save()" name="account" novalidate>
+                    <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
+                    <p class="ru-required-msg"><span>*</span> Required Field</p>
+                    <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                        <li>
+                            <div class="row">
+                                <div class="large-16 medium-8 columns">
+                                   <label for="account-firstname">
+                                        <strong>First Name</strong>
+                                        <span class="ru-form-required"></span>
+                                        <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
+                                            Required
+                                        </span>
+                                    </label>
+                                    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
+                                </div>
+                                <div class="large-16 medium-8 columns">
+                                    <label for="account-lastname">
+                                        <strong>Last Name</strong>
+                                        <span class="ru-form-required"></span>
+                                        <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
+                                            Required
+                                        </span>
+                                    </label>
+                                    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="large-16 columns">
+                                    <label for="account-email">
+                                        <strong>Your Email Address</strong>
+                                        <span ng-if="user.emailVerificationStatus != 'VERIFIED'" data-ot="Verifying your email address allows us to make sure Isaac is run for legitimate users." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                        <span class="ru-form-required"></span>
+                                        <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
+                                            Enter a valid email
+                                        </span>
+                                        </label>
+                                     <input id="account-email" name="email" type="email" ng-model="user.email" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div ng-show="!editingSelf" class="large-16 columns">
+                                    <label>
+                                        <strong>Change user's role:</strong>
+                                    </label>
+                                    <select ng-model="user.role">
+                                        <option value="">No role</option>
+                                        <option value="STUDENT">Student</option>
+                                        <option value="TEACHER">Teacher</option>
+                                        <option value="CONTENT_EDITOR">Content Editor</option>
+                                        <option value="ADMIN">Admin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div ng-class="{'invisible': !user.hasSegueAccount}" class="row">
+                                <div id="password-wrap" class="large-8 medium-8 columns">
+                                    <label for="account-password">
+                                        <!-- Change text if user doesn't have account -->
+                                        <strong ng-if="user.hasSegueAccount">Change password</strong>
+                                        <strong ng-if="!user.hasSegueAccount">Set password</strong>
+                                    </label>
+                                    <input id="account-password" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
+                                </div>
+                                <div id="password2-wrap" class="large-8 medium-8 columns">
+                                    <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
+                                    <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
+                                    <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
+                                        Passwords do not match
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small-16 columns">
+                                    <label for="account-gender">
+                                        <strong>Gender</strong>
+                                        <span ng-if="!user.gender" data-ot="Providing your gender will enable us to monitor the use of Isaac resources." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                    </label>
+                                </div>                   
+                                <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
+                                    <div class="small-5 columns">
+                                        <label for="r1"><span>Male</span></label>
+                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
+                                    </div>
+                                    <div class="small-5 columns">
+                                        <label for="r2"><span class="centeral-label">Female</span></label>
+                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
+                                    </div>
+                                    <div class="small-6 columns">
+                                        <label for="r3"><span>Other</span></label>
+                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" question-radio-button>
+                                    </div>                        
+                                </div>                    
+                            </div>
+                            <div class="row">
+                                <!-- Again this is due to the divisible by 3 issue -->
+                                <div class="large-16 medium-16 columns">
+                                    <label>
+                                        <strong>Date of Birth</strong>
+                                        <span ng-if="!user.dateOfBirth" data-ot="Providing your date of birth will enable us to inform you of features and events for your year group." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                    </label>
+                                </div>
+                                <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
+                                    <li>
+                                        <select ng-model="dob.day" ng-options="day for day in datePicker.days">
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select ng-model="dob.month" ng-options="month for month in datePicker.months">
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <select ng-model="dob.year" ng-options="year for year in datePicker.years">
+                                        </select>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="row">
+                                <div class="large-16 medium-16 columns account-level">
+                                    <label><strong>Starting level</strong><span aria-haspopup="true" class="icon-help has-tip" data-ot="Select your preferred question level."></span></label>
+                                    <select ng-model="user.defaultLevel">
+                                        <option value="1">1 (GCSE)</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6 (Post A-Level)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        
+                            <label>
+                                <strong>School</strong> 
+                                 <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for UK schools and universities. Use the 'other' box if you study outside of the UK or to type 'none' if you are not at school."></span>
+                                 <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                             </label>
-                         <input id="account-email" name="email" type="email" ng-model="user.email" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div ng-show="!editingSelf" class="large-16 columns">
-                        <label>
-                            <strong>Change user's role:</strong>
-                        </label>
-                        <select ng-model="user.role">
-                            <option value="">No role</option>
-                            <option value="STUDENT">Student</option>
-                            <option value="TEACHER">Teacher</option>
-                            <option value="CONTENT_EDITOR">Content Editor</option>
-                            <option value="ADMIN">Admin</option>
-                        </select>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div ng-class="{'invisible': !user.hasSegueAccount}" class="row">
-                    <div id="password-wrap" class="large-8 medium-8 columns">
-                        <label for="account-password">
-                            <!-- Change text if user doesn't have account -->
-                            <strong ng-if="user.hasSegueAccount">Change password</strong>
-                            <strong ng-if="!user.hasSegueAccount">Set password</strong>
-                        </label>
-                        <input id="account-password" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
-                    </div>
-                    <div id="password2-wrap" class="large-8 medium-8 columns">
-                        <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                        <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
-                        <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
-                            Passwords do not match
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <div class="small-16 columns">
-                        <label for="account-gender">
-                            <strong>Gender</strong>
-                            <span ng-if="!user.gender" data-ot="Providing your gender will enable us to monitor the use of Isaac resources." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                        </label>
-                    </div>                   
-                    <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
-                        <div class="small-5 columns">
-                            <label for="r1"><span>Male</span></label>
-                            <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
-                        </div>
-                        <div class="small-5 columns">
-                            <label for="r2"><span class="centeral-label">Female</span></label>
-                            <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
-                        </div>
-                        <div class="small-6 columns">
-                            <label for="r3"><span>Other</span></label>
-                            <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" question-radio-button>
-                        </div>                        
-                    </div>                    
-                </div>
-                <div class="row">
-                    <!-- Again this is due to the divisible by 3 issue -->
-                    <div class="large-16 medium-16 columns">
-                        <label>
-                            <strong>Date of Birth</strong>
-                            <span ng-if="!user.dateOfBirth" data-ot="Providing your date of birth will enable us to inform you of features and events for your year group." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                        </label>
-                    </div>
-                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
-                        <li>
-                            <select ng-model="dob.day" ng-options="day for day in datePicker.days">
-                            </select>
-                        </li>
-                        <li>
-                            <select ng-model="dob.month" ng-options="month for month in datePicker.months">
-                            </select>
-                        </li>
-                        <li>
-                            <select ng-model="dob.year" ng-options="year for year in datePicker.years">
-                            </select>
+                            <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
+                                {{schools}}      
+                            </div>
+                            <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
+
+                            <label class="linked-accounts-title">Linked accounts</label>
+                            <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
+                                <li ng-repeat="(key, value) in socialAccounts()" ng-class="{'linked': value == true}"ng-switch on="value">
+                                    <a tabindex="0" ng-switch-when="true" class="account-{{key | lowercase}}" ng-click="removeLinkedAccount(key)">
+                                        <span>Remove</span>
+                                    </a>
+                                    <a tabindex="0" ng-switch-default class="account-{{key | lowercase}}" ng-click="addLinkedAccount(key)">
+                                        <span>Add</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
+                    <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
+                        <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
+                        <li ng-if="updateFail" class="text-center">
+                            <h4 style="color:#a00;">
+                                Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+                            </h4>
+                        </li>
+                    </ul>
+                   
+                </form>
+                <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
+                    <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
                 </div>
-            </li>
-            <li>
-                <div class="row">
-                    <div class="large-16 medium-16 columns account-level">
-                        <label><strong>Starting level</strong><span aria-haspopup="true" class="icon-help has-tip" data-ot="Select your preferred question level."></span></label>
-                        <select ng-model="user.defaultLevel">
-                            <option value="1">1 (GCSE)</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6 (Post A-Level)</option>
-                        </select>
-                    </div>
-                </div>
-            
-                <label>
-                    <strong>School</strong> 
-                     <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for UK schools and universities. Use the 'other' box if you study outside of the UK or to type 'none' if you are not at school."></span>
-                     <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                </label>
-                <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
-                    {{schools}}      
-                </div>
-                <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
-
-                <label class="linked-accounts-title">Linked accounts</label>
-                <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 linked-accounts">
-                    <li ng-repeat="(key, value) in socialAccounts()" ng-class="{'linked': value == true}"ng-switch on="value">
-                        <a tabindex="0" ng-switch-when="true" class="account-{{key | lowercase}}" ng-click="removeLinkedAccount(key)">
-                            <span>Remove</span>
-                        </a>
-                        <a tabindex="0" ng-switch-default class="account-{{key | lowercase}}" ng-click="addLinkedAccount(key)">
-                            <span>Add</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
-            <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
-            <li ng-if="updateFail" class="text-center">
-                <h4 style="color:#a00;">
-                    Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
-                </h4>
-            </li>
-        </ul>
-       
-    </form>
-    <div class="account-reorder-wrap">
-        <div class="account-reorder-bottom">
-            <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
-                <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
             </div>
 
+            <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 1 == activeTab}">
+                Here are some teacher connections
+
+                <div ng-if="editingSelf" class="large-10 medium-16 columns">
+                    <div class="panel connect-form">
+                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 characters in length."></span></h3>
+                        <p>Enter the code given to connect with a teacher.</p>
+                        <form class="clearfix" ng-submit="useToken()">
+                            <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
+                            <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Apply Code</a>
+                        </form>
+                    </div>
+                </div>
+                <div ng-if="editingSelf" class="large-6 medium-16 columns">
+                    <div class="connect-list">
+                        <h3><span class="person-icon-active"></span> Teacher connections</h3>
+
+                        <div class="connect-list-inner">
+                            <ul class="teachers-connected">
+                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span> {{teacherUser.givenName}} {{teacherUser.familyName}} <a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
+                            </ul>
+                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
+                            <ul ng-if="false" class="teachers-disconnected">
+                                <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="account-settings-email-preferences"  ng-class="{content: true, active: 2 == activeTab}">
+                Here are some email preferences
+            </div>
+
+        </div>
+
+    </div>
+    <div class="account-reorder-wrap">
+        <div class="account-reorder-bottom">
             <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
                 <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
             </div>
@@ -207,32 +261,7 @@
             <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
         </div>
     </div>
-    <div ng-if="editingSelf" class="large-10 medium-16 columns">
-        <div class="panel connect-form">
-            <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 characters in length."></span></h3>
-            <p>Enter the code given to connect with a teacher.</p>
-            <form class="clearfix" ng-submit="useToken()">
-                <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
-                <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Apply Code</a>
-            </form>
-        </div>
-    </div>
-    <div ng-if="editingSelf" class="large-6 medium-16 columns">
-        <div class="connect-list">
-            <h3><span class="person-icon-active"></span> Teacher connections</h3>
-
-            <div class="connect-list-inner">
-                <ul class="teachers-connected">
-                    <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span> {{teacherUser.givenName}} {{teacherUser.familyName}} <a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
-                </ul>
-                <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
-                <ul ng-if="false" class="teachers-disconnected">
-                    <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+    
 <div id="account-updated" class="reveal-modal" data-reveal>
     <h2>Your account has been successfully updated.</h2>
     <a class="close-reveal-modal"><img src="/assets/Close-button.jpg" alt="Close" /></a>

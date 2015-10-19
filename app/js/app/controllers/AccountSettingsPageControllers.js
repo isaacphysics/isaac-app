@@ -26,8 +26,15 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
+		$scope.activeTab = 0;
+
+		$scope.activateTab = function(i) {
+			$scope.activeTab = i;
+
+		}
+
+		// so we can check if they have changed their email address
 		var emailBeforeEditing = $scope.user.email;
-		console.log("emailBeforeEditing:" + emailBeforeEditing + ", editingSelf:" + $scope.editingSelf);
 
 		// Create date of birth select options
 		$scope.datePicker = {
