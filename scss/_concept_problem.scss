@@ -277,6 +277,7 @@
         width: 150px;
         font-size: 0.8rem;
         box-shadow: 0px 0px 5px #888;
+        z-index: 999;
     }
 
     &:active .popup, &:hover .popup
