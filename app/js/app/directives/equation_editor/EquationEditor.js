@@ -175,6 +175,35 @@ define([], function() {
 
                 	scope.state.symbols[nextSymbolId++] = newSymbol;
 
+                    // Add any additional symbols (like brackets next to functions)
+
+                    if (newSymbol.func) {
+
+                        scope.state.symbols[nextSymbolId++] = {
+                            type: "container",
+                            subType: "brackets",
+                            width: 120,
+                            height: 70,
+                            label: "(x)",
+                            texLabel: true,
+                            x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft + symbol.dragWidth + 20, 
+                            y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
+                        };
+
+                    } else if (newSymbol.token == "\\int") {
+
+                        scope.state.symbols[nextSymbolId++] = {
+                            type: "string",
+                            label: "\\mathrm{d}",
+                            token: "\\mathrm{d}",
+                            fontSize: 48,
+                            texLabel: true,
+                            x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft + symbol.dragWidth + 100, 
+                            y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
+                        }
+
+                    }
+
                     scope.$broadcast("historyCheckpoint");
                 	console.debug("Symbols:", scope.state.symbols);
                 });
@@ -321,18 +350,21 @@ define([], function() {
                         type: "string",
                         label: "\\sin",
                         token: "\\sin",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{
                         type: "string",
                         label: "\\cos",
                         token: "\\cos",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{
                         type: "string",
                         label: "\\tan",
                         token: "\\tan",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{

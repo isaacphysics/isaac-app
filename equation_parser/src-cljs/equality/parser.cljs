@@ -255,7 +255,7 @@
                                           potential-exponents (filter #(and (geom/line-intersects-box? {:x (geom/bbox-right b) :dx (:width b)
                                                                                                         :y (:top b) :dy (- (:width b))} %)
                                                                             (> (:left %) (+ (:left b) (* 0.5 (:width b))))
-                                                                            (< (+ (:top %) (:height %)) (+ (:top b) (* 0.5 (:height b))))
+                                                                            (< (+ (:top %) (:height %)) (+ (:top b) (* 0.75 (:height b))))
                                                                             (isa? (:type %) :type/expr)) remaining-input)]
                                     :when (not-empty potential-exponents)]
                                 (for [e potential-exponents
@@ -289,7 +289,7 @@
                                           potential-subscripts (filter #(and (geom/line-intersects-box? {:x (geom/bbox-right b) :dx (:width b)
                                                                                                          :y (geom/bbox-bottom b) :dy (:width b)} %)
                                                                             (> (:left %) (+ (:left b) (* 0.5 (:width b))))
-                                                                            (> (:top %) (+ (:top b) (* 0.5 (:height b))))
+                                                                            (> (:top %) (+ (:top b) (* 0.25 (:height b))))
                                                                             (isa? (:type %) :type/expr)) remaining-input)]
                                     :when (not-empty potential-subscripts)]
                                 (for [e potential-subscripts
@@ -328,13 +328,13 @@
                                                                                                       (> (geom/bbox-bottom %) (:y (geom/bbox-middle (:base left))))
                                                                                                       (> (geom/bbox-bottom %) (:y (geom/bbox-middle left))))
                                                                                                   (>= (precedence (:type %)) (precedence :type/mult))
-                                                                                                  ;(not= (:type %) :type/num) ; Allow this. The left op might be a function.
-                                                                                                  ;(if (= (:type %) :type/pow)
-                                                                                                  ;  (not= (:type (:base %)) :type/num)
-                                                                                                  ;  true)
-                                                                                                  ;(if (= (:type %) :type/mult)
-                                                                                                  ;  (not= (:type (:left-op %)) :type/num)
-                                                                                                  ;  true)
+                                                                                                  (not= (:type %) :type/num) ; Don't allow this. If the left op is a function, it must use brackets for args.
+                                                                                                  (if (= (:type %) :type/pow)
+                                                                                                    (not= (:type (:base %)) :type/num)
+                                                                                                    true)
+                                                                                                  (if (= (:type %) :type/mult)
+                                                                                                    (not= (:type (:left-op %)) :type/num)
+                                                                                                    true)
                                                                                                   (isa? (:type %) :type/expr)) remaining-input)]
                                                           :when (not-empty potential-right-ops)]
                                                       (for [right potential-right-ops
@@ -465,7 +465,7 @@
                                                    :let [remaining-input (disj remaining-input child)]]
                                                (conj remaining-input (merge {:id (:id a)
                                                                              :type :type/abs
-                                                                             :src r
+                                                                             :src a
                                                                              :child child
                                                                              :symbol-count (+ 1 (:symbol-count child))}
                                                                             (geom/bbox-combine a child)))))]
