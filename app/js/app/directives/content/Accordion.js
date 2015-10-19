@@ -28,7 +28,9 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
-
+				scope.accordionChildMetrics = {
+					questionCount: 0,
+				}
 				
 				// Work out whether we're on a question page. If we are, open the first accordion section. Otherwise, only open it if it is the first item on the page.
 				var isOnQuestionPage = false;
@@ -75,7 +77,7 @@ define([], function() {
 						var ans = answersOnLoad[i];
 
 						// If there is an answer, close the tab and display the answer.
-						if (ans) {
+						if (ans && scope.accordionChildMetrics.questionCount <= 1) {
 							scope.openChildren[i] = false;
 							scope.titleSuffixes[i] = ans;
 						} else {
@@ -97,7 +99,7 @@ define([], function() {
 					if (index in answersOnLoad) {
 						
 						// This is a change - someone has submitted an answer.
-						if (ans) {
+						if (ans && scope.accordionChildMetrics.questionCount <= 1) {
 							// They got the answer right. Display the answer and if the next question isn't open, open it.
 							scope.titleSuffixes[index] = ans;
 							scope.openChildren[index+1] = true;
