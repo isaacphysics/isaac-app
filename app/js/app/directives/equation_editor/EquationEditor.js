@@ -379,6 +379,24 @@ define([], function() {
                         token: "\\mathrm{d}",
                         fontSize: 48,
                         texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\mathrm{e}",
+                        token: "\\mathrm{e}",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\ln",
+                        token: "\\ln",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\log",
+                        token: "\\log",
+                        fontSize: 48,
+                        texLabel: true,
                     }]
                 };
 
