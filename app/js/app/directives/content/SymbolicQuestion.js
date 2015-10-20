@@ -32,6 +32,9 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.eqnState = { symbols: {} };
 
 				scope.$watch("eqnState", function(s, oldS) {
+					if (s === oldS)
+						return;
+
 					scope.selectedChoice.value = JSON.stringify(s);
 				}, true);
 
