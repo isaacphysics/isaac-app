@@ -66,6 +66,7 @@ define([], function() {
                     r.width = element.width();
                     r.height = element.height();
                     r.token = s.token;
+                    r.fontSize = s.fontSize;
 
                     break;
                 case "line":

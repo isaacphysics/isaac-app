@@ -290,6 +290,7 @@
                                                                                                          :y (geom/bbox-bottom b) :dy (:width b)} %)
                                                                             (> (:left %) (+ (:left b) (* 0.5 (:width b))))
                                                                             (> (:top %) (+ (:top b) (* 0.25 (:height b))))
+                                                                            (< (:fontSize %) (:fontSize b))
                                                                             (isa? (:type %) :type/expr)) remaining-input)]
                                     :when (not-empty potential-subscripts)]
                                 (for [e potential-subscripts
@@ -305,6 +306,7 @@
                                                                                  (:symbol-count e))}
                                                                (geom/bbox-combine b e))))))))
            :divide (fn [input] #{})}
+
    "adjacent-mult" {:apply (fn [input]
 
                              ;; Potential coefficients are expressions that have higher precedence than :type/mult
@@ -324,9 +326,9 @@
                                                                 potential-right-ops (filter #(and (geom/boxes-intersect? (geom/right-box left (* 1.5 (min (:width left) (:width %))) (* 0.3 (:height left))) %)
                                                                                                   (> (:left %) (- (geom/bbox-right left) (* 0.5 (:width %))))
                                                                                                   (> (:left %) (:x (geom/bbox-middle left)))
-                                                                                                  #_(if (= (:type left) :type/pow)
-                                                                                                      (> (geom/bbox-bottom %) (:y (geom/bbox-middle (:base left))))
-                                                                                                      (> (geom/bbox-bottom %) (:y (geom/bbox-middle left))))
+                                                                                                  (if (= (:type left) :type/pow)
+                                                                                                      (> (geom/bbox-bottom %) (- (geom/bbox-bottom (:base left)) (* 0.1 (:height (:base left)))))
+                                                                                                      true #_(> (geom/bbox-bottom %) (:y (geom/bbox-middle left))))
                                                                                                   (>= (precedence (:type %)) (precedence :type/mult))
                                                                                                   (not= (:type %) :type/num) ; Don't allow this. If the left op is a function, it must use brackets for args.
                                                                                                   (if (= (:type %) :type/pow)
@@ -627,7 +629,7 @@
 
         result      (time (parse input))
 
-        ;;_           (println "Result:" result)
+       ;; _           (println "Result:" result)
 
         best-result (first result)
 
