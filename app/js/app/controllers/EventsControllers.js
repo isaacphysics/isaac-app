@@ -41,19 +41,29 @@ define([], function() {
 
         var startIndex = 0;
         var eventsPerPage = 6;
-        var showActiveOnly = $stateParams.show_active_only ? $stateParams.show_active_only : false;
-        var showInactiveOnly = $stateParams.show_inactive_only ? $stateParams.show_inactive_only : false;
+        var showActiveOnly = true;
+        var showInactiveOnly = false;
         var filterEventsByType = null;
 
-        var showByTag = null;
+        var showByTag = null; // show only events with set tag
 
-        $scope.filterEventsByStatus = "UPCOMING";
+
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
         $scope.toTitleCase = toTitleCase;
 
+        if($stateParams.event_status == "all") {
+            $scope.filterEventsByStatus = "all";
+        } else {
+            $scope.filterEventsByStatus = "upcoming";
+        }
+
+        if ($stateParams.types) {
+            $scope.filterEventsByType = $stateParams.types
+        }
+
         $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
-            if ($scope.filterEventsByStatus == "UPCOMING") {
+            if ($scope.filterEventsByStatus == "upcoming") {
                 showActiveOnly = true;
                 showInactiveOnly = false;
             } else {
