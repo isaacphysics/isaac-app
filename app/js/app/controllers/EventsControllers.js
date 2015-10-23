@@ -28,6 +28,10 @@ define([], function() {
         if(e.eventThumbnail && e.eventThumbnail.src) {
             e.eventThumbnail.src = api.getImageUrl(e.eventThumbnail.src);
         } else {
+            if (e.eventThumbnail == null) {
+                e.eventThumbnail = {};
+            }
+
             e.eventThumbnail.src = 'http://placehold.it/500x276';
             e.eventThumbnail.altText = 'placeholder image.';
         }
