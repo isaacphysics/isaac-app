@@ -112,7 +112,7 @@ define([], function() {
 				warnings.push(["quadratics", "There are no Quadratics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 
-			if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+			if (contains(topics, "series") && !(contains(levels, 3) || levels.length == 0))
 				warnings.push(["series", "There are no Series questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
@@ -130,7 +130,7 @@ define([], function() {
 			if (contains(topics, "shapes") && !(contains(levels, 2) || levels.length == 0))
 				warnings.push(["shapes", "There are no Shapes questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "trigonometry") && !(contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+			if (contains(topics, "trigonometry") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || levels.length == 0))
 				warnings.push(["trigonometry", "There are no Trigonometry questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "algebra") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
