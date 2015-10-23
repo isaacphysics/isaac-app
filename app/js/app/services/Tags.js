@@ -43,7 +43,7 @@ define([], function() {
 			}, 
 			{
 				id: "chemphysics",
-				title: "Chemical Physics",
+				title: "Physical Chemistry",
 				parent: "physics"
 			},
 
@@ -93,9 +93,7 @@ define([], function() {
 			    parent: "circuits"
 			}, {
 			    id: "capacitors",
-			    parent: "circuits",
-			    enabled: false,
-				comingSoon: true
+			    parent: "circuits"
 			}, {
 			    id: "general_circuits",
 			    parent: "circuits",
@@ -116,7 +114,7 @@ define([], function() {
 			    title: "Wave Motion"
 			},
 
-			// ChemPhys topics:
+			// Physical Chemistry topics:
 
 			{
 			    id: "thermodynamics",

@@ -75,7 +75,7 @@ define([], function() {
 			if (contains(topics, "resistors") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
 				warnings.push(["resistors", "There are no Resistors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "capacitors") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+			if (contains(topics, "capacitors") && !(contains(levels, 4) || levels.length == 0))
 				warnings.push(["capacitors", "There are no Capacitors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "general_circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
@@ -94,10 +94,10 @@ define([], function() {
 			if (contains(topics, "wave_motion") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
 				warnings.push(["wave_motion", "There are no Wave Motion questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-        // ChemPhysics field:
+        // Physical Chemistry field:
             if (topics.length == 0 && contains(fields, "chemphysics") && !(contains(levels, 1) || contains(levels, 2) || levels.length == 0))
-				warnings.push(["chemphysics", "There are no Chemical Physics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-        // ChemPhysics topics:
+				warnings.push(["chemphysics", "There are no Physical Chemistry questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+        // Physical Chemistry topics:
 			if (contains(topics, "thermodynamics") && !(contains(levels, 1) || contains(levels, 2) || levels.length == 0))
 				warnings.push(["thermodynamics", "There are no Thermodynamics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
