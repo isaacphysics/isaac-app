@@ -85,7 +85,7 @@ define([], function() {
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 				}).catch(function(e){
-					$scope.showToast($scope.toastTypes.Failure, "User Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 					$scope.userSearch.isLoading = false;
 				});
 				
