@@ -425,7 +425,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
@@ -438,7 +438,7 @@ define(["angular-ui-router"], function() {
             .state('adminStats', {
                 url: "/admin/stats",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {

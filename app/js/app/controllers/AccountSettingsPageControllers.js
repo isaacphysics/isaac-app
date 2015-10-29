@@ -19,6 +19,8 @@ define([], function() {
 		$rootScope.pageTitle = "Account Settings";
 		// if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
 		// this is likely to be an administrator activity and could do with some extra security from the frontend.
+		$scope.myUserRole = $rootScope.user.role;
+
 		if (userOfInterest) {
 			$scope.editingSelf = false;
 			$scope.user = userOfInterest;
