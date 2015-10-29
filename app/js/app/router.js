@@ -451,8 +451,8 @@ define(["angular-ui-router"], function() {
                                 $scope.statistics = result;
                                 $scope.setLoading(false)
                             });
-                            api.eventBookings.getAllBookings().$promise.then(function(result){
-                                $scope.eventBookings = result;
+                            api.eventBookings.getAllBookings({"count_only" : true}).$promise.then(function(result){
+                                $scope.eventBookingsCount = result.count;
                             })
                         }]
                     }

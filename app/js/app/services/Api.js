@@ -247,7 +247,6 @@ define([], function() {
 			'getAllBookings' : {
 				url: server + "/api/events/bookings",
 				method: 'GET', 
-				isArray: true
 			},
 			'getBookings' : {
 				url: server + "/api/events/:eventId/bookings",
