@@ -1,7 +1,7 @@
 "use strict";
 define([], function() {
 
-	return ["$timeout", "$rootScope", function($timeout, $rootScope) {
+	return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         /*
         equationEditorState = {
@@ -518,6 +518,10 @@ define([], function() {
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
+                    api.logger.log({
+                        type : "CLOSE_EQUATION_EDITOR",
+                    });
+
                 }
 
                 element.on("keydown", function(e) {
