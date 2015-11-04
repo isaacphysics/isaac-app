@@ -29,9 +29,9 @@
     <div class="small-16 columns end">
 
         <dl class="tabs ru_tabs ru-answer no-print" data-tab="">
-            <dd class="tabs-account-settings active" ng-click="activateTab(0)"><a href="javascript:void(0);">Personal <span>Information {{activeTab}}</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Teacher <span>Connections</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings active" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)"><a href="javascript:void(0);">Personal <span>Information</span></a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
         </dl>
 
         <div class="tabs-content ru_tabs ru-answer">
@@ -211,8 +211,6 @@
             </div>
 
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 1 == activeTab}">
-                Here are some teacher connections
-
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
                         <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 characters in length."></span></h3>
@@ -241,7 +239,38 @@
             </div>
 
             <div class="account-settings-email-preferences"  ng-class="{content: true, active: 2 == activeTab}">
-                Here are some email preferences
+                Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th width="150">Email Type</th>
+                      <th class="hide-for-small-only">Description</th>
+                      <th width="180" colspan="2">Preference</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>News and Updates</td>
+                      <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac.</td>
+                      <td><input name="r1" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r1" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
+                    </tr>
+                    <tr>
+                      <td>Events</td>
+                      <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
+                      <td><input name="r2" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r2" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
+                    </tr>
+                    <tr>
+                      <td>Assignments</td>
+                      <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
+                      <td><input name="r3" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r3" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
+                    </tr>
+                  </tbody>
+                </table>
+
             </div>
 
         </div>

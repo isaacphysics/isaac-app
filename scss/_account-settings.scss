@@ -45,6 +45,29 @@
 		display:inline-block !important;
 		float: none;
 	}
+
+	.account-settings-personal-information{
+		overflow:auto;
+		&.content.active{
+			padding-top:0;
+		}	
+	}
+
+	.account-settings-email-preferences{
+		overflow:auto;
+		padding:20px;
+		background:white;
+		&table{
+			margin: 0px;
+		}
+	}
+
+	.account-settings-teacher-connections{
+		overflow:auto;
+		padding:20px;
+		background:white;
+
+	}
 }
 input.account-settings-input {
 	margin-bottom: 40px;
@@ -267,10 +290,9 @@ input.account-settings-input {
 .account-warning {
 	@extend .clearfix;
 	border-right: #e3e3e3 1px solid;
-	border-bottom: #e3e3e3 1px solid;
 	border-left: #e3e3e3 1px solid;
 	background-color: #fff;
-	padding: 10px 20px;
+	padding: 10px 10px;
 
 	.icon-warning {
 		position: absolute;
