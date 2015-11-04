@@ -15,12 +15,13 @@
  */
 define([], function() {
 
-	return ["$filter", function($filter) {
+	return ["$filter", "api", function($filter, api) {
 
 		return {
 			scope: {
 				questions: "=",
 				title: "=",
+				parentQuestionId: "=",
 			},
 
 			restrict: "A",
@@ -35,7 +36,16 @@ define([], function() {
 					if (!isNaN(n))
 						return n;
 					return a.title;
-				}
+				
+				};
+
+				scope.logRelatedQuestionView = function(relatedQuestionId){
+					api.logger.log({
+						type: "VIEW_RELATED_QUESTION",
+						questionId: scope.parentQuestionId,
+						relatedQuestionId:relatedQuestionId
+					});
+				};
 	
 			},
 		};
