@@ -131,7 +131,6 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/admin/users/schools/:id", 
 				params: {id: '@id'},
-				isArray: true 
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
