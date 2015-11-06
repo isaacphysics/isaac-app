@@ -94,13 +94,6 @@ define([], function() {
 			if (contains(topics, "wave_motion") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
 				warnings.push(["wave_motion", "There are no Wave Motion questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-        // Physical Chemistry field:
-            if (topics.length == 0 && contains(fields, "chemphysics") && !(contains(levels, 1) || contains(levels, 2) || levels.length == 0))
-				warnings.push(["chemphysics", "There are no Physical Chemistry questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-        // Physical Chemistry topics:
-			if (contains(topics, "thermodynamics") && !(contains(levels, 1) || contains(levels, 2) || levels.length == 0))
-				warnings.push(["thermodynamics", "There are no Thermodynamics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-
         // Maths topics:
 			if (contains(topics, "simultaneous") && !(contains(levels, 1) || levels.length == 0))
 				warnings.push(["simultaneous", "There are no Simultaneous Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
