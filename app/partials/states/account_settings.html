@@ -24,21 +24,18 @@
     </div>    
 
 
-
-
     <div class="small-16 columns end">
 
-        <dl class="tabs ru_tabs ru-answer no-print" data-tab="">
+        <dl class="tabs no-print" data-tab="">
             <dd class="tabs-account-settings active" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)"><a href="javascript:void(0);">Personal <span>Information</span></a></dd>
-            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Teacher <span>Connections</span></a></dd>
-            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Password <span>Reset</span></a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);" ng-if="editingSelf" >Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 3}" ng-click="activateTab(3)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
         </dl>
 
-        <div class="tabs-content ru_tabs ru-answer">
-
+        <form class="panel" ng-submit="save()" name="account" novalidate>
+        <div class="tabs-content tabs-account-settings-content">
             <div class="account-settings-personal-information" ng-class="{content: true, active: 0 == activeTab}">
-
-                <form class="panel" ng-submit="save()" name="account" novalidate>
                     <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
                     <p class="ru-required-msg"><span>*</span> Required Field</p>
                     <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
@@ -94,23 +91,6 @@
                             </div>
                         </li>
                         <li>
-                            <div ng-class="{'invisible': !user.hasSegueAccount}" class="row">
-                                <div id="password-wrap" class="large-8 medium-8 columns">
-                                    <label for="account-password">
-                                        <!-- Change text if user doesn't have account -->
-                                        <strong ng-if="user.hasSegueAccount">Change password</strong>
-                                        <strong ng-if="!user.hasSegueAccount">Set password</strong>
-                                    </label>
-                                    <input id="account-password" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
-                                </div>
-                                <div id="password2-wrap" class="large-8 medium-8 columns">
-                                    <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                                    <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
-                                    <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
-                                        Passwords do not match
-                                    </span>
-                                </div>
-                            </div>
                             <div>
                                 <div class="small-16 columns">
                                     <label for="account-gender">
@@ -208,9 +188,50 @@
                 <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
                     <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
                 </div>
+                <div class="account-reorder-wrap">
+                    <div class="account-reorder-bottom">
+                        <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
+                            <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 1 == activeTab}">
+            <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
+               <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                   <div ng-class="{'invisible': !user.hasSegueAccount}">
+                        <div id="password-current-wrap" class="row"  ng-if="user.hasSegueAccount  && editingSelf">
+                            <div  class="large-6 columns">
+                                <label for="account-password-current">
+                                    <strong>Current password</strong>
+                                </label>
+                                <input id="account-password-current" type="password" ng-model="user.passwordcurrent" name="passwordcurrent" placeholder="Current password">        
+                            </div>
+                        </div>
+                        <div id="password-wrap" class="row">
+                            <div  class="large-6 columns">
+                                <label for="account-password">
+                                    <!-- Change text if user doesn't have account -->
+                                    <strong ng-if="user.hasSegueAccount">New password</strong>
+                                    <strong ng-if="!user.hasSegueAccount">Set password</strong>
+                                </label>
+                                <input id="account-password" ng-disabled="!user.passwordcurrent" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
+                            </div>
+                        </div>
+                        <div id="password2-wrap" class="row">
+                            <div  class="large-6 columns">
+                                <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
+                                <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
+                                    Passwords do not match
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+
+            <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
                         <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 characters in length."></span></h3>
@@ -238,7 +259,7 @@
                 </div>
             </div>
 
-            <div class="account-settings-email-preferences"  ng-class="{content: true, active: 2 == activeTab}">
+            <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}">
                 Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
 
                 <table>
@@ -252,44 +273,36 @@
                   <tbody>
                     <tr>
                       <td>News and Updates</td>
-                      <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac.</td>
-                      <td><input name="r1" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r1" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
-                    </tr>
-                    <tr>
-                      <td>Events</td>
-                      <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
-                      <td><input name="r2" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r2" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
+                      <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
+                      <td><input name="r1" type="radio"   data-ng-model="emailPreferences.NEWS_AND_UPDATES" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r1" type="radio"   data-ng-model="emailPreferences.NEWS_AND_UPDATES" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
                     </tr>
                     <tr>
                       <td>Assignments</td>
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
-                      <td><input name="r3" type="radio" value="MALE" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r3" type="radio" value="MALE" class="ng-valid ng-dirty">  No</td>
+                      <td><input name="r3" type="radio"   data-ng-model="emailPreferences.ASSIGNMENTS" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r3" type="radio"  data-ng-model="emailPreferences.ASSIGNMENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
+                    </tr>
+                    <tr>
+                      <td>Events {{emailPreferences.EVENTS}}</td>
+                      <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
+                      <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
+                      <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
                     </tr>
                   </tbody>
                 </table>
-
-            </div>
-
-        </div>
-
-    </div>
-    <div class="account-reorder-wrap">
-        <div class="account-reorder-bottom">
-            <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
-                <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
             </div>
         </div>
-        <div class="large-16 columns account-reorder-top" ng-class="{'account-single-btn': !showSkip}">
-            <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-                <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
-                <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
-            </ul>
-            <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
-        </div>
-    </div>
+    </form>
+</div>
+
+<div class="large-16 columns account-reorder-top" ng-class="{'account-single-btn': !showSkip}">
+    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+        <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
+        <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+    </ul>
+    <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+</div>
     
 <div id="account-updated" class="reveal-modal" data-reveal>
     <h2>Your account has been successfully updated.</h2>

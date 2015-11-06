@@ -69,6 +69,10 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
 			},
+			'getEmailPreferences' : {
+				method: 'GET',
+				url: server + "/api/users/email_preferences"
+			},
 		})
 
 		this.authentication = $resource("", {}, {

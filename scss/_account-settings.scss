@@ -1,5 +1,24 @@
+.tabs-account-settings-content{
+    .content {
+        padding-bottom: 0px;
+    }
+
+    .account-warning{
+        border-top:#e3e3e3 solid 1px;
+        border-left:none;
+        border-right:none;
+    }
+}
 
 .account-settings-wrap {
+
+	form{
+    	border:#e3e3e3 solid 1px !important;
+		padding:0px !important;
+		margin-top: -1px;
+		padding:20px 10px 0px 10px !important;
+		margin-bottom:20px !important;
+	}
 	.panel {
 		padding-bottom: 0;
 		margin-bottom: 0;
@@ -53,6 +72,15 @@
 		}	
 	}
 
+	.account-settings-password-reset{
+		overflow:auto;
+		padding:20px;
+		background:white;
+		&table{
+			margin: 0px;
+		}
+	}
+
 	.account-settings-email-preferences{
 		overflow:auto;
 		padding:20px;
@@ -66,8 +94,8 @@
 		overflow:auto;
 		padding:20px;
 		background:white;
-
 	}
+
 }
 input.account-settings-input {
 	margin-bottom: 40px;
@@ -176,9 +204,9 @@ input.account-settings-input {
 }
 .connect-form {
     margin: 20px 0 0 !important;
-    padding-left: 38px;
     padding-right: 35px;
     padding-bottom: 20px !important;
+	padding-top: 0px;
 
     h3 {
     	a {
@@ -297,7 +325,7 @@ input.account-settings-input {
 	.icon-warning {
 		position: absolute;
 		top: 10px;
-		left: 20px;
+		left: 10px;
 	}
 
 	p {
@@ -450,12 +478,6 @@ input.account-settings-input {
 		margin-left:-20px;
 	}
 
-	#password-wrap {
-		padding-right: 5px;
-	}
-	#password2-wrap {
-		padding-left: 5px;
-	}
 	#account-gender {
 		margin-top: 32px;
 		margin-bottom: 44px;

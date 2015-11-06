@@ -149,9 +149,19 @@
     border: #333333  solid 1px;
 }
 
-.tabs-account-settings a{
-    border-bottom: none !important;
-    color: black !important;
+.tabs-account-settings{
+    border-bottom: none;
+    border-left:#e3e3e3  solid 1px;
+    border-right:#e3e3e3  solid 1px;
+    border-top:#e3e3e3  solid 1px;
+    margin-right: 6px;
+    color: black;
+    background:white;
+    margin-right: 6px;
+    a {
+        padding:10px 20px 10px 20px !important;
+    }
+    
 }
 
 .tabs-content>.content.ru-answer

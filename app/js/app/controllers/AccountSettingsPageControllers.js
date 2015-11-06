@@ -16,9 +16,37 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
+		
+		$scope.activeTab = 0;
+
+		$scope.emailPreferences = {};
+
+		api.user.getEmailPreferences().$promise.then(function(result){
+			$scope.emailPreferences = result;
+		}).catch(function(e){
+			$scope.showToast($scope.toastTypes.Failure, "Failed to load email preferences", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+    	}) ;
+
+
+		// the hash will be used as an anchor
+		if($location.hash){
+			switch($location.hash()){
+				case "passwordreset":
+					$scope.activeTab = 1;
+					break;
+				case "teacherconnections":
+					$scope.activeTab = 2;
+					break;
+				case "emailpreferences":
+					$scope.activeTab = 3;
+					break;
+			}
+		}
+
 		$rootScope.pageTitle = "Account Settings";
 		// if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
 		// this is likely to be an administrator activity and could do with some extra security from the frontend.
+		
 		if (userOfInterest) {
 			$scope.editingSelf = false;
 			$scope.user = userOfInterest;
@@ -26,7 +54,6 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
-		$scope.activeTab = 0;
 
 		$scope.activateTab = function(i) {
 			$scope.activeTab = i;
@@ -152,9 +179,13 @@ define([], function() {
         		}
         	}
 
-
         	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
-	        	api.account.saveSettings($scope.user).$promise.then(function() {
+        		var userSettings = {
+        			registeredUser : $scope.user,
+        			emailPreferences : $scope.emailPreferences
+        		}
+
+	        	api.account.saveSettings(userSettings).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
 	        		return auth.updateUser();
 	        	}).then(function(){
