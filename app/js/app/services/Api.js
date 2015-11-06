@@ -412,7 +412,10 @@ define([], function() {
 				url: server + "/api/notifications/:id/:response",
 			}
 		})
-
+		
+		this.getCSVDownloadLink = function(assignmentId) {
+			return server + "/api/assignments/assign/" + assignmentId + "/progress/download"
+		}
 
 	}
 

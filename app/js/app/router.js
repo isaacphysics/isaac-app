@@ -126,7 +126,7 @@ define(["angular-ui-router"], function() {
             .state('equality', {
                 url: "/equality",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": { 
@@ -588,7 +588,7 @@ define(["angular-ui-router"], function() {
             .state('assignmentProgress', {
                 url: "/assignment_progress",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },                
                 views: {
                     "body": {

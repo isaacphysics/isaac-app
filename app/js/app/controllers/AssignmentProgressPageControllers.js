@@ -20,6 +20,10 @@ define([], function() {
 
         scope.generateGameBoardTitle = gameBoardTitles.generate;
 
+        scope.isUserStaff = function() {
+            return scope.user.role == 'ADMIN' || scope.user.role == "CONTENT_EDITOR" || scope.user.role == "EVENT_MANAGER";
+        }
+
         scope.groups = [];
         scope.groupExpanded = {}; // Key will be group ID, value bool
         scope.groupAssignments = {}; // Key will be group ID, value will be list of assignments
@@ -164,6 +168,10 @@ define([], function() {
                 },200);
             }
         });
+
+        scope.getAssignmentDownloadLink = function(assignmentId) {
+            return api.getCSVDownloadLink(assignmentId);
+        }
 
 	}];
 
