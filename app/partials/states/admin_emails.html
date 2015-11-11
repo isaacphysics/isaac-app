@@ -1,0 +1,95 @@
+<div class="small-16 columns">
+    <h1>Isaac Email Console</h1>
+</div>
+<div ng-show="isAdminUser">
+    <div class="row">
+        <div class="small-16 columns">
+            <div class="panel white clearfix">
+                <div class="small-16 columns">
+	                <h2>User Filter</h2>
+	                <ul>
+                       <table>
+		                  <thead>
+		                    <tr>
+		                      <th width="400">User Type</th>
+		                      <th width="30">Include</th>
+		                    </tr>
+		                  </thead>
+		                  <tbody>
+		                    <tr>
+		                      <td>ADMIN (XX)</td>
+		                      <td><input name="r1" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                    </tr>
+		                    <tr>
+		                      <td>EVENT_MANAGER (XX)</td>
+		                      <td><input name="r3" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                    </tr>
+		                    <tr>
+		                      <td>CONTENT_EDITOR (XX)</td>
+		                      <td><input name="r2" type="checkbox"  data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                    </tr>
+		                    <tr>
+		                      <td>TEACHER (XX)</td>
+		                      <td><input name="r2" type="checkbox"  data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                    </tr>
+		                    <tr>
+		                      <td>STUDENT (XX)</td>
+		                      <td><input name="r1" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                    </tr>
+		                  </tbody>
+		                </table>
+	                </ul>                
+	            </div>            
+	        </div>
+        </div>
+    </div>
+	<div class="row">
+	    <div class="small-16 columns">
+	        <div class="panel white clearfix">
+	            <div class="small-16 columns">
+	                <h2>Content Object</h2>
+	                <ul>
+                      <form ng-submit="setVersion()">
+                        <div class="medium-7 columns end">
+                            <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter email content object ID" ng-change="versionChange = null">
+                        </div>
+                        <div class="medium-4 columns end">
+                            <button ng-click="setVersion()">Load Template</button>
+
+                        </div>
+                    </form>
+	                </ul>                
+	            </div>            
+	        </div>
+        </div>
+    </div>
+	<div class="row">
+	    <div class="small-16 columns">
+	        <div class="panel white clearfix">
+	            <div class="small-16 columns">
+	                <h2>Preview</h2>
+	                <ul>
+	                    <textarea rows="4" cols="50">
+						At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
+						</textarea>  
+	                </ul>                
+	            </div>            
+	        </div>
+        </div>
+    </div>
+	<div class="row">
+	    <div class="small-16 columns">
+	        <div class="panel white clearfix">
+	            <div class="small-16 columns">
+	                <ul>
+	                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+					        <li><a class="ru-button-big expand" ng-click="Send('/')">Send</a></li>
+					        <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
+					    </ul>
+	                </ul>                
+	            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
