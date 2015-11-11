@@ -259,30 +259,28 @@
                     <tr>
                       <th width="150">Email Type</th>
                       <th class="hide-for-small-only">Description</th>
-                      <th width="180" colspan="2">Preference</th>
+                      <th width="50">Preference</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>News and Updates</td>
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
-                      <td><input name="r1" type="radio"   data-ng-model="emailPreferences.NEWS_AND_UPDATES" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r1" type="radio"   data-ng-model="emailPreferences.NEWS_AND_UPDATES" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
+                      <td class="email-checkbox"><input name="r1" type="checkbox" data-ng-model="emailPreferences.NEWS_AND_UPDATES"  ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
                     </tr>
                     <tr>
                       <td>Assignments</td>
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
-                      <td><input name="r3" type="radio"   data-ng-model="emailPreferences.ASSIGNMENTS" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r3" type="radio"  data-ng-model="emailPreferences.ASSIGNMENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
+                      <td class="email-checkbox"><input name="r3" type="checkbox" data-ng-model="emailPreferences.ASSIGNMENTS" ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
                     </tr>
                     <tr>
                       <td>Events</td>
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
-                      <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
-                      <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
+                      <td class="email-checkbox"><input name="r2" type="checkbox" data-ng-model="emailPreferences.EVENTS" ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
                     </tr>
                   </tbody>
                 </table>
+                For more information about emails, please refer to our <a href='/emailpolicy'>email policy</a>. 
             </div>
         </div>
     </form>

@@ -25,12 +25,6 @@ define([], function() {
 			$scope.emailPreferences = result;
 		});
 
-		userOfInterest.$promise.then(function(result){
-			console.log(result);
-		}, function error(msg) {
-			console.error(msg);
-		});
-
 		// the hash will be used as an anchor
 		if($location.hash){
 			switch($location.hash()){
