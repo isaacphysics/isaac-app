@@ -27,8 +27,8 @@
     <div class="small-16 columns end">
 
         <dl class="tabs no-print" data-tab="">
-            <dd class="tabs-account-settings active" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)"><a href="javascript:void(0);">Personal <span>Information</span></a></dd>
-            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Password <span>Reset</span></a></dd>
+            <dd class="tabs-account-settings active" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)"><a href="javascript:void(0);">Profile</a></dd>
+            <dd class="tabs-account-settings"        ng-class="{active: activeTab == 1}" ng-click="activateTab(1)"><a href="javascript:void(0);">Change <span>Password</span></a></dd>
             <dd class="tabs-account-settings"        ng-class="{active: activeTab == 2}" ng-click="activateTab(2)"><a href="javascript:void(0);" ng-if="editingSelf" >Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings"        ng-class="{active: activeTab == 3}" ng-click="activateTab(3)"><a href="javascript:void(0);">Email <span>Preferences</span></a></dd>
         </dl>
@@ -175,15 +175,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
-                        <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
-                        <li ng-if="updateFail" class="text-center">
-                            <h4 style="color:#a00;">
-                                Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
-                            </h4>
-                        </li>
-                    </ul>
-                   
                 </form>
                 <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
                     <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
@@ -199,23 +190,23 @@
 
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
                <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
-                   <div ng-class="{'invisible': !user.hasSegueAccount}">
+                   <div>
                         <div id="password-current-wrap" class="row"  ng-if="user.hasSegueAccount  && editingSelf">
                             <div  class="large-6 columns">
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
                                 </label>
-                                <input id="account-password-current" type="password" ng-model="user.passwordcurrent" name="passwordcurrent" placeholder="Current password">        
+                                <input id="account-password-current" type="password" ng-model="user.passwordCurrent" name="passwordCurrent" placeholder="Current password">        
                             </div>
                         </div>
                         <div id="password-wrap" class="row">
                             <div  class="large-6 columns">
-                                <label for="account-password">
+                                <label for="account-password" ng-class="{'disabled' : !user.passwordCurrent}">
                                     <!-- Change text if user doesn't have account -->
                                     <strong ng-if="user.hasSegueAccount">New password</strong>
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
-                                <input id="account-password" ng-disabled="!user.passwordcurrent" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
+                                <input id="account-password" ng-disabled="!user.passwordCurrent && user.hasSegueAccount  && editingSelf" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
@@ -284,7 +275,7 @@
                       <td><input name="r3" type="radio"  data-ng-model="emailPreferences.ASSIGNMENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
                     </tr>
                     <tr>
-                      <td>Events {{emailPreferences.EVENTS}}</td>
+                      <td>Events</td>
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
                       <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="true" class="ng-valid ng-dirty">  Yes</td>
                       <td><input name="r2" type="radio"  data-ng-model="emailPreferences.EVENTS" data-ng-value="false" class="ng-valid ng-dirty">  No</td>
@@ -295,6 +286,15 @@
         </div>
     </form>
 </div>
+
+<ul class="small-block-grid-1 ru-pad" ng-if="updateSuccess || updateFail">
+    <li ng-if="updateSuccess" class="text-center"><h4>Settings successfully updated</h4></li>
+    <li ng-if="updateFail" class="text-center">
+        <h4 style="color:#a00;">
+            Settings could not be updated<span ng-if="errorMessage != null">: {{errorMessage}}</span>
+        </h4>
+    </li>
+</ul>
 
 <div class="large-16 columns account-reorder-top" ng-class="{'account-single-btn': !showSkip}">
     <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">

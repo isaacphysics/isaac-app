@@ -23,10 +23,13 @@ define([], function() {
 
 		api.user.getEmailPreferences().$promise.then(function(result){
 			$scope.emailPreferences = result;
-		}).catch(function(e){
-			$scope.showToast($scope.toastTypes.Failure, "Failed to load email preferences", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-    	}) ;
+		});
 
+		userOfInterest.$promise.then(function(result){
+			console.log(result);
+		}, function error(msg) {
+			console.error(msg);
+		});
 
 		// the hash will be used as an anchor
 		if($location.hash){
@@ -54,6 +57,8 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
+		console.log($scope.user);
+	
 
 		$scope.activateTab = function(i) {
 			$scope.activeTab = i;
@@ -184,7 +189,7 @@ define([], function() {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences
         		}
-
+        		console.log(userSettings);
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
 	        		return auth.updateUser();
@@ -194,10 +199,10 @@ define([], function() {
 	        		} else {
 			        	$scope.updateSuccess = true;
 	        		}
-	        	}).catch(function(error) {
+	        	}).catch(function(e) {
 	        		$scope.updateFail = true;
-			        if (error.data != null && error.data.errorMessage != null) {
-				        $scope.errorMessage = error.data.errorMessage;
+			        if (e.data != null && e.data.errorMessage != null) {
+				        $scope.errorMessage = e.data.errorMessage;
 			        } else {
 				        $scope.errorMessage = null;
 			        }
