@@ -41,6 +41,7 @@ define([], function() {
 
 			var warnings = [];
 
+        // Mechanics topics:
 			if (contains(topics, "circular_motion") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["circular_motion", "There are no Circular Motion questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
@@ -50,10 +51,11 @@ define([], function() {
 			if (contains(topics, "shm") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["shm", "There are no SHM questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
+        // Fields field:
 			// fields - only show fields (filter property not the tag) message when no topics are selected.
 			if (topics.length == 0 && contains(fields, "fields") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["fields", "There are no Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-
+        // Fields topics:
 			if (contains(topics, "electric") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["electric", "There are no Electric questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
@@ -66,7 +68,33 @@ define([], function() {
 			if (contains(topics, "combined") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["combined", "There are no Combined questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
+        // Circuits field:
+            if (topics.length == 0 && contains(fields, "circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || levels.length == 0))
+				warnings.push(["circuits", "There are no Circuits questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+        // Circuits topics:
+			if (contains(topics, "resistors") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["resistors", "There are no Resistors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
+			if (contains(topics, "capacitors") && !(contains(levels, 4) || levels.length == 0))
+				warnings.push(["capacitors", "There are no Capacitors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+
+			if (contains(topics, "general_circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["general_circuits", "There are no General Circuits questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+
+        // Waves field:
+            if (topics.length == 0 && contains(fields, "waves") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["waves", "There are no Waves questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+        // Waves topics:
+			if (contains(topics, "superposition") && !(contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["superposition", "There are no Superposition questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+
+			if (contains(topics, "optics") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["optics", "There are no Optics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+
+			if (contains(topics, "wave_motion") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+				warnings.push(["wave_motion", "There are no Wave Motion questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+
+        // Maths topics:
 			if (contains(topics, "simultaneous") && !(contains(levels, 1) || levels.length == 0))
 				warnings.push(["simultaneous", "There are no Simultaneous Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
@@ -77,7 +105,7 @@ define([], function() {
 				warnings.push(["quadratics", "There are no Quadratics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 
-			if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+			if (contains(topics, "series") && !(contains(levels, 3) || levels.length == 0))
 				warnings.push(["series", "There are no Series questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
@@ -95,7 +123,7 @@ define([], function() {
 			if (contains(topics, "shapes") && !(contains(levels, 2) || levels.length == 0))
 				warnings.push(["shapes", "There are no Shapes questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "trigonometry") && !(contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+			if (contains(topics, "trigonometry") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || levels.length == 0))
 				warnings.push(["trigonometry", "There are no Trigonometry questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "algebra") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))

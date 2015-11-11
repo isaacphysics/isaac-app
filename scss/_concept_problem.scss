@@ -277,6 +277,7 @@
         width: 150px;
         font-size: 0.8rem;
         box-shadow: 0px 0px 5px #888;
+        z-index: 999;
     }
 
     &:active .popup, &:hover .popup
@@ -649,4 +650,9 @@
     font-size: 0.75rem;
     font-style: normal;
     margin-top: 15px;
+}
+
+[bind-markdown] table
+{
+    margin: auto;
 }

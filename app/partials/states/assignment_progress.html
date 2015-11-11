@@ -64,9 +64,12 @@
                                     <div class="accordion-board-date">
                                         Due Date <span class="icon-calender"></span>
                                     </div>
--->                                 <a href="javascript:void(0)" class="accordion-board-link">
+-->                                 
+
+                                    <a href="javascript:void(0)" class="accordion-board-link">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
-                                    </a>
+                                    </a> <span ng-show="isUserStaff()" class="accordion-board-link">&nbsp; or &nbsp; </span>
+                                    <a class="accordion-board-link" ng-show="isUserStaff()" href="{{getAssignmentDownloadLink(assignment._id)}}" target="_blank">Download CSV</a>                        
                                 </div>
 
                                 <!--

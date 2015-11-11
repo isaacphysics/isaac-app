@@ -126,7 +126,7 @@ define(["angular-ui-router"], function() {
             .state('equality', {
                 url: "/equality",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": { 
@@ -425,7 +425,7 @@ define(["angular-ui-router"], function() {
             .state('admin', {
                 url: "/admin",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
@@ -438,7 +438,7 @@ define(["angular-ui-router"], function() {
             .state('adminStats', {
                 url: "/admin/stats",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
@@ -451,8 +451,8 @@ define(["angular-ui-router"], function() {
                                 $scope.statistics = result;
                                 $scope.setLoading(false)
                             });
-                            api.eventBookings.getAllBookings().$promise.then(function(result){
-                                $scope.eventBookings = result;
+                            api.eventBookings.getAllBookings({"count_only" : true}).$promise.then(function(result){
+                                $scope.eventBookingsCount = result.count;
                             })
                         }]
                     }
@@ -588,7 +588,7 @@ define(["angular-ui-router"], function() {
             .state('assignmentProgress', {
                 url: "/assignment_progress",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },                
                 views: {
                     "body": {
@@ -599,7 +599,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('events', {
-                url: "/events?show_active_only&show_inactive_only",               
+                url: "/events?event_status&types",               
                 views: {
                     "body": {
                         templateUrl: "/partials/states/events_page.html",

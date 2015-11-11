@@ -1,6 +1,6 @@
 <div class="panel white clearfix">
     <div class="small-16 columns">
-        <h2>School Detail</h2>
+        <h2>School Detail: {{dataToShow.school.name}} ({{dataToShow.school.postcode}})</h2>
     </div>
     <div ng-if="!globalFlags.loading">
         <div class="small-16 columns">
@@ -12,7 +12,7 @@
                 <th>Registration Date</th>
                 <th>Last Seen Date</th>
             </tr>
-            <tr ng-repeat="item in dataToShow | orderBy:'familyName':reverse">
+            <tr ng-repeat="item in dataToShow.users | orderBy:'familyName':reverse">
                 <td>{{item.familyName}}, {{item.givenName}}</td>
                 <td>{{item.role || 'NOT_SET (Student)'}}</td>
                 <td>{{item.gender}}</td>

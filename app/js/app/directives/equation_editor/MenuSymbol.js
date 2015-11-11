@@ -81,6 +81,7 @@ define([], function() {
                     element.css("left", 0);
                     element.css("top", 0);
 
+                    scope.symbol.dragWidth = element.outerWidth();
                     // TODO: Work out why the "-1" is necessary here...
                     scope.$emit("symbolDrop", scope.symbol, tokenOffset.left + token.width() / 2 - 1, tokenOffset.top + token.height() / 2 - 1);
                     $("body").off("mouseup", mouseup);

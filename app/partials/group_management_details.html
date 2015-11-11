@@ -21,7 +21,6 @@
                         <tr ng-repeat="member in selectedGroupMembers" ng-class="{disabled: !member.authorisedFullAccess}">
                             <td ng-if="member.authorisedFullAccess"><a href="javascript:void(0)" ui-sref="userProgress({userId: member._id})" data-ot="Click to view this student's data."><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}}</a></td>
                             <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (access revoked)</span></td>
-                            <td><span class="hide-for-small-only">{{member.email}}</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>
                             <td class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteMember(selectedGroup, member)"></a></td>
                         </tr>

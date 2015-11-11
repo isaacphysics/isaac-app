@@ -58,7 +58,7 @@ define([], function() {
                         });                    
 
                         scope.user.$promise.then(function(user) {
-                            if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'ADMIN') {
+                            if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER' || user.role == 'ADMIN') {
                                 api.contentProblems.get().$promise.then(function(result){
                                     scope.contentProblems = result.totalErrors;
                                 })

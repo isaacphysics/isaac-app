@@ -42,7 +42,7 @@ define([], function() {
 		}
 
 		$scope.filterSubjects = ["physics"];
-		$scope.filterFields = [];
+		$scope.filterFields = ["mechanics", "waves", "circuits"];
 		$scope.filterTopics = [];
 		$scope.filterLevels = [1];
 		$scope.filterConcepts = [];

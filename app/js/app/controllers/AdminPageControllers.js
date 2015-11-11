@@ -49,7 +49,7 @@ define([], function() {
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
-		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+		$scope.isAdminUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
 
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
@@ -83,6 +83,9 @@ define([], function() {
 				$scope.userSearch.isLoading = true;
 				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 'schoolOther': schoolOther}).$promise.then(function(result){
 					$scope.userSearch.results = result;
+					$scope.userSearch.isLoading = false;
+				}).catch(function(e){
+					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 					$scope.userSearch.isLoading = false;
 				});
 				

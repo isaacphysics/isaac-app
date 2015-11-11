@@ -28,6 +28,10 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs, ctrls, transclude) {
 
+				if (scope.accordionChildMetrics) {
+					scope.accordionChildMetrics.questionCount++;
+				}
+
 				if (scope.doc.bestAttempt) {
 					scope.validationResponse = scope.doc.bestAttempt;
 					scope.selectedChoice = scope.validationResponse.answer;

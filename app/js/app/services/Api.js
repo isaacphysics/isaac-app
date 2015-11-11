@@ -135,7 +135,6 @@ define([], function() {
 				method: 'GET',
 				url: server + "/api/admin/users/schools/:id", 
 				params: {id: '@id'},
-				isArray: true 
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
@@ -251,7 +250,6 @@ define([], function() {
 			'getAllBookings' : {
 				url: server + "/api/events/bookings",
 				method: 'GET', 
-				isArray: true
 			},
 			'getBookings' : {
 				url: server + "/api/events/:eventId/bookings",
@@ -418,7 +416,10 @@ define([], function() {
 				url: server + "/api/notifications/:id/:response",
 			}
 		})
-
+		
+		this.getCSVDownloadLink = function(assignmentId) {
+			return server + "/api/assignments/assign/" + assignmentId + "/progress/download"
+		}
 
 	}
 

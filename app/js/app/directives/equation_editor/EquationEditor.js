@@ -1,7 +1,7 @@
 "use strict";
 define([], function() {
 
-	return ["$timeout", "$rootScope", function($timeout, $rootScope) {
+	return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         /*
         equationEditorState = {
@@ -66,6 +66,7 @@ define([], function() {
                     r.width = element.width();
                     r.height = element.height();
                     r.token = s.token;
+                    r.fontSize = s.fontSize;
 
                     break;
                 case "line":
@@ -174,6 +175,35 @@ define([], function() {
                     newSymbol.baseToken = newSymbol.token;
 
                 	scope.state.symbols[nextSymbolId++] = newSymbol;
+
+                    // Add any additional symbols (like brackets next to functions)
+
+                    if (newSymbol.func) {
+
+                        scope.state.symbols[nextSymbolId++] = {
+                            type: "container",
+                            subType: "brackets",
+                            width: 120,
+                            height: 70,
+                            label: "(x)",
+                            texLabel: true,
+                            x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft + symbol.dragWidth + 20, 
+                            y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
+                        };
+
+                    } else if (newSymbol.token == "\\int") {
+
+                        scope.state.symbols[nextSymbolId++] = {
+                            type: "string",
+                            label: "\\mathrm{d}",
+                            token: "\\mathrm{d}",
+                            fontSize: 48,
+                            texLabel: true,
+                            x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft + symbol.dragWidth + 100, 
+                            y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
+                        }
+
+                    }
 
                     scope.$broadcast("historyCheckpoint");
                 	console.debug("Symbols:", scope.state.symbols);
@@ -321,18 +351,21 @@ define([], function() {
                         type: "string",
                         label: "\\sin",
                         token: "\\sin",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{
                         type: "string",
                         label: "\\cos",
                         token: "\\cos",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{
                         type: "string",
                         label: "\\tan",
                         token: "\\tan",
+                        func: true,
                         fontSize: 48,
                         texLabel: true,
                     },{
@@ -345,6 +378,24 @@ define([], function() {
                         type: "string",
                         label: "\\mathrm{d}",
                         token: "\\mathrm{d}",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\mathrm{e}",
+                        token: "\\mathrm{e}",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\ln",
+                        token: "\\ln",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\log",
+                        token: "\\log",
                         fontSize: 48,
                         texLabel: true,
                     }]
@@ -467,6 +518,10 @@ define([], function() {
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
+                    api.logger.log({
+                        type : "CLOSE_EQUATION_EDITOR",
+                    });
+
                 }
 
                 element.on("keydown", function(e) {

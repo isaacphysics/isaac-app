@@ -25,7 +25,7 @@
                     <!-- <li class="disabled"><a href="javascript:void(0)">My Events</a> <span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li> -->
                 </ul>
             </li>
-            <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')">
+            <li ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'EVENT_MANAGER' || user.role == 'CONTENT_EDITOR')">
                 <h6 ng-click="menuForward($event)">Teacher Tools</h6>
                 <ul class="dl-level2">
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
@@ -45,11 +45,11 @@
                     <li class="show-for-small-only"><a href="javascript:void(0)" class="mobile-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>    -->                 
                 </ul>
             </li>            
-            <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR')">
+            <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER')">
                 <h6 ng-click="menuForward($event)">Admin Pages</h6>
                 <ul class="dl-level2">
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
-                    <li ng-show="user.role && user.role == 'ADMIN'"><a ui-sref="admin">Site Admin</a></li>
+                    <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="admin">Site Admin</a></li>
                     <li><a ui-sref="adminEvents">Event Admin</a></li>
                     <li><a ui-sref="contentErrors">Content Errors &nbsp;<span ng-if="contentProblems > 0" data-ot="There are {{contentProblems}} outstanding problems." class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{contentProblems}}</span></a></li>
                     <li><a ui-sref="adminStats">Site Statistics</a></li>

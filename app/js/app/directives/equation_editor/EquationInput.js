@@ -1,6 +1,6 @@
 define([], function() {
 
-    return ["$timeout", "$rootScope", function($timeout, $rootScope) {
+    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         return {
             scope: {
@@ -13,7 +13,11 @@ define([], function() {
 
                 scope.edit = function() {
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc);
-                }
+                    api.logger.log({
+                        type : "OPEN_EQUATION_EDITOR",
+                        questionId : scope.questionDoc.id,
+                    });
+                };
 
                 scope.$watch("state", function(s) {
                     console.debug("New state:", s);

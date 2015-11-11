@@ -26,6 +26,7 @@ define([], function() {
 
 			link: function(scope, element, attrs) {
 
+				scope.questionId = scope.page.id;
 				scope.relatedConcepts = $filter('filter')(scope.page.relatedContent, {type: "isaacConceptPage"});
 				scope.relatedQuestions = $filter('filter')(scope.page.relatedContent, {type: "isaacQuestionPage"});	
 

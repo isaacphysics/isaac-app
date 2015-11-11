@@ -18,11 +18,11 @@
                     </ul>
                 </div>
             </li>
-            <li ng-if="page.type !='isaacFastTrackQuestionPage'" question-pod questions="relatedQuestions" title="'Related Questions'"></li>
+            <li ng-if="page.type !='isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedQuestions" title="'Related Questions'"></li>
 
-            <li ng-if="page.type=='isaacFastTrackQuestionPage'" question-pod questions="relatedEasierQuestions" title="'Easier Questions'"></li>
+            <li ng-if="page.type=='isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedEasierQuestions" title="'Easier Questions'"></li>
 
-            <li ng-if="page.type=='isaacFastTrackQuestionPage' && relatedHarderQuestions.length > 0" question-pod questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
+            <li ng-if="page.type=='isaacFastTrackQuestionPage' && relatedHarderQuestions.length > 0" question-pod parent-question-id="questionId" questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
 
             <li ng-if="page.type !='isaacFastTrackQuestionPage' || relatedHarderQuestions.length == 0 ">
                 <div class="panel ru_pod ru_pod_forum">

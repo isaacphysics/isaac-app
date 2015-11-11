@@ -62,7 +62,7 @@ define([], function() {
 						var currentChunk = [];
 						for (var i in scope.children) {
 							var c = scope.children[i];
-							c.contentChildIndex = i;
+							c.contentChildIndex = scope.$root.padIndex(i);
 
 							if ((breakOnTypeChange && c.type != lastType) || (!breakOnTypeChange && c.type == "isaacFeaturedProfile")) {
 								// Split profiles into a separate content chunk
