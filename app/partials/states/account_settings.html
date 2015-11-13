@@ -197,17 +197,17 @@
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
                                 </label>
-                                <input id="account-password-current" type="password" ng-model="user.passwordCurrent" name="passwordCurrent" placeholder="Current password">        
+                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" name="passwordCurrent" placeholder="Current password">        
                             </div>
                         </div>
                         <div id="password-wrap" class="row">
                             <div  class="large-6 columns">
-                                <label for="account-password" ng-class="{'disabled' : !user.passwordCurrent}">
+                                <label for="account-password" ng-class="{'disabled' : !passwordChangeState.passwordCurrent}">
                                     <!-- Change text if user doesn't have account -->
                                     <strong ng-if="user.hasSegueAccount">New password</strong>
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
-                                <input id="account-password" ng-disabled="!user.passwordCurrent && user.hasSegueAccount  && editingSelf" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
+                                <input id="account-password" ng-disabled="!passwordChangeState.passwordCurrent && user.hasSegueAccount  && editingSelf" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
@@ -266,21 +266,21 @@
                     <tr>
                       <td>News and Updates</td>
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
-                      <td class="email-checkbox"><input name="r1" type="checkbox" data-ng-model="emailPreferences.NEWS_AND_UPDATES"  ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
+                      <td class="email-checkbox"><input name="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" class="ng-valid ng-dirty"> </td>
                     </tr>
                     <tr>
                       <td>Assignments</td>
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
-                      <td class="email-checkbox"><input name="r3" type="checkbox" data-ng-model="emailPreferences.ASSIGNMENTS" ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
+                      <td class="email-checkbox"><input name="r3" type="checkbox"  ng-model="emailPreferences.ASSIGNMENTS" class="ng-valid ng-dirty"> </td>
                     </tr>
                     <tr>
                       <td>Events</td>
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
-                      <td class="email-checkbox"><input name="r2" type="checkbox" data-ng-model="emailPreferences.EVENTS" ng-true-value=true ng-false-value=false class="ng-valid ng-dirty"> </td>
+                      <td class="email-checkbox"><input name="r2" type="checkbox" ng-model="emailPreferences.EVENTS"  class="ng-valid ng-dirty"> </td>
                     </tr>
                   </tbody>
                 </table>
-                For more information about emails, please refer to our <a href='/emailpolicy'>email policy</a>. 
+                For more information about communication from Isaac, please refer to our <a href='/policy/communication'>communication policy</a>. 
             </div>
         </div>
     </form>

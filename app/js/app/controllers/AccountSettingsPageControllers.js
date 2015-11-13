@@ -20,6 +20,9 @@ define([], function() {
 		$scope.activeTab = 0;
 
 		$scope.emailPreferences = {};
+		$scope.passwordChangeState = {
+			passwordCurrent : ""
+		};
 
 		api.user.getEmailPreferences().$promise.then(function(result){
 			$scope.emailPreferences = result;
@@ -52,12 +55,8 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
-		console.log($scope.user);
-	
-
 		$scope.activateTab = function(i) {
 			$scope.activeTab = i;
-
 		}
 
 		// so we can check if they have changed their email address
@@ -184,7 +183,12 @@ define([], function() {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences
         		}
-        		console.log(userSettings);
+
+        		// add the current password if it's available
+        		if($scope.passwordChangeState && $scope.passwordChangeState.passwordCurrent){
+        			userSettings.passwordCurrent = $scope.passwordChangeState.passwordCurrent;
+        		}
+
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
 	        		return auth.updateUser();
