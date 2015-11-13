@@ -38,6 +38,7 @@ define([
 	"app/controllers/HeaderControllers",
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
+	"app/controllers/AdminEmailController",
 	"app/controllers/GameEditorControllers",
 	"app/controllers/GroupManagementPageControllers",
 	"app/controllers/MyProgressPageControllers",
@@ -81,6 +82,8 @@ define([
 	var authErrorPageControllers = require("app/controllers/AuthErrorPageControllers");
 
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
+
+	var adminEmailController = require("app/controllers/AdminEmailController");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
 
@@ -138,6 +141,9 @@ define([
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
+
+	.controller('AdminEmailController', adminEmailController.PageController)
+
 	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
 	.controller('AnalyticsPageController', adminPageControllers.AnalyticsPageController)	
 	.controller('AdminEventBookingController', adminPageControllers.AdminEventBookingController)
