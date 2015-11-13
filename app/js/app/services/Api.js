@@ -382,7 +382,13 @@ define([], function() {
 		this.verifyEmail = $resource(server + "/api/users/verifyemail/:email", null, {
 			requestEmailVerification: {
 				method: "GET"
-			}
+			},
+		});
+
+		this.emailTemplate = $resource(server + "/api/email/viewinbrowser/:id", null, {
+			get: {
+				method: "GET"
+			},
 		});
 
 		this.logger = $resource(server + "/api/log", {}, {

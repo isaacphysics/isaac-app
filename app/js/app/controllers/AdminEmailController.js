@@ -19,11 +19,31 @@ define([], function() {
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 	    $scope.statistics = null;
 	    $scope.setLoading(true);
+	    $scope.apiVersion = api.contentVersion.get();
+
+	    $scope.emailConsoleProperties = {
+	    	adminUsers : false,
+	    	eventManagerUsers : false,
+	    	contentEditorUsers : false,
+	    	teacherUsers : false,
+	    	testerUsers : false,
+	    	studentUsers : false,
+	    	contentObjectId : ""
+	    }
+
 	    api.statisticsEndpoint.get().$promise.then(function(result){
 	        $scope.statistics = result;
 	        $scope.setLoading(false);
 	        console.log($scope.statistics);
 	    });
+
+	    $scope.loadContentTemplate = function(contentId){
+	    	$scope.setLoading(true);
+	    	api.emailTemplate.get($scope.emailConsoleProperties.contentObjectId).$promise.then(function(content){
+	    		console.log(content);
+	        	$scope.setLoading(false);
+	    	});
+	    }
 
     }]
 	return {

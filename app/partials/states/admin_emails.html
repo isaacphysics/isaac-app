@@ -18,27 +18,27 @@
 		                  <tbody>
 		                    <tr>
 		                      <td>ADMIN ({{statistics.adminUsers}})</td>
-		                      <td><input name="r1" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r1" type="checkbox"   data-ng-model="emailConsoleProperties.adminUsers" class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                    <tr>
 		                      <td>EVENT_MANAGER ({{statistics.eventManagerUsers}})</td>
-		                      <td><input name="r3" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r3" type="checkbox"   data-ng-model="emailConsoleProperties.eventManagerUsers" class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                    <tr>
 		                      <td>CONTENT_EDITOR ({{statistics.contentEditorUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.contentEditorUsers" class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                    <tr>
 		                      <td>TEACHER ({{statistics.teacherUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.teacherUsers"  class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                    <tr>
 		                      <td>TESTERS ({{statistics.testerUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.testerUsers"  class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                    <tr>
 		                      <td>STUDENT ({{statistics.studentUsers}})</td>
-		                      <td><input name="r1" type="checkbox"   data-ng-model="XXX" data-ng-value="true" class="ng-valid ng-dirty"> </td>
+		                      <td><input name="r1" type="checkbox"   data-ng-model="emailConsoleProperties.studentUsers"  class="ng-valid ng-dirty"> </td>
 		                    </tr>
 		                  </tbody>
 		                </table>
@@ -51,14 +51,25 @@
 	    <div class="small-16 columns">
 	        <div class="panel white clearfix">
 	            <div class="small-16 columns">
+	                <h2>Email Type</h2>
+	                <p>The type of email you are sending. 
+              
+	            </div>            
+	        </div>
+        </div>
+    </div>
+	<div class="row">
+	    <div class="small-16 columns">
+	        <div class="panel white clearfix">
+	            <div class="small-16 columns">
 	                <h2>Content Object</h2>
 	                <ul>
-                      <form ng-submit="setVersion()">
+                      <form ng-submit="loadContentTemplate()">
                         <div class="medium-7 columns end">
-                            <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter email content object ID" ng-change="versionChange = null">
+                            <input id="content-version" type="text" ng-model="emailConsoleProperties.contentObjectId" placeholder="Enter email content object ID" ng-change="versionChange = null">
                         </div>
                         <div class="medium-4 columns end">
-                            <button ng-click="setVersion()">Load Template</button>
+                            <button ng-click="loadContentTemplate()">Load Template</button>
 
                         </div>
                     </form>
@@ -72,6 +83,7 @@
 	        <div class="panel white clearfix">
 	            <div class="small-16 columns">
 	                <h2>Preview</h2>
+	                <p>The preview below uses fields taken from your account (e.g. givenName and familyName). 
 	                <ul>
 	                    <textarea rows="4" cols="50">
 						At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
