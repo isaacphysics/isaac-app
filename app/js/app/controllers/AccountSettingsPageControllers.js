@@ -247,11 +247,11 @@ define([], function() {
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
 		        	}).catch(function(e){
 		        		// this is likely to be a throttling error message.
-		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
 		        	})  						
 				}
         	}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
         }
 
@@ -271,7 +271,7 @@ define([], function() {
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
 	        	}).catch(function(e){
-        			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
 	        	})        		
         	} else {
         		return;
