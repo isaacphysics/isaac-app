@@ -11,6 +11,7 @@ define([], function() {
 
                 scope.currentNumber = "";
                 scope.currentExponent = null;
+                scope.negate = false;
                 scope.currentSymbol = null;
 
                 scope.clearOnClose = true;
@@ -18,7 +19,9 @@ define([], function() {
                 scope.buttonClick = function(btn) {
                 	if (btn == "^") {
                 		scope.currentExponent = "";
-                	} else {
+                	} else if (btn == "-" && scope.currentNumber.length > 0) {
+                        scope.negate = !scope.negate;
+                    } else {
                 		if (scope.currentExponent != null) {
                 			scope.currentExponent += btn;
                 		} else {
@@ -30,6 +33,7 @@ define([], function() {
                 scope.clearInput = function() {
                 	scope.currentExponent = null;
                 	scope.currentNumber = "";
+                    scope.negate = false;
                 }
 
                 var updateInputPadding = function() {
@@ -55,9 +59,19 @@ define([], function() {
                 	var expNum = parseFloat(scope.currentExponent);
 
                 	if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.label))) {
+                        scope.negate = false;
                 		scope.currentSymbol = null;
                 		return;
                 	}
+
+                    var currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
+
+                    if (currentNumberAlreadyNegated && !scope.negate) {
+                        scope.currentNumber = scope.currentNumber.substring(1);
+                    } else if (!currentNumberAlreadyNegated && scope.negate) {
+                        scope.currentNumber = "-" + scope.currentNumber;
+                        scope.currentSymbol.labelClass = "tiny";
+                    }
 
                 	if (scope.currentSymbol.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
                 		if (!isNaN(expNum)) {
@@ -72,11 +86,13 @@ define([], function() {
                     scope.currentSymbol.editable = {
                         currentNumber: scope.currentNumber,
                         currentExponent: scope.currentExponent,
+                        negate: scope.negate,
                     };
                 };
 
                 scope.$watch("currentNumber", updateSymbol);
                 scope.$watch("currentExponent", updateSymbol);
+                scope.$watch("negate", updateSymbol);
                 scope.$watch("currentExponent", updateInputPadding);
 
 				scope.$on("symbolDrag", function($e, pageX, pageY, deltaX, deltaY) {
@@ -102,6 +118,7 @@ define([], function() {
                     scope.editSymbol = s;
                     scope.currentNumber = s.editable.currentNumber;
                     scope.currentExponent = s.editable.currentExponent;
+                    scope.negate = s.editable.negate;
                 })
 
                 scope.dismiss = function() {
