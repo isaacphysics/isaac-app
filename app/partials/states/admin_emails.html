@@ -1,111 +1,122 @@
-<div class="small-16 columns">
-    <h1>Isaac Email Console</h1>
-</div>
-<div ng-show="isAdminUser">
-    <div class="row">
-        <div class="small-16 columns">
-            <div class="panel white clearfix">
-                <div class="small-16 columns">
-	                <h2>User Filter</h2>
-	                <ul>
-                       <table>
-		                  <thead>
-		                    <tr>
-		                      <th width="400">User Type</th>
-		                      <th width="30">Include</th>
-		                    </tr>
-		                  </thead>
-		                  <tbody>
-		                    <tr>
-		                      <td>ADMIN ({{statistics.adminUsers}})</td>
-		                      <td><input name="r1" type="checkbox"   data-ng-model="emailConsoleProperties.adminUsers" class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                    <tr>
-		                      <td>EVENT_MANAGER ({{statistics.eventManagerUsers}})</td>
-		                      <td><input name="r3" type="checkbox"   data-ng-model="emailConsoleProperties.eventManagerUsers" class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                    <tr>
-		                      <td>CONTENT_EDITOR ({{statistics.contentEditorUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.contentEditorUsers" class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                    <tr>
-		                      <td>TEACHER ({{statistics.teacherUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.teacherUsers"  class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                    <tr>
-		                      <td>TESTERS ({{statistics.testerUsers}})</td>
-		                      <td><input name="r2" type="checkbox"  data-ng-model="emailConsoleProperties.testerUsers"  class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                    <tr>
-		                      <td>STUDENT ({{statistics.studentUsers}})</td>
-		                      <td><input name="r1" type="checkbox"   data-ng-model="emailConsoleProperties.studentUsers"  class="ng-valid ng-dirty"> </td>
-		                    </tr>
-		                  </tbody>
-		                </table>
-	                </ul>                
-	            </div>            
+<div class="admin-emails">
+		<div class="small-16 columns">
+	    <h1>Isaac Email Console</h1>
+	</div>
+	<div ng-show="isAdminUser">
+	    <div class="row">
+	        <div class="small-16 columns">
+	            <div class="panel white clearfix">
+	                <div class="small-16 columns">
+		                <h2>User Filter</h2>
+		                <ul>
+	                       <table>
+			                  <thead>
+			                    <tr>
+			                      <th width="400">User Type</th>
+			                      <th width="30">Include</th>
+			                    </tr>
+			                  </thead>
+			                  <tbody>
+			                    <tr>
+			                      <td>ADMIN ({{statistics.adminUsers}})</td>
+			                      <td class="include-column"><input name="adminusers" type="checkbox" data-ng-model="emailToSend.users.adminUsers" class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>EVENT_MANAGER ({{statistics.eventManagerUsers}})</td>
+			                      <td class="include-column"><input name="eventmanagerusers" type="checkbox" data-ng-model="emailToSend.users.eventManagerUsers" class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>CONTENT_EDITOR ({{statistics.contentEditorUsers}})</td>
+			                      <td class="include-column"><input name="contenteditorusers" type="checkbox" data-ng-model="emailToSend.users.contentEditorUsers" class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>TEACHER ({{statistics.teacherUsers}})</td>
+			                      <td class="include-column"><input name="teacherusers" type="checkbox" data-ng-model="emailToSend.users.teacherUsers"  class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>TESTERS ({{statistics.testerUsers}})</td>
+			                      <td class="include-column"><input name="testerusers" type="checkbox" data-ng-model="emailToSend.users.testerUsers"  class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>STUDENT ({{statistics.studentUsers}})</td>
+			                      <td class="include-column"><input name="studentusers" type="checkbox" data-ng-model="emailToSend.users.studentUsers"  class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                  </tbody>
+			                </table>
+                            <span class="ru-error-message" ng-if="emailToSend.emailType.$invalid">
+                                Select one or more groups of users to email
+                            </span>
+		                </ul>                
+		            </div>            
+		        </div>
 	        </div>
-        </div>
-    </div>
-	<div class="row">
-	    <div class="small-16 columns">
-	        <div class="panel white clearfix">
-	            <div class="small-16 columns">
-	                <h2>Email Type</h2>
-	                <p>The type of email you are sending. 
-              
-	            </div>            
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Email Type</h2>
+		                <p>The type of email you are sending. Users who have opted out of this type of email will not receive anything.
+		             	<select name="emailTypeSelection" ng-model="data.repeatSelect">
+		             		<option value="">---Please select---</option>
+							<option ng-repeat="row in emailTypes" value="row">{{row}}</option>
+						</select>
+                        <span class="ru-error-message" ng-if="emailToSend.emailType.$invalid">
+                            Select an email type
+                        </span>
+		            </div>            
+		        </div>
 	        </div>
-        </div>
-    </div>
-	<div class="row">
-	    <div class="small-16 columns">
-	        <div class="panel white clearfix">
-	            <div class="small-16 columns">
-	                <h2>Content Object</h2>
-	                <ul>
-                      <form ng-submit="loadContentTemplate()">
-                        <div class="medium-7 columns end">
-                            <input id="content-version" type="text" ng-model="emailConsoleProperties.contentObjectId" placeholder="Enter email content object ID" ng-change="versionChange = null">
-                        </div>
-                        <div class="medium-4 columns end">
-                            <button ng-click="loadContentTemplate()">Load Template</button>
-
-                        </div>
-                    </form>
-	                </ul>                
-	            </div>            
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Content Object</h2>
+		                <ul>
+	                      <form ng-submit="loadContentTemplate()">
+	                        <div class="medium-7 columns end">
+	                            <input id="content-version" type="text" ng-model="emailToSend.contentObjectId" placeholder="Enter email content object ID" ng-change="versionChange = null">
+	                        </div>
+	                        <div class="medium-4 columns end">
+	                        	<a class="ru-button expand" ng-click="loadContentTemplate()">Load Template</a>
+	                        </div>
+	                    </form>
+		                </ul>  
+                    <span class="ru-error-message" ng-if="emailToSend.contentObjectId.$invalid">
+                        Enter the ID of a content object
+                    </span>           
+		            </div>               
+		        </div>
 	        </div>
-        </div>
-    </div>
-	<div class="row">
-	    <div class="small-16 columns">
-	        <div class="panel white clearfix">
-	            <div class="small-16 columns">
-	                <h2>Preview</h2>
-	                <p>The preview below uses fields taken from your account (e.g. givenName and familyName). 
-	                <ul>
-	                    <textarea rows="4" cols="50">
-						At w3schools.com you will learn how to make a website. We offer free tutorials in all web development technologies. 
-						</textarea>  
-	                </ul>                
-	            </div>            
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Preview</h2>
+		                <p>The preview below uses fields taken from your account (e.g. givenName and familyName). 
+		                <ul>
+		                    <iframe scrolling="no" src="{{htmlPreview}}" class="email-preview-frame">
+		                    </iframe>
+		                </ul>                
+		            </div>            
+		        </div>
 	        </div>
-        </div>
-    </div>
-	<div class="row">
-	    <div class="small-16 columns">
-	        <div class="panel white clearfix">
-	            <div class="small-16 columns">
-	                <ul>
-	                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-					        <li><a class="ru-button-big expand" ng-click="Send('/')">Send</a></li>
-					        <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
-					    </ul>
-	                </ul>                
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <ul>
+		                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
+						        <li><a class="ru-button expand" ng-click="validateAndSendEmails()">Send Emails</a></li>
+						    </ul>
+		                </ul>                
+		            </div>
 	            </div>
-            </div>
-        </div>
-    </div>
+	        </div>
+	    </div>
+	</div>
 </div>
 
