@@ -385,9 +385,16 @@ define([], function() {
 			},
 		});
 
-		this.emailTemplate = $resource(server + "/api/email/viewinbrowser/:id", null, {
+		this.email = $resource(server + "", null, {
 			get: {
-				method: "GET"
+				method: "GET",
+				url: server + "/api/email/viewinbrowser/:id",
+				isArray:false
+			},
+			getPreferences: {
+				method: "GET",
+				url: server + "/api/email/preferences",
+				isArray:false
 			},
 		});
 
