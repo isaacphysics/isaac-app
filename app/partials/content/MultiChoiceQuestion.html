@@ -6,8 +6,8 @@
                 <ul class='ru-problem-q-pad'>
 
                     <li ng-repeat="choice in doc.choices">
-                        <input type="radio" question-radio-button ng-model="$parent.selectedAnswer" ng-value="$index">
-                        <label ng-click="$parent.selectedAnswer = $index" math-jax><div isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></div></label>
+                        <input type="radio" question-radio-button ng-model="state.selectedAnswer" ng-value="$index">
+                        <label ng-click="state.selectedAnswer = $index" math-jax><div isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></div></label>
                     </li>
                 </ul>
             </form>
