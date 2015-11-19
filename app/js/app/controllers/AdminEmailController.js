@@ -27,8 +27,8 @@ define([], function() {
 	    $scope.htmlPreview = "";
 
 	    $scope.emailToSend = {
-	    	emailType : {"preferenceIndex" : -1},
-	    	contentObject :{"id": ""},
+	    	emailType : -1,
+	    	contentObjectId : "test-email-template", //TODO change this to empty - ONLY FOR TESTING PURPOSES
 	    	users: {
 		    	adminUsers : false,
 		    	eventManagerUsers : false,
@@ -39,6 +39,35 @@ define([], function() {
 	    	}
 	    };
 
+	    $scope.getTotalUsers = function(){
+	    	debugger		
+	    	var total = 0;
+	    	if($scope.emailToSend.users.adminUsers) {
+	    		total += parseInt($scope.statistics.adminUsers);
+	    	}
+
+	    	if($scope.emailToSend.users.eventManagerUsers) {
+	    		total += parseInt($scope.statistics.eventManagerUsers);
+	    	}
+
+	    	if($scope.emailToSend.users.contentEditorUsers) {
+	    		total += parseInt($scope.statistics.contentEditorUsers);
+	    	}
+
+	    	if($scope.emailToSend.users.teacherUsers) {
+	    		total += parseInt($scope.statistics.teacherUsers);
+	    	}
+
+	    	if($scope.emailToSend.users.testerUsers) {
+	    		total += parseInt($scope.statistics.testerUsers);
+	    	}
+
+	    	if($scope.emailToSend.users.studentUsers) {
+	    		total += parseInt($scope.statistics.studentUsers);
+	    	}
+	    	return total;
+	    }
+
 	    api.statisticsEndpoint.get().$promise.then(function(result){
 	        $scope.statistics = result;
 	        $scope.setLoading(false);
@@ -48,6 +77,7 @@ define([], function() {
 
 	    api.email.getPreferences().$promise.then(function(result){
 	    	$scope.emailTypes = result;
+	    	console.log(result);
 	    }).catch(function(e){
 			$scope.showToast($scope.toastTypes.Failure, "Preferences load failed", "With error message (" + e.status + ") " + e.statusText);
 	    });
@@ -63,32 +93,53 @@ define([], function() {
 	        	$scope.setLoading(false);
 	        	$scope.lastContentIDSuccessfullyPreviewed = "";
 	    	});
-	    }
+	    };
+
+        $scope.emailTypeChanged = function(idOfSelectedEmailType){
+			$scope.emailToSend.emailType = idOfSelectedEmailType;         
+		};
 
 	    $scope.validateAndSendEmails = function(){
-	    	//TODO get the email preference out of the dropdown
-	    	console.log($scope.emailTypes);
-
-	    	$scope.emailToSend.emailType.preferenceIndex = $scope.emailTypes;
-	    	if($scope.emailToSend.emailType < 0){
-	    		$scope.emailToSend.emailType.$invalid = true;
+			
+	    	if(!$scope.emailToSend.emailType || $scope.emailToSend.emailType < 0){
+    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select a type of email");
+				return;
 	    	}
 
-	    	if(!$scope.contentLoaded || !$scope.contentLoaded.id || !$scope.contentLoaded.id == "" || $scope.contentLoaded != $scope.emailToSend.contentObjectId){
-				$scope.emailToSend.contentObjectId.$invalid = true;
+	    	if($scope.lastContentIDSuccessfullyPreviewed == "" || $scope.emailToSend.contentObjectId != $scope.lastContentIDSuccessfullyPreviewed){
+    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must preview the email before sending");
+				return;
 	    	}
 
-	    	$scope.emailToSend.users.$invalid = true;
+	    	var usersSelected = false;
 	    	for(var key in $scope.emailToSend.users) {
-	    		if(key.substring(0, 1) != "$"){
-	    			if($scope.emailToSend.users[key]){
-	    				$scope.emailToSend.users.$invalid = false;
-	    			}
-	    		}
+    			if($scope.emailToSend.users[key]){
+    				usersSelected = true;
+    			}
 	    	}
 
+	    	if(!usersSelected){
+				$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select users to send the email to");
+				return;
+			}
 
-	    }
+
+        	var confirmation = $window.confirm('You are about to send ' + $scope.getTotalUsers() + ' email(s). Are you sure?'); 
+        	if(confirmation){ 
+				$scope.setLoading(true);
+				api.email.sendEmailWithId({
+					contentid : $scope.emailToSend.contentObjectId, 
+					emailtype: $scope.emailToSend.emailType, 
+					 
+				}, $scope.emailToSend.users).$promise.then(function(response){
+					$scope.setLoading(false);
+					console.log(response);
+				}).catch(function(e){
+	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
+		        	$scope.setLoading(false);
+				});
+			}
+	    };
 
     }]
 	return {

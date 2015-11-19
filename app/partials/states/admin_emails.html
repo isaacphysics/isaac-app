@@ -43,9 +43,6 @@
 			                    </tr>
 			                  </tbody>
 			                </table>
-                            <span class="ru-error-message" ng-if="emailToSend.emailType.$invalid">
-                                Select one or more groups of users to email
-                            </span>
 		                </ul>                
 		            </div>            
 		        </div>
@@ -57,13 +54,9 @@
 		            <div class="small-16 columns">
 		                <h2>Email Type</h2>
 		                <p>The type of email you are sending. Users who have opted out of this type of email will not receive anything.
-		             	<select name="emailTypeSelection" ng-model="data.repeatSelect">
-		             		<option value="">---Please select---</option>
-							<option ng-repeat="row in emailTypes" value="row">{{row}}</option>
+		             	<select name="emailTypeSelection" ng-model="selectedEmailType" ng-options="item.name for item in emailTypes" ng-change="emailTypeChanged(selectedEmailType.id)">
+		             		 <option value="">-- make a selection --</option>
 						</select>
-                        <span class="ru-error-message" ng-if="emailToSend.emailType.$invalid">
-                            Select an email type
-                        </span>
 		            </div>            
 		        </div>
 	        </div>
@@ -82,10 +75,7 @@
 	                        	<a class="ru-button expand" ng-click="loadContentTemplate()">Load Template</a>
 	                        </div>
 	                    </form>
-		                </ul>  
-                    <span class="ru-error-message" ng-if="emailToSend.contentObjectId.$invalid">
-                        Enter the ID of a content object
-                    </span>           
+		                </ul>           
 		            </div>               
 		        </div>
 	        </div>
@@ -109,8 +99,8 @@
 		        <div class="panel white clearfix">
 		            <div class="small-16 columns">
 		                <ul>
-		                    <ul class="large-block-grid-2 medium-block-grid-2 small-block-grid-1">
-						        <li><a class="ru-button expand" ng-click="validateAndSendEmails()">Send Emails</a></li>
+		                    <ul class="medium-block-grid-1 small-block-grid-1">
+						        <a class="ru-button expand" ng-click="validateAndSendEmails()">Send Emails</a>
 						    </ul>
 		                </ul>                
 		            </div>
