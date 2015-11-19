@@ -25,12 +25,11 @@
 
 
     <div class="small-16 columns end">
-
-        <dl class="tabs no-print" data-tab="">
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)" class="ng-scope"><a>Profile</a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)" class="ng-scope"><a>Change <span>Password</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a ng-if="editingSelf" >Teacher <span>Connections</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a>Email <span>Preferences</span></a></dd>
+        <dl class="tabs no-print">
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Profile</a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding"ng-if="editingSelf" >Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Email <span>Preferences</span></a></dd>
         </dl>
 
         <form class="panel" ng-submit="save()" name="account" novalidate>
