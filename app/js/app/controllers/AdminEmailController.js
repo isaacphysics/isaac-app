@@ -28,7 +28,7 @@ define([], function() {
 
 	    $scope.emailToSend = {
 	    	emailType : -1,
-	    	contentObjectId : "test-email-template", //TODO change this to empty - ONLY FOR TESTING PURPOSES
+	    	contentObjectId : "", 
 	    	users: {
 		    	adminUsers : false,
 		    	eventManagerUsers : false,
@@ -40,7 +40,6 @@ define([], function() {
 	    };
 
 	    $scope.getTotalUsers = function(){
-	    	debugger		
 	    	var total = 0;
 	    	if($scope.emailToSend.users.adminUsers) {
 	    		total += parseInt($scope.statistics.adminUsers);
@@ -131,9 +130,9 @@ define([], function() {
 					contentid : $scope.emailToSend.contentObjectId, 
 					emailtype: $scope.emailToSend.emailType, 
 					 
-				}, $scope.emailToSend.users).$promise.then(function(response){
+				}, $scope.emailToSend.users).$promise.then(function(){
 					$scope.setLoading(false);
-					console.log(response);
+	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
 				}).catch(function(e){
 	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
 		        	$scope.setLoading(false);
