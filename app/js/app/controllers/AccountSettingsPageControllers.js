@@ -63,10 +63,12 @@ define([], function() {
 		// so we can check if they have changed their email address
         var emailBeforeEditing = $scope.user.email;
 
+        var possibleMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 		// Create date of birth select options
 		$scope.datePicker = {
 			days: [],
-			months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+			months: possibleMonths,
 			years: []
 		};
 
@@ -78,6 +80,8 @@ define([], function() {
 		}
 
 		var populateDays = function(month, year) {
+			var today = new Date();
+
 			$scope.datePicker.days = [];
 
 			// Default to 31
@@ -86,6 +90,11 @@ define([], function() {
 			if (month !== undefined && month > -1 && year !== undefined && year > -1) {
 				// Month is 0 based, so add 1 to it
 				days = daysInMonth(month + 1, year);
+			}
+
+			// If the current month and year are selected, make sure days are limited to the past
+			if(today.getMonth() === month && today.getFullYear() === year){
+				days = today.getDate();
 			}
 
 			for (var i = 1; i <= days; i++) {
@@ -122,6 +131,15 @@ define([], function() {
 
 			// Restrict the number of days depended on the selected month and year
 			populateDays($scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.year);
+
+			var today = new Date();
+			// Restrict the months depending on the year
+			if($scope.dob.year === today.getFullYear()){
+				$scope.datePicker.months = possibleMonths.slice(0,today.getMonth() + 1);
+			}
+			else{
+				$scope.datePicker.months = possibleMonths;
+			}
 
 			var dob = new Date($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
 			if (!isNaN(dob.getTime())) {
