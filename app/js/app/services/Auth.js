@@ -114,7 +114,10 @@ define([], function() {
 		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){
-					$rootScope.user = null;
+					$rootScope.user = {
+						resolved: true,
+						$promise: Promise.resolve({}),
+					};
 			        cancelUserConsistencyCheck();
 					reject(e);
 				});

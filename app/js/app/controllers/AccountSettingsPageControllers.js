@@ -44,10 +44,11 @@ define([], function() {
 		}
 
 		$rootScope.pageTitle = "Account Settings";
-		// if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
-		// this is likely to be an administrator activity and could do with some extra security from the frontend.
-		$scope.myUserRole = $rootScope.user.role;
 
+        $scope.myUserRole = $rootScope.user.role;
+
+        // if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
+        // this is likely to be an administrator activity and could do with some extra security from the frontend.
 		if (userOfInterest) {
 			$scope.editingSelf = false;
 			$scope.user = userOfInterest;
@@ -60,7 +61,7 @@ define([], function() {
 		}
 
 		// so we can check if they have changed their email address
-		var emailBeforeEditing = $scope.user.email;
+        var emailBeforeEditing = $scope.user.email;
 
 		// Create date of birth select options
 		$scope.datePicker = {
@@ -132,16 +133,14 @@ define([], function() {
 			// object for linked account, nothing linked by default
 			var linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
 
-			if ($scope.user != null) {
-				// loop through linked accounts
-				angular.forEach($scope.user.linkedAccounts, function(account){
-					Object.keys(linked).forEach(function(key) {
-						// If there is a match update to true
-    					if(key === account) linked[key] = true;
-					});
-					
-                });
-			}
+			// loop through linked accounts
+			angular.forEach($scope.user.linkedAccounts, function(account){
+				Object.keys(linked).forEach(function(key) {
+					// If there is a match update to true
+					if(key === account) linked[key] = true;
+				});
+				
+            });
 			return linked;
 		}
 
@@ -157,7 +156,6 @@ define([], function() {
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
         $scope.showSkip = !!$stateParams.next;
-
         $scope.save = function(next) {
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
