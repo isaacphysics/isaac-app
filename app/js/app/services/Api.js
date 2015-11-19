@@ -394,8 +394,12 @@ define([], function() {
 			getPreferences: {
 				method: "GET",
 				url: server + "/api/email/preferences",
-				isArray:false
+				isArray:true
 			},
+			sendEmailWithId : {
+				method: "POST",
+				url: server + "/api/email/sendemail/:contentid/:emailtype",
+			}
 		});
 
 		this.logger = $resource(server + "/api/log", {}, {
