@@ -345,6 +345,30 @@ define([], function() {
                         token: "!",
                         fontSize: 48,
                         texLabel: true,
+                    },{
+                        type: "string",
+                        label: "<",
+                        token: "<",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: ">",
+                        token: ">",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\leq",
+                        token: "\\leq",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\geq",
+                        token: "\\geq",
+                        fontSize: 48,
+                        texLabel: true,
                     }],
 
                     functions: [{

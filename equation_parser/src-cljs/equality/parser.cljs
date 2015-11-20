@@ -13,6 +13,9 @@
 (derive :type/num :type/expr)
 (derive :type/var :type/expr)
 (derive :type/add :type/expr)
+(derive :type/pm :type/expr)
+(derive :type/cross :type/expr)
+;;(derive :type/ineq :type/expr)
 (derive :type/sub :type/expr)
 (derive :type/mult :type/expr)
 (derive :type/frac :type/expr)
@@ -22,6 +25,7 @@
 (derive :type/subscript :type/expr)
 ;(derive :type/function-application :type/expr)
 ;; NOTE: :type/eq is not an expr!
+;; NOTE: :type/ineq is not an expr!
 
 (defn precedence [type]
   (case type
@@ -31,6 +35,7 @@
     :type/add 5
     :type/sub 5
     :type/pm 4
+    :type/ineq 1
     :type/cross 8
     :type/mult 10
     :type/eq 1
@@ -75,6 +80,9 @@
   (concat (symbols (:left-op expr)) (symbols (:right-op expr)) (when (:id expr) (symbols (:src expr)))))
 
 (defmethod symbols :type/eq [expr]
+  (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
+
+(defmethod symbols :type/ineq [expr]
   (concat (symbols (:src expr)) (symbols (:left-op expr)) (symbols (:right-op expr))))
 
 (defmethod symbols :type/frac [expr]
@@ -165,7 +173,7 @@
                    contained-items (filter #(geom/box-mostly-contains-box c %) remaining-input)]
                (set contained-items))) containers))))
 
-(def non-var-symbols #{"+" "-" "=" "\\pm" "\\wedge"})
+(def non-var-symbols #{"+" "-" "=" "\\pm" "\\wedge" "<" ">" "\\leq" "\\geq"})
 
 ;; Each rule has an :apply function, which takes a set of entities and returns a list of sets of entities, where
 ;; each element of the list is a transformation of the input set, hopefully with some entities combined into bigger ones.
@@ -389,6 +397,14 @@
    "plus-or-minus" {:apply (binary-op-rule "\\pm" :type/pm)
                     :divide (fn [input] #{})}
    "cross" {:apply (binary-op-rule "\\wedge" :type/cross)
+                    :divide (fn [input] #{})}
+   "less-than" {:apply (binary-op-rule "<" :type/ineq)
+                    :divide (fn [input] #{})}
+   "greater-than" {:apply (binary-op-rule ">" :type/ineq)
+                    :divide (fn [input] #{})}
+   "less-than-or-equal" {:apply (binary-op-rule "\\leq" :type/ineq)
+                    :divide (fn [input] #{})}
+   "greater-than-or-equal" {:apply (binary-op-rule "\\geq" :type/ineq)
                     :divide (fn [input] #{})}
    "equals" {:apply (binary-op-rule "=" :type/eq)
              :divide (fn [input]

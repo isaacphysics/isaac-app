@@ -38,6 +38,9 @@
 (defmethod expr-str :type/eq [expr]
   (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " = " (expr-str (:right-op expr))))
 
+(defmethod expr-str :type/ineq [expr]
+  (str (if (:certain (meta expr)) "@" "") (expr-str (:left-op expr)) " " (:token (:src expr)) " " (expr-str (:right-op expr))))
+
 (defmethod expr-str :type/frac [expr]
   (str (if (:certain (meta expr)) "@" "")  "[" (expr-str (:numerator expr)) "] / [" (expr-str (:denominator expr)) "]"))
 
@@ -94,6 +97,9 @@
 
 (defmethod mathml-inner :type/eq [expr]
   (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">=</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
+
+(defmethod mathml-inner :type/ineq [expr]
+  (str "<mrow>" (mathml-inner (:left-op expr)) "<mo id=\"" (:id expr) "\">" (:token (:src expr)) "</mo>" (mathml-inner (:right-op expr)) "</mrow>"))
 
 (defmethod mathml-inner :type/frac [expr]
   (str "<mfrac id=\"" (:id expr) "\"><mrow>" (mathml-inner (:numerator expr)) "</mrow><mrow>" (mathml-inner (:denominator expr)) "</mrow></mfrac>"))
@@ -156,6 +162,9 @@
 
 (defmethod tex-inner :type/eq [expr]
   (str "{" (tex-inner (:left-op expr)) "}={" (tex-inner (:right-op expr)) "}"))
+
+(defmethod tex-inner :type/ineq [expr]
+  (str "{" (tex-inner (:left-op expr)) "}" (:token (:src expr)) "{" (tex-inner (:right-op expr)) "}"))
 
 (defmethod tex-inner :type/frac [expr]
   (str "\\frac{" (tex-inner (:numerator expr)) "}{" (tex-inner (:denominator expr)) "}"))
