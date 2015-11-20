@@ -15,9 +15,17 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', '$state', function($scope, $state) {
+    var PageController = ['$scope', '$state', '$location', function($scope, $state, $location) {
 
+        // Check whether someone has arrived at the homepage trying to load a game board. If so, 
+        // redirect them to the new /questions route.
+        var hash = $location.hash();
 
+        if (hash) {
+            console.debug("HASH", hash);
+            $location.replace();
+            $location.url("/questions#" + hash);
+        }
     }]
 
     return {
