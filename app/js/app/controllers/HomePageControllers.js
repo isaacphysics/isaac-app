@@ -26,6 +26,8 @@ define([], function() {
             $location.replace();
             $location.url("/questions#" + hash);
         }
+
+        $scope.$root.isHomePage = true;
     }]
 
     return {

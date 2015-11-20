@@ -1,18 +1,3 @@
-@import 'home-filters';
-
-.ru-board-title
-{
-    h1,h2,h3,h4,h5,h6
-    {
-        font-weight: 200 !important;
-        display: inline-block;
-    }
-    margin-top: 20px;
-    a
-    {
-        font-size: 1.1rem;
-    }
-}
 
 .ru-search-button
 {
@@ -30,173 +15,6 @@
         padding-right: 42px !important;
         width: auto !important;
     }
-}
-
-.pad
-{
-    height: 20px;
-}
-
-.ru-board-img
-{
-    display: inline;
-    padding: 0 10px;
-    position: relative;
-    bottom: 3px;
-    &:hover
-    {
-        opacity: 0.93;
-    }
-}
-
-a.ru-crumb {
-    color: #333333;
-}
-
-ul.ru-crumb
-{
-    padding: 0;
-    margin: 0;
-    position: relative;
-    left: -20px;
-}
-
-ul.ru-crumb li
-{
-    list-style-type: none;
-    display: inline;
-    padding-top: 20px;
-    width: 112px;
-    display: inline-block;
-    text-align: center;
-    white-space: nowrap;
-
-}
-
-ul.ru-crumb.physics li
-{
-    &:before
-    {
-        content: url(../assets/crumb-physics.png);
-        display: block;
-        width: 112px;
-        height: 28px;
-        position: relative;
-        left: (66 * 2px) / 3;
-        text-align: left;
-    }
-    &:last-child:before
-    {
-        content: url(../assets/crumb-physics-end.png);
-    }
-}
-
-ul.ru-crumb.maths li
-{
-    &:before
-    {
-        content: url(../assets/crumb-maths.png);
-        display: block;
-        width: 112px;
-        height: 28px;
-        position: relative;
-        left: (66 * 2px) / 3;
-        text-align: left;
-    }
-    &:last-child:before
-    {
-        content: url(../assets/crumb-maths-end.png);
-    }
-}
-
-// TODO: Create an appropriate asset for crumb-multiple. Green, perhaps?
-ul.ru-crumb.multiple-subjects li
-{
-    &:before
-    {
-        content: url(../assets/crumb-physics.png);
-        display: block;
-        width: 112px;
-        height: 28px;
-        position: relative;
-        left: (66 * 2px) / 3;
-        text-align: left;
-    }
-    &:last-child:before
-    {
-        content: url(../assets/crumb-physics-end.png);
-    }
-}
-
-
-@media #{$medium-only}
-{
-    ul.ru-crumb li
-    {
-        padding-top: 30px;
-    }
-}
-
-@media #{$small-only}
-{
-    .ru-no-wrap
-    {
-        white-space: nowrap;
-    }
-    .ru-mobile-panel.ru-mobile-panel-with-crumb
-    {
-        padding-bottom: 0px;
-        border-bottom: none;
-        margin-bottom: 0px;
-    }
-    
-    div.ru-mobile-crumb
-    {
-        margin-top: 5px;
-        border-top: 1px solid #ccc;
-        padding: 10px 0px;
-        background-color: #f6f6f6;
-        margin-left: -0.9375rem;
-        margin-right: -0.9375rem;
-    }
-    
-    .ru-mobile-crumb ul
-    {
-        padding: 0;
-        margin: 0;
-        position: relative;
-        padding-left: 10px;
-    }
-    
-    .ru-mobile-crumb ul li
-    {
-        display: inline;
-        list-style-type: none;
-        font-size: 0.8rem;
-    }
-
-    .ru-mobile-crumb ul.physics li:not(:first-child)
-    {
-        &:before
-        {
-            content: '> ';
-            display: inline;
-            color: $ru_physics;
-            padding: 0px 2px;
-        }
-    }
-
-    .ru-mobile-crumb ul.maths li:not(:first-child)
-    {
-        &:before
-        {
-            content: '> ';
-            display: inline;
-            color: $ru_maths;
-            padding: 0px 2px;
-        }
-    }
-
 }
 .ru-welcome
 {
@@ -220,320 +38,90 @@ ul.ru-crumb.multiple-subjects li
     padding-bottom: 20px;
 }
 
-@media #{$small-only}
-{
-    .ru-board-title
-    {
-        h4
-        {
-            font-size: 0.8rem;
-        }
-    }
-    .ru-board-img
-    {
-        height: 40px;
-        padding: 0 4px;
-        bottom: 0px;
-    }
+.home-page-menu-row {
+    margin-top: 60px !important;
+    margin-bottom: 120px !important;
 }
 
-.ru-score
-{
-    font-size: $h3-font-size;
-    font-style: italic;
-    margin: 30px 0 30px 0;
-    .green
-    {
-        color: $ru_green;
-    }
-}
+ul.home-page-menu {
+    list-style: none;
+    background: white;
+    padding: 0;
+    border: 1px solid #c7c7c7;
+    margin-left: 0;
 
-.hexagon_wrap
-{
-    background-color: transparent;
-    min-height: 650px;
-    margin-top: 15px;
-    position: relative;
-
-    &.loading {
-        background-image: url(../assets/loading.gif);
-        background-position: center center;
-        background-repeat: no-repeat;
-    }
-}
-
-.no-background {
-    background: none;
-}
-
-.hexagon_wrap * path
-{
-    cursor: pointer;
-}
-
-
-$col_values : 5;
-
-@for $i from 1 through $col_values
-{
-    // Note these filters are applied via JS, else FF baulks
-    .hexagon_wrap>a
-    {
-        outline: none;
-        &:focus
-        {
-            .hex-physics#{$i}
-            {
-                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);           
-            }
-            .hex-maths#{$i}
-            {
-                fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
-            }
-            .hex-orange
-            {
-                fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
-            }
-
-            .hex-grey
-            {
-                fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
-            }
-        }
-    }
-
-}
-
-
-.ru-hex-home-content
-{
-    text-align: center;
-    color: white;
-    text-shadow: black 1px 1px 2px;
-    font-style: italic;
-    //pointer-events: none;
-
-    @for $i from 1 through $col_values
-    {
-        .hex-physics#{$i}
-        {
-            fill: url('#physics') $ru_purple; 
-        }
-
-        .hex-maths#{$i}
-        {
-            fill: url('#maths') $ru_maths;
-        }
-    }
-
-    .hex-orange
-    {
-        fill: url(#wild) $ru_orange;
-    }
-
-    .hex-grey
-    {
-        fill: url(#correct) $ru_darkgrey;
-    }
-
-    &:hover, &:focus {
+    div.vertical-title {
+        position: absolute;
+        transform: rotate(-90deg);
+        transform-origin: left top 0;
+        text-align: center;
         color: white;
+        text-transform: uppercase;
+        width: 180px;
+        font-size: 22px;
+        font-family: Exo, sans-serif;
+        font-weight: 700;
+        top: 180px;
+        line-height: 50px;
+    }
 
-        @for $i from 1 through $col_values
-        {
-            .hex-physics#{$i}
-            {
-                fill: url('#physics-hover') lighten( $ru_purple, $ru_site_hover);
+    li {
+        height: 60px;
+        line-height: 60px;
+        padding-left: 50px;
+
+        a {
+            height: 60px;
+            background: white;
+            display: block;
+            font-family: 'Exo', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: black;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            &:hover {
+                background: #f2f2f2;
+
+                &:before {
+                    background: $ru_green;
+                    border-top: 30px solid #f2f2f2;
+                    border-left: 20px solid $ru_green;
+                    border-bottom: 30px solid #f2f2f2;
+                }
             }
 
-            .hex-maths#{$i}
-            {
-                fill: url('#maths-hover') lighten( $ru_maths, $ru_site_hover);
+            &:before {
+                content: '';
+                display:inline-block;
+                vertical-align: middle;
+                height:60px;
+                width:40px;
+                background: white;
+                margin-top:-2px;
+            }
+
+            span.amp:before {
+                content: '&';
+                font-weight: 300;
             }
         }
-        .hex-orange
-        {
-            fill: url(#wild-hover) lighten( $ru_orange, $ru_site_hover);
-        }
 
-        .hex-grey
-        {
-            fill: url(#correct-hover) lighten($ru_darkgrey, $ru_site_hover);
-        }
-    }
-}
+        background: $ru_green;
 
-.ru-hex-home-title
-{
-    text-align: center;
-}
-
-.ru-hex-home-content-wild
-{
-    width: 100%;
-    height:100%;
-    position:absolute;
-    z-index: -9;
-
-    background-image: url(../assets/arrow-bg.png);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-
-.ru-hex-home-content-correct
-{
-    width: 100%;
-    height:100%;
-    position:absolute;
-    z-index: -9;
-
-    background-image: url(../assets/tick-bg.png);
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-}
-
-.ru-hex-home-field
-{
-    background-repeat: no-repeat; 
-    background-size: cover;
-    background-position: center;
-    width: 32px;
-    height: 30px;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-
-    &.ru-hex-home-field-physics {
-        background-image: url(../assets/hex-icons/icon-hex-physics.png);
-    }
-    &.ru-hex-home-field-mechanics {
-        background-image: url(../assets/hex-icons/icon-hex-mechanics.png);
-    }
-    &.ru-hex-home-field-waves {
-        background-image: url(../assets/hex-icons/icon-hex-waves.png);
-    }
-    &.ru-hex-home-field-fields {
-        background-image: url(../assets/hex-icons/icon-hex-fields.png);
-    }
-    &.ru-hex-home-field-circuits {
-        background-image: url(../assets/hex-icons/icon-hex-circuits.png);
-    }
-    &.ru-hex-home-field-geometry {
-        background-image: url(../assets/hex-icons/icon-hex-geometry.png);
-    }
-    &.ru-hex-home-field-calculus {
-        background-image: url(../assets/hex-icons/icon-hex-calculus.png);
-    }
-    &.ru-hex-home-field-algebra {
-        background-image: url(../assets/hex-icons/icon-hex-algebra.png);
-    }
-    &.ru-hex-home-field-functions {
-        background-image: url(../assets/hex-icons/icon-hex-functions.png);
-    }
-    &.ru-hex-home-field-probability {
-        background-image: url(../assets/hex-icons/icon-hex-probability.png);
-    }
-
-}
-
-.ru-hex-home-chat
-{
-   background-image: url(../assets/hex-chat.png);
-   background-repeat: no-repeat; 
-   width: 32px;
-   height: 30px;
-   margin-top: 20px;
-   margin-left: auto;
-   margin-right: auto;
-}
-
-.ru-hex-home-title
-{
-    font-size: 1rem;
-    margin-top: 20px;
-    font-weight: 600;
-}
-
-.ru-hex-home-desc
-{
-    margin-top:   15px;
-    font-size:    1.6rem;
-    font-weight:  600;
-    margin-left:  22px;
-    margin-right: 22px;
-}
-
-.ru-hex-home-msg
-{
-    font-family: 'desyrel';
-    margin-top: 15px;
-    font-size: 1.5rem;
-}
-
-.ru-hex-home-msg
-{
-    color: $ru_orange;
-}
-
-[class^=ru-hex-level-]
-{
-    position: absolute;
-    top: 80px;
-    right: 4px;
-}
-
-@media #{$small-only}
-{
-    .ru-hex-home-content-wild, .ru-hex-home-content
-    {
-        background-size: 60% 60%;
-    }
-    .ru-hex-home-title
-    {
-        font-size: 0.9rem;
-        margin-top: 10px;
     }
     
-    .ru-hex-home-desc
-    {
-        margin-top:   13px;
-        font-size:    1.2rem;
-    }
-    
-    .ru-hex-home-msg
-    {
-        margin-top: 13px;
-        font-size: 1.3rem;
-    }
-    [class^=ru-hex-level-]
-    {
-        top: 58px;
-    }
 }
 
-// Ratings hexagons
+ul.home-page-menu-black {
+    li {
+        background: black;
+        a:hover:before {
+            background: black;
+            border-left: 20px solid black;
 
-$hex_levels : 6;
-
-@for $i from 1 through $hex_levels
-{
-    $bg_list : ();
-    $pos_list : ();
-    @for $j from 1 through $hex_levels
-    {
-        $pos_list : append($pos_list, ($j - 1) * 100% / $hex_levels );
-        @if $hex_levels - $i < $j { $bg_list : append($bg_list, url('../assets/hex-level-on.png')); }
-        @if $hex_levels - $i >= $j { $bg_list : append($bg_list, url('../assets/hex-level-off.png')); }
-    }
-    .ru-hex-level-#{$i}:after
-    {
-        content:'';
-        display: inline-block;
-        position: relative;
-        width: 16px;
-        height: 16px * $hex_levels;
-        background-repeat: no-repeat;
-        background-image: nth($bg_list, 1), nth($bg_list, 2), nth($bg_list, 3), nth($bg_list, 4), nth($bg_list, 5), nth($bg_list, 6);
-        background-position: left nth($pos_list, 1), left nth($pos_list, 2), left nth($pos_list, 3), left nth($pos_list, 4), left nth($pos_list, 5), left nth($pos_list, 6);
+        }
     }
 }

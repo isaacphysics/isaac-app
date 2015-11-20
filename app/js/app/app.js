@@ -149,6 +149,7 @@ define([
         $rootScope.$on("$stateChangeStart", function() {
             $rootScope.setLoading(true);
             $rootScope.pageTitle = "";
+            $rootScope.isHomePage = false;
         });
 
         $rootScope.$on("$stateChangeSuccess", function() {
