@@ -33,6 +33,8 @@ define([], function() {
         scope.assignmentSelectedQuestion = {}; // Key will be assignment ID, value will be index of selected question.
         scope.assignmentAverages = {}; // Key will be assignment ID, value list of averages. One per question.
 
+        scope.assignmentCSVLink = null;
+
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
 
@@ -169,8 +171,12 @@ define([], function() {
             }
         });
 
-        scope.getAssignmentDownloadLink = function(assignmentId) {
-            return api.getCSVDownloadLink(assignmentId);
+        scope.getAssignmentDownloadLink = function(assignmentId, $event) {
+            $event.stopPropagation();
+            scope.assignmentCSVLink = api.getCSVDownloadLink(assignmentId)
+            scope.modals.assignmentProgressCSVDownload.show();
+
+            // return api.getCSVDownloadLink(assignmentId);
         }
 
 	}];

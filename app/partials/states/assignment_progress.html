@@ -69,7 +69,7 @@
                                     <a href="javascript:void(0)" class="accordion-board-link">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </a> <span ng-show="isUserStaff()" class="accordion-board-link">&nbsp; or &nbsp; </span>
-                                    <a class="accordion-board-link" ng-show="isUserStaff()" href="{{getAssignmentDownloadLink(assignment._id)}}" target="_blank">Download CSV</a>                        
+                                    <a class="accordion-board-link" ng-click="getAssignmentDownloadLink(assignment._id, $event)" target="_blank">Download CSV</a>                        
                                 </div>
 
                                 <!--
@@ -114,7 +114,7 @@
                                                 <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress)">
                                                     <td class="student-name" >
                                                         <span class="icon-person"></span>
-                                                        <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user._id})">
+                                                        <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">
                                                             {{studentProgress.user.givenName}} 
                                                             <span class="show-for-large-up">{{studentProgress.user.familyName}}</span>
                                                         </a>
@@ -166,4 +166,21 @@
             </div>            
         </div>
     </div>
+</div>
+
+<div isaac-modal="assignmentProgressCSVDownload">
+  <div class="reveal-modal-head">
+    <h2>Privacy Notice</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+        <div isaac-page-fragment="csv_download_notice"> </div>
+        <div class="row">
+            <div class="small-16 text-center columns">
+                <a class="button" href="{{assignmentCSVLink}}" target="_blank">Download CSV</a>          
+            </div>
+            
+        </div>
+        
+  </div>
 </div>
