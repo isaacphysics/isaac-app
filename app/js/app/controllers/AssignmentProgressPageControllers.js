@@ -45,14 +45,30 @@ define([], function() {
             // Initialise master lists of groups and assignments.
             scope.groups = groups;
 
-
-            var gameboardPromises = [];
             for (var i = 0; i < allAssignments.length; i++) {
                 var a = allAssignments[i];
                 var groupId = a.groupId;
 
                 scope.groupAssignments[groupId] = scope.groupAssignments[groupId] || [];
                 scope.groupAssignments[groupId].push(a);
+            }
+
+            scope.setLoading(false);
+        })
+
+        // this function moves the gameboard title resolution to happen as needed rather than for all assignments that could ever be displayed.
+        scope.expandAssignments = function(groupId) {
+            var gameboardPromises = [];
+
+            if (scope.groupExpanded[groupId]) {
+                scope.groupExpanded[groupId] = false;
+                return;
+            } 
+            
+            scope.setLoading(true);
+
+            for (var i = 0; i < scope.groupAssignments[groupId].length; i++) {
+                var a = scope.groupAssignments[groupId][i];
 
                 a.gameBoard = api.gameBoards.get({id: a.gameboardId});
                 gameboardPromises.push(a.gameBoard.$promise);
@@ -63,9 +79,9 @@ define([], function() {
             Promise.all(gameboardPromises).then(function() {
                 scope.setLoading(false);
                 scope.$apply();
+                scope.groupExpanded[groupId] = true;
             });
-
-        })
+        }
 
         scope.$watchCollection("assignmentExpanded", function() {
 

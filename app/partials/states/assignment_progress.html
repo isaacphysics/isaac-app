@@ -26,7 +26,7 @@
             -->
             <dl class="accordion-group">
                 <dd ng-repeat="group in groups" ng-class="{active: groupExpanded[group._id]}">
-                    <a class="accordion-group-header" href="javascript:void(0)" ng-click="groupExpanded[group._id] = !groupExpanded[group._id]">
+                    <a class="accordion-group-header" href="javascript:void(0)" ng-click="expandAssignments(group._id)">
 
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
