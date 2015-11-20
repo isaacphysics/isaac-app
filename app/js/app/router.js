@@ -150,6 +150,16 @@ define(["angular-ui-router"], function() {
 		        }
 	        })
 
+            .state('questions', {
+                url: "/questions",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/questions.html",
+                        controller: "QuestionsController",
+                    }
+                }
+            })
+
             .state('conceptIndex', {
                 url: "/concepts?page",
                 resolve: {

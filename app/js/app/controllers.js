@@ -24,7 +24,7 @@ define([
 	"app/controllers/ConceptPageControllers",
 	"app/controllers/ConceptIndexControllers",
 	"app/controllers/QuestionPageControllers",
-	"app/controllers/HomePageControllers",
+	"app/controllers/QuestionsControllers",
 	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginControllers",
@@ -55,7 +55,7 @@ define([
 
 	var questionPageControllers = require("app/controllers/QuestionPageControllers");
 
-	var homePageControllers = require("app/controllers/HomePageControllers");
+	var questionsControllers = require("app/controllers/QuestionsControllers");
 
 	var myBoardsPageControllers = require("app/controllers/MyBoardsPageControllers");
 
@@ -111,7 +111,7 @@ define([
 
 	.controller('QuestionPageController', questionPageControllers.PageController)
 
-	.controller('HomePageController', homePageControllers.PageController)
+	.controller('QuestionsController', questionsControllers.PageController)
 
 	.controller('MyBoardsPageController', myBoardsPageControllers.PageController)
 
