@@ -64,6 +64,11 @@ define([], function() {
                 scope.groupExpanded[groupId] = false;
                 return;
             } 
+
+            if (!scope.groupAssignments[groupId]) {
+                // this means there are no assignments set
+                return;
+            }
             
             scope.setLoading(true);
 
