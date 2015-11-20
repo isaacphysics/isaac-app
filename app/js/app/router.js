@@ -164,23 +164,6 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
-            .state('questionIndex', {
-                url: "/questions?page",
-                resolve: {
-                    "pageIndex" :['$stateParams', function($stateParams){
-                        return parseInt($stateParams.page || "1") - 1;
-                    }],
-                    "list" : ['api', 'pageIndex', function(api, pageIndex){
-                        return api.getQuestionList(pageIndex).$promise;
-                    }]
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/question_index.html",
-                        controller: "QuestionIndexController",
-                    }
-                }
-            })            
 
             .state('concept', {
                 url: "/concepts/:id",
