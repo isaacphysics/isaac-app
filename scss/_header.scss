@@ -31,3 +31,19 @@
     opacity: 0.8;
 }
 
+.global-nav-strip {
+    text-align: center;
+    min-height: 40px;
+
+    .global-title {
+        font-family: 'Exo 2';
+        font-size: 28px;
+        line-height: 60px;
+    }
+
+    .ru-desktop-search-icon {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+}
