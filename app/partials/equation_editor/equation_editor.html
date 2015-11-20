@@ -10,9 +10,13 @@
         <div sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
     </div>
     <div top-menu="+\, -\, \sqrt{x}" ng-show="isLandscape">
-        <div symbol-menu symbols="symbolLibrary.operators"></div>
+        <div sub-menu></div>
+        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
+        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
+        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
+        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>
     </div>
-    <div top-menu="\sin\,\, \int" ng-show="isLandscape">
+    <div top-menu="\sin\,\, \int" ng-show="isLandscape && false">
         <div symbol-menu symbols="symbolLibrary.functions"></div>
     </div>
 

@@ -282,13 +282,97 @@ define([], function() {
                     
                     greekLettersUpper: stringSymbols(["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"]),
 
-                    operators: [{
+                    equality: [{
                         type: "string",
                         label: "=",
                         token: "=",
                         fontSize: 48,
                         texLabel: true,
                     },{
+                        type: "string",
+                        label: "<",
+                        token: "<",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: ">",
+                        token: ">",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\leq",
+                        token: "\\leq",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\geq",
+                        token: "\\geq",
+                        fontSize: 48,
+                        texLabel: true,
+                    }
+                    ],
+
+                    trig: [{
+                        type: "string",
+                        label: "\\sin",
+                        token: "\\sin",
+                        func: true,
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\cos",
+                        token: "\\cos",
+                        func: true,
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\tan",
+                        token: "\\tan",
+                        func: true,
+                        fontSize: 48,
+                        texLabel: true,
+                    }
+                    ],
+
+                    calculus: [{
+                        type: "string",
+                        label: "\\int",
+                        token: "\\int",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\mathrm{d}",
+                        token: "\\mathrm{d}",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\mathrm{e}",
+                        token: "\\mathrm{e}",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\ln",
+                        token: "\\ln",
+                        fontSize: 48,
+                        texLabel: true,
+                    },{
+                        type: "string",
+                        label: "\\log",
+                        token: "\\log",
+                        fontSize: 48,
+                        texLabel: true,
+                    }
+                    ],
+
+                    operators: [{
                         type: "string",
                         label: "+",
                         token: "+",
@@ -345,84 +429,9 @@ define([], function() {
                         token: "!",
                         fontSize: 48,
                         texLabel: true,
-                    },{
-                        type: "string",
-                        label: "<",
-                        token: "<",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: ">",
-                        token: ">",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\leq",
-                        token: "\\leq",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\geq",
-                        token: "\\geq",
-                        fontSize: 48,
-                        texLabel: true,
-                    }],
+                    },],
 
-                    functions: [{
-                        type: "string",
-                        label: "\\sin",
-                        token: "\\sin",
-                        func: true,
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\cos",
-                        token: "\\cos",
-                        func: true,
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\tan",
-                        token: "\\tan",
-                        func: true,
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\int",
-                        token: "\\int",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\mathrm{d}",
-                        token: "\\mathrm{d}",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\mathrm{e}",
-                        token: "\\mathrm{e}",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\ln",
-                        token: "\\ln",
-                        fontSize: 48,
-                        texLabel: true,
-                    },{
-                        type: "string",
-                        label: "\\log",
-                        token: "\\log",
-                        fontSize: 48,
-                        texLabel: true,
-                    }]
+                    functions: []
                 };
 
                 scope.latinLetterTitle = {
@@ -451,10 +460,31 @@ define([], function() {
                     texLabel: true,
                 };
 
+                scope.equalityTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "=",
+                }
+
                 scope.operatorMenuTitle = {
                     fontSize: 48,
                     type: "string",
-                    label: "\\sqrt{x}",
+                    label: "\\pm",
+                    texLabel: true,
+                }
+
+                scope.trigTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "\\sin",
+                    texLabel: true,
+                }
+
+                scope.calculusTitle = {
+                    fontSize: 48,
+                    type: "string",
+                    label: "\\int",
+                    texLabel: true,
                 }
 
                 var parser_message = function(e) {
