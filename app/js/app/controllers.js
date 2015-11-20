@@ -21,6 +21,7 @@ define([
 	"app/services", 
 	"app/directives", 
 	"app/controllers/GenericPageControllers",
+	"app/controllers/HomePageControllers",
 	"app/controllers/ConceptPageControllers",
 	"app/controllers/ConceptIndexControllers",
 	"app/controllers/QuestionPageControllers",
@@ -49,6 +50,8 @@ define([
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
+
+	var homePageControllers = require("app/controllers/HomePageControllers");
 
 	var conceptPageControllers = require("app/controllers/ConceptPageControllers");
 	var conceptIndexControllers = require("app/controllers/ConceptIndexControllers");
@@ -104,6 +107,8 @@ define([
 	angular.module('isaac.controllers', [])
 	
 	.controller('GenericPageController', genericPageControllers.PageController)
+	
+	.controller('HomePageController', homePageControllers.PageController)
 	
 	.controller('ConceptPageController', conceptPageControllers.PageController)
 

@@ -5,13 +5,6 @@
 </div>
 
 <!-- Additional Information Panel - when NOT logged in -->
-<div class="row" ng-if="!user.givenName">
-    <div class="small-16 columns">
-        <section class="top-pods">
-            <div pod-carousel></div>
-        </section>
-    </div>
-</div>
 
 <!-- Medium to Large game board filter -->
 <div class='row hide-for-small-only'>
@@ -156,11 +149,6 @@
             </section>
             <div class="pad"></div>
             <div class='show-for-small-only pad'></div>     
-
-        <!-- Additional Information Panel - when logged in -->
-        <section ng-if="user.givenName">
-            <div pod-carousel></div>
-        </section>
 
             <!-- SVG Patterns used in the hexagons -->
             <svg id="svg-patterns" width="1" height="2" viewBox="0 0 1 2" version="1.1" xmlns="http://www.w3.org/2000/svg">
