@@ -220,7 +220,6 @@ define([
 	            if (searchOpen) {
 	            	setTimeout(function(){
 	                	element[0].focus();
-	                	console.log("FOCUSED" + element[0]);
 	            	}, 1);
 	            } else {
 	                element[0].blur();

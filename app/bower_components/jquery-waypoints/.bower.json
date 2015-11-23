@@ -16,14 +16,14 @@
   "dependencies": {
     "jquery": ">=1.8"
   },
-  "homepage": "https://github.com/imakewebthings/jquery-waypoints",
+  "homepage": "https://github.com/imakewebthings/waypoints",
   "_release": "2.0.5",
   "_resolution": {
     "type": "version",
     "tag": "v2.0.5",
     "commit": "415eb556fc99b1475bd3b221f29c21eb4388c40c"
   },
-  "_source": "git://github.com/imakewebthings/jquery-waypoints.git",
-  "_target": "~v2.0.3",
+  "_source": "git://github.com/imakewebthings/waypoints.git",
+  "_target": "2.0.5",
   "_originalSource": "jquery-waypoints"
 }

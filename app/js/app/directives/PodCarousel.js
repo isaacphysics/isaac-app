@@ -30,18 +30,14 @@
 
  				// Owl options - see owl.carousel.js
  				var defaultOptions = {
-					"nav" : true,
-					"loop": false,
- 					"lazyLoad": true,
+                    "nav": false,
  					"navText": ['<', '>'],
  					"autoplay": true,
- 					"autoplayTimeout": scope.intervalValue,
- 					"autoplayHoverPause":true,
- 					"margin":10,
- 					"dots":true,
- 					"smartSpeed": 0,
- 					"navRewind": true,
- 					"responsive":{
+                    //"loop": true, // DO NOT SET THIS - CAUSES EMPTY PODS TO APPEAR ON THE RIGHT!
+                    "margin": 15,
+ 					"rewind": true,
+                    "autoPlayTimeout": 500,
+                    "responsive": {
  						0:{
  							"items":1,
  						},
@@ -51,7 +47,7 @@
  						900:{
  							"items":3,
  						}
- 					}
+ 					},
                 };
 
                 var customOptions = scope.$eval($(element).attr('data-options'));
@@ -86,6 +82,7 @@
 				scope.$on('$destroy', function(){
 					$('.owl-carousel').trigger('destroy');
 				});
+
 			},
 		};
 	}];

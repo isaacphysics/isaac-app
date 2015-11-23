@@ -18,6 +18,6 @@
     "commit": "585ad22e4d3f5d68286d06b704acca4c96ac0eb2"
   },
   "_source": "git://github.com/ftlabs/fastclick.git",
-  "_target": ">=0.6.11",
+  "_target": "1.0.1",
   "_originalSource": "fastclick"
 }

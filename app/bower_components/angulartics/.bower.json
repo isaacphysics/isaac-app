@@ -9,14 +9,14 @@
   "devDependencies": {
     "angular-mocks": ">= 1.0.7"
   },
-  "homepage": "https://github.com/luisfarzati/angulartics",
+  "homepage": "https://github.com/angulartics/angulartics",
   "_release": "0.15.17",
   "_resolution": {
     "type": "version",
     "tag": "0.15.17",
     "commit": "71db83492ee0d23151514e434f3a9cf989b36e2a"
   },
-  "_source": "git://github.com/luisfarzati/angulartics.git",
+  "_source": "git://github.com/angulartics/angulartics.git",
   "_target": "0.15.17",
   "_originalSource": "angulartics"
 }

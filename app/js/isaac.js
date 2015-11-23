@@ -22,7 +22,7 @@ require.config({
         "angulartics-ga": '../bower_components/angulartics/src/angulartics-ga',
         "fastclick" : '../bower_components/fastclick/lib/fastclick',
         "d3" : '../bower_components/d3/d3',
-        "owl-carousel2" : "../bower_components/owl-carousel2/dist/owl.carousel",
+        "owl-carousel2" : "../bower_components/owl.carousel/dist/owl.carousel",
     },
 
     shim: {
