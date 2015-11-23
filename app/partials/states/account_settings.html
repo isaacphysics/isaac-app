@@ -28,8 +28,8 @@
         <dl class="tabs no-print">
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Profile</a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding"ng-if="editingSelf" >Teacher <span>Connections</span></a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding"ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
         </dl>
 
         <form class="panel" ng-submit="save()" name="account" novalidate>
@@ -250,7 +250,7 @@
                 </div>
             </div>
 
-            <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}">
+            <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}"  ng-if="editingSelf" >
                 Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
 
                 <table>
