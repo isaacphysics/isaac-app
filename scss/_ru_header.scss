@@ -289,6 +289,8 @@ $ru_nav_size : 7em;
 .ru-desktop-search
 {
     padding-top: 16px;
+    position: relative;
+    z-index: 2000;
 }
 
 .ru-desktop-search * label
@@ -327,8 +329,8 @@ label[for="ru-search-box"]
 {
     position: absolute;
     right: 5px;
-    top: 9px;
-    z-index: 3000;
+    top: 20px;
+    z-index: 2000;
     cursor: pointer;
 }
 

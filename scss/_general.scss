@@ -109,8 +109,19 @@ body
 }
 
 .search-fade-active {
-    opacity: 0.1;
+    opacity: 0.2;
 }
+
+.animate-show {
+  transition:all linear 0.5s;
+  height: 78px;
+}
+
+.animate-show.ng-hide {
+  transition:all linear 0.5s;
+  height: 0;
+}
+
 
 .invisible {
     visibility: hidden;

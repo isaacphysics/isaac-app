@@ -5,9 +5,55 @@
         <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
         <span class="global-title hide-for-small-only">Welcome to Isaac</span>
 
-        <a id="tutorial-search" href="javascript:void(0)" class="ru-desktop-search-icon hide-for-small-only" tabindex="0" ng-click="globalFlags.siteSearchOpen = true">
+        <a id="tutorial-search" 
+           href="javascript:void(0)" 
+           class="ru-desktop-search-icon hide-for-small-only" 
+           tabindex="0" 
+           ng-click="globalFlags.siteSearchOpen = true"
+           ng-hide="globalFlags.siteSearchOpen">
             <img src='/assets/desktop-search-icon.png' alt="Search">
         </a>
+
+        <div ng-show="globalFlags.siteSearchOpen" class="animate-show" ng-controller="GlobalSearchController">
+            <div class="ru-search-bg hide-animate" ng-click="globalFlags.siteSearchOpen = false"></div>
+            <div class='ru-desktop-search'>
+                <div class="ru-desktop-panel-search-close"  tabindex="0">
+                    <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
+                </div>
+                <form ng-submit="triggerSearch()">
+                    <div class="row">
+                        <div class="large-2 medium-2 columns">
+                            <label for="ru-search-box" class=" text-center inline">Search</label>
+                        </div>
+                        <div class="large-3 medium-13 columns">
+                            <input id="ru-search-box" ng-model="models.query" type="text" sync-search-focus/>
+                        </div>
+                        <div class="clearfix show-for-medium-only"></div>
+                        <div class="large-4 medium-5 medium-offset-2 large-offset-0 columns">
+                            <div class="ru-desktop-search-check">
+                                <span class="ru-drop-check">
+                                    <input id="search-check1" ng-model="models.includeQuestions" name="checkbox2" type="checkbox">
+                                    <label for='search-check1'></label>
+                                </span>
+                                <label for="search-check1" class=''> Search problems</label>
+                            </div>
+                        </div>
+                        <div class="large-4 medium-5  columns">
+                            <div class="ru-desktop-search-check">
+                                <span class="ru-drop-check">
+                                    <input id="search-check2" ng-model="models.includeConcepts" name="checkbox2" type="checkbox">
+                                    <label for='search-check2'></label>
+                                </span>
+                                <label for="search-check2" class=''> Search concepts</label>
+                            </div>
+                        </div>
+                        <div class="large-2 medium-3 medium-offset-0 columns end">
+                            <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now" ng-click="triggerSearch()">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </div>
 <!--
@@ -23,7 +69,7 @@
     <nav class="dl-nav" role="navigation"> 
         <ul class="dl-level1">
             <li>
-                <h6 ng-click="menuForward($event)">My Isaac <span class="login-notification" ng-if="!user.email"><a class="hide-for-small-only" ui-sref="login">(login)</a></span></h6>
+                <h6 ng-click="menuForward($event)">My Isaac <span class="login-notification" ng-if="!user.email"><a class="hide-for-small-only" ui-sref="login">(login)</a></span><span class="login-notification" ng-if="user.email"><a class="hide-for-small-only" ui-sref="logout">(logout)</a></span></h6>
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
