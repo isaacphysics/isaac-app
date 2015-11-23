@@ -490,7 +490,7 @@ define(["angular-ui-router"], function() {
             .state('adminEvents', {
                 url: "/admin/events",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
@@ -516,7 +516,7 @@ define(["angular-ui-router"], function() {
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },                
                 views: {
                     "body": {
@@ -529,7 +529,7 @@ define(["angular-ui-router"], function() {
             .state('groups', {
                 url: "/groups",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },                
                 views: {
                     "body": {
@@ -542,7 +542,7 @@ define(["angular-ui-router"], function() {
             .state('setAssignments', {
                 url: "/set_assignments",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },                
                 views: {
                     "body": {
@@ -651,7 +651,7 @@ define(["angular-ui-router"], function() {
                 onEnter: ['$stateParams', '$state', 'api', '$rootScope', 'requireLogin', function($stateParams, $state, api, $rootScope, requireLogin) {
 
                     api.saveGameBoard($stateParams.boardId).$promise.then(function() {
-                        if (requireLogin.role == "TEACHER" || requireLogin.role == "ADMIN") {
+                        if (requireLogin.role == "TEACHER" || requireLogin.role == "CONTENT_EDITOR" || requireLogin.role == "EVENT_MANAGER" || requireLogin.role == "ADMIN") {
                             $state.go("setAssignments", {}, {location: "replace"});
                         } else {
                             $state.go("boards", {}, {location: "replace"});

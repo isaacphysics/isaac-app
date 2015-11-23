@@ -198,7 +198,7 @@ define([], function() {
 		$scope.userSearch.isLoading = false;
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
-		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+		$scope.isAdminUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
 		
 		$scope.setLoading(true);
 
