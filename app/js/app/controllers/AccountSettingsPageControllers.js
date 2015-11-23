@@ -24,10 +24,6 @@ define([], function() {
 			passwordCurrent : ""
 		};
 
-		api.user.getEmailPreferences().$promise.then(function(result){
-			$scope.emailPreferences = result;
-		});
-
 		// the hash will be used as an anchor
 		if($location.hash){
 			switch($location.hash()){
@@ -54,6 +50,12 @@ define([], function() {
 			$scope.user = userOfInterest;
 		} else {
 			$scope.editingSelf = true;
+		}
+
+		if($scope.editingSelf){
+			api.user.getEmailPreferences().$promise.then(function(result){
+				$scope.emailPreferences = result;
+			});
 		}
 
 		$scope.activateTab = function(i) {
