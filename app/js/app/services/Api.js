@@ -438,6 +438,8 @@ define([], function() {
 			return server + "/api/assignments/assign/" + assignmentId + "/progress/download"
 		}
 
+		this.questionsAnswered = $resource(server + "/api/stats/questions_answered/count");
+
 	}
 
 	return Api;

@@ -15,14 +15,17 @@
  */
 define([], function() {
 
-    return ["$location", "$timeout", "api", function($location, $timeout, api) {
+    return ["$location", "$timeout", "api", "$state", function($location, $timeout, api, $state) {
 		return {
 			scope: true,
 			restrict: "A",
             templateUrl: '/partials/global_navigation.html',
 
             link: function(scope, element, attrs) {
-            	// Global var
+            	
+                scope.$state = $state;
+
+                // Global var
             	var flyin;
                 scope.contentProblems = 0;
                 
@@ -112,7 +115,22 @@ define([], function() {
 
                 scope.$watch('isVisible', function(){
                     applyDisabledToolTips();                    
-                })
+                });
+
+                scope.answerCountTicker = 0;
+
+                api.questionsAnswered.get().$promise.then(function(stat) {
+                    var count = stat.answeredQuestionCount;
+                    var f = function() {
+                        scope.answerCountTicker += Math.max(Math.floor(count/100),1);
+                        if (scope.answerCountTicker < count) {
+                            $timeout(f, 20);
+                        }
+                    }
+                    f();
+
+                });
+
             }
 		};
 	}]

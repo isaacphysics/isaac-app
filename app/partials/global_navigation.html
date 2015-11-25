@@ -3,7 +3,12 @@
 <div class="row">
     <div class="small-16 columns global-nav-strip">
         <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
-        <span class="global-title hide-for-small-only">Welcome to Isaac</span>
+        <span class="global-title hide-for-small-only">
+            &nbsp;
+            <span ng-if="$state.includes('home')">
+                <span class="question-answer-count">{{answerCountTicker}}</span> Questions answered so far!
+            </span>
+        </span>
 
         <a id="tutorial-search" 
            href="javascript:void(0)" 
