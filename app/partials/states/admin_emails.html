@@ -84,10 +84,34 @@
 		    <div class="small-16 columns">
 		        <div class="panel white clearfix">
 		            <div class="small-16 columns">
-		                <h2>Preview</h2>
-		                <p>The preview below uses fields taken from your account (e.g. givenName and familyName). 
+		                <h2>Subject: {{subjectPreview}}</h2>
+		                              
+		            </div>            
+		        </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>HTML Preview</h2>
+		                <p>The preview below uses fields taken from your account (e.g. givenname and familyname). 
 		                <ul>
 		                    <iframe scrolling="no" src="{{htmlPreview}}" class="email-preview-frame">
+		                    </iframe>
+		                </ul>                
+		            </div>            
+		        </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Plain Text Preview</h2>
+		                <p>The preview below uses fields taken from your account (e.g. givenname and familyname). 
+		                <ul>
+		                    <iframe scrolling="no" src="{{plainTextPreview}}" class="email-preview-frame">
 		                    </iframe>
 		                </ul>                
 		            </div>            

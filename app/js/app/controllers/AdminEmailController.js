@@ -25,6 +25,8 @@ define([], function() {
 	    $scope.lastContentIDSuccessfullyPreviewed = "";
 
 	    $scope.htmlPreview = "";
+	    $scope.plainTextPreview = "";
+	    $scope.subjectPreview = "";
 
 	    $scope.emailToSend = {
 	    	emailType : -1,
@@ -84,7 +86,9 @@ define([], function() {
 	    $scope.loadContentTemplate = function(contentId){
 	    	$scope.setLoading(true);
 	    	api.email.get({"id" : $scope.emailToSend.contentObjectId}).$promise.then(function(content){
+	        	$scope.subjectPreview = content.subject;
 	        	$scope.htmlPreview = $sce.trustAsResourceUrl("data:text/html," + encodeURIComponent(content.html));
+	        	$scope.plainTextPreview = $sce.trustAsResourceUrl("data:text/html," + content.plainText);
 	        	$scope.setLoading(false);
 	        	$scope.lastContentIDSuccessfullyPreviewed = $scope.emailToSend.contentObjectId;
 	    	}).catch(function(e){
