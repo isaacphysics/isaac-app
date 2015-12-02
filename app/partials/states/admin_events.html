@@ -29,7 +29,7 @@
                                 <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
                                 <td>{{booking.userBooked.email}}</td>
                                 <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
-                                <td><a href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked._id)">Unbook</a></td>
+                                <td><a href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Unbook</a></td>
                             </tr>
                         </table>
                         <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
@@ -94,8 +94,8 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
-                                            <a ng-show="userBookings.indexOf(result._id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result._id)">Unbook from event</a></td>
+                                    <td><a ng-show="userBookings.indexOf(result.id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result.id)">Book on event</a>
+                                            <a ng-show="userBookings.indexOf(result.id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result.id)">Unbook from event</a></td>
                                 </tr>
                             </table>
                         </div>

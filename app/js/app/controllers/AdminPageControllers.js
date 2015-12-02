@@ -222,7 +222,7 @@ define([], function() {
 				$scope.userBookings = [];
 
 				angular.forEach($scope.bookings, function(booking, key){
-					$scope.userBookings.push(booking.userBooked._id);
+					$scope.userBookings.push(booking.userBooked.id);
 				});
     		})				
 		}
