@@ -117,7 +117,7 @@ define([], function() {
 		$scope.deleteMember = function(group, user) {
 			var deleteMember = $window.confirm('Are you sure you want to delete?');   
 			if (deleteMember) {
-				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user._id}).$promise.then(function(result){
+				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user.id}).$promise.then(function(result){
 					$scope.selectedGroupMembers = result;
 					$scope.showToast($scope.toastTypes.Success, "User Removed", "The user has been removed successfully.");
 				}).catch(function(e) {
