@@ -276,6 +276,7 @@ define([], function() {
         // if an auth token has been provided assume we want to add it.
         if ($stateParams.authToken && $scope.editingSelf) {
 			$scope.authenticationToken = {value: $stateParams.authToken}
+			$scope.activeTab = 2;
 			$scope.useToken();
 		} else if ($stateParams.authToken && !$scope.editingSelf) {
 			$scope.showToast($scope.toastTypes.Failure, "Access Denied", "You are not allowed to grant permissions (using a token) on behalf of another user.");
