@@ -81,14 +81,15 @@ define([], function() {
 			changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location)
 			$scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location)
 		});
-		// goes to a state depending on the summary object that we get given. TODO: maybe put this some where more useful.
-		$scope.goToState = function(summaryObject) {
+		
+		// this converts a summary object type to a known state.
+		$scope.mapTypeToState = function(summaryObject) {
 			if (summaryObject.type === conceptPage) {
-				$state.go("concept", {id: summaryObject.id});
+				return "concept";
 			} else if (summaryObject.type === questionPage) {
-				$state.go("question", {id: summaryObject.id});
+				return "question";
 			}
-		}
+		}	
 	}]
 
 	var GlobalSearchController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', function($scope, $state, $timeout, $location, $rootScope, api) {

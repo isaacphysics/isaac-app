@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-click="goToState(result)">
-                    <div class='small-16 columns'>
+                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" >
+                    <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id})}}">
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
@@ -50,7 +50,7 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="ru-concept-pad">
