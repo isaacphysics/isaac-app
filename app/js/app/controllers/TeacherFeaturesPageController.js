@@ -22,7 +22,7 @@ define([], function() {
 
 		$scope.user.$promise.then(function(){
 			$scope.isLoggedIn = $scope.user != null;
-			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR');
+			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
 
 		}).catch(function(){
 			$scope.isLoggedIn = false;
