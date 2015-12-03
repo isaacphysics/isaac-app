@@ -11,7 +11,7 @@
                 <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
                 <li><a href="/api/content/units" target="_blank">List of units</a></li>
                 <li><a ui-sref='adminStats'>Statistics</a></li>
-                <li><a ui-sref='adminEmails'>Email Sending</a></li>
+                <li ng-show="isAdminUser"><a ui-sref='adminEmails'>Email Sending</a></li>
             </ul>            
         </div>
     </div>
@@ -30,7 +30,7 @@
         </div>            
     </div>
 </div>
-<div ng-show="isAdminUser">
+<div ng-show="isStaffUser">
     <div class="row">
         <div class="small-16 columns">
             <div class="panel white clearfix">
@@ -39,7 +39,7 @@
                         <h2>Administrative tools</h2>
                     </div>
                 </div>
-                <div class="row">
+                <div ng-show="isAdminUser" class="row">
                     <div class="small-16 columns">
                        <h3>Manage site content <a name="content">&nbsp;</a></h3>
                     </div>

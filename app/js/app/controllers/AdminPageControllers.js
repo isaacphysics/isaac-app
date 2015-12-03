@@ -49,8 +49,9 @@ define([], function() {
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
-		$scope.isAdminUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
-
+		$scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
+		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
+		
 		$scope.setVersion = function() {
 			$scope.versionChange = "IN_PROGRESS"
 			api.contentVersion.set({version: $scope.contentVersion.liveVersion}, {}).$promise.then(function() {
