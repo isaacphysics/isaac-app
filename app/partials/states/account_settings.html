@@ -175,12 +175,12 @@
                         </li>
                     </ul>
                 </form>
-                <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
+                <div ng-show="user.role == 'STUDENT' && editingSelf" class="large-16 columns account-warning">
                     <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
                 </div>
                 <div class="account-reorder-wrap">
                     <div class="account-reorder-bottom">
-                        <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
+                        <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER') && editingSelf" class="large-16 columns account-warning">
                             <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
                         </div>
                     </div>
