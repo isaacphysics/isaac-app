@@ -84,7 +84,7 @@
 		    <div class="small-16 columns">
 		        <div class="panel white clearfix">
 		            <div class="small-16 columns">
-		                <h2>Subject: {{subjectPreview}}</h2>
+		                <h2>Subject:</h2> {{subjectPreview}}
 		                              
 		            </div>            
 		        </div>
@@ -97,9 +97,9 @@
 		                <h2>HTML Preview</h2>
 		                <p>The preview below uses fields taken from your account (e.g. givenname and familyname). 
 		                <ul>
-		                    <iframe scrolling="no" src="{{htmlPreview}}" class="email-preview-frame">
+		                    <iframe scrolling="vertical" src="{{htmlPreview}}" class="email-preview-frame">
 		                    </iframe>
-		                </ul>                
+		                </ul>
 		            </div>            
 		        </div>
 	        </div>
@@ -129,6 +129,16 @@
 		                </ul>                
 		            </div>
 	            </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Queue size: {{queueSize}}</h2>
+		                               
+		            </div>            
+		        </div>
 	        </div>
 	    </div>
 	</div>

@@ -399,6 +399,10 @@ define([], function() {
 			sendEmailWithId : {
 				method: "POST",
 				url: server + "/api/email/sendemail/:contentid/:emailtype",
+			},
+			getQueueSize : {
+				method: "GET",
+				url: server + "/api/email/queuesize",
 			}
 		});
 

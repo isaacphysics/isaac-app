@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$sce', function($scope, auth, api, $window, $rootScope, $sce) {
+	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$sce', '$timeout', function($scope, auth, api, $window, $rootScope, $sce, $timeout) {
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 	    $scope.statistics = null;
 	    $scope.setLoading(true);
@@ -40,6 +40,23 @@ define([], function() {
 		    	studentUsers : false,
 	    	}
 	    };
+
+	    $scope.queueSize = "?";
+	    var checkTimes = 0;
+
+	    var queueSizeChecker = function(){
+			console.log("Check:" + checkTimes++);
+	    	api.email.getQueueSize({}).$promise.then(function(result){
+	    		var d = new Date();
+    			$scope.queueSize = "" + result[0] + " at " + d.toLocaleTimeString();
+    		}).catch(function(e){
+				$scope.showToast($scope.toastTypes.Failure, "Email Queue Size", "Could not get email queue size (" + e.status + ") " + e.statusText);
+				clearInterval(timerId);
+			});
+			$timeout(queueSizeChecker, 5000);
+    	}
+
+	    queueSizeChecker();
 
 	    $scope.getTotalUsers = function(){
 	    	var total = 0;
@@ -88,7 +105,7 @@ define([], function() {
 	    	api.email.get({"id" : $scope.emailToSend.contentObjectId}).$promise.then(function(content){
 	        	$scope.subjectPreview = content.subject;
 	        	$scope.htmlPreview = $sce.trustAsResourceUrl("data:text/html," + encodeURIComponent(content.html));
-	        	$scope.plainTextPreview = $sce.trustAsResourceUrl("data:text/html," + content.plainText);
+	        	$scope.plainTextPreview = $sce.trustAsResourceUrl("data:text," + content.plainText);
 	        	$scope.setLoading(false);
 	        	$scope.lastContentIDSuccessfullyPreviewed = $scope.emailToSend.contentObjectId;
 	    	}).catch(function(e){
