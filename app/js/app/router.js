@@ -111,6 +111,7 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', staticPageState("/physics_skills_14", "book_index" , "BooksControllers"))
             .state('top_boards', genericPageState("/top_boards", "pop_boards"))
             .state('publications', genericPageState("/publications", "publications"))
+            .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
             
             .state('teacher_features', {
                 url:"/teacher_features?redirectModal",
