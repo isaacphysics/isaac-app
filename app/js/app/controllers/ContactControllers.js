@@ -24,7 +24,7 @@ define([], function() {
 			if ($stateParams.preset == 'teacherRequest') {
 				if ($scope.user.role != 'TEACHER') {
 					$scope.contactForm.subject = "Teacher Account Request",
-					$scope.contactForm.message = "Hello,\n\nPlease could you convert my isaac physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+					$scope.contactForm.message = "Hello,\n\nPlease could you convert my Isaac Physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
 				} else {
 					alert("Your account has already been upgraded to a teacher account.")
 				}
