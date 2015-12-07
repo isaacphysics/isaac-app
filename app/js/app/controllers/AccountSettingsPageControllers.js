@@ -286,7 +286,7 @@ define([], function() {
         	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
 
         	if(revoke) {
-	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
+	        	api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
 	        	}).catch(function(e){
