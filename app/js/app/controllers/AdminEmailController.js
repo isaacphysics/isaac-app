@@ -32,12 +32,13 @@ define([], function() {
 	    	emailType : -1,
 	    	contentObjectId : "", 
 	    	users: {
-		    	adminUsers : false,
-		    	eventManagerUsers : false,
-		    	contentEditorUsers : false,
-		    	teacherUsers : false,
-		    	testerUsers : false,
-		    	studentUsers : false,
+		    	ADMIN : false,
+		    	EVENT_MANAGER : false,
+		    	CONTENT_EDITOR : false,
+		    	TEACHER : false,
+		    	TESTER : false,
+		    	STAFF : false,
+		    	STUDENT : false,
 	    	}
 	    };
 
@@ -59,28 +60,32 @@ define([], function() {
 
 	    $scope.getTotalUsers = function(){
 	    	var total = 0;
-	    	if($scope.emailToSend.users.adminUsers) {
-	    		total += parseInt($scope.statistics.adminUsers);
+	    	if($scope.emailToSend.users.ADMIN) {
+	    		total += parseInt($scope.statistics.role.ADMIN);
 	    	}
 
-	    	if($scope.emailToSend.users.eventManagerUsers) {
-	    		total += parseInt($scope.statistics.eventManagerUsers);
+	    	if($scope.emailToSend.users.EVENT_MANAGER) {
+	    		total += parseInt($scope.statistics.role.EVENT_MANAGER);
 	    	}
 
-	    	if($scope.emailToSend.users.contentEditorUsers) {
-	    		total += parseInt($scope.statistics.contentEditorUsers);
+	    	if($scope.emailToSend.users.CONTENT_EDITOR) {
+	    		total += parseInt($scope.statistics.role.CONTENT_EDITOR);
 	    	}
 
-	    	if($scope.emailToSend.users.teacherUsers) {
-	    		total += parseInt($scope.statistics.teacherUsers);
+	    	if($scope.emailToSend.users.TEACHER) {
+	    		total += parseInt($scope.statistics.role.TEACHER);
 	    	}
 
-	    	if($scope.emailToSend.users.testerUsers) {
-	    		total += parseInt($scope.statistics.testerUsers);
+	    	if($scope.emailToSend.users.TESTER) {
+	    		total += parseInt($scope.statistics.role.TESTER);
 	    	}
 
-	    	if($scope.emailToSend.users.studentUsers) {
-	    		total += parseInt($scope.statistics.studentUsers);
+	    	if($scope.emailToSend.users.STAFF) {
+	    		total += parseInt($scope.statistics.role.STAFF);
+	    	}
+
+	    	if($scope.emailToSend.users.STUDENT) {
+	    		total += parseInt($scope.statistics.role.STUDENT);
 	    	}
 	    	return total;
 	    }

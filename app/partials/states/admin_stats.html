@@ -31,19 +31,21 @@
                                     <li>
                                         <strong>Gender</strong>
                                         <ul>
-                                            <li>Male: {{statistics.maleUsers}}</li>
-                                            <li>Female: {{statistics.femaleUsers}}</li>
-                                            <li>Unknown: {{statistics.unknownGenderUsers}}</li>
+                                            <li>Male: {{statistics.gender.MALE}}</li>
+                                            <li>Female: {{statistics.gender.FEMALE}}</li>
+                                            <li>Unknown: {{statistics.gender.OTHER}}</li>
                                         </ul>
                                     </li>
                                     <li>
                                         <strong>Role</strong>
                                         <ul>
-                                            <li>Student (unknown role): {{statistics.studentUsers}}</li>
-                                            <li>Teacher: {{statistics.teacherUsers}}</li>
-                                            <li>Event Manager: {{statistics.eventManagerUsers}}</li>
-                                            <li>Content Editor: {{statistics.contentEditorUsers}}</li>
-                                            <li>Admin: {{statistics.adminUsers}}</li>
+                                            <li>Student (unknown role): {{statistics.role.STUDENT}}</li>
+                                            <li>Teacher: {{statistics.role.TEACHER}}</li>
+                                            <li>Event Manager: {{statistics.role.EVENT_MANAGER}}</li>
+                                            <li>Content Editor: {{statistics.role.CONTENT_EDITOR}}</li>
+                                            <li>Admin: {{statistics.role.ADMIN}}</li>
+                                            <li>Tester: {{statistics.role.TESTER}}</li>
+                                            <li>Staff: {{statistics.role.STAFF}}</li>
                                         </ul>
                                     </li>
                                     <li>

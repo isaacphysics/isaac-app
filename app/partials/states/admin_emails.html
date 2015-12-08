@@ -18,28 +18,32 @@
 			                  </thead>
 			                  <tbody>
 			                    <tr>
-			                      <td>ADMIN ({{statistics.adminUsers}})</td>
-			                      <td class="include-column"><input name="adminusers" type="checkbox" data-ng-model="emailToSend.users.adminUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>ADMIN ({{statistics.role.ADMIN}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.ADMIN" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>EVENT_MANAGER ({{statistics.eventManagerUsers}})</td>
-			                      <td class="include-column"><input name="eventmanagerusers" type="checkbox" data-ng-model="emailToSend.users.eventManagerUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>EVENT_MANAGER ({{statistics.role.EVENT_MANAGER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.EVENT_MANAGER" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>CONTENT_EDITOR ({{statistics.contentEditorUsers}})</td>
-			                      <td class="include-column"><input name="contenteditorusers" type="checkbox" data-ng-model="emailToSend.users.contentEditorUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>CONTENT_EDITOR ({{statistics.role.CONTENT_EDITOR}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.CONTENT_EDITOR" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>TEACHER ({{statistics.teacherUsers}})</td>
-			                      <td class="include-column"><input name="teacherusers" type="checkbox" data-ng-model="emailToSend.users.teacherUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>TEACHER ({{statistics.role.TEACHER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.TEACHER"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>TESTERS ({{statistics.testerUsers}})</td>
-			                      <td class="include-column"><input name="testerusers" type="checkbox" data-ng-model="emailToSend.users.testerUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>TESTERS ({{statistics.role.TESTER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.TESTER"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>STUDENT ({{statistics.studentUsers}})</td>
-			                      <td class="include-column"><input name="studentusers" type="checkbox" data-ng-model="emailToSend.users.studentUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>STAFF ({{statistics.role.STAFF}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.STAFF" class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>STUDENT ({{statistics.role.STUDENT}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.STUDENT"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                  </tbody>
 			                </table>
