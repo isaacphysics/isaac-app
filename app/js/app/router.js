@@ -672,18 +672,22 @@ define(["angular-ui-router"], function() {
             })
 	}])
 
-    .run(['$rootScope', '$state', function($rootScope, $state) {
+    .run(['$rootScope', '$state', '$location', function($rootScope, $state, $location) {
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             console.warn("State change error:", error);
 
+            // The UI Router doesn't preserve the hash for us, so do it manually.
+            var toHash = $location.hash();
+            toHash = toHash ? "#" + toHash : "";
+
             if (error == "require_login")
-                $state.go('login', {target: $state.href(toState, toParams)});
+                $state.go('login', {target: $state.href(toState, toParams) + toHash});
 
             if (error == "require_role")
-                $state.go('403', {target: $state.href(toState, toParams)});
+                $state.go('403', {target: $state.href(toState, toParams) + toHash});
 
             if (error.status == 404)
-                $state.go('404', {target: $state.href(toState, toParams)});
+                $state.go('404', {target: $state.href(toState, toParams) + toHash});
         });
 
     }])
