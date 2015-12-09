@@ -46,7 +46,8 @@ define([
 	"app/controllers/AssignmentProgressPageControllers",
 	"app/controllers/EventsControllers",
 	"app/controllers/BooksControllers",
-	"app/controllers/TeacherFeaturesPageController",			
+	"app/controllers/TeacherFeaturesPageController",
+	"app/controllers/TopBoardsPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -101,6 +102,8 @@ define([
 	var booksControllers = require("app/controllers/BooksControllers");
 
 	var teacherFeaturesPageController = require("app/controllers/TeacherFeaturesPageController");
+
+	var topBoardsPageControllers = require("app/controllers/TopBoardsPageControllers");
 
 	/* Controllers */
 
@@ -165,4 +168,6 @@ define([
 
 	.controller('BooksControllers', booksControllers.PageController)
 	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
+
+	.controller('TopBoardsPageControllers', topBoardsPageControllers.PageController)
 });

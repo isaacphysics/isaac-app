@@ -1,0 +1,67 @@
+.top-boards-page {
+	
+	h2 {
+		font-weight: 300;
+		font-style: italic;
+		font-size: 4rem;
+		padding-bottom: 25px;
+	}
+
+	h3 {
+		font-weight: 200;
+	}
+
+	a.hexagon {
+		background-image:url(/assets/top-boards-hexagon.svg);
+		color: black;
+		width:230px;
+		height:258px;
+		overflow:hidden;
+		display: block;
+
+		&:hover .hexagon-desc {
+			color: $ru_green;
+		}
+	}
+
+	div.hexagon-field {
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	    background-position: center;
+		width:32px;
+		height:32px;
+		margin-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	div.hexagon-field.question {
+		background-image:url(/assets/top_boards/icon-question.png);
+	}
+	div.hexagon-field.top-board {
+		background-image:url(/assets/top_boards/icon-mechanics.png);
+	}
+	div.hexagon-field.build-board {
+		background-image:url(/assets/top_boards/icon-tool.png);
+	}
+	div.hexagon-field.extraordinary {
+		background-image:url(/assets/top_boards/icon-lightning-bolt.png);
+	}
+
+	div.hexagon-title {
+		font-size: 1rem;
+    	margin-top: 20px;
+    	font-weight: 600;
+	}
+
+	div.hexagon-desc {
+	    font-size: 1.6rem;
+	    font-weight: 600;
+	    font-style: italic;
+	    text-align: center;
+		margin-top: 15px;
+	    margin-left: 22px;
+	    margin-right: 22px;
+	    line-height: 1.6rem;
+	}
+}

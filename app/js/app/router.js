@@ -109,7 +109,8 @@ define(["angular-ui-router"], function() {
 	        .state('privacy', genericPageState("/privacy", "privacy_policy"))
             .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
             .state('physics_skills_14', staticPageState("/physics_skills_14", "book_index" , "BooksControllers"))
-            .state('top_boards', genericPageState("/top_boards", "pop_boards"))
+            //.state('top_boards', genericPageState("/top_boards", "pop_boards"))
+            .state('top_boards', staticPageState('/top_boards', 'top_boards', 'TopBoardsPageControllers'))
             .state('publications', genericPageState("/publications", "publications"))
             
             .state('teacher_features', {
