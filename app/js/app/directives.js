@@ -134,6 +134,10 @@ define([
 
 	.directive('podCarouselItem', require("app/directives/PodCarouselItem"))
 
+	.directive('hexCarousel', require("app/directives/HexCarousel"))
+
+	.directive('hexCarouselItem', require("app/directives/HexCarouselItem"))
+
 	.directive('d3Donut', require("app/directives/d3/Donut"))
 
 	.directive('d3Plot', require("app/directives/d3/Plot"))

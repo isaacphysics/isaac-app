@@ -1,5 +1,5 @@
 .top-boards-page {
-	
+
 	h2 {
 		font-weight: 300;
 		font-style: italic;
@@ -8,13 +8,22 @@
 	}
 
 	h3 {
-		font-weight: 200;
+		font-style: normal;
+		font-weight: 500;
+	}
+
+	.hexagon-row {
+		background-image: url(/assets/math-bg.png);
+		background-position: center;
+		margin-top: 25px;
 	}
 
 	a.hexagon {
 		background-image:url(/assets/top-boards-hexagon.svg);
+		background-size: contain;
+		background-repeat: no-repeat;
 		color: black;
-		width:230px;
+		width:220px;
 		height:258px;
 		overflow:hidden;
 		display: block;
@@ -46,6 +55,28 @@
 	}
 	div.hexagon-field.extraordinary {
 		background-image:url(/assets/top_boards/icon-lightning-bolt.png);
+	}
+
+	div.hexagon-level-bar {
+		position: absolute;
+		width: 16px;
+		height: 96px;
+		top: 80px;
+		right: 5px;
+	}
+
+	div.hexagon-level-dot {
+		background-image:url(/assets/isaac-level-marker-inactive.png);
+		background-size: contain;
+		background-repeat: no-repeat;
+	    background-position: center;
+		width: 12px;
+		height: 12px;
+		margin-top: 3px;
+
+		&.active {
+			background-image:url(/assets/hex-level-on.png);
+		}
 	}
 
 	div.hexagon-title {

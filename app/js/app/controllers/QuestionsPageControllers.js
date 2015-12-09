@@ -18,12 +18,10 @@ define([], function() {
 	var PageController = ['$scope', 'api', function($scope, api) {
 		
 		$scope.featuredQuestions = [{
-			image: "icon-mechanics.png",
 			subtitle: "Mechanics",
 			title: "A Toboggan",
 			level: 3
 		}, {
-			image: "icon-lightning-bolt.png",
 			subtitle: "Still Mechanics",
 			title: "Another Toboggan",
 			level: 4

@@ -19,7 +19,8 @@
 
  		return {
  			scope: {
- 				hexagons: "="
+ 				hexagonItems: "=",
+ 				hexagonIconClass: "@"
  			},
 
  			restrict: "A",
@@ -27,7 +28,7 @@
  			templateUrl: "/partials/hex_carousel.html",
 
  			link: function(scope, element, attrs) {
-return
+
  				scope.intervalValue = 10000; //ms
 
  				// Owl options - see owl.carousel.js
@@ -39,17 +40,7 @@ return
                     "margin": 15,
  					"rewind": true,
                     "autoPlayTimeout": 500,
-                    "responsive": {
- 						0:{
- 							"items":1,
- 						},
- 						600:{
- 							"items":2,
- 						},
- 						900:{
- 							"items":3,
- 						}
- 					},
+					"items": 1
                 };
 
                 var customOptions = scope.$eval($(element).attr('data-options'));
@@ -63,22 +54,6 @@ return
 				scope.initCarousel = function() {
 					$(element).owlCarousel(defaultOptions);
 				};
-
-				// Function to determine the order of pods to be displayed.
-				scope.comparitor = function(pod) {
-					var pos = scope.visiblePods.indexOf(pod);
-					if(pos != -1) {
-						return pos;
-					} 
-
-					return scope.pods.results.length;
-				}
-
- 				scope.pods = api.pods.get();
-
-				scope.pods.$promise.then(function(){
-					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });
-				});
 
 				// Cleanup
 				scope.$on('$destroy', function(){
