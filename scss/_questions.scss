@@ -16,6 +16,7 @@
 		background-image: url(/assets/math-bg.png);
 		background-position: center;
 		margin-top: 25px;
+		margin-bottom: 50px;
 	}
 
 	a.hexagon {
@@ -28,7 +29,7 @@
 		overflow:hidden;
 		display: block;
 
-		&:hover .hexagon-desc {
+		&:hover .hexagon-title {
 			color: $ru_green;
 		}
 	}
@@ -48,7 +49,7 @@
 		background-image:url(/assets/top_boards/icon-question.png);
 	}
 	div.hexagon-field.top-board {
-		background-image:url(/assets/top_boards/icon-mechanics.png);
+		background-image:url(/assets/top_boards/icon-board.png);
 	}
 	div.hexagon-field.build-board {
 		background-image:url(/assets/top_boards/icon-tool.png);
@@ -79,13 +80,13 @@
 		}
 	}
 
-	div.hexagon-title {
-		font-size: 1rem;
+	div.hexagon-subtitle {
+		font-size: 0.9rem;
     	margin-top: 20px;
     	font-weight: 600;
 	}
 
-	div.hexagon-desc {
+	div.hexagon-title {
 	    font-size: 1.6rem;
 	    font-weight: 600;
 	    font-style: italic;

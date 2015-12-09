@@ -20,11 +20,31 @@ define([], function() {
 		$scope.featuredQuestions = [{
 			subtitle: "Mechanics",
 			title: "A Toboggan",
+			href: "/a",
 			level: 3
 		}, {
 			subtitle: "Still Mechanics",
 			title: "Another Toboggan",
+			href: "/b",
 			level: 4
+		}]
+
+		$scope.topBoards = [{
+			subtitle: "Mechanics",
+			title: "Fasttrack Revision Practice",
+		}, {
+			subtitle: "Core",
+			title: "Fasttrack Core Revision",
+		}]
+
+		$scope.extraordinaryQuestions = [{
+			subtitle: "Extraordinary Questions",
+			title: "Estimating force in rugby tackles",
+			level: 6
+		}, {
+			subtitle: "Extraordinary Questions",
+			title: "A Falling Chain",
+			level: 0
 		}]
 
 

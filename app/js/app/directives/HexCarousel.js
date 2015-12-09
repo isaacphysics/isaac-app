@@ -29,8 +29,6 @@
 
  			link: function(scope, element, attrs) {
 
- 				scope.intervalValue = 10000; //ms
-
  				// Owl options - see owl.carousel.js
  				var defaultOptions = {
                     "nav": false,
@@ -39,7 +37,8 @@
                     //"loop": true, // DO NOT SET THIS - CAUSES EMPTY PODS TO APPEAR ON THE RIGHT!
                     "margin": 15,
  					"rewind": true,
-                    "autoPlayTimeout": 500,
+                    "autoPlayTimeout": 1500,
+                    "autoplayHoverPause": true,
 					"items": 1
                 };
 

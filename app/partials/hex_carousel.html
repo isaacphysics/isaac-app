@@ -1,13 +1,13 @@
 <div hex-carousel-item class="item" ng-repeat="hex in hexagonItems">
-	<a href="javascript:void(0)" class="hexagon">
+	<a ng-href="{{hex.href}}" class="hexagon">
 		<div ng-class="['hexagon-field', hexagonIconClass]"></div>
-		<div class="hexagon-title">
+		<div class="hexagon-subtitle">
 				{{hex.subtitle}}
 		</div>
-		<div class="hexagon-desc">
+		<div class="hexagon-title">
 			{{hex.title}}
 		</div>
-		<div class="hexagon-level-bar">
+		<div ng-if="hex.level" class="hexagon-level-bar">
 			<div ng-repeat="i in [0,1,2,3,4,5]" ng-class="{'hexagon-level-dot': true, active: i >= 6-hex.level}">
 			</div>
 		</div>
