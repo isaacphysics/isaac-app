@@ -25,7 +25,7 @@ define([
 	"app/controllers/ConceptPageControllers",
 	"app/controllers/ConceptIndexControllers",
 	"app/controllers/QuestionPageControllers",
-	"app/controllers/QuestionsControllers",
+	"app/controllers/GameBoardsControllers",
 	"app/controllers/MyBoardsPageControllers",
 	"app/controllers/ContentErrorControllers",
 	"app/controllers/LoginControllers",
@@ -47,7 +47,7 @@ define([
 	"app/controllers/EventsControllers",
 	"app/controllers/BooksControllers",
 	"app/controllers/TeacherFeaturesPageController",
-	"app/controllers/TopBoardsPageControllers",
+	"app/controllers/QuestionsPageControllers",
 	], function() {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
@@ -59,7 +59,7 @@ define([
 
 	var questionPageControllers = require("app/controllers/QuestionPageControllers");
 
-	var questionsControllers = require("app/controllers/QuestionsControllers");
+	var gameBoardsControllers = require("app/controllers/GameBoardsControllers");
 
 	var myBoardsPageControllers = require("app/controllers/MyBoardsPageControllers");
 
@@ -103,7 +103,7 @@ define([
 
 	var teacherFeaturesPageController = require("app/controllers/TeacherFeaturesPageController");
 
-	var topBoardsPageControllers = require("app/controllers/TopBoardsPageControllers");
+	var questionsPageControllers = require("app/controllers/QuestionsPageControllers");
 
 	/* Controllers */
 
@@ -119,7 +119,7 @@ define([
 
 	.controller('QuestionPageController', questionPageControllers.PageController)
 
-	.controller('QuestionsController', questionsControllers.PageController)
+	.controller('GameBoardsController', gameBoardsControllers.PageController)
 
 	.controller('MyBoardsPageController', myBoardsPageControllers.PageController)
 
@@ -169,5 +169,5 @@ define([
 	.controller('BooksControllers', booksControllers.PageController)
 	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
 
-	.controller('TopBoardsPageControllers', topBoardsPageControllers.PageController)
+	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
 });

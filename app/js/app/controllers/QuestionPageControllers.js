@@ -138,7 +138,7 @@ define([], function() {
 		}
 
 		$scope.backToBoard = function() {
-			$location.url("/questions#" + $stateParams.board)
+			$location.url("/gameboards#" + $stateParams.board)
 		}
 
 		$scope.$on("accordionsectionopen", function(e, idx, doc) {

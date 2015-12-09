@@ -24,7 +24,7 @@ define([], function() {
         if (hash) {
             console.debug("HASH", hash);
             $location.replace();
-            $location.url("/questions#" + hash);
+            $location.url("/gameboards#" + hash);
         }
 
         $scope.$root.isHomePage = true;
