@@ -54,6 +54,8 @@ define([
     "app/directives/QuestionPod",
     "app/directives/PodCarousel",
     "app/directives/PodCarouselItem",
+    "app/directives/HexCarousel",
+    "app/directives/HexCarouselItem",
     "app/directives/equation_editor/EquationEditor",
     "app/directives/GlobalNavigation",
     "app/directives/equation_editor/TopMenu",

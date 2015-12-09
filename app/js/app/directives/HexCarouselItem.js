@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 James Sharkey & Ian Davies
+ * Copyright 2015 Alistair Stead
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+ define([], function() {
 
-	var PageController = ['$scope', 'api', function($scope, api) {
-		
-		$scope.featuredQuestions = [{
-			image: "icon-mechanics.png",
-			subtitle: "Mechanics",
-			title: "A Toboggan",
-			level: 3
-		}, {
-			image: "icon-lightning-bolt.png",
-			subtitle: "Still Mechanics",
-			title: "Another Toboggan",
-			level: 4
-		}]
+ 	return ["api", "$interval", function(api, $interval) {
 
-
-
-	}];
-
-	return {
-		PageController: PageController
-	};
+ 		return {
+			restrict: 'A',
+			transclude: false,
+			link: function(scope, element) {
+			    // wait for the last item in the ng-repeat then call init
+				if(scope.$last) {
+					scope.initCarousel()
+				}
+			}
+		};
+	}]
 });

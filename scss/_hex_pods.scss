@@ -1,0 +1,183 @@
+
+@media #{$large-up}
+{
+    ul.hex_pods
+    {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+
+    ul.hex_pods > li
+    {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    ul.hex_pods > li:not(:last-child)
+    {
+        padding-right: 0.625rem;
+    }
+}
+
+.hex_pod
+{
+    padding-top: 10px;
+
+    .pod-scroll-list {
+        height: 150px;
+        overflow-y: auto;
+    }
+}
+
+.hex_pod li h6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.hex_pod_image_inner
+{
+    text-align: left;
+    height: 180px;
+    padding: 20px;
+    p,a
+    {
+        font-size: 0.95rem;
+    }
+}
+
+.hex_pod_image
+{
+    text-align: center;
+    height: auto;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+.hex_pod_image img
+{
+    display:block;
+    margin:auto;
+    height: 180px;
+    overflow: hidden;
+}
+
+.hex_pod hr
+{
+    margin-top: 6px;
+}
+
+.get-started-pod-spacer
+{
+    height: 180px;
+    background-position: center top;
+    background-image: url(../assets/get-started.png);        
+    background-repeat: no-repeat; 
+    cursor: pointer;
+}
+
+.get-started-pod-spacer-bottom
+{
+    height: 180px;
+    background-position: center top;
+    background-image: url(../assets/try-questions.png);       
+    background-repeat: no-repeat; 
+    cursor: pointer;
+}
+
+@media #{$small-only}
+{
+    .hex_pod
+    {
+        overflow-y: hidden;
+        height: auto;
+    }
+}
+
+
+.hex_pod_title
+{
+    height: 65px;
+    padding-left: 75px; 
+    background-repeat: no-repeat;
+    &:after
+        {
+            clear:both;
+        }
+}
+
+.hex_pod_title h5:last-child
+{
+    padding-top: 23px;
+}
+
+.hex_pod_title h5:not(:last-child)
+{
+    padding-top: 12px;
+    margin-bottom: 1px;
+}
+
+.hex_pod ul
+{
+    margin-left: 0;
+    line-height: 1;
+}
+
+.hex_pod ul li
+{
+    list-style: none;
+    padding-bottom: 0.5rem;
+}
+
+.hex_pod ul li > a
+{
+    color: $anchor-font-color !important;
+    &:hover
+    {
+        color: $anchor-font-color-hover  !important;
+    }
+    font-size: $h6-font-size;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 0.3rem;
+    margin-top: 0;
+    display: block;
+}
+
+.hex_pod ul li > h5
+{
+    color: $ru_green;
+    font-size: $h6-font-size;
+}
+
+.hex_pod ul li > h6
+{
+    font-size: $h6-font-size;
+}
+
+.hex_pod ul li > h5, .hex_pod ul li > h6, .hex_pod ul li > a
+{
+    margin-top: 0rem;
+    margin-bottom: 0.3rem;
+}
+
+.hex_pod_concepts
+{
+    background-image:  url('../assets/icon-books.png');
+}
+
+.hex_pod_questions
+{
+    background-image:  url('../assets/icon-search-concepts.png');
+}
+
+.hex_pod_forum .hex_pod_title
+{
+    background-image:  url('../assets/icon-help-forum.png');
+}
+
+.pod-carousel {
+    position: relative;
+}
