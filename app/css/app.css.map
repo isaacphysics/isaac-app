@@ -99,7 +99,7 @@
 		"../../scss/_book.scss",
 		"../../scss/teacher_features.scss",
 		"../../scss/_admin_pages.scss",
-		"../../scss/_top_boards.scss",
+		"../../scss/_questions.scss",
 		"../../scss/_code.scss",
 		"../../scss/_print.scss",
 		"../../scss/_contact.scss",
