@@ -228,16 +228,22 @@ define([], function() {
 			}
 		};
 
-		this.getSubjectTag = function(tagArray) {
+		this.getSpecifiedTag = function(tagType, tagArray) {
 			if (tagArray == null) return null;
 
 			for (var i in tagArray) {
 				var tag = this.getById(tagArray[i]);
-				if (tag != null && tag.type === "subject") {
+				if (tag != null && tag.type === tagType) {
 					return tag;
 				}
 			}
 		};
+
+		this.getSubjectTag = this.getSpecifiedTag.bind(this, "subject");
+
+		this.getFieldTag = this.getSpecifiedTag.bind(this, "field");
+
+		this.getTopicTag = this.getSpecifiedTag.bind(this, "topic");
 
 		this.getDeepestTag = function(tagArray) {
 			if (tagArray == null) return null;
