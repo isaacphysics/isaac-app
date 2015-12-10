@@ -17,6 +17,11 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', function($scope, api) {
 		
+		$scope.page = api.questionsPage.get();
+
+		console.log($scope.page);
+
+		/*
 		$scope.featuredQuestions = [{
 			subtitle: "Mechanics",
 			title: "A Toboggan",
@@ -47,7 +52,7 @@ define([], function() {
 			level: 0
 		}]
 
-
+*/
 
 	}];
 

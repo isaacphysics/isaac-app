@@ -23,6 +23,55 @@ define([], function() {
 
 		this.pods = $resource(server + "/api/pages/pods");
 
+		this.questionsPage = /*$resource(server + "/api/pages/top_boards_content");*/ {
+			get: function() { 
+				return {
+				  "type": "isaacQuestionsPage",
+				  "encoding": "markdown",
+				  "title": "Top Boards Content",
+				  "id": "top_boards_content",
+				  "author": "jsharkey13",
+				  "featuredQuestions": [
+				    {
+				      "question": {
+				      	id: "pop_up_toy",
+				      	title: "Pop up toy",
+				      	type: "isaacQuestionPage",
+				      },
+				      "boardId": "9a14250e-459c-42e4-a36b-6d563ad7a843"
+				    },
+				    {
+				      "question": {
+				      	id: "isosceles_triangle1",
+				      	title: "Isosceles Triangle 1",
+				      	type: "isaacQuestionPage",
+				      },
+				      "boardId": "e621b39d-e5f6-4865-944c-9c1ea4c8630e"
+				    }
+				  ],
+				  "topBoards": [{
+				  	id: "f828af40-1051-4bba-8a85-0d5b5b872d6e",
+				  	title: "Board 1",
+				  	subtitle: "Mechanics",
+				  }, {
+				  	id: "563a2a7a-5fc3-4cc7-a258-3a69dd34d5db",
+				  	title: "Board 2",
+				  	subtitle: "Core",
+				  }],
+				  "extraordinaryQuestions": [
+				    {
+				      "href": "extraordinary_problems#wimbledon",
+				      "title": "Wimbledon"
+				    },
+				    {
+				      "href": "extraordinary_problems#rosetta",
+				      "title": "The Rosetta Mission"
+				    }
+				  ]
+				}
+			}
+		}
+
 		this.questionPages = $resource(server + "/api/pages/questions/:id");
 
 		this.conceptPages = $resource(server + "/api/pages/concepts/:id");
