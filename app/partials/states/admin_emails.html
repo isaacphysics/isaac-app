@@ -7,9 +7,13 @@
 	        <div class="small-16 columns">
 	            <div class="panel white clearfix">
 	                <div class="small-16 columns">
-		                <h2>User Filter</h2>
+		                <h2>User Selection</h2>
+		                <select name="userSelectionType" ng-init="userSelectionType = 'userfilter'" ng-model="userSelectionType"  ng-change="userSelectionTypeChanged(userSelectionType.id)">
+		             		 <option value="userfilter">User Filter</option>
+		             		 <option value="csvuseridlist">CSV User ID List</option>
+						</select>
 		                <ul>
-	                       <table>
+	                       <table ng-if="userSelectionType=='userfilter'">
 			                  <thead>
 			                    <tr>
 			                      <th width="400">User Type</th>
@@ -47,6 +51,8 @@
 			                    </tr>
 			                  </tbody>
 			                </table>
+
+			                <textarea ng-model="$parent.csvuseridlist" ng-if="userSelectionType=='csvuseridlist'" rows="30" cols="50">Enter a list of comma separated user ids here.</textarea>
 		                </ul>                
 		            </div>            
 		        </div>

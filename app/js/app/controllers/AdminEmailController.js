@@ -39,7 +39,7 @@ define([], function() {
 		    	TESTER : false,
 		    	STAFF : false,
 		    	STUDENT : false,
-	    	}
+			}
 	    };
 
 	    $scope.queueSize = "?";
@@ -58,9 +58,19 @@ define([], function() {
 
 	    queueSizeChecker();
 
+		var getUserIdArrayFromTextArea = function(){
+			var userids = $scope.csvuseridlist.split(/[\s,]+/).map(function(e) {return parseInt(e);});;
+			return userids;
+		}
+
 	    $scope.getTotalUsers = function(){
+	    	if($scope.userSelectionType == 'csvuseridlist') {
+				var userIdList = getUserIdArrayFromTextArea();
+				return userIdList.length;
+	    	}
+
 	    	var total = 0;
-	    	if($scope.emailToSend.users.ADMIN) {
+			if($scope.emailToSend.users.ADMIN) {
 	    		total += parseInt($scope.statistics.role.ADMIN);
 	    	}
 
@@ -124,7 +134,7 @@ define([], function() {
 		};
 
 	    $scope.validateAndSendEmails = function(){
-			
+
 	    	if(!$scope.emailToSend.emailType || $scope.emailToSend.emailType < 0){
     			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select a type of email");
 				return;
@@ -135,27 +145,55 @@ define([], function() {
 				return;
 	    	}
 
-	    	var usersSelected = false;
-	    	for(var key in $scope.emailToSend.users) {
-    			if($scope.emailToSend.users[key]){
-    				usersSelected = true;
-    			}
-	    	}
+			if($scope.userSelectionType == 'userfilter') {
+		    	var usersSelected = false;
+		    	for(var key in $scope.emailToSend.users) {
+	    			if($scope.emailToSend.users[key]){
+	    				usersSelected = true;
+	    			}
+		    	}
 
-	    	if(!usersSelected){
-				$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select users to send the email to");
+		    	if(!usersSelected){
+					$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select users to send the email to");
+					return;
+				}
+			}
+			else if($scope.userSelectionType == 'csvuseridlist') {
+				var userids = getUserIdArrayFromTextArea($scope.csvuseridlist);
+				
+				// Check for NaNs 
+				for(var i = 0; i < userids.length; i++){
+					if(isNaN(userids[i])){
+						$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "One of the userIds given evaluates to NaN");
+						return;
+					}
+				}
+			}
+			else {
+				$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "No user selection type selected");
 				return;
 			}
 
-
         	var confirmation = $window.confirm('You are about to send ' + $scope.getTotalUsers() + ' email(s). Are you sure?'); 
-        	if(confirmation){ 
+        	if(confirmation && $scope.userSelectionType == 'userfilter'){ 
 				$scope.setLoading(true);
-				api.email.sendEmailWithId({
+				api.email.sendEmail({
 					contentid : $scope.emailToSend.contentObjectId, 
 					emailtype: $scope.emailToSend.emailType, 
-					 
 				}, $scope.emailToSend.users).$promise.then(function(){
+					$scope.setLoading(false);
+	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
+				}).catch(function(e){
+	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
+		        	$scope.setLoading(false);
+				});
+			}
+			else if(confirmation && $scope.userSelectionType == 'csvuseridlist'){
+				$scope.setLoading(true);
+				api.email.sendEmailWithIds({
+					contentid : $scope.emailToSend.contentObjectId, 
+					emailtype: $scope.emailToSend.emailType
+				}, getUserIdArrayFromTextArea($scope.csvuseridlist)).$promise.then(function(){
 					$scope.setLoading(false);
 	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
 				}).catch(function(e){

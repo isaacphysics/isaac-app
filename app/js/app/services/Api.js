@@ -396,9 +396,14 @@ define([], function() {
 				url: server + "/api/email/preferences",
 				isArray:true
 			},
-			sendEmailWithId : {
+			sendEmail : {
 				method: "POST",
 				url: server + "/api/email/sendemail/:contentid/:emailtype",
+			}, 
+			sendEmailWithIds : {
+				method: "POST",
+				url: server + "/api/email/sendemailwithuserids/:contentid/:emailtype",
+				isArray:true
 			},
 			getQueueSize : {
 				method: "GET",
