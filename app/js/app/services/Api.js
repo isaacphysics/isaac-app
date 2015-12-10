@@ -37,6 +37,8 @@ define([], function() {
 				      	id: "pop_up_toy",
 				      	title: "Pop up toy",
 				      	type: "isaacQuestionPage",
+				      	level: 3,
+				      	tags: ["physics", "mechanics", "dynamics"]
 				      },
 				      "boardId": "9a14250e-459c-42e4-a36b-6d563ad7a843"
 				    },
@@ -45,18 +47,20 @@ define([], function() {
 				      	id: "isosceles_triangle1",
 				      	title: "Isosceles Triangle 1",
 				      	type: "isaacQuestionPage",
+				      	level: 1,
+				      	tags: ["maths", "geometry", "trigonometry"]
 				      },
 				      "boardId": "e621b39d-e5f6-4865-944c-9c1ea4c8630e"
 				    }
 				  ],
 				  "topBoards": [{
-				  	id: "f828af40-1051-4bba-8a85-0d5b5b872d6e",
-				  	title: "Board 1",
-				  	subtitle: "Mechanics",
+				  	id: "870233fe-99ee-4e15-b2de-ec9da073d89f",
+				  	title: "Top Board 1",
+				  	subtitle: "Physics",
 				  }, {
-				  	id: "563a2a7a-5fc3-4cc7-a258-3a69dd34d5db",
+				  	id: "87162565-d9d9-4164-b017-69012d4819f2",
 				  	title: "Board 2",
-				  	subtitle: "Core",
+				  	subtitle: "Maths",
 				  }],
 				  "extraordinaryQuestions": [
 				    {
@@ -66,6 +70,10 @@ define([], function() {
 				    {
 				      "href": "extraordinary_problems#rosetta",
 				      "title": "The Rosetta Mission"
+				    },
+				    {
+				    	"href": "http://www.isaacbooks.com",
+				    	"title": "Try some Rugby Stuff!"
 				    }
 				  ]
 				}

@@ -15,44 +15,39 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'api', function($scope, api) {
+	var PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
 		
-		$scope.page = api.questionsPage.get();
+		var page = api.questionsPage.get();
 
-		console.log($scope.page);
+		console.log(page);
 
-		/*
-		$scope.featuredQuestions = [{
-			subtitle: "Mechanics",
-			title: "A Toboggan",
-			href: "/a",
-			level: 3
-		}, {
-			subtitle: "Still Mechanics",
-			title: "Another Toboggan",
-			href: "/b",
-			level: 4
-		}]
+		var randomFeaturedQuestions = [];
+		while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
+			var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
+			randomFeaturedQuestions.push(q);
+		}
 
-		$scope.topBoards = [{
-			subtitle: "Mechanics",
-			title: "Fasttrack Revision Practice",
-		}, {
-			subtitle: "Core",
-			title: "Fasttrack Core Revision",
-		}]
+		page.topBoards.length = Math.min(page.topBoards.length, 5);
+		page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
 
-		$scope.extraordinaryQuestions = [{
-			subtitle: "Extraordinary Questions",
-			title: "Estimating force in rugby tackles",
-			level: 6
-		}, {
-			subtitle: "Extraordinary Questions",
-			title: "A Falling Chain",
-			level: 0
-		}]
+		$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
+			var item = {};
+			item.title = q.question.title;
+			item.subtitle = tags.getFieldTag(q.question.tags).title;
+			item.level = q.question.level;
+			item.href = "/questions/" + q.question.id + "?board=" + q.boardId;
+			return item;
+		});
 
-*/
+		$scope.topBoards = page.topBoards.map(function(b) {
+			var item = {};
+			item.title = b.title;
+			item.subtitle = b.subtitle;
+			item.href = "/gameboards#" + b.id;
+			return item;
+		});
+
+		$scope.extraordinaryQuestions = page.extraordinaryQuestions;
 
 	}];
 
