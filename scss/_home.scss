@@ -111,6 +111,9 @@ ul.home-page-menu {
 
         background: $ru_green;
 
+        &:not(:last-child) a {
+                border-bottom: 1px solid #c7c7c7;
+        }
     }
     
 }
