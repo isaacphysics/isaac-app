@@ -7,16 +7,32 @@
 		padding-bottom: 25px;
 	}
 
-	h3 {
-		font-style: normal;
-		font-weight: 500;
+	div.columns {
+		min-height: 1px;
+		min-width: 250px;
+		float: left; 
 	}
 
 	.hexagon-row {
 		background-image: url(/assets/math-bg.png);
-		background-position: center;
-		margin-top: 25px;
+		background-position: center bottom;
+		background-size: contain;
+		background-repeat: no-repeat;
 		margin-bottom: 50px;
+	
+		@media #{$small-only} {
+			background: none;
+		}
+	}
+
+	div.column-title {
+		height: 70px;
+		margin-top: 20px;
+
+		h3 {
+			font-style: normal;
+			font-weight: 500;
+		}
 	}
 
 	a.hexagon {
@@ -28,6 +44,8 @@
 		height:258px;
 		overflow:hidden;
 		display: block;
+		margin-left: auto;
+		margin-right: auto;
 
 		&:hover .hexagon-title {
 			color: $ru_green;
@@ -59,11 +77,11 @@
 	}
 
 	div.hexagon-level-bar {
-		position: absolute;
+		position: relative;
 		width: 16px;
 		height: 96px;
-		top: 80px;
-		right: 5px;
+		bottom: 120px;
+		left: 200px;
 	}
 
 	div.hexagon-level-dot {
@@ -96,5 +114,6 @@
 	    margin-left: 22px;
 	    margin-right: 22px;
 	    line-height: 1.6rem;
+	    height: 85px;
 	}
 }

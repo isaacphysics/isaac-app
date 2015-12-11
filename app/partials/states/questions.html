@@ -1,42 +1,40 @@
 <div class="top-boards-page text-center">
 	<h2>Select a <span class="ru_green">challenge...</span></h2>
 
-	<div class="row">
-		<div class="medium-4 columns">
-			<h3>Try a Featured Question</h3>
-		</div>
-		<div class="medium-4 columns">
-			<h3>Try a Top Board</h3>
-		</div>
-		<div class="medium-4 columns">
-			<h3>Try Building Your Own Board</h3>
-		</div>
-		<div class="medium-4 columns">
-			<h3>Or Try Something Extraordinary!</h3>
-		</div>
-
-	</div>
 	<div class="row hexagon-row">
-		<div class="medium-4 columns" style="min-height: 1px;">
+		<div class="medium-4 columns">
+			<div class="column-title">
+				<h3>Try a Featured Question</h3>
+			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="featuredQuestions" hexagon-icon-class="question"></div>
 		</div>
-		<div class="medium-4 columns" style="min-height: 1px;">
+		<div class="medium-4 columns">
+			<div class="column-title">
+				<h3>Try a Top Board</h3>
+			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="topBoards" hexagon-icon-class="top-board"></div>
 		</div>
-		<div class="medium-4 columns" style="min-height: 1px;">
+		<div class="medium-4 columns">
+			<div class="column-title">
+				<h3>Try Building Your Own Board</h3>
+			</div>
 			<a href="javascript:void(0)" class="hexagon">
 				<div class="hexagon-field build-board"></div>
 				<div class="hexagon-subtitle">
-					Build your own board!
+					Build a board!
 				</div>
 				<div class="hexagon-title">
-					Launch the Isaac Board Builder
+					Choose your own Questions
 				</div>
 			</a>
 		</div>
-		<div class="medium-4 columns" style="min-height: 1px;">
+		<div class="medium-4 columns">
+			<div class="column-title">
+				<h3>Or Try Something Extraordinary!</h3>
+			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="extraordinaryQuestions" hexagon-icon-class="extraordinary"></div>
 		</div>
+		<div class="clearfix"></div>
 	</div>
 
 </div>

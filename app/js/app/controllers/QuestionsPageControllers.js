@@ -19,8 +19,6 @@ define([], function() {
 		
 		var page = api.questionsPage.get();
 
-		console.log(page);
-
 		var randomFeaturedQuestions = [];
 		while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
 			var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
@@ -42,7 +40,6 @@ define([], function() {
 		$scope.topBoards = page.topBoards.map(function(b) {
 			var item = {};
 			item.title = b.title;
-			item.subtitle = b.subtitle;
 			item.href = "/gameboards#" + b.id;
 			return item;
 		});
