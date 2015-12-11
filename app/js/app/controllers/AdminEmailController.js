@@ -159,9 +159,16 @@ define([], function() {
 				}
 			}
 			else if($scope.userSelectionType == 'csvuseridlist') {
+				var letters = /[^,0-9]+/;
+				
+				if(letters.test($scope.csvuseridlist)){
+					$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "Userids field contains invalid characters");
+					return;
+				}
+
 				var userids = getUserIdArrayFromTextArea($scope.csvuseridlist);
 				
-				// Check for NaNs 
+				// Check for NaNs and invalid characters
 				for(var i = 0; i < userids.length; i++){
 					if(isNaN(userids[i])){
 						$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "One of the userIds given evaluates to NaN");
