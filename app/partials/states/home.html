@@ -101,7 +101,7 @@
                         <a class="" href="javascript:void(0)" ng-show="shuffleStack.length > 0" ng-click="undoShuffle()"><img src="/assets/icon-undo-shuffle.png" class="ru-board-img" alt="Undo icon for Refresh board operation."><h4>Undo Refresh</h4></a>&nbsp;
                     </div>
                     <div class="medium-6 small-16 columns text-center">
-                        <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user._id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
+                        <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user.id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
                         <br/>
                         <strong><a ng-show="gameBoard.$resolved && editedGameBoardTitle == null && !gameBoard.savedToCurrentUser" href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">Add to My Boards</a></strong>
 
