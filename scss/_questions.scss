@@ -14,14 +14,14 @@
 	}
 
 	.hexagon-row {
-		background-image: url(/assets/math-bg.png);
-		background-position: center bottom;
-		background-size: contain;
-		background-repeat: no-repeat;
+		background: none;
 		margin-bottom: 50px;
 	
-		@media #{$small-only} {
-			background: none;
+		@media #{$large-only} {
+			background-image: url(/assets/math-bg.png);
+			background-position: center bottom;
+			background-size: contain;
+			background-repeat: no-repeat;
 		}
 	}
 
