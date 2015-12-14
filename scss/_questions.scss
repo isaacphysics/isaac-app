@@ -116,4 +116,38 @@
 	    line-height: 1.6rem;
 	    height: 85px;
 	}
+
+	.owl-dots {
+		.owl-dot {
+			display: inline-block;
+			zoom: 1;
+			*display: inline;
+
+			span {
+				width: 25px;
+				height: 25px;
+				margin: 5px;
+				background: none;
+				background-image: url(/assets/top_boards/pagination-grey.png);
+				background-position: center center;
+				background-size: fill;
+				display: block;
+				-webkit-backface-visibility: visible;
+				@include transition(opacity, 200ms, ease);
+			}
+
+			&.active,
+			&:hover {
+				span {
+					background: none;
+					background-image: url(/assets/top_boards/pagination-green.png);
+					background-position: center center;
+					background-size: fill;
+				}
+			}
+		}
+	}
+	.owl-theme .owl-nav.disabled+.owl-dots {
+    	margin-top: 0px;
+	}
 }
