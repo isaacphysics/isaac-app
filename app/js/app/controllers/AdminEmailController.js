@@ -119,7 +119,7 @@ define([], function() {
 	    	api.email.get({"id" : $scope.emailToSend.contentObjectId}).$promise.then(function(content){
 	        	$scope.subjectPreview = content.subject;
 	        	$scope.htmlPreview = $sce.trustAsResourceUrl("data:text/html," + encodeURIComponent(content.html));
-	        	$scope.plainTextPreview = $sce.trustAsResourceUrl("data:text," + content.plainText);
+	        	$scope.plainTextPreview = $sce.trustAsResourceUrl("data:/html," + encodeURIComponent(content.plainText));
 	        	$scope.setLoading(false);
 	        	$scope.lastContentIDSuccessfullyPreviewed = $scope.emailToSend.contentObjectId;
 	    	}).catch(function(e){
@@ -159,9 +159,9 @@ define([], function() {
 				}
 			}
 			else if($scope.userSelectionType == 'csvuseridlist') {
-				var letters = /[^,0-9]+/;
+				var numbersAndCommas = /[^,0-9]+/;
 				
-				if(letters.test($scope.csvuseridlist)){
+				if(numbersAndCommas.test($scope.csvuseridlist)){
 					$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "Userids field contains invalid characters");
 					return;
 				}
