@@ -23,62 +23,7 @@ define([], function() {
 
 		this.pods = $resource(server + "/api/pages/pods");
 
-		this.questionsPage = /*$resource(server + "/api/pages/top_boards_content");*/ {
-			get: function() { 
-				return {
-				  "type": "isaacQuestionsPage",
-				  "encoding": "markdown",
-				  "title": "Top Boards Content",
-				  "id": "top_boards_content",
-				  "author": "jsharkey13",
-				  "featuredQuestions": [
-				    {
-				      "question": {
-				      	id: "pop_up_toy",
-				      	title: "Pop up toy",
-				      	type: "isaacQuestionPage",
-				      	level: 3,
-				      	tags: ["physics", "mechanics", "dynamics"]
-				      },
-				      "boardId": "9a14250e-459c-42e4-a36b-6d563ad7a843"
-				    },
-				    {
-				      "question": {
-				      	id: "isosceles_triangle1",
-				      	title: "Isosceles Triangle 1",
-				      	type: "isaacQuestionPage",
-				      	level: 1,
-				      	tags: ["maths", "geometry", "trigonometry"]
-				      },
-				      "boardId": "e621b39d-e5f6-4865-944c-9c1ea4c8630e"
-				    }
-				  ],
-				  "topBoards": [{
-				  	id: "870233fe-99ee-4e15-b2de-ec9da073d89f",
-				  	title: "Top Board 1",
-				  	subtitle: "Physics",
-				  }, {
-				  	id: "87162565-d9d9-4164-b017-69012d4819f2",
-				  	title: "Board 2",
-				  	subtitle: "Maths",
-				  }],
-				  "extraordinaryQuestions": [
-				    {
-				      "href": "extraordinary_problems#wimbledon",
-				      "title": "Wimbledon"
-				    },
-				    {
-				      "href": "extraordinary_problems#rosetta",
-				      "title": "The Rosetta Mission"
-				    },
-				    {
-				    	"href": "http://www.isaacbooks.com",
-				    	"title": "Try some Rugby Stuff!"
-				    }
-				  ]
-				}
-			}
-		}
+		this.questionsPage = $resource(server + "/api/pages/question_summary/top_boards_content");
 
 		this.questionPages = $resource(server + "/api/pages/questions/:id");
 

@@ -17,35 +17,35 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
 		
-		var page = api.questionsPage.get();
+		api.questionsPage.get().$promise.then(function (page) {
 
-		var randomFeaturedQuestions = [];
-		while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
-			var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
-			randomFeaturedQuestions.push(q);
-		}
+			var randomFeaturedQuestions = [];
+			while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
+				var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
+				randomFeaturedQuestions.push(q);
+			}
 
-		page.topBoards.length = Math.min(page.topBoards.length, 5);
-		page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
+			page.topBoards.length = Math.min(page.topBoards.length, 5);
+			page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
 
-		$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
-			var item = {};
-			item.title = q.question.title;
-			item.subtitle = tags.getFieldTag(q.question.tags).title;
-			item.level = q.question.level;
-			item.href = "/questions/" + q.question.id + "?board=" + q.boardId;
-			return item;
+			$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
+				var item = {};
+				item.title = q.title;
+				item.subtitle = tags.getFieldTag(q.tags).title;
+				item.level = q.level;
+				item.url = "/questions/" + q.id + "?board=" + q.boardId;
+				return item;
+			});
+
+			$scope.topBoards = page.topBoards.map(function(b) {
+				var item = {};
+				item.title = b.title;
+				item.url = "/gameboards#" + b.id;
+				return item;
+			});
+
+			$scope.extraordinaryQuestions = page.extraordinaryQuestions;
 		});
-
-		$scope.topBoards = page.topBoards.map(function(b) {
-			var item = {};
-			item.title = b.title;
-			item.href = "/gameboards#" + b.id;
-			return item;
-		});
-
-		$scope.extraordinaryQuestions = page.extraordinaryQuestions;
-
 	}];
 
 	return {
