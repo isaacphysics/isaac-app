@@ -1,120 +1,64 @@
 .teacher-feature-body {
 	
-	.control-panel {
+	.row {
+		margin-bottom: 15px;
 	}
 
-	.panel {
+	a.hexagon, div.hexagon {
+		background-image:url(/assets/top-boards-hexagon.svg);
+		background-size: contain;
+		background-repeat: no-repeat;
+		color: black;
+		width:220px;
+		height:258px;
+		overflow:hidden;
+		display: block;
+		margin-left: 10px;
+		margin-right: 10px;
 
 		&.disabled{
 			color: #ccc;
-
-			.icon {
-				color: #ccc;				
-			}
-
-			img {
-				-webkit-filter: grayscale(100%); 
-				filter: grayscale(100%);
-				opacity: .5;
+			background-image:url(/assets/top-boards-hexagon-grey.svg);
+			&:hover .hexagon-title {
+				color: #ccc;
 			}
 		}
-
-		margin-right:10px;
-		height: 300px;
-		.icon {
-			color:$ru_green;
-			position: relative;
-			line-height: 0.7;	
-			display:inline-block;
-			width:100%;
-			vertical-align: middle;
-
-			&.icon-teacher {
-				font-size:300px;
-				@media #{$medium-up} {
-					left:-45px;
-				}
-				@media #{$large-up} {
-					left:-25px;
-				}				
-			}
-			&.icon-group {
-				font-size:170px;
-				margin:50px 0 0 25px;
-				@media #{$medium-up} {
-					left:-45px;
-				}
-				@media #{$large-up} {
-					left:-25px;
-				}				
-			}
-			&.icon-calendar-grid {
-				font-size:130px;
-				margin: 60px 0 0 0;
-			}
-			&.icon-gameboard-icon {
-				font-size:200px;
-				margin: 35px 0 0 0;
-			}
-			&.icon-speach-bubble {
-				font-size:120px;
-				margin: 60px 0 0 0;				
-			}
-			&.check-progress {
-				margin-top:35px;
-				.icon-check {
-					font-size:130px;	
-				}						
-				.icon-x {
-					font-size: 170px;
-					left: -25px;
-					top: 21px;
-					position: relative;						
-				}			
-			}
-			&.book-img img {
-				width: 100px;
-				top: 25px;
-				position: relative;
-			}
-			&.use-isaac-in-class img {
-				width: 150px;
-				top: 18px;
-				position: relative;
-			}			
-			&.forum-img img {
-				width: 150px;
-				top: 20px;
-				position: relative;
-			}
-			&.set-assign-img img {
-				width: 215px;
-				top: 35px;
-				position: relative;
-			}			
-			&.use-isaac {
-				margin-top:15px;
-				.icon-hexagon {
-					font-size:170px;			
-				}						
-				.icon-group {
-					font-size:140px;
-					left: -55px;
-					top: 30px;
-					position: relative;						
-				}			
-			}
-		}	
-		
-		.description {
-			display: block;
-			font-weight: bold;
-			position: absolute;
-			bottom: 25px;
-			width: 100%;
-			left: -4px;
-		}	
 	}
 
+	a.hexagon {
+		&:hover .hexagon-title {
+			color: $ru_green;
+		}
+	}
+
+	img.hexagon-field {
+		display: block;
+		width:80px;
+		height:80px;
+		margin-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
+
+		&.disabled {
+			-webkit-filter: grayscale(100%);
+			-webkit-filter: grayscale(1); 
+			filter: grayscale(100%);
+			filter:url(/assets/gray.svg#grayscale);
+			filter:gray;
+			opacity: .5;
+		}
+	}
+
+	div.hexagon-title {
+	    font-size: 1.6rem;
+	    font-weight: 600;
+	    font-style: italic;
+	    text-align: center;
+		margin-top: 10px;
+	    margin-left: 20px;
+	    margin-right: 20px;
+	    line-height: 1.6rem;
+	    height: 85px;
+	}
 
 }
