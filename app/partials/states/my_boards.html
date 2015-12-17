@@ -67,8 +67,8 @@
    			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
                   Created by:
-                  <span ng-if="board.ownerUserId == user.id">Me</span>
-                  <span ng-if="board.ownerUserId != user.id">Someone else</span>
+                  <span ng-if="board.ownerUserId == user._id">Me</span>
+                  <span ng-if="board.ownerUserId != user._id">Someone else</span>
                </div>
 
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
