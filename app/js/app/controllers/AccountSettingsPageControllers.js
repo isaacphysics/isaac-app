@@ -197,6 +197,7 @@ define([], function() {
         	}
 
         	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
+        		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences

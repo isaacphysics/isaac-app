@@ -83,8 +83,8 @@
                                         <option value="STUDENT">Student</option>
                                         <option value="TEACHER">Teacher</option>
                                         <option value="CONTENT_EDITOR">Content Editor</option>
-                            <option value="EVENT_MANAGER">Event Manager</option>                            
-                            <option ng-show="myUserRole == 'ADMIN'" value="ADMIN">Admin</option>
+                                        <option value="EVENT_MANAGER">Event Manager</option>                            
+                                        <option ng-show="myUserRole == 'ADMIN'" value="ADMIN">Admin</option>
                                     </select>
                                 </div>
                             </div>
@@ -134,6 +134,19 @@
                                         </select>
                                     </li>
                                 </ul>
+                            </div>
+
+                            <div class="row">
+                                <div ng-show="!editingSelf && myUserRole == 'ADMIN'" class="large-16 columns">
+                                    <label>
+                                        <strong>Email verification status:</strong>
+                                    </label>
+                                    <select ng-model="user.emailVerificationStatus">
+                                        <option value="VERIFIED">Verified</option>
+                                        <option value="NOT_VERIFIED">Not Verified</option>
+                                        <option value="DELIVERY_FAILED">Delivery Failed</option>
+                                    </select>
+                                </div>
                             </div>
                         </li>
                         <li>
