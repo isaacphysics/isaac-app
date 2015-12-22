@@ -10,64 +10,82 @@
 <div class="small-16 columns">
 	<div class="teacher-feature-body">	
 		<div class="row">
-			<a ng-show="!isTeacher" ui-sref="contact({preset:'teacherRequest'})" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-hat"></img>
-				<div class="hexagon-title">
-					1. Tell us you are a teacher
-				</div>
-			</a>
-			<div ng-show="isTeacher" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-hat"></img>
-				<div class="hexagon-title">
-					1. You are now a teacher!
+			<div ng-show="!isTeacher" class="small-16 medium-8 large-4 columns">
+				<a ui-sref="contact({preset:'teacherRequest'})" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-hat"></img>
+					<div class="hexagon-title">
+						1. Tell us you are a teacher
+					</div>
+				</a>
+			</div>
+			<div ng-show="isTeacher" class="small-16 medium-8 large-4 columns">
+				<div class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-hat"></img>
+					<div class="hexagon-title">
+						1. You are now a teacher!
+					</div>
 				</div>
 			</div>
-			<a ng-click="navigateToStateIfTeacher('groups')" ng-class="{disabled: !isTeacher}" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#groups" ng-class="{disabled: !isTeacher}"></img>
-				<div class="hexagon-title">
-					2. Create and manage groups
-				</div>
-			</a>
-			<a ng-click="setAssignmentModal()" ng-class="{disabled: !isTeacher}" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#set-assignments" ng-class="{disabled: !isTeacher}"></img>
-				<div class="hexagon-title">
-					3. Set Assignments
-				</div>
-			</a>
-			<a ng-click="navigateToStateIfTeacher('assignmentProgress')" ng-class="{disabled: !isTeacher}" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#track-progress" ng-class="{disabled: !isTeacher}"></img>
-				<div class="hexagon-title">
-					4. Track group progress
-				</div>
-			</a>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ng-click="navigateToStateIfTeacher('groups')" ng-class="{disabled: !isTeacher}" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#groups" ng-class="{disabled: !isTeacher}"></img>
+					<div class="hexagon-title">
+						2. Create and manage groups
+					</div>
+				</a>
+			</div>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ng-click="setAssignmentModal()" ng-class="{disabled: !isTeacher}" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#set-assignments" ng-class="{disabled: !isTeacher}"></img>
+					<div class="hexagon-title">
+						3. Set Assignments
+					</div>
+				</a>
+			</div>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ng-click="navigateToStateIfTeacher('assignmentProgress')" ng-class="{disabled: !isTeacher}" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#track-progress" ng-class="{disabled: !isTeacher}"></img>
+					<div class="hexagon-title">
+						4. Track group progress
+					</div>
+				</a>
+			</div>
 			<div class="clearfix"></div>
 		</div>
 		<div class="row">
 			<h3>Isaac Activities</h3>
-			<a ui-sref="pages({id:'teach_with_isaac'})" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#use-with-class"></img>
-				<div class="hexagon-title">
-					Isaac in your classroom
-				</div>
-			</a>
-			<a ui-sref="events" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#calendar"></img>
-				<div class="hexagon-title">
-					Teacher and Student Events
-				</div>
-			</a>
-			<a ui-sref="book" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#skills-book-cover"></img>
-				<div class="hexagon-title">
-					Book of core skills problems
-				</div>
-			</a>
-			<a href="http://talkphysics.org/groups/5719" target="_blank" rel="nofollow" class="columns hexagon">
-				<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-forum"></img>
-				<div class="hexagon-title">
-					Teacher Forum (TalkPhysics)
-				</div>
-			</a>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ui-sref="pages({id:'teach_with_isaac'})" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#use-with-class"></img>
+					<div class="hexagon-title">
+						Isaac in your classroom
+					</div>
+				</a>
+			</div>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ui-sref="events" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#calendar"></img>
+					<div class="hexagon-title">
+						Teacher and Student Events
+					</div>
+				</a>
+			</div>
+			<div class="small-16 medium-8 large-4 columns">
+				<a ui-sref="book" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#skills-book-cover"></img>
+					<div class="hexagon-title">
+						Book of core skills problems
+					</div>
+				</a>
+			</div>
+			<div class="small-16 medium-8 large-4 columns">
+				<a href="http://talkphysics.org/groups/5719" target="_blank" rel="nofollow" class="hexagon">
+					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#teacher-forum"></img>
+					<div class="hexagon-title">
+						Teacher Forum (TalkPhysics)
+					</div>
+				</a>
+			</div>
 			<div class="clearfix"></div>		
 		</div>				
 	</div>	
