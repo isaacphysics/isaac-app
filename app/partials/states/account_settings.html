@@ -251,7 +251,7 @@
 
                         <div class="connect-list-inner">
                             <ul class="teachers-connected">
-                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span> {{teacherUser.givenName}} {{teacherUser.familyName}} <a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
+                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
                             </ul>
                             <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
                             <ul ng-if="false" class="teachers-disconnected">
