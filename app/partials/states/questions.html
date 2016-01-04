@@ -2,18 +2,54 @@
 	<h2>Select a <span class="ru_green">challenge...</span></h2>
 
 	<div ng-show="featuredQuestions" class="row hexagon-row">
+	<!-- Featured Questions -->
+		<!-- Either display the Featured Questions. -->
 		<div class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Try a Featured Question</h3>
 			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="featuredQuestions" hexagon-icon-class="question"></div>
 		</div>
+		<!-- OR a static error placeholder, if server returns nothing. -->
+		<div ng-hide="featuredQuestions" class="small-16 medium-8 large-4 columns">
+			<div class="column-title">
+				<h3>Try a Featured Question</h3>
+			</div>
+			<a href="javascript:void(0)" class="hexagon inactive">
+				<div class="hexagon-field question"></div>
+				<div class="hexagon-subtitle">
+					Try Again Later!
+				</div>
+				<div class="hexagon-title">
+					Featured Questions Unavailable
+				</div>
+			</a>
+		</div>
+	<!-- Top Boards -->
+		<!-- Either display the Top Boards. -->
 		<div ng-show="topBoards" class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Try a Top Board</h3>
 			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="topBoards" hexagon-icon-class="top-board"></div>
 		</div>
+		<!-- OR display a static error placeholder, if server returns nothing. -->
+		<div ng-hide="topBoards" class="small-16 medium-8 large-4 columns">
+			<div class="column-title">
+				<h3>Top Boards</h3>
+			</div>
+			<a href="javascript:void(0)" class="hexagon inactive">
+				<div class="hexagon-field top-board"></div>
+				<div class="hexagon-subtitle">
+					Try Again Later!
+				</div>
+				<div class="hexagon-title">
+					Top Boards Unavailable
+				</div>
+			</a>
+		</div>
+	<!-- Board Building -->
+		<!-- This is a static link, so no alternate needed. -->
 		<div class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Try Building Your Own Board</h3>
@@ -28,12 +64,30 @@
 				</div>
 			</a>
 		</div>
+	<!-- Extraordinary Questions -->
+		<!-- Either display the Extraordinary Questions -->
 		<div ng-show="extraordinaryQuestions" class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Or Try Something Extraordinary!</h3>
 			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="extraordinaryQuestions" hexagon-icon-class="extraordinary"></div>
 		</div>
+		<!-- OR display a static error placeholder, if server returns nothing. -->
+		<div ng-hide="extraordinaryQuestions" class="small-16 medium-8 large-4 columns">
+			<div class="column-title">
+				<h3>Or Try Something Extraordinary!</h3>
+			</div>
+			<a href="javascript:void(0)" class="hexagon inactive">
+				<div class="hexagon-field extraordinary"></div>
+				<div class="hexagon-subtitle">
+					Try Again Later!
+				</div>
+				<div class="hexagon-title">
+					Extraordinary Problems Unavailable
+				</div>
+			</a>
+		</div>
+
 		<div class="clearfix"></div>
 	</div>
 

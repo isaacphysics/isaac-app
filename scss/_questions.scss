@@ -51,6 +51,25 @@
 		}
 	}
 
+	a.hexagon.inactive {
+		background-image:url(/assets/top-boards-hexagon-grey.svg);
+		color: gray;
+		cursor: default;
+
+		&:hover .hexagon-title {
+			color: gray;
+		}
+
+		.hexagon-field {
+			-webkit-filter: grayscale(100%);
+			-webkit-filter: grayscale(1); 
+			filter: grayscale(100%);
+			filter:url(/assets/gray.svg#grayscale);
+			filter:gray;
+			opacity: .5;
+		}
+	}
+
 	div.hexagon-field {
 	    background-repeat: no-repeat;
 	    background-size: cover;
