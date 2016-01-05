@@ -139,11 +139,20 @@ define([], function() {
 
 			$scope.map = { center: { latitude: 53.670680, longitude: -1.582031 }, zoom: 5 };
 			$scope.locations = []
+
+			$scope.locationDates = {
+         		defaultStart: new Date(new Date().setMonth(new Date().getMonth() - 1)),
+         		defaultEnd: new Date()
+       		};
+       		$scope.customLocationDates = false;
 			
 			$scope.getLocationData = function(){
+				$scope.customLocationDates = false; // hide the input boxes
 				$scope.setLoading(true);
-				var startDate = new Date(new Date().setMonth(new Date().getMonth() - 1)).getTime();
-				var endDate = new Date().getTime();
+				// If start and end dates from inputs are correctly formatted; use them, else use defaults:
+				var startDate = new Date($scope.locationDates.start ? $scope.locationDates.start : $scope.locationDates.defaultStart).getTime();
+				var endDate = new Date($scope.locationDates.end ? $scope.locationDates.end : $scope.locationDates.defaultEnd).getTime();
+
 				api.statisticsEndpoint.getUserLocations({from_date:startDate, to_date:endDate}).$promise.then(function(result){
 					for(var i = 0; i < result.length; i++) {
 						result[i].id = i;
@@ -152,6 +161,13 @@ define([], function() {
 					$scope.locations = result;
 					$scope.setLoading(false);
 				});				
+			}
+
+			$scope.customiseLocationDates = function(){
+				// Show the extra input boxes
+				$scope.locationDates.start = $scope.locationDates.defaultStart;
+				$scope.locationDates.end = $scope.locationDates.defaultEnd;
+				$scope.customLocationDates = true;
 			}
 				
 			// start and end dates for line graphs
