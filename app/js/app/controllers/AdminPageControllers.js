@@ -142,7 +142,9 @@ define([], function() {
 			
 			$scope.getLocationData = function(){
 				$scope.setLoading(true);
-				api.statisticsEndpoint.getUserLocations().$promise.then(function(result){
+				var startDate = new Date(new Date().setMonth(new Date().getMonth() - 1)).getTime();
+				var endDate = new Date().getTime();
+				api.statisticsEndpoint.getUserLocations({from_date:startDate, to_date:endDate}).$promise.then(function(result){
 					for(var i = 0; i < result.length; i++) {
 						result[i].id = i;
 					}
@@ -153,7 +155,7 @@ define([], function() {
 			}
 				
 			// start and end dates for line graphs
-			var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
+			var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)); //set it to a year ago
 			dataStartDate = dataStartDate.getTime();
 			var dataEndDate = new Date().getTime();
 			$scope.editingGraph = true;

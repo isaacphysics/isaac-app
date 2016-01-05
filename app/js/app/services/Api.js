@@ -142,7 +142,7 @@ define([], function() {
 			},
 			'getUserLocations' : {
 				method: 'GET',
-				url: server + "/api/admin/stats/users/last_locations", 
+				url: server + "/api/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date", 
 				isArray: true 
 			},
 			'getLogEventTypes' : {
