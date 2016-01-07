@@ -74,7 +74,10 @@
     <nav class="dl-nav" role="navigation"> 
         <ul class="dl-level1">
             <li>
-                <h6 ng-click="menuForward($event)">My Isaac <span class="login-notification" ng-if="!user.email"><a class="hide-for-small-only" ui-sref="login">(login)</a></span><span class="login-notification" ng-if="user.email"><a class="hide-for-small-only" ui-sref="logout">(logout)</a></span></h6>
+                <h6 ng-click="menuForward($event)">My Isaac
+                    <span class="login-notification" ng-if="!user._id"><a class="hide-for-small-only" ui-sref="login"> (login)</a></span>
+                    <span class="login-notification" ng-if="user._id"><a class="hide-for-small-only" ui-sref="logout"> (logout)</a></span>
+                </h6>
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
