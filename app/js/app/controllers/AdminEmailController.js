@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$sce', '$timeout', function($scope, auth, api, $window, $rootScope, $sce, $timeout) {
+	var PageController = ['$scope', 'auth', '$stateParams', 'api', '$window', '$rootScope', '$sce', '$timeout', function($scope, auth, $stateParams, api, $window, $rootScope, $sce, $timeout) {
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';
 	    $scope.statistics = null;
 	    $scope.setLoading(true);
@@ -41,6 +41,14 @@ define([], function() {
 		    	STUDENT : false,
 			}
 	    };
+
+	    $scope.getInitialUserFilterState = function() {
+	    	if($stateParams.userIds != null){
+	    		$scope.csvuseridlist = $stateParams.userIds;
+	    		return('csvuseridlist');
+	    	}
+	    	return('userfilter');
+	    }
 
 	    $scope.queueSize = "?";
 	    var checkTimes = 0;

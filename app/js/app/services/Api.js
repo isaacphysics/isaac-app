@@ -116,6 +116,21 @@ define([], function() {
 			},
 		});
 
+		this.adminUserManagerChange = $resource("", {}, {
+			'change_role' : {
+				method : 'POST',
+				isArray: true,
+				url: server+"/api/admin/users/change_role/:role",
+				params: {role: "@role"}
+			},
+			'changeEmailVerificationStatus' : {
+				method : 'POST',
+				isArray: true,
+				url: server+"/api/admin/users/change_email_verification_status/:emailVerificationStatus",
+				params: {emailVerificationStatus: '@emailVerificationStatus'},
+			}
+		});
+
 		this.statisticsEndpoint = $resource(server + "/api/admin/stats/", {}, {
 			'get' : {
 				method: 'GET', 

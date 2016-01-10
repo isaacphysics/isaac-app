@@ -39,6 +39,7 @@ define([
 	"app/controllers/AuthErrorPageControllers",
 	"app/controllers/AdminPageControllers",
 	"app/controllers/AdminEmailController",
+	"app/controllers/AdminUserManagerController",
 	"app/controllers/GameEditorControllers",
 	"app/controllers/GroupManagementPageControllers",
 	"app/controllers/MyProgressPageControllers",
@@ -84,6 +85,8 @@ define([
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
 
 	var adminEmailController = require("app/controllers/AdminEmailController");
+
+	var adminUserManagerController = require("app/controllers/AdminUserManagerController");
 
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
 
@@ -141,6 +144,8 @@ define([
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
 	
 	.controller('AdminPageController', adminPageControllers.PageController)
+	
+	.controller('AdminUserManagerController', adminUserManagerController.PageController)
 
 	.controller('AdminEmailController', adminEmailController.PageController)
 

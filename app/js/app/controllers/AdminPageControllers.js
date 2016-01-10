@@ -19,9 +19,6 @@ define([], function() {
 		$rootScope.pageTitle = "Admin Page";
 
 		$scope.contentVersion = api.contentVersion.get();
-		$scope.userSearch = {};
-		$scope.userSearch.isLoading = false;
-		$scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
 		$scope.indexQueue = null;
 		$scope.segueVersion = api.segueInfo.segueVersion();
@@ -65,49 +62,7 @@ define([], function() {
 			});
 		}
 		
-		$scope.userSearchSortPredicate = "familyName";
 
-		$scope.hasSearched = false;
-		$scope.findUsers = function() {
-			if ($scope.userSearch.searchTerms != "") {
-				var role = $scope.userSearch.searchTerms.role;
-				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
-
-				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
-					role = null;
-				}
-				
-				if ($scope.userSearch.searchTerms.schoolOther == "") {
-					schoolOther = null;
-				}
-
-				$scope.userSearch.isLoading = true;
-				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 'schoolOther': schoolOther}).$promise.then(function(result){
-					$scope.userSearch.results = result;
-					$scope.userSearch.isLoading = false;
-				}).catch(function(e){
-					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-					$scope.userSearch.isLoading = false;
-				});
-				
-				$scope.userSearch.hasSearched = true;
-			}
-		}
-
-		$scope.deleteUser = function(userId, email) {
-			var deleteUser = $window.confirm('Are you sure you want to delete the account with email address: ' + email + '?');   
-
-			if (deleteUser) {
-					api.adminDeleteUser.delete({'userId' : userId}).$promise.then(function(){
-					$scope.showToast($scope.toastTypes.Success, "User Deleted", "You have successfully deleted the user with e-mail: " + email);
-					$scope.findUsers();
-				}).catch(function(e){
-					$scope.showToast($scope.toastTypes.Failure, "User Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-				});
-			} else {
-				return;
-			}
-		}
 	}]
 
 	var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {

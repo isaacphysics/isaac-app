@@ -8,7 +8,7 @@
 	            <div class="panel white clearfix">
 	                <div class="small-16 columns">
 		                <h2>User Selection</h2>
-		                <select name="userSelectionType" ng-init="userSelectionType = 'userfilter'" ng-model="userSelectionType"  ng-change="userSelectionTypeChanged(userSelectionType.id)">
+		                <select name="userSelectionType" ng-init="userSelectionType = getInitialUserFilterState()" ng-model="userSelectionType"  ng-change="userSelectionTypeChanged(userSelectionType.id)">
 		             		 <option value="userfilter">User Filter</option>
 		             		 <option value="csvuseridlist">CSV User ID List</option>
 						</select>

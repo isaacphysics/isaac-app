@@ -507,10 +507,23 @@ define(["angular-ui-router"], function() {
                         controller: "AdminEventBookingController",
                     }
                 }
-            })   
+            })  
 
-            .state('adminEmails', {
-                url: "/admin/emails",
+            .state('adminUserManager', {
+                url: "/admin/usermanager",
+                resolve: {
+                    requireRole : getRolePromiseInjectableFunction(["ADMIN", "STAFF", "EVENT_MANAGER", "CONTENT_EDITOR"])
+                }, 
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_user_manager.html",
+                        controller: "AdminUserManagerController",
+                    }
+                }
+            }) 
+
+            .state('adminEmailsWithUserIds', {
+                url: "/admin/emails/:userIds",
                 resolve: {
                     requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
                 },
@@ -520,7 +533,20 @@ define(["angular-ui-router"], function() {
                         controller: "AdminEmailController",
                     }
                 }
-            })            
+            })    
+
+            .state('adminEmails', {
+                url: "/admin/emails/",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_emails.html",
+                        controller: "AdminEmailController",
+                    }
+                }
+            })          
 
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",

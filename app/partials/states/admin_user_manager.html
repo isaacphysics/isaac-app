@@ -1,0 +1,115 @@
+<div class="admin-user-manager">
+    <div class="row">
+        <div class="medium-16 columns">
+            <div class="panel white clearfix">
+                <form ng-submit="findUsers()">
+                    <div class="medium-8 columns">
+                        <label for="user-search-familyName">
+                            <strong>Find a user by family name</strong>
+                        </label>                            
+                        <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user familyName" >
+                        <label for="user-search-email">
+                            <strong>Find a user by email</strong>
+                        </label>                            
+                        <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
+
+                        <label for="user-school-other">
+                            <strong>Find by manually entered school:</strong>
+                        </label>
+                        <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
+                            <option value="">Any School</option>
+                            <option ng-repeat="school in schoolOtherEntries" ng-value="school.name">{{school.name}}</option>
+                        </select> 
+                    </div>
+                    <div class="medium-8 columns">
+                        <label for="user-search-role">
+                            <strong>Find by user role:</strong>
+                        </label>
+                        <select id="user-search-role" ng-model="userSearch.searchTerms.role">
+                            <option value="">Any Role</option>
+                            <option value="TEACHER">Teacher</option>
+                            <option value="CONTENT_EDITOR">Content Editor</option>
+                            <option value="EVENT_MANAGER">Event Manager</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>     
+                        <label>
+                            <strong>Find users with school within 50 miles of postcode:</strong>
+                        </label>
+                         <input id="user-location" name="location" type="text" ng-model="userSearch.searchTerms.postcode" placeholder="Enter a valid postcode" >
+                        
+                    </div>
+                    <div class="medium-16 columns end">
+                        <a class="button small" ng-click="findUsers()">Search</a>
+                    </div>        
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-16 columns">
+            <div class="panel white clearfix">
+                <div class="small-16 columns">
+                   <h3>Manage Users {{userSearch.results.length}}<a name="users">&nbsp;</a></h3>
+                </div>
+                <!-- Results TODO: stolen from search page this needs tidying up -->
+                <form ng-submit="findUsers()">
+                    <div class="medium-16 columns end">
+                        <div class="small-16 columns" ng-if="userSearch.isLoading">                   
+                            <div class="text-center" >
+                                <img src="/assets/loading.gif">
+                            </div>    
+                        </div>
+
+                        <div class="row" ng-if="true || (userSearch.results && !userSearch.isLoading)">
+
+                            <div class="small-3 columns">  <a class="button small" data-dropdown="elevateDropdown" aria-controls="elevateDropdown" aria-expanded="false">Elevate to &#x25BC;</a>
+                                <ul id="elevateDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1"  >
+                                    <li><a href="#"  ng-click="modifySelectedUsersRole('TEACHER')">Teacher</a></li>
+                                </ul>
+                            </div>
+                            <div class="small-7 columns end"> <a class="button  small" data-dropdown="demoteDropdown" aria-controls="demoteDropdown" aria-expanded="false">Demote to &#x25BC;</a>
+                                <ul id="demoteDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1" >
+                                    <li><a href="#"  ng-click="modifySelectedUsersRole('STUDENT')">Student</a></li>
+                                </ul></div>
+                             <div class="small-3 columns"> 
+                                <a class="button small" ng-class="{disabled : user.role != 'ADMIN'}" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIds()})">Email</a>
+                            </div>    
+                            <div class="small-3 columns"> <a class="button small" data-dropdown="markAsDropdown" aria-controls="markAsDropdown" aria-expanded="false">Mark as &#x25BC;</a>
+                                <ul id="markAsDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                                    <li><a href="#" ng-click="modifySelectedUsersEmailVerificationStatus('NOT_VERIFIED')">NOT_VERIFIED</a></li>
+                                    <li><a href="#" ng-click="modifySelectedUsersEmailVerificationStatus('DELIVERY_FAILED')">DELIVERY_FAILED</a></li>
+                                </ul></div>
+
+
+                            <div class="small-16 columns" style="overflow:scroll; height:400px;">                      
+                                <table>
+                                    <tr>
+                                        <th><a href="javascript:void(0);" ng-click="toggleUserSelection()">Select</a></th>
+                                        <th ng-if="user.role == 'ADMIN'">Actions</th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'familyName'; reverse=!reverse">Name</a></th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
+                                        <th>School Set</th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'verificationStatus'; reverse=!reverse">Verification Status</a></th>
+                                        <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
+                                    </tr>
+                                    <tr ng-repeat="result in userSearch.results | orderBy:userSearchSortPredicate:reverse">                                    
+                                        <td><input type="checkbox" ng-model="userManagerSelection[result._id]"></input></td>
+                                        <td ng-if="user.role == 'ADMIN'"><a target="_blank" ui-sref="userProgress({'userId' : result._id })">View</a> <a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a> <a href="javascript:void(0);" ng-click="deleteUser(result._id, result.email)">Delete</a></td>  
+                                        <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
+                                        <td>{{result.email}}</td>                                    
+                                        <td>{{result.role || "NOT_SET"}}</td>
+                                        <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                        <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{result.emailVerificationStatus || "NOT_SET"}}</td>       
+                                        <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                     
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
