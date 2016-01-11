@@ -75,13 +75,21 @@ define([], function() {
 
 				$scope.userSearch.isLoading = true;
 				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 
-																									'schoolOther': schoolOther, 'postcode' : postcode}).$promise.then(function(result){
+																									'schoolOther': schoolOther, schoolURN : $scope.userSearch.searchTerms.schoolURN, 
+																									'postcode' : postcode}).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 
 					//clear selections
-					for(var key in $scope.userManagerSelection) {
-						$scope.userManagerSelection[key] = false;
+					$scope.userManagerSelection = {};
+
+					//Add selections in, so we can select all
+					for (var resultItem in $scope.userSearch.results) {
+						debugger
+						if(result.hasOwnProperty(resultItem) && !resultItem.startsWith("$")) {
+							var key = result[resultItem]._id;
+							$scope.userManagerSelection[key] = false;
+						}
 					}
 				}).catch(function(e){
 					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
@@ -114,7 +122,7 @@ define([], function() {
 		$scope.getSelectedUserIds = function(){
 			userids = [];
 			for(var key in $scope.userManagerSelection){
-				if ($scope.userManagerSelection[key]) {
+    			if ($scope.userManagerSelection.hasOwnProperty(key) && $scope.userManagerSelection[key]) {
 					userids.push(key);
 				}
 			}
@@ -124,7 +132,10 @@ define([], function() {
 		$scope.toggleUserSelection = function(){
 			$scope.toggleUserSelectionState = !$scope.toggleUserSelectionState;
 			for(var key in $scope.userManagerSelection){
-				$scope.userManagerSelection[key] = $scope.toggleUserSelectionState;
+				debugger
+				if($scope.userManagerSelection.hasOwnProperty(key)) {
+					$scope.userManagerSelection[key] = $scope.toggleUserSelectionState;
+				}
 			}
 		}
 

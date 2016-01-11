@@ -36,7 +36,11 @@
                             <strong>Find users with school within 50 miles of postcode:</strong>
                         </label>
                          <input id="user-location" name="location" type="text" ng-model="userSearch.searchTerms.postcode" placeholder="Enter a valid postcode" >
-                        
+                             
+                        <label>
+                            <strong>Find users with by school URN:</strong>
+                        </label>
+                         <input id="user-school-urn" name="schoolURN" type="text" ng-model="userSearch.searchTerms.schoolURN" placeholder="Enter a valid school URN" >
                     </div>
                     <div class="medium-16 columns end">
                         <a class="button small" ng-click="findUsers()">Search</a>
@@ -49,7 +53,7 @@
         <div class="small-16 columns">
             <div class="panel white clearfix">
                 <div class="small-16 columns">
-                   <h3>Manage Users {{userSearch.results.length}}<a name="users">&nbsp;</a></h3>
+                   <h3>Manage Users ({{userSearch.results.length}}) Selected ({{getSelectedUserIds().length}})<a name="users">&nbsp;</a></h3>
                 </div>
                 <!-- Results TODO: stolen from search page this needs tidying up -->
                 <form ng-submit="findUsers()">
@@ -72,7 +76,7 @@
                                     <li><a href="#"  ng-click="modifySelectedUsersRole('STUDENT')">Student</a></li>
                                 </ul></div>
                              <div class="small-3 columns"> 
-                                <a class="button small" ng-class="{disabled : user.role != 'ADMIN'}" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIds()})">Email</a>
+                                <a ng-if="user.role == 'ADMIN'" class="button small" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIds()})">Email</a>
                             </div>    
                             <div class="small-3 columns"> <a class="button small" data-dropdown="markAsDropdown" aria-controls="markAsDropdown" aria-expanded="false">Mark as &#x25BC;</a>
                                 <ul id="markAsDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
