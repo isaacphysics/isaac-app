@@ -94,8 +94,8 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result.id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result.id)">Book on event</a>
-                                            <a ng-show="userBookings.indexOf(result.id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result.id)">Unbook from event</a></td>
+                                    <td><a ng-show="userBookings.indexOf(result.id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                            <a ng-show="userBookings.indexOf(result.id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result._id)">Unbook from event</a></td>
                                 </tr>
                             </table>
                         </div>
