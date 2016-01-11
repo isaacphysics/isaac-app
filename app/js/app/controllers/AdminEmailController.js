@@ -56,7 +56,7 @@ define([], function() {
 	    var queueSizeChecker = function(){
 	    	api.email.getQueueSize({}).$promise.then(function(result){
 	    		var d = new Date();
-    			$scope.queueSize = "" + result[0] + " at " + d.toLocaleTimeString();
+    			$scope.queueSize = "" + result.length + " at " + d.toLocaleTimeString();
 				$timeout(queueSizeChecker, 5000);
     		}).catch(function(e){
 				$scope.showToast($scope.toastTypes.Failure, "Email Queue Size", "Could not get email queue size (" + e.status + ") " + e.statusText);
