@@ -85,7 +85,6 @@ define([], function() {
 
 					//Add selections in, so we can select all
 					for (var resultItem in $scope.userSearch.results) {
-						debugger
 						if(result.hasOwnProperty(resultItem) && !resultItem.startsWith("$")) {
 							var key = result[resultItem]._id;
 							$scope.userManagerSelection[key] = false;
@@ -132,7 +131,6 @@ define([], function() {
 		$scope.toggleUserSelection = function(){
 			$scope.toggleUserSelectionState = !$scope.toggleUserSelectionState;
 			for(var key in $scope.userManagerSelection){
-				debugger
 				if($scope.userManagerSelection.hasOwnProperty(key)) {
 					$scope.userManagerSelection[key] = $scope.toggleUserSelectionState;
 				}
