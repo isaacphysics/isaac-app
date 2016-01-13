@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 Alistair Stead
+ * Copyright 2015 Alistair Stead
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@
 					scope.toastDescription = description;
 					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
-					scope.toastTimeouts = setTimeout(scope.hideToast, 3000);
+					scope.toastTimeouts = setTimeout(scope.hideToast, 4000);
 
 					element.children("div").css("visibility","visible");
 				};
