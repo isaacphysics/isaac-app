@@ -66,20 +66,20 @@
 
                         <div class="row" ng-if="true || (userSearch.results && !userSearch.isLoading)">
 
-                            <div class="small-3 columns">  <a class="button small" data-dropdown="elevateDropdown" aria-controls="elevateDropdown" aria-expanded="false">Elevate to &#x25BC;</a>
-                                <ul id="elevateDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1"  >
+                            <div class="small-3 columns">  <a class="button small" data-dropdown="elevateDropdown" >Elevate to &#x25BC;</a>
+                                <ul id="elevateDropdown" class="f-dropdown" data-dropdown-content>
                                     <li><a href="#"  ng-click="modifySelectedUsersRole('TEACHER')">Teacher</a></li>
                                 </ul>
                             </div>
-                            <div class="small-7 columns end"> <a class="button  small" data-dropdown="demoteDropdown" aria-controls="demoteDropdown" aria-expanded="false">Demote to &#x25BC;</a>
-                                <ul id="demoteDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1" >
+                            <div class="small-7 columns end"> <a class="button  small" data-dropdown="demoteDropdown" >Demote to &#x25BC;</a>
+                                <ul id="demoteDropdown" class="f-dropdown" data-dropdown-content>
                                     <li><a href="#"  ng-click="modifySelectedUsersRole('STUDENT')">Student</a></li>
                                 </ul></div>
                              <div class="small-3 columns"> 
                                 <a ng-if="user.role == 'ADMIN'" class="button small" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIds()})">Email</a>
                             </div>    
-                            <div class="small-3 columns"> <a class="button small" data-dropdown="markAsDropdown" aria-controls="markAsDropdown" aria-expanded="false">Mark as &#x25BC;</a>
-                                <ul id="markAsDropdown" class="f-dropdown" data-dropdown-content tabindex="-1" aria-hidden="true" aria-autoclose="false" tabindex="-1">
+                            <div class="small-3 columns"> <a class="button small" data-dropdown="markAsDropdown" >Mark as &#x25BC;</a>
+                                <ul id="markAsDropdown" class="f-dropdown" data-dropdown-content>
                                     <li><a href="#" ng-click="modifySelectedUsersEmailVerificationStatus('NOT_VERIFIED')">NOT_VERIFIED</a></li>
                                     <li><a href="#" ng-click="modifySelectedUsersEmailVerificationStatus('DELIVERY_FAILED')">DELIVERY_FAILED</a></li>
                                 </ul></div>

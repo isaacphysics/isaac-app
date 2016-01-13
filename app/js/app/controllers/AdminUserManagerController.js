@@ -99,24 +99,7 @@ define([], function() {
 			}
 		};
 
-		$scope.modifySelectedUsersRole = function(role) {
-			$scope.userSearch.isLoading = true;
 
-			userids = [];
-			for(var key in $scope.userManagerSelection){
-				if ($scope.userManagerSelection[key]) {
-					userids.push(key);
-				}
-			}
-
-			api.adminUserManagerChange.change_role({'role': role}, userids).$promise.then(function(result){
-				$scope.userSearch.isLoading = false;
-				$scope.findUsers();
-			}).catch(function(e){
-				$scope.showToast($scope.toastTypes.Failure, "Demotion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-				$scope.userSearch.isLoading = false;
-			});
-		}
 
 		$scope.getSelectedUserIds = function(){
 			userids = [];
@@ -127,6 +110,23 @@ define([], function() {
 			}
 			return(userids);
 		}
+
+		$scope.modifySelectedUsersRole = function(role) {
+			$scope.userSearch.isLoading = true;
+
+			var userIds = $scope.getSelectedUserIds();
+
+			api.adminUserManagerChange.change_role({'role': role}, userids).$promise.then(function(result){
+				$scope.userSearch.isLoading = false;
+				$scope.findUsers();
+			}).catch(function(e){
+				$scope.showToast($scope.toastTypes.Failure, "Demotion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				$scope.userSearch.isLoading = false;
+			});
+		}
+
+
+
 		$scope.toggleUserSelectionState = false;
 		$scope.toggleUserSelection = function(){
 			$scope.toggleUserSelectionState = !$scope.toggleUserSelectionState;
@@ -140,7 +140,7 @@ define([], function() {
 		$scope.modifySelectedUsersEmailVerificationStatus = function(emailVerificationStatus) {
 			$scope.userSearch.isLoading = true;
 
-			var userIds = getSelectedUserIds();
+			var userIds = $scope.getSelectedUserIds();
 
 			api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus}, userids).$promise.then(function(result){
 				$scope.userSearch.isLoading = false;
