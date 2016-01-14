@@ -81,10 +81,10 @@
                 </h6>
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
-                    <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your Isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
-                    <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip>1</span>--></li>
-                    <li class="login-required" ng-class="{disabled: !user.email}"><a href="javascript:void(0)" ui-sref="progress">My Progress</a></li>
-                    <li class="login-required" ng-class="{disabled: !user.email}"><a href="javascript:void(0)" ui-sref="assignments">My Assignments &nbsp; <span ng-if="myIncompleteAssignments > 0" class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{myIncompleteAssignments}}</span></a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
+                    <li class="login-required" ng-class="{disabled: !user._id}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your Isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
+                    <li class="login-required" ng-class="{disabled: !user._id}"><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip>1</span>--></li>
+                    <li class="login-required" ng-class="{disabled: !user._id}"><a href="javascript:void(0)" ui-sref="progress">My Progress</a></li>
+                    <li class="login-required" ng-class="{disabled: !user._id}"><a href="javascript:void(0)" ui-sref="assignments">My Assignments &nbsp; <span ng-if="myIncompleteAssignments > 0" class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{myIncompleteAssignments}}</span></a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
                     <!-- <li class="disabled"><a href="javascript:void(0)">My Events</a> <span title="You have 1 upcoming event" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip="">1</span></li> -->
                 </ul>
             </li>
