@@ -107,7 +107,7 @@
 
                         <span ng-hide="editedGameBoardTitle==null">
                             <form>
-                                <input type="text" ng-model="editedGameBoardTitle">
+                                <input type="text" ng-model="editedGameBoardTitle" maxlength="255">
                                 <button type="submit" ng-click="saveGameBoardTitle()">Save</button>
                                 <button ng-click="editedGameBoardTitle = null">Cancel</button>
                             </form>

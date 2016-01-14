@@ -17,7 +17,7 @@
 							<li>
 				                <span>
 				                    <label class="ru-form-required"><strong>Name your board</strong></label>
-				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required />				                    
+				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required  maxlength="255" />				                    
 				                </span>
 							</li>
 							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF' || user.role == 'EVENT_MANAGER'">
