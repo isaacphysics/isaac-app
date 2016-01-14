@@ -75,6 +75,10 @@ define([], function() {
 			})
 		});
 
+		$scope.$on("$destroy", function(){
+			$rootScope.pageSubject = "";
+		});
+
 	}]
 
 	return {

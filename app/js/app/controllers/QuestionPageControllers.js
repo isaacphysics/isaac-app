@@ -154,6 +154,10 @@ define([], function() {
 			hints : true
 		};
 
+		$scope.$on("$destroy", function(){
+			$rootScope.pageSubject = "";
+		});
+
 
 	}]
 
