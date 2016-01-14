@@ -151,7 +151,7 @@ define(["angular-ui-router"], function() {
 	        })
 
             .state('gameBoards', {
-                url: "/gameboards",
+                url: "/gameboards?filter",
                 views: {
                     "body": {
                         templateUrl: "/partials/states/gameboards.html",
