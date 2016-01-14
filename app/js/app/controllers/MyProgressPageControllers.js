@@ -21,7 +21,7 @@ define([], function() {
 		dataStartDate = dataStartDate.getTime();
 		var dataEndDate = new Date().getTime();
 
-		var userOfInterest = $scope.user.id;
+		var userOfInterest = $scope.user._id;
 
 		$scope.questionsAnsweredOverTime = null;
 
@@ -34,7 +34,7 @@ define([], function() {
 		} else {
 			$scope.progress = api.currentUser.getProgress();
 			$scope.viewingOwnData = true;
-			userOfInterest = $scope.user.id;
+			userOfInterest = $scope.user._id;
 		}
 
 		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result){

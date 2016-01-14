@@ -7,9 +7,13 @@
 	        <div class="small-16 columns">
 	            <div class="panel white clearfix">
 	                <div class="small-16 columns">
-		                <h2>User Filter</h2>
+		                <h2>User Selection</h2>
+		                <select name="userSelectionType" ng-init="userSelectionType = getInitialUserFilterState()" ng-model="userSelectionType"  ng-change="userSelectionTypeChanged(userSelectionType.id)">
+		             		 <option value="userfilter">User Filter</option>
+		             		 <option value="csvuseridlist">CSV User ID List</option>
+						</select>
 		                <ul>
-	                       <table>
+	                       <table ng-if="userSelectionType=='userfilter'">
 			                  <thead>
 			                    <tr>
 			                      <th width="400">User Type</th>
@@ -18,31 +22,37 @@
 			                  </thead>
 			                  <tbody>
 			                    <tr>
-			                      <td>ADMIN ({{statistics.adminUsers}})</td>
-			                      <td class="include-column"><input name="adminusers" type="checkbox" data-ng-model="emailToSend.users.adminUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>ADMIN ({{statistics.role.ADMIN}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.ADMIN" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>EVENT_MANAGER ({{statistics.eventManagerUsers}})</td>
-			                      <td class="include-column"><input name="eventmanagerusers" type="checkbox" data-ng-model="emailToSend.users.eventManagerUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>EVENT_MANAGER ({{statistics.role.EVENT_MANAGER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.EVENT_MANAGER" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>CONTENT_EDITOR ({{statistics.contentEditorUsers}})</td>
-			                      <td class="include-column"><input name="contenteditorusers" type="checkbox" data-ng-model="emailToSend.users.contentEditorUsers" class="ng-valid ng-dirty"> </td>
+			                      <td>CONTENT_EDITOR ({{statistics.role.CONTENT_EDITOR}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.CONTENT_EDITOR" class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>TEACHER ({{statistics.teacherUsers}})</td>
-			                      <td class="include-column"><input name="teacherusers" type="checkbox" data-ng-model="emailToSend.users.teacherUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>TEACHER ({{statistics.role.TEACHER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.TEACHER"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>TESTERS ({{statistics.testerUsers}})</td>
-			                      <td class="include-column"><input name="testerusers" type="checkbox" data-ng-model="emailToSend.users.testerUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>TESTERS ({{statistics.role.TESTER}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.TESTER"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                    <tr>
-			                      <td>STUDENT ({{statistics.studentUsers}})</td>
-			                      <td class="include-column"><input name="studentusers" type="checkbox" data-ng-model="emailToSend.users.studentUsers"  class="ng-valid ng-dirty"> </td>
+			                      <td>STAFF ({{statistics.role.STAFF}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.STAFF" class="ng-valid ng-dirty"> </td>
+			                    </tr>
+			                    <tr>
+			                      <td>STUDENT ({{statistics.role.STUDENT}})</td>
+			                      <td class="include-column"><input type="checkbox" data-ng-model="emailToSend.users.STUDENT"  class="ng-valid ng-dirty"> </td>
 			                    </tr>
 			                  </tbody>
 			                </table>
+
+			                <textarea ng-model="$parent.csvuseridlist" ng-if="userSelectionType=='csvuseridlist'" rows="30" cols="50">Enter a list of comma separated user ids here.</textarea>
 		                </ul>                
 		            </div>            
 		        </div>
@@ -84,10 +94,34 @@
 		    <div class="small-16 columns">
 		        <div class="panel white clearfix">
 		            <div class="small-16 columns">
-		                <h2>Preview</h2>
-		                <p>The preview below uses fields taken from your account (e.g. givenName and familyName). 
+		                <h2>Subject:</h2> {{subjectPreview}}
+		                              
+		            </div>            
+		        </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>HTML Preview</h2>
+		                <p>The preview below uses fields taken from your account (e.g. givenname and familyname). 
 		                <ul>
-		                    <iframe scrolling="no" src="{{htmlPreview}}" class="email-preview-frame">
+		                    <iframe scrolling="vertical" src="{{htmlPreview}}" class="email-preview-frame">
+		                    </iframe>
+		                </ul>
+		            </div>            
+		        </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Plain Text Preview</h2>
+		                <p>The preview below uses fields taken from your account (e.g. givenname and familyname). 
+		                <ul>
+		                    <iframe scrolling="no" src="{{plainTextPreview}}" class="email-preview-frame">
 		                    </iframe>
 		                </ul>                
 		            </div>            
@@ -105,6 +139,16 @@
 		                </ul>                
 		            </div>
 	            </div>
+	        </div>
+	    </div>
+		<div class="row">
+		    <div class="small-16 columns">
+		        <div class="panel white clearfix">
+		            <div class="small-16 columns">
+		                <h2>Queue size: {{queueSize}}</h2>
+		                               
+		            </div>            
+		        </div>
 	        </div>
 	    </div>
 	</div>

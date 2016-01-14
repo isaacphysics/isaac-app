@@ -80,12 +80,11 @@
                                         <strong>Change user's role:</strong>
                                     </label>
                                     <select ng-model="user.role">
-                                        <option value="">No role</option>
                                         <option value="STUDENT">Student</option>
                                         <option value="TEACHER">Teacher</option>
                                         <option value="CONTENT_EDITOR">Content Editor</option>
-                            <option value="EVENT_MANAGER">Event Manager</option>                            
-                            <option ng-show="myUserRole == 'ADMIN'" value="ADMIN">Admin</option>
+                                        <option value="EVENT_MANAGER">Event Manager</option>                            
+                                        <option ng-show="myUserRole == 'ADMIN'" value="ADMIN">Admin</option>
                                     </select>
                                 </div>
                             </div>
@@ -136,6 +135,19 @@
                                     </li>
                                 </ul>
                             </div>
+
+                            <div class="row">
+                                <div ng-show="!editingSelf && myUserRole == 'ADMIN'" class="large-16 columns">
+                                    <label>
+                                        <strong>Email verification status:</strong>
+                                    </label>
+                                    <select ng-model="user.emailVerificationStatus">
+                                        <option value="VERIFIED">Verified</option>
+                                        <option value="NOT_VERIFIED">Not Verified</option>
+                                        <option value="DELIVERY_FAILED">Delivery Failed</option>
+                                    </select>
+                                </div>
+                            </div>
                         </li>
                         <li>
                             <div class="row">
@@ -176,12 +188,12 @@
                         </li>
                     </ul>
                 </form>
-                <div ng-show="!user.role && editingSelf" class="large-16 columns account-warning">
+                <div ng-show="user.role == 'STUDENT' && editingSelf" class="large-16 columns account-warning">
                     <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="contact({preset:'teacherRequest'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
                 </div>
                 <div class="account-reorder-wrap">
                     <div class="account-reorder-bottom">
-                        <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR') && editingSelf" class="large-16 columns account-warning">
+                        <div ng-show="user.role && (user.role == 'TEACHER' || user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER') && editingSelf" class="large-16 columns account-warning">
                             <span class="icon-warning"></span><p><strong>You are currently registered with a {{user.role.toLowerCase()}} account.</strong> If you have any further questions please <a ui-sref="contact">Contact us</a></p>
                         </div>
                     </div>
@@ -239,7 +251,7 @@
 
                         <div class="connect-list-inner">
                             <ul class="teachers-connected">
-                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span> {{teacherUser.givenName}} {{teacherUser.familyName}} <a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
+                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
                             </ul>
                             <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
                             <ul ng-if="false" class="teachers-disconnected">
@@ -299,7 +311,7 @@
         <li><a class="ru-button-big expand" ng-click="save('/')">Save</a></li>
         <li ng-if="showSkip"><a class="ru-button-big expand secondary" ng-click="skip()">Skip this step</a></li>
     </ul>
-    <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact">contact us</a>.</span>
+    <span class="delete-account-text">If you would like to delete your account please <a ui-sref="contact({preset:'accountDeletion'})">contact us</a>.</span>
 </div>
     
 <div id="account-updated" class="reveal-modal" data-reveal>

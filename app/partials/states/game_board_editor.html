@@ -17,10 +17,10 @@
 							<li>
 				                <span>
 				                    <label class="ru-form-required"><strong>Name your board</strong></label>
-				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required />				                    
+				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required  maxlength="255" />				                    
 				                </span>
 							</li>
-							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
+							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF' || user.role == 'EVENT_MANAGER'">
 				                <span>
 				                    <label><strong>Choose your URL (must be unique and not contain spaces)</strong></label>
 				                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
@@ -58,7 +58,7 @@
 							<li>
 								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
 							</li>
-							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF'">
+							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF' || user.role == 'EVENT_MANAGER'">
 								<label><strong>Choose your Wildcard</strong></label>									
 								<div class="row">
 									<div class="small-16 columns">

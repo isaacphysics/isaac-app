@@ -24,14 +24,19 @@ define([], function() {
 			if ($stateParams.preset == 'teacherRequest') {
 				if ($scope.user.role != 'TEACHER') {
 					$scope.contactForm.subject = "Teacher Account Request",
-					$scope.contactForm.message = "Hello,\n\nPlease could you convert my isaac physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+					$scope.contactForm.message = "Hello,\n\nPlease could you convert my Isaac Physics account into a teacher account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
 				} else {
 					alert("Your account has already been upgraded to a teacher account.")
 				}
-			} 
+			} else if ($stateParams.preset == 'accountDeletion') {
+			    $scope.contactForm.subject = "Account Deletion Request",
+			    $scope.contactForm.message = "Hello,\n\nPlease could you delete my Isaac Physics account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+			}
 		}).catch(function(){
 			if (!$scope.user.email && $stateParams.preset == 'teacherRequest') {
 				$state.go('login', {target:"/contact?preset=teacherRequest"})
+			} else if (!$scope.user.email && $stateParams.preset == 'accountDeletion') {
+			    $state.go('login', {target:"/contact?preset=accountDeletion"})
 			}
 		})
 

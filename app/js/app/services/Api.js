@@ -118,6 +118,21 @@ define([], function() {
 			},
 		});
 
+		this.adminUserManagerChange = $resource("", {}, {
+			'change_role' : {
+				method : 'POST',
+				isArray: true,
+				url: server+"/api/admin/users/change_role/:role",
+				params: {role: "@role"}
+			},
+			'changeEmailVerificationStatus' : {
+				method : 'POST',
+				isArray: true,
+				url: server+"/api/admin/users/change_email_verification_status/:emailVerificationStatus",
+				params: {emailVerificationStatus: '@emailVerificationStatus'},
+			}
+		});
+
 		this.statisticsEndpoint = $resource(server + "/api/admin/stats/", {}, {
 			'get' : {
 				method: 'GET', 
@@ -144,7 +159,7 @@ define([], function() {
 			},
 			'getUserLocations' : {
 				method: 'GET',
-				url: server + "/api/admin/stats/users/last_locations", 
+				url: server + "/api/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date", 
 				isArray: true 
 			},
 			'getLogEventTypes' : {
@@ -398,9 +413,18 @@ define([], function() {
 				url: server + "/api/email/preferences",
 				isArray:true
 			},
-			sendEmailWithId : {
+			sendEmail : {
 				method: "POST",
 				url: server + "/api/email/sendemail/:contentid/:emailtype",
+			}, 
+			sendEmailWithIds : {
+				method: "POST",
+				url: server + "/api/email/sendemailwithuserids/:contentid/:emailtype",
+				isArray:true
+			},
+			getQueueSize : {
+				method: "GET",
+				url: server + "/api/email/queuesize",
 			}
 		});
 

@@ -66,7 +66,8 @@
     </div>
     <div class="medium-12 end columns text-right">
         <h2 class="status hide-for-small-only">Welcome<span ng-if="!user._id"> to Isaac</span>  
-        <span class='green' ng-if="user.givenName && user._id" ng-class="{physics:user.role=='ADMIN'}"> {{user.givenName}}
+        <span class='green' ng-if="user.givenName && user._id" ng-class="{physics:user.role=='ADMIN'}"> {{user.givenName}}</span>
+        <span ng-if="user._id">
             <span class="green"><a ui-sref="logout">(Log out)</a></span>
         </span></h2>
     </div>
@@ -80,7 +81,7 @@
                 </h6>
                 <ul class="dl-level2">
                 	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
-                    <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
+                    <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your Isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
                     <li class="login-required" ng-class="{disabled: !user.email}"><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip>1</span>--></li>
                     <li class="login-required" ng-class="{disabled: !user.email}"><a href="javascript:void(0)" ui-sref="progress">My Progress</a></li>
                     <li class="login-required" ng-class="{disabled: !user.email}"><a href="javascript:void(0)" ui-sref="assignments">My Assignments &nbsp; <span ng-if="myIncompleteAssignments > 0" class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{myIncompleteAssignments}}</span></a> <!--<span title="You have 10 overdue assignments" class="dl-alert overdue hide-for-small-only" aria-haspopup="true" data-tooltip="">10</span>--></li>
@@ -112,7 +113,8 @@
                 <ul class="dl-level2">
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="admin">Site Admin</a></li>
-                    <li><a ui-sref="adminEvents">Event Admin</a></li>
+                    <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER' || user.role == 'CONTENT_EDITOR')"><a ui-sref="adminUserManager">User Manager</a></li>
+                    <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="adminEvents">Event Admin</a></li>
                     <li><a ui-sref="contentErrors">Content Errors &nbsp;<span ng-if="contentProblems > 0" data-ot="There are {{contentProblems}} outstanding problems." class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{contentProblems}}</span></a></li>
                     <li><a ui-sref="adminStats">Site Statistics</a></li>
                 </ul>

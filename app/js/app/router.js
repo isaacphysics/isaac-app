@@ -111,6 +111,8 @@ define(["angular-ui-router"], function() {
             .state('physics_skills_14', staticPageState("/physics_skills_14", "book_index" , "BooksControllers"))
             .state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'))
             .state('publications', genericPageState("/publications", "publications"))
+            .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
+            .state('spc', genericPageState("/spc", "spc"))
             
             .state('teacher_features', {
                 url:"/teacher_features?redirectModal",
@@ -498,10 +500,23 @@ define(["angular-ui-router"], function() {
                         controller: "AdminEventBookingController",
                     }
                 }
-            })   
+            })  
 
-            .state('adminEmails', {
-                url: "/admin/emails",
+            .state('adminUserManager', {
+                url: "/admin/usermanager",
+                resolve: {
+                    requireRole : getRolePromiseInjectableFunction(["ADMIN", "STAFF", "EVENT_MANAGER", "CONTENT_EDITOR"])
+                }, 
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_user_manager.html",
+                        controller: "AdminUserManagerController",
+                    }
+                }
+            }) 
+
+            .state('adminEmailsWithUserIds', {
+                url: "/admin/emails/:userIds",
                 resolve: {
                     requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
                 },
@@ -511,7 +526,20 @@ define(["angular-ui-router"], function() {
                         controller: "AdminEmailController",
                     }
                 }
-            })            
+            })    
+
+            .state('adminEmails', {
+                url: "/admin/emails/",
+                resolve: {
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/admin_emails.html",
+                        controller: "AdminEmailController",
+                    }
+                }
+            })          
 
              .state('gameEditor', {
                 url: "/game_builder?query&subject&level&sort",
@@ -664,18 +692,22 @@ define(["angular-ui-router"], function() {
             })
 	}])
 
-    .run(['$rootScope', '$state', function($rootScope, $state) {
+    .run(['$rootScope', '$state', '$location', function($rootScope, $state, $location) {
         $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
             console.warn("State change error:", error);
 
+            // The UI Router doesn't preserve the hash for us, so do it manually.
+            var toHash = $location.hash();
+            toHash = toHash ? "#" + toHash : "";
+
             if (error == "require_login")
-                $state.go('login', {target: $state.href(toState, toParams)});
+                $state.go('login', {target: $state.href(toState, toParams) + toHash});
 
             if (error == "require_role")
-                $state.go('403', {target: $state.href(toState, toParams)});
+                $state.go('403', {target: $state.href(toState, toParams) + toHash});
 
             if (error.status == 404)
-                $state.go('404', {target: $state.href(toState, toParams)});
+                $state.go('404', {target: $state.href(toState, toParams) + toHash});
         });
 
     }])

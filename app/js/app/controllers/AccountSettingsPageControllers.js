@@ -197,6 +197,7 @@ define([], function() {
         	}
 
         	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
+        		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences
@@ -256,7 +257,7 @@ define([], function() {
         	}
         	
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) : null) + ". " + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
+				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
 
 				if (confirm) {
 		        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
@@ -276,6 +277,7 @@ define([], function() {
         // if an auth token has been provided assume we want to add it.
         if ($stateParams.authToken && $scope.editingSelf) {
 			$scope.authenticationToken = {value: $stateParams.authToken}
+			$scope.activeTab = 2;
 			$scope.useToken();
 		} else if ($stateParams.authToken && !$scope.editingSelf) {
 			$scope.showToast($scope.toastTypes.Failure, "Access Denied", "You are not allowed to grant permissions (using a token) on behalf of another user.");
@@ -285,7 +287,7 @@ define([], function() {
         	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
 
         	if(revoke) {
-	        	api.authorisations.revoke({id: userToRevoke._id}).$promise.then(function(){
+	        	api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
 	        	}).catch(function(e){
