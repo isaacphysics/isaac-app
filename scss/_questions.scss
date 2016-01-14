@@ -16,7 +16,7 @@
 		background: none;
 		margin-bottom: 50px;
 	
-		@media #{$large-only} {
+		@media #{$large-up} {
 			background-image: url(/assets/math-bg.png);
 			background-position: center bottom;
 			background-size: contain;
