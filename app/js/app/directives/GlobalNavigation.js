@@ -120,7 +120,7 @@ define([], function() {
                 scope.answerCountTicker = 0;
 
                 api.questionsAnswered.get().$promise.then(function(stat) {
-                    var count = stat.answeredQuestionCount + 32458484;
+                    var count = stat.answeredQuestionCount;
                     var f = function() {
                         scope.answerCountTicker += Math.max(Math.floor(count/100),1);
                         if (scope.answerCountTicker < count) {
