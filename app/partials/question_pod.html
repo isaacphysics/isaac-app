@@ -4,7 +4,7 @@
     </div>
     <hr>
     <ul class="pod-scroll-list">
-    	<li ng-repeat="c in questions | orderBy: questionComparer">
+    	<li ng-repeat="c in questions | orderBy: ['level', questionComparer]">
             <a ui-sref="question({id: c.id})" ng-click="logRelatedQuestionView(c.id)">{{c.title}} (Level {{c.level}})</a>
             <h6>{{c.summary}}</h6>
     	</li>
