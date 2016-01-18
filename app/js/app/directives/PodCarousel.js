@@ -37,6 +37,7 @@
                     "margin": 15,
  					"rewind": true,
                     "autoPlayTimeout": 500,
+                    "autoplayHoverPause": true,
                     "responsive": {
  						0:{
  							"items":1,
