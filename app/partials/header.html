@@ -9,7 +9,9 @@
                         <img alt="isaac logo" title='Isaac. Physics. You work it out.' class='ru-desktop-menu-img' src='' 
                              data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
                              [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
-                         <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev">Non-Prod</div>      
+                         <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod 
+                            <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
+                         </div>      
                 </div>
                 <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards'>
@@ -67,7 +69,7 @@
             <nav class='row'>
                 <a ui-sref='home'><img alt="isaac logo" title='Isaac. Physics. You work it out.' class='ru-mobile-menu-img' 
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
-                <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod</div>                
+                <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>                
                 <a class='ru-mobile-nav-item' ui-sref='questions'>
                     <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('questions') || $state.includes('question')}">
                         <span>Questions</span>

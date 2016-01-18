@@ -33,11 +33,16 @@ $ru_nav_size : 7em;
 
 .ru-desktop-logo-dev
 {
-  color:red;
-  position:relative;
-  top:-10px;
-  left:10px;
-  height:0px;
+    .admin {
+        color: purple;
+        font-weight: bold;
+        margin-left:10px;
+    }
+    color:red;
+    position:relative;
+    top:-10px;
+    left:10px;
+    height:0px;
 }
 
 .ru-desktop-nav-item-inner {
