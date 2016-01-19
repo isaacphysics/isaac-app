@@ -41,6 +41,9 @@ define(["app/honest/hexagon"],function(hexagon) {
 
                 } else {
                     $(this).attr("href", $state.href("question", {id: d.id, board: boardId}));
+                    if ($state.current.name == 'gameEditor') {
+                        $(this).attr("target", "_blank");
+                    }
                 }
 
             });
