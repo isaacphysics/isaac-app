@@ -45,6 +45,11 @@ define([], function() {
 			});
 
 			$scope.extraordinaryQuestions = page.extraordinaryQuestions;
+		}).catch(function(e){
+			console.warn("Couldn't load top boards page: ", e);
+			$scope.topBoards = false;
+			$scope.featuredQuestions = false;
+			$scope.extraordinaryQuestions = false;
 		});
 	}];
 
