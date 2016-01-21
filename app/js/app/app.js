@@ -440,6 +440,7 @@ define([
                         template : {
                             link: ''
                         },
+                        abort_on_close: false,
                         pre_ride_callback: function() {
                             // add custom controls
                             $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
