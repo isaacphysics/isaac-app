@@ -184,3 +184,55 @@
 (defn tex [expr]
   (when expr
     (str (tex-inner expr))))
+
+(defmulti py :type)
+
+(defmethod py nil [expr] "")
+
+(defmethod py :type/symbol [expr]
+  (println "Should not have called py with expr of type symbol:" expr)
+  "")
+
+(defmethod py :type/var [expr]
+  (str (:token expr)))
+
+(defmethod py :type/num [expr]
+  (str (:token expr)))
+
+(defmethod py :type/pow [expr]
+  (str "(" (py (:base expr)) ")**(" (py (:exponent expr)) ")"))
+
+(defmethod py :type/add [expr]
+  (str "(" (py (:left-op expr)) ")+(" (py (:right-op expr)) ")"))
+
+(defmethod py :type/sub [expr]
+  (str "(" (py (:left-op expr)) ")-(" (py (:right-op expr)) ")"))
+
+(defmethod py :type/pm [expr]
+  (str "(" (py (:left-op expr)) ")\\pm(" (py (:right-op expr)) ")"))
+
+;; TODO: Add cross
+
+(defmethod py :type/eq [expr]
+  (str "(" (py (:left-op expr)) ")=(" (py (:right-op expr)) ")"))
+
+;; TODO: Add ineq
+
+(defmethod py :type/frac [expr]
+  (str "(" (py (:numerator expr)) ")/(" (py (:denominator expr)) ")"))  
+
+(defmethod py :type/sqrt [expr]
+  (str "sqrt(" (py (:radicand expr)) ")"))
+
+(defmethod py :type/bracket [expr]
+  (str "(" (py (:child expr)) ")"))
+
+(defmethod py :type/abs [expr]
+  (str "abs(" (py :child expr) ")"))
+
+(defmethod py :type/subscript [expr]
+  (str "(" (py (:article expr)) "_" (py (:subscript expr)) ")"))
+
+(defn py-expr [expr]
+  (when expr
+    (str (py expr))))

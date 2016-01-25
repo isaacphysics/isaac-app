@@ -1,5 +1,5 @@
 (ns equality.parser
-  (:use [equality.printing :only [print-expr mathml tex expr-str]]
+  (:use [equality.printing :only [print-expr mathml tex expr-str py-expr]]
         [clojure.set :only [intersection union difference]])
   (:require [equality.geometry :as geom]
             [clojure.string]))
@@ -673,6 +673,7 @@
 
     (clj->js {:mathml  (mathml formula)
               :tex     (tex formula)
+              :py     (py-expr formula)
               :unusedSymbols unused-symbols})))
 
 (set! (.-onmessage js/self) (fn [e]
