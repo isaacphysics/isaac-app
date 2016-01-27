@@ -117,7 +117,6 @@ define([], function() {
 
 	    api.email.getPreferences().$promise.then(function(result){
 	    	$scope.emailTypes = result;
-	    	console.log(result);
 	    }).catch(function(e){
 			$scope.showToast($scope.toastTypes.Failure, "Preferences load failed", "With error message (" + e.status + ") " + e.statusText);
 	    });
