@@ -282,6 +282,42 @@ define([], function() {
                     
                     greekLettersUpper: stringSymbols(["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"]),
 
+                    reducedVars: stringSymbols(["a", "F", "m", "v", "u", "r", "t", "G", "M"]),
+
+                    reducedOps: [{
+                        type: "string",
+                        label: "+",
+                        token: "+",
+                        fontSize: 48,
+                        texLabel: true,
+                    }, {
+                        type: "line",
+                        label: "-",
+                        token: "-",
+                        length: 40,
+                        texLabel: true,
+                    }, {
+                        type: "line",
+                        label: "\\frac{a}{b}",
+                        token: ":frac",
+                        length: 100,
+                        texLabel: true,
+                    }, {
+                        type: "container",
+                        subType: "brackets",
+                        width: 220,
+                        height: 70,
+                        label: "(x)",
+                        texLabel: true,
+                    }, {
+                        type: "container",
+                        subType: "sqrt",
+                        width: 148,
+                        height: 60,
+                        label: "\\sqrt{x}",
+                        texLabel: true,
+                    }],
+
                     equality: [{
                         type: "string",
                         label: "=",

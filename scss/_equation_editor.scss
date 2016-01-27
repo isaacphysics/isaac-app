@@ -114,19 +114,15 @@ $menu-handle-width: 160px;
             padding-top: 5px;
 
             &.m1 {
-                margin-left: -$menu-handle-width*2;
+                margin-left: -$menu-handle-width*1.5;
             }
 
             &.m2 {
-                margin-left: -$menu-handle-width;
+                margin-left: -$menu-handle-width*0.5;
             }
 
             &.m3 {
-                margin-left: 0;
-            }
-
-            &.m4 {
-                margin-left: $menu-handle-width;
+                margin-left: $menu-handle-width*0.5;
             }
         }
 
