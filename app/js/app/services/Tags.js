@@ -194,14 +194,12 @@ define([], function() {
 			// Functions topics
 
 			{
-				id: "special",
+				id: "general_functions",
 				parent: "functions"
 			}, {
-				id: "trigonometric",
-				parent: "functions"
-			}, {
-				id: "curve_sketching",
-				parent: "functions"
+				id: "sketching",
+				parent: "functions",
+				title: "Graph Sketching"
 			},
 
 			// Probability topics
