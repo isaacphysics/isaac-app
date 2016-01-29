@@ -213,6 +213,9 @@
 
 ;; TODO: Add cross
 
+(defmethod py :type/mult [expr]
+  (str "(" (py (:left-op expr)) ")*(" (py (:right-op expr)) ")"))
+
 (defmethod py :type/eq [expr]
   (str "(" (py (:left-op expr)) ")=(" (py (:right-op expr)) ")"))
 

@@ -22516,6 +22516,9 @@ cljs.core._add_method.call(null, equality.printing.py, new cljs.core.Keyword("ty
 cljs.core._add_method.call(null, equality.printing.py, new cljs.core.Keyword("type", "pm", "type/pm", 1242951415), function(expr) {
   return[cljs.core.str("("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")\\pm("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")")].join("")
 });
+cljs.core._add_method.call(null, equality.printing.py, new cljs.core.Keyword("type", "mult", "type/mult", 1247947718), function(expr) {
+  return[cljs.core.str("("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")*("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")")].join("")
+});
 cljs.core._add_method.call(null, equality.printing.py, new cljs.core.Keyword("type", "eq", "type/eq", 1242952002), function(expr) {
   return[cljs.core.str("("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "left-op", "left-op", 1069299929)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")\x3d("), cljs.core.str(equality.printing.py.call(null, (new cljs.core.Keyword(null, "right-op", "right-op", 3872744100)).cljs$core$IFn$_invoke$arity$1(expr))), cljs.core.str(")")].join("")
 });
