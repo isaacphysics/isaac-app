@@ -88,7 +88,7 @@ define([], function() {
 			if (contains(topics, "superposition") && !(contains(levels, 2) || contains(levels, 3) || levels.length == 0))
 				warnings.push(["superposition", "There are no Superposition questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "optics") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+			if (contains(topics, "optics") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["optics", "There are no Optics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "wave_motion") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
