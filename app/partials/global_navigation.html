@@ -4,9 +4,9 @@
     <div class="small-16 columns global-nav-strip">
         <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
         <span class="global-title hide-for-small-only">
-            &nbsp;
+            &nbsp; <!-- You can't remove this; it ensures the menu div doesn't collapse -->
             <span ng-if="$state.includes('home')">
-                <span class="question-answer-count">{{answerCountTicker.toLocaleString()}}</span> Questions answered so far!
+                <span class="question-answer-count">{{answerCountTicker | number:0 }}</span> Questions answered so far!
             </span>
         </span>
 
