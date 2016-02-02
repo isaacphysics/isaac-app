@@ -26,7 +26,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs) {
 				scope.selectedChoice = {
-					type: "choice",
+					type: "formula",
 				};
 
 				scope.eqnState = { symbols: {} };
@@ -36,6 +36,11 @@ define(["app/honest/responsive_video"], function(rv) {
 						return;
 
 					scope.selectedChoice.value = JSON.stringify(s);
+					if (s && s.result) {
+						scope.selectedChoice.pythonExpression = s.result.py;
+					} else {
+						scope.selectedChoice.pythonExpression = "";
+					}
 				}, true);
 
 				scope.$watch("validationResponse", function(r, oldR) {
