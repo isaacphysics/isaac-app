@@ -82,7 +82,7 @@ define([], function() {
 				warnings.push(["general_circuits", "There are no General Circuits questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Waves field:
-            if (topics.length == 0 && contains(fields, "waves") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
+            if (topics.length == 0 && contains(fields, "waves") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["waves", "There are no Waves questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
         // Waves topics:
 			if (contains(topics, "superposition") && !(contains(levels, 2) || contains(levels, 3) || levels.length == 0))
