@@ -203,10 +203,10 @@
   (str "(" (py (:base expr)) ")**(" (py (:exponent expr)) ")"))
 
 (defmethod py :type/add [expr]
-  (str "(" (py (:left-op expr)) ")+(" (py (:right-op expr)) ")"))
+  (str (py (:left-op expr)) " + " (py (:right-op expr))))
 
 (defmethod py :type/sub [expr]
-  (str "(" (py (:left-op expr)) ")-(" (py (:right-op expr)) ")"))
+  (str (py (:left-op expr)) " - " (py (:right-op expr)) ))
 
 (defmethod py :type/pm [expr]
   (str "(" (py (:left-op expr)) ")\\pm(" (py (:right-op expr)) ")"))
@@ -214,7 +214,7 @@
 ;; TODO: Add cross
 
 (defmethod py :type/mult [expr]
-  (str "(" (py (:left-op expr)) ")*(" (py (:right-op expr)) ")"))
+  (str (py (:left-op expr)) " * " (py (:right-op expr))))
 
 (defmethod py :type/eq [expr]
   (str "(" (py (:left-op expr)) ")=(" (py (:right-op expr)) ")"))
@@ -234,7 +234,7 @@
   (str "abs(" (py :child expr) ")"))
 
 (defmethod py :type/subscript [expr]
-  (str "(" (py (:article expr)) "_" (py (:subscript expr)) ")"))
+  (str " " (py (:article expr)) "_" (py (:subscript expr)) " "))
 
 (defn py-expr [expr]
   (when expr
