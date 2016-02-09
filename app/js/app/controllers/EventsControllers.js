@@ -16,7 +16,13 @@
 define([], function() {
 
     var augmentEvent = function(e, api) {
-        e.expired = Date.now() > e.date;
+        if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
+            e.expired = Date.now() > e.endDate;
+            e.all_day = (e.endDate == e.date);  // If start and end times equal; assume an all day event
+        } else {
+            e.expired = Date.now() > e.date;
+            e.all_day = false;
+        }
 
         e.teacher = e.tags.indexOf("teacher") > -1;
         e.student = e.tags.indexOf("student") > -1;
