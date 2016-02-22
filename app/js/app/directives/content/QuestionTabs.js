@@ -101,10 +101,10 @@ define(["app/honest/responsive_video"], function(rv) {
 										}
 									}
 
-									// If things have changed, show the modal
-									if(gameBoardCompletedPassed != !!scope.state.gameBoardCompletedPassed || 
+									// If things have changed, and the answer is correct, show the modal
+									if ((gameBoardCompletedPassed != !!scope.state.gameBoardCompletedPassed || 
 									   gameBoardCompletedPerfect != !!scope.state.gameBoardCompletedPerfect ||
-									   initialGameBoardPercent != board.percentageCompleted) {
+									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
 										scope.state.gameBoardCompletedPassed = gameBoardCompletedPassed;
 										scope.state.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
 										scope.modals["congrats"].show();
