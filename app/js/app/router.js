@@ -505,7 +505,7 @@ define(["angular-ui-router"], function() {
             .state('adminUserManager', {
                 url: "/admin/usermanager",
                 resolve: {
-                    requireRole : getRolePromiseInjectableFunction(["ADMIN", "STAFF", "EVENT_MANAGER", "CONTENT_EDITOR"])
+                    requireRole : getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER"])
                 }, 
                 views: {
                     "body": {
