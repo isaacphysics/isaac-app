@@ -36,15 +36,27 @@
                         </select>
 
                         <label>
-                            <strong>Find users with school within 50 miles of postcode:</strong>
+                            <strong>Find users with school within a given distance of postcode:</strong>
                         </label>
-                        <input id="user-location" name="location" type="text" ng-model="userSearch.searchTerms.postcode" placeholder="Enter a valid postcode" >
+                        <div class="row">
+                            <div class="medium-10 columns">
+                                <input id="user-location" name="location" type="text" ng-model="userSearch.searchTerms.postcode" placeholder="Enter a valid postcode" >
+                            </div>
+                            <div class="medium-6 columns">
+                                <select id="user-search-postcode_radius" ng-model="userSearch.searchTerms.postcoderadius">
+                                  <option value="TEN_MILES">10 Miles</option>
+                                  <option value="TWENTY_FIVE_MILES">25 Miles</option>
+                                  <option value="FIFTY_MILES">50 Miles</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <label>
                             <strong>Find users with by school URN:</strong>
                         </label>
                         <input id="user-school-urn" name="schoolURN" type="text" ng-model="userSearch.searchTerms.schoolURN" placeholder="Enter a valid school URN" >
                     </div>
+
                     <div class="medium-16 columns end">
                         <button class="button small" ng-click="findUsers()" type="submit">Search</button>
                     </div>
@@ -56,7 +68,7 @@
         <div class="small-16 columns">
             <div class="panel white clearfix">
                 <div class="small-16 columns">
-                    <h3>Manage Users ({{userSearch.results.length}}) Selected ({{getSelectedUserIds().length}})<a name="users">&nbsp;</a></h3>
+                    <h3>Manage Users ({{userSearch.results.length}}) Selected ({{getSelectedUserIds().size}})<a name="users">&nbsp;</a></h3>
                 </div>
                 <div class="medium-16 columns end">
                     <div class="small-16 columns" ng-if="userSearch.isLoading">

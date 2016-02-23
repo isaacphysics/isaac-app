@@ -21,7 +21,7 @@ define([], function() {
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.isLoading = false;
-		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:""};
+		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES"};
 		$scope.userManagerSelection = {};
 
 		$scope.indexQueue = null;
@@ -60,6 +60,7 @@ define([], function() {
 				var role = $scope.userSearch.searchTerms.role;
 				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
 				var postcode = $scope.userSearch.searchTerms.postcode;
+				var postcoderadius = $scope.userSearch.searchTerms.postcoderadius;
 
 				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
 					role = null;
@@ -74,9 +75,13 @@ define([], function() {
 				}
 
 				$scope.userSearch.isLoading = true;
-				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role, 
-																									'schoolOther': schoolOther, schoolURN : $scope.userSearch.searchTerms.schoolURN, 
-																									'postcode' : postcode}).$promise.then(function(result){
+				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 
+										    'email' : $scope.userSearch.searchTerms.email, 
+											'role' : role, 
+											'schoolOther': schoolOther, 
+										 	'schoolURN' : $scope.userSearch.searchTerms.schoolURN, 
+											'postcode' : postcode,
+										    'postcodeRadius': postcoderadius}).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 
