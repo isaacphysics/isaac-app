@@ -102,30 +102,47 @@ define([], function() {
 
 
 		$scope.getSelectedUserIds = function(){
-			userids = [];
+			userids = new Set();
 			for(var key in $scope.userManagerSelection){
     			if ($scope.userManagerSelection.hasOwnProperty(key) && $scope.userManagerSelection[key]) {
-					userids.push(key);
+					userids.add(key);
 				}
 			}
 			return(userids);
 		}
 
+		$scope.getSelectedUserIdArray = function(){
+			idSet = $scope.getSelectedUserIds();
+			return(Array.from(idSet));
+		}
+
+		// Function that gets selected Ids, and finds appropriate email addresses
+		$scope.getSelectedUserEmails = function(){
+			emails = new Set();
+			ids = $scope.getSelectedUserIds();
+			for (var resultItem in $scope.userSearch.results) {
+				var id = $scope.userSearch.results[resultItem]._id;
+				if($scope.userSearch.results.hasOwnProperty(resultItem) && !resultItem.startsWith("$") && ids.has("" + id)) {
+					emails.add($scope.userSearch.results[resultItem].email)
+				}
+			}
+			return(emails);
+		}
+
 		$scope.modifySelectedUsersRole = function(role) {
 			$scope.userSearch.isLoading = true;
 
-			var userIds = $scope.getSelectedUserIds();
+			var userIdSet = $scope.getSelectedUserIds();
+			var userIds = Array.from(userIdSet);
 
-			api.adminUserManagerChange.change_role({'role': role}, userids).$promise.then(function(result){
+			api.adminUserManagerChange.change_role({'role': role}, userIds).$promise.then(function(result){
 				$scope.userSearch.isLoading = false;
 				$scope.findUsers();
 			}).catch(function(e){
-				$scope.showToast($scope.toastTypes.Failure, "Demotion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				$scope.showToast($scope.toastTypes.Failure, "Demotion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				$scope.userSearch.isLoading = false;
 			});
 		}
-
-
 
 		$scope.toggleUserSelectionState = false;
 		$scope.toggleUserSelection = function(){
@@ -139,10 +156,10 @@ define([], function() {
 
 		$scope.modifySelectedUsersEmailVerificationStatus = function(emailVerificationStatus) {
 			$scope.userSearch.isLoading = true;
+			var emailSet = $scope.getSelectedUserEmails();
+			var emails = Array.from(emailSet);
 
-			var userIds = $scope.getSelectedUserIds();
-
-			api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus}, userids).$promise.then(function(result){
+			api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus}, emails).$promise.then(function(result){
 				$scope.userSearch.isLoading = false;
 				$scope.findUsers();
 			}).catch(function(e){

@@ -76,7 +76,7 @@
                             </ul>
                         </div>
                         <div class="small-3 columns">
-                            <a ng-if="user.role == 'ADMIN'" class="button small" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIds()})">Email</a>
+                            <a ng-if="user.role == 'ADMIN'" class="button small" ui-sref="adminEmailsWithUserIds({'userIds': getSelectedUserIdArray()})">Email</a>
                         </div>
                         <div class="small-3 columns"> <a class="button small" data-dropdown="markAsDropdown" >Mark as &#x25BC;</a>
                             <ul id="markAsDropdown" class="f-dropdown" data-dropdown-content>
