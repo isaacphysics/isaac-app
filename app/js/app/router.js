@@ -671,6 +671,15 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('examUniHelp', {
+                url: "/exam_uni_help",               
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/exam_uni_help.html",
+                    }
+                }
+            })
+
             .state('addBoard', {
                 url: "/add_gameboard/:boardId",
                 resolve: {
