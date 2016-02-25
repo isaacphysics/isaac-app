@@ -160,7 +160,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
 
   grunt.registerTask('build', ['sass']);
-  grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist', 'compress:dist']);
+  grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist']);
   grunt.registerTask('watchcljs', ['exec:watchcljs']);
 
   grunt.registerTask('segue-version', 'Get the version of the segue api that this package depends on.', function() {
