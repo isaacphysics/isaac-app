@@ -122,9 +122,12 @@ define([], function() {
                 api.questionsAnswered.get().$promise.then(function(stat) {
                     var count = stat.answeredQuestionCount;
                     var f = function() {
-                        scope.answerCountTicker += Math.max(Math.floor(count/100),1);
-                        if (scope.answerCountTicker < count) {
+                        var increment = Math.max(Math.floor(count/100),1);
+                        if (scope.answerCountTicker + increment <= count) {
+                            scope.answerCountTicker += increment;
                             $timeout(f, 20);
+                        } else {
+                            scope.answerCountTicker = count;
                         }
                     }
                     f();
