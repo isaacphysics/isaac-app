@@ -128,7 +128,7 @@ define([], function() {
 			'changeEmailVerificationStatus' : {
 				method : 'POST',
 				isArray: true,
-				url: server+"/api/admin/users/change_email_verification_status/:emailVerificationStatus",
+				url: server+"/api/admin/users/change_email_verification_status/:emailVerificationStatus/:checkEmailsExistBeforeApplying",
 				params: {emailVerificationStatus: '@emailVerificationStatus'},
 			}
 		});
