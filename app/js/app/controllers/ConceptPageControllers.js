@@ -64,11 +64,13 @@ define([], function() {
 		} else if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/concepts/") == 0) {
 			// Explicitly log viewing of concept page related concepts, to be consistent with VIEW_RELATED_QUESTIONS events.
 			var cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
-			api.logger.log({
-				type: "VIEW_RELATED_CONCEPT",
-				questionId: cId,
-				conceptId: page.id,
-			});
+			if (cId != page.id) {
+				api.logger.log({
+					type: "VIEW_RELATED_CONCEPT",
+					questionId: cId,
+					conceptId: page.id,
+				});
+			}
 			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
 			persistence.session.save("conceptPageSource", $location.url());
 		}
