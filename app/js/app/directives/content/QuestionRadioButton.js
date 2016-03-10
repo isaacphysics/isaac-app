@@ -110,9 +110,15 @@ define([], function() {
 					}
 
 					scope.$watchCollection(watchCollection, function(newVal, oldVal) {
-						index = scope.$eval(attrs.ngValue);
+						if (attrs.value != undefined){
+							existingValue = attrs.value;
+							index = scope.$eval(attrs.ngModel);
+						} else {
+							existingValue = newVal.selectedAnswer;
+							index = scope.$eval(attrs.ngValue);
+						}
 
-						if (index == newVal.selectedAnswer) {
+						if (index == existingValue) {
 							draw(element[0], 'fill');
 						} else {
 							reset(element[0]);
