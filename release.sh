@@ -17,19 +17,19 @@ git clone -b $VERSION_TO_DEPLOY --depth 1 https://github.com/ucam-cl-dtg/isaac-a
 cd isaac-app
 
 # Determine segue version to use. Honest.
-if [ $VERSION_TO_DEPLOY != v* ]; then
+if [[ $VERSION_TO_DEPLOY == v* ]]; then
+	SEGUE_VERSION=`grep urlPrefix\(\"/api/ < app/js/app/app.js | sed 's/.*\/api\/\([^\/]*\)\/api.*/\1/g'`
+else
 	# Change the app src to request the API from a particular branch
 	read -p "Override API version to target [$VERSION_TO_DEPLOY]" SEGUE_VERSION
 	SEGUE_VERSION=${SEGUE_VERSION:-$VERSION_TO_DEPLOY}
 
 	sed -i.bak "s/api\/[^\/]*\/api/api\/$SEGUE_VERSION\/api/g" app/js/app/app.js
 	rm app/js/app/app.js.bak
-else
-	SEGUE_VERSION=v`grep urlPrefix\(\"/api/ < app/js/app/app.js | sed 's/.*\/api\/\([^\/]*\)\/api.*/\1/g'`
 fi
 
 npm install
-./build.sh $VERSION_TO_DEPLOY $SEGUE_VERSION
+./build.sh "${VERSION_TO_DEPLOY,,}" $SEGUE_VERSION
 
 
 cd ..
