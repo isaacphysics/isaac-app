@@ -7,3 +7,4 @@ tmp
 app.tar.gz
 *.localbackup
 app/npm-debug.log
+dist/

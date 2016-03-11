@@ -1,2 +1,2 @@
 grunt dist
-docker build -t app-$1 .
+docker build -t isaac-app-$1 .
