@@ -38,20 +38,17 @@ define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", 
 
 	.provider('api', function ApiProvider() {
 
-		// In here we might look at the URL of the page to decide whether to connect to a remote API server or use the local one.
-		// For now, just rely on specific app config, or assume the server is local.
+		var urlPrefix = "";
 
-		var server = "";
-
-		this.server = function(value) {
-			server = value;
+		this.urlPrefix = function(value) {
+			urlPrefix = value;
 		}
 
 		this.$get = ["$resource", "$http", function ApiFactory($resource, $http) {
 
 			var Api = require("app/services/Api");
 
-			return new Api($resource, server, $http);
+			return new Api($resource, urlPrefix, $http);
 				
 		}];
 	})

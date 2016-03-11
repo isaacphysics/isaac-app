@@ -15,101 +15,99 @@
  */
 define([], function() {
 
-	var Api = function ApiConstructor($resource, server, $http) {
+	var Api = function ApiConstructor($resource, urlPrefix, $http) {
 
-		var uriPrefix = server + "/api/1.2.3/api";
+		this.pages = $resource(urlPrefix + "/pages/:id");
 
-		this.pages = $resource(uriPrefix + "/pages/:id");
+		this.pageFragments = $resource(urlPrefix + "/pages/fragments/:id");
 
-		this.pageFragments = $resource(uriPrefix + "/pages/fragments/:id");
+		this.pods = $resource(urlPrefix + "/pages/pods");
 
-		this.pods = $resource(uriPrefix + "/pages/pods");
+		this.questionsPage = $resource(urlPrefix + "/pages/question_summary/top_boards_content");
 
-		this.questionsPage = $resource(uriPrefix + "/pages/question_summary/top_boards_content");
+		this.questionPages = $resource(urlPrefix + "/pages/questions/:id");
 
-		this.questionPages = $resource(uriPrefix + "/pages/questions/:id");
+		this.conceptPages = $resource(urlPrefix + "/pages/concepts/:id");
 
-		this.conceptPages = $resource(uriPrefix + "/pages/concepts/:id");
-
-		this.questionValidator = $resource(uriPrefix + "/questions/:id/answer", {}, {
+		this.questionValidator = $resource(urlPrefix + "/questions/:id/answer", {}, {
 			validate: {
 				method: "POST",
 			},
 		});
 
-		this.contactForm = $resource(uriPrefix + "/contact/", {}, {
+		this.contactForm = $resource(urlPrefix + "/contact/", {}, {
 			send: {
 				method: "POST",
 			},
 		});
 
-		this.gameBoards = $resource(uriPrefix + "/gameboards/:id", {id: "@id"}, {
+		this.gameBoards = $resource(urlPrefix + "/gameboards/:id", {id: "@id"}, {
 			filter: {
 				method: "GET",
-				url: uriPrefix + "/gameboards",
+				url: urlPrefix + "/gameboards",
 			},
 			wildcards: {
 				method: "GET",
-				url: uriPrefix + "/gameboards/wildcards",
+				url: urlPrefix + "/gameboards/wildcards",
 				isArray: true 
 			},
 		});
 
-		this.contentProblems = $resource(uriPrefix + "/admin/content_problems");
+		this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
-		this.currentUser = $resource(uriPrefix + "/users/current_user", {}, {
+		this.currentUser = $resource(urlPrefix + "/users/current_user", {}, {
 			'getProgress': {
 				method: 'GET',
-				url: uriPrefix + "/users/current_user/progress",
+				url: urlPrefix + "/users/current_user/progress",
 			},
 		});
 
 		this.user = $resource("", { }, {
 			'getProgress': {
 				method: 'GET',
-				url: uriPrefix + "/users/:userId/progress",
+				url: urlPrefix + "/users/:userId/progress",
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
-				url: uriPrefix + "/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
+				url: urlPrefix + "/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
 			},
 			'getEmailPreferences' : {
 				method: 'GET',
-				url: uriPrefix + "/users/email_preferences"
+				url: urlPrefix + "/users/email_preferences"
 			},
 		})
 
 		this.authentication = $resource("", {}, {
 			'getAuthRedirect': {
 				method: 'GET',
-				url: uriPrefix+"/auth/:provider/authenticate"
+				url: urlPrefix+"/auth/:provider/authenticate"
 			},
 			'getLinkRedirect': {
 				method: 'GET',
-				url: uriPrefix+"/auth/:provider/link",
+				url: urlPrefix+"/auth/:provider/link",
 			},
 			'getAuthResult': {
 				method: 'GET',
-				url: uriPrefix+"/auth/:provider/callback",
+				url: urlPrefix+"/auth/:provider/callback",
 			},
 			'login': {
 				method: 'POST',
-				url: uriPrefix+"/auth/segue/authenticate",
+				url: urlPrefix+"/auth/segue/authenticate",
 			},
 			'logout': {
 				method: 'POST',
-				url: uriPrefix+"/auth/logout",
+				url: urlPrefix+"/auth/logout",
 			},
 		});
 		
-		this.searchEndpoint = $resource(uriPrefix + "/search/:searchTerms?types=:types", {}, {
+		this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
 			'search': {
 				method: 'GET', 
 				isArray: false 
 			},
 		});
 
-		this.adminUserSearch = $resource(uriPrefix + "/admin/users/:userId?email=:email", {}, {
+		this.adminUserSearch = $resource(urlPrefix + "/admin/users/:userId?email=:email", {}, {
 			'search': {
 				method: 'GET', 
 				isArray: true 
@@ -124,112 +122,112 @@ define([], function() {
 			'change_role' : {
 				method : 'POST',
 				isArray: true,
-				url: uriPrefix+"/admin/users/change_role/:role",
+				url: urlPrefix+"/admin/users/change_role/:role",
 				params: {role: "@role"}
 			},
 			'changeEmailVerificationStatus' : {
 				method : 'POST',
 				isArray: true,
-				url: uriPrefix+"/admin/users/change_email_verification_status/:emailVerificationStatus",
+				url: urlPrefix+"/admin/users/change_email_verification_status/:emailVerificationStatus",
 				params: {emailVerificationStatus: '@emailVerificationStatus'},
 			}
 		});
 
-		this.statisticsEndpoint = $resource(uriPrefix + "/admin/stats/", {}, {
+		this.statisticsEndpoint = $resource(urlPrefix + "/admin/stats/", {}, {
 			'get' : {
 				method: 'GET', 
 				isArray: false 
 			},
 			'getGameboardPopularity' : {
 				method: 'GET',
-				url: uriPrefix + "/gameboards/popular", 
+				url: urlPrefix + "/gameboards/popular", 
 				isArray: false 
 			},
 			'getSchoolPopularity' : {
 				method: 'GET',
-				url: uriPrefix + "/admin/stats/schools/", 
+				url: urlPrefix + "/admin/stats/schools/", 
 				isArray: true 
 			},
 			'getSchoolUsers' : {
 				method: 'GET',
-				url: uriPrefix + "/admin/users/schools/:id", 
+				url: urlPrefix + "/admin/users/schools/:id", 
 				params: {id: '@id'},
 			},
 			'getEventsOverTime' : {
 				method: 'GET',
-				url: uriPrefix + "/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
+				url: urlPrefix + "/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
 			},
 			'getUserLocations' : {
 				method: 'GET',
-				url: uriPrefix + "/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date", 
+				url: urlPrefix + "/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date", 
 				isArray: true 
 			},
 			'getLogEventTypes' : {
 				method: 'GET',
-				url: uriPrefix + "/info/log_event_types",
+				url: urlPrefix + "/info/log_event_types",
 			},			
 		});
 
-		this.adminDeleteUser = $resource(uriPrefix + "/admin/users/:userId", {}, {
+		this.adminDeleteUser = $resource(urlPrefix + "/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
 			},
 		});
 
-		this.groupManagementEndpoint = $resource(uriPrefix + "/groups/:id", {id: "@id"}, {
+		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id", {id: "@id"}, {
 			'get' : {
 				method: 'GET', 
 				isArray: true 
 			},
 			'delete' :{
 				method: 'DELETE',
-				url: uriPrefix + "/groups/:id", 
+				url: urlPrefix + "/groups/:id", 
 				isArray: true
 			},
 			'getMembers' : {
 				method: 'GET',
-				url: uriPrefix + "/groups/:id/membership", 
+				url: urlPrefix + "/groups/:id/membership", 
 				isArray: true 
 			},
 			'deleteMember' : {
 				method: 'DELETE',
-				url: uriPrefix + "/groups/:id/membership/:userId", 
+				url: urlPrefix + "/groups/:id/membership/:userId", 
 				isArray: true 
 			},			
 			'getToken' : {
 				method: 'GET',
-				url: uriPrefix + "/authorisations/token/:id", 
+				url: urlPrefix + "/authorisations/token/:id", 
 				isArray: false 
 			},		
 		});
 
-		this.authorisations = $resource(uriPrefix + "/authorisations/", {}, {
+		this.authorisations = $resource(urlPrefix + "/authorisations/", {}, {
 			'get' : {
 				method: 'GET', 
 				isArray: true 
 			},
 			'useToken' : {
 				method: 'POST',
-				url: uriPrefix + "/authorisations/use_token/:token",
+				url: urlPrefix + "/authorisations/use_token/:token",
 				params: {token: '@token'}
 			},			
 			'revoke' : {
 				method: 'DELETE',
-				url: uriPrefix + "/authorisations/:id" 
+				url: urlPrefix + "/authorisations/:id" 
 			},			
 			'getOthers' : {
 				method: 'GET',
-				url: uriPrefix + "/authorisations/other_users", 
+				url: urlPrefix + "/authorisations/other_users", 
 				isArray: true 
 			},
 			'getTokenOwner' : {
 				method: 'GET',
-				url: uriPrefix + "/authorisations/token/:token/owner", 
+				url: urlPrefix + "/authorisations/token/:token/owner", 
 				isArray: false 
 			},				
 		});	
 
-		this.assignments = $resource(uriPrefix + "/assignments/", {}, {
+		this.assignments = $resource(urlPrefix + "/assignments/", {}, {
 			'getMyAssignments' : {
 				method: 'GET', 
 				isArray: true,
@@ -238,71 +236,71 @@ define([], function() {
 			'getAssignmentsOwnedByMe' : {
 				method: 'GET', 
 				isArray: true,
-				url: uriPrefix + "/assignments/assign", 
+				url: urlPrefix + "/assignments/assign", 
 			},
 			'getAssignedGroups' : {
 				method: 'GET', 
 				isArray: true,
-				url: uriPrefix + "/assignments/assign/:gameId", 
+				url: urlPrefix + "/assignments/assign/:gameId", 
 				params: {gameId: '@gameId'}
 			},					
 			'assignBoard' : {
 				method: 'POST',
-				url: uriPrefix + "/assignments/assign/:gameId/:groupId",
+				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
 				params: {gameId: '@gameId', groupId: '@groupId'}
 			},			
 			'unassignBoard' : {
 				method: 'DELETE',
-				url: uriPrefix + "/assignments/assign/:gameId/:groupId",
+				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
 				params: {gameId: '@gameId', groupId: '@groupId'}
 			},
 			'getProgress': {
 				method: 'GET',
-				url: uriPrefix + "/assignments/assign/:assignmentId/progress",
+				url: urlPrefix + "/assignments/assign/:assignmentId/progress",
 				isArray: true,
 			},
 		});			
 
-        this.events = $resource(uriPrefix + "/events/:id");
+        this.events = $resource(urlPrefix + "/events/:id");
 
-		this.eventBookings = $resource(uriPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
+		this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
 			'getAllBookings' : {
-				url: uriPrefix + "/events/bookings",
+				url: urlPrefix + "/events/bookings",
 				method: 'GET', 
 			},
 			'getBookings' : {
-				url: uriPrefix + "/events/:eventId/bookings",
+				url: urlPrefix + "/events/:eventId/bookings",
 				method: 'GET', 
 				isArray: true
 			},
 			'makeBooking' : {
 				method: 'POST', 
-				url: uriPrefix + "/events/:eventId/bookings/:userId"			
+				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
 			'deleteBooking' : {
 				method: 'DELETE', 
-				url: uriPrefix + "/events/:eventId/bookings/:userId"			
+				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function(canceller) {
-			return $resource(uriPrefix + "/pages/questions", {}, {
+			return $resource(urlPrefix + "/pages/questions", {}, {
 				'query': {
 					method: 'GET', isArray: false, timeout: canceller.promise, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", start_index:"@startIndex", limit:"@limit"}
 				}
 			})
 		};
 
-		this.getUnits = function() { return $http.get(uriPrefix + "/content/units").then(function (r) { return r.data; }); };
+		this.getUnits = function() { return $http.get(urlPrefix + "/content/units").then(function (r) { return r.data; }); };
 
 		var questionsPerPage = 10;
-		var questionList = $resource(uriPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-		var conceptList = $resource(uriPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
-		var gameBoardsList = $resource(uriPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
-		var deleteBoard = $resource(uriPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
-		var saveBoard = $resource(uriPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
-		var eventsList = $resource(uriPrefix + "/events");
+		var questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
+		var gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
+		var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+		var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
+		var eventsList = $resource(urlPrefix + "/events");
 
 
 		this.getQuestionList = function(page){
@@ -322,11 +320,11 @@ define([], function() {
 		}
      
 		this.removeLinkedAccount = function(provider) {
-			return $http.delete(uriPrefix + "/auth/"+provider+"/link");
+			return $http.delete(urlPrefix + "/auth/"+provider+"/link");
 		}
 
 		this.linkAccount = function(provider, target){
-			$http.get(uriPrefix + "/auth/"+provider+"/link?redirect=http://" + target);
+			$http.get(urlPrefix + "/auth/"+provider+"/link?redirect=http://" + target);
 		}
 
 		this.getConceptList = function(){
@@ -343,94 +341,94 @@ define([], function() {
 				return path;
 			}
 			else{
-				return uriPrefix + "/images/" + path;
+				return urlPrefix + "/images/" + path;
 			}
 		}
 
 		this.admin = {
 			synchroniseDatastores: function() {
-				return $http.post(uriPrefix + "/admin/synchronise_datastores").then(function() {
+				return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
 					console.warn("Synchronising Datastores. The next page load will take a while.");
 				});
 			}
 		};
 
-		this.account = $resource(uriPrefix + "/users", {}, {
+		this.account = $resource(urlPrefix + "/users", {}, {
 			saveSettings: {
 				method: "POST",
 			}
 		});
 
-		this.schools = $resource(uriPrefix + "/schools", {}, {
+		this.schools = $resource(urlPrefix + "/schools", {}, {
 			'get': {
 				method: 'GET', 
 				isArray: false 
 			},
 			'getSchoolOther' : {
-				url: uriPrefix + "/users/schools_other",
+				url: urlPrefix + "/users/schools_other",
 				method: 'GET', 
 				isArray: true
 			},
 		})
 
-		this.environment = $resource(uriPrefix + "/info/segue_environment");
+		this.environment = $resource(urlPrefix + "/info/segue_environment");
 
-		this.segueInfo = $resource(uriPrefix + "/search/:searchTerms?types=:types", {}, {
+		this.segueInfo = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
 			"segueVersion": {
 				method: "GET",
-				url: uriPrefix + "/info/segue_version",
+				url: urlPrefix + "/info/segue_version",
 			},
 			"cachedVersion": {
 				method: "GET",
-				url: uriPrefix + "/info/content_versions/cached",
+				url: urlPrefix + "/info/content_versions/cached",
 			},
 		});
 
-		this.password = $resource(uriPrefix + "/users/resetpassword/:token", null, {
+		this.password = $resource(urlPrefix + "/users/resetpassword/:token", null, {
 			reset: {
 				method: "POST",
 			},
 		});
 
-		this.emailVerification = $resource(uriPrefix + "/users/verifyemail/:userid/:email/:token", null, {
+		this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:email/:token", null, {
 			verify: {
 				method: "GET"
 			},
 		});
 
-		this.verifyEmail = $resource(uriPrefix + "/users/verifyemail/:email", null, {
+		this.verifyEmail = $resource(urlPrefix + "/users/verifyemail/:email", null, {
 			requestEmailVerification: {
 				method: "GET"
 			},
 		});
 
-		this.email = $resource(uriPrefix + "", null, {
+		this.email = $resource(urlPrefix + "", null, {
 			get: {
 				method: "GET",
-				url: uriPrefix + "/email/viewinbrowser/:id",
+				url: urlPrefix + "/email/viewinbrowser/:id",
 				isArray:false
 			},
 			getPreferences: {
 				method: "GET",
-				url: uriPrefix + "/email/preferences",
+				url: urlPrefix + "/email/preferences",
 				isArray:true
 			},
 			sendEmail : {
 				method: "POST",
-				url: uriPrefix + "/email/sendemail/:contentid/:emailtype",
+				url: urlPrefix + "/email/sendemail/:contentid/:emailtype",
 			}, 
 			sendEmailWithIds : {
 				method: "POST",
-				url: uriPrefix + "/email/sendemailwithuserids/:contentid/:emailtype",
+				url: urlPrefix + "/email/sendemailwithuserids/:contentid/:emailtype",
 				isArray:true
 			},
 			getQueueSize : {
 				method: "GET",
-				url: uriPrefix + "/email/queuesize",
+				url: urlPrefix + "/email/queuesize",
 			}
 		});
 
-		this.logger = $resource(uriPrefix + "/log", {}, {
+		this.logger = $resource(urlPrefix + "/log", {}, {
 			log : {
 				method: "POST",
 			},
@@ -439,34 +437,34 @@ define([], function() {
 		this.contentVersion = $resource("", {}, {
 			"get": {
 				method: "GET",
-				url: uriPrefix + "/info/content_versions/live_version",
+				url: urlPrefix + "/info/content_versions/live_version",
 			},
 			"set": {
 				method: "POST",
-				url: uriPrefix + "/admin/live_version/:version",
+				url: urlPrefix + "/admin/live_version/:version",
 			},
 			"currentIndexQueue" : {
 				method: "GET",
-				url: uriPrefix + "/admin/content_index_queue",
+				url: urlPrefix + "/admin/content_index_queue",
 			},
 			"emptyIndexQueue" : {
 				method: "DELETE",
-				url: uriPrefix + "/admin/content_index_queue",
+				url: urlPrefix + "/admin/content_index_queue",
 			}			
 		});
 
-		this.notifications = $resource(uriPrefix + "/notifications", {}, {
+		this.notifications = $resource(urlPrefix + "/notifications", {}, {
 			"respond": {
 				method: "POST",
-				url: uriPrefix + "/notifications/:id/:response",
+				url: urlPrefix + "/notifications/:id/:response",
 			}
 		})
 		
 		this.getCSVDownloadLink = function(assignmentId) {
-			return uriPrefix + "/assignments/assign/" + assignmentId + "/progress/download"
+			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download"
 		}
 
-		this.questionsAnswered = $resource(uriPrefix + "/stats/questions_answered/count");
+		this.questionsAnswered = $resource(urlPrefix + "/stats/questions_answered/count");
 
 	}
 
