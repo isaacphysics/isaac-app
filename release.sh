@@ -30,7 +30,7 @@ fi
 
 npm install
 grunt dist
-docker build -t "isaac-app-${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION
+docker build -t "isaac-app-${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION .
 
 cd ..
 rm -rf isaac-app
@@ -38,7 +38,7 @@ rm -rf isaac-app
 git clone -b $SEGUE_VERSION --depth 1 https://github.com/ucam-cl-dtg/isaac-api.git
 cd isaac-api
 
-docker build -t isaac-api-$SEGUE_VERSION
+docker build -t isaac-api-$SEGUE_VERSION .
 
 cd ..
 rm -rf isaac-api
