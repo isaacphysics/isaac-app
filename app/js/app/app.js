@@ -75,7 +75,7 @@ define([
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/1.6.8/api");
+            apiProvider.urlPrefix("/api/1.6.8-docker/api");
         }
 
         NProgress.configure({ showSpinner: false });
