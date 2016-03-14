@@ -39,7 +39,7 @@ services:
       - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content
       - /local/data/keys:/local/data/rutherford/keys
-
+      - /local/data/school_list.csv:/local/data/rutherford/school_list.csv
 networks:
   default:
     external:
