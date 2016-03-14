@@ -1,0 +1,49 @@
+export APP_VERSION=$1
+export API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' isaac-app-$APP_VERSION`
+
+shift 1
+
+export ES=es-test
+export PG=pg-test
+
+cat << EOF | docker-compose -f - $@
+version: '2'
+services:
+  es-test:
+    container_name: $ES
+    image: elasticsearch:1.4
+  pg-test:
+    container_name: $PG
+    image: isaac-pg
+    volumes:
+      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
+  app-test:
+    container_name: app-test
+    image: isaac-app-$APP_VERSION
+    networks:
+      default:
+        aliases:
+          - app-test
+  api-test:
+    container_name: api-test
+    image: isaac-api-$API_VERSION
+    external_links:
+      - $ES:elasticsearch
+      - $PG:postgres
+    networks:
+      default:
+        aliases:
+          - api-test
+    volumes:
+      - /local/data/conf/segue-config.test.properties:/local/data/rutherford/conf/segue-config.properties
+      - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content
+      - /local/data/keys:/local/data/rutherford/keys
+
+networks:
+  default:
+    external:
+      name: isaac
+EOF
+
+exit 0
