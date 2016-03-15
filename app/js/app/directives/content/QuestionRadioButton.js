@@ -109,10 +109,11 @@ define([], function() {
 						watchCollection = attrs.ngModel;
 					}
 
-					scope.$watchCollection(watchCollection, function(newVal, oldVal) {
-						index = scope.$eval(attrs.ngValue);
+					scope.$watchCollection(watchCollection, function() {
+						var selectedVal = scope.$eval(attrs.ngModel);
 
-						if (index == newVal.selectedAnswer) {
+						// Use == to compare values as they may be different types
+						if (selectedVal != null && selectedVal == attrs.value) {
 							draw(element[0], 'fill');
 						} else {
 							reset(element[0]);

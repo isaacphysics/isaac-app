@@ -27,6 +27,11 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs) {
 
+				scope.state = {
+					selectedAnswer: null,
+				};
+
+
 				scope.$watch("selectedChoice", function() {
 					if (scope.selectedChoice === null) {
 						return;

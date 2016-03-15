@@ -35,13 +35,6 @@ define(["app/honest/responsive_video"], function(rv) {
 				if (scope.doc.bestAttempt) {
 					scope.validationResponse = scope.doc.bestAttempt;
 					scope.selectedChoice = scope.validationResponse.answer;
-					
-					// Set selected answer so watchCollection function in QuestionRadioButton.js can draw it.  
-					for (var i = 0; i < scope.doc.choices.length ; i++) {
-						if (scope.doc.bestAttempt.answer.value == scope.doc.choices[i].value) {
-							scope.state.selectedAnswer = i;
-						}
-					}
 				} else {
 
 					// We have to explicitly initialise to null so that the 
