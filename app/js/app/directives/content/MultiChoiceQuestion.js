@@ -31,6 +31,14 @@ define(["app/honest/responsive_video"], function(rv) {
 					selectedAnswer: null,
 				};
 
+				if (scope.doc.bestAttempt) {
+					for (var i = 0; i < scope.doc.choices.length; i++) {
+						var choice = scope.doc.choices[i];
+						if (choice.value == scope.doc.bestAttempt.answer.value) {
+							scope.state.selectedAnswer = i;
+						}
+					}
+				}
 
 				scope.$watch("selectedChoice", function() {
 					if (scope.selectedChoice === null) {
@@ -53,9 +61,9 @@ define(["app/honest/responsive_video"], function(rv) {
 
 
 				scope.$watch("state.selectedAnswer", function(newA, oldA) {
-					if (newA === oldA)
+					if (newA === oldA) {
 						return; // Init
-
+					}
 					scope.selectedChoice = scope.doc.choices[scope.state.selectedAnswer];
 				});
 				//Add the accordion tick after validation
