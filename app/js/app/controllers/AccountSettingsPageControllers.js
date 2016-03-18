@@ -45,7 +45,7 @@ define([], function() {
 
         // if the userOfInterest is set then we want the $scope to use this and not the rootScope user (i.e. we are NOT editing the currently logged in user).
         // this is likely to be an administrator activity and could do with some extra security from the frontend.
-		if (userOfInterest) {
+		if (userOfInterest && $scope.user != undefined && $scope.user._id != $stateParams.userId) {
 			$scope.editingSelf = false;
 			$scope.user = userOfInterest;
 		} else {

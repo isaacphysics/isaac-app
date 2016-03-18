@@ -639,7 +639,8 @@ define(["angular-ui-router"], function() {
                         templateUrl: "/partials/states/events_page.html",
                         controller: "EventsPageController"
                     }
-                }
+                },
+                reloadOnSearch: false,
             })
 
             .state('event', {

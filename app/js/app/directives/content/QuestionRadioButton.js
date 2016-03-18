@@ -113,7 +113,10 @@ define([], function() {
 						var selectedVal = scope.$eval(attrs.ngModel);
 
 						// Use == to compare values as they may be different types
-						if (selectedVal != null && selectedVal == attrs.value) {
+						// Can't necessarily use 'attrs.value' - due to a race condition it might not be defined;
+						// in which case use 'attrs.ngValue' which should be.
+						var value = attrs.value ? attrs.value : scope.$eval(attrs.ngValue);
+						if (selectedVal != null && selectedVal == value) {
 							draw(element[0], 'fill');
 						} else {
 							reset(element[0]);

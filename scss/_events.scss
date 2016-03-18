@@ -196,6 +196,15 @@
   		left: 15px;
 	}
 }
+div.event-live {
+	position: absolute;
+	width: 60%;
+	height: 60%;
+	background-image:url(/assets/event-live-banner.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	z-index: 100;
+}
 .event-detail {
 	@extend .clearfix;
 	background-color: #fff;
