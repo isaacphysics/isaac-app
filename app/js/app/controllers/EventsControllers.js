@@ -19,8 +19,10 @@ define([], function() {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
             e.all_day = e.endDate - e.date >= 24*3600*1000;  // If start and end times 24 hours apart; assume an all day event
             e.expired = Date.now() > e.endDate;
+            e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
+            e.inProgress =  false;
             e.all_day = false;
         }
 
@@ -47,7 +49,7 @@ define([], function() {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
-    var ListController = ['$scope', 'api', '$timeout', '$stateParams', function($scope, api, $timeout, $stateParams) {
+    var ListController = ['$scope', 'api', '$timeout', '$stateParams', '$location', function($scope, api, $timeout, $stateParams, $location) {
 
         var startIndex = 0;
         var eventsPerPage = 6;
@@ -76,15 +78,19 @@ define([], function() {
             if ($scope.filterEventsByStatus == "upcoming") {
                 showActiveOnly = true;
                 showInactiveOnly = false;
+                $location.search('event_status', null); // This is currently the default; don't need to set it.
             } else {
                 showActiveOnly = false;
                 showInactiveOnly = false;
+                $location.search('event_status', 'all');
             }
 
             if ($scope.filterEventsByType == "all") {
                 filterEventsByType = null;
+                $location.search('types', null); // This is currently the default; don't need to set it.
             } else {
                 filterEventsByType = $scope.filterEventsByType
+                $location.search('types', filterEventsByType);
             }
 
             startIndex = 0;

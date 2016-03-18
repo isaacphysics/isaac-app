@@ -164,7 +164,7 @@ define([], function() {
 			var emailSet = $scope.getSelectedUserEmails();
 			var emails = Array.from(emailSet);
 
-			api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus}, emails).$promise.then(function(result){
+			api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus, "checkEmailsExistBeforeApplying" : true}, emails).$promise.then(function(result){
 				$scope.userSearch.isLoading = false;
 				$scope.findUsers();
 			}).catch(function(e){

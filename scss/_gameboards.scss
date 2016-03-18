@@ -46,13 +46,10 @@ ul.ru-crumb
 ul.ru-crumb li
 {
     list-style-type: none;
-    display: inline;
     padding-top: 20px;
     width: 112px;
-    display: inline-block;
+    display: inline-table;
     text-align: center;
-    white-space: nowrap;
-
 }
 
 ul.ru-crumb.physics li

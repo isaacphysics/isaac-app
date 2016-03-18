@@ -43,7 +43,8 @@ define([], function() {
 	    };
 
 	    $scope.getInitialUserFilterState = function() {
-	    	if($stateParams.userIds != null){
+	    	debugger
+	    	if($stateParams.userIds != ""){
 	    		$scope.csvuseridlist = $stateParams.userIds;
 	    		return('csvuseridlist');
 	    	}
@@ -141,13 +142,16 @@ define([], function() {
 		};
 
 	    $scope.validateAndSendEmails = function(){
+	    	//TODO check if loading, if so, disable button
 
 	    	if(!$scope.emailToSend.emailType || $scope.emailToSend.emailType < 0){
+	    		$scope.setLoading(false);
     			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select a type of email");
 				return;
 	    	}
 
 	    	if($scope.lastContentIDSuccessfullyPreviewed == "" || $scope.emailToSend.contentObjectId != $scope.lastContentIDSuccessfullyPreviewed){
+	    		$scope.setLoading(false);
     			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must preview the email before sending");
 				return;
 	    	}
@@ -161,6 +165,7 @@ define([], function() {
 		    	}
 
 		    	if(!usersSelected){
+		    		$scope.setLoading(false);
 					$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "You must select users to send the email to");
 					return;
 				}
@@ -169,6 +174,7 @@ define([], function() {
 				var numbersAndCommas = /[^,0-9]+/;
 				
 				if(numbersAndCommas.test($scope.csvuseridlist)){
+					$scope.setLoading(false);
 					$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "Userids field contains invalid characters");
 					return;
 				}
@@ -178,6 +184,7 @@ define([], function() {
 				// Check for NaNs and invalid characters
 				for(var i = 0; i < userids.length; i++){
 					if(isNaN(userids[i])){
+						$scope.setLoading(false);
 						$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "One of the userIds given evaluates to NaN");
 						return;
 					}
@@ -197,9 +204,11 @@ define([], function() {
 				}, $scope.emailToSend.users).$promise.then(function(){
 					$scope.setLoading(false);
 	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
+		        	return;
 				}).catch(function(e){
+					$scope.setLoading(false);
 	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
-		        	$scope.setLoading(false);
+		        	return;
 				});
 			}
 			else if(confirmation && $scope.userSelectionType == 'csvuseridlist'){
@@ -210,11 +219,20 @@ define([], function() {
 				}, getUserIdArrayFromTextArea($scope.csvuseridlist)).$promise.then(function(){
 					$scope.setLoading(false);
 	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
+	    			return;
 				}).catch(function(e){
 	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
 		        	$scope.setLoading(false);
+		        	return;
 				});
 			}
+			else {
+    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "Could not determine between user filter and id list");
+	        	$scope.setLoading(false);
+	        	return;
+			}
+
+
 	    };
 
     }]

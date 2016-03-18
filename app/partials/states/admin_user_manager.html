@@ -7,12 +7,12 @@
                         <label for="user-search-familyName">
                             <strong>Find a user by family name</strong>
                         </label>
-                        <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user family name" />
+                        <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user family name">
 
                         <label for="user-search-email">
                             <strong>Find a user by email</strong>
                         </label>
-                        <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" />
+                        <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email">
 
                         <label for="user-school-other">
                             <strong>Find by manually entered school:</strong>
@@ -68,21 +68,23 @@
         <div class="small-16 columns">
             <div class="panel white clearfix">
                 <div class="small-16 columns">
-                    <h3>Manage Users ({{userSearch.results.length}}) Selected ({{getSelectedUserIds().size}})<a name="users">&nbsp;</a></h3>
+                    <h3>Manage Users ({{userSearch.results.length}}) Selected ({{getSelectedUserIds().size}})<a name="users">&#160;</a></h3>
                 </div>
                 <div class="medium-16 columns end">
                     <div class="small-16 columns" ng-if="userSearch.isLoading">
                         <div class="text-center" >
-                            <img src="/assets/loading.gif" />
+                            <img src="/assets/loading.gif">
                         </div>
                     </div>
                     <div class="row" ng-if="true || (userSearch.results && !userSearch.isLoading)">
-                        <div class="small-3 columns">  <a class="button small" data-dropdown="elevateDropdown" >Elevate to &#x25BC;</a>
-                            <ul id="elevateDropdown" class="f-dropdown" data-dropdown-content>
+                        <div class="small-3 columns">  
+                        <a class="button small" data-dropdown="elevateDropdown" >Elevate to &#x25BC;</a>
+                            <ul id="elevateDropdown" class="f-dropdown open f-open-dropdown" aria-hidden="false" data-dropdown-content>
                                 <li><a href="#"  ng-click="modifySelectedUsersRole('TEACHER')">Teacher</a></li>
                             </ul>
                         </div>
-                        <div class="small-7 columns end"> <a class="button  small" data-dropdown="demoteDropdown" >Demote to &#x25BC;</a>
+                        <div class="small-7 columns end"> 
+                        <a class="button  small" data-dropdown="demoteDropdown" >Demote to &#x25BC;</a>
                             <ul id="demoteDropdown" class="f-dropdown" data-dropdown-content>
                                 <li><a href="#"  ng-click="modifySelectedUsersRole('STUDENT')">Student</a></li>
                             </ul>

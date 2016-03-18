@@ -46,14 +46,34 @@ define([], function() {
 			}
 		}
 		$scope.sourceUrl = persistence.session.load("conceptPageSource");
-		console.log($scope.sourceUrl);
-		if($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions") == 0) {
+		if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions/") == 0) {
 			$scope.backText = "Back to your question";
 			$scope.backButtonVisible = true;
+			// If we show this, it's *probably* the case that the user clicked a related concept:
+			var qId = $scope.sourceUrl.split("?")[0].replace("/questions/","");
+			api.logger.log({
+				type: "VIEW_RELATED_CONCEPT",
+				questionId: qId,
+				conceptId: page.id,
+			});
+			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
+			persistence.session.save("conceptPageSource", $location.url());
 		} else if ($scope.sourceUrl == "/concepts") {
 			$scope.backText = "Back to concepts";
 			$scope.backButtonVisible = true;
-		} 
+		} else if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/concepts/") == 0) {
+			// Explicitly log viewing of concept page related concepts, to be consistent with VIEW_RELATED_QUESTIONS events.
+			var cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
+			if (cId != page.id) {
+				api.logger.log({
+					type: "VIEW_RELATED_CONCEPT",
+					questionId: cId,
+					conceptId: page.id,
+				});
+			}
+			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
+			persistence.session.save("conceptPageSource", $location.url());
+		}
 
 		$rootScope.pageSubject = pageSubject;
 
