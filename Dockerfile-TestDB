@@ -1,3 +1,0 @@
-FROM isaac-pg
-COPY test-db-schema.sql /docker-entrypoint-initdb.d/test-create.sql
-

@@ -4,6 +4,9 @@ export ENV=$2
 
 shift 2
 
+export API_NAME=api-$ENV-$API_VERSION
+export APP_NAME=app-$ENV-$APP_VERSION
+
 if [ "$ENV" == "dev" ]; then
   export ES=es-tracking
   export PG=pg-dev
@@ -13,33 +16,47 @@ elif [ "$ENV" == "staging" ]; then
 elif [ "$ENV" == "live" ]; then
   export ES=es-live
   export PG=pg-live
+elif [ "$ENV" == "test" ]; then
+  export ES=es-test
+  export PG=pg-test
+  export API_NAME=api-test
+  export APP_NAME=app-test
+
+  read -r -d '' TEST_DEPS << EOM
+es-test:
+    container_name: $ES
+    image: elasticsearch:1.4
+  pg-test:
+    container_name: $PG
+    image: isaac-pg
+    volumes:
+      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
+EOM
+
 else
   echo "Must set environment to dev, staging or live."
   exit 1
 fi
 
-
 cat << EOF | docker-compose -f - $@
 version: '2'
 services:
-  app-$ENV-$APP_VERSION:
-    container_name: app-$ENV-$APP_VERSION
+  $TEST_DEPS
+  $APP_NAME:
+    container_name: $APP_NAME
     image: isaac-app-$APP_VERSION
     networks:
       default:
         aliases:
           - app-$ENV
-  api-$ENV-$API_VERSION:
-    container_name: api-$ENV-$API_VERSION
+  $API_NAME:
+    container_name: $API_NAME
     image: isaac-api-$API_VERSION
     external_links:
       - $ES:elasticsearch
       - $PG:postgres
-    networks:
-      default:
-        aliases:
-          - api-$ENV-$API_VERSION
     volumes:
+      - /local/data/m2:/root/.m2
       - /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties
       - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content

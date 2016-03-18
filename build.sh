@@ -2,8 +2,7 @@
 
 set -e # Exit on failure
 
-read -p "isaac-app version to deploy (e.g. v1.3.0 or for a SNAPSHOT build type 'master'):" VERSION_TO_DEPLOY
-
+read -p "isaac-app version to build (e.g. v1.3.0 or 'master'):" VERSION_TO_DEPLOY
 
 BUILD_DIR=/tmp/isaacDeploy
 
