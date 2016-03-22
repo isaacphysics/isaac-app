@@ -1,27 +1,28 @@
-export APP_VERSION=$1
-export API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' isaac-app-$APP_VERSION`
-export ENV=$2
+APP_VERSION=$1
+API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' isaac-app-$APP_VERSION`
+ENV=$2
 
 shift 2
 
-export API_NAME=api-$ENV-$API_VERSION
-export APP_NAME=app-$ENV-$APP_VERSION
+API_NAME=api-$ENV-$API_VERSION
+APP_NAME=app-$ENV-$APP_VERSION
+MAYBE_EXTERNAL=external_
 
 if [ "$ENV" == "dev" ]; then
-  export ES=es-tracking
-  export PG=pg-dev
+  ES=es-tracking
+  PG=pg-dev
 elif [ "$ENV" == "staging" ]; then
-  export ES=es-tracking
-  export PG=pg-live
+  ES=es-tracking
+  PG=pg-staging
 elif [ "$ENV" == "live" ]; then
-  export ES=es-live
-  export PG=pg-live
+  ES=es-live
+  PG=pg-live
 elif [ "$ENV" == "test" ]; then
-  export ES=es-test
-  export PG=pg-test
-  export API_NAME=api-test
-  export APP_NAME=app-test
-
+  ES=es-test
+  PG=pg-test
+  API_NAME=api-test
+  APP_NAME=app-test
+  MAYBE_EXTERNAL=
   read -r -d '' TEST_DEPS << EOM
 es-test:
     container_name: $ES
@@ -38,13 +39,14 @@ else
   exit 1
 fi
 
-cat << EOF | docker-compose -f - $@
+cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
 version: '2'
 services:
   $TEST_DEPS
   $APP_NAME:
     container_name: $APP_NAME
     image: isaac-app-$APP_VERSION
+    restart: always
     networks:
       default:
         aliases:
@@ -52,7 +54,8 @@ services:
   $API_NAME:
     container_name: $API_NAME
     image: isaac-api-$API_VERSION
-    external_links:
+    restart: always
+    ${MAYBE_EXTERNAL}links:
       - $ES:elasticsearch
       - $PG:postgres
     volumes:

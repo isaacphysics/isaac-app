@@ -2,7 +2,11 @@
 
 set -e # Exit on failure
 
-read -p "isaac-app version to build (e.g. v1.3.0 or 'master'):" VERSION_TO_DEPLOY
+if test -z "$1"; then
+  read -p "isaac-app version to build (e.g. v1.3.0 or 'master'):" VERSION_TO_DEPLOY
+else
+  VERSION_TO_DEPLOY="$1"
+fi
 
 BUILD_DIR=/tmp/isaacDeploy
 
@@ -20,8 +24,12 @@ if [[ $VERSION_TO_DEPLOY == v* ]]; then
 	SEGUE_VERSION=`grep urlPrefix\(\"/api/ < app/js/app/app.js | sed 's/.*\/api\/\([^\/]*\)\/api.*/\1/g'`
 else
 	# Change the app src to request the API from a particular branch
-	read -p "Override API version to target [$VERSION_TO_DEPLOY]" SEGUE_VERSION
-	SEGUE_VERSION=${SEGUE_VERSION:-$VERSION_TO_DEPLOY}
+	if test -z "$2"; then
+          read -p "Override API version to target [$VERSION_TO_DEPLOY]" SEGUE_VERSION
+	else
+          SEGUE_VERSION=$2
+        fi
+        SEGUE_VERSION=${SEGUE_VERSION:-$VERSION_TO_DEPLOY}
 
 	sed -i.bak "s/api\/[^\/]*\/api/api\/$SEGUE_VERSION\/api/g" app/js/app/app.js
 	rm app/js/app/app.js.bak
