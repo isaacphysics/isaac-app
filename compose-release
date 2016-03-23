@@ -59,12 +59,12 @@ services:
       - $ES:elasticsearch
       - $PG:postgres
     volumes:
-      - /local/data/m2:/root/.m2
-      - /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties
-      - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties
-      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content
-      - /local/data/keys:/local/data/rutherford/keys
-      - /local/data/school_list.csv:/local/data/rutherford/school_list.csv 
+      - /local/data/m2:/root/.m2:rw
+      - /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
+      - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties:rw
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/rutherford/keys:ro
+      - /local/data/school_list.csv:/local/data/rutherford/school_list.csv:ro
     networks:
       default:
         aliases:
