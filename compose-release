@@ -8,6 +8,8 @@ API_NAME=api-$ENV-$API_VERSION
 APP_NAME=app-$ENV-$APP_VERSION
 MAYBE_EXTERNAL=external_
 
+CONTENT=tracking
+
 if [ "$ENV" == "dev" ]; then
   ES=es-tracking
   PG=pg-dev
@@ -17,6 +19,7 @@ elif [ "$ENV" == "staging" ]; then
 elif [ "$ENV" == "live" ]; then
   ES=es-live
   PG=pg-live
+  CONTENT=live
 elif [ "$ENV" == "test" ]; then
   ES=es-test
   PG=pg-test
@@ -61,7 +64,7 @@ services:
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-      - /local/data/conf/live_version.properties:/local/data/rutherford/conf/live_version.properties:rw
+      - /local/data/conf/live_version.$CONTENT.properties:/local/data/rutherford/conf/live_version.properties:rw
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list.csv:/local/data/rutherford/school_list.csv:ro
