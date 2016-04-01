@@ -57,25 +57,25 @@ define([], function() {
 				warnings.push(["fields", "There are no Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
         // Fields topics:
 			if (contains(topics, "electric") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
-				warnings.push(["electric", "There are no Electric questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+				warnings.push(["electric", "There are no Electric Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
 			if (contains(topics, "magnetic") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
-				warnings.push(["magnetic", "There are no Magnetic questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+				warnings.push(["magnetic", "There are no Magnetic Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
 			if (contains(topics, "gravitational") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
-				warnings.push(["gravitational", "There are no Gravitational questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+				warnings.push(["gravitational", "There are no Gravitational Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
 			if (contains(topics, "combined") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
-				warnings.push(["combined", "There are no Combined questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+				warnings.push(["combined", "There are no Combined Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Circuits field:
-            if (topics.length == 0 && contains(fields, "circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || levels.length == 0))
+            if (topics.length == 0 && contains(fields, "circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["circuits", "There are no Circuits questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
         // Circuits topics:
 			if (contains(topics, "resistors") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
 				warnings.push(["resistors", "There are no Resistors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "capacitors") && !(contains(levels, 4) || levels.length == 0))
+			if (contains(topics, "capacitors") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["capacitors", "There are no Capacitors questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "general_circuits") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || levels.length == 0))
