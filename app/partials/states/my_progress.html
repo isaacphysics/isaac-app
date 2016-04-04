@@ -9,21 +9,19 @@
     </div>
 </div>
 <div ng-show="progress.totalQuestionsAttempted != 0" class="progress-wrap">
+   <div class="row" style="margin-bottom: 1.5rem;">
+    <div class="medium-12 small-16 columns medium-offset-2 end">
+      <h6>Questions answered <span class="ru_green">correctly</span></h6>
+      <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted"></div>
+     </div>
+   </div>
    <div class="row">
       <div class="large-16 columns">
          <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
-            <li>
-               <h6>Questions answered <span class="ru_green">correctly</span></h6>
-               <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted"></div>
-            </li>
-            <li>
-               <h6>Questions answered on <span class="ru_green">first attempt</span></h6>
-               <div progress-bar class="progress-bar" value="progress.totalCorrectFirstTime" max="progress.totalQuestionsAttempted"></div>
-            </li>
 
-            <li class="show-for-medium-up">
-               <!--<a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>-->
-            </li>
+<!--            <li class="show-for-medium-up">
+               <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
+            </li> -->
 <!--
             <li>
             <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
