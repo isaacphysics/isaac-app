@@ -26,10 +26,13 @@ elif [ "$ENV" == "test" ]; then
   API_NAME=api-test
   APP_NAME=app-test
   MAYBE_EXTERNAL=
+  CONTENT=live
   read -r -d '' TEST_DEPS << EOM
 es-test:
     container_name: $ES
     image: elasticsearch:1.4
+    volumes:                                                                                                                                
+      - ../isaac-api/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
   pg-test:
     container_name: $PG
     image: isaac-pg
