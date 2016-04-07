@@ -45,6 +45,8 @@ define([], function() {
 	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
+		$scope.tagsUrl = api.getTagsUrl();
+		$scope.unitsUrl = api.getUnitsUrl();
 
 		$scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
 		$scope.isAdminUser = $rootScope.user.role == 'ADMIN';

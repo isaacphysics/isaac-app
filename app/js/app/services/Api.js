@@ -345,6 +345,14 @@ define([], function() {
 			}
 		}
 
+		this.getTagsUrl = function() {
+			return urlPrefix + "/content/tags";
+		}
+
+		this.getUnitsUrl = function() {
+			return urlPrefix + "/content/units";
+		}
+
 		this.admin = {
 			synchroniseDatastores: function() {
 				return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {

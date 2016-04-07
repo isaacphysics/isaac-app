@@ -9,8 +9,8 @@
             <ul class="no-bullet horizontal-list">
                 <li><a ui-sref="adminUserManager">User Manager</a></li>
                 <li><a ui-sref="contentErrors">Content Errors Page</a></li>
-                <li><a href="/api/content/tags" target="_blank">List of tags</a></li>
-                <li><a href="/api/content/units" target="_blank">List of units</a></li>
+                <li><a ng-href="{{tagsUrl}}" target="_blank">List of tags</a></li>
+                <li><a ng-href="{{unitsUrl}}" target="_blank">List of units</a></li>
                 <li><a ui-sref='adminStats'>Statistics</a></li>
                 <li ng-show="isAdminUser"><a ui-sref='adminEmails'>Email Sending</a></li>
             </ul>            
