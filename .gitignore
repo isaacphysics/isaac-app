@@ -1,12 +1,11 @@
 logs/*
 !.gitkeep
-node_modules/
+/node_modules/
 tmp
 .DS_Store
 .idea
-app.tar.gz
 *.localbackup
 app/npm-debug.log
-dist/
+/dist/
 app/js/isaac.js.map
 app/js/isaac.js
