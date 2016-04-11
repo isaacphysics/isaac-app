@@ -301,7 +301,7 @@ define([], function() {
 
         $scope.scrollToQuestions = function() {
 			$('html, body').animate({
-                scrollTop: $(".hexagon_wrap").offset().top
+                scrollTop: $(".ru-board-title").offset().top
             }, 1000);        }
         $scope.scrollToWarnings = function() {
 			$('html, body').animate({

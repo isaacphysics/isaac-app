@@ -22,8 +22,9 @@
                         </a>
                     </div>
                     <div class='medium-8 end columns text-right'>
-                        <h2 class='ru-welcome'>Get started</h2>
+                        <span>&nbsp;</span>
                         <span class='ru-challenge' ng-hide="filterPanelOpen"><a href="javascript:void(0)" ng-click="openFilterPanel('desktop-filter')">Choose your questions</a></span>
+                        <span class='ru-challenge' ng-show="gameBoard.questions && filterPanelOpen"><a href="javascript:void(0)" ng-click="scrollToQuestions()">Scroll to Questions...</a></span>
                     </div>
                     <div class='clearfix'></div>
 
