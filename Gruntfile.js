@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
 
   var distOutputDir = "dist";
-  var distOutputFile = "isaac-app.tar.gz";
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -48,16 +47,6 @@ module.exports = function(grunt) {
         bootstrap: function(module, script) {
           return 'define([], function() { angular.module("isaac.templates",[]).run(["$templateCache", function($templateCache) {' + script + '}])});';
         },
-/*        htmlmin: {
-          collapseBooleanAttributes:      false,
-          collapseWhitespace:             false, // This removes spaces before tags, which we often rely on. Maybe we shouldn't.
-          removeAttributeQuotes:          true,
-          removeEmptyAttributes:          true,
-          removeComments:                 true,
-          removeRedundantAttributes:      false, // This removes type="text" on inputs, which prevents CSS being applied properly.
-          removeScriptTypeAttributes:     true,
-          removeStyleLinkTypeAttributes:  false
-        },*/  // Do not run htmlmin at all. We don't need it - apache will compress the file for transfer anyway.
       },
       local: {
         src: 'app/partials/**/*.html',
@@ -70,7 +59,7 @@ module.exports = function(grunt) {
     },
 
     clean: {
-      dist: [distOutputDir + "/**", distOutputFile],
+      dist: [distOutputDir + "/**"],
       distPartials: [distOutputDir + "/app/partials/**"],
       localBackup: ["app/**/*.localbackup"],
     },
@@ -99,21 +88,6 @@ module.exports = function(grunt) {
       }
 
     },
-
-    compress: {
-      dist: {
-        options: {
-          archive: distOutputFile,
-        },
-        files: [{
-          expand: true,
-          cwd: distOutputDir + "/",
-          src: ['app/**'],
-          dot: true,
-          filter: 'isFile',
-        }]
-      }
-    },
     
   });
 
@@ -125,15 +99,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-compress');
 
   grunt.registerTask('compile', function() {
     var path = require("path");
     var Builder = require('systemjs-builder');
 
     // Bundle just our app into a single file, isaac.js.
-    var src = './app/js/app/app.js';
-    var dest = './app/js/isaac.js';
+    var src = './dist/app/js/app/app.js';
+    var dest = './dist/app/js/isaac.js';
     var opts = {
       minify: true,
       sourceMaps: true
@@ -141,7 +114,7 @@ module.exports = function(grunt) {
 
     // optional constructor options
     // sets the baseURL and loads the configuration file
-    var builder = new Builder('app', 'app/js/system.config.js');
+    var builder = new Builder('dist/app', 'dist/app/js/system.config.js');
 
     var done = this.async();
 
