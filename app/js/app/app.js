@@ -16,7 +16,7 @@
 'use strict';
 
 define([
-    "app/honest/responsive_video", 
+    "app/honest/responsive_video",
     "lib/rsvp",
     "foundation", 
     "app/router", 
@@ -38,13 +38,12 @@ define([
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
-    ], function(rv) {
+    ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
 	//var rv = System.amdRequire("app/honest/responsive_video.js");
-
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [

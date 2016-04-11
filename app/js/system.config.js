@@ -49,6 +49,9 @@ System.config({
         "jquery-ui-datepicker" : 'bower_components/jquery-ui/ui/minified/datepicker.min.js',
         "modernizr": 'bower_components/modernizr/modernizr.js',
         "lodash": 'bower_components/lodash/dist/lodash.min.js',  
+        "typescript": 'js/lib/typescript.js',
+        "reflect": 'bower_components/reflect-metadata/Reflect.js',
+        "inequality": 'ts/inequality/inequality.ts',
     },
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.
@@ -80,6 +83,9 @@ System.config({
         "templates": { deps: ['angular'], format: 'global'},
         "lib/opentip-jquery": { deps: ['angular'], format: 'global'},
 
+        "inequality": {
+            deps: ['lib/p5.min.js']
+        },
 
         'app/*': {
             deps: ['jquery'],

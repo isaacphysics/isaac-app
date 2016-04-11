@@ -1,5 +1,7 @@
 "use strict";
-define([], function() {
+define(function(require) {
+
+    var MySketch = require("inequality").MySketch;
 
 	return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -112,6 +114,8 @@ define([], function() {
 			templateUrl: "/partials/equation_editor/equation_editor.html",
 			link: function(scope, element, attrs) {
 
+                var sketch = null;
+
                 scope.canvasOffset = { }
                 scope.draggingNewSymbol = false;
 
@@ -166,9 +170,18 @@ define([], function() {
                         return;
                     }
 
+                    var x = pageX - offset.left - width/2 - scope.canvasOffset.marginLeft; 
+                    var y = pageY - offset.top - height/2 - scope.canvasOffset.marginTop;
+
+                    console.debug(symbol, x, y);
+
+                    sketch.spawn(pageX, pageY, symbol.label);
+
+
+
+                    /*
+
                     var newSymbol = $.extend({
-                        x: pageX - offset.left - width/2 - scope.canvasOffset.marginLeft, 
-                        y: pageY - offset.top - height/2 - scope.canvasOffset.marginTop,
                     }, JSON.parse(JSON.stringify(symbol)));
 
                     // Store the original token so that we can modify it with dots, primes, etc.
@@ -204,7 +217,7 @@ define([], function() {
                         }
 
                     }
-
+                    */
                     scope.$broadcast("historyCheckpoint");
                 	console.debug("Symbols:", scope.state.symbols);
                 });
@@ -248,6 +261,28 @@ define([], function() {
                         }
 
                         console.debug("Set canvas offset:", scope.canvasOffset);
+
+
+                        var p = new p5( function(p) { 
+                            sketch = new MySketch(p, element.width(), element.height());
+
+                            sketch.newExpressionCallback = function(e) {
+                                var rp = $(".result-preview>span");
+
+                                rp.empty();
+                                delete scope.state.result;
+                                if (e) {
+                                    katex.render(e, rp[0]);
+                                }
+
+                                var w =  e ? rp.outerWidth() : 0;
+                                $(".result-preview").stop(true);
+                                $(".result-preview").animate({width: w}, 200);
+                            }
+
+                            return sketch; 
+                        }, element.find(".equation-editor")[0]);
+
                         $("#equationModal").one("closed.fndtn.reveal", function() {
                             resolve(scope.state);
                         })

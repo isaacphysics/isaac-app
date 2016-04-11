@@ -1,4 +1,4 @@
-<div class="equation-editor" ng-mousedown="editorClick($event)" tabindex="0">
+<div class="equation-editor" tabindex="0">
     <div top-menu="123" ng-show="isLandscape">
         <div number-entry></div>
     </div>
@@ -21,7 +21,7 @@
     <div top-menu="\sin\,\, \int" ng-show="isLandscape && false">
         <div symbol-menu symbols="symbolLibrary.functions"></div>
     </div>
-
+<!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
         <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
     </div>
@@ -29,7 +29,7 @@
     <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
 
     <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
-
+-->
     <!-- BUTTONS -->
 
     <div class="hex-button undo" ng-click="undo()" ng-if="history.length > 0 && isLandscape"></div>
