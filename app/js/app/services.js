@@ -15,7 +15,7 @@
  */
 'use strict';
 
-define(["angular", "angular-resource", "app/services/Api", "app/services/Tags", "app/services/Units", "app/services/Persistence", "app/services/FilterWarnings", "app/services/Auth", "app/services/GameBoardTitles"], function() {
+define(function(require) {
 
 	/* Services */
 

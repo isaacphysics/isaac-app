@@ -15,7 +15,7 @@
  */
 'use strict';
 
-define(["angular", "lib/showdown/showdown", "lib/showdown/extensions/table"], function() {
+define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], function() {
 
 	/* Filters */
 
@@ -28,7 +28,7 @@ define(["angular", "lib/showdown/showdown", "lib/showdown/extensions/table"], fu
 	}])
 
 	.filter('showdown', [function() {
-		var Showdown = require("showdown/showdown");
+		var Showdown = require("lib/showdown/showdown.js");
 		var converter = new Showdown.converter({
 			extensions: ["table"],
 		});

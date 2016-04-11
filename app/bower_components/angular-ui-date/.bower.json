@@ -28,7 +28,7 @@
     "tag": "0.0.7",
     "commit": "1480fb1990c512d85edb0830e997e0d16eea59d7"
   },
-  "_source": "git://github.com/angular-ui/ui-date.git",
+  "_source": "https://github.com/angular-ui/ui-date.git",
   "_target": "0.0.7",
   "_originalSource": "angular-ui-date"
 }

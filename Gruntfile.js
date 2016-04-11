@@ -69,35 +69,6 @@ module.exports = function(grunt) {
       }
     },
 
-    requirejs: {
-      options: {
-//        logLevel: 0, // Enable this line to see all debug output from requirejs optimiser
-        baseUrl: 'app/js/',
-        mainConfigFile: 'app/js/isaac.js',
-
-        name: "app/app",
-        findNestedDependencies: true,
-
-        insertRequire: ["app/app"],
-
-      },
-      local: {
-        options: {
-          out: "app/js/isaac.js",
-          optimize: "none",
-        },
-      },
-      dist: {
-        options: {
-          out: distOutputDir + "/app/js/isaac.js",
-          optimize: "uglify",
-          paths: {
-            "templates": "../../" + distOutputDir + "/app/js/templates",
-          }
-        },
-      },
-    },
-
     clean: {
       dist: [distOutputDir + "/**", distOutputFile],
       distPartials: [distOutputDir + "/app/partials/**"],
@@ -118,13 +89,11 @@ module.exports = function(grunt) {
 
       backupLocal: {
         files: {
-          "app/js/isaac.js.localbackup": "app/js/isaac.js", 
           "app/js/templates.js.localbackup": "app/js/templates.js"
         }
       },
       restoreLocal: {
         files: {
-          "app/js/isaac.js": "app/js/isaac.js.localbackup", 
           "app/js/templates.js": "app/js/templates.js.localbackup"
         }
       }
@@ -152,15 +121,46 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-bell');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-angular-templates');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-scp');
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compress');
 
+  grunt.registerTask('compile', function() {
+    var path = require("path");
+    var Builder = require('systemjs-builder');
+
+    // Bundle just our app into a single file, isaac.js.
+    var src = './app/js/app/app.js';
+    var dest = './app/js/isaac.js';
+    var opts = {
+      minify: true,
+      sourceMaps: true
+    };
+
+    // optional constructor options
+    // sets the baseURL and loads the configuration file
+    var builder = new Builder('app', 'app/js/system.config.js');
+
+    var done = this.async();
+
+    builder
+    .bundle(src, dest, opts)
+    .then(function() {
+      console.log('Build complete');
+      done();
+    })
+    .catch(function(err) {
+      console.log('Build error');
+      console.error(err);
+      done();
+    });
+
+  });
+
   grunt.registerTask('build', ['sass']);
-  grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'requirejs:dist']);
+  grunt.registerTask('dist', ['clean:dist', 'copy:restoreLocal', 'clean:localBackup', 'copy:dist', 'ngtemplates:dist', 'clean:distPartials', 'compile']);
   grunt.registerTask('watchcljs', ['exec:watchcljs']);
 
   grunt.registerTask('segue-version', 'Get the version of the segue api that this package depends on.', function() {

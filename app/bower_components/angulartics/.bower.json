@@ -16,7 +16,7 @@
     "tag": "0.15.17",
     "commit": "71db83492ee0d23151514e434f3a9cf989b36e2a"
   },
-  "_source": "git://github.com/angulartics/angulartics.git",
+  "_source": "https://github.com/angulartics/angulartics.git",
   "_target": "0.15.17",
   "_originalSource": "angulartics"
 }

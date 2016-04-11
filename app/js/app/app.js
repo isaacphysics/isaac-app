@@ -16,13 +16,12 @@
 'use strict';
 
 define([
+    "app/honest/responsive_video", 
     "lib/rsvp",
     "foundation", 
     "app/router", 
-    "app/honest/responsive_video", 
     "angular", 
     "angular-resource", 
-//    "angular-animate",
     "angular-cookies",
     "angular-ui-date",
     "app/controllers", 
@@ -36,16 +35,15 @@ define([
     "angulartics", 
     "angulartics-ga",
     "app/MathJaxConfig",
-    "lib/opentip-jquery",
-    "templates",
+    "lib/opentip-jquery.js",
+    "js/templates.js",
     "angular-google-maps",
-
-    ], function() {
+    ], function(rv) {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-	var rv = require("app/honest/responsive_video");
+	//var rv = System.amdRequire("app/honest/responsive_video.js");
 
 
 	// Declare app level module which depends on filters, and services
@@ -59,7 +57,6 @@ define([
         'angulartics',
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
-//        'ngAnimate',
         'ngCookies',
         'ui.date',
 	])

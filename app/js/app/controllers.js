@@ -15,41 +15,7 @@
  */
 'use strict';
 
-define([
-	"angular", 
-	"app/filters", 
-	"app/services", 
-	"app/directives", 
-	"app/controllers/GenericPageControllers",
-	"app/controllers/HomePageControllers",
-	"app/controllers/ConceptPageControllers",
-	"app/controllers/ConceptIndexControllers",
-	"app/controllers/QuestionPageControllers",
-	"app/controllers/GameBoardsControllers",
-	"app/controllers/MyBoardsPageControllers",
-	"app/controllers/ContentErrorControllers",
-	"app/controllers/LoginControllers",
-	"app/controllers/LoginPageControllers",
-	"app/controllers/SearchControllers",
-	"app/controllers/AccountSettingsPageControllers",
-	"app/controllers/ContactControllers",
-	"app/controllers/ResetPasswordControllers",
-	"app/controllers/VerifyEmailPageControllers",
-	"app/controllers/HeaderControllers",
-	"app/controllers/AuthErrorPageControllers",
-	"app/controllers/AdminPageControllers",
-	"app/controllers/AdminEmailController",
-	"app/controllers/AdminUserManagerController",
-	"app/controllers/GameEditorControllers",
-	"app/controllers/GroupManagementPageControllers",
-	"app/controllers/MyProgressPageControllers",
-	"app/controllers/AssignmentsController",	
-	"app/controllers/AssignmentProgressPageControllers",
-	"app/controllers/EventsControllers",
-	"app/controllers/BooksControllers",
-	"app/controllers/TeacherFeaturesPageController",
-	"app/controllers/QuestionsPageControllers",
-	], function() {
+define(function(require) {
 	
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
 
