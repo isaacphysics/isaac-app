@@ -84,7 +84,7 @@ define([], function() {
 
 			$scope.topicsSubject = attemptedFields[0].parent;
 
-
+			$scope.progress.percentCorrect = Math.round(100*$scope.progress.totalCorrect/$scope.progress.totalQuestionsAttempted);
 
 			$scope.$watch("field.selection", function(newField) {
 
