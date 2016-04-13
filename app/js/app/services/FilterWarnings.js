@@ -53,7 +53,7 @@ define([], function() {
 
         // Fields field:
 			// fields - only show fields (filter property not the tag) message when no topics are selected.
-			if (topics.length == 0 && contains(fields, "fields") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
+			if (topics.length == 0 && contains(fields, "fields") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["fields", "There are no Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
         // Fields topics:
 			if (contains(topics, "electric") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
@@ -62,7 +62,7 @@ define([], function() {
 			if (contains(topics, "magnetic") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["magnetic", "There are no Magnetic Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
-			if (contains(topics, "gravitational") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
+			if (contains(topics, "gravitational") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["gravitational", "There are no Gravitational Fields questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 			
 			if (contains(topics, "combined") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
