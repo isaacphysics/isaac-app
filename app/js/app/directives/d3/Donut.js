@@ -44,22 +44,28 @@ define([], function() {
 
 
                     var range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
+                    var label_range = ['#000000', '#000000', '#000000', '#000000', '#ffffff', '#ffffff']
 
                     // switch colours
                     switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
                             range = ['#6c388c', '#189ace'];
+                            label_range = ['#ffffff', '#ffffff']
                             break;
                         case 'physics':
                             range = [];
+                            label_range = [];
                             for (var i = 0; i < scope.data.length; i++) {
                                 range.push("hsl(276, 31%, " + (90 - 80*i/scope.data.length) + "%)");
+                                label_range.push("hsl(0, 0%, " + (100*Math.round(i/scope.data.length + 0.3)) + "%)");
                             }
                             break;
                         case 'maths':
                             range = [];
+                            label_range = [];
                             for (var i = 0; i < scope.data.length; i++) {
                                 range.push("hsl(197, 79%, " + (90 - 80*i/scope.data.length) + "%)");
+                                label_range.push("hsl(0, 0%, " + (100*Math.round(i/scope.data.length  + 0.3)) + "%)");
                             }
                             break;
                         case 'levels':
@@ -77,6 +83,9 @@ define([], function() {
 
                     var color = d3.scale.ordinal()
                         .range(range);
+
+                    var label_colour =  d3.scale.ordinal()
+                        .range(label_range);
 
                     var pie = d3.layout.pie()
                         .sort(null)
@@ -101,7 +110,9 @@ define([], function() {
 
                     var path = svg.selectAll('path')
                         .data(pie(scope.data))
-                        .enter().append('path')
+                        .enter().append('g')
+                        .attr("class", "arc")
+                        .append("path")
                         .attr("fill", function(d, i) { return color(i); })
                         .transition()
                         .ease('exp')
@@ -112,6 +123,20 @@ define([], function() {
                         var i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
                         return function(t) { return arc(i(t)); };
                     }
+
+                    var arcs = svg.selectAll("g.arc");
+                    arcs.append("text")
+                        .attr("class", "arc-label")
+                        .attr("fill", function(d, i) { return label_colour(i); })
+                        .attr("transform", function(d) {
+                            return "translate(" + arc.centroid(d) + ")";
+                        })
+                        .attr("text-anchor", "middle")
+                        .text(function(d) {
+                            if (d.value > 0) {
+                                return d.value;
+                            }
+                        });
 
 
                     // Settings for Key 
