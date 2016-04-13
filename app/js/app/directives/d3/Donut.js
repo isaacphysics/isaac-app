@@ -137,6 +137,8 @@ define([], function() {
                                 return d.value;
                             }
                         });
+                    arcs.append("title").text(function(d)
+                        {return Math.round(100*(d.endAngle-d.startAngle)/(2*Math.PI)) + "%"});
 
 
                     // Settings for Key 
