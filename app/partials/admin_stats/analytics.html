@@ -5,7 +5,7 @@
             <span ng-show="locationDates.start || locationDates.end">({{locationDates.start | date:'d MMM yyyy'}} to {{locationDates.end | date:'d MMM yyyy'}})</span>
         </h2>
         
-        <a class="button small" ng-show="locations.length == 0" ng-click="getLocationData()">Generate Location Data</button>
+        <a class="button small" ng-show="locations.length == 0" ng-click="getLocationData()">Generate Location Data</a>
         <a class="button small secondary" ng-show="locations.length == 0" ng-click="customiseLocationDates()">(Specify Date Range)</a>
         <label ng-show="customLocationDates" for="startDateInput">Start Date (default 1 month ago):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.start" name="startDateInput">
         <label ng-show="customLocationDates" for="endDateInput">End Date (default today):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.end" name="endDateInput">
