@@ -103,7 +103,7 @@ define(function(require) {
             }
 
             return r;
-        }
+        };
 
 
 		var nextSymbolId = 0;
@@ -116,7 +116,7 @@ define(function(require) {
 
                 var sketch = null;
 
-                scope.canvasOffset = { }
+                scope.canvasOffset = { };
                 scope.draggingNewSymbol = false;
 
                 scope.equationEditorElement = element;
@@ -125,7 +125,7 @@ define(function(require) {
                 scope.selectionHandleFlags = {
                     showCalc: false,
                     showResize: true,
-                    showMove: true,
+                    showMove: true
                 };
 
                 scope.$on("triggerCloseMenus", function() {
@@ -157,7 +157,7 @@ define(function(require) {
                         scope.draggingNewSymbol = false;
                         scope.$digest();
                     }
-                })
+                });
 
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
                 	var offset = element.offset();
@@ -225,12 +225,12 @@ define(function(require) {
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
 
                     return new Promise(function(resolve, reject) {
-
-                        $("#equationModal").one("opened.fndtn.reveal", function() {
+                        var eqnModal = $('#equationModal');
+                        eqnModal.one("opened.fndtn.reveal", function() {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
                         });
                         
-                        $("#equationModal").foundation("reveal", "open");
+                        eqnModal.foundation("reveal", "open");
                         scope.state = initialState || { symbols: {}, };
                         scope.questionDoc = questionDoc;
 
@@ -251,12 +251,12 @@ define(function(require) {
                         if (count > 0) {
                             scope.canvasOffset = {
                                 marginLeft: -sumX / count,
-                                marginTop: -sumY / count,
+                                marginTop: -sumY / count
                             }
                         } else {
                             scope.canvasOffset = {
                                 marginLeft: 0,
-                                marginTop: 0,
+                                marginTop: 0
                             }
                         }
 
@@ -276,19 +276,20 @@ define(function(require) {
                                 }
 
                                 var w =  e ? rp.outerWidth() : 0;
-                                $(".result-preview").stop(true);
-                                $(".result-preview").animate({width: w}, 200);
-                            }
+                                var resultPreview = $(".result-preview");
+                                resultPreview.stop(true);
+                                resultPreview.animate({width: w}, 200);
+                            };
 
                             return sketch; 
                         }, element.find(".equation-editor")[0]);
 
-                        $("#equationModal").one("closed.fndtn.reveal", function() {
+                        eqnModal.one("closed.fndtn.reveal", function() {
                             resolve(scope.state);
                         })
 
                     });
-                }
+                };
 
                 var stringSymbols = function(ss) {
                 	var symbols = [];
@@ -324,33 +325,33 @@ define(function(require) {
                         label: "+",
                         token: "+",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     }, {
                         type: "line",
                         label: "-",
                         token: "-",
                         length: 40,
-                        texLabel: true,
+                        texLabel: true
                     }, {
                         type: "line",
                         label: "\\frac{a}{b}",
                         token: ":frac",
                         length: 100,
-                        texLabel: true,
+                        texLabel: true
                     }, {
                         type: "container",
                         subType: "brackets",
                         width: 220,
                         height: 70,
                         label: "(x)",
-                        texLabel: true,
+                        texLabel: true
                     }, {
                         type: "container",
                         subType: "sqrt",
                         width: 148,
                         height: 60,
                         label: "\\sqrt{x}",
-                        texLabel: true,
+                        texLabel: true
                     }],
 
                     equality: [{
@@ -358,31 +359,31 @@ define(function(require) {
                         label: "=",
                         token: "=",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "<",
                         token: "<",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: ">",
                         token: ">",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\leq",
                         token: "\\leq",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\geq",
                         token: "\\geq",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     }
                     ],
 
@@ -392,21 +393,21 @@ define(function(require) {
                         token: "\\sin",
                         func: true,
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\cos",
                         token: "\\cos",
                         func: true,
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\tan",
                         token: "\\tan",
                         func: true,
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     }
                     ],
 
@@ -415,31 +416,31 @@ define(function(require) {
                         label: "\\int",
                         token: "\\int",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\mathrm{d}",
                         token: "\\mathrm{d}",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\mathrm{e}",
                         token: "\\mathrm{e}",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\ln",
                         token: "\\ln",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\log",
                         token: "\\log",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     }
                     ],
 
@@ -448,59 +449,60 @@ define(function(require) {
                         label: "+",
                         token: "+",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "line",
                         label: "-",
                         token: "-",
                         length: 40,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\times",
                         token: "\\times",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "line",
                         label: "\\frac{a}{b}",
                         token: ":frac",
                         length: 100,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "string",
                         label: "\\pm",
                         token: "\\pm",
                         fontSize: 48,
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "container",
                         subType: "sqrt",
                         width: 148,
                         height: 60,
                         label: "\\sqrt{x}",
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "container",
                         subType: "brackets",
                         width: 220,
                         height: 70,
                         label: "(x)",
-                        texLabel: true,
+                        texLabel: true
                     },{
                         type: "container",
                         subType: "abs",
                         width: 148,
                         height: 60,
                         label: "|x|",
-                        texLabel: true,
-                    },{
+                        texLabel: true
+                    }, {
                         type: "string",
                         label: "!",
                         token: "!",
                         fontSize: 48,
-                        texLabel: true,
-                    },],
+                        texLabel: true
+                    }
+                    ],
 
                     functions: []
                 };
@@ -508,55 +510,55 @@ define(function(require) {
                 scope.latinLetterTitle = {
                     fontSize: 48,
                     type: "string",
-                    label: "abc",
+                    label: "abc"
                 };
 
                 scope.latinLetterUpperTitle = {
                     fontSize: 48,
                     type: "string",
-                    label: "ABC",
+                    label: "ABC"
                 };
 
                 scope.greekLetterTitle = {
                     fontSize: 48,
                     type: "string",
                     label: "\\alpha\\beta",
-                    texLabel: true,
+                    texLabel: true
                 };
 
                 scope.greekLetterUpperTitle = {
                     fontSize: 48,
                     type: "string",
                     label: "\\Gamma\\Sigma",
-                    texLabel: true,
+                    texLabel: true
                 };
 
                 scope.equalityTitle = {
                     fontSize: 48,
                     type: "string",
-                    label: "=",
-                }
+                    label: "="
+                };
 
                 scope.operatorMenuTitle = {
                     fontSize: 48,
                     type: "string",
                     label: "\\pm",
-                    texLabel: true,
-                }
+                    texLabel: true
+                };
 
                 scope.trigTitle = {
                     fontSize: 48,
                     type: "string",
                     label: "\\sin",
-                    texLabel: true,
-                }
+                    texLabel: true
+                };
 
                 scope.calculusTitle = {
                     fontSize: 48,
                     type: "string",
                     label: "\\int",
-                    texLabel: true,
-                }
+                    texLabel: true
+                };
 
                 var parser_message = function(e) {
                     e.currentTarget.terminate();
@@ -572,8 +574,9 @@ define(function(require) {
                     }
 
                     var w =  e.data.tex ? rp.outerWidth() : 0;
-                    $(".result-preview").stop(true);
-                    $(".result-preview").animate({width: w}, 200);
+                    var resultsPreview = $(".result-preview");
+                    resultsPreview.stop(true);
+                    resultsPreview.animate({width: w}, 200);
                 };
 
                 var parseTimeout = null;
@@ -595,14 +598,14 @@ define(function(require) {
                         self.parser.postMessage({symbols: parserSymbols});
 
                         updateSelectionRender();
-                    }
+                    };
 
                     if (parseTimeout) {
                         clearTimeout(parseTimeout);
                     }
 
                     parseTimeout = setTimeout(parse, 500);
-                }
+                };
 
                 scope.$watch("state.symbols", function(newSymbols, oldSymbols) {
                     
@@ -631,23 +634,23 @@ define(function(require) {
                         scope.state.symbols = scope.history.pop();
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
-                }
+                };
 
                 scope.redo = function() {
                     if (scope.future.length > 0) {
-                        scope.history.push(JSON.parse(JSON.stringify(scope.state.symbols)))
+                        scope.history.push(JSON.parse(JSON.stringify(scope.state.symbols)));
                         scope.state.symbols = scope.future.shift();
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                     }
-                }
+                };
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
                     api.logger.log({
-                        type : "CLOSE_EQUATION_EDITOR",
+                        type : "CLOSE_EQUATION_EDITOR"
                     });
 
-                }
+                };
 
                 element.on("keydown", function(e) {
                     console.log("KeyDown", e.which);
@@ -679,8 +682,8 @@ define(function(require) {
                             left: offset.left - canvasOffset.left,
                             top: offset.top - canvasOffset.top,
                             width: e.width(),
-                            height: e.height(),
-                        }
+                            height: e.height()
+                        };
 
                         maxX = Math.max(maxX, localPos.left + localPos.width);
                         maxY = Math.max(maxY, localPos.top + localPos.height);
@@ -688,14 +691,14 @@ define(function(require) {
 
                     selectionHandle.css({
                         left: maxX,
-                        top: maxY,
+                        top: maxY
                     });
 
                     scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].fromCalc;
                     scope.selectionHandleFlags.showResize = scope.selectedSymbols.length == 1;
                     scope.selectionHandleFlags.enableSymbolModMenu = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].enableMods;
                     //scope.selectionHandleFlags.symbolModMenuOpen = false
-                }
+                };
 
                 scope.$watchCollection("selectedSymbols", updateSelectionRender);
 
@@ -704,7 +707,7 @@ define(function(require) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 var mouseup = function(e) {
 
@@ -712,7 +715,7 @@ define(function(require) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
 
                 scope.dragging = false;
@@ -727,9 +730,10 @@ define(function(require) {
                     dragTotalDx = 0;
                     dragTotalDy = 0;
 
-                    $("body").on("mouseup", mouseup);
-                    $("body").on("mousemove", mousemove);
-                }
+                    var body = $("body");
+                    body.on("mouseup", mouseup);
+                    body.on("mousemove", mousemove);
+                };
 
                 var drag = function drag(pageX, pageY, e) {
                     scope.dragging = true;
@@ -765,7 +769,7 @@ define(function(require) {
 
                             switch (s.type) {
                                 case "string":
-                                    s.fontSize += dy*2*0.67 // TODO: Work out why I need this factor of 0.67...
+                                    s.fontSize += dy*2*0.67; // TODO: Work out why I need this factor of 0.67...
                                     s.fontSize = Math.max(10, s.fontSize);
                                     break;
                                 case "container":
@@ -809,19 +813,19 @@ define(function(require) {
                             left: originX,
                             top: originY,
                             width: width,
-                            height: height,
+                            height: height
                         });
                     }
 
                     // Only call digest, not apply. This avoids a complete recursive update from $rootScope. Probably.
                     scope.$digest();
 
-                }
+                };
 
                 var drop = function(pageX, pageY, e) {
-
-                    $("body").off("mouseup", mouseup);
-                    $("body").off("mousemove", mousemove);
+                    var body = $('body');
+                    body.off("mouseup", mouseup);
+                    body.off("mousemove", mousemove);
 
                     if ((dragTotalDx != 0 || dragTotalDy != 0) && (scope.dragMode == "move" || scope.dragMode == "resize") && !scope.trashActive) {
                         // We have dragged
@@ -842,7 +846,7 @@ define(function(require) {
                         var maxY = minY + element.find(".selection-box").height();
 
                         scope.selectedSymbols.length = 0;
-                        scope.selectionHandleFlags.symbolModMenuOpen = false
+                        scope.selectionHandleFlags.symbolModMenuOpen = false;
 
                         for (var sid in scope.state.symbols) {
                             var s = scope.state.symbols[sid];
@@ -860,7 +864,7 @@ define(function(require) {
                     scope.dragging = false;
                     scope.dragMode = null;
                     scope.$apply();
-                }
+                };
 
                 scope.$on("selection_grab", function(_, symbolId, mode, e) {
                     scope.dragMode = mode;
@@ -976,19 +980,19 @@ define(function(require) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                })
+                });
 
                 scope.editorClick = function(e) {
                     scope.$broadcast("closeMenus");
                     scope.selectedSymbols.length = 0;
-                    scope.selectionHandleFlags.symbolModMenuOpen = false
+                    scope.selectionHandleFlags.symbolModMenuOpen = false;
 
                     scope.dragMode = "selectionBox";
                     $(".selection-box").css({
                         left: -10,
                         top: -10,
                         width: 0,
-                        height: 0,
+                        height: 0
                     });
 
 
@@ -1008,14 +1012,11 @@ define(function(require) {
                             delete scope.state.symbols[sid];
                         }
                         scope.selectedSymbols.length = 0;
-                        scope.selectionHandleFlags.symbolModMenuOpen = false
+                        scope.selectionHandleFlags.symbolModMenuOpen = false;
                         scope.$emit("historyCheckpoint");
                     }
                 }
-
-
-			},
-
+			}
 		};
 	}];
 });
