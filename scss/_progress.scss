@@ -92,10 +92,15 @@
         color: #fff;
         background-color: $ru_green;
         padding: 11px 12px 4px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
 
         .icon-group {
             font-size: 25px;
             margin-right: 5px;
+            vertical-align: middle;
+            vertical-align: -moz-middle-with-baseline;
+            vertical-align: -webkit-baseline-middle;
         }
     }
 
