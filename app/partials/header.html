@@ -71,8 +71,8 @@
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
                 <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
                 <div class="ru-mobile-nav-container">
-                  <a class='ru-mobile-nav-item' ui-sref='questions'>
-                      <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('questions') || $state.includes('question')}">
+                  <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
+                      <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
                           <span>Questions</span>
                       </div>
                   </a>
