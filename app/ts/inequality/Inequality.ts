@@ -35,6 +35,7 @@ export
 class MySketch {
 	symbols: Array<Widget>;
 	movingSymbol: Widget = null;
+	initialTouch: p5.Vector = null;
 	prevTouch: p5.Vector = null;
 
 	xBox: Rect = null;
@@ -86,6 +87,7 @@ class MySketch {
 		});
 	};
 
+	// TODO: Improve with different widget types
 	spawn = (x, y, letter) => {
 		var s = new Symbol(this.p, this, letter);
 		s.position.x = x;
@@ -126,6 +128,9 @@ class MySketch {
 	// Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
 	// Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
 	touchStarted = () => {
+		// These are used to correctly detect clicks and taps.
+		this.initialTouch = this.p.createVector(this.p.touchX, this.p.touchY);
+
 		this.movingSymbol = null;
 		var index = -1;
 		var movingSymbolDocksTo: Array<string> = [];
@@ -195,32 +200,51 @@ class MySketch {
 	};
 
 	touchEnded = () => {
-		if(this.movingSymbol != null) {
-			// When touches end, mark the symbol as not moving.
-			this.prevTouch = null;
+		// TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
+		if(p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+			// Click
+			// Close the menu when touching the canvas
+			this.scope.$broadcast("closeMenus");
+			this.scope.selectedSymbols.length = 0;
+			this.scope.selectionHandleFlags.symbolModMenuOpen = false;
 
-			// Make sure we have an active docking point, and that the moving symbol can dock to it.
-			if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
-               	this.symbols = _.without(this.symbols, this.movingSymbol);
-				this.activeDockingPoint.child = this.movingSymbol;
+			this.scope.dragMode = "selectionBox";
+			$(".selection-box").css({
+				left: -10,
+				top: -10,
+				width: 0,
+				height: 0
+			});
+		} else {
+			if (this.movingSymbol != null) {
+				// When touches end, mark the symbol as not moving.
+				this.prevTouch = null;
+
+				// Make sure we have an active docking point, and that the moving symbol can dock to it.
+				if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+					this.symbols = _.without(this.symbols, this.movingSymbol);
+					this.activeDockingPoint.child = this.movingSymbol;
+				}
 			}
-		}
-		_.each(this.symbols, symbol => {
-			console.log(symbol.id + " -> " + symbol.getExpression("latex"));
-			this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
-		});
+			_.each(this.symbols, symbol => {
+				console.log(symbol.id + " -> " + symbol.getExpression("latex"));
+				this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
+			});
 
+			this.movingSymbol = null;
+			this.activeDockingPoint = null;
+			this.visibleDockingPointTypes = [];
+		}
+
+		this.initialTouch = null;
+	};
+
+	getExpressionObjects = () => {
 		var subtreeObjects = [];
 		_.each(this.symbols, symbol => {
 			subtreeObjects.push(symbol.subtreeObject());
 		});
-
-		//console.log(subtreeObjects);
-		//console.log(JSON.stringify(subtreeObjects));
-
-		this.movingSymbol = null;
-		this.activeDockingPoint = null;
-        this.visibleDockingPointTypes = [];
-	};
+		return subtreeObjects;
+	}
 }
 
