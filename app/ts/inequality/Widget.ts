@@ -232,8 +232,8 @@ abstract class Widget {
                 this.parentWidget = null;
             }
         });
-        this.shakeIt(); // Our size may have changed. Shake.
-        oldParent.shakeIt(); // Our old parent should update. Shake.
+        this.shakeIt(); // Our size may have changed. Shake it.
+        oldParent.shakeIt(); // Our old parent should update. Shake it.
 	}
 
 	/**
@@ -261,29 +261,44 @@ abstract class Widget {
 	}
 
 	/**
-	 * Hit test for this widget's docking points.
+	 * Overlapping test for this widget's docking points.
 	 *
-	 * @param p The hit point
-	 * @returns {number} The hit docking point's index, or -1 if no docking point was hit.
-     */
-	dockingPointsHit(p: p5.Vector): DockingPoint {
-        var q = p5.Vector.sub(p, this.position);
+	 * @param w The overlapping Widget
+	 * @return {DockingPoint} The best overlapped candidate DockingPoint, or null if no docking point was selected.
+	 */
+	dockingPointsHit(w: Widget): DockingPoint {
+		var hitPoint:DockingPoint = null;
 
-        var hitPoint:DockingPoint = null;
-        _.some(this.getChildren(), child => {
-            hitPoint = child.dockingPointsHit(q);
-            return hitPoint != null;
-        });
+		_.some(this.getChildren(), child => {
+			hitPoint = child.dockingPointsHit(w);
+			return hitPoint != null;
+		});
 
-        if (!hitPoint) {
-            // This highlight thing is incredibly fishy, and yet it works...
-            _.each(this.dockingPoints, (point, name) => {
-                var dp = p5.Vector.mult(point.position, this.scale);
-                if(p5.Vector.dist(q, dp) < 10) {
-                    hitPoint = point;
-                }
-            });
-        }
+		// FIXME hic sunt leones. This works, but the code could be a bit clearer (if not better/more efficient)
+		var wAP = w.getAbsolutePosition();
+		var wBox = w.subtreeBoundingBox();
+		var testRect = new Rect(wBox.x + wAP.x, wBox.y + wAP.y, wBox.w, wBox.h);
+		var thisAP = this.getAbsolutePosition();
+
+		var hitPoints: Array<DockingPoint> = [];
+		if(!hitPoint) {
+			_.each(this.dockingPoints, (point, name) => {
+				var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
+				if(testRect.contains(dp)) {
+					hitPoints.push(point);
+				}
+			});
+		}
+		if(!_.isEmpty(hitPoints)) {
+			[hitPoint, ...hitPoints] = hitPoints;
+			_.each(hitPoints, hp => {
+				var hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
+				var currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
+				if(p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
+					hitPoint = hp;
+				}
+			});
+		}
 		return hitPoint;
 	}
 

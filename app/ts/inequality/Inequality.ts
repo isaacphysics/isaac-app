@@ -49,7 +49,7 @@ class MySketch {
 
 	private newExpressionCallback = null;
 
-	constructor(private p, private width, private height) {
+	constructor(private p, private scope, private width, private height) {
 		this.p.preload = this.preload;
 		this.p.setup = this.setup;
 		this.p.draw = this.draw;
@@ -164,6 +164,9 @@ class MySketch {
 
 		// Tell the other symbols to show only these points. Achievement unlocked: Usability!
         this.visibleDockingPointTypes = movingSymbolDocksTo;
+
+		// FIXME if you can. This is quite the hack.
+		this.touchMoved();
 	};
 
 	touchMoved = () => {
@@ -181,7 +184,7 @@ class MySketch {
 				var touchPoint = this.p.createVector(this.p.touchX, this.p.touchY);
 				// This is less refined than doing the proximity detection thing, but works much better (#4)
 				if(symbol != null && symbol.id != this.movingSymbol.id) {
-					if (this.activeDockingPoint = symbol.dockingPointsHit(touchPoint)) {
+					if (this.activeDockingPoint = symbol.dockingPointsHit(this.movingSymbol)) {
 						// We have hit a docking point, short-circuit the rest of this loop, because we
 						// don't care if we hit another one.
 						return true;
@@ -204,9 +207,7 @@ class MySketch {
 		}
 		_.each(this.symbols, symbol => {
 			console.log(symbol.id + " -> " + symbol.getExpression("latex"));
-			if (this.newExpressionCallback) {
-				this.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
-			}
+			this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
 		});
 
 		var subtreeObjects = [];
