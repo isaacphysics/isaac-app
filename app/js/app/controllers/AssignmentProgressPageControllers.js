@@ -98,46 +98,46 @@ define([], function() {
                     scope.assignmentProgress[k].$promise.then(function(k, progress) {
                         scope.setLoading(false);
 
-                        return scope.assignments[k].gameBoard.$promise;
-                    }.bind(this, k)).then(function(k, gameBoard) {
+                        scope.assignments[k].gameBoard.$promise.then(function(gameBoard) {
 
-                        // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
-                        var questions = gameBoard.questions;
-                        scope.assignmentAverages[k] = [];
+                            // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
+                            var questions = gameBoard.questions;
+                            scope.assignmentAverages[k] = [];
 
-                        for (var i in questions) {
-                            var q = questions[i];
-                            var tickCount = 0;
+                            for (var i in questions) {
+                                var q = questions[i];
+                                var tickCount = 0;
+
+                                for (var j = 0; j < progress.length; j++) {
+                                    var studentResults = progress[j].results;
+
+                                    if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
+                                        tickCount++;
+                                    }
+                                }
+
+                                var tickPercent = Math.round(100 * (tickCount / progress.length));
+                                scope.assignmentAverages[k].push(tickPercent);
+                            }
+
+                            // Calculate student totals and gameboard totals
+                            gameBoard.studentsCorrect = 0;
 
                             for (var j = 0; j < progress.length; j++) {
-                                var studentResults = progress[j].results;
+                                var studentProgress = progress[j];
 
-                                if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
-                                    tickCount++;
+                                studentProgress.tickCount = 0;
+                                for (var i in studentProgress.results) {
+                                    if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
+                                        studentProgress.tickCount++;
+                                    }
+                                }
+
+                                if (studentProgress.tickCount == gameBoard.questions.length) {
+                                    gameBoard.studentsCorrect++;
                                 }
                             }
-
-                            var tickPercent = Math.round(100 * (tickCount / progress.length));
-                            scope.assignmentAverages[k].push(tickPercent);
-                        }
-
-                        // Calculate student totals and gameboard totals
-                        gameBoard.studentsCorrect = 0;
-
-                        for (var j = 0; j < progress.length; j++) {
-                            var studentProgress = progress[j];
-
-                            studentProgress.tickCount = 0;
-                            for (var i in studentProgress.results) {
-                                if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
-                                    studentProgress.tickCount++;
-                                }
-                            }
-
-                            if (studentProgress.tickCount == gameBoard.questions.length) {
-                                gameBoard.studentsCorrect++;
-                            }
-                        }
+                        });
                     }.bind(this, k));
                     scope.assignmentSelectedQuestion[k] = 0;
                 }
