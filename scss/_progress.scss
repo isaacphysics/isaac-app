@@ -558,7 +558,7 @@ div[d3-plot] {
 
     li {
         position: relative;
-        font-size: 12px;
+        font-size: 13px;
         text-align: right;
         padding-right: 50px;
         margin-bottom: 7px;
@@ -593,6 +593,13 @@ div[d3-plot] {
             vertical-align: top;
         }
     }
+
+    .progress-wrap {
+        background-color: #fff;
+        padding: 10px 10px;
+        border:#999 1px solid;
+    }
+
 }
 @media #{$medium-up} { 
     .progress-wrap {

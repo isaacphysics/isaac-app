@@ -8,93 +8,97 @@
         <span data-ot="View your progress on Isaac Physics." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
-<div ng-show="progress.totalQuestionsAttempted != 0" class="progress-wrap">
-   <div class="row progress-space">
-    <div class="medium-12 small-16 columns medium-offset-2 end">
-      <h6>Questions answered <span class="ru_green">correctly</span></h6>
-      <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrect}}%"></div>
-     </div>
-   </div>
-   <div class="row">
-      <div class="large-16 columns">
-         <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
+<div class="row">
+  <div class="small-16 columns progress-wrap">
+    <div ng-show="progress.totalQuestionsAttempted != 0">
+       <div class="row progress-space">
+        <div class="medium-12 small-16 columns medium-offset-2 end">
+          <h6>Questions answered <span class="ru_green">correctly</span></h6>
+          <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrect}}%"></div>
+         </div>
+       </div>
+       <div class="row">
+          <div class="large-16 columns">
+             <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
 
-<!--            <li class="show-for-medium-up">
-               <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
-            </li> -->
-<!--
-            <li>
-            <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-               <div d3-donut data="subjectData" color-palette="subjects"></div>
-            </li>
--->
-            <li>
-              <div class="graph-wrapper">
+    <!--            <li class="show-for-medium-up">
+                   <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
+                </li> -->
+    <!--
+                <li>
                 <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-                <div d3-donut data="subjectData" color-palette="'subjects'"></div>
-              </div>
-            </li>
-            <li>
-              <div class="graph-wrapper">
-               <h6>Question attempts in &nbsp;
-                <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
-               </h6>
-               <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
-              </div>
-            </li>
-            <li>
-              <div class="graph-wrapper">
-                <h6>Questions attempted by <span class="ru_green">Level</span></h6>
-                <div d3-donut data="levelData" color-palette="'levels'"></div>
-              </div>
-            </li>
+                   <div d3-donut data="subjectData" color-palette="subjects"></div>
+                </li>
+    -->
+                <li>
+                  <div class="graph-wrapper">
+                    <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+                    <div d3-donut data="subjectData" color-palette="'subjects'"></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="graph-wrapper">
+                   <h6>Question attempts in &nbsp;
+                    <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
+                   </h6>
+                   <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="graph-wrapper">
+                    <h6>Questions attempted by <span class="ru_green">Level</span></h6>
+                    <div d3-donut data="levelData" color-palette="'levels'"></div>
+                  </div>
+                </li>
 
-<!--             <li class="hide-for-medium-up">
-               <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
-            </li> -->
-         </ul>
+    <!--             <li class="hide-for-medium-up">
+                   <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+                </li> -->
+             </ul>
 
-        <!-- 
-          Line graph
-        -->
-        <h6>Question attempts <span class="ru_green">over time</span></h6>
-        <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <!-- 
+              Line graph
+            -->
+            <h6>Question attempts <span class="ru_green">over time</span></h6>
+            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
 
-        <!-- 
-          Area graph
-        -->
-<!--         <h6>Area graph <span class="ru_green">title</span></h6>
-        <div d3-plot data="questionsAnsweredOverTime" type="area"></div> -->
-<!--         <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
-          <li>
-            <div class="graph-wrapper">
-              <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
-              <div d3-bar></div>
-            </div>
-          </li>
-          <li>
-            <div class="graph-wrapper">
-              <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
-              <div d3-bar></div>
-            </div>
-          </li>
-          <li>
-            <div class="graph-wrapper">
-              <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
-              <div d3-bar></div>
-            </div>
-          </li>
-        </ul> -->
+            <!-- 
+              Area graph
+            -->
+    <!--         <h6>Area graph <span class="ru_green">title</span></h6>
+            <div d3-plot data="questionsAnsweredOverTime" type="area"></div> -->
+    <!--         <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
+              <li>
+                <div class="graph-wrapper">
+                  <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+                  <div d3-bar></div>
+                </div>
+              </li>
+              <li>
+                <div class="graph-wrapper">
+                  <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+                  <div d3-bar></div>
+                </div>
+              </li>
+              <li>
+                <div class="graph-wrapper">
+                  <h6>Time on site <span class="ru_green">by month</span><span class="right">2014</span></h6>
+                  <div d3-bar></div>
+                </div>
+              </li>
+            </ul> -->
+          </div>
       </div>
+    </div>
+
+    <div ng-show="progress.totalQuestionsAttempted == 0">
+       <div class="row">
+          <div class="small-16 text-center columns">
+             <p>You have not answered any questions yet. There are no statistics to display.</p>
+          </div>
+       </div>
+    </div>
   </div>
-</div>
-
-<div ng-show="progress.totalQuestionsAttempted == 0" class="progress-wrap" >
-   <div class="row">
-      <div class="small-16 text-center columns">
-         <p>You have not answered any questions yet. There are no statistics to display.</p>
-      </div>
-   </div>
 </div>
 
 <div isaac-modal="export">
