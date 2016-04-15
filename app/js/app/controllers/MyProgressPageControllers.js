@@ -42,7 +42,7 @@ define([], function() {
 			for (var property in $scope.questionsAnsweredOverTime) {
 			    // remove underscores in series label.
 			    if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
-			        $scope.questionsAnsweredOverTime[property.replace("_", " ")] = $scope.questionsAnsweredOverTime[property];
+			        $scope.questionsAnsweredOverTime[property.replace("_", " ").toLowerCase()] = $scope.questionsAnsweredOverTime[property];
 			        delete $scope.questionsAnsweredOverTime[property];
 			    }
 			}			
