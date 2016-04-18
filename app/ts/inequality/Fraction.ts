@@ -26,7 +26,7 @@ class Fraction extends Widget {
         this.width = 100;
         super(p, s);
 
-        this.docksTo = ['operator', 'symbol'];
+        this.docksTo = ['operator', 'symbol', 'exponent'];
     }
 
     /** Generates all the docking points in one go and stores them in this.dockingPoints.
