@@ -170,12 +170,12 @@ class Symbol extends Widget {
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var widestSuperOrSubScript = 0;
+        var widest = 0;
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
             var w = boxes["superscript"].w;
-            widestSuperOrSubScript = this.scale * this.s.mBox.w / 12 + w;
+            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         }
@@ -183,7 +183,7 @@ class Symbol extends Widget {
         if ("subscript" in boxes) {
             var p = this.dockingPoints["subscript"].child.position;
             var w = boxes["subscript"].w;
-            widestSuperOrSubScript = Math.max(this.scale * this.s.mBox.w / 12 + w, widestSuperOrSubScript);
+            widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
             p.x = box.w / 2 + w/2;
             p.y = this.scale * this.s.mBox.w / 4;
         }
@@ -191,7 +191,7 @@ class Symbol extends Widget {
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + boxes["right"].w / 2 + widestSuperOrSubScript; // TODO: Tweak this with kerning.
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest; // TODO: Tweak this with kerning.
         }
 	}
 }

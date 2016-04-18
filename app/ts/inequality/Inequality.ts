@@ -236,6 +236,8 @@ class MySketch {
 			this.visibleDockingPointTypes = [];
 		}
 
+		console.log(this.scope);
+
 		this.initialTouch = null;
 	};
 

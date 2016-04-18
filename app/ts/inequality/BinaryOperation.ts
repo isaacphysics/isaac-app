@@ -138,7 +138,7 @@ class BinaryOperation extends Widget {
 
         // Calculate our own geometry
 
-        // Nothing to do for Symbol
+        // Nothing to do for BinaryOperation
 
         // Set position of all our children.
 
