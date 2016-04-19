@@ -451,7 +451,9 @@
     }
 }
 .d3-tooltip {   
-    position: absolute;           
+    position: absolute;
+    left: 0;
+    top: 0;
     text-align: center;           
     width: 50px;                  
     height: 28px;                 
