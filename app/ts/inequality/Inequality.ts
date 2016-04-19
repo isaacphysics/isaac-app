@@ -73,11 +73,11 @@ class MySketch {
 
 		this.prevTouch = this.p.createVector(0,0);
 
-		// FIXME This is for testing purposes only.
-		var subtreeObjects = JSON.parse('[{"type":"Symbol","position":{"x":185,"y":308},"expression":{"latex":"M−\\\\frac{x+j}{i} ","python":"M−((x+j)/(i))"},"children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Symbol","properties":{"letter":"j"}}},"properties":{"operation":"+"}}},"properties":{"letter":"x"}},"denominator":{"type":"Symbol","properties":{"letter":"i"}}}}},"properties":{"operation":"−"}}},"properties":{"letter":"M"}}]');
-		_.each(subtreeObjects, subtreeObject => {
-			this.parseSubtreeObject(subtreeObject);
-		});
+		// // FIXME This is for testing purposes only.
+		// var subtreeObjects = JSON.parse('[{"type":"Symbol","position":{"x":185,"y":308},"expression":{"latex":"M−\\\\frac{x+j}{i} ","python":"M−((x+j)/(i))"},"children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Symbol","properties":{"letter":"j"}}},"properties":{"operation":"+"}}},"properties":{"letter":"x"}},"denominator":{"type":"Symbol","properties":{"letter":"i"}}}}},"properties":{"operation":"−"}}},"properties":{"letter":"M"}}]');
+		// _.each(subtreeObjects, subtreeObject => {
+		// 	this.parseSubtreeObject(subtreeObject);
+		// });
 	};
 
 	draw = () => {
@@ -96,10 +96,12 @@ class MySketch {
 	};
 
 	parseSubtreeObject = (root: Object) => {
-		var w: Widget = this._parseSubtreeObject(root);
-		w.position.x = root["position"]["x"];
-		w.position.y = root["position"]["y"];
-		this.symbols.push(w);
+		if(root) {
+			var w:Widget = this._parseSubtreeObject(root);
+			w.position.x = root["position"]["x"];
+			w.position.y = root["position"]["y"];
+			this.symbols.push(w);
+		}
 	};
 
 	_parseSubtreeObject = (node: Object): Widget => {
@@ -229,14 +231,17 @@ class MySketch {
 			_.each(this.symbols, symbol => {
 				console.log(symbol.id + " -> " + symbol.getExpression("latex"));
 				this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
+
+				// Pass the LaTeX expression for rendering in the input box
+				this.scope.state.inequalityResult = symbol.getExpression("latex").replace(/−/g, "-");
+				// Store the subtree object for restoring when opening the editor
+				this.scope.state.symbols = symbol.subtreeObject();
 			});
 
 			this.movingSymbol = null;
 			this.activeDockingPoint = null;
 			this.visibleDockingPointTypes = [];
 		}
-
-		console.log(this.scope);
 
 		this.initialTouch = null;
 	};

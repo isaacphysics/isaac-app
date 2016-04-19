@@ -5,7 +5,7 @@ define([], function() {
         return {
             scope: {
                 state: "=",
-                questionDoc: "=",
+                questionDoc: "="
             },
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
@@ -15,20 +15,20 @@ define([], function() {
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc);
                     api.logger.log({
                         type : "OPEN_EQUATION_EDITOR",
-                        questionId : scope.questionDoc.id,
+                        questionId : scope.questionDoc.id
                     });
                 };
 
                 scope.$watch("state", function(s) {
-                    console.debug("New state:", s);
+                    // TODO Pick the largest expression and show it here.
+                    console.log("watch(scope.state): ", s);
                     if (s.result && s.result.tex) {
                         katex.render(s.result.tex, element.find(".eqn-preview")[0]);
                     } else {
                         element.find(".eqn-preview").html("&nbsp;");                        
                     }
                 }, true);
-
-            },
+            }
         };
     }];
 });

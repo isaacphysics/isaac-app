@@ -57,6 +57,7 @@ define(function(require) {
                 });
 
                 scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
+                    console.log("spawnSymbol: ", symbol);
                 	var offset = element.offset();
                     var width = element.width();
                     var height = element.height();
@@ -67,15 +68,15 @@ define(function(require) {
                         return;
                     }
 
-                    var x = pageX - offset.left - width/2 - scope.canvasOffset.marginLeft; 
-                    var y = pageY - offset.top - height/2 - scope.canvasOffset.marginTop;
+                    // var x = pageX - offset.left - width/2 - scope.canvasOffset.marginLeft;
+                    // var y = pageY - offset.top - height/2 - scope.canvasOffset.marginTop;
 
-                    console.debug(symbol, x, y);
-
+                    // TODO: Improve with different widget types
                     sketch.spawn(pageX, pageY, symbol.label);
 
                     scope.$broadcast("historyCheckpoint");
-                	console.debug("Symbols:", scope.state.symbols);
+
+                	console.log("scope.state: ", scope.state);
                 });
 
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
@@ -95,33 +96,11 @@ define(function(require) {
                         scope.future = [];
                         
                         // TODO: Redisplay old equations in the centre
-/*
-                        var sumX = 0;
-                        var sumY = 0;
-                        var count = 0;
-                        for (var sid in scope.state.symbols) {
-                            nextSymbolId = Math.max(nextSymbolId, parseInt(sid))+1;
-                            sumX += scope.state.symbols[sid].x;
-                            sumY += scope.state.symbols[sid].y;
-                            count++;
-                        }
-
-                        if (count > 0) {
-                            scope.canvasOffset = {
-                                marginLeft: -sumX / count,
-                                marginTop: -sumY / count
-                            }
-                        } else {
-                            scope.canvasOffset = {
-                                marginLeft: 0,
-                                marginTop: 0
-                            }
-                        }
-
-                        console.debug("Set canvas offset:", scope.canvasOffset);
-*/
-                        var p = new p5( function(p) { 
+                        var p = new p5( function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height());
+                            if(!_.isEmpty(scope.state.symbols)) {
+                                sketch.parseSubtreeObject(scope.state.symbols);
+                            }
                             return sketch;
                         }, element.find(".equation-editor")[0]);
 
@@ -162,7 +141,7 @@ define(function(require) {
                 	}
 
                 	return symbols;
-                }
+                };
 
                 scope.symbolLibrary = {
 
@@ -423,6 +402,8 @@ define(function(require) {
                     scope.history.push(nextHistoryEntry);
                     //TODO: Serialise current state for history
                     //nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
+                    // nextHistoryEntry = JSON.parse(JSON.stringify(scope.sketch.getSubtreeObjects()));
+                    console.log("historyCheckpoint:", scope.state);
                 });
 
                 scope.undo = function() {
@@ -452,6 +433,8 @@ define(function(require) {
                 };
 
                 scope.submit = function() {
+                    // scope.state.result = { "tex":"e^{i\\pi}+1=0" };
+                    scope.state.result = { "tex": scope.state.inequalityResult };
                     $("#equationModal").foundation("reveal", "close");
                     api.logger.log({
                         type : "CLOSE_EQUATION_EDITOR"
@@ -588,28 +571,7 @@ define(function(require) {
                     e.stopPropagation();
                     e.preventDefault();
                 });
-*/
-                // TODO: Close menus when clicking on the canvas.
-                /*
-                scope.editorClick = function(e) {
-                    scope.$broadcast("closeMenus");
-                    scope.selectedSymbols.length = 0;
-                    scope.selectionHandleFlags.symbolModMenuOpen = false;
-
-                    scope.dragMode = "selectionBox";
-                    $(".selection-box").css({
-                        left: -10,
-                        top: -10,
-                        width: 0,
-                        height: 0
-                    });
-
-
-                    grab(e.pageX, e.pageY, e);
-
-                };*/
-
-                
+                */
                 scope.$on("menuOpened", function() {
                     // TODO: Deselect symbols when opening menus
                     //scope.selectedSymbols.length = 0;
