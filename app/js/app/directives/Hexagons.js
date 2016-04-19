@@ -185,7 +185,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                 for(var i = 1; i <= 5; i++)
                 {
 
-                    $('.hex-'+name+i).css('filter','url(#filter'+i+')');
+                    $('.hex-'+name+i).css('filter','url(' + window.location.pathname + '#filter'+i+')');
                 }
             });
         }
