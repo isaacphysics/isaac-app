@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <a ng-repeat="concept in allConcepts | filter:{$:searchText} | filter:subjectFilter" class="ru-mobile-answer-wrap" ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" >
+                <a ng-repeat="concept in filteredConcepts = (allConcepts | filter:{$:searchText} | filter:subjectFilter)" class="ru-mobile-answer-wrap" ng-init="maths = concept.tags.indexOf('maths') > -1; physics = concept.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}" ui-sref="concept({id: concept.id})" >
                     <div class="row ">
                     <div class='small-16 columns'>
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
@@ -62,6 +62,16 @@
                     </div>
                     </div>
                 </a>
+                <div class='row ru-mobile-answer-wrap both' ng-if="filteredConcepts.length == 0">
+                    <a class='small-16 columns'>
+                        <div class="ru-search-result even">
+                            <div class="ru-search-result-content">
+                                <div style="text-align: center;">No concepts found</div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
             </div>
             <div class="ru-concept-pad">
 

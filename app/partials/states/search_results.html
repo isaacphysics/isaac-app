@@ -46,7 +46,16 @@
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
                                 <h4><span ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}">{{result.title}}</span></h4>
                                     <p>{{result.summary}}</p>
-                                </h4>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+                <div class='row ru-mobile-answer-wrap both' ng-if="response.results.length == 0">
+                    <a class='small-16 columns'>
+                        <div class="ru-search-result even">
+                            <div class="ru-search-result-content">
+                                <div style="text-align: center;">No results found</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
