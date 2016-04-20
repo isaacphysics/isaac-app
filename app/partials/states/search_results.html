@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" >
+                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-if="result.id != '_regression_test_'">
                     <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id})}}">
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
