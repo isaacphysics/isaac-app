@@ -237,7 +237,7 @@
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 characters in length."></span></h3>
+                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 to 8 characters in length."></span></h3>
                         <p>Enter the code given to connect with a teacher.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
