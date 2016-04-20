@@ -25,6 +25,7 @@ import { Widget, Rect } from './Widget.ts'
 import { Symbol } from './Symbol.ts'
 import { BinaryOperation } from './BinaryOperation.ts';
 import { Fraction } from './Fraction.ts';
+import { Brackets } from './Brackets.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -78,6 +79,16 @@ class MySketch {
 		// _.each(subtreeObjects, subtreeObject => {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
+		this.parseSubtreeObject({
+			type: 'Symbol',
+			position: { x:185, y:308 },
+			properties: { letter: 'G' }
+		});
+		this.parseSubtreeObject({
+			type: 'Brackets',
+			position: { x:300, y:308 },
+			properties: { type: 'round' }
+		});
 	};
 
 	draw = () => {
@@ -89,10 +100,17 @@ class MySketch {
 
 	// TODO: Improve with different widget types
 	spawn = (x, y, letter) => {
-		var s = new Symbol(this.p, this, letter);
-		s.position.x = x;
-		s.position.y = y;
-		this.symbols.push(s);
+		if(letter == '(x)') {
+			var s = new Brackets(this.p, this, 'round');
+			s.position.x = x;
+			s.position.y = y;
+			this.symbols.push(s);
+		} else {
+			var s = new Symbol(this.p, this, letter);
+			s.position.x = x;
+			s.position.y = y;
+			this.symbols.push(s);
+		}
 	};
 
 	parseSubtreeObject = (root: Object) => {
@@ -115,6 +133,9 @@ class MySketch {
 				break;
 			case "Fraction":
 				w = new Fraction(this.p, this);
+				break;
+			case "Brackets":
+				w = new Brackets(this.p, this, node["properties"]["type"]);
 				break;
 			default: // this would be a Widget...
 				break;
