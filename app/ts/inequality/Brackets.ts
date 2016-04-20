@@ -46,8 +46,8 @@ class Brackets extends Widget {
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * pBox.w*2, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
     }
 
     /**
@@ -201,7 +201,7 @@ class Brackets extends Widget {
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
             var w = boxes["superscript"].w;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
+            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         }

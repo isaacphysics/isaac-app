@@ -80,13 +80,42 @@ class MySketch {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
 		this.parseSubtreeObject({
-			type: 'Symbol',
-			position: { x:185, y:308 },
-			properties: { letter: 'G' }
+			type: 'Brackets',
+			position: { x:300, y:308 },
+			properties: { type: 'round' },
+			children: {
+				argument: {
+					type: 'Symbol',
+					position: { x:0, y:0 },
+					properties: { letter: 'G' },
+					children: {
+						right: {
+							type: 'Symbol',
+							position: { x:0, y:0 },
+							properties: { letter: 'q' }
+						},
+						superscript: {
+							type: 'Symbol',
+							position: { x:0, y:0 },
+							properties: { letter: 'F' }
+						}
+					}
+				},
+				superscript: {
+					type: 'Symbol',
+					position: { x:0, y:0 },
+					properties: { letter: 'j' }
+				},
+				right: {
+					type: 'Symbol',
+					position: { x:0, y:0 },
+					properties: { letter: 'p' }
+				}
+			},
 		});
 		this.parseSubtreeObject({
 			type: 'Brackets',
-			position: { x:300, y:308 },
+			position: { x:300, y:450 },
 			properties: { type: 'round' }
 		});
 	};
@@ -100,7 +129,12 @@ class MySketch {
 
 	// TODO: Improve with different widget types
 	spawn = (x, y, letter) => {
-		if(letter == '(x)') {
+		if(letter == '\\frac{a}{b}') {
+			var s = new Fraction(this.p, this);
+			s.position.x = x;
+			s.position.y = y;
+			this.symbols.push(s);
+		} else if(letter == '(x)') {
 			var s = new Brackets(this.p, this, 'round');
 			s.position.x = x;
 			s.position.y = y;
