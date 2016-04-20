@@ -212,7 +212,7 @@
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
                                 </label>
-                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" name="passwordCurrent" placeholder="Current password">        
+                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" ng-class="{'ng-invalid': (password1 || password2) && !passwordChangeState.passwordCurrent}" name="passwordCurrent" placeholder="Current password">        
                             </div>
                         </div>
                         <div id="password-wrap" class="row">
@@ -230,6 +230,9 @@
                             <div  class="large-6 columns">
                                 <label for="account-password2" ng-class="{'disabled' : !password1}"><strong>Confirm password</strong></label>
                                 <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!password1" match="password1" ng-model="password2" name="password2">
+                                <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent">
+                                    Current password not provided
+                                </span>
                                 <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
                                     Passwords do not match
                                 </span>
