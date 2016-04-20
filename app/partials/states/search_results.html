@@ -39,14 +39,23 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" >
+                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-if="result.id != '_regression_test_'">
                     <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id})}}">
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
                                 <h4><span ng-class="{maths: maths && !physics, physics: physics && !maths, both: physics && maths}">{{result.title}}</span></h4>
                                     <p>{{result.summary}}</p>
-                                </h4>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+                <div class='row ru-mobile-answer-wrap both' ng-if="response.results.length == 0">
+                    <a class='small-16 columns'>
+                        <div class="ru-search-result even">
+                            <div class="ru-search-result-content">
+                                <div style="text-align: center;">No results found</div>
                             </div>
                             <div class="clearfix"></div>
                         </div>

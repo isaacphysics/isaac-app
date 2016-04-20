@@ -192,6 +192,21 @@ define(["angular-ui-router"], function() {
                 }
             })
 
+            .state('regressionTestQuestion', {
+                url: "/questions/_regression_test_",
+                onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                    if (window.location.host == "isaacphysics.org") {
+                        console.log("This page exists for internal test purposes and is unavailable.")
+                        $state.go('404', {target: "/questions/_regression_test_"});
+                        // TODO work out why have to set loading false for both!
+                        $rootScope.setLoading(false);
+                    } else {
+                        $state.go('question', {id: "_regression_test_"});
+                        $rootScope.setLoading(false);
+                    }
+                }],
+            })
+
             .state('question', {
                 url: "/questions/:id?board",
                 resolve: {
