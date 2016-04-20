@@ -100,7 +100,16 @@
 		background:white;
 	}
 
+	dd.ru-error-message {
+		border-color: #dc5757;
+
+		a {
+			color: #dc5757!important;
+			font-weight: bold;
+		}	
+	}
 }
+
 input.account-settings-input {
 	margin-bottom: 40px;
 }

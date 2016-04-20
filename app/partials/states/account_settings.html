@@ -26,8 +26,12 @@
 
     <div class="small-16 columns end">
         <dl class="tabs no-print">
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0}" ng-click="activateTab(0)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Profile</a></dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1}" ng-click="activateTab(1)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid}" ng-click="activateTab(0)" class="ng-scope">
+                <a href="javascript:void(0);" class="ng-binding">Profile</a>
+            </dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
+                <a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a>
+            </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding"ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
         </dl>
@@ -218,13 +222,14 @@
                                     <strong ng-if="user.hasSegueAccount">New password</strong>
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
-                                <input id="account-password" ng-disabled="!passwordChangeState.passwordCurrent && user.hasSegueAccount  && editingSelf" type="password" ng-model="user.password" name="password" placeholder="Enter password">        
+                                <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password">        
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
                             <div  class="large-6 columns">
-                                <label for="account-password2" ng-class="{'disabled' : !user.password}"><strong>Confirm password</strong></label>
-                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!user.password" match="user.password" ng-model="password2" name="password2">
+                                <label for="account-password2" ng-class="{'disabled' : !password1}"><strong>Confirm password</strong></label>
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!password1" match="password1" ng-model="password2" name="password2">
                                 <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
                                     Passwords do not match
                                 </span>

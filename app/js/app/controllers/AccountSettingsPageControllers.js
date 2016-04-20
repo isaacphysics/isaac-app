@@ -177,6 +177,8 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
+        	$scope.errorMessage = null;  // clear any old error message
+
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
         	}
@@ -185,7 +187,8 @@ define([], function() {
         		$scope.account.password2.$setViewValue($scope.account.password2.$viewValue);
         	}
 
-        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf){
+        	// if not a new user; confirm any email change, else undo it (but don't if invalid because it will just fail below anyway)
+        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
         		if(promptResponse){
         			
@@ -196,17 +199,22 @@ define([], function() {
         		}
         	}
 
-        	if ($scope.account.$valid && (!$scope.user.password || $scope.user.password == $scope.password2)) {
+        	// Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
+        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1 == $scope.password2 && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences
         		}
 
-        		// add the current password if it's available
-        		if($scope.passwordChangeState && $scope.passwordChangeState.passwordCurrent){
+        		// add the current password if it's confirmed, and put new password in user object
+        		if(!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
+    				userSettings.registeredUser.password = $scope.password1;
         			userSettings.passwordCurrent = $scope.passwordChangeState.passwordCurrent;
-        		}
+				// or if a new password set and editing someone else, just put new password in user object (security checks done in api)
+    			} else if (!!$scope.password1 && !$scope.editingSelf) {
+    				userSettings.registeredUser.password = $scope.password1;
+    			}
 
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
@@ -230,6 +238,23 @@ define([], function() {
 	        	for(var i in $scope.account.$error.required) {
 	        		$scope.account.$error.required[i].$dirty = true;
         		}
+
+        		// show front end error messages now (really useful on mobile when can't see fields, appear under Save button)
+        		$scope.updateFail = true;
+	        	// no current password, but new password set (if not admin)
+	        	if (!$scope.passwordChangeState.passwordCurrent && !!$scope.password1 && $scope.editingSelf) {
+	        		$scope.errorMessage = "Current password not confirmed.";
+        		// current password given/admin user, but new password not confirmed
+	        	} else if ($scope.password1 != $scope.password2) {
+	        		$scope.errorMessage = "Passwords do not match.";
+        		// first name or last name missing
+	        	} else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
+	        		$scope.errorMessage = "Name field missing or invalid.";
+        		// bad email address given
+	        	} else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
+	        		$scope.errorMessage = "Email address missing or invalid."
+	        	}
+
 	        }
         }
 
