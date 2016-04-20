@@ -95,7 +95,7 @@ define([], function() {
                     scope.setLoading(true);
                     scope.assignmentProgress[k] = api.assignments.getProgress({assignmentId: k});
 
-                    scope.assignmentProgress[k].$promise.then(function(progress) {
+                    scope.assignmentProgress[k].$promise.then(function(k, progress) {
                         scope.setLoading(false);
 
                         scope.assignments[k].gameBoard.$promise.then(function(gameBoard) {
@@ -138,7 +138,7 @@ define([], function() {
                                 }
                             }
                         });
-                    })
+                    }.bind(this, k));
                     scope.assignmentSelectedQuestion[k] = 0;
                 }
             }

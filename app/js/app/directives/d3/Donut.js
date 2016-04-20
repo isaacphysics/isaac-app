@@ -137,8 +137,11 @@ define([], function() {
                                 return d.value;
                             }
                         });
-                    arcs.append("title").text(function(d)
-                        {return Math.round(100*(d.endAngle-d.startAngle)/(2*Math.PI)) + "%"});
+                    arcs.append("title").text(function(d, i) {
+                        var title = scope.data[i].label + ": ";
+                        title = title + Math.round(100*(d.endAngle-d.startAngle)/(2*Math.PI)) + "%";
+                        return title;
+                    });
 
 
                     // Settings for Key 

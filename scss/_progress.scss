@@ -92,10 +92,15 @@
         color: #fff;
         background-color: $ru_green;
         padding: 11px 12px 4px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
 
         .icon-group {
             font-size: 25px;
             margin-right: 5px;
+            vertical-align: middle;
+            vertical-align: -moz-middle-with-baseline;
+            vertical-align: -webkit-baseline-middle;
         }
     }
 
@@ -553,10 +558,11 @@ div[d3-plot] {
 
     li {
         position: relative;
-        font-size: 12px;
+        font-size: 13px;
         text-align: right;
         padding-right: 50px;
         margin-bottom: 7px;
+        text-transform: capitalize;
 
         span {
             position: absolute;
@@ -587,6 +593,13 @@ div[d3-plot] {
             vertical-align: top;
         }
     }
+
+    .progress-wrap {
+        background-color: #fff;
+        padding: 10px 10px;
+        border:#999 1px solid;
+    }
+
 }
 @media #{$medium-up} { 
     .progress-wrap {
