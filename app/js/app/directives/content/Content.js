@@ -59,16 +59,20 @@ define([], function() {
 
 		            			scope.$emit("ensureVisible");
 
+		            			var element = iElement.closest("dd");
+		            			if (null == element) {
+		            				element = iElement;
+		            			}
+
 								$timeout(function() {
-									$("body").animate({
-						                scrollTop: iElement.offset().top
-						            }, 1000);        
+									$("html,body").animate({
+										// Use accordion section containing object, the 'dd' element:
+						                scrollTop: element.offset().top
+						            });        
 								});
 		            		}
 		            	}
 	            	});
-
-
 	            });
 	        }
 		};
