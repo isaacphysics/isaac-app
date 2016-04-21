@@ -48,7 +48,11 @@
         </tr>
         <tr>
           <td>When:</td>
-          <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> <span ng-if="event.expired" class="error">This event is in the past.</span></td>
+          <td>
+            <time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> 
+            <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'dd/MM/yyyy'}}</time></span>
+            <span ng-if="event.expired" class="error">This event is in the past.</span>
+          </td>
         </tr>
         <tr ng-show="event.location">
           <td>Location:</td>
