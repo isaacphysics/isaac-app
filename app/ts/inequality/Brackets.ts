@@ -25,9 +25,9 @@ class Brackets extends Widget {
     }
 
     constructor(p:any, s:any, type:string) {
+        super(p, s);
         this.type = type;
         this.s = s;
-        super(p, s);
 
         this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
     }

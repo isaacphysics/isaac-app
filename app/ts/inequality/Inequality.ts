@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 
-///// <reference path="../../Typings/p5.d.ts" />
-///// <reference path="../../Typings/underscore.d.ts" />
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/underscore.d.ts" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
@@ -130,17 +130,17 @@ class MySketch {
 	// TODO: Improve with different widget types
 	spawn = (x, y, letter) => {
 		if(letter == '\\frac{a}{b}') {
-			var s = new Fraction(this.p, this);
+			let s = new Fraction(this.p, this);
 			s.position.x = x;
 			s.position.y = y;
 			this.symbols.push(s);
 		} else if(letter == '(x)') {
-			var s = new Brackets(this.p, this, 'round');
+			let s = new Brackets(this.p, this, 'round');
 			s.position.x = x;
 			s.position.y = y;
 			this.symbols.push(s);
 		} else {
-			var s = new Symbol(this.p, this, letter);
+			let s = new Symbol(this.p, this, letter);
 			s.position.x = x;
 			s.position.y = y;
 			this.symbols.push(s);

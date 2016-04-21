@@ -24,9 +24,9 @@ class Symbol extends Widget {
 	}
 
 	constructor(p:any, s:any, letter:string) {
+		super(p, s);
         this.letter = letter;
         this.s = s;
-		super(p, s);
 
 		this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
 	}

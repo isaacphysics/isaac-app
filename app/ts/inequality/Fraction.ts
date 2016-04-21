@@ -22,9 +22,9 @@ class Fraction extends Widget {
     }
 
     constructor(p: any, s: any) {
+        super(p, s);
         this.s = s;
         this.width = 100;
-        super(p, s);
 
         this.docksTo = ['operator', 'symbol', 'exponent'];
     }

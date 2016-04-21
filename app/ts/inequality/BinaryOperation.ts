@@ -27,9 +27,9 @@ class BinaryOperation extends Widget {
     }
 
     constructor(p: any, s: any, operation: string) {
+        super(p, s);
         this.s = s;
         this.operation = operation;
-        super(p, s);
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
         this.docksTo = ['operator', 'symbol'];
