@@ -3,12 +3,11 @@ import { Symbol } from "./Symbol.ts";
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
-/** Brackets. "We got both kinds, we got country and western". */
+/** Radix. Or, as they say, the _nth_ principal root of its argument. */
 export
-class Brackets extends Widget {
+class Radix extends Widget {
 
     protected s: any;
-    private type: string;
 
     get typeAsString(): string {
         return "Symbol";
@@ -25,12 +24,11 @@ class Brackets extends Widget {
         return p;
     }
 
-    constructor(p:any, s:any, type:string) {
+    constructor(p:any, s:any) {
         super(p, s);
-        this.type = type;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['symbol', 'operator', 'exponent'];
     }
 
     /**
@@ -46,9 +44,9 @@ class Brackets extends Widget {
         var descent = this.position.y - (box.y + box.h);
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
+        this.dockingPoints["argument"] =    new DockingPoint(this, this.p.createVector(box.w/2 + this.scale*this.s.xBox.w/2, -this.s.xBox.h/2), 1, "symbol");
+        this.dockingPoints["right"] =       new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -this.s.xBox.h / 2), 1, "operator");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
     }
 
     /**
@@ -63,56 +61,34 @@ class Brackets extends Widget {
     getExpression(format: string): string {
         // TODO Triple check
         var expression = "";
-        var lhs = '(', rhs = ')';
         if (format == "latex") {
-            switch(this.type) {
-                case "round":
-                    lhs = '\\left('; rhs = '\\right)';
-                    break;
-                case "square":
-                    lhs = '\\left['; rhs = '\\right]';
-                    break;
-                case "curly":
-                    lhs = '\\left}'; rhs = '\\right}';
-                    break;
+            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+                expression += '\\sqrt{' + this.dockingPoints['argument'].child.getExpression(format) + '}';
             }
-            if(this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if(this.dockingPoints['superscript'].child) {
-                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
-                }
-                if(this.dockingPoints['right'].child) {
-                    expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
-                }
+            if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+            }
+            if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         } else if (format == "python") {
-            switch(this.type) {
-                case "square":
-                    lhs = '['; rhs = ']';
-                    break;
-                case "curly":
-                    lhs = '{'; rhs = '}';
-                    break;
+            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+                expression += 'sqrt(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
             }
-            if(this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if(this.dockingPoints['superscript'].child) {
-                    expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
-                }
-                if(this.dockingPoints['right'].child) {
-                    expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
-                }
+            if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+            }
+            if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         } else if (format == "subscript") {
-            expression += "{BRACKETS}";
+            expression += "{SQRT}";
         }
         return expression;
     }
 
     properties(): Object {
-        return {
-            type: this.type
-        };
+        return { };
     }
 
     /** Paints the widget on the canvas. */
@@ -125,14 +101,14 @@ class Brackets extends Widget {
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.RIGHT, this.p.BASELINE);
+            .textAlign(this.p.CENTER, this.p.BASELINE);
 
-        this.p.text('(', -argWidth/2, 0);
+        this.p.text('\u221A', 0, 0);
 
-        this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(')', argWidth/2, 0);
+        this.p.noFill(0).strokeWeight(6*this.scale).stroke(0);
+        var box = this.boundingBox();
+        var y =  box.y + 3*this.scale;
+        this.p.line(box.x+box.w, y, argWidth+this.scale*box.w/2, y);
 
         this.p.strokeWeight(1);
 
@@ -153,13 +129,8 @@ class Brackets extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
-        var argWidth = this.s.xBox.w;
-        if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-            argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
-        }
-        var width = box.w + argWidth;
-        return new Rect(-width/2, box.y - 1000, width, box.h);
+        var box = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w/2, box.y - 1000, box.w, box.h);
     }
 
     /**
@@ -193,25 +164,33 @@ class Brackets extends Widget {
 
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
-            var w = boxes["argument"].w;
-            p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w/2 + w/2;
+            var w = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
+            p.x = box.w/2 + this.s.xBox.w/2;
             p.y = 0;
             widest += w;
         }
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = boxes["superscript"].w;
-            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
+            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
+            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
+        } else {
+            var p = this.dockingPoints["superscript"].position;
+            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
+            p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
 
-        // TODO Improve massively (see Radix)
+        widest = Math.max(widest, this.s.xBox.w);
+
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest; // TODO: Tweak this with kerning.
+            p.x = widest + box.w; // TODO: Tweak this with kerning.
+        } else {
+            var p = this.dockingPoints["right"].position;
+            p.y = 0; // FIXME
+            p.x = widest + box.w; // TODO: Tweak this with kerning.
         }
     }
 }

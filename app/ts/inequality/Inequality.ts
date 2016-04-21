@@ -26,6 +26,7 @@ import { Symbol } from './Symbol.ts'
 import { BinaryOperation } from './BinaryOperation.ts';
 import { Fraction } from './Fraction.ts';
 import { Brackets } from './Brackets.ts';
+import { Radix } from './Radix.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -80,43 +81,47 @@ class MySketch {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
 		this.parseSubtreeObject({
-			type: 'Brackets',
-			position: { x:300, y:308 },
+			type: 'Radix',
+			position: { x:this.width*0.45, y:this.height/2 },
 			properties: { type: 'round' },
 			children: {
 				argument: {
 					type: 'Symbol',
 					position: { x:0, y:0 },
-					properties: { letter: 'G' },
+					properties: { letter: 'A' },
 					children: {
 						right: {
 							type: 'Symbol',
 							position: { x:0, y:0 },
-							properties: { letter: 'q' }
+							properties: { letter: 'g' }
 						},
 						superscript: {
 							type: 'Symbol',
 							position: { x:0, y:0 },
-							properties: { letter: 'F' }
+							properties: { letter: 'r' }
 						}
 					}
 				},
-				superscript: {
-					type: 'Symbol',
-					position: { x:0, y:0 },
-					properties: { letter: 'j' }
-				},
+				// superscript: {
+				// 	type: 'Symbol',
+				// 	position: { x:0, y:0 },
+				// 	properties: { letter: 'e' }
+				// },
 				right: {
 					type: 'Symbol',
 					position: { x:0, y:0 },
-					properties: { letter: 'p' }
+					properties: { letter: 'm' }
 				}
 			},
 		});
 		this.parseSubtreeObject({
 			type: 'Brackets',
-			position: { x:300, y:450 },
+			position: { x:300, y:650 },
 			properties: { type: 'round' }
+		});
+		this.parseSubtreeObject({
+			type: 'Radix',
+			position: { x:500, y:650 }
 		});
 	};
 
@@ -127,7 +132,7 @@ class MySketch {
 		});
 	};
 
-	// TODO: Improve with different widget types
+	// TODO: This needs more cowbell (aka, why the heck are we getting weird stuff there?)
 	spawn = (x, y, letter) => {
 		if(letter == '\\frac{a}{b}') {
 			let s = new Fraction(this.p, this);
@@ -136,6 +141,11 @@ class MySketch {
 			this.symbols.push(s);
 		} else if(letter == '(x)') {
 			let s = new Brackets(this.p, this, 'round');
+			s.position.x = x;
+			s.position.y = y;
+			this.symbols.push(s);
+		} else if(letter == '\\sqrt{x}') {
+			var s = new Radix(this.p, this);
 			s.position.x = x;
 			s.position.y = y;
 			this.symbols.push(s);
@@ -170,6 +180,9 @@ class MySketch {
 				break;
 			case "Brackets":
 				w = new Brackets(this.p, this, node["properties"]["type"]);
+				break;
+			case "Radix":
+				w = new Radix(this.p, this);
 				break;
 			default: // this would be a Widget...
 				break;

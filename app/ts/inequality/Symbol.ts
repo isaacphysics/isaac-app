@@ -2,6 +2,7 @@ import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
+/** A class for representing variables and constants (aka, letters). */
 export
 class Symbol extends Widget {
 

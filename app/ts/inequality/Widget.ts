@@ -137,7 +137,7 @@ abstract class Widget {
 		if(window.location.hash === "#debug") {
 			var box = this.boundingBox();
 			this.p.stroke(255, 0, 0, 64);
-			//this.p.rect(box.x, box.y, box.w, box.h);
+			this.p.rect(box.x, box.y, box.w, box.h);
 
 			var subtreeBox = this.subtreeBoundingBox();
 			this.p.stroke(0, 0, 255, 64);
