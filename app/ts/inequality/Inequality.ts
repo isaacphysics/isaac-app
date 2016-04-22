@@ -27,6 +27,7 @@ import { BinaryOperation } from './BinaryOperation.ts';
 import { Fraction } from './Fraction.ts';
 import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
+import { Number } from './Number.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -81,6 +82,7 @@ class MySketch {
 		// _.each(subtreeObjects, subtreeObject => {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
+        /*
 		this.parseSubtreeObject({
 			type: 'Radix',
 			position: { x:this.width*0.45, y:this.height/2 },
@@ -120,9 +122,14 @@ class MySketch {
 			position: { x:300, y:650 },
 			properties: { type: 'round' }
 		});
+		*/
 		this.parseSubtreeObject({
-			type: 'Radix',
-			position: { x:500, y:650 }
+			type: 'Number',
+			position: { x:500, y:650 },
+            properties: {
+                significand: 56,
+                exponent: 6,
+            }
 		});
 	};
 
@@ -156,6 +163,9 @@ class MySketch {
                         break;
                     case "binaryOp":
                         this.potentialSymbol = new BinaryOperation(this.p, this, spec.token);
+                        break;
+                    case "number":
+                        this.potentialSymbol = new Number(this.p, this, spec.significand, spec.exponent);
                         break;
                     default:
                         throw new Error("Unknown widget type: " + spec.type);
@@ -226,6 +236,9 @@ class MySketch {
 			case "Radix":
 				w = new Radix(this.p, this);
 				break;
+            case "Number":
+                w = new Number(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
+                break;
 			default: // this would be a Widget...
 				break;
 		}

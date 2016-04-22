@@ -49,7 +49,7 @@ define([], function() {
                         scope.currentSymbol.label = scope.currentNumber;
                     } else {
                         scope.currentSymbol = {
-                            type: "symbol",
+                            type: "number",
                             fontSize: 48,
                             label: scope.currentNumber,
                             texLabel: true,
@@ -88,6 +88,8 @@ define([], function() {
                         currentExponent: scope.currentExponent,
                         negate: scope.negate,
                     };
+                    scope.currentSymbol.significand = scope.currentNumber;
+                    scope.currentSymbol.exponent = scope.currentExponent;
                 };
 
                 scope.$watch("currentNumber", updateSymbol);
