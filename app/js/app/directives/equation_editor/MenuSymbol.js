@@ -80,9 +80,7 @@ define([], function() {
 
                     element.css("left", 0);
                     element.css("top", 0);
-
-                    scope.symbol.dragWidth = element.outerWidth();
-
+                    
                     scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);

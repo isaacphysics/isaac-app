@@ -59,8 +59,7 @@ define(function(require) {
                     }
                 });
 
-                scope.$on("spawnSymbol", function($e, symbol, pageX, pageY) {
-                    console.log("spawnSymbol: ", symbol);
+                scope.$on("spawnSymbol", function(_e) {
                 	var offset = element.offset();
                     var width = element.width();
                     var height = element.height();
@@ -71,9 +70,6 @@ define(function(require) {
                         sketch.updatePotentialSymbol(null);
                         return;
                     }
-
-                    // var x = pageX - offset.left - width/2 - scope.canvasOffset.marginLeft;
-                    // var y = pageY - offset.top - height/2 - scope.canvasOffset.marginTop;
 
                     // TODO: Improve with different widget types
                     sketch.commitPotentialSymbol();
@@ -167,9 +163,9 @@ define(function(require) {
                         fontSize: 48,
                         texLabel: true
                     }, {
-                        type: "line",
+                        type: "binaryOp",
                         label: "-",
-                        token: "-",
+                        token: "−",
                         length: 40,
                         texLabel: true
                     }, {

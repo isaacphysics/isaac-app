@@ -143,7 +143,7 @@ class MySketch {
             if (!this.potentialSymbol) {
                 switch(spec.type) {
                     case "symbol":
-                        this.potentialSymbol = new Symbol(this.p, this, spec.letter);
+                        this.potentialSymbol = new Symbol(this.p, this, spec.token);
                         break;
                     case "fraction":
                         this.potentialSymbol = new Fraction(this.p, this);
@@ -153,6 +153,9 @@ class MySketch {
                         break;
                     case "sqrt":
                         this.potentialSymbol = new Radix(this.p, this);
+                        break;
+                    case "binaryOp":
+                        this.potentialSymbol = new BinaryOperation(this.p, this, spec.token);
                         break;
                     default:
                         throw new Error("Unknown widget type: " + spec.type);
@@ -311,7 +314,7 @@ class MySketch {
 
 	touchEnded = () => {
 		// TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-		if(p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+		if(this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
 			// Click
 			// Close the menu when touching the canvas
 			this.scope.$broadcast("closeMenus");

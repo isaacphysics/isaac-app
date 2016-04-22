@@ -49,7 +49,7 @@ define([], function() {
                         scope.currentSymbol.label = scope.currentNumber;
                     } else {
                         scope.currentSymbol = {
-                            type: "string",
+                            type: "symbol",
                             fontSize: 48,
                             label: scope.currentNumber,
                             texLabel: true,
@@ -95,19 +95,19 @@ define([], function() {
                 scope.$watch("negate", updateSymbol);
                 scope.$watch("currentExponent", updateInputPadding);
 
-				scope.$on("symbolDrag", function($e, pageX, pageY, deltaX, deltaY) {
+				scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
 					if (pageY > element.offset().top + element.height()) {
                         scope.clearOnClose = false;
 						scope.$emit("triggerCloseMenus");
                         scope.clearOnClose = true;
 					}
 
-                    scope.$emit("newSymbolDrag", pageX, pageY);
+                    scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				})
 
                 scope.$on("symbolDrop", function($e, symbolSpec, pageX, pageY) {
                 	if (pageY > element.offset().top + element.height()) {
-                		scope.$emit("spawnSymbol", symbolSpec, pageX, pageY);
+                		scope.$emit("spawnSymbol");
                 	}
 
                     scope.$emit("newSymbolAbortDrag");

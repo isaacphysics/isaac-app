@@ -45,7 +45,7 @@ define([], function() {
 
                     // If we've dropped outside the menu, spawn this symbol.
                     if (pageY > element.offset().top + element.height()) {
-                        scope.$emit("spawnSymbol", symbol, pageX, pageY, mousePageX, mousePageY);
+                        scope.$emit("spawnSymbol");
                     } else {
                     	scope.$emit("newSymbolAbortDrag");
                     }
