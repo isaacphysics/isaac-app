@@ -55,7 +55,8 @@ define([], function() {
 
 		            	if (scope.doc && scope.doc.id) {
 
-		            		if (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1) {
+		            		// Ensure that there is actually a hash at all first, then see if we match it
+		            		if ($location.hash() && (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1)) {
 
 		            			scope.$emit("ensureVisible");
 
