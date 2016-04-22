@@ -13,16 +13,15 @@ class Symbol extends Widget {
 		return "Symbol";
 	}
 
-	/**
-	 * There's a thing with the baseline and all that... this sort-of fixes it.
-	 *
-	 * @returns {Vector} The position to which a Symbol is meant to be docked from.
-	 */
-	get dockingPoint(): p5.Vector {
-		var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
-		var p = this.p.createVector(0, - box.h / 2);
-		return p;
-	}
+    /**
+     * There's a thing with the baseline and all that... this sort-of fixes it.
+     *
+     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     */
+    get dockingPoint(): p5.Vector {
+        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        return this.p.createVector(0, - box.h / 2);
+    }
 
 	constructor(p:any, s:any, letter:string) {
 		super(p, s);

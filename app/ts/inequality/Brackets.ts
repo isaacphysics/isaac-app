@@ -11,7 +11,7 @@ class Brackets extends Widget {
     private type: string;
 
     get typeAsString(): string {
-        return "Symbol";
+        return "Brackets";
     }
 
     /**
@@ -205,13 +205,21 @@ class Brackets extends Widget {
             widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
+        } else {
+            var p = this.dockingPoints["superscript"].position;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
+            p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
 
-        // TODO Improve massively (see Radix)
+        // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest; // TODO: Tweak this with kerning.
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
+        } else {
+            var p = this.dockingPoints["right"].position;
+            p.y = -this.s.xBox.h / 2;
+            p.x = box.w/2 + this.s.mBox.w / 4 + widest;
         }
     }
 }

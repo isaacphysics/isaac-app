@@ -103,7 +103,9 @@ class Radix extends Widget {
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE);
 
+        // this.p.scale(1.0, 1.5);
         this.p.text('\u221A', 0, 0);
+        // this.p.scale(1,0.75);
 
         this.p.noFill(0).strokeWeight(6*this.scale).stroke(0);
         var box = this.boundingBox();
@@ -183,14 +185,15 @@ class Radix extends Widget {
 
         widest = Math.max(widest, this.s.xBox.w);
 
+        // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = widest + box.w; // TODO: Tweak this with kerning.
+            p.x = widest + box.w;
         } else {
             var p = this.dockingPoints["right"].position;
-            p.y = 0; // FIXME
-            p.x = widest + box.w; // TODO: Tweak this with kerning.
+            p.y = -this.s.xBox.h / 2;
+            p.x = widest + box.w;
         }
     }
 }

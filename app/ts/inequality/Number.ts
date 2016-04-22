@@ -64,7 +64,6 @@ class Number extends Widget {
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
-        //this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, this.scale * 20), 0.75, "subscript");
     }
 
     /**
@@ -145,10 +144,10 @@ class Number extends Widget {
             .text(this.getFullText(), 0, 0);
         this.p.strokeWeight(1);
 
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
+		if (window.location.hash === "#debug") {
+			this.p.stroke(255, 0, 0).noFill();
+			this.p.ellipse(0, 0, 10, 10);
+			this.p.ellipse(0, 0, 5, 5);
 
             this.p.stroke(0, 0, 255).noFill();
             this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
@@ -201,20 +200,21 @@ class Number extends Widget {
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
+        } else {
+            var p = this.dockingPoints["superscript"].position;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12;
+            p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         }
-/*
-        if ("subscript" in boxes) {
-            var p = this.dockingPoints["subscript"].child.position;
-            var w = boxes["subscript"].w;
-            widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + w/2;
-            p.y = this.scale * this.s.mBox.w / 4;
-        }
-*/
+
+        // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest; // TODO: Tweak this with kerning.
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
+        } else {
+            var p = this.dockingPoints["right"].position;
+            p.y = -this.s.xBox.h / 2;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
         }
     }
 }

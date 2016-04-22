@@ -61,6 +61,7 @@ class MySketch {
 		this.p.touchStarted = this.touchStarted;
 		this.p.touchMoved = this.touchMoved;
 		this.p.touchEnded = this.touchEnded;
+		this.p.mouseMoved = this.mouseMoved;
 	}
 
 	preload = () => {
@@ -82,7 +83,6 @@ class MySketch {
 		// _.each(subtreeObjects, subtreeObject => {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
-        /*
 		this.parseSubtreeObject({
 			type: 'Radix',
 			position: { x:this.width*0.45, y:this.height/2 },
@@ -122,7 +122,6 @@ class MySketch {
 			position: { x:300, y:650 },
 			properties: { type: 'round' }
 		});
-		*/
 		this.parseSubtreeObject({
 			type: 'Number',
 			position: { x:500, y:650 },
@@ -215,6 +214,7 @@ class MySketch {
 			w.position.x = root["position"]["x"];
 			w.position.y = root["position"]["y"];
 			this.symbols.push(w);
+			w.shakeIt();
 		}
 	};
 
@@ -353,7 +353,7 @@ class MySketch {
 				}
 			}
 			_.each(this.symbols, symbol => {
-				console.log(symbol.id + " -> " + symbol.getExpression("latex"));
+				console.log(symbol.id + " -> " + symbol.getExpression("python"));
 				this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
 
 				// Pass the LaTeX expression for rendering in the input box
@@ -368,6 +368,13 @@ class MySketch {
 		}
 
 		this.initialTouch = null;
+	};
+
+	mouseMoved = () => {
+		var p = this.p.createVector(this.p.mouseX, this.p.mouseY);
+		_.some(this.symbols, (symbol) => {
+			var hitSymbol = symbol.hit(p);
+		});
 	};
 
 	getExpressionObjects = () => {
