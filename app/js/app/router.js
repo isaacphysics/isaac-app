@@ -128,7 +128,9 @@ define(["angular-ui-router"], function() {
             .state('equality', {
                 url: "/equality",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+                    // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
+                    // we may want to revert this policy at some point.
+                    // requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": { 
