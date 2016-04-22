@@ -37,14 +37,16 @@ define(function(require) {
                     element.find(".top-menu").css({"bottom": scope.equationEditorElement.height()}).removeClass("active-menu");
                 });
 
-                scope.$on("newSymbolDrag", function(_, pageX, pageY) {
+                scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
 
                     scope.draggingNewSymbol = true;
 
                     var tOff = element.find(".trash-button").offset();
                     var tWidth = element.find(".trash-button").width();
                     var tHeight = element.find(".trash-button").height();
-                    scope.trashActive = (pageX > tOff.left && pageX < tOff.left + tWidth && pageY > tOff.top && pageY < tOff.top + tHeight);
+                    scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
+
+                    sketch.updatePotentialSymbol(symbol, pageX, pageY);
                     scope.$digest();
 
                 });
@@ -52,6 +54,7 @@ define(function(require) {
                 scope.$on("newSymbolAbortDrag", function() {
                     if (scope.draggingNewSymbol) {
                         scope.draggingNewSymbol = false;
+                        sketch.updatePotentialSymbol(null);
                         scope.$digest();
                     }
                 });
@@ -65,6 +68,7 @@ define(function(require) {
                     scope.draggingNewSymbol = false;
 
                     if (scope.trashActive) {
+                        sketch.updatePotentialSymbol(null);
                         return;
                     }
 
@@ -72,7 +76,7 @@ define(function(require) {
                     // var y = pageY - offset.top - height/2 - scope.canvasOffset.marginTop;
 
                     // TODO: Improve with different widget types
-                    sketch.spawn(pageX, pageY, symbol.label);
+                    sketch.commitPotentialSymbol();
 
                     scope.$broadcast("historyCheckpoint");
 
@@ -131,9 +135,10 @@ define(function(require) {
                 	for(var i in ss) {
                 		var s = ss[i];
                 		symbols.push({
-                			type: "string",
+                			type: "symbol",
                 			token: s,
                 			label: s,
+                            letter: s,
                 			fontSize: 48,
                             texLabel: true,
                             enableMods: true
@@ -156,7 +161,7 @@ define(function(require) {
                     reducedVars: stringSymbols(["a", "F", "m", "v", "u", "r", "t", "G", "M"]),
 
                     reducedOps: [{
-                        type: "string",
+                        type: "binaryOp",
                         label: "+",
                         token: "+",
                         fontSize: 48,
@@ -168,20 +173,20 @@ define(function(require) {
                         length: 40,
                         texLabel: true
                     }, {
-                        type: "line",
+                        type: "fraction",
                         label: "\\frac{a}{b}",
                         token: ":frac",
                         length: 100,
                         texLabel: true
                     }, {
-                        type: "container",
+                        type: "brackets",
                         subType: "brackets",
                         width: 220,
                         height: 70,
                         label: "(x)",
                         texLabel: true
                     }, {
-                        type: "container",
+                        type: "sqrt",
                         subType: "sqrt",
                         width: 148,
                         height: 60,

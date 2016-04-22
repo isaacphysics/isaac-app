@@ -37,6 +37,7 @@ export
 class MySketch {
 	symbols: Array<Widget>;
 	movingSymbol: Widget = null;
+	potentialSymbol: Widget = null;
 	initialTouch: p5.Vector = null;
 	prevTouch: p5.Vector = null;
 
@@ -130,32 +131,70 @@ class MySketch {
 		_.each(this.symbols, symbol => {
 			symbol.draw();
 		});
+
+        if (this.potentialSymbol) {
+            this.potentialSymbol.draw();
+        }
 	};
 
-	// TODO: This needs more cowbell (aka, why the heck are we getting weird stuff there?)
-	spawn = (x, y, letter) => {
-		if(letter == '\\frac{a}{b}') {
-			let s = new Fraction(this.p, this);
-			s.position.x = x;
-			s.position.y = y;
-			this.symbols.push(s);
-		} else if(letter == '(x)') {
-			let s = new Brackets(this.p, this, 'round');
-			s.position.x = x;
-			s.position.y = y;
-			this.symbols.push(s);
-		} else if(letter == '\\sqrt{x}') {
-			var s = new Radix(this.p, this);
-			s.position.x = x;
-			s.position.y = y;
-			this.symbols.push(s);
-		} else {
-			let s = new Symbol(this.p, this, letter);
-			s.position.x = x;
-			s.position.y = y;
-			this.symbols.push(s);
-		}
+	updatePotentialSymbol = (spec, x?, y?) => {
+		// NB: This logic requires spec to be briefly set to null when switching between potential symbol types.
+        if (spec) {
+            if (!this.potentialSymbol) {
+                switch(spec.type) {
+                    case "symbol":
+                        this.potentialSymbol = new Symbol(this.p, this, spec.letter);
+                        break;
+                    case "fraction":
+                        this.potentialSymbol = new Fraction(this.p, this);
+                        break;
+                    case "brackets":
+                        this.potentialSymbol = new Brackets(this.p, this, 'round');
+                        break;
+                    case "sqrt":
+                        this.potentialSymbol = new Radix(this.p, this);
+                        break;
+                    default:
+                        throw new Error("Unknown widget type: " + spec.type);
+                }
+
+                this.visibleDockingPointTypes = this.potentialSymbol.docksTo;
+
+            }
+            this.potentialSymbol.position.x = x - this.potentialSymbol.boundingBox().w*0.5;
+            this.potentialSymbol.position.y = y;
+            
+            // Decide whether we should dock immediately
+
+            _.some(this.symbols, (symbol: Widget) => {
+                this.activeDockingPoint = null;
+
+                if(symbol != null) {
+                    // TODO: This is broken. Make sure we don't hit docking points of the wrong type
+                    if (this.activeDockingPoint = symbol.dockingPointsHit(this.potentialSymbol)) {
+                        // We have hit a docking point, short-circuit the rest of this loop, because we
+                        // don't care if we hit another one.
+                        return true;
+                    }
+                }
+            });
+
+        } else {
+            this.potentialSymbol = null;
+            this.visibleDockingPointTypes = [];
+        }
 	};
+
+    commitPotentialSymbol = () => {
+        // Make sure we have an active docking point, and that the moving symbol can dock to it.
+        if (this.activeDockingPoint != null && this.potentialSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+            this.activeDockingPoint.child = this.potentialSymbol;
+        } else {
+            this.symbols.push(this.potentialSymbol);
+        }
+
+        this.updatePotentialSymbol(null);
+    };
 
 	parseSubtreeObject = (root: Object) => {
 		if(root) {
@@ -259,6 +298,7 @@ class MySketch {
 				var touchPoint = this.p.createVector(this.p.touchX, this.p.touchY);
 				// This is less refined than doing the proximity detection thing, but works much better (#4)
 				if(symbol != null && symbol.id != this.movingSymbol.id) {
+                    // TODO: This is broken. Make sure we don't hit docking points of the wrong type
 					if (this.activeDockingPoint = symbol.dockingPointsHit(this.movingSymbol)) {
 						// We have hit a docking point, short-circuit the rest of this loop, because we
 						// don't care if we hit another one.

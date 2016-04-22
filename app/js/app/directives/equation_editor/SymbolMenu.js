@@ -14,7 +14,7 @@ define([], function() {
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
-				var absorbSymbolDrag = function($e, pageX, pageY, deltaX, deltaY) {
+				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
 
 					bufferedLeft += deltaX;
 
@@ -37,15 +37,15 @@ define([], function() {
 						scope.$emit("triggerCloseMenus");
 					}
 
-					scope.$emit("newSymbolDrag", pageX, pageY);
+					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				}
 
-				var abortSymbolDrag = function($e, symbol, pageX, pageY) {
+				var abortSymbolDrag = function($e, symbol, pageX, pageY, mousePageX, mousePageY) {
 					bufferedLeft = parseFloat(lst.css("left"));
 
                     // If we've dropped outside the menu, spawn this symbol.
                     if (pageY > element.offset().top + element.height()) {
-                        scope.$emit("spawnSymbol", symbol, pageX, pageY);
+                        scope.$emit("spawnSymbol", symbol, pageX, pageY, mousePageX, mousePageY);
                     } else {
                     	scope.$emit("newSymbolAbortDrag");
                     }
@@ -53,8 +53,8 @@ define([], function() {
 
 				abortSymbolDrag();
 
-				scope.$on("symbolDrag", absorbSymbolDrag)
-				scope.$on("symbolDrop", abortSymbolDrag)
+				scope.$on("symbolDrag", absorbSymbolDrag);
+				scope.$on("symbolDrop", abortSymbolDrag);
 			},
 		};
 	}];

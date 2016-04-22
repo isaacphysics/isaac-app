@@ -12,11 +12,6 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name="MENUSYMBOL"
 
-                scope.$watch("symbol.token", function(newt) {
-                    if (newt && scope.symbol.type == "string")
-                        katex.render(scope.symbol.token, element.find(".symbol-token>span")[0]);
-                });
-
                 scope.$watch("symbol.label", function(newLabel) {
                     if (newLabel && scope.symbol.texLabel)
                         katex.render(scope.symbol.label, element.find(".symbol-label")[0]);
@@ -55,8 +50,16 @@ define([], function() {
                     if ("lockVertical" in attrs)
                         pageY = lastPageY;
 
+                    var requiredPageLeft = pageX - grabLocalX;
+                    var requiredPageTop = pageY - grabLocalY;
+
+                    var offset = element.offset();
+
+                    var pX = pageX - offset.top;
+                    var pY = pageY - offset.left;
+
                     // Tell our parents that we've moved.
-                    scope.$emit("symbolDrag", pageX, pageY, pageX - lastPageX, pageY - lastPageY);
+                    scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop, pageX - lastPageX, pageY - lastPageY, pageX, pageY);
                     lastPageX = pageX;
                     lastPageY = pageY;
 
@@ -64,9 +67,6 @@ define([], function() {
                     element.css("left", 0);
                     element.css("top", 0);
                     var originOffset = element.offset();
-
-                    var requiredPageLeft = pageX - grabLocalX;
-                    var requiredPageTop = pageY - grabLocalY;
 
                     element.css("left", requiredPageLeft - originOffset.left);
                     element.css("top", requiredPageTop - originOffset.top);
@@ -82,8 +82,8 @@ define([], function() {
                     element.css("top", 0);
 
                     scope.symbol.dragWidth = element.outerWidth();
-                    // TODO: Work out why the "-1" is necessary here...
-                    scope.$emit("symbolDrop", scope.symbol, tokenOffset.left + token.width() / 2 - 1, tokenOffset.top + token.height() / 2 - 1);
+
+                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
                     $("body").off("touchend", touchend);
