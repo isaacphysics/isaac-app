@@ -12,7 +12,7 @@
 				<th>List of Error Messages</th>
 			</tr>
 			<tr ng-repeat="errorRecord in errorMap.errorsList | orderBy:searchSortPredicate:reverse">
-				<td class="error"><a href="{{editorPath + errorRecord.partialContent.canonicalSourceFile}}" target="_blank">{{errorRecord.partialContent.title}}</a></td>
+				<td class="error"><a href="{{editorPath + errorRecord.partialContent.canonicalSourceFile}}" target="_blank">{{errorRecord.partialContent.title || errorRecord.partialContent.id}}</a></td>
 				<td>{{errorRecord.successfulIngest}}</td>
 				<td style="height:100px; overflow:scroll;"><ul><li style="width:500px;" ng-repeat="error in errorRecord.listOfErrors track by $index">{{error}}</li></ul></td>
 			</tr>

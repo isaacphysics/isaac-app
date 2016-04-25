@@ -230,7 +230,7 @@
                             <div  class="large-6 columns">
                                 <label for="account-password2" ng-class="{'disabled' : !password1}"><strong>Confirm password</strong></label>
                                 <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!password1" match="password1" ng-model="password2" name="password2">
-                                <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent">
+                                <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent && editingSelf">
                                     Current password not provided
                                 </span>
                                 <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">

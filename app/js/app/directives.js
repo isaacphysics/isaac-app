@@ -217,7 +217,7 @@ define(function(require) {
 				scope.$on("accordionSectionOpened", function(e,i) {
 					if (scope.accordionSection == i && !e.foundSection) {
 						$timeout(function() {
-							$("body").animate({
+							$("html,body").animate({
 				                scrollTop: element.offset().top
 				            }, 1000);        
 						});

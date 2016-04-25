@@ -55,20 +55,25 @@ define([], function() {
 
 		            	if (scope.doc && scope.doc.id) {
 
-		            		if (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1) {
+		            		// Ensure that there is actually a hash at all first, then see if we match it
+		            		if ($location.hash() && (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1)) {
 
 		            			scope.$emit("ensureVisible");
 
+		            			var element = iElement.closest("dd");
+		            			if (null == element) {
+		            				element = iElement;
+		            			}
+
 								$timeout(function() {
-									$("body").animate({
-						                scrollTop: iElement.offset().top
-						            }, 1000);        
+									$("html,body").animate({
+										// Use accordion section containing object, the 'dd' element:
+						                scrollTop: element.offset().top
+						            });        
 								});
 		            		}
 		            	}
 	            	});
-
-
 	            });
 	        }
 		};
