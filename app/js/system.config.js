@@ -51,7 +51,7 @@ System.config({
         "lodash": 'bower_components/lodash/dist/lodash.min.js',  
         "typescript": 'js/lib/typescript.js',
         "reflect": 'bower_components/reflect-metadata/Reflect.js',
-        "inequality": 'ts/inequality/inequality.ts',
+        "inequality": 'ts/inequality/Inequality.ts',
     },
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.
