@@ -57,7 +57,7 @@ System.config({
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.
     meta: {
-        'app/*': { deps: ['jquery'], format: 'amd' },
+        'app/*': { deps: ['jquery', 'p5'], format: 'amd' },
         'lib/*': { format: 'global' },
 
         "inequality": { deps: ['p5'] },
