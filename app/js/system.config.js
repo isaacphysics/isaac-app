@@ -52,22 +52,19 @@ System.config({
         "typescript": 'js/lib/typescript.js',
         "reflect": 'bower_components/reflect-metadata/Reflect.js',
         "inequality": 'ts/inequality/Inequality.ts',
+        "p5": "js/lib/p5.min.js",
     },
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.
     meta: {
-        'typescript': {
-            deps: ['reflect']
-        },
-        'reflect': {
-            format: 'global',
-        },
-        'lib/*': {
-            format: 'global',
-        },
-        'angular': { format: 'global' },
-        'fastclick': { format: 'global' },
+        'app/*': { deps: ['jquery'], format: 'amd' },
+        'lib/*': { format: 'global' },
 
+        "inequality": { deps: ['p5'] }
+
+        'typescript': { deps: ['reflect'] },
+        'reflect': { format: 'global' },
+        'fastclick': { format: 'global' },
         "foundation": { deps: ['jquery', 'modernizr'], format: 'global'},
         "owl-carousel2" : { deps: ['jquery', 'angular', 'foundation'], format: 'global'},
         "angular-resource": { deps: ['angular'], format: 'global'},
@@ -82,14 +79,6 @@ System.config({
         "lib/showdown/extensions/table": { deps: ["lib/showdown/showdown"], format: 'global'},
         "templates": { deps: ['angular'], format: 'global'},
         "lib/opentip-jquery": { deps: ['angular'], format: 'global'},
-
-        "inequality": {
-            deps: ['lib/p5.min.js']
-        },
-
-        'app/*': {
-            deps: ['jquery'],
-            format: 'amd',
-        }
+        "p5": { format: 'global' },
     }
 });
