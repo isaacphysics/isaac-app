@@ -60,7 +60,7 @@ System.config({
         'app/*': { deps: ['jquery'], format: 'amd' },
         'lib/*': { format: 'global' },
 
-        "inequality": { deps: ['p5'] }
+        "inequality": { deps: ['p5'] },
 
         'typescript': { deps: ['reflect'] },
         'reflect': { format: 'global' },
