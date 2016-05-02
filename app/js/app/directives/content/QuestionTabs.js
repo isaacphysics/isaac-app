@@ -132,7 +132,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.$watch("selectedChoice", function(newVal, oldVal) {
 					if (newVal === oldVal)
 						return; // Init
-
+					scope.previousAnswerChoice = null;
 					delete scope.validationResponse;
 				}, true);
 
