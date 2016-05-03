@@ -91,7 +91,7 @@ class MySketch {
 				argument: {
 					type: 'Symbol',
 					position: { x:0, y:0 },
-					properties: { letter: 'A' },
+					properties: { letter: 'Argument' },
 					children: {
 						right: {
 							type: 'Symbol',
@@ -119,16 +119,30 @@ class MySketch {
 		});
 		this.parseSubtreeObject({
 			type: 'Brackets',
-			position: { x:300, y:650 },
+			position: { x:100, y:250 },
 			properties: { type: 'round' }
 		});
 		this.parseSubtreeObject({
 			type: 'Number',
 			position: { x:500, y:650 },
-            properties: {
-                significand: 56,
-                exponent: 6,
-            }
+			properties: {
+				significand: 56,
+				exponent: 6,
+			}
+		});
+		this.parseSubtreeObject({
+			type: 'Symbol',
+			position: { x:300, y:450 },
+			properties: {
+				letter: 'e'
+			}
+		});
+		this.parseSubtreeObject({
+			type: 'Symbol',
+			position: { x:300, y:650 },
+			properties: {
+				letter: 'e'
+			}
 		});
 	};
 
@@ -315,9 +329,11 @@ class MySketch {
 				// This is less refined than doing the proximity detection thing, but works much better (#4)
 				if(symbol != null && symbol.id != this.movingSymbol.id) {
                     // TODO: This is broken. Make sure we don't hit docking points of the wrong type
+					symbol.highlight(false);
 					if (this.activeDockingPoint = symbol.dockingPointsHit(this.movingSymbol)) {
 						// We have hit a docking point, short-circuit the rest of this loop, because we
 						// don't care if we hit another one.
+						symbol.highlight(true);
 						return true;
 					}
 				}
@@ -373,7 +389,11 @@ class MySketch {
 	mouseMoved = () => {
 		var p = this.p.createVector(this.p.mouseX, this.p.mouseY);
 		_.some(this.symbols, (symbol) => {
+			symbol.highlight(false);
 			var hitSymbol = symbol.hit(p);
+			if(hitSymbol) {
+				hitSymbol.highlight(true);
+			}
 		});
 	};
 

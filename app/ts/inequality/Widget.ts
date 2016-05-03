@@ -73,6 +73,9 @@ abstract class Widget {
 	/** Convenience pointer to this widget's parent */
 	parentWidget: Widget = null;
 
+	isHighlighted = false;
+	color = null;
+
 	get typeAsString(): string {
 		return "Widget";
 	}
@@ -84,6 +87,8 @@ abstract class Widget {
 		this.p = p;
 		// Default position is [0, 0]
 		this.position = p.createVector(0, 0);
+
+		this.color = this.p.color(0);
 
 		this.generateDockingPoints();
 	}
@@ -261,6 +266,19 @@ abstract class Widget {
 	}
 
 	/**
+	 * Turns on and off highlight recursively.
+	 */
+	highlight(on = true) {
+		this.isHighlighted = on;
+		this.color = on ? this.p.color(0, 127, 255) : this.p.color(0);
+		_.each(this.dockingPoints, dockingPoint => {
+			if(dockingPoint.child != null) {
+				dockingPoint.child.highlight(on);
+			}
+		})
+	}
+
+	/**
 	 * Overlapping test for this widget's docking points.
 	 *
 	 * @param w The overlapping Widget
@@ -294,7 +312,7 @@ abstract class Widget {
 			_.each(hitPoints, hp => {
 				var hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
 				var currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
-				if(p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
+				if (p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
 					hitPoint = hp;
 				}
 			});

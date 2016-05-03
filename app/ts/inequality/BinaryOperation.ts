@@ -83,7 +83,7 @@ class BinaryOperation extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.fill(0).strokeWeight(0).noStroke();
+        this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize*0.8 * this.scale)

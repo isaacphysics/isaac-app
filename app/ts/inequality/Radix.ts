@@ -97,7 +97,7 @@ class Radix extends Widget {
         if(this.dockingPoints['argument'].child) {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
         }
-        this.p.fill(0).strokeWeight(0).noStroke();
+        this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
@@ -107,7 +107,7 @@ class Radix extends Widget {
         this.p.text('\u221A', 0, 0);
         // this.p.scale(1,0.75);
 
-        this.p.noFill(0).strokeWeight(6*this.scale).stroke(0);
+        this.p.noFill(0).strokeWeight(6*this.scale).stroke(this.color);
         var box = this.boundingBox();
         var y =  box.y + 3*this.scale;
         this.p.line(box.x+box.w, y, argWidth+this.scale*box.w/2, y);
@@ -166,11 +166,16 @@ class Radix extends Widget {
 
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
-            var w = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
-            p.x = box.w/2 + this.s.xBox.w/2;
+            widest = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
+            p.x = box.w/2 + boxes["argument"].w/2;
             p.y = 0;
-            widest += w;
+        } else {
+            var p = this.dockingPoints["argument"].position;
+            p.x = box.w/2 + this.s.xBox.w/2;
+            p.y = -this.s.xBox.h/2;
         }
+
+        box = this.boundingBox();
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
@@ -183,17 +188,18 @@ class Radix extends Widget {
             p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
 
+        box = this.boundingBox();
         widest = Math.max(widest, this.s.xBox.w);
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = widest + box.w;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;
-            p.x = widest + box.w;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
         }
     }
 }

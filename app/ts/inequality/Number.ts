@@ -136,7 +136,7 @@ class Number extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.fill(0).strokeWeight(0).noStroke();
+        this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
@@ -210,7 +210,7 @@ class Number extends Widget {
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;

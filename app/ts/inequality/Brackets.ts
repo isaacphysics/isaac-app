@@ -121,7 +121,7 @@ class Brackets extends Widget {
         if(this.dockingPoints['argument'].child) {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
         }
-        this.p.fill(0).strokeWeight(0).noStroke();
+        this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
