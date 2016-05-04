@@ -35,7 +35,7 @@
 					scope.toastDescription = description;
 					scope.toastType = toastType;
 					scope.toastNotificationVisible = true;
-					scope.toastTimeouts = setTimeout(scope.hideToast, 4000);
+					scope.toastTimeouts = setTimeout(scope.hideToast, 5000);
 
 					element.children("div").css("visibility","visible");
 				};
