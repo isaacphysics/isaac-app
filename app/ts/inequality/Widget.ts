@@ -270,7 +270,7 @@ abstract class Widget {
 	 */
 	highlight(on = true) {
 		this.isHighlighted = on;
-		this.color = on ? this.p.color(0, 127, 255) : this.p.color(0);
+		this.color = on ? this.p.color(102, 153, 204) : this.p.color(0);
 		_.each(this.dockingPoints, dockingPoint => {
 			if(dockingPoint.child != null) {
 				dockingPoint.child.highlight(on);

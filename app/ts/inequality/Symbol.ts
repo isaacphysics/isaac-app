@@ -44,8 +44,8 @@ class Symbol extends Widget {
         var descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, this.scale * 20), 0.75, "subscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.75, "exponent");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.75, "subscript");
     }
 
     /**
@@ -176,27 +176,35 @@ class Symbol extends Widget {
             var p = this.dockingPoints["superscript"].child.position;
             var w = boxes["superscript"].w;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
-            p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
-        }
+            p.x = box.w / 2 + this.scale * 20 + w/2;
+            p.y = -(box.h - descent - this.scale * 20);
+        } else {
+			var p = this.dockingPoints["superscript"].position;
+			p.x = box.w / 2 + this.scale * 20;
+			p.y = -this.scale*this.s.mBox.h;
+		}
 
-        if ("subscript" in boxes) {
+		if ("subscript" in boxes) {
             var p = this.dockingPoints["subscript"].child.position;
             var w = boxes["subscript"].w;
             widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + w/2;
+			p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = this.scale * this.s.mBox.w / 4;
-        }
+        } else {
+			var p = this.dockingPoints["subscript"].position;
+			p.x = box.w / 2 + this.scale * 20;
+			p.y = descent;
+		}
 
 		// TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
+			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
         } else {
 			var p = this.dockingPoints["right"].position;
+			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
 			p.y = -this.s.xBox.h / 2;
-			p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
 		}
 	}
 }
