@@ -28,8 +28,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			link: function(scope, element, attrs, ctrls, transclude) {
 
-				scope.previousAnswerChoice = null;
-
 				if (scope.accordionChildMetrics) {
 					scope.accordionChildMetrics.questionCount++;
 				}
@@ -68,10 +66,12 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.state.gameBoardCompletedPerfect = false;					
 				}
 
+				// A flag to prevent someone clicking submit multiple times without changing their answer.
+				var canSubmit = true;
+
 				scope.checkAnswer = function() {
-					// Check the answer is not blank, and ensure not the same as the previous attempt.
-					if (scope.selectedChoice != null && scope.selectedChoice != scope.previousAnswerChoice) {
-						scope.previousAnswerChoice = scope.selectedChoice;
+					if (scope.selectedChoice != null && canSubmit) {
+						canSubmit = false;
 
 						if (scope.doc.type == "isaacSymbolicQuestion") {
 							var symbols = JSON.parse(scope.selectedChoice.value).symbols;
@@ -124,7 +124,7 @@ define(["app/honest/responsive_video"], function(rv) {
 							console.error("Error validating answer:", e);
 							scope.showToast(scope.toastTypes.Failure, "Can't Submit Answer", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 							// If an error, after a little while allow them to submit the same answer again.
-							setTimeout(function() {scope.previousAnswerChoice = null;}, 5000);
+							setTimeout(function() { canSubmit = true; }, 5000);
 						});
 
 					} else {
@@ -135,7 +135,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.$watch("selectedChoice", function(newVal, oldVal) {
 					if (newVal === oldVal)
 						return; // Init
-					scope.previousAnswerChoice = null;
+					canSubmit = true;
 					delete scope.validationResponse;
 				}, true);
 
