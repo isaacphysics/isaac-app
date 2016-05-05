@@ -88,7 +88,7 @@ class Fraction extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.noFill(this.color).strokeWeight(6*this.scale).stroke(0);
+        this.p.noFill().strokeWeight(6*this.scale).stroke(this.color);
 
         var box = this.boundingBox();
         this.p.line(-box.w/2, -box.h/2, box.w/2, -box.h/2);

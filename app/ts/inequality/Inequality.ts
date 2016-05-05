@@ -83,67 +83,89 @@ class MySketch {
 		// _.each(subtreeObjects, subtreeObject => {
 		// 	this.parseSubtreeObject(subtreeObject);
 		// });
-		this.parseSubtreeObject({
-			type: 'Radix',
-			position: { x:this.width*0.45, y:this.height/2 },
-			properties: { type: 'round' },
-			children: {
-				argument: {
-					type: 'Symbol',
-					position: { x:0, y:0 },
-					properties: { letter: 'Argument' },
-					children: {
-						right: {
-							type: 'Symbol',
-							position: { x:0, y:0 },
-							properties: { letter: 'g' }
-						},
-						superscript: {
-							type: 'Symbol',
-							position: { x:0, y:0 },
-							properties: { letter: 'r' }
-						}
-					}
-				},
-				// superscript: {
-				// 	type: 'Symbol',
-				// 	position: { x:0, y:0 },
-				// 	properties: { letter: 'e' }
-				// },
-				right: {
-					type: 'Symbol',
-					position: { x:0, y:0 },
-					properties: { letter: 'm' }
-				}
-			},
-		});
-		this.parseSubtreeObject({
-			type: 'Brackets',
-			position: { x:100, y:250 },
-			properties: { type: 'round' }
-		});
-		this.parseSubtreeObject({
-			type: 'Number',
-			position: { x:500, y:650 },
-			properties: {
-				significand: 56,
-				exponent: 6,
-			}
-		});
-		this.parseSubtreeObject({
-			type: 'Symbol',
-			position: { x:300, y:450 },
-			properties: {
-				letter: 'e'
-			}
-		});
-		this.parseSubtreeObject({
-			type: 'Symbol',
-			position: { x:300, y:650 },
-			properties: {
-				letter: 'e'
-			}
-		});
+		// this.parseSubtreeObject({
+		// 	type: 'Radix',
+		// 	position: { x:this.width*0.45, y:this.height/2 },
+		// 	children: {
+		// 		argument: {
+		// 			type: 'Fraction',
+		// 			position: { x:0, y:0 },
+		// 			children: {
+		// 				numerator: {
+		// 					type: 'Symbol',
+		// 					position: { x:0, y:0 },
+		// 					properties: { letter: 'F' }
+		// 				},
+		// 				denominator: {
+		// 					type: 'Symbol',
+		// 					position: { x:0, y:0 },
+		// 					properties: { letter: 'G' }
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// });
+		// this.parseSubtreeObject({
+		// 	type: 'Radix',
+		// 	position: { x:this.width*0.45, y:this.height/2 },
+		// 	properties: { type: 'round' },
+		// 	children: {
+		// 		argument: {
+		// 			type: 'Symbol',
+		// 			position: { x:0, y:0 },
+		// 			properties: { letter: 'Argument' },
+		// 			children: {
+		// 				right: {
+		// 					type: 'Symbol',
+		// 					position: { x:0, y:0 },
+		// 					properties: { letter: 'g' }
+		// 				},
+		// 				superscript: {
+		// 					type: 'Symbol',
+		// 					position: { x:0, y:0 },
+		// 					properties: { letter: 'r' }
+		// 				}
+		// 			}
+		// 		},
+		// 		// superscript: {
+		// 		// 	type: 'Symbol',
+		// 		// 	position: { x:0, y:0 },
+		// 		// 	properties: { letter: 'e' }
+		// 		// },
+		// 		right: {
+		// 			type: 'Symbol',
+		// 			position: { x:0, y:0 },
+		// 			properties: { letter: 'm' }
+		// 		}
+		// 	},
+		// });
+		// this.parseSubtreeObject({
+		// 	type: 'Brackets',
+		// 	position: { x:100, y:250 },
+		// 	properties: { type: 'round' }
+		// });
+		// this.parseSubtreeObject({
+		// 	type: 'Number',
+		// 	position: { x:500, y:650 },
+		// 	properties: {
+		// 		significand: 56,
+		// 		exponent: 6,
+		// 	}
+		// });
+		// this.parseSubtreeObject({
+		// 	type: 'Symbol',
+		// 	position: { x:300, y:450 },
+		// 	properties: {
+		// 		letter: 'e'
+		// 	}
+		// });
+		// this.parseSubtreeObject({
+		// 	type: 'Symbol',
+		// 	position: { x:300, y:650 },
+		// 	properties: {
+		// 		letter: 'e'
+		// 	}
+		// });
 	};
 
 	draw = () => {

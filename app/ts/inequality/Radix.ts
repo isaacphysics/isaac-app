@@ -9,6 +9,8 @@ class Radix extends Widget {
 
     protected s: any;
 
+    private baseHeight: number;
+
     get typeAsString(): string {
         return "Symbol";
     }
@@ -29,6 +31,7 @@ class Radix extends Widget {
         this.s = s;
 
         this.docksTo = ['symbol', 'operator', 'exponent'];
+        this.baseHeight = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize).h;
     }
 
     /**
@@ -94,8 +97,10 @@ class Radix extends Widget {
     /** Paints the widget on the canvas. */
     _draw() {
         var argWidth = this.s.xBox.w;
+        var argHeight = this.baseHeight;
         if(this.dockingPoints['argument'].child) {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
+            argHeight = this.dockingPoints['argument'].child.subtreeBoundingBox().h;
         }
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
@@ -103,9 +108,11 @@ class Radix extends Widget {
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE);
 
-        // this.p.scale(1.0, 1.5);
+
+
+        // this.p.scale(1.0, argHeight/this.baseHeight);
         this.p.text('\u221A', 0, 0);
-        // this.p.scale(1,0.75);
+        // this.p.scale(1.0, this.baseHeight/argHeight);
 
         this.p.noFill(0).strokeWeight(6*this.scale).stroke(this.color);
         var box = this.boundingBox();
@@ -132,7 +139,12 @@ class Radix extends Widget {
      */
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w/2, box.y - 1000, box.w, box.h);
+        var argHeight = 0;
+        // Hooray for short-circuit evaluation?
+        if(this.dockingPoints['argument'] && this.dockingPoints['argument'].child && this.dockingPoints['argument'].child.subtreeBoundingBox().h > argHeight) {
+            // argHeight = this.dockingPoints['argument'].child.subtreeBoundingBox().h;
+        }
+        return new Rect(-box.w/2, box.y - 1000 - argHeight/2, box.w, box.h + argHeight);
     }
 
     /**
