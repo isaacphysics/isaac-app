@@ -197,29 +197,31 @@ class Brackets extends Widget {
             p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w/2 + w/2;
             p.y = 0;
             widest += w;
+        } else {
+            this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h/2);
         }
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
             var w = boxes["superscript"].w;
-            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
+            // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         } else {
             var p = this.dockingPoints["superscript"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12;
             p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
         } else {
             var p = this.dockingPoints["right"].position;
+            p.x = box.w/2 + this.s.mBox.w / 4;
             p.y = -this.s.xBox.h / 2;
-            p.x = box.w/2 + this.s.mBox.w / 4 + widest;
         }
     }
 }
