@@ -39,7 +39,8 @@ class Fraction extends Widget {
     generateDockingPoints() {
         var box = this.boundingBox();
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + 25, -box.h/2), 1, "symbol");
+        // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale*this.s.mBox.w/4, -box.h/2), 1, "symbol");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol");
         this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol");
     }
@@ -164,8 +165,12 @@ class Fraction extends Widget {
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.y = 0;//(boxes["right"].h + boxes["right"].y);
             p.x = this.width / 2 + boxes["right"].w / 2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
+            p.y = 0;
+        } else {
+            var p = this.dockingPoints["right"].position;
+            p.x = this.width / 2 + this.scale*this.s.mBox.w/4;
+            p.y = -this.boundingBox().h/2;
         }
     }
 }
