@@ -279,6 +279,8 @@ class MySketch {
 					}
 				}
 			});
+
+            this.scope.notifySymbolDrag(this.p.touchX, this.p.touchY);
 		}
 	};
 
@@ -346,8 +348,8 @@ class MySketch {
 		if (symbolWithMostChildren != null) {
 			this.scope.newEditorState({
 				result: {
-					"tex": symbolWithMostChildren.getExpression("latex"),
-					"python": symbolWithMostChildren.getExpression("python")
+					"tex": symbolWithMostChildren.getExpression("latex").trim(),
+					"python": symbolWithMostChildren.getExpression("python").trim()
 				},
 				symbols: _.map(this.symbols, s => s.subtreeObject()),
 			})
