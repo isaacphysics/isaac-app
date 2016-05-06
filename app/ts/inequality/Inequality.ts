@@ -54,7 +54,7 @@ class MySketch {
 
 	private newExpressionCallback = null;
 
-	constructor(private p, private scope, private width, private height) {
+	constructor(private p, private scope, private width, private height, private initialSymbolsToParse) {
 		this.p.preload = this.preload;
 		this.p.setup = this.setup;
 		this.p.draw = this.draw;
@@ -77,6 +77,11 @@ class MySketch {
 		this.p.createCanvas(this.width, this.height);
 
 		this.prevTouch = this.p.createVector(0,0);
+
+        _.each(this.initialSymbolsToParse || [], s => {
+            this.parseSubtreeObject(s);
+        });
+
 
 		// // FIXME This is for testing purposes only.
 		// var subtreeObjects = JSON.parse('[{"type":"Symbol","position":{"x":185,"y":308},"expression":{"latex":"M−\\\\frac{x+j}{i} ","python":"M−((x+j)/(i))"},"children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Symbol","properties":{"letter":"j"}}},"properties":{"operation":"+"}}},"properties":{"letter":"x"}},"denominator":{"type":"Symbol","properties":{"letter":"i"}}}}},"properties":{"operation":"−"}}},"properties":{"letter":"M"}}]');
@@ -390,15 +395,32 @@ class MySketch {
 					this.activeDockingPoint.child = this.movingSymbol;
 				}
 			}
+
+            var symbolWithMostChildren = null;
+            var mostChildren = 0;
 			_.each(this.symbols, symbol => {
 				console.log(symbol.id + " -> " + symbol.getExpression("python"));
-				this.scope.newExpressionCallback(symbol.getExpression("latex").replace(/−/g, "-"));
-
-				// Pass the LaTeX expression for rendering in the input box
-				this.scope.state.inequalityResult = symbol.getExpression("latex").replace(/−/g, "-");
-				// Store the subtree object for restoring when opening the editor
-				this.scope.state.symbols = symbol.subtreeObject();
+                var numChildren = symbol.getTotalSymbolCount();
+                if (numChildren > mostChildren) {
+                    mostChildren = numChildren;
+                    symbolWithMostChildren = symbol;
+                }
 			});
+
+            if (symbolWithMostChildren != null) {
+                this.scope.newEditorState({
+                    result: {
+                        "tex": symbolWithMostChildren.getExpression("latex").replace(/−/g, "-"),
+                        "python": symbolWithMostChildren.getExpression("python")
+                    },
+                    symbols: _.map(this.symbols, s => s.subtreeObject()),
+                })
+            } else {
+                this.scope.newEditorState({
+                    result: null,
+                    symbols: [],
+                })
+            }
 
 			this.movingSymbol = null;
 			this.activeDockingPoint = null;
@@ -410,7 +432,7 @@ class MySketch {
 
 	mouseMoved = () => {
 		var p = this.p.createVector(this.p.mouseX, this.p.mouseY);
-		_.some(this.symbols, (symbol) => {
+		_.each(this.symbols, (symbol: Symbol) => {
 			symbol.highlight(false);
 			var hitSymbol = symbol.hit(p);
 			if(hitSymbol) {

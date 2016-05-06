@@ -34,7 +34,7 @@ define([], function() {
 					lst.css("left", newLeft);
 
 					if (pageY > element.offset().top + element.height()) {
-						scope.$emit("triggerCloseMenus");
+						//scope.$emit("triggerCloseMenus");
 					}
 
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);

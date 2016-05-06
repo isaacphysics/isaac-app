@@ -6,5 +6,11 @@
 <div class="row">
     <div class="small-16 columns">
         <div equation-input state="eqnState"></div>
+        <div ng-if="eqnState.result">
+            <h3>Python</h3>
+            <pre style="border:1px solid #ccc; border-radius:10px; padding:15px;background:#eee;text-align:center;font-size:2rem;">{{eqnState.result.python}}</pre>
+            <h3>LaTeX</h3>
+            <pre style="border:1px solid #ccc; border-radius:10px; padding:15px;background:#eee;text-align:center;font-size:2rem;">${{eqnState.result.tex}}$</pre>
+        </div>
     </div>
 </div>

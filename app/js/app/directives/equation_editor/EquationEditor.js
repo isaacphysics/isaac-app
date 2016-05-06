@@ -88,23 +88,23 @@ define(function(require) {
                         });
                         
                         eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || { symbols: {} };
+                        scope.state = initialState || { symbols: [] };
                         scope.questionDoc = questionDoc;
 
                         nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
                         scope.history = [];
-                        scope.future = [];
-                        
+                        //element.find("canvas").remove();
+
                         // TODO: Redisplay old equations in the centre
+
+                        scope.future = [];
                         var p = new p5( function(p) {
-                            sketch = new MySketch(p, scope, element.width(), element.height());
-                            if(!_.isEmpty(scope.state.symbols)) {
-                                sketch.parseSubtreeObject(scope.state.symbols);
-                            }
+                            sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
                             return sketch;
                         }, element.find(".equation-editor")[0]);
 
                         eqnModal.one("closed.fndtn.reveal", function() {
+                            sketch.p.remove();
                             resolve(scope.state);
                         })
 
@@ -112,19 +112,26 @@ define(function(require) {
                 };
                 
                 scope.newExpressionCallback = function(e) {
+                };
+
+                scope.newEditorState = function(s) {
+                    scope.state = s;
+
+                    console.log("New state:",s);
+
                     var rp = $(".result-preview>span");
 
                     rp.empty();
-                    delete scope.state.result;
-                    if (e) {
-                        katex.render(e, rp[0]);
+
+                    if (scope.state.result) {
+                        katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    var w =  e ? rp.outerWidth() : 0;
+                    var w =  scope.state.result ? rp.outerWidth() : 0;
                     var resultPreview = $(".result-preview");
                     resultPreview.stop(true);
                     resultPreview.animate({width: w}, 200);
-                };
+                }
 
                 var stringSymbols = function(ss) {
                 	var symbols = [];
@@ -435,7 +442,7 @@ define(function(require) {
 
                 scope.submit = function() {
                     // scope.state.result = { "tex":"e^{i\\pi}+1=0" };
-                    scope.state.result = { "tex": scope.state.inequalityResult };
+                    //scope.state.result = { "tex": scope.state.inequalityResult, "python": scope.state.symbols.expression.python };
                     $("#equationModal").foundation("reveal", "close");
                     api.logger.log({
                         type : "CLOSE_EQUATION_EDITOR"

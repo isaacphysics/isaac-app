@@ -327,6 +327,17 @@ abstract class Widget {
         return _.compact(_.pluck(_.values(this.dockingPoints), "child"));
     }
 
+	getTotalSymbolCount(): number {
+		var total = 1;
+		for (var i in this.dockingPoints) {
+			var c = this.dockingPoints[i].child;
+			if (c != null) {
+				total += c.getTotalSymbolCount();
+			}
+		}
+		return total;
+	}
+
 	/**
 	 * @returns {Vector} The absolute position of this widget relative to the canvas.
      */
