@@ -78,7 +78,7 @@ class Symbol extends Widget {
 		} else if (format == "python") {
 			expression = "" + this.letter;
 			if (this.dockingPoints["subscript"].child != null) {
-				expression += this.dockingPoints["subscript"].child.getExpression("subscript");
+				expression += "_"+this.dockingPoints["subscript"].child.getExpression("subscript");
 			}
 			if (this.dockingPoints["superscript"].child != null) {
 				expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
