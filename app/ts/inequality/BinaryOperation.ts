@@ -61,11 +61,11 @@ class BinaryOperation extends Widget {
         var expression = "";
         if(format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {

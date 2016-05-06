@@ -346,7 +346,7 @@ class MySketch {
 		if (symbolWithMostChildren != null) {
 			this.scope.newEditorState({
 				result: {
-					"tex": symbolWithMostChildren.getExpression("latex").replace(/−/g, "-"),
+					"tex": symbolWithMostChildren.getExpression("latex"),
 					"python": symbolWithMostChildren.getExpression("python")
 				},
 				symbols: _.map(this.symbols, s => s.subtreeObject()),
