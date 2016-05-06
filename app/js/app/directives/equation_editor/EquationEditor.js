@@ -51,6 +51,14 @@ define(function(require) {
 
                 });
 
+                scope.notifySymbolDrag = function(x,y) {
+                    var tOff = element.find(".trash-button").offset();
+                    var tWidth = element.find(".trash-button").width();
+                    var tHeight = element.find(".trash-button").height();
+                    scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
+                    scope.$apply();
+                };
+
                 scope.$on("newSymbolAbortDrag", function() {
                     if (scope.draggingNewSymbol) {
                         scope.draggingNewSymbol = false;

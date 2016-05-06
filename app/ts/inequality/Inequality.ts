@@ -239,6 +239,12 @@ class MySketch {
 			}
 		});
 
+        this.scope.selectedSymbols.length = 0;
+        if (this.movingSymbol) {
+            this.scope.selectedSymbols.push(this.movingSymbol);
+        }
+        this.scope.$digest();
+
 		// Put the moving symbol on top (bottom?) of the list (this only works with roots,
 		// and may not be necessary at all, but eye candy, right?)
 		if(index > -1) {
@@ -310,6 +316,12 @@ class MySketch {
 					this.symbols = _.without(this.symbols, this.movingSymbol);
 					this.activeDockingPoint.child = this.movingSymbol;
 				}
+
+                if (this.scope.trashActive) {
+                    this.symbols = _.without(this.symbols, this.movingSymbol);
+                }
+                this.scope.selectedSymbols.length = 0;
+                this.scope.$digest();
 			}
 
 			this.updateState();
