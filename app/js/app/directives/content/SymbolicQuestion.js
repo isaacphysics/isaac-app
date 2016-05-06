@@ -37,7 +37,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					scope.selectedChoice.value = JSON.stringify(s);
 					if (s && s.result) {
-						scope.selectedChoice.pythonExpression = s.result.py;
+						scope.selectedChoice.pythonExpression = s.result.python;
 					} else {
 						scope.selectedChoice.pythonExpression = "";
 					}

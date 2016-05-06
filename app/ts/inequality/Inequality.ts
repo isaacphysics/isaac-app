@@ -82,95 +82,6 @@ class MySketch {
             this.parseSubtreeObject(s);
         });
 
-
-		// // FIXME This is for testing purposes only.
-		// var subtreeObjects = JSON.parse('[{"type":"Symbol","position":{"x":185,"y":308},"expression":{"latex":"M−\\\\frac{x+j}{i} ","python":"M−((x+j)/(i))"},"children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Symbol","properties":{"letter":"j"}}},"properties":{"operation":"+"}}},"properties":{"letter":"x"}},"denominator":{"type":"Symbol","properties":{"letter":"i"}}}}},"properties":{"operation":"−"}}},"properties":{"letter":"M"}}]');
-		// _.each(subtreeObjects, subtreeObject => {
-		// 	this.parseSubtreeObject(subtreeObject);
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Radix',
-		// 	position: { x:this.width*0.45, y:this.height/2 },
-		// 	children: {
-		// 		argument: {
-		// 			type: 'Fraction',
-		// 			position: { x:0, y:0 },
-		// 			children: {
-		// 				numerator: {
-		// 					type: 'Symbol',
-		// 					position: { x:0, y:0 },
-		// 					properties: { letter: 'F' }
-		// 				},
-		// 				denominator: {
-		// 					type: 'Symbol',
-		// 					position: { x:0, y:0 },
-		// 					properties: { letter: 'G' }
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Radix',
-		// 	position: { x:this.width*0.45, y:this.height/2 },
-		// 	properties: { type: 'round' },
-		// 	children: {
-		// 		argument: {
-		// 			type: 'Symbol',
-		// 			position: { x:0, y:0 },
-		// 			properties: { letter: 'Argument' },
-		// 			children: {
-		// 				right: {
-		// 					type: 'Symbol',
-		// 					position: { x:0, y:0 },
-		// 					properties: { letter: 'g' }
-		// 				},
-		// 				superscript: {
-		// 					type: 'Symbol',
-		// 					position: { x:0, y:0 },
-		// 					properties: { letter: 'r' }
-		// 				}
-		// 			}
-		// 		},
-		// 		// superscript: {
-		// 		// 	type: 'Symbol',
-		// 		// 	position: { x:0, y:0 },
-		// 		// 	properties: { letter: 'e' }
-		// 		// },
-		// 		right: {
-		// 			type: 'Symbol',
-		// 			position: { x:0, y:0 },
-		// 			properties: { letter: 'm' }
-		// 		}
-		// 	},
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Brackets',
-		// 	position: { x:100, y:250 },
-		// 	properties: { type: 'round' }
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Number',
-		// 	position: { x:500, y:650 },
-		// 	properties: {
-		// 		significand: 56,
-		// 		exponent: 6,
-		// 	}
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Symbol',
-		// 	position: { x:300, y:450 },
-		// 	properties: {
-		// 		letter: 'e'
-		// 	}
-		// });
-		// this.parseSubtreeObject({
-		// 	type: 'Symbol',
-		// 	position: { x:300, y:650 },
-		// 	properties: {
-		// 		letter: 'e'
-		// 	}
-		// });
 	};
 
 	draw = () => {
@@ -222,11 +133,13 @@ class MySketch {
             _.some(this.symbols, (symbol: Widget) => {
                 this.activeDockingPoint = null;
 
+                symbol.highlight(false);
                 if(symbol != null) {
                     // TODO: This is broken. Make sure we don't hit docking points of the wrong type
                     if (this.activeDockingPoint = symbol.dockingPointsHit(this.potentialSymbol)) {
                         // We have hit a docking point, short-circuit the rest of this loop, because we
                         // don't care if we hit another one.
+                        this.activeDockingPoint.widget.highlight(true);
                         return true;
                     }
                 }
@@ -247,6 +160,7 @@ class MySketch {
         }
 
         this.updatePotentialSymbol(null);
+		this.updateState();
     };
 
 	parseSubtreeObject = (root: Object) => {
@@ -283,13 +197,13 @@ class MySketch {
 			default: // this would be a Widget...
 				break;
 		}
-		if(node["children"]) {
-			_.each(node["children"], (node, key) => {
-				w.dockingPoints[key].child = this._parseSubtreeObject(node);
-			});
-		}
+
+        _.each(node["children"] || [], (n, key) => {
+            w.dockingPoints[key].child = this._parseSubtreeObject(n);
+        });
+
 		return w;
-	}
+	};
 
 	// Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
 	// Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
@@ -360,7 +274,7 @@ class MySketch {
 					if (this.activeDockingPoint = symbol.dockingPointsHit(this.movingSymbol)) {
 						// We have hit a docking point, short-circuit the rest of this loop, because we
 						// don't care if we hit another one.
-						symbol.highlight(true);
+                        this.activeDockingPoint.widget.highlight(true);
 						return true;
 					}
 				}
@@ -396,31 +310,7 @@ class MySketch {
 				}
 			}
 
-            var symbolWithMostChildren = null;
-            var mostChildren = 0;
-			_.each(this.symbols, symbol => {
-				console.log(symbol.id + " -> " + symbol.getExpression("python"));
-                var numChildren = symbol.getTotalSymbolCount();
-                if (numChildren > mostChildren) {
-                    mostChildren = numChildren;
-                    symbolWithMostChildren = symbol;
-                }
-			});
-
-            if (symbolWithMostChildren != null) {
-                this.scope.newEditorState({
-                    result: {
-                        "tex": symbolWithMostChildren.getExpression("latex").replace(/−/g, "-"),
-                        "python": symbolWithMostChildren.getExpression("python")
-                    },
-                    symbols: _.map(this.symbols, s => s.subtreeObject()),
-                })
-            } else {
-                this.scope.newEditorState({
-                    result: null,
-                    symbols: [],
-                })
-            }
+			this.updateState();
 
 			this.movingSymbol = null;
 			this.activeDockingPoint = null;
@@ -432,13 +322,41 @@ class MySketch {
 
 	mouseMoved = () => {
 		var p = this.p.createVector(this.p.mouseX, this.p.mouseY);
-		_.each(this.symbols, (symbol: Symbol) => {
+		_.each(this.symbols, symbol => {
 			symbol.highlight(false);
 			var hitSymbol = symbol.hit(p);
 			if(hitSymbol) {
 				hitSymbol.highlight(true);
 			}
 		});
+	};
+
+	updateState = () => {
+		var symbolWithMostChildren = null;
+		var mostChildren = 0;
+		_.each(this.symbols, symbol => {
+			console.log(symbol.id + " -> " + symbol.getExpression("python"));
+			var numChildren = symbol.getTotalSymbolCount();
+			if (numChildren > mostChildren) {
+				mostChildren = numChildren;
+				symbolWithMostChildren = symbol;
+			}
+		});
+
+		if (symbolWithMostChildren != null) {
+			this.scope.newEditorState({
+				result: {
+					"tex": symbolWithMostChildren.getExpression("latex").replace(/−/g, "-"),
+					"python": symbolWithMostChildren.getExpression("python")
+				},
+				symbols: _.map(this.symbols, s => s.subtreeObject()),
+			})
+		} else {
+			this.scope.newEditorState({
+				result: null,
+				symbols: [],
+			})
+		}
 	};
 
 	getExpressionObjects = () => {

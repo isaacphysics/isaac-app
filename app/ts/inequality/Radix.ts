@@ -12,7 +12,7 @@ class Radix extends Widget {
     private baseHeight: number;
 
     get typeAsString(): string {
-        return "Symbol";
+        return "Radix";
     }
 
     /**
