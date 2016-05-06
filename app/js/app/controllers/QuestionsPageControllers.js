@@ -37,6 +37,8 @@ define([], function() {
 				return item;
 			});
 
+			$scope.featuredQuestions.sort(function(a,b) {return a.level - b.level});
+
 			$scope.topBoards = page.topBoards.map(function(b) {
 				var item = {};
 				item.title = b.title;
