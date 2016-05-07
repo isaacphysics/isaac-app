@@ -58,6 +58,10 @@
           <td>Location:</td>
           <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
         </tr>
+        <tr ng-show="event.numberOfPlaces">
+          <td>Availability</td>
+          <td><span ng-class="{available: event.placesAvailable > 0}">{{event.placesAvailable}}</span> spaces</td>
+        </tr>
       </tbody>
     </table>
     <!--
