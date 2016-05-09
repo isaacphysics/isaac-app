@@ -31,6 +31,8 @@ define([], function() {
 			} else if ($stateParams.preset == 'accountDeletion') {
 			    $scope.contactForm.subject = "Account Deletion Request",
 			    $scope.contactForm.message = "Hello,\n\nPlease could you delete my Isaac Physics account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+			} else if ($stateParams.subject != null && $stateParams.subject != '' && $stateParams.subject != 'true') {
+				$scope.contactForm.subject = $stateParams.subject;
 			}
 		}).catch(function(){
 			if (!$scope.user.email && $stateParams.preset == 'teacherRequest') {
