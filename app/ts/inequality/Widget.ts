@@ -300,10 +300,12 @@ abstract class Widget {
 
 		var hitPoints: Array<DockingPoint> = [];
 		if(!hitPoint) {
-			_.each(this.dockingPoints, (point, name) => {
-				var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
-				if(testRect.contains(dp)) {
-					hitPoints.push(point);
+			_.each(this.dockingPoints, point => {
+				if(point.child == null) {
+					var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
+					if (testRect.contains(dp)) {
+						hitPoints.push(point);
+					}
 				}
 			});
 		}
