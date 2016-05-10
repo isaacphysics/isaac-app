@@ -132,7 +132,7 @@ class Brackets extends Widget {
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(')', argWidth/2, 0);
+        this.p.text(')', argWidth/2 + this.scale*40, 0); // FIXME This 40 is hard-coded
 
         this.p.strokeWeight(1);
 
@@ -159,7 +159,7 @@ class Brackets extends Widget {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, box.y - 1000, width, box.h);
+        return new Rect(-width/2, box.y - 1000, width + this.scale*40, box.h);  // FIXME This 40 is hard-coded
     }
 
     /**
