@@ -82,7 +82,7 @@ class Brackets extends Widget {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
                 if(this.dockingPoints['right'].child) {
-                    expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
+                    expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         } else if (format == "python") {

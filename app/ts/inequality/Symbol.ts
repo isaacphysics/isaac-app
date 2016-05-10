@@ -72,7 +72,7 @@ class Symbol extends Widget {
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
 					// WARNING This assumes it's a Symbol, hence produces a multiplication
-					expression += " " + this.dockingPoints["right"].child.getExpression(format);
+					expression += this.dockingPoints["right"].child.getExpression(format);
 				}
 			}
 		} else if (format == "python") {

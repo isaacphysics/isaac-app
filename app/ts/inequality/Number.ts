@@ -88,15 +88,12 @@ class Number extends Widget {
                 }
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
-            //}
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol, hence produces a multiplication
-                    expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                    // WARNING This assumes it's a Number, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "python") {

@@ -70,7 +70,7 @@ class Fraction extends Widget {
                     if(this.dockingPoints["right"].child instanceof BinaryOperation) {
                         expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                        expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                     }
                 }
             }
