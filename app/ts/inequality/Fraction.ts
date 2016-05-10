@@ -58,7 +58,7 @@ class Fraction extends Widget {
         var expression = "";
         if(format == "latex") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "} ";
+                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
                 if(this.dockingPoints["right"].child != null) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
