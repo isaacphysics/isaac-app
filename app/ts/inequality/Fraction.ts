@@ -78,6 +78,14 @@ class Fraction extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += "[NOPE:" + this.id + "]";
             }
+        } else if(format == 'mathml') {
+            expression = '';
+            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
+                expression += '<mfrac>' + this.dockingPoints['numerator'].child.getExpression(format) + this.dockingPoints['denominator'].child.getExpression(format) + '</mfrac>';
+            }
+            if(this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
+            }
         }
         return expression;
     }

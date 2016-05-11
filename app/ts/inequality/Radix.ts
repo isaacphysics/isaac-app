@@ -86,6 +86,20 @@ class Radix extends Widget {
             }
         } else if (format == "subscript") {
             expression += "{SQRT}";
+        } else if (format == "mathml") {
+            expression = '';
+            // TODO Include indexes when they will be implemented
+            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+                var sqrt = '<msqrt>' + this.dockingPoints['argument'].child.getExpression(format) + '</msqrt>';
+                if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                    expression += '<msup>' + sqrt + '' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+                } else {
+                    expression += sqrt;
+                }
+            }
+            if(this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         }
         return expression;
     }

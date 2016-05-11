@@ -105,6 +105,26 @@ class Brackets extends Widget {
             }
         } else if (format == "subscript") {
             expression += "{BRACKETS}";
+        } else if (format == 'mathml') {
+            switch(this.type) {
+                case "square":
+                    lhs = '['; rhs = ']';
+                    break;
+                case "curly":
+                    lhs = '{'; rhs = '}';
+                    break;
+            }
+            if(this.dockingPoints['argument'].child) {
+                var brackets = '<mfenced open="'+lhs+'" close="'+rhs+'">' + this.dockingPoints['argument'].child.getExpression(format) + '</mfenced>';
+                if(this.dockingPoints['superscript'].child) {
+                    expression = '<msup>' + brackets + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+                } else {
+                    expression = brackets;
+                }
+                if(this.dockingPoints['right'].child) {
+                    expression = brackets + this.dockingPoints['right'].child.getExpression(format);
+                }
+            }
         }
         return expression;
     }

@@ -1,5 +1,5 @@
 import { Widget, Rect } from './Widget.ts'
-import {BinaryOperation} from "./BinaryOperation.ts";
+import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 /** A class for representing variables and constants (aka, letters). */
@@ -101,6 +101,24 @@ class Symbol extends Widget {
 			}
 			if (this.dockingPoints["right"].child != null) {
 				expression += this.dockingPoints["right"].child.getExpression(format);
+			}
+		} else if(format == "mathml") {
+			expression = '';
+			if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
+				expression += '<mi>' + this.letter + '</mi>';
+
+			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
+				expression += '<msub><mi>' + this.letter + '</mi>' + this.dockingPoints['subscript'].child.getExpression(format) + '</msub>';
+
+			} else if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
+				expression += '<msup><mi>' + this.letter + '</mi>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+
+			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
+				expression += '<msubsup><mi>' + this.letter + '</mi>' + this.dockingPoints['subscript'].child.getExpression(format) + this.dockingPoints['superscript'].child.getExpression(format) + '</msubsup>';
+
+			}
+			if(this.dockingPoints['right'].child != null) {
+				expression += this.dockingPoints['right'].child.getExpression('mathml');
 			}
 		}
 		return expression;

@@ -123,6 +123,24 @@ class Number extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
+        } else if(format == "mathml") {
+            expression = '';
+            if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
+                expression += '<mn>' + this.getFullText() + '</mn>';
+
+            } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
+                expression += '<msub><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['subscript'].child.getExpression(format) + '</msub>';
+
+            } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
+                expression += '<msup><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+
+            } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
+                expression += '<msubsup><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['subscript'].child.getExpression(format) + this.dockingPoints['superscript'].child.getExpression(format) + '</msubsup>';
+
+            }
+            if (this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         }
         return expression;
     }
