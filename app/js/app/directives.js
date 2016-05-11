@@ -134,6 +134,8 @@ define(function(require) {
 
 	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
 
+	.directive('isaacSymbolicChemistryQuestion', require("app/directives/content/SymbolicChemistryQuestion"))
+
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
 
 	.directive('isaacPod', require("app/directives/content/Pod"))
