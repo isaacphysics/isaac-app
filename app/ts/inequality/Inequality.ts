@@ -361,10 +361,11 @@ class MySketch {
 			this.scope.newEditorState({
 				result: {
 					"tex": symbolWithMostChildren.getExpression("latex").trim(),
-					"python": symbolWithMostChildren.getExpression("python").trim()
+					"python": symbolWithMostChildren.getExpression("python").trim(),
+					"mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>'
 				},
-				symbols: _.map(this.symbols, s => s.subtreeObject()),
-			})
+				symbols: _.map(this.symbols, s => s.subtreeObject())
+			});
 		} else {
 			this.scope.newEditorState({
 				result: null,

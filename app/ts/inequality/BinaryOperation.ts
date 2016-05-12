@@ -71,6 +71,10 @@ class BinaryOperation extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
+        } else if(format == "mathml") {
+            if (this.dockingPoints["right"].child != null) {
+                expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+            }
         }
         return expression;
     }
