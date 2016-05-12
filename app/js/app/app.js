@@ -166,10 +166,8 @@ define([
             $rootScope.relativeCanonicalUrl = $location.path();
 
             // we need to tell opentip to reapply everytime we change state
-            // also need to tell Foundation to register stuff too.
             setTimeout(function(){
                 Opentip.findElements();
-                $(document).foundation();
             }, 0);
         })
 

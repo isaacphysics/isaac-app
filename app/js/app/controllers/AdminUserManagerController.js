@@ -56,6 +56,9 @@ define([], function() {
 
 		$scope.hasSearched = false;
 		$scope.findUsers = function() {
+
+			$(document).foundation(); // Make sure the elevate/demote dropdowns now work, turning a bug into a feature!
+
 			if ($scope.userSearch.searchTerms != "") {
 				var role = $scope.userSearch.searchTerms.role;
 				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
