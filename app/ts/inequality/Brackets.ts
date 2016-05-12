@@ -47,7 +47,7 @@ class Brackets extends Widget {
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
     }
 
@@ -229,18 +229,18 @@ class Brackets extends Widget {
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         } else {
             var p = this.dockingPoints["superscript"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12;
-            p.y = -(box.h - this.scale * this.s.mBox.w / 6);
+            p.x = box.w/2 + this.scale * 20;
+            p.y = -(box.h + this.scale * 20);
         }
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + this.dockingPoints["right"].child.boundingBox().w/2;
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
-            p.x = box.w/2 + this.s.mBox.w / 4;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20;
             p.y = -this.s.xBox.h / 2;
         }
     }
