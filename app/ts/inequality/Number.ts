@@ -129,7 +129,7 @@ class Number extends Widget {
                 expression += '<mn>' + this.getFullText() + '</mn>';
 
             } else {
-                expression += '<msub><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msub>';
+                expression += '<msup><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
 
             }
             if (this.dockingPoints['right'].child != null) {
