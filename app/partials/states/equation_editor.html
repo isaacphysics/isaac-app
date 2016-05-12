@@ -6,11 +6,26 @@
 <div class="row">
     <div class="small-16 columns">
         <div equation-input state="eqnState"></div>
-        <div ng-if="eqnState.result">
+        <div ng-show="eqnState.result">
             <div style="margin-bottom:25px;"></div>
-            <h3>LaTeX</h3>
+            <h3>
+                LaTeX
+                <span data-ot="This can be used in a LaTeX document to typeset this expression. You may need the 'amsmath' package for some expressions." class="has-tip" aria-haspopup="true" style="float:right;">
+                    <span class="icon-help"></span>
+                </span>
+            </h3>    
             <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
                 <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;word-wrap:break-word;white-space:pre-wrap;">${{eqnState.result.tex}}$</pre>
+            </div>
+            <div style="margin-bottom:25px;"></div>
+            <h3>
+                MathML
+                <span data-ot="This can be copied and pasted into a Word document to insert this expression. Just paste using the 'Keep Text Only' option." class="has-tip" aria-haspopup="true" style="float:right;">
+                    <span class="icon-help"></span>
+                </span>
+            </h3>
+            <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
+                <pre style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mathml}}</pre>
             </div>
             <div style="margin-bottom:25px;"></div>
             <h3>Python</h3>
