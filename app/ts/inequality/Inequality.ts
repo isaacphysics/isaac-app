@@ -127,6 +127,7 @@ class MySketch {
             }
             this.potentialSymbol.position.x = x - this.potentialSymbol.boundingBox().w*0.5;
             this.potentialSymbol.position.y = y;
+			this.potentialSymbol.shakeIt();
             
             // Decide whether we should dock immediately
 
