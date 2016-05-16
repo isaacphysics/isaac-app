@@ -96,11 +96,11 @@ define(function(require) {
                         });
                         
                         eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || { symbols: [] };
+                        scope.state = initialState || { symbols: []  };
                         scope.questionDoc = questionDoc;
 
-                        nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
-                        scope.history = [];
+                        scope.history = [JSON.parse(JSON.stringify(scope.state))];
+                        scope.historyPtr = 0;
                         //element.find("canvas").remove();
 
                         // TODO: Redisplay old equations in the centre
@@ -139,6 +139,8 @@ define(function(require) {
                     var resultPreview = $(".result-preview");
                     resultPreview.stop(true);
                     resultPreview.animate({width: w}, 200);
+
+                    scope.$emit("historyCheckpoint");
                 }
 
                 var stringSymbols = function(ss) {
@@ -411,40 +413,45 @@ define(function(require) {
                     texLabel: true
                 };
 
-                var nextHistoryEntry;
+                scope.historyPtr = -1;
+                scope.history = [];
 
                 scope.$on("historyCheckpoint", function() {
-                    scope.future = [];
-                    scope.history.push(nextHistoryEntry);
-                    //TODO: Serialise current state for history
-                    //nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
-                    // nextHistoryEntry = JSON.parse(JSON.stringify(scope.sketch.getSubtreeObjects()));
-                    console.log("historyCheckpoint:", scope.state);
+
+                    var newEntry = JSON.stringify(scope.state);
+                    var currentEntry = JSON.stringify(scope.history[scope.historyPtr]);
+
+                    if (newEntry != currentEntry) {
+                        scope.historyPtr++;
+                        scope.history.splice(scope.historyPtr, scope.history.length - scope.historyPtr, JSON.parse(newEntry));
+
+                        console.log("historyCheckpoint:", scope.history, new Error("HERE"));
+                    }
                 });
 
                 scope.undo = function() {
-                    if (scope.history.length > 0) {
-                        // TODO: Add current state to scope.future
-                        //scope.future.unshift(JSON.parse(JSON.stringify(scope.state.symbols)));
-                        
-                        // TODO: Set current state to top of scope.history
-                        //scope.state.symbols = scope.history.pop();
-                        
-                        // TODO: Add current state (new one) to history
-                        //nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
+                    if (scope.historyPtr > 0) {
+                        scope.historyPtr--;
+
+                        var e = scope.history[scope.historyPtr];
+                        scope.state = JSON.parse(JSON.stringify(e));
+                        sketch.symbols = [];
+                        for (var i in scope.state.symbols) {
+                            sketch.parseSubtreeObject(scope.state.symbols[i]);
+                        }
                     }
                 };
 
                 scope.redo = function() {
-                    if (scope.future.length > 0) {
-                        // TODO: Add current state to history
-                        //scope.history.push(JSON.parse(JSON.stringify(scope.state.symbols)));
-                        
-                        // TODO: Set current state to end of scope.future
-                        //scope.state.symbols = scope.future.shift();
-                        
-                        // TODO: Add current state (new one) to history
-                        //nextHistoryEntry = JSON.parse(JSON.stringify(scope.state.symbols));
+                    if (scope.historyPtr < scope.history.length - 1) {
+                        scope.historyPtr++;
+
+                        var e = scope.history[scope.historyPtr];
+                        scope.state = JSON.parse(JSON.stringify(e));
+                        sketch.symbols = [];
+                        for (var i in scope.state.symbols) {
+                            sketch.parseSubtreeObject(scope.state.symbols[i]);
+                        }
                     }
                 };
 
@@ -473,6 +480,7 @@ define(function(require) {
 
                 // TODO: Make this work under new regime
                 var updateSelectionRender = function() {
+                    return;
                     var selectionHandle = element.find("[selection-handle]");
                     var canvasOffset = element.offset();
 
