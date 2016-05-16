@@ -100,7 +100,7 @@ define([], function() {
 				scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
 					if (pageY > element.offset().top + element.height()) {
                         scope.clearOnClose = false;
-						scope.$emit("triggerCloseMenus");
+						//scope.$emit("triggerCloseMenus");
                         scope.clearOnClose = true;
 					}
 
