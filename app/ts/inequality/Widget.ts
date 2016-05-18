@@ -75,6 +75,7 @@ abstract class Widget {
 
 	isHighlighted = false;
 	color = null;
+	isMainExpression = false;
 
 	get typeAsString(): string {
 		return "Widget";
@@ -269,11 +270,13 @@ abstract class Widget {
 	 * Turns on and off highlight recursively.
 	 */
 	highlight(on = true) {
+		var mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(127, 0, 0);
 		this.isHighlighted = on;
-		this.color = on ? this.p.color(72, 123, 174) : this.p.color(0);
+		this.color = on ? this.p.color(72, 123, 174) : mainColor;
 		_.each(this.dockingPoints, dockingPoint => {
 			if(dockingPoint.child != null) {
 				dockingPoint.child.highlight(on);
+				dockingPoint.child.isMainExpression = this.isMainExpression;
 			}
 		})
 	}
