@@ -278,7 +278,7 @@ abstract class Widget {
 	 * Turns on and off highlight recursively.
 	 */
 	highlight(on = true) {
-		var mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(127, 0, 0);
+		var mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(0, 0, 0, 127);
 		this.isHighlighted = on;
 		this.color = on ? this.p.color(72, 123, 174) : mainColor;
 		_.each(this.dockingPoints, dockingPoint => {
