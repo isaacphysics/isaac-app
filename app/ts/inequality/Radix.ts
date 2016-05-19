@@ -49,7 +49,7 @@ class Radix extends Widget {
 
         this.dockingPoints["argument"] =    new DockingPoint(this, this.p.createVector(box.w/2 + this.scale*this.s.xBox.w/2, -this.s.xBox.h/2), 1, "symbol");
         this.dockingPoints["right"] =       new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -(box.h + descent + this.scale * 20)), 0.666, "exponent");
     }
 
     /**
