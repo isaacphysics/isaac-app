@@ -94,6 +94,10 @@ class Fraction extends Widget {
         return null;
     }
 
+    token() {
+        return '';
+    }
+
     /** Paints the widget on the canvas. */
     _draw() {
         this.p.noFill().strokeWeight(6*this.scale).stroke(this.color);

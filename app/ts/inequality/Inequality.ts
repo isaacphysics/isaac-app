@@ -174,7 +174,7 @@ class MySketch {
 		}
 	};
 
-	_parseSubtreeObject = (node: Object): Widget => {
+	_parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
 		var w: Widget = null;
 		switch(node["type"]) {
 			case "Symbol":
@@ -199,9 +199,11 @@ class MySketch {
 				break;
 		}
 
+		if(parseChildren) {
         _.each(node["children"] || [], (n, key) => {
             w.dockingPoints[key].child = this._parseSubtreeObject(n);
         });
+		}
 
 		return w;
 	};
@@ -367,6 +369,18 @@ class MySketch {
 		});
 	};
 
+	flattenExpression = (w : Widget) => {
+		var stack : Array<Widget> = [w];
+		var list = [];
+		while(stack.length > 0) {
+			var e = stack.shift();
+			list.push(e.token());
+			var children = e.getChildren();
+			stack = stack.concat(children);
+		}
+		return _.reject(_.uniq(list), i => { return i == ''; });
+	};
+
 	updateState = () => {
 		var symbolWithMostChildren = null;
 		var mostChildren = 0;
@@ -384,7 +398,8 @@ class MySketch {
 				result: {
 					"tex": symbolWithMostChildren.getExpression("latex").trim(),
 					"python": symbolWithMostChildren.getExpression("python").trim(),
-					"mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>'
+					"mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
+					"uniqueSymbols": this.flattenExpression(symbolWithMostChildren).join(', ')
 				},
 				symbols: _.map(this.symbols, s => s.subtreeObject())
 			});

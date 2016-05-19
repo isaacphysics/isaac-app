@@ -108,6 +108,10 @@ class Radix extends Widget {
         return { };
     }
 
+    token() {
+        return '';
+    }
+
     /** Paints the widget on the canvas. */
     _draw() {
         var argWidth = this.s.xBox.w;

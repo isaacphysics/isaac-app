@@ -130,6 +130,11 @@ class Symbol extends Widget {
 		};
 	}
 
+	token() {
+		// TODO Handle greek letters
+		return this.letter;
+	}
+
 	/** Paints the widget on the canvas. */
 	_draw() {
 		this.p.fill(this.color).strokeWeight(0).noStroke();

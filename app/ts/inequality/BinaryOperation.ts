@@ -85,6 +85,10 @@ class BinaryOperation extends Widget {
         };
     }
 
+    token() {
+        return '';
+    }
+
     /** Paints the widget on the canvas. */
     _draw() {
         this.p.fill(this.color).strokeWeight(0).noStroke();

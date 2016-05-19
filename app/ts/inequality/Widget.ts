@@ -163,9 +163,17 @@ abstract class Widget {
      */
 	abstract boundingBox(): Rect;
 
+	abstract token(): string;
+
 	// ************ //
 
-	subtreeObject(): Object {
+	/**
+	 * Retrieves the abstract tree representation having this widget as root.
+	 *
+	 * @param processChildren This stops it from traversing children.
+	 * @returns {{type: string}}
+	 */
+	subtreeObject(processChildren = true): Object {
 		var dockingPoints = {};
 		_.each(this.dockingPoints, (dockingPoint, key) => {
 			if(dockingPoint.child != null) {
@@ -183,7 +191,7 @@ abstract class Widget {
 				python: this.getExpression("python")
 			};
 		};
-		if(!_.isEmpty(dockingPoints)) {
+		if(processChildren && !_.isEmpty(dockingPoints)) {
 			o["children"] = dockingPoints;
 		}
 		var properties = this._properties();
