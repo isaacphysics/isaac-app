@@ -417,6 +417,16 @@ class MySketch {
 			subtreeObjects.push(symbol.subtreeObject());
 		});
 		return subtreeObjects;
-	}
+	};
+
+	centre = () => {
+		var height = 240
+		_.each(this.symbols, (symbol, i) => {
+			var sbox = symbol.subtreeBoundingBox();
+			symbol.position = this.p.createVector(this.width/2 - sbox.center.x, height + sbox.center.y);
+			height += sbox.h;
+			// debugger;
+		});
+	};
 }
 

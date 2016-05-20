@@ -32,6 +32,8 @@
 -->
     <!-- BUTTONS -->
 
+    <div class="hex-button centre" ng-click="centre()"></div>
+
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>
 

@@ -464,6 +464,10 @@ define(function(require) {
                     });
                 };
 
+                scope.centre = function() {
+                    sketch.centre();
+                }
+
                 element.on("keydown", function(e) {
                     console.log("KeyDown", e.which);
 

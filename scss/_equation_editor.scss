@@ -352,13 +352,18 @@ $menu-handle-width: 160px;
         bottom: 18px;
         cursor: pointer;
 
-        &.undo {
+        &.centre {
             left: 18px;
+            background: url(/assets/equation_editor/hex-button-centre.png) no-repeat;
+        }
+
+        &.undo {
+            left: 114px;
             background: url(/assets/equation_editor/hex-button-undo.png) no-repeat;
         }
 
         &.redo {
-            left: 114px;
+            left: 210px;
             background: url(/assets/equation_editor/hex-button-redo.png) no-repeat;
         }
 
