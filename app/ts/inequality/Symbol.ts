@@ -132,7 +132,11 @@ class Symbol extends Widget {
 
 	token() {
 		// TODO Handle greek letters
-		return this.letter;
+		var e = this.letter;
+		if(this.dockingPoints['subscript'].child) {
+			e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+		}
+		return e;
 	}
 
 	/** Paints the widget on the canvas. */
