@@ -57,6 +57,10 @@ define([], function() {
 				api.contentVersion.get().$promise.then(function(r) {
 					$scope.contentVersion = r;
 					$scope.versionChange = "SUCCESS";
+                    api.logger.log({
+                        type : "CHANGE_CONTENT_VERSION",
+                        contentVersion : $scope.contentVersion.liveVersion
+                    });
 				});
 			}).catch(function(e) {
 				console.error(e);
