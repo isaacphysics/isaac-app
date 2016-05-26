@@ -425,7 +425,7 @@ define(function(require) {
                         scope.historyPtr++;
                         scope.history.splice(scope.historyPtr, scope.history.length - scope.historyPtr, JSON.parse(newEntry));
 
-                        console.log("historyCheckpoint:", scope.history, new Error("HERE"));
+                        console.log("historyCheckpoint:", scope.history);
                     }
                 });
 
