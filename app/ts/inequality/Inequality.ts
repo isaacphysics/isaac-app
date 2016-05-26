@@ -28,6 +28,7 @@ import { Fraction } from './Fraction.ts';
 import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
 import { Number } from './Number.ts';
+import { Function } from './Function.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -195,6 +196,9 @@ class MySketch {
             case "Number":
                 w = new Number(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
                 break;
+			case "Function":
+				w = new Function(this.p, this, node["properties"]["name"], node["properties"]["upright"]);
+				break;
 			default: // this would be a Widget...
 				break;
 		}
@@ -425,6 +429,7 @@ class MySketch {
 			var sbox = symbol.subtreeBoundingBox();
 			symbol.position = this.p.createVector(this.width/2 - sbox.center.x, height + sbox.center.y);
 			height += sbox.h;
+			symbol.shakeIt();
 			// debugger;
 		});
 	};
