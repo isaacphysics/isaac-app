@@ -79,10 +79,13 @@ class MySketch {
 
 		this.prevTouch = this.p.createVector(0,0);
 
-        _.each(this.initialSymbolsToParse || [], s => {
-            this.parseSubtreeObject(s);
-        });
-
+        try {
+            _.each(this.initialSymbolsToParse || [], s => {
+                this.parseSubtreeObject(s);
+            });
+        } catch (e) {
+            console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
+        }
 	};
 
 	draw = () => {
