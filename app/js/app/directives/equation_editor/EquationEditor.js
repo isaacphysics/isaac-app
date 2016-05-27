@@ -103,6 +103,8 @@ define(function(require) {
                             }
                         }
 
+                        $(".result-preview>span").empty();
+                        $(".result-preview").width(0);
 
                         var eqnModal = $('#equationModal');
                         eqnModal.one("opened.fndtn.reveal", function() {
