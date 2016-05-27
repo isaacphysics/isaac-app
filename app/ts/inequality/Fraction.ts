@@ -158,7 +158,7 @@ class Fraction extends Widget {
         if ("numerator" in boxes) {
             var p = this.dockingPoints["numerator"].child.position;
             var fullNumeratorWidth = subtreeBoxes["numerator"].w;
-            var numeratorRootWidth = boxes["numerator"].w;
+            var numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
             var numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
 
             p.x = numeratorRootWidth/2 - fullNumeratorWidth/2;
@@ -168,7 +168,7 @@ class Fraction extends Widget {
         if ("denominator" in boxes) {
             var p = this.dockingPoints["denominator"].child.position;
             var fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            var denominatorRootWidth = boxes["denominator"].w;
+            var denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
             var denominatorFullAscent = subtreeBoxes["denominator"].y;
 
             p.x = denominatorRootWidth/2 - fullDenominatorWidth/2;

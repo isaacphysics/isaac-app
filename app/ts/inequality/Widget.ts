@@ -126,7 +126,7 @@ abstract class Widget {
                 var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
                 if (drawThisOne || window.location.hash === "#debug") {
-                    var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? 40 : alpha * 0.5;
+                    var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha*0.5 : alpha;// * 0.5;
                     this.p.stroke(0, 127, 255, ptAlpha);
                     this.p.strokeWeight(1);
                     if(highlightThisOne && drawThisOne) {
@@ -190,7 +190,7 @@ abstract class Widget {
 				latex: this.getExpression("latex"),
 				python: this.getExpression("python")
 			};
-		};
+		}
 		if(processChildren && !_.isEmpty(dockingPoints)) {
 			o["children"] = dockingPoints;
 		}
@@ -381,4 +381,13 @@ abstract class Widget {
 	 * @private
      */
 	abstract _shakeIt();
+
+	/**
+	 * Internal aid for placing stuff as children.
+	 *
+	 * @private
+	 */
+	offsetBox(): Rect {
+		return this.boundingBox();
+	}
 }

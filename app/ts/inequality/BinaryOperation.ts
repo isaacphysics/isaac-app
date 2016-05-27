@@ -155,7 +155,7 @@ class BinaryOperation extends Widget {
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + boxes["right"].w / 2; // TODO: Tweak this with kerning.
+            p.x = box.w/2 + this.dockingPoints["right"].child.offsetBox().w/2; // TODO: Tweak this with kerning.
         }
     }
 }

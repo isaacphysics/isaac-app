@@ -200,7 +200,7 @@ class Radix extends Widget {
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
             widest = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
-            p.x = box.w/2 + boxes["argument"].w/2;
+            p.x = box.w/2 + this.dockingPoints["argument"].child.offsetBox().w/2;
             p.y = 0;
         } else {
             var p = this.dockingPoints["argument"].position;

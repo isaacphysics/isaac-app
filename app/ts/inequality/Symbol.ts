@@ -201,7 +201,7 @@ class Symbol extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = boxes["superscript"].w;
+            var w = this.dockingPoints["superscript"].child.offsetBox().w;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = -(box.h - descent - this.scale * 20);
@@ -213,7 +213,7 @@ class Symbol extends Widget {
 
 		if ("subscript" in boxes) {
             var p = this.dockingPoints["subscript"].child.position;
-            var w = boxes["subscript"].w;
+            var w = this.dockingPoints["subscript"].child.offsetBox().w;
             widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
 			p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = this.scale * this.s.mBox.w / 4;
@@ -226,7 +226,7 @@ class Symbol extends Widget {
 		// TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.boundingBox().w/2;
+			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w/2;
             p.y = 0;
         } else {
 			var p = this.dockingPoints["right"].position;

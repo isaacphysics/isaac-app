@@ -86,6 +86,40 @@ class MySketch {
         } catch (e) {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
+
+		this.parseSubtreeObject({
+			type: 'Function',
+			position: { x: this.width/2, y: this.height/2 },
+			properties: { name: 'log', upright: true },
+			children: {
+				'right': {
+					type: 'Symbol',
+					position: {x:0,y:0},
+					properties: { letter: 'M' }
+				}
+			}
+		});
+		this.parseSubtreeObject({
+			type: 'Function',
+			position: { x: this.width/2, y: this.height/2 },
+			properties: { name: 'log', upright: true },
+			children: {
+				'right': {
+					type: 'Function',
+					position: { x: 0, y: 0 },
+					properties: { name: 'sin', upright: true },
+				}
+			}
+		});
+		this.parseSubtreeObject({
+			type: 'Function',
+			position: { x: this.width/2, y: this.height/2 },
+			properties: { name: 'log', upright: true }
+		});
+
+		this.centre();
+
+		// this.symbols[0].position = this.p.createVector(this.width/2, this.height/2);
 	};
 
 	draw = () => {
@@ -184,9 +218,9 @@ class MySketch {
 		}
 
 		if(parseChildren) {
-        _.each(node["children"] || [], (n, key) => {
-            w.dockingPoints[key].child = this._parseSubtreeObject(n);
-        });
+			_.each(node["children"] || [], (n, key) => {
+				w.dockingPoints[key].child = this._parseSubtreeObject(n);
+			});
 		}
 
 		return w;
@@ -249,7 +283,23 @@ class MySketch {
 
 	touchMoved = () => {
 		if(this.movingSymbol != null) {
-			var d = this.p.createVector(this.p.touchX - this.prevTouch.x, this.p.touchY - this.prevTouch.y);
+			var sbox = this.movingSymbol.subtreeBoundingBox();
+			var spos = this.movingSymbol.getAbsolutePosition();
+			var dx = this.p.touchX - this.prevTouch.x;
+			var dy = this.p.touchY - this.prevTouch.y;
+			var left =   spos.x + sbox.x;
+			var right =  spos.x + sbox.x + sbox.w;
+			var top =    spos.y + sbox.y;
+			var bottom = spos.y + sbox.y + sbox.h;
+
+			if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
+				dx = 0;
+			}
+			if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
+				dy = 0;
+			}
+
+			var d = this.p.createVector(dx, dy);
 			this.movingSymbol.position.add(d);
 			this.prevTouch.x = this.p.touchX;
 			this.prevTouch.y = this.p.touchY;

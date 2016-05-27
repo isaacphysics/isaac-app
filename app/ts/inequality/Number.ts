@@ -209,7 +209,7 @@ class Number extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = boxes["superscript"].w;
+            var w = this.dockingPoints["superscript"].child.offsetBox().w;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = -(box.h - descent - this.scale * 20);

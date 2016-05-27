@@ -79,6 +79,9 @@ class Function extends Widget {
                         break;
                 }
                 expression += esc + this.name + sub + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
+                    expression += this.dockingPoints['right'].child.getExpression(format);
+                }
             }
         } else if (format == "python") {
         } else if (format == "subscript") {
@@ -191,28 +194,27 @@ class Function extends Widget {
 
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
-            var w = boxes["argument"].w;
-            var offset = 0;
-            // Hardcoded. Tough luck.
-            if(this.dockingPoints['argument'].child instanceof Fraction) {
-                offset = this.dockingPoints['argument'].child.boundingBox().w/2 - bracketBox.w;
-            }
-            p.x = offset + box.w/2 + 2*bracketBox.w;
+            var w = this.dockingPoints["argument"].child.offsetBox().w;
+            p.x = box.w/2 + bracketBox.w + this.dockingPoints["argument"].child.offsetBox().w/2;
             p.y = 0;
             widest += w;
         } else {
-            this.dockingPoints["argument"].position = this.p.createVector(box.w/2 + 2*bracketBox.w, -this.s.xBox.h/2);
+            this.dockingPoints["argument"].position = this.p.createVector(box.w/2 + bracketBox.w + this.s.xBox.w/2, -this.s.xBox.h/2);
         }
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + this.dockingPoints["right"].child.boundingBox().w/2;
+            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w/2 + this.dockingPoints["right"].child.offsetBox().w/2;
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
-            p.x = stBox.w;//box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20;
+            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w;
             p.y = -this.s.xBox.h / 2;
         }
+    }
+
+    offsetBox() {
+        return this.upright ? this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize) : this.s.font_it.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
     }
 }
