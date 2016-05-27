@@ -132,8 +132,11 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 				}
 
+				var watchSelectedChoice = true;
+				scope.$on("stopWatchingSelectedChoice", function() { watchSelectedChoice = false; });
+				scope.$on("startWatchingSelectedChoice", function() { watchSelectedChoice = true; });
 				scope.$watch("selectedChoice", function(newVal, oldVal) {
-					if (newVal === oldVal)
+					if (newVal === oldVal || !watchSelectedChoice)
 						return; // Init
 					canSubmit = true;
 					delete scope.validationResponse;

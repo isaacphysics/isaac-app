@@ -47,6 +47,11 @@ define(["app/honest/responsive_video"], function(rv) {
 					if (!scope.validationResponseSet)
 						return;
 
+					if (r === oldR) {
+						// Prevent questionTabs from clobbering our initialisation.
+						scope.$broadcast("stopWatchingSelectedChoice");
+						setTimeout(function() { scope.$broadcast("startWatchingSelectedChoice")}, 0);
+					}
 					// If we get this far, r has really been explicitly set by QuestionTabs
 					
 					if(r && r.answer.value) {
