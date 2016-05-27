@@ -142,23 +142,32 @@ class Brackets extends Widget {
     /** Paints the widget on the canvas. */
     _draw() {
         var argWidth = this.s.xBox.w;
+        var argHeight = this.s.xBox.h;
         if(this.dockingPoints['argument'].child) {
-            argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
+            let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox();
+            argWidth = subtreeBB.w;
+            argHeight = subtreeBB.h;
         }
+        this.p.push();
+        this.p.scale(1,1 + ((argHeight/this.s.xBox.h)-1)/2);
+
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.RIGHT, this.p.BASELINE);
+            .textAlign(this.p.RIGHT, this.p.CENTER);
 
-        this.p.text('(', -argWidth/2, 0);
+        this.p.text('(', -argWidth/2, -this.s.xBox.h/4);
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(')', argWidth/2 + this.scale*40, 0); // FIXME This 40 is hard-coded
-
+            .textAlign(this.p.LEFT, this.p.CENTER);
+        this.p.text(')', argWidth/2 + this.scale*40, -this.s.xBox.h/4); // FIXME This 40 is hard-coded
+        this.p.pop();
         this.p.strokeWeight(1);
+
+        //this.p.rect(-argWidth/2, -argHeight/2 - this.s.xBox.h/2, argWidth, argHeight);
+
 
         if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
@@ -179,11 +188,14 @@ class Brackets extends Widget {
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
+        var argHeight = this.s.xBox.h;
         if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-            argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
+            let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox()
+            argWidth = subtreeBB.w;
+            argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, box.y - 1000, width + this.scale*40, box.h);  // FIXME This 40 is hard-coded
+        return new Rect(-width/2, box.y - 1000, width + this.scale*40, argHeight);  // FIXME This 40 is hard-coded
     }
 
     /**
