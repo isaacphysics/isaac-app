@@ -253,23 +253,26 @@ class MySketch {
 
 	touchMoved = () => {
 		if(this.movingSymbol != null) {
-			var sbox = this.movingSymbol.subtreeBoundingBox();
-			var spos = this.movingSymbol.getAbsolutePosition();
-			var dx = this.p.touchX - this.prevTouch.x;
-			var dy = this.p.touchY - this.prevTouch.y;
-			var left =   spos.x + sbox.x;
-			var right =  spos.x + sbox.x + sbox.w;
-			var top =    spos.y + sbox.y;
-			var bottom = spos.y + sbox.y + sbox.h;
+			var d = this.p.createVector(this.p.touchX - this.prevTouch.x, this.p.touchY - this.prevTouch.y);
 
-			if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
-				dx = 0;
-			}
-			if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
-				dy = 0;
-			}
-
-			var d = this.p.createVector(dx, dy);
+			// TODO NOT DELETE the following commented section.
+			// var sbox = this.movingSymbol.subtreeBoundingBox();
+			// var spos = this.movingSymbol.getAbsolutePosition();
+			// var dx = this.p.touchX - this.prevTouch.x;
+			// var dy = this.p.touchY - this.prevTouch.y;
+			// var left =   spos.x + sbox.x;
+			// var right =  spos.x + sbox.x + sbox.w;
+			// var top =    spos.y + sbox.y;
+			// var bottom = spos.y + sbox.y + sbox.h;
+            //
+			// if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
+			// 	dx = 0;
+			// }
+			// if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
+			// 	dy = 0;
+			// }
+			// var d = this.p.createVector(dx, dy);
+			
 			this.movingSymbol.position.add(d);
 			this.prevTouch.x = this.p.touchX;
 			this.prevTouch.y = this.p.touchY;
