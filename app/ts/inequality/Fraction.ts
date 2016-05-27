@@ -81,7 +81,7 @@ class Fraction extends Widget {
         } else if(format == 'mathml') {
             expression = '';
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += '<mfrac>' + this.dockingPoints['numerator'].child.getExpression(format) + this.dockingPoints['denominator'].child.getExpression(format) + '</mfrac>';
+                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.getExpression(format) + '</mrow></mfrac>';
             }
             if(this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.getExpression(format);
