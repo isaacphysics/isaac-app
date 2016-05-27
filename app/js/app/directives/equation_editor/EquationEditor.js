@@ -275,7 +275,8 @@ define(function(require) {
 
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
-                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                        // Special characters have special needs (i.e., a space after them).
+                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k] + ' ');
                     }
                     return s;
                 }
