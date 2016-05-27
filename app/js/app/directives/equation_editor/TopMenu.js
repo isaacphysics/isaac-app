@@ -96,6 +96,10 @@ define([], function() {
                         toggleThisMenu();
                     })
                 }
+
+                scope.$on("$destroy", function() {
+                    allMenus.splice(allMenus.indexOf(el[0]),1);
+                })
 			},
 		};
 	}];

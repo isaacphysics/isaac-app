@@ -100,31 +100,8 @@ class MySketch {
 		// NB: This logic requires spec to be briefly set to null when switching between potential symbol types.
         if (spec) {
             if (!this.potentialSymbol) {
-                switch(spec.type) {
-                    case "symbol":
-                        this.potentialSymbol = new Symbol(this.p, this, spec.token);
-                        break;
-                    case "fraction":
-                        this.potentialSymbol = new Fraction(this.p, this);
-                        break;
-                    case "brackets":
-                        this.potentialSymbol = new Brackets(this.p, this, 'round');
-                        break;
-                    case "sqrt":
-                        this.potentialSymbol = new Radix(this.p, this);
-                        break;
-                    case "binaryOp":
-                        this.potentialSymbol = new BinaryOperation(this.p, this, spec.token);
-                        break;
-                    case "number":
-                        this.potentialSymbol = new Number(this.p, this, spec.significand, spec.exponent);
-                        break;
-                    default:
-                        throw new Error("Unknown widget type: " + spec.type);
-                }
-
+                this.potentialSymbol = this._parseSubtreeObject(spec);
                 this.visibleDockingPointTypes = this.potentialSymbol.docksTo;
-
             }
             this.potentialSymbol.position.x = x - this.potentialSymbol.boundingBox().w*0.5;
             this.potentialSymbol.position.y = y;

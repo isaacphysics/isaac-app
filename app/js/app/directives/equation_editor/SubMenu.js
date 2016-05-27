@@ -9,22 +9,26 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name+="SUBMENU"
 
-                var items = element.siblings("[sub-menu-item]");
+                setTimeout(function() {
+                    // Do this init asynchronously so that the sub-menu-items are definitely in the DOM.
+                    var items = element.siblings("[sub-menu-item]");
 
-                scope.selectMenu = function(e, idx) {
-                	scope.activeIdx = idx;
-					element.siblings("[sub-menu-item]").hide();
-					$(element.siblings("[sub-menu-item]")[idx]).show();
+                    scope.selectMenu = function(e, idx) {
+                        scope.activeIdx = idx;
+                        element.siblings("[sub-menu-item]").hide();
+                        $(element.siblings("[sub-menu-item]")[idx]).show();
 
-					scope.$emit("triggerResizeMenu");
-                }
+                        scope.$emit("triggerResizeMenu");
+                    }
 
-                scope.menus = [];
-                items.each(function(i,e) {
-                    scope.menus.push(JSON.parse(JSON.stringify(scope.$eval($(e).attr("menu-title")))));
+                    scope.menus = [];
+                    items.each(function(i,e) {
+                        scope.menus.push(JSON.parse(JSON.stringify(scope.$eval($(e).attr("menu-title")))));
+                    });
+
+                    scope.activeIdx = 0;
                 });
 
-                scope.activeIdx = 0;
 
                 var lst = element.find("ul");
                 var bufferedLeft = 0;

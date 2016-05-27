@@ -49,16 +49,20 @@ define([], function() {
                         scope.currentSymbol.label = scope.currentNumber;
                     } else {
                         scope.currentSymbol = {
-                            type: "number",
-                            fontSize: 48,
-                            label: scope.currentNumber,
-                            texLabel: true,
+                            type: "Number",
+                            properties: {
+                                significand: scope.currentNumber,
+                            },
+                            menu: {
+                                label: scope.currentNumber,
+                                texLabel: true,
+                            }
                         }
                     }
 
                 	var expNum = parseFloat(scope.currentExponent);
 
-                	if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.label))) {
+                	if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.menu.label))) {
                         scope.negate = false;
                 		scope.currentSymbol = null;
                 		return;
@@ -70,26 +74,24 @@ define([], function() {
                         scope.currentNumber = scope.currentNumber.substring(1);
                     } else if (!currentNumberAlreadyNegated && scope.negate) {
                         scope.currentNumber = "-" + scope.currentNumber;
-                        scope.currentSymbol.labelClass = "tiny";
+                        scope.currentSymbol.menu.labelClass = "tiny";
                     }
 
-                	if (scope.currentSymbol.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
+                	if (scope.currentSymbol.menu.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
                 		if (!isNaN(expNum)) {
-                			scope.currentSymbol.label += "\n\\times 10^{" + expNum + "}";
-                            scope.currentSymbol.labelClass = "tiny";
+                			scope.currentSymbol.menu.label += "\n\\times 10^{" + expNum + "}";
+                            scope.currentSymbol.menu.labelClass = "tiny";
                 		}
                 	}
 
-
-                	scope.currentSymbol.token = scope.currentSymbol.label;
                     scope.currentSymbol.fromCalc = true;
                     scope.currentSymbol.editable = {
                         currentNumber: scope.currentNumber,
                         currentExponent: scope.currentExponent,
                         negate: scope.negate,
                     };
-                    scope.currentSymbol.significand = scope.currentNumber;
-                    scope.currentSymbol.exponent = scope.currentExponent;
+                    scope.currentSymbol.properties.significand = scope.currentNumber;
+                    scope.currentSymbol.properties.exponent = scope.currentExponent;
                 };
 
                 scope.$watch("currentNumber", updateSymbol);

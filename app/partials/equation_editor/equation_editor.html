@@ -3,12 +3,12 @@
         <div number-entry></div>
     </div>
     <div top-menu="abc\,\, \alpha \beta \gamma" ng-show="isLandscape">
-        <div symbol-menu symbols="symbolLibrary.reducedVars"></div>
-        <!--<div sub-menu></div>
-        <div sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
-        <div sub-menu-item menu-title="latinLetterUpperTitle" symbol-menu symbols="symbolLibrary.latinLettersUpper"></div>
-        <div sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
-        <div sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>-->
+        <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="latinLetterUpperTitle" symbol-menu symbols="symbolLibrary.latinLettersUpper"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
     </div>
     <div top-menu="+\, -\, \sqrt{x}" ng-show="isLandscape">
         <div symbol-menu symbols="symbolLibrary.reducedOps"></div>
@@ -18,8 +18,11 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
-    <div top-menu="\sin\,\, \int" ng-show="isLandscape && false">
-        <div symbol-menu symbols="symbolLibrary.functions"></div>
+    <div top-menu="\sin\,\, \int" ng-show="isLandscape">
+        <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
 <!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
