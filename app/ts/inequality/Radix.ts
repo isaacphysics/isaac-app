@@ -122,6 +122,8 @@ class Radix extends Widget {
         }
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
+        this.p.push();
+        this.p.scale(1, 1+(argHeight/this.baseHeight-1)*0.8);
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE);
@@ -138,6 +140,7 @@ class Radix extends Widget {
         this.p.line(box.x+box.w, y, argWidth+this.scale*box.w/2, y);
 
         this.p.strokeWeight(1);
+        this.p.pop();
 
         if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
