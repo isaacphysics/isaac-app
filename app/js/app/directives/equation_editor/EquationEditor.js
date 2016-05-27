@@ -159,9 +159,6 @@ define(function(require) {
                             continue;
                         }
 
-                        if (s == "y")
-                            s = "v_zmf";
-
                         console.debug("Parsing:", s);
 
                         var parts = s.split(" ");
