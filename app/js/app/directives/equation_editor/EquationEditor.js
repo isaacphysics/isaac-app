@@ -504,7 +504,8 @@ define(function(require) {
                     trig: [{
                         type: "Function",
                         properties: {
-                            name: "sin"
+                            name: "sin",
+                            upright: true
                         },
                         menu: {
                             label:  "\\sin",
@@ -513,7 +514,8 @@ define(function(require) {
                     },{
                         type: "Function",
                         properties: {
-                            name: "cos"
+                            name: "cos",
+                            upright: true
                         },
                         menu: {
                             label:  "\\cos",
@@ -522,7 +524,8 @@ define(function(require) {
                     },{
                         type: "Function",
                         properties: {
-                            name: "tan"
+                            name: "tan",
+                            upright: true
                         },
                         menu: {
                             label:  "\\tan",
@@ -534,7 +537,8 @@ define(function(require) {
                     otherFns: [{
                         type: "Function",
                         properties: {
-                            name: "ln"
+                            name: "ln",
+                            upright: true
                         },
                         menu: {
                             label:  "\\ln",
@@ -543,7 +547,8 @@ define(function(require) {
                     },{
                         type: "Function",
                         properties: {
-                            name: "log"
+                            name: "log",
+                            upright: true
                         },
                         menu: {
                             label:  "\\log",
