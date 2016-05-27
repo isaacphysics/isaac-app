@@ -87,39 +87,9 @@ class MySketch {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
 
-		this.parseSubtreeObject({
-			type: 'Function',
-			position: { x: this.width/2, y: this.height/2 },
-			properties: { name: 'log', upright: true },
-			children: {
-				'right': {
-					type: 'Symbol',
-					position: {x:0,y:0},
-					properties: { letter: 'M' }
-				}
-			}
-		});
-		this.parseSubtreeObject({
-			type: 'Function',
-			position: { x: this.width/2, y: this.height/2 },
-			properties: { name: 'log', upright: true },
-			children: {
-				'right': {
-					type: 'Function',
-					position: { x: 0, y: 0 },
-					properties: { name: 'sin', upright: true },
-				}
-			}
-		});
-		this.parseSubtreeObject({
-			type: 'Function',
-			position: { x: this.width/2, y: this.height/2 },
-			properties: { name: 'log', upright: true }
-		});
+
 
 		this.centre();
-
-		// this.symbols[0].position = this.p.createVector(this.width/2, this.height/2);
 	};
 
 	draw = () => {
