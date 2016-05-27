@@ -336,7 +336,9 @@ class MySketch {
 			}
 		});
 
-		console.log("MATHML: " + symbolWithMostChildren.getExpression("mathml"));
+        if (symbolWithMostChildren) {
+		  console.log("MATHML: " + symbolWithMostChildren.getExpression("mathml"));
+        }
 	};
 
 	mouseMoved = () => {

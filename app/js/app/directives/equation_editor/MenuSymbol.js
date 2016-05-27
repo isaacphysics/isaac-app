@@ -56,7 +56,6 @@ define([], function() {
                     var requiredPageTop = pageY - grabLocalY;
 
                     var offset = element.offset();
-                    console.log(offset);
 
                     var pX = pageX - offset.top;
                     var pY = pageY - offset.left;

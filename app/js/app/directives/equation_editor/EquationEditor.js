@@ -133,8 +133,51 @@ define(function(require) {
                     });
                 };
 
-                var greekLetters = ["\\alpha","\\beta","\\gamma","\\delta","\\epsilon","\\zeta","\\eta","\\theta","\\iota","\\kappa","\\lambda","\\mu","\\nu","\\xi","\\omicron","\\pi","\\rho","\\sigma","\\tau","\\upsilon","\\phi","\\chi","\\psi","\\omega"];
+                var greekLetters = ["\\alpha","\\beta","\\gamma","\\delta","\\varepsilon","\\zeta","\\eta","\\theta","\\iota","\\kappa","\\lambda","\\mu","\\nu","\\xi","\\omicron","\\pi","\\rho","\\sigma","\\tau","\\upsilon","\\phi","\\chi","\\psi","\\omega"];
                 var greekLettersUpper = ["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"];
+                var letterMap = {
+                    "\\alpha": "α",
+                    "\\beta": "β",
+                    "\\gamma": "γ",
+                    "\\delta": "δ",
+                    "\\epsilon": "ε",
+                    "\\varepsilon": "ε",
+                    "\\zeta": "ζ",
+                    "\\eta": "η",
+                    "\\theta": "θ",
+                    "\\iota": "ι",
+                    "\\kappa": "κ",
+                    "\\lambda": "λ",
+                    "\\mu": "μ",
+                    "\\nu": "ν",
+                    "\\xi": "ξ",
+                    "\\omicron": "ο",
+                    "\\pi": "π",
+                    "\\rho": "ρ",
+                    "\\sigma": "σ",
+                    "\\tau": "τ",
+                    "\\upsilon": "υ",
+                    "\\phi": "φ",
+                    "\\chi": "χ",
+                    "\\psi": "ψ",
+                    "\\omega": "ω",
+                    "\\Gamma": "Γ",
+                    "\\Delta": "Δ",
+                    "\\Theta": "Θ",
+                    "\\Lambda": "Λ",
+                    "\\Xi": "Ξ",
+                    "\\Pi": "Π",
+                    "\\Sigma": "Σ",
+                    "\\Upsilon": "Υ",
+                    "\\Phi": "Φ",
+                    "\\Psi": "Ψ",
+                    "\\Omega": "Ω"
+                };
+                var inverseLetterMap = {};
+                for(var k in letterMap) {
+                    inverseLetterMap[letterMap[k]] = k;
+                }
+                inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
 
                 var convertToLatexIfGreek = function(s) {
                     if (greekLetters.indexOf("\\"+s) > -1) {
@@ -184,7 +227,7 @@ define(function(require) {
                                 var newSym = {
                                     type: "Symbol",
                                     properties: {
-                                        letter: p1,
+                                        letter: letterMap["\\"+p1] || p1,
                                     },
                                     menu: {
                                         label: p1,
@@ -197,7 +240,7 @@ define(function(require) {
                                         subscript: {
                                             type: "Symbol",
                                             properties: {
-                                                letter: p2,
+                                                letter: letterMap["\\"+p2] || p2,
                                                 upright: p2.length > 1
                                             }
                                         }
@@ -227,6 +270,13 @@ define(function(require) {
 
                     return r;
                 }
+
+                var replaceSpecialChars = function(s) {
+                    for (var k in inverseLetterMap) {
+                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                    }
+                    return s;
+                }
                 
                 scope.newEditorState = function(s) {
                     scope.state = s;
@@ -237,7 +287,11 @@ define(function(require) {
 
                     rp.empty();
 
+
                     if (scope.state.result) {
+                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]);
+                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]);
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
@@ -256,7 +310,7 @@ define(function(require) {
                 		symbols.push({
                 			type: "Symbol",
                             properties: {
-                                letter: s,
+                                letter: letterMap[s] || s
                             },
                             menu: {
                                 label: s,
