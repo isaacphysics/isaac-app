@@ -227,7 +227,7 @@ define(function(require) {
                                 var newSym = {
                                     type: "Symbol",
                                     properties: {
-                                        letter: letterMap["\\"+p1] || p1,
+                                        letter: letterMap[p1] || p1,
                                     },
                                     menu: {
                                         label: p1,
@@ -240,7 +240,7 @@ define(function(require) {
                                         subscript: {
                                             type: "Symbol",
                                             properties: {
-                                                letter: letterMap["\\"+p2] || p2,
+                                                letter: letterMap[p2] || p2,
                                                 upright: p2.length > 1
                                             }
                                         }
@@ -290,8 +290,8 @@ define(function(require) {
 
                     if (scope.state.result) {
                         scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]);
-                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]);
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"");
+                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"");
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 

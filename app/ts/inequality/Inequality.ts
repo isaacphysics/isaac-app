@@ -403,13 +403,12 @@ class MySketch {
 	};
 
 	centre = () => {
-		var height = 240
+		var top = this.height/2;
 		_.each(this.symbols, (symbol, i) => {
 			var sbox = symbol.subtreeBoundingBox();
-			symbol.position = this.p.createVector(this.width/2 - sbox.center.x, height + sbox.center.y);
-			height += sbox.h;
+			symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
+			top += sbox.h;
 			symbol.shakeIt();
-			// debugger;
 		});
 	};
 }
