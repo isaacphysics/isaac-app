@@ -381,6 +381,13 @@ define(["angular-ui-router"], function() {
                     },
                 },
             })
+            .state('error', {
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/error.html",
+                    },
+                },
+            })
 
 	        .state('accountSettings', {
 		        url: "/account?next&userId&authToken",

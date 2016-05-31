@@ -5,7 +5,7 @@
         <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
         <span class="global-title hide-for-small-only">
             &nbsp; <!-- You can't remove this; it ensures the menu div doesn't collapse -->
-            <span ng-if="$state.includes('home')">
+            <span ng-if="$state.includes('home') && answerCountTicker > 0">
                 <span class="question-answer-count">{{answerCountTicker | number:0 }}</span> Questions answered so far!
             </span>
         </span>

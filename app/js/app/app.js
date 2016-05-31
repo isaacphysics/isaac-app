@@ -65,6 +65,27 @@ define([
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
 
+        $httpProvider.interceptors.push(["$q", "$injector", function($q, $injector) {
+            return {
+                response: function(response) {
+                    // same as above
+                    if (response.status >= 500) {
+                        console.warn("Uncaught error from API:", response);
+                    }
+                    return response;
+                },
+                responseError: function(response) {
+                    if (response.status >= 500) {
+                        var $state = $injector.get("$state");
+                        $injector.get("$rootScope").setLoading(false);
+                        $state.go('error');
+                        console.warn("Error from API:", response);
+                    }
+                    return $q.reject(response);
+                }
+            };
+        }]);
+
 		$locationProvider.html5Mode(true).hashPrefix("!");
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
