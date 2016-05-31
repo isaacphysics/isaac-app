@@ -505,7 +505,7 @@ define(function(require) {
                     ],
 */
                     trig: [{
-                        type: "Function",
+                        type: "TrigFunction",
                         properties: {
                             name: "sin",
                             upright: true
@@ -515,7 +515,7 @@ define(function(require) {
                             texLabel: true
                         }
                     },{
-                        type: "Function",
+                        type: "TrigFunction",
                         properties: {
                             name: "cos",
                             upright: true
@@ -525,7 +525,7 @@ define(function(require) {
                             texLabel: true
                         }
                     },{
-                        type: "Function",
+                        type: "TrigFunction",
                         properties: {
                             name: "tan",
                             upright: true

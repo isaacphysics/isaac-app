@@ -116,28 +116,30 @@ abstract class Widget {
 			alpha = 127;
 		}
 
-        _.each(this.dockingPoints, (dockingPoint, key) => {
-            if (dockingPoint.child) {
-                dockingPoint.child.draw();
-            } else {
-                // There is no child to paint, let's paint an empty docking point
 
-                var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
-                var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
+		_.each(this.dockingPoints, (dockingPoint, key) => {
+			if (dockingPoint.child) {
+				dockingPoint.child.draw();
+			} else {
+				// There is no child to paint, let's paint an empty docking point
+				// if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+					var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
+					var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
-                if (drawThisOne || window.location.hash === "#debug") {
-                    var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha*0.5 : alpha;// * 0.5;
-                    this.p.stroke(0, 127, 255, ptAlpha);
-                    this.p.strokeWeight(1);
-                    if(highlightThisOne && drawThisOne) {
-                        this.p.fill(127, 192, 255);
-                    } else {
-                        this.p.noFill();
-                    }
-                    this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
-                }
-            }
-        });
+					if (drawThisOne || window.location.hash === "#debug") {
+						var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
+						this.p.stroke(0, 127, 255, ptAlpha);
+						this.p.strokeWeight(1);
+						if (highlightThisOne && drawThisOne) {
+							this.p.fill(127, 192, 255);
+						} else {
+							this.p.noFill();
+						}
+						this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
+					}
+				// }
+			}
+		});
 
 		this.p.noFill();
 		if(window.location.hash === "#debug") {
@@ -384,10 +386,21 @@ abstract class Widget {
 
 	/**
 	 * Internal aid for placing stuff as children.
-	 *
-	 * @private
 	 */
 	offsetBox(): Rect {
 		return this.boundingBox();
+	}
+
+	/**
+	 * Computes this widget's depth in the tree.
+	 */
+	depth(): number {
+		var depth = 0;
+		var n = this;
+		while(n.parentWidget) {
+			depth += 1;
+			n = n.parentWidget;
+		}
+		return depth;
 	}
 }

@@ -29,6 +29,7 @@ import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
 import { Number } from './Number.ts';
 import { Function } from './Function.ts';
+import { TrigFunction } from './TrigFunction.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -182,6 +183,9 @@ class MySketch {
                 break;
 			case "Function":
 				w = new Function(this.p, this, node["properties"]["name"], node["properties"]["upright"]);
+				break;
+			case "TrigFunction":
+				w = new TrigFunction(this.p, this, node["properties"]["name"], node["properties"]["upright"]);
 				break;
 			default: // this would be a Widget...
 				break;
