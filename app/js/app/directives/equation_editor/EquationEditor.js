@@ -189,13 +189,13 @@ define(function(require) {
                         return "\\" + s;
                     }
                     return s;
-                }
+                };
 
                 var parseCustomSymbols = function(symbols) {
                     var r = {
                         vars: [],
                         fns: [],
-                    }
+                    };
 
                     for (var i in symbols) {
                         var s = symbols[i].trim();
@@ -213,11 +213,14 @@ define(function(require) {
 
                             if (p.endsWith("()")) {
                                 var name = p.replace(/\(\)/g, "");
+                                var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
+                                var allowSubscript = name == "log";
                                 partResults.push({
                                     type: "Function",
                                     properties: {
                                         name: name,
-                                        upright: true
+                                        innerSuperscript: innerSuperscript,
+                                        allowSubscript: allowSubscript
                                     },
                                     menu: {
                                         label: "\\" + name,
@@ -246,7 +249,7 @@ define(function(require) {
                                                 upright: p2.length > 1
                                             }
                                         }
-                                    }
+                                    };
                                     newSym.menu.label += "_{" + p2 +"}";
                                 }
 
@@ -271,7 +274,7 @@ define(function(require) {
                     }
 
                     return r;
-                }
+                };
 
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
