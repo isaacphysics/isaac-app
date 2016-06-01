@@ -396,7 +396,7 @@ abstract class Widget {
 	 */
 	depth(): number {
 		var depth = 0;
-		var n = this;
+		var n:Widget = this;
 		while(n.parentWidget) {
 			depth += 1;
 			n = n.parentWidget;
