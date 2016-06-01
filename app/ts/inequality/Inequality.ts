@@ -27,9 +27,8 @@ import { BinaryOperation } from './BinaryOperation.ts';
 import { Fraction } from './Fraction.ts';
 import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
-import { Number } from './Number.ts';
-import { Function } from './Function.ts';
-import { TrigFunction } from './TrigFunction.ts';
+import { Num } from './Num.ts';
+import { Fn } from './Fn.ts';
 import { DockingPoint } from './DockingPoint.ts';
 
 // This is where the fun starts
@@ -178,14 +177,11 @@ class MySketch {
 			case "Radix":
 				w = new Radix(this.p, this);
 				break;
-            case "Number":
-                w = new Number(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
+            case "Num":
+                w = new Num(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
                 break;
-			case "Function":
-				w = new Function(this.p, this, node["properties"]["name"], node["properties"]["upright"]);
-				break;
-			case "TrigFunction":
-				w = new TrigFunction(this.p, this, node["properties"]["name"], node["properties"]["upright"]);
+			case "Fn":
+				w = new Fn(this.p, this, node["properties"]["name"], node["properties"]["custom"], node["properties"]["allowSubscript"], node["properties"]["innerSuperscript"]);
 				break;
 			default: // this would be a Widget...
 				break;

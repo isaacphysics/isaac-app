@@ -505,30 +505,30 @@ define(function(require) {
                     ],
 */
                     trig: [{
-                        type: "TrigFunction",
+                        type: "Fn",
                         properties: {
                             name: "sin",
-                            upright: true
+                            innerSuperscript: true
                         },
                         menu: {
                             label:  "\\sin",
                             texLabel: true
                         }
                     },{
-                        type: "TrigFunction",
+                        type: "Fn",
                         properties: {
                             name: "cos",
-                            upright: true
+                            innerSuperscript: true
                         },
                         menu: {
                             label:  "\\cos",
                             texLabel: true
                         }
                     },{
-                        type: "TrigFunction",
+                        type: "Fn",
                         properties: {
                             name: "tan",
-                            upright: true
+                            innerSuperscript: true
                         },
                         menu: {
                             label:  "\\tan",
@@ -538,20 +538,20 @@ define(function(require) {
                     ],
 
                     otherFns: [{
-                        type: "Function",
+                        type: "Fn",
                         properties: {
                             name: "ln",
-                            upright: true
+                            allowSubscript: true
                         },
                         menu: {
                             label:  "\\ln",
                             texLabel: true
                         }
                     },{
-                        type: "Function",
+                        type: "Fn",
                         properties: {
                             name: "log",
-                            upright: true
+                            allowSubscript: true
                         },
                         menu: {
                             label:  "\\log",

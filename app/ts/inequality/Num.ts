@@ -4,14 +4,14 @@ import { DockingPoint } from "./DockingPoint.ts";
 
 /** A class for representing numbers */
 export
-class Number extends Widget {
+class Num extends Widget {
 
     protected s: any;
     private significand: string;
     private exponent: string;
 
     get typeAsString(): string {
-        return "Number";
+        return "Num";
     }
 
     /**
