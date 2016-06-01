@@ -216,7 +216,7 @@ define(function(require) {
                                 var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                 var allowSubscript = name == "log";
                                 partResults.push({
-                                    type: "Function",
+                                    type: "Fn",
                                     properties: {
                                         name: name,
                                         innerSuperscript: innerSuperscript,

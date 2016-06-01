@@ -49,7 +49,7 @@ define([], function() {
                         scope.currentSymbol.label = scope.currentNumber;
                     } else {
                         scope.currentSymbol = {
-                            type: "Number",
+                            type: "Num",
                             properties: {
                                 significand: scope.currentNumber,
                             },
