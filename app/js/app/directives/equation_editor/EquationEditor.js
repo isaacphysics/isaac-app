@@ -295,9 +295,9 @@ define(function(require) {
 
 
                     if (scope.state.result) {
-                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"");
-                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"");
+                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"].replace(/ _/g,'_'));
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"").replace(/ _/g,'_');
+                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"").replace(/ _/g,'_');
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
