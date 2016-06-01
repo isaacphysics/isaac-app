@@ -30,6 +30,7 @@ import { Radix } from './Radix.ts';
 import { Num } from './Num.ts';
 import { Fn } from './Fn.ts';
 import { DockingPoint } from './DockingPoint.ts';
+import { Relation } from './Relation.ts';
 
 // This is where the fun starts
 
@@ -182,6 +183,9 @@ class MySketch {
                 break;
 			case "Fn":
 				w = new Fn(this.p, this, node["properties"]["name"], node["properties"]["custom"], node["properties"]["allowSubscript"], node["properties"]["innerSuperscript"]);
+				break;
+			case "Relation":
+				w = new Relation(this.p, this, node["properties"]["relation"]);
 				break;
 			default: // this would be a Widget...
 				break;
