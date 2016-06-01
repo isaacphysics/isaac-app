@@ -35,9 +35,9 @@ define([], function() {
 				$scope.contactForm.subject = $stateParams.subject;
 			}
 		}).catch(function(){
-			if (!$scope.user.email && $stateParams.preset == 'teacherRequest') {
+			if (!$scope.user._id && $stateParams.preset == 'teacherRequest') {
 				$state.go('login', {target:"/contact?preset=teacherRequest"})
-			} else if (!$scope.user.email && $stateParams.preset == 'accountDeletion') {
+			} else if (!$scope.user._id && $stateParams.preset == 'accountDeletion') {
 			    $state.go('login', {target:"/contact?preset=accountDeletion"})
 			}
 		})
