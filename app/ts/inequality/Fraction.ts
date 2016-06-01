@@ -76,7 +76,7 @@ class Fraction extends Widget {
             }
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += "[NOPE:" + this.id + "]";
+                expression += "[FRACTION:" + this.id + "]";
             }
         } else if(format == 'mathml') {
             expression = '';
@@ -177,7 +177,7 @@ class Fraction extends Widget {
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + boxes["right"].w / 2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
+            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w/2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

@@ -126,7 +126,7 @@ class Num extends Widget {
                 expression += '<mn>' + this.getFullText() + '</mn>';
 
             } else {
-                expression += '<msup><mn>' + this.getFullText() + '</mn>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+                expression += '<msup><mn>' + this.getFullText() + '</mn><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
 
             }
             if (this.dockingPoints['right'].child != null) {

@@ -108,13 +108,13 @@ class Symbol extends Widget {
 				expression += '<mi>' + this.letter + '</mi>';
 
 			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
-				expression += '<msub><mi>' + this.letter + '</mi>' + this.dockingPoints['subscript'].child.getExpression(format) + '</msub>';
+				expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
 
 			} else if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
-				expression += '<msup><mi>' + this.letter + '</mi>' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+				expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
 
 			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
-				expression += '<msubsup><mi>' + this.letter + '</mi>' + this.dockingPoints['subscript'].child.getExpression(format) + this.dockingPoints['superscript'].child.getExpression(format) + '</msubsup>';
+				expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
 
 			}
 			if(this.dockingPoints['right'].child != null) {

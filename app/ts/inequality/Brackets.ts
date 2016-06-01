@@ -117,7 +117,7 @@ class Brackets extends Widget {
             if(this.dockingPoints['argument'].child) {
                 var brackets = '<mfenced open="'+lhs+'" close="'+rhs+'"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
                 if(this.dockingPoints['superscript'].child) {
-                    expression = '<msup>' + brackets + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+                    expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
                 } else {
                     expression = brackets;
                 }

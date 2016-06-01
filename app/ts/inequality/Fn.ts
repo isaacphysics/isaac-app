@@ -131,12 +131,12 @@ class Fn extends Widget {
                 var right = ('right' in this.dockingPoints && this.dockingPoints['right'].child) ? this.dockingPoints['right'].child.getExpression(format) : '';
                 if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                     if(this.dockingPoints['subscript'].child instanceof Number) {
-                        expression += '<mrow><msub><mi>' + this.name + '</mi><mn>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mn></msub><mo>(</mo><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow><mo>)</mo>' + right + '</mrow>';
+                        expression += '<mrow><msub><mi>' + this.name + '</mi><mrow><mn>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mn></mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
                     } else {
-                        expression += '<mrow><msub><mi>' + this.name + '</mi><mi>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mi></msub><mo>(</mo><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow><mo>)</mo>' + right + '</mrow>';
+                        expression += '<mrow><msub><mi>' + this.name + '</mi><mrow><mi>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mi></mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
                     }
                 } else {
-                    expression += '<mrow><mi>' + this.name + '</mi><mo>(</mo><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow><mo>)</mo>' + right + '</mrow>';
+                    expression += '<mrow><mi>' + this.name + '</mi><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
                 }
             }
         }

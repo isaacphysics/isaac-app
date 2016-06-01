@@ -92,7 +92,7 @@ class Radix extends Widget {
             if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
                 var sqrt = '<msqrt>' + this.dockingPoints['argument'].child.getExpression(format) + '</msqrt>';
                 if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    expression += '<msup>' + sqrt + '' + this.dockingPoints['superscript'].child.getExpression(format) + '</msup>';
+                    expression += '<msup>' + sqrt + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
                 } else {
                     expression += sqrt;
                 }
