@@ -109,7 +109,7 @@ class Radix extends Widget {
     }
 
     token() {
-        return '';
+        return 'sqrt';
     }
 
     /** Paints the widget on the canvas. */
@@ -123,16 +123,16 @@ class Radix extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.push();
-        this.p.scale(1, 1+(argHeight/this.baseHeight-1)*0.8);
+        var scale = 1+(argHeight/this.baseHeight-1)*0.8;
+        if(scale < 1) {
+            scale = 1;
+        }
+        this.p.scale(1, scale);
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE);
 
-
-
-        // this.p.scale(1.0, argHeight/this.baseHeight);
         this.p.text('\u221A', 0, 0);
-        // this.p.scale(1.0, this.baseHeight/argHeight);
 
         this.p.noFill(0).strokeWeight(6*this.scale).stroke(this.color);
         var box = this.boundingBox();
@@ -195,11 +195,12 @@ class Radix extends Widget {
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var widest = 0;
+        var argWidth = this.s.xBox.w;
+        var supWidth = this.scale*this.s.xBox.w/2;
 
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
-            widest = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
+            argWidth = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
             p.x = box.w/2 + this.dockingPoints["argument"].child.offsetBox().w/2;
             p.y = 0;
         } else {
@@ -212,27 +213,25 @@ class Radix extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
+            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
+            p.x = box.w + argWidth + supWidth;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
-            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
+            // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
         } else {
             var p = this.dockingPoints["superscript"].position;
-            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
+            p.x = box.w + argWidth + supWidth;
             p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
-
-        box = this.boundingBox();
-        widest = Math.max(widest, this.s.xBox.w);
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w/2;
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth;
         }
     }
 }
