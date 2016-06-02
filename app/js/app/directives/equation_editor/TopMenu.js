@@ -43,7 +43,7 @@ define([], function() {
                             }
                         });
                     }
-                }
+                };
 
                 var toggleThisMenu = function() {
                     if (el.hasClass("active-menu")) {
@@ -57,14 +57,14 @@ define([], function() {
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
                         scope.$emit("menuOpened");
                     }
-                }
+                };
 
                 var resizeMenu = function() {
                     if (el.hasClass("active-menu")) {
                         var activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
                     }
-                }
+                };
 
                 scope.clickHandle = function(e) {
 
@@ -77,7 +77,10 @@ define([], function() {
                 scope.clickContent = function(e) {
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
+
+                element.on("touchstarted mousedown", ".handle-menu-touch-content", scope.clickContent);
+                element.on("touchstarted mousedown", ".handle-menu-touch", scope.clickHandle);
 
                 scope.$on("closeMenus", closeMenus);
                 scope.$on("resizeMenu", resizeMenu);

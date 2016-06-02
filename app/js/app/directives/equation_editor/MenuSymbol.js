@@ -124,8 +124,8 @@ define([], function() {
                 }
 
                 var touchend = function(e) {
-                    var ts = e.originalEvent.touches;
-                    drop(null, null, e);
+                    var ts = e.originalEvent.changedTouches;
+                    drop(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
