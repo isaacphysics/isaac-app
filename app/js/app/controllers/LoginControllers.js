@@ -19,6 +19,7 @@ define([], function() {
 
 		$scope.auth = auth;
 		$scope.target = $stateParams.target;
+		$scope.loginUser = {};
 
 		$scope.login = function() {
 
@@ -26,8 +27,8 @@ define([], function() {
 			delete $scope.errorMessage;
 			// Only submit if form is valid
 			if($scope.form.$valid) {
-				$scope.userEmail = $scope.user.email;
-				auth.login($scope.user).then(function(){
+				// $scope.userEmail = $scope.user.email;
+				auth.login($scope.loginUser).then(function(){
 					// Success		
 					if (!$scope.target) {
 						$window.location.href = '/';
