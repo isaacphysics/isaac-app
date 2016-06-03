@@ -207,14 +207,14 @@ define([], function() {
         			emailPreferences : $scope.emailPreferences
         		}
 
-        		// add the current password if it's confirmed, and put new password in user object
+        		// Add the current password if it's confirmed
         		if(!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
-    				userSettings.registeredUser.password = $scope.password1;
         			userSettings.passwordCurrent = $scope.passwordChangeState.passwordCurrent;
-				// or if a new password set and editing someone else, just put new password in user object (security checks done in api)
-    			} else if (!!$scope.password1 && !$scope.editingSelf) {
-    				userSettings.registeredUser.password = $scope.password1;
     			}
+    			// ALWAYS update the user password sent, to avoid autofil/leftover issues!
+    			// If a password is sent here, it's assumed to be an update; so send the 'new' password even if it's not set.
+    			// The server knows how to handle it being null.
+    			userSettings.registeredUser.password = $scope.password1;
 
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
 	        		// we want to cause the internal user object to be updated just in case it has changed.
