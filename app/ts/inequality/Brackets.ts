@@ -195,7 +195,7 @@ class Brackets extends Widget {
             argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, -argHeight/2, width + this.scale*40, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width/2, -Math.max(box.h, argHeight)/2, width + this.scale*40, Math.max(box.h, argHeight));  // FIXME This 40 is hard-coded
     }
 
     /**
@@ -225,14 +225,11 @@ class Brackets extends Widget {
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var widest = 0;
-
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
             p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w/2 + w/2;
             p.y = 0;
-            widest += w;
         } else {
             this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h/2);
         }
@@ -240,7 +237,6 @@ class Brackets extends Widget {
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
             var w = this.dockingPoints["superscript"].child.offsetBox().w;
-            // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
         } else {
