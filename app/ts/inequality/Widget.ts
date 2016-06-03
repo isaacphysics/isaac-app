@@ -1,5 +1,4 @@
 import { DockingPoint } from './DockingPoint.ts';
-import Dictionary = _.Dictionary;
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
