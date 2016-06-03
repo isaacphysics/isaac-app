@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Relation } from "./Relation.ts";
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -84,10 +85,11 @@ class Symbol extends Widget {
 				expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
 			}
 			if (this.dockingPoints["right"].child != null) {
-				if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+				if (this.dockingPoints["right"].child instanceof BinaryOperation ||
+					this.dockingPoints["right"].child instanceof Relation) {
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
-					// WARNING This assumes it's a Symbol, hence produces a multiplication
+					// WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
 					expression += "*" + this.dockingPoints["right"].child.getExpression(format);
 				}
 			}

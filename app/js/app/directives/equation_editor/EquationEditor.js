@@ -378,6 +378,15 @@ define(function(require) {
                             label: "\\sqrt{x}",
                             texLabel: true
                         }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '=',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '='
+                        }
                     }],
 
 /*
