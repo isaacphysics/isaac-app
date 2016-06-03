@@ -378,7 +378,7 @@ define(function(require) {
                             label: "\\sqrt{x}",
                             texLabel: true
                         }
-                    }, {
+                    }/*, {
                         type: 'Relation',
                         menu: {
                             label: '=',
@@ -387,7 +387,7 @@ define(function(require) {
                         properties: {
                             relation: '='
                         }
-                    }],
+                    }*/],
 
 /*
                     equality: [{
