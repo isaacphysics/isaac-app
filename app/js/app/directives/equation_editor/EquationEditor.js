@@ -182,6 +182,9 @@ define(function(require) {
                 inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
 
                 var convertToLatexIfGreek = function(s) {
+                    if (s == "epsilon") {
+                        return "\\varepsilon";
+                    }
                     if (greekLetters.indexOf("\\"+s) > -1) {
                         return "\\" + s;
                     }
@@ -378,7 +381,7 @@ define(function(require) {
                             label: "\\sqrt{x}",
                             texLabel: true
                         }
-                    }/*, {
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '=',
@@ -387,7 +390,7 @@ define(function(require) {
                         properties: {
                             relation: '='
                         }
-                    }*/],
+                    }],
 
 /*
                     equality: [{

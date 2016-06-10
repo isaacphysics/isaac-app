@@ -62,6 +62,11 @@ class Relation extends Widget {
                 this.pythonSymbol = '>=';
                 this.latexSymbol = '\\geq ';
                 break;
+            case '=':
+                this.relation = '=';
+                this.pythonSymbol = '==';
+                this.latexSymbol = '=';
+                break;
             default:
                 this.relation = relation;
                 this.pythonSymbol = relation;
@@ -123,7 +128,7 @@ class Relation extends Widget {
     }
 
     token() {
-        return this.relationString;
+        return "";//this.relationString;
     }
 
     /** Paints the widget on the canvas. */
