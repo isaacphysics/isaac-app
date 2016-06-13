@@ -282,9 +282,58 @@ define(function(require) {
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
                         // Special characters have special needs (i.e., a space after them).
-                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k] + ' ');
+                        // If the special character is followed by a non-special character, add a space:
+                        s = s.replace(new RegExp(k+"(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
+                        // Otherwise just replace it.
+                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
                     }
                     return s;
+                }
+
+                var uniqueSymbolsSortFn = function(a, b) {
+                    // Are these functions?
+                    if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
+                        if (a > b) return 1;
+                        if (a < b) return -1;
+                        return 0; 
+                    } else if (a.indexOf("()") > -1) {
+                        return 1;
+                    } else if (b.indexOf("()") > -1) {
+                        return -1;
+                    }
+                    // For compound symbols, position using base symbol:
+                    var baseA = convertToLatexIfGreek(a.split("_")[0].trim());
+                    var baseB = convertToLatexIfGreek(b.split("_")[0].trim());
+                    // Are these Uppercase Greek letters?
+                    if (greekLettersUpper.indexOf(baseA) > -1 && greekLettersUpper.indexOf(baseB) > -1) {
+                        return greekLettersUpper.indexOf(baseA) - greekLettersUpper.indexOf(baseB);
+                    } else if (greekLettersUpper.indexOf(baseA) > -1) {
+                        return 1;
+                    } else if (greekLettersUpper.indexOf(baseB) > -1) {
+                        return -1;
+                    }
+                    // Lowercase Greek Letters?
+                    if (greekLetters.indexOf(baseA) > -1 && greekLetters.indexOf(baseB) > -1) {
+                        return greekLetters.indexOf(baseA) - greekLetters.indexOf(baseB);
+                    } else if (greekLetters.indexOf(baseA) > -1) {
+                        return 1;
+                    } else if (greekLetters.indexOf(baseB) > -1) {
+                        return -1;
+                    }
+                    // Uppercase Letters (Unicode would put them first(!) otherwise)?
+                    if (baseA.toUpperCase() == baseA && baseB.toUpperCase() == baseB) {
+                        if (a > b) return 1;
+                        if (a < b) return -1;
+                        return 0; 
+                    } else if (baseA.toUpperCase() == baseA) {
+                        return 1;
+                    } else if (baseB.toUpperCase() == baseB) {
+                        return -1;
+                    }
+                    // Otherwise use default guess:
+                    if (a > b) return 1;
+                    if (a < b) return -1;
+                    return 0; 
                 }
                 
                 scope.newEditorState = function(s) {
@@ -298,9 +347,13 @@ define(function(require) {
 
 
                     if (scope.state.result) {
-                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"].replace(/ _/g,'_'));
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"").replace(/ _/g,'_');
-                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"").replace(/ _/g,'_');
+                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"");
+                        // Sort them into a unique order:
+                        scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].split(", ").sort(uniqueSymbolsSortFn).join(", ")
+                        scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].replace(/varepsilon/g, "epsilon");
+
+                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"").replace(/varepsilon/g, "epsilon");
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 

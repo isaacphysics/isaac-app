@@ -153,7 +153,7 @@ class Fn extends Widget {
     }
 
     token() {
-        return '';
+        return this.name + "()";
     }
 
     /** Paints the widget on the canvas. */
