@@ -104,7 +104,7 @@ class Fn extends Widget {
                         // Logarithm with base
                         expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', ' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                     } else {
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is ln otherwise!
                     }
                 } else {
                     if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
@@ -269,7 +269,6 @@ class Fn extends Widget {
             supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
         } else if ("superscript" in this.dockingPoints) {
             this.dockingPoints['superscript'].position = this.p.createVector(box.w/2, -Math.max(box.h, bracketBox.h)-(this.dockingPoint.y));
-            console.log(box.y, box.h);
         }
 
         if("argument" in boxes) {
