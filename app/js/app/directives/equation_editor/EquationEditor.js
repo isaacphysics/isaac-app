@@ -135,6 +135,8 @@ define(function(require) {
                     });
                 };
 
+                var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+                var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
                 var greekLetters = ["\\alpha","\\beta","\\gamma","\\delta","\\varepsilon","\\zeta","\\eta","\\theta","\\iota","\\kappa","\\lambda","\\mu","\\nu","\\xi","\\omicron","\\pi","\\rho","\\sigma","\\tau","\\upsilon","\\phi","\\chi","\\psi","\\omega"];
                 var greekLettersUpper = ["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"];
                 var letterMap = {
@@ -290,6 +292,13 @@ define(function(require) {
                     return s;
                 }
 
+                // Make a single dict for lookup to impose an order. Should be quicker than indexOf repeatedly!
+                var uniqueSymbolsTotalOrder = {};
+                var uniqueSymbols = latinLetters.concat(latinLettersUpper, greekLetters, greekLettersUpper);
+                for (var i = 0; i < uniqueSymbols.length; i++) {
+                    uniqueSymbolsTotalOrder[uniqueSymbols[i]] = i;
+                }
+
                 var uniqueSymbolsSortFn = function(a, b) {
                     // Are these functions?
                     if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
@@ -304,30 +313,12 @@ define(function(require) {
                     // For compound symbols, position using base symbol:
                     var baseA = convertToLatexIfGreek(a.split("_")[0].trim());
                     var baseB = convertToLatexIfGreek(b.split("_")[0].trim());
-                    // Are these Uppercase Greek letters?
-                    if (greekLettersUpper.indexOf(baseA) > -1 && greekLettersUpper.indexOf(baseB) > -1) {
-                        return greekLettersUpper.indexOf(baseA) - greekLettersUpper.indexOf(baseB);
-                    } else if (greekLettersUpper.indexOf(baseA) > -1) {
+                    // We have a dict with the symbols and an integer order:
+                    if (baseA in uniqueSymbolsTotalOrder && baseB in uniqueSymbolsTotalOrder) {
+                        return uniqueSymbolsTotalOrder[baseA] - uniqueSymbolsTotalOrder[baseB];
+                    } else if (baseA in uniqueSymbolsTotalOrder) {
                         return 1;
-                    } else if (greekLettersUpper.indexOf(baseB) > -1) {
-                        return -1;
-                    }
-                    // Lowercase Greek Letters?
-                    if (greekLetters.indexOf(baseA) > -1 && greekLetters.indexOf(baseB) > -1) {
-                        return greekLetters.indexOf(baseA) - greekLetters.indexOf(baseB);
-                    } else if (greekLetters.indexOf(baseA) > -1) {
-                        return 1;
-                    } else if (greekLetters.indexOf(baseB) > -1) {
-                        return -1;
-                    }
-                    // Uppercase Letters (Unicode would put them first(!) otherwise)?
-                    if (baseA.toUpperCase() == baseA && baseB.toUpperCase() == baseB) {
-                        if (a > b) return 1;
-                        if (a < b) return -1;
-                        return 0; 
-                    } else if (baseA.toUpperCase() == baseA) {
-                        return 1;
-                    } else if (baseB.toUpperCase() == baseB) {
+                    } else if (baseB in uniqueSymbolsTotalOrder) {
                         return -1;
                     }
                     // Otherwise use default guess:
@@ -386,9 +377,9 @@ define(function(require) {
 
                 scope.symbolLibrary = {
 
-                    latinLetters: stringSymbols(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]),
+                    latinLetters: stringSymbols(latinLetters),
 
-                    latinLettersUpper: stringSymbols(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]),
+                    latinLettersUpper: stringSymbols(latinLettersUpper),
 
                     greekLetters: stringSymbols(greekLetters),
                     
