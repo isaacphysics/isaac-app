@@ -1,5 +1,6 @@
 import { Widget, Rect } from './Widget.ts';
-import {BinaryOperation} from "./BinaryOperation.ts";
+import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 export
@@ -67,7 +68,7 @@ class Fraction extends Widget {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "((" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + "))";
                 if(this.dockingPoints["right"].child != null) {
-                    if(this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    if(this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
                         expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
                         expression += "*" + this.dockingPoints["right"].child.getExpression(format);
