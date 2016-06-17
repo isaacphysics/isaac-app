@@ -222,7 +222,7 @@ class Num extends Widget {
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w/2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
