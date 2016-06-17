@@ -620,6 +620,10 @@ define([
 		$('body').on('click', '.joyride-close-tip', function() {
             // remove controls if tutorial is closed part way through
             $('.joyride-custom-controls').detach();
+            api.logger.log({
+                type: "CLOSE_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.desktop-tutorial-trigger', function() {
             if ($rootScope.relativeCanonicalUrl == "/") {
@@ -632,10 +636,18 @@ define([
                 $rootScope.joyrideTutorial = "desktop-tutorial";
                 $('#desktop-tutorial').foundation('joyride', 'start');
             }
+            api.logger.log({
+                type: "VIEW_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.mobile-tutorial-trigger', function() {
             $rootScope.joyrideTutorial = "mobile-tutorial";
             $('#mobile-tutorial').foundation('joyride', 'start');
+            api.logger.log({
+                type: "VIEW_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');
