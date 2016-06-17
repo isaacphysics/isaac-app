@@ -624,7 +624,7 @@ define(function(require) {
                         type: "Fn",
                         properties: {
                             name: "ln",
-                            allowSubscript: true
+                            allowSubscript: false
                         },
                         menu: {
                             label:  "\\ln",
