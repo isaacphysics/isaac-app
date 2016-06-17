@@ -220,6 +220,29 @@ define(function(require) {
                                 var name = p.replace(/\(\)/g, "");
                                 var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                 var allowSubscript = name == "log";
+                                if(name.substring(0,3) == "arc") {
+                                    partResults.push({
+                                        type: "Fn",
+                                        properties: {
+                                            name: name.substring(3),
+                                            innerSuperscript: innerSuperscript,
+                                            allowSubscript: allowSubscript
+                                        },
+                                        children: {
+                                            superscript: {
+                                                type: "Num",
+                                                properties: {
+                                                    significand: -1,
+                                                    exponent: 0
+                                                }
+                                            }
+                                        },
+                                        menu: {
+                                            label: "\\" + name,
+                                            texLabel: true
+                                        }
+                                    });
+                                } else {
                                 partResults.push({
                                     type: "Fn",
                                     properties: {
@@ -232,6 +255,7 @@ define(function(require) {
                                         texLabel: true
                                     }
                                 });
+                                }
                             } else {
                                 var p1 = convertToLatexIfGreek(p.split("_")[0]);
                                 var newSym = {
