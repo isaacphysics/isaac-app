@@ -115,7 +115,12 @@ class Fn extends Widget {
                     }
                 }
                 if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                    var supExp = this.dockingPoints['superscript'].child.getExpression(format);
+                    if(Number(supExp) == -1 && this.innerSuperscript) {
+                        expression = 'arc' + expression;
+                    } else {
+                        expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                    }
                 }
 
                 if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
