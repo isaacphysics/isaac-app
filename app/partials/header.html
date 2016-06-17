@@ -15,12 +15,12 @@
                 </div>
                 <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards'>
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
+                        <div id="questions-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
                             <span>Questions</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item' ui-sref='conceptIndex'>
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
+                        <div id="concepts-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
                             <span>Concepts</span>
                         </div>
                     </a>

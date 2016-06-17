@@ -464,11 +464,7 @@ define([
                         pre_ride_callback: function() {
                             // add custom controls
                             $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
-                            if ($.ru_IsMobile()) {
-                                totalJoyridePageCount = $("#mobile-tutorial .joyride-list").children().length;
-                            } else {
-                                totalJoyridePageCount = $("#desktop-tutorial .joyride-list").children().length;
-                            }
+                            totalJoyridePageCount = $("#" + $rootScope.joyrideTutorial + " .joyride-list").children().length;
                         },
                         pre_step_callback: function(index) {
                             $(".joyride-page-indicator").empty();
@@ -494,12 +490,10 @@ define([
                             }
                         },
                         post_expose_callback: function (index){
-
                             // Work out what to wrap the exposed element with e.g. square, circle or rectangle
-                            	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
-                                                   .getElementsByTagName("li")[index]
+                            	var tutorial = document.getElementById($rootScope.joyrideTutorial)
+                                                   .getElementsByClassName("joyrideTutorialItem")[index]
                                                    .getAttribute('data-shape');                    
-                            
                             if(tutorial != null) {
                                 $('.joyride-expose-wrapper').addClass(tutorial);
                             }
@@ -628,9 +622,19 @@ define([
             $('.joyride-custom-controls').detach();
         });
         $('body').on('click', '.desktop-tutorial-trigger', function() {
-          	$('#desktop-tutorial').foundation('joyride', 'start');
+            if ($rootScope.relativeCanonicalUrl == "/") {
+                $rootScope.joyrideTutorial = "home-page-tutorial";
+                $('#home-page-tutorial').foundation('joyride', 'start');
+            } else if ($rootScope.relativeCanonicalUrl == "/gameboards") {
+                $rootScope.joyrideTutorial = "filter-tutorial";
+                $('#filter-tutorial').foundation('joyride', 'start');
+            } else {
+                $rootScope.joyrideTutorial = "desktop-tutorial";
+                $('#desktop-tutorial').foundation('joyride', 'start');
+            }
         });
         $('body').on('click', '.mobile-tutorial-trigger', function() {
+            $rootScope.joyrideTutorial = "mobile-tutorial";
             $('#mobile-tutorial').foundation('joyride', 'start');
         });
         $('body').on('click', '.joyride-expose-cover', function(){
