@@ -84,7 +84,7 @@ define(function(require) {
 
                     scope.$broadcast("historyCheckpoint");
 
-                	console.log("scope.state: ", scope.state);
+                	// console.log("scope.state: ", scope.state);
                 });
 
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
