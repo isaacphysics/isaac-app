@@ -47,7 +47,7 @@ class Fn extends Widget {
      *
      * - _right_: Binary operation (addition, subtraction), Symbol (multiplication)
      * - _subscript_: Subscript, or base, for \log
-     * - _superscript_: Exponent 
+     * - _superscript_: Exponent
      * - _argument_: Argument (duh?)
      */
     generateDockingPoints() {
@@ -158,7 +158,11 @@ class Fn extends Widget {
     }
 
     token() {
-        return this.name + "()";
+        if("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.getExpression("python")) == -1 && this.innerSuperscript) {
+            return "arc" + this.name + "()";
+        } else {
+            return this.name + "()";
+        }
     }
 
     /** Paints the widget on the canvas. */
