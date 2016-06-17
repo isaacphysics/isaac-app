@@ -103,8 +103,10 @@ class Fn extends Widget {
                     if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                         // Logarithm with base
                         expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', ' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
+                    } else if (this.name == 'log') {
+                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is base e (i.e. ln) otherwise!
                     } else {
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is ln otherwise!
+                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
                     }
                 } else {
                     if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
