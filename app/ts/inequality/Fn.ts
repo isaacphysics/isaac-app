@@ -127,21 +127,21 @@ class Fn extends Widget {
 
                 if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
                     if(!(this.dockingPoints['right'].child instanceof BinaryOperation)) {
-                        expression += this.dockingPoints['right'].child.getExpression(format);
-                    } else {
                         expression += '*' + this.dockingPoints['right'].child.getExpression(format);
+                    } else {
+                        expression += this.dockingPoints['right'].child.getExpression(format);
                     }
                 }
             }
         } else if (format == 'mathml') {
             if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
                 var right = ('right' in this.dockingPoints && this.dockingPoints['right'].child) ? this.dockingPoints['right'].child.getExpression(format) : '';
-                if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-                    if(this.dockingPoints['subscript'].child instanceof Number) {
-                        expression += '<mrow><msub><mi>' + this.name + '</mi><mrow><mn>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mn></mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
-                    } else {
-                        expression += '<mrow><msub><mi>' + this.name + '</mi><mrow><mi>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mi></mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
-                    }
+                if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child && 'superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                    expression += '<mrow><msubsup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                } else if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+                    expression += '<mrow><msub><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                } else if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                    expression += '<mrow><msup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
                 } else {
                     expression += '<mrow><mi>' + this.name + '</mi><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
                 }
