@@ -109,7 +109,7 @@ class Radix extends Widget {
     }
 
     token() {
-        return 'sqrt';
+        return '';//'sqrt';
     }
 
     /** Paints the widget on the canvas. */
