@@ -45,8 +45,6 @@ class Rect {
 	get center() {
 		return new p5.Vector(this.x + this.w/2, this.y + this.h/2);
 	}
-
-
 }
 
 /** A base class for anything visible, draggable, and dockable. */

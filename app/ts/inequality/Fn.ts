@@ -55,7 +55,7 @@ class Fn extends Widget {
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
 
         if (this.allowSubscript) {
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2, 0), 0.666, "symbol");
@@ -188,13 +188,19 @@ class Fn extends Widget {
             .textAlign(this.p.CENTER, this.p.BASELINE);
         this.p.text(this.name, 0, 0);
 
-        var box = this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.offsetBox(); //this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
+
+        // this.p.fill(0,0,0,48);
+        // this.p.rect(box.x-box.w/2, box.y, box.w, box.h);
+        // this.p.fill(this.color);
+
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.RIGHT, this.p.BASELINE);
-        this.p.text('(', box.w - bracketBox.w + Math.max(subWidth,supWidth), 0);
-        this.p.text(')', box.w + argWidth + Math.max(subWidth,supWidth), 0);
+        this.p.text('(', box.w/2 + bracketBox.w + Math.max(subWidth, supWidth), 0);
+        this.p.textAlign(this.p.LEFT, this.p.BASELINE);
+        this.p.text(')', box.w/2 + bracketBox.w + Math.max(subWidth, supWidth) + argWidth, 0);
 
         this.p.strokeWeight(1);
 
@@ -299,12 +305,13 @@ class Fn extends Widget {
             p.y = 0;
         } else {
             var p:any = this.dockingPoints["right"].position;
-            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w;
+            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w/2;
             p.y = -this.s.xBox.h / 2;
         }
     }
 
     offsetBox() {
-        return this.custom ? this.s.font_it.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.custom ? this.s.font_it.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
+        return new Rect(box.x, box.y-1000, box.w, box.h);
     }
 }
