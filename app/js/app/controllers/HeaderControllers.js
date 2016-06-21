@@ -17,7 +17,7 @@ define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
 		
-		$scope.$root.segueEnvironment = "LIVE"; //Live by default
+		$scope.$root.segueEnvironment = "DEV"; //Live by default
 
 		//Find out which version we're on
 		api.environment.get().$promise.then(function(response){
