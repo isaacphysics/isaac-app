@@ -26,7 +26,7 @@
 	                <li ng-if="doc.requireUnits" ng-class="{'ru-answer-block': true, 'ru-error': validationResponse.correctUnits === false, 'ru-correct': validationResponse.correctUnits === true}">
 	                    <div>Units</div>
 	                    <div class="ru-answer-block-panel">
-	                    	<button class="button" ng-click="toggleUnitsDropdown()"><span ng-bind="selectedUnitsDisplay" math-jax></span></button>
+	                    	<button ng-class="{'button': true, 'button-correct': validationResponse.correctUnits === true, 'button-incorrect': validationResponse.correctUnits === false}" ng-click="toggleUnitsDropdown()"><span ng-bind="selectedUnitsDisplay" math-jax></span></button>
 	                    	<ul class="f-dropdown" ng-style="unitsDropdownStyle">
 								<li><a ng-click="selectUnit('')">None</a></li>
 								<li ng-repeat="u in unitOptions" math-jax><a ng-click="selectUnit(u)">$\units{ {{u}} }$</a></li>

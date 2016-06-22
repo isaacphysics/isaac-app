@@ -179,6 +179,15 @@
     }
 }
 
+.button-correct {
+    background-color: $ru_gold;
+    color: $ru_darkgrey;
+}
+
+.button-incorrect {
+    background-color: $ru_red;
+}
+
 .ru-answer-wrong
 {
     background-color: #666666;
@@ -333,10 +342,10 @@
 
 .ru-answer-block.ru-error .ru-answer-block-panel
 {
-    background-color: $ru_red;
+    
     input
     {
-        color: $ru_red;
+        background-color: $ru_red;
     }
 
     &.instruction-text {
@@ -346,10 +355,10 @@
 
 .ru-answer-block.ru-correct .ru-answer-block-panel
 {
-    background-color: $ru_gold;
+   
     input
     {
-        color: $ru_gold;
+        background-color: $ru_gold;
     }
 
     &.instruction-text {
@@ -380,6 +389,7 @@
 {
     padding: 1rem 0 1rem 0;
 }
+
 
 .ru-answer-correct.physics
 {
