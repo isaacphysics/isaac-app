@@ -92,7 +92,7 @@ define([
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.7.4/api");
+            apiProvider.urlPrefix("/api/v1.7.5/api");
         }
 
         NProgress.configure({ showSpinner: false });
