@@ -344,6 +344,19 @@
     }
 }
 
+.ru-answer-block.ru-correct .ru-answer-block-panel
+{
+    background-color: $ru_gold;
+    input
+    {
+        color: $ru_gold;
+    }
+
+    &.instruction-text {
+        background-color: transparent;
+    }
+}
+
 .ru-answer-correct-summary
 {
     padding: 1.5rem 0 0.5rem 0;
