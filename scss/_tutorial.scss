@@ -101,6 +101,11 @@
 	background: transparent;
 	z-index: 1003;
 	width:auto;
+	left: 50%;
+	margin-left: -175px;
+}
+.search-highlighted {
+	background: rgb(80, 158, 46);
 }
 .joyride-content-wrapper {
 	float: left !important;
@@ -174,9 +179,18 @@
 
 @media #{$small-up} {
 	.joyride-custom-controls a.joyride-close-tip {
-    position: absolute;
-    top: 0;
-    left: 170px !important;
+    left: 160px;
+
+
+	}
+	.joyride-custom-controls {
+    position: fixed;
+    bottom: 28px;
+
+    top: auto !important;
+    left: 50%;
+    margin-left: -121px;
+    z-index: 99999;
 }
 	.joyride-content-wrapper {
 		.tutorial-welcome {
@@ -188,9 +202,14 @@
 				width:auto;
 			}
 	}
+	.joyride-custom-controls div.joyride-page-indicator {
 
-	.joyride-custom-controls div.joyride-page-indicator  {
-            top: 0 !important;
-        }
+    top: 70px;
+    left: 50px;
+    width: auto;
+
+}
+
+	
 }
 
