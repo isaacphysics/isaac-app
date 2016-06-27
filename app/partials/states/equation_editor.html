@@ -32,8 +32,10 @@
             <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
                 <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.python}}</pre>
             </div>
-            <div style="margin-bottom:25px;"></div>
+            <div style="margin-bottom:45px;"></div>
             <div ng-show="segueEnvironment=='DEV'">
+                <hr>
+                <div style="margin-bottom:25px;"></div>
                 <h3>
                     List of Symbols and Functions
                     <span data-ot="This list can be copied and pasted into the content editor for 'Available symbols'." class="has-tip" aria-haspopup="true" style="float:right;">
@@ -42,6 +44,16 @@
                 </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
                     <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.uniqueSymbols}}</pre>
+                </div>
+                <div style="margin-bottom:25px;"></div>
+                <h3>
+                    Equation Editor Seed
+                    <span data-ot="This seed can be copied and pasted into the content editor for 'Equation seed'. If it doesn't contain placeholders, it won't really form a seed!" class="has-tip" aria-haspopup="true" style="float:right;">
+                        <span class="icon-help"></span>
+                    </span>
+                </h3>
+                <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
+                    <pre style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.symbols}}</pre>
                 </div>
             </div>
             <div style="margin-bottom:25px;"></div>
