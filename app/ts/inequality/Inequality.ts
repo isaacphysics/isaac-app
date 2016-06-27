@@ -203,20 +203,26 @@ class MySketch {
 	// Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
 	// Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
 	touchStarted = () => {
+
 		// These are used to correctly detect clicks and taps.
-		this.initialTouch = this.p.createVector(this.p.touchX, this.p.touchY);
+
+		// Note that touchX and touchY are incorrect when using touch. Ironically.
+		var tx = this.p.touches.length > 0 ? this.p.touches[0].x : this.p.touchX;
+		var ty = this.p.touches.length > 0 ? this.p.touches[0].y : this.p.touchY;
+
+		this.initialTouch = this.p.createVector(tx, ty);
 
 		this.movingSymbol = null;
 		var index = -1;
 		var movingSymbolDocksTo: Array<string> = [];
 		_.some(this.symbols, (symbol, i) => {
 			// .hit() propagates down the hierarchy
-			var hitSymbol = symbol.hit(this.p.createVector(this.p.touchX, this.p.touchY));
+			var hitSymbol = symbol.hit(this.p.createVector(tx, ty));
 			if(hitSymbol != null) {
 				// If we hit that symbol, then mark it as moving
 				this.movingSymbol = hitSymbol;
 				index = i;
-				this.prevTouch = this.p.createVector(this.p.touchX, this.p.touchY);
+				this.prevTouch = this.p.createVector(tx, ty);
 
 				// Remove symbol from the hierarchy, place it back with the roots.
 				if(hitSymbol.parentWidget != null) {
@@ -256,8 +262,12 @@ class MySketch {
 	};
 
 	touchMoved = () => {
+
+		var tx = this.p.touches.length > 0 ? this.p.touches[0].x : this.p.touchX;
+		var ty = this.p.touches.length > 0 ? this.p.touches[0].y : this.p.touchY;
+
 		if(this.movingSymbol != null) {
-			var d = this.p.createVector(this.p.touchX - this.prevTouch.x, this.p.touchY - this.prevTouch.y);
+			var d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
 
 			// TODO NOT DELETE the following commented section.
 			// var sbox = this.movingSymbol.subtreeBoundingBox();
@@ -278,15 +288,15 @@ class MySketch {
 			// var d = this.p.createVector(dx, dy);
 			
 			this.movingSymbol.position.add(d);
-			this.prevTouch.x = this.p.touchX;
-			this.prevTouch.y = this.p.touchY;
+			this.prevTouch.x = tx;
+			this.prevTouch.y = ty;
 
 			// Check if we are moving close to a docking point, and highlight it even more.
 			_.some(this.symbols, (symbol: Widget) => {
 				this.activeDockingPoint = null;
 
 				// This is the point where the mouse/touch is.
-				var touchPoint = this.p.createVector(this.p.touchX, this.p.touchY);
+				var touchPoint = this.p.createVector(tx, ty);
 				// This is less refined than doing the proximity detection thing, but works much better (#4)
 				if(symbol != null && symbol.id != this.movingSymbol.id) {
                     // TODO: This is broken. Make sure we don't hit docking points of the wrong type
@@ -300,11 +310,12 @@ class MySketch {
 				}
 			});
 
-            this.scope.notifySymbolDrag(this.p.touchX, this.p.touchY);
+            this.scope.notifySymbolDrag(tx, ty);
 		}
 	};
 
 	touchEnded = () => {
+
 		// TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
 		if(this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
 			// Click
@@ -320,30 +331,30 @@ class MySketch {
 				width: 0,
 				height: 0
 			});
-		} else {
-			if (this.movingSymbol != null) {
-				// When touches end, mark the symbol as not moving.
-				this.prevTouch = null;
+		}
 
-				// Make sure we have an active docking point, and that the moving symbol can dock to it.
-				if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
-					this.symbols = _.without(this.symbols, this.movingSymbol);
-					this.activeDockingPoint.child = this.movingSymbol;
-				}
+		if (this.movingSymbol != null) {
+			// When touches end, mark the symbol as not moving.
+			this.prevTouch = null;
 
-                if (this.scope.trashActive) {
-                    this.symbols = _.without(this.symbols, this.movingSymbol);
-                }
-                this.scope.selectedSymbols.length = 0;
-                this.scope.$digest();
+			// Make sure we have an active docking point, and that the moving symbol can dock to it.
+			if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+				this.symbols = _.without(this.symbols, this.movingSymbol);
+				this.activeDockingPoint.child = this.movingSymbol;
 			}
 
-			this.updateState();
-
-			this.movingSymbol = null;
-			this.activeDockingPoint = null;
-			this.visibleDockingPointTypes = [];
+			if (this.scope.trashActive) {
+				this.symbols = _.without(this.symbols, this.movingSymbol);
+			}
+			this.scope.selectedSymbols.length = 0;
+			this.scope.$digest();
 		}
+
+		this.updateState();
+
+		this.movingSymbol = null;
+		this.activeDockingPoint = null;
+		this.visibleDockingPointTypes = [];
 
 		this.initialTouch = null;
 
