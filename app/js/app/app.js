@@ -476,7 +476,7 @@ define([
                                     $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
                                 }
                             }
-
+                            console.log($rootScope.openFilterPanel);
                             if (index == 0) {
                                 $(".joyride-prev-tip").css("visibility","hidden");
                             } else {

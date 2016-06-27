@@ -171,7 +171,13 @@
 		margin: 0;
 	}
 }
+
 @media #{$small-up} {
+	.joyride-custom-controls a.joyride-close-tip {
+    position: absolute;
+    top: 0;
+    left: 170px !important;
+}
 	.joyride-content-wrapper {
 		.tutorial-welcome {
 			text-align: center;
@@ -182,5 +188,9 @@
 				width:auto;
 			}
 	}
+
+	.joyride-custom-controls div.joyride-page-indicator  {
+            top: 0 !important;
+        }
 }
 

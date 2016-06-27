@@ -35,19 +35,20 @@
     </div>
     <!-- Mobile Header -->
     <div class='ru-mobile-header' ng-controller="HeaderController">
+        
         <!-- Mobile Fixed Header -->
         <div class='ru-fixed-header fixed'>
             <div class='row'>
                 <div class='small-8 columns'>
                     <div ng-if='!user._id' id='mobile-login' class='pointer'>
-                        <div class='ru-mobile-login'></div>
+                        <div id="mobile-login-button" class='ru-mobile-login'></div>
                         <span>
                             Log in
                         </span>
                         <div class='ru-mobile-down'></div>
                     </div>
                     <a ng-if='user._id' ui-sref='accountSettings'>
-                        <div class='ru-mobile-login'></div>
+                        <div id="login-tab-mobile" class='ru-mobile-login'></div>
                         <span>
                             My Account
                         </span>
@@ -72,12 +73,12 @@
                 <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
                 <div class="ru-mobile-nav-container">
                   <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
-                      <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
+                      <div id="questions-tab-mobile" ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
                           <span>Questions</span>
                       </div>
                   </a>
                   <a class='ru-mobile-nav-item' ui-sref='conceptIndex'>
-                      <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
+                      <div id="concepts-tab-mobile" class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
                           <span>Concepts</span>
                       </div>
                   </a>

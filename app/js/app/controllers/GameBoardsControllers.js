@@ -25,7 +25,7 @@ define([], function() {
 			$scope.filterPanelOpen = null;
 		}
 
-		$scope.openFilterPanel = function(panelToOpen) {
+		$scope.$root.openFilterPanel = function(panelToOpen) {
 			if ($scope.filterPanelOpen === panelToOpen) {
 				$scope.filterPanelOpen = null;
 

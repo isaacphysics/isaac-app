@@ -5,12 +5,14 @@
             <dd class="ru-answer active" ng-class="{active: activeTab == -1}" ng-click="activateTab(-1)"><a href="javascript:void(0);">Answer <span>Now</span></a></dd>
             <dd ng-repeat="hint in doc.hints" ng-class="{active: $index == activeTab}" ng-click="activateTab($index)"><a href="javascript:void(0);">Hint <span>{{$index + 1}}</span></a></dd>
         </dl>-->
+
         <div class="tabs-content ru_tabs ru-answer">
+            <div class='ru-answer-area transclude-here'></div>
             <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="force-print">
 
                 <!-- This is where the custom answer-input rendering goes for each question type. -->
                 <!-- Can't use ngTransclude here, as we mess around with the scope of the transcluded template -->
-                <div class='ru-answer-area transclude-here'></div>
+                
 
                 <!-- TODO Remove display:none from css -->
                 <div class='ru-answer-wrong no-print' style="display:block;" ng-show="validationResponse.correct==false && doc.type!='isaacAnvilQuestion'">
@@ -24,8 +26,8 @@
                 </div>
 
                 <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="validationResponse.correct==true">
-                    <!--<div class='ru-answer-correct {{pageSubject || "physics"}}'>
+                <!-- <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="validationResponse.correct==true">
+                    <div class='ru-answer-correct {{pageSubject || "physics"}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end text-center">
                                 <h1>Correct!</h1>
@@ -35,16 +37,16 @@
                                 <p class='text-right'>You have earned yourself a Top of the Class Isaac award and 25 bonus points!</p>
                             </div>
                         </div>
-                    </div> 
-                    <div class='ru-answer-correct-summary {{pageSubject || "physics"}}'>
+                    </div> -->
+                    <!--<div class='ru-answer-correct-summary {{pageSubject || "physics"}}'>
                         <div class='row'>
                             <div class="small-14 small-offset-1 columns end text-center">
                                 <p><strong>Well done!</strong></p>
                                 <div isaac-content doc="validationResponse.explanation"></div>
                             </div>
                         </div>
-                    </div>-->
-                </div>
+                    </div> 
+                </div>-->
 
 
                 <div class='ru-answer-check no-print' ng-hide="validationResponse.correct==true || doc.type=='isaacAnvilQuestion'">
@@ -58,7 +60,8 @@
                     </div>
                 </div>
 
-                <div class='ru-answer-check no-print' ng-show="validationResponse && (doc.type=='isaacAnvilQuestion')">
+                <div class='ru-answer-check no-print' style="width: 100%;
+    margin-left: 0 !important;" ng-show="validationResponse && (doc.type=='isaacAnvilQuestion')">
                     <div class='row'>
                         <div class="small-14 small-offset-1 columns text-center">
                             <div isaac-content doc="validationResponse.explanation"></div>
