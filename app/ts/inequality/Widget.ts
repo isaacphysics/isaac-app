@@ -113,7 +113,6 @@ abstract class Widget {
 			alpha = 127;
 		}
 
-
 		_.each(this.dockingPoints, (dockingPoint, key) => {
 			if (dockingPoint.child) {
 				dockingPoint.child.draw();
@@ -132,7 +131,8 @@ abstract class Widget {
 						} else {
 							this.p.noFill();
 						}
-						this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
+						this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * 20, this.scale * 20);
+						// this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
 					}
 				// }
 			}
