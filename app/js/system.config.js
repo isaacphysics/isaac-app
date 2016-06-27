@@ -41,7 +41,6 @@ System.config({
         "angular-ui-date" : 'bower_components/angular-ui-date/src/date.js',
         "angular-google-maps": 'bower_components/angular-google-maps/dist/angular-google-maps.min.js',
         "foundation": 'bower_components/foundation/js/foundation.js',
-        "fastclick" : 'bower_components/fastclick/lib/fastclick.js',
         "d3" : 'bower_components/d3/d3.js',
         "owl-carousel2" : "bower_components/owl.carousel/dist/owl.carousel.js",
         "angulartics": 'bower_components/angulartics/src/angulartics.js',
@@ -64,7 +63,6 @@ System.config({
 
         'typescript': { deps: ['reflect'] },
         'reflect': { format: 'global' },
-        'fastclick': { format: 'global' },
         "foundation": { deps: ['jquery', 'modernizr'], format: 'global'},
         "owl-carousel2" : { deps: ['jquery', 'angular', 'foundation'], format: 'global'},
         "angular-resource": { deps: ['angular'], format: 'global'},

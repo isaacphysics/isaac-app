@@ -28,7 +28,6 @@ define([
     "app/directives", 
     "app/services", 
     "app/filters",
-    "fastclick",
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
@@ -92,7 +91,7 @@ define([
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("https://staging.isaacphysics.org/api/any/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.7.4/api");
+            apiProvider.urlPrefix("/api/v1.7.5/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -339,9 +338,6 @@ define([
                     });
                 });
             
-                 // Fast click
-                FastClick.attach(document.body);
-                
                 // Mobile login drop down
 	            $("#mobile-login").off("click");
                 $("#mobile-login").click(function(e)

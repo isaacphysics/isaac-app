@@ -203,14 +203,16 @@ class Symbol extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = this.dockingPoints["superscript"].child.offsetBox().w;
+			var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
+            var w = offsetBox.w;
+			var childDescent = offsetBox.y + offsetBox.h;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * 20 + w/2;
-            p.y = -(box.h - descent - this.scale * 20);
+            p.x = (box.w + w)/2;
+            p.y = 0 - this.s.mBox.h*this.scale;
         } else {
 			var p = this.dockingPoints["superscript"].position;
-			p.x = box.w / 2 + this.scale * 20;
-			p.y = -this.scale*this.s.mBox.h;
+			p.x = (box.w + this.s.xBox.w)/2;
+			p.y = -this.s.mBox.h*this.scale;
 		}
 
 		if ("subscript" in boxes) {
