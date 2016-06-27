@@ -28,7 +28,6 @@ define([
     "app/directives", 
     "app/services", 
     "app/filters",
-    "fastclick",
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
@@ -339,9 +338,6 @@ define([
                     });
                 });
             
-                 // Fast click
-                FastClick.attach(document.body);
-                
                 // Mobile login drop down
 	            $("#mobile-login").off("click");
                 $("#mobile-login").click(function(e)

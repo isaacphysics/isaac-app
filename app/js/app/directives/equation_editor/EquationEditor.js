@@ -11,6 +11,10 @@ define(function(require) {
 			templateUrl: "/partials/equation_editor/equation_editor.html",
 			link: function(scope, element, attrs) {
 
+                element.on("touchstart touchmove", "canvas", function(e) {
+                    e.preventDefault();
+                })
+
                 var sketch = null;
 
                 scope.canvasOffset = { };

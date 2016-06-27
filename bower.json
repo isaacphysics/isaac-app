@@ -19,7 +19,6 @@
     "angular-ui-date": "0.0.7",
     "angular-ui-router": "0.2.10",
     "d3": "3.5.5",
-    "fastclick": "1.0.1",
     "foundation": "5.5.1",
     "jquery": "2.1.1",
     "jquery.cookie": "1.4.1",
