@@ -88,7 +88,14 @@ class MySketch {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
 
-
+		this.parseSubtreeObject({
+			type: "Symbol",
+			position: { x:0, y:0 },
+			placeholder: true,
+			properties: {
+				letter: "i"
+			}
+		});
 
 		this.centre();
 	};
@@ -155,6 +162,7 @@ class MySketch {
 			var w:Widget = this._parseSubtreeObject(root);
 			w.position.x = root["position"]["x"];
 			w.position.y = root["position"]["y"];
+			w.isPlaceholder = root["placeholder"] == true;
 			this.symbols.push(w);
 			w.shakeIt();
 		}

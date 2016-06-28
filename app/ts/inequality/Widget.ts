@@ -74,6 +74,8 @@ abstract class Widget {
 	color = null;
 	isMainExpression = false;
 
+	isPlaceholder = false;
+
 	get typeAsString(): string {
 		return "Widget";
 	}

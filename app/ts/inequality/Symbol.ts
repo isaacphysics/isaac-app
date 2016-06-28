@@ -143,12 +143,17 @@ class Symbol extends Widget {
 
 	/** Paints the widget on the canvas. */
 	_draw() {
-		this.p.fill(this.color).strokeWeight(0).noStroke();
-
-		this.p.textFont(this.s.font_it)
-			.textSize(this.s.baseFontSize * this.scale)
-			.textAlign(this.p.CENTER, this.p.BASELINE)
-			.text(this.letter, 0, 0);
+		if(this.isPlaceholder) {
+			this.p.noFill().strokeWeight(2).stroke(this.color);
+			var box = this.boundingBox();
+			this.p.rect(box.x, box.y, box.w, box.h);
+		} else {
+			this.p.fill(this.color).strokeWeight(0).noStroke();
+			this.p.textFont(this.s.font_it)
+				.textSize(this.s.baseFontSize * this.scale)
+				.textAlign(this.p.CENTER, this.p.BASELINE)
+				.text(this.letter, 0, 0);
+		}
 		this.p.strokeWeight(1);
 
 		if (window.location.hash === "#debug") {
@@ -168,7 +173,7 @@ class Symbol extends Widget {
 	 * @returns {Rect} The bounding box
 	 */
 	boundingBox(): Rect {
-		var box = this.s.font_it.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
+		var box = this.s.font_it.textBounds(this.isPlaceholder ? "M" : (this.letter || "x"), 0, 1000, this.scale * this.s.baseFontSize);
 		return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
 	}
 
