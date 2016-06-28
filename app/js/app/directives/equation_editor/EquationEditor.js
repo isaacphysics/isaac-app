@@ -622,34 +622,6 @@ define(function(require) {
                             texLabel: true
                         }
                     }
-                    //     ,{
-                    //     type: "Fn",
-                    //     properties: {
-                    //         name: "sin",
-                    //         innerSuperscript: true
-                    //     },
-                    //     children: {
-                    //         superscript: {
-                    //             type: "BinaryOperation",
-                    //             properties: {
-                    //                 operation: "−"
-                    //             },
-                    //             children: {
-                    //                 right: {
-                    //                     type: "Num",
-                    //                     properties: {
-                    //                         significand: "1"
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
-                    //     },
-                    //     menu: {
-                    //         label:  "\\sin^{-1}",
-                    //         fontSize: 20,
-                    //         texLabel: true
-                    //     }
-                    // }
                     ],
 
                     otherFns: [{
