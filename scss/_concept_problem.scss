@@ -179,15 +179,6 @@
     }
 }
 
-.button-correct {
-    background-color: $ru_gold;
-    color: $ru_darkgrey;
-}
-
-.button-incorrect {
-    background-color: $ru_red;
-}
-
 .ru-answer-wrong
 {
     background-color: #666666;
@@ -342,10 +333,10 @@
 
 .ru-answer-block.ru-error .ru-answer-block-panel
 {
-    
+    background-color: $ru_red;
     input
     {
-        background-color: $ru_red;
+        color: $ru_red;
     }
 
     &.instruction-text {

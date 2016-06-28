@@ -38,7 +38,7 @@
 
         <!-- Mobile Fixed Header -->
         <div class='ru-fixed-header fixed'>
-            <div class='row'>
+            <div class='row' id="mobile-search" > 
                 <div class='small-8 columns'>
                     <div ng-if='!user._id' class='pointer'>
                         <div id="mobile-login-button" class='ru-mobile-login'></div>
@@ -54,8 +54,8 @@
                         </span>
                     </a>
                 </div>
-                <div class='small-8 columns' >
-                    <div class='right pointer' id="mobile-search">
+                <div class='small-8 columns'>
+                    <div class='right pointer'>
                         <div class='ru-mobile-search'></div>
                         <span>
                             Search
@@ -67,7 +67,7 @@
         </div>
         <!-- Mobile Nav -->
         <div class='ru-mobile-nav'>
-            <nav class='row'>
+            <nav class='row' >
                 <a ui-sref='home'><img alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-mobile-menu-img'
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
                 <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>

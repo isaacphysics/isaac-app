@@ -102,6 +102,7 @@
 	z-index: 1003;
 	width:auto;
 	left: 50%;
+	top: 206px !important;
 	margin-left: -175px;
 }
 .search-highlighted {
@@ -185,7 +186,7 @@
 	}
 	.joyride-custom-controls {
     position: fixed;
-    bottom: 28px;
+    bottom: 50px;
 
     top: auto !important;
     left: 50%;
@@ -202,14 +203,9 @@
 				width:auto;
 			}
 	}
-	.joyride-custom-controls div.joyride-page-indicator {
 
-    top: 70px;
-    left: 50px;
-    width: auto;
-
-}
-
-	
+	.joyride-custom-controls div.joyride-page-indicator  {
+            top: 0 !important;
+        }
 }
 
