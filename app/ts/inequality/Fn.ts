@@ -51,7 +51,7 @@ class Fn extends Widget {
      * - _argument_: Argument (duh?)
      */
     generateDockingPoints() {
-        var box = this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_up.textBounds(this.isPlaceholder ? "sin" : (this.name || ''), 0, 1000, this.scale * this.s.baseFontSize);
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox.h/2), 1, "symbol");
@@ -169,30 +169,32 @@ class Fn extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        var argWidth = this.s.xBox.w;
-        if(this.dockingPoints['argument'].child) {
-            argWidth = this.s.xBox.w/2 + this.dockingPoints['argument'].child.subtreeBoundingBox().w;
-        }
-        var subWidth = 0;
-        if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-            subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
-        }
-        var supWidth = 0;
-        if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
-        }
-        this.p.fill(this.color).strokeWeight(0).noStroke();
+        if(this.isPlaceholder) {
+            this.p.noFill().strokeWeight(2).stroke(this.color);
+            var box = this.boundingBox();
+            this.p.rect(box.x, box.y, box.w, box.h);
+        } else {
+            var argWidth = this.s.xBox.w;
+            if (this.dockingPoints['argument'].child) {
+                argWidth = this.s.xBox.w / 2 + this.dockingPoints['argument'].child.subtreeBoundingBox().w;
+            }
+            var subWidth = 0;
+            if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+                subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
+            }
+            var supWidth = 0;
+            if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
+            }
+            this.p.fill(this.color).strokeWeight(0).noStroke();
 
-        this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.CENTER, this.p.BASELINE);
-        this.p.text(this.name, 0, 0);
+            this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
+                .textSize(this.s.baseFontSize * this.scale)
+                .textAlign(this.p.CENTER, this.p.BASELINE);
+            this.p.text(this.name, 0, 0);
+        }
 
-        var box = this.offsetBox(); //this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
-
-        // this.p.fill(0,0,0,48);
-        // this.p.rect(box.x-box.w/2, box.y, box.w, box.h);
-        // this.p.fill(this.color);
+        var box = this.offsetBox();
 
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
         this.p.textFont(this.s.font_up)
@@ -221,7 +223,8 @@ class Fn extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds(this.name+'()' || '', 0, 1000, this.scale * this.s.baseFontSize);
+        var name = this.isPlaceholder ? "sin" : this.name;
+        var box = this.s.font_up.textBounds(name+'()' || '', 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
         if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
@@ -311,7 +314,7 @@ class Fn extends Widget {
     }
 
     offsetBox() {
-        var box = this.custom ? this.s.font_it.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.custom ? this.s.font_it.textBounds((this.isPlaceholder ? "sin" : this.name), 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(box.x, box.y-1000, box.w, box.h);
     }
 }

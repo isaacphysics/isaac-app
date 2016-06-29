@@ -61,7 +61,7 @@ class Symbol extends Widget {
 	getExpression(format: string): string {
 		var expression = "";
 		if (format == "latex") {
-			expression = this.letter;
+			expression = this.isPlaceholder ? "\\square" : this.letter;
 			if (this.dockingPoints["superscript"].child != null) {
 				expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
 			}
@@ -77,7 +77,7 @@ class Symbol extends Widget {
 				}
 			}
 		} else if (format == "python") {
-			expression = "" + this.letter;
+			expression = this.isPlaceholder ? "placeholder" : this.letter;
 			if (this.dockingPoints["subscript"].child != null) {
 				expression += "_"+this.dockingPoints["subscript"].child.getExpression("subscript");
 			}
@@ -94,7 +94,7 @@ class Symbol extends Widget {
 				}
 			}
 		} else if (format == "subscript") {
-			expression = "" + this.letter;
+			expression = this.isPlaceholder ? "placeholder" : this.letter;
 			if (this.dockingPoints["subscript"].child != null) {
 				expression += this.dockingPoints["subscript"].child.getExpression(format);
 			}
@@ -105,7 +105,7 @@ class Symbol extends Widget {
 				expression += this.dockingPoints["right"].child.getExpression(format);
 			}
 		} else if(format == "mathml") {
-			expression = '';
+			expression = this.isPlaceholder ? "placeholder" : '';
 			if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
 				expression += '<mi>' + this.letter + '</mi>';
 
@@ -133,8 +133,7 @@ class Symbol extends Widget {
 	}
 
 	token() {
-		// TODO Handle greek letters
-		var e = this.letter;
+		var e = this.isPlaceholder ? "" : this.letter;
 		if(this.dockingPoints['subscript'].child) {
 			e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
 		}
