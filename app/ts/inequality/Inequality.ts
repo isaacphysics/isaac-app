@@ -89,11 +89,21 @@ class MySketch {
         }
 
 		this.parseSubtreeObject({
-			type: "Symbol",
+			type: "Fn",
 			position: { x:0, y:0 },
 			placeholder: true,
 			properties: {
-				letter: "i"
+				innerSuperscript: true,
+				name: 'l'
+			}
+		});
+		this.parseSubtreeObject({
+			type: "Fn",
+			position: { x:0, y:0 },
+			// placeholder: true,
+			properties: {
+				innerSuperscript: true,
+				name: "sin"
 			}
 		});
 

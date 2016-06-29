@@ -174,24 +174,25 @@ class Fn extends Widget {
             var box = this.boundingBox();
             this.p.rect(box.x, box.y, box.w, box.h);
         } else {
-            var argWidth = this.s.xBox.w;
-            if (this.dockingPoints['argument'].child) {
-                argWidth = this.s.xBox.w / 2 + this.dockingPoints['argument'].child.subtreeBoundingBox().w;
-            }
-            var subWidth = 0;
-            if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-                subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
-            }
-            var supWidth = 0;
-            if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
-            }
             this.p.fill(this.color).strokeWeight(0).noStroke();
 
             this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
                 .textSize(this.s.baseFontSize * this.scale)
                 .textAlign(this.p.CENTER, this.p.BASELINE);
             this.p.text(this.name, 0, 0);
+        }
+        this.p.fill(this.color).strokeWeight(0).noStroke();
+        var argWidth = this.s.xBox.w;
+        if (this.dockingPoints['argument'].child) {
+            argWidth = this.s.xBox.w / 2 + this.dockingPoints['argument'].child.subtreeBoundingBox().w;
+        }
+        var subWidth = 0;
+        if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+            subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
+        }
+        var supWidth = 0;
+        if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
         }
 
         var box = this.offsetBox();
@@ -314,7 +315,7 @@ class Fn extends Widget {
     }
 
     offsetBox() {
-        var box = this.custom ? this.s.font_it.textBounds((this.isPlaceholder ? "sin" : this.name), 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.custom ? this.s.font_it.textBounds((this.isPlaceholder ? "sin" : this.name), 0, 1000, this.scale * this.s.baseFontSize): this.s.font_up.textBounds((this.isPlaceholder ? "sin" : this.name), 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(box.x, box.y-1000, box.w, box.h);
     }
 }

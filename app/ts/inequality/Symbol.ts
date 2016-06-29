@@ -86,10 +86,9 @@ class Symbol extends Widget {
 				expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
 			}
 			if (this.dockingPoints["right"].child != null) {
-				if (this.dockingPoints["right"].child instanceof BinaryOperation ||
-					this.dockingPoints["right"].child instanceof Relation) {
-					expression += this.dockingPoints["right"].child.getExpression(format);
-				} else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
+				if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) { // Bring those two together maybe?
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
 					// WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
