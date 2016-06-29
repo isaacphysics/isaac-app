@@ -2,6 +2,7 @@ import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
+import { Num } from "./Num.ts";
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -87,6 +88,8 @@ class Symbol extends Widget {
 			if (this.dockingPoints["right"].child != null) {
 				if (this.dockingPoints["right"].child instanceof BinaryOperation ||
 					this.dockingPoints["right"].child instanceof Relation) {
+					expression += this.dockingPoints["right"].child.getExpression(format);
+				} else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
 					// WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
