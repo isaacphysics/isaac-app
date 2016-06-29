@@ -241,4 +241,11 @@ class Symbol extends Widget {
 			p.y = -this.s.xBox.h / 2;
 		}
 	}
+
+    /**
+     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     */
+    getChildren(): Array<Widget> {
+        return _.compact(_.pluck(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+    }
 }
