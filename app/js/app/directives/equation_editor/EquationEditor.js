@@ -247,18 +247,18 @@ define(function(require) {
                                         }
                                     });
                                 } else {
-                                partResults.push({
-                                    type: "Fn",
-                                    properties: {
-                                        name: name,
-                                        innerSuperscript: innerSuperscript,
-                                        allowSubscript: allowSubscript
-                                    },
-                                    menu: {
-                                        label: "\\" + name,
-                                        texLabel: true
-                                    }
-                                });
+                                    partResults.push({
+                                        type: "Fn",
+                                        properties: {
+                                            name: name,
+                                            innerSuperscript: innerSuperscript,
+                                            allowSubscript: allowSubscript
+                                        },
+                                        menu: {
+                                            label: "\\" + name,
+                                            texLabel: true
+                                        }
+                                    });
                                 }
                             } else {
                                 var p1 = convertToLatexIfGreek(p.split("_")[0]);

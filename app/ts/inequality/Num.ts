@@ -230,4 +230,8 @@ class Num extends Widget {
             p.y = -this.s.xBox.h / 2;
         }
     }
+
+    isNegative(): boolean {
+        return Number(this.significand) < 0;
+    }
 }
