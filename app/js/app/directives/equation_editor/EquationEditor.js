@@ -13,7 +13,7 @@ define(function(require) {
 
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
-                })
+                });
 
                 var sketch = null;
 
@@ -42,7 +42,6 @@ define(function(require) {
                 });
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-
                     scope.draggingNewSymbol = true;
 
                     var tOff = element.find(".trash-button").position();
@@ -66,6 +65,11 @@ define(function(require) {
                 scope.$on("newSymbolAbortDrag", function() {
                     if (scope.draggingNewSymbol) {
                         scope.draggingNewSymbol = false;
+                        this.scope.log.actions.push({
+                            event: "ABORT_POTENTIAL_SYMBOL",
+                            symbol: this.potentialSymbol.subtreeObject(false, true),
+                            timestamp: Date.now()
+                        });
                         sketch.updatePotentialSymbol(null);
                         scope.$digest();
                     }
@@ -79,6 +83,11 @@ define(function(require) {
                     scope.draggingNewSymbol = false;
 
                     if (scope.trashActive) {
+                        this.scope.log.actions.push({
+                            event: "TRASH_POTENTIAL_SYMBOL",
+                            symbol: this.potentialSymbol.subtreeObject(false, true),
+                            timestamp: Date.now()
+                        });
                         sketch.updatePotentialSymbol(null);
                         return;
                     }
@@ -118,6 +127,16 @@ define(function(require) {
                         eqnModal.foundation("reveal", "open");
                         scope.state = initialState || { symbols: []  };
                         scope.questionDoc = questionDoc;
+                        
+                        scope.log = {
+                            type: "EQN_EDITOR_LOG",
+                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                            screenSize: { width: window.width, height: window.height },
+                            actions: [{
+                                event: "OPEN",
+                                timestamp: new Date().getTime()
+                            }]
+                        };
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
@@ -763,6 +782,15 @@ define(function(require) {
                     api.logger.log({
                         type : "CLOSE_EQUATION_EDITOR"
                     });
+                    scope.log.finalState = [];
+                    sketch.symbols.forEach(function(e) {
+                       scope.log.finalState.push(e.subtreeObject(true, true));
+                    });
+                    scope.log.actions.push({
+                        type: "CLOSE",
+                        timestamp: new Date().getTime()
+                    });
+                    console.log("LOG: ", scope.log, JSON.stringify(scope.log).length);
                 };
 
                 scope.centre = function() {

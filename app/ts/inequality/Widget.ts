@@ -170,9 +170,10 @@ abstract class Widget {
 	 * Retrieves the abstract tree representation having this widget as root.
 	 *
 	 * @param processChildren This stops it from traversing children.
+	 * @param includeIds Include IDs!
 	 * @returns {{type: string}}
 	 */
-	subtreeObject(processChildren = true): Object {
+	subtreeObject(processChildren = true, includeIds = false): Object {
 		var dockingPoints = {};
 		_.each(this.dockingPoints, (dockingPoint, key) => {
 			if(dockingPoint.child != null) {
@@ -183,6 +184,9 @@ abstract class Widget {
 		var o = {
 			type: this.typeAsString
 		};
+		if(includeIds) {
+			o["id"] = this.id;
+		}
 		if(!this.parentWidget) {
 			o["position"] = { x: p.x, y: p.y };
 			o["expression"] = {
@@ -241,6 +245,13 @@ abstract class Widget {
         var oldParent = this.parentWidget;
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
+				this.s.scope.log.actions.push({
+					event: "UNDOCK_SYMBOL",
+					symbol: this.subtreeObject(false, true),
+					parent: this.parentWidget.subtreeObject(false, true),
+					dockingPoint: dockingPoint.name,
+					timestamp: Date.now()
+				});
                 dockingPoint.child = null;
                 this.parentWidget = null;
             }

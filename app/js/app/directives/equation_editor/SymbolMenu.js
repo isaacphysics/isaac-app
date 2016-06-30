@@ -10,7 +10,7 @@ define([], function() {
 			restrict: "A",
 			templateUrl: "/partials/equation_editor/symbol_menu.html",
 			link: function(scope, element, attrs) {
-				scope.name="SYMBOLMENU"
+				scope.name="SYMBOLMENU";
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
