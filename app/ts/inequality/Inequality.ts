@@ -87,9 +87,8 @@ class MySketch {
         } catch (e) {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
-		console.log("###", this.scope);
 
-		this.centre();
+		this.centre(true);
 
 		_this.scope.log.initialState = [];
 		this.symbols.forEach(function(e) {
@@ -481,7 +480,7 @@ class MySketch {
 		return subtreeObjects;
 	};
 
-	centre = () => {
+	centre = (init = false) => {
 		var top = this.height/2;
 		_.each(this.symbols, (symbol, i) => {
 			var sbox = symbol.subtreeBoundingBox();
@@ -489,6 +488,12 @@ class MySketch {
 			top += sbox.h;
 			symbol.shakeIt();
 		});
+		if (!init) {
+			this.scope.log.actions.push({
+				event: "CENTRE_SYMBOLS",
+				timestamp: Date.now()
+			});
+		}
 	};
 }
 

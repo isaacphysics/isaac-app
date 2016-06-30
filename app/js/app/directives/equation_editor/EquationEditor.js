@@ -65,9 +65,9 @@ define(function(require) {
                 scope.$on("newSymbolAbortDrag", function() {
                     if (scope.draggingNewSymbol) {
                         scope.draggingNewSymbol = false;
-                        this.scope.log.actions.push({
+                        scope.log.actions.push({
                             event: "ABORT_POTENTIAL_SYMBOL",
-                            symbol: this.potentialSymbol.subtreeObject(false, true),
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true),
                             timestamp: Date.now()
                         });
                         sketch.updatePotentialSymbol(null);
@@ -83,9 +83,9 @@ define(function(require) {
                     scope.draggingNewSymbol = false;
 
                     if (scope.trashActive) {
-                        this.scope.log.actions.push({
+                        scope.log.actions.push({
                             event: "TRASH_POTENTIAL_SYMBOL",
-                            symbol: this.potentialSymbol.subtreeObject(false, true),
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true),
                             timestamp: Date.now()
                         });
                         sketch.updatePotentialSymbol(null);
@@ -131,7 +131,7 @@ define(function(require) {
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
-                            screenSize: { width: window.width, height: window.height },
+                            screenSize: { width: window.innerWidth, height: window.innerHeight },
                             actions: [{
                                 event: "OPEN",
                                 timestamp: new Date().getTime()
@@ -759,6 +759,11 @@ define(function(require) {
                         for (var i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
+                        scope.log.actions.push({
+                            type: "UNDO",
+                            timestamp: new Date().getTime()
+                    });
+
                     }
                 };
 
@@ -772,12 +777,14 @@ define(function(require) {
                         for (var i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
+                        scope.log.actions.push({
+                            type: "REDO",
+                            timestamp: new Date().getTime()
+                    });
                     }
                 };
 
                 scope.submit = function() {
-                    // scope.state.result = { "tex":"e^{i\\pi}+1=0" };
-                    //scope.state.result = { "tex": scope.state.inequalityResult, "python": scope.state.symbols.expression.python };
                     $("#equationModal").foundation("reveal", "close");
                     api.logger.log({
                         type : "CLOSE_EQUATION_EDITOR"
@@ -790,7 +797,7 @@ define(function(require) {
                         type: "CLOSE",
                         timestamp: new Date().getTime()
                     });
-                    console.log("LOG: ", scope.log, JSON.stringify(scope.log).length);
+                    console.log("\nLOG: ~" + 2*JSON.stringify(scope.log).length + "kb\n\n", JSON.stringify(scope.log));
                 };
 
                 scope.centre = function() {
