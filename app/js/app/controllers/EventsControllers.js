@@ -195,9 +195,10 @@ define([], function() {
                         }
                     }
                 }
+                
+                $scope.bookingDeadlinePast = new Date(e.bookingDeadline) < new Date();
 
                 augmentEvent(e, api);
-
                 $scope.event = e;
             }).catch(function() {
                 $scope.setLoading(false);

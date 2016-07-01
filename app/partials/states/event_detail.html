@@ -62,20 +62,32 @@
           <td>Availability</td>
           <td><span ng-class="{available: event.placesAvailable > 0}">{{event.placesAvailable}}</span> spaces<span ng-show="user.email && event.userBooked"> - You are booked on this event!</span> <span ng-show="user.email && event.userOnWaitList"> - You are on the waiting list for this event.</span></td>
         </tr>
+        <tr ng-show="event.bookingDeadline">
+          <td>Booking Deadline</td>
+          <td>{{event.bookingDeadline | date:'h:MMa dd/MM/yyyy'}}</td>
+        </tr>        
       </tbody>
     </table>
     <!--
         Event body copy 
     -->
     <div isaac-content doc="event"></div>
-    <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && event.placesAvailable > 0" href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
-    <a ng-if="!user.email && event.numberOfPlaces > 0" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to Book</a>
-    <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && event.placesAvailable == 0" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list</a>
+    
+    <span ng-if="!bookingDeadlinePast && !event.expired">
+          <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && event.placesAvailable > 0" href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
+          <a ng-if="!user.email && event.numberOfPlaces > 0" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to Book</a>
+          
+          <a ng-if="!user.email && event.numberOfPlaces <= 0" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to add to waiting list</a>      
+          <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && event.placesAvailable == 0" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list</a>
 
-    <a ng-if="user.email && event.userBooked" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
-    <a ng-if="user.email && event.userOnWaitList" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
+          <a ng-if="user.email && event.userBooked" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
+          <a ng-if="user.email && event.userOnWaitList" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
+    </span>
 
-    <a ng-if="!user.email && event.numberOfPlaces <= 0" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to add to waiting list</a>    
+    <span ng-if="bookingDeadlinePast">
+          <a href="javascript:void(0)" ui-sref="contact" class="ru-button-big disabled">Deadline expired - contact us</a>  
+    </span>
+
     <a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
   </div>
   <div class="medium-16 large-6 columns event-detail-aside" ng-class="{expired: event.expired}">
