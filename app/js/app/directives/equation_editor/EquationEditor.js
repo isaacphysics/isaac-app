@@ -812,7 +812,7 @@ define(function(require) {
                         type: "CLOSE",
                         timestamp: Date.now()
                     });
-                    console.log("\nLOG: ~" + 2*JSON.stringify(scope.log).length + "kb\n\n", JSON.stringify(scope.log));
+                    console.log("\nLOG: ~" + JSON.stringify(scope.log).length + "kb\n\n", JSON.stringify(scope.log));
                     window.removeEventListener("beforeunload", scope.logOnClose);
                 };
 
