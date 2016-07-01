@@ -37,7 +37,7 @@
                 <span class="left">Group Name</span>
             </div>
             <dl class="group-nav">
-                <dd ng-class="{active: group._id == selectedGroup._id}" ng-repeat="group in myGroups">
+                <dd ng-class="{active: group._id == selectedGroup._id}" ng-repeat="group in myGroups | orderBy:'-_id'">
                     <a class="group-nav-header" ng-click="setSelectedGroup(group)">
                         <span class="group-icon"></span>
                         {{group.groupName}}
