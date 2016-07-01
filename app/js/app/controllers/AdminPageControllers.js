@@ -230,18 +230,63 @@ define([], function() {
 		$scope.bookUserOnEvent = function(eventId, userId){
 			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
 				updateBookingInfo();
-			});
+			})
+			.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+		}
+
+		$scope.addToWaitingList = function(eventId, userId){
+			api.eventBookings.addToWaitingList({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+				updateBookingInfo();
+			})			
+			.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+		}
+
+		$scope.promoteFromWaitList = function(eventId, userId){
+			var promote = $window.confirm('Are you sure you want to promote this user from the waiting list?');   
+
+			if (promote) {
+				api.eventBookings.promoteFromWaitList({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					updateBookingInfo();
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});				
+			}
 		}
 		
 		$scope.unbookUserFromEvent = function(eventId, userId){
-			var deleteBooking = $window.confirm('Are you sure you want to unbook this user?');   
+			var deleteBooking = $window.confirm('Are you sure you want to delete this booking permanently?');   
 
 			if (deleteBooking) {
 				api.eventBookings.deleteBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
 					updateBookingInfo();
-				});
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
 			}
-		}		
+		}
+
+		$scope.cancelEventBooking = function(eventId, userId){
+			var cancelBooking = $window.confirm('Are you sure you want to cancel this booking?');   
+			if (cancelBooking) {
+				api.eventBookings.cancelBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					updateBookingInfo();
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
+			}
+		}
 	}]
 
 	return {

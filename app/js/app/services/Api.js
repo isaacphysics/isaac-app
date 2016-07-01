@@ -277,10 +277,30 @@ define([], function() {
 				method: 'POST', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'requestBooking' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings"
+			},
+			'addToWaitingList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/waiting_list"
+			},
 			'deleteBooking' : {
 				method: 'DELETE', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'promoteFromWaitList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/promote"			
+			},
+			'cancelBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/cancel"			
+			},
+			'cancelMyBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/cancel"			
+			}
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request

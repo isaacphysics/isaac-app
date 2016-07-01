@@ -124,51 +124,89 @@ define([], function() {
         }
     }];
 
-    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', function($scope, api, $timeout, $stateParams, $state, $filter) {
+    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', function($scope, api, $timeout, $stateParams, $state, $filter, $window) {
         $scope.setLoading(true);
 
         $scope.toTitleCase = toTitleCase;
 
         $scope.jsonLd = {};
 
-        api.events.get({id: $stateParams.id}).$promise.then(function(e) {
-            $scope.setLoading(false);
-            
-            // usage instructions defined at - https://developers.google.com/structured-data/rich-snippets/events
-            $scope.jsonLd = {
-              "@context" : "http://schema.org",
-              "@type" : "EducationEvent",
-              "name" : e.title,
-              "description" : e.subtitle,
-              "startDate" : $filter('date')(e.date, 'yyyy-MM-ddTH:mm'),
-              "offers" : {
-                "price":"0.00",
-                "priceCurrency": "GBP",
-                "url" : "https://isaacphysics.org/events/" + e.id
-              }
-            }
+        $scope.requestBooking = function(){
+            api.eventBookings.requestBooking({"eventId": $stateParams.id}).$promise.then(function(){
+                getEventDetails();
+                $scope.showToast($scope.toastTypes.Success, "Event Booking Confirmed", "You have been successfully booked on to this event.");
+            }).catch(function(e){
+                console.log("error:" + e)
+                $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+        }
 
-            if (e.location) {
-                $scope.jsonLd["location"] = {
-                    "@type": "Place",
-                    "name": e.location.addressLine1,
-                    "address": {
+        $scope.addToWaitingList = function(){
+            api.eventBookings.addToWaitingList({"eventId": $stateParams.id}).$promise.then(function(){
+                getEventDetails();
+                $scope.showToast($scope.toastTypes.Success, "Waiting List Booking Confirmed", "You have been successfully added to the waiting list for this event.");
+            }).catch(function(e){
+                console.log("error:" + e)
+                $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+        }
+
+        $scope.cancelEventBooking = function(){
+            var cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to rebook especially if there is a waiting list.');   
+            if(cancel) {
+                api.eventBookings.cancelMyBooking({"eventId": $stateParams.id}).$promise.then(function(){
+                    getEventDetails();
+                    $scope.showToast($scope.toastTypes.Success, "Your booking has been cancelled", "Your booking has successfully been cancelled.");
+                }).catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                });                
+            }
+        }
+
+        var getEventDetails = function() {
+            api.events.get({id: $stateParams.id}).$promise.then(function(e) {
+                $scope.setLoading(false);
+                
+                // usage instructions defined at - https://developers.google.com/structured-data/rich-snippets/events
+                $scope.jsonLd = {
+                  "@context" : "http://schema.org",
+                  "@type" : "EducationEvent",
+                  "name" : e.title,
+                  "description" : e.subtitle,
+                  "startDate" : $filter('date')(e.date, 'yyyy-MM-ddTH:mm'),
+                  "offers" : {
+                    "price":"0.00",
+                    "priceCurrency": "GBP",
+                    "url" : "https://isaacphysics.org/events/" + e.id
+                  }
+                }
+
+                if (e.location) {
+                    $scope.jsonLd["location"] = {
+                        "@type": "Place",
                         "name": e.location.addressLine1,
-                        "streetAddress": e.location.addressLine2,
-                        "addressLocality": e.location.town,
-                        "postalCode": e.location.postalCode,
-                        "addressCountry": "GB"
+                        "address": {
+                            "name": e.location.addressLine1,
+                            "streetAddress": e.location.addressLine2,
+                            "addressLocality": e.location.town,
+                            "postalCode": e.location.postalCode,
+                            "addressCountry": "GB"
+                        }
                     }
                 }
-            }
 
-            augmentEvent(e, api);
+                augmentEvent(e, api);
 
-            $scope.event = e;
-        }).catch(function() {
-            $scope.setLoading(false);
-            $state.go('404', {target: $state.href("event", $stateParams)});
-        });        
+                $scope.event = e;
+            }).catch(function() {
+                $scope.setLoading(false);
+                $state.go('404', {target: $state.href("event", $stateParams)});
+            });            
+        }  
+        
+        getEventDetails();
+
     }];
 
     return {
