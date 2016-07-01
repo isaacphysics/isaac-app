@@ -10,7 +10,7 @@ define([], function() {
 			restrict: "A",
 			templateUrl: "/partials/equation_editor/symbol_menu.html",
 			link: function(scope, element, attrs) {
-				scope.name="SYMBOLMENU"
+				scope.name="SYMBOLMENU";
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
@@ -33,12 +33,12 @@ define([], function() {
 
 					lst.css("left", newLeft);
 
-					if (pageY > element.offset().top + element.height()) {
-						//scope.$emit("triggerCloseMenus");
+					if (pageY > element.offset().top + element.height() && $(window).height() <= 640) {
+						scope.$emit("triggerCloseMenus");
 					}
 
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
-				}
+				};
 
 				var abortSymbolDrag = function($e, symbol, pageX, pageY, mousePageX, mousePageY) {
 					bufferedLeft = parseFloat(lst.css("left"));
@@ -49,13 +49,13 @@ define([], function() {
                     } else {
                     	scope.$emit("newSymbolAbortDrag");
                     }
-				}
+				};
 
 				abortSymbolDrag();
 
 				scope.$on("symbolDrag", absorbSymbolDrag);
 				scope.$on("symbolDrop", abortSymbolDrag);
-			},
+			}
 		};
 	}];
 });

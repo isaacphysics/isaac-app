@@ -2,11 +2,14 @@
 <!-- Global navigation -->
 <div class="row">
     <div class="small-16 columns global-nav-strip">
-        <button class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
-        <span class="global-title hide-for-small-only">
+        <button id="menu-button-desktop" class="dl-toggle" ng-click="menuToggle()" ng-class="{active: isVisible}"><span></span>Menu</button>
+        <span class="global-title hide-for-small-only" style="height: 60px; overflow:hidden;">
             &nbsp; <!-- You can't remove this; it ensures the menu div doesn't collapse -->
-            <span ng-if="$state.includes('home')">
+            <!-- <span ng-if="$state.includes('home') && answerCountTicker > 0">
                 <span class="question-answer-count">{{answerCountTicker | number:0 }}</span> Questions answered so far!
+            </span> -->
+            <span ng-if="$state.includes('home')" style="font-size:1.4rem;font-weight:normal;display:inline-block;width:70%;">
+                <span>Mastering Physics by Solving Problems</span><span style="display:inline-block;">: from School to University!</span>
             </span>
         </span>
 

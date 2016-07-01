@@ -31,9 +31,9 @@
 
  				// Owl options - see owl.carousel.js
  				var defaultOptions = {
-                    // "nav": true, // Comment this to remove arrows
+                    "nav": true, // Comment this to remove arrows
  					"navText": ['', ''],
- 					"autoplay": true,
+ 					"autoplay": false,
                     //"loop": true, // DO NOT SET THIS - CAUSES EMPTY PODS TO APPEAR ON THE RIGHT!
                     "margin": 15,
  					"rewind": true,

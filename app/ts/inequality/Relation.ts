@@ -3,17 +3,18 @@ import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
 
 /**
- * Binary operations, such as plus and minus.
- *
- * BE EXTRA CAREFUL with the minus sign: use "−" (U+2212), not just a dash.
+ * Relations, such as equalities, inequalities, and unexpected friends.
  */
 export
-class BinaryOperation extends Widget {
+class Relation extends Widget {
     protected s: any;
-    protected operation: string;
+    protected relationString: string;
+    protected relation: string;
+    protected pythonSymbol: string;
+    protected latexSymbol: string;
 
     get typeAsString(): string {
-        return "BinaryOperation";
+        return "Relation";
     }
 
     /**
@@ -26,20 +27,61 @@ class BinaryOperation extends Widget {
         return p;
     }
 
-    constructor(p: any, s: any, operation: string) {
+    constructor(p: any, s: any, relation: string) {
         super(p, s);
         this.s = s;
-        this.operation = operation;
+        this.relationString = relation;
+        switch(relation) {
+            case 'rightarrow':
+                this.relation = '→';
+                this.pythonSymbol = '->';
+                this.latexSymbol = '\\rightarrow ';
+                break;
+            case 'leftarrow':
+                this.relation = '←';
+                this.pythonSymbol = '<-';
+                this.latexSymbol = '\\leftarrow ';
+                break;
+            case 'rightleftarrows':
+                this.relation = '⇄';
+                this.pythonSymbol = '-><-';
+                this.latexSymbol = '\\rightleftarrows ';
+                break;
+            case 'equilibrium':
+                this.relation = '⇌';
+                this.pythonSymbol = '==';
+                this.latexSymbol = '\\rightleftharpoons ';
+                break;
+            case 'leq':
+                this.relation = '≤';
+                this.pythonSymbol = '<=';
+                this.latexSymbol = '\\leq ';
+                break;
+            case 'geq':
+                this.relation = '≥';
+                this.pythonSymbol = '>=';
+                this.latexSymbol = '\\geq ';
+                break;
+            case '=':
+                this.relation = '=';
+                this.pythonSymbol = '==';
+                this.latexSymbol = '=';
+                break;
+            default:
+                this.relation = relation;
+                this.pythonSymbol = relation;
+                this.latexSymbol = relation;
+        }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['operator', 'exponent', 'symbol'];
+        this.docksTo = ['operator', 'symbol'];
     }
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
-     * A Binary Operation has one docking point:
+     * A Relation has one docking point:
      *
-      - _right_: Symbol
+     - _right_: Symbol
      */
     generateDockingPoints() {
         var box = this.boundingBox();
@@ -61,11 +103,11 @@ class BinaryOperation extends Widget {
         var expression = "";
         if(format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.latexSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.pythonSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
@@ -73,7 +115,7 @@ class BinaryOperation extends Widget {
             }
         } else if(format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + this.relation + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
@@ -81,12 +123,12 @@ class BinaryOperation extends Widget {
 
     properties(): Object {
         return {
-            operation: this.operation
+            relation: this.relationString
         };
     }
 
     token() {
-        return '';
+        return "";//this.relationString;
     }
 
     /** Paints the widget on the canvas. */
@@ -96,7 +138,7 @@ class BinaryOperation extends Widget {
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize*0.8 * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.operation, 0, 0);
+            .text(this.relation, 0, 0);
         this.p.strokeWeight(1);
 
         if(window.location.hash === "#debug") {
@@ -116,7 +158,7 @@ class BinaryOperation extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var s = this.operation || "+";
+        var s = this.relation || "+";
         if (s == "−") {
             s = "+";
         }
@@ -146,7 +188,7 @@ class BinaryOperation extends Widget {
 
         // Calculate our own geometry
 
-        // Nothing to do for BinaryOperation
+        // Nothing to do for Relation
 
         // Set position of all our children.
 

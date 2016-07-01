@@ -35,6 +35,9 @@ define(["app/honest/responsive_video"], function(rv) {
 					if (s === oldS)
 						return;
 
+					// Make sure that we cope if we've been given back a Choice object from the DB
+					scope.selectedChoice.type = "formula";
+
 					scope.selectedChoice.value = JSON.stringify(s);
 					if (s && s.result) {
 						scope.selectedChoice.pythonExpression = s.result.python;
@@ -47,6 +50,11 @@ define(["app/honest/responsive_video"], function(rv) {
 					if (!scope.validationResponseSet)
 						return;
 
+					if (r === oldR) {
+						// Prevent questionTabs from clobbering our initialisation.
+						scope.$broadcast("stopWatchingSelectedChoice");
+						setTimeout(function() { scope.$broadcast("startWatchingSelectedChoice")}, 0);
+					}
 					// If we get this far, r has really been explicitly set by QuestionTabs
 					
 					if(r && r.answer.value) {

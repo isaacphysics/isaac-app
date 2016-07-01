@@ -12,12 +12,14 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name="MENUSYMBOL"
 
-                scope.$watch("symbol.label", function(newLabel) {
-                    if (newLabel && scope.symbol.texLabel)
-                        katex.render(scope.symbol.label, element.find(".symbol-label")[0]);
+                scope.$watch("symbol.menu.label", function(newLabel) {
+                    if (newLabel && scope.symbol.menu.texLabel)
+                        katex.render(scope.symbol.menu.label, element.find(".symbol-label")[0]);
                 });
 
                 scope.dragging = false;
+
+                var editor = $(".equation-editor");
 
                 var grabLocalX, grabLocalY;
 
@@ -27,7 +29,6 @@ define([], function() {
                     scope.dragging = true;
                     element.addClass("dragging");
                     scope.$apply();
-
 
                     var offset = element.offset();
                     grabLocalX = pageX - offset.left;
@@ -43,6 +44,7 @@ define([], function() {
                 }
 
                 var drag = function(pageX, pageY) {
+                    var pageScroll = editor.offset().top;
 
                     pageX = pageX || lastPageX;
                     pageY = pageY || lastPageY;
@@ -59,7 +61,7 @@ define([], function() {
                     var pY = pageY - offset.left;
 
                     // Tell our parents that we've moved.
-                    scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop, pageX - lastPageX, pageY - lastPageY, pageX, pageY);
+                    scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop - pageScroll, pageX - lastPageX, pageY - pageScroll - lastPageY, pageX, pageY - pageScroll);
                     lastPageX = pageX;
                     lastPageY = pageY;
 
@@ -122,8 +124,8 @@ define([], function() {
                 }
 
                 var touchend = function(e) {
-                    var ts = e.originalEvent.touches;
-                    drop(null, null, e);
+                    var ts = e.originalEvent.changedTouches;
+                    drop(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();

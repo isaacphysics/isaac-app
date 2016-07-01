@@ -4,14 +4,14 @@ import { DockingPoint } from "./DockingPoint.ts";
 
 /** A class for representing numbers */
 export
-class Number extends Widget {
+class Num extends Widget {
 
     protected s: any;
     private significand: string;
     private exponent: string;
 
     get typeAsString(): string {
-        return "Number";
+        return "Num";
     }
 
     /**
@@ -62,11 +62,8 @@ class Number extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.75, "exponent");
-
-        // this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        // this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
     }
 
     /**
@@ -88,15 +85,12 @@ class Number extends Widget {
                 }
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
-            //}
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol, hence produces a multiplication
-                    expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                    // WARNING This assumes it's a Number, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "python") {
@@ -126,6 +120,18 @@ class Number extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
+        } else if(format == "mathml") {
+            expression = '';
+            if (this.dockingPoints['superscript'].child == null) {
+                expression += '<mn>' + this.getFullText() + '</mn>';
+
+            } else {
+                expression += '<msup><mn>' + this.getFullText() + '</mn><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+
+            }
+            if (this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         }
         return expression;
     }
@@ -135,6 +141,10 @@ class Number extends Widget {
             significand: this.significand,
             exponent: this.exponent,
         };
+    }
+
+    token() {
+        return '';
     }
 
     /** Paints the widget on the canvas. */
@@ -199,7 +209,7 @@ class Number extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = boxes["superscript"].w;
+            var w = this.dockingPoints["superscript"].child.offsetBox().w;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = -(box.h - descent - this.scale * 20);
@@ -212,12 +222,16 @@ class Number extends Widget {
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w/2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
             p.y = -this.s.xBox.h / 2;
         }
+    }
+
+    isNegative(): boolean {
+        return Number(this.significand) < 0;
     }
 }

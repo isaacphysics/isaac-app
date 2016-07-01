@@ -28,7 +28,6 @@ define([
     "app/directives", 
     "app/services", 
     "app/filters",
-    "fastclick",
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
@@ -65,13 +64,34 @@ define([
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
 
+        $httpProvider.interceptors.push(["$q", "$injector", function($q, $injector) {
+            return {
+                response: function(response) {
+                    // same as above
+                    if (response.status >= 500) {
+                        console.warn("Uncaught error from API:", response);
+                    }
+                    return response;
+                },
+                responseError: function(response) {
+                    if (response.status >= 500) {
+                        var $state = $injector.get("$state");
+                        $injector.get("$rootScope").setLoading(false);
+                        $state.go('error');
+                        console.warn("Error from API:", response);
+                    }
+                    return $q.reject(response);
+                }
+            };
+        }]);
+
 		$locationProvider.html5Mode(true).hashPrefix("!");
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.7.1/api");
+            apiProvider.urlPrefix("/api/v1.7.6/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -318,9 +338,6 @@ define([
                     });
                 });
             
-                 // Fast click
-                FastClick.attach(document.body);
-                
                 // Mobile login drop down
 	            $("#mobile-login").off("click");
                 $("#mobile-login").click(function(e)
@@ -443,11 +460,7 @@ define([
                         pre_ride_callback: function() {
                             // add custom controls
                             $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
-                            if ($.ru_IsMobile()) {
-                                totalJoyridePageCount = $("#mobile-tutorial .joyride-list").children().length;
-                            } else {
-                                totalJoyridePageCount = $("#desktop-tutorial .joyride-list").children().length;
-                            }
+                            totalJoyridePageCount = $("#" + $rootScope.joyrideTutorial + " .joyride-list").children().length;
                         },
                         pre_step_callback: function(index) {
                             $(".joyride-page-indicator").empty();
@@ -473,12 +486,10 @@ define([
                             }
                         },
                         post_expose_callback: function (index){
-
                             // Work out what to wrap the exposed element with e.g. square, circle or rectangle
-                            	var tutorial = document.getElementById(($(window).width() < 640) ? 'mobile-tutorial' : 'desktop-tutorial')
-                                                   .getElementsByTagName("li")[index]
+                            	var tutorial = document.getElementById($rootScope.joyrideTutorial)
+                                                   .getElementsByClassName("joyrideTutorialItem")[index]
                                                    .getAttribute('data-shape');                    
-                            
                             if(tutorial != null) {
                                 $('.joyride-expose-wrapper').addClass(tutorial);
                             }
@@ -605,12 +616,34 @@ define([
 		$('body').on('click', '.joyride-close-tip', function() {
             // remove controls if tutorial is closed part way through
             $('.joyride-custom-controls').detach();
+            api.logger.log({
+                type: "CLOSE_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.desktop-tutorial-trigger', function() {
-          	$('#desktop-tutorial').foundation('joyride', 'start');
+            if ($rootScope.relativeCanonicalUrl == "/") {
+                $rootScope.joyrideTutorial = "home-page-tutorial";
+                $('#home-page-tutorial').foundation('joyride', 'start');
+            } else if ($rootScope.relativeCanonicalUrl == "/gameboards") {
+                $rootScope.joyrideTutorial = "filter-tutorial";
+                $('#filter-tutorial').foundation('joyride', 'start');
+            } else {
+                $rootScope.joyrideTutorial = "desktop-tutorial";
+                $('#desktop-tutorial').foundation('joyride', 'start');
+            }
+            api.logger.log({
+                type: "VIEW_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.mobile-tutorial-trigger', function() {
+            $rootScope.joyrideTutorial = "mobile-tutorial";
             $('#mobile-tutorial').foundation('joyride', 'start');
+            api.logger.log({
+                type: "VIEW_TUTORIAL",
+                tutorialId: $rootScope.joyrideTutorial,
+            });
         });
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');

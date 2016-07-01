@@ -47,9 +47,9 @@ class Radix extends Widget {
         var descent = this.position.y - (box.y + box.h);
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] =    new DockingPoint(this, this.p.createVector(box.w/2 + this.scale*this.s.xBox.w/2, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] =       new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -(box.h + descent + this.scale * 20)), 0.75, "exponent");
+        this.dockingPoints["argument"] =    new DockingPoint(this, this.p.createVector(box.w/2 + this.scale*this.s.xBox.w/2, -this.s.xBox.h/2), 1, "symbol", "argument");
+        this.dockingPoints["right"] =       new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale*this.s.xBox.w/2, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
     }
 
     /**
@@ -86,12 +86,30 @@ class Radix extends Widget {
             }
         } else if (format == "subscript") {
             expression += "{SQRT}";
+        } else if (format == "mathml") {
+            expression = '';
+            // TODO Include indexes when they will be implemented
+            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+                var sqrt = '<msqrt>' + this.dockingPoints['argument'].child.getExpression(format) + '</msqrt>';
+                if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                    expression += '<msup>' + sqrt + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                } else {
+                    expression += sqrt;
+                }
+            }
+            if(this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         }
         return expression;
     }
 
     properties(): Object {
         return { };
+    }
+
+    token() {
+        return '';//'sqrt';
     }
 
     /** Paints the widget on the canvas. */
@@ -104,15 +122,17 @@ class Radix extends Widget {
         }
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
+        this.p.push();
+        var scale = 1+(argHeight/this.baseHeight-1)*0.8;
+        if(scale < 1) {
+            scale = 1;
+        }
+        this.p.scale(1, scale);
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE);
 
-
-
-        // this.p.scale(1.0, argHeight/this.baseHeight);
         this.p.text('\u221A', 0, 0);
-        // this.p.scale(1.0, this.baseHeight/argHeight);
 
         this.p.noFill(0).strokeWeight(6*this.scale).stroke(this.color);
         var box = this.boundingBox();
@@ -120,6 +140,7 @@ class Radix extends Widget {
         this.p.line(box.x+box.w, y, argWidth+this.scale*box.w/2, y);
 
         this.p.strokeWeight(1);
+        this.p.pop();
 
         if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
@@ -174,12 +195,13 @@ class Radix extends Widget {
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var widest = 0;
+        var argWidth = this.s.xBox.w;
+        var supWidth = this.scale*this.s.xBox.w/2;
 
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
-            widest = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
-            p.x = box.w/2 + boxes["argument"].w/2;
+            argWidth = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
+            p.x = box.w/2 + this.dockingPoints["argument"].child.offsetBox().w/2;
             p.y = 0;
         } else {
             var p = this.dockingPoints["argument"].position;
@@ -191,27 +213,25 @@ class Radix extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
+            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
+            p.x = box.w + argWidth + supWidth;
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
-            widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
+            // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
         } else {
             var p = this.dockingPoints["superscript"].position;
-            p.x = box.w + Math.max(this.scale*this.s.xBox.w/2, widest);
+            p.x = box.w + argWidth + supWidth;
             p.y = -(box.h - this.scale * this.s.mBox.w / 6);
         }
-
-        box = this.boundingBox();
-        widest = Math.max(widest, this.s.xBox.w);
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w/2;
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + widest;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth;
         }
     }
 }

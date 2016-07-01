@@ -1,6 +1,8 @@
 import { Widget, Rect } from './Widget.ts'
-import {BinaryOperation} from "./BinaryOperation.ts";
+import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Relation } from "./Relation.ts";
+import { Num } from "./Num.ts";
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -43,9 +45,9 @@ class Symbol extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.75, "exponent");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.75, "subscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
     }
 
     /**
@@ -72,7 +74,7 @@ class Symbol extends Widget {
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
 					// WARNING This assumes it's a Symbol, hence produces a multiplication
-					expression += " " + this.dockingPoints["right"].child.getExpression(format);
+					expression += this.dockingPoints["right"].child.getExpression(format);
 				}
 			}
 		} else if (format == "python") {
@@ -84,10 +86,13 @@ class Symbol extends Widget {
 				expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
 			}
 			if (this.dockingPoints["right"].child != null) {
-				if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+				if (this.dockingPoints["right"].child instanceof BinaryOperation ||
+					this.dockingPoints["right"].child instanceof Relation) {
+					expression += this.dockingPoints["right"].child.getExpression(format);
+				} else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
 					expression += this.dockingPoints["right"].child.getExpression(format);
 				} else {
-					// WARNING This assumes it's a Symbol, hence produces a multiplication
+					// WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
 					expression += "*" + this.dockingPoints["right"].child.getExpression(format);
 				}
 			}
@@ -102,6 +107,24 @@ class Symbol extends Widget {
 			if (this.dockingPoints["right"].child != null) {
 				expression += this.dockingPoints["right"].child.getExpression(format);
 			}
+		} else if(format == "mathml") {
+			expression = '';
+			if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
+				expression += '<mi>' + this.letter + '</mi>';
+
+			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
+				expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+
+			} else if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
+				expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+
+			} else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
+				expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+
+			}
+			if(this.dockingPoints['right'].child != null) {
+				expression += this.dockingPoints['right'].child.getExpression('mathml');
+			}
 		}
 		return expression;
 	}
@@ -110,6 +133,15 @@ class Symbol extends Widget {
 		return {
 			letter: this.letter
 		};
+	}
+
+	token() {
+		// TODO Handle greek letters
+		var e = this.letter;
+		if(this.dockingPoints['subscript'].child) {
+			e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+		}
+		return e;
 	}
 
 	/** Paints the widget on the canvas. */
@@ -174,19 +206,21 @@ class Symbol extends Widget {
 
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
-            var w = boxes["superscript"].w;
+			var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
+            var w = offsetBox.w;
+			var childDescent = offsetBox.y + offsetBox.h;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * 20 + w/2;
-            p.y = -(box.h - descent - this.scale * 20);
+            p.x = (box.w + w)/2;
+            p.y = 0 - this.s.mBox.h*this.scale;
         } else {
 			var p = this.dockingPoints["superscript"].position;
-			p.x = box.w / 2 + this.scale * 20;
-			p.y = -this.scale*this.s.mBox.h;
+			p.x = (box.w + this.s.xBox.w)/2;
+			p.y = -this.s.mBox.h*this.scale;
 		}
 
 		if ("subscript" in boxes) {
             var p = this.dockingPoints["subscript"].child.position;
-            var w = boxes["subscript"].w;
+            var w = this.dockingPoints["subscript"].child.offsetBox().w;
             widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
 			p.x = box.w / 2 + this.scale * 20 + w/2;
             p.y = this.scale * this.s.mBox.w / 4;
@@ -199,7 +233,7 @@ class Symbol extends Widget {
 		// TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.boundingBox().w/2);
+			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w/2;
             p.y = 0;
         } else {
 			var p = this.dockingPoints["right"].position;
@@ -207,4 +241,11 @@ class Symbol extends Widget {
 			p.y = -this.s.xBox.h / 2;
 		}
 	}
+
+    /**
+     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     */
+    getChildren(): Array<Widget> {
+        return _.compact(_.pluck(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+    }
 }

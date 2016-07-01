@@ -1,5 +1,4 @@
 import { DockingPoint } from './DockingPoint.ts';
-import Dictionary = _.Dictionary;
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
@@ -46,8 +45,6 @@ class Rect {
 	get center() {
 		return new p5.Vector(this.x + this.w/2, this.y + this.h/2);
 	}
-
-
 }
 
 /** A base class for anything visible, draggable, and dockable. */
@@ -75,6 +72,7 @@ abstract class Widget {
 
 	isHighlighted = false;
 	color = null;
+	isMainExpression = false;
 
 	get typeAsString(): string {
 		return "Widget";
@@ -115,28 +113,30 @@ abstract class Widget {
 			alpha = 127;
 		}
 
-        _.each(this.dockingPoints, (dockingPoint, key) => {
-            if (dockingPoint.child) {
-                dockingPoint.child.draw();
-            } else {
-                // There is no child to paint, let's paint an empty docking point
+		_.each(this.dockingPoints, (dockingPoint, key) => {
+			if (dockingPoint.child) {
+				dockingPoint.child.draw();
+			} else {
+				// There is no child to paint, let's paint an empty docking point
+				// if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+					var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
+					var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
-                var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
-                var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
-
-                if (drawThisOne || window.location.hash === "#debug") {
-                    var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? 40 : alpha * 0.5;
-                    this.p.stroke(0, 127, 255, ptAlpha);
-                    this.p.strokeWeight(1);
-                    if(highlightThisOne && drawThisOne) {
-                        this.p.fill(127, 192, 255);
-                    } else {
-                        this.p.noFill();
-                    }
-                    this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
-                }
-            }
-        });
+					if (drawThisOne || window.location.hash === "#debug") {
+						var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
+						this.p.stroke(0, 127, 255, ptAlpha);
+						this.p.strokeWeight(1);
+						if (highlightThisOne && drawThisOne) {
+							this.p.fill(127, 192, 255);
+						} else {
+							this.p.noFill();
+						}
+						this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * 20, this.scale * 20);
+						// this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
+					}
+				// }
+			}
+		});
 
 		this.p.noFill();
 		if(window.location.hash === "#debug") {
@@ -162,28 +162,43 @@ abstract class Widget {
      */
 	abstract boundingBox(): Rect;
 
+	abstract token(): string;
+
 	// ************ //
 
-	subtreeObject(): Object {
-		var dockingPoints = {};
-		_.each(this.dockingPoints, (dockingPoint, key) => {
-			if(dockingPoint.child != null) {
-				dockingPoints[key] = dockingPoint.child.subtreeObject();
-			}
-		});
+	/**
+	 * Retrieves the abstract tree representation having this widget as root.
+	 *
+	 * @param processChildren This stops it from traversing children.
+	 * @param includeIds Include symbol IDs
+	 * @param minimal Only include essential information
+	 * @returns {{type: string}}
+	 */
+	subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
 		var p = this.getAbsolutePosition();
 		var o = {
 			type: this.typeAsString
 		};
-		if(!this.parentWidget) {
+		if (includeIds) {
+			o["id"] = this.id;
+		}
+		if(!this.parentWidget && !minimal) {
 			o["position"] = { x: p.x, y: p.y };
 			o["expression"] = {
 				latex: this.getExpression("latex"),
 				python: this.getExpression("python")
 			};
-		};
-		if(!_.isEmpty(dockingPoints)) {
-			o["children"] = dockingPoints;
+		}
+		if(processChildren) {
+			var dockingPoints = {};
+			_.each(this.dockingPoints, (dockingPoint, key) => {
+				if(dockingPoint.child != null) {
+					dockingPoints[key] = dockingPoint.child.subtreeObject(processChildren, includeIds, minimal);
+				}
+			});
+			if (!_.isEmpty(dockingPoints)) {
+				o["children"] = dockingPoints;
+			}
 		}
 		var properties = this._properties();
 		if(properties) {
@@ -233,6 +248,13 @@ abstract class Widget {
         var oldParent = this.parentWidget;
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
+				this.s.scope.log.actions.push({
+					event: "UNDOCK_SYMBOL",
+					symbol: this.subtreeObject(false, true, true),
+					parent: this.parentWidget.subtreeObject(false, true, true),
+					dockingPoint: dockingPoint.name,
+					timestamp: Date.now()
+				});
                 dockingPoint.child = null;
                 this.parentWidget = null;
             }
@@ -269,11 +291,13 @@ abstract class Widget {
 	 * Turns on and off highlight recursively.
 	 */
 	highlight(on = true) {
+		var mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(0, 0, 0, 127);
 		this.isHighlighted = on;
-		this.color = on ? this.p.color(72, 123, 174) : this.p.color(0);
+		this.color = on ? this.p.color(72, 123, 174) : mainColor;
 		_.each(this.dockingPoints, dockingPoint => {
 			if(dockingPoint.child != null) {
 				dockingPoint.child.highlight(on);
+				dockingPoint.child.isMainExpression = this.isMainExpression;
 			}
 		})
 	}
@@ -300,10 +324,12 @@ abstract class Widget {
 
 		var hitPoints: Array<DockingPoint> = [];
 		if(!hitPoint) {
-			_.each(this.dockingPoints, (point, name) => {
-				var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
-				if(testRect.contains(dp)) {
-					hitPoints.push(point);
+			_.each(this.dockingPoints, point => {
+				if(point.child == null) {
+					var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
+					if (testRect.contains(dp)) {
+						hitPoints.push(point);
+					}
 				}
 			});
 		}
@@ -368,4 +394,24 @@ abstract class Widget {
 	 * @private
      */
 	abstract _shakeIt();
+
+	/**
+	 * Internal aid for placing stuff as children.
+	 */
+	offsetBox(): Rect {
+		return this.boundingBox();
+	}
+
+	/**
+	 * Computes this widget's depth in the tree.
+	 */
+	depth(): number {
+		var depth = 0;
+		var n:Widget = this;
+		while(n.parentWidget) {
+			depth += 1;
+			n = n.parentWidget;
+		}
+		return depth;
+	}
 }

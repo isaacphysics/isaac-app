@@ -38,7 +38,8 @@ define([], function() {
             	$scope.setLoading(false);
 			}).catch(function(e){
 				$scope.setLoading(false);
-        		$scope.showToast($scope.toastTypes.Failure, "Unable to load the chapter your requested", "Error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				console.log("Error loading chapter content: " + e)
+        		$scope.showToast($scope.toastTypes.Failure, "Unable to load the chapter you requested!", "You may want to try refreshing the page.");
 			})
 		}
 	}];

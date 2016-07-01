@@ -1,5 +1,6 @@
 import { Widget, Rect } from './Widget.ts';
-import {BinaryOperation} from "./BinaryOperation.ts";
+import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 export
@@ -40,9 +41,9 @@ class Fraction extends Widget {
         var box = this.boundingBox();
 
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale*this.s.mBox.w/4, -box.h/2), 1, "symbol");
-        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol");
-        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale*this.s.mBox.w/4, -box.h/2), 1, "symbol", "right");
+        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
+        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol", "denominator");
     }
 
     /**
@@ -58,7 +59,7 @@ class Fraction extends Widget {
         var expression = "";
         if(format == "latex") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "} ";
+                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
                 if(this.dockingPoints["right"].child != null) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
@@ -67,16 +68,24 @@ class Fraction extends Widget {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "((" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + "))";
                 if(this.dockingPoints["right"].child != null) {
-                    if(this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    if(this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
                         expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                        expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                     }
                 }
             }
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += "[NOPE:" + this.id + "]";
+                expression += "[FRACTION:" + this.id + "]";
+            }
+        } else if(format == 'mathml') {
+            expression = '';
+            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
+                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.getExpression(format) + '</mrow></mfrac>';
+            }
+            if(this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         return expression;
@@ -84,6 +93,10 @@ class Fraction extends Widget {
 
     properties(): Object {
         return null;
+    }
+
+    token() {
+        return '';
     }
 
     /** Paints the widget on the canvas. */
@@ -146,7 +159,7 @@ class Fraction extends Widget {
         if ("numerator" in boxes) {
             var p = this.dockingPoints["numerator"].child.position;
             var fullNumeratorWidth = subtreeBoxes["numerator"].w;
-            var numeratorRootWidth = boxes["numerator"].w;
+            var numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
             var numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
 
             p.x = numeratorRootWidth/2 - fullNumeratorWidth/2;
@@ -156,7 +169,7 @@ class Fraction extends Widget {
         if ("denominator" in boxes) {
             var p = this.dockingPoints["denominator"].child.position;
             var fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            var denominatorRootWidth = boxes["denominator"].w;
+            var denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
             var denominatorFullAscent = subtreeBoxes["denominator"].y;
 
             p.x = denominatorRootWidth/2 - fullDenominatorWidth/2;
@@ -165,7 +178,7 @@ class Fraction extends Widget {
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + boxes["right"].w / 2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
+            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w/2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

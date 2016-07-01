@@ -98,16 +98,20 @@ define([], function() {
 				buildBreadCrumb();
 				recordCurrentGameboard();
 
-			}).catch(function() {
+			}).catch(function(e) {
 				$scope.gameBoardLoading = false;
 				$scope.gameBoard = null;
 
 				if (!preventWarning) {
-        			$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+					if (e.statusText == "Not Found") {
+        				$scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+						// Something went wrong. This gameboard probably doesn't exist anymore.
+						loadGameBoardFromFilter();
+        			} else {
+        				// The server is misbehaving, no point trying to load a new gameboard. Hope the user tries again later.
+        				$scope.showToast($scope.toastTypes.Failure, "Error Loading Board", "There was an error loading the gameboard.");
+        			}
 				}
-
-				// Something went wrong. This gameboard probably doesn't exist anymore.
-				loadGameBoardFromFilter();
 			});
 		}
 

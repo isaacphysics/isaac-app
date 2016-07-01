@@ -236,6 +236,10 @@ define([], function() {
 				}
 			})
 			$scope.setLoading(false);
+			// Log this in the front end because the count is used in the gloabl nav, which incorrectly caused a log event.
+            api.logger.log({
+                type : "VIEW_MY_ASSIGNMENTS"
+            });
 		});
 
 		$scope.toggleVisibleBoards = function(){

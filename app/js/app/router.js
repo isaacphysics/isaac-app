@@ -145,7 +145,7 @@ define(["angular-ui-router"], function() {
             })
 
 	        .state('contact', {
-		        url: "/contact?preset",
+		        url: "/contact?preset&subject",
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/contact.html",
@@ -378,6 +378,13 @@ define(["angular-ui-router"], function() {
                         controller: ["$scope", "$stateParams", function($scope, $stateParams) {
                             $scope.target = $stateParams.target;
                         }],
+                    },
+                },
+            })
+            .state('error', {
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/error.html",
                     },
                 },
             })

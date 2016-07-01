@@ -27,8 +27,10 @@ import { BinaryOperation } from './BinaryOperation.ts';
 import { Fraction } from './Fraction.ts';
 import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
-import { Number } from './Number.ts';
+import { Num } from './Num.ts';
+import { Fn } from './Fn.ts';
 import { DockingPoint } from './DockingPoint.ts';
+import { Relation } from './Relation.ts';
 
 // This is where the fun starts
 
@@ -54,7 +56,7 @@ class MySketch {
 
 	private newExpressionCallback = null;
 
-	constructor(private p, private scope, private width, private height, private initialSymbolsToParse) {
+	constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
 		this.p.preload = this.preload;
 		this.p.setup = this.setup;
 		this.p.draw = this.draw;
@@ -78,10 +80,20 @@ class MySketch {
 
 		this.prevTouch = this.p.createVector(0,0);
 
-        _.each(this.initialSymbolsToParse || [], s => {
-            this.parseSubtreeObject(s);
-        });
+        try {
+            _.each(this.initialSymbolsToParse || [], s => {
+                this.parseSubtreeObject(s);
+            });
+        } catch (e) {
+            console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
+        }
 
+		this.centre(true);
+
+		_this.scope.log.initialState = [];
+		this.symbols.forEach(function(e) {
+			_this.scope.log.initialState.push(e.subtreeObject(true, true));
+		});
 	};
 
 	draw = () => {
@@ -99,34 +111,17 @@ class MySketch {
 		// NB: This logic requires spec to be briefly set to null when switching between potential symbol types.
         if (spec) {
             if (!this.potentialSymbol) {
-                switch(spec.type) {
-                    case "symbol":
-                        this.potentialSymbol = new Symbol(this.p, this, spec.token);
-                        break;
-                    case "fraction":
-                        this.potentialSymbol = new Fraction(this.p, this);
-                        break;
-                    case "brackets":
-                        this.potentialSymbol = new Brackets(this.p, this, 'round');
-                        break;
-                    case "sqrt":
-                        this.potentialSymbol = new Radix(this.p, this);
-                        break;
-                    case "binaryOp":
-                        this.potentialSymbol = new BinaryOperation(this.p, this, spec.token);
-                        break;
-                    case "number":
-                        this.potentialSymbol = new Number(this.p, this, spec.significand, spec.exponent);
-                        break;
-                    default:
-                        throw new Error("Unknown widget type: " + spec.type);
-                }
-
+                this.potentialSymbol = this._parseSubtreeObject(spec);
+				this.scope.log.actions.push({
+					event: "DRAG_POTENTIAL_SYMBOL",
+					symbol: this.potentialSymbol.subtreeObject(false, true, true),
+					timestamp: Date.now()
+				});
                 this.visibleDockingPointTypes = this.potentialSymbol.docksTo;
-
             }
             this.potentialSymbol.position.x = x - this.potentialSymbol.boundingBox().w*0.5;
             this.potentialSymbol.position.y = y;
+			this.potentialSymbol.shakeIt();
             
             // Decide whether we should dock immediately
 
@@ -155,8 +150,20 @@ class MySketch {
         // Make sure we have an active docking point, and that the moving symbol can dock to it.
         if (this.activeDockingPoint != null && this.potentialSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
             this.activeDockingPoint.child = this.potentialSymbol;
-        } else {
+			this.scope.log.actions.push({
+				event: "DOCK_POTENTIAL_SYMBOL",
+				symbol: this.potentialSymbol.subtreeObject(false, true, true),
+				parent: this.potentialSymbol.parentWidget.subtreeObject(false, true, true),
+				dockingPoint: this.activeDockingPoint.name,
+				timestamp: Date.now()
+			});
+		} else {
             this.symbols.push(this.potentialSymbol);
+			this.scope.log.actions.push({
+				event: "DROP_POTENTIAL_SYMBOL",
+				symbol: this.potentialSymbol.subtreeObject(false, true, true),
+				timestamp: Date.now()
+			});
         }
 
         this.updatePotentialSymbol(null);
@@ -173,7 +180,7 @@ class MySketch {
 		}
 	};
 
-	_parseSubtreeObject = (node: Object): Widget => {
+	_parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
 		var w: Widget = null;
 		switch(node["type"]) {
 			case "Symbol":
@@ -191,16 +198,24 @@ class MySketch {
 			case "Radix":
 				w = new Radix(this.p, this);
 				break;
-            case "Number":
-                w = new Number(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
+            case "Num":
+                w = new Num(this.p, this, node["properties"]["significand"], node["properties"]["exponent"]);
                 break;
+			case "Fn":
+				w = new Fn(this.p, this, node["properties"]["name"], node["properties"]["custom"], node["properties"]["allowSubscript"], node["properties"]["innerSuperscript"]);
+				break;
+			case "Relation":
+				w = new Relation(this.p, this, node["properties"]["relation"]);
+				break;
 			default: // this would be a Widget...
 				break;
 		}
 
-        _.each(node["children"] || [], (n, key) => {
-            w.dockingPoints[key].child = this._parseSubtreeObject(n);
-        });
+		if(parseChildren) {
+			_.each(node["children"] || [], (n, key) => {
+				w.dockingPoints[key].child = this._parseSubtreeObject(n);
+			});
+		}
 
 		return w;
 	};
@@ -208,20 +223,31 @@ class MySketch {
 	// Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
 	// Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
 	touchStarted = () => {
+
 		// These are used to correctly detect clicks and taps.
-		this.initialTouch = this.p.createVector(this.p.touchX, this.p.touchY);
+
+		// Note that touchX and touchY are incorrect when using touch. Ironically.
+		var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+		var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+
+		this.initialTouch = this.p.createVector(tx, ty);
 
 		this.movingSymbol = null;
 		var index = -1;
 		var movingSymbolDocksTo: Array<string> = [];
 		_.some(this.symbols, (symbol, i) => {
 			// .hit() propagates down the hierarchy
-			var hitSymbol = symbol.hit(this.p.createVector(this.p.touchX, this.p.touchY));
+			var hitSymbol = symbol.hit(this.p.createVector(tx, ty));
 			if(hitSymbol != null) {
 				// If we hit that symbol, then mark it as moving
 				this.movingSymbol = hitSymbol;
+				this.scope.log.actions.push({
+					event: "DRAG_START",
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
+					timestamp: Date.now()
+				});
 				index = i;
-				this.prevTouch = this.p.createVector(this.p.touchX, this.p.touchY);
+				this.prevTouch = this.p.createVector(tx, ty);
 
 				// Remove symbol from the hierarchy, place it back with the roots.
 				if(hitSymbol.parentWidget != null) {
@@ -261,18 +287,42 @@ class MySketch {
 	};
 
 	touchMoved = () => {
+
+		var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+		var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+
 		if(this.movingSymbol != null) {
-			var d = this.p.createVector(this.p.touchX - this.prevTouch.x, this.p.touchY - this.prevTouch.y);
+			var d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
+
+			// TODO NOT DELETE the following commented section.
+			// var sbox = this.movingSymbol.subtreeBoundingBox();
+			// var spos = this.movingSymbol.getAbsolutePosition();
+			// var dx = this.p.touchX - this.prevTouch.x;
+			// var dy = this.p.touchY - this.prevTouch.y;
+			// var left =   spos.x + sbox.x;
+			// var right =  spos.x + sbox.x + sbox.w;
+			// var top =    spos.y + sbox.y;
+			// var bottom = spos.y + sbox.y + sbox.h;
+            //
+			// if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
+			// 	dx = 0;
+			// }
+			// if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
+			// 	dy = 0;
+			// }
+			// var d = this.p.createVector(dx, dy);
+			
 			this.movingSymbol.position.add(d);
-			this.prevTouch.x = this.p.touchX;
-			this.prevTouch.y = this.p.touchY;
+			// FIXME GO AHEAD PUNK, MAKE MY DAY
+			this.prevTouch.x = <number>tx;
+			this.prevTouch.y = <number>ty;
 
 			// Check if we are moving close to a docking point, and highlight it even more.
 			_.some(this.symbols, (symbol: Widget) => {
 				this.activeDockingPoint = null;
 
 				// This is the point where the mouse/touch is.
-				var touchPoint = this.p.createVector(this.p.touchX, this.p.touchY);
+				var touchPoint = this.p.createVector(tx, ty);
 				// This is less refined than doing the proximity detection thing, but works much better (#4)
 				if(symbol != null && symbol.id != this.movingSymbol.id) {
                     // TODO: This is broken. Make sure we don't hit docking points of the wrong type
@@ -286,11 +336,12 @@ class MySketch {
 				}
 			});
 
-            this.scope.notifySymbolDrag(this.p.touchX, this.p.touchY);
+            this.scope.notifySymbolDrag(tx, ty);
 		}
 	};
 
 	touchEnded = () => {
+
 		// TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
 		if(this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
 			// Click
@@ -306,32 +357,66 @@ class MySketch {
 				width: 0,
 				height: 0
 			});
-		} else {
-			if (this.movingSymbol != null) {
-				// When touches end, mark the symbol as not moving.
-				this.prevTouch = null;
-
-				// Make sure we have an active docking point, and that the moving symbol can dock to it.
-				if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
-					this.symbols = _.without(this.symbols, this.movingSymbol);
-					this.activeDockingPoint.child = this.movingSymbol;
-				}
-
-                if (this.scope.trashActive) {
-                    this.symbols = _.without(this.symbols, this.movingSymbol);
-                }
-                this.scope.selectedSymbols.length = 0;
-                this.scope.$digest();
-			}
-
-			this.updateState();
-
-			this.movingSymbol = null;
-			this.activeDockingPoint = null;
-			this.visibleDockingPointTypes = [];
 		}
 
+		if (this.movingSymbol != null) {
+			// When touches end, mark the symbol as not moving.
+			this.prevTouch = null;
+
+			// Make sure we have an active docking point, and that the moving symbol can dock to it.
+			if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+				this.symbols = _.without(this.symbols, this.movingSymbol);
+				this.activeDockingPoint.child = this.movingSymbol;
+				this.scope.log.actions.push({
+					event: "DOCK_SYMBOL",
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
+					parent: this.movingSymbol.parentWidget.subtreeObject(false, true, true),
+					dockingPoint: this.activeDockingPoint.name,
+					timestamp: Date.now()
+				});
+			} else if (this.scope.trashActive) {
+				this.scope.log.actions.push({
+					event: "TRASH_SYMBOL",
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
+					timestamp: Date.now()
+				});
+				this.symbols = _.without(this.symbols, this.movingSymbol);
+			} else {
+				this.scope.log.actions.push({
+					event: "DROP_SYMBOL",
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
+					timestamp: Date.now()
+				});
+			}
+			this.scope.selectedSymbols.length = 0;
+			this.scope.$digest();
+		}
+
+		this.updateState();
+
+		this.movingSymbol = null;
+		this.activeDockingPoint = null;
+		this.visibleDockingPointTypes = [];
+
 		this.initialTouch = null;
+
+		var symbolWithMostChildren = null;
+		var mostChildren = 0;
+		_.each(this.symbols, symbol => {
+			var numChildren = symbol.getTotalSymbolCount();
+			if (numChildren > mostChildren) {
+				mostChildren = numChildren;
+				symbolWithMostChildren = symbol;
+			}
+		});
+
+		_.each(this.symbols, symbol => {
+			if(symbol != symbolWithMostChildren) {
+				symbol.isMainExpression = false;
+			} else {
+				symbol.isMainExpression = true;
+			}
+		});
 	};
 
 	mouseMoved = () => {
@@ -343,6 +428,18 @@ class MySketch {
 				hitSymbol.highlight(true);
 			}
 		});
+	};
+
+	flattenExpression = (w : Widget) => {
+		var stack : Array<Widget> = [w];
+		var list = [];
+		while(stack.length > 0) {
+			var e = stack.shift();
+			list.push(e.token());
+			var children = e.getChildren();
+			stack = stack.concat(children);
+		}
+		return _.reject(_.uniq(list), i => { return i == ''; });
 	};
 
 	updateState = () => {
@@ -361,10 +458,12 @@ class MySketch {
 			this.scope.newEditorState({
 				result: {
 					"tex": symbolWithMostChildren.getExpression("latex").trim(),
-					"python": symbolWithMostChildren.getExpression("python").trim()
+					"python": symbolWithMostChildren.getExpression("python").trim(),
+					"mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
+					"uniqueSymbols": this.flattenExpression(symbolWithMostChildren).join(', ')
 				},
-				symbols: _.map(this.symbols, s => s.subtreeObject()),
-			})
+				symbols: _.map(this.symbols, s => s.subtreeObject())
+			});
 		} else {
 			this.scope.newEditorState({
 				result: null,
@@ -379,6 +478,22 @@ class MySketch {
 			subtreeObjects.push(symbol.subtreeObject());
 		});
 		return subtreeObjects;
-	}
+	};
+
+	centre = (init = false) => {
+		var top = this.height/2;
+		_.each(this.symbols, (symbol, i) => {
+			var sbox = symbol.subtreeBoundingBox();
+			symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
+			top += sbox.h;
+			symbol.shakeIt();
+		});
+		if (!init) {
+			this.scope.log.actions.push({
+				event: "CENTRE_SYMBOLS",
+				timestamp: Date.now()
+			});
+		}
+	};
 }
 
