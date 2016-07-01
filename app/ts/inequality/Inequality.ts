@@ -114,7 +114,7 @@ class MySketch {
                 this.potentialSymbol = this._parseSubtreeObject(spec);
 				this.scope.log.actions.push({
 					event: "DRAG_POTENTIAL_SYMBOL",
-					symbol: this.potentialSymbol.subtreeObject(false, true),
+					symbol: this.potentialSymbol.subtreeObject(false, true, true),
 					timestamp: Date.now()
 				});
                 this.visibleDockingPointTypes = this.potentialSymbol.docksTo;
@@ -152,8 +152,8 @@ class MySketch {
             this.activeDockingPoint.child = this.potentialSymbol;
 			this.scope.log.actions.push({
 				event: "DOCK_POTENTIAL_SYMBOL",
-				symbol: this.potentialSymbol.subtreeObject(false, true),
-				parent: this.potentialSymbol.parentWidget.subtreeObject(false, true),
+				symbol: this.potentialSymbol.subtreeObject(false, true, true),
+				parent: this.potentialSymbol.parentWidget.subtreeObject(false, true, true),
 				dockingPoint: this.activeDockingPoint.name,
 				timestamp: Date.now()
 			});
@@ -161,7 +161,7 @@ class MySketch {
             this.symbols.push(this.potentialSymbol);
 			this.scope.log.actions.push({
 				event: "DROP_POTENTIAL_SYMBOL",
-				symbol: this.potentialSymbol.subtreeObject(false, true),
+				symbol: this.potentialSymbol.subtreeObject(false, true, true),
 				timestamp: Date.now()
 			});
         }
@@ -243,7 +243,7 @@ class MySketch {
 				this.movingSymbol = hitSymbol;
 				this.scope.log.actions.push({
 					event: "DRAG_START",
-					symbol: this.movingSymbol.subtreeObject(false, true),
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
 					timestamp: Date.now()
 				});
 				index = i;
@@ -369,22 +369,22 @@ class MySketch {
 				this.activeDockingPoint.child = this.movingSymbol;
 				this.scope.log.actions.push({
 					event: "DOCK_SYMBOL",
-					symbol: this.movingSymbol.subtreeObject(false, true),
-					parent: this.movingSymbol.parentWidget.subtreeObject(false, true),
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
+					parent: this.movingSymbol.parentWidget.subtreeObject(false, true, true),
 					dockingPoint: this.activeDockingPoint.name,
 					timestamp: Date.now()
 				});
 			} else if (this.scope.trashActive) {
 				this.scope.log.actions.push({
 					event: "TRASH_SYMBOL",
-					symbol: this.movingSymbol.subtreeObject(false, true),
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
 					timestamp: Date.now()
 				});
 				this.symbols = _.without(this.symbols, this.movingSymbol);
 			} else {
 				this.scope.log.actions.push({
 					event: "DROP_SYMBOL",
-					symbol: this.movingSymbol.subtreeObject(false, true),
+					symbol: this.movingSymbol.subtreeObject(false, true, true),
 					timestamp: Date.now()
 				});
 			}

@@ -170,21 +170,16 @@ abstract class Widget {
 	 * Retrieves the abstract tree representation having this widget as root.
 	 *
 	 * @param processChildren This stops it from traversing children.
+	 * @param includeIds Include symbol IDs
 	 * @param minimal Only include essential information
 	 * @returns {{type: string}}
 	 */
-	subtreeObject(processChildren = true, minimal = false): Object {
-		var dockingPoints = {};
-		_.each(this.dockingPoints, (dockingPoint, key) => {
-			if(dockingPoint.child != null) {
-				dockingPoints[key] = dockingPoint.child.subtreeObject();
-			}
-		});
+	subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
 		var p = this.getAbsolutePosition();
 		var o = {
 			type: this.typeAsString
 		};
-		if(minimal) {
+		if (includeIds) {
 			o["id"] = this.id;
 		}
 		if(!this.parentWidget && !minimal) {
@@ -194,8 +189,16 @@ abstract class Widget {
 				python: this.getExpression("python")
 			};
 		}
-		if(processChildren && !_.isEmpty(dockingPoints) && !minimal) {
-			o["children"] = dockingPoints;
+		if(processChildren) {
+			var dockingPoints = {};
+			_.each(this.dockingPoints, (dockingPoint, key) => {
+				if(dockingPoint.child != null) {
+					dockingPoints[key] = dockingPoint.child.subtreeObject(processChildren, includeIds, minimal);
+				}
+			});
+			if (!_.isEmpty(dockingPoints)) {
+				o["children"] = dockingPoints;
+			}
 		}
 		var properties = this._properties();
 		if(properties) {
@@ -247,8 +250,8 @@ abstract class Widget {
             if (dockingPoint.child == this) {
 				this.s.scope.log.actions.push({
 					event: "UNDOCK_SYMBOL",
-					symbol: this.subtreeObject(false, true),
-					parent: this.parentWidget.subtreeObject(false, true),
+					symbol: this.subtreeObject(false, true, true),
+					parent: this.parentWidget.subtreeObject(false, true, true),
 					dockingPoint: dockingPoint.name,
 					timestamp: Date.now()
 				});
