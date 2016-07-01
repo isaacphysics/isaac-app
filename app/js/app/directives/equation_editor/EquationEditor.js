@@ -100,6 +100,19 @@ define(function(require) {
                 	// console.log("scope.state: ", scope.state);
                 });
 
+                scope.logOnClose = function(event) {
+                    //TODO FIX THIS!
+                    console.log("AAAARRRRGGGHHHH!!!!!!!");
+                    // Maybe something like this?
+                    // if (scope.log != null) {
+                    //     scope.log.actions.push({
+                    //         event: "LEAVE_PAGE",
+                    //         timestamp: Date.now();
+                    //     });
+                    //     api.logger.log(scope.log);
+                    // }
+                };
+
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
 
                     return new Promise(function(resolve, reject) {
@@ -134,9 +147,11 @@ define(function(require) {
                             screenSize: { width: window.innerWidth, height: window.innerHeight },
                             actions: [{
                                 event: "OPEN",
-                                timestamp: new Date().getTime()
+                                timestamp: Date.now()
                             }]
                         };
+
+                        window.addEventListener("beforeunload", scope.logOnClose);
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
@@ -761,7 +776,7 @@ define(function(require) {
                         }
                         scope.log.actions.push({
                             type: "UNDO",
-                            timestamp: new Date().getTime()
+                            timestamp: Date.now()
                     });
 
                     }
@@ -779,7 +794,7 @@ define(function(require) {
                         }
                         scope.log.actions.push({
                             type: "REDO",
-                            timestamp: new Date().getTime()
+                            timestamp: Date.now()
                     });
                     }
                 };
@@ -795,9 +810,10 @@ define(function(require) {
                     });
                     scope.log.actions.push({
                         type: "CLOSE",
-                        timestamp: new Date().getTime()
+                        timestamp: Date.now()
                     });
                     console.log("\nLOG: ~" + 2*JSON.stringify(scope.log).length + "kb\n\n", JSON.stringify(scope.log));
+                    window.removeEventListener("beforeunload", scope.logOnClose);
                 };
 
                 scope.centre = function() {

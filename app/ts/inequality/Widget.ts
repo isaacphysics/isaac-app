@@ -170,10 +170,10 @@ abstract class Widget {
 	 * Retrieves the abstract tree representation having this widget as root.
 	 *
 	 * @param processChildren This stops it from traversing children.
-	 * @param includeIds Include IDs!
+	 * @param minimal Only include essential information
 	 * @returns {{type: string}}
 	 */
-	subtreeObject(processChildren = true, includeIds = false): Object {
+	subtreeObject(processChildren = true, minimal = false): Object {
 		var dockingPoints = {};
 		_.each(this.dockingPoints, (dockingPoint, key) => {
 			if(dockingPoint.child != null) {
@@ -184,17 +184,17 @@ abstract class Widget {
 		var o = {
 			type: this.typeAsString
 		};
-		if(includeIds) {
+		if(minimal) {
 			o["id"] = this.id;
 		}
-		if(!this.parentWidget) {
+		if(!this.parentWidget && !minimal) {
 			o["position"] = { x: p.x, y: p.y };
 			o["expression"] = {
 				latex: this.getExpression("latex"),
 				python: this.getExpression("python")
 			};
 		}
-		if(processChildren && !_.isEmpty(dockingPoints)) {
+		if(processChildren && !_.isEmpty(dockingPoints) && !minimal) {
 			o["children"] = dockingPoints;
 		}
 		var properties = this._properties();
