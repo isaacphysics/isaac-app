@@ -67,7 +67,7 @@ define(function(require) {
                         scope.draggingNewSymbol = false;
                         scope.log.actions.push({
                             event: "ABORT_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true),
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
                             timestamp: Date.now()
                         });
                         sketch.updatePotentialSymbol(null);
@@ -85,7 +85,7 @@ define(function(require) {
                     if (scope.trashActive) {
                         scope.log.actions.push({
                             event: "TRASH_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true),
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
                             timestamp: Date.now()
                         });
                         sketch.updatePotentialSymbol(null);
@@ -101,16 +101,14 @@ define(function(require) {
                 });
 
                 scope.logOnClose = function(event) {
-                    //TODO FIX THIS!
-                    console.log("AAAARRRRGGGHHHH!!!!!!!");
-                    // Maybe something like this?
-                    // if (scope.log != null) {
-                    //     scope.log.actions.push({
-                    //         event: "LEAVE_PAGE",
-                    //         timestamp: Date.now();
-                    //     });
-                    //     api.logger.log(scope.log);
-                    // }
+                    // This ought to catch people who navigate away without closing the editor!
+                    if (scope.log != null) {
+                        scope.log.actions.push({
+                            event: "NAVIGATE_AWAY",
+                            timestamp: Date.now()
+                        });
+                        api.logger.log(scope.log);
+                    }
                 };
 
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
@@ -801,9 +799,6 @@ define(function(require) {
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
-                    api.logger.log({
-                        type : "CLOSE_EQUATION_EDITOR"
-                    });
                     scope.log.finalState = [];
                     sketch.symbols.forEach(function(e) {
                        scope.log.finalState.push(e.subtreeObject(true, true));
@@ -812,8 +807,12 @@ define(function(require) {
                         type: "CLOSE",
                         timestamp: Date.now()
                     });
-                    console.log("\nLOG: ~" + JSON.stringify(scope.log).length + "kb\n\n", JSON.stringify(scope.log));
+                    if (scope.segueEnvironment == "DEV") {
+                        console.log("\nLOG: ~" + (JSON.stringify(scope.log).length/1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                    }
                     window.removeEventListener("beforeunload", scope.logOnClose);
+                    api.logger.log(scope.log);
+                    scope.log = null;
                 };
 
                 scope.centre = function() {
