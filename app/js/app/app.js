@@ -18,48 +18,48 @@
 define([
     "app/honest/responsive_video",
     "lib/rsvp",
-    "foundation", 
-    "app/router", 
-    "angular", 
-    "angular-resource", 
+    "foundation",
+    "app/router",
+    "angular",
+    "angular-resource",
     "angular-cookies",
     "angular-ui-date",
-    "app/controllers", 
-    "app/directives", 
-    "app/services", 
+    "app/controllers",
+    "app/directives",
+    "app/services",
     "app/filters",
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
-    "angulartics", 
+    "angulartics",
     "angulartics-ga",
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
-    ], function(rv, ineq) {
+], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-	//var rv = System.amdRequire("app/honest/responsive_video.js");
+    //var rv = System.amdRequire("app/honest/responsive_video.js");
 
-	// Declare app level module which depends on filters, and services
-	angular.module('isaac', [
+    // Declare app level module which depends on filters, and services
+    angular.module('isaac', [
         'isaac.router',
-		'isaac.filters',
-		'isaac.services',
-		'isaac.directives',
-		'isaac.controllers',
+        'isaac.filters',
+        'isaac.services',
+        'isaac.directives',
+        'isaac.controllers',
         'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
         'ui.date',
-	])
+    ])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
+    .config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
 
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
@@ -85,7 +85,7 @@ define([
             };
         }]);
 
-		$locationProvider.html5Mode(true).hashPrefix("!");
+        $locationProvider.html5Mode(true).hashPrefix("!");
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost") {
@@ -95,14 +95,14 @@ define([
         }
 
         NProgress.configure({ showSpinner: false });
-	}])
+    }])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
+    .run(['$rootScope', 'api', '$state', 'auth', '$location', '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
 
         /* 
             Tooltip settings
         */
-        Opentip.lastZIndex = 9999; 
+        Opentip.lastZIndex = 9999;
         Opentip.styles.globalStyle = {
             target: true,
             background: '#333333',
@@ -129,8 +129,8 @@ define([
             if (mathjaxRenderTimeout)
                 clearTimeout(mathjaxRenderTimeout);
 
-            setTimeout(function() { 
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            setTimeout(function() {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }, 500);
         }
 
@@ -175,7 +175,7 @@ define([
             $timeout(function() {
                 // Run this in a $timeout to make sure that $apply is called.
                 $rootScope.setLoading(false);
-                
+
                 // TODO: find a better way to hide the search
                 $rootScope.globalFlags.noSearch = false;
             });
@@ -186,19 +186,19 @@ define([
             $rootScope.relativeCanonicalUrl = $location.path();
 
             // we need to tell opentip to reapply everytime we change state
-            setTimeout(function(){
+            setTimeout(function() {
                 Opentip.findElements();
             }, 0);
         })
 
-        $rootScope.snoozeEmailVerification = function(){
+        $rootScope.snoozeEmailVerification = function() {
             $(".verification-message").remove();
         }
 
-        $rootScope.requestEmailVerification = function(){
-            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
+        $rootScope.requestEmailVerification = function() {
+            api.verifyEmail.requestEmailVerification({ 'email': $rootScope.user.email }).$promise.then(function(response) {
                 $rootScope.showToast($rootScope.toastTypes.Success, "Email verification request succeeded.", "Please follow the verification link given in the email sent to your address. ");
-            }, function(e){
+            }, function(e) {
                 $rootScope.showToast($rootScope.toastTypes.Failure, "Email verification request failed.", "Sending an email to your address failed with error message: " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
             });
         }
@@ -214,29 +214,27 @@ define([
 
             $(document).foundation({
                 // Queries for retina images for data interchange
-                interchange:
-                {
-                    named_queries :
-                    {
-                        small_retina :  'only screen and (min-width: 1px) and (-webkit-min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1px) and (min--moz-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1px) and (-o-min-device-pixel-ratio: 2/1),'+
-                                        'only screen and (min-width: 1px) and (min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1px) and (min-resolution: 192dpi),'+
-                                        'only screen and (min-width: 1px) and (min-resolution: 2dppx)',
-                        medium_retina : 'only screen and (min-width: 641px) and (-webkit-min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 641px) and (min--moz-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 641px) and (-o-min-device-pixel-ratio: 2/1),'+
-                                        'only screen and (min-width: 641px) and (min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 641px) and (min-resolution: 192dpi),'+
-                                        'only screen and (min-width: 641px) and (min-resolution: 2dppx)',
-                        large_retina :  'only screen and (min-width: 1024px) and (-webkit-min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1024px) and (min--moz-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1024px) and (-o-min-device-pixel-ratio: 2/1),'+
-                                        'only screen and (min-width: 1024px) and (min-device-pixel-ratio: 2),'+
-                                        'only screen and (min-width: 1024px) and (min-resolution: 192dpi),'+
-                                        'only screen and (min-width: 1024px) and (min-resolution: 2dppx)',
-                        medium_large :  'only screen and (min-width: 54.115em)'
+                interchange: {
+                    named_queries: {
+                        small_retina: 'only screen and (min-width: 1px) and (-webkit-min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1px) and (min--moz-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1px) and (-o-min-device-pixel-ratio: 2/1),' +
+                            'only screen and (min-width: 1px) and (min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1px) and (min-resolution: 192dpi),' +
+                            'only screen and (min-width: 1px) and (min-resolution: 2dppx)',
+                        medium_retina: 'only screen and (min-width: 641px) and (-webkit-min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 641px) and (min--moz-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 641px) and (-o-min-device-pixel-ratio: 2/1),' +
+                            'only screen and (min-width: 641px) and (min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 641px) and (min-resolution: 192dpi),' +
+                            'only screen and (min-width: 641px) and (min-resolution: 2dppx)',
+                        large_retina: 'only screen and (min-width: 1024px) and (-webkit-min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1024px) and (min--moz-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1024px) and (-o-min-device-pixel-ratio: 2/1),' +
+                            'only screen and (min-width: 1024px) and (min-device-pixel-ratio: 2),' +
+                            'only screen and (min-width: 1024px) and (min-resolution: 192dpi),' +
+                            'only screen and (min-width: 1024px) and (min-resolution: 2dppx)',
+                        medium_large: 'only screen and (min-width: 54.115em)'
                     }
                 }
             });
@@ -245,17 +243,16 @@ define([
             $(document).foundation('interchange', 'reflow');
             // we also need to tell open tip to reinitialise when new content is added.
             Opentip.findElements();
-            
+
             // Global jQuery
-            $(function()
-            {
-                
+            $(function() {
+
 
                 // IE console debug - bug fix
-                if(!(window.console)) {
-                    var noop = function(){};
+                if (!(window.console)) {
+                    var noop = function() {};
                     console = {
-                        log: noop, 
+                        log: noop,
                         debug: noop,
                         info: noop,
                         warn: noop,
@@ -268,97 +265,80 @@ define([
                  * Are we on a mobile? (Safe on any browser without needing media queries via JS)
                  * @returns {Boolean}
                  */
-                $.ru_IsMobile = function()
-                {
+                $.ru_IsMobile = function() {
                     return ($(".ru-mobile-header").css('display') !== 'none');
                 };
                 // Fix ups for iOS
-                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
-                {
+                if ((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
                     $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('iphone');
                     $('.ru-answer-orbit .ru-answer-orbit-content p').addClass('iphone');
                 }
-                
+
                 // Safari - accordion titles
-                if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0)
-                {
+                if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
                     $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('safari');
                 }
-                
+
                 // Fix up for custom check box 2nd label
-                $('.ru-drop-big-label,.ru-drop-mid-label,span.ru-drop-check~label').each(function()
-                {
+                $('.ru-drop-big-label,.ru-drop-mid-label,span.ru-drop-check~label').each(function() {
                     var $drop = $(this).prev('.ru-drop-check');
                     var id = $('input', $drop).attr('id');
                     $(this).attr('for', id);
-                }).css('user-select','none');
-                
+                }).css('user-select', 'none');
+
                 // Set tab indexes for some things
                 // Header nav
-                $('.ru-desktop-nav-item').attr('tabindex', 0).bind('keydown', function(e)
-                {
+                $('.ru-desktop-nav-item').attr('tabindex', 0).bind('keydown', function(e) {
                     // Follow link for tab on top level nav
-                    if(e.which === 13)
-                    {
+                    if (e.which === 13) {
                         var $link = $('a', $(this));
-                        if(!$link.hasClass('active'))
-                        {
+                        if (!$link.hasClass('active')) {
                             window.location.href = $link.attr('href');
                         }
                     }
                 });
                 $('.ru-desktop-nav-item .active').parent().attr('tabindex', null);
                 // Footer social icons
-                $("[class*='ru-social-icon-']").attr('tabindex',0).bind('keydown', function(e)
-                {
+                $("[class*='ru-social-icon-']").attr('tabindex', 0).bind('keydown', function(e) {
                     // Follow link for tab on top level nav
-                    if(e.which === 13)
-                    {
+                    if (e.which === 13) {
                         window.location.href = $(this).attr('href');
                     }
                 });
                 // Custom tick boxes
-                $('span.ru-drop-check').each(function()
-                {
+                $('span.ru-drop-check').each(function() {
                     // Add tab index
                     var span = $(this);
                     span.attr('tabindex', 0);
                     // Blur span on click
-                    $('input', span).click(function()
-                    {
+                    $('input', span).click(function() {
                         $(this).parent().blur();
                     });
                     // Enter on checkbox
-                    span.bind('keyup', function(e)
-                    {
-                        if(e.which === 13)
-                        {
+                    span.bind('keyup', function(e) {
+                        if (e.which === 13) {
                             $('input', span).click();
                         }
                     });
                 });
-            
+
                 // Mobile login drop down
-	            $("#mobile-login").off("click");
-                $("#mobile-login").click(function(e)
-                {
+                $("#mobile-login").off("click");
+                $("#mobile-login").click(function(e) {
                     e.preventDefault();
                     $("#mobile-login-form").ruDropDownToggle(this);
                 });
-                
+
                 // Mobile search drop down
-	            $("#mobile-search").off("click");
-                $("#mobile-search").click(function(e)
-                {
+                $("#mobile-search").off("click");
+                $("#mobile-search").click(function(e) {
                     e.preventDefault();
                     $("#mobile-search-form").ruDropDownToggle(this);
                 });
-                
+
                 // Resize slider on tab change (copes with resize when slider tab not visible)
-                var sliderResize = function()
-                {
-                    $(".bxslider").each(function()
-                    {
+                var sliderResize = function() {
+                    $(".bxslider").each(function() {
                         var slider = $(this).data('slider');
                         slider.reloadSlider();
                         var orbit = $(this).closest('.ru-answer-orbit');
@@ -366,25 +346,24 @@ define([
                         slider.goToSlide(item);
                     });
                     // Also - remove iphone override on p carousel text as it is not needed after a change of tab
-    //                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
-    //                {
-    //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
-    //                }
+                    //                if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)))
+                    //                {
+                    //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
+                    //                }
                 };
                 var cookie = {
                     create: function(name, value, days) {
                         // Only do time calculation if a day has been passed in
                         if (days) {
                             var date = new Date();
-                            var maxCookiesExpiry = days*24*60*60*1000;
+                            var maxCookiesExpiry = days * 24 * 60 * 60 * 1000;
                             // convert day to a Unix timestamp
-                                date.setTime(date.getTime()+maxCookiesExpiry);
+                            date.setTime(date.getTime() + maxCookiesExpiry);
                             // formate date ready to be passed to the DOM
-                            var expires = "; expires="+date.toGMTString();
-                        }
-                        else var expires = "";
+                            var expires = "; expires=" + date.toGMTString();
+                        } else var expires = "";
                         // Build cookie and send to DOM
-                        document.cookie = name+"="+value+expires+"; path=/";
+                        document.cookie = name + "=" + value + expires + "; path=/";
                     },
                     read: function(name) {
                         var nameEQ = name + "=";
@@ -392,7 +371,7 @@ define([
                         var cookieArray = document.cookie.split(';');
 
                         // Loop through array of cookies checking each one
-                        for(var i=0; i < cookieArray.length; i++) {
+                        for (var i = 0; i < cookieArray.length; i++) {
                             var cookie = cookieArray[i];
 
                             // Check to see first character is a space
@@ -403,7 +382,7 @@ define([
 
                             if (cookie.indexOf(nameEQ) == 0) {
                                 // Hurrah this is the cookie we wanted, now to return just the name
-                                return cookie.substring(nameEQ.length,cookie.length);
+                                return cookie.substring(nameEQ.length, cookie.length);
                             }
                         }
                         return null;
@@ -415,7 +394,7 @@ define([
                 }
 
                 var cookiesAccepted = cookie.read('isaacCookiesAccepted');
-            
+
                 if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
                     $(".cookies-message").show();
@@ -429,31 +408,28 @@ define([
 
                 // Set cookie on click without overriding Foundations close function
                 $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
-                    if (!cookie.read('isaacCookiesAccepted'))
-                    {
+                    if (!cookie.read('isaacCookiesAccepted')) {
                         api.logger.log({
                             type: "ACCEPT_COOKIES"
                         })
-                        cookie.create('isaacCookiesAccepted',1,720);
+                        cookie.create('isaacCookiesAccepted', 1, 720);
                     }
                 });
 
                 var totalJoyridePageCount = 0;
                 // Force resize of vidoes on tab change and accordion change
-                $(document).foundation(
-                {
-                    tab:{
-                        callback : function (tab)
-                        {
+                $(document).foundation({
+                    tab: {
+                        callback: function(tab) {
                             rv.forceResize();
                             sliderResize();
                         }
                     },
-                    joyride: { 
+                    joyride: {
                         expose: true,
                         next_button: false,
                         prev_button: false,
-                        template : {
+                        template: {
                             link: ''
                         },
                         abort_on_close: false,
@@ -462,8 +438,21 @@ define([
                             $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
                             totalJoyridePageCount = $("#" + $rootScope.joyrideTutorial + " .joyride-list").children().length;
                         },
+                        post_step_callback: function(index) {
+                            if (index == 6 && !($rootScope.isOpen)) {
+                                
+                                setTimeout(function() { $rootScope.openFilterPanel('desktop-filter'); }, 500);
+                                
+                            } else if (index == 7 || index == 8) {
+                                $("#level-h3").html("Choose your level");
+                                $("#desktop-filter h3").css("color", "#ffffff");
+                            }
+                        },
                         pre_step_callback: function(index) {
                             $(".joyride-page-indicator").empty();
+                            $("#desktop-filter h3").css("color", "#333");
+                            $("#navigation-selector").css("color", "#333");
+                            $("#level-h3").html("Levels");
 
                             for (var i = 0; i < totalJoyridePageCount; i++) {
                                 if (i <= index) {
@@ -472,25 +461,26 @@ define([
                                     $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
                                 }
                             }
-                            console.log($rootScope.openFilterPanel);
+                            
+
                             if (index == 0) {
-                                $(".joyride-prev-tip").css("visibility","hidden");
+                                $(".joyride-prev-tip").css("visibility", "hidden");
                             } else {
-                                $(".joyride-prev-tip").css("visibility","visible");
+                                $(".joyride-prev-tip").css("visibility", "visible");
                             }
 
-                            if (index == totalJoyridePageCount-1) {
-                                $(".joyride-next-tip").css("visibility","hidden");
+                            if (index == totalJoyridePageCount - 1) {
+                                $(".joyride-next-tip").css("visibility", "hidden");
                             } else {
-                                $(".joyride-next-tip").css("visibility","visible");
+                                $(".joyride-next-tip").css("visibility", "visible");
                             }
                         },
-                        post_expose_callback: function (index){
+                        post_expose_callback: function(index) {
                             // Work out what to wrap the exposed element with e.g. square, circle or rectangle
-                            	var tutorial = document.getElementById($rootScope.joyrideTutorial)
-                                                   .getElementsByClassName("joyrideTutorialItem")[index]
-                                                   .getAttribute('data-shape');                    
-                            if(tutorial != null) {
+                            var tutorial = document.getElementById($rootScope.joyrideTutorial)
+                                .getElementsByClassName("joyrideTutorialItem")[index]
+                                .getAttribute('data-shape');
+                            if (tutorial != null) {
                                 $('.joyride-expose-wrapper').addClass(tutorial);
                             }
 
@@ -500,36 +490,44 @@ define([
                         post_ride_callback: function() {
                             // remove controls when tutorial has finished
                             $('.joyride-custom-controls').detach();
+                            
+                            $("#navigation-selector").css("color", "#333");
+                            $("#desktop-filter h3").css("color", "#333");
+                            $("#level-h3").html("Levels");
+                            if ($rootScope.isOpen) {
+                                $rootScope.openFilterPanel('desktop-filter');
+                                
+                            }
                         }
                     },
                     reveal: {
                         animation: 'none', // Can change back to 'fadeAndPop', but it's horribly jumpy.
-                          animation_speed: 500,
-                          close_on_background_click: true,
-                          dismiss_modal_class: 'close-reveal-modal',
-                          multiple_opened: false,
-                          bg_class: 'reveal-modal-bg',
-                          root_element: 'body',
-                          on_ajax_error: $.noop,
-                          bg : $('.reveal-modal-bg'),
-                          css : {
-                            open : {
-                              'opacity': 0,
-                              'visibility': 'visible',
-                              'display' : 'block'
+                        animation_speed: 500,
+                        close_on_background_click: true,
+                        dismiss_modal_class: 'close-reveal-modal',
+                        multiple_opened: false,
+                        bg_class: 'reveal-modal-bg',
+                        root_element: 'body',
+                        on_ajax_error: $.noop,
+                        bg: $('.reveal-modal-bg'),
+                        css: {
+                            open: {
+                                'opacity': 0,
+                                'visibility': 'visible',
+                                'display': 'block'
                             },
-                            close : {
-                              'opacity': 1,
-                              'visibility': 'hidden',
-                              'display': 'none'
+                            close: {
+                                'opacity': 1,
+                                'visibility': 'hidden',
+                                'display': 'none'
                             }
-                          }                  
+                        }
                     }
-                }); 
+                });
                 // var tutorialShown = cookie.read('tutorialShown');
 
                 var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
-                
+
                 // we don't want the google bot or out of date browsers to see the tutorial.
                 // stop tutorial from loading for new users as no one reads it anyway.
                 // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
@@ -550,42 +548,32 @@ define([
                 // }
 
                 // Toggle hide / show of share links
-                $(".ru_share").click(function()
-                {
-                    if($(".ru_share_link").width() === 258)
-                    {
-                        $(".ru_share_link").animate({width:0}, {duration:400});
-                    }
-                    else
-                    {
-                        $(".ru_share_link").animate({width:260}, {duration:400});
+                $(".ru_share").click(function() {
+                    if ($(".ru_share_link").width() === 258) {
+                        $(".ru_share_link").animate({ width: 0 }, { duration: 400 });
+                    } else {
+                        $(".ru_share_link").animate({ width: 260 }, { duration: 400 });
                     }
                 });
-                
+
                 // Image zoom
-                $('.ru-expand div').click(function(e)
-                {
+                $('.ru-expand div').click(function(e) {
                     e.preventDefault();
 
                     // Invoke browser full screen
-                    function requestFullScreen(element)
-                    {
+                    function requestFullScreen(element) {
                         // Supports most browsers and their versions.
                         var requested = false;
                         var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
 
-                        if (requestMethod)
-                        { 
+                        if (requestMethod) {
                             // Native full screen.
                             requestMethod.call(element);
                             requested = true;
-                        }
-                        else if (typeof window.ActiveXObject !== "undefined")
-                        { 
+                        } else if (typeof window.ActiveXObject !== "undefined") {
                             // Older IE.
                             var wscript = new ActiveXObject("WScript.Shell");
-                            if (wscript !== null)
-                            {
+                            if (wscript !== null) {
                                 wscript.SendKeys("{F11}");
                                 requested = true;
                             }
@@ -597,23 +585,20 @@ define([
                     var elem = $(this).parent().find('img');
                     var url = elem.attr('src');
                     // Mobile - follow link
-                    if($.ru_IsMobile())
-                    {   
+                    if ($.ru_IsMobile()) {
                         window.location.href = url;
                     }
                     // Desktop - full screen mode, else revert to opening link
-                    else
-                    {
-                        if(!requestFullScreen(elem.get(0)))
-                        {
+                    else {
+                        if (!requestFullScreen(elem.get(0))) {
                             window.location.href = url;
                         }
                     }
-                });              
+                });
             });
 
         });
-		$('body').on('click', '.joyride-close-tip', function() {
+        $('body').on('click', '.joyride-close-tip', function() {
             // remove controls if tutorial is closed part way through
             $('.joyride-custom-controls').detach();
             api.logger.log({
@@ -645,21 +630,21 @@ define([
                 tutorialId: $rootScope.joyrideTutorial,
             });
         });
-        $('body').on('click', '.joyride-expose-cover', function(){
+        $('body').on('click', '.joyride-expose-cover', function() {
             $('.joyride-modal-bg').trigger('click');
         });
 
         var checkForNotifications = function() {
-            
+
             $rootScope.user.$promise.then(function() {
                 // We are logged in
 
                 var lastNotificationTime = persistence.load("lastNotificationTime") || 0;
 
-                if (Date.now() - $rootScope.user.registrationDate > 2*24*60*60*1000) {
+                if (Date.now() - $rootScope.user.registrationDate > 2 * 24 * 60 * 60 * 1000) {
                     // User registration was at least two days ago
 
-                    if (Date.now() - lastNotificationTime > 24*60*60*1000) {
+                    if (Date.now() - lastNotificationTime > 24 * 60 * 60 * 1000) {
                         // Last notification was at least one day ago
 
                         api.notifications.query().$promise.then(function(ns) {
@@ -684,7 +669,7 @@ define([
         $timeout(checkForNotifications, 5000);
 
         $rootScope.notificationResponse = function(notification, response) {
-            api.notifications.respond({id: notification.id, response: response}, {});
+            api.notifications.respond({ id: notification.id, response: response }, {});
 
             // if they respond with dismissed then it means we should show them the external link if there is one
             if (response == 'DISMISSED' && notification.externalReference.url) {
@@ -692,7 +677,7 @@ define([
 
                 // if they have a token representing the user id then replace it.
                 if (notification.externalReference.url.indexOf(userIdToken) != -1) {
-                    $rootScope.user.$promise.then(function(user){
+                    $rootScope.user.$promise.then(function(user) {
                         var newUrl = notification.externalReference.url.replace(userIdToken, user._id);
 
                         window.open(newUrl, "_blank");
@@ -720,16 +705,16 @@ define([
         $rootScope.isLandscape = isLandscape();
 
         $rootScope.padIndex = function(index) {
-            return ("0000"+index).slice(-4);
+            return ("0000" + index).slice(-4);
         }
 
         $rootScope.updateFigureNumbers = function() {
 
             var figures = [];
             for (var id in $rootScope.figurePaths)
-                figures.push({id: id, path: $rootScope.figurePaths[id]});
+                figures.push({ id: id, path: $rootScope.figurePaths[id] });
 
-            figures.sort(function(a,b) {
+            figures.sort(function(a, b) {
                 if (a.path < b.path)
                     return -1;
                 else if (a.path > b.path)
@@ -740,17 +725,17 @@ define([
 
             $rootScope.figureNumbers = {};
             for (var i in figures) {
-                $rootScope.figureNumbers[figures[i].id] = parseInt(i)+1;
+                $rootScope.figureNumbers[figures[i].id] = parseInt(i) + 1;
             }
         }
 
-	}]);
+    }]);
 
-	/////////////////////////////////////
-	// Bootstrap AngularJS
-	/////////////////////////////////////
+    /////////////////////////////////////
+    // Bootstrap AngularJS
+    /////////////////////////////////////
 
-	var root = $("html");
-	angular.bootstrap(root, ['isaac']);
+    var root = $("html");
+    angular.bootstrap(root, ['isaac']);
 
 });

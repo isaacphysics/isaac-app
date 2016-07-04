@@ -18,6 +18,7 @@ define([], function() {
 	var PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', '$stateParams', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles, $stateParams) {
 
 		// TODO: Reset filterPanelOpen when resizing between mobile and desktop.
+		$scope.$root.isOpen;
 
 		if ($stateParams.filter) {
 			$scope.filterPanelOpen = "desktop-filter";
@@ -26,11 +27,17 @@ define([], function() {
 		}
 
 		$scope.$root.openFilterPanel = function(panelToOpen) {
+			console.log("reached openFilterPanel");
 			if ($scope.filterPanelOpen === panelToOpen) {
 				$scope.filterPanelOpen = null;
+				$scope.$root.isOpen = false;
+				console.log("closing");
+				
 
 			} else {
 				$scope.filterPanelOpen = panelToOpen;
+				$scope.$root.isOpen = true;
+				console.log("opening");
 			}
 		}
 
