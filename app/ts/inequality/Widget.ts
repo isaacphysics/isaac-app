@@ -49,6 +49,15 @@ class Rect {
 
 /** A base class for anything visible, draggable, and dockable. */
 export
+/**
+Methods to be implemented:
+	- draw()
+	- boundingBox()
+	- token()
+	- properties()
+	- _shakeIt()
+*/
+
 abstract class Widget {
 	/** p5 instance, I guess? */
 	protected p: any;

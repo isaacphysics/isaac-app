@@ -53,24 +53,6 @@ define(function(require) {
 
 	.directive('questionPod', require("app/directives/QuestionPod"))
 
-	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
-
-	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
-
-	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
-
-	.directive('subMenu', require("app/directives/equation_editor/SubMenu"))
-
-	.directive('menuSymbol', require("app/directives/equation_editor/MenuSymbol"))
-
-	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
-
-	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
-
-	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
-
-	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
-
 	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
 	.directive('podCarousel', require("app/directives/PodCarousel"))
@@ -96,6 +78,29 @@ define(function(require) {
 	.directive('isaacModal', require("app/directives/IsaacModal"))
 
 	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
+
+	// Equation Editor Directives
+
+	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+
+	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
+
+	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
+
+	.directive('subMenu', require("app/directives/equation_editor/SubMenu"))
+
+	.directive('menuSymbol', require("app/directives/equation_editor/MenuSymbol"))
+
+	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
+
+	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
+
+	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
+
+	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
+
+	.directive('chemicalElementEntry', require("app/directives/equation_editor/ChemicalElementEntry"))
+
 
 
 	// Content Directives

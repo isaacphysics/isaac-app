@@ -18,12 +18,16 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
+    <div top-menu="H,\, He,\, Li" ng-show="isLandscape">
+         <div chemical-element-entry></div>
+    </div>
     <div top-menu="\sin\,\, \int" ng-show="isLandscape">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
+
 <!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
         <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
