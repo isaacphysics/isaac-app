@@ -128,6 +128,11 @@ $menu-handle-width: 160px;
             &.m4 {
                 margin-left: $menu-handle-width;
             }
+
+            &.m5 {
+                margin-left: $menu-handle-width*2;
+            }
+
         }
 
         .menu-list-container {

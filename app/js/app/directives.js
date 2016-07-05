@@ -83,6 +83,10 @@ define(function(require) {
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
 
+	.directive('chemicalElementsMenu', require("app/directives/equation_editor/ChemicalElementsMenu"))
+
+	.directive('elementsMenu', require("app/directives/equation_editor/ElementsMenu"))
+
 	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
 
 	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
@@ -99,7 +103,7 @@ define(function(require) {
 
 	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
 
-	.directive('chemicalElementEntry', require("app/directives/equation_editor/ChemicalElementEntry"))
+
 
 
 

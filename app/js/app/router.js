@@ -126,7 +126,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('equality', {
-                url: "/equality",
+                url: "/equality?mode",
                 resolve: {
                     // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
                     // we may want to revert this policy at some point.
@@ -135,7 +135,15 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": { 
                         templateUrl: "/partials/states/equation_editor.html",
-                        controller: ["$scope", function($scope) {
+                       
+                        controller: ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+                            
+                            if($stateParams.mode == 'chemistry') {
+                                $rootScope.mathMode = false;
+                            }
+                            else if($stateParams.mode == 'maths') {
+                                $rootScope.mathMode = true;
+                            }
                             $scope.eqnState = {
                                 symbols: {},
                             };
@@ -146,6 +154,7 @@ define(["angular-ui-router"], function() {
 
 	        .state('contact', {
 		        url: "/contact?preset&subject",
+
 		        views: {
 			        "body": {
 				        templateUrl: "/partials/states/contact.html",

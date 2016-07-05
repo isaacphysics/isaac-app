@@ -705,7 +705,8 @@ define([
             $rootScope.modals.notification.hide();
         }
 
-
+    
+        // Used in equation editor in ng-show or ng-hide. Both flags act as toggles for each mode.
         var isLandscape = function() {
             return window.innerWidth > window.innerHeight || window.innerWidth > 640;
         };
@@ -717,7 +718,11 @@ define([
                 $rootScope.$apply();
             }
         });
+
         $rootScope.isLandscape = isLandscape();
+
+
+        $rootScope.mathMode = true;
 
         $rootScope.padIndex = function(index) {
             return ("0000"+index).slice(-4);

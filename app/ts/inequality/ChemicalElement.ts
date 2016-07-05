@@ -4,12 +4,12 @@ import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
 
-/** A class for representing chemical elements, with support for both nuclear equations and reactions. */
+/** A class for representing variables and constants (aka, elements). */
 export
 class ChemicalElement extends Widget {
 
     protected s: any;
-    private symbol: string;
+    private element: string;
 
     get typeAsString(): string {
         return "ChemicalElement";
@@ -18,26 +18,26 @@ class ChemicalElement extends Widget {
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p:any, s:any, symbol:string) {
+    constructor(p:any, s:any, element:string) {
         super(p, s);
-        this.symbol = symbol;
+        this.element = element;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['ChemicalElement', 'operator', 'exponent', 'subscript'];
     }
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
-     * A Symbol has three docking points:
+     * A ChemicalElement has three docking points:
      *
-     * - _right_: Binary operation (addition, subtraction), Symbol (multiplication)
+     * - _right_: Binary operation (addition, subtraction), ChemicalElement (multiplication)
      * - _superscript_: Exponent
      * - _subscript_: Subscript (duh?)
      */
@@ -62,7 +62,7 @@ class ChemicalElement extends Widget {
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
-            expression = this.symbol;
+            expression = this.element;
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
@@ -73,12 +73,12 @@ class ChemicalElement extends Widget {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol, hence produces a multiplication
+                    // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "python") {
-            expression = "" + this.symbol;
+            expression = "" + this.element;
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_"+this.dockingPoints["subscript"].child.getExpression("subscript");
             }
@@ -92,12 +92,12 @@ class ChemicalElement extends Widget {
                 } else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
+                    // WARNING This assumes it's a ChemicalElement by default, hence produces a multiplication (with a star)
                     expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
-            expression = "" + this.symbol;
+            expression = "" + this.element;
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
@@ -110,34 +110,35 @@ class ChemicalElement extends Widget {
         } else if(format == "mathml") {
             expression = '';
             if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
-                expression += '<mi>' + this.symbol + '</mi>';
+                expression += '<mi>' + this.element + '</mi>';
 
             } else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
-                expression += '<msub><mi>' + this.symbol + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                expression += '<msub><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
 
             } else if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
-                expression += '<msup><mi>' + this.symbol + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                expression += '<msup><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
 
             } else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
-                expression += '<msubsup><mi>' + this.symbol + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                expression += '<msubsup><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
 
             }
             if(this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.getExpression('mathml');
             }
         }
+       
         return expression;
     }
 
     properties(): Object {
         return {
-            symbol: this.symbol
+            element: this.element
         };
     }
 
     token() {
-        // TODO Handle greek letters
-        var e = this.symbol;
+        // TODO Handle greek elements
+        var e = this.element;
         if(this.dockingPoints['subscript'].child) {
             e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
         }
@@ -148,10 +149,10 @@ class ChemicalElement extends Widget {
     _draw() {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
-        this.p.textFont(this.s.font_it)
+        this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.symbol, 0, 0);
+            .text(this.element, 0, 0);
         this.p.strokeWeight(1);
 
         if (window.location.hash === "#debug") {
@@ -171,7 +172,7 @@ class ChemicalElement extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_it.textBounds(this.symbol || "x", 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_it.textBounds(this.element || "x", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 
@@ -195,7 +196,7 @@ class ChemicalElement extends Widget {
 
         // Calculate our own geometry
 
-        // Nothing to do for Symbol
+        // Nothing to do for ChemicalElement
 
         // Set position of all our children.
 

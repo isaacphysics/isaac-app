@@ -168,6 +168,8 @@ class Num extends Widget {
         }
     }
 
+    
+
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
      *

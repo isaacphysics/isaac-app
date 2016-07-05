@@ -1,8 +1,13 @@
 <div class="equation-editor" tabindex="0">
-    <div top-menu="123" ng-show="isLandscape">
+    
+     <div top-menu="H,\, He,\, Li" ng-if="isLandscape && !mathMode">
+         <!--<div chemical-elements-menu symbols="symbolLibrary.chemicalElements"></div>-->
+          <div symbol-menu symbols="symbolLibrary.chemicalElements"></div>
+    </div>
+    <div top-menu="123" ng-if="isLandscape && mathMode">
         <div number-entry></div>
     </div>
-    <div top-menu="abc\,\, \alpha \beta \gamma" ng-show="isLandscape">
+    <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && mathMode">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
@@ -10,7 +15,7 @@
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="greekLetterTitle" symbol-menu symbols="symbolLibrary.greekLetters"></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
     </div>
-    <div top-menu="+\, -\, \sqrt{x}" ng-show="isLandscape">
+    <div top-menu="+\, -\, \sqrt{x}" ng-if="isLandscape && mathMode">
         <div symbol-menu symbols="symbolLibrary.reducedOps"></div>
         <!--<div sub-menu></div>
         <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
@@ -18,15 +23,14 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
-    <div top-menu="H,\, He,\, Li" ng-show="isLandscape">
-         <div chemical-element-entry></div>
-    </div>
-    <div top-menu="\sin\,\, \int" ng-show="isLandscape">
+    
+    <div top-menu="\sin\,\, \int" ng-if="isLandscape && mathMode">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
+
 
 <!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">

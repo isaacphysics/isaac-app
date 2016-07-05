@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="small-16 columns">
 		<ul class="small-block-grid-7 button-grid">
-			<li ng-click="buttonClick('1')">1</li>
+			<li menu-symbol ng-show="!editSymbol && currentSymbol != null" symbol="currentSymbol"></li>
 			<li ng-click="buttonClick('2')">2</li>
 			<li ng-click="buttonClick('3')">3</li>
 			<li ng-click="buttonClick('4')">4</li>

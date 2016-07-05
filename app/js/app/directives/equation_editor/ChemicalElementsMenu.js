@@ -8,9 +8,9 @@ define([], function() {
             	symbols: "=",
             },
 			restrict: "A",
-			templateUrl: "/partials/equation_editor/chemical_element_entry.html",
+			templateUrl: "/partials/equation_editor/chemical_elements_menu.html",
 			link: function(scope, element, attrs) {
-				scope.name="SYMBOLMENU";
+				scope.name="CHEMICALELEMTENTSMENU";
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
