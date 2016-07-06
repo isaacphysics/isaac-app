@@ -3,13 +3,13 @@ define(function(require) {
 
     var MySketch = require("inequality").MySketch;
 
-	return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
-		return {
-			scope: true,
-			restrict: "A",
-			templateUrl: "/partials/equation_editor/equation_editor.html",
-			link: function(scope, element, attrs) {
+        return {
+            scope: true,
+            restrict: "A",
+            templateUrl: "/partials/equation_editor/equation_editor.html",
+            link: function(scope, element, attrs) {
 
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
@@ -17,7 +17,7 @@ define(function(require) {
 
                 var sketch = null;
 
-                scope.canvasOffset = { };
+                scope.canvasOffset = {};
                 scope.draggingNewSymbol = false;
 
                 scope.equationEditorElement = element;
@@ -30,20 +30,23 @@ define(function(require) {
                 };
 
                 scope.$on("triggerCloseMenus", function() {
-                	scope.$broadcast("closeMenus");
+                    scope.$broadcast("closeMenus");
                 });
 
                 scope.$on("triggerResizeMenu", function() {
-                	scope.$broadcast("resizeMenu");
+                    scope.$broadcast("resizeMenu");
                 });
 
                 $(window).on("resize", function() {
-                    element.find(".top-menu").css({"bottom": scope.equationEditorElement.height()}).removeClass("active-menu");
+                    element.find(".top-menu").css({ "bottom": scope.equationEditorElement.height() }).removeClass("active-menu");
                 });
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-                    scope.draggingNewSymbol = true;
 
+
+                    scope.draggingNewSymbol = true;
+                    scope.mousePageX = pageX;
+                    scope.mousePageY = pageY;
                     var tOff = element.find(".trash-button").position();
                     var tWidth = element.find(".trash-button").width();
                     var tHeight = element.find(".trash-button").height();
@@ -52,9 +55,10 @@ define(function(require) {
                     sketch.updatePotentialSymbol(symbol, pageX, pageY);
                     scope.$digest();
 
+
                 });
 
-                scope.notifySymbolDrag = function(x,y) {
+                scope.notifySymbolDrag = function(x, y) {
                     var tOff = element.find(".trash-button").position();
                     var tWidth = element.find(".trash-button").width();
                     var tHeight = element.find(".trash-button").height();
@@ -76,7 +80,7 @@ define(function(require) {
                 });
 
                 scope.$on("spawnSymbol", function(_e) {
-                	var offset = element.offset();
+                    var offset = element.offset();
                     var width = element.width();
                     var height = element.height();
 
@@ -97,7 +101,7 @@ define(function(require) {
 
                     scope.$broadcast("historyCheckpoint");
 
-                	// console.log("scope.state: ", scope.state);
+                    // console.log("scope.state: ", scope.state);
                 });
 
                 scope.logOnClose = function(event) {
@@ -134,11 +138,11 @@ define(function(require) {
                         eqnModal.one("opened.fndtn.reveal", function() {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
                         });
-                        
+
                         eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || { symbols: []  };
+                        scope.state = initialState || { symbols: [] };
                         scope.questionDoc = questionDoc;
-                        
+
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
@@ -158,7 +162,7 @@ define(function(require) {
                         // TODO: Redisplay old equations in the centre
 
                         scope.future = [];
-                        var p = new p5( function(p) {
+                        var p = new p5(function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
                             return sketch;
                         }, element.find(".equation-editor")[0]);
@@ -173,8 +177,8 @@ define(function(require) {
 
                 var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
                 var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-                var greekLetters = ["\\alpha","\\beta","\\gamma","\\delta","\\varepsilon","\\zeta","\\eta","\\theta","\\iota","\\kappa","\\lambda","\\mu","\\nu","\\xi","\\omicron","\\pi","\\rho","\\sigma","\\tau","\\upsilon","\\phi","\\chi","\\psi","\\omega"];
-                var greekLettersUpper = ["\\Gamma","\\Delta","\\Theta","\\Lambda","\\Xi","\\Pi","\\Sigma","\\Upsilon","\\Phi","\\Psi","\\Omega"];
+                var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
+                var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
                 var letterMap = {
                     "\\alpha": "α",
                     "\\beta": "β",
@@ -213,9 +217,9 @@ define(function(require) {
                     "\\Psi": "Ψ",
                     "\\Omega": "Ω"
                 };
-                var elements = ["H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Uut","Fl","Uup","Lv","Uus","Uuo"];
+                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
                 var inverseLetterMap = {};
-                for(var k in letterMap) {
+                for (var k in letterMap) {
                     inverseLetterMap[letterMap[k]] = k;
                 }
                 inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
@@ -224,10 +228,10 @@ define(function(require) {
                     if (s == "epsilon") {
                         return "\\varepsilon";
                     }
-                    if (greekLetters.indexOf("\\"+s) > -1) {
+                    if (greekLetters.indexOf("\\" + s) > -1) {
                         return "\\" + s;
                     }
-                    if (greekLettersUpper.indexOf("\\"+s) > -1) {
+                    if (greekLettersUpper.indexOf("\\" + s) > -1) {
                         return "\\" + s;
                     }
                     return s;
@@ -257,7 +261,7 @@ define(function(require) {
                                 var name = p.replace(/\(\)/g, "");
                                 var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                 var allowSubscript = name == "log";
-                                if(name.substring(0,3) == "arc") {
+                                if (name.substring(0, 3) == "arc") {
                                     partResults.push({
                                         type: "Fn",
                                         properties: {
@@ -316,7 +320,7 @@ define(function(require) {
                                             }
                                         }
                                     };
-                                    newSym.menu.label += "_{" + p2 +"}";
+                                    newSym.menu.label += "_{" + p2 + "}";
                                 }
 
                                 partResults.push(newSym);
@@ -324,11 +328,11 @@ define(function(require) {
                         }
 
                         var root = partResults[0];
-                        for (var k = 0; k < partResults.length-1; k++) {
-                            partResults[k].children = { right: partResults[k+1] }
-                            root.menu.label += " " + partResults[k+1].menu.label;
+                        for (var k = 0; k < partResults.length - 1; k++) {
+                            partResults[k].children = { right: partResults[k + 1] }
+                            root.menu.label += " " + partResults[k + 1].menu.label;
                         }
-                        switch(partResults[0].type) {
+                        switch (partResults[0].type) {
                             case "Symbol":
                                 r.vars.push(root);
                                 break;
@@ -346,7 +350,7 @@ define(function(require) {
                     for (var k in inverseLetterMap) {
                         // Special characters have special needs (i.e., a space after them).
                         // If the special character is followed by a non-special character, add a space:
-                        s = s.replace(new RegExp(k+"(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
+                        s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
                         // Otherwise just replace it.
                         s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
                     }
@@ -365,7 +369,7 @@ define(function(require) {
                     if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
                         if (a > b) return 1;
                         if (a < b) return -1;
-                        return 0; 
+                        return 0;
                     } else if (a.indexOf("()") > -1) {
                         return 1;
                     } else if (b.indexOf("()") > -1) {
@@ -385,44 +389,44 @@ define(function(require) {
                     // Otherwise use default guess:
                     if (a > b) return 1;
                     if (a < b) return -1;
-                    return 0; 
+                    return 0;
                 }
-                
+
                 scope.newEditorState = function(s) {
                     scope.state = s;
 
-                    console.log("New state:",s);
+                    console.log("New state:", s);
 
                     var rp = $(".result-preview>span");
 
                     rp.empty();
 
-                // this renders the result in the preview box in the bottom right corner of the eqn editor
+                    // this renders the result in the preview box in the bottom right corner of the eqn editor
                     if (scope.state.result) {
-                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g,"");
+                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g, "");
                         // Sort them into a unique order:
                         scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].split(", ").sort(uniqueSymbolsSortFn).join(", ")
                         scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].replace(/varepsilon/g, "epsilon");
 
                         scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g,"").replace(/varepsilon/g, "epsilon");
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g, "").replace(/varepsilon/g, "epsilon");
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    var w =  scope.state.result ? rp.outerWidth() : 0;
+                    var w = scope.state.result ? rp.outerWidth() : 0;
                     var resultPreview = $(".result-preview");
                     resultPreview.stop(true);
-                    resultPreview.animate({width: w}, 200);
+                    resultPreview.animate({ width: w }, 200);
 
                     scope.$emit("historyCheckpoint");
                 }
 
                 var stringSymbols = function(ss) {
-                	var symbols = [];
-                	for(var i in ss) {
-                		var s = ss[i];
-                		symbols.push({
-                			type: "Symbol",
+                    var symbols = [];
+                    for (var i in ss) {
+                        var s = ss[i];
+                        symbols.push({
+                            type: "Symbol",
                             properties: {
                                 letter: letterMap[s] || s
                             },
@@ -430,17 +434,17 @@ define(function(require) {
                                 label: s,
                                 texLabel: true,
                             }
-                		});
-                	}
+                        });
+                    }
 
-                	return symbols;
+                    return symbols;
                 };
 
                 var chemicalElements = function(elementArray) {
                     var elements = [];
 
-                    for(var i in elementArray) {
-                    
+                    for (var i in elementArray) {
+
                         var currentElement = elementArray[i];
                         elements.push({
                             type: "ChemicalElement",
@@ -455,10 +459,9 @@ define(function(require) {
                         });
                     }
                     return elements;
-
                 }
 
-               
+
                 scope.elementLibrary = {}
 
 
@@ -469,12 +472,10 @@ define(function(require) {
                     latinLettersUpper: stringSymbols(latinLettersUpper),
 
                     greekLetters: stringSymbols(greekLetters),
-                    
+
                     greekLettersUpper: stringSymbols(greekLettersUpper),
 
                     chemicalElements: chemicalElements(elements),
-
-                    
 
                     reducedOps: [{
                         type: "BinaryOperation",
@@ -526,133 +527,133 @@ define(function(require) {
                         }
                     }],
 
-/*
-                    equality: [{
-                        type: "string",
-                        label: "=",
-                        token: "=",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "<",
-                        token: "<",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: ">",
-                        token: ">",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\leq",
-                        token: "\\leq",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\geq",
-                        token: "\\geq",
-                        fontSize: 48,
-                        texLabel: true
-                    }
-                    ],
+                    /*
+                                        equality: [{
+                                            type: "string",
+                                            label: "=",
+                                            token: "=",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "<",
+                                            token: "<",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: ">",
+                                            token: ">",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\leq",
+                                            token: "\\leq",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\geq",
+                                            token: "\\geq",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        }
+                                        ],
 
-                    calculus: [{
-                        type: "string",
-                        label: "\\int",
-                        token: "\\int",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\mathrm{d}",
-                        token: "\\mathrm{d}",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\mathrm{e}",
-                        token: "\\mathrm{e}",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\ln",
-                        token: "\\ln",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\log",
-                        token: "\\log",
-                        fontSize: 48,
-                        texLabel: true
-                    }
-                    ],
+                                        calculus: [{
+                                            type: "string",
+                                            label: "\\int",
+                                            token: "\\int",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\mathrm{d}",
+                                            token: "\\mathrm{d}",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\mathrm{e}",
+                                            token: "\\mathrm{e}",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\ln",
+                                            token: "\\ln",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\log",
+                                            token: "\\log",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        }
+                                        ],
 
-                    operators: [{
-                        type: "string",
-                        label: "+",
-                        token: "+",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "line",
-                        label: "-",
-                        token: "-",
-                        length: 40,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\times",
-                        token: "\\times",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "line",
-                        label: "\\frac{a}{b}",
-                        token: ":frac",
-                        length: 100,
-                        texLabel: true
-                    },{
-                        type: "string",
-                        label: "\\pm",
-                        token: "\\pm",
-                        fontSize: 48,
-                        texLabel: true
-                    },{
-                        type: "container",
-                        subType: "sqrt",
-                        width: 148,
-                        height: 60,
-                        label: "\\sqrt{x}",
-                        texLabel: true
-                    },{
-                        type: "container",
-                        subType: "brackets",
-                        width: 220,
-                        height: 70,
-                        label: "(x)",
-                        texLabel: true
-                    },{
-                        type: "container",
-                        subType: "abs",
-                        width: 148,
-                        height: 60,
-                        label: "|x|",
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "!",
-                        token: "!",
-                        fontSize: 48,
-                        texLabel: true
-                    }
-                    ],
-*/
+                                        operators: [{
+                                            type: "string",
+                                            label: "+",
+                                            token: "+",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "line",
+                                            label: "-",
+                                            token: "-",
+                                            length: 40,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\times",
+                                            token: "\\times",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "line",
+                                            label: "\\frac{a}{b}",
+                                            token: ":frac",
+                                            length: 100,
+                                            texLabel: true
+                                        },{
+                                            type: "string",
+                                            label: "\\pm",
+                                            token: "\\pm",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        },{
+                                            type: "container",
+                                            subType: "sqrt",
+                                            width: 148,
+                                            height: 60,
+                                            label: "\\sqrt{x}",
+                                            texLabel: true
+                                        },{
+                                            type: "container",
+                                            subType: "brackets",
+                                            width: 220,
+                                            height: 70,
+                                            label: "(x)",
+                                            texLabel: true
+                                        },{
+                                            type: "container",
+                                            subType: "abs",
+                                            width: 148,
+                                            height: 60,
+                                            label: "|x|",
+                                            texLabel: true
+                                        }, {
+                                            type: "string",
+                                            label: "!",
+                                            token: "!",
+                                            fontSize: 48,
+                                            texLabel: true
+                                        }
+                                        ],
+                    */
                     trig: [{
                         type: "Fn",
                         properties: {
@@ -660,31 +661,30 @@ define(function(require) {
                             innerSuperscript: true
                         },
                         menu: {
-                            label:  "\\sin",
+                            label: "\\sin",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fn",
                         properties: {
                             name: "cos",
                             innerSuperscript: true
                         },
                         menu: {
-                            label:  "\\cos",
+                            label: "\\cos",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fn",
                         properties: {
                             name: "tan",
                             innerSuperscript: true
                         },
                         menu: {
-                            label:  "\\tan",
+                            label: "\\tan",
                             texLabel: true
                         }
-                    }
-                    ],
+                    }],
 
                     otherFns: [{
                         type: "Fn",
@@ -693,21 +693,20 @@ define(function(require) {
                             allowSubscript: false
                         },
                         menu: {
-                            label:  "\\ln",
+                            label: "\\ln",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fn",
                         properties: {
                             name: "log",
                             allowSubscript: true
                         },
                         menu: {
-                            label:  "\\log",
+                            label: "\\log",
                             texLabel: true
                         }
-                    }
-                    ],
+                    }],
 
                 };
 
@@ -725,7 +724,7 @@ define(function(require) {
 
                 scope.greekLetterTitle = {
                     type: "string",
-                    menu : {
+                    menu: {
                         label: "\\alpha\\beta",
                         texLabel: true
                     }
@@ -738,31 +737,31 @@ define(function(require) {
                         texLabel: true
                     }
                 };
-/*
-                scope.equalityTitle = {
-                    fontSize: 48,
-                    type: "string",
-                    label: "="
-                };
+                /*
+                                scope.equalityTitle = {
+                                    fontSize: 48,
+                                    type: "string",
+                                    label: "="
+                                };
 
-                scope.operatorMenuTitle = {
-                    fontSize: 48,
-                    type: "string",
-                    label: "\\pm",
-                    texLabel: true
-                };
+                                scope.operatorMenuTitle = {
+                                    fontSize: 48,
+                                    type: "string",
+                                    label: "\\pm",
+                                    texLabel: true
+                                };
 
-                scope.calculusTitle = {
-                    type: "string",
-                    menu: {
-                        label: "\\int",
-                        texLabel: true
-                    }
-                };
-*/
+                                scope.calculusTitle = {
+                                    type: "string",
+                                    menu: {
+                                        label: "\\int",
+                                        texLabel: true
+                                    }
+                                };
+                */
                 scope.trigTitle = {
                     type: "string",
-                    menu: { 
+                    menu: {
                         label: "\\sin",
                         texLabel: true
                     }
@@ -805,7 +804,7 @@ define(function(require) {
                         scope.log.actions.push({
                             type: "UNDO",
                             timestamp: Date.now()
-                    });
+                        });
 
                     }
                 };
@@ -823,7 +822,7 @@ define(function(require) {
                         scope.log.actions.push({
                             type: "REDO",
                             timestamp: Date.now()
-                    });
+                        });
                     }
                 };
 
@@ -831,14 +830,14 @@ define(function(require) {
                     $("#equationModal").foundation("reveal", "close");
                     scope.log.finalState = [];
                     sketch.symbols.forEach(function(e) {
-                       scope.log.finalState.push(e.subtreeObject(true, true));
+                        scope.log.finalState.push(e.subtreeObject(true, true));
                     });
                     scope.log.actions.push({
                         type: "CLOSE",
                         timestamp: Date.now()
                     });
                     if (scope.segueEnvironment == "DEV") {
-                        console.log("\nLOG: ~" + (JSON.stringify(scope.log).length/1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                        console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
                     }
                     window.removeEventListener("beforeunload", scope.logOnClose);
                     api.logger.log(scope.log);
@@ -852,14 +851,14 @@ define(function(require) {
                 element.on("keydown", function(e) {
                     console.log("KeyDown", e.which);
 
-                    switch(e.which) {
+                    switch (e.which) {
                         case 8: // Backspace. Deliberately fall through.
                         case 46: // Delete
                             e.stopPropagation();
                             e.preventDefault();
                             scope.trash();
                             scope.$apply();
-                        break;
+                            break;
                     }
                 });
 
@@ -872,7 +871,7 @@ define(function(require) {
                     var maxX = 0;
                     var maxY = 0;
 
-                    for(var i in scope.selectedSymbols) {
+                    for (var i in scope.selectedSymbols) {
                         var sid = scope.selectedSymbols[i];
                         var e = $("#" + sid + " .canvas-symbol");
                         var offset = e.offset();
@@ -901,7 +900,7 @@ define(function(require) {
 
                 // TODO: As above
                 scope.$watchCollection("selectedSymbols", updateSelectionRender);
-                
+
                 // TODO: Decide how to edit numbers.
                 /*
                 scope.$on("selection_calc", function(_, e) {
@@ -1001,7 +1000,7 @@ define(function(require) {
                     */
                     scope.$emit("historyCheckpoint");
                 }
-			}
-		};
-	}];
+            }
+        };
+    }];
 });
