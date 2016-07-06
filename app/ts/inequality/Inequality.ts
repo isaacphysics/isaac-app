@@ -48,7 +48,7 @@ class MySketch {
 	xBox: Rect = null;
 	mBox: Rect = null;
 
-	baseFontSize = 120;
+	baseFontSize = 80;
 	font_it: p5.Font = null;
 	font_up: p5.Font = null;
 
