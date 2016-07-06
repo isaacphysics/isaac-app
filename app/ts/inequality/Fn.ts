@@ -1,5 +1,6 @@
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 /** Functions. */
@@ -126,7 +127,8 @@ class Fn extends Widget {
                 }
 
                 if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                    if(!(this.dockingPoints['right'].child instanceof BinaryOperation)) {
+                    if(!(this.dockingPoints['right'].child instanceof BinaryOperation  ||
+                    this.dockingPoints["right"].child instanceof Relation)) {
                         expression += '*' + this.dockingPoints['right'].child.getExpression(format);
                     } else {
                         expression += this.dockingPoints['right'].child.getExpression(format);
