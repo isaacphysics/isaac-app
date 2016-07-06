@@ -1,20 +1,40 @@
+
 <div class="row number-bar">
 	<div class="small-16 columns">
+	
+		<!--<div number-menu symbols="symbolLibrary.theNumbers" ></div> -->
 		<ul class="small-block-grid-7 button-grid">
-			<li menu-symbol symbol="numbers['one']" ng-click="buttonClick('1')"></li>
-			<li menu-symbol symbol="numbers['two']" ng-click="buttonClick('2')"></li>
-			<li menu-symbol symbol="numbers['three']" ng-click="buttonClick('3')"></li>
-			<li menu-symbol symbol="numbers['four']" ng-click="buttonClick('4')"></li>
-			<li menu-symbol symbol="numbers['five']" ng-click="buttonClick('5')"></li>
-			<li menu-symbol symbol="numbers['six']" ng-click="buttonClick('6')"></li>
-			<li menu-symbol symbol="numbers['seven']" ng-click="buttonClick('7')"></li>
-			<li menu-symbol symbol="numbers['eight']" ng-click="buttonClick('8')"></li>
-			<li menu-symbol symbol="numbers['nine']" ng-click="buttonClick('9')"></li>
-			<li menu-symbol symbol="numbers['zero']" ng-click="buttonClick('0')"></li>
-			
-			<li ng-click="buttonClick('^')" style="font-size:18px; white-space: nowrap; line-height: 55px;padding-left:2px;"><span katex>\times</span>10<sup katex>x</sup></li>
-			<li ng-click="buttonClick('-')" style="font-size:36px; white-space: nowrap; line-height: 55px;padding-left:9px;">±</li>
-		</ul>
+		<style>
+		.numhex .ng-isolate-scope {
+			text-align: center;
+    cursor: pointer;
+    width: 70px;
+    height: 80px;
+    /* border-radius: 30px; */
+    background: white;
+    background-size: contain;
+    background: url('/assets/equation_editor/hex-menu-item.png');
+    color: black;
+    /* font-size: 48px; */
+    font-weight: bold;
+    line-height: 78px;
+    margin: 7px 7px;
+		}
+		</style>
+			<li class="numhex" menu-symbol symbol="numbers['one']" ng-click="buttonClick('1')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['two']" ng-click="buttonClick('2')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['three']" ng-click="buttonClick('3')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['four']" ng-click="buttonClick('4')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['five']" ng-click="buttonClick('5')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['six']" ng-click="buttonClick('6')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['seven']" ng-click="buttonClick('7')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['eight']" ng-click="buttonClick('8')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['nine']" ng-click="buttonClick('9')"></li>
+			<li class="numhex" menu-symbol symbol="numbers['zero']" ng-click="buttonClick('0')"></li>
+			<li ng-click="buttonClick('.')" style="font-size:45px; white-space: nowrap;">.</li>
+			<li ng-click="buttonClick('^')" style="font-size:18px; white-space: nowrap; line-height: 55px;padding-left:5px;"><span katex>\times</span>10<sup katex>x</sup></li>
+			<li ng-click="buttonClick('-')" style="font-size:30px; white-space: nowrap; line-height: 60px;padding-left:9px;">±</li>
+		</ul> 
 
 		<div class="number-input-panel">
 			<input name="number" type="text" ng-model="currentNumber"/>

@@ -4,8 +4,10 @@
          <!--<div chemical-elements-menu symbols="symbolLibrary.chemicalElements"></div>-->
           <div symbol-menu symbols="symbolLibrary.chemicalElements"></div>
     </div>
-    <div top-menu="123" ng-if="isLandscape && mathMode">
-        <div number-entry></div>
+    <div style="bottom: 279px;
+    height: 200px;"top-menu="123" ng-if="isLandscape && mathMode">
+        <div symbols="symbolLibrary.theNumbers" number-entry></div>
+
     </div>
     <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && mathMode">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>

@@ -16,18 +16,23 @@ define([], function() {
 
                 scope.clearOnClose = false;
 
+           
+
                 scope.buttonClick = function(btn) {
-                    if (btn == "^") {
-                        scope.currentExponent = "";
-                    } else if (btn == "-" && scope.currentNumber.length > 0) {
-                        scope.negate = !scope.negate;
-                    } else {
-                        if (scope.currentExponent != null) {
-                            scope.currentExponent += btn;
+                    
+                   
+                        if (btn == "^") {
+                            scope.currentExponent = "";
+                        } else if (btn == "-" && scope.currentNumber.length > 0) {
+                            scope.negate = !scope.negate;
                         } else {
-                            scope.currentNumber += btn;
+                            if (scope.currentExponent != null) {
+                                scope.currentExponent += btn;
+                            } else {
+                                scope.currentNumber += btn;
+                            }
                         }
-                    }
+                    
                 }
 
                 scope.clearInput = function() {
@@ -48,6 +53,7 @@ define([], function() {
 
                 for (var i = 0; i < 10; i++) {
                     var numString = i.toString();
+                    console.log(numString);
                     scope.numbers[numberStrings[i]] = {
                         type: "Num",
                         properties: {

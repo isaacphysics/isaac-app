@@ -99,6 +99,8 @@ define(function(require) {
 
 	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
 
+	.directive('numberMenu', require("app/directives/equation_editor/NumberMenu"))
+
 	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
 
 	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))

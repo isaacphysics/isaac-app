@@ -15,6 +15,7 @@ define(function(require) {
                     e.preventDefault();
                 });
 
+                
                 var sketch = null;
 
                 scope.canvasOffset = {};
@@ -26,7 +27,7 @@ define(function(require) {
                 scope.selectionHandleFlags = {
                     showCalc: false,
                     showResize: true,
-                    showMove: true
+                    showMove: false
                 };
 
                 scope.$on("triggerCloseMenus", function() {
@@ -62,6 +63,7 @@ define(function(require) {
                     var tOff = element.find(".trash-button").position();
                     var tWidth = element.find(".trash-button").width();
                     var tHeight = element.find(".trash-button").height();
+
                     scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
                     scope.$apply();
                 };
