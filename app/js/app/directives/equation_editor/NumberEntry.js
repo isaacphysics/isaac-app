@@ -1,12 +1,12 @@
 define([], function() {
 
-	return ["$timeout", function($timeout) {
+    return ["$timeout", function($timeout) {
 
-		return {
+        return {
             scope: true,
-			restrict: "A",
-			templateUrl: "/partials/equation_editor/number_entry.html",
-			link: function(scope, element, attrs) {
+            restrict: "A",
+            templateUrl: "/partials/equation_editor/number_entry.html",
+            link: function(scope, element, attrs) {
                 scope.name="NUMBER ENTRY"
 
                 scope.currentNumber = "";
@@ -17,29 +17,29 @@ define([], function() {
                 scope.clearOnClose = true;
 
                 scope.buttonClick = function(btn) {
-                	if (btn == "^") {
-                		scope.currentExponent = "";
-                	} else if (btn == "-" && scope.currentNumber.length > 0) {
+                    if (btn == "^") {
+                        scope.currentExponent = "";
+                    } else if (btn == "-" && scope.currentNumber.length > 0) {
                         scope.negate = !scope.negate;
                     } else {
-                		if (scope.currentExponent != null) {
-                			scope.currentExponent += btn;
-                		} else {
-		                	scope.currentNumber += btn;
-                		}
-                	}
+                        if (scope.currentExponent != null) {
+                            scope.currentExponent += btn;
+                        } else {
+                            scope.currentNumber += btn;
+                        }
+                    }
                 }
 
                 scope.clearInput = function() {
-                	scope.currentExponent = null;
-                	scope.currentNumber = "";
+                    scope.currentExponent = null;
+                    scope.currentNumber = "";
                     scope.negate = false;
                 }
 
                 var updateInputPadding = function() {
-                	$timeout(function() {
-                		$(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
-                	});
+                    $timeout(function() {
+                        $(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
+                    });
                 };
 
                 var updateSymbol = function() {
@@ -60,13 +60,13 @@ define([], function() {
                         }
                     }
 
-                	var expNum = parseFloat(scope.currentExponent);
+                    var expNum = parseFloat(scope.currentExponent);
 
-                	if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.menu.label))) {
+                    if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.menu.label))) {
                         scope.negate = false;
-                		scope.currentSymbol = null;
-                		return;
-                	}
+                        scope.currentSymbol = null;
+                        return;
+                    }
 
                     var currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
 
@@ -77,12 +77,12 @@ define([], function() {
                         scope.currentSymbol.menu.labelClass = "tiny";
                     }
 
-                	if (scope.currentSymbol.menu.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
-                		if (!isNaN(expNum)) {
-                			scope.currentSymbol.menu.label += "\n\\times 10^{" + expNum + "}";
+                    if (scope.currentSymbol.menu.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
+                        if (!isNaN(expNum)) {
+                            scope.currentSymbol.menu.label += "\n\\times 10^{" + expNum + "}";
                             scope.currentSymbol.menu.labelClass = "tiny";
-                		}
-                	}
+                        }
+                    }
 
                     scope.currentSymbol.fromCalc = true;
                     scope.currentSymbol.editable = {
@@ -99,20 +99,20 @@ define([], function() {
                 scope.$watch("negate", updateSymbol);
                 scope.$watch("currentExponent", updateInputPadding);
 
-				scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
-					if (pageY > element.offset().top + element.height()) {
+                scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
+                    if (pageY > element.offset().top + element.height()) {
                         scope.clearOnClose = false;
-						//scope.$emit("triggerCloseMenus");
+                        //scope.$emit("triggerCloseMenus");
                         scope.clearOnClose = true;
-					}
+                    }
 
                     scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
-				})
+                })
 
                 scope.$on("symbolDrop", function($e, symbolSpec, pageX, pageY) {
-                	if (pageY > element.offset().top + element.height()) {
-                		scope.$emit("spawnSymbol");
-                	}
+                    if (pageY > element.offset().top + element.height()) {
+                        scope.$emit("spawnSymbol");
+                    }
 
                     scope.$emit("newSymbolAbortDrag");
                     scope.clearInput();
@@ -139,7 +139,7 @@ define([], function() {
                 element.find("[katex]").each(function(i,e) {
                     katex.render($(e).html(), e);
                 })
-			},
-		};
-	}];
+            },
+        };
+    }];
 });

@@ -29,9 +29,9 @@ import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
 import { Num } from './Num.ts';
 import { Fn } from './Fn.ts';
-import { ChemicalElement } from './ChemicalElement.ts';
 import { DockingPoint } from './DockingPoint.ts';
 import { Relation } from './Relation.ts';
+import { ChemicalElement } from './ChemicalElement.ts';
 
 // This is where the fun starts
 
@@ -48,7 +48,7 @@ class MySketch {
 	xBox: Rect = null;
 	mBox: Rect = null;
 
-	baseFontSize = 80;
+	baseFontSize = 120;
 	font_it: p5.Font = null;
 	font_up: p5.Font = null;
 
@@ -76,7 +76,6 @@ class MySketch {
 		this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
 		this.mBox = this.font_it.textBounds("M", 0, 1000, this.baseFontSize);
 
-
 		this.symbols = [];
 		this.p.createCanvas(this.width, this.height);
 
@@ -101,9 +100,7 @@ class MySketch {
 	draw = () => {
 	    this.p.clear();
 		_.each(this.symbols, symbol => {
-			console.log(symbol);
 			symbol.draw();
-
 		});
 
         if (this.potentialSymbol) {
@@ -190,9 +187,6 @@ class MySketch {
 			case "Symbol":
 				w = new Symbol(this.p, this, node["properties"]["letter"]);
 				break;
-			case "ChemicalElement":
-				w = new ChemicalElement(this.p, this, node["properties"]["element"]);
-				break;
 			case "BinaryOperation":
 				w = new BinaryOperation(this.p, this, node["properties"]["operation"]);
 				break;
@@ -213,6 +207,9 @@ class MySketch {
 				break;
 			case "Relation":
 				w = new Relation(this.p, this, node["properties"]["relation"]);
+				break;
+			case "ChemicalElement":
+				w = new ChemicalElement(this.p, this, node["properties"]["element"]);
 				break;
 			default: // this would be a Widget...
 				break;
@@ -503,4 +500,3 @@ class MySketch {
 		}
 	};
 }
-
