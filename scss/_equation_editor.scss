@@ -24,7 +24,7 @@ $menu-handle-width: 160px;
     }
     .number-bar {
         .symbol-label {
-            font-size: 48px;
+            font-size: 40px;
         }
     }
     .selection-box {
@@ -190,15 +190,16 @@ $menu-handle-width: 160px;
                 li {
                     text-align: center;
                     cursor: pointer;
-                    width: 50px;
-                    height: 60px;
-                    border-radius: 30px;
-                    background: white;
-                    color: black;
-                    font-size: 48px;
-                    font-weight: bold;
+                    width: 57px;
+                    height: 65px;
+                    background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat;
+                    background-size: contain;
+                    color: #317115;
                     line-height: 65px;
-                    margin: 7px 7px;
+                    font-size: 40px;
+                    font-weight: 500;
+                    font-family: KaTeX_Main;
+                    margin: 3px 3px 0px 3px;
                 }
             }
             .number-input-panel {
@@ -223,7 +224,7 @@ $menu-handle-width: 160px;
                     font-size: 36px;
                     font-family: sans-serif;
                     font-weight: bold;
-                    color: #ccc;
+                    color: rgba(49, 113, 21, 0.3);
                     cursor: pointer;
                     &:hover {
                         color: red;
@@ -233,10 +234,10 @@ $menu-handle-width: 160px;
                     text-align: right;
                     transition: padding-right 0s;
                     font-size: 48px;
-                    border-radius: 10px;
-                    border: 2px solid black;
-                    margin-top: 25px;
-                    height: 100px;
+                    border-radius: 2px;
+                    border: 2px solid #317115;
+                    margin-top: 10px;
+                    height: 136px;
                 }
                 @media (max-width: 45em) {
                     input {
