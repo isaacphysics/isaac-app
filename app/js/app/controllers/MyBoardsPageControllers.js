@@ -78,8 +78,13 @@ define([], function() {
 
 		$scope.deleteBoard = function(board){
 			lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
-				if (groupsAssigned != null && groupsAssigned.length != 0){
-					alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to see the board in your Assigned Boards or My boards page.")	
+				if (groupsAssigned != null && groupsAssigned.length != 0) {
+					if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
+						alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
+					} else {
+						$scope.showToast($scope.toastTypes.Failure, "Board Deletion Not Allowed", "You have groups assigned to this board. To delete this board, you must unassign all groups.");
+						return;
+					}
 				}
 				
 				var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
