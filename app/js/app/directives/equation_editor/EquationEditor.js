@@ -160,6 +160,7 @@ define(function(require) {
                         scope.future = [];
                         var p = new p5( function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                            scope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
 
