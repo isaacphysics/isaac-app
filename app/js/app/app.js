@@ -74,7 +74,7 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500) {
+                    if (response.status >= 500 && (response.data.message == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0)) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
                         $state.go('error');
