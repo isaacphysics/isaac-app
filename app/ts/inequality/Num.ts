@@ -4,12 +4,12 @@ import { DockingPoint } from "./DockingPoint.ts";
 
 /** A class for representing numbers */
 export
-class Num extends Widget {
+    class Num extends Widget {
 
     protected s: any;
     private significand: string;
     private exponent: string;
-
+    private num_font_size;
     get typeAsString(): string {
         return "Num";
     }
@@ -24,24 +24,25 @@ class Num extends Widget {
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p:any, s:any, significand:string, exponent:string) {
+    constructor(p: any, s: any, significand: string, exponent: string) {
         super(p, s);
         this.significand = significand;
         this.exponent = exponent;
+        this.num_font_size = 50;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left'];
     }
-    
+
     getFullText(type?: string): string {
         var s = this.significand;
         if (this.exponent) {
-            switch(type) {
+            switch (type) {
                 case "latex":
                     s += "\\times 10^{" + this.exponent + "}";
                     break;
                 case "python":
-                    s += "*(10**" + this.exponent  + ")";
+                    s += "*(10**" + this.exponent + ")";
                     break;
                 default:
                     s += "e" + this.exponent;
@@ -63,7 +64,7 @@ class Num extends Widget {
         var descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
     }
 
     /**
@@ -93,6 +94,20 @@ class Num extends Widget {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
+        } else if (format == "mhchem") {
+            expression = this.getFullText("mhchem"); // need to remove this so that we can append the element to mass/proton numbers
+            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
+            // Should we render one if the other is ommitted? - for now, no.
+          
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    // WARNING This assumes it's a Number, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+            }
+
         } else if (format == "python") {
             expression = "" + this.getFullText("python");
             //if (this.dockingPoints["subscript"].child != null) {
@@ -120,7 +135,7 @@ class Num extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints['superscript'].child == null) {
                 expression += '<mn>' + this.getFullText() + '</mn>';
@@ -157,10 +172,10 @@ class Num extends Widget {
             .text(this.getFullText(), 0, 0);
         this.p.strokeWeight(1);
 
-		if (window.location.hash === "#debug") {
-			this.p.stroke(255, 0, 0).noFill();
-			this.p.ellipse(0, 0, 10, 10);
-			this.p.ellipse(0, 0, 5, 5);
+        if (window.location.hash === "#debug") {
+            this.p.stroke(255, 0, 0).noFill();
+            this.p.ellipse(0, 0, 10, 10);
+            this.p.ellipse(0, 0, 5, 5);
 
             this.p.stroke(0, 0, 255).noFill();
             this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
@@ -168,7 +183,7 @@ class Num extends Widget {
         }
     }
 
-    
+
 
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
@@ -188,7 +203,7 @@ class Num extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -213,18 +228,18 @@ class Num extends Widget {
             var p = this.dockingPoints["superscript"].child.position;
             var w = this.dockingPoints["superscript"].child.offsetBox().w;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * 20 + w/2;
+            p.x = box.w / 2 + this.scale * 20 + w / 2;
             p.y = -(box.h - descent - this.scale * 20);
         } else {
             var p = this.dockingPoints["superscript"].position;
             p.x = box.w / 2 + this.scale * 20;
-            p.y = -this.scale*this.s.mBox.h;
+            p.y = -this.scale * this.s.mBox.h;
         }
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w/2);
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w / 2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
