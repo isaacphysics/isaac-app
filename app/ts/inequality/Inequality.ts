@@ -123,7 +123,7 @@ class MySketch {
             this.potentialSymbol.position.x = x - this.potentialSymbol.boundingBox().w*0.5;
             this.potentialSymbol.position.y = y;
 			this.potentialSymbol.shakeIt();
-            
+
             // Decide whether we should dock immediately
 
             _.some(this.symbols, (symbol: Widget) => {
@@ -315,7 +315,7 @@ class MySketch {
 			// 	dy = 0;
 			// }
 			// var d = this.p.createVector(dx, dy);
-			
+
 			this.movingSymbol.position.add(d);
 			// FIXME GO AHEAD PUNK, MAKE MY DAY
 			this.prevTouch.x = <number>tx;
@@ -462,6 +462,7 @@ class MySketch {
 			this.scope.newEditorState({
 				result: {
 					"tex": symbolWithMostChildren.getExpression("latex").trim(),
+					"mhchem": symbolWithMostChildren.getExpression("mhchem").trim(),
 					"python": symbolWithMostChildren.getExpression("python").trim(),
 					"mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
 					"uniqueSymbols": this.flattenExpression(symbolWithMostChildren).join(', ')

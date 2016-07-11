@@ -6,7 +6,7 @@ import { Num } from "./Num.ts";
 
 /** A class for representing variables and constants (aka, elements). */
 export
-class ChemicalElement extends Widget {
+    class ChemicalElement extends Widget {
 
     protected s: any;
     private element: string;
@@ -25,12 +25,12 @@ class ChemicalElement extends Widget {
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p:any, s:any, element:string) {
+    constructor(p: any, s: any, element: string) {
         super(p, s);
         this.element = element;
         this.s = s;
 
-        this.docksTo = ['ChemicalElement', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['ChemicalElement', 'operator', 'symbol'];
     }
 
     /**
@@ -45,9 +45,13 @@ class ChemicalElement extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
+        // Create the docking points - added mass number and proton number
+        // TODO: add a flag to toggle the mass/proton number docking points? e.g. boolean nuclearMode
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
+        this.dockingPoints["mass_number"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "top-left", "mass_number");
+        this.dockingPoints["proton_number"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "bottom-left", "proton_number");
     }
 
     /**
@@ -59,10 +63,26 @@ class ChemicalElement extends Widget {
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
+
+    // todo add mhchem with \alpha etc
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
-            expression = this.element;
+            expression = "\\text{" + this.element + "}";// need to remove this so that we can append the element to mass/proton numbers
+            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
+            // Should we render one if the other is ommitted? - for now, no.
+            if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
+                expression = "";
+                var mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
+                var proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
+                var number_of_spaces = Math.abs(proton_number_length - mass_number_length);
+                var padding = "";
+                // Temporary hack to align mass number and proton number correctly.
+                for (var _i = 0; _i < number_of_spaces; _i++) {
+                    padding += "\\enspace";
+                }
+                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
+            }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
@@ -72,30 +92,16 @@ class ChemicalElement extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+                else if (this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
                     // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "python") {
-            expression = "" + this.element;
-            if (this.dockingPoints["subscript"].child != null) {
-                expression += "_"+this.dockingPoints["subscript"].child.getExpression("subscript");
-            }
-            if (this.dockingPoints["superscript"].child != null) {
-                expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
-            }
-            if (this.dockingPoints["right"].child != null) {
-                if (this.dockingPoints["right"].child instanceof BinaryOperation ||
-                    this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
-                } else if(this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
-                } else {
-                    // WARNING This assumes it's a ChemicalElement by default, hence produces a multiplication (with a star)
-                    expression += "*" + this.dockingPoints["right"].child.getExpression(format);
-                }
-            }
+            expression = ""
         } else if (format == "subscript") {
             expression = "" + this.element;
             if (this.dockingPoints["subscript"].child != null) {
@@ -107,26 +113,36 @@ class ChemicalElement extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "python") {
+            expression = "";
+        } else if (format == "mathml") {
             expression = '';
-            if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
-                expression += '<mi>' + this.element + '</mi>';
-
-            } else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
-                expression += '<msub><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
-
-            } else if(this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
-                expression += '<msup><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
-
-            } else if(this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
-                expression += '<msubsup><mi>' + this.element + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
-
+        } else if (format == "mhchem") {
+            expression = this.element; // need to remove this so that we can append the element to mass/proton numbers
+            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
+            // Should we render one if the other is ommitted? - for now, no.
+            if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
+                expression = "";
+                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
             }
-            if(this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            if (this.dockingPoints["superscript"].child != null) {
+                expression += this.dockingPoints["superscript"].child.getExpression(format);
+            }
+            if (this.dockingPoints["subscript"].child != null) {
+                expression += this.dockingPoints["subscript"].child.getExpression(format);
+            }
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+                else if (this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
             }
         }
-       
         return expression;
     }
 
@@ -139,7 +155,7 @@ class ChemicalElement extends Widget {
     token() {
         // TODO Handle greek elements
         var e = this.element;
-        if(this.dockingPoints['subscript'].child) {
+        if (this.dockingPoints['subscript'].child) {
             e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
         }
         return e;
@@ -184,7 +200,7 @@ class ChemicalElement extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -209,32 +225,70 @@ class ChemicalElement extends Widget {
             var p = this.dockingPoints["superscript"].child.position;
             var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
             var w = offsetBox.w;
+
             var childDescent = offsetBox.y + offsetBox.h;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = (box.w + w)/2;
-            p.y = 0 - this.s.mBox.h*this.scale;
+            // this is the position of the docking point.
+            p.x = (box.w + w) / 2;
+            p.y = 0 - this.s.mBox.h * this.scale;
         } else {
             var p = this.dockingPoints["superscript"].position;
-            p.x = (box.w + this.s.xBox.w)/2;
-            p.y = -this.s.mBox.h*this.scale;
+            p.x = (box.w + this.s.xBox.w) / 2;
+            p.y = -this.s.mBox.h * this.scale;
         }
+
+
+        // Positioned top left side of element.
+        if ("mass_number" in boxes) {
+            var p = this.dockingPoints["mass_number"].child.position;
+            var offsetBox = this.dockingPoints["mass_number"].child.offsetBox();
+            var w = offsetBox.w;
+
+            console.log(w);
+            var childDescent = offsetBox.y + offsetBox.h;
+            widest = this.dockingPoints["mass_number"].child.subtreeBoundingBox().w;
+            // this is the position of the docking point.
+            p.x = 0 - (box.w + w) * .53; //(box.w / 2 + this.scale * 20 + childDescent);
+            p.y = 0 - box.w / 2;
+        } else {
+            var p = this.dockingPoints["mass_number"].position;
+            p.x = 0 - (box.w / 2 + this.scale * 20);
+            p.y = 0 - this.s.mBox.h * this.scale;
+        }
+
+
+
 
         if ("subscript" in boxes) {
             var p = this.dockingPoints["subscript"].child.position;
             var w = this.dockingPoints["subscript"].child.offsetBox().w;
             widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + this.scale * 20 + w/2;
+            p.x = box.w / 2 + this.scale * 20 + w / 2;
             p.y = this.scale * this.s.mBox.w / 4;
         } else {
             var p = this.dockingPoints["subscript"].position;
             p.x = box.w / 2 + this.scale * 20;
             p.y = descent;
         }
+        // Positioned bottom left side of element.
+        if ("proton_number" in boxes) {
+            var p = this.dockingPoints["proton_number"].child.position;
+            var w = this.dockingPoints["proton_number"].child.offsetBox().w;
+            widest = Math.max(this.dockingPoints["proton_number"].child.subtreeBoundingBox().w, widest);
+            p.x = 0 - (box.w + w) * .53;
+            p.y = (box.w / 2) * .6;
+        } else {
+            var p = this.dockingPoints["proton_number"].position;
+            p.x = 0 - (box.w / 2 + this.scale * 20);
+            p.y = descent;
+        }
+
+
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w/2;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w / 2;
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

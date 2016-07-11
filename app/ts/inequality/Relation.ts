@@ -12,6 +12,7 @@ class Relation extends Widget {
     protected relation: string;
     protected pythonSymbol: string;
     protected latexSymbol: string;
+    protected mhchemSymbol: string;
 
     get typeAsString(): string {
         return "Relation";
@@ -35,22 +36,24 @@ class Relation extends Widget {
             case 'rightarrow':
                 this.relation = '→';
                 this.pythonSymbol = '->';
-                this.latexSymbol = '\\rightarrow ';
+                this.mhchemSymbol = '->'
+                this.latexSymbol = '\\rightarrow';
                 break;
             case 'leftarrow':
                 this.relation = '←';
                 this.pythonSymbol = '<-';
-                this.latexSymbol = '\\leftarrow ';
+                this.latexSymbol = '\\leftarrow';
                 break;
             case 'rightleftarrows':
                 this.relation = '⇄';
                 this.pythonSymbol = '-><-';
-                this.latexSymbol = '\\rightleftarrows ';
+                this.latexSymbol = '\\rightleftarrows';
                 break;
             case 'equilibrium':
                 this.relation = '⇌';
                 this.pythonSymbol = '==';
-                this.latexSymbol = '\\rightleftharpoons ';
+                this.mhchemSymbol = '<=>'
+                this.latexSymbol = '\\rightleftharpoons';
                 break;
             case 'leq':
                 this.relation = '≤';
@@ -103,7 +106,7 @@ class Relation extends Widget {
         var expression = "";
         if(format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "python") {
             if (this.dockingPoints["right"].child != null) {
@@ -112,6 +115,10 @@ class Relation extends Widget {
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
+            }
+        } else if(format == "mhchem") {
+            if (this.dockingPoints["right"].child != null) {
+                expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if(format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
