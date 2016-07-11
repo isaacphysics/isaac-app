@@ -27,6 +27,9 @@ $menu-handle-width: 160px;
             font-size: 40px;
         }
     }
+    .wedgeFit {
+        margin-left: 10px;
+    }
     .selection-box {
         position: absolute;
         z-index: -1;
@@ -180,26 +183,29 @@ $menu-handle-width: 160px;
             }
         }
         [number-entry] {
-            height: 162px;
+            height: 130px;
             .button-grid {
                 position: absolute;
                 left: 0px;
                 width: 450px;
                 display: block;
-                margin: 7px;
+                margin: 7px 0 0 60px;
                 li {
                     text-align: center;
                     cursor: pointer;
-                    width: 57px;
+                    width: 50px;
                     height: 65px;
                     background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat;
                     background-size: contain;
                     color: #317115;
-                    line-height: 65px;
+                    line-height: 60px;
                     font-size: 40px;
                     font-weight: 500;
                     font-family: KaTeX_Main;
                     margin: 3px 3px 0px 3px;
+                }
+                .wedgeFit {
+                    margin-top: -14px;
                 }
             }
             .number-input-panel {
@@ -220,7 +226,7 @@ $menu-handle-width: 160px;
                 .input-clear {
                     position: absolute;
                     left: 20px;
-                    top: 45px;
+                    top: 35px;
                     font-size: 36px;
                     font-family: sans-serif;
                     font-weight: bold;
@@ -237,7 +243,7 @@ $menu-handle-width: 160px;
                     border-radius: 2px;
                     border: 2px solid #317115;
                     margin-top: 10px;
-                    height: 136px;
+                    height: 110px;
                 }
                 @media (max-width: 45em) {
                     input {
@@ -253,7 +259,7 @@ $menu-handle-width: 160px;
                     font-size: 14px;
                 }
                 .number-hex {
-                    margin-top: 25px;
+                    margin-top: 15px;
                     ul {
                         padding: 0px 7px;
                     }
