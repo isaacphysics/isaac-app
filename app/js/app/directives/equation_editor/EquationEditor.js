@@ -15,7 +15,6 @@ define(function(require) {
                     e.preventDefault();
                 });
 
-                
                 var sketch = null;
 
                 scope.canvasOffset = {};
@@ -39,7 +38,9 @@ define(function(require) {
                 });
 
                 $(window).on("resize", function() {
-                    element.find(".top-menu").css({ "bottom": scope.equationEditorElement.height() }).removeClass("active-menu");
+                    element.find(".top-menu").css({
+                        "bottom": scope.equationEditorElement.height()
+                    }).removeClass("active-menu");
                 });
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
@@ -142,13 +143,18 @@ define(function(require) {
                         });
 
                         eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || { symbols: [] };
+                        scope.state = initialState || {
+                            symbols: []
+                        };
                         scope.questionDoc = questionDoc;
 
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
-                            screenSize: { width: window.innerWidth, height: window.innerHeight },
+                            screenSize: {
+                                width: window.innerWidth,
+                                height: window.innerHeight
+                            },
                             actions: [{
                                 event: "OPEN",
                                 timestamp: Date.now()
@@ -181,6 +187,7 @@ define(function(require) {
                 var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
                 var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
                 var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
+                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
                 var letterMap = {
                     "\\alpha": "α",
                     "\\beta": "β",
@@ -219,7 +226,7 @@ define(function(require) {
                     "\\Psi": "Ψ",
                     "\\Omega": "Ω"
                 };
-                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
+
                 var inverseLetterMap = {};
                 for (var k in letterMap) {
                     inverseLetterMap[letterMap[k]] = k;
@@ -331,7 +338,9 @@ define(function(require) {
 
                         var root = partResults[0];
                         for (var k = 0; k < partResults.length - 1; k++) {
-                            partResults[k].children = { right: partResults[k + 1] }
+                            partResults[k].children = {
+                                right: partResults[k + 1]
+                            }
                             root.menu.label += " " + partResults[k + 1].menu.label;
                         }
                         switch (partResults[0].type) {
@@ -418,7 +427,9 @@ define(function(require) {
                     var w = scope.state.result ? rp.outerWidth() : 0;
                     var resultPreview = $(".result-preview");
                     resultPreview.stop(true);
-                    resultPreview.animate({ width: w }, 200);
+                    resultPreview.animate({
+                        width: w
+                    }, 200);
 
                     scope.$emit("historyCheckpoint");
                 }
@@ -454,8 +465,8 @@ define(function(require) {
                                 element: currentElement
                             },
                             menu: {
-                                label: currentElement,
-                                texLabel: false,
+                                label: "\\text{" + currentElement + "}",
+                                texLabel: true,
                                 // add here option for it to be part of nuclear equation
                             }
                         });
@@ -479,6 +490,45 @@ define(function(require) {
 
                     chemicalElements: chemicalElements(elements),
 
+
+
+                    chemOps: [{
+                        type: 'Relation',
+                        menu: {
+                            label: '\\rightarrow',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: 'rightarrow'
+                        }
+                    }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '\\rightleftharpoons',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: 'equilibrium'
+                        }
+                    }, {
+                        type: "BinaryOperation",
+                        properties: {
+                            operation: "+",
+                        },
+                        menu: {
+                            label: "+",
+                            texLabel: true
+                        }
+                    }, {
+                        type: "BinaryOperation",
+                        properties: {
+                            operation: "-",
+                        },
+                        menu: {
+                            label: "-",
+                            texLabel: true
+                        }
+                    }, ],
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -519,6 +569,7 @@ define(function(require) {
                             texLabel: true
                         }
                     }, {
+
                         type: 'Relation',
                         menu: {
                             label: '=',
@@ -721,7 +772,9 @@ define(function(require) {
 
                 scope.latinLetterUpperTitle = {
                     type: "string",
-                    menu: { label: "ABC" }
+                    menu: {
+                        label: "ABC"
+                    }
                 };
 
                 scope.greekLetterTitle = {
@@ -933,7 +986,7 @@ define(function(require) {
                         s.token = "\\mathbf{\\hat " + s.token + "}";
                     }
 
-                    
+
 
                     if (s.dot == 1) {
                         s.token = "\\dot{" + s.token + "}";

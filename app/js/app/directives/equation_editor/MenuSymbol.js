@@ -1,15 +1,15 @@
 
 define([], function() {
 
-	return [function() {
+    return [function() {
 
-		return {
+        return {
             scope: {
                 symbol: "=",
             },
-			restrict: "A",
+            restrict: "A",
             templateUrl: "/partials/equation_editor/menu_symbol.html",
-			link: function(scope, element, attrs) {
+            link: function(scope, element, attrs) {
                 scope.name="MENUSYMBOL"
 
                 scope.$watch("symbol.menu.label", function(newLabel) {
@@ -82,8 +82,11 @@ define([], function() {
 
                     element.css("left", 0);
                     element.css("top", 0);
-                    
+
+                    // This ensures new symbols can be selected.
                     scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
+
+                    // This drags the hexagons around.
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
                     $("body").off("touchend", touchend);
@@ -146,7 +149,7 @@ define([], function() {
                     if (scope.dragging)
                         drag();
                 })
-			},
-		};
-	}];
+            },
+        };
+    }];
 });

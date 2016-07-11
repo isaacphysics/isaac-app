@@ -1,13 +1,9 @@
 <div class="equation-editor" tabindex="0">
-    
-     <div top-menu="H,\, He,\, Li" ng-if="isLandscape && !mathMode">
-         <!--<div chemical-elements-menu symbols="symbolLibrary.chemicalElements"></div>-->
-          <div symbol-menu symbols="symbolLibrary.chemicalElements"></div>
+    <div top-menu="\text{H}\, \text{He}\, \text{Li}" ng-if="isLandscape && !mathMode">
+        <div symbol-menu symbols="symbolLibrary.chemicalElements"></div>
     </div>
-    <div style="bottom: 279px;
-    height: 200px;"top-menu="123" ng-if="isLandscape && mathMode">
+    <div top-menu="123" ng-if="isLandscape">
         <div symbols="symbolLibrary.theNumbers" number-entry></div>
-
     </div>
     <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && mathMode">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
@@ -25,16 +21,21 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
-    
+     <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && !mathMode">
+        <div symbol-menu symbols="symbolLibrary.chemOps"></div>
+        <!--<div sub-menu></div>
+        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
+        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
+        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
+        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
+    </div>
     <div top-menu="\sin\,\, \int" ng-if="isLandscape && mathMode">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
-
-
-<!--
+    <!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
         <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
     </div>
@@ -44,18 +45,14 @@
     <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
 -->
     <!-- BUTTONS -->
-
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
-
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>
-
-    <div ng-show="draggingNewSymbol || selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
-
-    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape"><div isaac-content doc="questionDoc"></div></div>
-
+    <div class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape">
+        <div isaac-content doc="questionDoc"></div>
+    </div>
     <div class="orientation-warning" ng-if="!isLandscape">The Isaac Equation Editor may only be used in landscape mode. Please rotate your device.</div>
-
     <div class="result-preview" ng-if="isLandscape"><span></span></div>
     <div class="hex-button submit" ng-click="submit()"></div>
 </div>
