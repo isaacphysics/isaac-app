@@ -28,6 +28,21 @@ define(["app/honest/responsive_video"], function(rv) {
                 scope.selectedChoice = {
                     type: "chemicalFormula",
                 };
+                scope.editorMode = 'chemistry';
+                scope.eqnState = {
+                    symbols: {}
+                };
+
+                scope.$watch("eqnState", function(s, oldS) {
+                    if (s === oldS)
+                        return;
+                    scope.selectedChoice.value = JSON.stringify(s);
+                    if (s && s.result) {
+                        scope.selectedChoice.value = s.result.mhchem;
+                    } else {
+                        scope.selectedChoice.pythonExpression = "";
+                    }
+                }, true);
 
             }
         };

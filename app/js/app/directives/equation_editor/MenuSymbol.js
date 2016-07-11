@@ -61,6 +61,7 @@ define([], function() {
                     var pY = pageY - offset.left;
 
                     // Tell our parents that we've moved.
+
                     scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop - pageScroll, pageX - lastPageX, pageY - pageScroll - lastPageY, pageX, pageY - pageScroll);
                     lastPageX = pageX;
                     lastPageY = pageY;

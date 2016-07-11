@@ -263,7 +263,7 @@ export
             var p = this.dockingPoints["subscript"].child.position;
             var w = this.dockingPoints["subscript"].child.offsetBox().w;
             widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + this.scale * 20 + w / 2;
+            p.x = box.w / 2 + this.dockingPoints["subscript"].child.boundingBox().w/2;
             p.y = this.scale * this.s.mBox.w / 4;
         } else {
             var p = this.dockingPoints["subscript"].position;
@@ -285,10 +285,28 @@ export
 
 
 
-        // TODO: Tweak this with kerning.
+
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w / 2;
+            var child_width = this.dockingPoints["right"].child.boundingBox().w;
+            console.log("Child width: " + child_width);
+            var parent_superscript_width = 0;
+            var parent_subscript_width = 0;
+            if (this.dockingPoints["superscript"].child != null) {
+              parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
+            }
+            if (this.dockingPoints["subscript"].child != null) {
+              parent_subscript_width = this.dockingPoints["subscript"].child.getExpressionWidth();
+            }
+
+            console.log("Parent superscript width: " + parent_subscript_width);
+            console.log("Parent subscript width: " + parent_subscript_width);
+            var parent_width = this.boundingBox().w;
+            console.log("Parent width before ammending: " + parent_width);
+            // If either subscripts or superscripts or both exist
+            parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
+            console.log("Parent width after ammending: " + parent_width);
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

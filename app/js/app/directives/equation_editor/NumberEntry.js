@@ -3,7 +3,9 @@ define([], function() {
     return ["$timeout", function($timeout) {
 
         return {
-            scope: true,
+            scope: {
+                symbols: "=",
+            },
             restrict: "A",
             templateUrl: "/partials/equation_editor/number_entry.html",
             link: function(scope, element, attrs) {
@@ -16,23 +18,23 @@ define([], function() {
 
                 scope.clearOnClose = false;
 
-           
+
 
                 scope.buttonClick = function(btn) {
-                    
-                   
-                        if (btn == "^") {
-                            scope.currentExponent = "";
-                        } else if (btn == "-" && scope.currentNumber.length > 0) {
-                            scope.negate = !scope.negate;
+
+
+                    if (btn == "^") {
+                        scope.currentExponent = "";
+                    } else if (btn == "-" && scope.currentNumber.length > 0) {
+                        scope.negate = !scope.negate;
+                    } else {
+                        if (scope.currentExponent != null) {
+                            scope.currentExponent += btn;
                         } else {
-                            if (scope.currentExponent != null) {
-                                scope.currentExponent += btn;
-                            } else {
-                                scope.currentNumber += btn;
-                            }
+                            scope.currentNumber += btn;
                         }
-                    
+                    }
+
                 }
 
                 scope.clearInput = function() {
@@ -46,25 +48,6 @@ define([], function() {
                         $(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
                     });
                 };
-
-
-                scope.numbers = {};
-                var numberStrings = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-
-                for (var i = 0; i < 10; i++) {
-                    var numString = i.toString();
-                    console.log(numString);
-                    scope.numbers[numberStrings[i]] = {
-                        type: "Num",
-                        properties: {
-                            significand: numString,
-                        },
-                        menu: {
-                            label: numString,
-                            texLabel: false,
-                        }
-                    }
-                }
 
                 var updateSymbol = function() {
 
@@ -125,19 +108,19 @@ define([], function() {
 
                 scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
                     // This overcomes issues with deciding if number button is clicked or dragged.
-                    // If the number is moved below the top green menu bar, then we associate this with a drag movement and 
-                    // draw the number on the canvas. 
-                    if (pageY > element.offset().top + element.height()) {
+                    // If the number is moved below the top green menu bar, then we associate this with a drag movement and
+                    // draw the number on the canvas.
+                    if (pageY > element.height()) {
                         scope.clearOnClose = false;
                         scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
                     }
                 })
 
-                scope.$on("symbolDrop", function($e, symbolSpec, pageX, pageY) {
-                    if (pageY > element.offset().top + element.height()) {
+                scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY) {
+                    if (mousePageY > element.offset().top + element.height()) {
                         scope.$emit("spawnSymbol");
                         // If property "editable" of current object isn't null, we must have generated it using the editor
-                        // and thus dragging and dropping this object should trigger the emptying of the editor. 
+                        // and thus dragging and dropping this object should trigger the emptying of the editor.
                         if (symbolSpec["editable"] != null) {
                             scope.clearInput();
                         }

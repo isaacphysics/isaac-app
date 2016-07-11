@@ -5,480 +5,502 @@ define(function(require) {
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
-        return {
-            scope: true,
-            restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_editor.html",
-            link: function(scope, element, attrs) {
+            return {
+                scope: true,
+                restrict: "A",
+                templateUrl: "/partials/equation_editor/equation_editor.html",
+                link: function(scope, element, attrs) {
 
-                element.on("touchstart touchmove", "canvas", function(e) {
-                    e.preventDefault();
-                });
+                    element.on("touchstart touchmove", "canvas", function(e) {
+                        e.preventDefault();
+                    });
 
-                var sketch = null;
+                    var sketch = null;
 
-                scope.canvasOffset = {};
-                scope.draggingNewSymbol = false;
-
-                scope.equationEditorElement = element;
-
-                scope.selectedSymbols = [];
-                scope.selectionHandleFlags = {
-                    showCalc: false,
-                    showResize: true,
-                    showMove: false
-                };
-
-                scope.$on("triggerCloseMenus", function() {
-                    scope.$broadcast("closeMenus");
-                });
-
-                scope.$on("triggerResizeMenu", function() {
-                    scope.$broadcast("resizeMenu");
-                });
-
-                $(window).on("resize", function() {
-                    element.find(".top-menu").css({
-                        "bottom": scope.equationEditorElement.height()
-                    }).removeClass("active-menu");
-                });
-
-                scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-
-
-                    scope.draggingNewSymbol = true;
-                    scope.mousePageX = pageX;
-                    scope.mousePageY = pageY;
-                    var tOff = element.find(".trash-button").position();
-                    var tWidth = element.find(".trash-button").width();
-                    var tHeight = element.find(".trash-button").height();
-                    scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
-
-                    sketch.updatePotentialSymbol(symbol, pageX, pageY);
-                    scope.$digest();
-
-
-                });
-
-                scope.notifySymbolDrag = function(x, y) {
-                    var tOff = element.find(".trash-button").position();
-                    var tWidth = element.find(".trash-button").width();
-                    var tHeight = element.find(".trash-button").height();
-
-                    scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
-                    scope.$apply();
-                };
-
-                scope.$on("newSymbolAbortDrag", function() {
-                    if (scope.draggingNewSymbol) {
-                        scope.draggingNewSymbol = false;
-                        scope.log.actions.push({
-                            event: "ABORT_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
-                            timestamp: Date.now()
-                        });
-                        sketch.updatePotentialSymbol(null);
-                        scope.$digest();
-                    }
-                });
-
-                scope.$on("spawnSymbol", function(_e) {
-                    var offset = element.offset();
-                    var width = element.width();
-                    var height = element.height();
-
+                    scope.canvasOffset = {};
                     scope.draggingNewSymbol = false;
 
-                    if (scope.trashActive) {
-                        scope.log.actions.push({
-                            event: "TRASH_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
-                            timestamp: Date.now()
-                        });
-                        sketch.updatePotentialSymbol(null);
-                        return;
-                    }
+                    scope.equationEditorElement = element;
 
-                    // TODO: Improve with different widget types
-                    sketch.commitPotentialSymbol();
-
-                    scope.$broadcast("historyCheckpoint");
-
-                    // console.log("scope.state: ", scope.state);
-                });
-
-                scope.logOnClose = function(event) {
-                    // This ought to catch people who navigate away without closing the editor!
-                    if (scope.log != null) {
-                        scope.log.actions.push({
-                            event: "NAVIGATE_AWAY",
-                            timestamp: Date.now()
-                        });
-                        api.logger.log(scope.log);
-                    }
-                };
-
-                $rootScope.showEquationEditor = function(initialState, questionDoc) {
-
-                    return new Promise(function(resolve, reject) {
-
-                        delete scope.symbolLibrary.customVars;
-                        delete scope.symbolLibrary.customFunctions;
-                        if (questionDoc && questionDoc.availableSymbols) {
-                            var parsed = parseCustomSymbols(questionDoc.availableSymbols);
-                            if (parsed.vars.length > 0) {
-                                scope.symbolLibrary.customVars = parsed.vars;
-                            }
-                            if (parsed.fns.length > 0) {
-                                scope.symbolLibrary.customFunctions = parsed.fns;
-                            }
-                        }
-
-                        $(".result-preview>span").empty();
-                        $(".result-preview").width(0);
-
-                        var eqnModal = $('#equationModal');
-                        eqnModal.one("opened.fndtn.reveal", function() {
-                            element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
-                        });
-
-                        eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || {
-                            symbols: []
-                        };
-                        scope.questionDoc = questionDoc;
-
-                        scope.log = {
-                            type: "EQN_EDITOR_LOG",
-                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
-                            screenSize: {
-                                width: window.innerWidth,
-                                height: window.innerHeight
-                            },
-                            actions: [{
-                                event: "OPEN",
-                                timestamp: Date.now()
-                            }]
-                        };
-
-                        window.addEventListener("beforeunload", scope.logOnClose);
-
-                        scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                        scope.historyPtr = 0;
-                        //element.find("canvas").remove();
-
-                        // TODO: Redisplay old equations in the centre
-
-                        scope.future = [];
-                        var p = new p5(function(p) {
-                            sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
-                            return sketch;
-                        }, element.find(".equation-editor")[0]);
-
-                        eqnModal.one("closed.fndtn.reveal", function() {
-                            sketch.p.remove();
-                            resolve(scope.state);
-                        })
-
-                    });
-                };
-
-                var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-                var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-                var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
-                var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
-                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
-                var letterMap = {
-                    "\\alpha": "α",
-                    "\\beta": "β",
-                    "\\gamma": "γ",
-                    "\\delta": "δ",
-                    "\\epsilon": "ε",
-                    "\\varepsilon": "ε",
-                    "\\zeta": "ζ",
-                    "\\eta": "η",
-                    "\\theta": "θ",
-                    "\\iota": "ι",
-                    "\\kappa": "κ",
-                    "\\lambda": "λ",
-                    "\\mu": "μ",
-                    "\\nu": "ν",
-                    "\\xi": "ξ",
-                    "\\omicron": "ο",
-                    "\\pi": "π",
-                    "\\rho": "ρ",
-                    "\\sigma": "σ",
-                    "\\tau": "τ",
-                    "\\upsilon": "υ",
-                    "\\phi": "φ",
-                    "\\chi": "χ",
-                    "\\psi": "ψ",
-                    "\\omega": "ω",
-                    "\\Gamma": "Γ",
-                    "\\Delta": "Δ",
-                    "\\Theta": "Θ",
-                    "\\Lambda": "Λ",
-                    "\\Xi": "Ξ",
-                    "\\Pi": "Π",
-                    "\\Sigma": "Σ",
-                    "\\Upsilon": "Υ",
-                    "\\Phi": "Φ",
-                    "\\Psi": "Ψ",
-                    "\\Omega": "Ω"
-                };
-
-                var inverseLetterMap = {};
-                for (var k in letterMap) {
-                    inverseLetterMap[letterMap[k]] = k;
-                }
-                inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
-
-                var convertToLatexIfGreek = function(s) {
-                    if (s == "epsilon") {
-                        return "\\varepsilon";
-                    }
-                    if (greekLetters.indexOf("\\" + s) > -1) {
-                        return "\\" + s;
-                    }
-                    if (greekLettersUpper.indexOf("\\" + s) > -1) {
-                        return "\\" + s;
-                    }
-                    return s;
-                };
-
-                var parseCustomSymbols = function(symbols) {
-                    var r = {
-                        vars: [],
-                        fns: [],
+                    scope.selectedSymbols = [];
+                    scope.selectionHandleFlags = {
+                        showCalc: false,
+                        showResize: true,
+                        showMove: false
                     };
 
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
-                        if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
-                            continue;
+                    scope.$on("triggerCloseMenus", function() {
+                        scope.$broadcast("closeMenus");
+                    });
+
+                    scope.$on("triggerResizeMenu", function() {
+                        scope.$broadcast("resizeMenu");
+                    });
+
+                    $(window).on("resize", function() {
+                        element.find(".top-menu").css({
+                            "bottom": scope.equationEditorElement.height()
+                        }).removeClass("active-menu");
+                    });
+
+                    scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
+
+
+                        scope.draggingNewSymbol = true;
+                        scope.mousePageX = pageX;
+                        scope.mousePageY = pageY;
+                        var tOff = element.find(".trash-button").position();
+                        var tWidth = element.find(".trash-button").width();
+                        var tHeight = element.find(".trash-button").height();
+                        scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
+                        console.log("Symbol object is: " + symbol);
+                        sketch.updatePotentialSymbol(symbol, pageX, pageY);
+                        scope.$digest();
+
+
+                    });
+
+                    scope.notifySymbolDrag = function(x, y) {
+                        var tOff = element.find(".trash-button").position();
+                        var tWidth = element.find(".trash-button").width();
+                        var tHeight = element.find(".trash-button").height();
+
+                        scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
+                        scope.$apply();
+                    };
+
+                    scope.$on("newSymbolAbortDrag", function() {
+                        if (scope.draggingNewSymbol) {
+                            scope.draggingNewSymbol = false;
+                            scope.log.actions.push({
+                                event: "ABORT_POTENTIAL_SYMBOL",
+                                symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                                timestamp: Date.now()
+                            });
+                            sketch.updatePotentialSymbol(null);
+                            scope.$digest();
+                        }
+                    });
+
+                    scope.$on("spawnSymbol", function(_e) {
+                        var offset = element.offset();
+                        var width = element.width();
+                        var height = element.height();
+
+                        scope.draggingNewSymbol = false;
+
+                        if (scope.trashActive) {
+                            scope.log.actions.push({
+                                event: "TRASH_POTENTIAL_SYMBOL",
+                                symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                                timestamp: Date.now()
+                            });
+                            sketch.updatePotentialSymbol(null);
+                            return;
                         }
 
-                        console.debug("Parsing:", s);
+                        // TODO: Improve with different widget types
+                        sketch.commitPotentialSymbol();
 
-                        var parts = s.split(" ");
-                        var partResults = [];
-                        for (var j in parts) {
-                            var p = parts[j];
+                        scope.$broadcast("historyCheckpoint");
 
-                            if (p.endsWith("()")) {
-                                var name = p.replace(/\(\)/g, "");
-                                var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
-                                var allowSubscript = name == "log";
-                                if (name.substring(0, 3) == "arc") {
-                                    partResults.push({
-                                        type: "Fn",
-                                        properties: {
-                                            name: name.substring(3),
-                                            innerSuperscript: innerSuperscript,
-                                            allowSubscript: allowSubscript
-                                        },
-                                        children: {
-                                            superscript: {
-                                                type: "Num",
-                                                properties: {
-                                                    significand: -1,
-                                                    exponent: 0
-                                                }
-                                            }
-                                        },
-                                        menu: {
-                                            label: "\\" + name,
-                                            texLabel: true
-                                        }
-                                    });
-                                } else {
-                                    partResults.push({
-                                        type: "Fn",
-                                        properties: {
-                                            name: name,
-                                            innerSuperscript: innerSuperscript,
-                                            allowSubscript: allowSubscript
-                                        },
-                                        menu: {
-                                            label: "\\" + name,
-                                            texLabel: true
-                                        }
-                                    });
+                        // console.log("scope.state: ", scope.state);
+                    });
+
+                    scope.logOnClose = function(event) {
+                        // This ought to catch people who navigate away without closing the editor!
+                        if (scope.log != null) {
+                            scope.log.actions.push({
+                                event: "NAVIGATE_AWAY",
+                                timestamp: Date.now()
+                            });
+                            api.logger.log(scope.log);
+                        }
+                    };
+
+                    $rootScope.showEquationEditor = function(initialState, questionDoc, editorMode) {
+
+                        return new Promise(function(resolve, reject) {
+
+                            delete scope.symbolLibrary.customVars;
+                            delete scope.symbolLibrary.customFunctions;
+                            if (questionDoc && questionDoc.availableSymbols) {
+                                var parsed = parseCustomSymbols(questionDoc.availableSymbols);
+                                if (parsed.vars.length > 0) {
+                                    scope.symbolLibrary.customVars = parsed.vars;
                                 }
-                            } else {
-                                var p1 = convertToLatexIfGreek(p.split("_")[0]);
-                                var newSym = {
-                                    type: "Symbol",
-                                    properties: {
-                                        letter: letterMap[p1] || p1,
-                                    },
-                                    menu: {
-                                        label: p1,
-                                        texLabel: true,
-                                    }
-                                };
-                                var p2 = convertToLatexIfGreek(p.split("_")[1]);
-                                if (p2) {
-                                    newSym.children = {
-                                        subscript: {
-                                            type: "Symbol",
+                                if (parsed.fns.length > 0) {
+                                    scope.symbolLibrary.customFunctions = parsed.fns;
+                                }
+                            }
+
+                            $(".result-preview>span").empty();
+                            $(".result-preview").width(0);
+
+                            var eqnModal = $('#equationModal');
+                            eqnModal.one("opened.fndtn.reveal", function() {
+                                element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
+                            });
+
+                            eqnModal.foundation("reveal", "open");
+                            scope.state = initialState || {
+                                symbols: []
+                            };
+                            scope.questionDoc = questionDoc;
+                            scope.editorMode = editorMode;
+                            console.log(editorMode);
+
+                            scope.log = {
+                                type: "EQN_EDITOR_LOG",
+                                questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                                screenSize: {
+                                    width: window.innerWidth,
+                                    height: window.innerHeight
+                                },
+                                actions: [{
+                                    event: "OPEN",
+                                    timestamp: Date.now()
+                                }]
+                            };
+
+                            window.addEventListener("beforeunload", scope.logOnClose);
+
+                            scope.history = [JSON.parse(JSON.stringify(scope.state))];
+                            scope.historyPtr = 0;
+                            //element.find("canvas").remove();
+
+                            // TODO: Redisplay old equations in the centre
+
+                            scope.future = [];
+                            var p = new p5(function(p) {
+                                sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                                return sketch;
+                            }, element.find(".equation-editor")[0]);
+
+                            eqnModal.one("closed.fndtn.reveal", function() {
+                                sketch.p.remove();
+                                resolve(scope.state);
+                            })
+
+                        });
+                    };
+
+                    var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+                    var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+                    var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
+                    var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
+                    var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
+                    var letterMap = {
+                        "\\alpha": "α",
+                        "\\beta": "β",
+                        "\\gamma": "γ",
+                        "\\delta": "δ",
+                        "\\epsilon": "ε",
+                        "\\varepsilon": "ε",
+                        "\\zeta": "ζ",
+                        "\\eta": "η",
+                        "\\theta": "θ",
+                        "\\iota": "ι",
+                        "\\kappa": "κ",
+                        "\\lambda": "λ",
+                        "\\mu": "μ",
+                        "\\nu": "ν",
+                        "\\xi": "ξ",
+                        "\\omicron": "ο",
+                        "\\pi": "π",
+                        "\\rho": "ρ",
+                        "\\sigma": "σ",
+                        "\\tau": "τ",
+                        "\\upsilon": "υ",
+                        "\\phi": "φ",
+                        "\\chi": "χ",
+                        "\\psi": "ψ",
+                        "\\omega": "ω",
+                        "\\Gamma": "Γ",
+                        "\\Delta": "Δ",
+                        "\\Theta": "Θ",
+                        "\\Lambda": "Λ",
+                        "\\Xi": "Ξ",
+                        "\\Pi": "Π",
+                        "\\Sigma": "Σ",
+                        "\\Upsilon": "Υ",
+                        "\\Phi": "Φ",
+                        "\\Psi": "Ψ",
+                        "\\Omega": "Ω"
+                    };
+
+                    var inverseLetterMap = {};
+                    for (var k in letterMap) {
+                        inverseLetterMap[letterMap[k]] = k;
+                    }
+                    inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
+
+                    var convertToLatexIfGreek = function(s) {
+                        if (s == "epsilon") {
+                            return "\\varepsilon";
+                        }
+                        if (greekLetters.indexOf("\\" + s) > -1) {
+                            return "\\" + s;
+                        }
+                        if (greekLettersUpper.indexOf("\\" + s) > -1) {
+                            return "\\" + s;
+                        }
+                        return s;
+                    };
+
+                    var parseCustomSymbols = function(symbols) {
+                        var r = {
+                            vars: [],
+                            fns: [],
+                        };
+
+                        for (var i in symbols) {
+                            var s = symbols[i].trim();
+                            if (s.length == 0) {
+                                console.warn("Tried to parse zero-length symbol in list:", symbols);
+                                continue;
+                            }
+
+                            console.debug("Parsing:", s);
+
+                            var parts = s.split(" ");
+                            var partResults = [];
+                            for (var j in parts) {
+                                var p = parts[j];
+
+                                if (p.endsWith("()")) {
+                                    var name = p.replace(/\(\)/g, "");
+                                    var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
+                                    var allowSubscript = name == "log";
+                                    if (name.substring(0, 3) == "arc") {
+                                        partResults.push({
+                                            type: "Fn",
                                             properties: {
-                                                letter: letterMap[p2] || p2,
-                                                upright: p2.length > 1
+                                                name: name.substring(3),
+                                                innerSuperscript: innerSuperscript,
+                                                allowSubscript: allowSubscript
+                                            },
+                                            children: {
+                                                superscript: {
+                                                    type: "Num",
+                                                    properties: {
+                                                        significand: -1,
+                                                        exponent: 0
+                                                    }
+                                                }
+                                            },
+                                            menu: {
+                                                label: "\\" + name,
+                                                texLabel: true
                                             }
+                                        });
+                                    } else {
+                                        partResults.push({
+                                            type: "Fn",
+                                            properties: {
+                                                name: name,
+                                                innerSuperscript: innerSuperscript,
+                                                allowSubscript: allowSubscript
+                                            },
+                                            menu: {
+                                                label: "\\" + name,
+                                                texLabel: true
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    var p1 = convertToLatexIfGreek(p.split("_")[0]);
+                                    var newSym = {
+                                        type: "Symbol",
+                                        properties: {
+                                            letter: letterMap[p1] || p1,
+                                        },
+                                        menu: {
+                                            label: p1,
+                                            texLabel: true,
                                         }
                                     };
-                                    newSym.menu.label += "_{" + p2 + "}";
+                                    var p2 = convertToLatexIfGreek(p.split("_")[1]);
+                                    if (p2) {
+                                        newSym.children = {
+                                            subscript: {
+                                                type: "Symbol",
+                                                properties: {
+                                                    letter: letterMap[p2] || p2,
+                                                    upright: p2.length > 1
+                                                }
+                                            }
+                                        };
+                                        newSym.menu.label += "_{" + p2 + "}";
+                                    }
+
+                                    partResults.push(newSym);
                                 }
-
-                                partResults.push(newSym);
                             }
-                        }
 
-                        var root = partResults[0];
-                        for (var k = 0; k < partResults.length - 1; k++) {
-                            partResults[k].children = {
-                                right: partResults[k + 1]
+                            var root = partResults[0];
+                            for (var k = 0; k < partResults.length - 1; k++) {
+                                partResults[k].children = {
+                                    right: partResults[k + 1]
+                                }
+                                root.menu.label += " " + partResults[k + 1].menu.label;
                             }
-                            root.menu.label += " " + partResults[k + 1].menu.label;
-                        }
-                        switch (partResults[0].type) {
-                            case "Symbol":
-                                r.vars.push(root);
-                                break;
-                            case "Function":
-                                r.fns.push(root);
-                                break;
+                            switch (partResults[0].type) {
+                                case "Symbol":
+                                    r.vars.push(root);
+                                    break;
+                                case "Function":
+                                    r.fns.push(root);
+                                    break;
+                            }
+
                         }
 
+                        return r;
+                    };
+
+                    var replaceSpecialChars = function(s) {
+                        for (var k in inverseLetterMap) {
+                            // Special characters have special needs (i.e., a space after them).
+                            // If the special character is followed by a non-special character, add a space:
+                            s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
+                            // Otherwise just replace it.
+                            s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                        }
+                        return s;
                     }
 
-                    return r;
-                };
-
-                var replaceSpecialChars = function(s) {
-                    for (var k in inverseLetterMap) {
-                        // Special characters have special needs (i.e., a space after them).
-                        // If the special character is followed by a non-special character, add a space:
-                        s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
-                        // Otherwise just replace it.
-                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                    // Make a single dict for lookup to impose an order. Should be quicker than indexOf repeatedly!
+                    var uniqueSymbolsTotalOrder = {};
+                    var uniqueSymbols = latinLetters.concat(latinLettersUpper, greekLetters, greekLettersUpper);
+                    for (var i = 0; i < uniqueSymbols.length; i++) {
+                        uniqueSymbolsTotalOrder[uniqueSymbols[i]] = i;
                     }
-                    return s;
-                }
 
-                // Make a single dict for lookup to impose an order. Should be quicker than indexOf repeatedly!
-                var uniqueSymbolsTotalOrder = {};
-                var uniqueSymbols = latinLetters.concat(latinLettersUpper, greekLetters, greekLettersUpper);
-                for (var i = 0; i < uniqueSymbols.length; i++) {
-                    uniqueSymbolsTotalOrder[uniqueSymbols[i]] = i;
-                }
-
-                var uniqueSymbolsSortFn = function(a, b) {
-                    // Are these functions?
-                    if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
+                    var uniqueSymbolsSortFn = function(a, b) {
+                        // Are these functions?
+                        if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
+                            if (a > b) return 1;
+                            if (a < b) return -1;
+                            return 0;
+                        } else if (a.indexOf("()") > -1) {
+                            return 1;
+                        } else if (b.indexOf("()") > -1) {
+                            return -1;
+                        }
+                        // For compound symbols, position using base symbol:
+                        var baseA = convertToLatexIfGreek(a.split("_")[0].trim());
+                        var baseB = convertToLatexIfGreek(b.split("_")[0].trim());
+                        // We have a dict with the symbols and an integer order:
+                        if (baseA in uniqueSymbolsTotalOrder && baseB in uniqueSymbolsTotalOrder) {
+                            return uniqueSymbolsTotalOrder[baseA] - uniqueSymbolsTotalOrder[baseB];
+                        } else if (baseA in uniqueSymbolsTotalOrder) {
+                            return 1;
+                        } else if (baseB in uniqueSymbolsTotalOrder) {
+                            return -1;
+                        }
+                        // Otherwise use default guess:
                         if (a > b) return 1;
                         if (a < b) return -1;
                         return 0;
-                    } else if (a.indexOf("()") > -1) {
-                        return 1;
-                    } else if (b.indexOf("()") > -1) {
-                        return -1;
-                    }
-                    // For compound symbols, position using base symbol:
-                    var baseA = convertToLatexIfGreek(a.split("_")[0].trim());
-                    var baseB = convertToLatexIfGreek(b.split("_")[0].trim());
-                    // We have a dict with the symbols and an integer order:
-                    if (baseA in uniqueSymbolsTotalOrder && baseB in uniqueSymbolsTotalOrder) {
-                        return uniqueSymbolsTotalOrder[baseA] - uniqueSymbolsTotalOrder[baseB];
-                    } else if (baseA in uniqueSymbolsTotalOrder) {
-                        return 1;
-                    } else if (baseB in uniqueSymbolsTotalOrder) {
-                        return -1;
-                    }
-                    // Otherwise use default guess:
-                    if (a > b) return 1;
-                    if (a < b) return -1;
-                    return 0;
-                }
-
-                scope.newEditorState = function(s) {
-                    scope.state = s;
-
-                    console.log("New state:", s);
-
-                    var rp = $(".result-preview>span");
-
-                    rp.empty();
-
-                    // this renders the result in the preview box in the bottom right corner of the eqn editor
-                    if (scope.state.result) {
-                        scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g, "");
-                        // Sort them into a unique order:
-                        scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].split(", ").sort(uniqueSymbolsSortFn).join(", ")
-                        scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].replace(/varepsilon/g, "epsilon");
-
-                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g, "").replace(/varepsilon/g, "epsilon");
-                        katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    var w = scope.state.result ? rp.outerWidth() : 0;
-                    var resultPreview = $(".result-preview");
-                    resultPreview.stop(true);
-                    resultPreview.animate({
-                        width: w
-                    }, 200);
+                    scope.newEditorState = function(s) {
+                        scope.state = s;
 
-                    scope.$emit("historyCheckpoint");
-                }
+                        console.log("New state:", s);
 
-                var stringSymbols = function(ss) {
-                    var symbols = [];
-                    for (var i in ss) {
-                        var s = ss[i];
-                        symbols.push({
-                            type: "Symbol",
-                            properties: {
-                                letter: letterMap[s] || s
-                            },
-                            menu: {
-                                label: s,
-                                texLabel: true,
+                        var rp = $(".result-preview>span");
+
+                        rp.empty();
+
+                        // this renders the result in the preview box in the bottom right corner of the eqn editor
+                        if (scope.state.result) {
+                            scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g, "");
+                            // Sort them into a unique order:
+                            scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].split(", ").sort(uniqueSymbolsSortFn).join(", ")
+                            scope.state.result["uniqueSymbols"] = scope.state.result["uniqueSymbols"].replace(/varepsilon/g, "epsilon");
+
+                            scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
+                            scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g, "").replace(/varepsilon/g, "epsilon");
+                            katex.render(scope.state.result["tex"], rp[0]);
+                        }
+
+                        var w = scope.state.result ? rp.outerWidth() : 0;
+                        var resultPreview = $(".result-preview");
+                        resultPreview.stop(true);
+                        resultPreview.animate({
+                            width: w
+                        }, 200);
+
+                        scope.$emit("historyCheckpoint");
+                    }
+
+                    var stringSymbols = function(ss) {
+                        var symbols = [];
+                        for (var i in ss) {
+                            var s = ss[i];
+                            symbols.push({
+                                type: "Symbol",
+                                properties: {
+                                    letter: letterMap[s] || s
+                                },
+                                menu: {
+                                    label: s,
+                                    texLabel: true,
+                                }
+                            });
+                        }
+
+                        return symbols;
+                    };
+
+                    var chemicalElements = function(elementArray) {
+                        var elements = [];
+
+                        for (var i in elementArray) {
+
+                            var currentElement = elementArray[i];
+                            elements.push({
+                                type: "ChemicalElement",
+                                properties: {
+                                    element: currentElement
+                                },
+                                menu: {
+                                    label: "\\text{" + currentElement + "}",
+                                    texLabel: true,
+                                    // add here option for it to be part of nuclear equation
+                                }
+                            });
+                        }
+                        return elements;
+                    }
+                    var numberStrings = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+
+                    var theNumbers = function(numberArray) {
+                        var elements = [];
+                        for (var i = 0; i < 10; i++) {
+                            var numString = i.toString();
+
+                            elements[numberStrings[i]] = {
+                                type: "Num",
+                                properties: {
+                                    significand: numString,
+                                },
+                                menu: {
+                                    label: numString,
+                                    texLabel: false,
+                                }
                             }
-                        });
-                    }
+                        }
 
-                    return symbols;
-                };
 
-                var chemicalElements = function(elementArray) {
-                    var elements = [];
-
-                    for (var i in elementArray) {
-
-                        var currentElement = elementArray[i];
-                        elements.push({
-                            type: "ChemicalElement",
-                            properties: {
-                                element: currentElement
-                            },
-                            menu: {
-                                label: "\\text{" + currentElement + "}",
-                                texLabel: true,
-                                // add here option for it to be part of nuclear equation
-                            }
-                        });
-                    }
                     return elements;
                 }
 
+                    scope.elementLibrary = {}
 
-                scope.elementLibrary = {}
-
-
-                scope.symbolLibrary = {
+                    scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
 
@@ -489,6 +511,8 @@ define(function(require) {
                     greekLettersUpper: stringSymbols(greekLettersUpper),
 
                     chemicalElements: chemicalElements(elements),
+
+                    theNumbers: theNumbers(numberStrings),
 
 
 
@@ -762,6 +786,7 @@ define(function(require) {
                     }],
 
                 };
+
 
                 scope.latinLetterTitle = {
                     menu: {

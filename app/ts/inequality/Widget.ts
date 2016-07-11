@@ -425,19 +425,20 @@ export
         return depth;
     }
 		/*
-		Finds the width of the bounding box around an entire expression. 
+		Finds the width of the bounding box around an entire expression.
 		*/
     getExpressionWidth(): number {
         var current_element: any = this;
+				console.log("hello");
         var expressionWidth = this.boundingBox().w;
         // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints["right"].child != null) {
+        if (current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
             expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
         }
-        if (current_element.dockingPoints["subscript"].child != null) {
+        if (current_element.dockingPoints["right"].childt != undefined && current_element.dockingPoints["subscript"].child != null) {
             expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
         }
-        if (current_element.dockingPoints["superscript"].child != null) {
+        if (current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
             expressionWidth += current_element.dockingPoints["superscript"].child.getExpressionWidth();
         }
         return expressionWidth;

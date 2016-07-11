@@ -98,7 +98,7 @@ export
             expression = this.getFullText("mhchem"); // need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
-          
+
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
@@ -239,7 +239,22 @@ export
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w / 2);
+            var child_width = this.dockingPoints["right"].child.boundingBox().w;
+            console.log("Child width: " + child_width);
+            var parent_superscript_width = 0;
+
+            if (this.dockingPoints["superscript"].child != null) {
+              parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
+            }
+
+
+            console.log("Parent superscript width: " + parent_superscript_width);
+            var parent_width = this.boundingBox().w;
+            console.log("Parent width before ammending: " + parent_width);
+            // If either subscripts or superscripts or both exist
+            parent_width += parent_superscript_width;
+            console.log("Parent width after ammending: " + parent_width);
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

@@ -30,6 +30,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				};
 
 				scope.eqnState = { symbols: {} };
+				scope.editorMode = 'maths';
 
 				scope.$watch("eqnState", function(s, oldS) {
 					if (s === oldS)
@@ -56,7 +57,7 @@ define(["app/honest/responsive_video"], function(rv) {
 						setTimeout(function() { scope.$broadcast("startWatchingSelectedChoice")}, 0);
 					}
 					// If we get this far, r has really been explicitly set by QuestionTabs
-					
+
 					if(r && r.answer.value) {
 
 						scope.eqnState = JSON.parse(r.answer.value);

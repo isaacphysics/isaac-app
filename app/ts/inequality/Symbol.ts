@@ -30,7 +30,7 @@ export
         this.letter = letter;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['symbol', 'operator', 'exponent'];
     }
 
 	/**
@@ -232,8 +232,6 @@ export
 
         // TODO: Tweak this with kerning.
 
-        // TODO: add this logic to other classes, and figure out how to position element if elements in sub/superscript OTHER than the last
-        // element have sub/superscripts also.
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             var child_width = this.dockingPoints["right"].child.boundingBox().w;
