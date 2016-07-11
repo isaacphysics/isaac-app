@@ -117,22 +117,22 @@ define([], function() {
                     applyDisabledToolTips();                    
                 });
 
-                scope.answerCountTicker = 0;
+                // scope.answerCountTicker = 0;
 
-                api.questionsAnswered.get().$promise.then(function(stat) {
-                    var count = stat.answeredQuestionCount;
-                    var f = function() {
-                        var increment = Math.max(Math.floor(count/100),1);
-                        if (scope.answerCountTicker + increment <= count) {
-                            scope.answerCountTicker += increment;
-                            $timeout(f, 20);
-                        } else {
-                            scope.answerCountTicker = count;
-                        }
-                    }
-                    f();
+                // api.questionsAnswered.get().$promise.then(function(stat) {
+                //     var count = stat.answeredQuestionCount;
+                //     var f = function() {
+                //         var increment = Math.max(Math.floor(count/100),1);
+                //         if (scope.answerCountTicker + increment <= count) {
+                //             scope.answerCountTicker += increment;
+                //             $timeout(f, 20);
+                //         } else {
+                //             scope.answerCountTicker = count;
+                //         }
+                //     }
+                //     f();
 
-                });
+                // });
 
             }
 		};

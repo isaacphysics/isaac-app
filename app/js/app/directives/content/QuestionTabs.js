@@ -122,7 +122,13 @@ define(["app/honest/responsive_video"], function(rv) {
 
 						}, function bar(e) {
 							console.error("Error validating answer:", e);
-							scope.showToast(scope.toastTypes.Failure, "Can't Submit Answer", e.data.errorMessage != undefined ? e.data.errorMessage : "");
+							var eMessage = e.data.errorMessage;
+							var eTitle = "Can't Submit Answer";
+							if (eMessage != null && eMessage.indexOf("ValidatorUnavailableException:") == 0) {
+								eTitle = "Error Checking Answer"
+								eMessage = eMessage.replace("ValidatorUnavailableException:", "");
+							}
+							scope.showToast(scope.toastTypes.Failure, eTitle, eMessage != undefined ? eMessage : "");
 							// If an error, after a little while allow them to submit the same answer again.
 							setTimeout(function() { canSubmit = true; }, 5000);
 						});

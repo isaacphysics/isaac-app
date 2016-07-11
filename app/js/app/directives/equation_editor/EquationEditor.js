@@ -13,7 +13,7 @@ define(function(require) {
 
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
-                })
+                });
 
                 var sketch = null;
 
@@ -42,7 +42,6 @@ define(function(require) {
                 });
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-
                     scope.draggingNewSymbol = true;
 
                     var tOff = element.find(".trash-button").position();
@@ -66,6 +65,11 @@ define(function(require) {
                 scope.$on("newSymbolAbortDrag", function() {
                     if (scope.draggingNewSymbol) {
                         scope.draggingNewSymbol = false;
+                        scope.log.actions.push({
+                            event: "ABORT_POTENTIAL_SYMBOL",
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                            timestamp: Date.now()
+                        });
                         sketch.updatePotentialSymbol(null);
                         scope.$digest();
                     }
@@ -79,6 +83,11 @@ define(function(require) {
                     scope.draggingNewSymbol = false;
 
                     if (scope.trashActive) {
+                        scope.log.actions.push({
+                            event: "TRASH_POTENTIAL_SYMBOL",
+                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                            timestamp: Date.now()
+                        });
                         sketch.updatePotentialSymbol(null);
                         return;
                     }
@@ -90,6 +99,17 @@ define(function(require) {
 
                 	// console.log("scope.state: ", scope.state);
                 });
+
+                scope.logOnClose = function(event) {
+                    // This ought to catch people who navigate away without closing the editor!
+                    if (scope.log != null) {
+                        scope.log.actions.push({
+                            event: "NAVIGATE_AWAY",
+                            timestamp: Date.now()
+                        });
+                        api.logger.log(scope.log);
+                    }
+                };
 
                 $rootScope.showEquationEditor = function(initialState, questionDoc) {
 
@@ -118,6 +138,18 @@ define(function(require) {
                         eqnModal.foundation("reveal", "open");
                         scope.state = initialState || { symbols: []  };
                         scope.questionDoc = questionDoc;
+                        
+                        scope.log = {
+                            type: "EQN_EDITOR_LOG",
+                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                            screenSize: { width: window.innerWidth, height: window.innerHeight },
+                            actions: [{
+                                event: "OPEN",
+                                timestamp: Date.now()
+                            }]
+                        };
+
+                        window.addEventListener("beforeunload", scope.logOnClose);
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
@@ -128,6 +160,7 @@ define(function(require) {
                         scope.future = [];
                         var p = new p5( function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                            scope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
 
@@ -740,6 +773,11 @@ define(function(require) {
                         for (var i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
+                        scope.log.actions.push({
+                            type: "UNDO",
+                            timestamp: Date.now()
+                    });
+
                     }
                 };
 
@@ -753,16 +791,29 @@ define(function(require) {
                         for (var i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
+                        scope.log.actions.push({
+                            type: "REDO",
+                            timestamp: Date.now()
+                    });
                     }
                 };
 
                 scope.submit = function() {
-                    // scope.state.result = { "tex":"e^{i\\pi}+1=0" };
-                    //scope.state.result = { "tex": scope.state.inequalityResult, "python": scope.state.symbols.expression.python };
                     $("#equationModal").foundation("reveal", "close");
-                    api.logger.log({
-                        type : "CLOSE_EQUATION_EDITOR"
+                    scope.log.finalState = [];
+                    sketch.symbols.forEach(function(e) {
+                       scope.log.finalState.push(e.subtreeObject(true, true));
                     });
+                    scope.log.actions.push({
+                        type: "CLOSE",
+                        timestamp: Date.now()
+                    });
+                    if (scope.segueEnvironment == "DEV") {
+                        console.log("\nLOG: ~" + (JSON.stringify(scope.log).length/1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                    }
+                    window.removeEventListener("beforeunload", scope.logOnClose);
+                    api.logger.log(scope.log);
+                    scope.log = null;
                 };
 
                 scope.centre = function() {

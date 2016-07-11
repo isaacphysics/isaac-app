@@ -1,5 +1,6 @@
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 /** Functions. */
@@ -54,14 +55,14 @@ class Fn extends Widget {
         var box = this.s.font_up.textBounds(this.isPlaceholder ? "sin" : (this.name || ''), 0, 1000, this.scale * this.s.baseFontSize);
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox.h/2), 1, "symbol");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox.h/2), 1, "symbol", "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
 
         if (this.allowSubscript) {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2, 0), 0.666, "symbol");
+            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2, 0), 0.666, "symbol", "subscript");
         }
         if (this.innerSuperscript) {
-            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2, -bracketBox.h), 0.666, "symbol");
+            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2, -bracketBox.h), 0.666, "symbol", "superscript");
         } else {
             // This is where we would generate the 'outer' superscript docking point, should we ever need it.
             // If we ever do this, we'll need to change all the Math.max calls below.
@@ -126,7 +127,8 @@ class Fn extends Widget {
                 }
 
                 if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                    if(!(this.dockingPoints['right'].child instanceof BinaryOperation)) {
+                    if(!(this.dockingPoints['right'].child instanceof BinaryOperation  ||
+                    this.dockingPoints["right"].child instanceof Relation)) {
                         expression += '*' + this.dockingPoints['right'].child.getExpression(format);
                     } else {
                         expression += this.dockingPoints['right'].child.getExpression(format);

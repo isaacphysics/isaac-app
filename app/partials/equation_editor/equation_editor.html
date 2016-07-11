@@ -42,7 +42,7 @@
 
     <div ng-show="draggingNewSymbol || selectedSymbols.length" class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
 
-    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape"><div isaac-content doc="questionDoc"></div></div>
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc &&questionDoc.value && isLandscape"><div isaac-content doc="questionDoc"></div></div>
 
     <div class="orientation-warning" ng-if="!isLandscape">The Isaac Equation Editor may only be used in landscape mode. Please rotate your device.</div>
 

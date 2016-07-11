@@ -126,7 +126,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('equality', {
-                url: "/equality",
+                url: "/equality?symbols",
                 resolve: {
                     // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
                     // we may want to revert this policy at some point.
@@ -135,7 +135,8 @@ define(["angular-ui-router"], function() {
                 views: {
                     "body": { 
                         templateUrl: "/partials/states/equation_editor.html",
-                        controller: ["$scope", function($scope) {
+                        controller: ["$scope", '$stateParams', function($scope, $stateParams) {
+                            $scope.questionDoc = {availableSymbols: $stateParams.symbols.split(",")};
                             $scope.eqnState = {
                                 symbols: {},
                             };

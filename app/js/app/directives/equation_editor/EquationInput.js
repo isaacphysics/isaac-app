@@ -5,17 +5,14 @@ define([], function() {
         return {
             scope: {
                 state: "=",
-                questionDoc: "="
+                questionDoc: "=",
             },
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
-
+                
+                
                 scope.edit = function() {
-                    api.logger.log({
-                        type : "OPEN_EQUATION_EDITOR",
-                        questionId : scope.questionDoc ? scope.questionDoc.id : null
-                    });
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc).then(function(finalState) {
                         scope.state = finalState;
                         scope.$apply();

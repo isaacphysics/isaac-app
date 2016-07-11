@@ -172,28 +172,35 @@ abstract class Widget {
 	 * Retrieves the abstract tree representation having this widget as root.
 	 *
 	 * @param processChildren This stops it from traversing children.
+	 * @param includeIds Include symbol IDs
+	 * @param minimal Only include essential information
 	 * @returns {{type: string}}
 	 */
-	subtreeObject(processChildren = true): Object {
-		var dockingPoints = {};
-		_.each(this.dockingPoints, (dockingPoint, key) => {
-			if(dockingPoint.child != null) {
-				dockingPoints[key] = dockingPoint.child.subtreeObject();
-			}
-		});
+	subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
 		var p = this.getAbsolutePosition();
 		var o = {
 			type: this.typeAsString
 		};
-		if(!this.parentWidget) {
+		if (includeIds) {
+			o["id"] = this.id;
+		}
+		if(!this.parentWidget && !minimal) {
 			o["position"] = { x: p.x, y: p.y };
 			o["expression"] = {
 				latex: this.getExpression("latex"),
 				python: this.getExpression("python")
 			};
 		}
-		if(processChildren && !_.isEmpty(dockingPoints)) {
-			o["children"] = dockingPoints;
+		if(processChildren) {
+			var dockingPoints = {};
+			_.each(this.dockingPoints, (dockingPoint, key) => {
+				if(dockingPoint.child != null) {
+					dockingPoints[key] = dockingPoint.child.subtreeObject(processChildren, includeIds, minimal);
+				}
+			});
+			if (!_.isEmpty(dockingPoints)) {
+				o["children"] = dockingPoints;
+			}
 		}
 		var properties = this._properties();
 		if(properties) {
@@ -243,6 +250,13 @@ abstract class Widget {
         var oldParent = this.parentWidget;
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
+				this.s.scope.log.actions.push({
+					event: "UNDOCK_SYMBOL",
+					symbol: this.subtreeObject(false, true, true),
+					parent: this.parentWidget.subtreeObject(false, true, true),
+					dockingPoint: dockingPoint.name,
+					timestamp: Date.now()
+				});
                 dockingPoint.child = null;
                 this.parentWidget = null;
             }

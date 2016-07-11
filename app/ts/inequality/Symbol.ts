@@ -45,9 +45,9 @@ class Symbol extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
     }
 
     /**
@@ -244,4 +244,11 @@ class Symbol extends Widget {
 			p.y = -this.s.xBox.h / 2;
 		}
 	}
+
+    /**
+     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     */
+    getChildren(): Array<Widget> {
+        return _.compact(_.pluck(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+    }
 }
