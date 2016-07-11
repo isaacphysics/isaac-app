@@ -141,9 +141,6 @@ define(["angular-ui-router"], function() {
                             if($stateParams.mode == 'chemistry') {
                                 $rootScope.mathMode = false;
                             }
-                            else if($stateParams.mode == 'maths') {
-                                $rootScope.mathMode = true;
-                            }
                             $scope.eqnState = {
                                 symbols: {},
                             };
