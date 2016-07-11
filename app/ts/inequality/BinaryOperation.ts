@@ -67,6 +67,10 @@ class BinaryOperation extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
             }
+        } else if(format == "mhchem") {
+            if (this.dockingPoints["right"].child != null) {
+                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+            }
         } else if(format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
