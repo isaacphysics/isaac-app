@@ -38,7 +38,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					// Make sure that we cope if we've been given back a Choice object from the DB
 					scope.selectedChoice.type = "formula";
-
+					
 					scope.selectedChoice.value = JSON.stringify(s);
 					if (s && s.result) {
 						scope.selectedChoice.pythonExpression = s.result.python;

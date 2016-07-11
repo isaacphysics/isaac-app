@@ -38,11 +38,31 @@ define(["app/honest/responsive_video"], function(rv) {
                         return;
                     scope.selectedChoice.value = JSON.stringify(s);
                     if (s && s.result) {
-                        scope.selectedChoice.value = s.result.mhchem;
+                        scope.selectedChoice.mhchemExpression = s.result.mhchem;
                     } else {
-                        scope.selectedChoice.pythonExpression = "";
+                        scope.selectedChoice.mhchemExpression = "";
                     }
                 }, true);
+
+                scope.$watch("validationResponse", function(r, oldR) {
+                    if (!scope.validationResponseSet)
+                        return;
+
+                    if (r === oldR) {
+                        // Prevent questionTabs from clobbering our initialisation.
+                        scope.$broadcast("stopWatchingSelectedChoice");
+                        setTimeout(function() {
+                            scope.$broadcast("startWatchingSelectedChoice")
+                        }, 0);
+                    }
+                    // If we get this far, r has really been explicitly set by QuestionTabs
+
+                    if (r && r.answer.value) {
+                        scope.eqnState = JSON.parse(r.answer.value);
+                        scope.selectedChoice.value = r.answer.value;
+
+                    }
+                })
 
             }
         };
