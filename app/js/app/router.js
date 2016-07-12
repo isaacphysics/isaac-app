@@ -136,7 +136,9 @@ define(["angular-ui-router"], function() {
                     "body": { 
                         templateUrl: "/partials/states/equation_editor.html",
                         controller: ["$scope", '$stateParams', function($scope, $stateParams) {
-                            $scope.questionDoc = {availableSymbols: $stateParams.symbols.split(",")};
+                            if ($stateParams.symbols) {
+                                $scope.questionDoc = {availableSymbols: $stateParams.symbols.split(",")};
+                            }
                             $scope.eqnState = {
                                 symbols: {},
                             };
