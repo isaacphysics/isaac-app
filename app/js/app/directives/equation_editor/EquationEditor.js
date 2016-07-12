@@ -774,7 +774,7 @@ define(function(require) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
-                            type: "UNDO",
+                            event: "UNDO",
                             timestamp: Date.now()
                     });
 
@@ -792,7 +792,7 @@ define(function(require) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
-                            type: "REDO",
+                            event: "REDO",
                             timestamp: Date.now()
                     });
                     }
@@ -805,7 +805,7 @@ define(function(require) {
                        scope.log.finalState.push(e.subtreeObject(true, true));
                     });
                     scope.log.actions.push({
-                        type: "CLOSE",
+                        event: "CLOSE",
                         timestamp: Date.now()
                     });
                     if (scope.segueEnvironment == "DEV") {
