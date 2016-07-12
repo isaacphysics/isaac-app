@@ -30,7 +30,7 @@ export
         this.letter = letter;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent'];
+        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript'];
     }
 
 	/**
@@ -47,7 +47,7 @@ export
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "symbol_subscript", "subscript");
     }
 
     /**
@@ -240,11 +240,16 @@ export
             var parent_width = this.boundingBox().w;
             // If either subscripts or superscripts or both exist
             parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
+            var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+            var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+            var parent_width = this.boundingBox().w;
+            // If either subscripts or superscripts or both exist
+            parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
             p.y = -this.s.xBox.h / 2;
         }
     }

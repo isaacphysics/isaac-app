@@ -30,7 +30,7 @@ export
         this.element = element;
         this.s = s;
 
-        this.docksTo = ['ChemicalElement', 'operator', 'symbol'];
+        this.docksTo = ['ChemicalElement', 'operator', 'relation'];
     }
 
     /**
@@ -243,8 +243,6 @@ export
             var p = this.dockingPoints["mass_number"].child.position;
             var offsetBox = this.dockingPoints["mass_number"].child.offsetBox();
             var w = offsetBox.w;
-
-            console.log(w);
             var childDescent = offsetBox.y + offsetBox.h;
             widest = this.dockingPoints["mass_number"].child.subtreeBoundingBox().w;
             // this is the position of the docking point.
@@ -289,7 +287,7 @@ export
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             var child_width = this.dockingPoints["right"].child.boundingBox().w;
-            console.log("Child width: " + child_width);
+
             var parent_superscript_width = 0;
             var parent_subscript_width = 0;
             if (this.dockingPoints["superscript"].child != null) {
@@ -299,13 +297,12 @@ export
               parent_subscript_width = this.dockingPoints["subscript"].child.getExpressionWidth();
             }
 
-            console.log("Parent superscript width: " + parent_subscript_width);
-            console.log("Parent subscript width: " + parent_subscript_width);
+
             var parent_width = this.boundingBox().w;
-            console.log("Parent width before ammending: " + parent_width);
+
             // If either subscripts or superscripts or both exist
             parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-            console.log("Parent width after ammending: " + parent_width);
+
             p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
             p.y = 0;
         } else {

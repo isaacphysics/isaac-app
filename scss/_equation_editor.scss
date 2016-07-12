@@ -1,6 +1,6 @@
 $menu-handle-width: 160px;
 .equation-editor {
-    background: url(/assets/equation_editor/bg.png);
+    background: url("/assets/equation_editor/bg.png");
     background-position: -1px -1px;
     border: 1px solid black;
     height: 100%;
@@ -14,14 +14,14 @@ $menu-handle-width: 160px;
     -ms-user-select: none;
     user-select: none;
     ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 4px;
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 1px;
-    background-color: rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
-}
+        -webkit-appearance: none;
+        width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 1px;
+        background-color: rgba(0,0,0,.5);
+        -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    }
     &:focus,
     :focus {
         outline: none;
@@ -83,7 +83,7 @@ $menu-handle-width: 160px;
         }
         &.active-menu {
             .handle {
-                background: url(/assets/equation_editor/menu-handle-active.png) no-repeat bottom;
+                background: url("/assets/equation_editor/menu-handle-active.png") no-repeat bottom;
             }
         }
         .top-menu-above {
@@ -104,7 +104,7 @@ $menu-handle-width: 160px;
             left: 50%;
             cursor: pointer;
             visibility: visible;
-            background: url(/assets/equation_editor/menu-handle.png) no-repeat bottom;
+            background: url("/assets/equation_editor/menu-handle.png") no-repeat bottom;
             height: 80px;
             color: white;
             font-size: 24px;
@@ -136,18 +136,18 @@ $menu-handle-width: 160px;
             }
             [menu-symbol] {
                 position: relative;
-                left: 0px;
-                top: 0px;
+                left: 0;
+                top: 0;
                 width: 90px;
                 height: 100px;
                 text-align: center;
                 line-height: 80px;
                 display: inline-block;
                 cursor: pointer;
-                background: url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                background: url("/assets/equation_editor/hex-menu-item.png") no-repeat center center;
                 color: #317115;
                 &.dragging {
-                    background: url(/assets/equation_editor/hex-menu-item-bordered.png) no-repeat center center;
+                    background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat center center;
                 }
             }
             .dragging-background {
@@ -166,9 +166,9 @@ $menu-handle-width: 160px;
             }
             ul {
                 position: absolute;
-                left: 0px;
-                top: 0px;
-                padding: 0px 20px;
+                left: 0;
+                top: 0;
+                padding: 0 20px;
                 margin: 0;
             }
         }
@@ -176,12 +176,12 @@ $menu-handle-width: 160px;
             background: #317115;
             li {
                 &:not(.active) {
-                    background: url(/assets/equation_editor/hex-menu-item-inactive.png) no-repeat center center !important;
+                    background: url("/assets/equation_editor/hex-menu-item-inactive.png") no-repeat center center !important;
                     color: #fff !important;
                 }
                 &.active {
                     background: #509e2e;
-                    background: #509e2e url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                    background: #509e2e url("/assets/equation_editor/hex-menu-item.png") no-repeat center center;
                 }
             }
         }
@@ -195,7 +195,7 @@ $menu-handle-width: 160px;
             height: 130px;
             .button-grid {
                 position: absolute;
-                left: 0px;
+                left: 0;
                 width: 450px;
                 display: block;
                 margin: 7px 0 0 60px;
@@ -211,7 +211,7 @@ $menu-handle-width: 160px;
                     font-size: 40px;
                     font-weight: 500;
                     font-family: KaTeX_Main;
-                    margin: 3px 3px 0px 3px;
+                    margin: 3px 3px 0;
                 }
                 .wedgeFit {
                     margin-top: -14px;
@@ -262,7 +262,7 @@ $menu-handle-width: 160px;
             }
             .number-entry-symbol {
                 position: absolute;
-                right: 0px;
+                right: 0;
                 width: 100px;
                 .symbol-label.tiny {
                     font-size: 14px;
@@ -270,14 +270,14 @@ $menu-handle-width: 160px;
                 .number-hex {
                     margin-top: 15px;
                     ul {
-                        padding: 0px 7px;
+                        padding: 0 7px;
                     }
                 }
                 .menu-dismiss {
                     bottom: initial;
                     top: 20px;
                     left: 10px;
-                    background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
+                    background: url("/assets/equation_editor/hex-button-submit.png") no-repeat;
                 }
             }
         }
@@ -306,28 +306,49 @@ $menu-handle-width: 160px;
         }
     }
     .hex-button {
-        width: 90px;
-        height: 108px;
         text-align: center;
         border: none;
         position: absolute;
         bottom: 18px;
         cursor: pointer;
+        &.centre,
+        &.redo,
+        &.undo {
+            width: 68px;
+            height: 80px;
+        }
         &.centre {
             left: 18px;
-            background: url(/assets/equation_editor/hex-button-centre.png) no-repeat;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+        }
+        &.centre:hover {
+            background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+            background-size: contain;
         }
         &.undo {
-            left: 114px;
-            background: url(/assets/equation_editor/hex-button-undo.png) no-repeat;
+            left: 102px;
+            background: url("/assets/equation_editor/hex-button-undo.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-undo-hover.png") no-repeat;
+                background-size: contain;
+            }
         }
         &.redo {
-            left: 210px;
-            background: url(/assets/equation_editor/hex-button-redo.png) no-repeat;
+            left: 187px;
+            background: url("/assets/equation_editor/hex-button-redo.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-redo-hover.png") no-repeat;
+                background-size: contain;
+            }
         }
         &.submit {
+            width: 90px;
+            height: 108px;
             right: 18px;
-            background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
+            background: url("/assets/equation_editor/hex-button-submit.png") no-repeat;
         }
     }
     .trash-button {
@@ -336,12 +357,12 @@ $menu-handle-width: 160px;
         position: absolute;
         right: 0;
         top: calc(50% - 80px);
-        background: url(/assets/equation_editor/trash-active.png) no-repeat;
+        background: url("/assets/equation_editor/trash-active.png") no-repeat;
         opacity: 0.5;
         cursor: pointer;
         z-index: -20;
-        &:hover,
-        &.active {
+        &.active,
+        &:hover {
             opacity: 1;
         }
     }
@@ -358,7 +379,7 @@ $menu-handle-width: 160px;
         line-height: 108px;
         overflow: hidden;
         width: 0;
-        &>span {
+        & > span {
             padding-left: 18px;
             padding-right: calc(90px/2 + 18px);
         }
@@ -375,7 +396,7 @@ $menu-handle-width: 160px;
         border-radius: 20px;
         background-color: rgba(0, 0, 0, 0.6);
         color: white;
-        padding: 1.25rem 1px 0px 1px;
+        padding: 1.25rem 1px 0;
         pointer-events: none;
     }
     .orientation-warning {

@@ -10,6 +10,9 @@ export
     private significand: string;
     private exponent: string;
     private num_font_size;
+    protected right = this.dockingPoints.hasOwnProperty("right");
+    protected superscript = this.dockingPoints.hasOwnProperty("superscript");
+
     get typeAsString(): string {
         return "Num";
     }
@@ -23,6 +26,7 @@ export
         var box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
+
 
     constructor(p: any, s: any, significand: string, exponent: string) {
         super(p, s);
@@ -76,17 +80,22 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
+
     getExpression(format: string): string {
         var expression = "";
+        console.log(this.right);
+        console.log(this.superscript);
+
         if (format == "latex") {
             expression = this.getFullText("latex");
-            if (this.dockingPoints["superscript"].child != null) {
+
+            if (this.superscript && this.dockingPoints["superscript"].child != null) {
                 if (this.exponent) {
                     expression = "(" + expression + ")";
                 }
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
-            if (this.dockingPoints["right"].child != null) {
+            if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
@@ -99,7 +108,7 @@ export
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
 
-            if (this.dockingPoints["right"].child != null) {
+            if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {

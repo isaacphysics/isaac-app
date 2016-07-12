@@ -112,7 +112,6 @@ export
     };
 
     updatePotentialSymbol = (spec, x?, y?) => {
-      console.log(spec);
         // NB: This logic requires spec to be briefly set to null when switching between potential symbol types.
         if (spec) {
             if (!this.potentialSymbol) {

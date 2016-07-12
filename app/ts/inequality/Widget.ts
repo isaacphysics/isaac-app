@@ -63,6 +63,7 @@ export
     protected p: any;
     /** Unique ID */
     id: number = -1;
+    
 
     /** Scaling factor for this widget (affected by where a widget is docked, typically) */
     scale: number = 1.0;
@@ -82,7 +83,7 @@ export
     isHighlighted = false;
     color = null;
     isMainExpression = false;
-    currentPlacement;
+    currentPlacement = "";
 
     get typeAsString(): string {
         return "Widget";
@@ -128,7 +129,7 @@ export
                 dockingPoint.child.draw();
             } else {
                 // There is no child to paint, let's paint an empty docking point
-                // if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+                //if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
                 var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
                 var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
@@ -144,7 +145,7 @@ export
                     this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * 20, this.scale * 20);
                     // this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
                 }
-                // }
+                //}
             }
         });
 
@@ -231,6 +232,7 @@ export
     subtreeBoundingBox(): Rect {
 
         var box = this.boundingBox();
+
         var subtree = _.map(this.getChildren(), c => {
             var b = c.subtreeBoundingBox();
             b.x += c.position.x;
@@ -250,12 +252,13 @@ export
             if (bottom < c.y + c.h) { bottom = c.y + c.h; }
         });
 
-        return new Rect(left, top, right - left, bottom - top);
+        return new Rect(left, top, this.getExpressionWidth(), bottom - top);
     }
 
     /** Removes this widget from its parent. Also, shakes it. */
     removeFromParent() {
         var oldParent = this.parentWidget;
+        this.currentPlacement = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
                 this.s.scope.log.actions.push({
@@ -419,8 +422,16 @@ export
         var depth = 0;
         var n: Widget = this;
         while (n.parentWidget) {
+
+          if(this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
             depth += 1;
             n = n.parentWidget;
+          }
+          else {
+
+            n = n.parentWidget;
+          }
+
         }
         return depth;
     }
@@ -429,18 +440,33 @@ export
 		*/
     getExpressionWidth(): number {
         var current_element: any = this;
-				console.log("hello");
         var expressionWidth = this.boundingBox().w;
+
         // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
+        if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
             expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
         }
-        if (current_element.dockingPoints["right"].childt != undefined && current_element.dockingPoints["subscript"].child != null) {
+        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
             expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
         }
-        if (current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
+        if (current_element.dockingPoints.hasOwnProperty("superscript") && current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
             expressionWidth += current_element.dockingPoints["superscript"].child.getExpressionWidth();
         }
         return expressionWidth;
+    }
+    getExpressionHeight(): number {
+        var current_element: any = this;
+        var expressionHeight = this.boundingBox().h;
+        // Find the bounding box width for an entire expression.
+        if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
+            expressionHeight += current_element.dockingPoints["right"].child.getExpressionHeight();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
+            expressionHeight += current_element.dockingPoints["subscript"].child.getExpressionHeight();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("superscript") &&  current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
+            expressionHeight += current_element.dockingPoints["superscript"].child.getExpressionHeight();
+        }
+        return expressionHeight;
     }
 }

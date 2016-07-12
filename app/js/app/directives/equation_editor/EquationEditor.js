@@ -212,7 +212,7 @@ define(function(require) {
                         "\\sigma": "σ",
                         "\\tau": "τ",
                         "\\upsilon": "υ",
-                        "\\phi": "φ",
+                        "\\phi": "ϕ",
                         "\\chi": "χ",
                         "\\psi": "ψ",
                         "\\omega": "ω",

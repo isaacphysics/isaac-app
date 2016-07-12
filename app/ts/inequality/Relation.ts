@@ -77,7 +77,7 @@ class Relation extends Widget {
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['operator', 'symbol'];
+        this.docksTo = ['operator',];
     }
 
     /**
@@ -90,7 +90,7 @@ class Relation extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w/4, -this.s.xBox.h/2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w/4, -this.s.xBox.h/2), 1, "relation", "right");
     }
 
     /**
@@ -184,7 +184,7 @@ class Relation extends Widget {
 
         // Work out the size of all our children
         var boxes: {[key:string]: Rect} = {};
-
+        console.log(this.docksTo);
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
                 dockingPoint.child.scale = this.scale * dockingPoint.scale;

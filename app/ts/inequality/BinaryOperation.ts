@@ -32,7 +32,7 @@ class BinaryOperation extends Widget {
         this.operation = operation;
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['operator', 'exponent', 'symbol'];
+        this.docksTo = ['exponent', 'operator'];
     }
 
     /**

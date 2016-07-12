@@ -11,8 +11,6 @@ define([], function() {
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
-
-                console.log(scope.editorMode + " in EditorInput");
                 scope.edit = function() {
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
                         scope.state = finalState;
