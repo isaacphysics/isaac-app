@@ -25,7 +25,7 @@ class Fraction extends Widget {
     constructor(p: any, s: any) {
         super(p, s);
         this.s = s;
-        this.width = 100;
+        this.width = 0;
 
         this.docksTo = ['operator', 'symbol', 'exponent'];
     }
@@ -39,7 +39,7 @@ class Fraction extends Widget {
      */
     generateDockingPoints() {
         var box = this.boundingBox();
-
+        console.log(this.boundingBox());
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale*this.s.mBox.w/4, -box.h/2), 1, "symbol", "right");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
@@ -101,7 +101,7 @@ class Fraction extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.noFill().strokeWeight(6*this.scale).stroke(this.color);
+        this.p.noFill().strokeWeight(5*this.scale).stroke(this.color);
 
         var box = this.boundingBox();
         this.p.line(-box.w/2, -box.h/2, box.w/2, -box.h/2);
@@ -125,8 +125,12 @@ class Fraction extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize*0.8);
-        return new Rect(-this.width/2, -box.h, this.width, box.h);
+        var box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize);
+        this.width = 50;
+        var numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
+        var denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
+        this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
+        return new Rect(-this.width*this.scale/2, -box.h*this.scale,  this.width*this.scale, box.h*this.scale);
     }
 
     /**

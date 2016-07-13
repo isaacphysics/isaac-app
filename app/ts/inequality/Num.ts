@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { ChemicalElement } from "././ChemicalElement.ts";
 
 /** A class for representing numbers */
 export
@@ -246,7 +247,7 @@ export
         }
 
         // TODO: Tweak this with kerning.
-        if ("right" in boxes) {
+        if (this.currentPlacement != "superscript" && "right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             var child_width = this.dockingPoints["right"].child.boundingBox().w;
             console.log("Child width: " + child_width);
@@ -265,6 +266,10 @@ export
             console.log("Parent width after ammending: " + parent_width);
             p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
             p.y = 0;
+
+            if(this.dockingPoints["right"].child instanceof ChemicalElement) {
+              this.docksTo = ['symbol'];
+            }
         } else {
             var p = this.dockingPoints["right"].position;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;

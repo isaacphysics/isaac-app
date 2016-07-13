@@ -6,7 +6,7 @@ import { DockingPoint } from "./DockingPoint.ts";
  * Relations, such as equalities, inequalities, and unexpected friends.
  */
 export
-class Relation extends Widget {
+    class Relation extends Widget {
     protected s: any;
     protected relationString: string;
     protected relation: string;
@@ -24,7 +24,7 @@ class Relation extends Widget {
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(0, -this.s.xBox.h/2);
+        var p = this.p.createVector(0, -this.s.xBox.h / 2);
         return p;
     }
 
@@ -32,9 +32,15 @@ class Relation extends Widget {
         super(p, s);
         this.s = s;
         this.relationString = relation;
-        switch(relation) {
+        switch (relation) {
             case 'rightarrow':
                 this.relation = '→';
+                this.pythonSymbol = '->';
+                this.mhchemSymbol = '->'
+                this.latexSymbol = '\\rightarrow';
+                break;
+            case 'aqueous':
+                this.relation = '(aq)';
                 this.pythonSymbol = '->';
                 this.mhchemSymbol = '->'
                 this.latexSymbol = '\\rightarrow';
@@ -77,7 +83,7 @@ class Relation extends Widget {
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['operator',];
+        this.docksTo = ['operator', 'chemical_element', 'state_symbol'];
     }
 
     /**
@@ -90,7 +96,7 @@ class Relation extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w/4, -this.s.xBox.h/2), 1, "relation", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "relation", "right");
     }
 
     /**
@@ -104,23 +110,23 @@ class Relation extends Widget {
      */
     getExpression(format: string): string {
         var expression = "";
-        if(format == "latex") {
+        if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "python") {
+        } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.pythonSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "subscript") {
+        } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mhchem") {
+        } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
                 expression += '<mo>' + this.relation + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
@@ -143,12 +149,12 @@ class Relation extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize*0.8 * this.scale)
+            .textSize(this.s.baseFontSize * 0.8 * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.relation, 0, 0);
         this.p.strokeWeight(1);
 
-        if(window.location.hash === "#debug") {
+        if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
@@ -170,8 +176,8 @@ class Relation extends Widget {
             s = "+";
         }
 
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize*0.8);
-        return new Rect(-box.w, box.y-1000, box.w*2, box.h); // TODO: Assymetrical BBox
+        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
     }
 
     /**
@@ -183,8 +189,8 @@ class Relation extends Widget {
     _shakeIt() {
 
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
-        console.log(this.docksTo);
+        var boxes: { [key: string]: Rect } = {};
+
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
                 dockingPoint.child.scale = this.scale * dockingPoint.scale;
@@ -204,7 +210,7 @@ class Relation extends Widget {
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w/2 + this.dockingPoints["right"].child.offsetBox().w/2; // TODO: Tweak this with kerning.
+            p.x = box.w / 2 + this.dockingPoints["right"].child.offsetBox().w / 2; // TODO: Tweak this with kerning.
         }
     }
 }

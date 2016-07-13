@@ -3,13 +3,15 @@ import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
+import {StateSymbol} from "./StateSymbol.ts";
+
 
 /** A class for representing variables and constants (aka, letters). */
 export
     class Symbol extends Widget {
 
     protected s: any;
-    private letter: string;
+    protected letter: string;
 
     get typeAsString(): string {
         return "Symbol";
@@ -25,7 +27,7 @@ export
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p: any, s: any, letter: string) {
+    public constructor(p: any, s: any, letter: string) {
         super(p, s);
         this.letter = letter;
         this.s = s;
@@ -216,7 +218,7 @@ export
             docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
             docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
         } else {
-            docking_superscript.position.x = box.w / 2 + this.scale * 20;
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
@@ -226,7 +228,7 @@ export
             docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
             docking_subscript.child.position.y = (parent_height / 2 + child_height / 5);
         } else {
-            docking_subscript.position.x = parent_width / 2 + this.scale * 20;
+            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_subscript.position.y = parent_position;
         }
 
@@ -237,8 +239,8 @@ export
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             docking_right.child.position.y = 0;
         } else {
-            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
-            docking_right.position.y = -this.s.xBox.h / 2;
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
         }
     }
 

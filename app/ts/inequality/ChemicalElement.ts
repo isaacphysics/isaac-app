@@ -4,12 +4,14 @@ import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
 
+
 /** A class for representing variables and constants (aka, elements). */
 export
     class ChemicalElement extends Widget {
 
     protected s: any;
     private element: string;
+
 
     get typeAsString(): string {
         return "ChemicalElement";
@@ -30,7 +32,7 @@ export
         this.element = element;
         this.s = s;
 
-        this.docksTo = ['ChemicalElement', 'operator', 'relation'];
+        this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element'];
     }
 
     /**
@@ -47,7 +49,7 @@ export
 
         // Create the docking points - added mass number and proton number
         // TODO: add a flag to toggle the mass/proton number docking points? e.g. boolean nuclearMode
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "chemical_element", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
         this.dockingPoints["mass_number"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "top-left", "mass_number");
@@ -225,7 +227,7 @@ export
             var p = this.dockingPoints["superscript"].child.position;
             var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
             var w = offsetBox.w;
-
+            this.currentPlacement = "superscript";
             var childDescent = offsetBox.y + offsetBox.h;
             widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
             // this is the position of the docking point.
@@ -296,10 +298,7 @@ export
             if (this.dockingPoints["subscript"].child != null) {
               parent_subscript_width = this.dockingPoints["subscript"].child.getExpressionWidth();
             }
-
-
             var parent_width = this.boundingBox().w;
-
             // If either subscripts or superscripts or both exist
             parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
 

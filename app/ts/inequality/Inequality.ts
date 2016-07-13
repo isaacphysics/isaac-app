@@ -32,6 +32,8 @@ import { Fn } from './Fn.ts';
 import { DockingPoint } from './DockingPoint.ts';
 import { Relation } from './Relation.ts';
 import { ChemicalElement } from './ChemicalElement.ts';
+import { StateSymbol } from './StateSymbol.ts';
+import { Particle } from './Particle.ts';
 
 // This is where the fun starts
 
@@ -212,8 +214,14 @@ export
             case "Relation":
                 w = new Relation(this.p, this, node["properties"]["relation"]);
                 break;
+            case "StateSymbol":
+                w = new StateSymbol(this.p, this, node["properties"]["state"]);
+                break;
             case "ChemicalElement":
                 w = new ChemicalElement(this.p, this, node["properties"]["element"]);
+                break;
+            case "Particle":
+                w = new Particle(this.p, this, node["properties"]["particle"], node["properties"]["type"]);
                 break;
             default: // this would be a Widget...
                 break;

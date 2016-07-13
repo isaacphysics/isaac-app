@@ -63,7 +63,7 @@ export
     protected p: any;
     /** Unique ID */
     id: number = -1;
-    
+
 
     /** Scaling factor for this widget (affected by where a widget is docked, typically) */
     scale: number = 1.0;
@@ -457,16 +457,15 @@ export
     getExpressionHeight(): number {
         var current_element: any = this;
         var expressionHeight = this.boundingBox().h;
+        var subscript_height;
+        var superscript_height;
         // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
-            expressionHeight += current_element.dockingPoints["right"].child.getExpressionHeight();
-        }
         if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
-            expressionHeight += current_element.dockingPoints["subscript"].child.getExpressionHeight();
+            subscript_height += current_element.dockingPoints["subscript"].child.getExpressionHeight();
         }
         if (current_element.dockingPoints.hasOwnProperty("superscript") &&  current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
-            expressionHeight += current_element.dockingPoints["superscript"].child.getExpressionHeight();
+            subscript_height += current_element.dockingPoints["superscript"].child.getExpressionHeight();
         }
-        return expressionHeight;
+        return (subscript_height >= superscript_height) ? (expressionHeight + subscript_height) : (expressionHeight + superscript_height);
     }
 }
