@@ -1,9 +1,16 @@
 <div class="equation-editor" tabindex="0">
     <div top-menu="\text{H}\, \text{He}\, \text{Li}" ng-if="isLandscape && (editorMode == 'chemistry')">
-        <div symbol-menu symbols="symbolLibrary.chemicalElements"></div>
+        <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="elementsTitle" symbol-menu symbols="symbolLibrary.chemicalElements"></div>
+        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="particlesTitle" symbol-menu symbols="symbolLibrary.particles"></div>
+
     </div>
     <div top-menu="123" ng-if="isLandscape">
         <div symbols="symbolLibrary.theNumbers" number-entry></div>
+    </div>
+    <div top-menu="(aq)\, (g)\, (l)" ng-if="isLandscape && (editorMode == 'chemistry')">
+        <div symbol-menu symbols="symbolLibrary.theStates"></div>
     </div>
     <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && (editorMode == 'maths')">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
@@ -21,7 +28,7 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
-     <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && (editorMode == 'chemistry')">
+    <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && (editorMode == 'chemistry')">
         <div symbol-menu symbols="symbolLibrary.chemOps"></div>
         <!--<div sub-menu></div>
         <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>

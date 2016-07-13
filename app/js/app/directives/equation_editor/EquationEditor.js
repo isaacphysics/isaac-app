@@ -53,7 +53,7 @@ define(function(require) {
                         var tWidth = element.find(".trash-button").width();
                         var tHeight = element.find(".trash-button").height();
                         scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
-                        console.log("Symbol object is: " + symbol);
+
                         sketch.updatePotentialSymbol(symbol, pageX, pageY);
                         scope.$digest();
 
@@ -148,7 +148,7 @@ define(function(require) {
                             };
                             scope.questionDoc = questionDoc;
                             scope.editorMode = editorMode;
-                            console.log(editorMode);
+
 
                             scope.log = {
                                 type: "EQN_EDITOR_LOG",
@@ -226,7 +226,7 @@ define(function(require) {
                         "\\Upsilon": "Υ",
                         "\\Phi": "Φ",
                         "\\Psi": "Ψ",
-                        "\\Omega": "Ω"
+                        "\\Omega": "Ω",
                     };
 
                     var inverseLetterMap = {};
@@ -247,6 +247,8 @@ define(function(require) {
                         }
                         return s;
                     };
+
+
 
                     var parseCustomSymbols = function(symbols) {
                         var r = {
@@ -368,7 +370,7 @@ define(function(require) {
                             s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
                         }
                         return s;
-                    }
+                    };
 
                     // Make a single dict for lookup to impose an order. Should be quicker than indexOf repeatedly!
                     var uniqueSymbolsTotalOrder = {};
@@ -474,7 +476,7 @@ define(function(require) {
                             });
                         }
                         return elements;
-                    }
+                    };
                     var numberStrings = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 
                     var theNumbers = function(numberArray) {
@@ -496,9 +498,8 @@ define(function(require) {
 
 
                     return elements;
-                }
+                };
 
-                    scope.elementLibrary = {}
 
                     scope.symbolLibrary = {
 
@@ -514,7 +515,153 @@ define(function(require) {
 
                     theNumbers: theNumbers(numberStrings),
 
+                    particles: [{
+                      type: 'Particle',
+                      menu: {
+                        label: '\\alpha',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'α',
+                        type: 'alpha',
+                      }
+                    },{
+                      type: 'Particle',
+                      menu: {
+                        label: '\\beta',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'β',
+                        type: 'beta'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\gamma',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'γ',
+                        type: 'gamma'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\nu',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'ν',
+                        type: 'neutrino'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\bar{\\nu}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'ν̅',
+                        type: 'antineutrino'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\text{p}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'p',
+                        type: 'proton'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\text{n}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'n',
+                        type: 'neutron'
+                      }
+                    },
+                    {
+                      type: 'Particle',
+                      menu: {
+                        label: '\\text{e}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        particle: 'e',
+                        type: 'electron'
+                      }
+                    },],
 
+                    theStates: [{
+                      type: 'StateSymbol',
+                      menu: {
+                        label: '\\text{(g)}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        state: 'gas',
+                      }
+                    },{
+                      type: 'StateSymbol',
+                      menu: {
+                        label: '\\text{(l)}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        state: 'liquid',
+                      }
+                    },{
+                      type: 'StateSymbol',
+                      menu: {
+                        label: '\\text{(aq)}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        state: 'aqueous',
+                      }
+                    },{
+                      type: 'StateSymbol',
+                      menu: {
+                        label: '\\text{(s)}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        state: 'solid',
+                      }
+                    },{
+                      type: 'StateSymbol',
+                      menu: {
+                        label: '\\text{(m)}',
+                        texLabel: true,
+                        fontSize: "2em"
+                      },
+                      properties: {
+                        state: 'metal',
+                      }
+                    }],
 
                     chemOps: [{
                         type: 'Relation',
@@ -524,15 +671,6 @@ define(function(require) {
                         },
                         properties: {
                             relation: 'rightarrow'
-                        }
-                    }, {
-                        type: 'Relation',
-                        menu: {
-                            label: '\\rightleftharpoons',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: 'equilibrium'
                         }
                     }, {
                         type: "BinaryOperation",
@@ -785,6 +923,20 @@ define(function(require) {
                         }
                     }],
 
+                };
+
+                scope.particlesTitle = {
+                  menu: {
+                      label: "α",
+                  },
+                  type: "string",
+                };
+
+                scope.elementsTitle = {
+                  menu: {
+                      label: "H",
+                  },
+                  type: "string",
                 };
 
 
