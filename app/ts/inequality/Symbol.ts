@@ -29,8 +29,7 @@ export
         super(p, s);
         this.letter = letter;
         this.s = s;
-
-        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript'];
+        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol'];
     }
 
 	/**
@@ -193,64 +192,53 @@ export
             }
         });
 
-        // Calculate our own geometry
-
-        // Nothing to do for Symbol
-
-        // Set position of all our children.
+        /*
+          - Positions widgets to the right, top-right or bottom-right of the parent symbol. Children are the symbols docked to the right,
+          superscript and subscript positions respectively.
+          - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
+        */
 
         var box = this.boundingBox();
-        var descent = (box.y + box.h);
-
-        var widest = 0;
+        var parent_position = (box.y + box.h);
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+        var parent_width = box.w;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+        var docking_subscript = this.dockingPoints["subscript"];
 
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-            var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
-            var w = offsetBox.w;
-            var childDescent = offsetBox.y + offsetBox.h;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = (box.w + w) / 2;
-            p.y = 0 - this.s.mBox.h * this.scale;
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
         } else {
-            var p = this.dockingPoints["superscript"].position;
-            p.x = (box.w + this.s.xBox.w) / 2;
-            p.y = -this.s.mBox.h * this.scale;
+            docking_superscript.position.x = box.w / 2 + this.scale * 20;
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
         if ("subscript" in boxes) {
-            var p = this.dockingPoints["subscript"].child.position;
-            var w = this.dockingPoints["subscript"].child.offsetBox().w;
-            widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + this.scale * 20 + w / 2;
-            p.y = this.scale * this.s.mBox.w / 4;
+            child_width = docking_subscript.child.boundingBox().w;
+            child_height = docking_subscript.child.boundingBox().h;
+            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_subscript.child.position.y = (parent_height / 2 + child_height / 5);
         } else {
-            var p = this.dockingPoints["subscript"].position;
-            p.x = box.w / 2 + this.scale * 20;
-            p.y = descent;
+            docking_subscript.position.x = parent_width / 2 + this.scale * 20;
+            docking_subscript.position.y = parent_position;
         }
 
-        // TODO: Tweak this with kerning.
+        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
 
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            var child_width = this.dockingPoints["right"].child.boundingBox().w;
-            var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
-            var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
-            var parent_width = this.boundingBox().w;
-            // If either subscripts or superscripts or both exist
-            parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            p.y = 0;
+            child_width = docking_right.child.boundingBox().w;
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.y = 0;
         } else {
-            var p = this.dockingPoints["right"].position;
-            var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
-            var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
-            var parent_width = this.boundingBox().w;
-            // If either subscripts or superscripts or both exist
-            parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
-            p.y = -this.s.xBox.h / 2;
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
+            docking_right.position.y = -this.s.xBox.h / 2;
         }
     }
 
