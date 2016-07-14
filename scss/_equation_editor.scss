@@ -121,9 +121,6 @@ $menu-handle-width: 160px;
             &.m4 {
                 margin-left: $menu-handle-width;
             }
-            &.m5 {
-                margin-left: $menu-handle-width*2;
-            }
         }
         .menu-list-container {
             width: 100%;
@@ -196,7 +193,7 @@ $menu-handle-width: 160px;
             .button-grid {
                 position: absolute;
                 left: 0;
-                width: 450px;
+                width: 337px;
                 display: block;
                 margin: 7px 0 0 60px;
                 li {
@@ -207,6 +204,7 @@ $menu-handle-width: 160px;
                     background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat;
                     background-size: contain;
                     color: #317115;
+                    clear: none;
                     line-height: 60px;
                     font-size: 40px;
                     font-weight: 500;
