@@ -36,7 +36,7 @@ export
         this.num_font_size = 50;
         this.s = s;
 
-        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle'];
     }
 
     getFullText(type?: string): string {

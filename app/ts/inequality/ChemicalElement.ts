@@ -10,8 +10,9 @@ export
     class ChemicalElement extends Widget {
 
     protected s: any;
-    private element: string;
-
+    protected element: string;
+    protected particle: string;
+    protected latexSymbol: string;
 
     get typeAsString(): string {
         return "ChemicalElement";
@@ -31,7 +32,8 @@ export
         super(p, s);
         this.element = element;
         this.s = s;
-
+        this.particle = "";
+        this.latexSymbol = element;
         this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element'];
     }
 
@@ -69,8 +71,12 @@ export
     // todo add mhchem with \alpha etc
     getExpression(format: string): string {
         var expression = "";
+        var thisExpression = (this.element[0] != '\\') ? this.latexSymbol : "\\text{" + this.element + "}";
+        var isParticle = (this.element[0] != '\\');
         if (format == "latex") {
-            expression = "\\text{" + this.element + "}";// need to remove this so that we can append the element to mass/proton numbers
+
+            expression = thisExpression;
+            // need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
@@ -83,7 +89,11 @@ export
                 for (var _i = 0; _i < number_of_spaces; _i++) {
                     padding += "\\enspace";
                 }
-                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
+                var add_text = (isParticle) ? "" : "\\text{";
+                var bracket = isParticle ? "" : "}";
+                expression += (mass_number_length <= proton_number_length)
+                ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + add_text + thisExpression + bracket
+                : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}" +  add_text + thisExpression + bracket;
             }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
@@ -105,7 +115,7 @@ export
         } else if (format == "python") {
             expression = ""
         } else if (format == "subscript") {
-            expression = "" + this.element;
+            expression = "" + thisExpression;
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
@@ -120,12 +130,12 @@ export
         } else if (format == "mathml") {
             expression = '';
         } else if (format == "mhchem") {
-            expression = this.element; // need to remove this so that we can append the element to mass/proton numbers
+            expression = thisExpression;// need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
+                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + thisExpression;
             }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
@@ -190,6 +200,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
+
         var box = this.s.font_it.textBounds(this.element || "x", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
@@ -221,93 +232,76 @@ export
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var widest = 0;
+
+
+        var box = this.boundingBox();
+        var parent_position = (box.y + box.h);
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+        var parent_width = box.w;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+        var docking_subscript = this.dockingPoints["subscript"];
+        var docking_mass = this.dockingPoints["mass_number"];
+        var docking_proton_number = this.dockingPoints["proton_number"];
 
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-            var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
-            var w = offsetBox.w;
-            this.currentPlacement = "superscript";
-            var childDescent = offsetBox.y + offsetBox.h;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            // this is the position of the docking point.
-            p.x = (box.w + w) / 2;
-            p.y = 0 - this.s.mBox.h * this.scale;
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
         } else {
-            var p = this.dockingPoints["superscript"].position;
-            p.x = (box.w + this.s.xBox.w) / 2;
-            p.y = -this.s.mBox.h * this.scale;
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
-
-
-        // Positioned top left side of element.
-        if ("mass_number" in boxes) {
-            var p = this.dockingPoints["mass_number"].child.position;
-            var offsetBox = this.dockingPoints["mass_number"].child.offsetBox();
-            var w = offsetBox.w;
-            var childDescent = offsetBox.y + offsetBox.h;
-            widest = this.dockingPoints["mass_number"].child.subtreeBoundingBox().w;
-            // this is the position of the docking point.
-            p.x = 0 - (box.w + w) * .53; //(box.w / 2 + this.scale * 20 + childDescent);
-            p.y = 0 - box.w / 2;
-        } else {
-            var p = this.dockingPoints["mass_number"].position;
-            p.x = 0 - (box.w / 2 + this.scale * 20);
-            p.y = 0 - this.s.mBox.h * this.scale;
-        }
-
-
-
 
         if ("subscript" in boxes) {
-            var p = this.dockingPoints["subscript"].child.position;
-            var w = this.dockingPoints["subscript"].child.offsetBox().w;
-            widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-            p.x = box.w / 2 + this.dockingPoints["subscript"].child.boundingBox().w/2;
-            p.y = this.scale * this.s.mBox.w / 4;
+            child_width = docking_subscript.child.boundingBox().w;
+            child_height = docking_subscript.child.boundingBox().h;
+            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_subscript.child.position.y = 0.7*(parent_height / 2 + child_height / 5);
         } else {
-            var p = this.dockingPoints["subscript"].position;
-            p.x = box.w / 2 + this.scale * 20;
-            p.y = descent;
+            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_subscript.position.y = parent_position;
         }
+
+
+        if ("mass_number" in boxes) {
+            child_width = docking_mass.child.boundingBox().w;
+            child_height = docking_mass.child.boundingBox().h;
+            docking_mass.child.position.x = 0-(parent_width / 2 + child_width / 2);
+            docking_mass.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
+        } else {
+          docking_mass.position.x = (parent_width == this.boundingBox().w) ? (0-(parent_width / 2 + this.scale * 20)) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
+          docking_mass.position.y = -this.scale * this.s.mBox.h;
+        }
+
         // Positioned bottom left side of element.
         if ("proton_number" in boxes) {
-            var p = this.dockingPoints["proton_number"].child.position;
-            var w = this.dockingPoints["proton_number"].child.offsetBox().w;
-            widest = Math.max(this.dockingPoints["proton_number"].child.subtreeBoundingBox().w, widest);
-            p.x = 0 - (box.w + w) * .53;
-            p.y = (box.w / 2) * .6;
+            child_width = docking_proton_number.child.boundingBox().w;
+            child_height = docking_proton_number.child.boundingBox().h;
+            docking_proton_number.child.position.x = -(parent_width / 2 + child_width / 2);
+            docking_proton_number.child.position.y = 0.7*(parent_height / 2 + child_height / 5);
         } else {
-            var p = this.dockingPoints["proton_number"].position;
-            p.x = 0 - (box.w / 2 + this.scale * 20);
-            p.y = descent;
+            docking_proton_number.position.x = (parent_width == this.boundingBox().w) ? (-parent_width / 2 - this.scale * 20) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
+            docking_proton_number.position.y = parent_position;
         }
 
 
 
 
+        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
+
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            var child_width = this.dockingPoints["right"].child.boundingBox().w;
-
-            var parent_superscript_width = 0;
-            var parent_subscript_width = 0;
-            if (this.dockingPoints["superscript"].child != null) {
-              parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
-            }
-            if (this.dockingPoints["subscript"].child != null) {
-              parent_subscript_width = this.dockingPoints["subscript"].child.getExpressionWidth();
-            }
-            var parent_width = this.boundingBox().w;
-            // If either subscripts or superscripts or both exist
-            parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
-            p.y = 0;
+            child_width = docking_right.child.boundingBox().w;
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.y = 0;
         } else {
-            var p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
-            p.y = -this.s.xBox.h / 2;
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
         }
     }
 
