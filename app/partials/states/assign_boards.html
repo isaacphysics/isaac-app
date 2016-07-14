@@ -83,7 +83,7 @@
             <a class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)" ng-show="openedAssignPanels.indexOf(board.id) == -1">Assign / Unassign</a>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
                <h6>Group:</h6>
-               <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups"></select>
+               <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups | orderBy:'groupName'"></select>
                <div ng-if="false">
                   <h6>Due Date <span class="lighter">(optional):</span></h6>
 

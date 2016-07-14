@@ -31,6 +31,12 @@ define([], function() {
 
 		$scope.newGroup = {};
 
+        $scope.sortOptions = [
+            {label: "Alphabetical", val: "groupName", reverse: false},
+            {label: "Group Created", val: "created", reverse: true}
+        ];
+		$scope.sortOption = $scope.sortOptions[0];
+
 		$scope.hasExistingAssignments = false;
 
 		api.userGameBoards(null, null, 0, 1).$promise.then(function(boards) {

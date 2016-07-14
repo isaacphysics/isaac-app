@@ -38,6 +38,12 @@ define([], function() {
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
 
+        scope.sortOptions = [
+            {label: "Alphabetical", val: "groupName", reverse: false},
+            {label: "Group Created", val: "created", reverse: true}
+        ];
+        scope.sortOption = scope.sortOptions[0];
+
         Promise.all([myGroupsPromise, mySetAssignmentsPromise]).then(function(r) {
             var groups = r[0];
             var allAssignments = r[1];
