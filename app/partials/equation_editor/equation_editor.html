@@ -1,9 +1,9 @@
 <div class="equation-editor" tabindex="0">
     <div top-menu="\text{H}\, \text{He}\, \text{Li}" ng-if="isLandscape && (editorMode == 'chemistry')">
-        <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
-        <div ng-if="!symbolLibrary.customVars" sub-menu></div>
-        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="elementsTitle" symbol-menu symbols="symbolLibrary.chemicalElements"></div>
-        <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="particlesTitle" symbol-menu symbols="symbolLibrary.particles"></div>
+        <div ng-if="symbolLibrary.customChemicalSymbols" symbol-menu symbols="symbolLibrary.customChemicalSymbols"></div>
+        <div ng-if="!symbolLibrary.customChemicalSymbols" sub-menu></div>
+        <div ng-if="!symbolLibrary.customChemicalSymbols" sub-menu-item menu-title="elementsTitle" symbol-menu symbols="symbolLibrary.chemicalElements"></div>
+        <div ng-if="!symbolLibrary.customChemicalSymbols" sub-menu-item menu-title="particlesTitle" symbol-menu symbols="symbolLibrary.particles"></div>
 
     </div>
     <div top-menu="123" ng-if="isLandscape">
@@ -56,7 +56,7 @@
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>
     <div class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
-    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape">
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape && questionDoc.value">
         <div isaac-content doc="questionDoc"></div>
     </div>
     <div class="orientation-warning" ng-if="!isLandscape">The Isaac Equation Editor may only be used in landscape mode. Please rotate your device.</div>
