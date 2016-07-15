@@ -13,7 +13,7 @@ export
     protected pythonSymbol: string;
     protected latexSymbol: string;
     protected mhchemSymbol: string;
-    
+
 
     get typeAsString(): string {
         return "StateSymbol";
@@ -161,7 +161,7 @@ export
      */
      boundingBox(): Rect {
          var box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
-         return new Rect(-(box.w -20)/ 2, box.y-1000, box.w-20, box.h);
+         return new Rect(-(box.w-10)/ 2, box.y-1000, box.w-10, box.h);
      }
 
 
