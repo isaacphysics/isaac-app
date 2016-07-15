@@ -13,6 +13,8 @@ export
     protected element: string;
     protected particle: string;
     protected latexSymbol: string;
+    protected mhchemSymbol: string;
+
 
     get typeAsString(): string {
         return "ChemicalElement";
@@ -34,6 +36,7 @@ export
         this.s = s;
         this.particle = "";
         this.latexSymbol = element;
+        this.mhchemSymbol = "";
         this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element'];
     }
 
@@ -71,12 +74,11 @@ export
     // todo add mhchem with \alpha etc
     getExpression(format: string): string {
         var expression = "";
-        var thisExpression = (this.element[0] != '\\') ? this.latexSymbol : "\\text{" + this.element + "}";
+        var thisExpression = (this.particle != "") ? this.latexSymbol : "\\text{" + this.element + "}";
         var isParticle = (this.element[0] != '\\');
         if (format == "latex") {
 
-            expression = thisExpression;
-            // need to remove this so that we can append the element to mass/proton numbers
+            expression = "\\text{" + this.element + "}";// need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
@@ -89,12 +91,9 @@ export
                 for (var _i = 0; _i < number_of_spaces; _i++) {
                     padding += "\\enspace";
                 }
-                var add_text = (isParticle) ? "" : "\\text{";
-                var bracket = isParticle ? "" : "}";
-                expression += (mass_number_length <= proton_number_length)
-                ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + add_text + thisExpression + bracket
-                : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}" +  add_text + thisExpression + bracket;
+                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
             }
+
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
@@ -112,8 +111,6 @@ export
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
-        } else if (format == "python") {
-            expression = ""
         } else if (format == "subscript") {
             expression = "" + thisExpression;
             if (this.dockingPoints["subscript"].child != null) {
@@ -130,18 +127,19 @@ export
         } else if (format == "mathml") {
             expression = '';
         } else if (format == "mhchem") {
-            expression = thisExpression;// need to remove this so that we can append the element to mass/proton numbers
+            expression = this.element; // need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + thisExpression;
+                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
             }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
+
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
@@ -262,7 +260,7 @@ export
             child_width = docking_subscript.child.boundingBox().w;
             child_height = docking_subscript.child.boundingBox().h;
             docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_subscript.child.position.y = 0.7*(parent_height / 2 + child_height / 5);
+            docking_subscript.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
         } else {
             docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_subscript.position.y = parent_position;
@@ -272,19 +270,19 @@ export
         if ("mass_number" in boxes) {
             child_width = docking_mass.child.boundingBox().w;
             child_height = docking_mass.child.boundingBox().h;
-            docking_mass.child.position.x = 0-(parent_width / 2 + child_width / 2);
+            docking_mass.child.position.x = 0 - 1.1 * (parent_width / 2 + child_width / 2);
             docking_mass.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
         } else {
-          docking_mass.position.x = (parent_width == this.boundingBox().w) ? (0-(parent_width / 2 + this.scale * 20)) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
-          docking_mass.position.y = -this.scale * this.s.mBox.h;
+            docking_mass.position.x = (parent_width == this.boundingBox().w) ? (0 - (parent_width / 2 + this.scale * 20)) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
+            docking_mass.position.y = -this.scale * this.s.mBox.h;
         }
 
         // Positioned bottom left side of element.
         if ("proton_number" in boxes) {
             child_width = docking_proton_number.child.boundingBox().w;
             child_height = docking_proton_number.child.boundingBox().h;
-            docking_proton_number.child.position.x = -(parent_width / 2 + child_width / 2);
-            docking_proton_number.child.position.y = 0.7*(parent_height / 2 + child_height / 5);
+            docking_proton_number.child.position.x = -1.1 * (parent_width / 2 + child_width / 2);
+            docking_proton_number.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
         } else {
             docking_proton_number.position.x = (parent_width == this.boundingBox().w) ? (-parent_width / 2 - this.scale * 20) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
             docking_proton_number.position.y = parent_position;

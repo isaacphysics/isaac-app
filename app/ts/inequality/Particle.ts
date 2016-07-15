@@ -109,6 +109,89 @@ export
         this.dockingPoints["proton_number"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "bottom-left", "proton_number");
     }
 
+    getExpression(format: string): string {
+        var expression = "";
+
+        if (format == "latex") {
+
+            expression = this.latexSymbol;// need to remove this so that we can append the element to mass/proton numbers
+            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
+            // Should we render one if the other is ommitted? - for now, no.
+            if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
+                expression = "";
+                var mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
+                var proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
+                var number_of_spaces = Math.abs(proton_number_length - mass_number_length);
+                var padding = "";
+                // Temporary hack to align mass number and proton number correctly.
+                for (var _i = 0; _i < number_of_spaces; _i++) {
+                    padding += "\\enspace";
+                }
+                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.latexSymbol : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.latexSymbol;
+            }
+
+            if (this.dockingPoints["superscript"].child != null) {
+                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
+            }
+            if (this.dockingPoints["subscript"].child != null) {
+                expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
+            }
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+                else if (this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+            }
+        } else if (format == "subscript") {
+            expression = "" + thisExpression;
+            if (this.dockingPoints["subscript"].child != null) {
+                expression += this.dockingPoints["subscript"].child.getExpression(format);
+            }
+            if (this.dockingPoints["superscript"].child != null) {
+                expression += this.dockingPoints["superscript"].child.getExpression(format);
+            }
+            if (this.dockingPoints["right"].child != null) {
+                expression += this.dockingPoints["right"].child.getExpression(format);
+            }
+        } else if (format == "python") {
+            expression = "";
+        } else if (format == "mathml") {
+            expression = '';
+        } else if (format == "mhchem") {
+            expression = this.mhchemSymbol; // need to remove this so that we can append the element to mass/proton numbers
+            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
+            // Should we render one if the other is ommitted? - for now, no.
+            if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
+                expression = "";
+                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
+            }
+            if (this.dockingPoints["superscript"].child != null) {
+                expression += this.dockingPoints["superscript"].child.getExpression(format);
+            }
+            if (this.dockingPoints["subscript"].child != null) {
+                expression += this.dockingPoints["subscript"].child.getExpression(format);
+
+            }
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+                else if (this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+            }
+        }
+        return expression;
+    }
+
 
 
 

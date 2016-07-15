@@ -200,7 +200,7 @@ define(function(require) {
                 var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
                 var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
                 var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
-                var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electon"];
+                var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
                 var letterMap = {
                     "\\alpha": "α",
                     "\\beta": "β",
@@ -242,9 +242,10 @@ define(function(require) {
 
                 var chemicalSymbols = {};
                 var chemicalSymbolsArray = elements.concat(particles);
-                for (var i in chemicalSymbolsArray) {
-                    chemicalSymbols[chemicalSymbolsArray[i]] = i;
 
+                for (var i in chemicalSymbolsArray) {
+
+                    chemicalSymbols[chemicalSymbolsArray[i]] = i;
                 }
 
                 var inverseLetterMap = {};
@@ -267,13 +268,12 @@ define(function(require) {
                 };
 
 
-
-
                 var parseCustomChemicalSymbols = function(symbols) {
                     // take symbols in string ["H", "He", "Li", "electron", "proton", "antineutrino"]
                     var custom = [];
                     for (var i in symbols) {
                         var s = symbols[i].trim();
+
                         if (s.length == 0) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
@@ -281,8 +281,10 @@ define(function(require) {
 
                         console.debug("Parsing:", s);
 
+                        console.log(chemicalSymbols.hasOwnProperty(s));
                         if (chemicalSymbols.hasOwnProperty(s)) {
                             console.debug("Creating object for:", s);
+
                             var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
 
                             console.debug("Identified: " + s + " at " + i + " as " + type);
@@ -334,7 +336,7 @@ define(function(require) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
                         }
-
+                        
                         console.debug("Parsing:", s);
 
                         var parts = s.split(" ");
