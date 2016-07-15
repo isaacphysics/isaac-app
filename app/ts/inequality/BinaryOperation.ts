@@ -156,10 +156,25 @@ class BinaryOperation extends Widget {
 
         var box = this.boundingBox();
 
+        var parent_w = this.boundingBox().w;
+        var right;
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            p.y = 0;
-            p.x = box.w/2 + this.dockingPoints["right"].child.offsetBox().w/2; // TODO: Tweak this with kerning.
+            right = this.dockingPoints["right"].child;
+            var isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
+            var child_w = right.boundingBox().w;
+            var child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
+            var child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
+            if(isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
+              child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+              right.position.x = 1.2*(parent_w/2 + child_w/2);
+              right.position.y = 0;
+            }
+            else {
+              child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+              right.position.x = parent_w/2 + child_w/2;
+              right.position.y = 0;
+            }
+
         }
     }
 }

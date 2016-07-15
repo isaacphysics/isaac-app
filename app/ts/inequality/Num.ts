@@ -84,9 +84,6 @@ export
 
     getExpression(format: string): string {
         var expression = "";
-        console.log(this.right);
-        console.log(this.superscript);
-
         if (format == "latex") {
             expression = this.getFullText("latex");
 
@@ -250,25 +247,17 @@ export
         if (this.currentPlacement != "superscript" && "right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             var child_width = this.dockingPoints["right"].child.boundingBox().w;
-            console.log("Child width: " + child_width);
             var parent_superscript_width = 0;
-
             if (this.dockingPoints["superscript"].child != null) {
-              parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
+                parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
             }
-
-
-            console.log("Parent superscript width: " + parent_superscript_width);
             var parent_width = this.boundingBox().w;
-            console.log("Parent width before ammending: " + parent_width);
             // If either subscripts or superscripts or both exist
             parent_width += parent_superscript_width;
-            console.log("Parent width after ammending: " + parent_width);
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             p.y = 0;
-
-            if(this.dockingPoints["right"].child instanceof ChemicalElement) {
-              this.docksTo = ['symbol'];
+            if (this.dockingPoints["right"].child instanceof ChemicalElement) {
+                this.docksTo = ['symbol'];
             }
         } else {
             var p = this.dockingPoints["right"].position;

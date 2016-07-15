@@ -37,29 +37,29 @@ export
                 this.relation = '→';
                 this.pythonSymbol = '->';
                 this.mhchemSymbol = '->'
-                this.latexSymbol = '\\rightarrow';
+                this.latexSymbol = '\\rightarrow ';
                 break;
             case 'aqueous':
                 this.relation = '(aq)';
                 this.pythonSymbol = '->';
                 this.mhchemSymbol = '->'
-                this.latexSymbol = '\\rightarrow';
+                this.latexSymbol = '\\rightarrow ';
                 break;
             case 'leftarrow':
                 this.relation = '←';
                 this.pythonSymbol = '<-';
-                this.latexSymbol = '\\leftarrow';
+                this.latexSymbol = '\\leftarrow ';
                 break;
             case 'rightleftarrows':
                 this.relation = '⇄';
                 this.pythonSymbol = '-><-';
-                this.latexSymbol = '\\rightleftarrows';
+                this.latexSymbol = '\\rightleftarrows ';
                 break;
             case 'equilibrium':
                 this.relation = '⇌';
                 this.pythonSymbol = '==';
                 this.mhchemSymbol = '<=>'
-                this.latexSymbol = '\\rightleftharpoons';
+                this.latexSymbol = '\\rightleftharpoons ';
                 break;
             case 'leq':
                 this.relation = '≤';
@@ -205,12 +205,18 @@ export
 
         // Set position of all our children.
 
-        var box = this.boundingBox();
 
+        var parent_w = this.boundingBox().w;
+        var right;
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            p.y = 0;
-            p.x = box.w / 2 + this.dockingPoints["right"].child.offsetBox().w / 2; // TODO: Tweak this with kerning.
+            right = this.dockingPoints["right"].child;
+            var child_w = right.boundingBox().w;
+            var child_mass_w = (right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
+            var child_proton_w = (right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
+            child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+            right.position.x = parent_w/2 + child_w/2;
+            right.position.y = 0;
+
         }
     }
 }
