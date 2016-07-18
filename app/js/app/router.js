@@ -362,7 +362,7 @@ define(["angular-ui-router"], function() {
             })
 
             .state('404', {
-                params: ["target"],
+                params: {"target": null},
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
@@ -374,7 +374,7 @@ define(["angular-ui-router"], function() {
 
             })
             .state('403', {
-                params: ["target"],
+                params: {"target": null},
                 views: {
                     "body": {
                         templateUrl: "/partials/states/403.html",

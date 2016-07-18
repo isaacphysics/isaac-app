@@ -1,23 +1,42 @@
 {
   "name": "angular-tipped",
-  "version": "0.3.0",
   "main": "tipped.js",
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests",
-    ".idea"
+    "Gruntfile.js",
+    "package.json",
+    "lib",
+    "grunt"
   ],
+  "keywords": [
+    "tipped",
+    "tooltip",
+    "angular",
+    "angularjs"
+  ],
+  "repository": "https://github.com/decipherinc/angular-tipped.git",
+  "authors": [
+    "Christopher Hiller <chiller@decipherinc.com>",
+    "Anthony Thompson <anthompson@decipherinc.com>",
+    "DJ Agellon <dj@decipherinc.com>",
+    "Nick Trevino <n.trevino@decipherinc.com>",
+    "Cameron Briar <cameron@decipherinc.com>"
+  ],
+  "license": "MIT",
+  "description": "AngularJS directive for Tipped tooltip library",
   "homepage": "https://github.com/decipherinc/angular-tipped",
-  "_release": "0.3.0",
+  "dependencies": {
+    "jquery": ">= 1.4.4 < 2.0.0",
+    "angular": ">= 1.2.0 < 2.0.0"
+  },
+  "version": "1.0.0-7",
+  "_release": "1.0.0-7",
   "_resolution": {
     "type": "version",
-    "tag": "v0.3.0",
-    "commit": "fa7c7769a4751724b65e490ff79b18db377b7c4e"
+    "tag": "v1.0.0-7",
+    "commit": "13440ee8fc4baf5efc66a5e6ae3b2622ea66f27f"
   },
   "_source": "https://github.com/decipherinc/angular-tipped.git",
-  "_target": "0.3.0",
+  "_target": "1.0.0-7",
   "_originalSource": "angular-tipped"
 }

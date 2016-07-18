@@ -91,13 +91,13 @@ define([], function() {
 		var doQuestionSearch = function(searchQuery, searchLevel, searchTags){
 			// if we have a current promise outstanding cancel it.
 			if (httpCanceller != null) {
-				httpCanceller.resolve();
+				httpCanceller();
 				httpCanceller = null;
 			}
 
 			// create a new promise so we can cancel it later.
-			httpCanceller = $q.defer();
-			var questionSearchResource = api.getQuestionsResource(httpCanceller);
+			var questionSearchResource = api.getQuestionsResource();
+            httpCanceller = questionSearchResource.$cancelRequest;
 			return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults});
 		};
 

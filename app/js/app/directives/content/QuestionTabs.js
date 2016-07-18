@@ -144,7 +144,6 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.$watch("selectedChoice", function(newVal, oldVal) {
 					// (Show some help text. Quietly though!)
 					scope.hlp = newVal && newVal.value && newVal.value.toLowerCase().match('(^h[ae]lp|\"help\").*');
-					console.log(newVal.value);
 
 					if (newVal === oldVal || !watchSelectedChoice)
 						return; // Init

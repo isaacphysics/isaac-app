@@ -32,7 +32,7 @@ define([
     "owl-carousel2",
     "app/honest/dropdown",
     "angulartics", 
-    "angulartics-ga",
+    "angulartics-google-analytics",
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
