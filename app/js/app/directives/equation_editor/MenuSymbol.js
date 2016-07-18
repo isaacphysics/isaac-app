@@ -1,4 +1,3 @@
-
 define([], function() {
 
     return [function() {
@@ -10,7 +9,7 @@ define([], function() {
             restrict: "A",
             templateUrl: "/partials/equation_editor/menu_symbol.html",
             link: function(scope, element, attrs) {
-                scope.name="MENUSYMBOL"
+                scope.name = "MENUSYMBOL"
 
                 scope.$watch("symbol.menu.label", function(newLabel) {
                     if (newLabel && scope.symbol.menu.texLabel)
@@ -26,7 +25,9 @@ define([], function() {
                 var lastPageX = 0;
                 var lastPageY = 0;
                 var grab = function(pageX, pageY, e) {
+
                     scope.dragging = true;
+
                     element.addClass("dragging");
                     scope.$apply();
 
@@ -37,11 +38,19 @@ define([], function() {
                     lastPageX = pageX;
                     lastPageY = pageY;
 
-                    $("body").on("mouseup", mouseup)
+                    scope.firstX = pageX;
+                    scope.firstY = pageY;
+
+                    $("body").on("mouseup", mouseup);
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
+
+
+
                 }
+
+
 
                 var drag = function(pageX, pageY) {
                     var pageScroll = editor.offset().top;
@@ -100,16 +109,20 @@ define([], function() {
 
                 var mousedown = function(e) {
                     grab(e.pageX, e.pageY, e);
-
                     e.stopPropagation();
                     e.preventDefault();
                 }
 
                 var mouseup = function(e) {
-                    drop(e.pageX, e.pageY, e);
-
-                    e.stopPropagation();
-                    e.preventDefault();
+                  console.debug(scope.firstX + " " + e.pageX);
+                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                    console.debug("registered as click");
+                    var num = attrs.value;
+                    scope.$emit("numberClicked", num);
+                  }
+                      drop(e.pageX, e.pageY, e);
+                      e.stopPropagation();
+                      e.preventDefault();
                 }
 
                 var mousemove = function(e) {

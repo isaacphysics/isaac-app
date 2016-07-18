@@ -20,22 +20,21 @@ define([], function() {
 
 
 
-                scope.buttonClick = function(btn) {
+                scope.$on("numberClicked", function(_, num) {
+                  console.debug("NumberEntry: " + num);
+                  if (num == "^") {
+                      scope.currentExponent = "";
+                  } else if (num == "-" && scope.currentNumber.length > 0) {
+                      scope.negate = !scope.negate;
+                  } else {
+                      if (scope.currentExponent != null) {
+                          scope.currentExponent += num;
+                      } else {
+                          scope.currentNumber += num;
+                      }
+                  }
+                })
 
-
-                    if (btn == "^") {
-                        scope.currentExponent = "";
-                    } else if (btn == "-" && scope.currentNumber.length > 0) {
-                        scope.negate = !scope.negate;
-                    } else {
-                        if (scope.currentExponent != null) {
-                            scope.currentExponent += btn;
-                        } else {
-                            scope.currentNumber += btn;
-                        }
-                    }
-
-                }
 
                 scope.clearInput = function() {
                     scope.currentExponent = null;
