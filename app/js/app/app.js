@@ -131,7 +131,7 @@ define([
 
             setTimeout(function() { 
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-            }, 500);
+            }, 50);
         }
 
         $rootScope.figures = {};

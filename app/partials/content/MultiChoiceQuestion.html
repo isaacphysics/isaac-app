@@ -1,13 +1,14 @@
-<div isaac-question-tabs>
+<div>
     <div class='row'>
         <div class="small-14 small-offset-1 columns end">
             <form class="ac-custom ac-radio ac-fill {{pageSubject}}" autocomplete="off">
                 <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div> </h3>
                 <ul class='ru-problem-q-pad'>
-
                     <li ng-repeat="choice in doc.choices">
-                        <input type="radio" question-radio-button ng-model="state.selectedAnswer" ng-value="$index">
-                        <label ng-click="state.selectedAnswer = $index" math-jax><div isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></div></label>
+                        <input type="radio" question-radio-button ng-model="ctrl.selectedAnswer" ng-value="$index">
+                        <label ng-click="ctrl.selectedAnswer = $index" math-jax>
+                            <div isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></div>
+                        </label>
                     </li>
                 </ul>
             </form>

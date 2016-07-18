@@ -139,7 +139,7 @@ define(["angular-ui-router"], function() {
                             if ($stateParams.symbols) {
                                 $scope.questionDoc = {availableSymbols: $stateParams.symbols.split(",")};
                             }
-                            $scope.eqnState = {
+                            $scope.selectedFormula = {
                                 symbols: {},
                             };
                         }],
