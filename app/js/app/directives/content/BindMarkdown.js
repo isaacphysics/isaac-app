@@ -19,20 +19,6 @@ define(["lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], functio
 	return ["$parse", "$compile", "$location", "$rootScope", function($parse, $compile, $location, $rootScope) {
 
 
-		$rootScope.markdownLinkGo = function(url) {
-			// If the link is external go ahead and return it
-			if (url.indexOf("http://") == 0 || url.indexOf("https://") == 0) {
-				return url;
-			}
-			
-			// The link must be internal so add #! if required.
-			if ($location.host().indexOf("localhost") > -1) {
-				return "/#!" + url
-			} else {
-				return url;	
-			}
-		}
-
 		return {
 			scope: {
 				md: "=",
@@ -43,12 +29,6 @@ define(["lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], functio
 			link: function(scope, element, attrs) {
 
 				var pageId = scope.$parent.page ? scope.$parent.page.id : "";
-
-				// since we are in an isolated scope we need access to this function.
-				scope.markdownLinkGo = $rootScope.markdownLinkGo;
-
-				// since we are in an isolated scope we need access to this function.
-				scope.markdownLinkGo = $rootScope.markdownLinkGo;
 
 				Showdown.extensions.refs = function(converter) {
 					return [{
@@ -62,7 +42,7 @@ define(["lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], functio
 					return [{
 						type: "lang",
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
-						replace: '<a ng-href="<lbr><lbr>markdownLinkGo(\'$2\')<rbr><rbr>" rel="nofollow">$1</a>',
+						replace: '[$1]($2)',
 					}]
 				};				
 
