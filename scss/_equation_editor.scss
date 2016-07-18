@@ -210,6 +210,8 @@ $menu-handle-width: 160px;
                     font-weight: 500;
                     font-family: KaTeX_Main;
                     margin: 3px 3px 0;
+                    position: relative;
+                    z-index: 9999;
                 }
                 .wedgeFit {
                     margin-top: -14px;
