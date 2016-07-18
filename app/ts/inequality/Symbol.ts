@@ -246,6 +246,6 @@ class Symbol extends Widget {
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
     getChildren(): Array<Widget> {
-        return _.compact(_.pluck(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+        return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }
 }

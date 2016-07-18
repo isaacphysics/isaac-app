@@ -151,7 +151,7 @@ class Fraction extends Widget {
 
         // Calculate our own geometry
 
-        this.width = Math.max(100, _.max(_.pluck(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")));
+        this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")));
 
         var bbox = this.boundingBox();
         // Set position of all our children.
