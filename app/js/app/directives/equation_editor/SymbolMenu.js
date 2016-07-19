@@ -14,7 +14,7 @@ define([], function() {
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
-				
+
 				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
 					scope.$emit('absorbSymbolDrag');
 					bufferedLeft += deltaX;

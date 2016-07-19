@@ -84,6 +84,7 @@ export
     color = null;
     isMainExpression = false;
     currentPlacement = "";
+    
 
     get typeAsString(): string {
         return "Widget";
