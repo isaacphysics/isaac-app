@@ -24,12 +24,41 @@ define(["app/honest/responsive_video"], function(rv) {
 
             templateUrl: "/partials/content/SymbolicChemistryQuestion.html",
 
-            link: function(scope, element, attrs) {
-                scope.selectedChoice = {
-                    type: "chemicalFormula",
-                };
+            controller: ["$scope", function(scope) {
+                var ctrl = this;
 
-            }
+                if (scope.question.selectedChoice) {
+                    // We have a previous answer. Load it.
+                    ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
+                } else {
+                    // We have no previous answer to load.
+                    ctrl.selectedFormula = { symbols: {} };
+                }
+
+                ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
+                ctrl.plainDoc.type = "content";
+
+                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                    if (f === oldF) {
+                        return; // Init
+                    }
+
+                    if (f) {
+                        //TODO: Set scope.question.selectedChoice here.
+                        scope.question.selectedChoice = {
+                            type: "TODO",
+                            value: "TODO",
+                            mhchem: "TODO",
+                        }
+
+                    } else {
+                        scope.question.selectedChoice = null;
+                    }
+                }, true);
+
+            }],
+
+            controllerAs: "ctrl",
         };
     }];
 });

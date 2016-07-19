@@ -32,7 +32,7 @@ define([
     "owl-carousel2",
     "app/honest/dropdown",
     "angulartics", 
-    "angulartics-ga",
+    "angulartics-google-analytics",
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
@@ -91,7 +91,7 @@ define([
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.7.6/api");
+            apiProvider.urlPrefix("/api/v1.7.7/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -131,7 +131,7 @@ define([
 
             setTimeout(function() { 
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-            }, 500);
+            }, 50);
         }
 
         $rootScope.figures = {};
