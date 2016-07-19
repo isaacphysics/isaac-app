@@ -3,7 +3,7 @@ import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
-
+import { StateSymbol } from "./StateSymbol.ts";
 
 /** A class for representing variables and constants (aka, elements). */
 export
@@ -11,9 +11,7 @@ export
 
     protected s: any;
     protected element: string;
-    protected particle: string;
-    protected latexSymbol: string;
-    protected mhchemSymbol: string;
+
 
 
     get typeAsString(): string {
@@ -34,9 +32,6 @@ export
         super(p, s);
         this.element = element;
         this.s = s;
-        this.particle = "";
-        this.latexSymbol = element;
-        this.mhchemSymbol = "";
         this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element'];
     }
 
@@ -73,8 +68,8 @@ export
 
     // todo add mhchem with \alpha etc
     getExpression(format: string): string {
-        var expression = "";
-        var thisExpression = (this.particle != "") ? this.latexSymbol : "\\text{" + this.element + "}";
+        var expression = "\\text{" + this.element + "}";
+
         var isParticle = (this.element[0] != '\\');
         if (format == "latex") {
 
@@ -106,13 +101,14 @@ export
                 }
                 else if (this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
-                } else {
+                }
+                else {
                     // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
-            expression = "" + thisExpression;
+            expression = "" + this.element;
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
@@ -127,9 +123,7 @@ export
         } else if (format == "mathml") {
             expression = '';
         } else if (format == "mhchem") {
-            expression = this.element; // need to remove this so that we can append the element to mass/proton numbers
-            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
-            // Should we render one if the other is ommitted? - for now, no.
+            expression = this.element;
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
                 expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;

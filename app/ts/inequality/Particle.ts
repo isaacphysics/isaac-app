@@ -11,11 +11,27 @@ export
     protected s: any;
     protected type: string;
     protected pythonSymbol: string;
-
+    protected latexSymbol: string;
+    protected particle: string;
     protected mhchemSymbol: string;
 
     get typeAsString(): string {
         return "Particle";
+    }
+
+    properties(): Object {
+        return {
+            particle: this.particle
+        };
+    }
+
+    token() {
+        // TODO Handle greek elements
+        var e = this.particle;
+        if (this.dockingPoints['subscript'].child) {
+            e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+        }
+        return e;
     }
 
     constructor(p: any, s: any, particle: string, type: string) {
@@ -75,12 +91,9 @@ export
                 this.particle = particle;
                 this.pythonSymbol = particle;
                 this.latexSymbol = particle;
+                this.mhchemSymbol = particle;
         }
           this.docksTo = ['operator', 'relation', 'symbol'];
-          for(var i in this.docksTo) {
-            console.debug(this.docksTo[i]);
-          }
-
     }
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
@@ -148,7 +161,6 @@ export
                 }
             }
         } else if (format == "subscript") {
-            expression = "" + thisExpression;
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
@@ -168,7 +180,7 @@ export
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
+                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.mhchemSymbol;
             }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
@@ -192,7 +204,26 @@ export
         return expression;
     }
 
+    /** Paints the widget on the canvas. */
+    _draw() {
+        this.p.fill(this.color).strokeWeight(0).noStroke();
 
+        this.p.textFont(this.s.font_up)
+            .textSize(this.s.baseFontSize * this.scale)
+            .textAlign(this.p.CENTER, this.p.BASELINE)
+            .text(this.particle, 0, 0);
+        this.p.strokeWeight(1);
+
+        if (window.location.hash === "#debug") {
+            this.p.stroke(255, 0, 0).noFill();
+            this.p.ellipse(0, 0, 10, 10);
+            this.p.ellipse(0, 0, 5, 5);
+
+            this.p.stroke(0, 0, 255).noFill();
+            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
+            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
+        }
+    }
 
 
 }

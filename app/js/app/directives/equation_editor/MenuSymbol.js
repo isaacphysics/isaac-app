@@ -116,11 +116,15 @@ define([], function() {
                 var mouseup = function(e) {
                   console.debug(scope.firstX + " " + e.pageX);
                   if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
-                    console.debug("registered as click");
+                    var clicked = true;
+                    scope.$emit("clicked", clicked);
+                    console.debug("Registered as click");
                     var num = attrs.value;
                     scope.$emit("numberClicked", num);
                   }
                       drop(e.pageX, e.pageY, e);
+                      clicked = false;
+                      scope.$emit("clicked", clicked);
                       e.stopPropagation();
                       e.preventDefault();
                 }

@@ -273,25 +273,17 @@ define(function(require) {
                     var custom = [];
                     for (var i in symbols) {
                         var s = symbols[i].trim();
-
                         if (s.length == 0) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
                         }
-
                         console.debug("Parsing:", s);
-
                         console.log(chemicalSymbols.hasOwnProperty(s));
                         if (chemicalSymbols.hasOwnProperty(s)) {
-                            console.debug("Creating object for:", s);
-
                             var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
-
-                            console.debug("Identified: " + s + " at " + i + " as " + type);
                             if (type == 'Particle') {
                                 var index_of_particle = chemicalSymbols[s] - elements.length;
                                 var particle_label = scope.symbolLibrary.particles[index_of_particle].menu.label;
-                                console.debug("Particle label is: " + scope.symbolLibrary.particles[index_of_particle].menu.label);
                                 custom.push({
                                     type: type,
                                     menu: {
@@ -336,7 +328,7 @@ define(function(require) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
                         }
-                        
+
                         console.debug("Parsing:", s);
 
                         var parts = s.split(" ");
@@ -599,6 +591,7 @@ define(function(require) {
                         properties: {
                             particle: 'α',
                             type: 'alpha',
+                            
                         }
                     }, {
                         type: 'Particle',
@@ -757,6 +750,15 @@ define(function(require) {
                         menu: {
                             label: "-",
                             texLabel: true
+                        }
+                    },{
+                        type: "Relation",
+                        menu: {
+                            label: '\\rightleftharpoons ',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: 'equilibrium'
                         }
                     }, ],
                     reducedOps: [{

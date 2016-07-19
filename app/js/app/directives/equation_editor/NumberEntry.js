@@ -19,7 +19,20 @@ define([], function() {
                 scope.clearOnClose = false;
 
 
-
+                scope.buttonClick = function(btn) {
+                	if (btn == "^") {
+                		scope.currentExponent = "";
+                	} else if (btn == "-" && scope.currentNumber.length > 0) {
+                        scope.negate = !scope.negate;
+                    } else {
+                		if (scope.currentExponent != null) {
+                			scope.currentExponent += btn;
+                		} else {
+		                	scope.currentNumber += btn;
+                		}
+                	}
+                }
+                
                 scope.$on("numberClicked", function(_, num) {
                   console.debug("NumberEntry: " + num);
                   if (num == "^") {
@@ -33,7 +46,7 @@ define([], function() {
                           scope.currentNumber += num;
                       }
                   }
-                })
+                });
 
 
                 scope.clearInput = function() {
@@ -104,7 +117,9 @@ define([], function() {
                 scope.$watch("currentExponent", updateSymbol);
                 scope.$watch("negate", updateSymbol);
                 scope.$watch("currentExponent", updateInputPadding);
-
+                scope.$on("clicked", function(_, clicked) {
+                  scope.clicked = clicked;
+                });
                 scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
                     // This overcomes issues with deciding if number button is clicked or dragged.
                     // If the number is moved below the top green menu bar, then we associate this with a drag movement and
@@ -115,8 +130,9 @@ define([], function() {
                     }
                 })
 
-                scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY) {
-                    if (mousePageY > element.offset().top + element.height()) {
+                scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY, pageY) {
+                    console.debug(scope.clicked);
+                    if (!scope.clicked) {
                         scope.$emit("spawnSymbol");
                         // If property "editable" of current object isn't null, we must have generated it using the editor
                         // and thus dragging and dropping this object should trigger the emptying of the editor.

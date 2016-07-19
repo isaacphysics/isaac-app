@@ -105,7 +105,12 @@ export
             expression = this.getFullText("mhchem"); // need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
-
+            if (this.superscript && this.dockingPoints["superscript"].child != null) {
+                if (this.exponent) {
+                    expression = "(" + expression + ")";
+                }
+                expression += "^" + this.dockingPoints["superscript"].child.getExpression(format) + "";
+            }
             if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
@@ -231,40 +236,38 @@ export
 
         var widest = 0;
 
+        var box = this.boundingBox();
+        var parent_position = (box.y + box.h);
+        var parent_width = box.w;
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+
+
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-            var w = this.dockingPoints["superscript"].child.offsetBox().w;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * 20 + w / 2;
-            p.y = -(box.h - descent - this.scale * 20);
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
         } else {
-            var p = this.dockingPoints["superscript"].position;
-            p.x = box.w / 2 + this.scale * 20;
-            p.y = -this.scale * this.s.mBox.h;
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
-        // TODO: Tweak this with kerning.
-        if (this.currentPlacement != "superscript" && "right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            var child_width = this.dockingPoints["right"].child.boundingBox().w;
-            var parent_superscript_width = 0;
-            if (this.dockingPoints["superscript"].child != null) {
-                parent_superscript_width = this.dockingPoints["superscript"].child.getExpressionWidth();
-            }
-            var parent_width = this.boundingBox().w;
-            // If either subscripts or superscripts or both exist
-            parent_width += parent_superscript_width;
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            p.y = 0;
-            if (this.dockingPoints["right"].child instanceof ChemicalElement) {
-                this.docksTo = ['symbol'];
-            }
+        parent_width += parent_superscript_width;
+
+        if ("right" in boxes) {
+            child_width = docking_right.child.boundingBox().w;
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.y = 0;
         } else {
-            var p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
-            p.y = -this.s.xBox.h / 2;
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
         }
-    }
+      }
 
     isNegative(): boolean {
         return Number(this.significand) < 0;

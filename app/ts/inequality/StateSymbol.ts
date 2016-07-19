@@ -100,20 +100,23 @@ export
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
+          expression = this.latexSymbol + "";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
+          expression = this.pythonSymbol + "";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.pythonSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mhchem") {
+          expression = this.mhchemSymbol + "";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
