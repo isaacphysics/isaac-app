@@ -14,7 +14,7 @@ define(function(require) {
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
                 });
-              
+
                 var sketch = null;
 
                 scope.canvasOffset = {};
@@ -779,7 +779,16 @@ define(function(require) {
                         properties: {
                             relation: 'equilibrium'
                         }
-                    }, ],
+                    },{
+                        type: "Brackets",
+                        properties: {
+                            type: "round",
+                        },
+                        menu: {
+                            label: "(x)",
+                            texLabel: true
+                        }
+                    }],
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {

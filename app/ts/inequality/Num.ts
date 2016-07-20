@@ -14,6 +14,7 @@ export
     protected right = this.dockingPoints.hasOwnProperty("right");
     protected superscript = this.dockingPoints.hasOwnProperty("superscript");
 
+
     get typeAsString(): string {
         return "Num";
     }
@@ -36,7 +37,8 @@ export
         this.num_font_size = 50;
         this.s = s;
 
-        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle'];
+
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle', 'relation'];
     }
 
     getFullText(type?: string): string {
@@ -86,7 +88,7 @@ export
         var expression = "";
         if (format == "latex") {
             expression = this.getFullText("latex");
-
+            console.debug("expression", expression);
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
                 if (this.exponent) {
                     expression = "(" + expression + ")";
@@ -100,6 +102,7 @@ export
                     // WARNING This assumes it's a Number, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
+                console.debug("expression", expression);
             }
         } else if (format == "mhchem") {
             expression = this.getFullText("mhchem"); // need to remove this so that we can append the element to mass/proton numbers
@@ -260,14 +263,23 @@ export
         parent_width += parent_superscript_width;
 
         if ("right" in boxes) {
-            child_width = docking_right.child.boundingBox().w;
-            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            docking_right.child.position.y = 0;
+            if (docking_right.child.dockingPoints["right"].child == null && docking_right.child instanceof BinaryOperation) {
+              child_width = docking_right.child.boundingBox().w;
+              child_height = docking_right.child.boundingBox().h;
+              docking_right.child.position.x = child_width / 2;
+              docking_right.child.position.y = -(child_height/2-parent_width/4);
+            }
+            else {
+                child_width = docking_right.child.boundingBox().w;
+                docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+                docking_right.child.position.y = 0;
+            }
+
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_right.position.y = (this.dockingPoint.y);
         }
-      }
+    }
 
     isNegative(): boolean {
         return Number(this.significand) < 0;

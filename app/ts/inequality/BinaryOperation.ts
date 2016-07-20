@@ -8,7 +8,7 @@ import { DockingPoint } from "./DockingPoint.ts";
  * BE EXTRA CAREFUL with the minus sign: use "−" (U+2212), not just a dash.
  */
 export
-class BinaryOperation extends Widget {
+    class BinaryOperation extends Widget {
     protected s: any;
     protected operation: string;
 
@@ -22,7 +22,7 @@ class BinaryOperation extends Widget {
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(0, -this.s.xBox.h/2);
+        var p = this.p.createVector(0, -this.s.xBox.h / 2);
         return p;
     }
 
@@ -45,7 +45,7 @@ class BinaryOperation extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w/4, -this.s.xBox.h/2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
     }
 
     /**
@@ -58,24 +58,29 @@ class BinaryOperation extends Widget {
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = "";
-        if(format == "latex") {
+        var expression = this.operation.replace(/−/g, "-");
+        if (format == "latex") {
+
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "python") {
+        } else if (format == "python") {
+
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mhchem") {
+        } else if (format == "mhchem") {
+
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "subscript") {
+        } else if (format == "subscript") {
+            expression = "";
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "mathml") {
+            expression = "";
             if (this.dockingPoints["right"].child != null) {
                 expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
@@ -98,12 +103,12 @@ class BinaryOperation extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize*0.8 * this.scale)
+            .textSize(this.s.baseFontSize * 0.8 * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.operation, 0, 0);
         this.p.strokeWeight(1);
 
-        if(window.location.hash === "#debug") {
+        if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
@@ -121,12 +126,12 @@ class BinaryOperation extends Widget {
      */
     boundingBox(): Rect {
         var s = this.operation || "+";
-        if (s == "−") {
-            s = "+";
-        }
+        s = "+";
 
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize*0.8);
-        return new Rect(-box.w, box.y-1000, box.w*2, box.h); // TODO: Assymetrical BBox
+
+        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+      
+        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
     }
 
     /**
@@ -138,7 +143,7 @@ class BinaryOperation extends Widget {
     _shakeIt() {
 
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -164,15 +169,15 @@ class BinaryOperation extends Widget {
             var child_w = right.boundingBox().w;
             var child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
             var child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
-            if(isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
-              child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-              right.position.x = 1.2*(parent_w/2 + child_w/2);
-              right.position.y = 0;
+            if (isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
+                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+                right.position.x = 1.2 * (parent_w / 2 + child_w / 2);
+                right.position.y = 0;
             }
             else {
-              child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-              right.position.x = parent_w/2 + child_w/2;
-              right.position.y = 0;
+                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+                right.position.x = parent_w / 2 + child_w / 2;
+                right.position.y = 0;
             }
 
         }
