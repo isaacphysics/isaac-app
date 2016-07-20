@@ -39,12 +39,6 @@ export
                 this.mhchemSymbol = '->'
                 this.latexSymbol = '\\rightarrow ';
                 break;
-            case 'aqueous':
-                this.relation = '(aq)';
-                this.pythonSymbol = '->';
-                this.mhchemSymbol = '->'
-                this.latexSymbol = '\\rightarrow ';
-                break;
             case 'leftarrow':
                 this.relation = '←';
                 this.pythonSymbol = '<-';

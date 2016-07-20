@@ -14,7 +14,7 @@ define(function(require) {
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
                 });
-
+              
                 var sketch = null;
 
                 scope.canvasOffset = {};

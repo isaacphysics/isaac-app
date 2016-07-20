@@ -13,6 +13,8 @@ define([], function() {
 			link: function(scope, element, attrs) {
                 scope.name="TOPMENU"
 
+
+
                 scope.allSubMenus = [];
 
                 element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
@@ -23,7 +25,8 @@ define([], function() {
 
                 var el = element.find(".top-menu");
 
-                allMenus.push(el[0]);
+								allMenus.push(el[0]);
+
                 scope.menuPos = "m" + allMenus.length;
 
                 var closing = false;
@@ -33,7 +36,7 @@ define([], function() {
 
                         closing = true;
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height()}, {
-                            duration: 200, 
+                            duration: 200,
                             progress: function() {
                                 scope.$root.$broadcast("menuMoved");
                             },
@@ -56,6 +59,7 @@ define([], function() {
                         var activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({"bottom": scope.equationEditorElement.height() - activeMenuHeight}, 200);
                         scope.$emit("menuOpened");
+												scope.$apply();
                     }
                 };
 
