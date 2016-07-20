@@ -27,6 +27,8 @@ define(["app/honest/responsive_video"], function(rv) {
 			controller: ["$scope", function(scope) {
 				var ctrl = this;
 
+				scope.editorMode = 'maths';
+
 				if (scope.question.selectedChoice) {
 					// We have a previous answer. Load it.
 					ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);

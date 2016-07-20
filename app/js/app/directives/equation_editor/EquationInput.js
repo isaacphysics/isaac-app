@@ -6,13 +6,14 @@ define([], function() {
             scope: {
                 state: "=",
                 questionDoc: "=",
+                editorMode: "=",
             },
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
 
                 scope.edit = function() {
-                    $rootScope.showEquationEditor(scope.state, scope.questionDoc).then(function(finalState) {
+                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
                         scope.state = finalState;
                         scope.$apply();
                     });

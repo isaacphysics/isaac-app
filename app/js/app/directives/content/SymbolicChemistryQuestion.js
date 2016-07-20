@@ -26,7 +26,9 @@ define(["app/honest/responsive_video"], function(rv) {
 
             controller: ["$scope", function(scope) {
                 var ctrl = this;
+
                 scope.editorMode = 'chemistry';
+
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
                     ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
@@ -46,8 +48,8 @@ define(["app/honest/responsive_video"], function(rv) {
                     if (f) {
                         scope.question.selectedChoice = {
                             type: "chemicalFormula",
-                            value: JSON.stringify(s),
-                            mhchemExpression: s.result ? s.result.mhchem : ""
+                            value: JSON.stringify(f),
+                            mhchemExpression: f.result ? f.result.mhchem : ""
                         }
 
                     } else {
