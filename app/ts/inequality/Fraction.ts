@@ -150,8 +150,7 @@ class Fraction extends Widget {
         });
 
         // Calculate our own geometry
-
-        this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")));
+        this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")) || 0);
 
         var bbox = this.boundingBox();
         // Set position of all our children.
@@ -182,7 +181,7 @@ class Fraction extends Widget {
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
-            p.x = this.width / 2 + this.scale*this.s.mBox.w/4;
+                p.x = this.width / 2 + this.scale * this.s.mBox.w / 4;
             p.y = -this.boundingBox().h/2;
         }
     }
