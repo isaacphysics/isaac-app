@@ -32,7 +32,7 @@ define([
     "owl-carousel2",
     "app/honest/dropdown",
     "angulartics",
-    "angulartics-ga",
+    "angulartics-google-analytics",
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
@@ -74,7 +74,7 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500) {
+                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0)) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
                         $state.go('error');
@@ -91,7 +91,7 @@ define([
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("https://staging.isaacphysics.org/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.7.6/api");
+            apiProvider.urlPrefix("/api/v1.7.7/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -131,7 +131,7 @@ define([
 
             setTimeout(function() {
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-            }, 500);
+            }, 50);
         }
 
         $rootScope.figures = {};

@@ -150,6 +150,9 @@ define(["angular-ui-router"], function() {
                                 availableSymbols: $stateParams.symbols.split(",")
                             };
                         }
+                        $scope.selectedFormula = {
+                                symbols: {},
+                        };
 
                         $scope.eqnState = {
                             symbols: {},
@@ -384,8 +387,8 @@ define(["angular-ui-router"], function() {
                 }]
             })
 
-        .state('404', {
-                params: ["target"],
+            .state('404', {
+                params: {"target": null},
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
@@ -397,7 +400,7 @@ define(["angular-ui-router"], function() {
 
             })
             .state('403', {
-                params: ["target"],
+                params: {"target": null},
                 views: {
                     "body": {
                         templateUrl: "/partials/states/403.html",

@@ -34,10 +34,13 @@
             <!-- End Mobile view only -->
 
             <div class="group-header show-for-large-up">
-                <span class="left">Group Name</span>
+                <span class="left" style="line-height: 35px;">Groups:</span>
+               <!--  <span ng-hide="sortOption == 'groupName'" class="right"><a ng-click="sortOption='groupName'">[Alphabetical]</a></span>
+                <span ng-hide="sortOption == 'created'" class="right"><a ng-click="sortOption='created'">[Group Created]</a></span></span> -->
+                <select class="right" ng-model="sortOption" ng-options="option.label for option in sortOptions" style="width:50%;margin-bottom:5px;"></select>
             </div>
             <dl class="group-nav">
-                <dd ng-class="{active: group._id == selectedGroup._id}" ng-repeat="group in myGroups | orderBy:'-_id'">
+                <dd ng-class="{active: group._id == selectedGroup._id}" ng-repeat="group in myGroups | orderBy:sortOption.val:sortOption.reverse">
                     <a class="group-nav-header" ng-click="setSelectedGroup(group)">
                         <span class="group-icon"></span>
                         {{group.groupName}}

@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 Ian Davies
+ * Copyright 2016 Andy Wells
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,47 +24,40 @@ define(["app/honest/responsive_video"], function(rv) {
 
             templateUrl: "/partials/content/SymbolicChemistryQuestion.html",
 
-            link: function(scope, element, attrs) {
-                scope.selectedChoice = {
-                    type: "chemicalFormula",
-                };
+            controller: ["$scope", function(scope) {
+                var ctrl = this;
                 scope.editorMode = 'chemistry';
-                scope.eqnState = {
-                    symbols: {}
-                };
+                if (scope.question.selectedChoice) {
+                    // We have a previous answer. Load it.
+                    ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
+                } else {
+                    // We have no previous answer to load.
+                    ctrl.selectedFormula = { symbols: {} };
+                }
 
-                scope.$watch("eqnState", function(s, oldS) {
-                    if (s === oldS)
-                        return;
-                    scope.selectedChoice.value = JSON.stringify(s);
-                    if (s && s.result) {
-                        scope.selectedChoice.mhchemExpression = s.result.mhchem;
+                ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
+                ctrl.plainDoc.type = "content";
+
+                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                    if (f === oldF) {
+                        return; // Init
+                    }
+
+                    if (f) {
+                        scope.question.selectedChoice = {
+                            type: "chemicalFormula",
+                            value: JSON.stringify(s),
+                            mhchemExpression: s.result ? s.result.mhchem : ""
+                        }
+
                     } else {
-                        scope.selectedChoice.mhchemExpression = "";
+                        scope.question.selectedChoice = null;
                     }
                 }, true);
 
-                scope.$watch("validationResponse", function(r, oldR) {
-                    if (!scope.validationResponseSet)
-                        return;
+            }],
 
-                    if (r === oldR) {
-                        // Prevent questionTabs from clobbering our initialisation.
-                        scope.$broadcast("stopWatchingSelectedChoice");
-                        setTimeout(function() {
-                            scope.$broadcast("startWatchingSelectedChoice")
-                        }, 0);
-                    }
-                    // If we get this far, r has really been explicitly set by QuestionTabs
-
-                    if (r && r.answer.value) {
-                        scope.eqnState = JSON.parse(r.answer.value);
-                        scope.selectedChoice.value = r.answer.value;
-
-                    }
-                })
-
-            }
+            controllerAs: "ctrl",
         };
     }];
 });

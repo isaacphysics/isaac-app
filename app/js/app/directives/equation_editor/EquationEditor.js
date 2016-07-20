@@ -173,7 +173,25 @@ define(function(require) {
                             }]
                         };
 
+                        // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
+                        // Log the editor being closed and submit log event to server:
+                        eqnModal.one("close", function(e) {
+                            scope.log.finalState = [];
+                            sketch.symbols.forEach(function(e) {
+                               scope.log.finalState.push(e.subtreeObject(true, true));
+                            });
+                            scope.log.actions.push({
+                                event: "CLOSE",
+                                timestamp: Date.now()
+                            });
+                            if (scope.segueEnvironment == "DEV") {
+                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length/1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                            }
+                            window.removeEventListener("beforeunload", scope.logOnClose);
+                            api.logger.log(scope.log);
+                            scope.log = null;
+                        });
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
@@ -184,6 +202,7 @@ define(function(require) {
                         scope.future = [];
                         var p = new p5(function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                            scope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
 
@@ -591,7 +610,7 @@ define(function(require) {
                         properties: {
                             particle: 'α',
                             type: 'alpha',
-                            
+
                         }
                     }, {
                         type: 'Particle',
@@ -1104,7 +1123,7 @@ define(function(require) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
-                            type: "UNDO",
+                            event: "UNDO",
                             timestamp: Date.now()
                         });
 
@@ -1122,7 +1141,7 @@ define(function(require) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
-                            type: "REDO",
+                            event: "REDO",
                             timestamp: Date.now()
                         });
                     }
@@ -1130,20 +1149,6 @@ define(function(require) {
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
-                    scope.log.finalState = [];
-                    sketch.symbols.forEach(function(e) {
-                        scope.log.finalState.push(e.subtreeObject(true, true));
-                    });
-                    scope.log.actions.push({
-                        type: "CLOSE",
-                        timestamp: Date.now()
-                    });
-                    if (scope.segueEnvironment == "DEV") {
-                        console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
-                    }
-                    window.removeEventListener("beforeunload", scope.logOnClose);
-                    api.logger.log(scope.log);
-                    scope.log = null;
                 };
 
                 scope.centre = function() {

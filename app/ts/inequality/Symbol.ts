@@ -250,6 +250,6 @@ export
 
 
     getChildren(): Array<Widget> {
-        return _.compact(_.pluck(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+        return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }
 }

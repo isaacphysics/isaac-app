@@ -364,7 +364,7 @@ export
 	 * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
     getChildren(): Array<Widget> {
-        return _.compact(_.pluck(_.values(this.dockingPoints), "child"));
+        return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 
     getTotalSymbolCount(): number {

@@ -34,8 +34,8 @@ define([], function() {
 
                 scope.$on("anvilAppMessage", function(_, data) {
                     if (data.msg == "answer") {
-                        if (!scope.selectedChoice) {
-                            scope.selectedChoice = {
+                        if (!scope.question.selectedChoice) {
+                            scope.question.selectedChoice = {
                               "value": "AnvilAnswer",
                               "type": "choice",
                             };
