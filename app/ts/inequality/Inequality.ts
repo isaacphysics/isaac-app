@@ -16,7 +16,7 @@ limitations under the License.
 
 
 ///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/underscore.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
