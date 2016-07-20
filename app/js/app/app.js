@@ -90,6 +90,7 @@ define([
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("https://staging.isaacphysics.org/api/any/api");
+            //apiProvider.urlPrefix("https://f7f4a8ef.ngrok.io/isaac-api/api");
         } else {
             apiProvider.urlPrefix("/api/v1.7.7/api");
         }
