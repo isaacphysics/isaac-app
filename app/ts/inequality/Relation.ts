@@ -55,30 +55,36 @@ export
                 this.mhchemSymbol = '<=>'
                 this.latexSymbol = '\\rightleftharpoons ';
                 break;
-            case 'leq':
+            case '<=':
                 this.relation = '≤';
                 this.pythonSymbol = '<=';
                 this.latexSymbol = '\\leq ';
                 break;
-            case 'geq':
+            case '>=':
                 this.relation = '≥';
                 this.pythonSymbol = '>=';
                 this.latexSymbol = '\\geq ';
                 break;
-            case 'less':
+            case '<':
                 this.relation = '<';
                 this.pythonSymbol = '<';
-                this.latexSymbol = '\\textless ';
+                this.latexSymbol = '<';
                 break;
-            case 'greater':
-                this.relation = '">';
+            case '>':
+                this.relation = '>';
                 this.pythonSymbol = '>';
-                this.latexSymbol = '\\textgreater ';
+                this.latexSymbol = '< ';
                 break;
             case '=':
                 this.relation = '=';
                 this.pythonSymbol = '==';
                 this.latexSymbol = '=';
+                break;
+            case '.':
+                this.relation = '⋅';
+                this.pythonSymbol = '.';
+                this.mhchemSymbol = ".";
+                this.latexSymbol = '\\cdot';
                 break;
             default:
                 this.relation = relation;
@@ -177,11 +183,18 @@ export
     boundingBox(): Rect {
         var s = this.relation || "+";
         if (s == "−") {
-            s = "+";
+            var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+            return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
         }
-
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+        else if (s == "⋅"){
+          s = "⋅";
+          var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+          return new Rect(-box.w, box.y-1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+        }
+        else {
+          var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+          return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+        }
     }
 
     /**
@@ -215,8 +228,8 @@ export
         if ("right" in boxes) {
             right = this.dockingPoints["right"].child;
             var child_w = right.boundingBox().w;
-            var child_mass_w = (right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            var child_proton_w = (right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
+            var child_mass_w = (right.dockingPoints["mass_number"] && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
+            var child_proton_w = (right.dockingPoints["proton_number"] && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
             child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
             right.position.x = parent_w / 2 + child_w / 2;
             right.position.y = 0;
