@@ -32,7 +32,7 @@ export
         this.operation = operation;
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets'];
     }
 
     /**
@@ -130,7 +130,7 @@ export
 
 
         var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-      
+
         return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
     }
 

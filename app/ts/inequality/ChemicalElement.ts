@@ -32,7 +32,7 @@ export
         super(p, s);
         this.element = element;
         this.s = s;
-        this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element'];
+        this.docksTo = ['ChemicalElement', 'operator', 'relation', 'symbol', 'chemical_element', "operator_brackets"];
     }
 
     /**

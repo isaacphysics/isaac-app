@@ -186,6 +186,7 @@ export
             this.symbols.push(w);
             w.shakeIt();
         }
+        this.updateState();
     };
 
     _parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
@@ -435,6 +436,7 @@ export
                 symbol.isMainExpression = true;
             }
         });
+        this.updateState();
     };
 
     mouseMoved = () => {
@@ -483,6 +485,7 @@ export
                 },
                 symbols: _.map(this.symbols, s => s.subtreeObject())
             });
+
         } else {
             this.scope.newEditorState({
                 result: null,

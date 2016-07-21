@@ -30,7 +30,7 @@ class Brackets extends Widget {
         this.type = type;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element'];
     }
 
     /**
@@ -47,7 +47,7 @@ class Brackets extends Widget {
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator_brackets", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
     }
@@ -304,7 +304,7 @@ class Brackets extends Widget {
         }
 
         parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-        
+
         if ("right" in boxes) {
             child_width = docking_right.child.boundingBox().w;
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);

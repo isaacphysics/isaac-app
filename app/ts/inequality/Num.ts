@@ -37,7 +37,7 @@ export
         this.s = s;
 
 
-        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle', 'relation'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle', 'relation', 'operator_brackets'];
     }
 
     getFullText(type?: string): string {

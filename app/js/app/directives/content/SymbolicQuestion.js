@@ -39,6 +39,7 @@ define(["app/honest/responsive_video"], function(rv) {
                     ctrl.selectedFormula = {
                         symbols: JSON.parse(scope.doc.formulaSeed)
                     };
+										
                 } else {
 										// We have no answer and no seed
 										console.debug("No previous answer or seed.");

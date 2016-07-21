@@ -31,7 +31,7 @@ export
         super(p, s);
         this.letter = letter;
         this.s = s;
-        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol'];
+        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets'];
     }
 
 	/**

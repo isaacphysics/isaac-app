@@ -72,7 +72,7 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['chemical_element'];
+        this.docksTo = ['chemical_element', "operator_brackets"];
     }
 
     /**

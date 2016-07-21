@@ -146,6 +146,7 @@ define(["angular-ui-router"], function() {
                             $scope.editorMode = "chemistry";
                         }
                         if ($stateParams.symbols) {
+
                             $scope.questionDoc = {
                                 availableSymbols: $stateParams.symbols.split(",")
                             };
@@ -157,6 +158,7 @@ define(["angular-ui-router"], function() {
                         $scope.eqnState = {
                             symbols: {},
                         };
+                        
                     }],
                 },
             },

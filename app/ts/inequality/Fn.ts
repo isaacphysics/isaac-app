@@ -39,7 +39,7 @@ class Fn extends Widget {
         this.dockingPoints = {};
         this.generateDockingPoints();
 
-        this.docksTo = ['symbol', 'operator', 'exponent'];
+        this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets"];
     }
 
     /**
