@@ -65,6 +65,16 @@ export
                 this.pythonSymbol = '>=';
                 this.latexSymbol = '\\geq ';
                 break;
+            case 'less':
+                this.relation = '<';
+                this.pythonSymbol = '<';
+                this.latexSymbol = '\\textless ';
+                break;
+            case 'greater':
+                this.relation = '">';
+                this.pythonSymbol = '>';
+                this.latexSymbol = '\\textgreater ';
+                break;
             case '=':
                 this.relation = '=';
                 this.pythonSymbol = '==';
@@ -208,7 +218,7 @@ export
             var child_mass_w = (right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
             var child_proton_w = (right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
             child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-            right.position.x = parent_w/2 + child_w/2;
+            right.position.x = parent_w / 2 + child_w / 2;
             right.position.y = 0;
 
         }
