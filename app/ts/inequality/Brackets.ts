@@ -277,7 +277,7 @@ class Brackets extends Widget {
             var p = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
             p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w/2 + w/2;
-            p.y = this.scale*10;
+            p.y = 0;
             widest += w;
         } else {
             this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h/2);
