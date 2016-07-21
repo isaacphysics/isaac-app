@@ -5,6 +5,7 @@ define([], function() {
         return {
             scope: {
                 symbol: "=",
+                mousePressed: "=",
             },
             restrict: "A",
             templateUrl: "/partials/equation_editor/menu_symbol.html",
@@ -108,7 +109,14 @@ define([], function() {
                 }
 
                 var mousedown = function(e) {
-                    grab(e.pageX, e.pageY, e);
+                  console.debug(e);
+                    if(e.buttons > 1) {
+                      console.warn("Attempted left and right click.");
+                    }
+                    else {
+                      grab(e.pageX, e.pageY, e);
+                    }
+
                     e.stopPropagation();
                     e.preventDefault();
                 }
