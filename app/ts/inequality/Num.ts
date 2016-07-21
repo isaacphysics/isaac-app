@@ -1,7 +1,8 @@
 import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
-import { ChemicalElement } from "././ChemicalElement.ts";
+import { ChemicalElement } from "./ChemicalElement.ts";
+import { Relation } from "./Relation.ts"
 
 /** A class for representing numbers */
 export
@@ -9,7 +10,6 @@ export
 
     protected s: any;
     private significand: string;
-    private exponent: string;
     private num_font_size;
     protected right = this.dockingPoints.hasOwnProperty("right");
     protected superscript = this.dockingPoints.hasOwnProperty("superscript");
@@ -33,7 +33,6 @@ export
     constructor(p: any, s: any, significand: string, exponent: string) {
         super(p, s);
         this.significand = significand;
-        this.exponent = exponent;
         this.num_font_size = 50;
         this.s = s;
 
@@ -42,20 +41,7 @@ export
     }
 
     getFullText(type?: string): string {
-        var s = this.significand;
-        if (this.exponent) {
-            switch (type) {
-                case "latex":
-                    s += "\\times 10^{" + this.exponent + "}";
-                    break;
-                case "python":
-                    s += "*(10**" + this.exponent + ")";
-                    break;
-                default:
-                    s += "e" + this.exponent;
-            }
-        }
-        return s;
+        return this.significand;
     }
 
     /**
@@ -90,9 +76,6 @@ export
             expression = this.getFullText("latex");
             console.debug("expression", expression);
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
-                if (this.exponent) {
-                    expression = "(" + expression + ")";
-                }
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
             if (this.right && this.dockingPoints["right"].child != null) {
@@ -109,9 +92,6 @@ export
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
-                if (this.exponent) {
-                    expression = "(" + expression + ")";
-                }
                 expression += "^" + this.dockingPoints["superscript"].child.getExpression(format) + "";
             }
             if (this.right && this.dockingPoints["right"].child != null) {
@@ -133,6 +113,8 @@ export
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else if (this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
                     // WARNING This assumes it's a Symbol, hence produces a multiplication
@@ -169,7 +151,6 @@ export
     properties(): Object {
         return {
             significand: this.significand,
-            exponent: this.exponent,
         };
     }
 

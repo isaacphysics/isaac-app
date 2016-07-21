@@ -52,19 +52,19 @@ export
             case 'alpha':
                 this.particle = 'α';
                 this.pythonSymbol = '\\alpha';
-                this.mhchemSymbol = '\\alpha';
+                this.mhchemSymbol = '\\alphaparticle';
                 this.latexSymbol = '\\alpha';
                 break;
             case 'beta':
                 this.particle = 'β';
                 this.pythonSymbol = '\\beta';
-                this.mhchemSymbol = '\\beta';
+                this.mhchemSymbol = '\\betaparticle';
                 this.latexSymbol = '\\beta';
                 break;
             case 'gamma':
                 this.particle = 'γ';
                 this.pythonSymbol = '\\gamma';
-                this.mhchemSymbol = '\\gamma';
+                this.mhchemSymbol = '\\gammaray';
                 this.latexSymbol = '\\gamma';
                 break;
             case 'neutrino':

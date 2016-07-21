@@ -126,6 +126,7 @@ define(function(require) {
                         delete scope.symbolLibrary.customFunctions;
                         delete scope.symbolLibrary.customChemicalSymbols;
                         delete scope.symbolLibrary.customFunction;
+                        delete scope.symbolLibrary.augmentedOps;
 
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
@@ -136,11 +137,14 @@ define(function(require) {
                                 scope.symbolLibrary.customFunctions = parsed.fns;
                             }
                             var parsedOps = parseCustomOperations(questionDoc.availableSymbols);
+                            console.debug(parsedOps);
                             if (parsedOps.length > 0) {
-                                scope.symbolLibrary.augmentedOps = parsed.concat(scope.symbolLibrary.operators);
+                                scope.symbolLibrary.augmentedOps = parsedOps.concat(scope.symbolLibrary.reducedOps);
+                                console.debug("scope.symbolLibrary.augmentedOps", scope.symbolLibrary.augmentedOps);
                             } else {
                                 console.debug("Didn't parse any chemical symbols.");
                             }
+                            console.debug("scope.symbolLibrary.customVars", scope.symbolLibrary.customVars);
 
                         } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
                             var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
@@ -216,7 +220,7 @@ define(function(require) {
                         eqnModal.one("closed.fndtn.reveal", function() {
                             sketch.p.remove();
                             resolve(scope.state);
-                        })
+                        });
 
                     });
                 };
@@ -226,7 +230,12 @@ define(function(require) {
                 var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
                 var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
                 var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
-                var ops = ["less", "greater", "geq", "leq"];
+                var opsMap = {
+                  "<": "<",
+                  ">": ">",
+                  ">=": "\\geq",
+                  "<=": "\\leq"
+                };
                 var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
                 var letterMap = {
                     "\\alpha": "α",
@@ -275,10 +284,7 @@ define(function(require) {
                     chemicalSymbols[chemicalSymbolsArray[i]] = i;
                 }
 
-                var opsMap = {};
-                for(var o in ops) {
-                  opsMap[ops[o]] = o;
-                }
+
                 var inverseLetterMap = {};
                 for (var k in letterMap) {
                     inverseLetterMap[letterMap[k]] = k;
@@ -360,7 +366,12 @@ define(function(require) {
                             continue;
                         }
 
-                        console.debug("Parsing:", s);
+                      if(opsMap.hasOwnProperty(s)) {
+                          console.debug("Identified " + s + " as a relation");
+                      }
+                      else {
+                        console.debug("Identified " + s + " as a symbol");
+                        console.debug("Parsing symbol:", s);
 
                         var parts = s.split(" ");
                         var partResults = [];
@@ -452,41 +463,14 @@ define(function(require) {
                                 r.fns.push(root);
                                 break;
                         }
+                      }
 
                     }
 
                     return r;
                 };
 
-                var parseCustomOperations = function(symbols) {
-                    // take symbols in string ["greater", "leq", "geq", "less"]
-                    var custom = [];
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
-                        if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
-                            continue;
-                        }
-                        console.debug("Parsing:", s);
-                        console.log(opsMap.hasOwnProperty(s));
-                        if (opsMap.hasOwnProperty(s)) {
-                                custom.push({
-                                    type: Relation,
-                                    properties: {
-                                        relation: s
-                                    },
-                                    menu: {
-                                        label: (s.length == 3) ? ("\\" + s) : ("\\text" + s),
-                                        texLabel: true,
-                                        // add here option for it to be part of nuclear equation
-                                    }
-                                });
-                            }
-                        }
 
-                    }
-                    return custom;
-                };
 
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
@@ -793,8 +777,7 @@ define(function(require) {
                         properties: {
                             relation: 'leq'
                         }
-                    },
-                    {
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\geq',
@@ -803,7 +786,7 @@ define(function(require) {
                         properties: {
                             relation: 'geq'
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\textless',
@@ -812,7 +795,7 @@ define(function(require) {
                         properties: {
                             relation: 'le'
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\textgreater',
@@ -821,7 +804,7 @@ define(function(require) {
                         properties: {
                             relation: 'ge'
                         }
-                    },],
+                    }, ],
                     chemOps: [{
                         type: 'Relation',
                         menu: {
@@ -832,6 +815,15 @@ define(function(require) {
                             relation: 'rightarrow'
                         }
                     }, {
+                        type: 'Relation',
+                        menu: {
+                            label: '\\cdot',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '.'
+                        }
+                    },{
                         type: "BinaryOperation",
                         properties: {
                             operation: "+",
@@ -952,98 +944,97 @@ define(function(require) {
                     //     texLabel: true
                     // }],
 
-                    calculus: [{
-                        type: "string",
-                        label: "\\int",
-                        token: "\\int",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\mathrm{d}",
-                        token: "\\mathrm{d}",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\mathrm{e}",
-                        token: "\\mathrm{e}",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\ln",
-                        token: "\\ln",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\log",
-                        token: "\\log",
-                        fontSize: 48,
-                        texLabel: true
-                    }],
+                    // calculus: [{
+                    //     type: "string",
+                    //     label: "\\int",
+                    //     token: "\\int",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\mathrm{d}",
+                    //     token: "\\mathrm{d}",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\mathrm{e}",
+                    //     token: "\\mathrm{e}",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\ln",
+                    //     token: "\\ln",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\log",
+                    //     token: "\\log",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }],
 
-                    operators: [{
-                        type: "string",
-                        label: "+",
-                        token: "+",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "line",
-                        label: "-",
-                        token: "-",
-                        length: 40,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\times",
-                        token: "\\times",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "line",
-                        label: "\\frac{a}{b}",
-                        token: ":frac",
-                        length: 100,
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "\\pm",
-                        token: "\\pm",
-                        fontSize: 48,
-                        texLabel: true
-                    }, {
-                        type: "container",
-                        subType: "sqrt",
-                        width: 148,
-                        height: 60,
-                        label: "\\sqrt{x}",
-                        texLabel: true
-                    }, {
-                        type: "container",
-                        subType: "brackets",
-                        width: 220,
-                        height: 70,
-                        label: "(x)",
-                        texLabel: true
-                    }, {
-                        type: "container",
-                        subType: "abs",
-                        width: 148,
-                        height: 60,
-                        label: "|x|",
-                        texLabel: true
-                    }, {
-                        type: "string",
-                        label: "!",
-                        token: "!",
-                        fontSize: 48,
-                        texLabel: true
-                    }],
-                    *
-                    /
+                    // operators: [{
+                    //     type: "string",
+                    //     label: "+",
+                    //     token: "+",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "line",
+                    //     label: "-",
+                    //     token: "-",
+                    //     length: 40,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\times",
+                    //     token: "\\times",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "line",
+                    //     label: "\\frac{a}{b}",
+                    //     token: ":frac",
+                    //     length: 100,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "\\pm",
+                    //     token: "\\pm",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }, {
+                    //     type: "container",
+                    //     subType: "sqrt",
+                    //     width: 148,
+                    //     height: 60,
+                    //     label: "\\sqrt{x}",
+                    //     texLabel: true
+                    // }, {
+                    //     type: "container",
+                    //     subType: "brackets",
+                    //     width: 220,
+                    //     height: 70,
+                    //     label: "(x)",
+                    //     texLabel: true
+                    // }, {
+                    //     type: "container",
+                    //     subType: "abs",
+                    //     width: 148,
+                    //     height: 60,
+                    //     label: "|x|",
+                    //     texLabel: true
+                    // }, {
+                    //     type: "string",
+                    //     label: "!",
+                    //     token: "!",
+                    //     fontSize: 48,
+                    //     texLabel: true
+                    // }],
+
                     trig: [{
                         type: "Fn",
                         properties: {
@@ -1166,6 +1157,35 @@ define(function(require) {
                                     }
                                 };
                 */
+                var parseCustomOperations = function(symbols) {
+                    // take symbols in string ["greater", "leq", "geq", "less"]
+                    var custom = [];
+                    for (var i in symbols) {
+                        var s = symbols[i].trim();
+                        if (s.length == 0) {
+                            console.warn("Tried to parse zero-length symbol in list:", symbols);
+                            continue;
+                        }
+                        console.debug("Parsing:", s);
+                        console.log(opsMap.hasOwnProperty(s));
+                        if (opsMap.hasOwnProperty(s)) {
+
+                            custom.push({
+                                type: 'Relation',
+                                menu: {
+                                    label: opsMap[s],
+                                    texLabel: true,
+                                },
+                                properties: {
+                                    relation: s
+                                }
+                            })
+                        }
+                        console.debug(custom);
+                    }
+                    return custom;
+                };
+
                 scope.trigTitle = {
                     type: "string",
                     menu: {
