@@ -123,9 +123,9 @@ $menu-handle-width: 160px;
             }
         }
         .menu-list-container {
-            width: 100%;
-            height: 100px;
+            height: 110px;
             white-space: nowrap;
+            overflow-x: scroll;
             position: relative;
             li {
                 padding-top: 10px;
