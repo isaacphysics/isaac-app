@@ -30,7 +30,7 @@ class Brackets extends Widget {
         this.type = type;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets'];
     }
 
     /**
@@ -227,7 +227,7 @@ class Brackets extends Widget {
             argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, -argHeight-this.scale*15, width, argHeight*2);  // FIXME This 40 is hard-coded
+        return new Rect(-width/2, -argHeight/2, width, argHeight);  // FIXME This 40 is hard-coded
     }
 
     /**
@@ -308,7 +308,7 @@ class Brackets extends Widget {
         if ("right" in boxes) {
             child_width = docking_right.child.boundingBox().w;
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            docking_right.child.position.y = this.scale*15;
+            docking_right.child.position.y = 0;
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_right.position.y = (this.dockingPoint.y);
