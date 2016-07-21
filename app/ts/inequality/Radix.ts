@@ -202,7 +202,8 @@ export
             var p = this.dockingPoints["argument"].child.position;
             argWidth = this.dockingPoints["argument"].child.subtreeBoundingBox().w;
             p.x = box.w / 2 + this.dockingPoints["argument"].child.offsetBox().w / 2;
-            p.y = this.boundingBox().h / 2 - 0.8*this.dockingPoints["argument"].child.boundingBox().h;
+            p.y = 0;
+
         } else {
             var p = this.dockingPoints["argument"].position;
             p.x = box.w / 2 + this.s.xBox.w / 2;
@@ -227,7 +228,7 @@ export
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w/2;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w / 2;
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;

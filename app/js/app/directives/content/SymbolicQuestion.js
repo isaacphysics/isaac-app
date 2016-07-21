@@ -15,51 +15,61 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-	return ["api", function(api) {
+    return ["api", function(api) {
 
-		return {
-			scope: true,
+        return {
+            scope: true,
 
-			restrict: 'A',
+            restrict: 'A',
 
-			templateUrl: "/partials/content/SymbolicQuestion.html",
+            templateUrl: "/partials/content/SymbolicQuestion.html",
 
-			controller: ["$scope", function(scope) {
-				var ctrl = this;
+            controller: ["$scope", function(scope) {
+                var ctrl = this;
 
-				scope.editorMode = 'maths';
+                scope.editorMode = 'maths';
 
-				if (scope.question.selectedChoice) {
-					// We have a previous answer. Load it.
-					ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
-				} else {
-					// We have no previous answer to load.
-					ctrl.selectedFormula = { symbols: {} };
-				}
+                if (scope.question.selectedChoice) {
+                    // We have a previous answer. Load it.
+										console.debug("Loading the previous answer.");
+                    ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
+                } else if (scope.doc.formulaSeed) {
+                    // We have seed to load and no previous answer
+										console.debug("Loading the formula seed.", scope.doc.formulaSeed);
+                    ctrl.selectedFormula = {
+                        symbols: JSON.parse(scope.doc.formulaSeed)
+                    };
+                } else {
+										// We have no answer and no seed
+										console.debug("No previous answer or seed.");
+                    ctrl.selectedFormula = {
+                        symbols: {}
+                    };
+                }
 
-				// TODO: Why do we do this?! Surely scope.doc would be enough? - Ian
-				ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
-				ctrl.plainDoc.type = "content";
+                // TODO: Why do we do this?! Surely scope.doc would be enough? - Ian
+                ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
+                ctrl.plainDoc.type = "content";
 
-				scope.$watch("ctrl.selectedFormula", function(f, oldF) {
-					if (f === oldF) {
-						return; // Init
-					}
+                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                    if (f === oldF) {
+                        return; // Init
+                    }
 
-					if (f) {
-						scope.question.selectedChoice = {
-							type: "formula",
-							value: JSON.stringify(f),
-							pythonExpression: f.result ? f.result.python : "",
-						};
-					} else {
-						scope.question.selectedChoice = null;
-					}
-				}, true);
+                    if (f) {
+                        scope.question.selectedChoice = {
+                            type: "formula",
+                            value: JSON.stringify(f),
+                            pythonExpression: f.result ? f.result.python : "",
+                        };
+                    } else {
+                        scope.question.selectedChoice = null;
+                    }
+                }, true);
 
-			}],
+            }],
 
-			controllerAs: "ctrl",
-		};
-	}];
+            controllerAs: "ctrl",
+        };
+    }];
 });

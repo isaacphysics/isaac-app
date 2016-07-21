@@ -526,7 +526,7 @@ define(function(require) {
                     var rp = $(".result-preview>span");
 
                     rp.empty();
-
+                    console.debug(scope.state.result);
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
                     if (scope.state.result) {
                         scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g, "");

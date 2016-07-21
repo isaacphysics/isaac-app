@@ -120,9 +120,11 @@ export
      */
     getExpression(format: string): string {
         var expression = "";
+        console.debug("this", this);
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
+                console.debug("latexexpression", expression);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {

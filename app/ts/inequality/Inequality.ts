@@ -180,6 +180,7 @@ export
 
         if (root) {
             var w: Widget = this._parseSubtreeObject(root);
+            console.log(w);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
             this.symbols.push(w);
@@ -225,8 +226,9 @@ export
                 break;
             default: // this would be a Widget...
                 break;
-        }
 
+        }
+        console.log(w);
         if (parseChildren) {
             _.each(node["children"] || [], (n, key) => {
                 w.dockingPoints[key].child = this._parseSubtreeObject(n);
