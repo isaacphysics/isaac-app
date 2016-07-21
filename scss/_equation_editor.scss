@@ -13,15 +13,15 @@ $menu-handle-width: 160px;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    ::-webkit-scrollbar {
-        -webkit-appearance: none;
-        width: 4px;
-    }
-    ::-webkit-scrollbar-thumb {
-        border-radius: 1px;
-        background-color: rgba(0,0,0,.5);
-        -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
-    }
+    // ::-webkit-scrollbar {
+    //     -webkit-appearance: none;
+    //     width: 4px;
+    // }
+    // ::-webkit-scrollbar-thumb {
+    //     border-radius: 1px;
+    //     background-color: rgba(0,0,0,.5);
+    //     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    // }
     &:focus,
     :focus {
         outline: none;
@@ -123,10 +123,12 @@ $menu-handle-width: 160px;
             }
         }
         .menu-list-container {
+            width: 100%;
             height: 100px;
             white-space: nowrap;
-            overflow-x: scroll;
             position: relative;
+
+
             li {
                 padding-top: 10px;
                 padding-bottom: 10px;
