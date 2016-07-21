@@ -21,7 +21,8 @@
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="greekLetterUpperTitle" symbol-menu symbols="symbolLibrary.greekLettersUpper"></div>
     </div>
     <div top-menu="+\, -\, \sqrt{x}" ng-if="isLandscape && (editorMode == 'maths')">
-        <div symbol-menu symbols="symbolLibrary.reducedOps"></div>
+        <div ng-if="symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.augmentedOps"></div>
+        <div ng-if="!symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.reducedOps"></div>
         <!--<div sub-menu></div>
         <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
         <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
