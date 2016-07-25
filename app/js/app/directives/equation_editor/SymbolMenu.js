@@ -41,11 +41,12 @@ define([], function() {
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				};
 
-				var abortSymbolDrag = function($e, symbol, pageX, pageY, mousePageX, mousePageY) {
+				var abortSymbolDrag = function(_, symbol, pageX, pageY, mousePageX, mousePageY, offCanvas) {
 					bufferedLeft = parseFloat(lst.css("left"));
+					console.debug("offCanvas", offCanvas);
 						scope.$emit('abortSymbolDrag');
                     // If we've dropped outside the menu, spawn this symbol.
-                    if (pageY > element.offset().top + element.height()) {
+                    if (pageY > element.offset().top + element.height() && !offCanvas) {
                         scope.$emit("spawnSymbol");
                     } else {
                     	scope.$emit("newSymbolAbortDrag");

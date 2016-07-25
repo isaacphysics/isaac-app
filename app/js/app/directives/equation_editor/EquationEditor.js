@@ -19,7 +19,6 @@ define(function(require) {
 
                 scope.canvasOffset = {};
                 scope.draggingNewSymbol = false;
-
                 scope.equationEditorElement = element;
 
                 scope.selectedSymbols = [];
@@ -45,7 +44,7 @@ define(function(require) {
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
 
-
+                    console.debug(scope.dimmensions);
                     scope.draggingNewSymbol = true;
                     scope.mousePageX = pageX;
                     scope.mousePageY = pageY;
@@ -142,7 +141,7 @@ define(function(require) {
                                 scope.symbolLibrary.augmentedOps = parsedOps.concat(scope.symbolLibrary.reducedOps);
                                 console.debug("scope.symbolLibrary.augmentedOps", scope.symbolLibrary.augmentedOps);
                             } else {
-                                console.debug("Didn't parse any chemical symbols.");
+                                console.debug("Didn't parse any custom symbols.");
                             }
                             console.debug("scope.symbolLibrary.customVars", scope.symbolLibrary.customVars);
 

@@ -83,7 +83,7 @@ define(function(require) {
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
 
-	.directive('chemicalElementsMenu', require("app/directives/equation_editor/ChemicalElementsMenu"))
+
 
 	.directive('elementsMenu', require("app/directives/equation_editor/ElementsMenu"))
 

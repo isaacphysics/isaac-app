@@ -95,7 +95,17 @@ define([], function() {
                     element.css("top", 0);
 
                     // This ensures new symbols can be selected.
-                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
+                    console.debug(scope.offCanvas);
+                    if (scope.offCanvas) {
+                        var offCanvas = true;
+                        console.debug("offCanvas 101:", offCanvas);
+                        scope.$emit("symbolDrop", scope.symbol, 1000, 1000, 1000, 1000, offCanvas);
+                    } else {
+                        var offCanvas = false;
+                        console.debug("offCanvas 105:", offCanvas);
+                        scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY, offCanvas);
+                    }
+
 
                     // This drags the hexagons around.
                     $("body").off("mouseup", mouseup);
@@ -104,17 +114,17 @@ define([], function() {
                     $("body").off("touchmove", touchmove);
 
                     scope.dragging = false;
+
                     element.removeClass("dragging");
                     scope.$apply();
                 }
 
                 var mousedown = function(e) {
-                  console.debug(e);
-                    if(e.buttons > 1) {
-                      console.warn("Attempted left and right click.");
-                    }
-                    else {
-                      grab(e.pageX, e.pageY, e);
+                    // Fix for bug when clicking both left and right buttons 
+                    if (e.buttons > 1) {
+                        console.warn("Attempted left and right click.");
+                    } else {
+                        grab(e.pageX, e.pageY, e);
                     }
 
                     e.stopPropagation();
@@ -122,26 +132,24 @@ define([], function() {
                 }
 
                 var mouseup = function(e) {
-                  console.debug(scope.firstX + " " + e.pageX);
-                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
-                    var clicked = true;
+                    // If current position matches previous position after mouseup, define action as a click.
+                    if (scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                        var clicked = true;
+                        scope.$emit("clicked", clicked);
+                        var num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+                    drop(e.pageX, e.pageY, e);
+                    clicked = false;
                     scope.$emit("clicked", clicked);
-                    console.debug("Registered as click");
-                    var num = attrs.value;
-                    scope.$emit("numberClicked", num);
-                  }
-                      drop(e.pageX, e.pageY, e);
-                      clicked = false;
-                      scope.$emit("clicked", clicked);
-                      e.stopPropagation();
-                      e.preventDefault();
+                    e.stopPropagation();
+                    e.preventDefault();
                 }
 
                 var mousemove = function(e) {
-                    drag(e.pageX, e.pageY);
-
-                    e.stopPropagation();
-                    e.preventDefault();
+                        drag(e.pageX, e.pageY);
+                        e.stopPropagation();
+                        e.preventDefault();
                 }
 
                 var touchstart = function(e) {
