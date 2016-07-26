@@ -139,27 +139,7 @@ define(["angular-ui-router"], function() {
             views: {
                 "body": {
                     templateUrl: "/partials/states/equation_editor.html",
-
-                    controller: ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
-                        $scope.editorMode = "maths";
-                        if ($stateParams.mode == 'chemistry') {
-                            $scope.editorMode = "chemistry";
-                        }
-                        if ($stateParams.symbols) {
-
-                            $scope.questionDoc = {
-                                availableSymbols: $stateParams.symbols.split(",")
-                            };
-                        }
-                        $scope.selectedFormula = {
-                                symbols: {},
-                        };
-
-                        $scope.eqnState = {
-                            symbols: {},
-                        };
-                        
-                    }],
+                    controller: "EqualityPageController"
                 },
             },
         })
@@ -389,8 +369,10 @@ define(["angular-ui-router"], function() {
                 }]
             })
 
-            .state('404', {
-                params: {"target": null},
+        .state('404', {
+                params: {
+                    "target": null
+                },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/404.html",
@@ -402,7 +384,9 @@ define(["angular-ui-router"], function() {
 
             })
             .state('403', {
-                params: {"target": null},
+                params: {
+                    "target": null
+                },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/403.html",
