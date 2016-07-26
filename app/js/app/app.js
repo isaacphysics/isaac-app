@@ -59,8 +59,9 @@ define([
         'ui.date',
 	])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', function($locationProvider, apiProvider, $httpProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider) {
 
+        $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
 
