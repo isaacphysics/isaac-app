@@ -64,6 +64,7 @@ class MySketch {
 		this.p.touchMoved = this.touchMoved;
 		this.p.touchEnded = this.touchEnded;
 		this.p.mouseMoved = this.mouseMoved;
+		this.p.windowResized = this.windowResized;
 	}
 
 	preload = () => {
@@ -95,6 +96,11 @@ class MySketch {
 			_this.scope.log.initialState.push(e.subtreeObject(true, true));
 		});
 	};
+
+	windowResized = () => {
+		console.log(this.p.windowWidth, this.p.windowHeight);
+		this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+	}
 
 	draw = () => {
 	    this.p.clear();
