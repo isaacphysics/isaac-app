@@ -52,6 +52,7 @@ define([], function() {
 				"eighth": ["\\frac{1}{8}",0],
 				"e": ["\\textrm{e}",0],
 				"units": ["\\rm{#1}",1],
+				"standardstate": ["\\mathbin{\u29B5}",0],
 			},
 			extensions: ["mhchem.js"],
 		},
