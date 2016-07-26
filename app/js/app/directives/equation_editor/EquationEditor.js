@@ -504,7 +504,6 @@ define(function(require) {
 
                 var uniqueSymbolsSortFn = function(a, b) {
                     // Sort operators:
-                    console.debug("Comparing", a, b);
                     if (a in uniqueOperatorsTotalOrder || b in uniqueOperatorsTotalOrder) {
                         // both a and b are operators
                         if (a in uniqueOperatorsTotalOrder && b in uniqueOperatorsTotalOrder) {
