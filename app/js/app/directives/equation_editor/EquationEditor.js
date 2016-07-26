@@ -43,8 +43,6 @@ define(function(require) {
                 });
 
                 scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-
-                    console.debug(scope.dimmensions);
                     scope.draggingNewSymbol = true;
                     scope.mousePageX = pageX;
                     scope.mousePageY = pageY;
@@ -127,24 +125,21 @@ define(function(require) {
                         delete scope.symbolLibrary.customFunction;
                         delete scope.symbolLibrary.augmentedOps;
 
+                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat((scope.symbolLibrary.hiddenOps));
+
+
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
+                            scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
                             if (parsed.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsed.vars;
-                            }
-                            if (parsed.fns.length > 0) {
+                            } else if (parsed.fns.length > 0) {
                                 scope.symbolLibrary.customFunctions = parsed.fns;
-                            }
-                            var parsedOps = parseCustomOperations(questionDoc.availableSymbols);
-                            console.debug(parsedOps);
-                            if (parsedOps.length > 0) {
-                                scope.symbolLibrary.augmentedOps = parsedOps.concat(scope.symbolLibrary.reducedOps);
-                                console.debug("scope.symbolLibrary.augmentedOps", scope.symbolLibrary.augmentedOps);
+                            } else if (parsed.operators.length > 0) {
+                                scope.symbolLibrary.customFunctions = scope.symbolLibrary.reducedOps.concat(parsed.operators);
                             } else {
-                                console.debug("Didn't parse any custom symbols.");
+                                console.debug("Unable to parse any custom variables.");
                             }
-                            console.debug("scope.symbolLibrary.customVars", scope.symbolLibrary.customVars);
-
                         } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
                             var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
                             if (parsed.length > 0) {
@@ -228,13 +223,14 @@ define(function(require) {
                 var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
                 var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
                 var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
-                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Uut", "Fl", "Uup", "Lv", "Uus", "Uuo"];
+                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
                 var opsMap = {
-                  "<": "<",
-                  ">": ">",
-                  ">=": "\\geq",
-                  "<=": "\\leq"
+                    "<": "<",
+                    ">": ">",
+                    "<=": "\\leq",
+                    ">=": "\\geq",
                 };
+
                 var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
                 var letterMap = {
                     "\\alpha": "α",
@@ -356,6 +352,7 @@ define(function(require) {
                     var r = {
                         vars: [],
                         fns: [],
+                        operators: []
                     };
 
                     for (var i in symbols) {
@@ -363,106 +360,113 @@ define(function(require) {
                         if (s.length == 0) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
-                        }
-
-                      if(opsMap.hasOwnProperty(s)) {
-                          console.debug("Identified " + s + " as a relation");
-                      }
-                      else {
-                        console.debug("Identified " + s + " as a symbol");
-                        console.debug("Parsing symbol:", s);
-
-                        var parts = s.split(" ");
-                        var partResults = [];
-                        for (var j in parts) {
-                            var p = parts[j];
-
-                            if (p.endsWith("()")) {
-                                var name = p.replace(/\(\)/g, "");
-                                var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
-                                var allowSubscript = name == "log";
-                                if (name.substring(0, 3) == "arc") {
-                                    partResults.push({
-                                        type: "Fn",
-                                        properties: {
-                                            name: name.substring(3),
-                                            innerSuperscript: innerSuperscript,
-                                            allowSubscript: allowSubscript
-                                        },
-                                        children: {
-                                            superscript: {
-                                                type: "Num",
-                                                properties: {
-                                                    significand: -1,
-                                                    exponent: 0
-                                                }
-                                            }
-                                        },
-                                        menu: {
-                                            label: "\\" + name,
-                                            texLabel: true
-                                        }
-                                    });
-                                } else {
-                                    partResults.push({
-                                        type: "Fn",
-                                        properties: {
-                                            name: name,
-                                            innerSuperscript: innerSuperscript,
-                                            allowSubscript: allowSubscript
-                                        },
-                                        menu: {
-                                            label: "\\" + name,
-                                            texLabel: true
-                                        }
-                                    });
+                        } else if (opsMap.hasOwnProperty(s)) {
+                            console.debug("Identified " + s + " as an operator");
+                            r['operators'].push({
+                                type: 'Relation',
+                                menu: {
+                                    label: opsMap[s],
+                                    texLabel: true,
+                                },
+                                properties: {
+                                    relation: s
                                 }
-                            } else {
-                                var p1 = convertToLatexIfGreek(p.split("_")[0]);
-                                var newSym = {
-                                    type: "Symbol",
-                                    properties: {
-                                        letter: letterMap[p1] || p1,
-                                    },
-                                    menu: {
-                                        label: p1,
-                                        texLabel: true,
-                                    }
-                                };
-                                var p2 = convertToLatexIfGreek(p.split("_")[1]);
-                                if (p2) {
-                                    newSym.children = {
-                                        subscript: {
-                                            type: "Symbol",
+                            })
+                        } else {
+                            console.debug("Identified " + s + " as a symbol");
+                            console.debug("Parsing symbol:", s);
+
+                            var parts = s.split(" ");
+                            var partResults = [];
+                            for (var j in parts) {
+                                var p = parts[j];
+
+                                if (p.endsWith("()")) {
+                                    var name = p.replace(/\(\)/g, "");
+                                    var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
+                                    var allowSubscript = name == "log";
+                                    if (name.substring(0, 3) == "arc") {
+                                        partResults.push({
+                                            type: "Fn",
                                             properties: {
-                                                letter: letterMap[p2] || p2,
-                                                upright: p2.length > 1
+                                                name: name.substring(3),
+                                                innerSuperscript: innerSuperscript,
+                                                allowSubscript: allowSubscript
+                                            },
+                                            children: {
+                                                superscript: {
+                                                    type: "Num",
+                                                    properties: {
+                                                        significand: -1,
+                                                        exponent: 0
+                                                    }
+                                                }
+                                            },
+                                            menu: {
+                                                label: "\\" + name,
+                                                texLabel: true
                                             }
+                                        });
+                                    } else {
+                                        partResults.push({
+                                            type: "Fn",
+                                            properties: {
+                                                name: name,
+                                                innerSuperscript: innerSuperscript,
+                                                allowSubscript: allowSubscript
+                                            },
+                                            menu: {
+                                                label: "\\" + name,
+                                                texLabel: true
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    var p1 = convertToLatexIfGreek(p.split("_")[0]);
+                                    var newSym = {
+                                        type: "Symbol",
+                                        properties: {
+                                            letter: letterMap[p1] || p1,
+                                        },
+                                        menu: {
+                                            label: p1,
+                                            texLabel: true,
                                         }
                                     };
-                                    newSym.menu.label += "_{" + p2 + "}";
+                                    var p2 = convertToLatexIfGreek(p.split("_")[1]);
+                                    if (p2) {
+                                        newSym.children = {
+                                            subscript: {
+                                                type: "Symbol",
+                                                properties: {
+                                                    letter: letterMap[p2] || p2,
+                                                    upright: p2.length > 1
+                                                }
+                                            }
+                                        };
+                                        newSym.menu.label += "_{" + p2 + "}";
+                                    }
+
+                                    partResults.push(newSym);
                                 }
+                            }
 
-                                partResults.push(newSym);
+                            var root = partResults[0];
+                            for (var k = 0; k < partResults.length - 1; k++) {
+                                partResults[k].children = {
+                                    right: partResults[k + 1]
+                                }
+                                root.menu.label += " " + partResults[k + 1].menu.label;
+                            }
+                            switch (partResults[0].type) {
+                                case "Symbol":
+                                    r.vars.push(root);
+                                    break;
+                                case "Function":
+                                    r.fns.push(root);
+                                    break;
                             }
                         }
-
-                        var root = partResults[0];
-                        for (var k = 0; k < partResults.length - 1; k++) {
-                            partResults[k].children = {
-                                right: partResults[k + 1]
-                            }
-                            root.menu.label += " " + partResults[k + 1].menu.label;
-                        }
-                        switch (partResults[0].type) {
-                            case "Symbol":
-                                r.vars.push(root);
-                                break;
-                            case "Function":
-                                r.fns.push(root);
-                                break;
-                        }
-                      }
 
                     }
 
@@ -489,7 +493,34 @@ define(function(require) {
                     uniqueSymbolsTotalOrder[uniqueSymbols[i]] = i;
                 }
 
+                var uniqueOperatorsTotalOrder = {};
+                var count = 0;
+                for (var operator in opsMap) {
+                    uniqueOperatorsTotalOrder[operator] = count;
+                    console.log(operator, count);
+                    count++;
+                }
+
+
                 var uniqueSymbolsSortFn = function(a, b) {
+                    // Sort operators:
+                    console.debug("Comparing", a, b);
+                    if (a in uniqueOperatorsTotalOrder || b in uniqueOperatorsTotalOrder) {
+                        // both a and b are operators
+                        if (a in uniqueOperatorsTotalOrder && b in uniqueOperatorsTotalOrder) {
+                            console.debug("uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b]", uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b]);
+                            return uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b];
+                        }
+                        // only a is an operator, so place it after b
+                        if (a in uniqueOperatorsTotalOrder) {
+                            console.log(a, "after", b);
+                            return 1;
+                        // only b is an operator, so place it after a
+                        } else {
+                            console.log(b, "after", a);
+                            return -1;
+                        }
+                    }
                     // Are these functions?
                     if (a.indexOf("()") > -1 && b.indexOf("()") > -1) {
                         if (a > b) return 1;
@@ -517,6 +548,7 @@ define(function(require) {
                     return 0;
                 }
 
+
                 scope.newEditorState = function(s) {
                     scope.state = s;
 
@@ -525,7 +557,7 @@ define(function(require) {
                     var rp = $(".result-preview>span");
 
                     rp.empty();
-                    console.debug(scope.state.result);
+
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
                     if (scope.state.result) {
                         scope.state.result["uniqueSymbols"] = replaceSpecialChars(scope.state.result["uniqueSymbols"]).replace(/\\/g, "");
@@ -774,7 +806,7 @@ define(function(require) {
                             texLabel: true,
                         },
                         properties: {
-                            relation: 'leq'
+                            relation: '<='
                         }
                     }, {
                         type: 'Relation',
@@ -783,25 +815,25 @@ define(function(require) {
                             texLabel: true,
                         },
                         properties: {
-                            relation: 'geq'
+                            relation: '>='
                         }
                     }, {
                         type: 'Relation',
                         menu: {
-                            label: '\\textless',
+                            label: '<',
                             texLabel: true,
                         },
                         properties: {
-                            relation: 'le'
+                            relation: '<'
                         }
                     }, {
                         type: 'Relation',
                         menu: {
-                            label: '\\textgreater',
+                            label: '>',
                             texLabel: true,
                         },
                         properties: {
-                            relation: 'ge'
+                            relation: '>'
                         }
                     }, ],
                     chemOps: [{
@@ -822,7 +854,7 @@ define(function(require) {
                         properties: {
                             relation: '.'
                         }
-                    },{
+                    }, {
                         type: "BinaryOperation",
                         properties: {
                             operation: "+",
@@ -1064,6 +1096,16 @@ define(function(require) {
                             label: "\\tan",
                             texLabel: true
                         }
+                    }, {
+                        type: "Fn",
+                        properties: {
+                            name: "tan^{-1}",
+                            innerSuperscript: true
+                        },
+                        menu: {
+                            label: "\\tan^{-1}",
+                            texLabel: true
+                        }
                     }],
 
                     otherFns: [{
@@ -1156,35 +1198,6 @@ define(function(require) {
                                     }
                                 };
                 */
-                var parseCustomOperations = function(symbols) {
-                    // take symbols in string ["greater", "leq", "geq", "less"]
-                    var custom = [];
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
-                        if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
-                            continue;
-                        }
-                        console.debug("Parsing:", s);
-                        console.log(opsMap.hasOwnProperty(s));
-                        if (opsMap.hasOwnProperty(s)) {
-
-                            custom.push({
-                                type: 'Relation',
-                                menu: {
-                                    label: opsMap[s],
-                                    texLabel: true,
-                                },
-                                properties: {
-                                    relation: s
-                                }
-                            })
-                        }
-                        console.debug(custom);
-                    }
-                    return custom;
-                };
-
                 scope.trigTitle = {
                     type: "string",
                     menu: {
@@ -1392,6 +1405,7 @@ define(function(require) {
                     e.preventDefault();
                 });
                 */
+
                 scope.$on("menuOpened", function() {
                     // TODO: Deselect symbols when opening menus
                     //scope.selectedSymbols.length = 0;
