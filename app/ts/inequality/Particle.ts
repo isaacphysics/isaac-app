@@ -121,15 +121,9 @@ export
 
     getExpression(format: string): string {
         var expression = "";
-        console.debug("type:", this.type);
-        //var obj = new Particle(this.p, this.s, this.particle, this.type);
-        console.debug("this.latex: ", this.latexSymbol);
-        //console.debug("obj.latex: ", obj.latexSymbol);
         if (format == "latex") {
-
-            expression = this.latexSymbol;// need to remove this so that we can append the element to mass/proton numbers
-            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
-            // Should we render one if the other is ommitted? - for now, no.
+            expression = this.latexSymbol;
+            //  KaTeX doesn't support the mhchem package so padding is used to align proton number correctly. 
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
                 var mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;

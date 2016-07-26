@@ -74,7 +74,6 @@ export
         var expression = "";
         if (format == "latex") {
             expression = this.getFullText("latex");
-            console.debug("expression", expression);
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
@@ -85,12 +84,9 @@ export
                     // WARNING This assumes it's a Number, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
-                console.debug("expression", expression);
             }
         } else if (format == "mhchem") {
-            expression = this.getFullText("mhchem"); // need to remove this so that we can append the element to mass/proton numbers
-            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
-            // Should we render one if the other is ommitted? - for now, no.
+            expression = this.getFullText("mhchem");
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
                 expression += "^" + this.dockingPoints["superscript"].child.getExpression(format) + "";
             }

@@ -3,7 +3,7 @@ import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
 
 /**
- * Relations, such as equalities, inequalities, and unexpected friends.
+ * A class for state symbols.
  */
 export
     class StateSymbol extends Widget {
@@ -24,10 +24,10 @@ export
      *
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
-     get dockingPoint(): p5.Vector {
-         var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
-         return this.p.createVector(0, - box.h / 2);
-     }
+    get dockingPoint(): p5.Vector {
+        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        return this.p.createVector(0, - box.h / 2);
+    }
 
     constructor(p: any, s: any, state: string) {
         super(p, s);
@@ -100,12 +100,12 @@ export
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
-          expression = this.latexSymbol + "";
+            expression += this.latexSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-          expression = this.pythonSymbol + "";
+            expression += this.pythonSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
@@ -114,7 +114,7 @@ export
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mhchem") {
-          expression = this.mhchemSymbol + "";
+            expression += this.mhchemSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
@@ -133,7 +133,7 @@ export
     }
 
     token() {
-        return "";//this.relationString;
+        return "";
     }
 
     /** Paints the widget on the canvas. */
@@ -162,10 +162,10 @@ export
      *
      * @returns {Rect} The bounding box
      */
-     boundingBox(): Rect {
-         var box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
-         return new Rect(-(box.w-10)/ 2, box.y-1000, box.w-10, box.h);
-     }
+    boundingBox(): Rect {
+        var box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
+        return new Rect(-(box.w - 10) / 2, box.y - 1000, box.w - 10, box.h);
+    }
 
 
     /**
@@ -186,23 +186,14 @@ export
             }
         });
 
-        // Calculate our own geometry
-
-        // Nothing to do for Relation
-
-        // Set position of all our children.
-
         var box = this.boundingBox();
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             var child_width = this.dockingPoints["right"].child.boundingBox().w;
-
             var parent_width = this.boundingBox().w;
             // If either subscripts or superscripts or both exist
-
-
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width/2 + child_width/2) : (parent_width-this.boundingBox().w/2+child_width/2);
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;

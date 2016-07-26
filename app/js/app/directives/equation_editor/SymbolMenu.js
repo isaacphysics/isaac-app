@@ -43,7 +43,7 @@ define([], function() {
 
 				var abortSymbolDrag = function(_, symbol, pageX, pageY, mousePageX, mousePageY, offCanvas) {
 					bufferedLeft = parseFloat(lst.css("left"));
-					console.debug("offCanvas", offCanvas);
+					
 						scope.$emit('abortSymbolDrag');
                     // If we've dropped outside the menu, spawn this symbol.
                     if (pageY > element.offset().top + element.height() && !offCanvas) {

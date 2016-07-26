@@ -5,7 +5,7 @@ import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
 import { StateSymbol } from "./StateSymbol.ts";
 
-/** A class for representing variables and constants (aka, elements). */
+/** A class for representing chemical elements. */
 export
     class ChemicalElement extends Widget {
 
@@ -37,18 +37,19 @@ export
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
-     * A ChemicalElement has three docking points:
+     * A ChemicalElement has five docking points:
      *
      * - _right_: Binary operation (addition, subtraction), ChemicalElement (multiplication)
      * - _superscript_: Exponent
      * - _subscript_: Subscript (duh?)
+     * - mass_number: the number of protons and neutrons the element has
+     * - proton_number: the number of protons the element has (crazy, right?)
      */
     generateDockingPoints() {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        // Create the docking points - added mass number and proton number
-        // TODO: add a flag to toggle the mass/proton number docking points? e.g. boolean nuclearMode
+        // Create the docking points
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "chemical_element", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
@@ -66,27 +67,34 @@ export
      * @returns {string} The expression in the specified format.
      */
 
-    // todo add mhchem with \alpha etc
     getExpression(format: string): string {
         var expression = "\\text{" + this.element + "}";
 
         var isParticle = (this.element[0] != '\\');
         if (format == "latex") {
-
-            expression = "\\text{" + this.element + "}";// need to remove this so that we can append the element to mass/proton numbers
-            // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
-            // Should we render one if the other is ommitted? - for now, no.
-            if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
+            expression = "\\text{" + this.element + "}";
+            // Need to remove this so that we can append the element to mass/proton numbers
+            // Renders the mass number first if present, otherwise just renders the element.
+            // KaTeX doesn't support the mhchem package so padding is used to display nuclear equations correctly.
+            if (this.dockingPoints["mass_number"].child != null || this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                var mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
-                var proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
-                var number_of_spaces = Math.abs(proton_number_length - mass_number_length);
-                var padding = "";
-                // Temporary hack to align mass number and proton number correctly.
-                for (var _i = 0; _i < number_of_spaces; _i++) {
-                    padding += "\\enspace";
+                var mass_number_length = 0;
+                var proton_number_length = 0;
+                if (this.dockingPoints["mass_number"].child != null) {
+                    mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
+                    expression = "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{}\\text{" + this.element + "}";
                 }
-                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
+
+                if (this.dockingPoints["proton_number"].child != null) {
+                    proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
+                    var number_of_spaces = Math.abs(proton_number_length - mass_number_length);
+                    var padding = "";
+                    // Temporary hack to align mass number and proton number correctly.
+                    for (var _i = 0; _i < number_of_spaces; _i++) {
+                        padding += "\\enspace";
+                    }
+                    expression = (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
+                }
             }
 
             if (this.dockingPoints["superscript"].child != null) {
@@ -301,6 +309,6 @@ export
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
     getChildren(): Array<Widget> {
-        return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")),"child"));
+        return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }
 }

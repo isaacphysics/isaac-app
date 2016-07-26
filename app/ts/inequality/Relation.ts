@@ -73,7 +73,7 @@ export
             case '>':
                 this.relation = '>';
                 this.pythonSymbol = '>';
-                this.latexSymbol = '< ';
+                this.latexSymbol = '> ';
                 break;
             case '=':
                 this.relation = '=';
@@ -120,11 +120,9 @@ export
      */
     getExpression(format: string): string {
         var expression = "";
-        console.debug("this", this);
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
-                console.debug("latexexpression", expression);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
@@ -153,7 +151,7 @@ export
     }
 
     token() {
-        return "";//this.relationString;
+        return this.pythonSymbol;
     }
 
     /** Paints the widget on the canvas. */
