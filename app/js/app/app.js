@@ -18,20 +18,20 @@
 define([
     "app/honest/responsive_video",
     "lib/rsvp",
-    "foundation", 
-    "app/router", 
-    "angular", 
-    "angular-resource", 
+    "foundation",
+    "app/router",
+    "angular",
+    "angular-resource",
     "angular-cookies",
     "angular-ui-date",
-    "app/controllers", 
-    "app/directives", 
-    "app/services", 
+    "app/controllers",
+    "app/directives",
+    "app/services",
     "app/filters",
     "d3",
     "owl-carousel2",
     "app/honest/dropdown",
-    "angulartics", 
+    "angulartics",
     "angulartics-google-analytics",
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
@@ -100,10 +100,10 @@ define([
 
 	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
 
-        /* 
+        /*
             Tooltip settings
         */
-        Opentip.lastZIndex = 9999; 
+        Opentip.lastZIndex = 9999;
         Opentip.styles.globalStyle = {
             target: true,
             background: '#333333',
@@ -130,7 +130,7 @@ define([
             if (mathjaxRenderTimeout)
                 clearTimeout(mathjaxRenderTimeout);
 
-            setTimeout(function() { 
+            setTimeout(function() {
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
             }, 50);
         }
@@ -176,7 +176,7 @@ define([
             $timeout(function() {
                 // Run this in a $timeout to make sure that $apply is called.
                 $rootScope.setLoading(false);
-                
+
                 // TODO: find a better way to hide the search
                 $rootScope.globalFlags.noSearch = false;
             });
@@ -246,17 +246,17 @@ define([
             $(document).foundation('interchange', 'reflow');
             // we also need to tell open tip to reinitialise when new content is added.
             Opentip.findElements();
-            
+
             // Global jQuery
             $(function()
             {
-                
+
 
                 // IE console debug - bug fix
                 if(!(window.console)) {
                     var noop = function(){};
                     console = {
-                        log: noop, 
+                        log: noop,
                         debug: noop,
                         info: noop,
                         warn: noop,
@@ -279,13 +279,13 @@ define([
                     $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('iphone');
                     $('.ru-answer-orbit .ru-answer-orbit-content p').addClass('iphone');
                 }
-                
+
                 // Safari - accordion titles
                 if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0)
                 {
                     $('.accordion.ru_accordion dd a.ru_accordion_titlebar .ru_accordion_title').addClass('safari');
                 }
-                
+
                 // Fix up for custom check box 2nd label
                 $('.ru-drop-big-label,.ru-drop-mid-label,span.ru-drop-check~label').each(function()
                 {
@@ -293,7 +293,7 @@ define([
                     var id = $('input', $drop).attr('id');
                     $(this).attr('for', id);
                 }).css('user-select','none');
-                
+
                 // Set tab indexes for some things
                 // Header nav
                 $('.ru-desktop-nav-item').attr('tabindex', 0).bind('keydown', function(e)
@@ -338,7 +338,7 @@ define([
                         }
                     });
                 });
-            
+
                 // Mobile login drop down
 	            $("#mobile-login").off("click");
                 $("#mobile-login").click(function(e)
@@ -346,7 +346,7 @@ define([
                     e.preventDefault();
                     $("#mobile-login-form").ruDropDownToggle(this);
                 });
-                
+
                 // Mobile search drop down
 	            $("#mobile-search").off("click");
                 $("#mobile-search").click(function(e)
@@ -354,7 +354,7 @@ define([
                     e.preventDefault();
                     $("#mobile-search-form").ruDropDownToggle(this);
                 });
-                
+
                 // Resize slider on tab change (copes with resize when slider tab not visible)
                 var sliderResize = function()
                 {
@@ -398,7 +398,7 @@ define([
 
                             // Check to see first character is a space
                             while (cookie.charAt(0) == ' ') {
-                                // Strip any subsequent spaces until the first character is not a space 
+                                // Strip any subsequent spaces until the first character is not a space
                                 cookie = cookie.substring(1, cookie.length);
                             }
 
@@ -416,7 +416,7 @@ define([
                 }
 
                 var cookiesAccepted = cookie.read('isaacCookiesAccepted');
-            
+
                 if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
                     $(".cookies-message").show();
@@ -450,7 +450,7 @@ define([
                             sliderResize();
                         }
                     },
-                    joyride: { 
+                    joyride: {
                         expose: true,
                         next_button: false,
                         prev_button: false,
@@ -490,7 +490,7 @@ define([
                             // Work out what to wrap the exposed element with e.g. square, circle or rectangle
                             	var tutorial = document.getElementById($rootScope.joyrideTutorial)
                                                    .getElementsByClassName("joyrideTutorialItem")[index]
-                                                   .getAttribute('data-shape');                    
+                                                   .getAttribute('data-shape');
                             if(tutorial != null) {
                                 $('.joyride-expose-wrapper').addClass(tutorial);
                             }
@@ -524,16 +524,16 @@ define([
                               'visibility': 'hidden',
                               'display': 'none'
                             }
-                          }                  
+                          }
                     }
-                }); 
+                });
                 // var tutorialShown = cookie.read('tutorialShown');
 
                 var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
-                
+
                 // we don't want the google bot or out of date browsers to see the tutorial.
                 // stop tutorial from loading for new users as no one reads it anyway.
-                // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) { 
+                // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) {
                 //     if ($.ru_IsMobile()) {
                 //         if ($('#mobile-tutorial').length > 0) {
                 //             setTimeout(function() {
@@ -562,7 +562,7 @@ define([
                         $(".ru_share_link").animate({width:260}, {duration:400});
                     }
                 });
-                
+
                 // Image zoom
                 $('.ru-expand div').click(function(e)
                 {
@@ -576,13 +576,13 @@ define([
                         var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
 
                         if (requestMethod)
-                        { 
+                        {
                             // Native full screen.
                             requestMethod.call(element);
                             requested = true;
                         }
                         else if (typeof window.ActiveXObject !== "undefined")
-                        { 
+                        {
                             // Older IE.
                             var wscript = new ActiveXObject("WScript.Shell");
                             if (wscript !== null)
@@ -599,7 +599,7 @@ define([
                     var url = elem.attr('src');
                     // Mobile - follow link
                     if($.ru_IsMobile())
-                    {   
+                    {
                         window.location.href = url;
                     }
                     // Desktop - full screen mode, else revert to opening link
@@ -610,7 +610,7 @@ define([
                             window.location.href = url;
                         }
                     }
-                });              
+                });
             });
 
         });
@@ -651,7 +651,7 @@ define([
         });
 
         var checkForNotifications = function() {
-            
+
             $rootScope.user.$promise.then(function() {
                 // We are logged in
 
@@ -707,6 +707,7 @@ define([
         }
 
 
+        // Used in equation editor in ng-show or ng-hide. Both flags act as toggles for each mode.
         var isLandscape = function() {
             return window.innerWidth > window.innerHeight || window.innerWidth > 640;
         };
@@ -718,7 +719,11 @@ define([
                 $rootScope.$apply();
             }
         });
+
         $rootScope.isLandscape = isLandscape();
+
+
+        $rootScope.mathMode = true;
 
         $rootScope.padIndex = function(index) {
             return ("0000"+index).slice(-4);

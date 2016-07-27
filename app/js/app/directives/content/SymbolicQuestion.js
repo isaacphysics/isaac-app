@@ -15,49 +15,76 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-	return ["api", function(api) {
+    return ["api", function(api) {
 
-		return {
-			scope: true,
+        return {
+            scope: true,
 
-			restrict: 'A',
+            restrict: 'A',
 
-			templateUrl: "/partials/content/SymbolicQuestion.html",
+            templateUrl: "/partials/content/SymbolicQuestion.html",
 
-			controller: ["$scope", function(scope) {
-				var ctrl = this;
+            controller: ["$scope", function(scope) {
+                var ctrl = this;
 
-				if (scope.question.selectedChoice) {
-					// We have a previous answer. Load it.
-					ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
-				} else {
-					// We have no previous answer to load.
-					ctrl.selectedFormula = { symbols: {} };
-				}
+                scope.editorMode = 'maths';
 
-				// TODO: Why do we do this?! Surely scope.doc would be enough? - Ian
-				ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
-				ctrl.plainDoc.type = "content";
+                ctrl.selectedFormula = {
+                    symbols: {}
+                };
 
-				scope.$watch("ctrl.selectedFormula", function(f, oldF) {
-					if (f === oldF) {
-						return; // Init
-					}
+                if (scope.question.selectedChoice) {
+                    // We have a previous answer. Load it.
+                    console.debug("Loading the previous answer.");
+                    try {
+                        ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
+                    } catch (e) {
+                        console.warn("Error loading previous answer: ", e.message);
+                    }
 
-					if (f) {
-						scope.question.selectedChoice = {
-							type: "formula",
-							value: JSON.stringify(f),
-							pythonExpression: f.result ? f.result.python : "",
-						};
-					} else {
-						scope.question.selectedChoice = null;
-					}
-				}, true);
+                } else if (scope.doc.formulaSeed) {
+                    // We have seed to load and no previous answer
+                    console.debug("Loading the formula seed.", scope.doc.formulaSeed);
+                    try {
+                        ctrl.selectedFormula = {
+                            symbols: JSON.parse(scope.doc.formulaSeed)
+                        };
+                    } catch (e) {
+                        console.error("Error loading seed: ", e.message);
+                    }
 
-			}],
 
-			controllerAs: "ctrl",
-		};
-	}];
+                } else {
+                    // We have no answer and no seed
+                    console.debug("No previous answer or seed.");
+                    ctrl.selectedFormula = {
+                        symbols: {}
+                    };
+                }
+
+                // TODO: Why do we do this?! Surely scope.doc would be enough? - Ian
+                ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
+                ctrl.plainDoc.type = "content";
+
+                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                    if (f === oldF) {
+                        return; // Init
+                    }
+
+                    if (f) {
+                        scope.question.selectedChoice = {
+                            type: "formula",
+                            value: JSON.stringify(f),
+                            pythonExpression: f.result ? f.result.python : "",
+                        };
+                    } else {
+                        scope.question.selectedChoice = null;
+                    }
+                }, true);
+
+            }],
+
+            controllerAs: "ctrl",
+        };
+    }];
 });

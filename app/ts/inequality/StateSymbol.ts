@@ -3,17 +3,20 @@ import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
 
 /**
- * Binary operations, such as plus and minus.
- *
- * BE EXTRA CAREFUL with the minus sign: use "−" (U+2212), not just a dash.
+ * A class for state symbols.
  */
 export
-    class BinaryOperation extends Widget {
+    class StateSymbol extends Widget {
     protected s: any;
-    protected operation: string;
+    protected stateString: string;
+    protected state: string;
+    protected pythonSymbol: string;
+    protected latexSymbol: string;
+    protected mhchemSymbol: string;
+
 
     get typeAsString(): string {
-        return "BinaryOperation";
+        return "StateSymbol";
     }
 
     /**
@@ -22,30 +25,67 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(0, -this.s.xBox.h / 2);
-        return p;
+        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p: any, s: any, operation: string) {
+    constructor(p: any, s: any, state: string) {
         super(p, s);
         this.s = s;
-        this.operation = operation;
+        this.stateString = state;
+        this.state = state;
+        switch (state) {
+            case 'aqueous':
+                this.state = '(aq)';
+                this.pythonSymbol = '(aq)';
+                this.mhchemSymbol = '(aq)'
+                this.latexSymbol = '\\text{(aq)}';
+                break;
+            case 'gas':
+                this.state = '(g)';
+                this.pythonSymbol = '(g)';
+                this.mhchemSymbol = '(g)'
+                this.latexSymbol = '\\text{(g)}';
+                break;
+            case 'solid':
+                this.state = '(s)';
+                this.pythonSymbol = '(s)';
+                this.mhchemSymbol = '(s)'
+                this.latexSymbol = '\\text{(s)}';
+                break;
+            case 'liquid':
+                this.state = '(l)';
+                this.pythonSymbol = '(l)';
+                this.mhchemSymbol = '(l)'
+                this.latexSymbol = '\\text{(l)}';
+                break;
+            case 'metal':
+                this.state = '(m)';
+                this.pythonSymbol = '(m)';
+                this.mhchemSymbol = '(m)'
+                this.latexSymbol = '\\text{(m)}';
+                break;
+            default:
+                this.state = state;
+                this.pythonSymbol = state;
+                this.latexSymbol = state;
+        }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets'];
+        this.docksTo = ['chemical_element', "operator_brackets"];
     }
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
-     * A Binary Operation has one docking point:
+     * A Relation has one docking point:
      *
-      - _right_: Symbol
+     - _right_: Symbol
      */
     generateDockingPoints() {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "state_symbol", "right");
     }
 
     /**
@@ -58,31 +98,29 @@ export
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = this.operation.replace(/−/g, "-");
+        var expression = "";
         if (format == "latex") {
-
+            expression += this.latexSymbol;
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-
+            expression += this.pythonSymbol;
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
-            }
-        } else if (format == "mhchem") {
-
-            if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "subscript") {
-            expression = "";
+            if (this.dockingPoints["right"].child != null) {
+                expression += this.dockingPoints["right"].child.getExpression(format);
+            }
+        } else if (format == "mhchem") {
+            expression += this.mhchemSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
-            expression = "";
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + this.state + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
@@ -90,12 +128,12 @@ export
 
     properties(): Object {
         return {
-            operation: this.operation
+            state: this.stateString
         };
     }
 
     token() {
-        return '';
+        return "";
     }
 
     /** Paints the widget on the canvas. */
@@ -105,7 +143,7 @@ export
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * 0.8 * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.operation, 0, 0);
+            .text(this.state, 0, 0);
         this.p.strokeWeight(1);
 
         if (window.location.hash === "#debug") {
@@ -125,14 +163,10 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var s = this.operation || "+";
-        s = "+";
-
-
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-
-        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+        var box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
+        return new Rect(-(box.w - 10) / 2, box.y - 1000, box.w - 10, box.h);
     }
+
 
     /**
      * Internal companion method to shakeIt(). This is the one that actually does the work, and the one that should be
@@ -144,7 +178,6 @@ export
 
         // Work out the size of all our children
         var boxes: { [key: string]: Rect } = {};
-
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
                 dockingPoint.child.scale = this.scale * dockingPoint.scale;
@@ -153,33 +186,19 @@ export
             }
         });
 
-        // Calculate our own geometry
-
-        // Nothing to do for BinaryOperation
-
-        // Set position of all our children.
-
         var box = this.boundingBox();
 
-        var parent_w = this.boundingBox().w;
-        var right;
         if ("right" in boxes) {
-            right = this.dockingPoints["right"].child;
-            var isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
-            var child_w = right.boundingBox().w;
-            var child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            var child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
-            if (isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
-                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-                right.position.x = 1.2 * (parent_w / 2 + child_w / 2);
-                right.position.y = 0;
-            }
-            else {
-                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-                right.position.x = parent_w / 2 + child_w / 2;
-                right.position.y = 0;
-            }
-
+            var p = this.dockingPoints["right"].child.position;
+            var child_width = this.dockingPoints["right"].child.boundingBox().w;
+            var parent_width = this.boundingBox().w;
+            // If either subscripts or superscripts or both exist
+            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            p.y = 0;
+        } else {
+            var p = this.dockingPoints["right"].position;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4;
+            p.y = -this.s.xBox.h / 2;
         }
     }
 }

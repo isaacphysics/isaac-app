@@ -30,7 +30,7 @@ class Brackets extends Widget {
         this.type = type;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets'];
     }
 
     /**
@@ -47,8 +47,9 @@ class Brackets extends Widget {
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator_brackets", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
     }
 
     /**
@@ -73,13 +74,41 @@ class Brackets extends Widget {
                     lhs = '\\left['; rhs = '\\right]';
                     break;
                 case "curly":
-                    lhs = '\\left}'; rhs = '\\right}';
+                    lhs = '\\left{'; rhs = '\\right}';
                     break;
             }
             if(this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
                 if(this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+                }
+                if(this.dockingPoints['subscript'].child) {
+                    expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
+                }
+                if(this.dockingPoints['right'].child) {
+                    expression += this.dockingPoints['right'].child.getExpression(format);
+                }
+            }
+        }
+        if (format == "mhchem") {
+            switch(this.type) {
+                case "round":
+                    lhs = '('; rhs = ')';
+                    break;
+                case "square":
+                    lhs = '['; rhs = ']';
+                    break;
+                case "curly":
+                    lhs = '{'; rhs = '}';
+                    break;
+            }
+            if(this.dockingPoints['argument'].child) {
+                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+                if(this.dockingPoints['superscript'].child) {
+                    expression += this.dockingPoints['superscript'].child.getExpression(format);
+                }
+                if(this.dockingPoints['subscript'].child) {
+                    expression += this.dockingPoints['subscript'].child.getExpression(format);
                 }
                 if(this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
@@ -98,6 +127,9 @@ class Brackets extends Widget {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
                 if(this.dockingPoints['superscript'].child) {
                     expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                }
+                if(this.dockingPoints['subscript'].child) {
+                    expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                 }
                 if(this.dockingPoints['right'].child) {
                     expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
@@ -157,12 +189,12 @@ class Brackets extends Widget {
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.RIGHT, this.p.CENTER);
 
-        this.p.text('(', -argWidth/2, -this.s.xBox.h/4);
+        this.p.text('(', -argWidth/2, -this.s.xBox.h/2);
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.LEFT, this.p.CENTER);
-        this.p.text(')', argWidth/2 + this.scale*40, -this.s.xBox.h/4); // FIXME This 40 is hard-coded
+        this.p.text(')', argWidth/2, -this.s.xBox.h/2); // FIXME This 40 is hard-coded
         this.p.pop();
         this.p.strokeWeight(1);
 
@@ -195,7 +227,7 @@ class Brackets extends Widget {
             argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, -argHeight/2, width + this.scale*40, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width/2, -argHeight/2, width, argHeight);  // FIXME This 40 is hard-coded
     }
 
     /**
@@ -227,6 +259,20 @@ class Brackets extends Widget {
 
         var widest = 0;
 
+        var box = this.boundingBox();
+        var parent_position = (box.y + box.h);
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+        var parent_width = box.w;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+        var docking_subscript = this.dockingPoints["subscript"];
+        var docking_mass = this.dockingPoints["mass_number"];
+        var docking_proton_number = this.dockingPoints["proton_number"];
+
         if("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
@@ -238,26 +284,34 @@ class Brackets extends Widget {
         }
 
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-            var w = this.dockingPoints["superscript"].child.offsetBox().w;
-            // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 12 + w/2;
-            p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
         } else {
-            var p = this.dockingPoints["superscript"].position;
-            p.x = box.w/2 + this.scale * 20;
-            p.y = -(box.h + this.scale * 20);
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
-        // TODO: Tweak this with kerning.
-        if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + this.dockingPoints["right"].child.offsetBox().w/2;
-            p.y = 0;
+        if ("subscript" in boxes) {
+            child_width = docking_subscript.child.boundingBox().w;
+            child_height = docking_subscript.child.boundingBox().h;
+            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_subscript.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
         } else {
-            var p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20;
-            p.y = -this.s.xBox.h / 2;
+            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_subscript.position.y = parent_position;
+        }
+
+        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
+
+        if ("right" in boxes) {
+            child_width = docking_right.child.boundingBox().w;
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.y = 0;
+        } else {
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
         }
     }
 }

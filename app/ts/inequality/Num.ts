@@ -1,14 +1,19 @@
 import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { ChemicalElement } from "./ChemicalElement.ts";
+import { Relation } from "./Relation.ts"
 
 /** A class for representing numbers */
 export
-class Num extends Widget {
+    class Num extends Widget {
 
     protected s: any;
     private significand: string;
-    private exponent: string;
+    private num_font_size;
+    protected right = this.dockingPoints.hasOwnProperty("right");
+    protected superscript = this.dockingPoints.hasOwnProperty("superscript");
+
 
     get typeAsString(): string {
         return "Num";
@@ -24,30 +29,19 @@ class Num extends Widget {
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p:any, s:any, significand:string, exponent:string) {
+
+    constructor(p: any, s: any, significand: string, exponent: string) {
         super(p, s);
         this.significand = significand;
-        this.exponent = exponent;
+        this.num_font_size = 50;
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
+
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle', 'relation', 'operator_brackets'];
     }
-    
+
     getFullText(type?: string): string {
-        var s = this.significand;
-        if (this.exponent) {
-            switch(type) {
-                case "latex":
-                    s += "\\times 10^{" + this.exponent + "}";
-                    break;
-                case "python":
-                    s += "*(10**" + this.exponent  + ")";
-                    break;
-                default:
-                    s += "e" + this.exponent;
-            }
-        }
-        return s;
+        return this.significand;
     }
 
     /**
@@ -63,7 +57,7 @@ class Num extends Widget {
         var descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
     }
 
     /**
@@ -75,17 +69,15 @@ class Num extends Widget {
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
+
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
             expression = this.getFullText("latex");
-            if (this.dockingPoints["superscript"].child != null) {
-                if (this.exponent) {
-                    expression = "(" + expression + ")";
-                }
+            if (this.superscript && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
-            if (this.dockingPoints["right"].child != null) {
+            if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
@@ -93,6 +85,20 @@ class Num extends Widget {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
+        } else if (format == "mhchem") {
+            expression = this.getFullText("mhchem");
+            if (this.superscript && this.dockingPoints["superscript"].child != null) {
+                expression += "^" + this.dockingPoints["superscript"].child.getExpression(format) + "";
+            }
+            if (this.right && this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    // WARNING This assumes it's a Number, hence produces a multiplication
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
+            }
+
         } else if (format == "python") {
             expression = "" + this.getFullText("python");
             //if (this.dockingPoints["subscript"].child != null) {
@@ -103,6 +109,8 @@ class Num extends Widget {
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else if (this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
                     // WARNING This assumes it's a Symbol, hence produces a multiplication
@@ -120,7 +128,7 @@ class Num extends Widget {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints['superscript'].child == null) {
                 expression += '<mn>' + this.getFullText() + '</mn>';
@@ -139,7 +147,6 @@ class Num extends Widget {
     properties(): Object {
         return {
             significand: this.significand,
-            exponent: this.exponent,
         };
     }
 
@@ -157,16 +164,18 @@ class Num extends Widget {
             .text(this.getFullText(), 0, 0);
         this.p.strokeWeight(1);
 
-		if (window.location.hash === "#debug") {
-			this.p.stroke(255, 0, 0).noFill();
-			this.p.ellipse(0, 0, 10, 10);
-			this.p.ellipse(0, 0, 5, 5);
+        if (window.location.hash === "#debug") {
+            this.p.stroke(255, 0, 0).noFill();
+            this.p.ellipse(0, 0, 10, 10);
+            this.p.ellipse(0, 0, 5, 5);
 
             this.p.stroke(0, 0, 255).noFill();
             this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
             this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
         }
     }
+
+
 
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
@@ -186,7 +195,7 @@ class Num extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -207,27 +216,45 @@ class Num extends Widget {
 
         var widest = 0;
 
+        var box = this.boundingBox();
+        var parent_position = (box.y + box.h);
+        var parent_width = box.w;
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+
+
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-            var w = this.dockingPoints["superscript"].child.offsetBox().w;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = box.w / 2 + this.scale * 20 + w/2;
-            p.y = -(box.h - descent - this.scale * 20);
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
         } else {
-            var p = this.dockingPoints["superscript"].position;
-            p.x = box.w / 2 + this.scale * 20;
-            p.y = -this.scale*this.s.mBox.h;
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
-        // TODO: Tweak this with kerning.
+        parent_width += parent_superscript_width;
+
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + Math.max(widest, this.dockingPoints["right"].child.offsetBox().w/2);
-            p.y = 0;
+            if (docking_right.child.dockingPoints["right"].child == null && docking_right.child instanceof BinaryOperation) {
+              child_width = docking_right.child.boundingBox().w;
+              child_height = docking_right.child.boundingBox().h;
+              docking_right.child.position.x = child_width / 2;
+              docking_right.child.position.y = -(child_height/2-parent_width/4);
+            }
+            else {
+                child_width = docking_right.child.boundingBox().w;
+                docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+                docking_right.child.position.y = 0;
+            }
+
         } else {
-            var p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
-            p.y = -this.s.xBox.h / 2;
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
         }
     }
 
