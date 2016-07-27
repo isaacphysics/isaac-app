@@ -19,7 +19,7 @@
                         </label>
                         <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
                             <option value="">Any School</option>
-                            <option ng-repeat="school in schoolOtherEntries" ng-value="school.name">{{school.name}}</option>
+                            <option ng-repeat="school in schoolOtherEntries | orderBy:'name'" ng-value="school.name">{{school.name}}</option>
                         </select>
                     </div>
                     <div class="medium-8 columns">

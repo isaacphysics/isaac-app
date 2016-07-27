@@ -40,39 +40,40 @@ import { Particle } from './Particle.ts';
 
 // This is the "main" app with the update/render loop and all that jazz.
 export
-    class MySketch {
-    symbols: Array<Widget>;
-    movingSymbol: Widget = null;
-    potentialSymbol: Widget = null;
-    initialTouch: p5.Vector = null;
-    prevTouch: p5.Vector = null;
+class MySketch {
+	symbols: Array<Widget>;
+	movingSymbol: Widget = null;
+	potentialSymbol: Widget = null;
+	initialTouch: p5.Vector = null;
+	prevTouch: p5.Vector = null;
 
-    xBox: Rect = null;
-    mBox: Rect = null;
+	xBox: Rect = null;
+	mBox: Rect = null;
 
-    baseFontSize = 80;
-    font_it: p5.Font = null;
-    font_up: p5.Font = null;
+	baseFontSize = 80;
+	font_it: p5.Font = null;
+	font_up: p5.Font = null;
 
-    visibleDockingPointTypes: Array<string> = [];
-    activeDockingPoint: DockingPoint = null;
+	visibleDockingPointTypes: Array<string> = [];
+	activeDockingPoint: DockingPoint = null;
 
-    private newExpressionCallback = null;
+	private newExpressionCallback = null;
 
-    constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
-        this.p.preload = this.preload;
-        this.p.setup = this.setup;
-        this.p.draw = this.draw;
-        this.p.touchStarted = this.touchStarted;
-        this.p.touchMoved = this.touchMoved;
-        this.p.touchEnded = this.touchEnded;
-        this.p.mouseMoved = this.mouseMoved;
-    }
+	constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
+		this.p.preload = this.preload;
+		this.p.setup = this.setup;
+		this.p.draw = this.draw;
+		this.p.touchStarted = this.touchStarted;
+		this.p.touchMoved = this.touchMoved;
+		this.p.touchEnded = this.touchEnded;
+		this.p.mouseMoved = this.mouseMoved;
+		this.p.windowResized = this.windowResized;
+	}
 
-    preload = () => {
-        this.font_it = this.p.loadFont("/assets/STIXGeneral-Italic.otf");
-        this.font_up = this.p.loadFont("/assets/STIXGeneral-Regular.otf");
-    };
+	preload = () => {
+		this.font_it = this.p.loadFont("/assets/STIXGeneral-Italic.otf");
+		this.font_up = this.p.loadFont("/assets/STIXGeneral-Regular.otf");
+	};
 
     setup = () => {
         this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
@@ -102,11 +103,16 @@ export
 
     };
 
-    draw = () => {
-        this.p.clear();
-        _.each(this.symbols, symbol => {
-            symbol.draw();
-        });
+	windowResized = () => {
+		console.log(this.p.windowWidth, this.p.windowHeight);
+		this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+	}
+
+	draw = () => {
+	    this.p.clear();
+		_.each(this.symbols, symbol => {
+			symbol.draw();
+		});
 
         if (this.potentialSymbol) {
             this.potentialSymbol.draw();

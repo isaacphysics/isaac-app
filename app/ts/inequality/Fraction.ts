@@ -185,7 +185,11 @@ class Fraction extends Widget {
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
+            if("denominator" in boxes) {
+                p.x = this.width / 2 + this.scale * this.s.mBox.w / 2;
+            } else {
                 p.x = this.width / 2 + this.scale * this.s.mBox.w / 4;
+            }
             p.y = -this.boundingBox().h/2;
         }
     }
