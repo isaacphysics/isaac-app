@@ -385,14 +385,15 @@ define(function(require) {
                             var partResults = [];
                             for (var j in parts) {
                                 var p = parts[j];
-
+                                var name = p.replace(/\(\)/g, "");
+                                var index = trigMap[name + ""];
                                 if (p.endsWith("()")) {
-                                    var name = p.replace(/\(\)/g, "");
+
                                     var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                     var allowSubscript = name == "log";
                                     if (name.substring(0, 3) == "arc") {
                                         // finds the index of the function in the symbol library to retrieve the label.
-                                        var index = trigMap[name + ""];
+
 
                                         partResults.push({
                                             type: "Fn",
@@ -417,6 +418,7 @@ define(function(require) {
                                         });
                                         console.log(partResults);
                                     } else {
+
                                         partResults.push({
                                             type: "Fn",
                                             properties: {
@@ -425,7 +427,7 @@ define(function(require) {
                                                 allowSubscript: allowSubscript
                                             },
                                             menu: {
-                                                label: "\\" + name,
+                                                label: scope.symbolLibrary.trigFunctions[index].menu.label,
                                                 texLabel: true,
                                                 fontSize: '18px'
                                             }
@@ -657,6 +659,8 @@ define(function(require) {
                         var properties = {};
                         var children = null;
                         var name = trigArray[trig_func];
+
+                      console.log(name);
                         if (trigArray[trig_func].substring(0, 3) == 'arc') {
                             name = trigArray[trig_func].substring(3);
                             children = {
@@ -689,9 +693,8 @@ define(function(require) {
                         result[count] = {
                             type: "Fn",
                             properties: {
-                                name: name,
+                                name: trigArray[trig_func],
                                 innerSuperscript: true,
-                                type: trigArray[trig_func],
                                 allowSubscript: true,
                             },
                             menu: {
