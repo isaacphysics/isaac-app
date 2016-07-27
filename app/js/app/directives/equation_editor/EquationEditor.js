@@ -659,8 +659,6 @@ define(function(require) {
                         var properties = {};
                         var children = null;
                         var name = trigArray[trig_func];
-
-                      console.log(name);
                         if (trigArray[trig_func].substring(0, 3) == 'arc') {
                             name = trigArray[trig_func].substring(3);
                             children = {
