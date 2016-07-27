@@ -37,10 +37,10 @@
         <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
-    <div top-menu="\sin\,\, \int" ng-if="isLandscape && (editorMode == 'maths')">
+    <div top-menu="\sin\,\, \int" ng-if="isLandscape && (editorMode == 'maths')" style="font-size: 23px !important;">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
-        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
     <!--

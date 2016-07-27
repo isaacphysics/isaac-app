@@ -133,11 +133,13 @@ define(function(require) {
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
                             if (parsed.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsed.vars;
-                            } else if (parsed.fns.length > 0) {
+                            }
+                            if (parsed.fns.length > 0) {
                                 scope.symbolLibrary.customFunctions = parsed.fns;
-                            } else if (parsed.operators.length > 0) {
+                            }
+                            if (parsed.operators.length > 0) {
                                 scope.symbolLibrary.customFunctions = scope.symbolLibrary.reducedOps.concat(parsed.operators);
-                            } else {
+                            } else if (!(parsed.vars.length > 0 || parsed.fns.length > 0 || parsed.operators.length > 0)) {
                                 console.debug("Unable to parse any custom variables.");
                             }
                         } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
@@ -230,7 +232,7 @@ define(function(require) {
                     "<=": "\\leq",
                     ">=": "\\geq",
                 };
-
+                var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
                 var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
                 var letterMap = {
                     "\\alpha": "α",
@@ -275,8 +277,13 @@ define(function(require) {
                 var chemicalSymbolsArray = elements.concat(particles);
 
                 for (var i in chemicalSymbolsArray) {
-
                     chemicalSymbols[chemicalSymbolsArray[i]] = i;
+                }
+
+                var trigMap = {};
+                // dictionary of trig functions
+                for (var i = 0; i < trigFunctions.length; i++) {
+                    trigMap[trigFunctions[i]] = i;
                 }
 
 
@@ -310,7 +317,6 @@ define(function(require) {
                             continue;
                         }
                         console.debug("Parsing:", s);
-                        console.log(chemicalSymbols.hasOwnProperty(s));
                         if (chemicalSymbols.hasOwnProperty(s)) {
                             var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
                             if (type == 'Particle') {
@@ -362,7 +368,8 @@ define(function(require) {
                             continue;
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Identified " + s + " as an operator");
-                            r['operators'].push({
+                            var partResults = [];
+                            partResults.push({
                                 type: 'Relation',
                                 menu: {
                                     label: opsMap[s],
@@ -373,9 +380,7 @@ define(function(require) {
                                 }
                             })
                         } else {
-                            console.debug("Identified " + s + " as a symbol");
                             console.debug("Parsing symbol:", s);
-
                             var parts = s.split(" ");
                             var partResults = [];
                             for (var j in parts) {
@@ -386,6 +391,9 @@ define(function(require) {
                                     var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                     var allowSubscript = name == "log";
                                     if (name.substring(0, 3) == "arc") {
+                                        // finds the index of the function in the symbol library to retrieve the label.
+                                        var index = trigMap[name + ""];
+
                                         partResults.push({
                                             type: "Fn",
                                             properties: {
@@ -397,16 +405,17 @@ define(function(require) {
                                                 superscript: {
                                                     type: "Num",
                                                     properties: {
-                                                        significand: -1,
-                                                        exponent: 0
+                                                        significand: "-1",
                                                     }
                                                 }
                                             },
                                             menu: {
-                                                label: "\\" + name,
-                                                texLabel: true
+                                                label: scope.symbolLibrary.trigFunctions[index].menu.label,
+                                                texLabel: true,
+                                                fontSize: '15px'
                                             }
                                         });
+                                        console.log(partResults);
                                     } else {
                                         partResults.push({
                                             type: "Fn",
@@ -417,11 +426,13 @@ define(function(require) {
                                             },
                                             menu: {
                                                 label: "\\" + name,
-                                                texLabel: true
+                                                texLabel: true,
+                                                fontSize: '18px'
                                             }
                                         });
                                     }
                                 } else {
+                                    // must be a symbol
                                     var p1 = convertToLatexIfGreek(p.split("_")[0]);
                                     var newSym = {
                                         type: "Symbol",
@@ -446,12 +457,12 @@ define(function(require) {
                                         };
                                         newSym.menu.label += "_{" + p2 + "}";
                                     }
-
                                     partResults.push(newSym);
                                 }
                             }
 
                             var root = partResults[0];
+
                             for (var k = 0; k < partResults.length - 1; k++) {
                                 partResults[k].children = {
                                     right: partResults[k + 1]
@@ -462,8 +473,11 @@ define(function(require) {
                                 case "Symbol":
                                     r.vars.push(root);
                                     break;
-                                case "Function":
+                                case "Fn":
                                     r.fns.push(root);
+                                    break;
+                                case "Relation":
+                                    r.operators.push(root);
                                     break;
                             }
                         }
@@ -497,7 +511,6 @@ define(function(require) {
                 var count = 0;
                 for (var operator in opsMap) {
                     uniqueOperatorsTotalOrder[operator] = count;
-                    console.log(operator, count);
                     count++;
                 }
 
@@ -507,16 +520,13 @@ define(function(require) {
                     if (a in uniqueOperatorsTotalOrder || b in uniqueOperatorsTotalOrder) {
                         // both a and b are operators
                         if (a in uniqueOperatorsTotalOrder && b in uniqueOperatorsTotalOrder) {
-                            console.debug("uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b]", uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b]);
                             return uniqueOperatorsTotalOrder[a] - uniqueOperatorsTotalOrder[b];
                         }
                         // only a is an operator, so place it after b
                         if (a in uniqueOperatorsTotalOrder) {
-                            console.log(a, "after", b);
                             return 1;
-                        // only b is an operator, so place it after a
+                            // only b is an operator, so place it after a
                         } else {
-                            console.log(b, "after", a);
                             return -1;
                         }
                     }
@@ -636,10 +646,68 @@ define(function(require) {
                             }
                         }
                     }
-
-
                     return elements;
                 };
+
+                var trigFunction = function(trigArray) {
+                    var count = 0;
+                    var result = [];
+                    for (var trig_func in trigArray) {
+                        var label = "";
+                        var properties = {};
+                        var children = null;
+                        var name = trigArray[trig_func];
+                        if (trigArray[trig_func].substring(0, 3) == 'arc') {
+                            name = trigArray[trig_func].substring(3);
+                            children = {
+                                superscript: {
+                                    type: "Num",
+                                    properties: {
+                                        significand: "-1",
+                                    }
+                                }
+                            };
+                            // if inverse function and involves cosec (not supported by latex)
+                            if (trigArray[trig_func].substring(3, 7) == 'sech') {
+                                label = "\\text{" + trigArray[trig_func].substring(3) + "}";
+                            } else if (trigArray[trig_func].substring(3, 8) == 'cosec') {
+                                label = "\\text{" + trigArray[trig_func].substring(3) + "}";
+                            } else {
+                                label = "\\" + trigArray[trig_func].substring(3);
+                            }
+                            label += "^{-1}";
+                        } else {
+                            // if function isn't inverse but still involves cosec
+                            if (trigArray[trig_func].substring(0, 4) == 'sech') {
+                                label = "\\text{" + trigArray[trig_func] + "}";
+                            } else if (trigArray[trig_func].substring(0, 5) == 'cosec') {
+                                label = "\\text{" + trigArray[trig_func] + "}";
+                            } else {
+                                label = "\\" + trigArray[trig_func];
+                            }
+                        }
+                        result[count] = {
+                            type: "Fn",
+                            properties: {
+                                name: name,
+                                innerSuperscript: true,
+                                type: trigArray[trig_func],
+                                allowSubscript: true,
+                            },
+                            menu: {
+                                label: label,
+                                texLabel: true,
+                                fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) == 'arc') ? '15px' : '18px'
+                            }
+                        }
+                        if(children != null) {
+                          result[count].children = children;
+                        }
+                        count++;
+                    }
+                    return result;
+                };
+
 
 
                 scope.symbolLibrary = {
@@ -656,6 +724,9 @@ define(function(require) {
 
                     theNumbers: theNumbers(numberStrings),
 
+                    trigFunctions: trigFunction(trigFunctions),
+
+
                     particles: [{
                         type: 'Particle',
                         menu: {
@@ -666,7 +737,6 @@ define(function(require) {
                         properties: {
                             particle: 'α',
                             type: 'alpha',
-
                         }
                     }, {
                         type: 'Particle',
@@ -1095,17 +1165,9 @@ define(function(require) {
                             label: "\\tan",
                             texLabel: true
                         }
-                    }, {
-                        type: "Fn",
-                        properties: {
-                            name: "tan^{-1}",
-                            innerSuperscript: true
-                        },
-                        menu: {
-                            label: "\\tan^{-1}",
-                            texLabel: true
-                        }
-                    }],
+                    }, ],
+
+
 
                     otherFns: [{
                         type: "Fn",
