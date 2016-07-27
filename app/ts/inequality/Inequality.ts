@@ -163,7 +163,7 @@ export
                 dockingPoint: this.activeDockingPoint.name,
                 timestamp: Date.now()
             });
-        } else {
+        } else if (this.potentialSymbol != null ) {
             this.symbols.push(this.potentialSymbol);
             this.scope.log.actions.push({
                 event: "DROP_POTENTIAL_SYMBOL",
@@ -180,7 +180,6 @@ export
 
         if (root) {
             var w: Widget = this._parseSubtreeObject(root);
-            console.log(w);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
             this.symbols.push(w);
@@ -229,7 +228,6 @@ export
                 break;
 
         }
-        console.log(w);
         if (parseChildren) {
             _.each(node["children"] || [], (n, key) => {
                 w.dockingPoints[key].child = this._parseSubtreeObject(n);

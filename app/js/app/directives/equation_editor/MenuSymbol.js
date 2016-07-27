@@ -94,8 +94,13 @@ define([], function() {
                     element.css("left", 0);
                     element.css("top", 0);
 
+                    // fixes bug involving being able to drag symbols outside of the visible canvas,
+                    var width = $(window).width();
+                    var height = $(window).height();
+                    var offCanvas = (e.clientX*100/width < 5 || e.clientY*100/height < 10) ? true : false;
+
                     // This ensures new symbols can be selected.
-                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
+                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY, offCanvas);
 
                     // This drags the hexagons around.
                     $("body").off("mouseup", mouseup);
@@ -139,6 +144,9 @@ define([], function() {
 
                 var touchstart = function(e) {
                     var ts = e.originalEvent.touches;
+                    console.log(ts);
+                    scope.mobileX = ts[0].pageX;
+                    scope.mobileY = ts[0].pageY;
                     grab(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
@@ -146,9 +154,23 @@ define([], function() {
                 }
 
                 var touchend = function(e) {
-                    var ts = e.originalEvent.changedTouches;
-                    drop(ts[0].pageX, ts[0].pageY, e);
+                  var ts = e.originalEvent.changedTouches;
+                    console.debug(scope.mobileX + " " + ts[0].pageX);
 
+                    console.log(ts, e.originalEvent);
+
+
+                    if (scope.mobileX == ts[0].pageX && scope.mobileY == ts[0].pageY) {
+                        var clicked = true;
+                        scope.$emit("clicked", clicked);
+                        console.debug("Registered as click");
+                        var num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+
+                    drop(ts[0].pageX, ts[0].pageY, e);
+                    clicked = false;
+                    scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
                 }
