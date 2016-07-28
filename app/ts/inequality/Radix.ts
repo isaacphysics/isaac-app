@@ -196,8 +196,8 @@ export
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var argWidth = this.s.xBox.w;
         var supWidth = this.scale * this.s.xBox.w / 2;
+        var argWidth = this.s.xBox.w;
 
         if ("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;

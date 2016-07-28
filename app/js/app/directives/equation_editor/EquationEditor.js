@@ -1210,15 +1210,16 @@ define(function(require) {
                 };
 
                 scope.particlesTitle = {
-                    menu: {
-                        label: "α",
-                    },
-                    type: "string",
+                  type: "string",
+                  menu: {
+                      label: "\\alpha",
+                      texLabel: true
+                  }
                 };
 
                 scope.elementsTitle = {
                     menu: {
-                        label: "H",
+                        label: "He",
                     },
                     type: "string",
                 };
