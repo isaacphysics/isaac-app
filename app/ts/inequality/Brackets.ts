@@ -181,7 +181,7 @@ class Brackets extends Widget {
             argHeight = subtreeBB.h;
         }
         this.p.push();
-        this.p.scale(1,1 + ((argHeight/this.s.xBox.h)-1)/2);
+        this.p.scale(1, 1 + ((argHeight/this.s.xBox.h)-1)/2);
 
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
@@ -189,12 +189,12 @@ class Brackets extends Widget {
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.RIGHT, this.p.CENTER);
 
-        this.p.text('(', -argWidth/2, -this.s.xBox.h/2);
+        this.p.text('(', -argWidth/2, -this.s.xBox.h/4);
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.LEFT, this.p.CENTER);
-        this.p.text(')', argWidth/2, -this.s.xBox.h/2); // FIXME This 40 is hard-coded
+        this.p.text(')', argWidth/2 + this.scale*40, -this.s.xBox.h/4); // FIXME This 40 is hard-coded
         this.p.pop();
         this.p.strokeWeight(1);
 
@@ -286,11 +286,11 @@ class Brackets extends Widget {
         if ("superscript" in boxes) {
             child_width = docking_superscript.child.boundingBox().w;
             child_height = docking_superscript.child.boundingBox().h;
-            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_superscript.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
-        } else {
-            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_superscript.position.y = -this.scale * this.s.mBox.h;
+            docking_superscript.child.position.x = (parent_width / 2 + this.scale*(40) + child_width / 2);
+            docking_superscript.child.position.y = - parent_height/2 - docking_superscript.child.subtreeBoundingBox().h/2; // this.scale * this.s.mBox.h/2; // -0.7 * (parent_height / 2 + child_height / 2);
+        } else { // FIXME This kind of works, but could use some improvements on the constants side (af599)
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale*(40+20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
+            docking_superscript.position.y = -parent_height/2 - this.scale * this.s.mBox.h/2;
         }
 
         if ("subscript" in boxes) {
@@ -307,10 +307,10 @@ class Brackets extends Widget {
 
         if ("right" in boxes) {
             child_width = docking_right.child.boundingBox().w;
-            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale*(40+20) + docking_right.child.offsetBox().w / 2) : (parent_width - this.boundingBox().w / 2 + docking_right.child.offsetBox().w);
             docking_right.child.position.y = 0;
         } else {
-            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale*(40+20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
             docking_right.position.y = (this.dockingPoint.y);
         }
     }
