@@ -5,10 +5,15 @@ import { DockingPoint } from "./DockingPoint.ts";
 
 /** Brackets. "We got both kinds, we got country and western". */
 export
-class Brackets extends Widget {
+    class Brackets extends Widget {
 
     protected s: any;
     private type: string;
+    private latexSymbol: Object;
+    private pythonSymbol: Object;
+    private mhchemSymbol: Object;
+    private mathmlSymbol: Object;
+    private glyph: Object;
 
     get typeAsString(): string {
         return "Brackets";
@@ -25,11 +30,45 @@ class Brackets extends Widget {
         return p;
     }
 
-    constructor(p:any, s:any, type:string) {
+    constructor(p: any, s: any, type: string) {
         super(p, s);
         this.type = type;
         this.s = s;
-
+        switch (this.type) {
+            case 'round':
+                this.latexSymbol = {
+                    'lhs': '\\left(',
+                    'rhs': '\\right)'
+                };
+                this.mhchemSymbol =  this.pythonSymbol =  this.mathmlSymbol = this.glyph = {
+                    'lhs': '(',
+                    'rhs': ')'
+                }
+            break;
+            case "square":
+                this.latexSymbol = {
+                    'lhs': '\\left[',
+                    'rhs': '\\right]'
+                };
+                this.mhchemSymbol =  this.pythonSymbol =  this.mathmlSymbol = this.glyph = {
+                    'lhs': '[',
+                    'rhs': ']'
+                }
+            break;
+            case "curly":
+                this.latexSymbol = {
+                    'lhs': '\\left{',
+                    'rhs': '\\right}'
+                };
+                this.mhchemSymbol =  this.pythonSymbol =  this.mathmlSymbol = this.glyph = {
+                    'lhs': '{',
+                    'rhs': '}'
+                };
+            break;
+            default:
+                this.latexSymbol = {};
+                this.mhchemSymbol =  this.pythonSymbol =  this.mathmlSymbol = this.glyph = {};
+        }
         this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets'];
     }
 
@@ -46,10 +85,10 @@ class Brackets extends Widget {
         var descent = this.position.y - (box.y + box.h);
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h/2), 1, "symbol", "argument");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, "symbol", "argument");
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator_brackets", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
     }
 
     /**
@@ -66,94 +105,64 @@ class Brackets extends Widget {
         var expression = "";
         var lhs = '(', rhs = ')';
         if (format == "latex") {
-            switch(this.type) {
-                case "round":
-                    lhs = '\\left('; rhs = '\\right)';
-                    break;
-                case "square":
-                    lhs = '\\left['; rhs = '\\right]';
-                    break;
-                case "curly":
-                    lhs = '\\left{'; rhs = '\\right}';
-                    break;
-            }
-            if(this.dockingPoints['argument'].child) {
+            lhs = this.latexSymbol['lhs'];
+            rhs = this.latexSymbol['rhs'];
+            if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if(this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
-                if(this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'].child) {
                     expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
                 }
-                if(this.dockingPoints['right'].child) {
+                if (this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         }
         if (format == "mhchem") {
-            switch(this.type) {
-                case "round":
-                    lhs = '('; rhs = ')';
-                    break;
-                case "square":
-                    lhs = '['; rhs = ']';
-                    break;
-                case "curly":
-                    lhs = '{'; rhs = '}';
-                    break;
-            }
-            if(this.dockingPoints['argument'].child) {
+            lhs = this.mhchemSymbol['lhs'];
+            rhs = this.mhchemSymbol['rhs'];
+            if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if(this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'].child) {
                     expression += this.dockingPoints['superscript'].child.getExpression(format);
                 }
-                if(this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'].child) {
                     expression += this.dockingPoints['subscript'].child.getExpression(format);
                 }
-                if(this.dockingPoints['right'].child) {
+                if (this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         } else if (format == "python") {
-            switch(this.type) {
-                case "square":
-                    lhs = '['; rhs = ']';
-                    break;
-                case "curly":
-                    lhs = '{'; rhs = '}';
-                    break;
-            }
-            if(this.dockingPoints['argument'].child) {
+            lhs = this.pythonSymbol['lhs'];
+            rhs = this.pythonSymbol['rhs'];
+            if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if(this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'].child) {
                     expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
                 }
-                if(this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                 }
-                if(this.dockingPoints['right'].child) {
+                if (this.dockingPoints['right'].child) {
                     expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
                 }
             }
         } else if (format == "subscript") {
             expression += "{BRACKETS}";
         } else if (format == 'mathml') {
-            switch(this.type) {
-                case "square":
-                    lhs = '['; rhs = ']';
-                    break;
-                case "curly":
-                    lhs = '{'; rhs = '}';
-                    break;
-            }
-            if(this.dockingPoints['argument'].child) {
-                var brackets = '<mfenced open="'+lhs+'" close="'+rhs+'"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-                if(this.dockingPoints['superscript'].child) {
+            lhs = this.mathmlSymbol['lhs'];
+            rhs = this.mathmlSymbol['rhs'];
+            if (this.dockingPoints['argument'].child) {
+                var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
+                if (this.dockingPoints['superscript'].child) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
                 } else {
                     expression = brackets;
                 }
-                if(this.dockingPoints['right'].child) {
+                if (this.dockingPoints['right'].child) {
                     expression = brackets + this.dockingPoints['right'].child.getExpression(format);
                 }
             }
@@ -175,13 +184,13 @@ class Brackets extends Widget {
     _draw() {
         var argWidth = this.s.xBox.w;
         var argHeight = this.s.xBox.h;
-        if(this.dockingPoints['argument'].child) {
+        if (this.dockingPoints['argument'].child) {
             let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox();
             argWidth = subtreeBB.w;
             argHeight = subtreeBB.h;
         }
         this.p.push();
-        this.p.scale(1,1 + ((argHeight/this.s.xBox.h)-1)/2);
+        this.p.scale(1, 1 + ((argHeight / this.s.xBox.h) - 1) / 2);
 
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
@@ -189,12 +198,12 @@ class Brackets extends Widget {
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.RIGHT, this.p.CENTER);
 
-        this.p.text('(', -argWidth/2, -this.s.xBox.h/2);
+        this.p.text(this.glyph['lhs'], -argWidth / 2, -this.s.xBox.h / 2);
 
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.LEFT, this.p.CENTER);
-        this.p.text(')', argWidth/2, -this.s.xBox.h/2); // FIXME This 40 is hard-coded
+        this.p.text(this.glyph['rhs'], argWidth / 2, -this.s.xBox.h / 2); // FIXME This 40 is hard-coded
         this.p.pop();
         this.p.strokeWeight(1);
 
@@ -221,13 +230,13 @@ class Brackets extends Widget {
         var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
         var argHeight = this.s.xBox.h;
-        if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+        if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
             let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox()
             argWidth = subtreeBB.w;
             argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, -argHeight/2, width, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width / 2, -argHeight / 2, width, argHeight);  // FIXME This 40 is hard-coded
     }
 
     /**
@@ -238,7 +247,7 @@ class Brackets extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -273,14 +282,14 @@ class Brackets extends Widget {
         var docking_mass = this.dockingPoints["mass_number"];
         var docking_proton_number = this.dockingPoints["proton_number"];
 
-        if("argument" in boxes) {
+        if ("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
-            p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w/2 + w/2;
+            p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w / 2 + w / 2;
             p.y = 0;
             widest += w;
         } else {
-            this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h/2);
+            this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h / 2);
         }
 
         if ("superscript" in boxes) {

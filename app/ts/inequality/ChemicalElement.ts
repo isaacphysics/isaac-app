@@ -3,6 +3,8 @@ import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
+import { Brackets } from "./Brackets.ts";
+import { Fraction } from "./Fraction.ts";
 import { StateSymbol } from "./StateSymbol.ts";
 
 /** A class for representing chemical elements. */

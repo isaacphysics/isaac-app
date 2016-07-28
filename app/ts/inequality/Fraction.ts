@@ -57,14 +57,15 @@ class Fraction extends Widget {
      */
     getExpression(format: string): string {
         var expression = "";
-        if(format == "latex") {
+        if(format == "latex" || format == 'mhchem') {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
                 if(this.dockingPoints["right"].child != null) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
-        } else if(format == "python") {
+        }
+        else if(format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "((" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + "))";
                 if(this.dockingPoints["right"].child != null) {
