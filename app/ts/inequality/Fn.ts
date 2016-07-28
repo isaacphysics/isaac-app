@@ -1,4 +1,3 @@
-
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
@@ -68,9 +67,7 @@ export
         // Override docking points created in super constructor
         this.dockingPoints = {};
         this.generateDockingPoints();
-
         this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets"];
-      
     }
 
     /**

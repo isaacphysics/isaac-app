@@ -706,7 +706,6 @@ define(function(require) {
                         }
                         count++;
                     }
-                    console.log(result);
                     return result;
                 };
 
