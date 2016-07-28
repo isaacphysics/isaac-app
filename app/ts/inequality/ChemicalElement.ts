@@ -26,7 +26,7 @@ export
      * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_it.textBounds("X", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -203,8 +203,8 @@ export
      */
     boundingBox(): Rect {
 
-        var box = this.s.font_it.textBounds(this.element || "x", 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
+        var box = this.s.font_it.textBounds(this.element || "X", 0, 1000, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w/2, box.y - 1000, box.w, box.h);
     }
 
     /**

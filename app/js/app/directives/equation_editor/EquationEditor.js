@@ -691,7 +691,7 @@ define(function(require) {
                         result[count] = {
                             type: "Fn",
                             properties: {
-                                name: trigArray[trig_func],
+                                name: name,
                                 innerSuperscript: true,
                                 allowSubscript: true,
                             },
@@ -706,6 +706,7 @@ define(function(require) {
                         }
                         count++;
                     }
+                    console.log(result);
                     return result;
                 };
 

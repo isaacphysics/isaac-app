@@ -1,3 +1,4 @@
+
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
@@ -69,7 +70,7 @@ export
         this.generateDockingPoints();
 
         this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets"];
-        console.debug('Properties', this.latexSymbol, this.name);
+      
     }
 
     /**

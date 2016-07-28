@@ -228,15 +228,16 @@ export
      */
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
-        var argWidth = this.s.xBox.w;
+        var argWidth = (this.dockingPoints['argument'] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() + this.dockingPoints['argument'].child.boundingBox().w: 0;
+
         var argHeight = this.s.xBox.h;
         if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
             let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox()
-            argWidth = subtreeBB.w;
+            // argWidth = subtreeBB.w;
             argHeight = subtreeBB.h;
         }
-        var width = box.w + argWidth;
-        return new Rect(-width / 2, -argHeight / 2, width, argHeight);  // FIXME This 40 is hard-coded
+        var width = box.w + argWidth + this.scale*40;
+        return new Rect(-width/ 2, -argHeight / 2, width, argHeight);  // FIXME This 40 is hard-coded
     }
 
     /**
