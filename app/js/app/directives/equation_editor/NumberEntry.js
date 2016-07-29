@@ -45,11 +45,9 @@ define([], function() {
                     } else if (num == "-") {
                         scope.negate = !scope.negate;
                         if(scope.currentNumber[0] != '-') {
-                            console.debug("51", scope.currentNumber);
                           scope.currentNumber = "-" + scope.currentNumber;
                         }
                         else {
-                            console.debug("55", scope.currentNumber.substring(1));
                           scope.currentNumber = scope.currentNumber.substring(1);
                         }
 
