@@ -57,7 +57,7 @@
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>
     <div class="trash-button" ng-mousedown="trash()" ng-class="{active: trashActive}"></div>
-    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape && questionDoc.value">
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape && (questionDoc.value || questionDoc.children.length > 0)">
         <div isaac-content doc="questionDoc"></div>
     </div>
     <div class="orientation-warning" ng-if="!isLandscape">The Isaac Equation Editor may only be used in landscape mode. Please rotate your device.</div>
