@@ -141,7 +141,7 @@ export
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
                 if (this.dockingPoints['superscript'].child) {
-                    expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                    expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
                 }
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';

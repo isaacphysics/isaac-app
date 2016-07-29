@@ -123,7 +123,7 @@ export
         var expression = "";
         if (format == "latex") {
             expression = this.latexSymbol;
-            //  KaTeX doesn't support the mhchem package so padding is used to align proton number correctly. 
+            //  KaTeX doesn't support the mhchem package so padding is used to align proton number correctly.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
                 var mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
@@ -165,7 +165,7 @@ export
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-            expression = "hi";
+            expression = "";
         } else if (format == "mathml") {
             expression = '';
         } else if (format == "mhchem") {
