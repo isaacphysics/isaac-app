@@ -470,7 +470,7 @@ class MySketch {
         var symbolWithMostChildren = null;
         var mostChildren = 0;
         _.each(this.symbols, symbol => {
-            console.log(symbol.id + " -> " + symbol.getExpression("python"));
+            //console.log(symbol.id + " -> " + symbol.getExpression("python"));
             var numChildren = symbol.getTotalSymbolCount();
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;

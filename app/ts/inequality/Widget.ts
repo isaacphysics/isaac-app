@@ -84,7 +84,7 @@ export
     color = null;
     isMainExpression = false;
     currentPlacement = "";
-    
+
 
     get typeAsString(): string {
         return "Widget";
@@ -447,11 +447,20 @@ export
         if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
             expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
         }
+        if (current_element.dockingPoints.hasOwnProperty("argument") && current_element != undefined && current_element.dockingPoints["argument"].child != null) {
+            expressionWidth += current_element.dockingPoints["argument"].child.getExpressionWidth();
+        }
         if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
             expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
         }
         if (current_element.dockingPoints.hasOwnProperty("superscript") && current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
             expressionWidth += current_element.dockingPoints["superscript"].child.getExpressionWidth();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("mass_number") && current_element != undefined && current_element.dockingPoints["mass_number"].child != null) {
+            expressionWidth += current_element.dockingPoints["mass_number"].child.getExpressionWidth();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("proton_number") && current_element != undefined && current_element.dockingPoints["proton_number"].child != null) {
+            expressionWidth += current_element.dockingPoints["proton_number"].child.getExpressionWidth();
         }
         return expressionWidth;
     }

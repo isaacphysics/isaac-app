@@ -659,8 +659,6 @@ define(function(require) {
                         var properties = {};
                         var children = null;
                         var name = trigArray[trig_func];
-
-                      console.log(name);
                         if (trigArray[trig_func].substring(0, 3) == 'arc') {
                             name = trigArray[trig_func].substring(3);
                             children = {
@@ -693,7 +691,7 @@ define(function(require) {
                         result[count] = {
                             type: "Fn",
                             properties: {
-                                name: trigArray[trig_func],
+                                name: name,
                                 innerSuperscript: true,
                                 allowSubscript: true,
                             },
@@ -909,24 +907,6 @@ define(function(require) {
                         }
                     }, ],
                     chemOps: [{
-                        type: 'Relation',
-                        menu: {
-                            label: '\\rightarrow',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: 'rightarrow'
-                        }
-                    }, {
-                        type: 'Relation',
-                        menu: {
-                            label: '\\cdot',
-                            texLabel: true,
-                        },
-                        properties: {
-                            relation: '.'
-                        }
-                    }, {
                         type: "BinaryOperation",
                         properties: {
                             operation: "+",
@@ -944,7 +924,22 @@ define(function(require) {
                             label: "-",
                             texLabel: true
                         }
-                    }, {
+                    },{
+                        type: "Fraction",
+                        menu: {
+                            label: "\\frac{a}{b}",
+                            texLabel: true
+                        }
+                    },{
+                        type: 'Relation',
+                        menu: {
+                            label: '\\rightarrow',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: 'rightarrow'
+                        }
+                    },  {
                         type: "Relation",
                         menu: {
                             label: '\\rightleftharpoons ',
@@ -953,7 +948,7 @@ define(function(require) {
                         properties: {
                             relation: 'equilibrium'
                         }
-                    }, {
+                    },{
                         type: "Brackets",
                         properties: {
                             type: "round",
@@ -962,7 +957,25 @@ define(function(require) {
                             label: "(x)",
                             texLabel: true
                         }
-                    }],
+                    },{
+                        type: "Brackets",
+                        properties: {
+                            type: "square",
+                        },
+                        menu: {
+                            label: "[x]",
+                            texLabel: true
+                        }
+                    },{
+                        type: 'Relation',
+                        menu: {
+                            label: '\\cdot',
+                            texLabel: true,
+                        },
+                        properties: {
+                            relation: '.'
+                        }
+                    },  ],
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -1197,15 +1210,16 @@ define(function(require) {
                 };
 
                 scope.particlesTitle = {
-                    menu: {
-                        label: "α",
-                    },
-                    type: "string",
+                  type: "string",
+                  menu: {
+                      label: "\\alpha",
+                      texLabel: true
+                  }
                 };
 
                 scope.elementsTitle = {
                     menu: {
-                        label: "H",
+                        label: "He",
                     },
                     type: "string",
                 };

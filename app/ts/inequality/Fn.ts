@@ -67,9 +67,7 @@ export
         // Override docking points created in super constructor
         this.dockingPoints = {};
         this.generateDockingPoints();
-
         this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets"];
-        console.debug('Properties', this.latexSymbol, this.name);
     }
 
     /**

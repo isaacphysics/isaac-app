@@ -26,7 +26,11 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 			return String(text).replace(/\%VERSION\%/mg, version);
 		};
 	}])
-
+	.filter('capitalize', [function() {
+			return function(input) {
+					return (!!input) ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
+			}
+	}])
 	.filter('showdown', [function() {
 		var Showdown = require("lib/showdown/showdown.js");
 		var converter = new Showdown.converter({

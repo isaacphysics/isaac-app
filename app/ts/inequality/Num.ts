@@ -37,7 +37,7 @@ export
         this.s = s;
 
 
-        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'bottom-left', 'particle', 'relation', 'operator_brackets'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'symbol_subscript', 'bottom-left', 'particle', 'relation', 'operator_brackets'];
     }
 
     getFullText(type?: string): string {
@@ -247,8 +247,17 @@ export
               docking_right.child.position.y = -(child_height/2-parent_width/4);
             }
             else {
-                child_width = docking_right.child.boundingBox().w;
-                docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+              child_width = docking_right.child.boundingBox().w;
+                if(docking_right.child instanceof ChemicalElement) {
+                  var mass_width = (docking_right.child.dockingPoints['mass_number'] && docking_right.child.dockingPoints['mass_number'].child) ? docking_right.child.dockingPoints['mass_number'].child.boundingBox().w : 0;
+                  var proton_width = (docking_right.child.dockingPoints['proton_number'] && docking_right.child.dockingPoints['proton_number'].child) ? docking_right.child.dockingPoints['proton_number'].child.boundingBox().w : 0;
+                  child_width += (mass_width >= proton_width) ? mass_width : proton_width;
+                  console.log("child_width", child_width);
+                  docking_right.child.position.x = (mass_width == 0 && proton_width == 0) ? parent_width + child_width / 2 - this.boundingBox().w/2: parent_width/2 + child_width / 2 + this.boundingBox().w/2;
+                }
+                else {
+                  docking_right.child.position.x = (parent_width + child_width / 2 - this.boundingBox().w/2);
+                }
                 docking_right.child.position.y = 0;
             }
 

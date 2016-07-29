@@ -23,7 +23,7 @@ define([], function() {
                     if (s && s.result) {
                         katex.render(s.result.tex, element.find(".eqn-preview")[0]);
                     } else {
-                        element.find(".eqn-preview").html("Click to enter formula");
+                        element.find(".eqn-preview").html("Click to enter your answer");
                     }
                 })
             }

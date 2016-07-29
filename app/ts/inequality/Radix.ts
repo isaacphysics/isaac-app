@@ -79,7 +79,7 @@ export
                 expression += 'sqrt(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
             }
             if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                expression += '^(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
             }
             if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
                 expression += this.dockingPoints['right'].child.getExpression(format);
@@ -161,6 +161,7 @@ export
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize);
         var argHeight = 0;
+        var argWidth = (this.dockingPoints['argument'] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() : 0;
         // Hooray for short-circuit evaluation?
         if (this.dockingPoints['argument'] && this.dockingPoints['argument'].child && this.dockingPoints['argument'].child.subtreeBoundingBox().h > argHeight) {
             // argHeight = this.dockingPoints['argument'].child.subtreeBoundingBox().h;
@@ -195,8 +196,8 @@ export
         var box = this.boundingBox();
         var descent = (box.y + box.h);
 
-        var argWidth = this.s.xBox.w;
         var supWidth = this.scale * this.s.xBox.w / 2;
+        var argWidth = this.s.xBox.w;
 
         if ("argument" in boxes) {
             var p = this.dockingPoints["argument"].child.position;
@@ -215,7 +216,9 @@ export
         if ("superscript" in boxes) {
             var p = this.dockingPoints["superscript"].child.position;
             supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
-            p.x = box.w + argWidth + supWidth;
+            argWidth = (this.dockingPoints["argument"] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() : supWidth;
+            console.log("argwidth", argWidth);
+            p.x = (box.w + argWidth -supWidth/2);
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
             // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);
         } else {
@@ -228,7 +231,8 @@ export
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w / 2;
+            p.x = (this.dockingPoints["argument"] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() + this.s.mBox.w: this.s.mBox.w + this.dockingPoints['right'].child.boundingBox().w/2;
+            //p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w / 2;
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;
