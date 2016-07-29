@@ -4,7 +4,7 @@ import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 export
-class Fraction extends Widget {
+    class Fraction extends Widget {
     protected s: any;
     private width: number;
 
@@ -18,7 +18,7 @@ class Fraction extends Widget {
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(-this.boundingBox().w/2, 0);
+        var p = this.p.createVector(-this.boundingBox().w / 2, 0);
         return p;
     }
 
@@ -41,7 +41,7 @@ class Fraction extends Widget {
         var box = this.boundingBox();
         console.log(this.boundingBox());
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale*this.s.mBox.w/4, -box.h/2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, "symbol", "right");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
         this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol", "denominator");
     }
@@ -57,35 +57,34 @@ class Fraction extends Widget {
      */
     getExpression(format: string): string {
         var expression = "";
-        if(format == "latex" || format == 'mhchem') {
+        if (format == "latex" || format == 'mhchem') {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
-                if(this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child != null) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
-        }
-        else if(format == "python") {
+        } else if (format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "((" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + "))";
-                if(this.dockingPoints["right"].child != null) {
-                    if(this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                if (this.dockingPoints["right"].child != null) {
+                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
                         expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
                         expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                     }
                 }
             }
-        } else if(format == "subscript") {
+        } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += "[FRACTION:" + this.id + "]";
             }
-        } else if(format == 'mathml') {
+        } else if (format == 'mathml') {
             expression = '';
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.getExpression(format) + '</mrow></mfrac>';
             }
-            if(this.dockingPoints['right'].child != null) {
+            if (this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
@@ -102,14 +101,14 @@ class Fraction extends Widget {
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.noFill().strokeWeight(5*this.scale).stroke(this.color);
+        this.p.noFill().strokeWeight(5 * this.scale).stroke(this.color);
 
         var box = this.boundingBox();
-        this.p.line(-box.w/2, -box.h/2, box.w/2, -box.h/2);
+        this.p.line(-box.w / 2, -box.h / 2, box.w / 2, -box.h / 2);
 
         this.p.strokeWeight(1);
 
-        if(window.location.hash === "#debug") {
+        if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
@@ -131,7 +130,7 @@ class Fraction extends Widget {
         var numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
         var denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
         this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
-        return new Rect(-this.width*this.scale/2, -box.h*this.scale,  this.width*this.scale, box.h*this.scale);
+        return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
     }
 
     /**
@@ -142,8 +141,8 @@ class Fraction extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
-        var subtreeBoxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
+        var subtreeBoxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -166,8 +165,8 @@ class Fraction extends Widget {
             var numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
             var numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
 
-            p.x = numeratorRootWidth/2 - fullNumeratorWidth/2;
-            p.y = -bbox.h/2 - this.scale * this.s.mBox.w / 4 - numeratorFullDescent;
+            p.x = numeratorRootWidth / 2 - fullNumeratorWidth / 2;
+            p.y = -bbox.h / 2 - this.scale * this.s.mBox.w / 4 - numeratorFullDescent;
         }
 
         if ("denominator" in boxes) {
@@ -176,22 +175,22 @@ class Fraction extends Widget {
             var denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
             var denominatorFullAscent = subtreeBoxes["denominator"].y;
 
-            p.x = denominatorRootWidth/2 - fullDenominatorWidth/2;
+            p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;
             p.y = -bbox.h / 2 + this.scale * this.s.mBox.w / 4 - denominatorFullAscent;
         }
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w/2 + this.scale*this.s.mBox.w/4; // TODO: Tweak this with kerning.
+            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
             p.y = 0;
         } else {
             var p = this.dockingPoints["right"].position;
-            if("denominator" in boxes) {
+            if ("denominator" in boxes) {
                 p.x = this.width / 2 + this.scale * this.s.mBox.w / 2;
             } else {
                 p.x = this.width / 2 + this.scale * this.s.mBox.w / 4;
             }
-            p.y = -this.boundingBox().h/2;
+            p.y = -this.boundingBox().h / 2;
         }
     }
 }
