@@ -20,32 +20,42 @@ define([], function() {
 
 
                 scope.buttonClick = function(btn) {
-                	if (btn == "^") {
-                		scope.currentExponent = "";
-                	} else if (btn == "-" && scope.currentNumber.length > 0) {
-                        scope.negate = !scope.negate;
-                    } else {
-                		if (scope.currentExponent != null) {
-                			scope.currentExponent += btn;
-                		} else {
-		                	scope.currentNumber += btn;
-                		}
-                	}
-                }
-                
-                scope.$on("numberClicked", function(_, num) {
-                  console.debug("NumberEntry: " + num);
-                  if (num == "^") {
-                      scope.currentExponent = "";
-                  } else if (num == "-" && scope.currentNumber.length > 0) {
+                    if (btn == "^") {
+                        scope.currentExponent = "";
+                    } else if (btn == "-") {
                       scope.negate = !scope.negate;
-                  } else {
-                      if (scope.currentExponent != null) {
-                          scope.currentExponent += num;
-                      } else {
-                          scope.currentNumber += num;
+                      if(scope.currentNumber[0] != '-') {
+                        scope.currentNumber = "-" + scope.currentNumber;
                       }
-                  }
+                      else {
+                        scope.currentNumber = scope.currentNumber.substring(1);
+                      }
+                    } else {
+                        if (scope.currentExponent != null) {
+                            scope.currentExponent += btn;
+                        } else {
+                            scope.currentNumber += btn;
+                        }
+                    }
+                }
+
+                scope.$on("numberClicked", function(_, num) {
+                    if (num == "^") {
+                        scope.currentExponent = "";
+                    } else if (num == "-") {
+                        scope.negate = !scope.negate;
+                        if(scope.currentNumber[0] != '-') {
+                            console.debug("51", scope.currentNumber);
+                          scope.currentNumber = "-" + scope.currentNumber;
+                        }
+                        else {
+                            console.debug("55", scope.currentNumber.substring(1));
+                          scope.currentNumber = scope.currentNumber.substring(1);
+                        }
+
+                    } else {
+                        scope.currentNumber += num;
+                    }
                 });
 
 
@@ -91,34 +101,18 @@ define([], function() {
 
                     var currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
 
-                    if (currentNumberAlreadyNegated && !scope.negate) {
-                        scope.currentNumber = scope.currentNumber.substring(1);
-                    } else if (!currentNumberAlreadyNegated && scope.negate) {
-                        scope.currentNumber = "-" + scope.currentNumber;
-                        scope.currentSymbol.menu.labelClass = "tiny";
-                    }
-                    if (scope.currentSymbol.menu.label && scope.currentExponent != null && scope.currentExponent.length > 0) {
-                        if (!isNaN(expNum)) {
-                            scope.currentSymbol.menu.label += "\n\\times 10^{" + expNum + "}";
-                            scope.currentSymbol.menu.labelClass = "tiny";
-                        }
-                    }
                     scope.currentSymbol.editable = {
                         currentNumber: scope.currentNumber,
-                        currentExponent: scope.currentExponent,
                         negate: scope.negate,
                     };
                     scope.currentSymbol.properties.significand = scope.currentNumber;
-                    scope.currentSymbol.properties.exponent = scope.currentExponent;
                 };
 
                 scope.$watch("currentNumber", updateSymbol);
                 scope.$watch("one", updateSymbol);
-                scope.$watch("currentExponent", updateSymbol);
                 scope.$watch("negate", updateSymbol);
-                scope.$watch("currentExponent", updateInputPadding);
                 scope.$on("clicked", function(_, clicked) {
-                  scope.clicked = clicked;
+                    scope.clicked = clicked;
                 });
                 scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
                     // This overcomes issues with deciding if number button is clicked or dragged.
@@ -131,7 +125,6 @@ define([], function() {
                 })
 
                 scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY, pageY) {
-                    console.debug(scope.clicked);
                     if (!scope.clicked) {
                         scope.$emit("spawnSymbol");
                         // If property "editable" of current object isn't null, we must have generated it using the editor
