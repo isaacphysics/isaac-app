@@ -34,27 +34,36 @@ define([], function() {
 	            	scope.children = undefined;
 	            	scope.encoding = undefined;
 
-	            	scope.$parent.$watch(iAttrs.value, function(newValue) {
-	            		scope.value = newValue;
-	            		update();
-	            	});
+	            	// scope.$parent.$watch(iAttrs.value, function(newValue) {
+	            	// 	scope.value = newValue;
+	            	// 	update();
+	            	// });
 
-	            	scope.$parent.$watch(iAttrs.children, function(newChildren) {
-	            		scope.children = newChildren;
-	            		update();
-	            	});
+	            	// scope.$parent.$watch(iAttrs.children, function(newChildren) {
+	            	// 	scope.children = newChildren;
+	            	// 	update();
+	            	// });
 
-	            	scope.$parent.$watch(iAttrs.encoding, function(newEncoding) {
-	            		scope.encoding = newEncoding;
-	            		update();
-	            	});
+	            	// scope.$parent.$watch(iAttrs.encoding, function(newEncoding) {
+	            	// 	scope.encoding = newEncoding;
+	            	// 	update();
+	            	// });
+
+					// Replace three watchers which always get called one after another with one watcher:
+					scope.$parent.$watchGroup([iAttrs.value, iAttrs.children, iAttrs.encoding], function(newValues) {
+						scope.value = newValues[0];
+						scope.children = newValues[1];
+						scope.encoding = newValues[2];
+						update();
+					});
 
 	            	var update = function updateFn() {
 
 	            		scope.safeValue = $sce.trustAsHtml(scope.value);
 
-						if (scope.value != "" && scope.value != null && scope.children != null && scope.children.length > 0)
+						if (scope.value != "" && scope.value != null && scope.children != null && scope.children.length > 0) {
 							throw new Error("Cannot render both value and children:\n\tVALUE:\n" +  JSON.stringify(scope.value, null, 2) + "\n\n\tCHILDREN:\n" + JSON.stringify(scope.children, null, 2));
+						}
 
 						scope.contentChunks = []; // One of these for each chunk of content, where accordions may only appear on their own in a chunk.
 			            var breakOnTypeChange = false;
