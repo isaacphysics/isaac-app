@@ -9,11 +9,10 @@ define([], function() {
             link: function(scope, element, attrs) {
 
               scope.edit = function() {
-                console.log($rootScope.showGraphSketcher);
                   $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
-                      alert("hello");
+                      scope.state = finalState;
+                      scope.$apply();
                   });
-
               };
 
 

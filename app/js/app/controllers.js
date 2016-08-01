@@ -75,6 +75,7 @@ define(function(require) {
 	var questionsPageControllers = require("app/controllers/QuestionsPageControllers");
 
 	var equalityPageController = require("app/controllers/EqualityPageController");
+	var sketcherPageController = require("app/controllers/SketcherPageController");
 
 	/* Controllers */
 
@@ -144,4 +145,5 @@ define(function(require) {
 
 	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
 	.controller('EqualityPageController', equalityPageController.PageController)
+	.controller('SketcherPageController', sketcherPageController.PageController)
 });

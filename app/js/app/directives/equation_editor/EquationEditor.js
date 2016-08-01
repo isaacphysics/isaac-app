@@ -205,7 +205,7 @@ define(function(require) {
                         //element.find("canvas").remove();
 
                         // TODO: Redisplay old equations in the centre
-
+                        
                         scope.future = [];
                         var p = new p5(function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);

@@ -25,9 +25,9 @@ var canvasHeight = 600,
 	gridWidth = 50,
 	strkWeight = 1.5,
 	padding = 15;
-	
+
 var colors = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
-	
+
 // point collection
 var drawnPts = [],
 	curves = [];
@@ -51,11 +51,11 @@ var checkPoint,
 
 // run in the beginning by p5 library
 function setup() {
-	createCanvas(canvasWidth, canvasHeight).position(50,50);
-
+	var myCanvas =  createCanvas(canvasWidth, canvasHeight);
+	myCanvas.parent('sketch-holder');
 	noLoop();
 	cursor(CROSS);
-	
+
 	drawBackground();
 	refreshFreeSymbols();
 	drawSymbols(freeSymbols);
@@ -66,7 +66,7 @@ function drawBackground() {
 
 	function drawHorizontalAxis() {
 		push();
-		
+
 		strokeWeight(strkWeight);
 		strokeJoin(ROUND);
 		stroke(0);
@@ -82,13 +82,13 @@ function drawBackground() {
 		vertex(rightMargin, canvasHeight / 2);
 		vertex(rightMargin - 10, canvasHeight / 2 + 5);
 		endShape();
-		
+
 		pop();
 	}
 
 	function drawVerticalAxis() {
 		push();
-		
+
 		strokeWeight(strkWeight);
 		strokeJoin(ROUND);
 		stroke(0);
@@ -104,7 +104,7 @@ function drawBackground() {
 		vertex(canvasWidth/2, upMargin);
 		vertex(canvasWidth/2 + 5, upMargin + 10);
 		endShape();
-		
+
 		pop();
 	}
 
@@ -196,7 +196,7 @@ function drawBackground() {
 
 // given a set of points, draw the corresponding curve.
 function drawCurve(curve, color) {
-	if (color == undefined) 
+	if (color == undefined)
 		color = curve.color;
 
 	push();
@@ -207,7 +207,7 @@ function drawCurve(curve, color) {
 	for (var i = 1; i < pts.length; i++) {
 		line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
 	}
-	
+
 	pop();
 
 	// draw x intercepts, y intercepts and turning points
@@ -222,13 +222,13 @@ function drawCurve(curve, color) {
 
 function drawCurves(curves, color) {
 	for (var i = 0; i < curves.length; i++)
-		drawCurve(curves[i], color);	
+		drawCurve(curves[i], color);
 }
 
 
 // given a set of points, draw the corresponding points (knots).
 function drawKnot(knot, color) {
-	if (color == undefined) 
+	if (color == undefined)
 		color = [77,77,77];
 
 	if (knot.symbol != undefined) {
@@ -247,7 +247,7 @@ function drawKnot(knot, color) {
 function drawKnots(knots, color) {
 	for (var i = 0; i < knots.length; i++) {
 		drawKnot(knots[i], color);
-	}	
+	}
 }
 
 function drawKnot2(knot, color) {
@@ -267,7 +267,7 @@ function drawKnot2(knot, color) {
 function drawKnots2(knots, color) {
 	for (var i = 0; i < knots.length; i++) {
 		drawKnot2(knots[i], color);
-	}	
+	}
 }
 
 function drawKnot3(knot, color) {
@@ -286,32 +286,32 @@ function drawKnot3(knot, color) {
 	if (knot.ySymbol != undefined) {
 		drawSymbol(knot.ySymbol);
 	} else {
-		drawKnot(createPoint(canvasWidth/2, knot.y));	
+		drawKnot(createPoint(canvasWidth/2, knot.y));
 	}
 }
 
 // draw symbols, e.g. "A", "B".
 function drawSymbol(symbol, color) {
 	if (color == undefined) color = [77,77,77];
-	
+
 	push();
-	
+
 	stroke(color);
 	strokeWeight(1.5);
 	noFill();
 	line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-	line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);	
-	
+	line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
+
 	stroke(0);
 	strokeWeight(0.5);
 	fill(0);
 	textSize(14);
 	text(symbol.text, symbol.x - 4, symbol.y + 20);
-	
+
 	pop();
 }
 
-function drawSymbols(symbols, color) {	
+function drawSymbols(symbols, color) {
 	for (var i = 0; i < symbols.length; i++) {
 		drawSymbol(symbols[i], color);
 	}
@@ -389,10 +389,10 @@ function transCurve(curve, dx, dy) {
 	var maxima = curve.maxima;
 	for (var i = 0; i < maxima.length; i++) {
 		var knot = maxima[i];
-		
+
 		knot.x += dx;
 		knot.y += dy;
-		
+
 		if (knot.symbol != undefined) {
 			knot.symbol.x += dx;
 			knot.symbol.y += dy;
@@ -410,10 +410,10 @@ function transCurve(curve, dx, dy) {
 	var minima = curve.minima;
 	for (var i = 0; i < minima.length; i++) {
 		var knot = minima[i];
-		
+
 		knot.x += dx;
 		knot.y += dy;
-		
+
 		if (knot.symbol != undefined) {
 			knot.symbol.x += dx;
 			knot.symbol.y += dy;
@@ -501,7 +501,7 @@ function mousePressed() {
 	drawnPts = [];
 
 	if (current.x < 0 || current.x > canvasWidth || current.y < 0 || current.y > canvasHeight) return;
-	
+
 	checkPoint = {};
 	checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
 	checkPoint.curvesJSON = JSON.stringify(curves);
@@ -628,7 +628,7 @@ function mousePressed() {
 		alert("Too much lines being drawn.");
 		checkPointsUndo.pop();
 	}
-	
+
 }
 
 function mouseDragged() {
@@ -702,7 +702,7 @@ function mouseDragged() {
 
 		if (clickedKnot != null) {
 			var knot = clickedKnot;
-			
+
 			if (knot.xSymbol == undefined && getDist(current, createPoint(knot.x, canvasHeight/2)) < 10) {
 				drawKnot(createPoint(knot.x, canvasHeight/2), 151);
 				return;
@@ -713,7 +713,7 @@ function mouseDragged() {
 				return;
 			}
 		}
-		
+
 
 	} else if (action == "DRAW_CURVE") {
 		push();
@@ -725,7 +725,7 @@ function mouseDragged() {
 		}
 		pop();
 
-		drawnPts.push(current);	
+		drawnPts.push(current);
 	}
 }
 
@@ -739,7 +739,7 @@ function mouseReleased() {
 		checkPointsUndo.push(checkPoint);
 		checkPointsRedo = [];
 		drawCurve(curves[movedCurveIdx]);
-	} else if (action == "MOVE_SYMBOL") {	
+	} else if (action == "MOVE_SYMBOL") {
 		checkPointsUndo.push(checkPoint);
 		checkPointsRedo = [];
 
@@ -775,7 +775,7 @@ function mouseReleased() {
 			var maxima = curves[i]['maxima'];
 			for (var j = 0; j < maxima.length; j++) {
 				var knot = maxima[j];
-				
+
 				if (knot.symbol == undefined && getDist(current, knot) < 10) {
 					movedSymbol.x = knot.x;
 					movedSymbol.y = knot.y;
@@ -790,7 +790,7 @@ function mouseReleased() {
 			var minima = curves[i]['minima'];
 			for (var j = 0; j < minima.length; j++) {
 				var knot = minima[j];
-				
+
 				if (knot.symbol == undefined && getDist(current, knot) < 10) {
 					movedSymbol.x = knot.x;
 					movedSymbol.y = knot.y;
@@ -827,7 +827,7 @@ function mouseReleased() {
 		refreshFreeSymbols();
 		drawSymbols(freeSymbols);
 		drawKnot3(clickedKnot);
-				
+
 	} else if (action == "DRAW_CURVE") {
 		// neglect if curve drawn is too short
 		if (sample(drawnPts).length < 3) {
@@ -837,16 +837,16 @@ function mouseReleased() {
 		checkPointsUndo.push(checkPoint);
 		checkPointsRedo = [];
 
-		if (Math.abs(drawnPts[0].y - canvasHeight/2) < 0.01 * canvasHeight) 
+		if (Math.abs(drawnPts[0].y - canvasHeight/2) < 0.01 * canvasHeight)
 			drawnPts[0].y = canvasHeight/2;
-		if (Math.abs(drawnPts[0].x - canvasWidth/2) < 0.01 * canvasWidth) 
+		if (Math.abs(drawnPts[0].x - canvasWidth/2) < 0.01 * canvasWidth)
 			drawnPts[0].x = canvasWidth/2;
-		if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 0.01 * canvasHeight) 
+		if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 0.01 * canvasHeight)
 			drawnPts[drawnPts.length - 1].y = canvasHeight/2;
-		if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 0.01 * canvasWidth) 
+		if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 0.01 * canvasWidth)
 			drawnPts[drawnPts.length - 1].x = canvasWidth/2;
 
-	
+
 		var pts = genericBezier(sample(drawnPts));
 		var curve = {};
 		curve.pts = pts;
@@ -944,13 +944,3 @@ function mouseClicked() {
 
 
 }
-
-
-
-
-
-
-
-
-
-
