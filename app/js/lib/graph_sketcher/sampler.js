@@ -16,6 +16,7 @@
 
 // Given a set of data points, sample a subset of points such that there is about constant space interval between two adjacent points.
 define(function(require) {
+    var f = require("lib/graph_sketcher/func.js");
     return {
         sampleInterval: 10,
 
@@ -26,7 +27,8 @@ define(function(require) {
             var j = 0;
             while (i < pts.length) {
                 // func.getDist
-                while (j < pts.length && getDist(pts[i], pts[j]) < sampleInterval) {
+                
+                while (j < pts.length && f.getDist(pts[i], pts[j]) < this.sampleInterval) {
                     j += 1;
                 }
 

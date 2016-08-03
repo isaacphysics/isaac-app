@@ -315,13 +315,19 @@ $menu-handle-width: 160px;
         cursor: pointer;
         &.centre,
         &.redo,
-        &.undo {
+        &.undo,
+        &.clearAll {
             width: 68px;
             height: 80px;
         }
         &.centre {
             left: 18px;
             background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+        }
+        &.clearAll {
+            left: 18px;
+            background: url("/assets/equation_editor/hex-button-clear-all.png") no-repeat;
             background-size: contain;
         }
         &.centre:hover {

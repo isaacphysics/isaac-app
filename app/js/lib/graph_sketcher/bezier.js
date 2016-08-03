@@ -13,21 +13,22 @@ define(function(require) {
             var r;
             for (r = 0; r <= n; r += 1) {
                 // from the other math library!!!! not the same as Math!!!!
-                comb.push(m.math.combinations(n, r));
+                comb.push(m.combinations(n, r));
             }
 
-            var step = 1 / numOfPts;
+            var step = 1 / this.numOfPts;
             var bezier = [];
             var u;
-            var sx = 0;
-            var sy = 0;
+            
             var i;
             var tmp1;
             var tmp2;
             var tmp3;
 
-            for (i = 0; i < numOfPts; i += 1) {
+            for (i = 0; i < this.numOfPts; i += 1) {
                 u = i * step;
+                var sx = 0;
+                var sy = 0;
                 for (r = 0; r <= n; r += 1) {
                     tmp1 = Math.pow(u, r);
                     tmp2 = Math.pow(1 - u, n - r);
@@ -39,7 +40,7 @@ define(function(require) {
                 bezier.push(f.createPoint(sx, sy));
             }
             bezier.push(pts[pts.length - 1]);
-
+            console.debug(bezier);
             return bezier;
         }
     }
