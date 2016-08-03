@@ -1,4 +1,8 @@
-define(['require'], function(require) {
+define(function(require) {
+  var m = require('lib/math.js');
+  var b = require('lib/graph_sketcher/bezier.js');
+  var f = require('lib/graph_sketcher/func.js');
+
     return {
         numOfPts: 100,
 
@@ -9,7 +13,7 @@ define(['require'], function(require) {
             var r;
             for (r = 0; r <= n; r += 1) {
                 // from the other math library!!!! not the same as Math!!!!
-                //comb.push(math.combinations(n, r));
+                comb.push(m.math.combinations(n, r));
             }
 
             var step = 1 / numOfPts;
@@ -32,11 +36,11 @@ define(['require'], function(require) {
                     sy += tmp3 * pts[r].y;
                 }
                 // createPoint from point.js
-                //bezier.push(createPoint(sx, sy));
+                bezier.push(f.createPoint(sx, sy));
             }
             bezier.push(pts[pts.length - 1]);
 
             return bezier;
         }
-    };
+    }
 });

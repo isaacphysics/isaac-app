@@ -169,25 +169,25 @@ define(function(require) {
                               p.push();
 
                               p.strokeWeight(CURVE_STRKWEIGHT);
-                              p.strokeJoin(ROUND);
+                              p.strokeJoin(p.ROUND);
                               p.stroke(0);
                               p.noFill();
 
                               var leftMargin = PADDING;
                               var rightMargin = canvasWidth - PADDING;
 
-                              beginShape();
-                              vertex(leftMargin, canvasHeight/2);
-                              vertex(rightMargin, canvasHeight / 2);
-                              vertex(rightMargin - 10, canvasHeight / 2 - 5);
-                              vertex(rightMargin, canvasHeight / 2);
-                              vertex(rightMargin - 10, canvasHeight / 2 + 5);
-                              endShape();
+                              p.beginShape();
+                              p.vertex(leftMargin, canvasHeight/2);
+                              p.vertex(rightMargin, canvasHeight / 2);
+                              p.vertex(rightMargin - 10, canvasHeight / 2 - 5);
+                              p.vertex(rightMargin, canvasHeight / 2);
+                              p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
+                              p.endShape();
 
-                              pop();
+                              p.pop();
                             }
 
-                            function drawVerticalAxis() {
+                            p.drawVerticalAxis =function() {
                               // p5.strokeWeight, p5.strokeJoin, p5.ROUND, p5.stroke, p5.noFill, p5.beginShape, p5.vertex, p5.endShape, p5.push, p5.pop
 
                               push();
@@ -211,132 +211,146 @@ define(function(require) {
                               pop();
                             }
 
-                            function drawGrid() {
+                            p.drawGrid = function () {
                               // p5.strokeWeight, p5.strokeJoin, p5.ROUND, p5.stroke, p5.translate, p5.line, p5.push, p5.pop
-                              push();
+                              p.push();
 
-                              noFill();
-                              strokeWeight(CURVE_STRKWEIGHT);
-                              strokeJoin(ROUND);
-                              stroke(215);
+                              p.noFill();
+                              p.strokeWeight(CURVE_STRKWEIGHT);
+                              p.strokeJoin(p.ROUND);
 
-                              push();
-                              translate(0, canvasHeight / 2);
+                              p.stroke(215);
+
+                              p.push();
+                              p.translate(0, canvasHeight / 2);
                               var num = canvasHeight / (GRID_WIDTH * 2);
                               for (var i = 0; i < num; i++) {
-                                line(0, -i*GRID_WIDTH, canvasWidth, -i*GRID_WIDTH);
-                                line(0, i*GRID_WIDTH, canvasWidth, i*GRID_WIDTH);
-                              }
-                              pop();
+                                p.line(0, -i*GRID_WIDTH, canvasWidth, -i*GRID_WIDTH);
+                                p.line(0, i*GRID_WIDTH, canvasWidth, i*GRID_WIDTH);
 
-                              push();
-                              translate(canvasWidth / 2, 0);
+                              }
+
+                              p.pop();
+
+                              p.push();
+                              p.translate(canvasWidth / 2, 0);
+
                               var num = canvasWidth / (GRID_WIDTH * 2);
+
                               for (var i = 0; i < num; i++) {
-                                line(-i*GRID_WIDTH, 0, -i*GRID_WIDTH, canvasHeight);
-                                line(i*GRID_WIDTH, 0, i*GRID_WIDTH, canvasHeight);
+                                p.line(-i*GRID_WIDTH, 0, -i*GRID_WIDTH, canvasHeight);
+                                p.line(i*GRID_WIDTH, 0, i*GRID_WIDTH, canvasHeight);
+
                               }
-                              pop();
+                              p.pop();
 
-                              pop();
+                              p.pop();
+
+
                             }
 
-                            function drawLabel() {
+                            p.drawLabel = function() {
                               // p5.push, p5.textSize, p5.stroke, p5.strokeWeight, p5.fill, p5.text, p5.pop
-                              push();
+                              p.push();
 
-                              textSize(16);
-                              stroke(0);
-                              strokeWeight(0.5);
-                              fill(0);
+                              p.textSize(16);
+                              p.stroke(0);
+                              p.strokeWeight(0.5);
+                              p.fill(0);
 
-                              text("O", canvasWidth/2 - 15, canvasHeight/2 + 15);
-                              text("x", canvasWidth - 12, canvasHeight/2 + 15);
-                              text("y", canvasWidth/2 + 5, 12);
+                              p.text("O", canvasWidth/2 - 15, canvasHeight/2 + 15);
+                              p.text("x", canvasWidth - 12, canvasHeight/2 + 15);
+                              p.text("y", canvasWidth/2 + 5, 12);
 
-                              pop();
+                              p.pop();
                             }
 
-                            // function drawScale() {
-                            // 	var len = 3;
+                            p.drawScale = function() {
+                            	var len = 3;
 
-                            // 	push();
-                            // 	strokeWeight(1);
-                            // 	stroke(0);
-                            // 	textSize(12);
+                            	p.push();
+                            	p.strokeWeight(1);
+                            	p.stroke(0);
+                            	p.textSize(12);
 
-                            // 	push();
-                            // 	translate(0, canvasHeight / 2);
-                            // 	var num = canvasHeight / (GRID_WIDTH * 2);
-                            // 	for (var i = 1; i < num; i++) {
-                            // 		line(canvasWidth/2 -len, -i*GRID_WIDTH, canvasWidth/2 + len, -i*GRID_WIDTH);
-                            // 		line(canvasWidth/2 - len, i*GRID_WIDTH, canvasWidth/2 + len, i*GRID_WIDTH);
-                            // 		text(i, canvasWidth/2 + 5, -i * GRID_WIDTH + 5);
-                            // 		text(-i, canvasWidth/2 + 5, i * GRID_WIDTH + 5);
-                            // 	}
-                            // 	pop();
+                            	p.push();
+                            	p.translate(0, canvasHeight / 2);
+                            	var num = canvasHeight / (GRID_WIDTH * 2);
+                            	for (var i = 1; i < num; i++) {
+                            		p.line(canvasWidth/2 -len, -i*GRID_WIDTH, canvasWidth/2 + len, -i*GRID_WIDTH);
+                            		p.line(canvasWidth/2 - len, i*GRID_WIDTH, canvasWidth/2 + len, i*GRID_WIDTH);
+                            		p.text(i, canvasWidth/2 + 5, -i * GRID_WIDTH + 5);
+                            		p.text(-i, canvasWidth/2 + 5, i * GRID_WIDTH + 5);
+                            	}
+                            	p.pop();
 
-                            // 	push();
-                            // 	translate(canvasWidth / 2, 0);
-                            // 	var num = canvasWidth / (GRID_WIDTH * 2);
-                            // 	for (var i = 1; i < num; i++) {
-                            // 		line(-i*GRID_WIDTH, canvasHeight/2 - len, -i*GRID_WIDTH, canvasHeight / 2 + len);
-                            // 		line(i*GRID_WIDTH, canvasHeight/2 - len, i*GRID_WIDTH, canvasHeight /2 + len);
-                            // 		text(-i, -i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
-                            // 		text(i, i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
-                            // 	}
-                            // 	pop();
+                            	p.push();
+                            	p.translate(canvasWidth / 2, 0);
+                            	var num = canvasWidth / (GRID_WIDTH * 2);
+                            	for (var i = 1; i < num; i++) {
+                            		p.line(-i*GRID_WIDTH, canvasHeight/2 - len, -i*GRID_WIDTH, canvasHeight / 2 + len);
+                            		p.line(i*GRID_WIDTH, canvasHeight/2 - len, i*GRID_WIDTH, canvasHeight /2 + len);
+                            		p.text(-i, -i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
+                            		p.text(i, i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
+                            	}
+                            	p.pop();
 
-                            // 	pop();
-                            // }
+                            	p.pop();
+                            }
 
 
 
                             // p5.clear, p5.background
-                            clear();
-                            background(255);
-                            drawGrid();
-                            drawHorizontalAxis();
-                            drawVerticalAxis();
-                            drawLabel();
+                            p.clear();
+
+                            p.background(255);
+
+                            p.drawGrid();
+
+                            p.drawHorizontalAxis();
+                              console.log("here");
+                            p.drawVerticalAxis();
+                            p.drawLabel();
+
+
                           }
 
                           // given a set of points, draw the corresponding curve.
-                          function drawCurve(curve, color) {
+                          p.drawCurve = function(curve, color) {
                             if (color == undefined) {
                               color = curve.color;
                             }
 
-                            push();
-                            stroke(color);
-                            strokeWeight(CURVE_STRKWEIGHT);
+                            p.push();
+                            p.stroke(color);
+                            p.strokeWeight(CURVE_STRKWEIGHT);
 
                             var pts = curve.pts;
                             for (var i = 1; i < pts.length; i++) {
                               line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
                             }
 
-                            pop();
+                            p.pop();
 
                             // draw x intercepts, y intercepts and turning points
-                            drawKnots(curve['interX']);
-                            drawKnots(curve['interY']);
-                            drawKnots(curve['maxima']);
-                            drawKnots(curve['minima']);
-                            drawKnots2(curve['maxima']);
-                            drawKnots2(curve['minima']);
+                            p.drawKnots(curve['interX']);
+                            p.drawKnots(curve['interY']);
+                            p.drawKnots(curve['maxima']);
+                            p.drawKnots(curve['minima']);
+                            p.drawKnots2(curve['maxima']);
+                            p.drawKnots2(curve['minima']);
 
                           }
 
-                          function drawCurves(curves, color) {
+                          p.drawCurves = function(curves, color) {
                             for (var i = 0; i < curves.length; i++) {
-                              drawCurve(curves[i], color);
+                              p.drawCurve(curves[i], color);
                             }
                           }
 
 
                           // given a set of points, draw the corresponding points (knots).
-                          function drawKnot(knot, color) {
+                          p.drawKnot = function(knot, color) {
                             if (color == undefined) {
                               color = KNOT_COLOR;
                             }
@@ -354,13 +368,13 @@ define(function(require) {
                             }
                           }
 
-                          function drawKnots(knots, color) {
+                          p.drawKnots = function(knots, color) {
                             for (var i = 0; i < knots.length; i++) {
                               drawKnot(knots[i], color);
                             }
                           }
 
-                          function drawKnot2(knot) {
+                          p.drawKnot2 =function(knot) {
                             if (knot.xSymbol != undefined) {
                               drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
                               drawSymbol(knot.xSymbol);
@@ -372,19 +386,19 @@ define(function(require) {
                             }
                           }
 
-                          function drawKnots2(knots) {
+                          p.drawKnots2 = function(knots) {
                             for (var i = 0; i < knots.length; i++) {
                               drawKnot2(knots[i]);
                             }
                           }
 
-                          function drawKnot3(knot) {
+                          p.drawKnot3 = function(knot) {
                             if (knot == null) {
                               return;
                             }
 
-                            drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
-                            drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
+                            p.drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
+                            p.drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
 
                             if (knot.xSymbol != undefined) {
                               drawSymbol(knot.xSymbol);
@@ -400,35 +414,35 @@ define(function(require) {
                           }
 
                           // draw symbols, e.g. "A", "B".
-                          function drawSymbol(symbol, color) {
+                          p.drawSymbol = function(symbol, color) {
                             if (color == undefined) {
                               color = KNOT_COLOR;
                             }
 
-                            push();
+                            p.push();
 
-                            stroke(color);
-                            strokeWeight(1.5);
-                            noFill();
-                            line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-                            line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
+                            p.stroke(color);
+                            p.strokeWeight(1.5);
+                            p.noFill();
+                            p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
+                            p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
 
-                            stroke(0);
-                            strokeWeight(0.5);
-                            fill(0);
-                            textSize(14);
-                            text(symbol.text, symbol.x - 4, symbol.y + 20);
+                            p.stroke(0);
+                            p.strokeWeight(0.5);
+                            p.fill(0);
+                            p.textSize(14);
+                            p.text(symbol.text, symbol.x - 4, symbol.y + 20);
 
-                            pop();
+                            p.pop();
                           }
 
-                          function drawSymbols(symbols, color) {
+                          p.drawSymbols = function(symbols, color) {
                             for (var i = 0; i < symbols.length; i++) {
                               drawSymbol(symbols[i], color);
                             }
                           }
 
-                          function drawVerticalDotLine(x, begin, end) {
+                          p.drawVerticalDotLine = function(x, begin, end) {
                             if (x < 0 || x > canvasWidth) {
                               return;
                             }
@@ -439,9 +453,9 @@ define(function(require) {
                               end = tmp;
                             }
 
-                            push();
-                            stroke(DOT_LINE_COLOR);
-                            strokeWeight(CURVE_STRKWEIGHT);
+                            p.push();
+                            p.stroke(DOT_LINE_COLOR);
+                            p.strokeWeight(CURVE_STRKWEIGHT);
 
                             var step = DOT_LINE_STEP;
                             var toDraw = true;
@@ -457,10 +471,10 @@ define(function(require) {
                               line(x, y, x, end);
                             }
 
-                            pop();
+                            p.pop();
                           }
 
-                          function drawHorizontalDotLine(y, begin, end) {
+                          p.drawHorizontalDotLine = function(y, begin, end) {
                             if (y < 0 || y > canvasHeight) {
                               return;
                             }
@@ -471,9 +485,9 @@ define(function(require) {
                               end = tmp;
                             }
 
-                            push();
-                            stroke(DOT_LINE_COLOR);
-                            strokeWeight(CURVE_STRKWEIGHT);
+                            p.push();
+                            p.stroke(DOT_LINE_COLOR);
+                            p.strokeWeight(CURVE_STRKWEIGHT);
 
                             var step = DOT_LINE_STEP;
                             var toDraw = true;
@@ -486,10 +500,10 @@ define(function(require) {
                               toDraw = !toDraw;
                             }
                             if (toDraw) {
-                              line(x, y, end, y);
+                              p.line(x, y, end, y);
                             }
 
-                            pop();
+                            p.pop();
                           }
 
                           p.reDraw = function() {
@@ -506,14 +520,14 @@ define(function(require) {
                             }
 
                             p.drawBackground();
-                            console.log("here");
-                            drawCurves(curves);
-                            refreshFreeSymbols();
-                            drawSymbols(freeSymbols);
-                            drawKnot3(clickedKnot);
+
+                            p.drawCurves(curves);
+                            p.refreshFreeSymbols();
+                            p.drawSymbols(freeSymbols);
+                            p.drawKnot3(clickedKnot);
                           }
 
-                          function findInterceptX(pts) {
+                          p.findInterceptX = function(pts) {
                             if (pts.length == 0) return [];
 
                             var intercepts = [];
@@ -537,7 +551,7 @@ define(function(require) {
                             return intercepts;
                           }
 
-                          function findInterceptY(pts) {
+                          findInterceptY = function(pts) {
                             if (pts.length == 0) return [];
 
                             var intercepts = [];
@@ -561,7 +575,7 @@ define(function(require) {
                             return intercepts;
                           }
 
-                          function findMaxima(pts) {
+                          p.findMaxima = function(pts) {
                             if (pts.length == 0) return [];
 
                             var maxima = [];
@@ -603,7 +617,7 @@ define(function(require) {
                             return maxima;
                           }
 
-                          function findMinima(pts) {
+                          p.findMinima = function(pts) {
                             if (pts.length == 0) return [];
 
                             var minima = [];
@@ -647,7 +661,7 @@ define(function(require) {
 
 
                           // given a curve, translate the curve
-                          function transCurve(curve, dx, dy) {
+                          p.transCurve = function(curve, dx, dy) {
                             var pts = curve.pts;
                             for (var i = 0; i < pts.length; i++) {
                               pts[i].x += dx;
@@ -757,7 +771,7 @@ define(function(require) {
 
 
 
-                          function mousePressed() {
+                          p.mousePressed = function() {
                             var current = createPoint(mouseX, mouseY);
                             isMouseDragged = false;
                             action = undefined;
@@ -902,7 +916,7 @@ define(function(require) {
 
                           }
 
-                          function mouseDragged() {
+                          p.mouseDragged = function() {
                             isMouseDragged = true;
                             var current = createPoint(mouseX, mouseY);
 
@@ -912,15 +926,15 @@ define(function(require) {
                               transCurve(curves[movedCurveIdx], dx, dy);
                               prevMousePt = current;
 
-                              reDraw();
-                              drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
+                              p.reDraw();
+                              p.drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                             } else if (action == "MOVE_SYMBOL") {
                               movedSymbol.x = current.x;
                               movedSymbol.y = current.y;
 
-                              reDraw();
-                              drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
+                              p.reDraw();
+                              p.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
 
                               for (var i = 0; i < curves.length; i++) {
                                 var interX = curves[i]['interX'];
@@ -987,7 +1001,7 @@ define(function(require) {
                             }
                           }
 
-                          function mouseReleased() {
+                          p.mouseReleased = function() {
                             var current = createPoint(mouseX, mouseY);
 
                             // if it is just a click
@@ -1116,14 +1130,14 @@ define(function(require) {
                               curves.push(curve);
 
 
-                              drawnPts = [];
-                              reDraw();
+                              p.drawnPts = [];
+                              p.reDraw();
                             }
 
                             return;
                           }
 
-                          function mouseClicked() {
+                          p.mouseClicked = function() {
                             if (isMouseDragged) {
                               return;
                             }
@@ -1177,17 +1191,17 @@ define(function(require) {
 
                             if (clickedKnot != null) {
                               clickedKnot = null;
-                              reDraw();
+                              p.reDraw();
                             }
 
                           }
 
-                          function clone(obj) {
+                          p.clone = function(obj) {
                             var json = JSON.stringify(obj);
                             return JSON.parse(json);
                           }
 
-                          function encodeData() {
+                          p.encodeData = function () {
 
                             if (canvasWidth > 5000 || canvasWidth <= 0) {
                               alert("Invalid canvasWidth.");
