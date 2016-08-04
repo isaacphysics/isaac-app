@@ -62,7 +62,7 @@ export
         if (format == "latex") {
 
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
 
@@ -72,7 +72,7 @@ export
         } else if (format == "mhchem") {
 
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
             }
         } else if (format == "subscript") {
             expression = "";

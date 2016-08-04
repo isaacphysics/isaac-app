@@ -139,7 +139,7 @@ export
                 expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
             }
             if (this.dockingPoints["superscript"].child != null) {
-                expression += this.dockingPoints["superscript"].child.getExpression(format);
+                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
@@ -147,10 +147,10 @@ export
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
                 }
                 else if (this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
                 } else {
                     // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
                     expression += this.dockingPoints["right"].child.getExpression(format);
