@@ -134,7 +134,7 @@ export
             }
         } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
