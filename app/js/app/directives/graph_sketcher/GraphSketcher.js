@@ -22,6 +22,9 @@ define(function(require) {
                 scope.draggingNewSymbol = false;
                 scope.equationEditorElement = element;
 
+                scope.submit = function() {
+                    $("#equationModal").foundation("reveal", "close");
+                };
 
                 scope.logOnClose = function(event) {
                     // This ought to catch people who navigate away without closing the editor!
@@ -52,43 +55,43 @@ define(function(require) {
                         };
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode;
-
-
-                        scope.log = {
-                            type: "EQN_EDITOR_LOG",
-                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
-                            screenSize: {
-                                width: window.innerWidth,
-                                height: window.innerHeight
-                            },
-                            actions: [{
-                                event: "OPEN",
-                                timestamp: Date.now()
-                            }]
-                        };
+                        //
+                        //
+                        // scope.log = {
+                        //     type: "EQN_EDITOR_LOG",
+                        //     questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                        //     screenSize: {
+                        //         width: window.innerWidth,
+                        //         height: window.innerHeight
+                        //     },
+                        //     actions: [{
+                        //         event: "OPEN",
+                        //         timestamp: Date.now()
+                        //     }]
+                        // };
 
                         // Log just before the page closes if tab/browser closed:
-                        window.addEventListener("beforeunload", scope.logOnClose);
-                        // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function(e) {
-                            scope.log.finalState = [];
-                            sketch.symbols.forEach(function(e) {
-                                scope.log.finalState.push(e.subtreeObject(true, true));
-                            });
-                            scope.log.actions.push({
-                                event: "CLOSE",
-                                timestamp: Date.now()
-                            });
-                            if (scope.segueEnvironment == "DEV") {
-                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
-                            }
-                            window.removeEventListener("beforeunload", scope.logOnClose);
-                            api.logger.log(scope.log);
-                            scope.log = null;
-                        });
-
-                        scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                        scope.historyPtr = 0;
+                        // window.addEventListener("beforeunload", scope.logOnClose);
+                        // // Log the editor being closed and submit log event to server:
+                        // eqnModal.one("close", function(e) {
+                        //     scope.log.finalState = [];
+                        //     sketch.symbols.forEach(function(e) {
+                        //         scope.log.finalState.push(e.subtreeObject(true, true));
+                        //     });
+                        //     scope.log.actions.push({
+                        //         event: "CLOSE",
+                        //         timestamp: Date.now()
+                        //     });
+                        //     if (scope.segueEnvironment == "DEV") {
+                        //         console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                        //     }
+                        //     window.removeEventListener("beforeunload", scope.logOnClose);
+                        //     api.logger.log(scope.log);
+                        //     scope.log = null;
+                        // });
+                        //
+                        // scope.history = [JSON.parse(JSON.stringify(scope.state))];
+                        // scope.historyPtr = 0;
                         //element.find("canvas").remove();
 
 
@@ -1476,7 +1479,7 @@ define(function(require) {
                         var p = new p5(sketch, element.find(".graph-sketcher")[0]);
 
                         eqnModal.one("closed.fndtn.reveal", function() {
-                            sketch.p.remove();
+                            p.remove();
                             resolve(scope.state);
                         });
 
