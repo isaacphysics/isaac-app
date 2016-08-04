@@ -131,25 +131,29 @@ define(function(require) {
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
-                            console.debug(parsed);
+                            
+                            var customSymbolsParsed = false;
                             if (parsed.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsed.vars;
+                                customSymbolsParsed = true;
                             }
                             if (parsed.fns.length > 0) {
                                 scope.symbolLibrary.customFunctions = parsed.fns;
+                                customSymbolsParsed = true;
                             }
                             if (parsed.operators.length > 0) {
-                                console.debug(parsed.operators);
                                 scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(parsed.operators);
-                            } else if (!(parsed.vars.length > 0 || parsed.fns.length > 0 || parsed.operators.length > 0)) {
-                                console.debug("Unable to parse any custom variables.");
+                                customSymbolsParsed = true;
+                            }
+                            if (!customSymbolsParsed) {
+                                console.debug("No custom symbols.");
                             }
                         } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
                             var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
                             if (parsed.length > 0) {
                                 scope.symbolLibrary.customChemicalSymbols = parsed;
                             } else {
-                                console.debug("Didn't parse any chemical symbols.");
+                                console.debug("No custom symbols.");
                             }
                         }
 
@@ -369,7 +373,7 @@ define(function(require) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
                         } else if (opsMap.hasOwnProperty(s)) {
-                            console.debug("Identified " + s + " as an operator");
+                            console.debug("Parsing operator:", s);
                             var partResults = [];
 
                             partResults.push({
@@ -419,7 +423,6 @@ define(function(require) {
                                                 fontSize: '15px'
                                             }
                                         });
-                                        console.log(partResults);
                                     } else {
 
                                         partResults.push({
@@ -468,7 +471,6 @@ define(function(require) {
                         }
 
                         var root = partResults[0];
-                        console.debug("root", root);
                         for (var k = 0; k < partResults.length - 1; k++) {
                             partResults[k].children = {
                                 right: partResults[k + 1]
@@ -487,9 +489,6 @@ define(function(require) {
                                 break;
                         }
                     }
-
-
-                    console.debug("r", r);
                     return r;
                 };
 
