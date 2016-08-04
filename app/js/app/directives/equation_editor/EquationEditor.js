@@ -131,6 +131,7 @@ define(function(require) {
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
+                            console.debug(parsed);
                             if (parsed.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsed.vars;
                             }
@@ -138,7 +139,8 @@ define(function(require) {
                                 scope.symbolLibrary.customFunctions = parsed.fns;
                             }
                             if (parsed.operators.length > 0) {
-                                scope.symbolLibrary.customFunctions = scope.symbolLibrary.reducedOps.concat(parsed.operators);
+                                console.debug(parsed.operators);
+                                scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(parsed.operators);
                             } else if (!(parsed.vars.length > 0 || parsed.fns.length > 0 || parsed.operators.length > 0)) {
                                 console.debug("Unable to parse any custom variables.");
                             }
@@ -369,6 +371,7 @@ define(function(require) {
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Identified " + s + " as an operator");
                             var partResults = [];
+
                             partResults.push({
                                 type: 'Relation',
                                 menu: {
@@ -462,30 +465,31 @@ define(function(require) {
                                     partResults.push(newSym);
                                 }
                             }
-
-                            var root = partResults[0];
-
-                            for (var k = 0; k < partResults.length - 1; k++) {
-                                partResults[k].children = {
-                                    right: partResults[k + 1]
-                                }
-                                root.menu.label += " " + partResults[k + 1].menu.label;
-                            }
-                            switch (partResults[0].type) {
-                                case "Symbol":
-                                    r.vars.push(root);
-                                    break;
-                                case "Fn":
-                                    r.fns.push(root);
-                                    break;
-                                case "Relation":
-                                    r.operators.push(root);
-                                    break;
-                            }
                         }
 
+                        var root = partResults[0];
+                        console.debug("root", root);
+                        for (var k = 0; k < partResults.length - 1; k++) {
+                            partResults[k].children = {
+                                right: partResults[k + 1]
+                            }
+                            root.menu.label += " " + partResults[k + 1].menu.label;
+                        }
+                        switch (partResults[0].type) {
+                            case "Symbol":
+                                r.vars.push(root);
+                                break;
+                            case "Fn":
+                                r.fns.push(root);
+                                break;
+                            case "Relation":
+                                r.operators.push(root);
+                                break;
+                        }
                     }
 
+
+                    console.debug("r", r);
                     return r;
                 };
 
@@ -701,8 +705,8 @@ define(function(require) {
                                 fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) == 'arc') ? '15px' : '18px'
                             }
                         }
-                        if(children != null) {
-                          result[count].children = children;
+                        if (children != null) {
+                            result[count].children = children;
                         }
                         count++;
                     }
@@ -924,13 +928,13 @@ define(function(require) {
                             label: "-",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fraction",
                         menu: {
                             label: "\\frac{a}{b}",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\rightarrow',
@@ -939,7 +943,7 @@ define(function(require) {
                         properties: {
                             relation: 'rightarrow'
                         }
-                    },  {
+                    }, {
                         type: "Relation",
                         menu: {
                             label: '\\rightleftharpoons ',
@@ -948,7 +952,7 @@ define(function(require) {
                         properties: {
                             relation: 'equilibrium'
                         }
-                    },{
+                    }, {
                         type: "Brackets",
                         properties: {
                             type: "round",
@@ -957,7 +961,7 @@ define(function(require) {
                             label: "(x)",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Brackets",
                         properties: {
                             type: "square",
@@ -966,7 +970,7 @@ define(function(require) {
                             label: "[x]",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\cdot',
@@ -975,7 +979,7 @@ define(function(require) {
                         properties: {
                             relation: '.'
                         }
-                    },  ],
+                    }, ],
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -1210,11 +1214,11 @@ define(function(require) {
                 };
 
                 scope.particlesTitle = {
-                  type: "string",
-                  menu: {
-                      label: "\\alpha",
-                      texLabel: true
-                  }
+                    type: "string",
+                    menu: {
+                        label: "\\alpha",
+                        texLabel: true
+                    }
                 };
 
                 scope.elementsTitle = {
