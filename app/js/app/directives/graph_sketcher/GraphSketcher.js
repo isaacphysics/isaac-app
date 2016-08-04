@@ -16,7 +16,6 @@ define(function(require) {
                     e.preventDefault();
                 });
 
-
                 scope.title = "Sketcher";
                 scope.canvasOffset = {};
                 scope.draggingNewSymbol = false;
@@ -94,7 +93,6 @@ define(function(require) {
                         // scope.historyPtr = 0;
                         //element.find("canvas").remove();
 
-
                         scope.future = [];
 
                         var sketch = function(p) {
@@ -151,7 +149,6 @@ define(function(require) {
                                 checkPointsUndo = [],
                                 checkPointsRedo = [];
 
-
                             p.initiateFreeSymbols = function() {
                                 freeSymbols = [];
                                 freeSymbols.push(f.createSymbol('A'));
@@ -175,7 +172,6 @@ define(function(require) {
                                 p.drawButton();
 
                             }
-
 
                             p.drawBackground = function() {
 
@@ -261,7 +257,6 @@ define(function(require) {
 
                                     p.pop();
 
-
                                 }
 
                                 p.drawLabel = function() {
@@ -313,8 +308,6 @@ define(function(require) {
                                     p.pop();
                                 }
 
-
-
                                 // p5.clear, p5.background
                                 p.clear();
 
@@ -327,7 +320,6 @@ define(function(require) {
                                 p.drawVerticalAxis();
 
                                 p.drawLabel();
-
 
                             }
 
@@ -363,7 +355,6 @@ define(function(require) {
                                     p.drawCurve(curves[i], color);
                                 }
                             }
-
 
                             // given a set of points, draw the corresponding points (knots).
                             p.drawKnot = function(knot, color) {
@@ -545,7 +536,6 @@ define(function(require) {
 
                                 p.drawKnot3(clickedKnot);
 
-
                             }
 
                             p.findInterceptX = function(pts) {
@@ -680,7 +670,6 @@ define(function(require) {
                                 return minima;
                             }
 
-
                             // given a curve, translate the curve
                             p.transCurve = function(curve, dx, dy) {
                                 var pts = curve.pts;
@@ -790,11 +779,9 @@ define(function(require) {
                                 return;
                             }
 
-
-
                             p.mousePressed = function(e) {
-                                console.debug(p.mouseX);
-                                var current = f.createPoint(p.mouseX, e.clientY);
+
+                                var current = f.createPoint(e.clientX, e.clientY);
                                 isMouseDragged = false;
                                 action = undefined;
 
@@ -812,6 +799,7 @@ define(function(require) {
                                 checkPoint = {};
                                 checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                                 checkPoint.curvesJSON = JSON.stringify(curves);
+                                console.debug("curves", curves);
 
                                 for (var i = 0; i < freeSymbols.length; i++) {
                                     if (f.getDist(current, freeSymbols[i]) < MOUSE_DETECT_RADIUS) {
@@ -915,15 +903,16 @@ define(function(require) {
 
                                 }
 
-
                                 for (var i = 0; i < curves.length; i++) {
                                     var pts = curves[i].pts;
                                     for (var j = 0; j < pts.length; j++) {
+                                        console.debug("f.getDist(pts[j], current)", f.getDist(pts[j], current));
                                         if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
                                             movedCurveIdx = i;
                                             action = "MOVE_CURVE";
+                                            console.debug(action);
                                             prevMousePt = current;
-                                            drawCurve(curves[i], MOVE_LINE_COLOR);
+                                            p.drawCurve(curves[i], MOVE_LINE_COLOR);
                                             return;
                                         }
                                     }
@@ -933,7 +922,7 @@ define(function(require) {
                                     action = "DRAW_CURVE";
                                 } else {
                                     alert("Too much lines being drawn.");
-                                    checkPointsUndp.pop();
+                                    p.checkPointsUndo.pop();
                                 }
 
                             }
@@ -942,7 +931,6 @@ define(function(require) {
 
                                 isMouseDragged = true;
                                 var current = f.createPoint(e.clientX, e.clientY);
-
 
                                 if (action == "MOVE_CURVE") {
                                     var dx = current.x - prevMousePt.x;
@@ -953,14 +941,12 @@ define(function(require) {
                                     p.reDraw();
                                     p.drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
-
                                 } else if (action == "MOVE_SYMBOL") {
                                     movedSymbol.x = current.x;
                                     movedSymbol.y = current.y;
 
                                     p.reDraw();
                                     p.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
-
 
                                     for (var i = 0; i < curves.length; i++) {
                                         var interX = curves[i]['interX'];
@@ -1011,7 +997,6 @@ define(function(require) {
                                             return;
                                         }
                                     }
-
 
                                 } else if (action == "DRAW_CURVE") {
                                     p.push();
@@ -1088,7 +1073,6 @@ define(function(require) {
                                         }
                                         if (found) break;
 
-
                                         var minima = curves[i]['minima'];
                                         for (var j = 0; j < minima.length; j++) {
                                             var knot = minima[j];
@@ -1160,7 +1144,6 @@ define(function(require) {
                                     curve.minima = p.findMinima(pts);
                                     curve.color = CURVE_COLORS[curves.length];
                                     curves.push(curve);
-
 
                                     drawnPts = [];
                                     p.reDraw();
@@ -1252,7 +1235,6 @@ define(function(require) {
                                 data.canvasWidth = canvasWidth;
                                 data.canvasHeight = canvasHeight;
 
-
                                 var clonedCurves = clone(curves);
 
                                 // sort segments according to their left most points.
@@ -1272,7 +1254,6 @@ define(function(require) {
                                     else return 1;
                                 }
                                 clonedCurves.sort(compare);
-
 
                                 for (var i = 0; i < clonedCurves.length; i++) {
                                     var pts = clonedCurves[i].pts;
@@ -1353,7 +1334,6 @@ define(function(require) {
                                         pts[j].y = canvasHeight / 2 - pts[j].y * canvasHeight;
                                     }
 
-
                                     // 4 duplicated codes
 
                                     var interX = curves[i].interX;
@@ -1389,13 +1369,11 @@ define(function(require) {
 
                             }
 
-
                             p.drawButton = function() {
-                              // here we define the buttons:
-                              // - test, testCase, drawnCase, custom, undo, redo, clear, testCasePrint, drawnCasePrint
+                                // here we define the buttons:
+                                // - test, testCase, drawnCase, custom, undo, redo, clear, testCasePrint, drawnCasePrint
                                 console.debug("here");
                                 var buttonTest = $('.test');
-
 
                                 buttonTest.click(function() {
 
@@ -1414,7 +1392,6 @@ define(function(require) {
                                     }
                                     xhr.send(params);
                                 });
-
 
                                 var buttonUndo = $('.undo');
 
@@ -1457,8 +1434,6 @@ define(function(require) {
                                     p.reDraw();
                                 });
 
-
-
                                 var buttonClear = $('.clearAll');
 
                                 buttonClear.click(function() {
@@ -1471,7 +1446,6 @@ define(function(require) {
                                     p.initiateFreeSymbols();
                                     p.reDraw();
                                 });
-
 
                             }
 
@@ -1486,9 +1460,6 @@ define(function(require) {
                     });
                 };
 
-
-
-
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
                 };
@@ -1496,9 +1467,6 @@ define(function(require) {
                 scope.centre = function() {
                     sketch.centre();
                 }
-
-
-
 
             }
         };

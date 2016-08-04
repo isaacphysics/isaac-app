@@ -34,28 +34,28 @@ define([], function() {
 	            	scope.children = undefined;
 	            	scope.encoding = undefined;
 
-	            	// scope.$parent.$watch(iAttrs.value, function(newValue) {
-	            	// 	scope.value = newValue;
-	            	// 	update();
-	            	// });
+	            	scope.$parent.$watch(iAttrs.value, function(newValue) {
+	            		scope.value = newValue;
+	            		update();
+	            	});
 
-	            	// scope.$parent.$watch(iAttrs.children, function(newChildren) {
-	            	// 	scope.children = newChildren;
-	            	// 	update();
-	            	// });
+	            	scope.$parent.$watch(iAttrs.children, function(newChildren) {
+	            		scope.children = newChildren;
+	            		update();
+	            	});
 
-	            	// scope.$parent.$watch(iAttrs.encoding, function(newEncoding) {
-	            	// 	scope.encoding = newEncoding;
-	            	// 	update();
-	            	// });
+	            	scope.$parent.$watch(iAttrs.encoding, function(newEncoding) {
+	            		scope.encoding = newEncoding;
+	            		update();
+	            	});
 
-					// Replace three watchers which always get called one after another with one watcher:
-					scope.$parent.$watchGroup([iAttrs.value, iAttrs.children, iAttrs.encoding], function(newValues) {
-						scope.value = newValues[0];
-						scope.children = newValues[1];
-						scope.encoding = newValues[2];
-						update();
-					});
+					// // Replace three watchers which always get called one after another with one watcher:
+					// scope.$parent.$watchGroup([iAttrs.value, iAttrs.children, iAttrs.encoding], function(newValues) {
+					// 	scope.value = newValues[0];
+					// 	scope.children = newValues[1];
+					// 	scope.encoding = newValues[2];
+					// 	update();
+					// });
 
 	            	var update = function updateFn() {
 
