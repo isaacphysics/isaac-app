@@ -94,6 +94,10 @@ define([], function() {
 				};
 
 				scope.$on("newQuestionAnswer", function(e, index, ans) {
+					//
+					//        FIXME : This function has been broken for a while and is now misbehaving!
+					//
+					return;
 					// TODO: Make sure we can go "back" to this question. This accordion stuff only works on refresh
 
 					if (index in answersOnLoad) {
