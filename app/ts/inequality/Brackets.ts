@@ -236,7 +236,7 @@ export
             argHeight = subtreeBB.h;
         }
         var width = box.w + argWidth;
-        return new Rect(-width / 2, -argHeight / 2, width, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width / 2, -argHeight / 2, width + this.scale * 40, argHeight);  // FIXME This 40 is hard-coded
     }
 
 
