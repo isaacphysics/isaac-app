@@ -176,6 +176,7 @@ define(function(require) {
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                            mode: scope.editorMode,
                             screenSize: {
                                 width: window.innerWidth,
                                 height: window.innerHeight
