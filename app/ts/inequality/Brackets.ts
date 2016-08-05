@@ -69,7 +69,7 @@ export
                 this.latexSymbol = {};
                 this.mhchemSymbol = this.pythonSymbol = this.mathmlSymbol = this.glyph = {};
         }
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation'];
     }
 
     /**
