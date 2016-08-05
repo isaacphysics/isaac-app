@@ -82,13 +82,9 @@ export
                 expression = "";
                 var mass_number_length = 0;
                 var proton_number_length = 0;
-                if (this.dockingPoints["mass_number"].child != null) {
-                    mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
-                    expression = "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{}\\text{" + this.element + "}";
-                }
-
-                if (this.dockingPoints["proton_number"].child != null) {
+                if (this.dockingPoints["proton_number"].child != null && this.dockingPoints["mass_number"].child != null) {
                     proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
+                    mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
                     var number_of_spaces = Math.abs(proton_number_length - mass_number_length);
                     var padding = "";
                     // Temporary hack to align mass number and proton number correctly.
@@ -96,6 +92,8 @@ export
                         padding += "\\enspace";
                     }
                     expression = (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
+                } else if (this.dockingPoints["mass_number"].child != null) {
+                    expression = "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{}\\text{" + this.element + "}";
                 }
             }
 
@@ -128,15 +126,28 @@ export
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if (format == "python") {
-            expression = "";
+        // } else if (format == "python") {
+        //     expression = "";
         } else if (format == "mathml") {
+            var m_superscript = this.dockingPoints['superscript'].child != null ? "<mrow>" + this.dockingPoints['superscript'].child.getExpression(format) + "</mrow>" : "<none />";
+            var m_subscript = this.dockingPoints['subscript'].child != null ? "<mrow>" + this.dockingPoints['subscript'].child.getExpression(format) + "</mrow>" : "<none />";
+            var m_mass_number = this.dockingPoints['mass_number'].child != null ? "<mrow>" + this.dockingPoints['mass_number'].child.getExpression(format) + "</mrow>" : "<none />";
+            var m_proton_number = this.dockingPoints['proton_number'].child != null ? "<mrow>" + this.dockingPoints['proton_number'].child.getExpression(format) + "</mrow>" : "<none />";
             expression = '';
+            if (m_subscript == "<none />" && m_superscript == "<none />" && m_mass_number == "<none />" && m_proton_number == "<none />") {
+                expression += '<mi>' + this.element + '</mi>';
+            } else  {
+                expression += "<mmultiscripts>" + "<mi>" + this.element + "</mi>" + m_subscript + m_superscript;
+                expression += "<mprescripts />" + m_mass_number + m_proton_number + "</mmultiscripts>"
+            }
+            if (this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         } else if (format == "mhchem") {
             expression = this.element;
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                expression += "^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
+                expression += "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.element;
             }
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";

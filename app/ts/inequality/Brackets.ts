@@ -125,11 +125,11 @@ export
             rhs = this.mhchemSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
-                    expression += this.dockingPoints['superscript'].child.getExpression(format);
-                }
                 if (this.dockingPoints['subscript'].child) {
                     expression += this.dockingPoints['subscript'].child.getExpression(format);
+                }
+                if (this.dockingPoints['superscript'].child) {
+                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
                 if (this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
@@ -157,8 +157,12 @@ export
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] != null) {
+                    expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] == null) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
+                    expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
                 } else {
                     expression = brackets;
                 }

@@ -60,19 +60,19 @@ export
     getExpression(format: string): string {
         var expression = " " + this.operation.replace(/−/g, "-");
         if (format == "latex") {
-
             if (this.dockingPoints["right"].child != null) {
                 expression += " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mhchem") {
-
             if (this.dockingPoints["right"].child != null) {
                 expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
+            } else {
+                // This is a charge, most likely:
+                expression = this.operation.replace(/−/g, "-");
             }
         } else if (format == "subscript") {
             expression = "";
@@ -80,9 +80,9 @@ export
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
-            expression = "";
+            expression = '<mo>' + this.operation.replace(/−/g, "-") + "</mo>";
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
