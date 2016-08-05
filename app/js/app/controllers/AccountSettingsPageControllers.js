@@ -25,7 +25,9 @@ define([], function() {
 		};
 
 		// It appears ng-model can no longer cope matching a string value to a number?
-		$scope.user.defaultLevel = String($scope.user.defaultLevel);
+		if ($scope.user.defaultLevel) {
+			$scope.user.defaultLevel = String($scope.user.defaultLevel);
+		}
 
 		// the hash will be used as an anchor
 		if($location.hash){
