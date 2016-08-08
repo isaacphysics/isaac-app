@@ -103,6 +103,7 @@ define(function(require) {
 
 	// Sketcher directives
 	.directive('graphInput', require("app/directives/graph_sketcher/GraphInput"))
+	
 	.directive('graphSketcher', require("app/directives/graph_sketcher/GraphSketcher"))
 
 

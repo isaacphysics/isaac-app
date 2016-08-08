@@ -3,7 +3,11 @@ define([], function() {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         return {
-            scope: true,
+            scope: {
+                state: "=",
+                questionDoc: "=",
+                
+            },
             restrict: "A",
             templateUrl: "/partials/graph_sketcher/graph_input.html",
             link: function(scope, element, attrs) {

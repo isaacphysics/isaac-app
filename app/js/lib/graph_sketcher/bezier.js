@@ -40,7 +40,6 @@ define(function(require) {
                 bezier.push(f.createPoint(sx, sy));
             }
             bezier.push(pts[pts.length - 1]);
-            console.debug(bezier);
             return bezier;
         }
     }

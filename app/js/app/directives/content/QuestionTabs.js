@@ -64,6 +64,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				var canSubmit = true;
 
 				scope.checkAnswer = function() {
+
 					if (scope.question.selectedChoice != null && canSubmit) {
 						canSubmit = false;
 
@@ -78,7 +79,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
 						s.$promise.then(function foo(r) {
 							scope.question.validationResponse = r;
-
 							// Check the gameboard progress
 							if (scope.gameBoard) {
 								// Re-load the game board to check for updated progress
@@ -103,6 +103,7 @@ define(["app/honest/responsive_video"], function(rv) {
 									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
 									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
 									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
+									   	console.debug("correct");
 										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
 										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
 										scope.modals["congrats"].show();

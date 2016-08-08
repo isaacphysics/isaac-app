@@ -1,7 +1,7 @@
 define(["app/honest/responsive_video"], function(rv) {
 
     return ["api", function(api) {
-
+        //var g = require('directives/graph_sketcher/MyGraphSketcher.js');
         return {
             scope: true,
 
@@ -12,13 +12,13 @@ define(["app/honest/responsive_video"], function(rv) {
             controller: ["$scope", function(scope) {
                 var ctrl = this;
 
-                scope.editorMode = 'chemistry';
                 ctrl.selectedFormula = {
-                    symbols: {}
+                   
                 };
 
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
+
                     console.debug("Loading the previous answer.");
                     try {
                         ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
@@ -42,7 +42,7 @@ define(["app/honest/responsive_video"], function(rv) {
                     // We have no answer and no seed
                     console.debug("No previous answer or seed.");
                     ctrl.selectedFormula = {
-                        symbols: {}
+                        
                     };
                 }
 
@@ -58,14 +58,15 @@ define(["app/honest/responsive_video"], function(rv) {
 
                     if (f) {
                         scope.question.selectedChoice = {
-                            type: "graph",
-                            value: JSON.stringify(f),
-                            mhchemExpression: f.result ? f.result.mhchem : ""
+                            type: "graphChoice",
+                            graphData: JSON.stringify(f)
+                           
                         }
 
                     } else {
                         scope.question.selectedChoice = null;
                     }
+                    console.debug(scope.question.selectedChoice);
                 }, true);
 
             }],
