@@ -32,13 +32,17 @@ define(["app/honest/responsive_video"], function(rv) {
 				ctrl.displayUnits = null; // Need this to display "None" when units are ""
 
 				ctrl.showUnitsDropdown = function() {
+					if(ctrl.unitsDropdownStyle) {
+						ctrl.unitsDropdownStyle = null;
+					}
+					else {
+						var btnPos = element.find("button").offset();
+						var parent = element.find("button").parent().offset();
 
-					var btnPos = element.find("button").offset();
-					var parent = element.find("button").parent().offset();
-
-					ctrl.unitsDropdownStyle = {
-						top: btnPos.top + btnPos.height - parent.top,
-						left: btnPos.left - parent.left,
+						ctrl.unitsDropdownStyle = {
+							top: btnPos.top + btnPos.height - parent.top,
+							left: btnPos.left - parent.left,
+						}
 					}
 				}
 
@@ -50,8 +54,9 @@ define(["app/honest/responsive_video"], function(rv) {
 					for (var i in scope.doc.knownUnits) {
 						var unitsFromQuestion = scope.doc.knownUnits[i];
 
-						if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1) 
+						if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1) {
 							ctrl.unitOptions.push(unitsFromQuestion);
+						}
 					}
 
 					var unitsPool = JSON.parse(JSON.stringify(allUnits));
