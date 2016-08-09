@@ -23,10 +23,6 @@ define(function(require) {
 
                 scope.submit = function() {
                     $("#equationModal").foundation("reveal", "close");
-
-                    // needed??
-                    scope.testResult = scope.p.encodeData();
-                    
                 };
 
                 scope.logOnClose = function(event) {
@@ -1023,12 +1019,7 @@ define(function(require) {
                                 return;
                             }
 
-                            function mouseClicked(e) {
-                                
-                                // this is buggy, wrong place to put this code.
-                                scope.newEditorState(encodeData());
-
-
+                            function mouseClicked(e) {                    
                                 if (isMouseDragged) {
                                     return;
                                 }
@@ -1394,13 +1385,11 @@ define(function(require) {
                         //element.find("canvas").remove();
 
                         scope.future = [];
-
-                        
-                        var p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
-                        scope.p = p;
-
+                                        
+                        scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         eqnModal.one("closed.fndtn.reveal", function() {
-                            p.remove();
+                            scope.newEditorState(scope.p.encodeData());
+                            scope.p.remove();
                             resolve(scope.state);
                         });
 

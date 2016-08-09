@@ -1,7 +1,7 @@
 define(["app/honest/responsive_video"], function(rv) {
 
     return ["api", function(api) {
-        //var g = require('directives/graph_sketcher/MyGraphSketcher.js');
+        
         return {
             scope: true,
 
@@ -12,41 +12,21 @@ define(["app/honest/responsive_video"], function(rv) {
             controller: ["$scope", function(scope) {
                 var ctrl = this;
 
-                ctrl.selectedFormula = {
-                   
-                };
+                ctrl.selectedFormula = {};
 
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
-
                     console.debug("Loading the previous answer.");
                     try {
-                        ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
+                        ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.graphData);
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
-
-                } else if (scope.doc.formulaSeed) {
-                    // We have seed to load and no previous answer
-                    console.debug("Loading the formula seed.", scope.doc.formulaSeed);
-                    try {
-                        ctrl.selectedFormula = {
-                            symbols: JSON.parse(scope.doc.formulaSeed)
-                        };
-                    } catch (e) {
-                        console.error("Error loading seed: ", e.message);
-                    }
-
-
                 } else {
                     // We have no answer and no seed
-                    console.debug("No previous answer or seed.");
-                    ctrl.selectedFormula = {
-                        
-                    };
+                    console.debug("No previous answer.");
+                    ctrl.selectedFormula = {};
                 }
-
-
 
                 ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
                 ctrl.plainDoc.type = "content";
@@ -60,13 +40,11 @@ define(["app/honest/responsive_video"], function(rv) {
                         scope.question.selectedChoice = {
                             type: "graphChoice",
                             graphData: JSON.stringify(f)
-                           
                         }
-
                     } else {
                         scope.question.selectedChoice = null;
                     }
-                    console.debug(scope.question.selectedChoice);
+                    
                 }, true);
 
             }],
