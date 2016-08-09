@@ -29,6 +29,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				ctrl.selectedValue = null;
 				ctrl.selectedUnits = null;
+				ctrl.displayUnits = null; // Need this to display "None" when units are ""
 
 				ctrl.showUnitsDropdown = function() {
 
@@ -83,6 +84,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
 					scope.question.selectedChoice.units = u;
+					ctrl.displayUnits = (u == '' ? "None" : "$\\units{" + u + "}$");
 
 					if (u) {
 						$rootScope.requestMathjaxRender();
