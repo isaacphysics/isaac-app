@@ -98,6 +98,12 @@ define(function(require) {
 
                             var junkPt = f.createPoint(canvasWidth - 50, 50);
 
+                            function getMousePt(e) {
+                                var x = e.clientX - 5;
+                                var y = e.clientY - 5;
+                                return (f.createPoint(x, y));
+                            }
+
                             function initiateFreeSymbols() {
                                 freeSymbols = [];
                                 freeSymbols.push(f.createSymbol('A'));
@@ -118,10 +124,11 @@ define(function(require) {
 
                             // run in the beginning by p5 library
                             function setup() {
-                                // p5.createCanvas
+
                                 p.createCanvas(canvasWidth, canvasHeight);
                                 p.noLoop();
                                 p.cursor(p.CROSS);
+
 
                                 initiateFreeSymbols();
                                 reDraw();
@@ -649,7 +656,7 @@ define(function(require) {
 
 
                             function mousePressed(e) {
-                                var current = f.createPoint(e.clientX, e.clientY);
+                                var current = getMousePt(e);
 
                                 isMouseDragged = false;
                                 action = undefined;
@@ -790,13 +797,13 @@ define(function(require) {
                             }
 
                             function mouseDragged(e) {
-                               
-
-
                                 isMouseDragged = true;
-                                var current = f.createPoint(e.clientX, e.clientY);
+                                var current = getMousePt(e);
 
                                 if (action == "MOVE_CURVE") {
+                                    scope.trashActive = true;
+                                    scope.$apply();
+
                                     var dx = current.x - prevMousePt.x;
                                     var dy = current.y - prevMousePt.y;
                                     transCurve(curves[movedCurveIdx], dx, dy);
@@ -869,10 +876,7 @@ define(function(require) {
                             }
 
                             function mouseReleased(e) {
-                                
-
-                                var current = f.createPoint(e.clientX, e.clientY);
-
+                                var current = getMousePt(e);
 
                                 // if it is just a click
                                 if (!isMouseDragged) {
@@ -880,6 +884,7 @@ define(function(require) {
                                 }
 
                                 if (action == "MOVE_CURVE") {
+
                                     checkPointsUndo.push(checkPoint);
                                     checkPointsRedo = [];
 
@@ -978,8 +983,7 @@ define(function(require) {
                                             
                                 } else if (action == "DRAW_CURVE") {
                                     // neglect if curve drawn is too short
-                                    if (s.sample(drawnPts).length < 3) {
-                                        
+                                    if (s.sample(drawnPts).length < 3) { 
                                         return;
                                     }
 
@@ -1035,7 +1039,7 @@ define(function(require) {
                                     reDraw();
                                 }
 
-                                var current = f.createPoint(e.clientX, e.clientY);
+                                var current = getMousePt(e);
 
                                 if (current.x < 0 || current.x > canvasWidth || current.y < 0 || current.y > canvasHeight) {
                                     return;
@@ -1096,7 +1100,6 @@ define(function(require) {
                                 }
 
                                 var data = {};
-                                data.descriptor = "";
                                 data.canvasWidth = canvasWidth;
                                 data.canvasHeight = canvasHeight;
 
@@ -1212,7 +1215,7 @@ define(function(require) {
                                 }
 
                                 
-                                var curves = data.curves;
+                                curves = data.curves;
                                 for (var i = 0; i < curves.length; i++) {
 
                                     var pts = curves[i].pts;
@@ -1233,10 +1236,12 @@ define(function(require) {
                                     denormalise2(minima);
                                 }
 
-                                var freeSymbols = data.freeSymbols;
+                                freeSymbols = data.freeSymbols;
                                 for (var j = 0; j < freeSymbols.length; j++) {
                                     denormalise(freeSymbols[j]);
                                 }
+
+                                reDraw();
                             }
 
                             function drawButton(){
@@ -1326,6 +1331,7 @@ define(function(require) {
                             p.mouseReleased = mouseReleased;
                             p.mouseClicked = mouseClicked;
                             p.encodeData = encodeData;
+                            p.decodeData = decodeData;
                         }
                 $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode) {
 
@@ -1340,11 +1346,8 @@ define(function(require) {
                         });
 
                         eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || {
-                            
-                        };
+                        scope.state = initialState;
                         scope.questionDoc = questionDoc;
-                        
                         //
                         //
                         // scope.log = {
@@ -1385,11 +1388,27 @@ define(function(require) {
                         //element.find("canvas").remove();
 
                         scope.future = [];
-                                        
+                        
+                        // generate p5 instance                
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
+
+                        // reload previous answer if there is one
+                        console.debug("scope.state: ", scope.state);
+                        if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
+                            scope.p.decodeData(scope.state);
+                        }
+
+
+
+
                         eqnModal.one("closed.fndtn.reveal", function() {
+                            // update local state
                             scope.newEditorState(scope.p.encodeData());
+
+                            // remove p5 object
                             scope.p.remove();
+
+                            // update ctrl.selectedFormula (in scope of GraphSketcherQuestion.js)
                             resolve(scope.state);
                         });
 
@@ -1397,7 +1416,6 @@ define(function(require) {
                 };
 
                 
-
                 scope.centre = function() {
                     sketch.centre();
                 }

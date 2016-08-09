@@ -44,7 +44,7 @@ define(["app/honest/responsive_video"], function(rv) {
                     } else {
                         scope.question.selectedChoice = null;
                     }
-                    
+
                 }, true);
 
             }],
