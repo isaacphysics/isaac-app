@@ -16,7 +16,7 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
-		
+
 		$scope.activeTab = 0;
 
 		$scope.emailPreferences = {};
@@ -25,7 +25,9 @@ define([], function() {
 		};
 
 		// It appears ng-model can no longer cope matching a string value to a number?
-		$scope.user.defaultLevel = String($scope.user.defaultLevel);
+		if ($scope.user.defaultLevel) {
+			$scope.user.defaultLevel = String($scope.user.defaultLevel);
+		}
 
 		// the hash will be used as an anchor
 		if($location.hash){
@@ -162,7 +164,7 @@ define([], function() {
 					// If there is a match update to true
 					if(key === account) linked[key] = true;
 				});
-				
+
             });
 			return linked;
 		}
@@ -194,7 +196,7 @@ define([], function() {
         	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
         		if(promptResponse){
-        			
+
         		}
         		else{
         			$scope.user.email = emailBeforeEditing;
@@ -277,13 +279,13 @@ define([], function() {
 		// authorisation (token) stuff
 		$scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
-        
+
         $scope.useToken = function() {
         	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
-        	
+
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
 				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
 
@@ -295,7 +297,7 @@ define([], function() {
 		        	}).catch(function(e){
 		        		// this is likely to be a throttling error message.
 		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-		        	})  						
+		        	})
 				}
         	}).catch(function(e){
         		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
@@ -312,7 +314,7 @@ define([], function() {
 		}
 
         $scope.revokeAuthorisation = function(userToRevoke){
-        	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+        	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');
 
         	if(revoke) {
 	        	api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
@@ -320,7 +322,7 @@ define([], function() {
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
 	        	}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-	        	})        		
+	        	})
         	} else {
         		return;
         	}

@@ -28,7 +28,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				var ctrl = this;
 
 				ctrl.selectedValue = null;
-				ctrl.selectedUnits = null;
+				ctrl.selectedUnits = "";
 
 				ctrl.showUnitsDropdown = function() {
 
@@ -82,7 +82,7 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 
 					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
-					scope.question.selectedChoice.units = u;
+					scope.question.selectedChoice.units = (u == '') ? "None" : u;
 
 					if (u) {
 						$rootScope.requestMathjaxRender();
