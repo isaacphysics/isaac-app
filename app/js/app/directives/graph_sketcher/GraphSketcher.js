@@ -61,7 +61,7 @@ define(function(require) {
                         CURVE_STRKWEIGHT = 2,
                         PADDING = 0.025 * canvasWidth,
                         DOT_LINE_STEP = 5,
-                        MOUSE_DETECT_RADIUS = 10;
+                        MOUSE_DETECT_RADIUS = 5;
                         
                     var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
                         KNOT_COLOR = [77,77,77],
@@ -97,14 +97,6 @@ define(function(require) {
                         checkPointsUndo = [],
                         checkPointsRedo = [];
 
-                    var junkPt = f.createPoint(canvasWidth - 50, 50);
-
-                    function getMousePt(e) {
-                        var x = e.clientX - 5;
-                        var y = e.clientY - 5;
-                        return (f.createPoint(x, y));
-                    }
-
                     function initiateFreeSymbols() {
                         freeSymbols = [];
                         freeSymbols.push(f.createSymbol('A'));
@@ -128,7 +120,7 @@ define(function(require) {
 
                         p.createCanvas(canvasWidth, canvasHeight);
                         p.noLoop();
-                        p.cursor(p.CROSS);
+                        p.cursor(p.ARROW);
 
 
                         initiateFreeSymbols();
@@ -147,7 +139,6 @@ define(function(require) {
                     function drawBackground() {
 
                         function drawHorizontalAxis() {
-                            // p5.p.strokeWeight, p5.p.strokeJoin, p5.ROUND, p5.p.stroke, p5.noFill, p5.p.beginShape, p5.p.vertex, p5.p.endShape, p5.push, p5.pop
                             p.push();
                             
                             p.strokeWeight(CURVE_STRKWEIGHT);
@@ -378,6 +369,20 @@ define(function(require) {
                         }
                     }
 
+                    function drawKnot4(knot, color) {
+                        if (color == undefined) {
+                            color = KNOT_COLOR;
+                        }
+
+                        p.push();
+                        p.noFill();
+                        p.stroke(color);
+                        p.strokeWeight(2);
+                        p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
+                        p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
+                        p.pop();
+                    }
+
                     // draw symbols, e.g. "A", "B".
                     function drawSymbol(symbol, color) {
                         if (color == undefined) {
@@ -576,6 +581,55 @@ define(function(require) {
                         return turnPts;
                     }
 
+                    function getMousePt(e) {
+                        var x = e.clientX - 5;
+                        var y = e.clientY - 5;
+                        return (f.createPoint(x, y));
+                    }
+
+                    function isOverSymbol(pt, symbol) {
+                        if (symbol == undefined) {
+                            return false;
+                        }
+                        var left = symbol.x - 5;
+                        var right = symbol.x + 5;
+                        var top = symbol.y - 5;
+                        var bottom = symbol.y + 20 + 5;
+                        return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
+                    }
+
+                    function isOverButton(pt, button) {
+                        if (button.position() == undefined) {
+                            return false;
+                        }
+
+                        var left = button.position().left;
+                        var top = button.position().top;
+                        var width = button.width();
+                        var height = button.height();
+                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
+                    }
+
+
+                    function isActive(pt) {
+
+                        if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
+                            return false; 
+                        }
+
+                        var buttons = [];
+                        buttons.push(element.find(".redo"));
+                        buttons.push(element.find(".undo"));
+                        buttons.push(element.find(".trash-button"));
+                        buttons.push(element.find(".submit"));
+                        for (var i = 0; i < buttons.length; i++) {
+                            if (isOverButton(pt, buttons[i])) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
 
                     // given a curve, translate the curve
                     function transCurve(curve, dx, dy) {
@@ -654,50 +708,141 @@ define(function(require) {
                         return;
                     }
 
-                    // function isTrashActive(pt) {
-                    //     var tOff = element.find(".trash-button").position();
-                    //     var tWidth = element.find(".trash-button").width();
-                    //     var tHeight = element.find(".trash-button").height();
-                    //     scope.trashActive = (current.x > tOff.left && current.x < tOff.left + tWidth && current.y > tOff.top && current.y < tOff.top + tHeight);
-                    // }
 
-                    function isOverButton(pt, button) {
-                        if (button.position() == undefined) {
-                            return false;
+                    function mouseMoved(e) {
+                        var current = getMousePt(e);
+
+                        // this funciton does not react if the mouse is over buttons or outside the canvas.
+                        if (!isActive(current)) {
+                            return;
                         }
 
-                        var left = button.position().left;
-                        var top = button.position().top;
-                        var width = button.width();
-                        var height = button.height();
-                        if (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height) {
-                            return true;
+                        var found = false;
+
+                        if (!found) {
+                            function loop(knots) {
+                                if (found) {
+                                    return;
+                                }
+
+                                for (var i = 0; i < knots.length; i++) {
+                                    if (f.getDist(current, knots[i]) < MOUSE_DETECT_RADIUS) {
+                                        p.cursor(p.HAND);
+                                        drawKnot4(knots[i]);
+                                        found = true;
+                                        return;
+                                    }
+                                }
+                            }
+                            
+                            for (var i = 0; i < curves.length; i++) {
+                                var maxima = curves[i]['maxima'];
+                                loop(maxima);
+
+                                var minima = curves[i]['minima'];
+                                loop(minima);
+
+                                if (found) {
+                                    break;
+                                }
+                            }
                         }
-                    }
+                        
 
 
-                    function isActive(pt) {
+                        if (!found) {
+                            for (var i = 0; i < freeSymbols.length; i++) {
+                                if (isOverSymbol(current, freeSymbols[i])) {
+                                    p.cursor(p.MOVE);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }                    
+                        
+                        if (!found) {
+                            function loop1(knots) {
+                                if (found) {
+                                    return;
+                                }
 
-                        if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
-                            return false; 
-                        }
+                                for (var j = 0; j < knots.length; j++) {
+                                    var knot = knots[j];
+                                    if (knot.symbol != undefined && isOverSymbol(current, knot.symbol)) {
+                                        p.cursor(p.MOVE);
+                                        found = true;
+                                        return;
+                                    }
+                                }   
+                            }
 
-                        var buttons = [];
-                        buttons.push(element.find(".redo"));
-                        buttons.push(element.find(".undo"));
-                        buttons.push(element.find(".trash-button"));
-                        buttons.push(element.find(".submit"));
-                        for (var i = 0; i < buttons.length; i++) {
-                            if (isOverButton(pt, buttons[i])) {
-                                return false;
+                            function loop2(knots) {
+                                if (found) {
+                                    return;
+                                }
+                                
+                                loop1(knots);
+                                
+                                for (var j = 0; j < knots.length; j++) {
+                                    var knot = knots[j];
+                                    if (knot.xSymbol != undefined && isOverSymbol(current, knot.xSymbol)) {
+                                        p.cursor(p.MOVE);
+                                        found = true;
+                                        return;
+                                    }
+                                    if (knot.ySymbol != undefined && isOverSymbol(current, knot.ySymbol)) {
+                                        p.cursor(p.MOVE);
+                                        found = true;
+                                        return;
+                                    }
+
+                                }
+                            }
+
+
+                            for (var i = 0; i < curves.length; i++) {
+                                var interX = curves[i]['interX'];
+                                loop1(interX);
+
+                                var interY = curves[i]['interY'];
+                                loop1(interY);
+
+                                var maxima = curves[i]['maxima'];
+                                loop2(maxima);
+
+                                var minima = curves[i]['minima'];
+                                loop2(minima);
+
+                                if (found) {
+                                    break;
+                                }
                             }
                         }
 
-                        return true;
+                        if (!found) {
+                            for (var i = 0; i < curves.length; i++) {
+                                var pts = curves[i].pts;
+                                for (var j = 0; j < pts.length; j++) {
+                                    if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
+                                        found = true;
+                                        p.cursor(p.MOVE);
+                                        break;
+                                    }
+                                }
+
+                                if (found) {
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!found) {
+                            p.cursor(p.CROSS);
+                            reDraw();
+                        }
                     }
 
-
-
+                
                     function mousePressed(e) {
 
                         isMouseDragged = false;
@@ -730,7 +875,7 @@ define(function(require) {
 
                         // check if it is to move a symbol
                         for (var i = 0; i < freeSymbols.length; i++) {
-                            if (f.getDist(current, freeSymbols[i]) < MOUSE_DETECT_RADIUS) {
+                            if (isOverSymbol(current, freeSymbols[i])) {
                                 movedSymbol = freeSymbols[i];
                                 freeSymbols.splice(i, 1);
                                 action = "MOVE_SYMBOL";
@@ -745,12 +890,13 @@ define(function(require) {
                             }
                             for (var j = 0; j < knots.length; j++) {
                                 var knot = knots[j];
-                                if (knot.symbol != undefined && f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                                if (knot.symbol != undefined && isOverSymbol(current, knot.symbol)) {
                                     movedSymbol = knot.symbol;
                                     knot.symbol = undefined;
                                     bindedKnot = knot;
                                     symbolType = 'symbol';
                                     found = true;
+                                    break;
                                 }
                             }   
                         }
@@ -762,19 +908,22 @@ define(function(require) {
                             detach1(knots);
                             for (var j = 0; j < knots.length; j++) {
                                 var knot = knots[j];
-                                if (knot.xSymbol != undefined && f.getDist(current, knot.xSymbol) < MOUSE_DETECT_RADIUS) {
+                                if (knot.xSymbol != undefined && isOverSymbol(current, knot.xSymbol)) {
                                     movedSymbol = knot.xSymbol;
                                     knot.xSymbol = undefined;
                                     bindedKnot = knot;
                                     symbolType = 'xSymbol';
                                     found = true;
                                 }
-                                if (knot.ySymbol != undefined && f.getDist(current, knot.ySymbol) < MOUSE_DETECT_RADIUS) {
+                                if (knot.ySymbol != undefined && isOverSymbol(current, knot.ySymbol)) {
                                     movedSymbol = knot.ySymbol;
                                     knot.ySymbol = undefined;
                                     bindedKnot = knot;
                                     symbolType = 'ySymbol';
                                     found = true;
+                                }
+                                if (found) {
+                                    break;
                                 }
                             }
                         }
@@ -840,11 +989,16 @@ define(function(require) {
                         
                     }
 
+                    
+
                     function mouseDragged(e) {
                         isMouseDragged = true;
                         var current = getMousePt(e);
 
                         if (action == "MOVE_CURVE") {
+                            p.cursor(p.MOVE);
+
+
                             scope.trashActive = isOverButton(current, element.find(".trash-button"));
                             scope.$apply();
 
@@ -857,6 +1011,8 @@ define(function(require) {
                             drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "MOVE_SYMBOL") {
+                            p.cursor(p.MOVE);
+
                             movedSymbol.x = current.x;
                             movedSymbol.y = current.y;
 
@@ -901,6 +1057,8 @@ define(function(require) {
                             
 
                         } else if (action == "DRAW_CURVE") {
+                            p.cursor(p.CROSS);
+
                             p.push();
                             p.stroke(CURVE_COLORS[drawnColorIdx]);
                             p.strokeWeight(CURVE_STRKWEIGHT);
@@ -1066,7 +1224,8 @@ define(function(require) {
                         return;
                     }
 
-                    function mouseClicked(e) {                    
+                    function mouseClicked(e) {
+                        console.log(e.clientX, e.clientY);
                         if (isMouseDragged) {
                             return;
                         }
@@ -1401,6 +1560,7 @@ define(function(require) {
                     p.mouseDragged = mouseDragged;
                     p.mouseReleased = mouseReleased;
                     p.mouseClicked = mouseClicked;
+                    p.mouseMoved = mouseMoved;
                     p.encodeData = encodeData;
                     p.decodeData = decodeData;
                     p.undo = undo;
@@ -1476,7 +1636,6 @@ define(function(require) {
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             scope.p.decodeData(scope.state);
                         }
-
 
 
 
