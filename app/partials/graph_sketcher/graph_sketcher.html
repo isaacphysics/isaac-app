@@ -9,11 +9,10 @@
     <button class="testCasePrint">Print Test Case</button>
     <button class="drawnCasePrint">Print Drawn Case</button> -->
   </div>
-  <div class="hex-button undo" ng-click="" ></div>
-  <div class="hex-button redo" ng-click=""></div>
-  <div class="hex-button clearAll" ng-click=""></div>
-
+  <div class="hex-button undo graph" ng-click="p.undo()" ng-if="p.isUndoable()"></div>
+  <div class="hex-button redo graph" ng-click="p.redo()" ng-if="p.isRedoable()"></div>
+<!--   <div class="hex-button clearAll" ng-click=""></div> -->
   <div class="hex-button submit" ng-click="submit()"></div>
-  <div class="trash-button graph" ng-mousedown="" ng-class="{active: trashActive}"></div>
+  <div class="trash-button graph" ng-click="p.clean()" ng-mousedown="" ng-class="{active: trashActive}"></div>
 
 </div>

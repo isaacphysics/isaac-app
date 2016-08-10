@@ -208,8 +208,6 @@ define(function(require) {
 
                         scope.future = [];
 
-                        console.debug("document.getElementById('equationEditor') ", document.getElementById("equationEditor"));
-
                         var p = new p5(function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
                             $rootScope.sketch = sketch;

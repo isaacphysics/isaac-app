@@ -342,6 +342,10 @@ $menu-handle-width: 160px;
                 background: url("/assets/equation_editor/hex-button-undo-hover.png") no-repeat;
                 background-size: contain;
             }
+
+            &.graph {
+                left: 18px;
+            }
         }
         &.redo {
             left: 187px;
@@ -351,6 +355,10 @@ $menu-handle-width: 160px;
                 background: url("/assets/equation_editor/hex-button-redo-hover.png") no-repeat;
                 background-size: contain;
             }
+
+            &.graph {
+                left: 102px;
+            }
         }
         &.submit {
             width: 90px;
@@ -359,7 +367,6 @@ $menu-handle-width: 160px;
             background: url("/assets/equation_editor/hex-button-submit.png") no-repeat;
         }
     }
-    
     .trash-button {
         width: 70px;
         height: 160px;
@@ -374,12 +381,14 @@ $menu-handle-width: 160px;
         &:hover {
             opacity: 1;
         }
+
+        &.graph {
+            z-index: 1000;
+            top: calc(20% - 80px);
+        }
     }
 
-    .graph {
-        z-index: 1000;
-        top: calc(20% - 80px);
-    }
+    
 
     .result-preview {
         position: absolute;
