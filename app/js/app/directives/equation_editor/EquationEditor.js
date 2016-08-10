@@ -207,11 +207,14 @@ define(function(require) {
                         // TODO: Redisplay old equations in the centre
 
                         scope.future = [];
+
+                        console.debug("document.getElementById('equationEditor') ", document.getElementById("equationEditor"));
+
                         var p = new p5(function(p) {
                             sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
                             $rootScope.sketch = sketch;
                             return sketch;
-                        }, element.find(".equation-editor")[0]);
+                        }, document.getElementById("equationEditor"));
 
                         eqnModal.one("closed.fndtn.reveal", function() {
                             sketch.p.remove();

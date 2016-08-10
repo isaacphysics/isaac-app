@@ -22,7 +22,7 @@ define(function(require) {
                 scope.equationEditorElement = element;
 
                 scope.submit = function() {
-                    $("#equationModal").foundation("reveal", "close");
+                    $("#graphModal").foundation("reveal", "close");
                 };
 
                 scope.logOnClose = function(event) {
@@ -801,21 +801,20 @@ define(function(require) {
                                 var current = getMousePt(e);
 
                                 if (action == "MOVE_CURVE") {
-                                    scope.trashActive = true;
+
+                                    var tOff = element.find(".trash-button").position();
+                                    var tWidth = element.find(".trash-button").width();
+                                    var tHeight = element.find(".trash-button").height();
+                                    scope.trashActive = (current.x > tOff.left && current.x < tOff.left + tWidth && current.y > tOff.top && current.y < tOff.top + tHeight);
                                     scope.$apply();
 
                                     var dx = current.x - prevMousePt.x;
                                     var dy = current.y - prevMousePt.y;
-                                    transCurve(curves[movedCurveIdx], dx, dy);
                                     prevMousePt = current;
-
+                                    transCurve(curves[movedCurveIdx], dx, dy);
+                                    
                                     reDraw();
                                     drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
-                                    drawJunkArea(KNOT_COLOR);
-
-                                    if (f.getDist(current, junkPt) < 15) {
-                                        drawJunkArea(KNOT_DETECT_COLOR);
-                                    }
 
                                 } else if (action == "MOVE_SYMBOL") {
                                     movedSymbol.x = current.x;
@@ -889,7 +888,13 @@ define(function(require) {
                                     checkPointsRedo = [];
 
                                     // for deletion
-                                    if (f.getDist(current, junkPt) < 15) {
+
+                                    var tOff = element.find(".trash-button").position();
+                                    var tWidth = element.find(".trash-button").width();
+                                    var tHeight = element.find(".trash-button").height();
+                                    scope.trashActive = (current.x > tOff.left && current.x < tOff.left + tWidth && current.y > tOff.top && current.y < tOff.top + tHeight);
+
+                                    if (scope.trashActive) {
                                         var curve = (curves.splice(movedCurveIdx, 1))[0];
 
                                         function freeAllSymbols(knots) {
@@ -920,6 +925,8 @@ define(function(require) {
                                         freeAllSymbols(minima); 
                                     }
                                     
+                                    scope.trashActive = false;
+                                    scope.$apply();
                                     reDraw();
                                 } else if (action == "MOVE_SYMBOL") {   
                                     checkPointsUndo.push(checkPoint);
@@ -1340,7 +1347,7 @@ define(function(require) {
                         $(".result-preview>span").empty();
                         $(".result-preview").width(0);
 
-                        var eqnModal = $('#equationModal');
+                        var eqnModal = $('#graphModal');
                         eqnModal.one("opened.fndtn.reveal", function() {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
                         });
@@ -1390,7 +1397,10 @@ define(function(require) {
                         scope.future = [];
                         
                         // generate p5 instance                
-                        scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
+                        // scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
+                        console.debug("document.getElementById('graphSketcher') ", document.getElementById("graphSketcher"));
+                        scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
+
 
                         // reload previous answer if there is one
                         console.debug("scope.state: ", scope.state);
