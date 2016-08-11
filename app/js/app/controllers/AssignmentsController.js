@@ -102,7 +102,7 @@ define([], function() {
 			$timeout(function(){
 				Opentip.findElements();
 			}, 0);
-			
+
 		}, true);
 
 		// Perform initial load
@@ -114,7 +114,7 @@ define([], function() {
 			mergeInProgress = true;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
-				// Merge new boards into results 
+				// Merge new boards into results
 				updateGroupAssignmentMap(newBoards.results)
 
 				$.merge($scope.boards.results, newBoards.results);
@@ -133,7 +133,7 @@ define([], function() {
 						return;
 					}
 				}
-				
+
 				var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
 				// Warn user before deleting
 				var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
@@ -201,7 +201,7 @@ define([], function() {
 		}
 
 		$scope.unassignBoard = function(group, board) {
-			var unassignGroup = $window.confirm('Are you sure you want to unassign this board from this group?');   
+			var unassignGroup = $window.confirm('Are you sure you want to unassign this board from this group?');
 
 			if (unassignGroup){
 				api.assignments.unassignBoard({gameId: board.id, groupId: group._id}).$promise.then(function(){
@@ -212,7 +212,7 @@ define([], function() {
 					});
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", e.data.errorMessage || ("Error " + e.status));
-				});				
+				});
 			}
 		}
 	}];
@@ -220,13 +220,13 @@ define([], function() {
 	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
 
 		$scope.setLoading(true);
-		
+
 		$rootScope.pageTitle = "My Assignments";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
-		
+
 		$scope.myAssignments = {};
-		
+
 		$scope.myAssignments.completed = [];
 		$scope.myAssignments.inProgress = [];
 

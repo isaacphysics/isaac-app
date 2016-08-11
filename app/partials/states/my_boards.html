@@ -8,7 +8,7 @@
          <div ng-switch-default>
             <h2>My Boards</h2>
             <p class="hide-for-small-only"><strong>
-               You have completed 
+               You have completed
                <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>,
                with
                <span class="ru_green">{{boards.totalInProgress}}</span>
@@ -34,21 +34,27 @@
          <label class="hide-for-small-only">Sort by</label>
          <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
       </li>
+      <li>
+         <label class="hide-for-small-only" ng-click="toggleTrashMode()">Toggle Mode</label>
+      </li>
+      <li>
+         <label class="hide-for-small-only" ng-click="deleteMultipleGameBoards()">Delete</label>
+      </li>
    </ul>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
       <!-- Loop all boards and add a class if complete -->
    	<li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
-   		<div class="panel">
+   		<div class="panel"  ng-class="board.id">
             <span class="board-delete" ng-click="deleteBoard(board)">X</span>
-   			<a ui-sref="board({'id':board.id})">
+   			<a ng-click="boardClick({'id':board.id})">
                <div class="row">
                   <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
       					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
-                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
       					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
-                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
       				</div>
       				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">

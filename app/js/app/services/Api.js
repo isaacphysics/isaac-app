@@ -49,7 +49,7 @@ define([], function() {
 			wildcards: {
 				method: "GET",
 				url: urlPrefix + "/gameboards/wildcards",
-				isArray: true 
+				isArray: true
 			},
 		});
 
@@ -99,22 +99,22 @@ define([], function() {
 				url: urlPrefix+"/auth/logout",
 			},
 		});
-		
+
 		this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
 			'search': {
-				method: 'GET', 
-				isArray: false 
+				method: 'GET',
+				isArray: false
 			},
 		});
 
 		this.adminUserSearch = $resource(urlPrefix + "/admin/users/:userId?email=:email", {}, {
 			'search': {
-				method: 'GET', 
-				isArray: true 
+				method: 'GET',
+				isArray: true
 			},
 			'get' : {
-				method: 'GET', 
-				isArray: false 
+				method: 'GET',
+				isArray: false
 			},
 		});
 
@@ -135,22 +135,22 @@ define([], function() {
 
 		this.statisticsEndpoint = $resource(urlPrefix + "/admin/stats/", {}, {
 			'get' : {
-				method: 'GET', 
-				isArray: false 
+				method: 'GET',
+				isArray: false
 			},
 			'getGameboardPopularity' : {
 				method: 'GET',
-				url: urlPrefix + "/gameboards/popular", 
-				isArray: false 
+				url: urlPrefix + "/gameboards/popular",
+				isArray: false
 			},
 			'getSchoolPopularity' : {
 				method: 'GET',
-				url: urlPrefix + "/admin/stats/schools/", 
-				isArray: true 
+				url: urlPrefix + "/admin/stats/schools/",
+				isArray: true
 			},
 			'getSchoolUsers' : {
 				method: 'GET',
-				url: urlPrefix + "/admin/users/schools/:id", 
+				url: urlPrefix + "/admin/users/schools/:id",
 				params: {id: '@id'},
 			},
 			'getEventsOverTime' : {
@@ -159,13 +159,13 @@ define([], function() {
 			},
 			'getUserLocations' : {
 				method: 'GET',
-				url: urlPrefix + "/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date", 
-				isArray: true 
+				url: urlPrefix + "/admin/stats/users/last_locations?from_date=:from_date&to_date=:to_date",
+				isArray: true
 			},
 			'getLogEventTypes' : {
 				method: 'GET',
 				url: urlPrefix + "/info/log_event_types",
-			},			
+			},
 		});
 
 		this.adminDeleteUser = $resource(urlPrefix + "/admin/users/:userId", {}, {
@@ -176,79 +176,79 @@ define([], function() {
 
 		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id", {id: "@id"}, {
 			'get' : {
-				method: 'GET', 
-				isArray: true 
+				method: 'GET',
+				isArray: true
 			},
 			'delete' :{
 				method: 'DELETE',
-				url: urlPrefix + "/groups/:id", 
+				url: urlPrefix + "/groups/:id",
 				isArray: true
 			},
 			'getMembers' : {
 				method: 'GET',
-				url: urlPrefix + "/groups/:id/membership", 
-				isArray: true 
+				url: urlPrefix + "/groups/:id/membership",
+				isArray: true
 			},
 			'deleteMember' : {
 				method: 'DELETE',
-				url: urlPrefix + "/groups/:id/membership/:userId", 
-				isArray: true 
-			},			
+				url: urlPrefix + "/groups/:id/membership/:userId",
+				isArray: true
+			},
 			'getToken' : {
 				method: 'GET',
-				url: urlPrefix + "/authorisations/token/:id", 
-				isArray: false 
-			},		
+				url: urlPrefix + "/authorisations/token/:id",
+				isArray: false
+			},
 		});
 
 		this.authorisations = $resource(urlPrefix + "/authorisations/", {}, {
 			'get' : {
-				method: 'GET', 
-				isArray: true 
+				method: 'GET',
+				isArray: true
 			},
 			'useToken' : {
 				method: 'POST',
 				url: urlPrefix + "/authorisations/use_token/:token",
 				params: {token: '@token'}
-			},			
+			},
 			'revoke' : {
 				method: 'DELETE',
-				url: urlPrefix + "/authorisations/:id" 
-			},			
+				url: urlPrefix + "/authorisations/:id"
+			},
 			'getOthers' : {
 				method: 'GET',
-				url: urlPrefix + "/authorisations/other_users", 
-				isArray: true 
+				url: urlPrefix + "/authorisations/other_users",
+				isArray: true
 			},
 			'getTokenOwner' : {
 				method: 'GET',
-				url: urlPrefix + "/authorisations/token/:token/owner", 
-				isArray: false 
-			},				
-		});	
+				url: urlPrefix + "/authorisations/token/:token/owner",
+				isArray: false
+			},
+		});
 
 		this.assignments = $resource(urlPrefix + "/assignments/", {}, {
 			'getMyAssignments' : {
-				method: 'GET', 
+				method: 'GET',
 				isArray: true,
 				params: {assignmentStatus: '@assignmentStatus'}
 			},
 			'getAssignmentsOwnedByMe' : {
-				method: 'GET', 
+				method: 'GET',
 				isArray: true,
-				url: urlPrefix + "/assignments/assign", 
+				url: urlPrefix + "/assignments/assign",
 			},
 			'getAssignedGroups' : {
-				method: 'GET', 
+				method: 'GET',
 				isArray: true,
-				url: urlPrefix + "/assignments/assign/:gameId", 
+				url: urlPrefix + "/assignments/assign/:gameId",
 				params: {gameId: '@gameId'}
-			},					
+			},
 			'assignBoard' : {
 				method: 'POST',
 				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
 				params: {gameId: '@gameId', groupId: '@groupId'}
-			},			
+			},
 			'unassignBoard' : {
 				method: 'DELETE',
 				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
@@ -259,29 +259,29 @@ define([], function() {
 				url: urlPrefix + "/assignments/assign/:assignmentId/progress",
 				isArray: true,
 			},
-		});			
+		});
 
         this.events = $resource(urlPrefix + "/events/:id");
 
 		this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
 			'getAllBookings' : {
 				url: urlPrefix + "/events/bookings",
-				method: 'GET', 
+				method: 'GET',
 			},
 			'getBookings' : {
 				url: urlPrefix + "/events/:eventId/bookings",
-				method: 'GET', 
+				method: 'GET',
 				isArray: true
 			},
 			'makeBooking' : {
-				method: 'POST', 
-				url: urlPrefix + "/events/:eventId/bookings/:userId"			
+				method: 'POST',
+				url: urlPrefix + "/events/:eventId/bookings/:userId"
 			},
 			'deleteBooking' : {
-				method: 'DELETE', 
-				url: urlPrefix + "/events/:eventId/bookings/:userId"			
+				method: 'DELETE',
+				url: urlPrefix + "/events/:eventId/bookings/:userId"
 			},
-		});	
+		});
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
 		this.getQuestionsResource = function() {
@@ -299,6 +299,7 @@ define([], function() {
 		var conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
 		var gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
 		var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+		var deleteBoards = $resource(urlPrefix + "/users/current_user/gameboards/delete_multiple/:ids", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 		var eventsList = $resource(urlPrefix + "/events");
 
@@ -310,15 +311,19 @@ define([], function() {
 		this.userGameBoards = function(filter, sort, index, limit){
 			return gameBoardsList.query({"filter" : (filter != null) ? '&show_only='+filter : '', "sort" : sort, "startIndex" : index, "limit" : (limit != null) ? '&limit='+limit : ''});
 		}
-		
+
 		this.deleteGameBoard = function(id){
 			return deleteBoard.query({"id" : id});
+		}
+
+		this.deleteMultipleGameBoards = function(ids) {
+			return deleteBoards.query({"ids" : ids});
 		}
 
 		this.saveGameBoard = function(id) {
 			return saveBoard.query({"id": id}, {});
 		}
-     
+
 		this.removeLinkedAccount = function(provider) {
 			return $http.delete(urlPrefix + "/auth/"+provider+"/link");
 		}
@@ -369,12 +374,12 @@ define([], function() {
 
 		this.schools = $resource(urlPrefix + "/schools", {}, {
 			'get': {
-				method: 'GET', 
-				isArray: false 
+				method: 'GET',
+				isArray: false
 			},
 			'getSchoolOther' : {
 				url: urlPrefix + "/users/schools_other",
-				method: 'GET', 
+				method: 'GET',
 				isArray: true
 			},
 		})
@@ -424,7 +429,7 @@ define([], function() {
 			sendEmail : {
 				method: "POST",
 				url: urlPrefix + "/email/sendemail/:contentid/:emailtype",
-			}, 
+			},
 			sendEmailWithIds : {
 				method: "POST",
 				url: urlPrefix + "/email/sendemailwithuserids/:contentid/:emailtype",
@@ -458,7 +463,7 @@ define([], function() {
 			"emptyIndexQueue" : {
 				method: "DELETE",
 				url: urlPrefix + "/admin/content_index_queue",
-			}			
+			}
 		});
 
 		this.notifications = $resource(urlPrefix + "/notifications", {}, {
@@ -467,7 +472,7 @@ define([], function() {
 				url: urlPrefix + "/notifications/:id/:response",
 			}
 		})
-		
+
 		this.getCSVDownloadLink = function(assignmentId) {
 			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download"
 		}

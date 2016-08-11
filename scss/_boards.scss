@@ -1,9 +1,14 @@
 /*
-	Global boards styles 
+	Global boards styles
 */
 .boards-wrap {
 	margin: 10px -10px 0;
-
+	.toDelete {
+		opacity: 1 !important;
+	}
+	.trashMode {
+		opacity: 0.5;
+	}
 	.row {
 		margin: 0;
 	}
@@ -14,6 +19,7 @@
 		&:hover {
 			border-color: #008dbb;
 		}
+
 	}
 	h3 {
 		margin: 27px 0 10px;
@@ -208,7 +214,7 @@
 			width:100%;
 			margin-bottom:10px;
 		}
-		
+
 	}
 }
 
@@ -335,7 +341,7 @@
 		padding-top: 5px;
 		padding-bottom: 5px;
 	}
-	/* 
+	/*
 		These can't be grouped together otherwise they will be ignored
 	*/
 	::-webkit-input-placeholder {
@@ -390,7 +396,7 @@
 	background: url(../assets/ru.png) -384px -369px no-repeat;
 }
 /*
-	Styles for My assignments 
+	Styles for My assignments
 */
 .assignments-wrap {
 	.assignment:first-child {
@@ -466,8 +472,8 @@
 		margin: 0;
 	}
 }
-/* 
-	All media queries 
+/*
+	All media queries
 */
 @media #{$large-up} {
 	.board-link {
@@ -550,7 +556,7 @@
 					color: $ru_green;
 				}
 			}
-			
+
 		}
 		.icon-link {
 			display: none;
