@@ -61,7 +61,7 @@ define(function(require) {
                         CURVE_STRKWEIGHT = 2,
                         PADDING = 0.025 * canvasWidth,
                         DOT_LINE_STEP = 5,
-                        MOUSE_DETECT_RADIUS = 5;
+                        MOUSE_DETECT_RADIUS = 10;
                         
                     var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
                         KNOT_COLOR = [77,77,77],
@@ -1383,10 +1383,13 @@ define(function(require) {
                         }
                         data.freeSymbols = clonedFreeSymbols;
                         
+                        console.debug(data);
                         return data;
                     }
 
-                    function decodeData(data) {
+                    function decodeData(rawData) {
+
+                        var data = clone(rawData);
 
                         function denormalise(pt) {
                                 pt.x = pt.x * canvasWidth + canvasWidth/2;
@@ -1630,9 +1633,8 @@ define(function(require) {
                         // scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
 
-
                         // reload previous answer if there is one
-                        console.debug("scope.state: ", scope.state);
+                        console.debug("within graphSketcher scope.state: ", scope.state);
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             scope.p.decodeData(scope.state);
                         }
