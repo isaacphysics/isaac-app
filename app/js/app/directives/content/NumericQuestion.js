@@ -101,6 +101,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				if (scope.question.selectedChoice) {
 					ctrl.selectedUnits = scope.question.selectedChoice.units;
 					ctrl.selectedValue = scope.question.selectedChoice.value;
+					ctrl.displayUnits = (ctrl.selectedUnits == '' ? "None" : "$\\units{" + ctrl.selectedUnits + "}$");
 				}
 
 				// Add or remove the accordion answer reminder after validation
