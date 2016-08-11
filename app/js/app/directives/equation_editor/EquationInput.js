@@ -22,8 +22,10 @@ define([], function() {
                 scope.$watch("state", function(s) {
                     if (s && s.result) {
                         katex.render(s.result.tex, element.find(".eqn-preview")[0]);
-                    } else {
+                    } else if (scope.questionDoc) {
                         element.find(".eqn-preview").html("Click to enter your answer");
+                    } else {
+                        element.find(".eqn-preview").html("Click to enter a formula!");
                     }
                 })
             }
