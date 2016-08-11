@@ -27,7 +27,7 @@ export
         this.s = s;
         this.width = 0;
 
-        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets'];
+        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'symbol_subscript'];
     }
 
     /** Generates all the docking points in one go and stores them in this.dockingPoints.
