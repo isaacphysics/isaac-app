@@ -68,7 +68,7 @@ define(function(require) {
                         DOT_LINE_COLOR = [123],
                         MOVE_LINE_COLOR = [135],
                         MOVE_SYMBOL_COLOR = [151],
-                        KNOT_DETECT_COLOR = [151];
+                        KNOT_DETECT_COLOR = [0];
 
                     // action recorder
                     var action = undefined,
@@ -81,9 +81,10 @@ define(function(require) {
                     var drawnPts = [],
                         drawnColorIdx;
 
+                    var prevMousePt;
+
                     // for moving curve
-                    var prevMousePt,
-                        movedCurveIdx;
+                    var movedCurveIdx;
 
                     // for moving symbols
                     var movedSymbol,
@@ -369,14 +370,10 @@ define(function(require) {
                         }
                     }
 
-                    function drawKnot4(knot, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-
+                    function drawKnotDetect(knot) {
                         p.push();
                         p.noFill();
-                        p.stroke(color);
+                        p.stroke(KNOT_DETECT_COLOR);
                         p.strokeWeight(2);
                         p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
                         p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
@@ -728,7 +725,7 @@ define(function(require) {
                                 for (var i = 0; i < knots.length; i++) {
                                     if (f.getDist(current, knots[i]) < MOUSE_DETECT_RADIUS) {
                                         p.cursor(p.HAND);
-                                        drawKnot4(knots[i]);
+                                        drawKnotDetect(knots[i]);
                                         found = true;
                                         return;
                                     }
@@ -878,6 +875,7 @@ define(function(require) {
                             if (isOverSymbol(current, freeSymbols[i])) {
                                 movedSymbol = freeSymbols[i];
                                 freeSymbols.splice(i, 1);
+                                prevMousePt = current;
                                 action = "MOVE_SYMBOL";
                                 return;
                             }
@@ -948,6 +946,7 @@ define(function(require) {
 
                         if (found) {
                             action = "MOVE_SYMBOL";
+                            prevMousePt = current;
                             return;
                         }
 
@@ -990,7 +989,6 @@ define(function(require) {
                     }
 
                     
-
                     function mouseDragged(e) {
                         isMouseDragged = true;
                         var current = getMousePt(e);
@@ -1013,16 +1011,20 @@ define(function(require) {
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
 
-                            movedSymbol.x = current.x;
-                            movedSymbol.y = current.y;
+                            var dx = current.x - prevMousePt.x;
+                            var dy = current.y - prevMousePt.y;
+                            prevMousePt = current;
+
+                            movedSymbol.x += dx;
+                            movedSymbol.y += dy;
 
                             reDraw();
                             drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
 
                             function detect(knots) {
                                 for (var j = 0; j < knots.length; j++) {
-                                    if (knots[j].symbol == undefined && f.getDist(current, knots[j]) < MOUSE_DETECT_RADIUS) {
-                                        drawKnot(knots[j], KNOT_DETECT_COLOR);
+                                    if (knots[j].symbol == undefined && f.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
+                                        drawKnotDetect(knots[j], KNOT_DETECT_COLOR);
                                         return;
                                     }
                                 }
@@ -1045,12 +1047,12 @@ define(function(require) {
 
                             if (clickedKnot != null) {
                                 var knot = clickedKnot;
-                                if (knot.xSymbol == undefined && f.getDist(current, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
-                                    drawKnot(f.createPoint(knot.x, canvasHeight/2), KNOT_DETECT_COLOR);
+                                if (knot.xSymbol == undefined && f.getDist(movedSymbol, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
+                                    drawKnotDetect(f.createPoint(knot.x, canvasHeight/2), KNOT_DETECT_COLOR);
                                     return;
                                 }
-                                if (knot.ySymbol == undefined && f.getDist(current, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    drawKnot(f.createPoint(canvasWidth/2, knot.y), KNOT_DETECT_COLOR);
+                                if (knot.ySymbol == undefined && f.getDist(movedSymbol, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                    drawKnotDetect(f.createPoint(canvasWidth/2, knot.y), KNOT_DETECT_COLOR);
                                     return;
                                 }
                             }
@@ -1134,7 +1136,7 @@ define(function(require) {
                                 }
                                 for (var j = 0; j < knots.length; j++) {
                                     var knot = knots[j];
-                                    if (knot.symbol == undefined && f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                                    if (knot.symbol == undefined && f.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
                                         movedSymbol.x = knot.x;
                                         movedSymbol.y = knot.y;
                                         knot.symbol = movedSymbol;
@@ -1163,12 +1165,12 @@ define(function(require) {
 
                             if (clickedKnot != null && !found) {
                                 var knot = clickedKnot;
-                                if (knot.xSymbol == undefined && f.getDist(current, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
+                                if (knot.xSymbol == undefined && f.getDist(movedSymbol, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = knot.x;
                                     movedSymbol.y = canvasHeight/2;
                                     knot.xSymbol = movedSymbol;
                                     found = true;
-                                } else if (knot.ySymbol == undefined && f.getDist(current, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                } else if (knot.ySymbol == undefined && f.getDist(movedSymbol, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = canvasWidth/2;
                                     movedSymbol.y = knot.y;
                                     knot.ySymbol = movedSymbol;

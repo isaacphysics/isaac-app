@@ -21,6 +21,7 @@ define(function(require) {
                       
                       if (scope.isTherePreviousAnswer) {
                           if (scope.preview == undefined) {
+
                               scope.preview = new p5(scope.sketch, document.getElementById("graphPreview"));
                           }
                           scope.preview.decodeData(scope.state);
@@ -472,7 +473,7 @@ define(function(require) {
               }
 
               scope.isTherePreviousAnswer = function() {
-                  return (scope.state.curves != undefined && scope.state.freeSymbols != undefined);
+                  return (scope.state.curves != undefined && scope.state.freeSymbols != undefined );
               }
 
             }
