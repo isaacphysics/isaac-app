@@ -68,7 +68,7 @@ define(["app/honest/responsive_video"], function(rv) {
                      *
                      * Known units are units from question choices.
                      */
-                    for (var i in scope.doc.knownUnits) {
+                    for (var i = 0; i < scope.doc.knownUnits.length; i++) {
                         var unitsFromQuestion = scope.doc.knownUnits[i];
 
                         // Only add to options when it is not null and not duplicated.
