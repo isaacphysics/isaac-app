@@ -1,13 +1,13 @@
 <div class="row">
-   <div class="small-13 columns">
-      <div ng-switch="boards">
-         <div ng-switch-when="undefined">
-            <h1>&nbsp;</h1>
-            <p>&nbsp;</p>
-         </div>
-         <div ng-switch-default>
-            <h2>My Boards</h2>
-            <p class="hide-for-small-only"><strong>
+    <div class="small-13 columns">
+        <div ng-switch="boards">
+            <div ng-switch-when="undefined">
+                <h1>&nbsp;</h1>
+                <p>&nbsp;</p>
+            </div>
+            <div ng-switch-default>
+                <h2>My Boards</h2>
+                <p class="hide-for-small-only"><strong>
                You have completed
                <span class="ru_green">{{boards.totalCompleted}} board<span ng-if="boards.totalCompleted != 1">s</span></span>,
                with
@@ -16,83 +16,87 @@
                <span class="ru_green">{{boards.totalNotStarted}}</span>
                not started.
             </strong></p>
-         </div>
-      </div>
-   </div>
-   <div class="medium-3 columns text-right hide-for-small-only">
-      <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
-   </div>
+            </div>
+        </div>
+    </div>
+    <div class="medium-3 columns text-right hide-for-small-only">
+        <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+    </div>
 </div>
 
 <div class="boards-filters" ng-show="boards != null">
-   <ul class="small-block-grid-2">
-      <li>
-         <label class="hide-for-small-only">Show</label>
-         <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
-      </li>
-      <li>
-         <label class="hide-for-small-only">Sort by</label>
-         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
-      </li>
-      <li>
-         <label class="hide-for-small-only" ng-click="toggleTrashMode()">Toggle Mode</label>
-      </li>
-      <li>
-         <label class="hide-for-small-only" ng-click="deleteMultipleGameBoards()">Delete</label>
-      </li>
-   </ul>
+
+    <ul class="small-block-grid-2 no-block">
+
+        <li>
+            <p class="delete-buttons" ng-if="!trashMode" ng-click="toggleTrashMode()">Select Boards</p>
+            <p class="delete-buttons"ng-if="trashMode" ng-click="toggleTrashMode()">Deselect Boards</p>
+        </li>
+        <li>
+            <p class="delete-buttons" ng-click="deleteMultipleGameBoards()">Clear Selected</p>
+        </li>
+        <li style="clear: none;">
+            <label class="hide-for-small-only">Show</label>
+            <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
+        </li>
+        <li style="clear: none;">
+            <label class="hide-for-small-only">Sort by</label>
+            <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+        </li>
+
+    </ul>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
-      <!-- Loop all boards and add a class if complete -->
-   	<li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
-   		<div class="panel"  ng-class="board.id">
-            <span class="board-delete" ng-click="deleteBoard(board)">X</span>
-   			<a ng-click="boardClick({'id':board.id})">
-               <div class="row">
-                  <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
+    <!-- Loop all boards and add a class if complete -->
+    <li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
+        <div class="panel" ng-class="board.id">
+            <span class="board-delete" ng-click="boardDelete(board)">X</span>
+            <a ng-click="boardClick({'id':board.id})">
+                <div class="row">
+                    <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
+                        <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
-                     </span>
-      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                        </span>
+                        <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
-                     </span>
-      				</div>
-      				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
-      					<span class="subject-complete"></span>
-      				</div>
-                  <div class="board-info">
-                     <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
-                     <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
-                     <div class="board-levels">
-                        <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
-                     </div>
-                  </div>
-      			</div>
+                        </span>
+                    </div>
+                    <div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+                        <span class="subject-complete"></span>
+                    </div>
+                    <div class="board-info">
+                        <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                        <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
+                        <div class="board-levels">
+                            <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
+                        </div>
+                    </div>
+                </div>
             </a>
             <div class="row">
-   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
-               <div class="board-creator">
-                  Created by:
-                  <span ng-if="board.ownerUserId == user._id">Me</span>
-                  <span ng-if="board.ownerUserId != user._id">Someone else</span>
-               </div>
+                <h3><a class="board-title-link" tabindex="0" ng-click="boardClick({'id':board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+                <div class="board-creator">
+                    Created by:
+                    <span ng-if="board.ownerUserId == user._id">Me</span>
+                    <span ng-if="board.ownerUserId != user._id">Someone else</span>
+                </div>
 
-               <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
-               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                  <div>
-                     {{shareUrl}}
-                  </div>
-               </div>
+                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
+                <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                    <div>
+                        {{shareUrl}}
+                    </div>
+                </div>
             </div>
-   		</div>
-   	</li>
+        </div>
+    </li>
 </ul>
 <div class="row" ng-hide="boards == null || boards.results.length == ''">
-  <div class="large-5 medium-6 small-centered columns">
-      <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
-      <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
-   </div>
+    <div class="large-5 medium-6 small-centered columns">
+        <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
+        <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
+    </div>
 </div>
 <div class="row" ng-show="boards.results.length == ''">
-   <p class="text-center">No Results</p>
+    <p class="text-center">No Results</p>
 </div>

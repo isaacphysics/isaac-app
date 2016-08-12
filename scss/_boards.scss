@@ -1,13 +1,27 @@
 /*
 	Global boards styles
 */
+.delete-buttons {
+	float: left;
+	font-size: 18px;
+	line-height: 20px;
+	font-weight: 600;
+	color: #333;
+	margin: 8px 5px 15px 10px;
+	cursor: pointer;
+}
 .boards-wrap {
 	margin: 10px -10px 0;
 	.toDelete {
 		opacity: 1 !important;
+		-webkit-box-shadow: 0 0 3px 3px rgba(187,40,40,1);
+		-moz-box-shadow: 0 0 3px 3px rgba(187,40,40,1);
+		box-shadow: 0 0 3px 3px rgba(187,40,40,1);
+		border-color: #bb2828 !important;
 	}
 	.trashMode {
-		opacity: 0.5;
+		opacity: 0.4;
+		border-color: #e3e3e3 !important;
 	}
 	.row {
 		margin: 0;
@@ -19,7 +33,6 @@
 		&:hover {
 			border-color: #008dbb;
 		}
-
 	}
 	h3 {
 		margin: 27px 0 10px;
@@ -41,14 +54,13 @@
 		font-size: 13px;
 	}
 }
-
-
 .board-title-link {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
 	line-height: 40px;
+	outline: none;
 }
 .board-delete {
 	position: absolute;
@@ -79,15 +91,15 @@
 		vertical-align: top;
 	}
 }
-.subject-physics,
+.subject-complete,
 .subject-maths,
-.subject-complete {
+.subject-physics {
 	position: absolute;
 	top: 11px;
 	left: 0;
 	width: 71px;
 	height: 82px;
-	background: url(../assets/my-boards-sprite.png) no-repeat 0 0;
+	background: url("../assets/my-boards-sprite.png") no-repeat 0 0;
 	padding: 20px 0 0;
 }
 .subject-physics {
@@ -121,7 +133,7 @@
 	position: relative;
 	width: 110px;
 	height: 18px;
-	background: url(../assets/my-boards-sprite.png) no-repeat 0 -82px;
+	background: url("../assets/my-boards-sprite.png") no-repeat 0 -82px;
 	margin: 4px 0 0;
 	span {
 		font-size: 12px;
@@ -135,7 +147,7 @@
 		top: 0;
 		position: absolute;
 		padding: 2px 0 0 4px;
-		background: url(../assets/my-boards-sprite.png) no-repeat -114px -82px;
+		background: url("../assets/my-boards-sprite.png") no-repeat -114px -82px;
 	}
 	.level-1 {
 		left: 0;
@@ -178,7 +190,6 @@
 	}
 	.board-levels span {
 		background-position: -132px -82px;
-
 	}
 }
 .boards-filters {
@@ -195,41 +206,32 @@
 		padding-bottom: 0;
 	}
 }
-
-
 /*
 	Styles for set assignments
 */
-
 .set-assign-header {
 	.subtitle {
-		margin-top:10px;
+		margin-top: 10px;
 	}
-	.button-menu{
-		padding-top:10px;
-
+	.button-menu {
+		padding-top: 10px;
 		button {
-			margin-right:10px;
-			margin-bottom:0px;
-			width:100%;
-			margin-bottom:10px;
+			margin-right: 10px;
+			margin-bottom: 0;
+			width: 100%;
+			margin-bottom: 10px;
 		}
-
 	}
 }
-
 .assign-board-wrap {
-
 	.board-info {
 		float: left;
 		margin-top: 22px;
-
 		p {
 			font-size: 15px;
 			line-height: 135%;
 		}
 	}
-
 	.ru_share_link {
 		position: absolute;
 		top: 105px;
@@ -237,51 +239,42 @@
 		left: 40px;
 		font-size: 13px;
 	}
-
 	.board-share {
 		top: 105px;
 		bottom: auto;
 	}
-
 	.panel {
 		position: relative;
 		border-color: #000;
 		padding-bottom: 0;
-
 		.row {
 			margin: 0;
 		}
 	}
-
 	h3 {
 		padding-right: 50px;
 		line-height: 115%;
 		font-weight: 800;
-
 		a {
 			color: #333;
 		}
 	}
-
-	.subject-physics,
-	.subject-maths {
+	.subject-maths,
+	.subject-physics {
 		top: 0;
 	}
-
 	.group-table {
 		margin-bottom: 18px;
-
 		tr:hover {
 			background-color: #ecf8e7;
 		}
-		td{
+		td {
 			color: #666;
 			font-family: "Source Sans Pro","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
 			font-weight: 600;
 			font-size: 16px;
 		}
 	}
-
 	.group-table .icon-delete {
 		margin-top: 2px;
 	}
@@ -289,7 +282,6 @@
 .board-overview {
 	padding-bottom: 18px;
 	counter-reset: board-overview-question;
-
 	h6 {
 		margin: 10px 0 6px;
 		font-style: normal;
@@ -308,14 +300,12 @@
 		content: "Q" counter(board-overview-question) ". ";
 	}
 }
-
 .groups-assigned {
 	font-size: 12px;
 	line-height: 110%;
 	font-weight: 100;
 	font-style: normal;
 	padding-top: 18px;
-
 	strong {
 		display: block;
 		font-size: 15px;
@@ -324,18 +314,17 @@
 		padding-bottom: 2px;
 	}
 }
-
 .board-section {
 	padding-top: 15px;
 	border-top: #000 1px dashed;
-
 	h6 {
 		font-style: normal;
 	}
 	.lighter {
 		font-weight: 200;
 	}
-	input, select {
+	input,
+	select {
 		font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
 		font-size: 18px;
 		padding-top: 5px;
@@ -357,10 +346,8 @@
 		color: rgba(0, 0, 0, 0.75);
 	}
 }
-
 .ui-date-wrap {
 	position: relative;
-
 	.hasDatepicker {
 		padding-right: 35px;
 	}
@@ -370,7 +357,7 @@
 		position: absolute;
 		width: 23px;
 		height: 26px;
-		background:transparent url(../assets/ru.png) -315px -347px no-repeat;
+		background: transparent url("../assets/ru.png") -315px -347px no-repeat;
 		padding: 0;
 		margin: 0;
 	}
@@ -379,13 +366,13 @@
 	float: left;
 	width: 16px;
 	height: 16px;
-	background: url(../assets/ru.png) -371px -324px no-repeat;
+	background: url("../assets/ru.png") -371px -324px no-repeat;
 }
 .icon-complete {
 	display: inline-block;
 	width: 25px;
 	height: 20px;
-	background: url(../assets/ru.png) -357px -370px no-repeat;
+	background: url("../assets/ru.png") -357px -370px no-repeat;
 	margin-left: 10px;
 	margin-bottom: -4px;
 }
@@ -393,7 +380,7 @@
 	float: left;
 	width: 17px;
 	height: 19px;
-	background: url(../assets/ru.png) -384px -369px no-repeat;
+	background: url("../assets/ru.png") -384px -369px no-repeat;
 }
 /*
 	Styles for My assignments
@@ -407,13 +394,10 @@
 	position: relative;
 	@extend .clearfix;
 	margin: 0 15px;
-	border-top:#b1b1b1 1px solid;
+	border-top: #b1b1b1 1px solid;
 	padding: 20px 0;
-
-
 	h3 {
 		font-size: 18px;
-
 		a {
 			color: #333;
 		}
@@ -423,7 +407,6 @@
 		line-height: 44px;
 		position: absolute;
 		left: 0;
-
 		.percent-symbol {
 			line-height: 22px;
 			font-size: 14px;
@@ -436,37 +419,30 @@
 		float: left;
 		margin-top: 6px;
 		margin-left: 90px;
-
 		p {
 			font-size: 15px;
 		}
 	}
-
 	.board-levels {
 		float: none;
 		font-weight: 600;
 		margin-bottom: 6px;
 	}
-
 	.board-overview {
 		padding-bottom: 0;
 	}
-
 	.overdue {
 		color: #be4c4c;
 		font-weight: 600;
 	}
-
 }
 .board-link {
 	text-align: right;
 	font-size: 18px;
 	padding-right: 0;
-
 	a {
 		display: inline-block;
 	}
-
 	P {
 		font-size: 18px;
 		margin: 0;
@@ -527,7 +503,6 @@
 			padding-right: 40px;
 		}
 	}
-
 	.assignment {
 		.columns {
 			padding-left: 0;
@@ -538,7 +513,6 @@
 		}
 		.board-link {
 			text-align: left;
-
 			a {
 				font-size: 1.25rem;
 				font-weight: 600;
@@ -551,16 +525,13 @@
 				padding-top: 0.6rem;
 				padding-bottom: 0.6rem;
 				margin-top: 25px;
-
 				&:hover {
 					color: $ru_green;
 				}
 			}
-
 		}
 		.icon-link {
 			display: none;
 		}
 	}
-
 }

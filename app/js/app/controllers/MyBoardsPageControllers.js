@@ -15,13 +15,14 @@
  */
 define([], function() {
 
-    var PageController = ['$scope','$state', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, $state, auth, api, gameBoardTitles, $rootScope, $timeout) {
+    var PageController = ['$scope', '$state', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, $state, auth, api, gameBoardTitles, $rootScope, $timeout) {
 
         $rootScope.pageTitle = "My Boards";
         $scope.boardsToDelete = [];
         $scope.safeToDelete = true;
         $scope.trashMode = false;
         $scope.generateGameBoardTitle = gameBoardTitles.generate;
+
 
         $scope.filterOptions = [{
             label: "All Boards",
@@ -45,7 +46,10 @@ define([], function() {
             val: "visited"
         }];
 
+
+
         $scope.filterOption = $scope.filterOptions[0];
+
         $scope.sortOption = $scope.sortOptions[1];
 
         var updateBoards = function(limit) {
@@ -77,6 +81,7 @@ define([], function() {
 
         var mergeInProgress = false;
         $scope.loadMore = function() {
+            console.debug($scope.trashMode);
             if (mergeInProgress) return;
             mergeInProgress = true;
             $scope.setLoading(true);
@@ -85,47 +90,49 @@ define([], function() {
                 $.merge($scope.boards.results, newBoards.results);
                 $scope.setLoading(false);
                 mergeInProgress = false;
+                if ($scope.trashMode) {
+                    $scope.toggleTrashMode();
+                }
             });
+
         };
 
-				$scope.toggleBoards = function(b) {
-					if(b) {
-						$('.panel').addClass('trashMode');
-					}
-					else {
-						$('.panel').removeClass('trashMode');
-					}
-				}
+        $scope.toggleBoards = function(b) {
+            if (b) {
+                $('.panel').addClass('trashMode');
+            } else {
+                $('.panel').removeClass('trashMode');
+            }
+        }
 
-				$scope.toggleTrashMode = function() {
-					if($scope.trashMode) {
-						// delete all the items in the trash array
-						// empty the trash array
-						$('.panel').removeClass('toDelete');
-						$('.panel').removeClass('trashMode');
+        $scope.toggleTrashMode = function() {
+                $scope.boardsToDelete = [];
+                if ($scope.trashMode) {
+                    // delete all the items in the trash array
+                    // empty the trash array
+                    $('.panel').removeClass('toDelete');
+                    $('.panel').removeClass('trashMode');
+                    $scope.trashMode = false;
+                    $scope.toggleBoards(false);
+                } else {
+                    $scope.trashMode = true;
+                    $scope.toggleBoards(true);
+                }
 
-						$scope.trashMode = false;
-						$scope.toggleBoards(false);
-					}
-					else {
-						$scope.trashMode = true;
-						$scope.toggleBoards(true);
-					}
-				}
-				// if trashMode is active, clicking the board adds it to trashArray.
-				// if trashMode is inactive, allow user to be redirected to that board.
+            }
+            // if trashMode is active, clicking the board adds it to trashArray.
+            // if trashMode is inactive, allow user to be redirected to that board.
         $scope.boardClick = function(board) {
             if ($scope.trashMode) {
-								if($('.' + board.id).hasClass("toDelete")) {
-									$('.' + board.id).removeClass('toDelete');
-									console.debug("Removing: " + board.id + " from the trash.");
-                  $scope.boardsToDelete.splice($scope.boardsToDelete.indexOf(board.id));
-								}
-								else {
-									$('.' + board.id).addClass("toDelete");
-									console.debug("Adding: " + board.id + " to the trash.");
-                  $scope.boardsToDelete.push(board.id);
-								}
+                if ($('.' + board.id).hasClass("toDelete")) {
+                    $('.' + board.id).removeClass('toDelete');
+                    console.debug("Removing: " + board.id + " from the trash.");
+                    $scope.boardsToDelete.splice($scope.boardsToDelete.indexOf(board.id));
+                } else {
+                    $('.' + board.id).addClass("toDelete");
+                    console.debug("Adding: " + board.id + " to the trash.");
+                    $scope.boardsToDelete.push(board.id);
+                }
                 console.debug($scope.boardsToDelete);
 
             } else {
@@ -134,105 +141,92 @@ define([], function() {
                 });
             }
         }
+        $scope.boardDelete = function(board) {
+            if ($scope.trashMode) {
+                if ($('.' + board.id).hasClass("toDelete")) {
+                    $('.' + board.id).removeClass('toDelete');
+                    console.debug("Removing: " + board.id + " from the trash.");
+                    $scope.boardsToDelete.splice($scope.boardsToDelete.indexOf(board.id));
+                } else {
+                    $('.' + board.id).addClass("toDelete");
+                    console.debug("Adding: " + board.id + " to the trash.");
+                    $scope.boardsToDelete.push(board.id);
+                }
+                console.debug($scope.boardsToDelete);
+
+            } else {
+                $scope.deleteBoard(board);
+            }
+        }
 
         $scope.deleteMultipleGameBoards = function() {
-          // send an XHR request to delete all the boards in $scope.boardsToDelete
-          // endpoint will then decide if ALL the boards can be deleted.
-          // If a single board cannot be deleted, we return an error with appropriate message.
-          console.debug("Deleting multiple game boards");
-          var ids = "";
-          for(var b in $scope.boardsToDelete) {
-            ids += $scope.boardsToDelete[b] + ((b != $scope.boardsToDelete.length-1) ? "," : "");
-          }
-          console.debug("ID being sent to server: " + ids);
-          api.deleteGameBoards(ids).$promise.then(function() {
-              updateBoards($scope.boards.results.length);
-              $scope.setLoading(false);
-              $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
-          }).catch(function(e) {
-              $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-          });
-          $scope.boardsToDelete = [];
+            // send an XHR request to delete all the boards in $scope.boardsToDelete
+            // endpoint will then decide if ALL the boards can be deleted.
+            // If a single board cannot be deleted, we return an error with appropriate message.
+            console.debug("Deleting multiple game boards");
+            if ($scope.boardsToDelete.length != 0) {
+                var ids = "";
+                for (var b in $scope.boardsToDelete) {
+                    ids += $scope.boardsToDelete[b] + ((b != $scope.boardsToDelete.length - 1) ? "," : "");
+                }
+                console.debug("ID being sent to server: " + ids);
+                api.deleteMultipleGameBoards(ids).$promise.then(function() {
+                    updateBoards($scope.boards.results.length);
+                    $scope.setLoading(false);
+                    $scope.showToast($scope.toastTypes.Success, "Boards Deleted", "Successfully deleted the boards you selected.");
+                }).catch(function(e) {
+                    updateBoards($scope.boards.results.length);
+                    $scope.setLoading(false);
+                    $scope.showToast($scope.toastTypes.Failure, "Warning", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                });
+                $scope.toggleTrashMode();
+            } else {
+                if ($scope.trashMode) {
+                    $scope.showToast($scope.toastTypes.Failure, "No Boards Selected", "Choose the boards you wish to delete.");
+                } else {
+                    $scope.showToast($scope.toastTypes.Failure, "No Boards Selected", "Click Select Boards and choose the boards you wish to delete.");
+                }
+            }
+
+            $scope.boardsToDelete = [];
         }
 
         $scope.deleteBoard = function(board) {
-            if ($scope.trashMode) {
-                lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
-                    if (groupsAssigned != null && groupsAssigned.length != 0) {
-                        if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
-                            alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
-                        } else {
-                            $scope.showToast($scope.toastTypes.Failure, "Board Deletion Not Allowed", "You have groups assigned to this board. To delete this board, you must unassign all groups.");
-                            return;
-                        }
-                    }
 
-                    var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
-                    // Warn user before deleting
-                    var confirmation = confirm("You are about to delete " + boardTitle + " board?");
-                    if (confirmation) {
-                        // TODO: This needs to be reviewed
-                        // Currently reloading boards after delete
-                        $scope.setLoading(true);
-                        api.deleteGameBoard(board.id).$promise.then(function() {
-                            updateBoards($scope.boards.results.length);
-                            $scope.setLoading(false);
-                            $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
-                        }).catch(function(e) {
-                            $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-                        });
+            lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
+                if (groupsAssigned != null && groupsAssigned.length != 0) {
+                    if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
+                        alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
+                    } else {
+                        $scope.showToast($scope.toastTypes.Failure, "Board Deletion Not Allowed", "You have groups assigned to this board. To delete this board, you must unassign all groups.");
+                        return;
                     }
-                })
-            }
+                }
+
+                var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
+                // Warn user before deleting
+                var confirmation = confirm("You are about to delete " + boardTitle + " board?");
+                if (confirmation) {
+                    // TODO: This needs to be reviewed
+                    // Currently reloading boards after delete
+                    $scope.setLoading(true);
+                    api.deleteGameBoard(board.id).$promise.then(function() {
+                        updateBoards($scope.boards.results.length);
+                        $scope.setLoading(false);
+                        $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
+                    }).catch(function(e) {
+                        $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    });
+                }
+            })
+
         }
         $scope.addDelete = function(board) {
             $scope.deleteBoardsArray.push(board);
             console.debug("Added:" + board.id + " to the boards to be deleted.");
         }
-        $scope.deleteBoards = function() {
-                var groupsAssigned = 0;
-                //var confirmation = confirm("Are you sure you want to delete the selected boards?");
 
-                for (var b in $scope.deleteBoardsArray) {
-                    $scope.setLoading(false);
-                    var board = $scope.deleteBoardsArray[b];
-                    console.debug(board.id);
-
-
-                    api.deleteGameBoard(board.id).$promise.then(function() {
-                        updateBoards($scope.boards.results.length);
-                        $scope.setLoading(false);
-                        //$scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
-                    })
-
-                    // lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
-                    //
-                    // 	// if (groupsAssigned != null && groupsAssigned.length != 0) {
-                    // 	// 	if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
-                    // 	// 		alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
-                    // 	// 	} else {
-                    // 	// 		$scope.showToast($scope.toastTypes.Failure, "Board Deletion Not Allowed", "You have groups assigned to this board. To delete this board, you must unassign all groups.");
-                    // 	// 		return;
-                    // 	// 	}
-                    // 	// }
-                    //
-                    // 	//var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
-                    // 	// Warn user before deleting
-                    //
-                    // 	//if (confirmation){
-                    // 				// TODO: This needs to be reviewed
-                    // 				// Currently reloading boards after delete
-                    //
-                    //
-                    // 	//}
-                    // })
-
-                }
-
-                $scope.showToast($scope.toastTypes.Success, "Board(s) Deleted", "You have successfully deleted " + $scope.deleteBoardsArray.length);
-                $scope.deleteBoardsArray = [];
-            }
-            // duplicate code - I know its bad but this whole file is duplicated so one more function isn't going to destroy the world - just until we refactor this file...
+        // duplicate code - I know its bad but this whole file is duplicated so one more function isn't going to destroy the world - just until we refactor this file...
         var lookupAssignedGroups = function(board) {
             var groups = api.assignments.getAssignedGroups({
                 gameId: board.id
