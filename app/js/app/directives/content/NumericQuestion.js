@@ -58,7 +58,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
                         // Only add to options when it is not null and not duplicated.
                         if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
-                            ctrl.unitOptions.push(availableUnit);
+                            ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
 
                     }
 
