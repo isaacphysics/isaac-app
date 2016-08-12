@@ -15,8 +15,9 @@
   background: white;
   ">
 
-  <div id="graphPreview" style="width:100%; height:300px; " ng-if="isTherePreviousAnswer()" > </div>
-  <div ng-if="!isTherePreviousAnswer()"> Click to input your answer </div>
+  <div ng-if="isTherePreviousAnswer()" graph-preview state="state" question-doc="questionDoc"> </div>
+  <div ng-if="!isTherePreviousAnswer()"> Click to enter your answer </div>
+  
 </div>
 
 <!-- <p> There is a canvas underneath </p>

@@ -32,7 +32,7 @@ define(["app/honest/responsive_video"], function(rv) {
                 ctrl.plainDoc.type = "content";
 
                 scope.$watch("ctrl.selectedFormula", function(f, oldF) {
-                    console.debug("ctrl.selectedFormula", f);
+                    // console.debug("ctrl.selectedFormula", f);
                     
                     if (f === oldF) {
                         return; // Init

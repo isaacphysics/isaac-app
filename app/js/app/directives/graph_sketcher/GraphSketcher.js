@@ -1227,7 +1227,6 @@ define(function(require) {
                     }
 
                     function mouseClicked(e) {
-                        console.log(e.clientX, e.clientY);
                         if (isMouseDragged) {
                             return;
                         }
@@ -1385,7 +1384,6 @@ define(function(require) {
                         }
                         data.freeSymbols = clonedFreeSymbols;
                         
-                        console.debug(data);
                         return data;
                     }
 

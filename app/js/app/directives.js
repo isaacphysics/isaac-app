@@ -106,7 +106,7 @@ define(function(require) {
 	
 	.directive('graphSketcher', require("app/directives/graph_sketcher/GraphSketcher"))
 
-	// .directive('graphPreview', require("app/directives/graph_sketcher/GraphPreview"))
+	.directive('graphPreview', require("app/directives/graph_sketcher/GraphPreview"))
 
 
 	// Content Directives
