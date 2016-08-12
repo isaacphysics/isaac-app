@@ -51,15 +51,16 @@ define(["app/honest/responsive_video"], function(rv) {
                      * STEP 1: Initialize unitOptions list with available units,
                      * removing duplicates and with spaces trimmed.
                      */
-                    for (var i = 0; i < scope.doc.availableUnits.length; i++) {
+                    if (typeof scope.doc.availableUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.availableUnits.length; i++) {
 
-                        // Trim the space of availableUnit, and remove redundant backslashes.
-                        var availableUnit = scope.doc.availableUnits[i].trim().replace("\\\\", "\\");
+                          // Trim the space of availableUnit, and remove redundant backslashes.
+                          var availableUnit = scope.doc.availableUnits[i].trim().replace("\\\\", "\\");
 
-                        // Only add to options when it is not null and not duplicated.
-                        if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
-                            ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
-
+                          // Only add to options when it is not null and not duplicated.
+                          if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
+                      }
                     }
 
                     /*
@@ -68,12 +69,16 @@ define(["app/honest/responsive_video"], function(rv) {
                      *
                      * Known units are units from question choices.
                      */
-                    for (var i = 0; i < scope.doc.knownUnits.length; i++) {
-                        var unitsFromQuestion = scope.doc.knownUnits[i];
+                    if (typeof scope.doc.knownUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.knownUnits.length; i++) {
 
-                        // Only add to options when it is not null and not duplicated.
-                        if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1)
-                            ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitsFromQuestion);
+                          // Get a knwn unit from choice.
+                          var unitsFromQuestion = scope.doc.knownUnits[i];
+
+                          // Only add to options when it is not null and not duplicated.
+                          if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitsFromQuestion);
+                      }
                     }
 
                     // Get the pool of all available units.
