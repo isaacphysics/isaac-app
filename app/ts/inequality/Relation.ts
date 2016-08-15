@@ -35,23 +35,19 @@ export
         switch (relation) {
             case 'rightarrow':
                 this.relation = '→';
-                this.pythonSymbol = '->';
                 this.mhchemSymbol = '->'
                 this.latexSymbol = '\\rightarrow ';
                 break;
             case 'leftarrow':
                 this.relation = '←';
-                this.pythonSymbol = '<-';
                 this.latexSymbol = '\\leftarrow ';
                 break;
             case 'rightleftarrows':
                 this.relation = '⇄';
-                this.pythonSymbol = '-><-';
                 this.latexSymbol = '\\rightleftarrows ';
                 break;
             case 'equilibrium':
                 this.relation = '⇌';
-                this.pythonSymbol = '==';
                 this.mhchemSymbol = '<=>'
                 this.latexSymbol = '\\rightleftharpoons ';
                 break;
@@ -82,7 +78,6 @@ export
                 break;
             case '.':
                 this.relation = '⋅';
-                this.pythonSymbol = '.';
                 this.mhchemSymbol = ".";
                 this.latexSymbol = '\\cdot';
                 break;
@@ -122,11 +117,11 @@ export
         var expression = "";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.pythonSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
@@ -134,7 +129,7 @@ export
             }
         } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
             if (this.dockingPoints["right"].child != null) {
@@ -151,7 +146,12 @@ export
     }
 
     token() {
-        return this.pythonSymbol;
+        // Equals sign always appears in menu, others require loading
+        if (this.relation == "=") {
+            return
+        } else if (this.pythonSymbol) {
+            return this.pythonSymbol;
+        }
     }
 
     /** Paints the widget on the canvas. */

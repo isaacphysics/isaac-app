@@ -50,7 +50,7 @@ class MySketch {
 	xBox: Rect = null;
 	mBox: Rect = null;
 
-	baseFontSize = 80;
+	baseFontSize = 70;
 	font_it: p5.Font = null;
 	font_up: p5.Font = null;
 
@@ -207,7 +207,7 @@ class MySketch {
                 w = new Fraction(this.p, this);
                 break;
             case "Brackets":
-                w = new Brackets(this.p, this, node["properties"]["type"]);
+                w = new Brackets(this.p, this, node["properties"]["type"], node["properties"]["mode"]);
                 break;
             case "Radix":
                 w = new Radix(this.p, this);

@@ -319,9 +319,18 @@ define(["angular-ui-router"], function() {
                         return $stateParams.query;
                     }],
                     "types": ['$stateParams', function($stateParams) {
+                        // If $stateParams.types not empty object...
                         if ($stateParams.types != null && $stateParams.types.length > 0) {
-                            return $stateParams.types.split(",");
+                            // and object is actually a string, with items seperated by commas...
+                            if (typeof $stateParams.types == "string" || (typeof $stateParams.types == "object" && $stateParams.types.constructor === String)) {
+                                // return the items in the string as an array of strings
+                                return $stateParams.types.split(",");
+                            } else {
+                                // object is an array of strings already
+                                return $stateParams.types;
+                            }
                         } else {
+                            // $stateParams.types is indeed empty. return empty list
                             return [];
                         }
                     }],

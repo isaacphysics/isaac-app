@@ -37,38 +37,33 @@ export
         switch (state) {
             case 'aqueous':
                 this.state = '(aq)';
-                this.pythonSymbol = '(aq)';
                 this.mhchemSymbol = '(aq)'
                 this.latexSymbol = '\\text{(aq)}';
                 break;
             case 'gas':
                 this.state = '(g)';
-                this.pythonSymbol = '(g)';
                 this.mhchemSymbol = '(g)'
                 this.latexSymbol = '\\text{(g)}';
                 break;
             case 'solid':
                 this.state = '(s)';
-                this.pythonSymbol = '(s)';
                 this.mhchemSymbol = '(s)'
                 this.latexSymbol = '\\text{(s)}';
                 break;
             case 'liquid':
                 this.state = '(l)';
-                this.pythonSymbol = '(l)';
                 this.mhchemSymbol = '(l)'
                 this.latexSymbol = '\\text{(l)}';
                 break;
             case 'metal':
                 this.state = '(m)';
-                this.pythonSymbol = '(m)';
                 this.mhchemSymbol = '(m)'
                 this.latexSymbol = '\\text{(m)}';
                 break;
             default:
                 this.state = state;
-                this.pythonSymbol = state;
-                this.latexSymbol = state;
+                this.mhchemSymbol = state;
+                this.latexSymbol = "\\text{" + state + "}";
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
@@ -104,11 +99,10 @@ export
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if (format == "python") {
-            expression += this.pythonSymbol;
-            if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
-            }
+        // } else if (format == "python") {
+        //     if (this.dockingPoints["right"].child != null) {
+        //         expression += this.dockingPoints["right"].child.getExpression(format);
+        //     }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);

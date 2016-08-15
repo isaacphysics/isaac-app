@@ -1,7 +1,7 @@
 <div class="row">
     <div class="small-16 columns show-for-small-only">
         <h1>Welcome to Isaac</h1>
-    </div>    
+    </div>
 </div>
 
 <!-- Additional Information Panel - when NOT logged in -->
@@ -30,14 +30,11 @@
 
                     <div id='desktop-filter' class="down isdown hide-animate" ng-show="filterPanelOpen == 'desktop-filter'">
                         <div class='medium-9 large-10 columns' id='desktop-filter1'>
-                            <div hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings"></div>
+                            <div hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings" style="margin-bottom: 50px"></div>
                         </div>
                         <div class='medium-7 large-6 columns'>
                             <div id='desktop-filter2'>
                                 <div difficulty-filter="filterLevels"></div>
-                            </div>
-                            <div id='desktop-filter3'>
-                                <div concept-filter="filterConcepts"></div>
                             </div>
                         </div>
                     </div>
@@ -61,21 +58,15 @@
                 <li id='button-difficulty' ng-click="openFilterPanel('mobile-filter2')" data-for="mobile-filter2" ng-class="{active: filterPanelOpen == 'mobile-filter2'}">
                     <p><small>Difficulty</small></p>
                 </li>
-                <li id='button-concept' ng-click="openFilterPanel('mobile-filter3')" data-for="mobile-filter3" ng-class="{active: filterPanelOpen == 'mobile-filter3'}">
-                    <p><small>Filter by concept</small></p>
-                </li>
             </ul>
         </div>
         <div class='clearfix'></div>
         <div class='mobile-filter'>
             <div id='mobile-filter1' ng-show="filterPanelOpen == 'mobile-filter1'" class="down isdown">
-                <div id="hexfilter" hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings"></div>
+                <div id="hexfilter" hex-filter subjects="filterSubjects" fields="filterFields" topics="filterTopics" warnings="warnings" style="margin-bottom: 50px"></div>
             </div>
             <div id='mobile-filter2' ng-show="filterPanelOpen == 'mobile-filter2'" class="down isdown">
                 <div difficulty-filter="filterLevels"></div>
-            </div>
-            <div id='mobile-filter3' ng-show="filterPanelOpen == 'mobile-filter3'" class="down isdown">
-                <div concept-filter="filterConcepts"></div>
             </div>
         </div>
         <div class='clearfix'></div>
@@ -128,7 +119,7 @@
 
                 <div id="game-board-panel" class="small-16 columns" hexagons="gameBoard.questions" wild-card="gameBoard.wildCard" wild-card-position="gameBoard.wildCardPosition" loading="gameBoardLoading" board-id="gameBoard.id"></div>
 
-                <div class=''> 
+                <div class=''>
                     <div class='ru-board-title hide-for-medium-up'>
                         <div class="small-8 columns">
                             <a ng-show="shuffleStack.length > 0" ng-click="undoShuffle()">
@@ -149,7 +140,7 @@
                 </div>
             </section>
             <div class="pad"></div>
-            <div class='show-for-small-only pad'></div>     
+            <div class='show-for-small-only pad'></div>
 
             <!-- SVG Patterns used in the hexagons -->
             <svg id="svg-patterns" width="1" height="2" viewBox="0 0 1 2" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -192,27 +183,27 @@
 
                     <pattern id="physics" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-purple-bg.png" x="0" y="0" width="1" height="2" />
-                    </pattern> 
+                    </pattern>
                     <pattern id="physics-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-purple-bg-hover.png" x="0" y="0" width="1" height="2" />
                     </pattern>
 
                     <pattern id="maths" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-blue-bg.png" x="0" y="0" width="1" height="2" />
-                    </pattern> 
+                    </pattern>
                     <pattern id="maths-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-blue-bg-hover.png" x="0" y="0" width="1" height="2" />
                     </pattern>
 
                     <pattern id="correct" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-correct-bg.png" x="0" y="0" width="1" height="2" />
-                    </pattern> 
+                    </pattern>
                     <pattern id="correct-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-correct-bg-hover.png" x="0" y="0" width="1" height="2" />
                     </pattern>
                     <pattern id="wild" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-wild-bg.png" x="0" y="0" width="1" height="2" />
-                    </pattern> 
+                    </pattern>
                     <pattern id="wild-hover" patternUnits="userSpaceOnUse" x="0" y="0" width="1" height="2" viewBox="0 0 1 2" >
                         <image xlink:href="/assets/hex-wild-bg-hover.png" x="0" y="0" width="1" height="2" />
                     </pattern>

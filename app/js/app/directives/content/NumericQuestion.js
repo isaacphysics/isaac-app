@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-	return ["api", "units", "$rootScope", function(api, units, $rootScope) {
+    return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
 		return {
 			scope: true,
@@ -48,30 +48,63 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				ctrl.unitOptions = [];
 
-				units.getUnits().then(function(allUnits) {
+                units.getUnits().then(function(allUnits) {
 
-					// Add potential units to options list
-					for (var i in scope.doc.knownUnits) {
-						var unitsFromQuestion = scope.doc.knownUnits[i];
+                    /*
+                     * STEP 1: Initialize unitOptions list with available units,
+                     * removing duplicates and with spaces trimmed.
+                     */
+                    if (typeof scope.doc.availableUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.availableUnits.length; i++) {
 
-						if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1) {
-							ctrl.unitOptions.push(unitsFromQuestion);
-						}
-					}
+                          // Trim the space of availableUnit, and remove redundant backslashes.
+                          var availableUnit = scope.doc.availableUnits[i].trim().replace("\\\\", "\\");
 
-					var unitsPool = JSON.parse(JSON.stringify(allUnits));
+                          // Only add to options when it is not null and not duplicated.
+                          if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
+                      }
+                    }
 
-					while (ctrl.unitOptions.length < 6) {
-						// Fill the unit options up with other random units
-						var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
+                    /*
+                     * STEP 2: Add to the unitOptions list all known units at random
+                     * location, unless the unit is a duplicate.
+                     *
+                     * Known units are units from question choices.
+                     */
+                    if (typeof scope.doc.knownUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.knownUnits.length; i++) {
 
-						if (ctrl.unitOptions.indexOf(u) == -1) {
-							// Splice the randomly selected units into a randomly selected location
-							ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, u);
-						}
-					}
+                          // Get a knwn unit from choice.
+                          var unitsFromQuestion = scope.doc.knownUnits[i];
 
-				});
+                          // Only add to options when it is not null and not duplicated.
+                          if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitsFromQuestion);
+                      }
+                    }
+
+                    // Get the pool of all available units.
+                    var unitsPool = JSON.parse(JSON.stringify(allUnits));
+
+                    /*
+                     * STEP 3: Fill the unit options up with other random units in pool.
+                     *
+                     * Procedure terminates after unitOptions list has not less than 6
+                     * elements, or unitPool gone empty.
+                     */
+                    while (ctrl.unitOptions.length < 6 && unitsPool.length > 0) {
+                        // Gets a random unit from pool, and removes it from pool.
+                        var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
+
+                        // If the selected unit does not appear in option list
+                        if (ctrl.unitOptions.indexOf(u) == -1) {
+                            // Splice the randomly selected unit into a randomly selected location
+                            ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, u);
+                        }
+                    }
+
+                });
 
 				scope.$watch("ctrl.selectedValue", function(v, oldV) {
 					if (v === oldV) {

@@ -30,8 +30,10 @@ export
         return p;
     }
 
-    constructor(p: any, s: any, type: string) {
-        super(p, s);
+
+
+    constructor(p: any, s: any, type: string, mode:string) {
+        super(p, s, mode);
         this.type = type;
         this.s = s;
         switch (this.type) {
@@ -69,8 +71,10 @@ export
                 this.latexSymbol = {};
                 this.mhchemSymbol = this.pythonSymbol = this.mathmlSymbol = this.glyph = {};
         }
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets'];
+        console.debug(this.mode);
+        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation'];
     }
+
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
@@ -88,7 +92,12 @@ export
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, "symbol", "argument");
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator_brackets", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
+        if(this.mode == 'chemistry') {
+          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
+        }
+        else {
+          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript_maths", "subscript");
+        }
     }
 
     /**
@@ -125,11 +134,11 @@ export
             rhs = this.mhchemSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
-                    expression += this.dockingPoints['superscript'].child.getExpression(format);
-                }
                 if (this.dockingPoints['subscript'].child) {
                     expression += this.dockingPoints['subscript'].child.getExpression(format);
+                }
+                if (this.dockingPoints['superscript'].child) {
+                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
                 if (this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
@@ -157,8 +166,12 @@ export
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
+                    expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
+                    expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
                 } else {
                     expression = brackets;
                 }
@@ -287,7 +300,7 @@ export
             var p = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
             p.x = -this.dockingPoints["argument"].child.subtreeBoundingBox().w / 2 + w / 2;
-            p.y = 0;
+            p.y = this.scale*15;
             widest += w;
         } else {
             this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h / 2);
@@ -316,11 +329,11 @@ export
         if ("subscript" in boxes) {
             child_width = docking_subscript.child.boundingBox().w;
             child_height = docking_subscript.child.boundingBox().h;
-            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_subscript.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
+            docking_subscript.child.position.x = (parent_width / 2 + this.scale * (40) + child_width / 2);
+            docking_subscript.child.position.y =  parent_height / 2 + docking_subscript.child.subtreeBoundingBox().h / 2; // this.scale * this.s.mBox.h/2; // -0.7 * (parent_height / 2 + child_height / 2);
         } else {
-            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_subscript.position.y = parent_position;
+            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
+            docking_subscript.position.y = parent_height / 2 + this.scale * this.s.mBox.h / 2;
         }
 
         parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
@@ -328,7 +341,7 @@ export
         if ("right" in boxes) {
             child_width = docking_right.child.boundingBox().w;
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20) + docking_right.child.offsetBox().w / 2) : (parent_width - this.boundingBox().w / 2 + docking_right.child.offsetBox().w);
-            docking_right.child.position.y = 0;
+            docking_right.child.position.y = this.scale*20;
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
             docking_right.position.y = (this.dockingPoint.y);

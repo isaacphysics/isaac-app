@@ -45,8 +45,6 @@ define(function(require) {
 
 	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
 
-	.directive('conceptFilter', require("app/directives/ConceptFilter"))
-
 	.directive('footerPods', require("app/directives/FooterPods"))
 
 	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
