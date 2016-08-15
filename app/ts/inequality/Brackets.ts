@@ -157,9 +157,9 @@ export
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] != null) {
+                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
                     expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
-                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] == null) {
+                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
                 } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
                     expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
