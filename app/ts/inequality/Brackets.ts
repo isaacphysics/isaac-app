@@ -166,9 +166,9 @@ export
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] != null) {
+                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
                     expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
-                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] == null) {
+                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
                 } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
                     expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
@@ -248,8 +248,8 @@ export
             argWidth = subtreeBB.w;
             argHeight = subtreeBB.h;
         }
-        var width = box.w + argWidth + this.scale*20;  // FIXME This 20 is hard-coded
-        return new Rect(-width / 2, -argHeight / 2, width, argHeight);
+        var width = box.w + argWidth;
+        return new Rect(-width / 2, -argHeight / 2, width + this.scale * 40, argHeight);  // FIXME This 40 is hard-coded
     }
 
 
