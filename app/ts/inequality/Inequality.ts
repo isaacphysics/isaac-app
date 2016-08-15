@@ -207,7 +207,7 @@ class MySketch {
                 w = new Fraction(this.p, this);
                 break;
             case "Brackets":
-                w = new Brackets(this.p, this, node["properties"]["type"]);
+                w = new Brackets(this.p, this, node["properties"]["type"], node["properties"]["mode"]);
                 break;
             case "Radix":
                 w = new Radix(this.p, this);

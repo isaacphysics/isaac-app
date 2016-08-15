@@ -131,7 +131,7 @@ define(function(require) {
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
-                            
+
                             var customSymbolsParsed = false;
                             if (parsed.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsed.vars;
@@ -956,6 +956,7 @@ define(function(require) {
                         type: "Brackets",
                         properties: {
                             type: "round",
+                            mode: "chemistry"
                         },
                         menu: {
                             label: "(x)",
@@ -965,6 +966,7 @@ define(function(require) {
                         type: "Brackets",
                         properties: {
                             type: "square",
+                            mode: "chemistry"
                         },
                         menu: {
                             label: "[x]",
