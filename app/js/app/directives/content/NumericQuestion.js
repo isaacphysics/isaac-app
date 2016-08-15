@@ -17,33 +17,36 @@ define(["app/honest/responsive_video"], function(rv) {
 
     return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
-        return {
-            scope: true,
+		return {
+			scope: true,
 
-            restrict: 'A',
+			restrict: 'A',
 
-            templateUrl: "/partials/content/NumericQuestion.html",
+			templateUrl: "/partials/content/NumericQuestion.html",
 
-            controller: ["$scope", "$element", function(scope, element) {
-                var ctrl = this;
+			controller: ["$scope", "$element", function(scope, element) {
+				var ctrl = this;
 
-                ctrl.selectedValue = null;
-                ctrl.selectedUnits = null;
+				ctrl.selectedValue = null;
+				ctrl.selectedUnits = null;
+				ctrl.displayUnits = null; // Need this to display "None" when units are ""
 
-                ctrl.showUnitsDropdown = function() {
+				ctrl.showUnitsDropdown = function() {
+					if(ctrl.unitsDropdownStyle) {
+						ctrl.unitsDropdownStyle = null;
+					}
+					else {
+						var btnPos = element.find("button").offset();
+						var parent = element.find("button").parent().offset();
 
-                    var btnPos = element.find("button").offset();
-                    var parent = element.find("button").parent().offset();
+						ctrl.unitsDropdownStyle = {
+							top: btnPos.top + btnPos.height - parent.top,
+							left: btnPos.left - parent.left,
+						}
+					}
+				}
 
-                    ctrl.unitsDropdownStyle = {
-                        top: btnPos.top + btnPos.height - parent.top,
-                        left: btnPos.left - parent.left,
-                    }
-                }
-
-                ctrl.unitOptions = [];
-
-                //console.log(scope.doc);
+				ctrl.unitOptions = [];
 
                 units.getUnits().then(function(allUnits) {
 
@@ -103,59 +106,57 @@ define(["app/honest/responsive_video"], function(rv) {
 
                 });
 
-                scope.$watch("ctrl.selectedValue", function(v, oldV) {
-                    if (v === oldV) {
-                        return; // Init
-                    }
+				scope.$watch("ctrl.selectedValue", function(v, oldV) {
+					if (v === oldV) {
+						return; // Init
+					}
 
-                    scope.question.selectedChoice = scope.question.selectedChoice || {
-                        type: "quantity"
-                    };
-                    scope.question.selectedChoice.value = v;
-                })
+					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
+					scope.question.selectedChoice.value = v;
+				})
 
-                scope.$watch("ctrl.selectedUnits", function(u, oldU) {
-                    if (u === oldU) {
-                        return; // Init
-                    }
+				scope.$watch("ctrl.selectedUnits", function(u, oldU) {
+					if (u === oldU) {
+						return; // Init
+					}
 
-                    scope.question.selectedChoice = scope.question.selectedChoice || {
-                        type: "quantity"
-                    };
-                    scope.question.selectedChoice.units = u;
+					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
+					scope.question.selectedChoice.units = u;
+					ctrl.displayUnits = (u == '' ? "None" : "$\\units{" + u + "}$");
 
-                    if (u) {
-                        $rootScope.requestMathjaxRender();
-                    }
+					if (u) {
+						$rootScope.requestMathjaxRender();
+					}
 
-                });
+				});
 
-                // Load previous answer if there is one
-                if (scope.question.selectedChoice) {
-                    ctrl.selectedUnits = scope.question.selectedChoice.units;
-                    ctrl.selectedValue = scope.question.selectedChoice.value;
-                }
+				// Load previous answer if there is one
+				if (scope.question.selectedChoice) {
+					ctrl.selectedUnits = scope.question.selectedChoice.units;
+					ctrl.selectedValue = scope.question.selectedChoice.value;
+					ctrl.displayUnits = (ctrl.selectedUnits == '' ? "None" : "$\\units{" + ctrl.selectedUnits + "}$");
+				}
 
-                // Add or remove the accordion answer reminder after validation
-                scope.$watch("question.validationResponse", function(r, oldR) {
-                    if (r === oldR) {
-                        return; // Init
-                    }
+				// Add or remove the accordion answer reminder after validation
+				scope.$watch("question.validationResponse", function(r, oldR) {
+					if (r === oldR) {
+						return; // Init
+					}
 
-                    if (r && r.correct) {
-                        scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.question.selectedChoice.value + " }{ " + (scope.question.selectedChoice.units || "") + " }$  ✓");
-                        $rootScope.requestMathjaxRender();
-                    } else {
+					if(r && r.correct) {
+						scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.question.selectedChoice.value + " }{ " + (scope.question.selectedChoice.units || "") + " }$  ✓");
+						$rootScope.requestMathjaxRender();
+					} else {
 
-                        // The validationResponse was reset. This happens when changing answer after submitting.
-                        scope.$emit("newQuestionAnswer", scope.accordionSection);
-                    }
-                });
+						// The validationResponse was reset. This happens when changing answer after submitting.
+						scope.$emit("newQuestionAnswer", scope.accordionSection);
+					}
+				});
 
 
-            }],
+			}],
 
-            controllerAs: "ctrl",
-        };
-    }];
+			controllerAs: "ctrl",
+		};
+	}];
 });
