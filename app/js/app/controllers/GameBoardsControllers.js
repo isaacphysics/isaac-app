@@ -20,6 +20,7 @@ define([], function() {
 		// TODO: Reset filterPanelOpen when resizing between mobile and desktop.
 
 		if ($stateParams.filter) {
+
 			$scope.filterPanelOpen = "desktop-filter";
 		} else {
 			$scope.filterPanelOpen = null;
@@ -37,12 +38,12 @@ define([], function() {
 		var recordCurrentGameboard = function() {
 			if (!$scope.gameBoard)
 				return;
-			
+
 			persistence.save("lastGameBoardId", $scope.gameBoard.id);
 
 			api.logger.log({
 				type: "VIEW_GAMEBOARD_BY_ID",
-				gameBoardId: $scope.gameBoard.id, 
+				gameBoardId: $scope.gameBoard.id,
 			})
 		}
 
@@ -190,6 +191,7 @@ define([], function() {
 				return;
 
 			console.log("Hash changed:", hash);
+				
 			lastHash = hash;
 
 			if (hash) {
@@ -262,7 +264,7 @@ define([], function() {
 			}
 
 			api.logger.log(logMsg);
-			
+
 			loadGameBoardFromFilter();
 
 		}

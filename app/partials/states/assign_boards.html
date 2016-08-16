@@ -37,11 +37,18 @@
          <label class="hide-for-small-only">Sort by</label>
          <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
       </li>
+      <li>
+          <p class="delete-buttons" ng-if="!trashMode" ng-click="toggleTrashMode()">Select Boards</p>
+          <p class="delete-buttons"ng-if="trashMode" ng-click="toggleTrashMode()">Deselect Boards</p>
+      </li>
+      <li>
+          <p class="delete-buttons" ng-click="deleteMultipleGameBoards()">Clear Selected</p>
+      </li>
    </ul>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 assign-board-wrap">
       <li ng-repeat="board in boards.results">
-   		<div class="panel">
+   		<div class="panel" ng-click="boardClick({'id':board.id})">
             <a href="javascript:void(0)" class="board-delete" ng-click="deleteBoard(board)">X</a>
             <div class="row">
                <div ng-click="toggleAssignPanel(board)" data-ot="{{getListOfGroups(groupAssignmentInfo[board.id])}}" data-ot-style="ru_boards" class="board-percentage test">

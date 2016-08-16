@@ -122,7 +122,105 @@ define([], function() {
 				mergeInProgress = false;
 			});
 		};
+		$scope.toggleBoards = function(b) {
+				if (b) {
+						$('.panel').addClass('trashMode');
+				} else {
+						$('.panel').removeClass('trashMode');
+				}
+		}
 
+		$scope.toggleTrashMode = function() {
+						$scope.boardsToDelete = [];
+						if ($scope.trashMode) {
+								// delete all the items in the trash array
+								// empty the trash array
+								$('.panel').removeClass('toDelete');
+								$('.panel').removeClass('trashMode');
+								$scope.trashMode = false;
+								$scope.toggleBoards(false);
+						} else {
+								$scope.trashMode = true;
+								$scope.toggleBoards(true);
+						}
+
+				}
+				// if trashMode is active, clicking the board adds it to trashArray.
+				// if trashMode is inactive, allow user to be redirected to that board.
+		$scope.boardClick = function(board) {
+				if ($scope.trashMode) {
+						if ($('.' + board.id).hasClass("toDelete")) {
+								$('.' + board.id).removeClass('toDelete');
+								console.debug("Removing: " + board.id + " from the trash.");
+								$scope.boardsToDelete.splice($scope.boardsToDelete.indexOf(board.id));
+						} else {
+								$('.' + board.id).addClass("toDelete");
+								console.debug("Adding: " + board.id + " to the trash.");
+								$scope.boardsToDelete.push(board.id);
+						}
+						console.debug($scope.boardsToDelete);
+
+				} else {
+						$state.go('board', {
+								id: board.id
+						});
+				}
+		}
+		$scope.boardDelete = function(board) {
+				if ($scope.trashMode) {
+						if ($('.' + board.id).hasClass("toDelete")) {
+								$('.' + board.id).removeClass('toDelete');
+								console.debug("Removing: " + board.id + " from the trash.");
+								$scope.boardsToDelete.splice($scope.boardsToDelete.indexOf(board.id));
+						} else {
+								$('.' + board.id).addClass("toDelete");
+								console.debug("Adding: " + board.id + " to the trash.");
+								$scope.boardsToDelete.push(board.id);
+						}
+						console.debug($scope.boardsToDelete);
+
+				} else {
+						$scope.deleteBoard(board);
+				}
+		}
+
+		$scope.deleteMultipleGameBoards = function() {
+				// send an XHR request to delete all the boards in $scope.boardsToDelete
+				// endpoint will then decide if ALL the boards can be deleted.
+				// If a single board cannot be deleted, we return an error with appropriate message.
+				console.debug("Deleting multiple game boards");
+				if ($scope.boardsToDelete.length != 0) {
+						var ids = "";
+						for (var b in $scope.boardsToDelete) {
+								ids += $scope.boardsToDelete[b] + ((b != $scope.boardsToDelete.length - 1) ? "," : "");
+						}
+						console.debug("ID being sent to server: " + ids);
+						api.deleteMultipleGameBoards(ids).$promise.then(function() {
+								updateBoards($scope.boards.results.length);
+								$scope.setLoading(false);
+								$scope.showToast($scope.toastTypes.Success, "Boards Deleted", "Successfully deleted the boards you selected.");
+						}).catch(function(e) {
+								updateBoards($scope.boards.results.length);
+								$scope.setLoading(false);
+								$scope.showToast($scope.toastTypes.Failure, "Warning", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+						});
+						$scope.toggleTrashMode();
+				} else {
+						if ($scope.trashMode) {
+								$scope.showToast($scope.toastTypes.Failure, "No Boards Selected", "Choose the boards you wish to delete.");
+						} else {
+								$scope.showToast($scope.toastTypes.Failure, "No Boards Selected", "Click Select Boards and choose the boards you wish to delete.");
+						}
+				}
+
+				$scope.boardsToDelete = [];
+		}
+
+	
+		$scope.addDelete = function(board) {
+				$scope.deleteBoardsArray.push(board);
+				console.debug("Added:" + board.id + " to the boards to be deleted.");
+		}
 		$scope.deleteBoard = function(board){
 			lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
 				if (groupsAssigned != null && groupsAssigned.length != 0){
