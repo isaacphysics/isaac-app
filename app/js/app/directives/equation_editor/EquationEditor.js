@@ -1355,8 +1355,8 @@ define(function(require) {
                             default:
                                 var key = String.fromCharCode(e.which || e.keyCode);
                                 if (test_cases_lib.hasOwnProperty(key)) {
-                                    $rootScope.sketch.loadTestCase(test_cases_lib[key]);
-                                    console.debug("Loading test case " + key);
+                                    $rootScope.sketch.loadTestCase(test_cases_lib[key].testCase);
+                                    console.debug("Loading test case " + key + " | " + test_cases_lib[key].description);
                                 } else {
                                     console.debug("Test case " + key + " does not exist.");
                                 }
