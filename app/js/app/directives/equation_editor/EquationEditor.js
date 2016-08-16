@@ -54,7 +54,6 @@ define(function(require) {
                     sketch.updatePotentialSymbol(symbol, pageX, pageY);
                     scope.$digest();
 
-
                 });
 
                 scope.notifySymbolDrag = function(x, y) {
@@ -127,7 +126,6 @@ define(function(require) {
 
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat((scope.symbolLibrary.hiddenOps));
 
-
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
@@ -171,7 +169,6 @@ define(function(require) {
                         };
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode;
-
 
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
@@ -293,7 +290,6 @@ define(function(require) {
                     trigMap[trigFunctions[i]] = i;
                 }
 
-
                 var inverseLetterMap = {};
                 for (var k in letterMap) {
                     inverseLetterMap[letterMap[k]] = k;
@@ -312,7 +308,6 @@ define(function(require) {
                     }
                     return s;
                 };
-
 
                 var parseCustomChemicalSymbols = function(symbols) {
                     // take symbols in string ["H", "He", "Li", "electron", "proton", "antineutrino"]
@@ -401,7 +396,6 @@ define(function(require) {
                                     var allowSubscript = name == "log";
                                     if (name.substring(0, 3) == "arc") {
                                         // finds the index of the function in the symbol library to retrieve the label.
-
 
                                         partResults.push({
                                             type: "Fn",
@@ -493,8 +487,6 @@ define(function(require) {
                     return r;
                 };
 
-
-
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
                         // Special characters have special needs (i.e., a space after them).
@@ -519,7 +511,6 @@ define(function(require) {
                     uniqueOperatorsTotalOrder[operator] = count;
                     count++;
                 }
-
 
                 var uniqueSymbolsSortFn = function(a, b) {
                     // Sort operators:
@@ -562,7 +553,6 @@ define(function(require) {
                     if (a < b) return -1;
                     return 0;
                 }
-
 
                 scope.newEditorState = function(s) {
                     scope.state = s;
@@ -713,8 +703,6 @@ define(function(require) {
                     return result;
                 };
 
-
-
                 scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
@@ -730,7 +718,6 @@ define(function(require) {
                     theNumbers: theNumbers(numberStrings),
 
                     trigFunctions: trigFunction(trigFunctions),
-
 
                     particles: [{
                         type: 'Particle',
@@ -1033,7 +1020,6 @@ define(function(require) {
                         }
                     }],
 
-
                     // equality: [{
                     //     type: "string",
                     //     label: "=",
@@ -1189,8 +1175,6 @@ define(function(require) {
                         }
                     }, ],
 
-
-
                     otherFns: [{
                         type: "Fn",
                         properties: {
@@ -1229,7 +1213,6 @@ define(function(require) {
                     },
                     type: "string",
                 };
-
 
                 scope.latinLetterTitle = {
                     menu: {
@@ -1359,38 +1342,36 @@ define(function(require) {
 
                 element.on("keydown", function(e) {
                     var test_cases_lib = tester.testCases;
-                    if($stateParams.testing) {
-                      console.log("KeyDown", e.which || e.keyCode);
-                      switch (e.which || e.keyCode) {
-                          case 8: // Backspace. Deliberately fall through.
-                          case 46: // Delete
-                              e.stopPropagation();
-                              e.preventDefault();
-                              scope.trash();
-                              scope.$apply();
-                              break;
-                          default:
-                              var key = String.fromCharCode(e.which || e.keyCode);
-                              if(test_cases_lib.hasOwnProperty(key)) {
-                                $rootScope.sketch.loadTestCase(test_cases_lib[key]);
-                                console.debug("Loading test case " + key);
-                              }
-                              else {
-                                console.debug("Test case " + key + " does not exist.");
-                              }
-                              break;
-                      }
-                    }
-                    else {
-                      switch (e.which || e.keyCode) {
-                          case 8: // Backspace. Deliberately fall through.
-                          case 46: // Delete
-                              e.stopPropagation();
-                              e.preventDefault();
-                              scope.trash();
-                              scope.$apply();
-                              break;
-                      }
+                    if ($stateParams.testing) {
+                        console.log("KeyDown", e.which || e.keyCode);
+                        switch (e.which || e.keyCode) {
+                            case 8: // Backspace. Deliberately fall through.
+                            case 46: // Delete
+                                e.stopPropagation();
+                                e.preventDefault();
+                                scope.trash();
+                                scope.$apply();
+                                break;
+                            default:
+                                var key = String.fromCharCode(e.which || e.keyCode);
+                                if (test_cases_lib.hasOwnProperty(key)) {
+                                    $rootScope.sketch.loadTestCase(test_cases_lib[key]);
+                                    console.debug("Loading test case " + key);
+                                } else {
+                                    console.debug("Test case " + key + " does not exist.");
+                                }
+                                break;
+                        }
+                    } else {
+                        switch (e.which || e.keyCode) {
+                            case 8: // Backspace. Deliberately fall through.
+                            case 46: // Delete
+                                e.stopPropagation();
+                                e.preventDefault();
+                                scope.trash();
+                                scope.$apply();
+                                break;
+                        }
                     }
                 });
 
