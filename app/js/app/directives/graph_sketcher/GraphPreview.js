@@ -12,6 +12,8 @@ define(function(require) {
             templateUrl: "/partials/graph_sketcher/graph_preview.html",
             link: function(scope, element, attrs) {
 
+                var graphPreviewDiv = element.find(".graph-preview")
+
                 var b = require('lib/graph_sketcher/bezier.js');
                 var f = require('lib/graph_sketcher/func.js');
                 var s = require('lib/graph_sketcher/sampler.js');
@@ -21,8 +23,8 @@ define(function(require) {
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    var canvasHeight = document.getElementById(scope.canvasID).offsetHeight;
-                    var canvasWidth = document.getElementById(scope.canvasID).offsetWidth;
+                    var canvasHeight = graphPreviewDiv.height();//document.getElementById(scope.canvasID).offsetHeight;
+                    var canvasWidth = graphPreviewDiv.width();//document.getElementById(scope.canvasID).offsetWidth;
 
                     var GRID_WIDTH = 50,
                         CURVE_STRKWEIGHT = 2,
@@ -453,16 +455,18 @@ define(function(require) {
 
                 scope.updateGraphPreview = function() {
                     if (scope.preview == undefined) {
-                        scope.preview = new p5(scope.sketch, document.getElementById(scope.canvasID));
+                        scope.preview = new p5(scope.sketch, graphPreviewDiv[0]);
                     }
                     scope.preview.decodeData(scope.state);
                 }
 
 
                 // delay updateGraphPreview until the DOM element is loaded.
-                $timeout(function() {
-                    scope.updateGraphPreview();
-                });
+                // $timeout(function() {
+                //     scope.updateGraphPreview();
+                // });
+
+                scope.updateGraphPreview();
 
                 scope.$watch("state", function(newState, oldState) {
                     scope.updateGraphPreview();

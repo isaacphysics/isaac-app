@@ -546,31 +546,47 @@ define(function(require) {
                             if (grad[i-1] != NaN && grad[i] != NaN) {
                                 if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
-                                    var l = i-1;
-                                    while (l >= 0 && f.getDist(pts[l], pts[i]) < 15) l--;
-                                    if (l < 0) continue;
-                                    var dy = pts[i].y - pts[l].y;
-                                    var dx = pts[i].x - pts[l].x;
-                                    var grad1 = dy/dx;
+                                    // var l = i-1;
+                                    // while (l >= 0 && f.getDist(pts[l], pts[i]) < 0.0125 * canvasWidth) l--;
+                                    // if (l < 0) {
+                                    //     l = 0;
+                                    // }
+                                    // var dy = pts[i].y - pts[l].y;
+                                    // var dx = pts[i].x - pts[l].x;
+                                    // var grad1 = dy/dx;
 
-                                    var r = i+1;
-                                    while (r < pts.length && f.getDist(pts[r], pts[i]) < 15) r++;
-                                    if (r >= pts.length) continue;
-                                    var dy = pts[r].y - pts[i].y;
-                                    var dx = pts[r].x - pts[i].x;
-                                    var grad2 = dy/dx;
+                                    // var r = i+1;
+                                    // while (r < pts.length && f.getDist(pts[r], pts[i]) < 0.0125 * canvasWidth) r++;
+                                    // if (r >= pts.length) {
+                                    //     r = pts.length - 1;
+                                    // }
+                                    // var dy = pts[r].y - pts[i].y;
+                                    // var dx = pts[r].x - pts[i].x;
+                                    // var grad[i] = dy/dx;
 
-                                    if (Math.abs(grad1) > 0.03 && Math.abs(grad2) > 0.03) {
-                                        if (mode == 'maxima') {
-                                            if ((pts[i].x > pts[i-1].x && grad1 < 0 && grad2 > 0) || (pts[i].x < pts[i-1].x && grad1 > 0 && grad2 < 0)) {
-                                                turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                            } 
-                                        } else {
-                                            if ((pts[i].x > pts[i-1].x && grad1 > 0 && grad2 < 0) || (pts[i].x < pts[i-1].x && grad1 < 0 && grad2 > 0)) {
-                                                turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                            } 
-                                        }   
-                                    } 
+                                    // if (Math.abs(grad1) > 0.015 && Math.abs(grad2) > 0.015) {
+                                    //     if (mode == 'maxima') {
+                                    //         if ((pts[i].x > pts[i-1].x && grad1 < 0 && grad2 > 0) || (pts[i].x < pts[i-1].x && grad1 > 0 && grad2 < 0)) {
+                                    //             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                    //         } 
+                                    //     } else {
+                                    //         if ((pts[i].x > pts[i-1].x && grad1 > 0 && grad2 < 0) || (pts[i].x < pts[i-1].x && grad1 < 0 && grad2 > 0)) {
+                                    //             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                    //         } 
+                                    //     }   
+                                    // } 
+
+                                    if (mode == 'maxima') {
+                                        if ((pts[i].x > pts[i-1].x && grad[i-1] < 0 && grad[i] > 0) || (pts[i].x < pts[i-1].x && grad[i-1] > 0 && grad[i] < 0)) {
+                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                        } 
+                                    } else {
+                                        if ((pts[i].x > pts[i-1].x && grad[i-1] > 0 && grad[i] < 0) || (pts[i].x < pts[i-1].x && grad[i-1] < 0 && grad[i] > 0)) {
+                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                        } 
+                                    }   
+
+
                                 }
                             }
                         }
@@ -1218,7 +1234,6 @@ define(function(require) {
                             curve.minima = findTurnPts(pts, 'minima');
                             curve.colorIdx = drawnColorIdx;
                             curves.push(curve);
-
                             
                             reDraw();
                         }
@@ -1328,8 +1343,10 @@ define(function(require) {
 
 
                         function normalise(pt) {
-                            pt.x = (pt.x - canvasWidth/2) / canvasWidth;
-                            pt.y = (canvasHeight/2 - pt.y) / canvasHeight;
+                            var x = (pt.x - canvasWidth/2) / canvasWidth;
+                            var y = (canvasHeight/2 - pt.y) / canvasHeight;
+                            pt.x = Math.trunc(x * 10000) / 10000;
+                            pt.y = Math.trunc(y * 10000) / 10000;
                         }
 
                         function normalise1(knots) {
@@ -1383,7 +1400,7 @@ define(function(require) {
                             normalise(symbol);
                         }
                         data.freeSymbols = clonedFreeSymbols;
-                        
+
                         return data;
                     }
 
