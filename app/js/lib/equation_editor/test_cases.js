@@ -1,9 +1,12 @@
 define(function(require) {
     return {
-        testCases:{
+        testCasesMaths:{
           "1":{"description":"Einstein's Equation","testCase":[{"type":"Symbol","position":{"x":367.81,"y":304},"expression":{"latex":"E = mc^{2}","python":"E == m*c**(2)"},"children":{"right":{"type":"Relation","children":{"right":{"type":"Symbol","children":{"right":{"type":"Symbol","children":{"superscript":{"type":"Num","properties":{"significand":"2"}}},"properties":{"letter":"c"}}},"properties":{"letter":"m"}}},"properties":{"relation":"="}}},"properties":{"letter":"E"}}]},
           "2":{"description":"Euler's Identity","testCase":[{"type":"Symbol","position":{"x":368.58,"y":302},"expression":{"latex":"e^{iπ} + 1 = 0","python":"e**(i*π) +1 == 0"},"children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Num","children":{"right":{"type":"Relation","children":{"right":{"type":"Num","properties":{"significand":"0"}}},"properties":{"relation":"="}}},"properties":{"significand":"1"}}},"properties":{"operation":"+"}},"superscript":{"type":"Symbol","children":{"right":{"type":"Symbol","properties":{"letter":"π"}}},"properties":{"letter":"i"}}},"properties":{"letter":"e"}}]},
           "3":{"description":"Newton's Law of Gravitation","testCase":[{"type":"Symbol","position":{"x":374.425,"y":315},"expression":{"latex":"F =  - \\frac{GMm}{r^{2}}","python":"F ==  -((G*M*m)/(r**(2)))"},"children":{"right":{"type":"Relation","children":{"right":{"type":"BinaryOperation","children":{"right":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"right":{"type":"Symbol","children":{"right":{"type":"Symbol","properties":{"letter":"m"}}},"properties":{"letter":"M"}}},"properties":{"letter":"G"}},"denominator":{"type":"Symbol","children":{"superscript":{"type":"Num","properties":{"significand":"2"}}},"properties":{"letter":"r"}}}}},"properties":{"operation":"−"}}},"properties":{"relation":"="}}},"properties":{"letter":"F"}}]}
+        },
+        testCasesChemistry: {
+          "1": {"description": "Dopamine Formula", "testCase":[{"type":"ChemicalElement","position":{"x":428.885,"y":327},"expression":{"latex":"\\text{C}_{8}\\text{H}_{11}\\text{N}\\text{O}_{2}","python":"\\text{C}"},"children":{"right":{"type":"ChemicalElement","children":{"right":{"type":"ChemicalElement","children":{"right":{"type":"ChemicalElement","children":{"subscript":{"type":"Num","properties":{"significand":"2"}}},"properties":{"element":"O"}}},"properties":{"element":"N"}},"subscript":{"type":"Num","properties":{"significand":"11"}}},"properties":{"element":"H"}},"subscript":{"type":"Num","properties":{"significand":"8"}}},"properties":{"element":"C"}}]},
         }
     }
 });

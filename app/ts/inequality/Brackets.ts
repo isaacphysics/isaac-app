@@ -184,7 +184,8 @@ export
 
     properties(): Object {
         return {
-            type: this.type
+            type: this.type,
+            mode: this.mode,
         };
     }
 

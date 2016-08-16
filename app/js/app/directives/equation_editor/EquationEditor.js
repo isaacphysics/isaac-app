@@ -1341,7 +1341,7 @@ define(function(require) {
                 }
 
                 element.on("keydown", function(e) {
-                    var test_cases_lib = tester.testCases;
+                    var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
                     if ($stateParams.testing) {
                         console.log("KeyDown", e.which || e.keyCode);
                         switch (e.which || e.keyCode) {
