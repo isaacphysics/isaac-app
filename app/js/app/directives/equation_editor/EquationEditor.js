@@ -2,7 +2,7 @@
 define(function(require) {
 
     var MySketch = require("inequality").MySketch;
-
+    var tester = require("lib/equation_editor/test_cases.js");
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         return {
@@ -1359,7 +1359,7 @@ define(function(require) {
 
                 element.on("keydown", function(e) {
                     console.log("KeyDown", e.which);
-
+                    var test_cases_lib = tester.testCases;
                     switch (e.which) {
                         case 8: // Backspace. Deliberately fall through.
                         case 46: // Delete
@@ -1368,6 +1368,16 @@ define(function(require) {
                             scope.trash();
                             scope.$apply();
                             break;
+                        default:
+                            if(test_cases_lib.hasOwnProperty(e.which-48)) {
+                              $rootScope.sketch.loadTestCase(test_cases_lib[e.which-48]);
+                              console.debug("Loading test case " + (e.which-48));
+                            }
+                            else {
+                              console.debug("Test case " + (e.which-48) + " does not exist.");
+                            }
+                            break;
+
                     }
                 });
 
