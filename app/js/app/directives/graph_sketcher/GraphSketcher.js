@@ -47,7 +47,7 @@ define(function(require) {
                     rp.empty();
 
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
-                    
+
                     scope.$emit("historyCheckpoint");
                 }
 
@@ -62,7 +62,7 @@ define(function(require) {
                         PADDING = 0.025 * canvasWidth,
                         DOT_LINE_STEP = 5,
                         MOUSE_DETECT_RADIUS = 10;
-                        
+
                     var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
                         KNOT_COLOR = [77,77,77],
                         DOT_LINE_COLOR = [123],
@@ -94,7 +94,7 @@ define(function(require) {
                     var clickedKnot = null;
 
                     // for redo and undo
-                    var checkPoint, 
+                    var checkPoint,
                         checkPointsUndo = [],
                         checkPointsRedo = [];
 
@@ -106,7 +106,7 @@ define(function(require) {
                     }
 
                     function refreshFreeSymbols() {
-                        var start = 15, 
+                        var start = 15,
                             separation = 30;
 
                         for (var i = 0; i < freeSymbols.length; i++) {
@@ -141,7 +141,7 @@ define(function(require) {
 
                         function drawHorizontalAxis() {
                             p.push();
-                            
+
                             p.strokeWeight(CURVE_STRKWEIGHT);
                             p.strokeJoin(p.ROUND);
                             p.stroke(0);
@@ -157,13 +157,13 @@ define(function(require) {
                             p.vertex(rightMargin, canvasHeight / 2);
                             p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
                             p.endShape();
-                            
+
                             p.pop();
                         }
 
                         function drawVerticalAxis() {
                             p.push();
-                            
+
                             p.strokeWeight(CURVE_STRKWEIGHT);
                             p.strokeJoin(p.ROUND);
                             p.stroke(0);
@@ -179,7 +179,7 @@ define(function(require) {
                             p.vertex(canvasWidth/2, upMargin);
                             p.vertex(canvasWidth/2 + 5, upMargin + 10);
                             p.endShape();
-                            
+
                             p.pop();
                         }
 
@@ -276,7 +276,7 @@ define(function(require) {
                     function drawCurve(curve, color) {
                         if (color == undefined) {
                             color = CURVE_COLORS[curve.colorIdx];
-                        } 
+                        }
 
                         p.push();
                         p.stroke(color);
@@ -286,7 +286,7 @@ define(function(require) {
                         for (var i = 1; i < pts.length; i++) {
                             p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
                         }
-                        
+
                         p.pop();
 
                         // draw x intercepts, y intercepts and turning points
@@ -299,7 +299,7 @@ define(function(require) {
 
                     function drawCurves(curves, color) {
                         for (var i = 0; i < curves.length; i++) {
-                            drawCurve(curves[i], color);    
+                            drawCurve(curves[i], color);
                         }
                     }
 
@@ -326,7 +326,7 @@ define(function(require) {
                     function drawKnots(knots, color) {
                         for (var i = 0; i < knots.length; i++) {
                             drawKnot(knots[i], color);
-                        }   
+                        }
                     }
 
                     function drawKnot2(knot) {
@@ -346,7 +346,7 @@ define(function(require) {
                     function drawKnots2(knots) {
                         for (var i = 0; i < knots.length; i++) {
                             drawKnot2(knots[i]);
-                        }   
+                        }
                     }
 
                     function drawKnot3(knot) {
@@ -366,7 +366,7 @@ define(function(require) {
                         if (knot.ySymbol != undefined) {
                             drawSymbol(knot.ySymbol);
                         } else {
-                            drawKnot(f.createPoint(canvasWidth/2, knot.y)); 
+                            drawKnot(f.createPoint(canvasWidth/2, knot.y));
                         }
                     }
 
@@ -385,25 +385,25 @@ define(function(require) {
                         if (color == undefined) {
                             color = KNOT_COLOR;
                         }
-                        
+
                         p.push();
-                        
+
                         p.stroke(color);
                         p.strokeWeight(1.5);
                         p.noFill();
                         p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-                        p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3); 
-                        
+                        p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
+
                         p.stroke(0);
                         p.strokeWeight(0.5);
                         p.fill(0);
                         p.textSize(14);
                         p.text(symbol.text, symbol.x - 4, symbol.y + 20);
-                        
+
                         p.pop();
                     }
 
-                    function drawSymbols(symbols, color) {  
+                    function drawSymbols(symbols, color) {
                         for (var i = 0; i < symbols.length; i++) {
                             drawSymbol(symbols[i], color);
                         }
@@ -478,7 +478,7 @@ define(function(require) {
                     //     p.stroke(color)
                     //     p.strokeWeight(10);
                     //     p.line(junkPt.x - 15, junkPt.y - 15, junkPt.x + 15, junkPt.y + 15);
-                    //     p.line(junkPt.x + 15, junkPt.y - 15, junkPt.x - 15, junkPt.y + 15); 
+                    //     p.line(junkPt.x + 15, junkPt.y - 15, junkPt.x - 15, junkPt.y + 15);
                     //     p.pop();
                     // }
 
@@ -531,7 +531,11 @@ define(function(require) {
                     }
 
                     function findTurnPts(pts, mode) {
-                        if (pts.length == 0) return [];
+                        var range = 50;
+
+                        if (pts.length == 0) {
+                          return [];
+                        }
 
                         var grad = [];
                         for (var i = 0; i < pts.length - 1; i++) {
@@ -546,45 +550,43 @@ define(function(require) {
                             if (grad[i-1] != NaN && grad[i] != NaN) {
                                 if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
-                                    // var l = i-1;
-                                    // while (l >= 0 && f.getDist(pts[l], pts[i]) < 0.0125 * canvasWidth) l--;
-                                    // if (l < 0) {
-                                    //     l = 0;
-                                    // }
-                                    // var dy = pts[i].y - pts[l].y;
-                                    // var dx = pts[i].x - pts[l].x;
-                                    // var grad1 = dy/dx;
+                                    var l = i-1;
+                                    while (l >= 0 && f.getDist(pts[l], pts[i]) <= range && Math.abs((pts[i].y - pts[l].y)/(pts[i].x - pts[l].x)) < 0.015) {
+                                        l--;
+                                    }
+                                    if (l < 0 || f.getDist(pts[l], pts[i]) > range) {
+                                        continue;
+                                    }
+                                    var grad1 = (pts[i].y - pts[l].y)/(pts[i].x - pts[l].x);
 
-                                    // var r = i+1;
-                                    // while (r < pts.length && f.getDist(pts[r], pts[i]) < 0.0125 * canvasWidth) r++;
-                                    // if (r >= pts.length) {
-                                    //     r = pts.length - 1;
-                                    // }
-                                    // var dy = pts[r].y - pts[i].y;
-                                    // var dx = pts[r].x - pts[i].x;
-                                    // var grad[i] = dy/dx;
-
-                                    // if (Math.abs(grad1) > 0.015 && Math.abs(grad2) > 0.015) {
-                                    //     if (mode == 'maxima') {
-                                    //         if ((pts[i].x > pts[i-1].x && grad1 < 0 && grad2 > 0) || (pts[i].x < pts[i-1].x && grad1 > 0 && grad2 < 0)) {
-                                    //             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                    //         } 
-                                    //     } else {
-                                    //         if ((pts[i].x > pts[i-1].x && grad1 > 0 && grad2 < 0) || (pts[i].x < pts[i-1].x && grad1 < 0 && grad2 > 0)) {
-                                    //             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                    //         } 
-                                    //     }   
-                                    // } 
-
+                                    var r = i+1;
+                                    while (r < pts.length && f.getDist(pts[r], pts[i]) <= range && Math.abs((pts[r].y - pts[i].y)/(pts[r].x - pts[i].x)) < 0.015) {
+                                        r++;
+                                    }
+                                    if (r >= pts.length || f.getDist(pts[r], pts[i]) > range) {
+                                        continue;
+                                    }
+                                    var grad2 = (pts[r].y - pts[i].y)/(pts[r].x - pts[i].x);
+                                    
                                     if (mode == 'maxima') {
-                                        if ((pts[i].x > pts[i-1].x && grad[i-1] < 0 && grad[i] > 0) || (pts[i].x < pts[i-1].x && grad[i-1] > 0 && grad[i] < 0)) {
+                                        if ((pts[i].x > pts[i-1].x && grad1 < 0 && grad2 > 0) || (pts[i].x < pts[i-1].x && grad1 > 0 && grad2 < 0)) {
                                             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                        } 
+                                        }
                                     } else {
-                                        if ((pts[i].x > pts[i-1].x && grad[i-1] > 0 && grad[i] < 0) || (pts[i].x < pts[i-1].x && grad[i-1] < 0 && grad[i] > 0)) {
+                                        if ((pts[i].x > pts[i-1].x && grad1 > 0 && grad2 < 0) || (pts[i].x < pts[i-1].x && grad1 < 0 && grad2 > 0)) {
                                             turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                        } 
-                                    }   
+                                        }
+                                    }
+
+                                    // if (mode == 'maxima') {
+                                    //     if ((pts[i].x > pts[i-1].x && grad[i-1] < 0 && grad[i] > 0) || (pts[i].x < pts[i-1].x && grad[i-1] > 0 && grad[i] < 0)) {
+                                    //         turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                    //     }
+                                    // } else {
+                                    //     if ((pts[i].x > pts[i-1].x && grad[i-1] > 0 && grad[i] < 0) || (pts[i].x < pts[i-1].x && grad[i-1] < 0 && grad[i] > 0)) {
+                                    //         turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                    //     }
+                                    // }
 
 
                                 }
@@ -627,7 +629,7 @@ define(function(require) {
                     function isActive(pt) {
 
                         if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
-                            return false; 
+                            return false;
                         }
 
                         var buttons = [];
@@ -655,10 +657,10 @@ define(function(require) {
                         function moveTurnPts(knots) {
                             for (var i = 0; i < knots.length; i++) {
                                 var knot = knots[i];
-                                
+
                                 knot.x += dx;
                                 knot.y += dy;
-                                
+
                                 if (knot.symbol != undefined) {
                                     knot.symbol.x += dx;
                                     knot.symbol.y += dy;
@@ -747,7 +749,7 @@ define(function(require) {
                                     }
                                 }
                             }
-                            
+
                             for (var i = 0; i < curves.length; i++) {
                                 var maxima = curves[i]['maxima'];
                                 loop(maxima);
@@ -760,7 +762,7 @@ define(function(require) {
                                 }
                             }
                         }
-                        
+
 
 
                         if (!found) {
@@ -771,8 +773,8 @@ define(function(require) {
                                     break;
                                 }
                             }
-                        }                    
-                        
+                        }
+
                         if (!found) {
                             function loop1(knots) {
                                 if (found) {
@@ -786,16 +788,16 @@ define(function(require) {
                                         found = true;
                                         return;
                                     }
-                                }   
+                                }
                             }
 
                             function loop2(knots) {
                                 if (found) {
                                     return;
                                 }
-                                
+
                                 loop1(knots);
-                                
+
                                 for (var j = 0; j < knots.length; j++) {
                                     var knot = knots[j];
                                     if (knot.xSymbol != undefined && isOverSymbol(current, knot.xSymbol)) {
@@ -855,7 +857,7 @@ define(function(require) {
                         }
                     }
 
-                
+
                     function mousePressed(e) {
 
                         isMouseDragged = false;
@@ -878,7 +880,7 @@ define(function(require) {
                         if (!isActive(current)) {
                             return;
                         }
-                        
+
 
                         // record down current status, may be used later for undo.
                         checkPoint = {};
@@ -912,7 +914,7 @@ define(function(require) {
                                     found = true;
                                     break;
                                 }
-                            }   
+                            }
                         }
 
                         function detach2(knots) {
@@ -1001,10 +1003,10 @@ define(function(require) {
                             alert("Too much lines being drawn.");
                             checkPointsUndo.pop();
                         }
-                        
+
                     }
 
-                    
+
                     function mouseDragged(e) {
                         isMouseDragged = true;
                         var current = getMousePt(e);
@@ -1020,7 +1022,7 @@ define(function(require) {
                             var dy = current.y - prevMousePt.y;
                             prevMousePt = current;
                             transCurve(curves[movedCurveIdx], dx, dy);
-                            
+
                             reDraw();
                             drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
@@ -1072,7 +1074,7 @@ define(function(require) {
                                     return;
                                 }
                             }
-                            
+
 
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
@@ -1086,7 +1088,7 @@ define(function(require) {
                             }
                             p.pop();
 
-                            drawnPts.push(current); 
+                            drawnPts.push(current);
                         }
                     }
 
@@ -1133,13 +1135,13 @@ define(function(require) {
                                 freeAllSymbols(maxima);
 
                                 var minima = curve.minima;
-                                freeAllSymbols(minima); 
+                                freeAllSymbols(minima);
                             }
-                            
+
                             scope.trashActive = false;
                             scope.$apply();
                             reDraw();
-                        } else if (action == "MOVE_SYMBOL") {   
+                        } else if (action == "MOVE_SYMBOL") {
                             checkPointsUndo.push(checkPoint);
                             checkPointsRedo = [];
                             scope.$apply();
@@ -1199,10 +1201,10 @@ define(function(require) {
                             }
 
                             reDraw();
-                                    
+
                         } else if (action == "DRAW_CURVE") {
                             // neglect if curve drawn is too short
-                            if (s.sample(drawnPts).length < 3) { 
+                            if (s.sample(drawnPts).length < 3) {
                                 return;
                             }
 
@@ -1234,7 +1236,7 @@ define(function(require) {
                             curve.minima = findTurnPts(pts, 'minima');
                             curve.colorIdx = drawnColorIdx;
                             curves.push(curve);
-                            
+
                             reDraw();
                         }
 
@@ -1322,13 +1324,13 @@ define(function(require) {
                         data.canvasHeight = canvasHeight;
 
                         var clonedCurves = clone(curves);
-                        
+
                         // sort segments according to their left most points.
                         function compare(curve1, curve2) {
                             function findMinX(pts) {
                                 if (pts.length == 0) return 0;
                                 var min = canvasWidth;
-                                for (var i = 0; i < pts.length; i++) 
+                                for (var i = 0; i < pts.length; i++)
                                     min = Math.min(min, pts[i].x);
                                 return min;
                             }
@@ -1436,7 +1438,7 @@ define(function(require) {
                             }
                         }
 
-                        
+
                         curves = data.curves;
                         for (var i = 0; i < curves.length; i++) {
 
@@ -1519,10 +1521,10 @@ define(function(require) {
 
                         checkPoint = {};
                         checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
-                        checkPoint.curvesJSON = JSON.stringify(curves);  
-                        checkPointsUndo.push(checkPoint);                          
+                        checkPoint.curvesJSON = JSON.stringify(curves);
+                        checkPointsUndo.push(checkPoint);
                         checkPointsRedo = [];
-                        
+
                         curves = [];
                         clickedKnot = null;
 
@@ -1546,7 +1548,7 @@ define(function(require) {
                     //         xhr.onreadystatechange = function() {
                     //             if (xhr.readyState == 4 && xhr.status == 200) {
                     //                 var data = JSON.parse(xhr.responseText);
-                                    
+
                     //                 alert(data['isCorrect'] + ": " + data['errCause']);
                     //             }
                     //         }
@@ -1645,8 +1647,8 @@ define(function(require) {
                         //element.find("canvas").remove();
 
                         scope.future = [];
-                        
-                        // generate p5 instance                
+
+                        // generate p5 instance
                         // scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
 
@@ -1672,7 +1674,7 @@ define(function(require) {
                     });
                 };
 
-                
+
                 scope.centre = function() {
                     sketch.centre();
                 }
