@@ -25,12 +25,10 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
-        var p = this.p.createVector(0, - box.h / 2);
+        var box = this.s.font_it.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        var p = this.p.createVector(0, 0);
         return p;
     }
-
-
 
     constructor(p: any, s: any, type: string, mode:string) {
         super(p, s, mode);
@@ -242,14 +240,16 @@ export
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
-        var argHeight = this.s.xBox.h;
+        var argHeight = box.h;// this.s.xBox.h;
         if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-            let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox()
+            let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox();
             argWidth = subtreeBB.w;
-            argHeight = subtreeBB.h;
+            argHeight = _.max([argHeight, subtreeBB.h]);
         }
+        var scale = 1 + ((argHeight / box.h) - 1) / 2;
+        argHeight *= scale; // Vertical scale factor (???)
         var width = box.w + argWidth;
-        return new Rect(-width / 2, -argHeight / 2, width + this.scale * 40, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width / 2, -argHeight/2, width + this.scale * 40, argHeight);  // FIXME This 40 is hard-coded
     }
 
 
@@ -303,7 +303,7 @@ export
             p.y = this.scale*15;
             widest += w;
         } else {
-            this.dockingPoints["argument"].position = this.p.createVector(0, -this.s.xBox.h / 2);
+            this.dockingPoints["argument"].position = this.p.createVector(0, 0);
         }
 
         if ("superscript" in boxes) {
@@ -341,10 +341,10 @@ export
         if ("right" in boxes) {
             child_width = docking_right.child.boundingBox().w;
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20) + docking_right.child.offsetBox().w / 2) : (parent_width - this.boundingBox().w / 2 + docking_right.child.offsetBox().w);
-            docking_right.child.position.y = this.scale*20;
+            docking_right.child.position.y = 0;
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
-            docking_right.position.y = (this.dockingPoint.y);
+            docking_right.position.y = 0;
         }
 
     }

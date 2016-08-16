@@ -2,6 +2,7 @@ import { Widget, Rect } from './Widget.ts';
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 export
     class Fraction extends Widget {
@@ -183,6 +184,11 @@ export
             var p = this.dockingPoints["right"].child.position;
             p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
             p.y = 0;
+            // FIXME HORRIBLE BRACKETS FIX
+            var docking_right = this.dockingPoints["right"];
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
             var p = this.dockingPoints["right"].position;
             if ("denominator" in boxes) {

@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts';
 import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /**
  * Relations, such as equalities, inequalities, and unexpected friends.
@@ -233,6 +234,10 @@ export
             child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
             right.position.x = parent_w / 2 + child_w / 2;
             right.position.y = 0;
+            // FIXME HORRIBLE BRACKETS FIX
+            if(right.child instanceof Brackets) {
+                right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
 
         }
     }
