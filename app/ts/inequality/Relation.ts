@@ -148,7 +148,7 @@ export
     token() {
         // Equals sign always appears in menu, others require loading
         if (this.relation == "=") {
-            return
+            return '';
         } else if (this.pythonSymbol) {
             return this.pythonSymbol;
         }
