@@ -11,6 +11,10 @@ export
     class BinaryOperation extends Widget {
     protected s: any;
     protected operation: string;
+    protected mhchemSymbol: string;
+    protected latexSymbol: string;
+    protected mathmlSymbol: string;
+    protected pythonSymbol: string;
 
     get typeAsString(): string {
         return "BinaryOperation";
@@ -33,15 +37,15 @@ export
         switch(this.operation) {
           case '±':
             this.latexSymbol = '\\pm ';
-            this.pythonSymbol = '±';
-            this.mathmlSymbol = '±';
-            this.mhchemSymbol = '±';
+            this.pythonSymbol = '± ';
+            this.mathmlSymbol = '± ';
+            this.mhchemSymbol = null;
             break;
           case '−':
-            this.latexSymbol = '-';
-            this.pythonSymbol = '-';
-            this.mathmlSymbol = '-';
-            this.mhchemSymbol = '-';
+            this.latexSymbol = '- ';
+            this.pythonSymbol = '- ';
+            this.mathmlSymbol = '- ';
+            this.mhchemSymbol = '- ';
             break;
           default:
             this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.mhchemSymbol = this.operation;
