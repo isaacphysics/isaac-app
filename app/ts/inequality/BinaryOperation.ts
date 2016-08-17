@@ -30,6 +30,23 @@ export
         super(p, s);
         this.s = s;
         this.operation = operation;
+        switch(this.operation) {
+          case '±':
+            this.latexSymbol = '\\pm ';
+            this.pythonSymbol = '±';
+            this.mathmlSymbol = '±';
+            this.mhchemSymbol = '±';
+            break;
+          case '−':
+            this.latexSymbol = '-';
+            this.pythonSymbol = '-';
+            this.mathmlSymbol = '-';
+            this.mhchemSymbol = '-';
+            break;
+          default:
+            this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.mhchemSymbol = this.operation;
+            break;
+        }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
         this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation'];
@@ -58,16 +75,19 @@ export
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = " " + this.operation.replace(/−/g, "-");
+        var expression = " ";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.latexSymbol;
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
+            expression += this.pythonSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mhchem") {
+          expression += this.mhchemSymbol;
             if (this.dockingPoints["right"].child != null) {
                 expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
             } else {
@@ -80,7 +100,7 @@ export
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
-            expression = '<mo>' + this.operation.replace(/−/g, "-") + "</mo>";
+            expression = '<mo>' + this.mathmlSymbol + "</mo>";
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }

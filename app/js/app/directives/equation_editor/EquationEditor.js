@@ -988,6 +988,15 @@ define(function(require) {
                             texLabel: true
                         }
                     }, {
+                        type: "BinaryOperation",
+                        properties: {
+                            operation: "±",
+                        },
+                        menu: {
+                            label: "\\pm",
+                            texLabel: true
+                        }
+                    },{
                         type: "Fraction",
                         menu: {
                             label: "\\frac{a}{b}",
