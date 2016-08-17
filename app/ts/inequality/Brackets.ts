@@ -316,16 +316,6 @@ export
             docking_superscript.position.y = -parent_height / 2 - this.scale * this.s.mBox.h / 2;
         }
 
-        if ("superscript" in boxes) {
-            child_width = docking_superscript.child.boundingBox().w;
-            child_height = docking_superscript.child.boundingBox().h;
-            docking_superscript.child.position.x = (parent_width / 2 + this.scale * (40) + child_width / 2);
-            docking_superscript.child.position.y = - parent_height / 2 - docking_superscript.child.subtreeBoundingBox().h / 2; // this.scale * this.s.mBox.h/2; // -0.7 * (parent_height / 2 + child_height / 2);
-        } else { // FIXME This kind of works, but could use some improvements on the constants side (af599)
-            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * (40 + 20)) : (parent_width - this.boundingBox().w / 2 + this.scale * 40);
-            docking_superscript.position.y = -parent_height / 2 - this.scale * this.s.mBox.h / 2;
-        }
-
         if ("subscript" in boxes) {
             child_width = docking_subscript.child.boundingBox().w;
             child_height = docking_subscript.child.boundingBox().h;
