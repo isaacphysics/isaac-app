@@ -45,6 +45,22 @@ export
     get center() {
         return new p5.Vector(this.x + this.w / 2, this.y + this.h / 2);
     }
+
+    get topLeft(): p5.Vector {
+        return new p5.Vector(this.x, this.y);
+    }
+
+    get topRight(): p5.Vector {
+        return new p5.Vector(this.x + this.w, this.y);
+    }
+
+    get bottomRight(): p5.Vector {
+        return new p5.Vector(this.x + this.w, this.y + this.h);
+    }
+
+    get bottomLeft(): p5.Vector {
+        return new p5.Vector(this.x, this.y + this.h);
+    }
 }
 
 /** A base class for anything visible, draggable, and dockable. */
