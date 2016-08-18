@@ -1206,16 +1206,16 @@ define(function(require) {
                             checkPointsRedo = [];
                             scope.$apply();
 
-                            if (Math.abs(drawnPts[0].y - canvasHeight/2) < 5) {
+                            if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
                                 drawnPts[0].y = canvasHeight/2;
                             }
-                            if (Math.abs(drawnPts[0].x - canvasWidth/2) < 5) {
+                            if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
                                 drawnPts[0].x = canvasWidth/2;
                             }
-                            if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 5) {
+                            if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
                                 drawnPts[drawnPts.length - 1].y = canvasHeight/2;
                             }
-                            if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 5) {
+                            if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
                                 drawnPts[drawnPts.length - 1].x = canvasWidth/2;
                             }
 
