@@ -553,25 +553,24 @@ define(function(require) {
                                     var range = 30;
                                     var limit = 0.05;
 
-                                    var l = i-2;
-                                    var acc1 = grad[i-1];
-                                    while (l >= 0 && f.getDist(pts[l], pts[i]) < range && Math.abs(acc1) < limit) {
-                                        acc1 += grad[l] - grad[l+1];
+                                    var l = i - 1;
+                                    while (l >= 0 && f.getDist(pts[l], pts[i]) < range && Math.abs(grad[l]) < limit) {
                                         l--;
                                     }
-                                    if (Math.abs(acc1) < limit) {
+                                    if (l < 0 || f.getDist(pts[l], pts[i]) >= range) {
                                         continue;
                                     }
 
-                                    var r = i + 1;
-                                    var acc2 = grad[i];
-                                    while (r < grad.length && f.getDist(pts[i], pts[r+1]) < range && Math.abs(acc2) < limit) {
-                                        acc2 += grad[r] - grad[r-1];
+                                    var r = i;
+                                    while (r < grad.length && f.getDist(pts[i], pts[r + 1]) < range && Math.abs(grad[r]) < limit) {
                                         r++;
                                     }
-                                    if (Math.abs(acc2) < limit) {
+                                    if (r >= grad.length || f.getDist(pts[i], pts[r + 1]) >= range) {
                                         continue;
                                     }
+
+                                    var acc1 = grad[l];
+                                    var acc2 = grad[r];
 
                                     if (mode == 'maxima') {
                                         if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
