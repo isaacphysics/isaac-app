@@ -57,7 +57,7 @@ define(function(require) {
                     var canvasHeight = window.innerHeight;
                     var canvasWidth = window.innerWidth;
 
-                    var GRID_WIDTH = 50,
+                    var GRID_WIDTH = 60,
                         CURVE_STRKWEIGHT = 2,
                         PADDING = 0.025 * canvasWidth,
                         DOT_LINE_STEP = 5,
@@ -189,7 +189,7 @@ define(function(require) {
                             p.noFill();
                             p.strokeWeight(CURVE_STRKWEIGHT);
                             p.strokeJoin(p.ROUND);
-                            p.stroke(215);
+                            p.stroke(245);
 
                             p.push();
                             p.translate(0, canvasHeight / 2);
@@ -550,43 +550,38 @@ define(function(require) {
                             if (grad[i-1] != NaN && grad[i] != NaN) {
                                 if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
-                                    var l = i-1;
-                                    while (l >= 0 && f.getDist(pts[l], pts[i]) <= range && Math.abs((pts[i].y - pts[l].y)/(pts[i].x - pts[l].x)) < 0.015) {
+                                    var range = 30;
+                                    var limit = 0.05;
+
+                                    var l = i-2;
+                                    var acc1 = grad[i-1];
+                                    while (l >= 0 && f.getDist(pts[l], pts[i]) < range && Math.abs(acc1) < limit) {
+                                        acc1 += grad[l] - grad[l+1];
                                         l--;
                                     }
-                                    if (l < 0 || f.getDist(pts[l], pts[i]) > range) {
+                                    if (Math.abs(acc1) < limit) {
                                         continue;
                                     }
-                                    var grad1 = (pts[i].y - pts[l].y)/(pts[i].x - pts[l].x);
 
-                                    var r = i+1;
-                                    while (r < pts.length && f.getDist(pts[r], pts[i]) <= range && Math.abs((pts[r].y - pts[i].y)/(pts[r].x - pts[i].x)) < 0.015) {
+                                    var r = i + 1;
+                                    var acc2 = grad[i];
+                                    while (r < grad.length && f.getDist(pts[i], pts[r+1]) < range && Math.abs(acc2) < limit) {
+                                        acc2 += grad[r] - grad[r-1];
                                         r++;
                                     }
-                                    if (r >= pts.length || f.getDist(pts[r], pts[i]) > range) {
+                                    if (Math.abs(acc2) < limit) {
                                         continue;
                                     }
-                                    var grad2 = (pts[r].y - pts[i].y)/(pts[r].x - pts[i].x);
-                                    
-                                    if (mode == 'maxima') {
-                                        if ((pts[i].x > pts[i-1].x && grad1 < 0 && grad2 > 0) || (pts[i].x < pts[i-1].x && grad1 > 0 && grad2 < 0)) {
-                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                        }
-                                    } else {
-                                        if ((pts[i].x > pts[i-1].x && grad1 > 0 && grad2 < 0) || (pts[i].x < pts[i-1].x && grad1 < 0 && grad2 > 0)) {
-                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                        }
-                                    }
 
-                                    // if (mode == 'maxima') {
-                                    //     if ((pts[i].x > pts[i-1].x && grad[i-1] < 0 && grad[i] > 0) || (pts[i].x < pts[i-1].x && grad[i-1] > 0 && grad[i] < 0)) {
-                                    //         turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                    //     }
-                                    // } else {
-                                    //     if ((pts[i].x > pts[i-1].x && grad[i-1] > 0 && grad[i] < 0) || (pts[i].x < pts[i-1].x && grad[i-1] < 0 && grad[i] > 0)) {
-                                    //         turnPts.push(f.createPoint(pts[i].x, pts[i].y));
-                                    //     }
-                                    // }
+                                    if (mode == 'maxima') {
+                                        if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
+                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                        } 
+                                    } else {
+                                        if ((pts[i].x > pts[i-1].x && acc1 > 0 && acc2 < 0) || (pts[i].x < pts[i-1].x && acc1 < 0 && acc2 > 0)) {
+                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y));
+                                        } 
+                                    }
 
 
                                 }
