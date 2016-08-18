@@ -55,7 +55,7 @@ define(["app/honest/responsive_video"], function(rv) {
 							questionId : scope.doc.id,
 							hintIndex : i,
 						})
-					}		
+					}
 				}
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
@@ -79,7 +79,7 @@ define(["app/honest/responsive_video"], function(rv) {
 						s.$promise.then(function foo(r) {
 							scope.question.validationResponse = r;
 
-							// Check the gameboard progress 
+							// Check the gameboard progress
 							if (scope.gameBoard) {
 								// Re-load the game board to check for updated progress
 								var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
@@ -98,17 +98,23 @@ define(["app/honest/responsive_video"], function(rv) {
 											gameBoardCompletedPassed = false;
 										}
 									}
-
+									console.debug(board.percentageCompleted);
 									// If things have changed, and the answer is correct, show the modal
-									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed || 
+									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
 									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
 									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
 										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
 										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
-										scope.modals["congrats"].show();
+										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
+										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
+										//scope.modals["congrats"].show();
+
+									}
+									if(board.percentageCompleted == '100') {
+											scope.modals["congrats"].show();
 									}
 
-									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one 
+									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 									// question for a gameboard and the question has been passed, not completed. See issue #419
 
 								});

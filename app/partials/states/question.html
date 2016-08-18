@@ -19,7 +19,7 @@
 <div mobile-panel class="no-print">
     <div class='row'>
         <div class='small-16 columns text-right'>
-            <span class='ru-level-{{pageSubject}}-{{questionPage.level}} ru-level' aria-label='{{pageSubject}} Level {{questionPage.level}}'></span>  
+            <span class='ru-level-{{pageSubject}}-{{questionPage.level}} ru-level' aria-label='{{pageSubject}} Level {{questionPage.level}}'></span>
         </div>
     </div>
     <div class='ru-mobile-crumb'>
@@ -112,28 +112,28 @@
     <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
   </div>
   <div class="reveal-modal-body">
-    <!-- 
+    <!--
         Physics question
     -->
     <div ng-class="['congrats', pageSubject]">
         <span class="icon-stack">
             <span class="icon-hexagon"></span>
-            <span ng-class="state.gameBoardPercentComplete == 100 ? 'icon-board-complete' : 'icon-question-complete'"></span>
+            <span ng-class="gameBoardPercentComplete == 100 ? 'icon-board-complete' : 'icon-question-complete'"></span>
         </span>
-        <div ng-show="state.gameBoardCompletedPassed && ! state.gameBoardCompletedPerfect" class="congrats-msg">
+        <div ng-show="gameBoardCompletedPassed && !gameBoardCompletedPerfect" class="congrats-msg">
             <p>You've achieved mastery in</p>
-            <h3>{{gameBoard.title}}</h3>
+            <h3>{{gameBoardCompletedPerfect}}</h3>
         </div>
-        <div ng-show="state.gameBoardCompletedPerfect" class="congrats-msg">
+        <div ng-show="gameBoardCompletedPerfect" class="congrats-msg">
             <p>You've achieved 100% on your board</p>
             <h3>{{gameBoard.title}}</h3>
         </div>
-        <div ng-show="state.gameBoardPercentComplete < 100 && !hasReachedQuestionPassmark" class="congrats-msg">
+        <div ng-show="gameBoardPercentComplete < 100 && !hasReachedQuestionPassmark" class="congrats-msg">
             <p>You've completed this question</p>
             <h3>{{questionPage.title}}</h3>
         </div>
     </div>
-    <div ng-show="nextQuestion" class="row">
+    <div ng-show="nextQuestion && !gameBoardCompletedPerfect" class="row">
         <div class="text-center columns">
             <h4 class="congrats-subhead">Next question:</h4>
         </div>
@@ -141,7 +141,7 @@
             <a class="ru-button-big" ui-sref="question({id: nextQuestion.id})" ng-click="modals.congrats.hide()">{{nextQuestion.title}}</a>
         </div>
     </div>
-    <div ng-show="!nextQuestion" class="row">
+    <div ng-show="!nextQuestion || gameBoardCompletedPerfect" class="row">
         <div class="text-center columns">
             <a class="ru-button-big" ng-click="modals.congrats.hide(); backToBoard();">Back to Board</a>
         </div>

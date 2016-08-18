@@ -103,7 +103,12 @@ define([], function() {
 					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}
 		}
-
+		$scope.$on('gameBoardCompletedPassed', function(e, data) {
+			$scope.gameBoardCompletedPassed = data;
+		});
+		$scope.$on('gameBoardCompletedPerfect', function(e, data) {
+			$scope.gameBoardCompletedPerfect = data;
+		});
 		persistence.session.save("conceptPageSource", $location.url());
 
 		if ($stateParams.board) {
@@ -111,7 +116,7 @@ define([], function() {
 			$scope.gameBoard.$promise.then(function(board) {
 
 				console.debug("Question is from board:", board);
-				// Cause this board to be persisted for the current user. 
+				// Cause this board to be persisted for the current user.
 				// This will fail if we're not logged in, but that doesn't matter.
 				api.saveGameBoard(board.id);
 				// Find the index of this question on the game board.
