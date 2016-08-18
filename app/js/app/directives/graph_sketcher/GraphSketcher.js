@@ -554,7 +554,7 @@ define(function(require) {
                                 if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
                                     var range = 30;
-                                    var limit = 0.05;
+                                    var limit = 0.1;
 
                                     var l = i - 1;
                                     while (l >= 0 && f.getDist(pts[l], pts[i]) < range && Math.abs(grad[l]) < limit) {
@@ -1588,6 +1588,18 @@ define(function(require) {
                         key = undefined;
                     }
 
+                    function touchStarted(e) {
+                        mousePressed(e);
+                    }
+
+                    function touchMoved(e) {
+                        mousePressed(e);
+                    }
+
+                    function touchEnded(e) {
+                        mouseReleased(e);
+                    }
+
                     // function drawButton(){
                     //     here we define the buttons:
                     //     - test, testCase, drawnCase, custom, undo, redo, clear, testCasePrint, drawnCasePrint
@@ -1638,15 +1650,16 @@ define(function(require) {
                     p.mouseDragged = mouseDragged;
                     p.mouseReleased = mouseReleased;
                     p.mouseClicked = mouseClicked;
+                    p.mouseMoved = mouseMoved;
 
-                    p.touchStarted = mousePressed;
-                    p.touchMoved = mouseDragged;
-                    p.touchEnded = mouseReleased;
+
+                    p.touchStarted = touchStarted;
+                    p.touchMoved = touchMoved;
+                    p.touchEnded = touchEnded;
 
                     p.keyPressed = keyPressed;
                     p.keyReleased = keyReleased;
 
-                    p.mouseMoved = mouseMoved;
                     p.encodeData = encodeData;
                     p.decodeData = decodeData;
                     p.undo = undo;
