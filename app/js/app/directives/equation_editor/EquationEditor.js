@@ -125,9 +125,12 @@ define(function(require) {
                         delete scope.symbolLibrary.augmentedOps;
 
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
+                        scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
 
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
+
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
+                            scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             var parsed = parseCustomSymbols(questionDoc.availableSymbols);
 
                             var customSymbolsParsed = false;
@@ -237,6 +240,9 @@ define(function(require) {
                     ">=": "\\geq",
                 };
                 var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                var trigFunctionsStandard = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot"];
+                var trigFunctionsHyp = ["sinh", "cosh", "tanh", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                var trigReduced = ["sin", "cos", "tan"];
                 var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
                 var letterMap = {
                     "\\alpha": "α",
@@ -441,7 +447,8 @@ define(function(require) {
 
                                     } else {
                                         // otherwise we must have a standard trig function
-                                        if (scope.symbolLibrary.trigFunctions.indexOf(name) != -1) {
+                                      
+                                        if (trigFunctions.indexOf(name) != -1) {
                                             partResults.push({
                                                 type: "Fn",
                                                 properties: {
@@ -457,7 +464,7 @@ define(function(require) {
                                             });
                                         } else {
                                             console.debug("Could not parse custom function!");
-                                            debugger;
+
                                             continue;
                                         }
 
@@ -749,6 +756,12 @@ define(function(require) {
                     theNumbers: theNumbers(numberStrings),
 
                     trigFunctions: trigFunction(trigFunctions),
+
+                    reducedTrigFunctions: trigFunction(trigReduced),
+
+                    hypTrigFunctions: trigFunction(trigFunctionsHyp),
+
+                    trigFunctionsStandard: trigFunction(trigFunctionsStandard),
 
                     particles: [{
                         type: 'Particle',
@@ -1313,11 +1326,21 @@ define(function(require) {
                     }
                 };
 
+                scope.hypTrigTitle = {
+                    type: "string",
+                    menu: {
+                        label: "\\text{hyp}",
+                        texLabel: true,
+                        fontSize: '30px',
+                    }
+                };
+
                 scope.otherFnTitle = {
                     type: "string",
                     menu: {
                         label: "\\log",
-                        texLabel: true
+                        texLabel: true,
+                        fontSize: '33px'
                     }
                 };
 

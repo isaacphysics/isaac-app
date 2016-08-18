@@ -40,7 +40,8 @@
     <div top-menu="\sin\,\, \int" ng-if="isLandscape && (editorMode == 'maths')" style="font-size: 23px !important;">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu></div>
-        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trigFunctions"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.augmentedTrig"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="hypTrigTitle" symbol-menu symbols="symbolLibrary.hypTrigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
     </div>
     <!--
