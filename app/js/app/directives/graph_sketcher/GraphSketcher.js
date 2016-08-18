@@ -73,6 +73,7 @@ define(function(require) {
                     // action recorder
                     var action = undefined,
                         isMouseDragged,
+                        releasePt,
                         drawMode,
                         key = undefined;
                         
@@ -82,7 +83,8 @@ define(function(require) {
                     // for drawing curve
                     var drawnPts = [],
                         drawnColorIdx,
-                        lineStart;
+                        lineStart,
+                        lineEnd;
 
                     var prevMousePt;
 
@@ -870,8 +872,11 @@ define(function(require) {
                         movedCurveIdx = undefined;
                         prevMousePt = undefined;
 
+                        releasePt = undefined;
+
 
                         var current = getMousePt(e);
+                        releasePt = current;
 
                         // this funciton does not react if the mouse is over buttons or outside the canvas.
                         if (!isActive(current)) {
@@ -1016,6 +1021,7 @@ define(function(require) {
                     function mouseDragged(e) {
                         isMouseDragged = true;
                         var current = getMousePt(e);
+                        releasePt = current;
 
                         if (action == "MOVE_CURVE") {
                             p.cursor(p.MOVE);
@@ -1104,16 +1110,71 @@ define(function(require) {
                                 p.strokeWeight(CURVE_STRKWEIGHT);
                                 p.line(lineStart.x, lineStart.y, current.x, current.y);
                                 p.pop();
+
+                                lineEnd = current;
                             }
                             
                         }
                     }
 
                     function mouseReleased(e) {
-                        var current = getMousePt(e);
+                        var current = releasePt;
 
-                        // if it is just a click
+                        // if it is just a click, handle click in the following if block
                         if (!isMouseDragged) {
+
+                            // clean up the mess of MOVE_SYMBOL and MOVE_CURVE
+                            if (action  == "MOVE_SYMBOL") {
+                                if (bindedKnot == undefined) {
+                                    freeSymbols.push(movedSymbol);
+                                } else {
+                                    bindedKnot[symbolType] = movedSymbol;
+                                }
+                                reDraw();
+                            } else if (action == "MOVE_CURVE") {
+                                reDraw();
+                            }
+
+                            // click do not respond in inactive area (eg buttons)
+                            if (!isActive(current)) {
+                                return;
+                            }
+
+                            for (var i = 0; i < curves.length; i++) {
+                                var maxima = curves[i].maxima;
+                                for (var j = 0; j < maxima.length; j++) {
+                                    var knot = maxima[j];
+                                    if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                                        if (knot == clickedKnot) {
+                                            clickedKnot = null;
+                                        } else {
+                                            clickedKnot = knot;
+                                        }
+                                        reDraw();
+                                        return;
+                                    }
+                                }
+
+                                var minima = curves[i].minima;
+                                for (var j = 0; j < minima.length; j++) {
+                                    var knot = minima[j];
+                                    if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                                        if (knot == clickedKnot) {
+                                            clickedKnot = null;
+                                        } else {
+                                            clickedKnot = knot;
+                                        }
+                                        reDraw();
+                                        return;
+                                    }
+                                }
+                            }
+
+                            if (clickedKnot != null) {
+                                clickedKnot = null;
+                                reDraw();
+                            }
+
                             return;
                         }
 
@@ -1262,8 +1323,8 @@ define(function(require) {
                                 checkPointsRedo = [];
 
                                 var n = 100;
-                                var rx = current.x - lineStart.x;
-                                var ry = current.y - lineStart.y;
+                                var rx = lineEnd.x - lineStart.x;
+                                var ry = lineEnd.y - lineStart.y;
                                 var sx = rx / n;
                                 var sy = ry / n;
                                 var pts = [];
@@ -1589,13 +1650,11 @@ define(function(require) {
                     }
 
                     function touchStarted(e) {
-
-
-                        mousePressed(e);
+                        mousePressed(e.touches[0]);
                     }
 
                     function touchMoved(e) {
-                        mouseDragged(e);
+                        mouseDragged(e.touches[0]);
                     }
 
                     function touchEnded(e) {
@@ -1651,7 +1710,6 @@ define(function(require) {
                     p.mousePressed = mousePressed;
                     p.mouseDragged = mouseDragged;
                     p.mouseReleased = mouseReleased;
-                    p.mouseClicked = mouseClicked;
                     p.mouseMoved = mouseMoved;
 
 
