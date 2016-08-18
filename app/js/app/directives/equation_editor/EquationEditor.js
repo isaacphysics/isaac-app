@@ -124,7 +124,7 @@ define(function(require) {
                         delete scope.symbolLibrary.customFunction;
                         delete scope.symbolLibrary.augmentedOps;
 
-                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat((scope.symbolLibrary.hiddenOps));
+                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
 
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
@@ -384,16 +384,21 @@ define(function(require) {
                             })
                         } else {
                             console.debug("Parsing symbol:", s);
+
                             var parts = s.split(" ");
+
                             var partResults = [];
                             for (var j in parts) {
                                 var p = parts[j];
                                 var name = p.replace(/\(\)/g, "");
                                 var index = trigMap[name + ""];
+                                // If we have a function
                                 if (p.endsWith("()")) {
 
                                     var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                     var allowSubscript = name == "log";
+                                    console.log(name);
+                                    // which is an inverse trig function
                                     if (name.substring(0, 3) == "arc") {
                                         // finds the index of the function in the symbol library to retrieve the label.
 
@@ -418,8 +423,8 @@ define(function(require) {
                                                 fontSize: '15px'
                                             }
                                         });
-                                    } else {
-
+                                    } else if (name == 'log' || name == 'ln') {
+                                        // or if we have log or natural log
                                         partResults.push({
                                             type: "Fn",
                                             properties: {
@@ -428,14 +433,37 @@ define(function(require) {
                                                 allowSubscript: allowSubscript
                                             },
                                             menu: {
-                                                label: scope.symbolLibrary.trigFunctions[index].menu.label,
+                                                label: '\\text{' + name + '}',
                                                 texLabel: true,
                                                 fontSize: '18px'
                                             }
                                         });
+
+                                    } else {
+                                        // otherwise we must have a standard trig function
+                                        if (scope.symbolLibrary.trigFunctions.indexOf(name) != -1) {
+                                            partResults.push({
+                                                type: "Fn",
+                                                properties: {
+                                                    name: name,
+                                                    innerSuperscript: innerSuperscript,
+                                                    allowSubscript: allowSubscript
+                                                },
+                                                menu: {
+                                                    label: scope.symbolLibrary.trigFunctions[index].menu.label,
+                                                    texLabel: true,
+                                                    fontSize: '18px'
+                                                }
+                                            });
+                                        } else {
+                                            console.debug("Could not parse custom function!");
+                                            debugger;
+                                            continue;
+                                        }
+
                                     }
                                 } else {
-                                    // must be a symbol
+                                    // otherwise we must have a symbol
                                     var p1 = convertToLatexIfGreek(p.split("_")[0]);
                                     var newSym = {
                                         type: "Symbol",
@@ -464,25 +492,28 @@ define(function(require) {
                                 }
                             }
                         }
-
-                        var root = partResults[0];
-                        for (var k = 0; k < partResults.length - 1; k++) {
-                            partResults[k].children = {
-                                right: partResults[k + 1]
+                        // if input is malicious partResults[0] may not exist!
+                        if (partResults[0]) {
+                            var root = partResults[0];
+                            for (var k = 0; k < partResults.length - 1; k++) {
+                                partResults[k].children = {
+                                    right: partResults[k + 1]
+                                }
+                                root.menu.label += " " + partResults[k + 1].menu.label;
                             }
-                            root.menu.label += " " + partResults[k + 1].menu.label;
+                            switch (partResults[0].type) {
+                                case "Symbol":
+                                    r.vars.push(root);
+                                    break;
+                                case "Fn":
+                                    r.fns.push(root);
+                                    break;
+                                case "Relation":
+                                    r.operators.push(root);
+                                    break;
+                            }
                         }
-                        switch (partResults[0].type) {
-                            case "Symbol":
-                                r.vars.push(root);
-                                break;
-                            case "Fn":
-                                r.fns.push(root);
-                                break;
-                            case "Relation":
-                                r.operators.push(root);
-                                break;
-                        }
+
                     }
                     return r;
                 };
@@ -996,7 +1027,7 @@ define(function(require) {
                             label: "\\pm",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fraction",
                         menu: {
                             label: "\\frac{a}{b}",
