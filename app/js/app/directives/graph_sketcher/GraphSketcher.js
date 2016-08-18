@@ -72,14 +72,17 @@ define(function(require) {
 
                     // action recorder
                     var action = undefined,
-                        isMouseDragged;
-
+                        isMouseDragged,
+                        drawMode,
+                        key = undefined;
+                        
                     var freeSymbols = [],
                         curves = [];
 
                     // for drawing curve
                     var drawnPts = [],
-                        drawnColorIdx;
+                        drawnColorIdx,
+                        lineStart;
 
                     var prevMousePt;
 
@@ -982,6 +985,15 @@ define(function(require) {
                         if (curves.length < CURVE_COLORS.length) {
                             action = "DRAW_CURVE";
 
+                            if (key === "Shift") {
+                                console.debug("Draw Line");
+                                lineStart = current;
+                                drawMode = "line";
+                            } else {
+                                console.debug("Draw Curve");
+                                drawMode = "curve";
+                            }
+
                             var alreadyUsedColors = [];
                             for (var i = 0; i < curves.length; i++) {
                                 alreadyUsedColors.push(curves[i].colorIdx);
@@ -1073,16 +1085,27 @@ define(function(require) {
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
 
-                            p.push();
-                            p.stroke(CURVE_COLORS[drawnColorIdx]);
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            if (drawnPts.length > 0) {
-                                var prev = drawnPts[drawnPts.length - 1];
-                                p.line(prev.x, prev.y, current.x, current.y);
-                            }
-                            p.pop();
+                            if (drawMode == "curve") {
+                                p.push();
+                                p.stroke(CURVE_COLORS[drawnColorIdx]);
+                                p.strokeWeight(CURVE_STRKWEIGHT);
+                                if (drawnPts.length > 0) {
+                                    var prev = drawnPts[drawnPts.length - 1];
+                                    p.line(prev.x, prev.y, current.x, current.y);
+                                }
+                                p.pop();
 
-                            drawnPts.push(current);
+                                drawnPts.push(current);
+                            } else {
+                                reDraw();
+
+                                p.push();
+                                p.stroke(CURVE_COLORS[drawnColorIdx]);
+                                p.strokeWeight(CURVE_STRKWEIGHT);
+                                p.line(lineStart.x, lineStart.y, current.x, current.y);
+                                p.pop();
+                            }
+                            
                         }
                     }
 
@@ -1197,41 +1220,72 @@ define(function(require) {
                             reDraw();
 
                         } else if (action == "DRAW_CURVE") {
-                            // neglect if curve drawn is too short
-                            if (s.sample(drawnPts).length < 3) {
-                                return;
-                            }
 
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
-                            scope.$apply();
+                            if (drawMode == "curve") {
+                                 // neglect if curve drawn is too short
+                                if (s.sample(drawnPts).length < 3) {
+                                    return;
+                                }
 
-                            if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
-                                drawnPts[0].y = canvasHeight/2;
-                            }
-                            if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
-                                drawnPts[0].x = canvasWidth/2;
-                            }
-                            if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
-                                drawnPts[drawnPts.length - 1].y = canvasHeight/2;
-                            }
-                            if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
-                                drawnPts[drawnPts.length - 1].x = canvasWidth/2;
-                            }
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+                                scope.$apply();
 
-                            // sampler.sample, bezier.genericBezier
+                                if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
+                                    drawnPts[0].y = canvasHeight/2;
+                                }
+                                if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
+                                    drawnPts[0].x = canvasWidth/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
+                                    drawnPts[drawnPts.length - 1].y = canvasHeight/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
+                                    drawnPts[drawnPts.length - 1].x = canvasWidth/2;
+                                }
 
-                            var pts = b.genericBezier(s.sample(drawnPts));
-                            var curve = {};
-                            curve.pts = pts;
-                            curve.interX = findInterceptX(pts);
-                            curve.interY = findInterceptY(pts);
-                            curve.maxima = findTurnPts(pts, 'maxima');
-                            curve.minima = findTurnPts(pts, 'minima');
-                            curve.colorIdx = drawnColorIdx;
-                            curves.push(curve);
+                                // sampler.sample, bezier.genericBezier
 
-                            reDraw();
+                                var pts = b.genericBezier(s.sample(drawnPts));
+                                var curve = {};
+                                curve.pts = pts;
+                                curve.interX = findInterceptX(pts);
+                                curve.interY = findInterceptY(pts);
+                                curve.maxima = findTurnPts(pts, 'maxima');
+                                curve.minima = findTurnPts(pts, 'minima');
+                                curve.colorIdx = drawnColorIdx;
+                                curves.push(curve);
+
+                                reDraw();
+                            } else {
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+
+                                var n = 100;
+                                var rx = current.x - lineStart.x;
+                                var ry = current.y - lineStart.y;
+                                var sx = rx / n;
+                                var sy = ry / n;
+                                var pts = [];
+                                for (var i = 0; i <= n; i++) {
+                                    var x = lineStart.x + i * sx;
+                                    var y = lineStart.y + i * sy;
+                                    pts.push(f.createPoint(x, y));
+                                }
+
+                                var curve = {};
+
+                                curve.pts = pts;
+                                curve.interX = findInterceptX(pts);
+                                curve.interY = findInterceptY(pts);
+                                curve.maxima = [];
+                                curve.minima = [];
+                                curve.colorIdx = drawnColorIdx;
+                                curves.push(curve);
+
+                                reDraw();
+                            }
+                           
                         }
 
                         return;
@@ -1526,6 +1580,14 @@ define(function(require) {
                         reDraw();
                     }
 
+                    function keyPressed(e) {
+                        key = e.key;
+                    }
+
+                    function keyReleased(e) {
+                        key = undefined;
+                    }
+
                     // function drawButton(){
                     //     here we define the buttons:
                     //     - test, testCase, drawnCase, custom, undo, redo, clear, testCasePrint, drawnCasePrint
@@ -1576,6 +1638,14 @@ define(function(require) {
                     p.mouseDragged = mouseDragged;
                     p.mouseReleased = mouseReleased;
                     p.mouseClicked = mouseClicked;
+
+                    p.touchStarted = mousePressed;
+                    p.touchMoved = mouseDragged;
+                    p.touchEnded = mouseReleased;
+
+                    p.keyPressed = keyPressed;
+                    p.keyReleased = keyReleased;
+
                     p.mouseMoved = mouseMoved;
                     p.encodeData = encodeData;
                     p.decodeData = decodeData;
