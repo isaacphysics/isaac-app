@@ -1589,11 +1589,13 @@ define(function(require) {
                     }
 
                     function touchStarted(e) {
+
+
                         mousePressed(e);
                     }
 
                     function touchMoved(e) {
-                        mousePressed(e);
+                        mouseDragged(e);
                     }
 
                     function touchEnded(e) {
