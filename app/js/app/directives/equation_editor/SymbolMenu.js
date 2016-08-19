@@ -14,8 +14,9 @@ define([], function() {
 
 				var lst = element.find("ul");
 				var bufferedLeft = 0;
-				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
 
+				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
+					scope.$emit('absorbSymbolDrag');
 					bufferedLeft += deltaX;
 
 					newLeft = bufferedLeft;
@@ -40,11 +41,12 @@ define([], function() {
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				};
 
-				var abortSymbolDrag = function($e, symbol, pageX, pageY, mousePageX, mousePageY) {
+				var abortSymbolDrag = function(_, symbol, pageX, pageY, mousePageX, mousePageY, offCanvas) {
 					bufferedLeft = parseFloat(lst.css("left"));
-
+					
+						scope.$emit('abortSymbolDrag');
                     // If we've dropped outside the menu, spawn this symbol.
-                    if (pageY > element.offset().top + element.height()) {
+                    if (pageY > element.offset().top + element.height() && !offCanvas) {
                         scope.$emit("spawnSymbol");
                     } else {
                     	scope.$emit("newSymbolAbortDrag");
@@ -55,6 +57,7 @@ define([], function() {
 
 				scope.$on("symbolDrag", absorbSymbolDrag);
 				scope.$on("symbolDrop", abortSymbolDrag);
+
 			}
 		};
 	}];

@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-	return ["api", "units", "$rootScope", function(api, units, $rootScope) {
+    return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
 		return {
 			scope: true,
@@ -24,109 +24,139 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			templateUrl: "/partials/content/NumericQuestion.html",
 
-			link: function(scope, element, attrs) {
+			controller: ["$scope", "$element", function(scope, element) {
+				var ctrl = this;
 
-				scope.selectedChoice = {
-					type: "quantity",
-				};
-				scope.selectedUnitsDisplay = "";
+				ctrl.selectedValue = null;
+				ctrl.selectedUnits = null;
+				ctrl.displayUnits = null; // Need this to display "None" when units are ""
 
-				scope.toggleUnitsDropdown = function() {
-
-					if (scope.unitsDropdownStyle) {
-						scope.unitsDropdownStyle = null;
-					} else {
+				ctrl.showUnitsDropdown = function() {
+					if(ctrl.unitsDropdownStyle) {
+						ctrl.unitsDropdownStyle = null;
+					}
+					else {
 						var btnPos = element.find("button").offset();
 						var parent = element.find("button").parent().offset();
 
-						scope.unitsDropdownStyle = {
+						ctrl.unitsDropdownStyle = {
 							top: btnPos.top + btnPos.height - parent.top,
 							left: btnPos.left - parent.left,
 						}
 					}
 				}
 
-				scope.unitOptions = [];
+				ctrl.unitOptions = [];
 
-				units.getUnits().then(function(allUnits) {
+                units.getUnits().then(function(allUnits) {
 
-					// Add potential units to options list
-					for (var i in scope.doc.knownUnits) {
-						var unitsFromQuestion = scope.doc.knownUnits[i];
+                    /*
+                     * STEP 1: Initialize unitOptions list with available units,
+                     * removing duplicates and with spaces trimmed.
+                     */
+                    if (typeof scope.doc.availableUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.availableUnits.length; i++) {
 
-						if (unitsFromQuestion && scope.unitOptions.indexOf(unitsFromQuestion) == -1) 
-							scope.unitOptions.push(unitsFromQuestion);
+                          // Trim the space of availableUnit, and remove redundant backslashes.
+                          var availableUnit = scope.doc.availableUnits[i].trim().replace("\\\\", "\\");
+
+                          // Only add to options when it is not null and not duplicated.
+                          if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
+                      }
+                    }
+
+                    /*
+                     * STEP 2: Add to the unitOptions list all known units at random
+                     * location, unless the unit is a duplicate.
+                     *
+                     * Known units are units from question choices.
+                     */
+                    if (typeof scope.doc.knownUnits !== "undefined") {
+                      for (var i = 0; i < scope.doc.knownUnits.length; i++) {
+
+                          // Get a knwn unit from choice.
+                          var unitsFromQuestion = scope.doc.knownUnits[i];
+
+                          // Only add to options when it is not null and not duplicated.
+                          if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1)
+                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitsFromQuestion);
+                      }
+                    }
+
+                    // Get the pool of all available units.
+                    var unitsPool = JSON.parse(JSON.stringify(allUnits));
+
+                    /*
+                     * STEP 3: Fill the unit options up with other random units in pool.
+                     *
+                     * Procedure terminates after unitOptions list has not less than 6
+                     * elements, or unitPool gone empty.
+                     */
+                    while (ctrl.unitOptions.length < 6 && unitsPool.length > 0) {
+                        // Gets a random unit from pool, and removes it from pool.
+                        var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
+
+                        // If the selected unit does not appear in option list
+                        if (ctrl.unitOptions.indexOf(u) == -1) {
+                            // Splice the randomly selected unit into a randomly selected location
+                            ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, u);
+                        }
+                    }
+
+                });
+
+				scope.$watch("ctrl.selectedValue", function(v, oldV) {
+					if (v === oldV) {
+						return; // Init
 					}
 
-					var unitsPool = JSON.parse(JSON.stringify(allUnits));
-
-					while (scope.unitOptions.length < 6) {
-						// Fill the unit options up with other random units
-						var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
-
-						if (scope.unitOptions.indexOf(u) == -1) {
-							// Splice the randomly selected units into a randomly selected location
-							scope.unitOptions.splice(Math.floor(Math.random() * (scope.unitOptions.length + 1)), 0, u);
-						}
-					}
-
+					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
+					scope.question.selectedChoice.value = v;
 				})
 
-				scope.selectUnit = function(u) {
-					scope.selectedChoice.units = u;
-
-					if (scope.selectedChoice.units != undefined) {
-						if (scope.selectedChoice.units == "")
-							scope.selectedUnitsDisplay = "None";
-						else {
-							scope.selectedUnitsDisplay = "$\\units{" + scope.selectedChoice.units + "}$";
-							setTimeout(function() {
-								$rootScope.requestMathjaxRender();
-							}, 0);
-						}
-					} else {
-						scope.selectedUnitsDisplay = "";
+				scope.$watch("ctrl.selectedUnits", function(u, oldU) {
+					if (u === oldU) {
+						return; // Init
 					}
-					scope.unitsDropdownStyle = null;
+
+					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
+					scope.question.selectedChoice.units = u;
+					ctrl.displayUnits = (u == '' ? "None" : "$\\units{" + u + "}$");
+
+					if (u) {
+						$rootScope.requestMathjaxRender();
+					}
+
+				});
+
+				// Load previous answer if there is one
+				if (scope.question.selectedChoice) {
+					ctrl.selectedUnits = scope.question.selectedChoice.units;
+					ctrl.selectedValue = scope.question.selectedChoice.value;
+					ctrl.displayUnits = (ctrl.selectedUnits == '' ? "None" : "$\\units{" + ctrl.selectedUnits + "}$");
 				}
 
-				// scope.validationResponse is explicitly set by QuestionTabs in the link function.
-				// QuestionTabs then sets scope.validationResponseSet, so we ignore any changes 
-				// to validationResponse before that gets set.
-
-				scope.$watch("validationResponse", function(r, oldR) {
-					if (!scope.validationResponseSet)
-						return;
-
-					// If we get this far, r has really been explicitly set by QuestionTabs
-					
-					if(r) {
-
-						scope.selectedChoice.value = r.answer.value;
-						scope.selectUnit(r.answer.units);
-
-						if (scope.accordionSection != null) {
-							if (r.correct) {
-								scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.selectedChoice.value + " }{ " + (scope.selectedChoice.units || "") + " }$  ✓");
-								setTimeout(function() {
-									$rootScope.requestMathjaxRender();
-								}, 0);
-							} else {							
-								scope.$emit("newQuestionAnswer", scope.accordionSection);
-							}
-						}
-					} else {
-
-						// The user started changing their answer after a previous validation response.
-
-						if (scope.accordionSection != null) {
-							scope.$emit("newQuestionAnswer", scope.accordionSection);
-						}
+				// Add or remove the accordion answer reminder after validation
+				scope.$watch("question.validationResponse", function(r, oldR) {
+					if (r === oldR) {
+						return; // Init
 					}
 
-				})
+					if(r && r.correct) {
+						scope.$emit("newQuestionAnswer", scope.accordionSection, "$\\quantity{ " + scope.question.selectedChoice.value + " }{ " + (scope.question.selectedChoice.units || "") + " }$  ✓");
+						$rootScope.requestMathjaxRender();
+					} else {
 
-			}
+						// The validationResponse was reset. This happens when changing answer after submitting.
+						scope.$emit("newQuestionAnswer", scope.accordionSection);
+					}
+				});
+
+
+			}],
+
+			controllerAs: "ctrl",
 		};
 	}];
 });

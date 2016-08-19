@@ -25,58 +25,48 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			templateUrl: "/partials/content/MultiChoiceQuestion.html",
 
-			link: function(scope, element, attrs) {
+			controller: ["$scope", function(scope) {
+				var ctrl = this;
 
-				scope.state = {
-					selectedAnswer: null,
-				};
+				ctrl.selectedAnswer = null;
 
-				if (scope.doc.bestAttempt) {
+				// Pre-select a radio button if we've reloaded a previous answer
+				if (scope.question.selectedChoice) {
 					for (var i = 0; i < scope.doc.choices.length; i++) {
 						var choice = scope.doc.choices[i];
-						if (choice.value == scope.doc.bestAttempt.answer.value) {
-							scope.state.selectedAnswer = i;
+						if (choice.value == scope.question.selectedChoice.value) {
+							ctrl.selectedAnswer = i;
+							scope.$emit("newQuestionAnswer", scope.accordionSection, scope.question.validationResponse.correct ? "✓" : undefined)
 						}
 					}
 				}
 
-				scope.$watch("selectedChoice", function() {
-					if (scope.selectedChoice === null) {
-						return;
-					}
-
-					// Find index of selected choice
-					// Can't use indexOf as they are different objects
-					for (var i = 0; i < scope.doc.choices.length; i++) {
-						var choice = scope.doc.choices[i];
-
-						// Use JSON.stringify to do a deep comparison (compares children and value)
-						if (JSON.stringify(choice) === JSON.stringify(scope.selectedChoice)) {
-							scope.selectedAnswer = i;
-							break;
-						}
-					}
-					
-				});
-
-
-				scope.$watch("state.selectedAnswer", function(newA, oldA) {
-					if (newA === oldA) {
+				scope.$watch("ctrl.selectedAnswer", function(a, oldA) {
+					if (a === oldA) {
 						return; // Init
 					}
-					scope.selectedChoice = scope.doc.choices[scope.state.selectedAnswer];
+
+					scope.question.selectedChoice = scope.doc.choices[ctrl.selectedAnswer];
 				});
-				//Add the accordion tick after validation
-				scope.$watch("validationResponse", function(r, oldR) {
-					if(r){
-						if(r.correct)
-							scope.$emit("newQuestionAnswer", scope.accordionSection, "✓");
+
+
+				// Add or remove the accordion tick after validation
+				scope.$watch("question.validationResponse", function(r, oldR) {
+
+					if (r === oldR) {
+						return; // Init
 					}
-					else{} if(scope.accordionSection != null){
-						scope.$emit("newQuestionAnswer", scope.accordionSection); 
+
+					if (r) {
+						scope.$emit("newQuestionAnswer", scope.accordionSection, r.correct ? "✓" : undefined);
+					} else {
+						// The validationResponse was reset. This happens when changing choice after submitting.
+						scope.$emit("newQuestionAnswer", scope.accordionSection);
 					}
 				});
-			}
+			}],
+
+			controllerAs: "ctrl",
 		};
 	}];
 });

@@ -136,11 +136,13 @@ define([], function() {
 				id: "functions",
 				parent: "maths",
 				comingSoon:true,
-			}, {
-				id: "probability",
-				parent: "maths",
-				comingSoon:true,
-			}, 
+			},
+			// Removed 18/8/16
+			// {
+			// 	id: "probability",
+			// 	parent: "maths",
+			// 	comingSoon:true,
+			// }, 
 
 			// Geometry topics
 
@@ -202,19 +204,19 @@ define([], function() {
 				title: "Graph Sketching"
 			},
 
-			// Probability topics
-
-			{
-				id: "means",
-				parent: "probability"
-			}, {
-				id: "prob_functions",
-				title: "Functions",
-				parent: "probability"
-			}, {
-				id: "distributions",
-				parent: "probability"
-			}
+			// // Probability topics
+			// Removed 18/8/16
+			// {
+			// 	id: "means",
+			// 	parent: "probability"
+			// }, {
+			// 	id: "prob_functions",
+			// 	title: "Functions",
+			// 	parent: "probability"
+			// }, {
+			// 	id: "distributions",
+			// 	parent: "probability"
+			// }
 
 		];
 

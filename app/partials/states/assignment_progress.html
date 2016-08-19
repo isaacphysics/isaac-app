@@ -6,6 +6,10 @@
     <div class="medium-3 columns text-right hide-for-small-only">
         <span data-ot="Click on your groups to see the assignments you have set. View your students' progress by question." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
+    <div class="columns medium-5 medium-offset-13 hide-for-small-only" style="margin-top:-45px;">
+         <label class="hide-for-small-only">Sort groups: </label>
+         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+    </div>
 </div>
 <div class="row" ng-show="groups.length == 0">
     <div class="large-6 medium-6 small-centered columns text-center">
@@ -25,7 +29,7 @@
                 FIRST LEVEL - groups accordion
             -->
             <dl class="accordion-group">
-                <dd ng-repeat="group in groups" ng-class="{active: groupExpanded[group._id]}">
+                <dd ng-repeat="group in groups | orderBy:sortOption.val:sortOption.reverse" ng-class="{active: groupExpanded[group._id]}">
                     <a class="accordion-group-header" href="javascript:void(0)" ng-click="expandAssignments(group._id)">
 
                         <div class="accordion-group-title">

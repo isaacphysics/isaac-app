@@ -1,36 +1,30 @@
-<div class="row">
-	<div class="small-16 columns">
-		<ul class="small-block-grid-7 button-grid">
-			<li ng-click="buttonClick('1')">1</li>
-			<li ng-click="buttonClick('2')">2</li>
-			<li ng-click="buttonClick('3')">3</li>
-			<li ng-click="buttonClick('4')">4</li>
-			<li ng-click="buttonClick('5')">5</li>
-			<li ng-click="buttonClick('6')">6</li>
-			<li ng-click="buttonClick('7')">7</li>
-			<li ng-click="buttonClick('8')">8</li>
-			<li ng-click="buttonClick('9')">9</li>
-			<li ng-click="buttonClick('.')">.</li>
-			<li ng-click="buttonClick('0')">0</li>
-			<li ng-click="buttonClick('^')" style="font-size:18px; white-space: nowrap; line-height: 55px;padding-left:2px;"><span katex>\times</span>10<sup katex>x</sup></li>
-			<li ng-click="buttonClick('-')" style="font-size:36px; white-space: nowrap; line-height: 55px;padding-left:9px;">±</li>
-		</ul>
-
-		<div class="number-input-panel">
-			<input name="number" type="text" ng-model="currentNumber"/>
-			<div class="input-exponent" ng-if="currentExponent != null"><span>10<sup>{{currentExponent}}</sup></span></div>
-			<div class="input-clear" ng-click="clearInput()">&times;</div>
-		</div>
-
-		<div class="number-entry-symbol">
-			<div ng-show="!editSymbol && currentSymbol != null" class="menu-list-container number-hex">
-			    <ul>
-			        <li menu-symbol symbol="currentSymbol"></li>
-			    </ul>
-			</div>
-			<div ng-show="editSymbol && currentSymbol != null">
-				<a href="javascript:void(0)" ng-click="dismiss()" class="menu-dismiss hex-button" style=""></a>
-			</div>
-		</div>
-	</div>
+<div class="row number-bar">
+    <div class="small-16 columns">
+        <!--<div number-menu symbols="symbolLibrary.theNumbers" ></div> -->
+        <ul class="small-block-grid-7 button-grid">
+            <li menu-symbol symbol="symbols['one']" value="1"></li>
+            <li menu-symbol symbol="symbols['two']" value="2"></li>
+            <li menu-symbol symbol="symbols['three']" value="3"></li>
+            <li menu-symbol symbol="symbols['four']" value="4"></li>
+            <li menu-symbol symbol="symbols['five']" value="5"></li>
+            <li menu-symbol symbol="symbols['six']" value="6"></li>
+            <li class="wedgeFit" style="margin-left: 31px;"  menu-symbol symbol="symbols['seven']" value="7"></li>
+            <li class="wedgeFit" menu-symbol symbol="symbols['eight']" value="8"></li>
+            <li class="wedgeFit" menu-symbol symbol="symbols['nine']" value="9"></li>
+            <li class="wedgeFit" menu-symbol symbol="symbols['zero']" value="0"></li>
+            <li class="wedgeFit" value="-" ng-click="buttonClick('-')" style="font-size:30px; white-space: nowrap; line-height: 60px;padding-left:9px; color: #333">±</li>
+        </ul>
+        <div class="number-input-panel">
+            <input name="number" type="text" ng-model="currentNumber" />
+            <div class="input-exponent" ng-if="currentExponent != null"><span>10<sup>{{currentExponent}}</sup></span></div>
+            <div class="input-clear" ng-click="clearInput()">&times;</div>
+        </div>
+        <div class="number-entry-symbol">
+            <div ng-show="!editSymbol && currentSymbol != null" class="menu-list-container number-hex">
+                <ul>
+                    <li menu-symbol symbol="currentSymbol"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

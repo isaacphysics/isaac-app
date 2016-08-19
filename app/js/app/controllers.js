@@ -16,7 +16,7 @@
 'use strict';
 
 define(function(require) {
-	
+
 	var genericPageControllers = require("app/controllers/GenericPageControllers");
 
 	var homePageControllers = require("app/controllers/HomePageControllers");
@@ -59,7 +59,7 @@ define(function(require) {
 	var gameEditorControllers = require("app/controllers/GameEditorControllers");
 
 	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
-	
+
 	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
 
 	var assignmentsController = require("app/controllers/AssignmentsController")
@@ -74,14 +74,16 @@ define(function(require) {
 
 	var questionsPageControllers = require("app/controllers/QuestionsPageControllers");
 
+	var equalityPageController = require("app/controllers/EqualityPageController");
+
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
-	
+
 	.controller('GenericPageController', genericPageControllers.PageController)
-	
+
 	.controller('HomePageController', homePageControllers.PageController)
-	
+
 	.controller('ConceptPageController', conceptPageControllers.PageController)
 
 	.controller('ConceptIndexController', conceptIndexControllers.PageController)
@@ -112,15 +114,15 @@ define(function(require) {
 	.controller('HeaderController', headerControllers.PageController)
 
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
-	
+
 	.controller('AdminPageController', adminPageControllers.PageController)
-	
+
 	.controller('AdminUserManagerController', adminUserManagerController.PageController)
 
 	.controller('AdminEmailController', adminEmailController.PageController)
 
 	.controller('AdminStatsPageController', adminPageControllers.AdminStatsPageController)
-	.controller('AnalyticsPageController', adminPageControllers.AnalyticsPageController)	
+	.controller('AnalyticsPageController', adminPageControllers.AnalyticsPageController)
 	.controller('AdminEventBookingController', adminPageControllers.AdminEventBookingController)
 
 	.controller('GameEditorControllers', gameEditorControllers.PageController)
@@ -141,4 +143,5 @@ define(function(require) {
 	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
 
 	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
+	.controller('EqualityPageController', equalityPageController.PageController)
 });

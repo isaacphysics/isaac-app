@@ -15,14 +15,13 @@
  */
 define(["app/honest/responsive_video"], function(rv) {
 
-
 	return ["api", function(api) {
 
 		return {
 
 			restrict: 'A',
 
-			transclude: true,
+			scope: true,
 
 			templateUrl: "/partials/content/QuestionTabs.html",
 
@@ -32,18 +31,20 @@ define(["app/honest/responsive_video"], function(rv) {
 					scope.accordionChildMetrics.questionCount++;
 				}
 
+				// An object to hold a load of state for this particular question. Keep it together like this
+				// so that child scopes can read/write values safely without shadowing.
+				scope.question = {
+					validationResponse: null,
+					selectedChoice: null,
+					gameBoardCompletedPassed: false,
+					gameBoardCompletedPerfect: false,
+					id: scope.doc.id,
+				};
+
 				if (scope.doc.bestAttempt) {
-					scope.validationResponse = scope.doc.bestAttempt;
-					scope.selectedChoice = scope.validationResponse.answer;
-				} else {
-
-					// We have to explicitly initialise to null so that the 
-					// validationResponse watcher fires on the question. This
-					// can allow it to remove the accordion watcher.
-
-					scope.validationResponse = null;
+					scope.question.validationResponse = scope.doc.bestAttempt;
+					scope.question.selectedChoice = scope.question.validationResponse.answer;
 				}
-				scope.validationResponseSet = true;
 
 				scope.activateTab = function(i) {
 					scope.activeTab = i;
@@ -60,30 +61,24 @@ define(["app/honest/responsive_video"], function(rv) {
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
-				// prevent undefined errors when we don't know which gameboard a person is working on.
-				if(scope.gameBoard){
-					scope.state.gameBoardCompletedPassed = false;
-					scope.state.gameBoardCompletedPerfect = false;					
-				}
-
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
-				var canSubmit = true;
+				scope.canSubmit = false;
 
 				scope.checkAnswer = function() {
-					if (scope.selectedChoice != null && canSubmit) {
-						canSubmit = false;
+					if (scope.question.selectedChoice != null && scope.canSubmit) {
+						scope.canSubmit = false;
 
-						if (scope.doc.type == "isaacSymbolicQuestion") {
-							var symbols = JSON.parse(scope.selectedChoice.value).symbols;
+						if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
+							var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
 							if (Object.keys(symbols).length == 0) {
 								return;
 							}
 						}
 
-						var s = api.questionValidator.validate({id: scope.doc.id}, scope.selectedChoice);
+						var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
 
 						s.$promise.then(function foo(r) {
-							scope.validationResponse = r;
+							scope.question.validationResponse = r;
 
 							// Check the gameboard progress 
 							if (scope.gameBoard) {
@@ -93,7 +88,7 @@ define(["app/honest/responsive_video"], function(rv) {
 								var gameBoardCompletedPerfect =  true;
 
 								api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
-									scope.state.gameBoardPercentComplete = board.percentageCompleted;
+									scope.question.gameBoardPercentComplete = board.percentageCompleted;
 
 									//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
 									for(var i = 0; i < board.questions.length; i++){
@@ -106,11 +101,11 @@ define(["app/honest/responsive_video"], function(rv) {
 									}
 
 									// If things have changed, and the answer is correct, show the modal
-									if ((gameBoardCompletedPassed != !!scope.state.gameBoardCompletedPassed || 
-									   gameBoardCompletedPerfect != !!scope.state.gameBoardCompletedPerfect ||
+									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed || 
+									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
 									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
-										scope.state.gameBoardCompletedPassed = gameBoardCompletedPassed;
-										scope.state.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
+										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
+										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
 										scope.modals["congrats"].show();
 									}
 
@@ -122,31 +117,33 @@ define(["app/honest/responsive_video"], function(rv) {
 
 						}, function bar(e) {
 							console.error("Error validating answer:", e);
-							scope.showToast(scope.toastTypes.Failure, "Can't Submit Answer", e.data.errorMessage != undefined ? e.data.errorMessage : "");
+							var eMessage = e.data.errorMessage;
+							var eTitle = "Can't Submit Answer";
+							if (eMessage != null && eMessage.indexOf("ValidatorUnavailableException:") == 0) {
+								eTitle = "Error Checking Answer"
+								eMessage = eMessage.replace("ValidatorUnavailableException:", "");
+							}
+							scope.showToast(scope.toastTypes.Failure, eTitle, eMessage != undefined ? eMessage : "");
 							// If an error, after a little while allow them to submit the same answer again.
-							setTimeout(function() { canSubmit = true; }, 5000);
+							setTimeout(function() { scope.canSubmit = true; }, 5000);
 						});
 
 					} else {
-						// TODO: Somehow tell the user that they need to choose an option before clicking Check.
+						console.log("Not submitting answer - either no answer selected or previous answer unchanged");
+						// TODO: Somehow tell the user that their answer was not submitted. Better: Disable the button so we never get here.
 					}
 				}
 
-				var watchSelectedChoice = true;
-				scope.$on("stopWatchingSelectedChoice", function() { watchSelectedChoice = false; });
-				scope.$on("startWatchingSelectedChoice", function() { watchSelectedChoice = true; });
-				scope.$watch("selectedChoice", function(newVal, oldVal) {
-					if (newVal === oldVal || !watchSelectedChoice)
+				scope.$watch("question.selectedChoice", function(newVal, oldVal) {
+					// (Show some help text. Quietly though!)
+					scope.hlp = newVal && newVal.value && newVal.value.toLowerCase().match('(^h[ae]lp|\"help\").*');
+
+					if (newVal === oldVal)
 						return; // Init
-					canSubmit = true;
-					delete scope.validationResponse;
+
+					scope.canSubmit = true;
+					scope.question.validationResponse = null;
 				}, true);
-
-
-				// Prevent the transcluded template from getting a new child scope - attach it to our scope.
-				transclude(scope, function(clone, scope) {
-					element.find(".transclude-here").append(clone);
-				})
 
 				scope.$on("ensureVisible", function(e) {
 					if (e.targetScope == scope)

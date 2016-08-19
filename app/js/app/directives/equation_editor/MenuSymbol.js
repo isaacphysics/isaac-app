@@ -1,16 +1,17 @@
 
 define([], function() {
 
-	return [function() {
+    return [function() {
 
-		return {
+        return {
             scope: {
                 symbol: "=",
+                mousePressed: "=",
             },
-			restrict: "A",
+            restrict: "A",
             templateUrl: "/partials/equation_editor/menu_symbol.html",
-			link: function(scope, element, attrs) {
-                scope.name="MENUSYMBOL"
+            link: function(scope, element, attrs) {
+                scope.name = "MENUSYMBOL"
 
                 scope.$watch("symbol.menu.label", function(newLabel) {
                     if (newLabel && scope.symbol.menu.texLabel)
@@ -26,7 +27,9 @@ define([], function() {
                 var lastPageX = 0;
                 var lastPageY = 0;
                 var grab = function(pageX, pageY, e) {
+
                     scope.dragging = true;
+
                     element.addClass("dragging");
                     scope.$apply();
 
@@ -37,11 +40,19 @@ define([], function() {
                     lastPageX = pageX;
                     lastPageY = pageY;
 
-                    $("body").on("mouseup", mouseup)
+                    scope.firstX = pageX;
+                    scope.firstY = pageY;
+
+                    $("body").on("mouseup", mouseup);
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
+
+
+
                 }
+
+
 
                 var drag = function(pageX, pageY) {
                     var pageScroll = editor.offset().top;
@@ -61,6 +72,7 @@ define([], function() {
                     var pY = pageY - offset.left;
 
                     // Tell our parents that we've moved.
+
                     scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop - pageScroll, pageX - lastPageX, pageY - pageScroll - lastPageY, pageX, pageY - pageScroll);
                     lastPageX = pageX;
                     lastPageY = pageY;
@@ -82,8 +94,16 @@ define([], function() {
 
                     element.css("left", 0);
                     element.css("top", 0);
-                    
-                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY);
+
+                    // fixes bug involving being able to drag symbols outside of the visible canvas,
+                    var width = $(window).width();
+                    var height = $(window).height();
+                    var offCanvas = (e.clientX*100/width < 5 || e.clientY*100/height < 10) ? true : false;
+
+                    // This ensures new symbols can be selected.
+                    scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY, offCanvas);
+
+                    // This drags the hexagons around.
                     $("body").off("mouseup", mouseup);
                     $("body").off("mousemove", mousemove);
                     $("body").off("touchend", touchend);
@@ -96,16 +116,22 @@ define([], function() {
 
                 var mousedown = function(e) {
                     grab(e.pageX, e.pageY, e);
-
                     e.stopPropagation();
                     e.preventDefault();
                 }
 
                 var mouseup = function(e) {
-                    drop(e.pageX, e.pageY, e);
-
-                    e.stopPropagation();
-                    e.preventDefault();
+                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                    var clicked = true;
+                    scope.$emit("clicked", clicked);
+                    var num = attrs.value;
+                    scope.$emit("numberClicked", num);
+                  }
+                      drop(e.pageX, e.pageY, e);
+                      clicked = false;
+                      scope.$emit("clicked", clicked);
+                      e.stopPropagation();
+                      e.preventDefault();
                 }
 
                 var mousemove = function(e) {
@@ -117,6 +143,9 @@ define([], function() {
 
                 var touchstart = function(e) {
                     var ts = e.originalEvent.touches;
+                    console.log(ts);
+                    scope.mobileX = ts[0].pageX;
+                    scope.mobileY = ts[0].pageY;
                     grab(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
@@ -124,9 +153,23 @@ define([], function() {
                 }
 
                 var touchend = function(e) {
-                    var ts = e.originalEvent.changedTouches;
-                    drop(ts[0].pageX, ts[0].pageY, e);
+                  var ts = e.originalEvent.changedTouches;
+                    console.debug(scope.mobileX + " " + ts[0].pageX);
 
+                    console.log(ts, e.originalEvent);
+
+
+                    if (scope.mobileX == ts[0].pageX && scope.mobileY == ts[0].pageY) {
+                        var clicked = true;
+                        scope.$emit("clicked", clicked);
+                        console.debug("Registered as click");
+                        var num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+
+                    drop(ts[0].pageX, ts[0].pageY, e);
+                    clicked = false;
+                    scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
                 }
@@ -146,7 +189,7 @@ define([], function() {
                     if (scope.dragging)
                         drag();
                 })
-			},
-		};
-	}];
+            },
+        };
+    }];
 });

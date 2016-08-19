@@ -37,6 +37,11 @@ define([], function() {
 
                 if (scope.$root.user && scope.$root.user.email) {
                     ps.username = scope.$root.user.email;
+                    ps.user_id = scope.$root.user._id;
+                }
+
+                if (scope.$parent.question) {
+                    ps.problem_id = scope.$parent.question.id;
                 }
 
                 ps = $.extend(ps, scope.params);

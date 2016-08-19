@@ -304,10 +304,10 @@ define([], function() {
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
-		this.getQuestionsResource = function(canceller) {
+		this.getQuestionsResource = function() {
 			return $resource(urlPrefix + "/pages/questions", {}, {
 				'query': {
-					method: 'GET', isArray: false, timeout: canceller.promise, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", start_index:"@startIndex", limit:"@limit"}
+					method: 'GET', isArray: false, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", fasttrack: "@fasttrack", start_index:"@startIndex", limit:"@limit"}
 				}
 			})
 		};

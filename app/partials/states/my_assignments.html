@@ -14,7 +14,7 @@
          <dd ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()">Completed <span class="show-for-medium-up">Assignments </span>({{myAssignments.completed.length || 0}})</span></a></dd>
       </dl>
       <div class="tabs-content profile-tabs-content">
-         <div ng-repeat="assignment in assignmentsVisible.slice().reverse()" class="assignment">
+         <div ng-repeat="assignment in assignmentsVisible | orderBy:'creationDate':true" class="assignment">
             <div class="large-6 medium-7 columns">
                <div class="board-percentage">
                   <span ng-if="assignment.gameboard.percentageCompleted != 100" class="subject-physics">
