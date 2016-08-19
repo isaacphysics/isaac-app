@@ -62,7 +62,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
 				scope.canSubmit = false;
-
+			
 				scope.checkAnswer = function() {
 					if (scope.question.selectedChoice != null && scope.canSubmit) {
 						scope.canSubmit = false;
@@ -108,17 +108,26 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
 										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
 
-										if(!scope.modalDisplayed && (scope.question.gameBoardCompletedPassed ||scope.question.gameBoardCompletedPerfect)) {
+										if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
+											console.log("scope.modalPassedDisplayed", scope.modalPassedDisplayed);
 											scope.modals["congrats"].show();
-											scope.$emit("modalDisplayed", true);
+											scope.$emit("modalPassedDisplayed", true);
+										}
+
+										if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
+											console.log("scope.modalPerfectDisplayed", scope.modalPerfectDisplayed);
+											scope.modals["congrats"].show();
+											scope.$emit("modalPerfectDisplayed", true);
 										}
 
 									}
 
-									if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
-											scope.modals["congrats"].show();
-											scope.$emit("modalDisplayed", true);
-									}
+
+									//
+									// if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
+									// 		scope.modals["congrats"].show();
+									// 		scope.$emit("modalCompleteDisplayed", true);
+									// }
 
 
 									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one

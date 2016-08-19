@@ -111,7 +111,7 @@
     <h2>Congratulations!</h2>
     <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
   </div>
-  <div class="reveal-modal-body">
+  <div class="reveal-modal-body" style="overflow: auto;">
     <!--
         Physics question
     -->
@@ -133,15 +133,12 @@
             <h3>{{questionPage.title}}</h3>
         </div>
     </div>
-    <div ng-show="nextQuestion && !gameBoardCompletedPerfect" class="row">
+    <div ng-show="gameBoardCompletedPassed" class="row back-to-question">
         <div class="text-center columns">
-            <h4 class="congrats-subhead">Next question:</h4>
-        </div>
-        <div class="text-center columns">
-            <a class="ru-button-big" ui-sref="question({id: nextQuestion.id})" ng-click="modals.congrats.hide()">{{nextQuestion.title}}</a>
+            <a class="ru-button-big" ng-click="modals.congrats.hide()">Back to Question</a>
         </div>
     </div>
-    <div ng-show="!nextQuestion || gameBoardCompletedPerfect" class="row">
+    <div class="row back-to-board">
         <div class="text-center columns">
             <a class="ru-button-big" ng-click="modals.congrats.hide(); backToBoard();">Back to Board</a>
         </div>

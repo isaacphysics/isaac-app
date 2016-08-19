@@ -23,6 +23,8 @@ define([], function() {
 		$scope.questionPage = page;
 
 		$rootScope.pageTitle = page.title;
+		$scope.modalPerfectDisplayed = false;
+		$scope.modalPassedDisplayed = false;
 
 		$scope.state = {};
 
@@ -103,8 +105,13 @@ define([], function() {
 					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}
 		}
-		$scope.$on("modalDisplayed", function(e, b) {
-			$scope.modalDisplayed = b;
+		$scope.$on("modalPerfectDisplayed", function(e, b) {
+			$scope.modalPerfectDisplayed = b;
+			console.debug($scope.modalPerfectDisplayed);
+		});
+		$scope.$on("modalPassedDisplayed", function(e, b) {
+			$scope.modalPassedDisplayed = b;
+			console.debug($scope.modalPassedDisplayed);
 		});
 		$scope.$on('gameBoardCompletedPassed', function(e, data) {
 			$scope.gameBoardCompletedPassed = data;
