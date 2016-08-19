@@ -15,24 +15,40 @@
                             <option ng-repeat="event in events" value="{{event.id}}">{{event.title}} - {{event.subtitle}} @ {{event.location.addressLine1}} on {{event.date | date:'dd/MM/yyyy'}}</option>
                         </select>
                     </div>
-                    
+                    <div ng-if="eventIdForBooking" class="small-16 columns">
+                        <h3>Selected Event Details</h3>
+                        <p>
+                            <strong>Event:</strong> {{eventSelected.title}}<br>
+                            <strong>Event Status:</strong> {{eventSelected.}}<br>
+                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy'}}<br>
+                            <strong>Event End:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy'}}<br>
+                            <strong>Booking Deadline:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy'}}<br>
+                            <strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}
+                        </p>
+                    </div>
                     <div ng-if="eventIdForBooking" class="small-16 columns">
                         <h3>Step 2: Review current bookings ({{bookings.length}})</h3>
                         <table ng-show="bookings.length > 0">
                             <tr>
                                 <th>User</th>
+                                <th>Job / Year Group</th>
                                 <th>Email</th>
                                 <th>Booking Status</th>
                                 <th>Booking Created</th>
-                                <th>Booking Updated</th>                                
+                                <th>Booking Updated</th>
+                                <th>Accessibility Requirements</th>
+                                <th>Dietary Requirements</th>
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="booking in bookings | orderBy:'userBooked.familyName'">
                                 <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
+                                <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
                                 <td>{{booking.userBooked.email}}</td>
                                 <td>{{booking.bookingStatus}}</td>
                                 <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{booking.updated | date:'dd/MM/yyyy'}}</td>
+                                <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
+                                <td>{{booking.additionalInformation.dietaryRequirements}}</td>
                                 <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
                             </tr>
                         </table>

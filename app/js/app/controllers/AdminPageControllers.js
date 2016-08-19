@@ -188,7 +188,7 @@ define([], function() {
 		$scope.bookings = [];
 		$scope.userBookings = [];
 		$scope.eventIdForBooking = null;
-
+		$scope.eventSelected = null;
 
 		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
                 $scope.setLoading(false);
@@ -210,6 +210,7 @@ define([], function() {
         $scope.$watch('eventIdForBooking', function(){
         	if ($scope.eventIdForBooking) {
 				updateBookingInfo();
+				$scope.eventSelected = api.events.get({id:$scope.eventIdForBooking});
         	}        	
         })
 
