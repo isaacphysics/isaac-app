@@ -190,6 +190,8 @@ define([], function() {
 		$scope.eventIdForBooking = null;
 		$scope.eventSelected = null;
 
+		$scope.userIdToSchoolMapping = {}
+
 		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
                 $scope.setLoading(false);
                 
@@ -204,6 +206,10 @@ define([], function() {
 				angular.forEach($scope.bookings, function(booking, key){
 					$scope.userBookings.push(booking.userBooked.id);
 				});
+
+				if ($scope.userBookings.length > 0) {
+					$scope.userIdToSchoolMapping = api.user.getUserIdSchoolLookup({"user_ids" : $scope.userBookings.join()})
+				}
     		})				
 		}
 
@@ -233,6 +239,7 @@ define([], function() {
 		}
 
 		$scope.bookUserOnEvent = function(eventId, userId){
+
 			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
 				updateBookingInfo();
 			})

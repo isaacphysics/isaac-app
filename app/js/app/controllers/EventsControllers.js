@@ -257,6 +257,12 @@ define([], function() {
                     $scope.bookingDeadlinePast = new Date(e.date) < new Date();
                 }
 
+                if (e.tags.indexOf('teacher') != -1 && ($scope.user.role == 'STUDENT')) {
+                    $scope.compatibleRole = false;
+                } else {
+                    $scope.compatibleRole = true;
+                }
+
                 augmentEvent(e, api);
                 $scope.event = e;
             }).catch(function() {

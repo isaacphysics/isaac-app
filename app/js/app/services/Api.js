@@ -75,6 +75,10 @@ define([], function() {
 				method: 'GET',
 				url: urlPrefix + "/users/email_preferences"
 			},
+			'getUserIdSchoolLookup' : {
+				method: 'GET',
+				url: urlPrefix + "/users/school_lookup?user_ids=:user_ids"
+			},
 		})
 
 		this.authentication = $resource("", {}, {
