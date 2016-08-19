@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["app/honest/responsive_video"], function(rv, scope) {
 
 	return ["api", function(api) {
 
@@ -107,12 +107,19 @@ define(["app/honest/responsive_video"], function(rv) {
 										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
 										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
 										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
-										//scope.modals["congrats"].show();
+
+										if(!scope.modalDisplayed && (scope.question.gameBoardCompletedPassed ||scope.question.gameBoardCompletedPerfect)) {
+											scope.modals["congrats"].show();
+											scope.$emit("modalDisplayed", true);
+										}
 
 									}
-									if(board.percentageCompleted == '100') {
+
+									if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
 											scope.modals["congrats"].show();
+											scope.$emit("modalDisplayed", true);
 									}
+
 
 									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 									// question for a gameboard and the question has been passed, not completed. See issue #419

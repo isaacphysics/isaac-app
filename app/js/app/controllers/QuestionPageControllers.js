@@ -103,6 +103,9 @@ define([], function() {
 					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}
 		}
+		$scope.$on("modalDisplayed", function(e, b) {
+			$scope.modalDisplayed = b;
+		});
 		$scope.$on('gameBoardCompletedPassed', function(e, data) {
 			$scope.gameBoardCompletedPassed = data;
 		});
