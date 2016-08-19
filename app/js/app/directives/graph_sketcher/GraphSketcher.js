@@ -194,7 +194,7 @@ define(function(require) {
                             p.noFill();
                             p.strokeWeight(CURVE_STRKWEIGHT);
                             p.strokeJoin(p.ROUND);
-                            p.stroke(245);
+                            p.stroke(240);
 
                             p.push();
                             p.translate(0, canvasHeight / 2);
@@ -536,8 +536,6 @@ define(function(require) {
                     }
 
                     function findTurnPts(pts, mode) {
-                        var range = 50;
-
                         if (pts.length == 0) {
                           return [];
                         }
@@ -555,22 +553,21 @@ define(function(require) {
                             if (grad[i-1] != NaN && grad[i] != NaN) {
                                 if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
-                                    var range = 30;
-                                    var limit = 0.1;
+                                    var limit = 0.3;
 
-                                    var l = i - 1;
-                                    while (l >= 0 && f.getDist(pts[l], pts[i]) < range && Math.abs(grad[l]) < limit) {
+                                    var l = i - 2;
+                                    while (l >= 0 && Math.abs(grad[l]) < limit && Math.abs(grad[l]) > Math.abs(grad[l+1]) && grad[l] * grad[l+1] >= 0) {
                                         l--;
                                     }
-                                    if (l < 0 || f.getDist(pts[l], pts[i]) >= range) {
+                                    if (!(Math.abs(grad[l]) >= limit)) {
                                         continue;
                                     }
 
-                                    var r = i;
-                                    while (r < grad.length && f.getDist(pts[i], pts[r + 1]) < range && Math.abs(grad[r]) < limit) {
+                                    var r = i + 1;
+                                    while (r < grad.length && Math.abs(grad[r]) < limit && Math.abs(grad[r]) > Math.abs(grad[r-1]) && grad[r] * grad[r-1] >= 0) {
                                         r++;
                                     }
-                                    if (r >= grad.length || f.getDist(pts[i], pts[r + 1]) >= range) {
+                                    if (!(Math.abs(grad[r]) >= limit)) {
                                         continue;
                                     }
 
@@ -1352,64 +1349,64 @@ define(function(require) {
                         return;
                     }
 
-                    function mouseClicked(e) {
-                        if (isMouseDragged) {
-                            return;
-                        }
+                    // function mouseClicked(e) {
+                    //     if (isMouseDragged) {
+                    //         return;
+                    //     }
 
-                        if (action  == "MOVE_SYMBOL") {
-                            if (bindedKnot == undefined) {
-                                freeSymbols.push(movedSymbol);
-                            } else {
-                                bindedKnot[symbolType] = movedSymbol;
-                            }
-                            reDraw();
-                        } else if (action == "MOVE_CURVE") {
-                            reDraw();
-                        }
+                    //     if (action  == "MOVE_SYMBOL") {
+                    //         if (bindedKnot == undefined) {
+                    //             freeSymbols.push(movedSymbol);
+                    //         } else {
+                    //             bindedKnot[symbolType] = movedSymbol;
+                    //         }
+                    //         reDraw();
+                    //     } else if (action == "MOVE_CURVE") {
+                    //         reDraw();
+                    //     }
 
-                        var current = getMousePt(e);
+                    //     var current = getMousePt(e);
 
-                        if (!isActive(current)) {
-                            return;
-                        }
+                    //     if (!isActive(current)) {
+                    //         return;
+                    //     }
 
-                        for (var i = 0; i < curves.length; i++) {
-                            var maxima = curves[i].maxima;
-                            for (var j = 0; j < maxima.length; j++) {
-                                var knot = maxima[j];
-                                if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
-                                    if (knot == clickedKnot) {
-                                        clickedKnot = null;
-                                    } else {
-                                        clickedKnot = knot;
-                                    }
-                                    reDraw();
-                                    return;
-                                }
-                            }
+                    //     for (var i = 0; i < curves.length; i++) {
+                    //         var maxima = curves[i].maxima;
+                    //         for (var j = 0; j < maxima.length; j++) {
+                    //             var knot = maxima[j];
+                    //             if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                    //                 if (knot == clickedKnot) {
+                    //                     clickedKnot = null;
+                    //                 } else {
+                    //                     clickedKnot = knot;
+                    //                 }
+                    //                 reDraw();
+                    //                 return;
+                    //             }
+                    //         }
 
-                            var minima = curves[i].minima;
-                            for (var j = 0; j < minima.length; j++) {
-                                var knot = minima[j];
-                                if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
-                                    if (knot == clickedKnot) {
-                                        clickedKnot = null;
-                                    } else {
-                                        clickedKnot = knot;
-                                    }
-                                    reDraw();
-                                    return;
-                                }
-                            }
-                        }
+                    //         var minima = curves[i].minima;
+                    //         for (var j = 0; j < minima.length; j++) {
+                    //             var knot = minima[j];
+                    //             if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS) {
+                    //                 if (knot == clickedKnot) {
+                    //                     clickedKnot = null;
+                    //                 } else {
+                    //                     clickedKnot = knot;
+                    //                 }
+                    //                 reDraw();
+                    //                 return;
+                    //             }
+                    //         }
+                    //     }
 
-                        if (clickedKnot != null) {
-                            clickedKnot = null;
-                            reDraw();
-                        }
+                    //     if (clickedKnot != null) {
+                    //         clickedKnot = null;
+                    //         reDraw();
+                    //     }
 
-                    }
+                    // }
 
                     function clone(obj) {
                         var json = JSON.stringify(obj);
