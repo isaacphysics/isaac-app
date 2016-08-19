@@ -38,6 +38,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					selectedChoice: null,
 					gameBoardCompletedPassed: false,
 					gameBoardCompletedPerfect: false,
+					id: scope.doc.id,
 				};
 
 				if (scope.doc.bestAttempt) {

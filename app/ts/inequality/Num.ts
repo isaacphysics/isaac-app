@@ -2,7 +2,8 @@ import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { ChemicalElement } from "./ChemicalElement.ts";
-import { Relation } from "./Relation.ts"
+import { Relation } from "./Relation.ts";
+import { Brackets } from "./Brackets.ts";
 
 /** A class for representing numbers */
 export
@@ -258,7 +259,10 @@ export
                 }
                 docking_right.child.position.y = 0;
             }
-
+            // FIXME HORRIBLE BRACKETS FIX
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_right.position.y = (this.dockingPoint.y);

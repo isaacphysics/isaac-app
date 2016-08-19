@@ -2,6 +2,7 @@ import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /** Functions. */
 export
@@ -333,6 +334,12 @@ export
             var p: any = this.dockingPoints["right"].child.position;
             p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2 + this.dockingPoints["right"].child.offsetBox().w / 2;
             p.y = 0;
+            var docking_right = this.dockingPoints["right"];
+            // FIXME HORRIBLE BRACKETS FIX
+            if(docking_right instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
+
         } else {
             var p: any = this.dockingPoints["right"].position;
             p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2;

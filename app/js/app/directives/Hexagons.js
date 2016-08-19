@@ -103,6 +103,8 @@ define(["app/honest/hexagon"],function(hexagon) {
                         $(this).addClass('ru-hex-home-field-functions');
                     } else if (d.tags.indexOf("probability") > -1) {
                         $(this).addClass('ru-hex-home-field-probability');
+                    } else if (d.tags.indexOf("chemphysics") > -1) {
+                        $(this).addClass('ru-hex-home-field-chemphysics');
                     }
                 }
             });

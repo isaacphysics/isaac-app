@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts';
 import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /**
  * A class for state symbols.
@@ -189,6 +190,11 @@ export
             // If either subscripts or superscripts or both exist
             p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             p.y = 0;
+            // FIXME HORRIBLE BRACKETS FIX
+            var docking_right = this.dockingPoints["right"];
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
             var p = this.dockingPoints["right"].position;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 4;

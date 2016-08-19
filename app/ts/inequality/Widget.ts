@@ -315,7 +315,7 @@ export
                 dockingPoint.child.highlight(on);
                 dockingPoint.child.isMainExpression = this.isMainExpression;
             }
-        })
+        });
     }
 
 	/**
