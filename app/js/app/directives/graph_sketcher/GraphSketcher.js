@@ -514,6 +514,10 @@ define(function(require) {
                         p.rect(maxX - 4, minY - 4, 8, 8);
                         p.rect(minX - 4, maxY - 4, 8, 8);
                         p.rect(maxX - 4, maxY - 4, 8, 8);
+                        p.triangle((minX + maxX)/2 - 5, minY - 2, (minX + maxX)/2 + 5, minY - 2, (minX + maxX)/2, minY - 7);
+                        p.triangle((minX + maxX)/2 - 5, maxY + 2, (minX + maxX)/2 + 5, maxY + 2, (minX + maxX)/2, maxY + 7);
+                        p.triangle(minX - 2, (minY + maxY) / 2 - 5, minX - 2, (minY + maxY) / 2 + 5, minX - 7, (minY + maxY) / 2);
+                        p.triangle(maxX + 2, (minY + maxY) / 2 - 5, maxX + 2, (minY + maxY) / 2 + 5, maxX + 7, (minY + maxY) / 2); 
                         p.pop();
                     }
 
@@ -984,6 +988,10 @@ define(function(require) {
                                 } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
                                     found = true;
                                     p.cursor(p.MOVE);
+                                } else if (detect((c.minX + c.maxX)/2, c.minY - 3) || detect((c.minX + c.maxX)/2, c.maxY + 3) 
+                                    || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
+                                    found = true;
+                                    p.cursor(p.MOVE);
                                 }
                             }
                         }
@@ -1137,15 +1145,26 @@ define(function(require) {
                                 return (Math.abs(current.x - x) < 5 && Math.abs(current.y - y) < 5);
                             }
 
-                            if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
+                            if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)
+                                    || detect((c.minX + c.maxX)/2, c.minY - 3) || detect((c.minX + c.maxX)/2, c.maxY + 3) 
+                                    || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
+
                                 if (detect(c.minX, c.minY)) {
                                     stretchMode = 0;
                                 } else if (detect(c.maxX, c.minY)) {
                                     stretchMode = 1;
                                 } else if (detect(c.maxX, c.maxY)) {
                                     stretchMode = 2;
-                                } else {
+                                } else if (detect(c.minX, c.maxY)) {
                                     stretchMode = 3;
+                                } else if (detect((c.minX + c.maxX)/2, c.minY - 3)) {
+                                    stretchMode = 4;
+                                } else if (detect((c.minX + c.maxX)/2, c.maxY + 3)) {
+                                    stretchMode = 5;
+                                } else if (detect(c.minX - 3, (c.minY + c.maxY)/2)) {
+                                    stretchMode = 6;
+                                } else {
+                                    stretchMode = 7;
                                 }
 
 
@@ -1244,7 +1263,7 @@ define(function(require) {
                             // update the position of stretched vertex
                             switch (stretchMode) {
                                 case 0: {
-                                    if (orx - dx < 30 || ory - dy < 30) {
+                                    if (orx < 30 && dx > 0  || ory < 30 && dy > 0) {
                                         return;
                                     }
                                     c.minX += dx;
@@ -1252,7 +1271,7 @@ define(function(require) {
                                     break;
                                 }
                                 case 1: {
-                                    if (orx + dx < 30 || ory - dy < 30) {
+                                    if (orx < 30 && dx < 0 || ory < 30 && dy > 0) {
                                         return;
                                     }
                                     c.maxX += dx;
@@ -1260,7 +1279,7 @@ define(function(require) {
                                     break;
                                 }
                                 case 2: {
-                                    if (orx + dx < 30 || ory + dy < 30) {
+                                    if (orx < 30 && dx < 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
                                     c.maxX += dx;
@@ -1268,11 +1287,39 @@ define(function(require) {
                                     break;
                                 }
                                 case 3: {
-                                    if (orx - dx < 30 || ory + dy < 30) {
+                                    if (orx < 30 && dy > 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
                                     c.minX += dx;
                                     c.maxY += dy;
+                                    break;
+                                }
+                                case 4: {
+                                    if (ory < 30 && dy > 0) {
+                                        return;
+                                    }
+                                    c.minY += dy;
+                                    break;
+                                }
+                                case 5: {
+                                    if (ory < 30 && dy < 0) {
+                                        return;
+                                    }
+                                    c.maxY += dy;
+                                    break;
+                                }
+                                case 6: {
+                                    if (orx < 30 && dx > 0) {
+                                        return;
+                                    }
+                                    c.minX += dx;
+                                    break;
+                                }
+                                case 7: {
+                                    if (orx < 30 && dx < 0) {
+                                        return;
+                                    }
+                                    c.maxX += dx;
                                     break;
                                 }
                             }
@@ -1297,6 +1344,22 @@ define(function(require) {
                                 }
                                 case 3: {
                                     stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.minY);
+                                    break;
+                                }
+                                case 4: {
+                                    stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.maxY);
+                                    break;
+                                }
+                                case 5: {
+                                    stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.minY);
+                                    break;
+                                }
+                                case 6: {
+                                    stretchCurve(c, orx, ory, nrx, ory, c.maxX, (c.minY + c.maxY)/2);
+                                    break;
+                                }
+                                case 7: {
+                                    stretchCurve(c, orx, ory, nrx, ory, c.minX, (c.minY + c.maxY)/2);
                                     break;
                                 }
                             }
@@ -1626,6 +1689,7 @@ define(function(require) {
                                 curve.minY = minY;
                                 curve.maxY = maxY;
 
+
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
                                 curve.maxima = findTurnPts(pts, 'maxima');
@@ -1635,6 +1699,7 @@ define(function(require) {
                             } else {
                                 checkPointsUndo.push(checkPoint);
                                 checkPointsRedo = [];
+                                scope.$apply();
 
                                 var n = 100;
                                 var rx = lineEnd.x - lineStart.x;
@@ -1654,7 +1719,7 @@ define(function(require) {
                                 curve.minX = Math.min(lineStart.x, lineEnd.x);
                                 curve.maxX = Math.max(lineStart.x, lineEnd.x);
                                 curve.minY = Math.min(lineStart.y, lineEnd.y);
-                                curve.maxY = Math.min(lineStart.y, lineEnd.y);
+                                curve.maxY = Math.max(lineStart.y, lineEnd.y);
 
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
