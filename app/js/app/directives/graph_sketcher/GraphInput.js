@@ -5,7 +5,7 @@ define(function(require) {
         return {
             scope: {
                 state: "=",
-                questionDoc: "=",  
+                questionDoc: "=",
             },
 
             restrict: "A",
@@ -18,10 +18,11 @@ define(function(require) {
                 scope.edit = function() {
                     $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
                         console.debug("finalState: ", finalState);
+                        console.debug("json: ", JSON.stringify(finalState));
                         scope.state = finalState;
                         scope.$apply();
 
-                        
+
                         // if (scope.isTherePreviousAnswer()) {
                         //     if (scope.preview == undefined) {
                         //         console.debug(document.getElementById("graphPreview"));
@@ -47,7 +48,7 @@ define(function(require) {
                 //         PADDING = 0.025 * canvasWidth,
                 //         DOT_LINE_STEP = 5,
                 //         MOUSE_DETECT_RADIUS = 5;
-                        
+
                 //     var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
                 //         KNOT_COLOR = [77,77,77],
                 //         DOT_LINE_COLOR = [123],
@@ -66,7 +67,7 @@ define(function(require) {
                 //     }
 
                 //     function refreshFreeSymbols() {
-                //         var start = 15, 
+                //         var start = 15,
                 //             separation = 30;
 
                 //         for (var i = 0; i < freeSymbols.length; i++) {
@@ -96,7 +97,7 @@ define(function(require) {
 
                 //         function drawHorizontalAxis() {
                 //             p.push();
-                            
+
                 //             p.strokeWeight(CURVE_STRKWEIGHT);
                 //             p.strokeJoin(p.ROUND);
                 //             p.stroke(0);
@@ -112,13 +113,13 @@ define(function(require) {
                 //             p.vertex(rightMargin, canvasHeight / 2);
                 //             p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
                 //             p.endShape();
-                            
+
                 //             p.pop();
                 //         }
 
                 //         function drawVerticalAxis() {
                 //             p.push();
-                            
+
                 //             p.strokeWeight(CURVE_STRKWEIGHT);
                 //             p.strokeJoin(p.ROUND);
                 //             p.stroke(0);
@@ -134,7 +135,7 @@ define(function(require) {
                 //             p.vertex(canvasWidth/2, upMargin);
                 //             p.vertex(canvasWidth/2 + 5, upMargin + 10);
                 //             p.endShape();
-                            
+
                 //             p.pop();
                 //         }
 
@@ -196,7 +197,7 @@ define(function(require) {
                 //     function drawCurve(curve, color) {
                 //         if (color == undefined) {
                 //             color = CURVE_COLORS[curve.colorIdx];
-                //         } 
+                //         }
 
                 //         p.push();
                 //         p.stroke(color);
@@ -206,7 +207,7 @@ define(function(require) {
                 //         for (var i = 1; i < pts.length; i++) {
                 //             p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
                 //         }
-                        
+
                 //         p.pop();
 
                 //         // draw x intercepts, y intercepts and turning points
@@ -219,7 +220,7 @@ define(function(require) {
 
                 //     function drawCurves(curves, color) {
                 //         for (var i = 0; i < curves.length; i++) {
-                //             drawCurve(curves[i], color);    
+                //             drawCurve(curves[i], color);
                 //         }
                 //     }
 
@@ -246,7 +247,7 @@ define(function(require) {
                 //     function drawKnots(knots, color) {
                 //         for (var i = 0; i < knots.length; i++) {
                 //             drawKnot(knots[i], color);
-                //         }   
+                //         }
                 //     }
 
                 //     function drawKnot2(knot) {
@@ -266,7 +267,7 @@ define(function(require) {
                 //     function drawKnots2(knots) {
                 //         for (var i = 0; i < knots.length; i++) {
                 //             drawKnot2(knots[i]);
-                //         }   
+                //         }
                 //     }
 
                 //     function drawKnot3(knot) {
@@ -286,7 +287,7 @@ define(function(require) {
                 //         if (knot.ySymbol != undefined) {
                 //             drawSymbol(knot.ySymbol);
                 //         } else {
-                //             drawKnot(f.createPoint(canvasWidth/2, knot.y)); 
+                //             drawKnot(f.createPoint(canvasWidth/2, knot.y));
                 //         }
                 //     }
 
@@ -309,25 +310,25 @@ define(function(require) {
                 //         if (color == undefined) {
                 //             color = KNOT_COLOR;
                 //         }
-                        
+
                 //         p.push();
-                        
+
                 //         p.stroke(color);
                 //         p.strokeWeight(1.5);
                 //         p.noFill();
                 //         p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-                //         p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3); 
-                        
+                //         p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
+
                 //         p.stroke(0);
                 //         p.strokeWeight(0.5);
                 //         p.fill(0);
                 //         p.textSize(14);
                 //         p.text(symbol.text, symbol.x - 4, symbol.y + 20);
-                        
+
                 //         p.pop();
                 //     }
 
-                //     function drawSymbols(symbols, color) {  
+                //     function drawSymbols(symbols, color) {
                 //         for (var i = 0; i < symbols.length; i++) {
                 //             drawSymbol(symbols[i], color);
                 //         }
@@ -401,7 +402,7 @@ define(function(require) {
                 //         var json = JSON.stringify(obj);
                 //         return JSON.parse(json);
                 //     }
-                  
+
                 //     function decodeData(rawData) {
                 //         var data = clone(rawData);
 
@@ -433,7 +434,7 @@ define(function(require) {
                 //             }
                 //         }
 
-                        
+
                 //         curves = data.curves;
                 //         for (var i = 0; i < curves.length; i++) {
 
@@ -469,7 +470,7 @@ define(function(require) {
                 //     p.decodeData = decodeData;
                 // }
 
-                
+
 
                 // if (scope.isTherePreviousAnswer()) {
                 //     if (scope.preview == undefined) {
@@ -479,7 +480,7 @@ define(function(require) {
                 //     scope.preview.decodeData(scope.state);
                 // }
 
-              
+
 
             }
 

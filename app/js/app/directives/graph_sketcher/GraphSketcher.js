@@ -88,15 +88,17 @@ define(function(require) {
 
                     var prevMousePt;
 
-                    // for moving curve
-                    var movedCurveIdx;
+                    // for moving and stretching curve
+                    var movedCurveIdx,
+                        stretchMode;
 
                     // for moving symbols
                     var movedSymbol,
                         bindedKnot,
                         symbolType;
 
-                    var clickedKnot = null;
+                    var clickedKnot = null,
+                        clickedCurveIdx;
 
                     // for redo and undo
                     var checkPoint,
@@ -108,6 +110,10 @@ define(function(require) {
                         freeSymbols.push(f.createSymbol('A'));
                         freeSymbols.push(f.createSymbol('B'));
                         freeSymbols.push(f.createSymbol('C'));
+                        freeSymbols.push(f.createSymbol('D'));
+                        freeSymbols.push(f.createSymbol('E'));
+                        
+                        refreshFreeSymbols();
                     }
 
                     function refreshFreeSymbols() {
@@ -131,15 +137,18 @@ define(function(require) {
 
                         initiateFreeSymbols();
                         reDraw();
+
                         // drawButton();
                     }
 
                     function reDraw() {
                         drawBackground();
                         drawCurves(curves);
-                        refreshFreeSymbols();
+                        // refreshFreeSymbols();
                         drawSymbols(freeSymbols);
+                        
                         drawKnot3(clickedKnot);
+                        drawStretchBox(clickedCurveIdx);
                     }
 
                     function drawBackground() {
@@ -299,7 +308,6 @@ define(function(require) {
                         drawKnots(curve['interY']);
                         drawKnots2(curve['maxima']);
                         drawKnots2(curve['minima']);
-
                     }
 
                     function drawCurves(curves, color) {
@@ -402,8 +410,8 @@ define(function(require) {
                         p.stroke(0);
                         p.strokeWeight(0.5);
                         p.fill(0);
-                        p.textSize(14);
-                        p.text(symbol.text, symbol.x - 4, symbol.y + 20);
+                        p.textSize(16);
+                        p.text(symbol.text, symbol.x - 5, symbol.y + 20);
 
                         p.pop();
                     }
@@ -475,6 +483,37 @@ define(function(require) {
                             p.line(x, y, end, y);
                         }
 
+                        p.pop();
+                    }
+
+
+                    function drawStretchBox(idx) {
+                        if (idx == undefined) {
+                            return;
+                        }
+
+                        var curve = curves[idx];
+
+                        var pts = curve.pts;
+
+                        var minX = curve.minX;
+                        var maxX = curve.maxX;
+                        var minY = curve.minY;
+                        var maxY = curve.maxY;
+
+                        p.push();
+                        p.stroke(DOT_LINE_COLOR);
+                        p.strokeWeight(0.5);
+                        p.line(minX, minY, maxX, minY);
+                        p.line(maxX, minY, maxX, maxY);
+                        p.line(maxX, maxY, minX, maxY);
+                        p.line(minX, maxY, minX, minY);
+
+                        p.fill(255);
+                        p.rect(minX - 4, minY - 4, 8, 8);
+                        p.rect(maxX - 4, minY - 4, 8, 8);
+                        p.rect(minX - 4, maxY - 4, 8, 8);
+                        p.rect(maxX - 4, maxY - 4, 8, 8);
                         p.pop();
                     }
 
@@ -645,6 +684,12 @@ define(function(require) {
                     // given a curve, translate the curve
                     function transCurve(curve, dx, dy) {
                         var pts = curve.pts;
+
+                        curve.minX += dx;
+                        curve.maxX += dx;
+                        curve.minY += dy;
+                        curve.maxY += dy;
+
                         for (var i = 0; i < pts.length; i++) {
                             pts[i].x += dx;
                             pts[i].y += dy;
@@ -717,6 +762,85 @@ define(function(require) {
                         curve.interY = moveInter(interY, newInterY);
 
                         return;
+                    }
+
+                    function stretchCurve(c, orx, ory, nrx, nry, baseX, baseY) {
+
+                        function stretch(pt) {
+                            var nx = (pt.x - baseX) / orx;
+                            var ny = (pt.y - baseY) / ory;
+                            pt.x = nx * nrx + baseX;
+                            pt.y = ny * nry + baseY;
+                        }
+
+                        var pts = c.pts;
+                        for (var j = 0; j < pts.length; j++) {
+                            stretch(pts[j]);
+                        }
+
+                        function loop1(knots) {
+                            for (var j = 0; j < knots.length; j++) {
+                                var knot = knots[j];
+
+                                stretch(knot);
+
+                                if (knot.symbol != undefined) {
+                                    stretch(knot.symbol);
+                                }
+
+                                if (knot.xSymbol != undefined) {
+                                    stretch(knot.xSymbol);
+                                }
+
+                                if (knot.ySymbol != undefined) {
+                                    stretch(knot.ySymbol);
+                                }
+                            }
+                        }
+
+
+                        var maxima = c.maxima;
+                        loop1(maxima);
+
+                        var minima = c.minima;
+                        loop1(minima);
+
+                        function loop2(inter, newInter) {
+                            for (var i = 0; i < inter.length; i++) {
+                                if (inter[i].symbol != undefined) {
+                                    var symbol = inter[i].symbol;
+
+                                    var found = false,
+                                        min = 50,
+                                        knot;
+                                    for (var j = 0; j < newInter.length; j++) {
+                                        if (f.getDist(inter[i], newInter[j]) < min) {
+                                            min = f.getDist(inter[i], newInter[j]);
+                                            knot = newInter[j];
+                                            found = true;
+                                        }
+                                    }
+
+                                    if (found) {
+                                        symbol.x = knot.x;
+                                        symbol.y = knot.y;
+                                        knot.symbol = symbol;
+                                    } else {
+                                        freeSymbols.push(symbol);
+                                    }
+                                }
+                            }
+                            return newInter;
+                        }
+
+                        var interX = c.interX,
+                            newInterX = findInterceptX(pts);
+                        c.interX = loop2(interX, newInterX);
+
+
+                        var interY = c.interY,
+                            newInterY = findInterceptY(pts);
+                        c.interY = loop2(interY, newInterY);
                     }
 
 
@@ -831,18 +955,35 @@ define(function(require) {
                         }
 
                         if (!found) {
-                            for (var i = 0; i < curves.length; i++) {
-                                var pts = curves[i].pts;
-                                for (var j = 0; j < pts.length; j++) {
-                                    if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
-                                        found = true;
-                                        p.cursor(p.MOVE);
-                                        break;
-                                    }
+                            // for (var i = 0; i < curves.length; i++) {
+                            //     var pts = curves[i].pts;
+                            //     for (var j = 0; j < pts.length; j++) {
+                            //         if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
+                            //             found = true;
+                            //             p.cursor(p.MOVE);
+                            //             break;
+                            //         }
+                            //     }
+
+                            //     if (found) {
+                            //         break;
+                            //     }
+                            // }
+
+                            
+
+                            if (clickedCurveIdx != undefined) {
+                                function detect(x, y) {
+                                    return (Math.abs(current.x - x) < 5 && Math.abs(current.y - y) < 5);
                                 }
 
-                                if (found) {
-                                    break;
+                                var c = curves[clickedCurveIdx];
+                                if (current.x >= c.minX && current.x <= c.maxX && current.y >= c.minY && current.y <= c.maxY) {
+                                    found = true;
+                                    p.cursor(p.MOVE);
+                                } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
+                                    found = true;
+                                    p.cursor(p.MOVE);
                                 }
                             }
                         }
@@ -894,6 +1035,9 @@ define(function(require) {
                                 freeSymbols.splice(i, 1);
                                 prevMousePt = current;
                                 action = "MOVE_SYMBOL";
+
+                                // clickedCurveIdx = undefined;
+
                                 return;
                             }
                         }
@@ -964,21 +1108,64 @@ define(function(require) {
                         if (found) {
                             action = "MOVE_SYMBOL";
                             prevMousePt = current;
+                                
+                            // clickedCurveIdx = undefined;
+
                             return;
                         }
 
 
-                        // check if it is moving curve.
-                        for (var i = 0; i < curves.length; i++) {
-                            var pts = curves[i].pts;
-                            for (var j = 0; j < pts.length; j++) {
-                                if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
-                                    movedCurveIdx = i;
-                                    action = "MOVE_CURVE";
-                                    clickedKnot = null;
-                                    prevMousePt = current;
-                                    return;
+                        // // check if it is moving curve.
+                        // for (var i = 0; i < curves.length; i++) {
+                        //     var pts = curves[i].pts;
+                        //     for (var j = 0; j < pts.length; j++) {
+                        //         if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
+                        //             movedCurveIdx = i;
+                        //             action = "MOVE_CURVE";
+                        //             clickedKnot = null;
+                        //             prevMousePt = current;
+                        //             return;
+                        //         }
+                        //     }
+                        // }
+
+                        // check if stretching curve 
+                        if (clickedCurveIdx != undefined) {
+                            var c = curves[clickedCurveIdx];
+
+                            function detect(x, y) {
+                                return (Math.abs(current.x - x) < 5 && Math.abs(current.y - y) < 5);
+                            }
+
+                            if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
+                                if (detect(c.minX, c.minY)) {
+                                    stretchMode = 0;
+                                } else if (detect(c.maxX, c.minY)) {
+                                    stretchMode = 1;
+                                } else if (detect(c.maxX, c.maxY)) {
+                                    stretchMode = 2;
+                                } else {
+                                    stretchMode = 3;
                                 }
+
+
+                                action = "STRETCH_CURVE";
+                                clickedKnot = null;
+                                prevMousePt = current;
+                                return;
+                            }
+                        }
+
+
+                        // check if it is moving curve
+                        if (clickedCurveIdx != undefined) {
+                            var c = curves[clickedCurveIdx];
+                            if (current.x >= c.minX && current.x <= c.maxX && current.y >= c.minY && current.y <= c.maxY) {
+                                movedCurveIdx = clickedCurveIdx;
+                                action = "MOVE_CURVE";
+                                clickedKnot = null;
+                                prevMousePt = current;
+                                return;   
                             }
                         }
 
@@ -987,12 +1174,18 @@ define(function(require) {
                         if (curves.length < CURVE_COLORS.length) {
                             action = "DRAW_CURVE";
 
+
+                            if (clickedCurveIdx != undefined || clickedKnot != null) {
+                                clickedCurveIdx = undefined;
+                                clickedKnot = null;
+                                reDraw();
+                            }
+
+
                             if (key === "Shift") {
-                                console.debug("Draw Line");
                                 lineStart = current;
                                 drawMode = "line";
                             } else {
-                                console.debug("Draw Curve");
                                 drawMode = "curve";
                             }
 
@@ -1023,7 +1216,6 @@ define(function(require) {
                         if (action == "MOVE_CURVE") {
                             p.cursor(p.MOVE);
 
-
                             scope.trashActive = isOverButton(current, element.find(".trash-button"));
                             scope.$apply();
 
@@ -1034,6 +1226,82 @@ define(function(require) {
 
                             reDraw();
                             drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
+
+                        } else if (action == "STRETCH_CURVE") {
+                            p.cursor(p.MOVE);
+
+                            var dx = current.x - prevMousePt.x;
+                            var dy = current.y - prevMousePt.y;
+                            prevMousePt = current;
+
+                            var c = curves[clickedCurveIdx];
+
+                            // calculate old x,y range
+                            var orx = c.maxX - c.minX;
+                            var ory = c.maxY - c.minY;
+
+
+                            // update the position of stretched vertex
+                            switch (stretchMode) {
+                                case 0: {
+                                    if (orx - dx < 30 || ory - dy < 30) {
+                                        return;
+                                    }
+                                    c.minX += dx;
+                                    c.minY += dy;
+                                    break;
+                                }
+                                case 1: {
+                                    if (orx + dx < 30 || ory - dy < 30) {
+                                        return;
+                                    }
+                                    c.maxX += dx;
+                                    c.minY += dy;
+                                    break;
+                                }
+                                case 2: {
+                                    if (orx + dx < 30 || ory + dy < 30) {
+                                        return;
+                                    }
+                                    c.maxX += dx;
+                                    c.maxY += dy;
+                                    break;
+                                }
+                                case 3: {
+                                    if (orx - dx < 30 || ory + dy < 30) {
+                                        return;
+                                    }
+                                    c.minX += dx;
+                                    c.maxY += dy;
+                                    break;
+                                }
+                            }
+
+                            // calculate the new range
+                            var nrx = c.maxX - c.minX;
+                            var nry = c.maxY - c.minY;
+
+                            // stretch the curve
+                            switch (stretchMode) {
+                                case 0: {
+                                    stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.maxY);
+                                    break;
+                                }
+                                case 1: {
+                                    stretchCurve(c, orx, ory, nrx, nry, c.minX, c.maxY);
+                                    break;
+                                }
+                                case 2: {
+                                    stretchCurve(c, orx, ory, nrx, nry, c.minX, c.minY);
+                                    break;
+                                }
+                                case 3: {
+                                    stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.minY);
+                                    break;
+                                }
+                            }
+                            
+                            reDraw();
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
@@ -1128,7 +1396,8 @@ define(function(require) {
                                     bindedKnot[symbolType] = movedSymbol;
                                 }
                                 reDraw();
-                            } else if (action == "MOVE_CURVE") {
+
+                            } else if (action == "MOVE_CURVE" || action == "STRETCH_CURVE") {
                                 reDraw();
                             }
 
@@ -1137,6 +1406,7 @@ define(function(require) {
                                 return;
                             }
 
+                            // if to show dot line
                             for (var i = 0; i < curves.length; i++) {
                                 var maxima = curves[i].maxima;
                                 for (var j = 0; j < maxima.length; j++) {
@@ -1167,8 +1437,22 @@ define(function(require) {
                                 }
                             }
 
-                            if (clickedKnot != null) {
+                            // check if show stretch box
+                            for (var i = 0; i < curves.length; i++) {
+                                var pts = curves[i].pts;
+                                for (var j = 0; j < pts.length; j++) {
+                                    if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
+                                        clickedCurveIdx = i;
+                                        reDraw();
+                                        return;
+                                    }
+                                }
+                            }
+
+
+                            if (clickedKnot != null || clickedCurveIdx != undefined) {
                                 clickedKnot = null;
+                                clickedCurveIdx = undefined;
                                 reDraw();
                             }
 
@@ -1179,7 +1463,6 @@ define(function(require) {
 
                             checkPointsUndo.push(checkPoint);
                             checkPointsRedo = [];
-                            scope.$apply();
 
                             // for deletion
                             if (scope.trashActive) {
@@ -1216,6 +1499,24 @@ define(function(require) {
                             scope.trashActive = false;
                             scope.$apply();
                             reDraw();
+
+                        } else if (action == "STRETCH_CURVE") {
+                            checkPointsUndo.push(checkPoint);
+                            checkPointsRedo = [];
+
+                            var c = curves[clickedCurveIdx];
+
+                            // if (c.maxX < c.minX) {
+                            //     var tmp = c.maxX;
+                            //     c.maxX = c.minX;
+                            //     c.minX = tmp;
+                            // }
+
+                            // if (c.maxY < c.minY) {
+                            //     var tmp = c.maxY;
+                            //     c.maxY = c.minY;
+                            //     c.minX = tmp;
+                            // }
                         } else if (action == "MOVE_SYMBOL") {
                             checkPointsUndo.push(checkPoint);
                             checkPointsRedo = [];
@@ -1279,6 +1580,8 @@ define(function(require) {
 
                         } else if (action == "DRAW_CURVE") {
 
+                            var curve;
+
                             if (drawMode == "curve") {
                                  // neglect if curve drawn is too short
                                 if (s.sample(drawnPts).length < 3) {
@@ -1305,16 +1608,30 @@ define(function(require) {
                                 // sampler.sample, bezier.genericBezier
 
                                 var pts = b.genericBezier(s.sample(drawnPts));
-                                var curve = {};
+                                curve = {};
                                 curve.pts = pts;
+
+                                var minX = pts[0].x;
+                                var maxX = pts[0].x;
+                                var minY = pts[0].y;
+                                var maxY = pts[0].y;
+                                for (var i = 1; i < pts.length; i++) {
+                                    minX = Math.min(pts[i].x, minX);
+                                    maxX = Math.max(pts[i].x, maxX);
+                                    minY = Math.min(pts[i].y, minY);
+                                    maxY = Math.max(pts[i].y, maxY);
+                                }
+                                curve.minX = minX;
+                                curve.maxX = maxX;
+                                curve.minY = minY;
+                                curve.maxY = maxY;
+
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
                                 curve.maxima = findTurnPts(pts, 'maxima');
                                 curve.minima = findTurnPts(pts, 'minima');
                                 curve.colorIdx = drawnColorIdx;
-                                curves.push(curve);
 
-                                reDraw();
                             } else {
                                 checkPointsUndo.push(checkPoint);
                                 checkPointsRedo = [];
@@ -1331,19 +1648,43 @@ define(function(require) {
                                     pts.push(f.createPoint(x, y));
                                 }
 
-                                var curve = {};
-
+                                curve = {};
                                 curve.pts = pts;
+
+                                curve.minX = Math.min(lineStart.x, lineEnd.x);
+                                curve.maxX = Math.max(lineStart.x, lineEnd.x);
+                                curve.minY = Math.min(lineStart.y, lineEnd.y);
+                                curve.maxY = Math.min(lineStart.y, lineEnd.y);
+
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
                                 curve.maxima = [];
                                 curve.minima = [];
                                 curve.colorIdx = drawnColorIdx;
-                                curves.push(curve);
-
-                                reDraw();
                             }
-                           
+
+                            function loop(knots) {
+                                for (var i = 0; i < knots.length; i++) {
+                                    var knot = knots[i];
+                                    for (var j = 0; j < freeSymbols.length; j++) {
+                                        var sym = freeSymbols[j];
+                                        if (f.getDist(knot, sym) < 20) {
+                                            sym.x = knot.x;
+                                            sym.y = knot.y;
+                                            knot.symbol = sym;
+                                            freeSymbols.splice(j, 1);
+                                        }
+                                    }
+                                }
+                            }
+
+                            loop(curve.maxima);
+                            loop(curve.minima);
+                            loop(curve.interX);
+                            loop(curve.interY);
+
+                            curves.push(curve);
+                            reDraw();
                         }
 
                         return;
@@ -1449,7 +1790,6 @@ define(function(require) {
                         }
                         clonedCurves.sort(compare);
 
-
                         function normalise(pt) {
                             var x = (pt.x - canvasWidth/2) / canvasWidth;
                             var y = (canvasHeight/2 - pt.y) / canvasHeight;
@@ -1487,6 +1827,21 @@ define(function(require) {
                                 normalise(pts[j]);
                             }
 
+                            var tmp;
+
+                            tmp = (clonedCurves[i].minX - canvasWidth/2) / canvasWidth;
+                            clonedCurves[i].minX = Math.trunc(tmp * 10000) / 10000;
+
+                            tmp = (clonedCurves[i].maxX - canvasWidth/2) / canvasWidth;
+                            clonedCurves[i].maxX = Math.trunc(tmp * 10000) / 10000;
+
+                            tmp = (canvasHeight/2 - clonedCurves[i].minY) / canvasHeight;
+                            clonedCurves[i].minY = Math.trunc(tmp * 10000) / 10000;
+
+                            tmp = (canvasHeight/2 - clonedCurves[i].maxY) / canvasHeight;
+                            clonedCurves[i].maxY = Math.trunc(tmp * 10000) / 10000;
+
+
                             var interX = clonedCurves[i].interX;
                             normalise1(interX);
 
@@ -1499,6 +1854,8 @@ define(function(require) {
                             var minima = clonedCurves[i].minima;
                             normalise2(minima);
                         }
+
+
 
                         data.curves = clonedCurves;
 
@@ -1553,6 +1910,11 @@ define(function(require) {
                                 denormalise(pts[j]);
                             }
 
+                            curves[i].minX = curves[i].minX * canvasWidth + canvasWidth/2;
+                            curves[i].maxX = curves[i].maxX * canvasWidth + canvasWidth/2;
+                            curves[i].minY = canvasHeight/2 - curves[i].minY * canvasHeight;
+                            curves[i].maxY = canvasHeight/2 - curves[i].maxY * canvasHeight;
+
                             var interX = curves[i].interX;
                             denormalise1(interX);
 
@@ -1587,7 +1949,9 @@ define(function(require) {
                         var checkPointUndo = checkPointsUndo.pop();
                         freeSymbols = JSON.parse(checkPointUndo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointUndo.curvesJSON);
+                        
                         clickedKnot = null;
+                        clickedCurveIdx = undefined;
 
                         reDraw();
                     }
@@ -1606,7 +1970,9 @@ define(function(require) {
                         var checkPointRedo = checkPointsRedo.pop();
                         freeSymbols = JSON.parse(checkPointRedo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointRedo.curvesJSON);
+                        
                         clickedKnot = null;
+                        clickedCurveIdx = undefined;
 
                         reDraw();
                     }
@@ -1621,9 +1987,9 @@ define(function(require) {
 
                     function clean() {
                         // if the graph is clean originall, no change occur.
-                        if (curves.length === 0) {
-                            return;
-                        }
+                        // if (curves.length === 0) {
+                        //     return;
+                        // }
 
                         checkPoint = {};
                         checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
@@ -1633,6 +1999,7 @@ define(function(require) {
 
                         curves = [];
                         clickedKnot = null;
+                        clickedCurveIdx = undefined;
 
                         initiateFreeSymbols();
                         reDraw();
@@ -1656,6 +2023,18 @@ define(function(require) {
 
                     function touchEnded(e) {
                         mouseReleased(e);
+                    }
+
+                    function drawSelect() {
+                        debugger;
+                        var s1 = p.createSelect();
+                        s1.position(canvasWidth/2, 30);
+                        s1.option("draw");
+                        s1.option("arrow");
+                        s1.changed(function(e) {
+                            debugger;
+                            console.debug(e);
+                        });
                     }
 
                     // function drawButton(){
