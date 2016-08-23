@@ -23,7 +23,7 @@
     "node-sass": "3.4.2",
     "protractor": "~0.20.1",
     "shelljs": "^0.2.6",
-    "single-page-server": "0.1.0",
+    "single-page-server": "0.1.1",
     "systemjs-builder": "0.15.15"
   },
   "scripts": {
