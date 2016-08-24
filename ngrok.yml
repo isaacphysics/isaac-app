@@ -1,0 +1,14 @@
+region: eu
+authtoken: AUTH_TOKEN_HERE
+update: true
+tunnels:
+  app:
+    proto: http
+    addr: 8000
+    subdomain: isaacphysics
+    bind_tls: true
+  api:
+    proto: http
+    addr: 8080
+    subdomain: isaacphysics-api
+    bind_tls: true
