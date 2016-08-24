@@ -180,20 +180,6 @@ define(["app/honest/hexagon"],function(hexagon) {
             return svg;
         });
 
-        // Apply hexagon gradient styles (only if svg #svg-patterns is on the page and not Safari). If not default to plain.
-        // Chrome reports Safari in its User Agent, so need to ensure no Chrome as well. THIS IS AWFUL, but works for now
-        // FIXME - either change to more sane filters, ditch filters or ditch Safari.
-        if ($("#svg-patterns").length && !(navigator.userAgent.indexOf("Safari") > -1 && !(navigator.userAgent.indexOf("Chrome") > -1))) {
-            $.each(['physics','maths'], function(i, name)
-            {
-                for(var i = 1; i <= 5; i++) {
-                    $('.hex-'+name+i).css({
-                                            '-webkit-filter': 'url(#filter'+i+')',
-                                            'filter': 'url(' + window.location.origin + window.location.pathname + '#filter'+i+')',
-                                        });
-                }
-            });
-        }
     };
 
 	return ["$state", "tags", function($state, tags) {
