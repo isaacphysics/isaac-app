@@ -91,9 +91,9 @@ define([
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost") {
             apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
-        } else if (document.location.hostname == "isaacphysics.eu.ngrok.io") {
+        } else if (document.location.hostname.indexOf(".eu.ngrok.io") > -1) {
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
-            apiProvider.urlPrefix("https://isaacphysics-api.eu.ngrok.io/isaac-api/api");
+            apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
             apiProvider.urlPrefix("/api/v1.8.1/api");
         }
