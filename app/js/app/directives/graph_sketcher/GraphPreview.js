@@ -12,7 +12,7 @@ define(function(require) {
             templateUrl: "/partials/graph_sketcher/graph_preview.html",
             link: function(scope, element, attrs) {
 
-                var graphPreviewDiv = element.find(".graph-preview")
+                var graphPreviewDiv = element.find(".graph-preview");
 
                 var b = require('lib/graph_sketcher/bezier.js');
                 var f = require('lib/graph_sketcher/func.js');

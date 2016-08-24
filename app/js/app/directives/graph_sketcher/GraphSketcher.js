@@ -21,6 +21,8 @@ define(function(require) {
                 scope.draggingNewSymbol = false;
                 scope.equationEditorElement = element;
 
+                var colorSelect = element.find(".color-select")[0];
+
                 scope.submit = function() {
                     $("#graphModal").foundation("reveal", "close");
                 };
@@ -1208,16 +1210,34 @@ define(function(require) {
                                 drawMode = "curve";
                             }
 
-                            var alreadyUsedColors = [];
-                            for (var i = 0; i < curves.length; i++) {
-                                alreadyUsedColors.push(curves[i].colorIdx);
-                            }
-                            for (var i = 0; i < CURVE_COLORS.length; i++) {
-                                if (alreadyUsedColors.indexOf(i) == -1) {
-                                    drawnColorIdx = i;
-                                    return;
+                            // var alreadyUsedColors = [];
+                            // for (var i = 0; i < curves.length; i++) {
+                            //     alreadyUsedColors.push(curves[i].colorIdx);
+                            // }
+                            // for (var i = 0; i < CURVE_COLORS.length; i++) {
+                            //     if (alreadyUsedColors.indexOf(i) == -1) {
+                            //         drawnColorIdx = i;
+                            //         return;
+                            //     }
+                            // }
+
+                            // get drawnColor
+                            switch (colorSelect.value) {
+                                case "Blue": {
+                                    drawnColorIdx = 0;
+                                    break;
+                                }
+                                case "Orange": {
+                                    drawnColorIdx = 1;
+                                    break;
+                                }
+                                case "Green": {
+                                    drawnColorIdx = 2;
+                                    break;
                                 }
                             }
+
+                            return;
 
                         } else {
                             alert("Too much lines being drawn.");
@@ -1557,6 +1577,8 @@ define(function(require) {
 
                                 var minima = curve.minima;
                                 freeAllSymbols(minima);
+
+                                clickedCurveIdx = undefined;
                             }
 
                             scope.trashActive = false;
@@ -1819,7 +1841,11 @@ define(function(require) {
                         return JSON.parse(json);
                     }
 
-                    var encodeData = function() {
+                    var encodeData = function(trunc) {
+
+                        if (trunc == undefined) {
+                            trunc = true;
+                        }
 
                         if (canvasWidth > 5000 || canvasWidth <= 0) {
                             alert("Invalid canvasWidth.");
@@ -1858,8 +1884,14 @@ define(function(require) {
                         function normalise(pt) {
                             var x = (pt.x - canvasWidth/2) / canvasWidth;
                             var y = (canvasHeight/2 - pt.y) / canvasHeight;
-                            pt.x = Math.trunc(x * 10000) / 10000;
-                            pt.y = Math.trunc(y * 10000) / 10000;
+                            if (trunc) {
+                                pt.x = Math.trunc(x * 10000) / 10000;
+                                pt.y = Math.trunc(y * 10000) / 10000;
+                            } else {
+                                pt.x = x;
+                                pt.y = y;
+                            }
+                            
                         }
 
                         function normalise1(knots) {
@@ -2090,16 +2122,13 @@ define(function(require) {
                         mouseReleased(e);
                     }
 
-                    function drawSelect() {
-                        debugger;
-                        var s1 = p.createSelect();
-                        s1.position(canvasWidth/2, 30);
-                        s1.option("draw");
-                        s1.option("arrow");
-                        s1.changed(function(e) {
-                            debugger;
-                            console.debug(e);
-                        });
+                    function windowResized() {
+                        var data = encodeData(false);
+                        canvasWidth = window.innerWidth;
+                        canvasHeight = window.innerHeight;
+                        p.resizeCanvas(window.innerWidth, window.innerHeight);
+                        decodeData(data);
+                        reDraw();
                     }
 
                     // function drawButton(){
@@ -2160,6 +2189,8 @@ define(function(require) {
 
                     p.keyPressed = keyPressed;
                     p.keyReleased = keyReleased;
+
+                    p.windowResized = windowResized;
 
                     p.encodeData = encodeData;
                     p.decodeData = decodeData;
@@ -2256,6 +2287,7 @@ define(function(require) {
                 scope.centre = function() {
                     sketch.centre();
                 }
+
 
             }
         };
