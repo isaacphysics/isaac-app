@@ -403,7 +403,6 @@ define(function(require) {
 
                                         var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                         var allowSubscript = name == "log";
-                                        console.log(name);
                                         // which is an inverse trig function
                                         if (name.substring(0, 3) == "arc") {
                                             // finds the index of the function in the symbol library to retrieve the label.

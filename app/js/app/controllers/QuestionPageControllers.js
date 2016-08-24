@@ -107,11 +107,9 @@ define([], function() {
 		}
 		$scope.$on("modalPerfectDisplayed", function(e, b) {
 			$scope.modalPerfectDisplayed = b;
-			console.debug($scope.modalPerfectDisplayed);
 		});
 		$scope.$on("modalPassedDisplayed", function(e, b) {
 			$scope.modalPassedDisplayed = b;
-			console.debug($scope.modalPassedDisplayed);
 		});
 		$scope.$on('gameBoardCompletedPassed', function(e, data) {
 			$scope.gameBoardCompletedPassed = data;

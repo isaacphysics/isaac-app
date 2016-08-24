@@ -36,16 +36,16 @@ export
         this.operation = operation;
         switch(this.operation) {
           case '±':
-            this.latexSymbol = '\\pm ';
-            this.pythonSymbol = '± ';
-            this.mathmlSymbol = '± ';
-            this.mhchemSymbol = null;
+            this.latexSymbol = '\\pm';
+            this.pythonSymbol = '±';
+            this.mathmlSymbol = '±';
+            this.mhchemSymbol = '\\pm';
             break;
           case '−':
-            this.latexSymbol = '- ';
-            this.pythonSymbol = '- ';
-            this.mathmlSymbol = '- ';
-            this.mhchemSymbol = '- ';
+            this.latexSymbol = '-';
+            this.pythonSymbol = '-';
+            this.mathmlSymbol = '-';
+            this.mhchemSymbol = '-';
             break;
           default:
             this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.mhchemSymbol = this.operation;
@@ -82,16 +82,16 @@ export
         var expression = " ";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol;
+                expression += this.latexSymbol + " ";
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-            expression += this.pythonSymbol;
+            expression += this.pythonSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
                 expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mhchem") {
-          expression += this.mhchemSymbol;
+          expression += this.mhchemSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
                 expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
             } else {

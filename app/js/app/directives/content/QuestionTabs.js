@@ -99,7 +99,6 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 											gameBoardCompletedPassed = false;
 										}
 									}
-									console.debug(board.percentageCompleted);
 									// If things have changed, and the answer is correct, show the modal
 									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
 									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
@@ -110,13 +109,11 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
 
 										if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
-											console.log("scope.modalPassedDisplayed", scope.modalPassedDisplayed);
 											scope.modals["congrats"].show();
 											scope.$emit("modalPassedDisplayed", true);
 										}
 
 										if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
-											console.log("scope.modalPerfectDisplayed", scope.modalPerfectDisplayed);
 											scope.modals["congrats"].show();
 											scope.$emit("modalPerfectDisplayed", true);
 										}
