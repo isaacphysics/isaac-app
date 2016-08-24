@@ -1,45 +1,32 @@
 $ru_odd: #f7f7f7;
 $ru_even: #ffffff;
-$ci_top_pad : 15px;
+$ci_top_pad: 15px;
 $ci_bottom_pad: 10px;
-
-.h1-concept-index
-{
+.h1-concept-index {
     font-weight: 200;
 }
-
-span.physics
-{
+span.physics {
     color: $ru_physics;
 }
-
-span.maths
-{
+span.maths {
     color: $ru_maths;
 }
-
-#result-template
-{
-    height: 0px;
+#result-template {
+    height: 0;
     overflow: hidden;
 }
-
-#desktop-button
-{
+#desktop-button {
     margin: 0;
     float: right;
-    padding: 9px 10px 8px 10px;
+    padding: 9px 10px 8px;
 }
-
-.ru-search-result-bar
-{
+.ru-search-result-bar {
     background-color: $ru_darkgrey;
     color: white;
     font-style: italic;
-    padding: 20px 0 10px 0;
+    padding: 20px 0 10px;
     position: relative;
-    h4
-    {
+    h4 {
         padding: 0;
         margin: 0;
         position: relative;
@@ -47,142 +34,117 @@ span.maths
         bottom: 4px;
         padding-left: 30px;
     }
-    * span
-    {
+    * span {
         display: inline !important;
         padding-right: 10px;
     }
-    * input
-    {
+    * input {
         margin-left: 10px;
     }
-    * label
-    {
+    * label {
         color: white !important;
     }
-    .right
-    {
+    .right {
         margin-right: 1rem;
     }
 }
-
-.ru-search-result
-{
+.ru-search-result {
     color: black;
     cursor: pointer;
     font-style: italic;
 }
-
-.ru-concept-results
-{
+.ru-search-result-content {
+    margin-left: 25px;
+}
+.ru-search-result.concept.physics {
+        background: url('/assets/concept-physics.png') no-repeat left center;
+        background-size: 28px 28px;
+        background-position-x: 16px;
+        background-position-y: 17px;
+}
+.ru-search-result.concept.maths {
+        background: url('/assets/concept-maths.png') no-repeat left center;
+        background-size: 28px 28px;
+        background-position-x: 12px;
+        background-position-y: 17px;
+}
+.ru-concept-results {
     outline: none;
-    .ru-search-result.odd
-    {
+    .ru-search-result.odd {
         background-color: $ru_odd;
     }
-    .ru-search-result.even
-    {
+    .ru-search-result.even {
         background-color: $ru_even;
     }
 }
-
-.ru-concept-results * h4, .ru-concept-pad * h4
-{
+.ru-concept-pad * h4,
+.ru-concept-results * h4 {
     margin: 0;
 }
-
-@media #{$medium-up}
-{
-    .ru-search-result
-    {
+@media #{$medium-up} {
+    .ru-search-result {
         padding-left: 30px;
         padding-right: 30px;
     }
-    
-    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result
-    {
+    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result {
         border-left: $ru_lightgrey 1px solid;
         border-right: $ru_lightgrey 1px solid;
-        padding-top: $ci_top_pad  + 1px;
+        padding-top: $ci_top_pad + 1px;
         padding-bottom: $ci_bottom_pad + 1px;
     }
-    
-    .ru-concept-results .ru-mobile-answer-wrap:first-child .ru-search-result
-    {
+    .ru-concept-results .ru-mobile-answer-wrap:first-child .ru-search-result {
         border-top: $ru_lightgrey 1px solid;
-        padding-top:  $ci_top_pad;
+        padding-top: $ci_top_pad;
     }
-    
-    .ru-concept-results .ru-mobile-answer-wrap:last-child .ru-search-result
-    {
+    .ru-concept-results .ru-mobile-answer-wrap:last-child .ru-search-result {
         border-bottom: $ru_lightgrey 1px solid;
         padding-bottom: $ci_bottom_pad;
     }
-    
-    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result:hover, .ru-concept-results .ru-mobile-answer-wrap:focus .ru-search-result
-    {
+    .ru-concept-results .ru-mobile-answer-wrap .ru-search-result:hover,
+    .ru-concept-results .ru-mobile-answer-wrap:focus .ru-search-result {
         padding-top: $ci_top_pad;
         padding-bottom: $ci_bottom_pad;
     }
-    
-    .ru-mobile-answer-wrap.physics .ru-search-result:hover, .ru-mobile-answer-wrap.physics:focus .ru-search-result
-    {
+    .ru-mobile-answer-wrap.physics .ru-search-result:hover,
+    .ru-mobile-answer-wrap.physics:focus .ru-search-result {
         border: 1px solid $ru_physics;
     }
-    
-    .ru-mobile-answer-wrap.maths .ru-search-result:hover, .ru-mobile-answer-wrap.maths:focus .ru-search-result
-    {
+    .ru-mobile-answer-wrap.maths .ru-search-result:hover,
+    .ru-mobile-answer-wrap.maths:focus .ru-search-result {
         border: 1px solid $ru_maths;
     }
-    
-    .ru-mobile-answer-wrap.both .ru-search-result:hover, .ru-mobile-answer-wrap.both:focus .ru-search-result
-    {
+    .ru-mobile-answer-wrap.both .ru-search-result:hover,
+    .ru-mobile-answer-wrap.both:focus .ru-search-result {
         border: 1px solid $ru_darkgrey;
     }
-    
-    .ru-concept-search
-    {
+    .ru-concept-search {
         margin-top: 20px;
     }
-    .ru-mobile-searchbar-wrap
-    {
+    .ru-mobile-searchbar-wrap {
         margin-top: 10px;
     }
-    
-    .ru-answer-pad
-    {
+    .ru-answer-pad {
         height: 101px;
     }
 }
-
-.ru-no-result
-{
+.ru-no-result {
     padding-top: 10px;
 }
-
-.ru-concept-result-bullets
-{
-    img
-    {
-        padding: 20px 4px 10px 4px;
+.ru-concept-result-bullets {
+    img {
+        padding: 20px 4px 10px;
         cursor: pointer;
     }
 }
-
-.ru-concept-search
-{
+.ru-concept-search {
     position: relative;
 }
-
-.ru-search-list
-{
+.ru-search-list {
     position: absolute;
     z-index: 10;
     top: 37px;
 }
-
-.ru-search-list-item
-{
+.ru-search-list-item {
     border-bottom: 1px $input-border-color solid;
     border-left: 1px $input-border-color solid;
     border-right: 1px $input-border-color solid;
@@ -191,24 +153,17 @@ span.maths
     font-style: italic;
     padding: 8px;
     cursor: pointer;
-    
-    &:hover
-    {
+    &:hover {
         color: $ru_green;
     }
-    
-    &:nth-child(2n+1)
-    {
+    &:nth-child(2n+1) {
         background-color: $ru_odd;
     }
-    &:nth-child(2n)
-    {
+    &:nth-child(2n) {
         background-color: $ru_even;
     }
 }
-
-#load-more
-{
+#load-more {
     @include button(1, $ru_darkgrey, 0, true, false, false);
     margin-top: 20px;
     font-size: $h4-font-size;
@@ -216,85 +171,68 @@ span.maths
     font-style: italic;
     display: none;
 }
-
-@media #{$small-only}
-{
-    .ru-concept-search
-    {
+@media #{$small-only} {
+    .ru-concept-search {
         background-color: white;
         margin: 0 -0.9375rem;
         padding: 0 0.9375rem;
     }
-    .ru-mobile-searchbar-wrap
-    {
+    .ru-mobile-searchbar-wrap {
         background-color: $ru_darkgrey;
     }
-
-    .ru-mobile-answer-wrap .ru-search-result
-    {
-        padding: 12px 10px 8px 10px;
+    .ru-mobile-answer-wrap .ru-search-result {
+        padding: 12px 10px 8px;
         margin-left: -0.9375rem;
         margin-right: -0.9375rem;
     }
-
-    .ru-mobile-answer-wrap
-    {
-        &:nth-child(2n+1)
-        {
+    .ru-mobile-answer-wrap {
+        &:nth-child(2n+1) {
             background-color: $ru_odd;
         }
-        &:nth-child(2n)
-        {
+        &:nth-child(2n) {
             background-color: $ru_even;
         }
     }
-    
-    .ru-search-result-bar
-    {
-        padding: 12px 0 10px 0;
-        * span:first-child
-        {
+    .ru-search-result-bar {
+        padding: 12px 0 10px;
+        * span:first-child {
             display: none !important;
         }
-        * label.ru-drop-mid-label
-        {
+        * label.ru-drop-mid-label {
             position: relative;
             top: -1px;
         }
-        h4
-        {
+        h4 {
             font-size: 1.0rem;
-            bottom: 0px;
-            padding-left: 0px;
+            bottom: 0;
+            padding-left: 0;
         }
-        * input
-        {
-            margin: 0 !important;
-            margin-right: 4px !important;
-            padding: 0px !important;
+        * input {
+            margin: 0 4px 0 0 !important;
+            padding: 0 !important;
         }
-        * label
-        {
+        * label {
             margin: 0 !important;
             padding: 0 !important;
         }
-        .right
-        {
-            margin-right: 0rem;
+        .right {
+            margin-right: 0;
         }
     }
-    
-    .ru-search-result-content
-    {
-        img
-        {
+    .ru-search-result-content {
+        margin-left: 0px !important;
+        img {
             padding-top: 7px;
             padding-bottom: 7px;
         }
     }
-
-    #load-more
-    {
+    .ru-search-result.concept.physics {
+            background: none !important;
+    }
+    .ru-search-result.concept.maths {
+            background: none !important;
+    }
+    #load-more {
         margin-top: 10px;
     }
 }
