@@ -1,3 +1,4 @@
+
 "use strict";
 define(function(require) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
@@ -523,14 +524,6 @@ define(function(require) {
                         p.pop();
                     }
 
-                    // function drawJunkArea(color) {
-                    //     p.push();
-                    //     p.stroke(color)
-                    //     p.strokeWeight(10);
-                    //     p.line(junkPt.x - 15, junkPt.y - 15, junkPt.x + 15, junkPt.y + 15);
-                    //     p.line(junkPt.x + 15, junkPt.y - 15, junkPt.x - 15, junkPt.y + 15);
-                    //     p.pop();
-                    // }
 
                     function findInterceptX(pts) {
                         if (pts.length == 0) return [];
@@ -889,8 +882,6 @@ define(function(require) {
                             }
                         }
 
-
-
                         if (!found) {
                             for (var i = 0; i < freeSymbols.length; i++) {
                                 if (isOverSymbol(current, freeSymbols[i])) {
@@ -975,8 +966,6 @@ define(function(require) {
                             //         break;
                             //     }
                             // }
-
-                            
 
                             if (clickedCurveIdx != undefined) {
                                 function detect(x, y) {
@@ -1642,7 +1631,7 @@ define(function(require) {
                                 }
                             }
 
-                            if (clickedKnot != null && !found) {
+                            if (!found && clickedKnot != null) {
                                 var knot = clickedKnot;
                                 if (knot.xSymbol == undefined && f.getDist(movedSymbol, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = knot.x;
@@ -1673,10 +1662,7 @@ define(function(require) {
                                     return;
                                 }
 
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
-
+                                // adjustment of start and end to attach to the axis automatically.
                                 if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
                                     drawnPts[0].y = canvasHeight/2;
                                 }
@@ -1691,7 +1677,6 @@ define(function(require) {
                                 }
 
                                 // sampler.sample, bezier.genericBezier
-
                                 var pts = b.genericBezier(s.sample(drawnPts));
                                 curve = {};
                                 curve.pts = pts;
@@ -1712,6 +1697,15 @@ define(function(require) {
                                 curve.maxY = maxY;
 
 
+                                // discard if the curve is too small
+                                if ((maxX - minX) < 30 || (maxY - minY) < 30) {
+                                    return;
+                                }
+
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+                                scope.$apply();
+
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
                                 curve.maxima = findTurnPts(pts, 'maxima');
@@ -1719,10 +1713,6 @@ define(function(require) {
                                 curve.colorIdx = drawnColorIdx;
 
                             } else {
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
-
                                 var n = 100;
                                 var rx = lineEnd.x - lineStart.x;
                                 var ry = lineEnd.y - lineStart.y;
@@ -1742,6 +1732,14 @@ define(function(require) {
                                 curve.maxX = Math.max(lineStart.x, lineEnd.x);
                                 curve.minY = Math.min(lineStart.y, lineEnd.y);
                                 curve.maxY = Math.max(lineStart.y, lineEnd.y);
+
+                                if ((maxX - minX) < 30 || (maxY - minY) < 30) {
+                                    return;
+                                }
+
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+                                scope.$apply();
 
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
@@ -2175,13 +2173,12 @@ define(function(require) {
                     // }
 
 
-                    // export
+                    // export the following functions to p5, so they can be assessed via the object produced.
                     p.setup = setup;
                     p.mousePressed = mousePressed;
                     p.mouseDragged = mouseDragged;
                     p.mouseReleased = mouseReleased;
                     p.mouseMoved = mouseMoved;
-
 
                     p.touchStarted = touchStarted;
                     p.touchMoved = touchMoved;
@@ -2216,8 +2213,8 @@ define(function(require) {
                         eqnModal.foundation("reveal", "open");
                         scope.state = initialState;
                         scope.questionDoc = questionDoc;
-                        //
-                        //
+                        
+                        
                         // scope.log = {
                         //     type: "EQN_EDITOR_LOG",
                         //     questionId: scope.questionDoc ? scope.questionDoc.id : null,
@@ -2258,7 +2255,6 @@ define(function(require) {
                         scope.future = [];
 
                         // generate p5 instance
-                        // scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
 
                         // reload previous answer if there is one
