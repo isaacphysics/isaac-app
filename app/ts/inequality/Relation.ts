@@ -14,6 +14,7 @@ export
     protected pythonSymbol: string;
     protected latexSymbol: string;
     protected mhchemSymbol: string;
+    protected mathmlSymbol: string;
 
     get typeAsString(): string {
         return "Relation";
@@ -56,21 +57,25 @@ export
                 this.relation = '≤';
                 this.pythonSymbol = '<=';
                 this.latexSymbol = '\\leq ';
+                this.mathmlSymbol = '&#x2264;';
                 break;
             case '>=':
                 this.relation = '≥';
                 this.pythonSymbol = '>=';
                 this.latexSymbol = '\\geq ';
+                this.mathmlSymbol = '&#x2265;';
                 break;
             case '<':
                 this.relation = '<';
                 this.pythonSymbol = '<';
                 this.latexSymbol = '<';
+                this.mathmlSymbol = '&lt;';
                 break;
             case '>':
                 this.relation = '>';
                 this.pythonSymbol = '>';
                 this.latexSymbol = '> ';
+                this.mathmlSymbol = '&gt;';
                 break;
             case '=':
                 this.relation = '=';
@@ -133,8 +138,9 @@ export
                 expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
+            var rel = this.mathmlSymbol ? this.mathmlSymbol : this.relation;
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.relation + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
