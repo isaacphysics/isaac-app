@@ -2,440 +2,474 @@
 define(function(require) {
 
     var MySketch = require("inequality").MySketch;
-   
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+    var tester = require("lib/equation_editor/test_cases.js");
+    return ["$timeout", "$rootScope", "api", "$stateParams", function($timeout, $rootScope, api, $stateParams) {
 
-        return {
-            scope: true,
-            restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_editor.html",
-            link: function(scope, element, attrs) {
+            return {
+                scope: true,
+                restrict: "A",
+                templateUrl: "/partials/equation_editor/equation_editor.html",
+                link: function(scope, element, attrs) {
 
-                element.on("touchstart touchmove", "canvas", function(e) {
-                    e.preventDefault();
-                });
-
-                var sketch = null;
-
-                scope.canvasOffset = {};
-                scope.draggingNewSymbol = false;
-                scope.equationEditorElement = element;
-
-                scope.selectedSymbols = [];
-                scope.selectionHandleFlags = {
-                    showCalc: false,
-                    showResize: true,
-                    showMove: false
-                };
-
-                scope.$on("triggerCloseMenus", function() {
-                    scope.$broadcast("closeMenus");
-                });
-
-                scope.$on("triggerResizeMenu", function() {
-                    scope.$broadcast("resizeMenu");
-                });
-
-                $(window).on("resize", function() {
-                    element.find(".top-menu").css({
-                        "bottom": scope.equationEditorElement.height()
-                    }).removeClass("active-menu");
-                });
-
-                scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
-                    scope.draggingNewSymbol = true;
-                    scope.mousePageX = pageX;
-                    scope.mousePageY = pageY;
-                    var tOff = element.find(".trash-button").position();
-                    var tWidth = element.find(".trash-button").width();
-                    var tHeight = element.find(".trash-button").height();
-                    scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
-
-                    sketch.updatePotentialSymbol(symbol, pageX, pageY);
-                    scope.$digest();
-
-
-                });
-
-                scope.notifySymbolDrag = function(x, y) {
-                    var tOff = element.find(".trash-button").position();
-                    var tWidth = element.find(".trash-button").width();
-                    var tHeight = element.find(".trash-button").height();
-
-                    scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
-                    scope.$apply();
-                };
-
-                scope.$on("newSymbolAbortDrag", function() {
-                    if (scope.draggingNewSymbol) {
-                        scope.draggingNewSymbol = false;
-                        scope.log.actions.push({
-                            event: "ABORT_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
-                            timestamp: Date.now()
-                        });
-                        sketch.updatePotentialSymbol(null);
-                        scope.$digest();
-                    }
-                });
-
-                scope.$on("spawnSymbol", function(_e) {
-                    var offset = element.offset();
-                    var width = element.width();
-                    var height = element.height();
-
-                    scope.draggingNewSymbol = false;
-
-                    if (scope.trashActive) {
-                        scope.log.actions.push({
-                            event: "TRASH_POTENTIAL_SYMBOL",
-                            symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
-                            timestamp: Date.now()
-                        });
-                        sketch.updatePotentialSymbol(null);
-                        return;
-                    }
-
-                    // TODO: Improve with different widget types
-                    sketch.commitPotentialSymbol();
-
-                    scope.$broadcast("historyCheckpoint");
-
-                    // console.log("scope.state: ", scope.state);
-                });
-
-                scope.logOnClose = function(event) {
-                    // This ought to catch people who navigate away without closing the editor!
-                    if (scope.log != null) {
-                        scope.log.actions.push({
-                            event: "NAVIGATE_AWAY",
-                            timestamp: Date.now()
-                        });
-                        api.logger.log(scope.log);
-                    }
-                };
-
-                $rootScope.showEquationEditor = function(initialState, questionDoc, editorMode) {
-
-                    return new Promise(function(resolve, reject) {
-
-                        delete scope.symbolLibrary.customVars;
-                        delete scope.symbolLibrary.customFunctions;
-                        delete scope.symbolLibrary.customChemicalSymbols;
-                        delete scope.symbolLibrary.customFunction;
-                        delete scope.symbolLibrary.augmentedOps;
-
-                        scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat((scope.symbolLibrary.hiddenOps));
-
-
-                        if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
-                            scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
-                            var parsed = parseCustomSymbols(questionDoc.availableSymbols);
-                            if (parsed.vars.length > 0) {
-                                scope.symbolLibrary.customVars = parsed.vars;
-                            }
-                            if (parsed.fns.length > 0) {
-                                scope.symbolLibrary.customFunctions = parsed.fns;
-                            }
-                            if (parsed.operators.length > 0) {
-                                scope.symbolLibrary.customFunctions = scope.symbolLibrary.reducedOps.concat(parsed.operators);
-                            } else if (!(parsed.vars.length > 0 || parsed.fns.length > 0 || parsed.operators.length > 0)) {
-                                console.debug("Unable to parse any custom variables.");
-                            }
-                        } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
-                            var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
-                            if (parsed.length > 0) {
-                                scope.symbolLibrary.customChemicalSymbols = parsed;
-                            } else {
-                                console.debug("Didn't parse any chemical symbols.");
-                            }
-                        }
-
-                        $(".result-preview>span").empty();
-                        $(".result-preview").width(0);
-
-                        var eqnModal = $('#equationModal');
-                        eqnModal.one("opened.fndtn.reveal", function() {
-                            element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
-                        });
-
-                        eqnModal.foundation("reveal", "open");
-                        scope.state = initialState || {
-                            symbols: []
-                        };
-                        scope.questionDoc = questionDoc;
-                        scope.editorMode = editorMode;
-
-
-                        scope.log = {
-                            type: "EQN_EDITOR_LOG",
-                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
-                            screenSize: {
-                                width: window.innerWidth,
-                                height: window.innerHeight
-                            },
-                            actions: [{
-                                event: "OPEN",
-                                timestamp: Date.now()
-                            }]
-                        };
-
-                        // Log just before the page closes if tab/browser closed:
-                        window.addEventListener("beforeunload", scope.logOnClose);
-                        // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function(e) {
-                            scope.log.finalState = [];
-                            sketch.symbols.forEach(function(e) {
-                                scope.log.finalState.push(e.subtreeObject(true, true));
-                            });
-                            scope.log.actions.push({
-                                event: "CLOSE",
-                                timestamp: Date.now()
-                            });
-                            if (scope.segueEnvironment == "DEV") {
-                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
-                            }
-                            window.removeEventListener("beforeunload", scope.logOnClose);
-                            api.logger.log(scope.log);
-                            scope.log = null;
-                        });
-
-                        scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                        scope.historyPtr = 0;
-                        //element.find("canvas").remove();
-
-                        // TODO: Redisplay old equations in the centre
-
-                        scope.future = [];
-
-                        var p = new p5(function(p) {
-                            sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
-                            $rootScope.sketch = sketch;
-                            return sketch;
-                        }, document.getElementById("equationEditor"));
-
-                        eqnModal.one("closed.fndtn.reveal", function() {
-                            sketch.p.remove();
-                            resolve(scope.state);
-                        });
-
+                    element.on("touchstart touchmove", "canvas", function(e) {
+                        e.preventDefault();
                     });
-                };
 
-                var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-                var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-                var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
-                var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
-                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
-                var opsMap = {
-                    "<": "<",
-                    ">": ">",
-                    "<=": "\\leq",
-                    ">=": "\\geq",
-                };
-                var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
-                var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
-                var letterMap = {
-                    "\\alpha": "α",
-                    "\\beta": "β",
-                    "\\gamma": "γ",
-                    "\\delta": "δ",
-                    "\\epsilon": "ε",
-                    "\\varepsilon": "ε",
-                    "\\zeta": "ζ",
-                    "\\eta": "η",
-                    "\\theta": "θ",
-                    "\\iota": "ι",
-                    "\\kappa": "κ",
-                    "\\lambda": "λ",
-                    "\\mu": "μ",
-                    "\\nu": "ν",
-                    "\\xi": "ξ",
-                    "\\omicron": "ο",
-                    "\\pi": "π",
-                    "\\rho": "ρ",
-                    "\\sigma": "σ",
-                    "\\tau": "τ",
-                    "\\upsilon": "υ",
-                    "\\phi": "ϕ",
-                    "\\chi": "χ",
-                    "\\psi": "ψ",
-                    "\\omega": "ω",
-                    "\\Gamma": "Γ",
-                    "\\Delta": "Δ",
-                    "\\Theta": "Θ",
-                    "\\Lambda": "Λ",
-                    "\\Xi": "Ξ",
-                    "\\Pi": "Π",
-                    "\\Sigma": "Σ",
-                    "\\Upsilon": "Υ",
-                    "\\Phi": "Φ",
-                    "\\Psi": "Ψ",
-                    "\\Omega": "Ω",
-                };
+                    var sketch = null;
 
-                var chemicalSymbols = {};
-                var chemicalSymbolsArray = elements.concat(particles);
+                    scope.canvasOffset = {};
+                    scope.draggingNewSymbol = false;
+                    scope.equationEditorElement = element;
 
-                for (var i in chemicalSymbolsArray) {
-                    chemicalSymbols[chemicalSymbolsArray[i]] = i;
-                }
-
-                var trigMap = {};
-                // dictionary of trig functions
-                for (var i = 0; i < trigFunctions.length; i++) {
-                    trigMap[trigFunctions[i]] = i;
-                }
-
-
-                var inverseLetterMap = {};
-                for (var k in letterMap) {
-                    inverseLetterMap[letterMap[k]] = k;
-                }
-                inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
-
-                var convertToLatexIfGreek = function(s) {
-                    if (s == "epsilon") {
-                        return "\\varepsilon";
-                    }
-                    if (greekLetters.indexOf("\\" + s) > -1) {
-                        return "\\" + s;
-                    }
-                    if (greekLettersUpper.indexOf("\\" + s) > -1) {
-                        return "\\" + s;
-                    }
-                    return s;
-                };
-
-
-                var parseCustomChemicalSymbols = function(symbols) {
-                    // take symbols in string ["H", "He", "Li", "electron", "proton", "antineutrino"]
-                    var custom = [];
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
-                        if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
-                            continue;
-                        }
-                        console.debug("Parsing:", s);
-                        if (chemicalSymbols.hasOwnProperty(s)) {
-                            var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
-                            if (type == 'Particle') {
-                                var index_of_particle = chemicalSymbols[s] - elements.length;
-                                var particle_label = scope.symbolLibrary.particles[index_of_particle].menu.label;
-                                custom.push({
-                                    type: type,
-                                    menu: {
-                                        label: particle_label,
-                                        texLabel: true,
-                                        fontSize: "2em"
-                                    },
-                                    properties: {
-                                        type: s,
-                                        particle: scope.symbolLibrary.particles[index_of_particle].properties.particle
-                                    }
-                                });
-
-                            } else {
-                                custom.push({
-                                    type: type,
-                                    properties: {
-                                        element: s
-                                    },
-                                    menu: {
-                                        label: "\\text{" + s + "}",
-                                        texLabel: true,
-                                        // add here option for it to be part of nuclear equation
-                                    }
-                                });
-                            }
-                        }
-
-                    }
-                    return custom;
-                };
-
-                var parseCustomSymbols = function(symbols) {
-                    var r = {
-                        vars: [],
-                        fns: [],
-                        operators: []
+                    scope.selectedSymbols = [];
+                    scope.selectionHandleFlags = {
+                        showCalc: false,
+                        showResize: true,
+                        showMove: false
                     };
 
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
-                        if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
-                            continue;
-                        } else if (opsMap.hasOwnProperty(s)) {
-                            console.debug("Identified " + s + " as an operator");
-                            var partResults = [];
-                            partResults.push({
-                                type: 'Relation',
-                                menu: {
-                                    label: opsMap[s],
-                                    texLabel: true,
-                                },
-                                properties: {
-                                    relation: s
+                    scope.$on("triggerCloseMenus", function() {
+                        scope.$broadcast("closeMenus");
+                    });
+
+                    scope.$on("triggerResizeMenu", function() {
+                        scope.$broadcast("resizeMenu");
+                    });
+
+                    $(window).on("resize", function() {
+                        element.find(".top-menu").css({
+                            "bottom": scope.equationEditorElement.height()
+                        }).removeClass("active-menu");
+                    });
+
+                    scope.$on("newSymbolDrag", function(_, symbol, pageX, pageY, mousePageX, mousePageY) {
+                        scope.draggingNewSymbol = true;
+                        scope.mousePageX = pageX;
+                        scope.mousePageY = pageY;
+                        var tOff = element.find(".trash-button").position();
+                        var tWidth = element.find(".trash-button").width();
+                        var tHeight = element.find(".trash-button").height();
+                        scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
+
+                        sketch.updatePotentialSymbol(symbol, pageX, pageY);
+                        scope.$digest();
+
+                    });
+
+                    scope.notifySymbolDrag = function(x, y) {
+                        var tOff = element.find(".trash-button").position();
+                        var tWidth = element.find(".trash-button").width();
+                        var tHeight = element.find(".trash-button").height();
+
+                        scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
+                        scope.$apply();
+                    };
+
+                    scope.$on("newSymbolAbortDrag", function() {
+                        if (scope.draggingNewSymbol) {
+                            scope.draggingNewSymbol = false;
+                            scope.log.actions.push({
+                                event: "ABORT_POTENTIAL_SYMBOL",
+                                symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                                timestamp: Date.now()
+                            });
+                            sketch.updatePotentialSymbol(null);
+                            scope.$digest();
+                        }
+                    });
+
+                    scope.$on("spawnSymbol", function(_e) {
+                        var offset = element.offset();
+                        var width = element.width();
+                        var height = element.height();
+
+                        scope.draggingNewSymbol = false;
+
+                        if (scope.trashActive) {
+                            scope.log.actions.push({
+                                event: "TRASH_POTENTIAL_SYMBOL",
+                                symbol: sketch.potentialSymbol.subtreeObject(false, true, true),
+                                timestamp: Date.now()
+                            });
+                            sketch.updatePotentialSymbol(null);
+                            return;
+                        }
+
+                        // TODO: Improve with different widget types
+                        sketch.commitPotentialSymbol();
+
+                        scope.$broadcast("historyCheckpoint");
+
+                        // console.log("scope.state: ", scope.state);
+                    });
+
+                    scope.logOnClose = function(event) {
+                        // This ought to catch people who navigate away without closing the editor!
+                        if (scope.log != null) {
+                            scope.log.actions.push({
+                                event: "NAVIGATE_AWAY",
+                                timestamp: Date.now()
+                            });
+                            api.logger.log(scope.log);
+                        }
+                    };
+
+                    $rootScope.showEquationEditor = function(initialState, questionDoc, editorMode) {
+
+                        return new Promise(function(resolve, reject) {
+
+                            delete scope.symbolLibrary.customVars;
+                            delete scope.symbolLibrary.customFunctions;
+                            delete scope.symbolLibrary.customChemicalSymbols;
+                            delete scope.symbolLibrary.customFunction;
+                            delete scope.symbolLibrary.augmentedOps;
+
+                            scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
+                            scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
+
+                            if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
+
+                                scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
+                                scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
+                                var parsed = parseCustomSymbols(questionDoc.availableSymbols);
+
+                                var customSymbolsParsed = false;
+                                if (parsed.vars.length > 0) {
+                                    scope.symbolLibrary.customVars = parsed.vars;
+                                    customSymbolsParsed = true;
                                 }
-                            })
-                        } else {
-                            console.debug("Parsing symbol:", s);
-                            var parts = s.split(" ");
-                            var partResults = [];
-                            for (var j in parts) {
-                                var p = parts[j];
-                                var name = p.replace(/\(\)/g, "");
-                                var index = trigMap[name + ""];
-                                if (p.endsWith("()")) {
-
-                                    var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
-                                    var allowSubscript = name == "log";
-                                    if (name.substring(0, 3) == "arc") {
-                                        // finds the index of the function in the symbol library to retrieve the label.
-
-
-                                        partResults.push({
-                                            type: "Fn",
-                                            properties: {
-                                                name: name.substring(3),
-                                                innerSuperscript: innerSuperscript,
-                                                allowSubscript: allowSubscript
-                                            },
-                                            children: {
-                                                superscript: {
-                                                    type: "Num",
-                                                    properties: {
-                                                        significand: "-1",
-                                                    }
-                                                }
-                                            },
-                                            menu: {
-                                                label: scope.symbolLibrary.trigFunctions[index].menu.label,
-                                                texLabel: true,
-                                                fontSize: '15px'
-                                            }
-                                        });
-                                        console.log(partResults);
-                                    } else {
-
-                                        partResults.push({
-                                            type: "Fn",
-                                            properties: {
-                                                name: name,
-                                                innerSuperscript: innerSuperscript,
-                                                allowSubscript: allowSubscript
-                                            },
-                                            menu: {
-                                                label: scope.symbolLibrary.trigFunctions[index].menu.label,
-                                                texLabel: true,
-                                                fontSize: '18px'
-                                            }
-                                        });
-                                    }
+                                if (parsed.fns.length > 0) {
+                                    scope.symbolLibrary.customFunctions = parsed.fns;
+                                    customSymbolsParsed = true;
+                                }
+                                if (parsed.operators.length > 0) {
+                                    scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(parsed.operators);
+                                    customSymbolsParsed = true;
+                                }
+                                if (!customSymbolsParsed) {
+                                    console.debug("No custom symbols.");
+                                }
+                            } else if (questionDoc && questionDoc.availableSymbols && editorMode == "chemistry") {
+                                var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
+                                if (parsed.length > 0) {
+                                    scope.symbolLibrary.customChemicalSymbols = parsed;
                                 } else {
-                                    // must be a symbol
+                                    console.debug("No custom symbols.");
+                                }
+                            }
+
+                            $(".result-preview>span").empty();
+                            $(".result-preview").width(0);
+
+                            var eqnModal = $('#equationModal');
+                            eqnModal.one("opened.fndtn.reveal", function() {
+                                element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
+                            });
+
+                            eqnModal.foundation("reveal", "open");
+                            scope.state = initialState || {
+                                symbols: []
+                            };
+                            scope.questionDoc = questionDoc;
+                            scope.editorMode = editorMode;
+
+                            scope.log = {
+                                type: "EQN_EDITOR_LOG",
+                                questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                                mode: scope.editorMode,
+                                screenSize: {
+                                    width: window.innerWidth,
+                                    height: window.innerHeight
+                                },
+                                actions: [{
+                                    event: "OPEN",
+                                    timestamp: Date.now()
+                                }]
+                            };
+
+                            // Log just before the page closes if tab/browser closed:
+                            window.addEventListener("beforeunload", scope.logOnClose);
+                            // Log the editor being closed and submit log event to server:
+                            eqnModal.one("close", function(e) {
+                                scope.log.finalState = [];
+                                sketch.symbols.forEach(function(e) {
+                                    scope.log.finalState.push(e.subtreeObject(true, true));
+                                });
+                                scope.log.actions.push({
+                                    event: "CLOSE",
+                                    timestamp: Date.now()
+                                });
+                                if (scope.segueEnvironment == "DEV") {
+                                    console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                                }
+                                window.removeEventListener("beforeunload", scope.logOnClose);
+                                api.logger.log(scope.log);
+                                scope.log = null;
+                            });
+
+                            scope.history = [JSON.parse(JSON.stringify(scope.state))];
+                            scope.historyPtr = 0;
+                            //element.find("canvas").remove();
+
+                            // TODO: Redisplay old equations in the centre
+
+                            scope.future = [];
+                            var p = new p5(function(p) {
+                                sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                                $rootScope.sketch = sketch;
+                                return sketch;
+                            }, element.find(".equation-editor")[0]);
+
+                            eqnModal.one("closed.fndtn.reveal", function() {
+                                sketch.p.remove();
+                                resolve(scope.state);
+                            });
+
+                        });
+                    };
+
+                    var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+                    var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+                    var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
+                    var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
+                    var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
+                    var opsMap = {
+                        "<": "<",
+                        ">": ">",
+                        "<=": "\\leq",
+                        ">=": "\\geq",
+                    };
+                    var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                    var trigFunctionsStandard = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot"];
+                    var trigFunctionsHyp = ["sinh", "cosh", "tanh", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                    var trigReduced = ["sin", "cos", "tan"];
+                    var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
+                    var letterMap = {
+                        "\\alpha": "α",
+                        "\\beta": "β",
+                        "\\gamma": "γ",
+                        "\\delta": "δ",
+                        "\\epsilon": "ε",
+                        "\\varepsilon": "ε",
+                        "\\zeta": "ζ",
+                        "\\eta": "η",
+                        "\\theta": "θ",
+                        "\\iota": "ι",
+                        "\\kappa": "κ",
+                        "\\lambda": "λ",
+                        "\\mu": "μ",
+                        "\\nu": "ν",
+                        "\\xi": "ξ",
+                        "\\omicron": "ο",
+                        "\\pi": "π",
+                        "\\rho": "ρ",
+                        "\\sigma": "σ",
+                        "\\tau": "τ",
+                        "\\upsilon": "υ",
+                        "\\phi": "ϕ",
+                        "\\chi": "χ",
+                        "\\psi": "ψ",
+                        "\\omega": "ω",
+                        "\\Gamma": "Γ",
+                        "\\Delta": "Δ",
+                        "\\Theta": "Θ",
+                        "\\Lambda": "Λ",
+                        "\\Xi": "Ξ",
+                        "\\Pi": "Π",
+                        "\\Sigma": "Σ",
+                        "\\Upsilon": "Υ",
+                        "\\Phi": "Φ",
+                        "\\Psi": "Ψ",
+                        "\\Omega": "Ω",
+                    };
+
+                    var chemicalSymbols = {};
+                    var chemicalSymbolsArray = elements.concat(particles);
+
+                    for (var i in chemicalSymbolsArray) {
+                        chemicalSymbols[chemicalSymbolsArray[i]] = i;
+                    }
+
+                    var trigMap = {};
+                    // dictionary of trig functions
+                    for (var i = 0; i < trigFunctions.length; i++) {
+                        trigMap[trigFunctions[i]] = i;
+                    }
+
+                    var inverseLetterMap = {};
+                    for (var k in letterMap) {
+                        inverseLetterMap[letterMap[k]] = k;
+                    }
+                    inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
+
+                    var convertToLatexIfGreek = function(s) {
+                        if (s == "epsilon") {
+                            return "\\varepsilon";
+                        }
+                        if (greekLetters.indexOf("\\" + s) > -1) {
+                            return "\\" + s;
+                        }
+                        if (greekLettersUpper.indexOf("\\" + s) > -1) {
+                            return "\\" + s;
+                        }
+                        return s;
+                    };
+
+                    var parseCustomChemicalSymbols = function(symbols) {
+                        // take symbols in string ["H", "He", "Li", "electron", "proton", "antineutrino"]
+                        var custom = [];
+                        for (var i in symbols) {
+                            var s = symbols[i].trim();
+                            if (s.length == 0) {
+                                console.warn("Tried to parse zero-length symbol in list:", symbols);
+                                continue;
+                            }
+                            console.debug("Parsing:", s);
+                            if (chemicalSymbols.hasOwnProperty(s)) {
+                                var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
+                                if (type == 'Particle') {
+                                    var index_of_particle = chemicalSymbols[s] - elements.length;
+                                    var particle_label = scope.symbolLibrary.particles[index_of_particle].menu.label;
+                                    custom.push({
+                                        type: type,
+                                        menu: {
+                                            label: particle_label,
+                                            texLabel: true,
+                                            fontSize: "2em"
+                                        },
+                                        properties: {
+                                            type: s,
+                                            particle: scope.symbolLibrary.particles[index_of_particle].properties.particle
+                                        }
+                                    });
+
+                                } else {
+                                    custom.push({
+                                        type: type,
+                                        properties: {
+                                            element: s
+                                        },
+                                        menu: {
+                                            label: "\\text{" + s + "}",
+                                            texLabel: true,
+                                            // add here option for it to be part of nuclear equation
+                                        }
+                                    });
+                                }
+                            }
+
+                        }
+                        return custom;
+                    };
+
+                    var parseCustomSymbols = function(symbols) {
+                        var r = {
+                            vars: [],
+                            fns: [],
+                            operators: []
+                        };
+
+                        for (var i in symbols) {
+                            var s = symbols[i].trim();
+                            if (s.length == 0) {
+                                console.warn("Tried to parse zero-length symbol in list:", symbols);
+                                continue;
+                            } else if (opsMap.hasOwnProperty(s)) {
+                                console.debug("Parsing operator:", s);
+                                var partResults = [];
+
+                                partResults.push({
+                                    type: 'Relation',
+                                    menu: {
+                                        label: opsMap[s],
+                                        texLabel: true,
+                                    },
+                                    properties: {
+                                        relation: s
+                                    }
+                                })
+                            } else {
+                                console.debug("Parsing symbol:", s);
+
+                                var parts = s.split(" ");
+
+                                var partResults = [];
+                                for (var j in parts) {
+                                    var p = parts[j];
+                                    var name = p.replace(/\(\)/g, "");
+                                    var index = trigMap[name + ""];
+                                    // If we have a function
+                                    if (p.endsWith("()")) {
+
+                                        var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
+                                        var allowSubscript = name == "log";
+                                        // which is an inverse trig function
+                                        if (name.substring(0, 3) == "arc") {
+                                            // finds the index of the function in the symbol library to retrieve the label.
+
+                                            partResults.push({
+                                                type: "Fn",
+                                                properties: {
+                                                    name: name.substring(3),
+                                                    innerSuperscript: innerSuperscript,
+                                                    allowSubscript: allowSubscript
+                                                },
+                                                children: {
+                                                    superscript: {
+                                                        type: "Num",
+                                                        properties: {
+                                                            significand: "-1",
+                                                        }
+                                                    }
+                                                },
+                                                menu: {
+                                                    label: scope.symbolLibrary.trigFunctions[index].menu.label,
+                                                    texLabel: true,
+                                                    fontSize: '15px'
+                                                }
+                                            });
+                                        } else if (name == 'log' || name == 'ln') {
+                                            // or if we have log or natural log
+                                            partResults.push({
+                                                type: "Fn",
+                                                properties: {
+                                                    name: name,
+                                                    innerSuperscript: innerSuperscript,
+                                                    allowSubscript: allowSubscript
+                                                },
+                                                menu: {
+                                                    label: '\\text{' + name + '}',
+                                                    texLabel: true,
+                                                    fontSize: '18px'
+                                                }
+                                            });
+
+                                        } else if (trigFunctions.indexOf(name) != -1) {
+                                            // otherwise we must have a standard trig function
+
+
+                                            partResults.push({
+                                                type: "Fn",
+                                                properties: {
+                                                    name: name,
+                                                    innerSuperscript: innerSuperscript,
+                                                    allowSubscript: allowSubscript
+                                                },
+                                                menu: {
+                                                    label: scope.symbolLibrary.trigFunctions[index].menu.label,
+                                                    texLabel: true,
+                                                    fontSize: '18px'
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            console.debug("Did not parse custom function: " + name);
+
+                                        }
+
+
+                                } else {
+                                    // otherwise we must have a symbol
                                     var p1 = convertToLatexIfGreek(p.split("_")[0]);
                                     var newSym = {
                                         type: "Symbol",
@@ -463,9 +497,10 @@ define(function(require) {
                                     partResults.push(newSym);
                                 }
                             }
-
+                        }
+                        // if input is malicious partResults[0] may not exist!
+                        if (partResults[0]) {
                             var root = partResults[0];
-
                             for (var k = 0; k < partResults.length - 1; k++) {
                                 partResults[k].children = {
                                     right: partResults[k + 1]
@@ -486,11 +521,8 @@ define(function(require) {
                         }
 
                     }
-
                     return r;
                 };
-
-
 
                 var replaceSpecialChars = function(s) {
                     for (var k in inverseLetterMap) {
@@ -516,7 +548,6 @@ define(function(require) {
                     uniqueOperatorsTotalOrder[operator] = count;
                     count++;
                 }
-
 
                 var uniqueSymbolsSortFn = function(a, b) {
                     // Sort operators:
@@ -559,7 +590,6 @@ define(function(require) {
                     if (a < b) return -1;
                     return 0;
                 }
-
 
                 scope.newEditorState = function(s) {
                     scope.state = s;
@@ -702,15 +732,13 @@ define(function(require) {
                                 fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) == 'arc') ? '15px' : '18px'
                             }
                         }
-                        if(children != null) {
-                          result[count].children = children;
+                        if (children != null) {
+                            result[count].children = children;
                         }
                         count++;
                     }
                     return result;
                 };
-
-
 
                 scope.symbolLibrary = {
 
@@ -728,6 +756,11 @@ define(function(require) {
 
                     trigFunctions: trigFunction(trigFunctions),
 
+                    reducedTrigFunctions: trigFunction(trigReduced),
+
+                    hypTrigFunctions: trigFunction(trigFunctionsHyp),
+
+                    trigFunctionsStandard: trigFunction(trigFunctionsStandard),
 
                     particles: [{
                         type: 'Particle',
@@ -925,13 +958,13 @@ define(function(require) {
                             label: "-",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Fraction",
                         menu: {
                             label: "\\frac{a}{b}",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\rightarrow',
@@ -940,7 +973,7 @@ define(function(require) {
                         properties: {
                             relation: 'rightarrow'
                         }
-                    },  {
+                    }, {
                         type: "Relation",
                         menu: {
                             label: '\\rightleftharpoons ',
@@ -949,25 +982,27 @@ define(function(require) {
                         properties: {
                             relation: 'equilibrium'
                         }
-                    },{
+                    }, {
                         type: "Brackets",
                         properties: {
                             type: "round",
+                            mode: "chemistry"
                         },
                         menu: {
                             label: "(x)",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: "Brackets",
                         properties: {
                             type: "square",
+                            mode: "chemistry"
                         },
                         menu: {
                             label: "[x]",
                             texLabel: true
                         }
-                    },{
+                    }, {
                         type: 'Relation',
                         menu: {
                             label: '\\cdot',
@@ -976,7 +1011,7 @@ define(function(require) {
                         properties: {
                             relation: '.'
                         }
-                    },  ],
+                    }, ],
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -993,6 +1028,15 @@ define(function(require) {
                         },
                         menu: {
                             label: "-",
+                            texLabel: true
+                        }
+                    }, {
+                        type: "BinaryOperation",
+                        properties: {
+                            operation: "±",
+                        },
+                        menu: {
+                            label: "\\pm",
                             texLabel: true
                         }
                     }, {
@@ -1027,7 +1071,6 @@ define(function(require) {
                             relation: '='
                         }
                     }],
-
 
                     // equality: [{
                     //     type: "string",
@@ -1184,8 +1227,6 @@ define(function(require) {
                         }
                     }, ],
 
-
-
                     otherFns: [{
                         type: "Fn",
                         properties: {
@@ -1211,11 +1252,11 @@ define(function(require) {
                 };
 
                 scope.particlesTitle = {
-                  type: "string",
-                  menu: {
-                      label: "\\alpha",
-                      texLabel: true
-                  }
+                    type: "string",
+                    menu: {
+                        label: "\\alpha",
+                        texLabel: true
+                    }
                 };
 
                 scope.elementsTitle = {
@@ -1224,7 +1265,6 @@ define(function(require) {
                     },
                     type: "string",
                 };
-
 
                 scope.latinLetterTitle = {
                     menu: {
@@ -1285,11 +1325,21 @@ define(function(require) {
                     }
                 };
 
+                scope.hypTrigTitle = {
+                    type: "string",
+                    menu: {
+                        label: "\\text{hyp}",
+                        texLabel: true,
+                        fontSize: '30px',
+                    }
+                };
+
                 scope.otherFnTitle = {
                     type: "string",
                     menu: {
                         label: "\\log",
-                        texLabel: true
+                        texLabel: true,
+                        fontSize: '33px'
                     }
                 };
 
@@ -1353,16 +1403,37 @@ define(function(require) {
                 }
 
                 element.on("keydown", function(e) {
-                    console.log("KeyDown", e.which);
-
-                    switch (e.which) {
-                        case 8: // Backspace. Deliberately fall through.
-                        case 46: // Delete
-                            e.stopPropagation();
-                            e.preventDefault();
-                            scope.trash();
-                            scope.$apply();
-                            break;
+                    var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
+                    if ($stateParams.testing) {
+                        console.log("KeyDown", e.which || e.keyCode);
+                        switch (e.which || e.keyCode) {
+                            case 8: // Backspace. Deliberately fall through.
+                            case 46: // Delete
+                                e.stopPropagation();
+                                e.preventDefault();
+                                scope.trash();
+                                scope.$apply();
+                                break;
+                            default:
+                                var key = String.fromCharCode(e.which || e.keyCode);
+                                if (test_cases_lib.hasOwnProperty(key)) {
+                                    $rootScope.sketch.loadTestCase(test_cases_lib[key].testCase);
+                                    console.debug("Loading test case " + key + " | " + test_cases_lib[key].description);
+                                } else {
+                                    console.debug("Test case " + key + " does not exist.");
+                                }
+                                break;
+                        }
+                    } else {
+                        switch (e.which || e.keyCode) {
+                            case 8: // Backspace. Deliberately fall through.
+                            case 46: // Delete
+                                e.stopPropagation();
+                                e.preventDefault();
+                                scope.trash();
+                                scope.$apply();
+                                break;
+                        }
                     }
                 });
 

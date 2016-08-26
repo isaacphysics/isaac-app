@@ -287,7 +287,7 @@ define([], function() {
 		this.getQuestionsResource = function() {
 			return $resource(urlPrefix + "/pages/questions", {}, {
 				'query': {
-					method: 'GET', isArray: false, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", start_index:"@startIndex", limit:"@limit"}
+					method: 'GET', isArray: false, params: {searchString:"@searchString", tags:"@tags", levels:"@levels", fasttrack: "@fasttrack", start_index:"@startIndex", limit:"@limit"}
 				}
 			})
 		};

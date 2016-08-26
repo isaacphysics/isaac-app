@@ -49,7 +49,10 @@ define([], function() {
 	            		update();
 	            	});
 
-					// // Replace three watchers which always get called one after another with one watcher:
+					// Replace three watchers which always get called one after another with one watcher:
+					// TODO: work out why this didn't work. Also, work out why removing only enmcoding from it
+					// and having that watcher separately *did* work just fine . . . 
+					
 					// scope.$parent.$watchGroup([iAttrs.value, iAttrs.children, iAttrs.encoding], function(newValues) {
 					// 	scope.value = newValues[0];
 					// 	scope.children = newValues[1];

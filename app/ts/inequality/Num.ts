@@ -2,7 +2,8 @@ import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { ChemicalElement } from "./ChemicalElement.ts";
-import { Relation } from "./Relation.ts"
+import { Relation } from "./Relation.ts";
+import { Brackets } from "./Brackets.ts";
 
 /** A class for representing numbers */
 export
@@ -243,16 +244,14 @@ export
             if (docking_right.child.dockingPoints["right"].child == null && docking_right.child instanceof BinaryOperation) {
               child_width = docking_right.child.boundingBox().w;
               child_height = docking_right.child.boundingBox().h;
-              docking_right.child.position.x = child_width / 2;
-              docking_right.child.position.y = -(child_height/2-parent_width/4);
-            }
-            else {
+              docking_right.child.position.x = this.boundingBox().w/2 + child_width/4;
+              docking_right.child.position.y = 0;//-(child_height/2-parent_height/4);
+            } else {
               child_width = docking_right.child.boundingBox().w;
                 if(docking_right.child instanceof ChemicalElement) {
                   var mass_width = (docking_right.child.dockingPoints['mass_number'] && docking_right.child.dockingPoints['mass_number'].child) ? docking_right.child.dockingPoints['mass_number'].child.boundingBox().w : 0;
                   var proton_width = (docking_right.child.dockingPoints['proton_number'] && docking_right.child.dockingPoints['proton_number'].child) ? docking_right.child.dockingPoints['proton_number'].child.boundingBox().w : 0;
                   child_width += (mass_width >= proton_width) ? mass_width : proton_width;
-                  console.log("child_width", child_width);
                   docking_right.child.position.x = (mass_width == 0 && proton_width == 0) ? parent_width + child_width / 2 - this.boundingBox().w/2: parent_width/2 + child_width / 2 + this.boundingBox().w/2;
                 }
                 else {
@@ -260,7 +259,10 @@ export
                 }
                 docking_right.child.position.y = 0;
             }
-
+            // FIXME HORRIBLE BRACKETS FIX
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_right.position.y = (this.dockingPoint.y);

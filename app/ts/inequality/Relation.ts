@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts';
 import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /**
  * Relations, such as equalities, inequalities, and unexpected friends.
@@ -13,6 +14,7 @@ export
     protected pythonSymbol: string;
     protected latexSymbol: string;
     protected mhchemSymbol: string;
+    protected mathmlSymbol: string;
 
     get typeAsString(): string {
         return "Relation";
@@ -35,23 +37,19 @@ export
         switch (relation) {
             case 'rightarrow':
                 this.relation = '→';
-                this.pythonSymbol = '->';
                 this.mhchemSymbol = '->'
                 this.latexSymbol = '\\rightarrow ';
                 break;
             case 'leftarrow':
                 this.relation = '←';
-                this.pythonSymbol = '<-';
                 this.latexSymbol = '\\leftarrow ';
                 break;
             case 'rightleftarrows':
                 this.relation = '⇄';
-                this.pythonSymbol = '-><-';
                 this.latexSymbol = '\\rightleftarrows ';
                 break;
             case 'equilibrium':
                 this.relation = '⇌';
-                this.pythonSymbol = '==';
                 this.mhchemSymbol = '<=>'
                 this.latexSymbol = '\\rightleftharpoons ';
                 break;
@@ -59,21 +57,25 @@ export
                 this.relation = '≤';
                 this.pythonSymbol = '<=';
                 this.latexSymbol = '\\leq ';
+                this.mathmlSymbol = '&#x2264;';
                 break;
             case '>=':
                 this.relation = '≥';
                 this.pythonSymbol = '>=';
                 this.latexSymbol = '\\geq ';
+                this.mathmlSymbol = '&#x2265;';
                 break;
             case '<':
                 this.relation = '<';
                 this.pythonSymbol = '<';
                 this.latexSymbol = '<';
+                this.mathmlSymbol = '&lt;';
                 break;
             case '>':
                 this.relation = '>';
                 this.pythonSymbol = '>';
                 this.latexSymbol = '> ';
+                this.mathmlSymbol = '&gt;';
                 break;
             case '=':
                 this.relation = '=';
@@ -82,7 +84,6 @@ export
                 break;
             case '.':
                 this.relation = '⋅';
-                this.pythonSymbol = '.';
                 this.mhchemSymbol = ".";
                 this.latexSymbol = '\\cdot';
                 break;
@@ -122,11 +123,11 @@ export
         var expression = "";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.pythonSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
@@ -134,11 +135,12 @@ export
             }
         } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.mhchemSymbol + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
+            var rel = this.mathmlSymbol ? this.mathmlSymbol : this.relation;
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.relation + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
@@ -151,7 +153,12 @@ export
     }
 
     token() {
-        return this.pythonSymbol;
+        // Equals sign always appears in menu, others require loading
+        if (this.relation == "=") {
+            return '';
+        } else if (this.pythonSymbol) {
+            return this.pythonSymbol;
+        }
     }
 
     /** Paints the widget on the canvas. */
@@ -233,6 +240,10 @@ export
             child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
             right.position.x = parent_w / 2 + child_w / 2;
             right.position.y = 0;
+            // FIXME HORRIBLE BRACKETS FIX
+            if(right.child instanceof Brackets) {
+                right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
 
         }
     }

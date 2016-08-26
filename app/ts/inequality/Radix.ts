@@ -2,6 +2,7 @@ import { Widget, Rect } from './Widget.ts'
 import { Symbol } from "./Symbol.ts";
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /** Radix. Or, as they say, the _nth_ principal root of its argument. */
 export
@@ -30,7 +31,7 @@ export
         super(p, s);
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'operator_brackets'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'operator_brackets', 'relation'];
         this.baseHeight = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize).h;
     }
 
@@ -161,6 +162,7 @@ export
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize);
         var argHeight = 0;
+        var line = box.w*(2-0.5*this.scale)-argWidth;
         var argWidth = (this.dockingPoints['argument'] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() : 0;
         // Hooray for short-circuit evaluation?
         if (this.dockingPoints['argument'] && this.dockingPoints['argument'].child && this.dockingPoints['argument'].child.subtreeBoundingBox().h > argHeight) {
@@ -231,8 +233,14 @@ export
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
             p.y = 0;
-            p.x = (this.dockingPoints["argument"] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() + this.s.mBox.w: this.s.mBox.w + this.dockingPoints['right'].child.boundingBox().w/2;
-            //p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w / 2;
+            var add = (this.dockingPoints["argument"] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() + this.s.mBox.w : 0;
+            p.x = box.w / 2 + this.scale * this.s.mBox.w / 2 + argWidth + supWidth + this.dockingPoints["right"].child.offsetBox().w / 2;
+
+            // FIXME HORRIBLE BRACKETS FIX
+            var docking_right = this.dockingPoints["right"];
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
             var p = this.dockingPoints["right"].position;
             p.y = -this.s.xBox.h / 2;

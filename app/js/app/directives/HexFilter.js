@@ -111,7 +111,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 		        	walkAll(config);
 
 		        	console.debug("Selected Items", selectedItems);
-		        	
+
 		        	var subjects = selectedItems[0];
 		        	var fields = selectedItems[1];
 		        	var topics = selectedItems[2];
@@ -133,7 +133,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    {
 			        hexFilter.EnableVertical(element.find('#hexfilter-large').css('display') === 'none');
 			        hexFilter.ReDraw(true);
-			        element.height(element.find('#hexfilter-large').css('display') === 'none' ? 740 : 450);
+			        element.height(element.find('#hexfilter-large').css('display') === 'none' ? 740 : 460);
 			    };
 
 				hexFilterResize(element);
@@ -145,7 +145,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 			    var configChanged = function() {
 
 	    			var visit = function(obj, callback, level) {
-	    				if (!level) 
+	    				if (!level)
 	    					level = 0;
 
 	    				callback(obj, level);

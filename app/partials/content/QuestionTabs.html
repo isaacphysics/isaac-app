@@ -67,7 +67,7 @@
                             </p>&nbsp;
                         </div>
                         <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="question.validationResponse.correct">Check my answer</button>
+                            <button ng-disabled="!canSubmit" class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="question.validationResponse.correct">Check my answer</button>
                         </div>
                     </div>
                 </div>

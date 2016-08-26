@@ -22,10 +22,10 @@
 	                    <div>Units</div>
 	                    <div class="ru-answer-block-panel">
 	                    	<button class="button" ng-click="ctrl.showUnitsDropdown()">
-	                    		<span ng-show="ctrl.selectedUnits" ng-bind="'$\\units{' + ctrl.selectedUnits + '}$'" math-jax></span>
+	                    		<span ng-show="ctrl.displayUnits" ng-bind="ctrl.displayUnits" math-jax></span>
 	                    	</button>
 	                    	<ul class="f-dropdown" ng-style="ctrl.unitsDropdownStyle">
-								<li><a ng-click="ctrl.selectedUnits=null;ctrl.unitsDropdownStyle=null;">None</a></li>
+								<li><a ng-click="ctrl.selectedUnits='';ctrl.unitsDropdownStyle=null;">None</a></li>
 								<li ng-repeat="u in ctrl.unitOptions" math-jax><a ng-click="ctrl.selectedUnits=u;ctrl.unitsDropdownStyle=null;">$\units{ {{u}} }$</a></li>
 							</ul>
 	                    </div>

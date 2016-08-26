@@ -103,6 +103,8 @@ define(["app/honest/hexagon"],function(hexagon) {
                         $(this).addClass('ru-hex-home-field-functions');
                     } else if (d.tags.indexOf("probability") > -1) {
                         $(this).addClass('ru-hex-home-field-probability');
+                    } else if (d.tags.indexOf("chemphysics") > -1) {
+                        $(this).addClass('ru-hex-home-field-chemphysics');
                     }
                 }
             });
@@ -178,17 +180,6 @@ define(["app/honest/hexagon"],function(hexagon) {
             return svg;
         });
 
-        // Apply hexagon gradient styles (only if svg #svg-patterns - is accessible on the page. If not default to plain.)
-        if ($("#svg-patterns").length) {
-            $.each(['physics','maths'], function(i, name)
-            {
-                for(var i = 1; i <= 5; i++)
-                {
-
-                    $('.hex-'+name+i).css('filter','url(' + window.location.pathname + '#filter'+i+')');
-                }
-            });
-        }
     };
 
 	return ["$state", "tags", function($state, tags) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["app/honest/responsive_video"], function(rv, scope) {
 
 	return ["api", function(api) {
 
@@ -38,6 +38,7 @@ define(["app/honest/responsive_video"], function(rv) {
 					selectedChoice: null,
 					gameBoardCompletedPassed: false,
 					gameBoardCompletedPerfect: false,
+					id: scope.doc.id,
 				};
 
 				if (scope.doc.bestAttempt) {
@@ -61,14 +62,13 @@ define(["app/honest/responsive_video"], function(rv) {
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
-				var canSubmit = true;
-
+				scope.canSubmit = false;
+			
 				scope.checkAnswer = function() {
+					if (scope.question.selectedChoice != null && scope.canSubmit) {
+						scope.canSubmit = false;
 
-					if (scope.question.selectedChoice != null && canSubmit) {
-						canSubmit = false;
-
-						if (scope.doc.type == "isaacSymbolicQuestion") {
+						if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
 							var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
 							if (Object.keys(symbols).length == 0) {
 								return;
@@ -79,6 +79,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 						s.$promise.then(function foo(r) {
 							scope.question.validationResponse = r;
+
 							// Check the gameboard progress
 							if (scope.gameBoard) {
 								// Re-load the game board to check for updated progress
@@ -98,16 +99,34 @@ define(["app/honest/responsive_video"], function(rv) {
 											gameBoardCompletedPassed = false;
 										}
 									}
-
 									// If things have changed, and the answer is correct, show the modal
 									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
 									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
 									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
-									   	console.debug("correct");
 										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
 										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
-										scope.modals["congrats"].show();
+										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
+										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
+
+										if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
+											scope.modals["congrats"].show();
+											scope.$emit("modalPassedDisplayed", true);
+										}
+
+										if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
+											scope.modals["congrats"].show();
+											scope.$emit("modalPerfectDisplayed", true);
+										}
+
 									}
+
+
+									//
+									// if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
+									// 		scope.modals["congrats"].show();
+									// 		scope.$emit("modalCompleteDisplayed", true);
+									// }
+
 
 									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 									// question for a gameboard and the question has been passed, not completed. See issue #419
@@ -125,7 +144,7 @@ define(["app/honest/responsive_video"], function(rv) {
 							}
 							scope.showToast(scope.toastTypes.Failure, eTitle, eMessage != undefined ? eMessage : "");
 							// If an error, after a little while allow them to submit the same answer again.
-							setTimeout(function() { canSubmit = true; }, 5000);
+							setTimeout(function() { scope.canSubmit = true; }, 5000);
 						});
 
 					} else {
@@ -141,7 +160,7 @@ define(["app/honest/responsive_video"], function(rv) {
 					if (newVal === oldVal)
 						return; // Init
 
-					canSubmit = true;
+					scope.canSubmit = true;
 					scope.question.validationResponse = null;
 				}, true);
 

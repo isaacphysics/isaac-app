@@ -3,7 +3,7 @@
 // and also for building production bundles with build.js
 
 System.config({
-
+    
     // This section configures the TypeScript compiler.
     transpiler: 'typescript',
 
@@ -47,7 +47,7 @@ System.config({
         "angulartics-google-analytics": 'bower_components/angulartics-google-analytics/dist/angulartics-ga.min.js',
         "jquery-ui-datepicker" : 'bower_components/jquery-ui/ui/minified/datepicker.min.js',
         "modernizr": 'bower_components/modernizr/modernizr.js',
-        "lodash": 'bower_components/lodash/dist/lodash.min.js',
+        "lodash": 'bower_components/lodash/dist/lodash.min.js',  
         "typescript": 'js/lib/typescript.js',
         "reflect": 'bower_components/reflect-metadata/Reflect.js',
         "inequality": 'ts/inequality/Inequality.ts',
@@ -58,8 +58,7 @@ System.config({
     meta: {
         'app/*': { deps: ['jquery', 'p5'], format: 'amd' },
         'lib/*': { format: 'global' },
-        'lib/graph_sketcher/*': { format: 'amd'},
-
+        'lib/equation_editor/*': { format: 'amd'},
         "inequality": { deps: ['p5'] },
 
         'typescript': { deps: ['reflect'] },
