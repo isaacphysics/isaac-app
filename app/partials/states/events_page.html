@@ -10,6 +10,7 @@
           <select ng-model="filterEventsByStatus">
             <option value="all">All Events</option>
             <option value="upcoming">Upcoming Events</option>
+            <option value="showBookedOnly">My Booked Events</option>
           </select>
           <select ng-model="filterEventsByType">
             <option value="all">All Events</option>
@@ -68,15 +69,22 @@
               </tbody>
            </table>
            <a class="event-link" ui-sref="event({id: event.id})">View details</a>
-<!--
-           <div class="event-attend">
+
+           <div ng-if="event.userBooked" class="event-attend">
               <span class="icon-stack">
                 <span class="icon-hexagon"></span>
                 <span class="icon-check"></span>
               </span>
-              Attending
+              Booked
            </div>
--->
+          
+          <div ng-if="event.userOnWaitList" class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Waiting list
+           </div>
       </div>
     </li>
 </ul>

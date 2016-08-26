@@ -56,9 +56,9 @@ define([], function() {
         var showActiveOnly = true;
         var showInactiveOnly = false;
         var filterEventsByType = null;
+        var showBookedOnly = false;
 
         var showByTag = null; // show only events with set tag
-
 
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
@@ -70,19 +70,33 @@ define([], function() {
             $scope.filterEventsByStatus = "upcoming";
         }
 
+        if ($stateParams.show_booked_only == "true") {
+            $scope.filterEventsByStatus = "showBookedOnly"
+        }
+
         if ($stateParams.types) {
             $scope.filterEventsByType = $stateParams.types
         }
 
         $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
-            if ($scope.filterEventsByStatus == "upcoming") {
+            if ($scope.filterEventsByStatus == "showBookedOnly") {
+                showActiveOnly = false;
+                showInactiveOnly = false;
+                showBookedOnly = true;
+                $location.search('event_status', null);
+                $location.search('show_booked_only', 'true');   
+            } else if ($scope.filterEventsByStatus == "upcoming") {
                 showActiveOnly = true;
                 showInactiveOnly = false;
+                showBookedOnly = false;
                 $location.search('event_status', null); // This is currently the default; don't need to set it.
+                $location.search('show_booked_only', null);
             } else {
                 showActiveOnly = false;
                 showInactiveOnly = false;
+                showBookedOnly = false;
                 $location.search('event_status', 'all');
+                $location.search('show_booked_only', null); 
             }
 
             if ($scope.filterEventsByType == "all") {
@@ -104,7 +118,7 @@ define([], function() {
         $scope.events = [];
         $scope.loadMore = function() {
             $scope.setLoading(true);
-            api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType).$promise.then(function(result) {
+            api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType, showBookedOnly).$promise.then(function(result) {
                 $scope.setLoading(false);
                 
                 for(var i in result.results) {

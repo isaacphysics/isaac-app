@@ -355,8 +355,8 @@ define([], function() {
 			return conceptList.query();
 		}
 
-		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags) {
-			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags});
+		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags, showBookedOnly) {
+			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags, show_booked_only:showBookedOnly});
 		}
 
 		this.getImageUrl = function(path) {
