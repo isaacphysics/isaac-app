@@ -17,7 +17,7 @@ define(function(require) {
 
                 scope.edit = function() {
                     $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
-                        console.debug("json: ", JSON.stringify(finalState));
+                        // console.debug("json: ", JSON.stringify(finalState));
                         scope.state = finalState;
                         scope.$apply();
                     });
