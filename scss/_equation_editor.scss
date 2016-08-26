@@ -200,6 +200,7 @@ $menu-handle-width: 160px;
                 margin: 7px 0 0 60px;
                 li {
                     text-align: center;
+                    z-index: 1000px;
                     cursor: pointer;
                     width: 50px;
                     height: 65px;
@@ -217,6 +218,7 @@ $menu-handle-width: 160px;
                 }
                 .wedgeFit {
                     margin-top: -14px;
+                    z-index: 100px !important;
                 }
             }
             .number-input-panel {
@@ -315,13 +317,19 @@ $menu-handle-width: 160px;
         cursor: pointer;
         &.centre,
         &.redo,
-        &.undo {
+        &.undo,
+        &.clearAll {
             width: 68px;
             height: 80px;
         }
         &.centre {
             left: 18px;
             background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+        }
+        &.clearAll {
+            left: 18px;
+            background: url("/assets/equation_editor/hex-button-clear-all.png") no-repeat;
             background-size: contain;
         }
         &.centre:hover {
@@ -336,6 +344,10 @@ $menu-handle-width: 160px;
                 background: url("/assets/equation_editor/hex-button-undo-hover.png") no-repeat;
                 background-size: contain;
             }
+
+            &.graph {
+                left: 18px;
+            }
         }
         &.redo {
             left: 187px;
@@ -344,6 +356,10 @@ $menu-handle-width: 160px;
             &:hover {
                 background: url("/assets/equation_editor/hex-button-redo-hover.png") no-repeat;
                 background-size: contain;
+            }
+
+            &.graph {
+                left: 102px;
             }
         }
         &.submit {
@@ -367,7 +383,15 @@ $menu-handle-width: 160px;
         &:hover {
             opacity: 1;
         }
+
+        &.graph {
+            z-index: 1000;
+            top: calc(20% - 80px);
+        }
     }
+
+
+
     .result-preview {
         position: absolute;
         right: calc(18px + 90px / 2);

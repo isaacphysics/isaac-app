@@ -1,0 +1,24 @@
+region: eu
+authtoken: AUTH_TOKEN_HERE
+update: true
+tunnels:
+    api:
+        proto: http
+        addr: 8080
+        subdomain: isaacscience
+        bind_tls: true
+    physics:
+        proto: http
+        addr: 8000
+        subdomain: isaacphysics
+        bind_tls: true
+    chemistry:
+        proto: http
+        addr: 8001
+        subdomain: isaacchemistry
+        bind_tls: true
+    biology:
+        proto: http
+        addr: 8002
+        subdomain: isaacbiology
+        bind_tls: true
