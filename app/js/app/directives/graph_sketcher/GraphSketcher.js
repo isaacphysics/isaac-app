@@ -816,6 +816,8 @@ define(function(require) {
 
                         var found = false;
 
+
+                        // maxima and minima
                         if (!found) {
                             function loop(knots) {
                                 if (found) {
@@ -845,6 +847,7 @@ define(function(require) {
                             }
                         }
 
+                        // freeSymbols
                         if (!found) {
                             for (var i = 0; i < freeSymbols.length; i++) {
                                 if (isOverSymbol(current, freeSymbols[i])) {
@@ -855,6 +858,7 @@ define(function(require) {
                             }
                         }
 
+                        // attached symbols
                         if (!found) {
                             function loop1(knots) {
                                 if (found) {
@@ -914,6 +918,8 @@ define(function(require) {
                             }
                         }
 
+
+                        // stretch box
                         if (!found) {
                             // for (var i = 0; i < curves.length; i++) {
                             //     var pts = curves[i].pts;
@@ -931,6 +937,7 @@ define(function(require) {
                             // }
 
                             if (clickedCurveIdx != undefined) {
+
                                 function detect(x, y) {
                                     return (Math.abs(current.x - x) < 5 && Math.abs(current.y - y) < 5);
                                 }
@@ -940,10 +947,37 @@ define(function(require) {
                                     found = true;
                                     p.cursor(p.MOVE);
                                 } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
+                                    p.push();
+                                    p.fill(KNOT_DETECT_COLOR);
+                                    if (detect(c.minX, c.minY)) {
+                                         p.rect(c.minX - 4, c.minY - 4, 8, 8);
+                                    } else if (detect(c.maxX, c.minY)) {
+                                        p.rect(c.maxX - 4, c.minY - 4, 8, 8);
+                                    } else if (detect(c.minX, c.maxY)) {
+                                        p.rect(c.minX - 4, c.maxY - 4, 8, 8);
+                                    } else {
+                                        p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
+                                    }
+                                    p.pop();
+
                                     found = true;
                                     p.cursor(p.MOVE);
                                 } else if (detect((c.minX + c.maxX)/2, c.minY - 3) || detect((c.minX + c.maxX)/2, c.maxY + 3) 
                                     || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
+
+                                    p.push();
+                                    p.fill(KNOT_DETECT_COLOR);
+                                    if (detect((c.minX + c.maxX)/2, c.minY - 3)) {
+                                        p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
+                                    } else if (detect((c.minX + c.maxX)/2, c.maxY + 3)) {
+                                        p.triangle((c.minX + c.maxX)/2 - 5, c.maxY + 2, (c.minX + c.maxX)/2 + 5, c.maxY + 2, (c.minX + c.maxX)/2, c.maxY + 7);
+                                    } else if (detect(c.minX - 3, (c.minY + c.maxY)/2)) {
+                                        p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
+                                    } else {
+                                        p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2); 
+                                    }
+                                    p.pop();
+
                                     found = true;
                                     p.cursor(p.MOVE);
                                 }
@@ -1190,8 +1224,6 @@ define(function(require) {
 
                         return;
 
-
-
                     }
 
 
@@ -1215,6 +1247,47 @@ define(function(require) {
                             drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "STRETCH_CURVE") {
+
+                            function drawCorner() {
+                                p.push();
+                                p.fill(KNOT_DETECT_COLOR);
+                                switch (stretchMode) {
+                                    case 0: {
+                                        p.rect(c.minX - 4, c.minY - 4, 8, 8);
+                                        break;
+                                    }
+                                    case 1: {
+                                        p.rect(c.maxX - 4, c.minY - 4, 8, 8);
+                                        break;
+                                    }
+                                    case 2: {
+                                        p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
+                                        break;
+                                    }
+                                    case 3: {
+                                        p.rect(c.minX - 4, c.maxY - 4, 8, 8);
+                                        break;
+                                    }
+                                    case 4: {
+                                        p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
+                                        break;
+                                    }
+                                    case 5: {
+                                        p.triangle((c.minX + c.maxX)/2 - 5, c.maxY + 2, (c.minX + c.maxX)/2 + 5, c.maxY + 2, (c.minX + c.maxX)/2, c.maxY + 7);
+                                        break;
+                                    }
+                                    case 6: {
+                                        p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
+                                        break;
+                                    }
+                                    case 7: {
+                                        p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2);
+                                        break;
+                                    }
+                                }
+                                p.pop();
+                            }
+
                             p.cursor(p.MOVE);
 
                             var dx = current.x - prevMousePt.x;
@@ -1227,6 +1300,7 @@ define(function(require) {
                             var orx = c.maxX - c.minX;
                             var ory = c.maxY - c.minY;
 
+                            drawCorner();
 
                             // update the position of stretched vertex
                             switch (stretchMode) {
@@ -1333,6 +1407,7 @@ define(function(require) {
                             }
                             
                             reDraw();
+                            drawCorner();
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
