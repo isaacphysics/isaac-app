@@ -62,8 +62,9 @@
             <td>Availability</td>
             <td>
               <span ng-show="event.placesAvailable > 0">{{event.placesAvailable}} spaces</span>
-              <span ng-show="event.placesAvailable <= 0"><strong style="color:red">FULL</strong></span>
-              <span ng-show="user.email && event.userBooked"> - <span style="color:green">You are booked on this event!</span></span> 
+              <span ng-show="event.placesAvailable <= 0"><strong style="color:red">FULL</strong><span ng-if="(e.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - for student bookings</span></span>
+              <span ng-show="user.email && event.userBooked"> - <span style="color:green">You are booked on this event!</span> </span> 
+              <span ng-if="!event.userBooked && !event.userOnWaitList && event.placesAvailable <= 0"> - Waiting list booking is available!</span>
               <span ng-show="user.email && event.userOnWaitList"> - You are on the waiting list for this event.</span></td>
           </tr>
           <tr ng-show="event.bookingDeadline">
@@ -147,20 +148,24 @@
             <label for="dietary-reqs">
               <strong>Dietary Requirements</strong>
             </label>
-            <input id="dietary-reqs" name="dietary-reqs" type="text" ng-model="additionalInformation.dietaryRequirements" required>
+            <input id="dietary-reqs" name="dietary-reqs" type="text" ng-model="additionalInformation.dietaryRequirements">
 
             <label for="access-reqs">
               <strong>Accessibility Requirements</strong>
             </label>
-            <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements" required>
+            <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements">
+            <label for="emergency-details">
+              <strong>Emergency Details</strong>
+            </label>
+            <textarea id="emergency-details" name="emergency-details" ng-model="additionalInformation.emergencyDetails"/>
           </fieldset>
           <span ng-if="!event.expired">
-            <span ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && event.placesAvailable > 0 && !bookingDeadlinePast">
+            <span ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast &&(event.placesAvailable > 0 || (e.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
               <p><small>By requesting to book on this event, you are giving permission for the event creator to set you pre-event work and view any work you do for this event. You can manage access to your data in your <a ui-sref="accountSettings">account settings</a></small></p>
               <a href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
             </span>
 
-            <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable == 0 || bookingDeadlinePast)" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
+            <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable == 0 || bookingDeadlinePast) && (e.tags.indexOf('student') != -1 && user.role == 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
         </form>    
       </div>    
@@ -181,8 +186,8 @@
       <span ng-show="user.email && compatibleRole">
         <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
         <a href="javascript:void(0)" ng-show="bookingFormOpen  && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=false" class="ru-button-big secondary">Close booking form</a>
-        <a ng-if="event.userBooked" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
-        <a ng-if="event.userOnWaitList" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
+        <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
+        <a ng-if="event.userOnWaitList && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
       </span>
 
       <a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>

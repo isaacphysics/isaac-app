@@ -41,6 +41,7 @@
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
                                 <th>Accessibility Requirements</th>
                                 <th>Dietary Requirements</th>
+                                <th>Emergency Details</th>
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
@@ -55,6 +56,7 @@
                                 <td>{{booking.updated | date:'dd/MM/yyyy'}}</td>
                                 <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                 <td>{{booking.additionalInformation.dietaryRequirements}}</td>
+                                <td>{{booking.additionalInformation.emergencyDetails}}</td>
                                 <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
                             </tr>
                         </table>
