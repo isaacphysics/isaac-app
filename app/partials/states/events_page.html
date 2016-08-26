@@ -10,7 +10,7 @@
           <select ng-model="filterEventsByStatus">
             <option value="all">All Events</option>
             <option value="upcoming">Upcoming Events</option>
-            <option value="showBookedOnly">My Booked Events</option>
+            <option ng-show="user.email" value="showBookedOnly">My Booked Events</option>
           </select>
           <select ng-model="filterEventsByType">
             <option value="all">All Events</option>
