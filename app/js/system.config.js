@@ -59,6 +59,7 @@ System.config({
         'app/*': { deps: ['jquery', 'p5'], format: 'amd' },
         'lib/*': { format: 'global' },
         'lib/equation_editor/*': { format: 'amd'},
+        'lib/graph_sketcher/*': { format: 'amd'},
         "inequality": { deps: ['p5'] },
 
         'typescript': { deps: ['reflect'] },
