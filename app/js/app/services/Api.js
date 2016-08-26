@@ -266,6 +266,8 @@ define([], function() {
 		});			
 
         this.events = $resource(urlPrefix + "/events/:id");
+        
+        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
 		this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
 			'getAllBookings' : {
@@ -325,7 +327,6 @@ define([], function() {
 		var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 		var eventsList = $resource(urlPrefix + "/events");
-
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});

@@ -1,12 +1,55 @@
 <div class="small-16 columns">
     <h1>Isaac Event Booking Administration</h1>
 </div>
+<div class="row">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="row">
+                <div class="small-16 columns">
+                    <h2>Event overview</h2>
+                    <div class="events-filters">
+                      <label class="show-for-large-up">Show </label>
+                      <select ng-model="filterEventsByStatus">
+                        <option value="all">All Events</option>
+                        <option value="active">Upcoming Events</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-16 columns">
+                    <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Number Confirmed</th>
+                                <th>Number Waiting</th>
+                                <th>Total Spaces Available</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
+                                <td>{{event.title}}</td>
+                                <td>{{event.date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{event.location.addressLine1}}</td>
+                                <td>{{event.numberOfConfirmedBookings}}</td>
+                                <td>{{event.numberOfWaitingListBookings}}</td>
+                                <td>{{event.numberOfPlaces}}</td>
+                                <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage Bookings</a>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div ng-show="isAdminUser">
     <div class="row">
         <div class="small-16 columns">
             <div class="panel white clearfix">
                 <div class="row">
-                    <div class="small-16 columns">
+                    <!--div class="small-16 columns">
                         <h2>Step 1: Choose your event</h2>
                         <label for="eventToBook">
                             <strong>Select your event:</strong>
@@ -14,7 +57,7 @@
                         <select id="eventToBook" ng-model="eventIdForBooking">
                             <option ng-repeat="event in events" value="{{event.id}}">{{event.title}} - {{event.subtitle}} @ {{event.location.addressLine1}} on {{event.date | date:'dd/MM/yyyy'}}</option>
                         </select>
-                    </div>
+                    </div-->
                     <div ng-if="eventIdForBooking" class="small-16 columns">
                         <h3>Selected Event Details</h3>
                         <p>
@@ -64,7 +107,7 @@
                     </div>
                     
                     <div ng-if="eventIdForBooking" class="small-16 columns">
-                       <h3>Step 3: Find user account(s)</h3>
+                       <h3>Step 3: Find user account(s) for manual booking</h3>
 
                         <form ng-submit="findUsers()">
                             <div class="medium-12 medium-centered columns end">

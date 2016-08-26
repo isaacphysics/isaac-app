@@ -192,11 +192,31 @@ define([], function() {
 
 		$scope.userIdToSchoolMapping = {}
 
-		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
-                $scope.setLoading(false);
-                
-				$scope.events = result.results;
-        });
+		$scope.showActiveOnly = true;
+		$scope.filterEventsByStatus = "active";
+
+		var updateEventOverviewList = function(){
+
+			api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly}).$promise.then(function(result) {
+	                $scope.setLoading(false);
+	                
+					$scope.events = result.results;
+	        });			
+		}
+
+		$scope.$watch('filterEventsByStatus', function(newValue, oldValue){
+			if (newValue == "all") {
+				$scope.showActiveOnly = false;	
+			} else {
+				$scope.showActiveOnly = true;	
+			}
+			
+			updateEventOverviewList();
+		});
+
+		$scope.updateBookingInfo = function(eventId) {
+			$scope.eventIdForBooking = eventId;
+		}
 
 		var updateBookingInfo = function(){
     		api.eventBookings.getBookings({eventId: $scope.eventIdForBooking}).$promise.then(function(result){
