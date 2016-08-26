@@ -1,4 +1,3 @@
-
 "use strict";
 define(function(require) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
@@ -42,8 +41,6 @@ define(function(require) {
                 scope.newEditorState = function(s) {
 
                     scope.state = s;
-
-                    // console.log("New state:", s);
 
                     var rp = $(".result-preview>span");
 
@@ -243,41 +240,6 @@ define(function(require) {
 
                             p.pop();
                         }
-
-                        // function drawScale() {
-                        //  var len = 3;
-
-                        //  push();
-                        //  p.strokeWeight(1);
-                        //  p.stroke(0);
-                        //  textSize(12);
-
-                        //  push();
-                        //  translate(0, canvasHeight / 2);
-                        //  var num = canvasHeight / (GRID_WIDTH * 2);
-                        //  for (var i = 1; i < num; i++) {
-                        //      line(canvasWidth/2 -len, -i*GRID_WIDTH, canvasWidth/2 + len, -i*GRID_WIDTH);
-                        //      line(canvasWidth/2 - len, i*GRID_WIDTH, canvasWidth/2 + len, i*GRID_WIDTH);
-                        //      text(i, canvasWidth/2 + 5, -i * GRID_WIDTH + 5);
-                        //      text(-i, canvasWidth/2 + 5, i * GRID_WIDTH + 5);
-                        //  }
-                        //  pop();
-
-                        //  push();
-                        //  translate(canvasWidth / 2, 0);
-                        //  var num = canvasWidth / (GRID_WIDTH * 2);
-                        //  for (var i = 1; i < num; i++) {
-                        //      line(-i*GRID_WIDTH, canvasHeight/2 - len, -i*GRID_WIDTH, canvasHeight / 2 + len);
-                        //      line(i*GRID_WIDTH, canvasHeight/2 - len, i*GRID_WIDTH, canvasHeight /2 + len);
-                        //      text(-i, -i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
-                        //      text(i, i * GRID_WIDTH - 5, canvasHeight / 2 + 15);
-                        //  }
-                        //  pop();
-
-                        //  pop();
-                        // }
-
-
 
                         // p5.clear, p5.background
                         p.clear();
@@ -1182,57 +1144,53 @@ define(function(require) {
 
 
                         // if it is drawing curve
-                        if (curves.length < CURVE_COLORS.length) {
-                            action = "DRAW_CURVE";
+                        action = "DRAW_CURVE";
 
 
-                            if (clickedCurveIdx != undefined || clickedKnot != null) {
-                                clickedCurveIdx = undefined;
-                                clickedKnot = null;
-                                reDraw();
-                            }
-
-
-                            if (key === "Shift") {
-                                lineStart = current;
-                                drawMode = "line";
-                            } else {
-                                drawMode = "curve";
-                            }
-
-                            // var alreadyUsedColors = [];
-                            // for (var i = 0; i < curves.length; i++) {
-                            //     alreadyUsedColors.push(curves[i].colorIdx);
-                            // }
-                            // for (var i = 0; i < CURVE_COLORS.length; i++) {
-                            //     if (alreadyUsedColors.indexOf(i) == -1) {
-                            //         drawnColorIdx = i;
-                            //         return;
-                            //     }
-                            // }
-
-                            // get drawnColor
-                            switch (colorSelect.value) {
-                                case "Blue": {
-                                    drawnColorIdx = 0;
-                                    break;
-                                }
-                                case "Orange": {
-                                    drawnColorIdx = 1;
-                                    break;
-                                }
-                                case "Green": {
-                                    drawnColorIdx = 2;
-                                    break;
-                                }
-                            }
-
-                            return;
-
-                        } else {
-                            alert("Too much lines being drawn.");
-                            checkPointsUndo.pop();
+                        if (clickedCurveIdx != undefined || clickedKnot != null) {
+                            clickedCurveIdx = undefined;
+                            clickedKnot = null;
+                            reDraw();
                         }
+
+
+                        if (key === "Shift") {
+                            lineStart = current;
+                            drawMode = "line";
+                        } else {
+                            drawMode = "curve";
+                        }
+
+                        // var alreadyUsedColors = [];
+                        // for (var i = 0; i < curves.length; i++) {
+                        //     alreadyUsedColors.push(curves[i].colorIdx);
+                        // }
+                        // for (var i = 0; i < CURVE_COLORS.length; i++) {
+                        //     if (alreadyUsedColors.indexOf(i) == -1) {
+                        //         drawnColorIdx = i;
+                        //         return;
+                        //     }
+                        // }
+
+                        // get drawnColor
+                        switch (colorSelect.value) {
+                            case "Blue": {
+                                drawnColorIdx = 0;
+                                break;
+                            }
+                            case "Orange": {
+                                drawnColorIdx = 1;
+                                break;
+                            }
+                            case "Green": {
+                                drawnColorIdx = 2;
+                                break;
+                            }
+                        }
+
+                        return;
+
+
 
                     }
 
@@ -2211,8 +2169,6 @@ define(function(require) {
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             scope.p.decodeData(scope.state);
                         }
-
-
 
                         eqnModal.one("closed.fndtn.reveal", function() {
                             // update local state
