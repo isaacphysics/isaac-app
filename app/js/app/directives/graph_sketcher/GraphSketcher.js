@@ -630,6 +630,7 @@ define(function(require) {
                         return turnPts;
                     }
 
+
                     function getMousePt(e) {
                         var x = e.clientX - 5;
                         var y = e.clientY - 5;
@@ -1662,6 +1663,10 @@ define(function(require) {
                                     return;
                                 }
 
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+                                scope.$apply();
+
                                 // adjustment of start and end to attach to the axis automatically.
                                 if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
                                     drawnPts[0].y = canvasHeight/2;
@@ -1696,16 +1701,6 @@ define(function(require) {
                                 curve.minY = minY;
                                 curve.maxY = maxY;
 
-
-                                // discard if the curve is too small
-                                if ((maxX - minX) < 30 || (maxY - minY) < 30) {
-                                    return;
-                                }
-
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
-
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
                                 curve.maxima = findTurnPts(pts, 'maxima');
@@ -1713,6 +1708,11 @@ define(function(require) {
                                 curve.colorIdx = drawnColorIdx;
 
                             } else {
+                                checkPointsUndo.push(checkPoint);
+                                checkPointsRedo = [];
+                                scope.$apply();
+
+
                                 var n = 100;
                                 var rx = lineEnd.x - lineStart.x;
                                 var ry = lineEnd.y - lineStart.y;
@@ -1732,14 +1732,6 @@ define(function(require) {
                                 curve.maxX = Math.max(lineStart.x, lineEnd.x);
                                 curve.minY = Math.min(lineStart.y, lineEnd.y);
                                 curve.maxY = Math.max(lineStart.y, lineEnd.y);
-
-                                if ((maxX - minX) < 30 || (maxY - minY) < 30) {
-                                    return;
-                                }
-
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
 
                                 curve.interX = findInterceptX(pts);
                                 curve.interY = findInterceptY(pts);
@@ -2129,49 +2121,6 @@ define(function(require) {
                         reDraw();
                     }
 
-                    // function drawButton(){
-                    //     here we define the buttons:
-                    //     - test, testCase, drawnCase, custom, undo, redo, clear, testCasePrint, drawnCasePrint
-                    //     var buttonTest = $('.test');
-
-                    //     buttonTest.click(function() {
-
-                    //         var params = 'data=' + JSON.stringify(encodeData()),
-                    //             url = "http://localhost:5000/test",
-                    //             xhr = new XMLHttpRequest();
-
-                    //         xhr.open("POST", url, true);
-                    //         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                    //         xhr.onreadystatechange = function() {
-                    //             if (xhr.readyState == 4 && xhr.status == 200) {
-                    //                 var data = JSON.parse(xhr.responseText);
-
-                    //                 alert(data['isCorrect'] + ": " + data['errCause']);
-                    //             }
-                    //         }
-                    //         xhr.send(params);
-                    //     });
-
-                    //     var buttonUndo = $('.undo');
-
-                    //     buttonUndo.click(function() {
-                    //         undo();
-                    //     });
-
-                    //     var buttonRedo = $('.redo');
-
-                    //     buttonRedo.click(function(event) {
-                    //         redo();
-                    //     });
-
-                    //     var buttonClean = $('.trash-button');
-
-                    //     buttonClean.click(function() {
-                    //         clean();
-                    //     });
-
-                    // }
-
 
                     // export the following functions to p5, so they can be assessed via the object produced.
                     p.setup = setup;
@@ -2258,7 +2207,7 @@ define(function(require) {
                         scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
 
                         // reload previous answer if there is one
-                        console.debug("within graphSketcher scope.state: ", scope.state);
+                        // console.debug("within graphSketcher scope.state: ", scope.state);
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             scope.p.decodeData(scope.state);
                         }
