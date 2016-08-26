@@ -122,7 +122,7 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event (no user emails)</a>
                                     <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>
