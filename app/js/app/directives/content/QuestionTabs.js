@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["app/honest/responsive_video"], function(rv, scope) {
 
 	return ["api", function(api) {
 
@@ -56,14 +56,14 @@ define(["app/honest/responsive_video"], function(rv) {
 							questionId : scope.doc.id,
 							hintIndex : i,
 						})
-					}		
+					}
 				}
 
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
 				scope.canSubmit = false;
-
+			
 				scope.checkAnswer = function() {
 					if (scope.question.selectedChoice != null && scope.canSubmit) {
 						scope.canSubmit = false;
@@ -80,7 +80,7 @@ define(["app/honest/responsive_video"], function(rv) {
 						s.$promise.then(function foo(r) {
 							scope.question.validationResponse = r;
 
-							// Check the gameboard progress 
+							// Check the gameboard progress
 							if (scope.gameBoard) {
 								// Re-load the game board to check for updated progress
 								var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
@@ -99,17 +99,36 @@ define(["app/honest/responsive_video"], function(rv) {
 											gameBoardCompletedPassed = false;
 										}
 									}
-
 									// If things have changed, and the answer is correct, show the modal
-									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed || 
+									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
 									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
 									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
 										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
 										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
-										scope.modals["congrats"].show();
+										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
+										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
+
+										if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
+											scope.modals["congrats"].show();
+											scope.$emit("modalPassedDisplayed", true);
+										}
+
+										if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
+											scope.modals["congrats"].show();
+											scope.$emit("modalPerfectDisplayed", true);
+										}
+
 									}
 
-									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one 
+
+									//
+									// if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
+									// 		scope.modals["congrats"].show();
+									// 		scope.$emit("modalCompleteDisplayed", true);
+									// }
+
+
+									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 									// question for a gameboard and the question has been passed, not completed. See issue #419
 
 								});

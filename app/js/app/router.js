@@ -130,7 +130,7 @@ define(["angular-ui-router"], function() {
         })
 
         .state('equality', {
-            url: "/equality?mode&symbols",
+            url: "/equality?mode&symbols&testing",
             resolve: {
                 // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
                 // we may want to revert this policy at some point.

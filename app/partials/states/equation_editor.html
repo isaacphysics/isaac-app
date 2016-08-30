@@ -14,7 +14,7 @@
 
             <h3>
                 LaTeX
-                <span data-ot="This can be used in a LaTeX document to typeset this expression. You may need the 'amsmath' package for some expressions." class="has-tip" aria-haspopup="true" style="float:right;">
+                <span data-ot="This can be used in a LaTeX document to typeset this expression. You may need the 'amsmath' and 'mhchem' packages for some expressions, and a few require custom definitions." class="has-tip" aria-haspopup="true" style="float:right;">
                     <span class="icon-help"></span>
                 </span>
             </h3>
@@ -26,7 +26,12 @@
 
             <div style="margin-bottom:25px;"></div>
             <div ng-if="editorMode == 'chemistry'">
-                <h3>mhchem</h3>
+                <h3>
+                    mhchem
+                    <span data-ot="mhchem is a LaTeX package which is used to typeset Chemical and Nuclear equations and expression. This expression can be used in the \ce{...} environment." class="has-tip" aria-haspopup="true" style="float:right;">
+                    <span class="icon-help"></span>
+                </span>
+                </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
                     <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mhchem}}</pre>
                 </div>
@@ -34,14 +39,20 @@
 
             <div style="margin-bottom:25px;"></div>
             <div ng-if="editorMode == 'maths'">
-                <h3>Python</h3>
+                <h3>
+                    Python
+                    <span data-ot="An example of Python code representing the formula. We use this to check answers on Isaac with the Sympy package." class="has-tip" aria-haspopup="true" style="float:right;">
+                    <span class="icon-help"></span>
+                </span>
+                </h3>
                 <div style="border:1px solid #ccc; border-radius:10px; padding:5px;background:#eee;">
                     <pre style="padding:10px;background:#eee;text-align:center;font-size:2rem;;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.python}}</pre>
                 </div>
+                <div style="margin-bottom:25px;"></div>
             </div>
             <h3>
                 MathML
-                <span data-ot="This can be copied and pasted into a Word document to insert this expression. Just paste using the 'Keep Text Only' option." class="has-tip" aria-haspopup="true" style="float:right;">
+                <span data-ot="This can be copied and pasted into a Word document to insert this formula. Just paste using the 'Keep Text Only' option." class="has-tip" aria-haspopup="true" style="float:right;">
                     <span class="icon-help"></span>
                 </span>
             </h3>
@@ -49,7 +60,7 @@
                 <pre style="padding:10px;background:#eee;text-align:left;font-size:1rem;word-wrap:break-word;white-space:pre-wrap;">{{eqnState.result.mathml}}</pre>
             </div>
             <div style="margin-bottom:45px;"></div>
-            <div>
+            <div ng-show="segueEnvironment=='DEV'">
                 <hr>
                 <div style="margin-bottom:25px;"></div>
                 <h3>

@@ -152,9 +152,9 @@ define([], function() {
 				$scope.datePicker.months = possibleMonths;
 			}
 
-			var dob = new Date($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
-			if (!isNaN(dob.getTime())) {
-				$scope.user.dateOfBirth = dob.getTime();
+			var dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
+			if (!isNaN(dob_unix)) {
+				$scope.user.dateOfBirth = dob_unix;
 			}
 		});
 
