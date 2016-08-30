@@ -3,17 +3,20 @@ import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
+import { Brackets } from "./Brackets.ts";
+import {StateSymbol} from "./StateSymbol.ts";
+
 
 /** A class for representing variables and constants (aka, letters). */
 export
-class Symbol extends Widget {
+    class Symbol extends Widget {
 
     protected s: any;
-    private letter: string;
+    protected letter: string;
 
-	get typeAsString(): string {
-		return "Symbol";
-	}
+    get typeAsString(): string {
+        return "Symbol";
+    }
 
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
@@ -25,13 +28,12 @@ class Symbol extends Widget {
         return this.p.createVector(0, - box.h / 2);
     }
 
-	constructor(p:any, s:any, letter:string) {
-		super(p, s);
+    public constructor(p: any, s: any, letter: string) {
+        super(p, s);
         this.letter = letter;
         this.s = s;
-
-		this.docksTo = ['symbol', 'operator', 'exponent', 'subscript'];
-	}
+        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets'];
+    }
 
 	/**
 	 * Generates all the docking points in one go and stores them in this.dockingPoints.
@@ -46,8 +48,8 @@ class Symbol extends Widget {
         var descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale*this.s.mBox.h), 0.666, "exponent", "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "subscript", "subscript");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "symbol_subscript", "subscript");
     }
 
     /**
@@ -184,9 +186,9 @@ class Symbol extends Widget {
 	 *
 	 * @private
 	 */
-	_shakeIt() {
+    _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -196,58 +198,65 @@ class Symbol extends Widget {
             }
         });
 
-        // Calculate our own geometry
-
-        // Nothing to do for Symbol
-
-        // Set position of all our children.
+        /*
+          - Positions widgets to the right, top-right or bottom-right of the parent symbol. Children are the symbols docked to the right,
+          superscript and subscript positions respectively.
+          - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
+        */
 
         var box = this.boundingBox();
-        var descent = (box.y + box.h);
-
-        var widest = 0;
+        var parent_position = (box.y + box.h);
+        var parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+        var parent_width = box.w;
+        var parent_height = box.h;
+        var child_height;
+        var child_width;
+        var docking_right = this.dockingPoints["right"];
+        var docking_superscript = this.dockingPoints["superscript"];
+        var docking_subscript = this.dockingPoints["subscript"];
 
         if ("superscript" in boxes) {
-            var p = this.dockingPoints["superscript"].child.position;
-			var offsetBox = this.dockingPoints["superscript"].child.offsetBox();
-            var w = offsetBox.w;
-			var childDescent = offsetBox.y + offsetBox.h;
-            widest = this.dockingPoints["superscript"].child.subtreeBoundingBox().w;
-            p.x = (box.w + w)/2;
-            p.y = 0 - this.s.mBox.h*this.scale;
+            child_width = docking_superscript.child.boundingBox().w;
+            child_height = docking_superscript.child.boundingBox().h;
+            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
         } else {
-			var p = this.dockingPoints["superscript"].position;
-			p.x = (box.w + this.s.xBox.w)/2;
-			p.y = -this.s.mBox.h*this.scale;
-		}
+            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_superscript.position.y = -this.scale * this.s.mBox.h;
+        }
 
-		if ("subscript" in boxes) {
-            var p = this.dockingPoints["subscript"].child.position;
-            var w = this.dockingPoints["subscript"].child.offsetBox().w;
-            widest = Math.max(this.dockingPoints["subscript"].child.subtreeBoundingBox().w, widest);
-			p.x = box.w / 2 + this.scale * 20 + w/2;
-            p.y = this.scale * this.s.mBox.w / 4;
+        if ("subscript" in boxes) {
+            child_width = docking_subscript.child.boundingBox().w;
+            child_height = docking_subscript.child.boundingBox().h;
+            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
+            docking_subscript.child.position.y = (parent_height / 2 + child_height / 5);
         } else {
-			var p = this.dockingPoints["subscript"].position;
-			p.x = box.w / 2 + this.scale * 20;
-			p.y = descent;
-		}
+            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_subscript.position.y = parent_position;
+        }
 
-		// TODO: Tweak this with kerning.
+        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
+
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest + this.dockingPoints["right"].child.offsetBox().w/2;
-            p.y = 0;
+            child_width = docking_right.child.boundingBox().w;
+            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+            docking_right.child.position.y = 0;
+            // FIXME HORRIBLE BRACKETS FIX
+            if(docking_right.child instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
         } else {
-			var p = this.dockingPoints["right"].position;
-			p.x = box.w / 2 + this.scale * this.s.mBox.w / 4 + widest;
-			p.y = -this.s.xBox.h / 2;
-		}
-	}
+            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+            docking_right.position.y = (this.dockingPoint.y);
+        }
+    }
 
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
+
+
     getChildren(): Array<Widget> {
         return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }

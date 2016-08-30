@@ -1,93 +1,91 @@
-
 $menu-handle-width: 160px;
-
 .equation-editor {
-	background: url(/assets/equation_editor/bg.png);
+    background: url("/assets/equation_editor/bg.png");
     background-position: -1px -1px;
     border: 1px solid black;
-    height:100%;
+    height: 100%;
     overflow: hidden;
     position: relative;
     z-index: 0;
-
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
-
-    &:focus, :focus {
+    // ::-webkit-scrollbar {
+    //     -webkit-appearance: none;
+    //     width: 4px;
+    // }
+    // ::-webkit-scrollbar-thumb {
+    //     border-radius: 1px;
+    //     background-color: rgba(0,0,0,.5);
+    //     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    // }
+    &:focus,
+    :focus {
         outline: none;
     }
-
     .canvas-offsetter {
         position: absolute;
         left: 50%;
         top: 50%;
     }
-
+    .number-bar {
+        .symbol-label {
+            font-size: 40px;
+        }
+    }
+    .wedgeFit {
+        margin-left: 10px;
+    }
     .selection-box {
         position: absolute;
         z-index: -1;
         pointer-events: none;
         border: 1px dotted #007;
-        background: rgba(0,0,255,0.1);
+        background: rgba(0, 0, 255, 0.1);
     }
-
     [selection-handle] {
         position: absolute;
         pointer-events: none;
         z-index: -1;
-
         svg {
             cursor: default;
             overflow: visible;
             // shape-rendering: crispEdges;
-
             polygon {
                 fill: white;
                 cursor: pointer;
                 pointer-events: initial;
-                stroke:black;
-                stroke-width:0.05;
-
+                stroke: black;
+                stroke-width: 0.05;
                 &:hover {
                     fill: hsl(102, 55%, 95%);
                 }
-
             }
-
             .handle-fade {
                 opacity: 0.5;
             }
         }
     }
-
-
     .top-menu {
-
         /* Giving this any z-index at all prevents .dragging-background from going behind it. */
         /* z-index: 100; */
-
         background: #509e2e;
-        position:absolute;
+        position: absolute;
         left: 0;
         right: 0;
         bottom: 100%;
         visibility: hidden;
-
         &.foreground {
             visibility: visible;
         }
-
         &.active-menu {
             .handle {
-                background: url(/assets/equation_editor/menu-handle-active.png) no-repeat bottom;
-                }
+                background: url("/assets/equation_editor/menu-handle-active.png") no-repeat bottom;
+            }
         }
-
         .top-menu-above {
             position: absolute;
             left: 0;
@@ -96,7 +94,6 @@ $menu-handle-width: 160px;
             height: 500px;
             background: #509e2e;
         }
-
         .handle {
             position: absolute;
             top: 100%;
@@ -107,291 +104,293 @@ $menu-handle-width: 160px;
             left: 50%;
             cursor: pointer;
             visibility: visible;
-            background: url(/assets/equation_editor/menu-handle.png) no-repeat bottom;
+            background: url("/assets/equation_editor/menu-handle.png") no-repeat bottom;
             height: 80px;
             color: white;
             font-size: 24px;
             padding-top: 5px;
-
             &.m1 {
                 margin-left: -$menu-handle-width*2;
             }
-
             &.m2 {
                 margin-left: -$menu-handle-width;
             }
-
             &.m3 {
                 margin-left: 0;
             }
-
             &.m4 {
                 margin-left: $menu-handle-width;
             }
         }
-
         .menu-list-container {
             width: 100%;
             height: 100px;
             white-space: nowrap;
             position: relative;
 
+
             li {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
-
             [menu-symbol] {
                 position: relative;
-                left: 0px;
-                top: 0px;
+                left: 0;
+                top: 0;
                 width: 90px;
                 height: 100px;
                 text-align: center;
                 line-height: 80px;
                 display: inline-block;
                 cursor: pointer;
-                background: url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                background: url("/assets/equation_editor/hex-menu-item.png") no-repeat center center;
                 color: #317115;
-
                 &.dragging {
-                    background: url(/assets/equation_editor/hex-menu-item-bordered.png) no-repeat center center;
+                    background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat center center;
                 }
             }
-
             .dragging-background {
                 position: absolute;
                 z-index: -1;
-
                 .symbol-token {
                     position: absolute;
                     right: 100%;
                     bottom: 100%;
                     text-align: right;
-                    border: 1px dotted rgba(0,0,0,0.2);
-
+                    border: 1px dotted rgba(0, 0, 0, 0.2);
                     &.line {
                         background: black;
                     }
                 }
             }
-            
             ul {
-                position:absolute;
-                left: 0px;
-                top: 0px;
-                padding: 0px 20px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                padding: 0 20px;
                 margin: 0;
             }
         }
-
         [sub-menu] {
             background: #317115;
-
-            li
-            {
+            li {
                 &:not(.active) {
-                    background: url(/assets/equation_editor/hex-menu-item-inactive.png) no-repeat center center !important;
+                    background: url("/assets/equation_editor/hex-menu-item-inactive.png") no-repeat center center !important;
                     color: #fff !important;
                 }
-
                 &.active {
                     background: #509e2e;
-                    background: #509e2e url(/assets/equation_editor/hex-menu-item.png) no-repeat center center;
+                    background: #509e2e url("/assets/equation_editor/hex-menu-item.png") no-repeat center center;
                 }
             }
         }
-
         [sub-menu-item] {
-
             display: none;
-
             &:nth-child(2) {
                 display: block;
             }
         }
-
         [number-entry] {
-
-            height: 162px;
-
+            height: 130px;
             .button-grid {
                 position: absolute;
-                left: 0px;
-                width: 450px;
+                left: 0;
+                width: 337px;
                 display: block;
-                margin: 7px;
+                margin: 7px 0 0 60px;
                 li {
                     text-align: center;
+                    z-index: 1000px;
                     cursor: pointer;
                     width: 50px;
-                    height: 60px;
-                    border-radius: 30px;
-                    background: white;
-                    color: black;
-                    font-size: 48px;
-                    font-weight: bold;
-                    line-height: 65px;
-                    margin: 7px 7px;
+                    height: 65px;
+                    background: url("/assets/equation_editor/hex-menu-item-bordered.png") no-repeat;
+                    background-size: contain;
+                    color: #317115;
+                    clear: none;
+                    line-height: 60px;
+                    font-size: 40px;
+                    font-weight: 500;
+                    font-family: KaTeX_Main;
+                    margin: 3px 3px 0;
+                    position: relative;
+                    z-index: 9999;
+                }
+                .wedgeFit {
+                    margin-top: -14px;
+                    z-index: 100px !important;
                 }
             }
-
             .number-input-panel {
                 position: absolute;
                 left: 460px;
                 right: 100px;
-
                 .input-exponent {
                     position: absolute;
                     right: 20px;
                     top: 45px;
                     font-size: 36px;
                     display: inline-block;
-
                     &:before {
                         content: "×";
                         font-family: sans-serif;
                     }
                 }
-
                 .input-clear {
                     position: absolute;
                     left: 20px;
-                    top: 45px;
+                    top: 35px;
                     font-size: 36px;
                     font-family: sans-serif;
                     font-weight: bold;
-                    color: #ccc;
+                    color: rgba(49, 113, 21, 0.3);
                     cursor: pointer;
-
                     &:hover {
                         color: red;
                     }
                 }
-
                 input {
                     text-align: right;
                     transition: padding-right 0s;
                     font-size: 48px;
-                    border-radius: 10px;
-                    border: 2px solid black;
-                    margin-top: 25px;
-                    height: 100px;
+                    border-radius: 2px;
+                    border: 2px solid #317115;
+                    margin-top: 10px;
+                    height: 110px;
                 }
-
                 @media (max-width: 45em) {
                     input {
-                        display:none;
+                        display: none;
                     }
                 }
             }
-
-
-
             .number-entry-symbol {
-
                 position: absolute;
-                right: 0px;
+                right: 0;
                 width: 100px;
-
                 .symbol-label.tiny {
                     font-size: 14px;
                 }
-
                 .number-hex {
-                    margin-top: 25px;
-
+                    margin-top: 15px;
                     ul {
-                        padding: 0px 7px;
+                        padding: 0 7px;
                     }
                 }
-
                 .menu-dismiss {
                     bottom: initial;
-                    top:20px;
+                    top: 20px;
                     left: 10px;
-                    background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
+                    background: url("/assets/equation_editor/hex-button-submit.png") no-repeat;
                 }
             }
-
         }
     }
-
     [canvas-symbol] .canvas-symbol {
         position: absolute;
         cursor: pointer;
         z-index: -2;
-
         .measure-this {
             //border: 1px dashed rgba(0,0,150,0.5);
         }
-
         &.string {
             z-index: -2;
         }
-
         &.container {
             //border: 1px dashed blue;
             z-index: -3;
         }
-
         &.selected {
             color: #080;
             border-color: #080;
         }
-        
         &.dragging {
             color: #00a;
             border-color: #00a;
         }
-
     }
-
     .hex-button {
-        width: 90px;
-        height: 108px;
         text-align: center;
         border: none;
         position: absolute;
         bottom: 18px;
         cursor: pointer;
-
+        &.centre,
+        &.redo,
+        &.undo,
+        &.clearAll {
+            width: 68px;
+            height: 80px;
+        }
         &.centre {
             left: 18px;
-            background: url(/assets/equation_editor/hex-button-centre.png) no-repeat;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
         }
-
+        &.clearAll {
+            left: 18px;
+            background: url("/assets/equation_editor/hex-button-clear-all.png") no-repeat;
+            background-size: contain;
+        }
+        &.centre:hover {
+            background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+            background-size: contain;
+        }
         &.undo {
-            left: 114px;
-            background: url(/assets/equation_editor/hex-button-undo.png) no-repeat;
-        }
+            left: 102px;
+            background: url("/assets/equation_editor/hex-button-undo.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-undo-hover.png") no-repeat;
+                background-size: contain;
+            }
 
+            &.graph {
+                left: 18px;
+            }
+        }
         &.redo {
-            left: 210px;
-            background: url(/assets/equation_editor/hex-button-redo.png) no-repeat;
-        }
+            left: 187px;
+            background: url("/assets/equation_editor/hex-button-redo.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-redo-hover.png") no-repeat;
+                background-size: contain;
+            }
 
+            &.graph {
+                left: 102px;
+            }
+        }
         &.submit {
+            width: 90px;
+            height: 108px;
             right: 18px;
-            background: url(/assets/equation_editor/hex-button-submit.png) no-repeat;
+            background: url("/assets/equation_editor/hex-button-submit.png") no-repeat;
         }
     }
-
     .trash-button {
         width: 70px;
         height: 160px;
         position: absolute;
         right: 0;
         top: calc(50% - 80px);
-        background: url(/assets/equation_editor/trash-active.png) no-repeat;
+        background: url("/assets/equation_editor/trash-active.png") no-repeat;
         opacity: 0.5;
         cursor: pointer;
         z-index: -20;
-
-        &:hover, &.active {
+        &.active,
+        &:hover {
             opacity: 1;
         }
+
+        &.graph {
+            z-index: 1000;
+            top: calc(20% - 80px);
+        }
     }
+
+
 
     .result-preview {
         position: absolute;
@@ -405,47 +404,40 @@ $menu-handle-width: 160px;
         font-size: 36px;
         line-height: 108px;
         overflow: hidden;
-
         width: 0;
-
-        &>span {
+        & > span {
             padding-left: 18px;
             padding-right: calc(90px/2 + 18px);
-
         }
     }
-
     .symbol-label {
         font-size: 36px;
     }
-
     .question-reminder {
         position: absolute;
         bottom: 140px;
         left: 250px;
         right: 250px;
-        text-align:center;
+        text-align: center;
         border-radius: 20px;
-        background-color: rgba(0,0,0,0.6);
+        background-color: rgba(0, 0, 0, 0.6);
         color: white;
-        padding: 1.25rem 1px 0px 1px;
+        padding: 1.25rem 1px 0;
         pointer-events: none;
     }
-
     .orientation-warning {
         position: absolute;
         left: 10%;
         right: 10%;
         top: 40%;
         padding: 1em;
-        text-align:center;
+        text-align: center;
         border-radius: 20px;
-        background-color: rgba(0,0,0,0.6);
+        background-color: rgba(0, 0, 0, 0.6);
         color: white;
         padding-top: 1.25rem;
         pointer-events: none;
     }
-
     #p5_loading {
         text-align: center;
         width: 100%;
@@ -453,4 +445,3 @@ $menu-handle-width: 160px;
         font-size: 4rem;
     }
 }
-

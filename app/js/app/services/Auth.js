@@ -92,8 +92,9 @@ define([], function() {
 		this.updateUser = function() {
 			$rootScope.user = api.currentUser.get();
 			
-			$rootScope.user.$promise.then(function() {
+			$rootScope.user.$promise.then(function(u) {
 				$timeout(function() {
+					$rootScope.user = u;
 					setupUserConsistencyCheck();
 					$rootScope.$apply();
 				});

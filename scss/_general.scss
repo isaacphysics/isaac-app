@@ -487,4 +487,10 @@ h6~.subheader { position: relative; bottom:  8px;}
     width: 100%;
     border: 1px solid;
     padding: 10px;
+    a:link {
+        text-decoration: underline;
+    }
+    a:hover {
+        text-decoration: none;
+    }
 }

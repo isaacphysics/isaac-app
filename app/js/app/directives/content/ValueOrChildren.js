@@ -49,12 +49,24 @@ define([], function() {
 	            		update();
 	            	});
 
+					// Replace three watchers which always get called one after another with one watcher:
+					// TODO: work out why this didn't work. Also, work out why removing only enmcoding from it
+					// and having that watcher separately *did* work just fine . . . 
+					
+					// scope.$parent.$watchGroup([iAttrs.value, iAttrs.children, iAttrs.encoding], function(newValues) {
+					// 	scope.value = newValues[0];
+					// 	scope.children = newValues[1];
+					// 	scope.encoding = newValues[2];
+					// 	update();
+					// });
+
 	            	var update = function updateFn() {
 
 	            		scope.safeValue = $sce.trustAsHtml(scope.value);
 
-						if (scope.value != "" && scope.value != null && scope.children != null && scope.children.length > 0)
+						if (scope.value != "" && scope.value != null && scope.children != null && scope.children.length > 0) {
 							throw new Error("Cannot render both value and children:\n\tVALUE:\n" +  JSON.stringify(scope.value, null, 2) + "\n\n\tCHILDREN:\n" + JSON.stringify(scope.children, null, 2));
+						}
 
 						scope.contentChunks = []; // One of these for each chunk of content, where accordions may only appear on their own in a chunk.
 			            var breakOnTypeChange = false;

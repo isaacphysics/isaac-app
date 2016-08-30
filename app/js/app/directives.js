@@ -20,7 +20,7 @@ define(function(require) {
 	require('angular-recursion');
 
 	/* Directives */
-	angular.module('isaac.directives', 
+	angular.module('isaac.directives',
 		['RecursionHelper'])
 
 	.directive('appVersion', ['version', function(version) {
@@ -38,14 +38,12 @@ define(function(require) {
     .directive('printButton', require("app/directives/PrintButton"))
 
     .directive('shareButton', require("app/directives/ShareButton"))
-	
+
 	.directive('hexagons', require("app/directives/Hexagons"))
-	
+
 	.directive('hexFilter', require("app/directives/HexFilter"))
-	
+
 	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
-	
-	.directive('conceptFilter', require("app/directives/ConceptFilter"))
 
 	.directive('footerPods', require("app/directives/FooterPods"))
 
@@ -53,7 +51,39 @@ define(function(require) {
 
 	.directive('questionPod', require("app/directives/QuestionPod"))
 
+	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
+
+	.directive('podCarousel', require("app/directives/PodCarousel"))
+
+	.directive('podCarouselItem', require("app/directives/PodCarouselItem"))
+
+	.directive('hexCarousel', require("app/directives/HexCarousel"))
+
+	.directive('hexCarouselItem', require("app/directives/HexCarouselItem"))
+
+	.directive('d3Donut', require("app/directives/d3/Donut"))
+
+	.directive('d3Plot', require("app/directives/d3/Plot"))
+
+	.directive('d3Bar', require("app/directives/d3/Bar"))
+
+	.directive('progressBar', require("app/directives/ProgressBar"))
+
+	.directive('toast', require("app/directives/Toast"))
+
+	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
+
+	.directive('isaacModal', require("app/directives/IsaacModal"))
+
+	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
+
+	// Equation Editor Directives
+
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+
+
+
+	.directive('elementsMenu', require("app/directives/equation_editor/ElementsMenu"))
 
 	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
 
@@ -71,31 +101,8 @@ define(function(require) {
 
 	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
 
-	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
 
-	.directive('podCarousel', require("app/directives/PodCarousel"))
 
-	.directive('podCarouselItem', require("app/directives/PodCarouselItem"))
-
-	.directive('hexCarousel', require("app/directives/HexCarousel"))
-
-	.directive('hexCarouselItem', require("app/directives/HexCarouselItem"))
-
-	.directive('d3Donut', require("app/directives/d3/Donut"))
-
-	.directive('d3Plot', require("app/directives/d3/Plot"))
-
-	.directive('d3Bar', require("app/directives/d3/Bar"))
-	
-	.directive('progressBar', require("app/directives/ProgressBar"))
-
-	.directive('toast', require("app/directives/Toast"))
-
-	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
-
-	.directive('isaacModal', require("app/directives/IsaacModal"))
-
-	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
 
 
 	// Content Directives
@@ -111,7 +118,7 @@ define(function(require) {
 	.directive('isaacContentValueOrChildren', require("app/directives/content/ValueOrChildren"))
 
 	.directive('isaacImage', require("app/directives/content/Image"))
-	
+
 	.directive('isaacFigure', require("app/directives/content/Figure"))
 
 	.directive('isaacFigureRef', require("app/directives/content/FigureRef"))
@@ -124,7 +131,7 @@ define(function(require) {
 
 	.directive('isaacHorizontal', require("app/directives/content/Horizontal"))
 
-	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))	
+	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))
 
 	.directive('isaacQuestionTabs', require("app/directives/content/QuestionTabs"))
 
@@ -144,7 +151,7 @@ define(function(require) {
 
 	.directive('isaacAnvilQuestion', require("app/directives/content/AnvilQuestion"))
 
-	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))	
+	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))
 
 	.directive('fadeOnSearch', [function() {
 		return {
@@ -167,7 +174,7 @@ define(function(require) {
 			link: function(scope, element, attrs) {
 				element.addClass("search-fade")
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
-					
+
 	            if (searchOpen) {
 	            	setTimeout(function(){
 	                	element[0].focus();
@@ -221,7 +228,7 @@ define(function(require) {
 						$timeout(function() {
 							$("html,body").animate({
 				                scrollTop: element.offset().top
-				            }, 1000);        
+				            }, 1000);
 						});
 						// Prevent nested accordions from also scrolling.
 						e.foundSection = true;
@@ -260,5 +267,5 @@ define(function(require) {
 
 	  return directiveDefinitionObject;
 	}])
-	
+
 });

@@ -40,6 +40,15 @@
     border-left:#cecece 1px solid;
     background-color: #fff;
 }
+.row.back-to-question {
+    float: right;
+    width: auto;
+    margin-right: 5px;
+}
+.row.back-to-board {
+    float: right;
+    width: auto;
+}
 .icon-close {
     float: right;
     width: 24px;
@@ -69,7 +78,7 @@
         line-height: 1;
         font-weight: 600;
         font-style: italic;
-        margin: 0; 
+        margin: 0;
     }
 
     .icon-stack {
@@ -84,7 +93,7 @@
         line-height: 0.642;
         color: $ru_green;
     }
-    .icon-board-complete, 
+    .icon-board-complete,
     .icon-question-complete {
         position: absolute;
         top: -40px;
@@ -125,13 +134,13 @@
     margin: 10px 0;
 }
 
-@media #{$small-only} { 
+@media #{$small-only} {
     .reveal-modal-body {
         padding: 20px 0px;
     }
 }
 
-@media #{$medium-up} { 
+@media #{$medium-up} {
     .reveal-modal {
         .close-reveal-modal {
             top: 25px;
@@ -172,7 +181,7 @@
             font-size: 268px;
         }
 
-        .icon-board-complete, 
+        .icon-board-complete,
         .icon-question-complete {
             font-size: 180px;
             top: -50px;
@@ -181,7 +190,7 @@
         }
     }
 }
-@media #{$large-up} { 
+@media #{$large-up} {
     .congrats {
         height: 180px;
         padding-right: 20px;
@@ -205,7 +214,7 @@
             font-size: 320px;
         }
 
-        .icon-board-complete, 
+        .icon-board-complete,
         .icon-question-complete {
             font-size: 205px;
             top: -50px;
@@ -223,7 +232,7 @@
     display: block;
 }
 
-// Fix cross browser icon line-height issues 
+// Fix cross browser icon line-height issues
 
 // Target firefox only
 @-moz-document url-prefix() {
@@ -232,17 +241,17 @@
             line-height: 0.51;
         }
     }
-    @media #{$medium-up} { 
+    @media #{$medium-up} {
         .congrats {
-            .icon-board-complete, 
+            .icon-board-complete,
             .icon-question-complete {
                 top: 65px;
             }
         }
     }
-    @media #{$large-up} { 
+    @media #{$large-up} {
         .congrats {
-            .icon-board-complete, 
+            .icon-board-complete,
             .icon-question-complete {
                 top: 79px;
             }

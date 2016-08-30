@@ -38,7 +38,7 @@ define([], function() {
 		$scope.findBookQuestions = function() {
 			$scope.questionSearchText = "book";
 			$scope.questionSearchSubject = "";
-			$scope.questionSearchLevel = "0";
+			$scope.questionSearchLevel = null;
 			sortField = "title"	;
 		}
 
@@ -88,7 +88,7 @@ define([], function() {
 
 		// question finder code.
 		var httpCanceller = null;
-		var doQuestionSearch = function(searchQuery, searchLevel, searchTags){
+		var doQuestionSearch = function(searchQuery, searchLevel, searchTags, fasttrack){
 			// if we have a current promise outstanding cancel it.
 			if (httpCanceller != null) {
 				httpCanceller();
@@ -98,7 +98,7 @@ define([], function() {
 			// create a new promise so we can cancel it later.
 			var questionSearchResource = api.getQuestionsResource();
             httpCanceller = questionSearchResource.$cancelRequest;
-			return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults});
+			return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults, fasttrack:fasttrack});
 		};
 
 		// timer for the search box to minimise number of requests sent to api
@@ -112,7 +112,16 @@ define([], function() {
 	        timer = $timeout(function() {
             	$scope.loading = true;
 
-            	doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
+
+            	if ($scope.questionSearchText == "fasttrack") {
+            		var searchText = "";
+            		var fasttrack = true;
+            	} else {
+            		var searchText = $scope.questionSearchText;
+            		var fasttrack = false;
+            	}
+
+            	doQuestionSearch(searchText, $scope.questionSearchLevel, $scope.questionSearchSubject, fasttrack)
             	.$promise.then(function(questionsFromServer){
 					httpCanceller = null;
         			// update the view

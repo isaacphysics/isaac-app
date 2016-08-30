@@ -16,13 +16,22 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
-		
+		/*
+		*  This controller manages the User Account Settings page, but it also
+		*  manages user Registration. Any changes to one will affect the other,
+		*  so ensure both are checked after modifying this code.
+		*/
 		$scope.activeTab = 0;
 
 		$scope.emailPreferences = {};
 		$scope.passwordChangeState = {
 			passwordCurrent : ""
 		};
+
+		// It appears ng-model can no longer cope matching a string value to a number?
+		if ($scope.user.defaultLevel) {
+			$scope.user.defaultLevel = String($scope.user.defaultLevel);
+		}
 
 		// the hash will be used as an anchor
 		if($location.hash){
@@ -143,9 +152,9 @@ define([], function() {
 				$scope.datePicker.months = possibleMonths;
 			}
 
-			var dob = new Date($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
-			if (!isNaN(dob.getTime())) {
-				$scope.user.dateOfBirth = dob.getTime();
+			var dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
+			if (!isNaN(dob_unix)) {
+				$scope.user.dateOfBirth = dob_unix;
 			}
 		});
 

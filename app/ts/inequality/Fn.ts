@@ -2,16 +2,19 @@ import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
+import { Brackets } from "./Brackets.ts";
 
 /** Functions. */
 export
-class Fn extends Widget {
+    class Fn extends Widget {
 
     protected s: any;
     protected name: string;
     protected custom: boolean;
     protected innerSuperscript: boolean;
     protected allowSubscript: boolean;
+    protected latexSymbol: string;
+    protected pythonSymbol: string;
 
     get typeAsString(): string {
         return "Fn";
@@ -27,7 +30,7 @@ class Fn extends Widget {
         return this.p.createVector(0, - box.h / 2);
     }
 
-    constructor(p:any, s:any, name:string, custom:boolean, allowSubscript:boolean, innerSuperscript:boolean) {
+    constructor(p: any, s: any, name: string, custom: boolean, allowSubscript: boolean, innerSuperscript: boolean) {
         super(p, s);
         this.name = name;
         this.custom = custom;
@@ -35,11 +38,37 @@ class Fn extends Widget {
         this.allowSubscript = allowSubscript;
         this.innerSuperscript = innerSuperscript;
 
+        switch (name) {
+            case "arccosec":
+                this.latexSymbol = 'text{cosec}',
+                this.pythonSymbol = this.name;
+                break;
+            case "sech":
+                this.latexSymbol = 'text{sech}',
+                this.pythonSymbol = this.name;
+                break;
+            case "arcsech":
+                this.latexSymbol = "text{sech}",
+                this.pythonSymbol = this.name;
+                break;
+            case "cosec":
+                this.latexSymbol = 'text{cosec}',
+                this.pythonSymbol = this.name;
+                break;
+            case "cosech":
+                this.latexSymbol = 'text{cosech}',
+                this.pythonSymbol = this.name;
+                break;
+            default:
+                this.latexSymbol = this.name;
+                this.pythonSymbol = this.name;
+                break;
+        }
+
         // Override docking points created in super constructor
         this.dockingPoints = {};
         this.generateDockingPoints();
-
-        this.docksTo = ['symbol', 'operator', 'exponent'];
+        this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets"];
     }
 
     /**
@@ -55,14 +84,14 @@ class Fn extends Widget {
         var box = this.s.font_up.textBounds(this.isPlaceholder ? "sin" : (this.name || ''), 0, 1000, this.scale * this.s.baseFontSize);
         var bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox.h/2), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + bracketBox.w, -this.s.xBox.h / 2), 1, "symbol", "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
 
         if (this.allowSubscript) {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2, 0), 0.666, "symbol", "subscript");
+            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, 0), 0.666, "symbol", "subscript");
         }
         if (this.innerSuperscript) {
-            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2, -bracketBox.h), 0.666, "symbol", "superscript");
+            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, -bracketBox.h), 0.666, "symbol", "superscript");
         } else {
             // This is where we would generate the 'outer' superscript docking point, should we ever need it.
             // If we ever do this, we'll need to change all the Math.max calls below.
@@ -81,54 +110,54 @@ class Fn extends Widget {
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
-            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+            if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
                 var sub = '';
-                if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+                if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                     sub += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
                 }
                 var sup = '';
-                if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
                     sup += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
 
                 var esc = this.custom ? "" : "\\";
 
-                expression += esc + this.name + sup + sub + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
-                if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
+                expression += esc + this.latexSymbol + sup + sub + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         } else if (format == "python") {
-            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-                if(this.name == 'ln' || this.name == 'log') {
-                    if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+            if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+                if (this.pythonSymbol == 'ln' || this.pythonSymbol == 'log') {
+                    if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                         // Logarithm with base
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', ' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
-                    } else if (this.name == 'log') {
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is base e (i.e. ln) otherwise!
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', ' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
+                    } else if (this.pythonSymbol == 'log') {
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is base e (i.e. ln) otherwise!
                     } else {
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
                     }
                 } else {
-                    if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+                    if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                         // Function with subscript
-                        expression += this.name + '_' + this.dockingPoints['subscript'].child.getExpression(format) + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '_' + this.dockingPoints['subscript'].child.getExpression(format) + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
                     } else {
-                        expression += this.name + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
                     }
                 }
-                if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+                if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
                     var supExp = this.dockingPoints['superscript'].child.getExpression(format);
-                    if(Number(supExp) == -1 && this.innerSuperscript) {
+                    if (Number(supExp) == -1 && this.innerSuperscript) {
                         expression = 'arc' + expression;
                     } else {
                         expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
                     }
                 }
 
-                if('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                    if(!(this.dockingPoints['right'].child instanceof BinaryOperation  ||
-                    this.dockingPoints["right"].child instanceof Relation)) {
+                if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
+                    if (!(this.dockingPoints['right'].child instanceof BinaryOperation ||
+                        this.dockingPoints["right"].child instanceof Relation)) {
                         expression += '*' + this.dockingPoints['right'].child.getExpression(format);
                     } else {
                         expression += this.dockingPoints['right'].child.getExpression(format);
@@ -136,7 +165,7 @@ class Fn extends Widget {
                 }
             }
         } else if (format == 'mathml') {
-            if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+            if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
                 var right = ('right' in this.dockingPoints && this.dockingPoints['right'].child) ? this.dockingPoints['right'].child.getExpression(format) : '';
                 if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child && 'superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
                     expression += '<mrow><msubsup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
@@ -162,7 +191,7 @@ class Fn extends Widget {
     }
 
     token() {
-        if("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.getExpression("python")) == -1 && this.innerSuperscript) {
+        if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.getExpression("python")) == -1 && this.innerSuperscript) {
             return "arc" + this.name + "()";
         } else {
             return this.name + "()";
@@ -203,9 +232,9 @@ class Fn extends Widget {
         this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.RIGHT, this.p.BASELINE);
-        this.p.text('(', box.w/2 + bracketBox.w + Math.max(subWidth, supWidth), 0);
+        this.p.text('(', box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth), 0);
         this.p.textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(')', box.w/2 + bracketBox.w + Math.max(subWidth, supWidth) + argWidth, 0);
+        this.p.text(')', box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + argWidth, 0);
 
         this.p.strokeWeight(1);
 
@@ -229,22 +258,22 @@ class Fn extends Widget {
         var name = this.isPlaceholder ? "sin" : this.name;
         var box = this.s.font_up.textBounds(name+'()' || '', 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
-        if('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
+        if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
             argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
         }
         var subWidth = 0;
-        if('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
+        if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
             subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
         }
         var supWidth = 0;
-        if('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
+        if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
             supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
         }
 
         var bracketsBox = this.s.font_up.textBounds('()', 0, 1000, this.scale * this.s.baseFontSize);
         var width = box.w;
         var dpWidth = 0;
-        return new Rect(-width/2 + bracketsBox.w/2, box.y - 1000, width + argWidth + Math.max(subWidth,supWidth) + dpWidth, Math.max(box.h, bracketsBox.h));
+        return new Rect(-width / 2 + bracketsBox.w / 2, box.y - 1000, width + argWidth + Math.max(subWidth, supWidth) + dpWidth, Math.max(box.h, bracketsBox.h));
     }
 
     /**
@@ -255,7 +284,7 @@ class Fn extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -281,37 +310,43 @@ class Fn extends Widget {
         var subWidth = 0;
         var supWidth = 0;
 
-        if("subscript" in boxes) {
-            var p = this.dockingPoints['subscript'].child.position = this.p.createVector(box.w/2 + this.dockingPoints['subscript'].child.offsetBox().w/2, -this.dockingPoint.y);
+        if ("subscript" in boxes) {
+            var p = this.dockingPoints['subscript'].child.position = this.p.createVector(box.w / 2 + this.dockingPoints['subscript'].child.offsetBox().w / 2, -this.dockingPoint.y);
             subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
         } else if ("subscript" in this.dockingPoints) {
-            this.dockingPoints['subscript'].position = this.p.createVector(box.w/2, -this.dockingPoint.y);
+            this.dockingPoints['subscript'].position = this.p.createVector(box.w / 2, -this.dockingPoint.y);
         }
-        if("superscript" in boxes) {
-            let p = this.dockingPoints['superscript'].child.position = this.p.createVector(box.w/2 + this.dockingPoints['superscript'].child.offsetBox().w/2, -Math.max(box.h, bracketBox.h)-(this.dockingPoint.y));
+        if ("superscript" in boxes) {
+            let p = this.dockingPoints['superscript'].child.position = this.p.createVector(box.w / 2 + this.dockingPoints['superscript'].child.offsetBox().w / 2, -Math.max(box.h, bracketBox.h) - (this.dockingPoint.y));
             supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
         } else if ("superscript" in this.dockingPoints) {
-            this.dockingPoints['superscript'].position = this.p.createVector(box.w/2, -Math.max(box.h, bracketBox.h)-(this.dockingPoint.y));
+            this.dockingPoints['superscript'].position = this.p.createVector(box.w / 2, -Math.max(box.h, bracketBox.h) - (this.dockingPoint.y));
         }
 
-        if("argument" in boxes) {
-            var p:any = this.dockingPoints["argument"].child.position;
+        if ("argument" in boxes) {
+            var p: any = this.dockingPoints["argument"].child.position;
             var w = this.dockingPoints["argument"].child.offsetBox().w;
-            p.x = box.w/2 + bracketBox.w + Math.max(subWidth,supWidth) + this.dockingPoints["argument"].child.offsetBox().w/2;
+            p.x = box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + this.dockingPoints["argument"].child.offsetBox().w / 2;
             p.y = 0;
             widest += w;
         } else {
-            this.dockingPoints["argument"].position = this.p.createVector(box.w/2 + bracketBox.w + Math.max(subWidth,supWidth) + this.s.xBox.w/2, -this.s.xBox.h/2);
+            this.dockingPoints["argument"].position = this.p.createVector(box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + this.s.xBox.w / 2, -this.s.xBox.h / 2);
         }
 
         // TODO: Tweak this with kerning.
         if ("right" in boxes) {
-            var p:any = this.dockingPoints["right"].child.position;
-            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w/2 + this.dockingPoints["right"].child.offsetBox().w/2;
+            var p: any = this.dockingPoints["right"].child.position;
+            p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2 + this.dockingPoints["right"].child.offsetBox().w / 2;
             p.y = 0;
+            var docking_right = this.dockingPoints["right"];
+            // FIXME HORRIBLE BRACKETS FIX
+            if(docking_right instanceof Brackets) {
+                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            }
+
         } else {
-            var p:any = this.dockingPoints["right"].position;
-            p.x = this.boundingBox().w - this.offsetBox().w/2 + this.s.xBox.w/2;
+            var p: any = this.dockingPoints["right"].position;
+            p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2;
             p.y = -this.s.xBox.h / 2;
         }
     }

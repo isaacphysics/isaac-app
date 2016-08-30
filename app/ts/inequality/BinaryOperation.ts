@@ -1,5 +1,5 @@
 import { Widget, Rect } from './Widget.ts';
-import { Symbol } from './Symbol.ts';
+import { Brackets } from './Brackets.ts';
 import { DockingPoint } from "./DockingPoint.ts";
 
 /**
@@ -8,9 +8,13 @@ import { DockingPoint } from "./DockingPoint.ts";
  * BE EXTRA CAREFUL with the minus sign: use "−" (U+2212), not just a dash.
  */
 export
-class BinaryOperation extends Widget {
+    class BinaryOperation extends Widget {
     protected s: any;
     protected operation: string;
+    protected mhchemSymbol: string;
+    protected latexSymbol: string;
+    protected mathmlSymbol: string;
+    protected pythonSymbol: string;
 
     get typeAsString(): string {
         return "BinaryOperation";
@@ -22,7 +26,7 @@ class BinaryOperation extends Widget {
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(0, -this.s.xBox.h/2);
+        var p = this.p.createVector(0, -this.s.xBox.h / 2);
         return p;
     }
 
@@ -30,9 +34,26 @@ class BinaryOperation extends Widget {
         super(p, s);
         this.s = s;
         this.operation = operation;
+        switch(this.operation) {
+          case '±':
+            this.latexSymbol = '\\pm';
+            this.pythonSymbol = '±';
+            this.mathmlSymbol = '±';
+            this.mhchemSymbol = '\\pm';
+            break;
+          case '−':
+            this.latexSymbol = '-';
+            this.pythonSymbol = '-';
+            this.mathmlSymbol = '-';
+            this.mhchemSymbol = '-';
+            break;
+          default:
+            this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.mhchemSymbol = this.operation;
+            break;
+        }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['operator', 'exponent', 'symbol'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation'];
     }
 
     /**
@@ -45,7 +66,7 @@ class BinaryOperation extends Widget {
         var box = this.boundingBox();
         var descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox.w/4, -this.s.xBox.h/2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
     }
 
     /**
@@ -58,22 +79,34 @@ class BinaryOperation extends Widget {
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = "";
-        if(format == "latex") {
+        var expression = " ";
+        if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.latexSymbol + " ";
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "python") {
+        } else if (format == "python") {
+            expression += this.pythonSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.operation.replace(/−/g, "-") + "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "subscript") {
+        } else if (format == "mhchem") {
+          expression += this.mhchemSymbol + " ";
+            if (this.dockingPoints["right"].child != null) {
+                expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
+            } else {
+                // This is a charge, most likely:
+                expression = this.operation.replace(/−/g, "-");
+            }
+        } else if (format == "subscript") {
+            expression = "";
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
-        } else if(format == "mathml") {
+        } else if (format == "mathml") {
+            expression = '<mo>' + this.mathmlSymbol + "</mo>";
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.operation.replace(/−/g, "-") + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
@@ -94,12 +127,12 @@ class BinaryOperation extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize*0.8 * this.scale)
+            .textSize(this.s.baseFontSize * 0.8 * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.operation, 0, 0);
         this.p.strokeWeight(1);
 
-        if(window.location.hash === "#debug") {
+        if (window.location.hash === "#debug") {
             this.p.stroke(255, 0, 0).noFill();
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
@@ -117,12 +150,12 @@ class BinaryOperation extends Widget {
      */
     boundingBox(): Rect {
         var s = this.operation || "+";
-        if (s == "−") {
-            s = "+";
-        }
+        s = "+";
 
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize*0.8);
-        return new Rect(-box.w, box.y-1000, box.w*2, box.h); // TODO: Assymetrical BBox
+
+        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+
+        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
     }
 
     /**
@@ -134,7 +167,7 @@ class BinaryOperation extends Widget {
     _shakeIt() {
 
         // Work out the size of all our children
-        var boxes: {[key:string]: Rect} = {};
+        var boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -152,10 +185,29 @@ class BinaryOperation extends Widget {
 
         var box = this.boundingBox();
 
+        var parent_w = this.boundingBox().w;
+        var right;
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            p.y = 0;
-            p.x = box.w/2 + this.dockingPoints["right"].child.offsetBox().w/2; // TODO: Tweak this with kerning.
+            right = this.dockingPoints["right"].child;
+            var isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
+            var child_w = right.boundingBox().w;
+            var child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
+            var child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
+            if (isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
+                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+                right.position.x = 1.2 * (parent_w / 2 + child_w / 2);
+                right.position.y = 0;
+            }
+            else {
+                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
+                right.position.x = parent_w / 2 + child_w / 2;
+                right.position.y = 0;
+                // FIXME HORRIBLE BRACKETS FIX
+                if(right.child instanceof Brackets) {
+                    right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+                }
+            }
+
         }
     }
 }
