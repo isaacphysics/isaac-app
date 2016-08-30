@@ -21,6 +21,7 @@ define([], function() {
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
 		$scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
 		$scope.loading = false;
+		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
 
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
@@ -125,12 +126,15 @@ define([], function() {
             	.$promise.then(function(questionsFromServer){
 					httpCanceller = null;
         			// update the view
-        			$scope.searchResults = questionsFromServer.results;
+        			$scope.searchResults = questionsFromServer.results.filter(function(r) {
+	        				var keepElement = (r.id != "_regression_test_" && r.tags.indexOf("nofilter") < 0);
+							return keepElement || $scope.isStaffUser;
+        			});;
         			// try to sort the results if requested.
         			if (sortField) {
 	        			$scope.searchResults.sort(function(a,b) {
 	        				return a[sortField] > b[sortField] ? 1 : -1;
-	        			})        				
+	        			});
         			}
         			$scope.loading = false;
             	});
