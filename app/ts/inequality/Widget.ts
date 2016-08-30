@@ -152,7 +152,7 @@ export
                 var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
                 var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
-                if (drawThisOne || window.location.hash === "#debug") {
+                if (true || drawThisOne || window.location.hash === "#debug") {
                     var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
                     this.p.stroke(0, 127, 255, ptAlpha);
                     this.p.strokeWeight(1);
@@ -332,6 +332,8 @@ export
                 dockingPoint.child.isMainExpression = this.isMainExpression;
             }
         });
+
+        // this.color = this.p.color(0);
     }
 
 	/**

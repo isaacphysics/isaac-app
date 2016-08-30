@@ -92,7 +92,28 @@ class MySketch {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
 
-        this.centre(true);
+        // this.parseSubtreeObject({"type":"Brackets","position":{"x":1132.1,"y":730},"expression":{"latex":"\\left(\\frac{m^{l}}{m^{l}}\\right)","python":"(((m**(l))/(m**(l))))"},"children":{"argument":{"type":"Fraction","children":{"numerator":{"type":"Symbol","children":{"superscript":{"type":"Symbol","properties":{"letter":"l"}}},"properties":{"letter":"m"}},"denominator":{"type":"Symbol","children":{"superscript":{"type":"Symbol","properties":{"letter":"l"}}},"properties":{"letter":"m"}}}}},"properties":{"type":"round"}});
+        this.parseSubtreeObject({"type":"Brackets","position":{"x":1116.735,"y":556.98625},"expression":{"latex":"\\left(l^{l^{l^{l^{l}}}}\\right)","python":"(l**(l**(l**(l**(l)))))"},"children":{"argument":{"type":"Symbol","children":{"superscript":{"type":"Symbol","children":{"superscript":{"type":"Symbol","children":{"superscript":{"type":"Symbol","children":{"superscript":{"type":"Symbol","properties":{"letter":"l"}}},"properties":{"letter":"l"}}},"properties":{"letter":"l"}}},"properties":{"letter":"l"}}},"properties":{"letter":"l"}}},"properties":{"type":"round"}});
+        // this.parseSubtreeObject({
+        //     type: "Brackets",
+        //     position: {x:0,y:0},
+        //     properties: {
+        //         type: "round"
+        //     },
+        //     children: {
+        //         right: {
+        //             type: "Symbol",
+        //             position: {x:0,y:0},
+        //             properties: {
+        //                 letter: "l"
+        //             }
+        //         }
+        //     }
+        // });
+        _.each(this.symbols, symbol => { symbol.shakeIt() });
+        // _.each([{"type":"Symbol","position":{"x":0,"y":0},"expression":{"latex":"m\\left(m\\right)m","python":"m*(m) m* "},"children":{"right":{"type":"Brackets","children":{"argument":{"type":"Symbol","properties":{"letter":"m"}},"right":{"type":"Symbol","children":{"right":{"type":"Brackets","properties":{"type":"round"}}},"properties":{"letter":"m"}}},"properties":{"type":"round"}}},"properties":{"letter":"m"}}], e => { this.parseSubtreeObject(e) });
+
+		this.centre(true);
 
         _this.scope.log.initialState = [];
 
@@ -104,7 +125,6 @@ class MySketch {
     };
 
 	windowResized = () => {
-		console.log(this.p.windowWidth, this.p.windowHeight);
 		this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
 	}
 
@@ -511,7 +531,7 @@ class MySketch {
         _.each(this.symbols, (symbol, i) => {
             var sbox = symbol.subtreeBoundingBox();
             symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h;
+            top += sbox.h + 100;
             symbol.shakeIt();
         });
         if (!init) {
