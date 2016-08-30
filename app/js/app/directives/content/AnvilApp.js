@@ -35,13 +35,34 @@ define([], function() {
 
                 var ps = {};
 
-                if (scope.$root.user && scope.$root.user.email) {
-                    ps.username = scope.$root.user.email;
+                if (scope.$root.user && scope.$root.user._id) {
                     ps.user_id = scope.$root.user._id;
+                    ps.user_role = scope.$root.user.role;
                 }
 
                 if (scope.$parent.question) {
                     ps.problem_id = scope.$parent.question.id;
+                    ps.problem_type = scope.$parent.question.type;
+                    if (scope.$parent.question.validationResponse) {
+                        ps.problem_previously_correct = scope.$parent.question.validationResponse.correct;
+                    }
+                }
+
+                if (location.pathname.indexOf("/questions/") == 0) {
+                    ps.page_id = location.pathname.replace("/questions/", "");
+                    ps.page_type = "isaacQuestionPage";
+                } else if (location.pathname.indexOf("/concepts/") == 0) {
+                    ps.page_id = location.pathname.replace("/concepts/", "");
+                    ps.page_type = "isaacConceptPage";
+                } else if (location.pathname.indexOf("/events/") == 0) {
+                    ps.page_id = location.pathname.replace("/events/", "");
+                    ps.page_type = "isaacEventPage";
+                } else if (location.pathname.indexOf("/pages/") == 0) {
+                    ps.page_id = location.pathname.replace("/pages/", "");
+                    ps.page_type = "page";
+                } else if ((location.pathname.match(/\//g) || []).length == 1) {
+                    ps.page_id = location.pathname.replace("/", "");
+                    ps.page_type = "page";
                 }
 
                 ps = $.extend(ps, scope.params);
