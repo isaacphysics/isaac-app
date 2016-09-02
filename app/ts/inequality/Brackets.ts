@@ -17,6 +17,17 @@ class Brackets extends Widget {
         return "Brackets";
     }
 
+    /**
+     * There's a thing with the baseline and all that... this sort-of fixes it.
+     *
+     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     */
+    get dockingPoint(): p5.Vector {
+        var box = this.s.font_it.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        var p = this.p.createVector(0, 0);
+        return p;
+    }
+
     constructor(p: any, s: any, type: string, mode:string) {
         super(p, s, mode);
         this.type = type;
@@ -73,9 +84,13 @@ class Brackets extends Widget {
         var descent = this.position.y - (box.y + box.h);
         var pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
+        // this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "symbol", "argument");
+        // this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, 0), 1, "operator_brackets", "right");
+        // this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, 0), 1, "operator_brackets", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "operator_brackets", "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "exponent", "superscript");
+
         // if(this.mode == 'chemistry') {
         //     this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
         // } else {
@@ -188,23 +203,28 @@ class Brackets extends Widget {
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
 
-            // this.p.stroke(0, 0, 255).noFill();
-            // this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            // this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
+            this.p.stroke(0, 0, 255).noFill();
+            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
+            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
         }
     }
 
     boundingBox(): Rect {
         var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
         var argWidth = this.s.xBox.w;
-        var argHeight = box.h;// this.s.xBox.h;
+        var argHeight = box.h;
         if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
             let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox();
             argWidth = subtreeBB.w;
             argHeight = _.max([argHeight, subtreeBB.h]);
         }
         var width = box.w + argWidth;
-        return new Rect(-width / 2, -argHeight/2, width + this.scale * 40, argHeight);  // FIXME This 40 is hard-coded
+        return new Rect(-width/2, -argHeight/2, width+this.scale*40, argHeight);  // FIXME This 40 is hard-coded
+    }
+
+    offsetBox(): Rect {
+        var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w/2, -box.h/2, this.scale*40, box.h);
     }
 
     _shakeIt() {
@@ -218,9 +238,7 @@ class Brackets extends Widget {
         var box = this.boundingBox();
 
         var widest = 0;
-        console.debug(0, this.typeAsString, descent);
-        var descent = (box.y + box.h);
-        console.debug(1, this.typeAsString, descent);
+        var descent = (box.y + box.h)/2;
 
         var superscriptWidth = 0;
         var subscriptWidth = 0;
@@ -230,10 +248,11 @@ class Brackets extends Widget {
             var argumentWidth = dp.child.offsetBox().w;
             var argumentPosition = dp.child.position;
             argumentPosition.x = -dp.child.subtreeBoundingBox().w/2 + argumentWidth/2;
-            argumentPosition.y = this.scale*15;
+            argumentPosition.y = descent;
             widest = argumentWidth;
         } else {
-            this.dockingPoints["argument"].position = this.p.createVector(0, 0);
+            var dp = this.dockingPoints["argument"];
+            dp.position = this.p.createVector(0, 0);
         }
 
         if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child) {

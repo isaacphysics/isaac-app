@@ -240,9 +240,9 @@ export
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             docking_right.child.position.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
-            if(docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
+            // if(docking_right.child instanceof Brackets) {
+            //     docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+            // }
         } else {
             docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_right.position.y = (this.dockingPoint.y);
