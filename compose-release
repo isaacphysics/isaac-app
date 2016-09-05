@@ -7,7 +7,7 @@ shift 2
 API_NAME=api-$ENV-$API_VERSION
 APP_NAME=app-$ENV-$APP_VERSION
 MAYBE_EXTERNAL=external_
-
+VERSION_FILE_PERMS=rw
 CONTENT=tracking
 
 if [ "$ENV" == "dev" ]; then
@@ -27,14 +27,17 @@ elif [ "$ENV" == "test" ]; then
   APP_NAME=app-test
   MAYBE_EXTERNAL=
   CONTENT=live
+  VERSION_FILE_PERMS=ro
   read -r -d '' TEST_DEPS << EOM
 es-test:
     container_name: $ES
+    restart: always
     image: elasticsearch:1.4
     volumes:                                                                                                                                
       - ../isaac-api/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
   pg-test:
     container_name: $PG
+    restart: always
     image: isaac-pg
     volumes:
       - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
@@ -67,7 +70,7 @@ services:
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-      - /local/data/conf/live_version.$CONTENT.properties:/local/data/rutherford/conf/live_version.properties:rw
+      - /local/data/conf/live_version.$CONTENT.properties:/local/data/rutherford/conf/live_version.properties:$VERSION_FILE_PERMS
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list.csv:/local/data/rutherford/school_list.csv:ro
@@ -75,7 +78,10 @@ services:
       default:
         aliases:
           - api-$ENV-any
-
+    logging:
+      driver: journald
+      options:
+        tag: isaac-api-$ENV
 networks:
   default:
     external:
