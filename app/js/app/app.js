@@ -101,8 +101,9 @@ define([
         NProgress.configure({ showSpinner: false });
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', 'subject', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile, subject) {
 
+        $rootScope.$subject = subject;
         /*
             Tooltip settings
         */

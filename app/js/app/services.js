@@ -32,6 +32,8 @@ define(function(require) {
 
 	.factory('units', require("app/services/Units"))
 
+	.factory('subject', require("app/services/Subject"))
+
 	.factory('filterWarnings', require("app/services/FilterWarnings"))
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))

@@ -24,11 +24,6 @@ define([], function() {
 			$scope.$root.segueEnvironment = response.segueEnvironment;
 		});
 
-		// FIXME: Which frontend should we use (this is a temporary solution only).
-		$scope.$root.isaacPhysics = document.location.host == "localhost:8000" || document.location.origin.indexOf("isaacphysics") > -1;
-		$scope.$root.isaacChemistry = document.location.host == "localhost:8001" || document.location.origin.indexOf("isaacchemistry") > -1;
-		$scope.$root.isaacBiology = document.location.host == "localhost:8002" || document.location.origin.indexOf("isaacbiology") > -1;
-
 	}];
 
 	return {
