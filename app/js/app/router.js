@@ -131,6 +131,7 @@ define(["angular-ui-router"], function() {
         .state('publications', genericPageState("/publications", "publications"))
         .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
         .state('spc', genericPageState("/spc", "spc"))
+        .state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"))
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
