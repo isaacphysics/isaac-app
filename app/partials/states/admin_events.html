@@ -1,12 +1,55 @@
 <div class="small-16 columns">
     <h1>Isaac Event Booking Administration</h1>
 </div>
+<div class="row">
+    <div class="small-16 columns">
+        <div class="panel white clearfix">
+            <div class="row">
+                <div class="small-16 columns">
+                    <h2>Event overview</h2>
+                    <div class="events-filters">
+                      <label class="show-for-large-up">Show </label>
+                      <select ng-model="filterEventsByStatus">
+                        <option value="all">All Events</option>
+                        <option value="active">Upcoming Events</option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-16 columns">
+                    <table>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Number Confirmed</th>
+                                <th>Number Waiting</th>
+                                <th>Total Spaces Available</th>
+                                <th>Actions</th>
+                            </tr>
+                            <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
+                                <td>{{event.title}}</td>
+                                <td>{{event.date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{event.location.addressLine1}}</td>
+                                <td>{{event.numberOfConfirmedBookings}}</td>
+                                <td>{{event.numberOfWaitingListBookings}}</td>
+                                <td>{{event.numberOfPlaces}}</td>
+                                <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage Bookings</a>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div ng-show="isAdminUser">
     <div class="row">
         <div class="small-16 columns">
             <div class="panel white clearfix">
                 <div class="row">
-                    <div class="small-16 columns">
+                    <!--div class="small-16 columns">
                         <h2>Step 1: Choose your event</h2>
                         <label for="eventToBook">
                             <strong>Select your event:</strong>
@@ -14,29 +57,57 @@
                         <select id="eventToBook" ng-model="eventIdForBooking">
                             <option ng-repeat="event in events" value="{{event.id}}">{{event.title}} - {{event.subtitle}} @ {{event.location.addressLine1}} on {{event.date | date:'dd/MM/yyyy'}}</option>
                         </select>
+                    </div-->
+                    <div ng-if="eventIdForBooking" class="small-16 columns">
+                        <h3>Selected Event Details</h3>
+                        <p>
+                            <strong>Event:</strong> {{eventSelected.title}}<br>
+                            <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
+                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy'}}<br>
+                            <strong>Event End:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy'}}<br>
+                            <strong>Booking Deadline:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy'}}<br>
+                            <strong>Group Auth Code:</strong> {{eventSelected.isaacGroupToken}} <br>
+                            <span ng-show="eventSelected.placesAvailable < 0"><strong style="color:red">Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
+                            <span ng-show="eventSelected.placesAvailable >= 0"><strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
+                        </p>
                     </div>
-                    
                     <div ng-if="eventIdForBooking" class="small-16 columns">
                         <h3>Step 2: Review current bookings ({{bookings.length}})</h3>
                         <table ng-show="bookings.length > 0">
                             <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Date booked</th>                                
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
+                                <th>School</th>
+                                <th>Job / Year Group</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Booking Status</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
+                                <th>Accessibility Requirements</th>
+                                <th>Dietary Requirements</th>
+                                <th>Emergency Details</th>
                                 <th>Actions</th>
                             </tr>
-                            <tr ng-repeat="booking in bookings | orderBy:'userBooked.familyName'">
+                            <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
                                 <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
                                 <td>{{booking.userBooked.email}}</td>
+                                
+                                <td ng-show="!userIdToSchoolMapping[booking.userBooked.id]['urn']">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</td>
+                                <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
+                                <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
+                                <td>{{booking.bookingStatus}}</td>
                                 <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
-                                <td><a href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Unbook</a></td>
+                                <td>{{booking.updated | date:'dd/MM/yyyy'}}</td>
+                                <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
+                                <td>{{booking.additionalInformation.dietaryRequirements}}</td>
+                                <td>{{booking.additionalInformation.emergencyDetails}}</td>
+                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
                             </tr>
                         </table>
                         <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
                     </div>
                     
                     <div ng-if="eventIdForBooking" class="small-16 columns">
-                       <h3>Step 3: Find user account(s)</h3>
+                       <h3>Step 3: Find user account(s) for manual booking</h3>
 
                         <form ng-submit="findUsers()">
                             <div class="medium-12 medium-centered columns end">
@@ -79,7 +150,7 @@
                             <h4>User search results ({{userSearch.results.length}})</h4>
                             <table>
                                 <tr>
-                                    <th>User Name</th>
+                                    <th>Name</th>
                                     <th>Email</th>
                                     <th>User Role</th>
                                     <th>School Set</th>
@@ -94,8 +165,8 @@
                                     <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result.id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
-                                            <a ng-show="userBookings.indexOf(result.id) != -1" href="javascript:void(0);" class="right" ng-click="unbookUserFromEvent(eventIdForBooking, result._id)">Unbook from event</a></td>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event (no user emails)</a>
+                                    <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>
                         </div>

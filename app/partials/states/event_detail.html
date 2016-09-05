@@ -1,7 +1,7 @@
 <div class="row ru-page-heading">
-    <div class="medium-16 columns text-right hide-for-small-only">
-        <span data-ot="Please find additional information about the event in the page below." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
-    </div>
+  <div class="medium-16 columns text-right hide-for-small-only">
+    <span data-ot="Please find additional information about the event in the page below." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+  </div>
 </div>
 <div class="event-detail" >
   <div class="medium-16 large-10 columns event-detail-main" ng-class="{expired: event.expired}">
@@ -36,56 +36,182 @@
       <a class="event-share-icon" href="javascript:void(0)"><span class="icon-gplus"></span></a>
       <a class="event-share-icon" href="javascript:void(0)"><span class="icon-twitter"></span></a>
     </div>
-    -->
+  -->
     <!--
         Key event info - location, date etc
-    -->
-    <table class="event-table">
-      <tbody>
-        <tr ng-if="event.field">
-          <td>Field:</td>
-          <td>{{toTitleCase(event.field)}}</td>
-        </tr>
-        <tr>
-          <td>When:</td>
-          <td>
-            <time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> 
-            <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'dd/MM/yyyy'}}</time></span>
-            <span ng-if="event.expired" class="error">This event is in the past.</span>
-          </td>
-        </tr>
-        <tr ng-show="event.location">
-          <td>Location:</td>
-          <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
-        </tr>
-      </tbody>
-    </table>
+      -->
+      <table class="event-table">
+        <tbody>
+          <tr ng-if="event.field">
+            <td>Field:</td>
+            <td>{{toTitleCase(event.field)}}</td>
+          </tr>
+          <tr>
+            <td>When:</td>
+            <td>
+              <time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date:'dd/MM/yyyy'}}<span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> 
+              <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'dd/MM/yyyy'}}</time></span>
+              <span ng-if="event.expired" class="error">This event is in the past.</span>
+            </td>
+          </tr>
+          <tr ng-show="event.location">
+            <td>Location:</td>
+            <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
+          </tr>
+          <tr ng-show="event.numberOfPlaces">
+            <td>Availability</td>
+            <td>
+              <span ng-show="event.placesAvailable > 0">{{event.placesAvailable}} spaces</span>
+              <span ng-show="event.placesAvailable <= 0"><strong style="color:red">FULL</strong><span ng-if="(e.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - for student bookings</span></span>
+              <span ng-show="user.email && event.userBooked"> - <span style="color:green">You are booked on this event!</span> </span> 
+              <span ng-if="!event.userBooked && !event.userOnWaitList && event.placesAvailable <= 0"> - Waiting list booking is available!</span>
+              <span ng-show="user.email && event.userOnWaitList"> - You are on the waiting list for this event.</span></td>
+          </tr>
+          <tr ng-show="event.bookingDeadline">
+            <td>Booking Deadline</td>
+            <td>{{event.bookingDeadline | date:'h:MMa dd/MM/yyyy'}}</td>
+          </tr>        
+        </tbody>
+      </table>
     <!--
         Event body copy 
-    -->
-    <div isaac-content doc="event"></div>
-    <a ng-if="false" href="javascript:void(0)" ui-sref="contact" class="ru-button-big">Contact us to book</a><a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
-  </div>
-  <div class="medium-16 large-6 columns event-detail-aside" ng-class="{expired: event.expired}">
-    <div class="row">
-      <div class="medium-8 large-16 columns" >
-        <div class="event-type show-for-medium-up">
-          <span class="icon-stack" ng-if="event.teacher">
-            <span class="icon-hexagon"></span>
-            <span class="icon-teacher"></span>
+      -->
+      <div isaac-content doc="event"></div>
+
+      <div class="event-booking-form" ng-show="user.email && event.eventStatus != 'CLOSED' && bookingFormOpen && !(event.userBooked || event.userOnWaitList)">
+        <form>         
+          <fieldset>
+            <legend>Your Account Information (<a ui-sref="accountSettings">update</a>)</legend>
+            <div class="row">
+              <div class="columns small-8">
+                <label for="account-firstname">
+                  <strong>First Name</strong>
+                  <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
+                    Required
+                  </span>
+                </label>
+                <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" disabled=true required>
+              </div>
+              <div class="columns small-8">
+                <label for="account-lastname">
+                  <strong>Last Name</strong>
+                  <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
+                    Required
+                  </span>
+                </label>
+                <input id="account-lastname" name="secondname" type="text" disabled=true ng-model="user.familyName">              
+              </div>
+            </div>
+
+            <label for="account-email">
+              <strong>Your Email Address</strong>
+              <span ng-if="user.emailVerificationStatus != 'VERIFIED'" data-ot="Verifying your email address allows us to make sure Isaac is run for legitimate users." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+              <span class="ru-form-required"></span>
+              <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
+                Enter a valid email
+              </span>
+            </label>
+            <input id="account-email" name="email" type="email" disabled=true ng-model="user.email">
+          </fieldset>
+          <fieldset>
+            <legend>Event Booking Details</legend>  
+            <label>
+              <strong>Your School</strong> 
+              <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for UK schools and universities. Use the 'other' box if you study outside of the UK or to type 'none' if you are not at school."></span>
+              <span class="ru-form-required"></span>
+            </label>
+            <div class="school-wrap" school-dropdown selected-school-urn="school.schoolId">
+              {{schools}}      
+            </div>
+            <input ng-hide="school.schoolId" ng-model="school.schoolOther" type="text" placeholder="School Other (if not listed above)">
+            
+            <span ng-if="user.role!='STUDENT'">
+              <label for="job-title">
+                <strong>Job Title</strong>
+              </label>
+              <input id="job-title" name="job-title" type="text" ng-model="additionalInformation.jobTitle" required>
+            </span>
+
+            <span ng-if="user.role=='STUDENT'">
+              <label for="year-group">
+                <strong>School Year Group</strong>
+              </label>
+              <select id="year-group" name="year-group" ng-model="additionalInformation.yearGroup" required>
+                                        <option value="9">Year 9</option>
+                                        <option value="10">Year 10</option>
+                                        <option value="11">Year 11</option>
+                                        <option value="12">Year 12</option>
+                                        <option value="13">Year 13</option>
+                                    </select>
+            </span>
+
+            <label for="dietary-reqs">
+              <strong>Dietary Requirements</strong>
+            </label>
+            <input id="dietary-reqs" name="dietary-reqs" type="text" ng-model="additionalInformation.dietaryRequirements">
+
+            <label for="access-reqs">
+              <strong>Accessibility Requirements</strong>
+            </label>
+            <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements">
+            <label for="emergency-details">
+              <strong>Emergency Details</strong>
+            </label>
+            <textarea id="emergency-details" name="emergency-details" ng-model="additionalInformation.emergencyDetails"/>
+          </fieldset>
+          <span ng-if="!event.expired">
+            <span ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast &&(event.placesAvailable > 0 || (e.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
+              <p><small>By requesting to book on this event, you are giving permission for the event creator to set you pre-event work and view any work you do for this event. You can manage access to your data in your <a ui-sref="accountSettings">account settings</a></small></p>
+              <a href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
+            </span>
+
+            <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable == 0 || bookingDeadlinePast) && (e.tags.indexOf('student') != -1 && user.role == 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
-          <span class="icon-stack" ng-if="event.student">
-            <span class="icon-hexagon"></span>
-            <span class="icon-student"></span>
-          </span>
-          <span class="icon-stack" ng-if="event.virtual">
-            <span class="icon-hexagon"></span>
-            <span class="icon-virtual"></span>
-          </span>
-          <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
-          <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
-          <div ng-if="event.inProgress && event.virtual" class="event-live"></div><img class="event-img" ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
-        </div>
+        </form>    
+      </div>    
+
+      <!-- options for those not logged in -->
+      <span ng-show="!user.email">
+        <a ng-if="!user.email && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to Book</a>
+        
+        <a ng-if="!user.email && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to add to waiting list</a>    
+      </span>
+
+      <!-- options for non-teacher on teacher event -->
+      <span ng-show="!compatibleRole">
+        <a href="javascript:void(0)" ui-sref="teacher_features" class="ru-button-big">Register as a teacher to book</a> 
+      </span>
+
+      <!-- options for those logged in -->
+      <span ng-show="user.email && compatibleRole">
+        <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
+        <a href="javascript:void(0)" ng-show="bookingFormOpen  && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=false" class="ru-button-big secondary">Close booking form</a>
+        <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
+        <a ng-if="event.userOnWaitList && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
+      </span>
+
+      <a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
+    </div>
+    <div class="medium-16 large-6 columns event-detail-aside" ng-class="{expired: event.expired}">
+      <div class="row">
+        <div class="medium-8 large-16 columns" >
+          <div class="event-type show-for-medium-up">
+            <span class="icon-stack" ng-if="event.teacher">
+              <span class="icon-hexagon"></span>
+              <span class="icon-teacher"></span>
+            </span>
+            <span class="icon-stack" ng-if="event.student">
+              <span class="icon-hexagon"></span>
+              <span class="icon-student"></span>
+            </span>
+            <span class="icon-stack" ng-if="event.virtual">
+              <span class="icon-hexagon"></span>
+              <span class="icon-virtual"></span>
+            </span>
+            <h6><span ng-if="event.teacher">Teacher</span><span ng-if="event.student">Student</span><span ng-if="event.teacher || event.student"> event </span><span ng-if="event.virtual">(Virtual)</span></h6>
+            <!-- Having an image size of 500x276 ensures a high resolution on mobile -->
+            <div ng-if="event.inProgress && event.virtual" class="event-live"></div><img class="event-img" ng-src="{{event.eventThumbnail.src}}" alt="{{event.eventThumbnail.altText}}" />
+          </div>
       <!--
         <div class="event-attendees">
           <h3>Also attending:</h3>
@@ -103,7 +229,7 @@
           </span>
           Attending
         </div>
-        -->
+      -->
 
       <!--
         <div class="event-resources">
@@ -114,25 +240,25 @@
             <li><a href="javascript:void(0)">Accomodation <span>PDF Download</span></a></li>
           </ul>
         </div>
-        -->
-      </div>
+      -->
+    </div>
 
-      <div class="medium-8 large-16 columns" ng-show="event.location">
+    <div class="medium-8 large-16 columns" ng-show="event.location">
         <!--
             Map
-        -->
-        <div class="event-map">
-          <a target="_blank" href="https://www.google.co.uk/maps?q={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}">
-            <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=604x644&maptype=roadmap&key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y&markers={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}" alt="" />
-          </a>
-          <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
+          -->
+          <div class="event-map">
+            <a target="_blank" href="https://www.google.co.uk/maps?q={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}">
+              <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=604x644&maptype=roadmap&key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y&markers={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}" alt="" />
+            </a>
+            <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
 <!--
           <p><strong>Transit:</strong> Green Park</p>
--->
-        </div>
+        -->
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <div json-ld-writer script="jsonLd"></div>
