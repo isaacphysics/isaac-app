@@ -91,7 +91,12 @@ define([], function() {
 
 		this.updateUser = function() {
 			return new Promise(function(resolve, reject) {
-				api.currentUser.get().$promise.then(function(u) {
+				var userResource = api.currentUser.get();
+				if (!$rootScope.user) {
+					$rootScope.user = userResource;
+				}
+				
+				userResource.$promise.then(function(u) {
 					$timeout(function() {
 						$rootScope.user = u;
 						setupUserConsistencyCheck();
