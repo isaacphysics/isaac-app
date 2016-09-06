@@ -271,7 +271,8 @@ export
             if (bottom < c.y + c.h) { bottom = c.y + c.h; }
         });
 
-        return new Rect(left, top, this.getExpressionWidth(), bottom - top);
+        // return new Rect(left, top, this.getExpressionWidth(), bottom - top);
+        return new Rect(left, top, right - left, bottom - top);
     }
 
     /** Removes this widget from its parent. Also, shakes it. */
@@ -458,6 +459,7 @@ export
     }
 		/*
 		Finds the width of the bounding box around an entire expression.
+		FIXME This was Andy's fault and broke everything we hold dear and may go as soon as someone checks that this hasn't affected Chemistry
 		*/
     getExpressionWidth(): number {
         var current_element: any = this;

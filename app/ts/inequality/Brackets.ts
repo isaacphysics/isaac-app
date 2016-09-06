@@ -88,8 +88,8 @@ class Brackets extends Widget {
         // this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, 0), 1, "operator_brackets", "right");
         // this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "operator_brackets", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "exponent", "superscript");
+        // this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(0, 0), 1, "operator_brackets", "right");
+        // this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(0, 0), 0.666, "exponent", "superscript");
 
         // if(this.mode == 'chemistry') {
         //     this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
@@ -109,75 +109,75 @@ class Brackets extends Widget {
      */
     getExpression(format: string): string {
         // TODO Triple check
-        var expression = "";
+        var expression = "(\\square)";
         var lhs = '(', rhs = ')';
         if (format == "latex") {
             lhs = this.latexSymbol['lhs'];
             rhs = this.latexSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
+                expression = lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+                if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
                 // if (this.dockingPoints['subscript'].child) {
                 //     expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
                 // }
-                if (this.dockingPoints['right'].child) {
+                if ("right" in this.dockingPoints && this.dockingPoints['right'].child) {
                     expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         }
-        if (format == "mhchem") {
-            lhs = this.mhchemSymbol['lhs'];
-            rhs = this.mhchemSymbol['rhs'];
-            if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                // if (this.dockingPoints['subscript'].child) {
-                //     expression += this.dockingPoints['subscript'].child.getExpression(format);
-                // }
-                if (this.dockingPoints['superscript'].child) {
-                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
-                }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
-            }
-        } else if (format == "python") {
-            lhs = this.pythonSymbol['lhs'];
-            rhs = this.pythonSymbol['rhs'];
-            if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
-                    expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
-                }
-                // if (this.dockingPoints['subscript'].child) {
-                //     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
-                // }
-                if (this.dockingPoints['right'].child) {
-                    expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
-                }
-            }
-        } else if (format == "subscript") {
-            expression += "{BRACKETS}";
-        } else if (format == 'mathml') {
-            // lhs = this.mathmlSymbol['lhs'];
-            // rhs = this.mathmlSymbol['rhs'];
-            // if (this.dockingPoints['argument'].child) {
-            //     var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
-            //     if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
-            //         expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
-            //     } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
-            //         expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
-            //     } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
-            //         expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
-            //     } else {
-            //         expression = brackets;
-            //     }
-            //     if (this.dockingPoints['right'].child) {
-            //         expression = brackets + this.dockingPoints['right'].child.getExpression(format);
-            //     }
-            // }
-        }
+        // if (format == "mhchem") {
+        //     lhs = this.mhchemSymbol['lhs'];
+        //     rhs = this.mhchemSymbol['rhs'];
+        //     if (this.dockingPoints['argument'].child) {
+        //         expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+        //         // if (this.dockingPoints['subscript'].child) {
+        //         //     expression += this.dockingPoints['subscript'].child.getExpression(format);
+        //         // }
+        //         if (this.dockingPoints['superscript'].child) {
+        //             expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+        //         }
+        //         if (this.dockingPoints['right'].child) {
+        //             expression += this.dockingPoints['right'].child.getExpression(format);
+        //         }
+        //     }
+        // } else if (format == "python") {
+        //     lhs = this.pythonSymbol['lhs'];
+        //     rhs = this.pythonSymbol['rhs'];
+        //     if (this.dockingPoints['argument'].child) {
+        //         expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+        //         if (this.dockingPoints['superscript'].child) {
+        //             expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+        //         }
+        //         // if (this.dockingPoints['subscript'].child) {
+        //         //     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
+        //         // }
+        //         if (this.dockingPoints['right'].child) {
+        //             expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
+        //         }
+        //     }
+        // } else if (format == "subscript") {
+        //     expression += "{BRACKETS}";
+        // } else if (format == 'mathml') {
+        //     // lhs = this.mathmlSymbol['lhs'];
+        //     // rhs = this.mathmlSymbol['rhs'];
+        //     // if (this.dockingPoints['argument'].child) {
+        //     //     var brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
+        //     //     if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
+        //     //         expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+        //     //     } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
+        //     //         expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+        //     //     } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
+        //     //         expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+        //     //     } else {
+        //     //         expression = brackets;
+        //     //     }
+        //     //     if (this.dockingPoints['right'].child) {
+        //     //         expression = brackets + this.dockingPoints['right'].child.getExpression(format);
+        //     //     }
+        //     // }
+        // }
         return expression;
     }
 
@@ -192,10 +192,11 @@ class Brackets extends Widget {
     }
 
     _draw() {
-        var box = this.boundingBox();
-        this.p.stroke(0).strokeWeight(5);
-        this.p.line(box.topLeft.x, box.topLeft.y, box.bottomLeft.x, box.bottomLeft.y);
-        this.p.line(box.topRight.x, box.topRight.y, box.bottomRight.x, box.bottomRight.y);
+        var bBox = this.boundingBox();
+        var sBox = this.subtreeBoundingBox();
+        this.p.stroke(this.color).strokeWeight(5);
+        this.p.line(bBox.topLeft.x, sBox.topLeft.y, bBox.bottomLeft.x, sBox.bottomLeft.y);
+        this.p.line(bBox.topRight.x, sBox.topRight.y, bBox.bottomRight.x, sBox.bottomRight.y);
 
         this.p.strokeWeight(1);
         if (window.location.hash === "#debug") {
@@ -203,9 +204,9 @@ class Brackets extends Widget {
             this.p.ellipse(0, 0, 10, 10);
             this.p.ellipse(0, 0, 5, 5);
 
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
+            // this.p.stroke(0, 0, 255).noFill();
+            // this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
+            // this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
         }
     }
 
@@ -219,12 +220,17 @@ class Brackets extends Widget {
             argHeight = _.max([argHeight, subtreeBB.h]);
         }
         var width = box.w + argWidth;
-        return new Rect(-width/2, -argHeight/2, width+this.scale*40, argHeight);  // FIXME This 40 is hard-coded
+        var newBox = new Rect(-width / 2, box.y-1000, width + this.scale * 40, argHeight);
+       return newBox;
     }
 
     offsetBox(): Rect {
-        var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w/2, -box.h/2, this.scale*40, box.h);
+        // var box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        // // return new Rect(-box.w/2, -box.h/2, this.scale*40, box.h);
+        // return new Rect(-box.w/2, box.y-1000, this.scale*40, box.h);
+
+        var box = this.boundingBox();
+        return new Rect(box.x, box.y, this.scale*40, box.h);
     }
 
     _shakeIt() {
@@ -248,24 +254,28 @@ class Brackets extends Widget {
             var argumentWidth = dp.child.offsetBox().w;
             var argumentPosition = dp.child.position;
             argumentPosition.x = -dp.child.subtreeBoundingBox().w/2 + argumentWidth/2;
-            argumentPosition.y = descent;
+            if(dp.child instanceof Brackets) {
+                argumentPosition.y = 0;
+            } else {
+                argumentPosition.y = dp.child.subtreeBoundingBox().h / 2;
+            }
             widest = argumentWidth;
         } else {
             var dp = this.dockingPoints["argument"];
             dp.position = this.p.createVector(0, 0);
         }
 
-        if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child) {
-            var dp = this.dockingPoints["superscript"];
-            superscriptWidth = dp.child.boundingBox().w;
-            dp.child.position.x = (box.w / 2 + this.scale * (40) + superscriptWidth / 2);
-            dp.child.position.y = - box.h / 2 - dp.child.subtreeBoundingBox().h / 2;
-        } else {
-            var dp = this.dockingPoints["superscript"];
-            dp.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -(box.h + this.scale * 20));
-            // dp.position.x = (box.w == this.boundingBox().w) ? (box.w / 2 + this.scale * (40 + 20)) : (box.w - this.boundingBox().w / 2 + this.scale * 40);
-            // dp.position.y = -box.h / 2 - this.scale * this.s.mBox.h / 2;
-        }
+        // if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child) {
+        //     var dp = this.dockingPoints["superscript"];
+        //     superscriptWidth = dp.child.boundingBox().w;
+        //     dp.child.position.x = (box.w / 2 + this.scale * (40) + superscriptWidth / 2);
+        //     dp.child.position.y = - box.h / 2 - dp.child.subtreeBoundingBox().h / 2;
+        // } else {
+        //     var dp = this.dockingPoints["superscript"];
+        //     dp.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -(box.h + this.scale * 20));
+        //     // dp.position.x = (box.w == this.boundingBox().w) ? (box.w / 2 + this.scale * (40 + 20)) : (box.w - this.boundingBox().w / 2 + this.scale * 40);
+        //     // dp.position.y = -box.h / 2 - this.scale * this.s.mBox.h / 2;
+        // }
 
         // if ("subscript" in this.dockingPoints && this.dockingPoints["subscript"].child) {
         //     var dp = this.dockingPoints["subscript"];
@@ -280,18 +290,18 @@ class Brackets extends Widget {
 
         var parentWidth = box.w + _.max([subscriptWidth, superscriptWidth]);
 
-        if ("right" in this.dockingPoints && this.dockingPoints["right"].child) {
-            var dp = this.dockingPoints["right"];
-            // var rightWidth = dp.child.boundingBox().w;
-            // dp.child.position.x = (parentWidth == this.boundingBox().w) ? (parentWidth / 2 + this.scale * (40 + 20) + dp.child.offsetBox().w / 2) : (parentWidth - this.boundingBox().w / 2 + dp.child.offsetBox().w);
-            // dp.child.position.y = 0;
-            dp.child.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, descent/2);
-        } else {
-            var dp = this.dockingPoints["right"];
-            dp.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, 0);
-            // dp.position.x = (parentWidth == this.boundingBox().w) ? (parentWidth / 2 + this.scale * (40 + 20)) : (parentWidth - this.boundingBox().w / 2 + this.scale * 40);
-            // dp.position.y = 0;
-        }
+        // if ("right" in this.dockingPoints && this.dockingPoints["right"].child) {
+        //     var dp = this.dockingPoints["right"];
+        //     // var rightWidth = dp.child.boundingBox().w;
+        //     // dp.child.position.x = (parentWidth == this.boundingBox().w) ? (parentWidth / 2 + this.scale * (40 + 20) + dp.child.offsetBox().w / 2) : (parentWidth - this.boundingBox().w / 2 + dp.child.offsetBox().w);
+        //     // dp.child.position.y = 0;
+        //     dp.child.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, descent);
+        // } else {
+        //     var dp = this.dockingPoints["right"];
+        //     dp.position = this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 40, 0);
+        //     // dp.position.x = (parentWidth == this.boundingBox().w) ? (parentWidth / 2 + this.scale * (40 + 20)) : (parentWidth - this.boundingBox().w / 2 + this.scale * 40);
+        //     // dp.position.y = 0;
+        // }
 
 
     }

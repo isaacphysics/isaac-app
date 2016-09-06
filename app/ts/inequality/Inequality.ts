@@ -122,18 +122,52 @@ export
                 type: "round"
             },
             children: {
-                right: {
-                    type: "Symbol",
+                argument: {
+                    type: "Fraction",
                     position: {x:0,y:0},
-                    properties: {
-                        letter: "l"
+                    children: {
+                        numerator: {
+                            type: "Symbol",
+                            position: {x: 0, y: 0},
+                            properties: {
+                                letter: "l"
+                            },
+                            children: {
+                                right: {
+                                    type: "Fraction",
+                                    position: {x: 0, y: 0},
+                                    children: {
+                                        numerator: {
+                                            type: "Symbol",
+                                            position: {x: 0, y: 0},
+                                            properties: {
+                                                letter: "l"
+                                            }
+                                        },
+                                        denominator: {
+                                            type: "Symbol",
+                                            position: {x: 0, y: 0},
+                                            properties: {
+                                                letter: "l"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        denominator: {
+                            type: "Symbol",
+                            position: {x: 0, y: 0},
+                            properties: {
+                                letter: "l"
+                            }
+                        }
                     }
                 }
             }
         });
         _.each(this.symbols, symbol => { symbol.shakeIt() });
         // _.each([{"type":"Symbol","position":{"x":0,"y":0},"expression":{"latex":"m\\left(m\\right)m","python":"m*(m) m* "},"children":{"right":{"type":"Brackets","children":{"argument":{"type":"Symbol","properties":{"letter":"m"}},"right":{"type":"Symbol","children":{"right":{"type":"Brackets","properties":{"type":"round"}}},"properties":{"letter":"m"}}},"properties":{"type":"round"}}},"properties":{"letter":"m"}}], e => { this.parseSubtreeObject(e) });
-
 		this.centre(true);
 
         _this.scope.log.initialState = [];
@@ -147,7 +181,7 @@ export
 
 	windowResized = () => {
 		this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
-	}
+	};
 
     draw = () => {
         this.p.clear();
