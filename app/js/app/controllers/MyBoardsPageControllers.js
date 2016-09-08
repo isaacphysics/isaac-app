@@ -132,10 +132,14 @@ define([], function() {
 			for(i = 0; i < board.questions.length; i++) {
 				var q = board.questions[i];
 
-				if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1)
+				if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1) {
 					subjects.push("maths");
-				else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1)
+				} else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1) {
 					subjects.push("physics");
+				} else if (q.tags && q.tags.indexOf("chemistry") > -1 && subjects.indexOf("physics") == -1) {
+					// FIXME - Hack for now to avoid having to change the sprite image!
+					subjects.push("physics");
+				}
 			}
 
 			return subjects;

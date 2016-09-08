@@ -24,7 +24,9 @@ define([], function() {
 				id: "physics"
 			}, {
 				id: "maths"
-			}, 
+			}, {
+				id: "chemistry"
+			},
 
 			// Physics fields
 

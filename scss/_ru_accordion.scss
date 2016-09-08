@@ -124,6 +124,16 @@
     border-top: 3px solid lighten($ru_maths, $ru_site_hover);
 }
 
+.accordion.ru_accordion.chemistry dd a.ru_accordion_titlebar .ru_accordion_name {
+    background-color: $ru_chemistry;
+    border-top: 3px solid $ru_chemistry;
+}
+
+.accordion.ru_accordion.chemistry dd a.ru_accordion_titlebar:hover .ru_accordion_name {
+    background-color: lighten($ru_chemistry, $ru_site_hover);
+    border-top: 3px solid lighten($ru_chemistry, $ru_site_hover);
+}
+
 .accordion.ru_accordion.general dd a.ru_accordion_titlebar .ru_accordion_name
 {
     background-color: $ru_physics;
