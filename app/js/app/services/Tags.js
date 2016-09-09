@@ -121,6 +121,11 @@ define([], function() {
 			{
 			    id: "thermodynamics",
 			    parent: "chemphysics"
+			}, {
+				id:"kinetics",
+				parent: "chemphysics",
+				title: "Reaction Kinetics",
+				comingSoon: true,
 			},
 
 			// Maths fields
