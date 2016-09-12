@@ -37,6 +37,12 @@ define([], function() {
 	var PageController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', 'query', 'types', 'pageIndex', function($scope, $state, $timeout, $location, $rootScope, api, query, types, pageIndex) {
 		var conceptPage = "isaacConceptPage";
 		var questionPage = "isaacQuestionPage";
+		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
+
+		var filterResult = function(r) {
+			var keepElement = (r.id != "_regression_test_" && r.tags.indexOf("nofilter") < 0);
+			return keepElement || $scope.isStaffUser;
+		}
 
 		$rootScope.globalFlags.siteSearchOpen = false;
 		$rootScope.pageTitle = "Search Results";
@@ -72,14 +78,20 @@ define([], function() {
 
 		$scope.$watch('models.includeConcepts', function(newVal, oldVal) {
 			if (newVal === oldVal) return;
-			 changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location)
-			 $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location)
+			 changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+			 $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
 		});
 
 		$scope.$watch('models.includeQuestions', function(newVal, oldVal) {
 			if (newVal === oldVal) return;
-			changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location)
-			$scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location)
+			changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+			$scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
+		});
+
+		$scope.$watch('response.results', function(results) {
+			if ($scope.response) {
+				$scope.response.filteredResults = results ? results.filter(filterResult) : [];
+			}
 		});
 		
 		// this converts a summary object type to a known state.

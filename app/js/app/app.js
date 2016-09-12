@@ -95,14 +95,15 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.8.1/api");
+            apiProvider.urlPrefix("/api/v1.8.2/api");
         }
 
         NProgress.configure({ showSpinner: false });
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', 'subject', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile, subject) {
 
+        $rootScope.$subject = subject;
         /*
             Tooltip settings
         */

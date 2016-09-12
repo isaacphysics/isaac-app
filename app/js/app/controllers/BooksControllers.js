@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$scope', 'auth', 'api', 'introTextId', function($scope, auth, api, introTextId) {
 		$scope.selectedChapterId = null;
 		$scope.setLoading(true);
 
 		$scope.introText = null;
 
-		api.pageFragments.get({id: "physics_skills_14_intro"}).$promise.then(function(result){
+		api.pageFragments.get({id: introTextId}).$promise.then(function(result){
 				$scope.introText = result;
             	$scope.setLoading(false);
 			}).catch(function(e){

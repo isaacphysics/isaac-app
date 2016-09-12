@@ -109,7 +109,7 @@ class Brackets extends Widget {
      */
     getExpression(format: string): string {
         // TODO Triple check
-        var expression = "(\\square)";
+        var expression = "(\\ldots)";
         var lhs = '(', rhs = ')';
         if (format == "latex") {
             lhs = this.latexSymbol['lhs'];
@@ -257,7 +257,8 @@ class Brackets extends Widget {
             if(dp.child instanceof Brackets) {
                 argumentPosition.y = 0;
             } else {
-                argumentPosition.y = dp.child.subtreeBoundingBox().h / 2;
+                var h = dp.child.subtreeBoundingBox().h;
+                argumentPosition.y = h/2;
             }
             widest = argumentWidth;
         } else {

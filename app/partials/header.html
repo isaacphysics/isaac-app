@@ -6,12 +6,19 @@
             <nav class='row'>
                 <div class='padded-left-float'>
                     <a id="isaac-logo" ui-sref='home'>
-                        <img alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
-                             data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
-                             [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
-                         <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
-                            <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
-                         </div>
+                        <img ng-if="$subject.id == 'physics'" alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]" />
+                        <img ng-if="$subject.id == 'chemistry'" alt="isaac logo" title='Isaac Chemistry. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-chemistry-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-chemistry-strap@2x.png, (large_retina)]" />
+                        <img ng-if="$subject.id == 'biology'" alt="isaac logo" title='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-biology-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-biology-strap@2x.png, (large_retina)]" />
+                    </a>
+                    <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
+                        <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
+                    </div>
                 </div>
                 <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>

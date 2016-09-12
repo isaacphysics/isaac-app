@@ -11,6 +11,14 @@ span.physics {
 span.maths {
     color: $ru_maths;
 }
+span.hidden {
+    &:after {
+        content: "(Hidden)";
+        padding-left: 5px;
+        color: black;
+        font-size: 0.7rem;
+    }
+}
 #result-template {
     height: 0;
     overflow: hidden;

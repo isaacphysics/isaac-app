@@ -119,6 +119,7 @@ define([], function() {
                     if (pageY > element.height()) {
                         scope.clearOnClose = false;
                         scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
+                        scope.$emit("triggerCloseMenus");
                     }
                 })
 

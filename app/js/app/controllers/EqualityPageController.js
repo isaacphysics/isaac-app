@@ -21,14 +21,10 @@ define([], function() {
         }
         if ($stateParams.symbols) {
             $scope.questionDoc = {
-                // this is outisde of equality mode.
                 availableSymbols: $stateParams.symbols.split(",")
             }
         }
         $scope.selectedFormula = {
-            symbols: {}
-        };
-        $scope.eqnState = {
             symbols: {}
         };
     }];

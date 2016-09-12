@@ -90,19 +90,24 @@ define([], function() {
 		}
 
 		this.updateUser = function() {
-			$rootScope.user = api.currentUser.get();
-			
-			$rootScope.user.$promise.then(function(u) {
-				$timeout(function() {
-					$rootScope.user = u;
-					setupUserConsistencyCheck();
-					$rootScope.$apply();
+			return new Promise(function(resolve, reject) {
+				var userResource = api.currentUser.get();
+				if (!$rootScope.user) {
+					$rootScope.user = userResource;
+				}
+				
+				userResource.$promise.then(function(u) {
+					$timeout(function() {
+						$rootScope.user = u;
+						setupUserConsistencyCheck();
+						$rootScope.$apply();
+						resolve(u);
+					});
+				}).catch(function(){
+					cancelUserConsistencyCheck();
+					reject();
 				});
-			}).catch(function(){
-				cancelUserConsistencyCheck();
-			})
-
-			return $rootScope.user.$promise;
+			});
 		}
 		
 
