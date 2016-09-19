@@ -58,7 +58,7 @@
             <td>Location:</td>
             <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
           </tr>
-          <tr ng-show="event.numberOfPlaces">
+          <tr ng-show="event.numberOfPlaces && event.eventStatus != 'CLOSED'">
             <td>Availability</td>
             <td>
               <span ng-show="event.placesAvailable > 0">{{event.placesAvailable}} spaces</span>
@@ -160,21 +160,21 @@
             <textarea id="emergency-details" name="emergency-details" ng-model="additionalInformation.emergencyDetails"/>
           </fieldset>
           <span ng-if="!event.expired">
-            <span ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast &&(event.placesAvailable > 0 || (e.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
+            <span ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast &&(event.placesAvailable > 0 || (e.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
               <p><small>By requesting to book on this event, you are giving permission for the event creator to set you pre-event work and view any work you do for this event. You can manage access to your data in your <a ui-sref="accountSettings">account settings</a></small></p>
               <a href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
             </span>
 
-            <a ng-if="user.email && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable == 0 || bookingDeadlinePast) && (e.tags.indexOf('student') != -1 && user.role == 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
+            <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable == 0 || bookingDeadlinePast) && (e.tags.indexOf('student') != -1 && user.role == 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
         </form>    
       </div>    
 
       <!-- options for those not logged in -->
-      <span ng-show="!user.email">
-        <a ng-if="!user.email && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to Book</a>
+      <span ng-show="!user._id">
+        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to Book</a>
         
-        <a ng-if="!user.email && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to add to waiting list</a>    
+        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login" class="ru-button-big">Login to join waiting list</a>    
       </span>
 
       <!-- options for non-teacher on teacher event -->
@@ -183,7 +183,7 @@
       </span>
 
       <!-- options for those logged in -->
-      <span ng-show="user.email && compatibleRole">
+      <span ng-show="user._id && compatibleRole">
         <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
         <a href="javascript:void(0)" ng-show="bookingFormOpen  && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=false" class="ru-button-big secondary">Close booking form</a>
         <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
