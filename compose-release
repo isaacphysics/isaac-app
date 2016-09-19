@@ -1,5 +1,5 @@
 APP_VERSION=$1
-API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' isaac-app-$APP_VERSION`
+API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app-$APP_VERSION`
 ENV=$2
 
 shift 2
@@ -54,7 +54,7 @@ services:
   $TEST_DEPS
   $APP_NAME:
     container_name: $APP_NAME
-    image: isaac-app-$APP_VERSION
+    image: docker.isaacscience.org/isaac-app-$APP_VERSION
     restart: always
     networks:
       default:
@@ -62,7 +62,7 @@ services:
           - app-$ENV
   $API_NAME:
     container_name: $API_NAME
-    image: isaac-api-$API_VERSION
+    image: docker.isaacscience.org/isaac-api-$API_VERSION
     restart: always
     ${MAYBE_EXTERNAL}links:
       - $ES:elasticsearch
