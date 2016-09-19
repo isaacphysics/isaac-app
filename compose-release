@@ -48,6 +48,9 @@ else
   exit 1
 fi
 
+docker pull docker.isaacscience.org/isaac-app-$APP_VERSION
+docker pull docker.isaacscience.org/isaac-api-$API_VERSION
+
 cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
 version: '2'
 services:
