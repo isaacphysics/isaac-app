@@ -11,6 +11,9 @@ span.physics {
 span.maths {
     color: $ru_maths;
 }
+span.chemistry {
+    color: $ru_chemistry;
+}
 span.hidden {
     &:after {
         content: "(Hidden)";
