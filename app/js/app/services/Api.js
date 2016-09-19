@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-	var Api = function ApiConstructor($resource, urlPrefix, $http) {
+	var Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
 
 		this.pages = $resource(urlPrefix + "/pages/:id");
 
 		this.pageFragments = $resource(urlPrefix + "/pages/fragments/:id");
 
-		this.pods = $resource(urlPrefix + "/pages/pods");
+		this.pods = $resource(urlPrefix + "/pages/pods/" + subject.id);
 
 		this.questionsPage = $resource(urlPrefix + "/pages/question_summary/top_boards_content");
 

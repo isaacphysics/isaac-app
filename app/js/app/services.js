@@ -46,11 +46,11 @@ define(function(require) {
 			urlPrefix = value;
 		}
 
-		this.$get = ["$resource", "$http", function ApiFactory($resource, $http) {
+		this.$get = ["$resource", "$http", "subject", function ApiFactory($resource, $http, subject) {
 
 			var Api = require("app/services/Api");
 
-			return new Api($resource, urlPrefix, $http);
+			return new Api($resource, urlPrefix, $http, subject);
 				
 		}];
 	})
