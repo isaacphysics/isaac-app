@@ -353,29 +353,32 @@
     }
 }
 
-.ru-answer-correct-summary.physics
-{
+.ru-answer-correct-summary.physics {
     background-color: $ru_darkpurple;
 }
 
-.ru-answer-correct-summary.maths
-{
+.ru-answer-correct-summary.maths {
     background-color: darken($ru_maths, $ru_site_hover);
 }
 
-.ru-answer-correct
-{
+.ru-answer-correct-summary.chemistry {
+    background-color: darken($ru_chemistry, $ru_site_hover);
+}
+
+.ru-answer-correct {
     padding: 1rem 0 1rem 0;
 }
 
-.ru-answer-correct.physics
-{
+.ru-answer-correct.physics {
     background-color: $ru_physics;   
 }
 
-.ru-answer-correct.maths
-{
+.ru-answer-correct.maths {
     background-color: $ru_maths;   
+}
+
+.ru-answer-correct.chemistry {
+    background-color: $ru_chemistry;   
 }
 
 .ru-answer-correct img

@@ -95,28 +95,60 @@ define(["angular-ui-router"], function() {
             }
         }
 
+        var bookState = function(bookId) {
+            return {
+                url: "/books/" + bookId,
+                resolve: {
+                    introTextId: [function() { return bookId + "_intro"}],
+                },
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/books/" + bookId + ".html",
+                        controller: "BooksController",
+                    },
+                },
+            }
+        }
+
         $stateProvider
-            .state('home', staticPageState("/", "home", "HomePageController"))
-            .state('about', genericPageState("/about", "about_us_index"))
-            .state('teachers', genericPageState("/teachers", "mission_teachers"))
-            .state('mission', genericPageState("/mission", "mission"))
-            .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
-            .state('mission_students', genericPageState("/mission_students", "mission_students"))
-            .state('glossary', genericPageState("/glossary", "glossary"))
-            .state('cookies', genericPageState("/cookies", "cookie_policy"))
-            .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
-            .state('solving_problems', genericPageState("/solving_problems", "solving_problems"))
-            .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
-            .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
-            .state('bios', genericPageState("/bios", "bios"))
-            .state('why_physics', genericPageState("/why_physics", "why_physics"))
-            .state('privacy', genericPageState("/privacy", "privacy_policy"))
-            .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
-            .state('physics_skills_14', staticPageState("/physics_skills_14", "book_index", "BooksControllers"))
-            .state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'))
-            .state('publications', genericPageState("/publications", "publications"))
-            .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
-            .state('spc', genericPageState("/spc", "spc"))
+        .state('home', staticPageState("/", "home", "HomePageController"))
+        .state('about', genericPageState("/about", "about_us_index"))
+        .state('teachers', genericPageState("/teachers", "mission_teachers"))
+        .state('mission', genericPageState("/mission", "mission"))
+        .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
+        .state('mission_students', genericPageState("/mission_students", "mission_students"))
+        .state('glossary', genericPageState("/glossary", "glossary"))
+        .state('cookies', genericPageState("/cookies", "cookie_policy"))
+        .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
+        .state('solving_problems', genericPageState("/solving_problems", "solving_problems"))
+        .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
+        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
+        .state('bios', genericPageState("/bios", "bios"))
+        .state('why_physics', genericPageState("/why_physics", "why_physics"))
+        .state('privacy', genericPageState("/privacy", "privacy_policy"))
+        .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
+        .state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'))
+        .state('publications', genericPageState("/publications", "publications"))
+        .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
+        .state('spc', genericPageState("/spc", "spc"))
+        .state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"))
+
+        // To create a book page:
+        // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
+        // * Create intro text content with ID <BOOK_ID>_intro
+        // * Add a bookState below
+        // * Update /book (below) if you wish
+
+        .state('book_physics_skills_14', bookState("physics_skills_14"))
+        .state('book_chemistry_16', bookState("chemistry_16"))
+
+        .state('book', {
+            url: "/book",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go('book_physics_skills_14');
+                $rootScope.setLoading(false);
+            }],
+        })
 
         .state('teacher_features', {
             url: "/teacher_features?redirectModal",
@@ -232,151 +264,151 @@ define(["angular-ui-router"], function() {
                     }
                 }
             })
-            .state('pages', {
-                url: "/pages/:id",
-                resolve: {
-                    "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.pages.get({
-                            id: $stateParams.id
-                        }).$promise;
+        .state('pages', {
+            url: "/pages/:id",
+            resolve: {
+                "page": ["api", "$stateParams", function(api, $stateParams) {
+                    return api.pages.get({
+                        id: $stateParams.id
+                    }).$promise;
+                }]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/generic_page.html",
+                    controller: ["$scope", "page", function($scope, page) {
+                        $scope.title = "Content object: " + page.id;
+                        $scope.doc = page;
                     }]
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/generic_page.html",
-                        controller: ["$scope", "page", function($scope, page) {
-                            $scope.title = "Content object: " + page.id;
-                            $scope.doc = page;
-                        }]
-                    }
                 }
-            })
-            .state('contentErrors', {
-                url: "/admin/content_errors",
-                resolve: {
-                    "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.contentProblems.get().$promise;
-                    }]
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/content_error.html",
-                        controller: "ContentErrorController",
-                    }
+            }
+        })
+        .state('contentErrors', {
+            url: "/admin/content_errors",
+            resolve: {
+                "page": ["api", "$stateParams", function(api, $stateParams) {
+                    return api.contentProblems.get().$promise;
+                }]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/content_error.html",
+                    controller: "ContentErrorController",
                 }
-            })
-            .state('login', {
-                url: "/login?target",
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/login_page.html",
-                        controller: "LoginPageController",
-                    }
+            }
+        })
+        .state('login', {
+            url: "/login?target",
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/login_page.html",
+                    controller: "LoginPageController",
                 }
-            })
-            .state('resetPassword', {
-                url: "/resetpassword/*token",
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/reset_password.html",
-                        controller: "ResetPasswordPageController",
-                    }
+            }
+        })
+        .state('resetPassword', {
+            url: "/resetpassword/*token",
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/reset_password.html",
+                    controller: "ResetPasswordPageController",
                 }
-            })
-            .state('verifyEmail', {
-                url: "/verifyemail?userid&token&email&requested",
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/verify_email.html",
-                        controller: "VerifyEmailPageController",
-                    }
+            }
+        })
+        .state('verifyEmail', {
+            url: "/verifyemail?userid&token&email&requested",
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/verify_email.html",
+                    controller: "VerifyEmailPageController",
                 }
-            })
-            .state('boards', {
-                url: "/boards",
-                resolve: {
-                    requireLogin: getLoggedInPromise
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/my_boards.html",
-                        controller: "MyBoardsPageController",
-                    }
+            }
+        })
+        .state('boards', {
+            url: "/boards",
+            resolve: {
+                requireLogin: getLoggedInPromise
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/my_boards.html",
+                    controller: "MyBoardsPageController",
                 }
-            })
-            .state('board', {
-                url: "/board/:id",
-                onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
-                    $location.url("/#" + $stateParams.id);
-                    $rootScope.setLoading(false);
-                    throw "Prevent entering board redirect state."
+            }
+        })
+        .state('board', {
+            url: "/board/:id",
+            onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
+                $location.url("/#" + $stateParams.id);
+                $rootScope.setLoading(false);
+                throw "Prevent entering board redirect state."
+            }],
+        })
+        .state('searchResults', {
+            url: "/search?query&types&page",
+            resolve: {
+                "query": ['$stateParams', function($stateParams) {
+                    return $stateParams.query;
                 }],
-            })
-            .state('searchResults', {
-                url: "/search?query&types&page",
-                resolve: {
-                    "query": ['$stateParams', function($stateParams) {
-                        return $stateParams.query;
-                    }],
-                    "types": ['$stateParams', function($stateParams) {
-                        // If $stateParams.types not empty object...
-                        if ($stateParams.types != null && $stateParams.types.length > 0) {
-                            // and object is actually a string, with items seperated by commas...
-                            if (typeof $stateParams.types == "string" || (typeof $stateParams.types == "object" && $stateParams.types.constructor === String)) {
-                                // return the items in the string as an array of strings
-                                return $stateParams.types.split(",");
-                            } else {
-                                // object is an array of strings already
-                                return $stateParams.types;
-                            }
+                "types": ['$stateParams', function($stateParams) {
+                    // If $stateParams.types not empty object...
+                    if ($stateParams.types != null && $stateParams.types.length > 0) {
+                        // and object is actually a string, with items seperated by commas...
+                        if (typeof $stateParams.types == "string" || (typeof $stateParams.types == "object" && $stateParams.types.constructor === String)) {
+                            // return the items in the string as an array of strings
+                            return $stateParams.types.split(",");
                         } else {
-                            // $stateParams.types is indeed empty. return empty list
-                            return [];
+                            // object is an array of strings already
+                            return $stateParams.types;
                         }
-                    }],
-
-                    "pageIndex": ['$stateParams', function($stateParams) {
-                        return parseInt($stateParams.page || "1") - 1;
-                    }]
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/search_results.html",
-                        controller: "SearchController",
+                    } else {
+                        // $stateParams.types is indeed empty. return empty list
+                        return [];
                     }
-                },
-                reloadOnSearch: false,
-            })
-            .state('logout', {
-                url: "/logout",
-                resolve: {
-                    done: ["auth", function(auth) {
-                        window.foo = auth.logout();
-                        return window.foo;
-                    }],
-                },
-                onEnter: ["$state", function($state) {
-                    document.location.href = "/";
-                }]
-            })
-            .state('shareLink', {
-                url: "/s/:shortCode",
-                onEnter: ["$stateParams", "api", function($stateParams, api) {
-                    var redirectURL = "http://goo.gl/" + $stateParams.shortCode;
-                    var doRedirect = function() {
-                        document.location.href = redirectURL;
-                    }
+                }],
 
-                    api.logger.log({
-                        type: "USE_SHARE_LINK",
-                        shortURL: redirectURL,
-                    }).$promise.then(function() {
-                        doRedirect();
-                    }).catch(function() {
-                        doRedirect();
-                    })
+                "pageIndex": ['$stateParams', function($stateParams) {
+                    return parseInt($stateParams.page || "1") - 1;
                 }]
-            })
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/search_results.html",
+                    controller: "SearchController",
+                }
+            },
+            reloadOnSearch: false,
+        })
+        .state('logout', {
+            url: "/logout",
+            resolve: {
+                done: ["auth", function(auth) {
+                    window.foo = auth.logout();
+                    return window.foo;
+                }],
+            },
+            onEnter: ["$state", function($state) {
+                document.location.href = "/";
+            }]
+        })
+        .state('shareLink', {
+            url: "/s/:shortCode",
+            onEnter: ["$stateParams", "api", function($stateParams, api) {
+                var redirectURL = "http://goo.gl/" + $stateParams.shortCode;
+                var doRedirect = function() {
+                    document.location.href = redirectURL;
+                }
+
+                api.logger.log({
+                    type: "USE_SHARE_LINK",
+                    shortURL: redirectURL,
+                }).$promise.then(function() {
+                    doRedirect();
+                }).catch(function() {
+                    doRedirect();
+                })
+            }]
+        })
 
         .state('404', {
                 params: {
@@ -689,7 +721,7 @@ define(["angular-ui-router"], function() {
         })
 
         .state('events', {
-            url: "/events?event_status&types",
+            url: "/events?event_status&types&show_booked_only",
             views: {
                 "body": {
                     templateUrl: "/partials/states/events_page.html",
@@ -705,16 +737,6 @@ define(["angular-ui-router"], function() {
                 "body": {
                     templateUrl: "/partials/states/event_detail.html",
                     controller: "EventDetailController"
-                }
-            }
-        })
-
-        .state('book', {
-            url: "/book",
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/book_index.html",
-                    controller: "BooksControllers",
                 }
             }
         })

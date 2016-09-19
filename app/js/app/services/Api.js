@@ -75,6 +75,10 @@ define([], function() {
 				method: 'GET',
 				url: urlPrefix + "/users/email_preferences"
 			},
+			'getUserIdSchoolLookup' : {
+				method: 'GET',
+				url: urlPrefix + "/users/school_lookup?user_ids=:user_ids"
+			},
 		})
 
 		this.authentication = $resource("", {}, {
@@ -262,6 +266,8 @@ define([], function() {
 		});			
 
         this.events = $resource(urlPrefix + "/events/:id");
+        
+        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
 		this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
 			'getAllBookings' : {
@@ -277,10 +283,30 @@ define([], function() {
 				method: 'POST', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'requestBooking' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings"
+			},
+			'addToWaitingList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/waiting_list"
+			},
 			'deleteBooking' : {
 				method: 'DELETE', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'promoteFromWaitList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/promote"			
+			},
+			'cancelBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/cancel"			
+			},
+			'cancelMyBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/cancel"			
+			}
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
@@ -301,7 +327,6 @@ define([], function() {
 		var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 		var eventsList = $resource(urlPrefix + "/events");
-
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -331,8 +356,8 @@ define([], function() {
 			return conceptList.query();
 		}
 
-		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags) {
-			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags});
+		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags, showBookedOnly) {
+			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags, show_booked_only:showBookedOnly});
 		}
 
 		this.getImageUrl = function(path) {

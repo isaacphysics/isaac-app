@@ -224,9 +224,12 @@ $footer_height : 250px;
     text-align: center;
 }
 
-.ru_maths, .panel.maths *
-{
+.ru_maths, .panel.maths * {
     color: $ru_maths !important;
+}
+
+.ru_chemistry, .panel.chemistry * {
+    color: $ru_chemistry !important;
 }
 
 .ru-figure-ref
@@ -239,6 +242,10 @@ $footer_height : 250px;
 
     &.maths {
         color: $ru_maths !important;
+    }
+
+    &.chemistry {
+        color: $ru_chemistry !important;
     }
 }
 
