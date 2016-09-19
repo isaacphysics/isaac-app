@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var SubjectFactory = [function UnitsFactory() {
+	var SubjectConstructor = function() {
 
 		if (document.location.host == "localhost:8000" || document.location.origin.indexOf("isaacphysics") > -1) {
 			var id = "physics";
@@ -32,7 +32,7 @@ define([], function() {
 			title: title,
 		};
 
-	}];
+	};
 
-	return SubjectFactory;
+	return SubjectConstructor;
 });

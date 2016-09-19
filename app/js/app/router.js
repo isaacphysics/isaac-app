@@ -18,9 +18,10 @@ define(["angular-ui-router"], function() {
     // Declare app level module which depends on filters, and services
     angular.module('isaac.router', [
         'ui.router',
+        'isaac.services',
     ])
 
-    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'subjectProvider', function($sp, $urlRouterProvider, subject) {
 
         var getLoggedInPromise = function($rootScope) {
             return $rootScope.user.$promise.catch(function(r) {
@@ -110,47 +111,67 @@ define(["angular-ui-router"], function() {
             }
         }
 
-        $stateProvider
-        .state('home', staticPageState("/", "home", "HomePageController"))
-        .state('about', genericPageState("/about", "about_us_index"))
-        .state('teachers', genericPageState("/teachers", "mission_teachers"))
-        .state('mission', genericPageState("/mission", "mission"))
-        .state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"))
-        .state('mission_students', genericPageState("/mission_students", "mission_students"))
-        .state('glossary', genericPageState("/glossary", "glossary"))
-        .state('cookies', genericPageState("/cookies", "cookie_policy"))
-        .state('apply_uni', genericPageState("/apply_uni", "apply_uni"))
-        .state('solving_problems', genericPageState("/solving_problems", "solving_problems"))
-        .state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"))
-        .state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"))
-        .state('bios', genericPageState("/bios", "bios"))
-        .state('why_physics', genericPageState("/why_physics", "why_physics"))
-        .state('privacy', genericPageState("/privacy", "privacy_policy"))
-        .state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"))
-        .state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'))
-        .state('publications', genericPageState("/publications", "publications"))
-        .state('prize_draws', genericPageState("/prize_draws", "prize_draws"))
-        .state('spc', genericPageState("/spc", "spc"))
-        .state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"))
+        $sp.state('home', staticPageState("/", "home", "HomePageController"));
+
+        if (subject.id == "physics") {
+
+            // These are the routes that are specific to the physics site
+
+            $sp.state('about', genericPageState("/about", "about_us_index"));
+            $sp.state('teachers', genericPageState("/teachers", "mission_teachers"));
+            $sp.state('mission', genericPageState("/mission", "mission"));
+            $sp.state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"));
+            $sp.state('mission_students', genericPageState("/mission_students", "mission_students"));
+            $sp.state('glossary', genericPageState("/glossary", "glossary"));
+            $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
+            $sp.state('apply_uni', genericPageState("/apply_uni", "apply_uni"));
+            $sp.state('solving_problems', genericPageState("/solving_problems", "solving_problems"));
+            $sp.state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"));
+            $sp.state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"));
+            $sp.state('bios', genericPageState("/bios", "bios"));
+            $sp.state('why_physics', genericPageState("/why_physics", "why_physics"));
+            $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+            $sp.state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"));
+            $sp.state('publications', genericPageState("/publications", "publications"));
+            $sp.state('prize_draws', genericPageState("/prize_draws", "prize_draws"));
+            $sp.state('spc', genericPageState("/spc", "spc"));
+            $sp.state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"));
+
+            $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
+            $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
+        }
+
+
+        if (subject.id == "chemistry") {
+
+            // Create chemistry generic pages and register them here.
+        }
+
+        if (subject.id == "biology") {
+
+            // Create biology generic pages and register them here
+        }
+        
+        $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
+
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
         // * Create intro text content with ID <BOOK_ID>_intro
         // * Add a bookState below
         // * Update /book (below) if you wish
+        $sp.state('book_physics_skills_14', bookState("physics_skills_14"));
+        $sp.state('book_chemistry_16', bookState("chemistry_16"));
 
-        .state('book_physics_skills_14', bookState("physics_skills_14"))
-        .state('book_chemistry_16', bookState("chemistry_16"))
-
-        .state('book', {
+        $sp.state('book', {
             url: "/book",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
                 $state.go('book_physics_skills_14');
                 $rootScope.setLoading(false);
             }],
-        })
+        });
 
-        .state('teacher_features', {
+        $sp.state('teacher_features', {
             url: "/teacher_features?redirectModal",
             views: {
                 "body": {
@@ -159,9 +180,9 @@ define(["angular-ui-router"], function() {
                 }
             },
             reloadOnSearch: false,
-        })
+        });
 
-        .state('equality', {
+        $sp.state('equality', {
             url: "/equality?mode&symbols&testing",
             resolve: {
                 // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
@@ -174,9 +195,9 @@ define(["angular-ui-router"], function() {
                     controller: "EqualityPageController"
                 },
             },
-        })
+        });
 
-        .state('contact', {
+        $sp.state('contact', {
             url: "/contact?preset&subject",
 
             views: {
@@ -185,9 +206,9 @@ define(["angular-ui-router"], function() {
                     controller: "ContactController",
                 }
             }
-        })
+        });
 
-        .state('gameBoards', {
+        $sp.state('gameBoards', {
             url: "/gameboards?filter",
             views: {
                 "body": {
@@ -195,9 +216,9 @@ define(["angular-ui-router"], function() {
                     controller: "GameBoardsController",
                 }
             }
-        })
+        });
 
-        .state('conceptIndex', {
+        $sp.state('conceptIndex', {
             url: "/concepts?page",
             resolve: {
                 "conceptList": ['api', function(api) {
@@ -210,9 +231,9 @@ define(["angular-ui-router"], function() {
                     controller: "ConceptIndexController",
                 }
             }
-        })
+        });
 
-        .state('concept', {
+        $sp.state('concept', {
             url: "/concepts/:id",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
@@ -227,9 +248,9 @@ define(["angular-ui-router"], function() {
                     controller: "ConceptPageController",
                 }
             }
-        })
+        });
 
-        .state('regressionTestQuestion', {
+        $sp.state('regressionTestQuestion', {
             url: "/questions/_regression_test_",
             onEnter: ["$state", "$rootScope", function($state, $rootScope) {
                 if (window.location.host == "isaacphysics.org") {
@@ -246,25 +267,26 @@ define(["angular-ui-router"], function() {
                     $rootScope.setLoading(false);
                 }
             }],
-        })
+        });
 
-        .state('question', {
-                url: "/questions/:id?board",
-                resolve: {
-                    "page": ["api", "$stateParams", function(api, $stateParams) {
-                        return api.questionPages.get({
-                            id: $stateParams.id
-                        }).$promise;
-                    }]
-                },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/question.html",
-                        controller: "QuestionPageController",
-                    }
+        $sp.state('question', {
+            url: "/questions/:id?board",
+            resolve: {
+                "page": ["api", "$stateParams", function(api, $stateParams) {
+                    return api.questionPages.get({
+                        id: $stateParams.id
+                    }).$promise;
+                }]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/question.html",
+                    controller: "QuestionPageController",
                 }
-            })
-        .state('pages', {
+            }
+        });
+
+        $sp.state('pages', {
             url: "/pages/:id",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
@@ -282,8 +304,9 @@ define(["angular-ui-router"], function() {
                     }]
                 }
             }
-        })
-        .state('contentErrors', {
+        });
+
+        $sp.state('contentErrors', {
             url: "/admin/content_errors",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
@@ -296,8 +319,9 @@ define(["angular-ui-router"], function() {
                     controller: "ContentErrorController",
                 }
             }
-        })
-        .state('login', {
+        });
+
+        $sp.state('login', {
             url: "/login?target",
             views: {
                 "body": {
@@ -305,8 +329,9 @@ define(["angular-ui-router"], function() {
                     controller: "LoginPageController",
                 }
             }
-        })
-        .state('resetPassword', {
+        });
+
+        $sp.state('resetPassword', {
             url: "/resetpassword/*token",
             views: {
                 "body": {
@@ -314,8 +339,9 @@ define(["angular-ui-router"], function() {
                     controller: "ResetPasswordPageController",
                 }
             }
-        })
-        .state('verifyEmail', {
+        });
+
+        $sp.state('verifyEmail', {
             url: "/verifyemail?userid&token&email&requested",
             views: {
                 "body": {
@@ -323,8 +349,9 @@ define(["angular-ui-router"], function() {
                     controller: "VerifyEmailPageController",
                 }
             }
-        })
-        .state('boards', {
+        });
+
+        $sp.state('boards', {
             url: "/boards",
             resolve: {
                 requireLogin: getLoggedInPromise
@@ -335,16 +362,18 @@ define(["angular-ui-router"], function() {
                     controller: "MyBoardsPageController",
                 }
             }
-        })
-        .state('board', {
+        });
+
+        $sp.state('board', {
             url: "/board/:id",
             onEnter: ["$stateParams", "$location", "$rootScope", function($stateParams, $location, $rootScope) {
                 $location.url("/#" + $stateParams.id);
                 $rootScope.setLoading(false);
                 throw "Prevent entering board redirect state."
             }],
-        })
-        .state('searchResults', {
+        });
+
+        $sp.state('searchResults', {
             url: "/search?query&types&page",
             resolve: {
                 "query": ['$stateParams', function($stateParams) {
@@ -378,8 +407,9 @@ define(["angular-ui-router"], function() {
                 }
             },
             reloadOnSearch: false,
-        })
-        .state('logout', {
+        });
+
+        $sp.state('logout', {
             url: "/logout",
             resolve: {
                 done: ["auth", function(auth) {
@@ -390,8 +420,9 @@ define(["angular-ui-router"], function() {
             onEnter: ["$state", function($state) {
                 document.location.href = "/";
             }]
-        })
-        .state('shareLink', {
+        });
+
+        $sp.state('shareLink', {
             url: "/s/:shortCode",
             onEnter: ["$stateParams", "api", function($stateParams, api) {
                 var redirectURL = "http://goo.gl/" + $stateParams.shortCode;
@@ -408,44 +439,45 @@ define(["angular-ui-router"], function() {
                     doRedirect();
                 })
             }]
-        })
+        });
 
-        .state('404', {
-                params: {
-                    "target": null
+        $sp.state('404', {
+            params: {
+                "target": null
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/404.html",
+                    controller: ["$scope", "$stateParams", function($scope, $stateParams) {
+                        $scope.target = $stateParams.target;
+                    }],
                 },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/404.html",
-                        controller: ["$scope", "$stateParams", function($scope, $stateParams) {
-                            $scope.target = $stateParams.target;
-                        }],
-                    },
-                },
+            },
+        });
 
-            })
-            .state('403', {
-                params: {
-                    "target": null
+        $sp.state('403', {
+            params: {
+                "target": null
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/403.html",
+                    controller: ["$scope", "$stateParams", function($scope, $stateParams) {
+                        $scope.target = $stateParams.target;
+                    }],
                 },
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/403.html",
-                        controller: ["$scope", "$stateParams", function($scope, $stateParams) {
-                            $scope.target = $stateParams.target;
-                        }],
-                    },
-                },
-            })
-            .state('error', {
-                views: {
-                    "body": {
-                        templateUrl: "/partials/states/error.html",
-                    },
-                },
-            })
+            },
+        });
 
-        .state('accountSettings', {
+        $sp.state('error', {
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/error.html",
+                },
+            },
+        });
+
+        $sp.state('accountSettings', {
             url: "/account?next&userId&authToken",
             resolve: {
                 "userOfInterest": ["$stateParams", "api", function($stateParams, api) {
@@ -465,9 +497,9 @@ define(["angular-ui-router"], function() {
                     controller: "AccountSettingsPageController",
                 }
             }
-        })
+        });
 
-        .state('register', {
+        $sp.state('register', {
             url: "/register",
             resolve: {
                 "userOfInterest": function() {
@@ -480,18 +512,18 @@ define(["angular-ui-router"], function() {
                     controller: "AccountSettingsPageController",
                 }
             }
-        })
+        });
 
-        .state('authCallback', {
+        $sp.state('authCallback', {
             url: "/auth/:provider/callback",
             onEnter: ["$stateParams", "$location", "auth", function($stateParams, $location, auth) {
                 console.debug("Auth callback from", $stateParams.provider, "with params:", $location.search());
 
                 auth.providerCallback($stateParams.provider, $location.search());
             }]
-        })
+        });
 
-        .state('authError', {
+        $sp.state('authError', {
             url: "/auth_error?errorMessage&statusText",
             views: {
                 "body": {
@@ -499,9 +531,9 @@ define(["angular-ui-router"], function() {
                     controller: "AuthErrorPageController",
                 }
             }
-        })
+        });
 
-        .state('admin', {
+        $sp.state('admin', {
             url: "/admin",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER"]),
@@ -512,9 +544,9 @@ define(["angular-ui-router"], function() {
                     controller: "AdminPageController",
                 }
             }
-        })
+        });
 
-        .state('adminStats', {
+        $sp.state('adminStats', {
                 url: "/admin/stats",
                 resolve: {
                     requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
@@ -538,8 +570,9 @@ define(["angular-ui-router"], function() {
                         }]
                     }
                 }
-            })
-            .state('adminStats.schoolUserSummaryList', {
+            });
+
+            $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
                 templateUrl: '/partials/admin_stats/school_user_summary_list.html',
                 resolve: {
@@ -548,8 +581,9 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 controller: "AdminStatsPageController",
-            })
-            .state('adminStats.schoolUsersDetail', {
+            });
+
+            $sp.state('adminStats.schoolUsersDetail', {
                 url: "/schools/:schoolId/user_list",
                 templateUrl: '/partials/admin_stats/school_user_detail_list.html',
                 resolve: {
@@ -560,8 +594,9 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 controller: "AdminStatsPageController"
-            })
-            .state('adminStats.popularGameboards', {
+            });
+
+            $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
                 templateUrl: '/partials/admin_stats/popular_gameboards.html',
                 resolve: {
@@ -570,14 +605,16 @@ define(["angular-ui-router"], function() {
                     }]
                 },
                 controller: "AdminStatsPageController",
-            })
-            .state('adminStats.isaacAnalytics', {
+            });
+
+            $sp.state('adminStats.isaacAnalytics', {
                 url: "/isaac_analytics",
                 templateUrl: '/partials/admin_stats/analytics.html',
                 controller: "AnalyticsPageController",
-            })
+            });
 
-        .state('adminEvents', {
+
+        $sp.state('adminEvents', {
             url: "/admin/events",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "EVENT_MANAGER"]),
@@ -588,9 +625,9 @@ define(["angular-ui-router"], function() {
                     controller: "AdminEventBookingController",
                 }
             }
-        })
+        });
 
-        .state('adminUserManager', {
+        $sp.state('adminUserManager', {
             url: "/admin/usermanager",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER"])
@@ -601,9 +638,9 @@ define(["angular-ui-router"], function() {
                     controller: "AdminUserManagerController",
                 }
             }
-        })
+        });
 
-        .state('adminEmailsWithUserIds', {
+        $sp.state('adminEmailsWithUserIds', {
             url: "/admin/emails/:userIds",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
@@ -614,9 +651,9 @@ define(["angular-ui-router"], function() {
                     controller: "AdminEmailController",
                 }
             }
-        })
+        });
 
-        .state('adminEmails', {
+        $sp.state('adminEmails', {
             url: "/admin/emails/",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN"]),
@@ -627,9 +664,9 @@ define(["angular-ui-router"], function() {
                     controller: "AdminEmailController",
                 }
             }
-        })
+        });
 
-        .state('gameEditor', {
+        $sp.state('gameEditor', {
             url: "/game_builder?query&subject&level&sort",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
@@ -640,9 +677,9 @@ define(["angular-ui-router"], function() {
                     controller: "GameEditorControllers",
                 }
             }
-        })
+        });
 
-        .state('groups', {
+        $sp.state('groups', {
             url: "/groups",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
@@ -653,9 +690,9 @@ define(["angular-ui-router"], function() {
                     controller: "GroupManagementPageController",
                 }
             }
-        })
+        });
 
-        .state('setAssignments', {
+        $sp.state('setAssignments', {
             url: "/set_assignments",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
@@ -666,9 +703,9 @@ define(["angular-ui-router"], function() {
                     controller: "SetAssignmentsPageController",
                 }
             }
-        })
+        });
 
-        .state('assignments', {
+        $sp.state('assignments', {
             url: "/assignments",
             resolve: {
                 requireLogin: getLoggedInPromise,
@@ -679,9 +716,9 @@ define(["angular-ui-router"], function() {
                     controller: "MyAssignmentsPageController",
                 }
             }
-        })
+        });
 
-        .state('progress', {
+        $sp.state('progress', {
             url: "/progress",
             resolve: {
                 requireLogin: getLoggedInPromise,
@@ -692,9 +729,9 @@ define(["angular-ui-router"], function() {
                     controller: "MyProgressPageController",
                 }
             }
-        })
+        });
 
-        .state('userProgress', {
+        $sp.state('userProgress', {
             url: "/progress/:userId",
             resolve: {
                 requireLogin: getLoggedInPromise,
@@ -705,9 +742,9 @@ define(["angular-ui-router"], function() {
                     controller: "MyProgressPageController",
                 }
             }
-        })
+        });
 
-        .state('assignmentProgress', {
+        $sp.state('assignmentProgress', {
             url: "/assignment_progress",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
@@ -718,9 +755,9 @@ define(["angular-ui-router"], function() {
                     controller: "AssignmentProgressPageController",
                 }
             }
-        })
+        });
 
-        .state('events', {
+        $sp.state('events', {
             url: "/events?event_status&types&show_booked_only",
             views: {
                 "body": {
@@ -729,9 +766,9 @@ define(["angular-ui-router"], function() {
                 }
             },
             reloadOnSearch: false,
-        })
+        });
 
-        .state('event', {
+        $sp.state('event', {
             url: "/events/:id",
             views: {
                 "body": {
@@ -739,27 +776,9 @@ define(["angular-ui-router"], function() {
                     controller: "EventDetailController"
                 }
             }
-        })
+        });
 
-        .state('bookQuestion', {
-            url: "/book/question",
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/book_question.html",
-                }
-            }
-        })
-
-        .state('examUniHelp', {
-            url: "/exam_uni_help",
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/exam_uni_help.html",
-                }
-            }
-        })
-
-        .state('addBoard', {
+        $sp.state('addBoard', {
             url: "/add_gameboard/:boardId",
             resolve: {
                 requireLogin: getLoggedInPromise,
@@ -781,7 +800,7 @@ define(["angular-ui-router"], function() {
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });
             }],
-        })
+        });
     }])
 
     .run(['$rootScope', '$state', '$location', function($rootScope, $state, $location) {

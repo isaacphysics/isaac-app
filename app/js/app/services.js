@@ -32,8 +32,6 @@ define(function(require) {
 
 	.factory('units', require("app/services/Units"))
 
-	.factory('subject', require("app/services/Subject"))
-
 	.factory('filterWarnings', require("app/services/FilterWarnings"))
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
@@ -53,6 +51,17 @@ define(function(require) {
 			return new Api($resource, urlPrefix, $http, subject);
 				
 		}];
+	})
+
+	.provider('subject', function SubjectProvider() {
+
+		var subject = require("app/services/Subject")();
+
+		for(var k in subject) {
+			this[k] = subject[k];
+		}
+		
+		this.$get = function() { return subject; };
 	})
 
 	.service('persistence', require("app/services/Persistence"))
