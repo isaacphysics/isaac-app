@@ -154,6 +154,14 @@ define([], function() {
 			$location.url("/gameboards#" + $stateParams.board)
 		}
 
+		$scope.logClickSupersededBy = function(){
+			api.logger.log({
+				type: "VIEW_SUPERSEDED_BY_QUESTION",
+				questionId: page.id,
+				supersededBy: page.supersededBy,
+			});
+		};
+
 		$scope.$on("accordionsectionopen", function(e, idx, doc) {
 			api.logger.log({
 				type: "QUESTION_PART_OPEN",

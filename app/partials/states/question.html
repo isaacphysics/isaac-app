@@ -74,7 +74,8 @@
                     </div>
                     <div class="row" ng-if="!!questionPage.supersededBy">
                         <div class="small-12 small-offset-2 columns">
-                            <h4 class="superseded-warning">This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})">this question</a>.</h4>
+                            <h4 class="superseded-warning">This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})"
+                                ng-click="logClickSupersededBy()">this question</a>.</h4>
                             <br class="no-print"><br class="no-print">
                         </div>
                     </div>
