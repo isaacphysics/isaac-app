@@ -81,8 +81,8 @@ export
     getExpression(format: string): string {
         var expression = " ";
         if (format == "latex") {
+            expression += this.latexSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.latexSymbol + " ";
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
