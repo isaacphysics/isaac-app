@@ -70,8 +70,7 @@ $menu-handle-width: 160px;
         }
     }
     .top-menu {
-        /* Giving this any z-index at all prevents .dragging-background from going behind it. */
-        /* z-index: 100; */
+        z-index: 100;
         background: #509e2e;
         position: absolute;
         left: 0;
