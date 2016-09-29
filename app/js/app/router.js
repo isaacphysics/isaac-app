@@ -111,7 +111,13 @@ define(["angular-ui-router"], function() {
             }
         }
 
+        // These routes apply to all of the sites
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
+        $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
+        $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+        $sp.state('publications', genericPageState("/publications", "publications"));
+        $sp.state('faq', genericPageState("/faq", "faq"));
+
 
         if (subject.id == "physics") {
 
@@ -123,16 +129,13 @@ define(["angular-ui-router"], function() {
             $sp.state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"));
             $sp.state('mission_students', genericPageState("/mission_students", "mission_students"));
             $sp.state('glossary', genericPageState("/glossary", "glossary"));
-            $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
             $sp.state('apply_uni', genericPageState("/apply_uni", "apply_uni"));
             $sp.state('solving_problems', genericPageState("/solving_problems", "solving_problems"));
             $sp.state('extraordinary_problems', genericPageState("/extraordinary_problems", "extraordinary_problems_index"));
             $sp.state('challenge_problems', genericPageState("/challenge_problems", "challenge_problems_index"));
             $sp.state('bios', genericPageState("/bios", "bios"));
             $sp.state('why_physics', genericPageState("/why_physics", "why_physics"));
-            $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
             $sp.state('fast_track_14', genericPageState("/fast_track_14", "fast_track_14_index"));
-            $sp.state('publications', genericPageState("/publications", "publications"));
             $sp.state('prize_draws', genericPageState("/prize_draws", "prize_draws"));
             $sp.state('spc', genericPageState("/spc", "spc"));
             $sp.state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"));
