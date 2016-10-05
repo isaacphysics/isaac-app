@@ -40,7 +40,7 @@ define([], function() {
 		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
 
 		var filterResult = function(r) {
-			var keepElement = (r.id != "_regression_test_" && r.tags.indexOf("nofilter") < 0);
+			var keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
 			return keepElement || $scope.isStaffUser;
 		}
 

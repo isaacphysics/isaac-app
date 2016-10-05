@@ -127,7 +127,7 @@ define([], function() {
 					httpCanceller = null;
         			// update the view
         			$scope.searchResults = questionsFromServer.results.filter(function(r) {
-	        				var keepElement = (r.id != "_regression_test_" && r.tags.indexOf("nofilter") < 0);
+	        				var keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
 							return keepElement || $scope.isStaffUser;
         			});;
         			// try to sort the results if requested.
