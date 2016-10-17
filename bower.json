@@ -8,7 +8,7 @@
   "dependencies": {
     "angular": "1.5.7",
     "angular-cookies": "1.5.7",
-    "angular-google-maps": "2.1.0",
+    "angular-google-maps": "2.4.0",
     "angular-loader": "1.5.7",
     "angular-mocks": "1.5.7",
     "angular-recursion": "1.0.5",

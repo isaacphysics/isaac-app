@@ -10,7 +10,7 @@
         <label ng-show="customLocationDates" for="startDateInput">Start Date (default 1 month ago):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.start" name="startDateInput">
         <label ng-show="customLocationDates" for="endDateInput">End Date (default today):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.end" name="endDateInput">
         
-        <div ng-show="locations.length != 0">
+        <div ng-if="locations.length != 0">
             <ui-gmap-google-map center='map.center' zoom='map.zoom'>
                 <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
                 </ui-gmap-markers>

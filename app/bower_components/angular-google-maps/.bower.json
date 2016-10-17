@@ -1,10 +1,17 @@
 {
   "name": "angular-google-maps",
-  "version": "2.1.0",
+  "version": "2.4.0",
+  "license": "MIT",
   "main": "./dist/angular-google-maps.js",
   "dependencies": {
-    "angular": ">=1.2.0",
-    "lodash": "~2.4.1"
+    "angular": "1.2 - 1.5",
+    "angular-simple-logger": ">=0.0.1",
+    "lodash": "3.X - 4.X",
+    "markerclustererplus": "^2.1.4",
+    "google-maps-utility-library-v3-markerwithlabel": "git://github.com/nmccready/google-maps-utility-library-v3-markerwithlabel.git",
+    "google-maps-utility-library-v3-infobox": "^1.1.14",
+    "google-maps-utility-library-v3-keydragzoom": "^2.0.9",
+    "js-rich-marker": "*"
   },
   "ignore": [
     "*.json",
@@ -21,23 +28,27 @@
     "spec/coffee/directives",
     "spec/coffee/providers",
     "spec/coffee/usage",
-    "tmp"
+    "tmp",
+    "dist/coverage/",
+    "dist/architecture/"
   ],
   "devDependencies": {
-    "angular-mocks": ">=1.2.x",
-    "uuid": "http://github.com/LiosK/UUID.js/archive/v3.2.tar.gz",
-    "angular-route": "~1.3.0",
+    "angular-mocks": "1.2 - 1.5",
+    "angular-route": "1.2 - 1.5",
     "bootstrap-without-jquery": "git://github.com/tagawa/bootstrap-without-jquery.git",
-    "data-structures": "~1.4.2"
+    "data-structures": "~1.4.2",
+    "OverlappingMarkerSpiderfier": "git://github.com/nmccready/OverlappingMarkerSpiderfier.git",
+    "underscore": "~1.8.3",
+    "uuid": "http://github.com/LiosK/UUID.js/archive/v3.2.tar.gz"
   },
   "homepage": "https://github.com/angular-ui/angular-google-maps",
-  "_release": "2.1.0",
+  "_release": "2.4.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.1.0",
-    "commit": "0d80e4877e83d6f6891381139376230d038bf983"
+    "tag": "2.4.0",
+    "commit": "2047ea47020fae4c9941ff0e2162ab73f58b3e13"
   },
   "_source": "https://github.com/angular-ui/angular-google-maps.git",
-  "_target": "2.1.0",
+  "_target": "2.4.0",
   "_originalSource": "angular-google-maps"
 }

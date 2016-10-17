@@ -59,7 +59,7 @@ define([
         'ui.date',
 	])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
 
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
@@ -90,7 +90,7 @@ define([
 
         // Here we configure the api provider with the server running the API. Don't need to do this if we want to use the same server as the static content.
         if (document.location.hostname == "localhost") {
-            apiProvider.urlPrefix("http://localhost:8080/isaac-api/api");
+            apiProvider.urlPrefix("https://staging.isaacphysics.org/api/any/api");
         } else if (document.location.hostname.indexOf(".eu.ngrok.io") > -1) {
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
@@ -99,6 +99,11 @@ define([
         }
 
         NProgress.configure({ showSpinner: false });
+
+        uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y',
+        });
+
 	}])
 
 	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', 'subject', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile, subject) {
@@ -759,6 +764,7 @@ define([
 	/////////////////////////////////////
 	// Bootstrap AngularJS
 	/////////////////////////////////////
+
 
 	var root = $("html");
 	angular.bootstrap(root, ['isaac']);
