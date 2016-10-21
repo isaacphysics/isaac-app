@@ -80,7 +80,7 @@ define([], function() {
 					$scope.groupJoinURL = null;
 				}
 
-				var deleteGroup = $window.confirm('Are you sure you want to delete ' + group.groupName + '?'); 
+				var deleteGroup = $window.confirm("Are you sure you want to permanently delete the group '" + group.groupName + "' and remove all associated assignments?\n\nTHIS ACTION CANNOT BE UNDONE!"); 
 				if(deleteGroup){
 					api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(result){
 						$scope.myGroups = api.groupManagementEndpoint.get();
@@ -121,7 +121,7 @@ define([], function() {
 		}
 
 		$scope.deleteMember = function(group, user) {
-			var deleteMember = $window.confirm('Are you sure you want to delete?');   
+			var deleteMember = $window.confirm('Are you sure you want to remove this user from the group?');   
 			if (deleteMember) {
 				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user.id}).$promise.then(function(result){
 					$scope.selectedGroupMembers = result;
