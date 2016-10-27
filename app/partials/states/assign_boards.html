@@ -47,7 +47,7 @@
                <div ng-click="toggleAssignPanel(board)" data-ot="{{getListOfGroups(groupAssignmentInfo[board.id])}}" data-ot-style="ru_boards" class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->
       				<span class="groups-assigned subject-physics">
-                     <strong>{{groupAssignmentInfo[board.id].length || 0}}</strong> Groups Assigned
+                     <strong>{{groupAssignmentInfo[board.id].length || 0}}</strong> Group<span ng-hide="groupAssignmentInfo[board.id].length == 1">s</span> Assigned
                   </span>
       			</div>
 
@@ -98,7 +98,7 @@
                <a ng-if="false" class="ru-button-big tertiary expand">Edit Assigned Groups</a>
             </div>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
-               <h6>Assigned groups</h6>
+               <h6>Board currently assigned to:</h6>
                <table class="group-table">
                   <tbody>
                      <tr ng-repeat="groupsAssigned in groupAssignmentInfo[board.id]">
@@ -108,7 +108,7 @@
                      </tr>
                   </tbody>
                </table>
-               <p ng-show="groupAssignmentInfo[board.id] == null || groupAssignmentInfo[board.id].length == 0">No groups are assigned.</p>
+               <p ng-show="groupAssignmentInfo[board.id] == null || groupAssignmentInfo[board.id].length == 0">No groups.</p>
                <a href="javascript:void(0)" class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)">Close</a>
             </div>
    		</div>
