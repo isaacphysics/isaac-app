@@ -17,9 +17,13 @@ define([], function() {
 
 	var PageController = ['$scope', 'api', '$state', '$rootScope', '$stateParams', function($scope, api, $state, $rootScope, $stateParams) {
 		$rootScope.pageTitle = "Contact us";
+		$scope.contactForm = {};
+		if ($stateParams.subject != null && $stateParams.subject != '' && $stateParams.subject != 'true') {
+			$scope.contactForm.subject = $stateParams.subject;
+		}
 
 		$scope.user.$promise.then(function() {
-			$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email};				
+			$scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email, "subject": $scope.contactForm.subject};
 		
 			if ($stateParams.preset == 'teacherRequest') {
 				if ($scope.user.role != 'TEACHER') {
@@ -31,8 +35,6 @@ define([], function() {
 			} else if ($stateParams.preset == 'accountDeletion') {
 			    $scope.contactForm.subject = "Account Deletion Request",
 			    $scope.contactForm.message = "Hello,\n\nPlease could you delete my Isaac account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
-			} else if ($stateParams.subject != null && $stateParams.subject != '' && $stateParams.subject != 'true') {
-				$scope.contactForm.subject = $stateParams.subject;
 			}
 		}).catch(function(){
 			if (!$scope.user._id && $stateParams.preset == 'teacherRequest') {
@@ -40,7 +42,7 @@ define([], function() {
 			} else if (!$scope.user._id && $stateParams.preset == 'accountDeletion') {
 			    $state.go('login', {target:"/contact?preset=accountDeletion"})
 			}
-		})
+		});
 
 		$scope.invalidForm = false;
 		$scope.formSubmitted = false;
