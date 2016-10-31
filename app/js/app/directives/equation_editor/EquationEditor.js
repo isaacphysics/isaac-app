@@ -399,7 +399,8 @@ define(function(require) {
                                     var name = p.replace(/\(\)/g, "");
                                     var index = trigMap[name + ""];
                                     // If we have a function
-                                    if (p.endsWith("()")) {
+                                    // (Using lodash because IE 11 does not support endsWith)
+                                    if (_.endsWith(p, "()")) {
 
                                         var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
                                         var allowSubscript = name == "log";
