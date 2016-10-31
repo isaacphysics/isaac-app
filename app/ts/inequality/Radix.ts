@@ -83,7 +83,7 @@ export
                 expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
             }
             if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += '*' + this.dockingPoints['right'].child.getExpression(format);
             }
         } else if (format == "subscript") {
             expression += "{SQRT}";
