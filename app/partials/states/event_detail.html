@@ -150,6 +150,8 @@
                                         <option value="TEACHER">N/A - Teacher</option>
                                         <option value="OTHER">N/A - Other</option>
               </select>
+
+              <strong ng-show="event.teacher && additionalInformation.yearGroup == 'TEACHER' && user.role != 'TEACHER'"><a ui-sref="pages({id: 'contact_us_teacher'})" target="_blank">Click to upgrade to a teacher account</a> for free!</strong>
             </span>
             <div ng-show="additionalInformation.yearGroup != 'TEACHER' && additionalInformation.yearGroup != 'OTHER'" class="row">
               <div class="columns small-16 medium-8">            
