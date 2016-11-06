@@ -151,11 +151,34 @@ define([], function() {
 
         $scope.school = {"schoolOther" : $scope.user.schoolOther, "schoolId": $scope.user.schoolId};
 
+        $scope.verifyEmailRequestSent = false;
+
         // validate pre-requisites for event booking
         var validUserProfile = function() {
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
                 $scope.showToast($scope.toastTypes.Failure, "School Information is required", "You must enter a school in order to book on to this event.");
                 return false;
+            }
+
+            // validation for users / forms that indicate the booker is not a teacher
+            if ($scope.user.role != 'TEACHER' && $scope.additionalInformation.yearGroup != 'TEACHER') {
+                if (!$scope.additionalInformation.yearGroup) {
+                    $scope.showToast($scope.toastTypes.Failure, "Year Group is required", "You must enter a year group to proceed.");
+                    return false;   
+                }
+
+                if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
+                    $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details are required", "You must enter a emergency Contact Details in order to book on to this event.");
+                    return false;   
+                }    
+            }
+            
+            // validation for users that are teachers
+            if ($scope.user.role == 'TEACHER') {
+                if (!$scope.additionalInformation.jobTitle) {
+                    $scope.showToast($scope.toastTypes.Failure, "Job Title is required", "You must enter a job title to proceed.");
+                    return false;   
+                } 
             }
 
             return true;
@@ -269,6 +292,11 @@ define([], function() {
                 } else {
                     // if no booking deadline set use end date.
                     $scope.bookingDeadlinePast = new Date(e.date) < new Date();
+                }
+
+                // default year group drop down for teachers.
+                if ($scope.user.role == 'TEACHER') {
+                    $scope.additionalInformation.yearGroup = 'TEACHER'
                 }
 
                 if (e.tags.indexOf('teacher') != -1 && ($scope.user.role == 'STUDENT')) {

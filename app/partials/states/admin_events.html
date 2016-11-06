@@ -35,8 +35,7 @@
                                 <td>{{event.numberOfConfirmedBookings}}</td>
                                 <td>{{event.numberOfWaitingListBookings}}</td>
                                 <td>{{event.numberOfPlaces}}</td>
-                                <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage Bookings</a>
-                                </td>
+                                <td><a href="#event-booking-details" ng-click="updateBookingInfo(event.id)">Manage Bookings</a></td>
                             </tr>
                         </table>
                 </div>
@@ -77,20 +76,22 @@
                             <tr>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
+                                <th>Account Type</th>
                                 <th>School</th>
                                 <th>Job / Year Group</th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Booking Status</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
                                 <th>Accessibility Requirements</th>
-                                <th>Dietary Requirements</th>
-                                <th>Emergency Details</th>
+                                <th>Medical Requirements</th>
+                                <th>Emergency Name</th>
+                                <th>Emergency Telephone</th>
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
                                 <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
                                 <td>{{booking.userBooked.email}}</td>
-                                
+                                <td>{{booking.userBooked.role}}</td>
                                 <td ng-show="!userIdToSchoolMapping[booking.userBooked.id]['urn']">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</td>
                                 <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                 <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
@@ -98,9 +99,10 @@
                                 <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
                                 <td>{{booking.updated | date:'dd/MM/yyyy'}}</td>
                                 <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
-                                <td>{{booking.additionalInformation.dietaryRequirements}}</td>
-                                <td>{{booking.additionalInformation.emergencyDetails}}</td>
-                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
+                                <td>{{booking.additionalInformation.medicalRequirements}}</td>
+                                <td>{{booking.additionalInformation.emergencyName}}</td>
+                                <td>{{booking.additionalInformation.emergencyNumber}}</td>
+                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
                             </tr>
                         </table>
                         <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
