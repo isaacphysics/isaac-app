@@ -71,7 +71,7 @@
                             <span ng-show="eventSelected.placesAvailable >= 0"><strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
                         </p>
                     </div>
-                    <div ng-if="eventIdForBooking" class="small-16 columns">
+                    <div ng-if="eventIdForBooking" class="small-16 columns" style="overflow-x:scroll;">
                         <h3>Step 2: Review current bookings ({{bookings.length}})</h3>
                         <table ng-show="bookings.length > 0">
                             <tr>
