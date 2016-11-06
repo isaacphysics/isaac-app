@@ -20,12 +20,12 @@
                 <div class="small-16 columns">
                     <table>
                             <tr>
-                                <th>Title</th>
-                                <th>Date</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'title'; reverse=!reverse">Title</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Date</a></th>
                                 <th>Location</th>
-                                <th>Number Confirmed</th>
-                                <th>Number Waiting</th>
-                                <th>Total Spaces Available</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfConfirmedBookings'; reverse=!reverse">Number Confirmed</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfWaitingListBookings'; reverse=!reverse">Number Waiting</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfPlaces'; reverse=!reverse">Total Spaces</a></th>
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
