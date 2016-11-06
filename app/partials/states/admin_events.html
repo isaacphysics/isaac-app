@@ -35,7 +35,7 @@
                                 <td>{{event.numberOfConfirmedBookings}}</td>
                                 <td>{{event.numberOfWaitingListBookings}}</td>
                                 <td>{{event.numberOfPlaces}}</td>
-                                <td><a href="#event-booking-details" ng-click="updateBookingInfo(event.id)">Manage Bookings</a></td>
+                                <td><a href="" ng-click="updateBookingInfo(event.id)">Manage Bookings</a></td>
                             </tr>
                         </table>
                 </div>
@@ -58,7 +58,7 @@
                         </select>
                     </div-->
                     <div ng-if="eventIdForBooking" class="small-16 columns">
-                        <h3>Selected Event Details</h3>
+                        <h3 id='event-booking-details'>Selected Event Details</h3>
                         <p>
                             <strong>Event:</strong> {{eventSelected.title}}<br>
                             <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
@@ -71,7 +71,7 @@
                         </p>
                     </div>
                     <div ng-if="eventIdForBooking" class="small-16 columns" style="overflow-x:scroll;">
-                        <h3>Step 2: Review current bookings ({{bookings.length}})</h3>
+                        <h3>Step 2: Review bookings</h3>
                         <table ng-show="bookings.length > 0">
                             <tr>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>

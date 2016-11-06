@@ -170,7 +170,7 @@ define([], function() {
 		}]		
 
 	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
-	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope','$location', '$anchorScroll', function($scope, auth, api, $window, $rootScope, $location, $anchorScroll) {
 		$rootScope.pageTitle = "Admin Page";
 
 		$scope.contentVersion = api.contentVersion.get();
@@ -196,7 +196,6 @@ define([], function() {
 		$scope.filterEventsByStatus = "active";
 
 		var updateEventOverviewList = function(){
-
 			api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly}).$promise.then(function(result) {
 	                $scope.setLoading(false);
 	                
@@ -233,10 +232,18 @@ define([], function() {
     		})				
 		}
 
+		$scope.goToTag = function(tagToGoTo) {
+		      $location.hash(tagToGoTo);
+		      $anchorScroll();
+		};
+
         $scope.$watch('eventIdForBooking', function(){
         	if ($scope.eventIdForBooking) {
 				updateBookingInfo();
-				$scope.eventSelected = api.events.get({id:$scope.eventIdForBooking});
+				api.events.get({id:$scope.eventIdForBooking}).$promise.then(function(value){
+					$scope.eventSelected = value;
+					$scope.goToTag('event-booking-details');
+				});
         	}        	
         })
 
