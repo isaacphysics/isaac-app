@@ -31,7 +31,7 @@ define([], function() {
 
             link: function(scope, element, attrs) {
 
-                var url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app";
+                var url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app?s=new";
 
                 var ps = {};
 
