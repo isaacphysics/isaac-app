@@ -17,11 +17,11 @@ define([], function() {
 
 	var SubjectConstructor = function() {
 
-		if (document.location.host == "localhost:8000" || document.location.origin.indexOf("isaacphysics") > -1) {
+		if (document.location.host == "localhost:8000" || document.location.host.indexOf("isaacphysics") > -1) {
 			var id = "physics";
-		} else if (document.location.host == "localhost:8001" || document.location.origin.indexOf("isaacchemistry") > -1) {
+		} else if (document.location.host == "localhost:8001" || document.location.host.indexOf("isaacchemistry") > -1) {
 			var id = "chemistry";
-		} else if (document.location.host == "localhost:8002" || document.location.origin.indexOf("isaacbiology") > -1) {
+		} else if (document.location.host == "localhost:8002" || document.location.host.indexOf("isaacbiology") > -1) {
 			var id = "biology";
 		}
 
