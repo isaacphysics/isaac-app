@@ -82,7 +82,7 @@ table {
 }
 @media #{$small-only} { 
     .ru-alert-box {
-        position: absolute;
+        position: relative;
         top: 42px;
         left: 0;
         right: 0;
@@ -107,6 +107,10 @@ table {
                 margin-right: 10px;
             }
         }
+    }
+    .ru-alert-columns {
+        padding-left: 0px;
+        padding-right: 0px;
     }
     .ru-page-heading {
         h1 {
