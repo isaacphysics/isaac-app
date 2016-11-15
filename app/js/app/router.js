@@ -670,7 +670,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('gameEditor', {
-            url: "/game_builder?query&subject&level&sort",
+            url: "/game_builder?query&subject&level&sort&base",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
             },

@@ -64,6 +64,22 @@ define([], function() {
 		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
 
+		// Allow cloning of existing gameboards:
+		if ($stateParams.base != null && $stateParams.base != '' && $stateParams.base != 'true') {
+			api.gameBoards.get({id: $stateParams.base}).$promise.then(function(response) {
+				for (var i = 0; i < response.questions.length; i++) {
+					var question = response.questions[i];
+					if (!$scope.isStaffUser && question.tags && question.tags.indexOf("nofilter") > -1) {
+						continue;  // But don't allow including of nofilter questions!
+					}
+					$scope.enabledQuestions[question.id] = true;
+					$scope.currentGameBoard.questions.push({id: question.id, tags: question.tags, level: question.level, title: question.title});
+				}
+			}).catch(function() {
+				$scope.showToast($scope.toastTypes.Failure, "Can't Find Gameboard", "No gameboard found with ID: " + $stateParams.base);
+			});
+		}
+
 		// get the index of a question in a gameboard by id.
 		var getGameBoardIndex = function(questionId) {
 			var gameBoardQuestionsToSearch = $scope.currentGameBoard.questions;
@@ -158,7 +174,7 @@ define([], function() {
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
 			updateWildCard();
-			
+
 			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title, id: $scope.currentGameBoard.id};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
