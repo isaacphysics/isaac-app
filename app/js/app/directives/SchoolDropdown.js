@@ -35,8 +35,11 @@ define([], function() {
 			 	scope.$watch("selectedSchoolUrn", function(newUrn, oldUrn) {
 			 		if (newUrn) {
 			 			api.schools.query({query: newUrn}).$promise.then(function(s) {
-				 			if (s.length >= 1)
+				 			if (s.length >= 1) {
 				 				scope.selection.school = s[0];
+			 				} else {
+			 					scope.selectedSchoolUrn = null;
+			 				}
 				 		});
 			 		}
 			 	});
