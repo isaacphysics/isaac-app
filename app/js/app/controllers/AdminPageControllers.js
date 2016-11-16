@@ -20,29 +20,7 @@ define([], function() {
 
 		$scope.contentVersion = api.contentVersion.get();
 
-		$scope.indexQueue = null;
 		$scope.segueVersion = api.segueInfo.segueVersion();
-		$scope.cachedVersions = api.segueInfo.cachedVersion();
-		var updateIndexerQueue = function(){
-			api.contentVersion.currentIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;		
-			});
-		}
-		
-		updateIndexerQueue();
-
-		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
-		$scope.clearIndexQueue = function(){
-			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;
-			});
-		}
-
-		$scope.$on("$destroy", function() {
-	        if (indexQueueInterval) {
-	            $interval.cancel(indexQueueInterval);
-	        }
-	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 		$scope.tagsUrl = api.getTagsUrl();
