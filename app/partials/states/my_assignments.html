@@ -30,7 +30,7 @@
                         <span ng-repeat="level in calculateBoardLevels(assignment.gameboard)" class="level-{{level}}">{{level}}</span>
                   </div>
                   <p>Assigned: <strong>{{assignment.creationDate | date:'dd/MM/yyyy'}}</strong></p>
-                  <p ng-show="assignment.assignerSummary.givenName && assignment.assignerSummary.familyName">By: <strong>{{assignment.assignerSummary.givenName.charAt(0) + ". " + assignment.assignerSummary.familyName}}</strong></p>
+                  <p ng-show="assignment.assignerSummary.familyName">By: <strong>{{(assignment.assignerSummary.givenName ? assignment.assignerSummary.givenName.charAt(0) + ". " : "") + assignment.assignerSummary.familyName}}</strong></p>
                </div>
             </div>
             <div class="medium-6 columns board-overview">
