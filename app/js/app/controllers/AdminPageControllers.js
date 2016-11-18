@@ -167,7 +167,23 @@ define([], function() {
 					$scope.setLoading(false);
 				});
 			}
-		}]		
+
+			$scope.getDownloadEventsOverTimeLink = function() {
+				var eventsForGraph = [];
+				for (var eventType in $scope.eventsSelected) {
+					if ($scope.eventsSelected[eventType]) {
+						eventsForGraph.push(eventType);
+					}
+				}
+
+				if (eventsForGraph.length < 1) {
+					return;
+				}
+
+				var url = api.makeDownloadEventsOverTimeLink(dataStartDate, dataEndDate, eventsForGraph, true);
+                return url;
+			}
+		}]
 
 	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
 	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope','$location', '$anchorScroll', function($scope, auth, api, $window, $rootScope, $location, $anchorScroll) {

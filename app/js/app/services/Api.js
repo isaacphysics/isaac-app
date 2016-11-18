@@ -172,6 +172,10 @@ define([], function() {
 			},			
 		});
 
+		this.makeDownloadEventsOverTimeLink = function(startDate, endDate, events, binData) {
+			return urlPrefix + "/admin/users/event_data/over_time/download?from_date=" + startDate + "&to_date=" + endDate + "&events=" + events.join() + "&bin_data=" + binData;
+		}
+
 		this.adminDeleteUser = $resource(urlPrefix + "/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
