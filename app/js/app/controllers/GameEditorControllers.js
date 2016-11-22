@@ -209,7 +209,7 @@ define([], function() {
 		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
 
         $scope.saveGameBoard = function() {
-        	var saveConfirmed = $window.confirm('Are you sure you want save this game board?');   
+        	var saveConfirmed = $window.confirm('Are you sure you want to save this game board?');   
 
         	if (!saveConfirmed) {
         		return;
