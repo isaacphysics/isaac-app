@@ -54,9 +54,9 @@
               <span ng-if="event.expired" class="error">This event is in the past.</span>
             </td>
           </tr>
-          <tr ng-show="event.location">
+          <tr ng-show="event.location.address">
             <td>Location:</td>
-            <td>{{event.location.addressLine1}}, {{event.location.addressLine2}}, {{event.location.town}}, {{event.location.postalCode}}</td>
+            <td>{{event.location.address.addressLine1}}, {{event.location.address.addressLine2}}, {{event.location.address.town}}, {{event.location.address.postalCode}}</td>
           </tr>
           <tr ng-show="event.numberOfPlaces && event.eventStatus != 'CLOSED'">
             <td>Availability</td>
@@ -259,15 +259,15 @@
       -->
     </div>
 
-    <div class="medium-8 large-16 columns" ng-show="event.location">
+    <div class="medium-8 large-16 columns" ng-show="event.location.address">
         <!--
             Map
           -->
           <div class="event-map">
-            <a target="_blank" href="https://www.google.co.uk/maps?q={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}">
-              <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=604x644&maptype=roadmap&key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y&markers={{event.location.addressLine1}},{{event.location.town}},{{event.location.postalCode}}" alt="" />
+            <a target="_blank" href="https://www.google.co.uk/maps?q={{event.location.address.addressLine1}},{{event.location.address.town}},{{event.location.address.postalCode}}">
+              <img ng-src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=604x644&maptype=roadmap&key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y&markers={{event.location.address.addressLine1}},{{event.location.address.town}},{{event.location.address.postalCode}}" alt="" />
             </a>
-            <h4>{{event.location.town}}, {{event.location.postalCode}}</h4>
+            <h4>{{event.location.address.town}}, {{event.location.address.postalCode}}</h4>
 <!--
           <p><strong>Transit:</strong> Green Park</p>
         -->
