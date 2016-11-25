@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts'
 import { Symbol } from "./Symbol.ts";
 import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Brackets } from "./Brackets.ts";
 
@@ -82,8 +83,12 @@ export
             if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
                 expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
             }
-            if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                expression += '*' + this.dockingPoints['right'].child.getExpression(format);
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                }
             }
         } else if (format == "subscript") {
             expression += "{SQRT}";

@@ -154,13 +154,11 @@ export
                         expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
                     }
                 }
-
-                if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                    if (!(this.dockingPoints['right'].child instanceof BinaryOperation ||
-                        this.dockingPoints["right"].child instanceof Relation)) {
-                        expression += '*' + this.dockingPoints['right'].child.getExpression(format);
+                if (this.dockingPoints["right"].child != null) {
+                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                        expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
-                        expression += this.dockingPoints['right'].child.getExpression(format);
+                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
                     }
                 }
             }
