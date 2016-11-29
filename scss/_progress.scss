@@ -150,6 +150,10 @@
         border-right: #999 1px solid;
         cursor: pointer;
     }
+    .accordion-board-header-last {
+        background: #f2f2f2;
+        //border-top: #333 1px solid;
+    }
     .accordion-board-title {
         position: relative;
         font-size: 18px;
@@ -170,6 +174,13 @@
             padding: 8px 6px 0;
             min-width: 30px;
             text-align: right;
+        }
+    }
+
+    .accordion-board-title-no-counter {
+        &:before {
+            counter-increment: none;
+            content: '';
         }
     }
 

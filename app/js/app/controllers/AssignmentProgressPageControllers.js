@@ -204,7 +204,15 @@ define([], function() {
             scope.modals.assignmentProgressCSVDownload.show();
 
             // return api.getCSVDownloadLink(assignmentId);
-        }
+        };
+
+        scope.getGroupProgressDownloadLink = function(groupId, $event) {
+            $event.stopPropagation();
+            scope.assignmentCSVLink = api.getGroupProgressCSVDownloadLink(groupId)
+            scope.modals.assignmentProgressCSVDownload.show();
+
+            // return api.getCSVDownloadLink(assignmentId);
+        };
 
 	}];
 

@@ -498,7 +498,11 @@ define([], function() {
 		})
 		
 		this.getCSVDownloadLink = function(assignmentId) {
-			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download"
+			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download";
+		}
+
+		this.getGroupProgressCSVDownloadLink = function(groupId) {
+			return urlPrefix + "/assignments/assign/group/" + groupId + "/progress/download";
 		}
 
 		this.questionsAnswered = $resource(urlPrefix + "/stats/questions_answered/count");

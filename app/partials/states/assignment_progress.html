@@ -150,6 +150,12 @@
                                     </div>
                                 </div>
                             </dd>
+                            <dd ng-class="{active: assignmentExpanded[assignment._id]}">
+                                <div class="accordion-board-header accordion-board-header-last">
+                                    <div class="accordion-board-title accordion-board-title-no-counter">&nbsp;</div>
+                                    <a ng-click="getGroupProgressDownloadLink(group._id, $event)" class="accordion-board-link" target="_blank"><span>Download Group CSV</span><span class="icon-link invisible"></span></a>
+                                </div>
+                            </dd>
                         </dl>
                     </div>
                 </dd>
