@@ -1,6 +1,7 @@
 import { Widget, Rect } from './Widget.ts'
 import { Symbol } from "./Symbol.ts";
 import { BinaryOperation } from "./BinaryOperation.ts";
+import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 
 /** Brackets. "We got both kinds, we got country and western". */
@@ -153,8 +154,12 @@ export
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += ' ' + this.dockingPoints['right'].child.getExpression(format) + ' ';
+                if (this.dockingPoints["right"].child != null) {
+                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                        expression += this.dockingPoints["right"].child.getExpression(format);
+                    } else {
+                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                    }
                 }
             }
         } else if (format == "subscript") {

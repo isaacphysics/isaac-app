@@ -67,12 +67,12 @@ export
             }
         } else if (format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "((" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + "))";
+                expression += "(" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + ")";
                 if (this.dockingPoints["right"].child != null) {
                     if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
                         expression += this.dockingPoints["right"].child.getExpression(format);
                     } else {
-                        expression += "*" + this.dockingPoints["right"].child.getExpression(format);
+                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
                     }
                 }
             }
