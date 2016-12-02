@@ -152,6 +152,7 @@
     }
     .accordion-board-header-last {
         background: #f2f2f2;
+        cursor: auto;
         //border-top: #333 1px solid;
     }
     .accordion-board-title {
@@ -609,6 +610,10 @@ div[d3-plot] {
         background-color: #fff;
         padding: 10px 10px;
         border:#999 1px solid;
+    }
+
+    .accordion-board-header-last {
+        display: none !important;
     }
 
 }
