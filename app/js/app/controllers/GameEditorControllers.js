@@ -228,6 +228,14 @@ define([], function() {
 				if (question.tags.indexOf("maths") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("maths") == -1) {
 					gameBoardToSave.gameFilter.subjects.push("maths");
 				}
+
+				if (question.tags.indexOf("chemistry") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("chemistry") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("chemistry");
+				}
+
+				if (question.tags.indexOf("biology") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("biology") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("biology");
+				}
 			});
 
         	// clear placeholder wildcard so that server picks one.
