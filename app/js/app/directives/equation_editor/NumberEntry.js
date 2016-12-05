@@ -124,6 +124,10 @@ define([], function() {
                         scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
                         // scope.$emit("triggerCloseMenus");
                     }
+
+                    if (pageY > element.position().top + element.height() && $(window).height() <= 768) {
+                        scope.$emit("triggerCloseMenus");
+                    }
                 })
 
                 scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY, pageY) {
