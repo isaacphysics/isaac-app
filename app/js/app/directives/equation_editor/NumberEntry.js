@@ -40,6 +40,9 @@ define([], function() {
                 }
 
                 scope.$on("numberClicked", function(_, num) {
+                    if(num == undefined) {
+                        return;
+                    }
                     if (num == "^") {
                         scope.currentExponent = "";
                     } else if (num == "-") {
