@@ -289,22 +289,26 @@ define([], function() {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
-        	
+        	// Tokens so far are always uppercase; this is hardcoded in the API, so safe to assume here:
+			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase();
+
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
+				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.");
 
 				if (confirm) {
 		        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
 		        		$scope.activeAuthorisations = api.authorisations.get();
 		        		$scope.authenticationToken = {value: null};
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-		        	}).catch(function(e){
-		        		// this is likely to be a throttling error message.
-		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-		        	})  						
+		        	})						
 				}
         	}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        		console.error(e);
+        		if (e.status == 429) {
+					$scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
+        		} else {
+        			$scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 letters in length.");
+        		}
         	});
         }
 
