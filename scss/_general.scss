@@ -483,9 +483,18 @@ h6~.subheader { position: relative; bottom:  8px;}
 
 
 // Questions
-.question-prefix{
+.question-prefix {
     position:absolute;
-    margin-left:-30px
+    margin-left:-35px;
+}
+
+@media #{$small-only} {
+    .question-prefix {
+        margin-left:0px;
+    }
+    .question-title {
+        text-indent: 1em;
+    }
 }
 
 .superseded-warning {
