@@ -123,7 +123,7 @@
                                     <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
                                     <td>{{result.email}}</td>
                                     <td>{{result.role || "NOT_SET"}}</td>
-                                    <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td title="{{result.schoolId}}">{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.emailVerificationStatus || "NOT_SET"}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
