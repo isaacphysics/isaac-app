@@ -118,6 +118,10 @@ define([], function() {
 				updateGroupAssignmentMap(newBoards.results);
 				// Remove duplicate boards caused by changing board list in another tab. Test uniqueness on board ID.
 				$scope.boards.results = _.unionWith($scope.boards.results, newBoards.results, function(a,b) {return a.id == b.id});
+				// Avoid issues if boards have been deleted in another tab:
+				if ($scope.boards.totalResults > newBoards.totalResults) {
+					$scope.boards.totalResults = newBoards.totalResults;
+				}
 				$scope.setLoading(false);
 				mergeInProgress = false;
 			});
