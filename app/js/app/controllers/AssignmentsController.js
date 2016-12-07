@@ -114,10 +114,10 @@ define([], function() {
 			mergeInProgress = true;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
-				// Merge new boards into results 
-				updateGroupAssignmentMap(newBoards.results)
-
-				$.merge($scope.boards.results, newBoards.results);
+				// Augment new boards and merge them into results:
+				updateGroupAssignmentMap(newBoards.results);
+				// Remove duplicate boards caused by changing board list in another tab. Test uniqueness on board ID.
+				$scope.boards.results = _.unionWith($scope.boards.results, newBoards.results, function(a,b) {return a.id == b.id});
 				$scope.setLoading(false);
 				mergeInProgress = false;
 			});
