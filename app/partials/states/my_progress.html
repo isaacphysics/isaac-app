@@ -94,7 +94,8 @@
     <div ng-show="progress.totalQuestionsAttempted == 0">
        <div class="row">
           <div class="small-16 text-center columns">
-             <p>You have not answered any questions yet. There are no statistics to display.</p>
+             <p ng-if="viewingOwnData">You have not answered any questions yet. There are no statistics to display.</p>
+             <p ng-if="!viewingOwnData">This user has not answered any questions yet. There are no statistics to display.</p>
           </div>
        </div>
     </div>
