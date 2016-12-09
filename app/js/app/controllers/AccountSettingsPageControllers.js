@@ -32,6 +32,7 @@ define([], function() {
 		if ($scope.user.defaultLevel) {
 			$scope.user.defaultLevel = String($scope.user.defaultLevel);
 		}
+		var oldSchool = $scope.user.schoolId;
 
 		// the hash will be used as an anchor
 		if($location.hash){
@@ -214,6 +215,10 @@ define([], function() {
         		var userSettings = {
         			registeredUser : $scope.user,
         			emailPreferences : $scope.emailPreferences
+        		}
+        		if (userSettings.registeredUser.schoolId == null && userSettings.registeredUser.schoolOther == null && oldSchool != null) {
+        			// Restore any school Isaac no longer recognises if a new one isn't added:
+        			userSettings.registeredUser.schoolId = oldSchool;
         		}
 
         		// add the current password if it's confirmed, and put new password in user object
