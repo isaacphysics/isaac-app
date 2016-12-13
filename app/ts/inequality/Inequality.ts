@@ -50,7 +50,7 @@ export
     xBox: Rect = null;
     mBox: Rect = null;
 
-    baseFontSize = 70;
+    baseFontSize = 60;
     font_it: p5.Font = null;
     font_up: p5.Font = null;
 
