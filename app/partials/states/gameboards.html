@@ -88,7 +88,15 @@
                     <div class="medium-6 small-16 columns text-center">
                         <h2 ng-show="editedGameBoardTitle == null" ng-click="editedGameBoardTitle=(user._id == gameBoard.ownerUserId ? (gameBoard.title || generateGameBoardTitle(gameBoard)) : null)">{{gameBoard.title || generateGameBoardTitle(gameBoard)}}</h2>
                         <br/>
-                        <strong><a ng-show="gameBoard.$resolved && editedGameBoardTitle == null && !gameBoard.savedToCurrentUser" href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">Add to My Boards</a></strong>
+                        <strong>
+                            <a ng-show="gameBoard.$resolved && editedGameBoardTitle == null && !gameBoard.savedToCurrentUser" 
+                               href="javascript:void(0)" 
+                               ui-sref="addBoard({boardId:gameBoard.id})"
+                               ng-switch="$root.user.role">
+                               <span ng-switch-when="STUDENT">Save to My Boards</span>
+                               <span ng-switch-default>Save board or set as assignment</span>
+                            </a>
+                        </strong>
 
                         <span ng-hide="editedGameBoardTitle==null">
                             <form>
