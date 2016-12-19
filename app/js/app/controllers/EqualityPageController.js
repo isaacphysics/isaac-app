@@ -15,6 +15,7 @@
  */
 define([], function() {
     var PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+        $scope.eqnEditorSeed = null;
         $scope.editorMode = "maths";
         if ($stateParams.mode == 'chemistry') {
             $scope.editorMode = "chemistry"
@@ -24,9 +25,21 @@ define([], function() {
                 availableSymbols: $stateParams.symbols.split(",")
             }
         }
-        $scope.selectedFormula = {
+        $scope.eqnState = {
             symbols: {}
         };
+        $scope.$watch("eqnEditorSeed", function(s) {
+            if (s == null) return;
+            try {
+                var seed = JSON.parse(s);
+                $scope.eqnState = {
+                    symbols: seed,
+                    result: { tex: seed[0].expression.latex, python: seed[0].expression.python }
+                }
+            } catch (e) {
+                console.error("Invalid seed.");
+            }
+        });
     }];
 
     return {
