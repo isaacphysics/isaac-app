@@ -66,7 +66,7 @@
 	}
 
 	.account-settings-personal-information{
-		overflow:auto;
+		overflow: inherit;
 		&.content.active{
 			padding-top:0;
 		}	
@@ -137,6 +137,7 @@ input.account-settings-input {
 	background: #fff;
 	border-left: 1px solid #999;
 	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
 	li {
 		padding: 5px 10px;
 		&:hover {
