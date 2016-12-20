@@ -112,10 +112,44 @@ define([], function() {
             $timeout(function() {
                 // Call this asynchronously, so that loading icon doesn't get immediately clobbered by $stateChangeSuccess.
                 $scope.loadMore();
+                $scope.loadMap();
             });
         });
 
         $scope.events = [];
+        $scope.eventPopup = {};
+
+        $scope.map = {
+            center: {latitude: 54.5, longitude: -2},//{ latitude: 53.670680, longitude: -1.582031 },
+            zoom: 5,
+            markersEvents: {
+                click: function(marker, eventName, model, args) {
+                    $scope.map.window.model = model;
+                    $scope.eventPopup = model;
+                    $scope.map.window.show = true;
+                }
+            },
+            window: {
+                marker:{},
+                show: false,
+                closeClick: function() {this.show = false;},
+                options: {}
+            },
+            options: {
+                minZoom: 5,
+                maxZoom: 15,
+                streetViewControl: false,
+            }
+        };
+        $scope.locations = [];
+
+        $scope.loadMap = function() {
+            api.eventMapData.get({"limit":-1, "startIndex": 0, "showActiveOnly": showActiveOnly, "tags": filterEventsByType}).$promise.then(function(result) {
+                $scope.locations = result.results;
+            });
+        }
+
+
         $scope.loadMore = function() {
             $scope.setLoading(true);
             api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType, showBookedOnly).$promise.then(function(result) {
@@ -273,15 +307,15 @@ define([], function() {
                   }
                 }
 
-                if (e.location) {
+                if (e.location && e.location.address) {
                     $scope.jsonLd["location"] = {
                         "@type": "Place",
-                        "name": e.location.addressLine1,
+                        "name": e.location.address.addressLine1,
                         "address": {
-                            "name": e.location.addressLine1,
-                            "streetAddress": e.location.addressLine2,
-                            "addressLocality": e.location.town,
-                            "postalCode": e.location.postalCode,
+                            "name": e.location.address.addressLine1,
+                            "streetAddress": e.location.address.addressLine2,
+                            "addressLocality": e.location.address.town,
+                            "postalCode": e.location.address.postalCode,
                             "addressCountry": "GB"
                         }
                     }

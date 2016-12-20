@@ -267,6 +267,16 @@ div.event-live {
 		margin: 0;
 	}
 }
+
+.events-map {
+	margin-bottom: 15px;
+}
+@media #{$small-only} {
+	.events-map {
+		display: none;
+	}
+}
+
 .event-resources {
 	float: left;
 	width: 100%;

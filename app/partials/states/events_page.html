@@ -21,6 +21,22 @@
         </div>
     </div>
 </div>
+<div class="events-map" ng-if="locations.length != 0 && filterEventsByStatus != 'showBookedOnly' && filterEventsByType != 'virtual'">
+  <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+    <ui-gmap-markers models="locations" coords="'self'" icon="'icon'" events="map.markersEvents">
+    </ui-gmap-markers>
+    <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" closeclick="map.window.closeClick()">
+      <div>
+        <h3><a href="/events/{{eventPopup.id}}" target="_blank">{{eventPopup.title}}</a></h3>
+        {{eventPopup.subtitle}}<br>
+        <b>When:  </b><time datetime="{{eventPopup.date | date:'yyyy-MM-dd H:mm'}}">{{eventPopup.date | date : 'EEE d MMM yyyy'}}</time><br>
+        <b>Location:  </b>{{eventPopup.address.addressLine1}}{{eventPopup.address.town ? ", "+eventPopup.address.town : ""}}<br>
+        <div ng-if="eventPopup.status == 'OPEN'"><b>Places: </b>{{eventPopup.numberOfPlaces - eventPopup.numberOfConfirmedBookings}}<br></div>
+        <a href="/events/{{eventPopup.id}}" target="_blank"><b>View Full Details</b></a>
+       </div>
+    </ui-gmap-window>
+  </ui-gmap-google-map>
+</div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
     <li class="event" ng-repeat="event in events" ng-class="{expired: event.expired}">
       <div class="event-type">
@@ -58,11 +74,11 @@
 -->
                     <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
-                 <tr ng-show="event.location">
+                 <tr ng-show="event.location.address">
                     <td>Location:</td>
-                    <td>{{event.location.addressLine1}}<span ng-if="event.location.town">,</span> {{event.location.town}}</td>
+                    <td>{{event.location.address.addressLine1}}<span ng-if="event.location.address.town">,</span> {{event.location.address.town}}</td>
                  </tr>
-                 <tr ng-show="!event.location && event.virtual">
+                 <tr ng-show="!event.location.address && event.virtual">
                     <td>Location:</td>
                     <td>Online</td>
                  </tr>
