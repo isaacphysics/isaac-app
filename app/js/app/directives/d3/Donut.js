@@ -49,8 +49,8 @@ define([], function() {
                     // switch colours
                     switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
-                            range = ['#6c388c', '#189ace'];
-                            label_range = ['#ffffff', '#ffffff']
+                            range = ['#6c388c', '#189ace', '#ef3e36'];
+                            label_range = ['#ffffff', '#ffffff', '#ffffff']
                             break;
                         case 'physics':
                             range = [];

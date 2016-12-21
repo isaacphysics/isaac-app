@@ -62,7 +62,8 @@ define([], function() {
 
 			$scope.subjectData = [
 				{label: 'Physics', val: $scope.progress.attemptsByTag["physics"] || 0},
-				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0}
+				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0},
+				{label: 'Chemistry', val: $scope.progress.attemptsByTag["chemistry"] || 0}
 			];
 
 			var attemptedFields = [];
