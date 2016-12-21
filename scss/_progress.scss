@@ -160,7 +160,7 @@
         font-size: 18px;
         line-height: 20px;
         vertical-align: top;
-        padding: 8px 12px 8px 36px;
+        padding: 8px 12px 8px 45px;
 
         &:before {
             position: absolute;
@@ -173,7 +173,7 @@
             content: counter(board-count) ". ";
             background-color: $ru_green;
             padding: 8px 6px 0;
-            min-width: 30px;
+            min-width: 35px;
             text-align: right;
         }
     }
