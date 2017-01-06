@@ -54,7 +54,7 @@
               <span ng-if="event.expired" class="error">This event is in the past.</span>
             </td>
           </tr>
-          <tr ng-show="event.location.address">
+          <tr ng-show="event.location.address.addressLine1">
             <td>Location:</td>
             <td>{{event.location.address.addressLine1}}, {{event.location.address.addressLine2}}, {{event.location.address.town}}, {{event.location.address.postalCode}}</td>
           </tr>
@@ -259,7 +259,7 @@
       -->
     </div>
 
-    <div class="medium-8 large-16 columns" ng-show="event.location.address">
+    <div class="medium-8 large-16 columns" ng-show="event.location.address.addressLine1">
         <!--
             Map
           -->

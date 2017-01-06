@@ -74,11 +74,11 @@
 -->
                     <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
-                 <tr ng-show="event.location.address">
+                 <tr ng-show="event.location.address.addressLine1">
                     <td>Location:</td>
                     <td>{{event.location.address.addressLine1}}<span ng-if="event.location.address.town">,</span> {{event.location.address.town}}</td>
                  </tr>
-                 <tr ng-show="!event.location.address && event.virtual">
+                 <tr ng-show="!event.location.address.addressLine1 && event.virtual">
                     <td>Location:</td>
                     <td>Online</td>
                  </tr>
