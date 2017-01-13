@@ -36,8 +36,8 @@ define([], function() {
 			}
 		});
 
-		$scope.findBookQuestions = function() {
-			$scope.questionSearchText = "book";
+		$scope.findBookQuestions = function(book_id) {
+			$scope.questionSearchText = "\"" + book_id + "\"";
 			$scope.questionSearchSubject = "";
 			$scope.questionSearchLevel = null;
 			sortField = "title"	;

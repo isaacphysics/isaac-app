@@ -1,13 +1,17 @@
 <div class="game-editor">
 	<div class="row ru-page-heading">
-	    <div class="medium-13 columns">
+	    <div class="medium-14 columns">
 	        <h1>Build an Assignment</h1>
-	        <p class="hide-for-small-only">Build and share game boards. Click <strong><a ng-click="findBookQuestions()">here</a></strong> to choose question pages from our <a target="_blank" ui-sref="book">book</a>.</p>
 	    </div>
-	    <div class="medium-3 columns text-right hide-for-small-only">
+	    <div class="medium-2 columns text-right hide-for-small-only">
 	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</a>
 	    </div>
-	</div>	
+	</div>
+	<div class="row ru-page-heading">
+		<div class="columns">
+			<p class="hide-for-small-only">Click the following links to choose questions from our <strong><a ng-click="findBookQuestions('physics_skills_14')">Mastering Physics</a></strong> or <strong><a ng-click="findBookQuestions('chemistry_16')">Mastering Chemistry</a></strong> books.</p>
+		</div>
+	</div>
 		<div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
 			<form ng-submit="saveGameBoard()">
 				<div class="row">
