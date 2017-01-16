@@ -620,7 +620,7 @@ div[d3-plot] {
 @media #{$medium-up} { 
     .progress-wrap {
         background-color: #fff;
-        padding: 30px 20px;
+        padding: 15px 20px 20px 20px;
         border:#999 1px solid;
     }
     .progress-tabs-content {
@@ -811,17 +811,25 @@ div[d3-plot] {
 
 .progress-wrap {
     h6 {
-        height: 40px;
+        line-height: 2.3rem;
     }
 
     select {
         width: initial;
-        padding-right:40px; 
-        margin-bottom:0;
+        padding-right: 40px; 
+        margin-bottom: 0;
+        max-width: 48%;
     }
 
     .progress-space {
         margin-bottom: 2.5rem;
+    }
+    .progress-small-space {
+        margin-bottom: 0.75rem;
+    }
+
+    .progress-bar-box {
+        margin-bottom: 15px;
     }
 }
 

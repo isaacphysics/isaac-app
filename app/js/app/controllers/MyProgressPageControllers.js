@@ -51,24 +51,37 @@ define([], function() {
 
 		$scope.progress.$promise.then(function() {
 			$scope.setLoading(false);
+
+			$scope.progress.percentCorrectQuestions = Math.round(100*$scope.progress.totalQuestionsCorrect/$scope.progress.totalQuestionsAttempted);
+			$scope.progress.percentCorrectQuestionParts = Math.round(100*$scope.progress.totalQuestionPartsCorrect/$scope.progress.totalQuestionPartsAttempted);
+
+			$scope.progress.percentCorrectNumeric = Math.round(100*$scope.progress.correctByType["isaacNumericQuestion"]/$scope.progress.attemptsByType["isaacNumericQuestion"]) || 0;
+			$scope.progress.percentCorrectMultiChoice = Math.round(100*$scope.progress.correctByType["isaacMultiChoiceQuestion"]/$scope.progress.attemptsByType["isaacMultiChoiceQuestion"]) || 0;
+			$scope.progress.percentCorrectSymbolic = Math.round(100*$scope.progress.correctByType["isaacSymbolicQuestion"]/$scope.progress.attemptsByType["isaacSymbolicQuestion"]) || 0;
+			$scope.progress.percentCorrectSymbolicChemistry = Math.round(100*$scope.progress.correctByType["isaacSymbolicChemistryQuestion"]/$scope.progress.attemptsByType["isaacSymbolicChemistryQuestion"]) || 0;
+			$scope.progress.percentCorrectPhysicsSkills14 = Math.round(100*$scope.progress.correctByTag["physics_skills_14"]/$scope.progress.attemptsByTag["physics_skills_14"]) || 0;
+			$scope.progress.percentCorrectChemistry16 = Math.round(100*$scope.progress.correctByTag["chemistry_16"]/$scope.progress.attemptsByTag["chemistry_16"]) || 0;
+
+
 			$scope.levelData = [
-				{label: 'Level 1', val: $scope.progress.attemptsByLevel["1"] || 0},
-				{label: 'Level 2', val: $scope.progress.attemptsByLevel["2"] || 0},
-				{label: 'Level 3', val: $scope.progress.attemptsByLevel["3"] || 0},
-				{label: 'Level 4', val: $scope.progress.attemptsByLevel["4"] || 0},
-				{label: 'Level 5', val: $scope.progress.attemptsByLevel["5"] || 0},
-				{label: 'Level 6', val: $scope.progress.attemptsByLevel["6"] || 0}
+				{label: 'Level 1', val: $scope.progress.correctByLevel["1"] || 0},
+				{label: 'Level 2', val: $scope.progress.correctByLevel["2"] || 0},
+				{label: 'Level 3', val: $scope.progress.correctByLevel["3"] || 0},
+				{label: 'Level 4', val: $scope.progress.correctByLevel["4"] || 0},
+				{label: 'Level 5', val: $scope.progress.correctByLevel["5"] || 0},
+				{label: 'Level 6', val: $scope.progress.correctByLevel["6"] || 0}
 			];
 
 			$scope.subjectData = [
-				{label: 'Physics', val: $scope.progress.attemptsByTag["physics"] || 0},
-				{label: 'Maths', val: $scope.progress.attemptsByTag["maths"] || 0},
-				{label: 'Chemistry', val: $scope.progress.attemptsByTag["chemistry"] || 0}
+				{label: 'Physics', val: $scope.progress.correctByTag["physics"] || 0},
+				{label: 'Maths', val: $scope.progress.correctByTag["maths"] || 0},
+				{label: 'Chemistry', val: $scope.progress.correctByTag["chemistry"] || 0}
 			];
 
+			$scope.fieldData = [];
 			var attemptedFields = [];
 			$scope.fields = [];
-			for (var tid in $scope.progress.attemptsByTag) {
+			for (var tid in $scope.progress.correctByTag) {
 				var t = tags.getById(tid);
 				if (t && t.level == 1) {
 					attemptedFields.push(t);
@@ -76,16 +89,15 @@ define([], function() {
 				}
 			}
 
-			if (attemptedFields.length == 0)
+			if (attemptedFields.length == 0) {
 				return;
+			}
 
 			$scope.field = {
 				selection: attemptedFields[0],
 			};
 
 			$scope.topicsSubject = attemptedFields[0].parent;
-
-			$scope.progress.percentCorrect = Math.round(100*$scope.progress.totalCorrect/$scope.progress.totalQuestionsAttempted);
 
 			$scope.$watch("field.selection", function(newField) {
 
@@ -96,7 +108,7 @@ define([], function() {
 					var t = topics[i];
 					$scope.fieldData.push({
 						label: t.title,
-						val: $scope.progress.attemptsByTag[t.id] || 0,
+						val: $scope.progress.correctByTag[t.id] || 0,
 					})
 				}
 

@@ -5,17 +5,21 @@
         <p ng-if="viewingOwnData" class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="View your progress on Isaac Physics. A question is usually a single hexagon, which can contain several question parts." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="View your progress on Isaac. A question (or question page) is usually a single hexagon from a board, which can contain several question parts." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="row">
   <div class="small-16 columns progress-wrap">
-    <div ng-show="progress.totalQuestionsAttempted != 0">
+    <div ng-show="progress && progress.totalQuestionsAttempted != 0">
        <div class="row progress-space">
-        <div class="medium-12 small-16 columns medium-offset-2 end">
+        <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
+          <h6>Questions completed <span class="ru_green">correctly</span></h6>
+          <div progress-bar class="progress-bar" value="progress.totalQuestionsCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrectQuestions}}%"></div>
+        </div>
+        <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
           <h6>Question parts answered <span class="ru_green">correctly</span></h6>
-          <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrect}}%"></div>
-         </div>
+          <div progress-bar class="progress-bar" value="progress.totalQuestionPartsCorrect" max="progress.totalQuestionPartsAttempted" title="{{progress.percentCorrectQuestionParts}}%"></div>
+        </div>
        </div>
        <div class="row">
           <div class="large-16 columns">
@@ -32,21 +36,22 @@
     -->
                 <li>
                   <div class="graph-wrapper">
-                    <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+                    <h6>Questions correct by <span class="ru_green">Subject</span></h6>
                     <div d3-donut data="subjectData" color-palette="'subjects'"></div>
                   </div>
                 </li>
                 <li>
                   <div class="graph-wrapper">
-                   <h6>Question attempts in &nbsp;
+                   <h6 ng-hide="fields.length == 0">Questions correct in &nbsp;
                     <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
                    </h6>
-                   <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
+                   <h6 ng-show="fields.length == 0">Questions correct by <span class="ru_green">Topic</span></h6>
+                   <div d3-donut data="fieldData" color-palette="'topicsSubject'"></div>
                   </div>
                 </li>
                 <li>
                   <div class="graph-wrapper">
-                    <h6>Questions attempted by <span class="ru_green">Level</span></h6>
+                    <h6>Questions correct by <span class="ru_green">Level</span></h6>
                     <div d3-donut data="levelData" color-palette="'levels'"></div>
                   </div>
                 </li>
@@ -55,6 +60,44 @@
                    <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
                 </li> -->
              </ul>
+
+            <h6>Isaac Books</h6>
+            <ul class="small-block-grid-1 progress-space">
+              <li>
+                <div class="progress-bar-box">
+                  <span>Mastering Essential Pre-University Physics pages completed <span class="ru_green">correctly</span></span>
+                  <div progress-bar class="progress-bar" value="progress.correctByTag['physics_skills_14']" max="progress.attemptsByTag['physics_skills_14']" title="{{progress.percentCorrectPhysicsSkills14}}%"></div>
+                </div>
+              </li>
+            </ul>
+
+            <h6>Question parts correct by <span class="ru_green">Type</span></h6>
+            <ul class="large-block-grid-4 medium-block-grid-2 small-block-grid-1 progress-space">
+              <li>
+                <div class="progress-bar-box">
+                  <span>Numeric Questions</span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacNumericQuestion']" max="progress.attemptsByType['isaacNumericQuestion']" title="{{progress.percentCorrectNumeric}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box">
+                  <span>Multiple Choice Questions</span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacMultiChoiceQuestion']" max="progress.attemptsByType['isaacMultiChoiceQuestion']" title="{{progress.percentCorrectMultiChoice}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box end">
+                  <span>Symbolic Questions</span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacSymbolicQuestion']" max="progress.attemptsByType['isaacSymbolicQuestion']" title="{{progress.percentCorrectSymbolic}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box end">
+                  <span>Symbolic Chemistry Questions</span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacSymbolicChemistryQuestion']" max="progress.attemptsByType['isaacSymbolicChemistryQuestion']" title="{{progress.percentCorrectSymbolicChemistry}}%"></div>
+                </div>
+              </li>
+            </ul>
 
             <!-- 
               Line graph
@@ -91,7 +134,7 @@
       </div>
     </div>
 
-    <div ng-show="progress.totalQuestionsAttempted == 0">
+    <div ng-show="!progress || progress.totalQuestionsAttempted == 0">
        <div class="row">
           <div class="small-16 text-center columns">
              <p ng-if="viewingOwnData">You have not answered any questions yet. There are no statistics to display.</p>
