@@ -87,10 +87,8 @@ define([], function() {
 
                     // Define axis ranges & scales        
                     var xScale = d3.time.scale()
-                        .domain([minX, maxX])
+                        .domain([minX, maxX]).nice(d3.time.year)
                         .range([padding, w - 30]);
-
-                        console.log('Start date = ' + new Date(minX).toString());
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
@@ -167,9 +165,9 @@ define([], function() {
                     var xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
-                        .ticks(5)
+                        .ticks(6)
                         .tickSize(-h).tickSubdivide(true)
-                        .tickFormat(d3.time.format("%b"));
+                        .tickFormat(d3.time.format("%b %y"));
 
                     //Define Y axis
                     var yAxis = d3.svg.axis()

@@ -39,26 +39,39 @@ define([], function() {
 
 		api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result){
 			$scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
+			$scope.showQuestionsOverTime = false;
 			for (var property in $scope.questionsAnsweredOverTime) {
-			    // remove underscores in series label.
 			    if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
+			        for (var i in $scope.questionsAnsweredOverTime[property]) {
+			        	$scope.showQuestionsOverTime = true; // There is data to show.
+			        	break;
+			        }
+    			    // remove underscores in series label.
 			        $scope.questionsAnsweredOverTime[property.replace("_", " ").toLowerCase()] = $scope.questionsAnsweredOverTime[property];
 			        delete $scope.questionsAnsweredOverTime[property];
 			    }
 			}			
 			$scope.setLoading(false);
-		})
+		}).catch(function(e) {
+			console.error("Unable to load user timeline:", e);
+			$timeout(function() {
+				// Call this asynchronously, so that it happens later than the previous asynchronous call (!)
+				$scope.setLoading(false);
+			});
+		});
 
 		$scope.progress.$promise.then(function() {
 			$scope.setLoading(false);
 
 			$scope.progress.percentCorrectQuestions = Math.round(100*$scope.progress.totalQuestionsCorrect/$scope.progress.totalQuestionsAttempted);
 			$scope.progress.percentCorrectQuestionParts = Math.round(100*$scope.progress.totalQuestionPartsCorrect/$scope.progress.totalQuestionPartsAttempted);
+			$scope.progress.symbolicCorrect = ($scope.progress.correctByType["isaacSymbolicQuestion"] || 0) + ($scope.progress.correctByType["isaacSymbolicChemistryQuestion"] || 0);
+			$scope.progress.symbolicAttempts = ($scope.progress.attemptsByType["isaacSymbolicQuestion"] || 0) + ($scope.progress.attemptsByType["isaacSymbolicChemistryQuestion"] || 0);
 
 			$scope.progress.percentCorrectNumeric = Math.round(100*$scope.progress.correctByType["isaacNumericQuestion"]/$scope.progress.attemptsByType["isaacNumericQuestion"]) || 0;
 			$scope.progress.percentCorrectMultiChoice = Math.round(100*$scope.progress.correctByType["isaacMultiChoiceQuestion"]/$scope.progress.attemptsByType["isaacMultiChoiceQuestion"]) || 0;
-			$scope.progress.percentCorrectSymbolic = Math.round(100*$scope.progress.correctByType["isaacSymbolicQuestion"]/$scope.progress.attemptsByType["isaacSymbolicQuestion"]) || 0;
-			$scope.progress.percentCorrectSymbolicChemistry = Math.round(100*$scope.progress.correctByType["isaacSymbolicChemistryQuestion"]/$scope.progress.attemptsByType["isaacSymbolicChemistryQuestion"]) || 0;
+			$scope.progress.percentCorrectSymbolic = Math.round(100*$scope.progress.symbolicCorrect/$scope.progress.symbolicAttempts) || 0;
+
 			$scope.progress.percentCorrectPhysicsSkills14 = Math.round(100*$scope.progress.correctByTag["physics_skills_14"]/$scope.progress.attemptsByTag["physics_skills_14"]) || 0;
 			$scope.progress.percentCorrectChemistry16 = Math.round(100*$scope.progress.correctByTag["chemistry_16"]/$scope.progress.attemptsByTag["chemistry_16"]) || 0;
 

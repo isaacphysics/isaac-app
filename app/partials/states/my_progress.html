@@ -5,7 +5,7 @@
         <p ng-if="viewingOwnData" class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="View your progress on Isaac. A question (or question page) is usually a single hexagon from a board, which can contain several question parts." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="View your progress on Isaac. <br><br>A <i>question</i> (or question page) is usually a single hexagon from a board, which can contain several <i>question parts</i>. <br><br>Symbolic questions are those which require an equation as an answer." data-html="true" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="row">
@@ -13,11 +13,11 @@
     <div ng-show="progress && progress.totalQuestionsAttempted != 0">
        <div class="row progress-space">
         <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
-          <h6>Questions completed <span class="ru_green">correctly</span></h6>
+          <h6>Questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></h6>
           <div progress-bar class="progress-bar" value="progress.totalQuestionsCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrectQuestions}}%"></div>
         </div>
         <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
-          <h6>Question parts answered <span class="ru_green">correctly</span></h6>
+          <h6>Question parts <span class="ru_green">correct</span> of those <span class="progress-attempted">attempted</span></h6>
           <div progress-bar class="progress-bar" value="progress.totalQuestionPartsCorrect" max="progress.totalQuestionPartsAttempted" title="{{progress.percentCorrectQuestionParts}}%"></div>
         </div>
        </div>
@@ -46,7 +46,7 @@
                     <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
                    </h6>
                    <h6 ng-show="fields.length == 0">Questions correct by <span class="ru_green">Topic</span></h6>
-                   <div d3-donut data="fieldData" color-palette="'topicsSubject'"></div>
+                   <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
                   </div>
                 </li>
                 <li>
@@ -65,36 +65,30 @@
             <ul class="small-block-grid-1 progress-space">
               <li>
                 <div class="progress-bar-box">
-                  <span>Mastering Essential Pre-University Physics pages completed <span class="ru_green">correctly</span></span>
+                  <span><a class="book-title" ui-sref="book_physics_skills_14">Mastering Essential Pre-University Physics</a> sections completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
                   <div progress-bar class="progress-bar" value="progress.correctByTag['physics_skills_14']" max="progress.attemptsByTag['physics_skills_14']" title="{{progress.percentCorrectPhysicsSkills14}}%"></div>
                 </div>
               </li>
             </ul>
 
             <h6>Question parts correct by <span class="ru_green">Type</span></h6>
-            <ul class="large-block-grid-4 medium-block-grid-2 small-block-grid-1 progress-space">
+            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
               <li>
                 <div class="progress-bar-box">
-                  <span>Numeric Questions</span>
+                  <span>Numeric questions <span class="ru_green">correct</span></span>
                   <div progress-bar class="progress-bar" value="progress.correctByType['isaacNumericQuestion']" max="progress.attemptsByType['isaacNumericQuestion']" title="{{progress.percentCorrectNumeric}}%"></div>
                 </div>
               </li>
               <li>
                 <div class="progress-bar-box">
-                  <span>Multiple Choice Questions</span>
+                  <span>Multiple Choice questions <span class="ru_green">correct</span></span>
                   <div progress-bar class="progress-bar" value="progress.correctByType['isaacMultiChoiceQuestion']" max="progress.attemptsByType['isaacMultiChoiceQuestion']" title="{{progress.percentCorrectMultiChoice}}%"></div>
                 </div>
               </li>
               <li>
                 <div class="progress-bar-box end">
-                  <span>Symbolic Questions</span>
-                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacSymbolicQuestion']" max="progress.attemptsByType['isaacSymbolicQuestion']" title="{{progress.percentCorrectSymbolic}}%"></div>
-                </div>
-              </li>
-              <li>
-                <div class="progress-bar-box end">
-                  <span>Symbolic Chemistry Questions</span>
-                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacSymbolicChemistryQuestion']" max="progress.attemptsByType['isaacSymbolicChemistryQuestion']" title="{{progress.percentCorrectSymbolicChemistry}}%"></div>
+                  <span>Symbolic questions <span class="ru_green">correct</span></span>
+                  <div progress-bar class="progress-bar" value="progress.symbolicCorrect" max="progress.symbolicAttempts" title="{{progress.percentCorrectSymbolic}}%"></div>
                 </div>
               </li>
             </ul>
@@ -103,7 +97,8 @@
               Line graph
             -->
             <h6>Question attempts <span class="ru_green">over time</span></h6>
-            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <div ng-show="showQuestionsOverTime" d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <div ng-hide="showQuestionsOverTime" class='text-center'><i>No Data in Last 12 Months</i></div>
 
             <!-- 
               Area graph
