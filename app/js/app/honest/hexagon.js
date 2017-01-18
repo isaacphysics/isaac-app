@@ -190,6 +190,7 @@ define([ 'jquery','lib/honest/d3.min'],
             {
                 // Clear target
                 where.empty();
+                console.log("VERSION", d3.version);
                 
                 // Create D3 enter for each item
                 var plot = d3.select(where[0]).selectAll("a")
