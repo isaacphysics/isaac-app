@@ -2,7 +2,7 @@
  * Library to render a series of hexagons from arbitrary data
  * Requires jQuery and D3
  */
-define([ 'jquery','lib/honest/d3.min'],
+define([ 'jquery','d3'],
     function($, d3) 
     {  
         // NOTE this could be encapsulated further (into a Class) but all use cases
@@ -190,7 +190,6 @@ define([ 'jquery','lib/honest/d3.min'],
             {
                 // Clear target
                 where.empty();
-                console.log("VERSION", d3.version);
                 
                 // Create D3 enter for each item
                 var plot = d3.select(where[0]).selectAll("a")
