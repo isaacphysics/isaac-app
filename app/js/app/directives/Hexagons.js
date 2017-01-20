@@ -32,6 +32,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                     var trimmedUrl = d.url.trim();
 
                     $(this).attr("href", trimmedUrl);
+                    $(this).attr("target", "_self");
 
                     // if this looks like an external link then open in a new tab
                     if (trimmedUrl.indexOf("http://") === 0 || trimmedUrl.indexOf("https://") === 0) {
