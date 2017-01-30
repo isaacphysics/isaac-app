@@ -6,6 +6,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:rw"
       - "~/.docker/config.json:/root/.docker/config.json:ro"
+      - "./build.sh:/build.sh:ro"
     network_mode: bridge
 networks:
   default:
