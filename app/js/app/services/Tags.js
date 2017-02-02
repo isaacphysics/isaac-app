@@ -141,8 +141,7 @@ define([], function() {
 				parent: "maths"
 			}, {
 				id: "functions",
-				parent: "maths",
-				comingSoon:true,
+				parent: "maths"
 			},
 			// Removed 18/8/16
 			// {
@@ -206,9 +205,9 @@ define([], function() {
 				id: "general_functions",
 				parent: "functions"
 			}, {
-				id: "sketching",
+				id: "graph_sketching",
 				parent: "functions",
-				title: "Graph Sketching"
+				comingSoon: true,
 			},
 
 			// // Probability topics
