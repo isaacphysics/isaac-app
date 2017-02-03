@@ -22,19 +22,17 @@
                             <tr>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'title'; reverse=!reverse">Title</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Date</a></th>
-                                <th>Location</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'location.address.town'; reverse=!reverse">Location</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfConfirmedBookings'; reverse=!reverse">Number Confirmed</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfWaitingListBookings'; reverse=!reverse">Number Waiting</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfPlaces'; reverse=!reverse">Total Spaces</a></th>
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
                                 <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}}</a></td>
                                 <td>{{event.date | date:'dd/MM/yyyy'}}</td>
-                                <td>{{event.location.addressLine1}}</td>
-                                <td>{{event.numberOfConfirmedBookings}}</td>
+                                <td>{{event.location.address.town}}</td>
+                                <td>{{event.numberOfConfirmedBookings}} / {{event.numberOfPlaces}}</td>
                                 <td>{{event.numberOfWaitingListBookings}}</td>
-                                <td>{{event.numberOfPlaces}}</td>
                                 <td><a href="" ng-click="updateBookingInfo(event.id)">Manage Bookings</a></td>
                             </tr>
                         </table>
