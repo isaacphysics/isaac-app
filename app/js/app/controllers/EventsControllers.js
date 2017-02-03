@@ -195,7 +195,7 @@ define([], function() {
             }
 
             // validation for users / forms that indicate the booker is not a teacher
-            if ($scope.user.role != 'TEACHER' && $scope.additionalInformation.yearGroup != 'TEACHER') {
+            if ($scope.user.role == 'STUDENT' && !($scope.additionalInformation.yearGroup == 'TEACHER' || $scope.additionalInformation.yearGroup == 'OTHER')) {
                 if (!$scope.additionalInformation.yearGroup) {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group is required", "You must enter a year group to proceed.");
                     return false;   
@@ -208,7 +208,7 @@ define([], function() {
             }
             
             // validation for users that are teachers
-            if ($scope.user.role == 'TEACHER') {
+            if ($scope.user.role != 'STUDENT') {
                 if (!$scope.additionalInformation.jobTitle) {
                     $scope.showToast($scope.toastTypes.Failure, "Job Title is required", "You must enter a job title to proceed.");
                     return false;   
