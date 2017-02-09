@@ -23,7 +23,7 @@
 </div>
 <div class="events-map" ng-if="locations.length != 0 && filterEventsByStatus != 'showBookedOnly' && filterEventsByType != 'virtual'">
   <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
-    <ui-gmap-markers models="locations" coords="'self'" icon="'icon'" events="map.markersEvents">
+    <ui-gmap-markers models="locations" coords="'self'" icon="'icon'" type="'spider'" typeEvents="typeEvents">
     </ui-gmap-markers>
     <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" closeclick="map.window.closeClick()">
       <div>

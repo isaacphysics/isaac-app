@@ -122,13 +122,6 @@ define([], function() {
         $scope.map = {
             center: {latitude: 54.5, longitude: -2},//{ latitude: 53.670680, longitude: -1.582031 },
             zoom: 5,
-            markersEvents: {
-                click: function(marker, eventName, model, args) {
-                    $scope.map.window.model = model;
-                    $scope.eventPopup = model;
-                    $scope.map.window.show = true;
-                }
-            },
             window: {
                 marker:{},
                 show: false,
@@ -142,6 +135,13 @@ define([], function() {
             }
         };
         $scope.locations = [];
+        $scope.typeEvents = {
+                click: function(cluster, clusterModel) {
+                    $scope.map.window.model = cluster.model;
+                    $scope.eventPopup = cluster.model;
+                    $scope.map.window.show = true;
+                },
+        };
 
         $scope.loadMap = function() {
             api.eventMapData.get({"limit":-1, "startIndex": 0, "showActiveOnly": showActiveOnly, "tags": filterEventsByType}).$promise.then(function(result) {
