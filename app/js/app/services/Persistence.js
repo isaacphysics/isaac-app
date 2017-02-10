@@ -23,8 +23,10 @@ define([], function() {
 		this.save = function save(key, value) {
 			try {
 				$window.localStorage[key] = value;
+				return true;
 			} catch (e) {
 				console.error("Failed to save to local storage. This might be a browser restriction.", e);
+				return false;
 			}
 		}
 
@@ -41,8 +43,10 @@ define([], function() {
 			save: function sessionSave(key, value) {
 				try {
 					$window.sessionStorage[key] = value;
+					return true;
 				} catch (e) {
 					console.error("Failed to save to session storage. This might be a browser restriction.", e);
+					return false;
 				}
 			},
 

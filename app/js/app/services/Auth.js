@@ -134,20 +134,24 @@ define([], function() {
 			cancelUserConsistencyCheck();
 			// Note: Had to use local storage rather than cookies for this because cookies sometimes did not update across browser tabs in chrome.
 			// This is especially so when using third party authenticators for some reason.
-			persistence.save("currentUserId", $rootScope.user._id)
+			// We also need to make sure that we can in fact write to Local Storage before setting the timeout!
+			if (persistence.save("currentUserId", $rootScope.user._id)) {
 
-			interval = $interval(function() {
-				var currentId = persistence.load("currentUserId")
-				if (currentId != $rootScope.user._id) {
-	            	cancelUserConsistencyCheck();
-	            	$rootScope.modals.userConsistencyError.show();
-					// we want to know how often this happens.
-					api.logger.log({
-						type: "USER_CONSISTENCY_WARNING_SHOWN"
-					});
-	            	$rootScope.user = api.currentUser.get();
-				}
-	        }, 1000)		
+				interval = $interval(function() {
+					var currentId = persistence.load("currentUserId")
+					if (currentId != $rootScope.user._id) {
+		            	cancelUserConsistencyCheck();
+		            	$rootScope.modals.userConsistencyError.show();
+						// we want to know how often this happens.
+						api.logger.log({
+							type: "USER_CONSISTENCY_WARNING_SHOWN"
+						});
+		            	$rootScope.user = api.currentUser.get();
+					}
+		        }, 1000)
+			} else {
+				console.error("Cannot perform user consistency checking!");
+			}
 		}
 
 		var cancelUserConsistencyCheck = function() {
@@ -156,7 +160,7 @@ define([], function() {
 	        	$interval.cancel(interval);
 	        	interval = null;
 	        }   
-		}		
+		}
 	}];
 
 	// this should not be used in the router resolver property as it will only return once.
