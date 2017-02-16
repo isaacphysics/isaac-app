@@ -144,13 +144,18 @@ define([], function() {
 		            	$rootScope.modals.userConsistencyError.show();
 						// we want to know how often this happens.
 						api.logger.log({
-							type: "USER_CONSISTENCY_WARNING_SHOWN"
+							type: "USER_CONSISTENCY_WARNING_SHOWN",
+							userAgent: navigator.userAgent,
 						});
 		            	$rootScope.user = api.currentUser.get();
 					}
 		        }, 1000)
 			} else {
 				console.error("Cannot perform user consistency checking!");
+				api.logger.log({
+					type: "USER_CONSISTENCY_CHECKING_FAILED",
+					userAgent: navigator.userAgent,
+				});
 			}
 		}
 
