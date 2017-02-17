@@ -427,20 +427,30 @@ define(["angular-ui-router"], function() {
 
         $sp.state('shareLink', {
             url: "/s/:shortCode",
-            onEnter: ["$stateParams", "api", function($stateParams, api) {
-                var redirectURL = "http://goo.gl/" + $stateParams.shortCode;
-                var doRedirect = function() {
-                    document.location.href = redirectURL;
-                }
+            onEnter: ["$stateParams", "api", "$http", function($stateParams, api, $http) {
+                var redirectURL = "https://goo.gl/" + $stateParams.shortCode;
 
                 api.logger.log({
                     type: "USE_SHARE_LINK",
-                    shortURL: redirectURL,
-                }).$promise.then(function() {
-                    doRedirect();
+                    shortCode: $stateParams.shortCode
+                }).$promise.then(function () {
+                    return $http.get("https://www.googleapis.com/urlshortener/v1/url", {params: {shortUrl: redirectURL, key: 'AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y'}});
+                }).then(function(response) {
+                    if (response.data.status == "OK") {
+                        var longUrl = response.data.longUrl;
+                        if (longUrl.indexOf(window.location.origin) == 0) {
+                            document.location.href = longUrl;
+                        } else {
+                            console.error("This is an external URL: " + longUrl);
+                            // FIXME - do something smarter here!
+                            document.location.href = longUrl;
+                        }
+                    } else {
+                        // FIXME - don't fail silently! Not 'OK' means malware or deleted.
+                    }
                 }).catch(function() {
-                    doRedirect();
-                })
+                    // FIXME - don't fail silently!
+                });
             }]
         });
 

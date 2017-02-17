@@ -30,23 +30,24 @@ define([], function() {
 	                scope.showShareUrl = !scope.showShareUrl;
 	                if (scope.showShareUrl) {
 
-						if(attrs.sharelink) {
-							var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
+						if (attrs.sharelink) {
+							var data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
 						}
 						else {
 							var data = {"longUrl": window.location.href};
 						}
 
 						$http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
-							scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
+							scope.shareUrl = response.data.id.replace("https://goo.gl/", window.location.origin + "/s/");
+							var shortCode = response.data.id.replace("https://goo.gl/", "");
+		                	api.logger.log({
+			                	type: "SHOW_SHARE_URL",
+			                	shortCode: shortCode,
+			                	longUrl: data.longUrl,
+		                	});
 						}).catch(function() {
 							// Fail silently
 						});
-
-	                	api.logger.log({
-		                	type: "SHOW_SHARE_URL",
-		                	shortURL : scope.shareUrl,
-		                });
 	                }
                 };
 			}
