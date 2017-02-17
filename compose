@@ -54,9 +54,7 @@ services:
       - $PG:postgres
     volumes:
       - /local/data/m2:/root/.m2:rw
-      #- /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-      #- /local/data/conf/live_version.$CONTENT.properties:/local/data/rutherford/conf/live_version.properties:$VERSION_FILE_PERMS
-      - /local/data/isaac-config:/local/data/rutherford/conf:ro
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
