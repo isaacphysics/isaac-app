@@ -7,7 +7,7 @@ if [ $# -eq 0 ]
 fi
 
 APP_VERSION=$1
-API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app-$APP_VERSION`
+API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
 ENV=$2
 
 shift 2
@@ -30,15 +30,15 @@ else
   exit 1
 fi
 
-docker pull docker.isaacscience.org/isaac-app-$APP_VERSION
-docker pull docker.isaacscience.org/isaac-api-$API_VERSION
+docker pull docker.isaacscience.org/isaac-app:$APP_VERSION
+docker pull docker.isaacscience.org/isaac-api:$API_VERSION
 
 cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
 version: '2'
 services:
   $APP_NAME:
     container_name: $APP_NAME
-    image: docker.isaacscience.org/isaac-app-$APP_VERSION
+    image: docker.isaacscience.org/isaac-app:$APP_VERSION
     restart: always
     networks:
       default:
@@ -46,7 +46,7 @@ services:
           - app-$ENV
   $API_NAME:
     container_name: $API_NAME
-    image: docker.isaacscience.org/isaac-api-$API_VERSION
+    image: docker.isaacscience.org/isaac-api:$API_VERSION
     restart: always
     extra_hosts:
       - elasticsearch:$LOCAL_ELASTICSEARCH
