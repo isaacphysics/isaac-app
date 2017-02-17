@@ -1,0 +1,83 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: compose VERSION [dev|staging]"
+    exit 1
+fi
+
+APP_VERSION=$1
+API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app-$APP_VERSION`
+ENV=$2
+
+shift 2
+
+API_NAME=api-$ENV-$API_VERSION
+APP_NAME=app-$ENV-$APP_VERSION
+
+if [ "$ENV" == "dev" ]; then
+  PG=pg-dev
+elif [ "$ENV" == "staging" ]; then
+  PG=pg-staging
+elif [ "$ENV" == "live" ]; then
+  echo "Cannot manage live deployment with this script any more. Please use compose-release-live."
+  exit 1
+elif [ "$ENV" == "test" ]; then
+  echo "Cannot manage test deployment with this script any more. Please use compose-test."
+  exit 1
+else
+  echo "Must set environment to dev or staging."
+  exit 1
+fi
+
+docker pull docker.isaacscience.org/isaac-app-$APP_VERSION
+docker pull docker.isaacscience.org/isaac-api-$API_VERSION
+
+cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
+version: '2'
+services:
+  $APP_NAME:
+    container_name: $APP_NAME
+    image: docker.isaacscience.org/isaac-app-$APP_VERSION
+    restart: always
+    networks:
+      default:
+        aliases:
+          - app-$ENV
+  $API_NAME:
+    container_name: $API_NAME
+    image: docker.isaacscience.org/isaac-api-$API_VERSION
+    restart: always
+    extra_hosts:
+      - elasticsearch:$LOCAL_ELASTICSEARCH
+    external_links:
+      - $PG:postgres
+    volumes:
+      - /local/data/m2:/root/.m2:rw
+      #- /local/data/conf/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
+      #- /local/data/conf/live_version.$CONTENT.properties:/local/data/rutherford/conf/live_version.properties:$VERSION_FILE_PERMS
+      - /local/data/isaac-config:/local/data/rutherford/conf:ro
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/rutherford/keys:ro
+      - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+    networks:
+      default:
+        aliases:
+          - api-$ENV-any
+    logging:
+      driver: journald
+      options:
+        tag: isaac-api-$ENV
+  $PG:
+    container_name: $PG
+    image: isaac-pg
+    volumes:
+      - $PG:/pgdata
+    restart: always
+networks:
+  default:
+    external:
+      name: isaac
+EOF
+
+exit 0
