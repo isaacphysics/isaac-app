@@ -78,6 +78,10 @@ networks:
   default:
     external:
       name: isaac
+volumes:
+  $PG:
+    external: true
+
 EOF
 
 exit 0
