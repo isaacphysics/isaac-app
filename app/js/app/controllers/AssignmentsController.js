@@ -259,9 +259,9 @@ define([], function() {
 		});
 
 		$scope.setVisibleBoard = function(state){
-			if (state == 'IN_PROGRESS_RECENT') {
+			if (state === 'IN_PROGRESS_RECENT') {
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
-			} else if (state == 'IN_PROGRESS_OLD') {
+			} else if (state === 'IN_PROGRESS_OLD') {
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressOld;
 			} else {
 				$scope.assignmentsVisible = $scope.myAssignments.completed;
