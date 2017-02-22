@@ -141,29 +141,31 @@ define([], function() {
                 }
             }
 
-			if (correctFields.length == 0) {
-				return;
-			}
-
+            //check if any attempts have been made, if not, return
             if (attemptedFields.length == 0) {
                 return;
             }
-
-			$scope.correctQuestions.field = {
-				selection: correctFields[0],
-			};
 
             $scope.attemptedQuestions.field = {
                 selection: attemptedFields[0],
             };
 
-            $scope.correctQuestions.topicsSubject = correctFields[0].parent;
             $scope.attemptedQuestions.topicsSubject = attemptedFields[0].parent;
 
+            if (correctFields.length != 0) {
+                $scope.correctQuestions.field = {
+                    selection: correctFields[0],
+                };
+                $scope.correctQuestions.topicsSubject = correctFields[0].parent;
+            }
 
 			$scope.$watch("questionsVisible.field.selection", function(newField) {
 
 				$scope.questionsVisible.fieldData = [];
+
+				if ($scope.questionsVisible.field == null) {
+                    return;
+				}
 
 				var topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
 				for(var i in topics) {

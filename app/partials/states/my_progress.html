@@ -24,12 +24,12 @@
        <div class="row">
           <div class="large-16 columns">
 
-              <dl class="tabs profile-tabs no-print">
-                  <dd ng-class="questionsVisible == correctQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Correct Questions </span></a></dd>
-                  <dd ng-class="questionsVisible == attemptedQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Attempted Questions</span></a></dd>
+              <dl class="tabs profile-tabs no-print" id="progressTabs">
+                  <dd ng-class="questionsVisible == correctQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Correct <span class="show-for-medium-up">Questions</span></span></a></dd>
+                  <dd ng-class="questionsVisible == attemptedQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Attempted <span class="show-for-medium-up">Questions</span></span></a></dd>
               </dl>
 
-              <div class="profile-tabs-content">
+              <div class="profile-tabs-content" id="progressTabsContent">
                   <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
 
                       <!--            <li class="show-for-medium-up">
@@ -54,7 +54,7 @@
                               <h6 ng-hide="questionsVisible.fields.length == 0">Questions in &nbsp;
                                   <select ng-model="questionsVisible.field.selection" ng-options="field.title for field in questionsVisible.fields"></select>
                               </h6>
-                              <h6 ng-show="fields.length == 0">Questions by <span class="ru_green">Topic</span></h6>
+                              <h6 ng-show="questionsVisible.fields.length == 0">Questions by <span class="ru_green">Topic</span></h6>
                               <div d3-donut data="questionsVisible.fieldData" color-palette="questionsVisible.topicsSubject"></div>
                           </div>
                       </li>
