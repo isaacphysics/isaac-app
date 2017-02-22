@@ -12,7 +12,7 @@
       <dl class="tabs profile-tabs no-print">
          <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressRecent ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_RECENT')"><span class="show-for-medium-up">Assignments</span> To&nbsp;Do ({{myAssignments.inProgressRecent.length || 0}})</a></dd>
          <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressOld ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_OLD')">Older <span class="show-for-medium-up">Assignments</span> ({{myAssignments.inProgressOld.length || 0}})</a></dd>
-         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('COMPLETED')"><span class="show-for-medium-up">Completed Assignments</span><span class="show-for-small-only">Done</span>&nbsp;({{myAssignments.completed.length || 0}})</a></dd>
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('COMPLETED')"><span class="show-for-medium-up">Completed Assignments ({{myAssignments.completed.length || 0}})</span><span class="show-for-small-only">Done ({{myAssignments.completed.length || 0}})</span></a></dd>
        </dl>
        <div class="tabs-content profile-tabs-content">
          <div ng-repeat="assignment in assignmentsVisible | orderBy:'creationDate':true" class="assignment">
