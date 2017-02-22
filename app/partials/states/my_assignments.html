@@ -9,10 +9,10 @@
 </div>
 <div class="row assignments-wrap">
     <div class="large-16 columns">
-      <dl class="tabs no-print">
-         <dd class="tabs-account-settings small-5" ng-class="assignmentsVisible == myAssignments.inProgressRecent ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_RECENT')">Assignments ({{myAssignments.inProgressRecent.length || 0}})</a></dd>
-         <dd class="tabs-account-settings small-5" ng-class="assignmentsVisible == myAssignments.inProgressOld ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_OLD')">Older Assignments ({{myAssignments.inProgressOld.length || 0}})</a></dd>
-         <dd class="tabs-account-settings small-5" ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('COMPLETED')">Completed Assignments ({{myAssignments.completed.length || 0}})</span></a></dd>
+      <dl class="tabs profile-tabs no-print">
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressRecent ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_RECENT')">Assignments ({{myAssignments.inProgressRecent.length || 0}})</a></dd>
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressOld ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_OLD')">Older Assignments ({{myAssignments.inProgressOld.length || 0}})</a></dd>
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('COMPLETED')">Completed Assignments ({{myAssignments.completed.length || 0}})</span></a></dd>
       </dl>
       <div class="tabs-content profile-tabs-content">
          <div ng-repeat="assignment in assignmentsVisible | orderBy:'creationDate':true" class="assignment">
