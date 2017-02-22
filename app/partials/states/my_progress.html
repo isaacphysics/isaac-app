@@ -23,43 +23,56 @@
        </div>
        <div class="row">
           <div class="large-16 columns">
-             <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
 
-    <!--            <li class="show-for-medium-up">
-                   <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
-                </li> -->
-    <!--
-                <li>
-                <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-                   <div d3-donut data="subjectData" color-palette="subjects"></div>
-                </li>
-    -->
-                <li>
-                  <div class="graph-wrapper">
-                    <h6>Questions correct by <span class="ru_green">Subject</span></h6>
-                    <div d3-donut data="subjectData" color-palette="'subjects'"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="graph-wrapper">
-                   <h6 ng-hide="fields.length == 0">Questions correct in &nbsp;
-                    <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
-                   </h6>
-                   <h6 ng-show="fields.length == 0">Questions correct by <span class="ru_green">Topic</span></h6>
-                   <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="graph-wrapper">
-                    <h6>Questions correct by <span class="ru_green">Level</span></h6>
-                    <div d3-donut data="levelData" color-palette="'levels'"></div>
-                  </div>
-                </li>
+              <dl class="tabs profile-tabs no-print">
+                  <dd ng-class="questionsVisible == correctQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Correct Questions </span></a></dd>
+                  <dd ng-class="questionsVisible == attemptedQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Attempted Questions</span></a></dd>
+              </dl>
 
-    <!--             <li class="hide-for-medium-up">
-                   <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
-                </li> -->
-             </ul>
+              <div class="profile-tabs-content">
+                  <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
+
+                      <!--            <li class="show-for-medium-up">
+                                     <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
+                                  </li> -->
+                      <!--
+                                  <li>
+                                  <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+                                     <div d3-donut data="subjectData" color-palette="subjects"></div>
+                                  </li>
+                      -->
+
+                      <!--<div class="profile-tabs-content">-->
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6>Questions by <span class="ru_green">Subject</span></h6>
+                              <div d3-donut data="questionsVisible.subjectData" color-palette="'subjects'"></div>
+                          </div>
+                      </li>
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6 ng-hide="questionsVisible.fields.length == 0">Questions in &nbsp;
+                                  <select ng-model="questionsVisible.field.selection" ng-options="field.title for field in questionsVisible.fields"></select>
+                              </h6>
+                              <h6 ng-show="fields.length == 0">Questions by <span class="ru_green">Topic</span></h6>
+                              <div d3-donut data="questionsVisible.fieldData" color-palette="questionsVisible.topicsSubject"></div>
+                          </div>
+                      </li>
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6>Questions by <span class="ru_green">Level</span></h6>
+                              <div d3-donut data="questionsVisible.levelData" color-palette="'levels'"></div>
+                          </div>
+                      </li>
+                      <!--</div>-->
+
+
+                      <!--             <li class="hide-for-medium-up">
+                                     <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+                                  </li> -->
+                  </ul>
+              </div>
+
 
             <h6>Isaac Books</h6>
             <ul class="small-block-grid-1 progress-space">

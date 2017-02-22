@@ -75,59 +75,118 @@ define([], function() {
 			$scope.progress.percentCorrectPhysicsSkills14 = Math.round(100*$scope.progress.correctByTag["physics_skills_14"]/$scope.progress.attemptsByTag["physics_skills_14"]) || 0;
 			$scope.progress.percentCorrectChemistry16 = Math.round(100*$scope.progress.correctByTag["chemistry_16"]/$scope.progress.attemptsByTag["chemistry_16"]) || 0;
 
+            $scope.correctQuestions = {};
+            $scope.attemptedQuestions = {};
 
-			$scope.levelData = [
-				{label: 'Level 1', val: $scope.progress.correctByLevel["1"] || 0},
-				{label: 'Level 2', val: $scope.progress.correctByLevel["2"] || 0},
-				{label: 'Level 3', val: $scope.progress.correctByLevel["3"] || 0},
-				{label: 'Level 4', val: $scope.progress.correctByLevel["4"] || 0},
-				{label: 'Level 5', val: $scope.progress.correctByLevel["5"] || 0},
-				{label: 'Level 6', val: $scope.progress.correctByLevel["6"] || 0}
-			];
+            $scope.questionsVisible = $scope.correctQuestions;
 
-			$scope.subjectData = [
-				{label: 'Physics', val: $scope.progress.correctByTag["physics"] || 0},
-				{label: 'Maths', val: $scope.progress.correctByTag["maths"] || 0},
-				{label: 'Chemistry', val: $scope.progress.correctByTag["chemistry"] || 0}
-			];
 
-			$scope.fieldData = [];
-			var attemptedFields = [];
-			$scope.fields = [];
+
+            $scope.toggleVisibleBoards = function(){
+                if ($scope.questionsVisible == $scope.correctQuestions) {
+                    $scope.questionsVisible = $scope.attemptedQuestions;
+                } else {
+                    $scope.questionsVisible = $scope.correctQuestions;
+                }
+            }
+
+            $scope.correctQuestions.levelData = [];
+            $scope.attemptedQuestions.levelData = [];
+
+            for(var i = 1;i <= 6; i++){
+                $scope.correctQuestions.levelData.push(
+                    {label: 'Level ' + i.toString(), val: $scope.progress.correctByLevel[i.toString()] || 0}
+				);
+                $scope.attemptedQuestions.levelData.push(
+                    {label: 'Level ' + i.toString(), val: $scope.progress.attemptsByLevel[i.toString()] || 0}
+				);
+			}
+
+			$scope.correctQuestions.subjectData = [];
+            $scope.attemptedQuestions.subjectData = [];
+            var subjects = ["physics","maths","chemistry"];
+
+            for(var i = 0; i < subjects.length; i++) {
+                $scope.correctQuestions.subjectData.push(
+                    {label: subjects[i].charAt(0).toUpperCase() + subjects[i].slice(1), val: $scope.progress.correctByTag[subjects[i]] || 0}
+				);
+                $scope.attemptedQuestions.subjectData.push(
+                    {label: subjects[i].charAt(0).toUpperCase() + subjects[i].slice(1), val: $scope.progress.attemptsByTag[subjects[i]] || 0}
+				);
+			}
+
+
+            $scope.correctQuestions.fields = [];
+            $scope.attemptedQuestions.fields = [];
+
+			$scope.correctQuestions.fieldData = [];
+            $scope.attemptedQuestions.fieldData = [];
+
+			var correctFields = [];
+            var attemptedFields = [];
+
 			for (var tid in $scope.progress.correctByTag) {
 				var t = tags.getById(tid);
 				if (t && t.level == 1) {
-					attemptedFields.push(t);
-					$scope.fields.push(t);
+					correctFields.push(t);
+					$scope.correctQuestions.fields.push(t);
 				}
 			}
 
-			if (attemptedFields.length == 0) {
+            for (var tid in $scope.progress.attemptsByTag) {
+                var t = tags.getById(tid);
+                if (t && t.level == 1) {
+                    attemptedFields.push(t);
+                    $scope.attemptedQuestions.fields.push(t);
+                }
+            }
+
+			if (correctFields.length == 0) {
 				return;
 			}
 
-			$scope.field = {
-				selection: attemptedFields[0],
+            if (attemptedFields.length == 0) {
+                return;
+            }
+
+			$scope.correctQuestions.field = {
+				selection: correctFields[0],
 			};
 
-			$scope.topicsSubject = attemptedFields[0].parent;
+            $scope.attemptedQuestions.field = {
+                selection: attemptedFields[0],
+            };
 
-			$scope.$watch("field.selection", function(newField) {
+            $scope.correctQuestions.topicsSubject = correctFields[0].parent;
+            $scope.attemptedQuestions.topicsSubject = attemptedFields[0].parent;
 
-				$scope.fieldData = [];
 
-				var topics = tags.getDescendents($scope.field.selection.id);
+			$scope.$watch("questionsVisible.field.selection", function(newField) {
+
+				$scope.questionsVisible.fieldData = [];
+
+				var topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
 				for(var i in topics) {
 					var t = topics[i];
-					$scope.fieldData.push({
+                    var value;
+
+                    if ($scope.questionsVisible == $scope.correctQuestions) {
+                        value = $scope.progress.correctByTag[t.id] || 0;
+                    } else {
+                        value = $scope.progress.attemptsByTag[t.id] || 0;
+                    }
+
+					$scope.questionsVisible.fieldData.push({
 						label: t.title,
-						val: $scope.progress.correctByTag[t.id] || 0,
+						val: value
 					})
 				}
 
-				$scope.topicsSubject = newField.parent;
+				$scope.questionsVisible.topicsSubject = newField.parent;
 
 			})
+
+
 
 		}).catch(function(e) {
 			console.error("Unable to load user progress:", e);
