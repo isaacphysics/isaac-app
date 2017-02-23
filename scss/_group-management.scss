@@ -7,13 +7,16 @@
 		text-align: center;
 		font-weight: 600;
 
-		&:first-child {
+		&:not(:last-child) {
 			padding-right: 10px;
 		}
 
 		a {
 			border: #ccc solid 1px;
 			padding: 10px 20px;
+			&.assignments {
+				padding: 10px 25px;
+			}
 		}
 
 		&.active a {
@@ -21,11 +24,16 @@
 			background-color: #fff;
 			border-bottom: #fff solid 1px;
 		}
+
+		&.assignments {
+			width: 33%;
+		}
 	}
 }
 .profile-tabs-content {
 	background-color: #fff;
 	border-top: #ccc solid 1px;
+	border-bottom: #ccc solid 1px;
 	padding-top: 5px;
 	margin-top: -1px;
 }
@@ -345,6 +353,5 @@
 	}
 	.profile-tabs-content {
 		padding: 0 20px;
-		border-bottom: #ccc solid 1px;
 	}
 }

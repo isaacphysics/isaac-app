@@ -232,14 +232,21 @@ define([], function() {
 		$scope.myAssignments = {};
 		
 		$scope.myAssignments.completed = [];
-		$scope.myAssignments.inProgress = [];
+		$scope.myAssignments.inProgressRecent = [];
+		$scope.myAssignments.inProgressOld = [];
 
-		$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+		$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
 
+		var fourWeeksAgo = new Date(new Date() - (4 * 7 * 24 * 60 * 60 * 1000));
 		api.assignments.getMyAssignments().$promise.then(function(results) {
 			angular.forEach(results, function(assignment, index) {
+				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
-					$scope.myAssignments.inProgress.push(assignment);
+					if (creationDate > fourWeeksAgo) {
+						$scope.myAssignments.inProgressRecent.push(assignment);
+					} else {
+						$scope.myAssignments.inProgressOld.push(assignment);
+					}
 				} else {
 					$scope.myAssignments.completed.push(assignment);
 				}
@@ -251,11 +258,13 @@ define([], function() {
             });
 		});
 
-		$scope.toggleVisibleBoards = function(){
-			if ($scope.assignmentsVisible == $scope.myAssignments.inProgress) {
-				$scope.assignmentsVisible = $scope.myAssignments.completed;
+		$scope.setVisibleBoard = function(state){
+			if (state === 'IN_PROGRESS_RECENT') {
+				$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
+			} else if (state === 'IN_PROGRESS_OLD') {
+				$scope.assignmentsVisible = $scope.myAssignments.inProgressOld;
 			} else {
-				$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+				$scope.assignmentsVisible = $scope.myAssignments.completed;
 			}
 		}
 
