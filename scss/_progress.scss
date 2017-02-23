@@ -51,11 +51,24 @@
 }
 .graph-wrapper {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 5% auto 0;
+    text-align: center;
 }
 /*
     Assignment progress styles 
 */
+
+#progressTabs{
+    margin:0;
+}
+
+#progressTabsContent{
+    margin:-1px 0 0;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+}
+
 .progress-tabs-content {
     position: relative;
     width: auto;
