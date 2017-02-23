@@ -14,6 +14,9 @@
 		a {
 			border: #ccc solid 1px;
 			padding: 10px 20px;
+			&.assignments {
+				padding: 10px 25px;
+			}
 		}
 
 		&.active a {
@@ -24,7 +27,6 @@
 
 		&.assignments {
 			width: 33%;
-			padding: 10px 25px;
 		}
 	}
 }
