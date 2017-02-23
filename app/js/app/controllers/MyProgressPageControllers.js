@@ -93,7 +93,7 @@ define([], function() {
             $scope.correctQuestions.levelData = [];
             $scope.attemptedQuestions.levelData = [];
 
-            for(var i = 1;i <= 6; i++){
+            for (var i = 1; i <= 6; i++) {
                 $scope.correctQuestions.levelData.push(
                     {label: 'Level ' + i.toString(), val: $scope.progress.correctByLevel[i.toString()] || 0}
 				);
@@ -106,7 +106,7 @@ define([], function() {
             $scope.attemptedQuestions.subjectData = [];
             var subjects = ["physics","maths","chemistry"];
 
-            for(var i = 0; i < subjects.length; i++) {
+            for (var i = 0; i < subjects.length; i++) {
                 $scope.correctQuestions.subjectData.push(
                     {label: subjects[i].charAt(0).toUpperCase() + subjects[i].slice(1), val: $scope.progress.correctByTag[subjects[i]] || 0}
 				);
