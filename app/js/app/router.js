@@ -169,7 +169,9 @@ define(["angular-ui-router"], function() {
         $sp.state('book', {
             url: "/book",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go('book_physics_skills_14');
+                $state.go('book_physics_skills_14', {}, {
+                    location: "replace"
+                });
                 $rootScope.setLoading(false);
             }],
         });
