@@ -108,7 +108,7 @@
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'familyName'; reverse=!reverse">Name</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
-                                    <th>School Set</th>
+                                    <th>School</th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'verificationStatus'; reverse=!reverse">Verification Status</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
@@ -125,7 +125,7 @@
                                     <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
                                     <td>{{result.email}}</td>
                                     <td>{{result.role || "NOT_SET"}}</td>
-                                    <td title="{{result.schoolId}}">{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td title="{{result.schoolOther != null ? result.schoolOther : null}}">{{result.schoolId != null ? result.schoolId : result.schoolOther != null ? '(Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.emailVerificationStatus || "NOT_SET"}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
