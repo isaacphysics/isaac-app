@@ -26,7 +26,7 @@
 
     <div class="small-16 columns end">
         <dl class="tabs no-print">
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid}" ng-click="activateTab(0)" class="ng-scope">
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid || !atLeastOne(subjectInterests)}" ng-click="activateTab(0)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Profile</a>
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
@@ -143,7 +143,9 @@
                                 <div class="small-16 columns">
                                     <label for="subject-interests">
                                         <strong>Subject Interests</strong>
-                                        <span ng-if="!subjectInterests.PHYSICS && !subjectInterests.CHEMISTRY && !subjectInterests.BIOLOGY && !subjectInterests.MATHEMATICS" data-ot="Indicating your subjects of interest will help us make sure that we do not send information which is not relevant to you." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                        <!-- <span ng-if="!atLeastOne(subjectInterests)" data-ot="Indicating your subjects of interest will help us to send only relevant information to you." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span> -->
+                                        <span class="ru-form-required"></span>
+                                        <span class="ru-error-message" ng-if="!atLeastOne(subjectInterests)">Select at least one subject</span>
                                     </label>
                                 </div>
                                 <div id="subject-interests" class="ac-custom ac-checkbox ac-checkmark">                 
