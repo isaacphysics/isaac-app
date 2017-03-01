@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, $stateParams, $window, $location, $rootScope) {
 		/*
 		*  This controller manages the User Account Settings page, but it also
 		*  manages user Registration. Any changes to one will affect the other,
@@ -62,10 +62,18 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
-		if($scope.editingSelf){
+		if ($scope.editingSelf) {
 			api.user.getEmailPreferences().$promise.then(function(result){
 				$scope.emailPreferences = result;
 			});
+		}
+
+		if ($scope.editingSelf) {
+			$scope.subjectInterests[subject.id.toUpperCase()] = true;
+			// TODO something like this:
+			// api.user.getSubjectInterests().$promise.then(function(result){
+			// 	Object.assign($scope.subjectInterests, result);
+			// });
 		}
 
 		$scope.activateTab = function(i) {
