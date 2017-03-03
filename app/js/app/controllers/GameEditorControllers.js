@@ -25,7 +25,7 @@ define([], function() {
 
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
-		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
+		var largeNumberOfResults = -1; // assumes -1 limit will return all possible results.
 
 		$scope.hasGroups = false;
 		$scope.boardCreatedSuccessfully = false;
