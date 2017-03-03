@@ -69,11 +69,13 @@ define([], function() {
 		}
 
 		if ($scope.editingSelf) {
-			$scope.subjectInterests[subject.id.toUpperCase()] = true;
 			// TODO something like this:
-			// api.user.getSubjectInterests().$promise.then(function(result){
-			// 	Object.assign($scope.subjectInterests, result);
-			// });
+			api.user.getSubjectInterests().$promise.then(function(result){
+				$scope.subjectInterests = result;
+				if (!result.hasOwnProperty(subject.id.toUpperCase())) {
+					$scope.subjectInterests[subject.id.toUpperCase()] = true;
+				}
+			});
 		}
 
 		$scope.activateTab = function(i) {
@@ -192,9 +194,14 @@ define([], function() {
 		}
 
 		$scope.atLeastOne = function(object) {
-			return Object.keys(object).some(function (key) {
-				return object[key];
+			var oneOrMoreTrue = false;
+			// Avoid all the horrible angular properties:
+			angular.forEach(JSON.parse(JSON.stringify(object)), function(key) {
+				if (key === true) {
+					oneOrMoreTrue = true;
+				}
 			});
+			return oneOrMoreTrue;
 		}
 
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
