@@ -25,6 +25,7 @@
     <!--
       Title
     -->
+    <a ng-click="googleCalendarTemplate()" ng-if="isStaffUser"><span class="calendar-img" alt="Add to Google Calendar">Add to Calendar</span></a>
     <h1>{{event.title}}</h1>
     <p class="event-subtitle">{{event.subtitle}}</p>
 
@@ -207,6 +208,7 @@
       </span>
 
       <a href="javascript:void(0)" ui-sref="events" class="ru-button-big secondary">Back to events</a>
+      <a ng-click="googleCalendarTemplate()" ng-if="isStaffUser"><span class="calendar-img" alt="Add to Google Calendar" style="margin-top: -20px">Add to Calendar</span></a>
     </div>
     <div class="medium-16 large-6 columns event-detail-aside" ng-class="{expired: event.expired}">
       <div class="row">
