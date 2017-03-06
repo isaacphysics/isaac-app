@@ -119,13 +119,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            var thisSubdomain = document.location.hostname.match(/^(?:([^\.]+)\.)?[^\.]+\.[^\.]+$/)[1] || "";
-            var apiSubdomain = "api";
-            if (thisSubdomain.length > 0) {
-                apiSubdomain += "-" + thisSubdomain;
-            }
-            var apiHost = "https://" + apiSubdomain + ".isaacscience.org";
-            apiProvider.urlPrefix(apiHost + "/api/v1.9.3/api");
+            apiProvider.urlPrefix("/api/v1.9.3/api");
         }
 
         NProgress.configure({ showSpinner: false });
