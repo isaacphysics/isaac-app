@@ -151,7 +151,7 @@ define(function(require) {
 
 	.directive('isaacAnvilQuestion', require("app/directives/content/AnvilQuestion"))
 
-	.directive('questionRadioButton', require("app/directives/content/QuestionRadioButton"))
+	.directive('inputAnimation', require("app/directives/content/InputAnimation"))
 
 	.directive('fadeOnSearch', [function() {
 		return {

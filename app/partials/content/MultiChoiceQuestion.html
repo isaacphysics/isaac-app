@@ -5,7 +5,7 @@
                 <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div> </h3>
                 <ul class='ru-problem-q-pad'>
                     <li ng-repeat="choice in doc.choices">
-                        <input type="radio" question-radio-button ng-model="ctrl.selectedAnswer" ng-value="$index">
+                        <input type="radio" input-animation ng-model="ctrl.selectedAnswer" ng-value="$index">
                         <label ng-click="ctrl.selectedAnswer = $index" math-jax>
                             <div isaac-content-value-or-children value="choice.value" children="null" encoding="doc.encoding"></div>
                         </label>

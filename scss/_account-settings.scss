@@ -481,6 +481,20 @@ input.account-settings-input {
 			}
 		}		
 	}
+	#subject-interest-section {
+		.columns {
+			padding: 0px;
+		}		
+	}
+	#subject-interests {
+		label {
+			padding-top: 0.5REM;
+			padding-bottom: 0.5REM;
+		}
+		svg {
+			margin: -28px 0px 0px -17px;
+		}
+	}
 	.linked-accounts {
 		margin: 8px 0 20px;
 	}
@@ -494,7 +508,7 @@ input.account-settings-input {
 
 	#account-gender {
 		margin-top: 32px;
-		margin-bottom: 44px;
+		margin-bottom: 32px;
 	}
 	.linked-accounts {
 		margin: 0;
