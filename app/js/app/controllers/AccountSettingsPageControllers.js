@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, $stateParams, $window, $location, $rootScope) {
 		/*
 		*  This controller manages the User Account Settings page, but it also
 		*  manages user Registration. Any changes to one will affect the other,
@@ -24,6 +24,7 @@ define([], function() {
 		$scope.activeTab = 0;
 
 		$scope.emailPreferences = {};
+		$scope.subjectInterests = {};
 		$scope.passwordChangeState = {
 			passwordCurrent : ""
 		};
@@ -61,9 +62,18 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
-		if($scope.editingSelf){
+		if ($scope.editingSelf) {
 			api.user.getEmailPreferences().$promise.then(function(result){
 				$scope.emailPreferences = result;
+			});
+		}
+
+		if ($scope.editingSelf) {
+			api.user.getSubjectInterests().$promise.then(function(result){
+				$scope.subjectInterests = result;
+				if (angular.equals($scope.subjectInterests, {})) {
+					$scope.subjectInterests[subject.id.toUpperCase()] = true;
+				}
 			});
 		}
 
@@ -182,6 +192,17 @@ define([], function() {
 			auth.linkRedirect(provider);
 		}
 
+		$scope.atLeastOne = function(object) {
+			var oneOrMoreTrue = false;
+			// Avoid all the horrible angular properties:
+			angular.forEach(JSON.parse(JSON.stringify(object)), function(key) {
+				if (key === true) {
+					oneOrMoreTrue = true;
+				}
+			});
+			return oneOrMoreTrue;
+		}
+
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
         $scope.showSkip = !!$stateParams.next;
@@ -213,7 +234,8 @@ define([], function() {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
-        			emailPreferences : $scope.emailPreferences
+        			emailPreferences : $scope.emailPreferences,
+        			subjectInterests : $scope.subjectInterests
         		}
 
         		// add the current password if it's confirmed, and put new password in user object
@@ -262,8 +284,9 @@ define([], function() {
         		// bad email address given
 	        	} else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
 	        		$scope.errorMessage = "Email address missing or invalid."
+	        	} else if (!$scope.atLeastOne($scope.subjectInterests)) {
+	        		$scope.errorMessage = "At least one subject interest must be selected."
 	        	}
-
 	        }
         }
 

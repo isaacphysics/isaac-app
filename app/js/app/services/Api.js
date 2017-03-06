@@ -75,6 +75,10 @@ define([], function() {
 				method: 'GET',
 				url: urlPrefix + "/users/email_preferences"
 			},
+			'getSubjectInterests' : {
+				method: 'GET',
+				url: urlPrefix + "/users/subject_interests"
+			},
 			'getUserIdSchoolLookup' : {
 				method: 'GET',
 				url: urlPrefix + "/users/school_lookup?user_ids=:user_ids"
