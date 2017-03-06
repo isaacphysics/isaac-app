@@ -280,7 +280,7 @@ define(["app/honest/hexagon"],function(hexagon) {
                         var augmentedWildcard = JSON.parse(JSON.stringify(scope.wildCard));
 	            		augmentedQuestions.splice(scope.wildCardPosition, 0, augmentedWildcard);
 
-                        update();
+	            		setTimeout(update, 50);
 		    		} else {
 			            augmentedQuestions = null;
                         update();
