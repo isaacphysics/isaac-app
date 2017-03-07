@@ -21,7 +21,7 @@ define([], function() {
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.isLoading = false;
-		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES"};
+		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES", subjectOfInterest: ""};
 		$scope.userManagerSelection = {};
 
 		$scope.indexQueue = null;
@@ -84,7 +84,8 @@ define([], function() {
 											'schoolOther': schoolOther, 
 										 	'schoolURN' : $scope.userSearch.searchTerms.schoolURN, 
 											'postcode' : postcode,
-										    'postcodeRadius': postcoderadius}).$promise.then(function(result){
+										    'postcodeRadius': postcoderadius,
+										    'subjectOfInterest': $scope.userSearch.searchTerms.subjectOfInterest}).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 

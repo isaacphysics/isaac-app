@@ -21,6 +21,17 @@
                             <option value="">Any School</option>
                             <option ng-repeat="school in schoolOtherEntries | orderBy:'name'" ng-value="school.name">{{school.name}}</option>
                         </select>
+
+                        <label>
+                            <strong>Find users by subject interest:</strong>
+                        </label>
+                        <select id="user-search-subject" ng-model="userSearch.searchTerms.subjectOfInterest">
+                            <option value="">Any Subject</option>
+                            <option value="PHYSICS">Physics</option>
+                            <option value="CHEMISTRY">Chemistry</option>
+                            <option value="BIOLOGY">Biology</option>
+                            <option value="MATHEMATICS">Maths</option>
+                        </select>
                     </div>
                     <div class="medium-8 columns">
                         <label for="user-search-role">
