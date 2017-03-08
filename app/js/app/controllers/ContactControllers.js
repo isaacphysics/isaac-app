@@ -61,6 +61,12 @@ define([], function() {
 				return;
 			}
 
+			if($scope.user.emailVerificationStatus == 'NOT_VERIFIED' && $scope.contactForm.emailAddress == $scope.user.email) {
+
+				$scope.modals.emailWarning.show();
+				return;
+			}
+
 			var message = {
 				"firstName": $scope.contactForm.firstName,
 				"lastName": $scope.contactForm.lastName,
