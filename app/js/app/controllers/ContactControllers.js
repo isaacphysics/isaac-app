@@ -44,9 +44,12 @@ define([], function() {
 			}
 		});
 
-		$scope.invalidForm = false;
-		$scope.formSubmitted = false;
-		$scope.errorDuringSubmit = false;
+        $scope.$watchCollection("contactForm", function() {
+			$scope.invalidForm = false;
+			$scope.formSubmitted = false;
+			$scope.errorDuringSubmit = false;
+			$scope.invalidEmail = false;
+        })
 
 		$scope.sendForm = function() {
 			if($scope.form.$invalid) {
@@ -61,8 +64,9 @@ define([], function() {
 				return;
 			}
 
-			if($scope.user.emailVerificationStatus == 'NOT_VERIFIED' && $scope.contactForm.emailAddress == $scope.user.email) {
+			if($scope.user.emailVerificationStatus == 'DELIVERY_FAILED' && $scope.contactForm.emailAddress == $scope.user.email) {
 
+				$scope.invalidEmail = true;
 				$scope.modals.emailWarning.show();
 				return;
 			}
