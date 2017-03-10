@@ -29,7 +29,7 @@
                                 <th>Actions</th>
                             </tr>
                             <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
-                                <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} {{eventSelected.subtitle}}</a></td>
+                                <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} - {{eventSelected.subtitle}}</a></td>
                                 <td>{{event.date | date:'dd/MM/yyyy'}}</td>
                                 <td>{{event.location.address.town}}</td>
                                 <td>{{event.eventStatus}}</td>
