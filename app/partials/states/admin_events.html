@@ -22,6 +22,7 @@
                             <tr>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'title'; reverse=!reverse">Title</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Date</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Booking Deadline</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'location.address.town'; reverse=!reverse">Location</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'eventStatus'; reverse=!reverse">Status</a></th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfConfirmedBookings'; reverse=!reverse">Number Confirmed</a></th>
@@ -31,11 +32,12 @@
                             <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
                                 <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} - {{event.subtitle}}</a></td>
                                 <td>{{event.date | date:'dd/MM/yyyy'}}</td>
+                                <td>{{event.bookingDeadline | date:'dd/MM/yyyy h:ma'}}</td>
                                 <td>{{event.location.address.town}}</td>
                                 <td>{{event.eventStatus}}</td>
                                 <td>{{event.numberOfConfirmedBookings}} / {{event.numberOfPlaces}}</td>
                                 <td>{{event.numberOfWaitingListBookings}}</td>
-                                <td><a href="" ng-click="updateBookingInfo(event.id)">Manage Bookings</a></td>
+                                <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage</a></td>
                             </tr>
                         </table>
                 </div>
@@ -60,12 +62,11 @@
                     <div ng-if="eventIdForBooking" class="small-16 columns">
                         <h3 id='event-booking-details'>Selected Event Details</h3>
                         <p>
-                            <strong>Event:</strong> {{eventSelected.title}} {{eventSelected.subtitle}}<br>
+                            <strong>Event:</strong> <a href="" ui-sref="event({id: eventSelected.id})" target="_blank">{{eventSelected.title}} {{eventSelected.subtitle}}</a><br>
                             <strong>Location:</strong> {{eventSelected.location.address.addressLine1}}, {{eventSelected.location.address.town}},{{eventSelected.location.address.postalCode}}<br>
                             <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
-                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Event End:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Booking Deadline:</strong> {{eventSelected.endDate | date:'dd/MM/yyyy h:ma'}}<br>
+                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy h:ma'}} - {{eventSelected.endDate | date:'dd/MM/yyyy h:ma'}}<br>
+                            <strong>Booking Deadline:</strong> {{eventSelected.bookingDeadline | date:'dd/MM/yyyy h:ma'}}<br>
                             <strong>Prepwork Deadline:</strong> {{eventSelected.prepWorkDeadline | date:'dd/MM/yyyy h:ma'}}<br>
                             <strong>Group Auth Code:</strong> {{eventSelected.isaacGroupToken}} <br>
                             <span ng-show="eventSelected.placesAvailable < 0"><strong style="color:red">Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
