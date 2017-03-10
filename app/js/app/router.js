@@ -142,6 +142,18 @@ define(["angular-ui-router"], function() {
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
+
+            // The events page shouldn't be accessible from the other sites to avoid confusion!
+            $sp.state('events', {
+                url: "/events?event_status&types&show_booked_only",
+                views: {
+                    "body": {
+                        templateUrl: "/partials/states/events_page.html",
+                        controller: "EventsPageController"
+                    }
+                },
+                reloadOnSearch: false,
+            });
         }
 
 
@@ -770,17 +782,6 @@ define(["angular-ui-router"], function() {
                     controller: "AssignmentProgressPageController",
                 }
             }
-        });
-
-        $sp.state('events', {
-            url: "/events?event_status&types&show_booked_only",
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/events_page.html",
-                    controller: "EventsPageController"
-                }
-            },
-            reloadOnSearch: false,
         });
 
         $sp.state('event', {

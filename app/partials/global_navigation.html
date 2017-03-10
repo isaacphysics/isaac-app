@@ -13,10 +13,10 @@
             </span>
         </span>
 
-        <a id="tutorial-search" 
-           href="javascript:void(0)" 
-           class="ru-desktop-search-icon hide-for-small-only" 
-           tabindex="0" 
+        <a id="tutorial-search"
+           href="javascript:void(0)"
+           class="ru-desktop-search-icon hide-for-small-only"
+           tabindex="0"
            ng-click="globalFlags.siteSearchOpen = true"
            ng-hide="globalFlags.siteSearchOpen">
             <img src='/assets/desktop-search-icon.png' alt="Search">
@@ -64,18 +64,18 @@
         </div>
 
     </div>
-<!--
-    <div class="medium-3 columns">
-    </div>
-    <div class="medium-12 end columns text-right">
-        <h2 class="status hide-for-small-only">Welcome<span ng-if="!user._id"> to Isaac</span>  
-        <span class='green' ng-if="user.givenName && user._id" ng-class="{physics:user.role=='ADMIN'}"> {{user.givenName}}</span>
-        <span ng-if="user._id">
-            <span class="green"><a ui-sref="logout">(Log out)</a></span>
-        </span></h2>
-    </div>
--->
-    <nav class="dl-nav" role="navigation"> 
+    <!--
+        <div class="medium-3 columns">
+        </div>
+        <div class="medium-12 end columns text-right">
+            <h2 class="status hide-for-small-only">Welcome<span ng-if="!user._id"> to Isaac</span>
+            <span class='green' ng-if="user.givenName && user._id" ng-class="{physics:user.role=='ADMIN'}"> {{user.givenName}}</span>
+            <span ng-if="user._id">
+                <span class="green"><a ui-sref="logout">(Log out)</a></span>
+            </span></h2>
+        </div>
+    -->
+    <nav class="dl-nav" role="navigation">
         <ul class="dl-level1">
             <li>
                 <h6 ng-click="menuForward($event)">My Isaac
@@ -83,7 +83,7 @@
                     <span class="login-notification" ng-if="user._id"><a class="hide-for-small-only" ui-sref="logout"> (logout)</a></span>
                 </h6>
                 <ul class="dl-level2">
-                	<li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
+                    <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li class="login-required" ng-class="{disabled: !user._id}"><a ui-sref="accountSettings">My Account &nbsp;<span ng-if="user._id && (user.emailVerificationStatus!='VERIFIED' || !user.dateOfBirth || (!user.schoolId && !user.schoolOther) || !user.gender)" data-ot="Your Isaac profile is incomplete." class="dl-alert warning hide-for-small-only" aria-haspopup="true">!</span></a></li>
                     <li class="login-required" ng-class="{disabled: !user._id}"><a ui-sref="boards">My Boards</a> <!--<span title="You have 1 board" class="dl-alert hide-for-small-only" aria-haspopup="true" data-tooltip>1</span>--></li>
                     <li class="login-required" ng-class="{disabled: !user._id}"><a href="javascript:void(0)" ui-sref="progress">My Progress</a></li>
@@ -97,7 +97,7 @@
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li><a href="javascript:void(0)" ui-sref="setAssignments({showModal: 'setAssignmentsModal'})">Set Assignments</a></li>
                     <li><a href="javascript:void(0)" ui-sref="assignmentProgress">Assignment Progess</a></li>
-                    <li><a href="javascript:void(0)" ui-sref="groups">Manage Groups</a></li>                    
+                    <li><a href="javascript:void(0)" ui-sref="groups">Manage Groups</a></li>
                 </ul>
             </li>
             <li>
@@ -106,12 +106,15 @@
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li><a ui-sref="solving_problems">Problem Solving Guide</a></li>
                     <li><a ui-sref='teacher_features'><span>Guide for Teachers</span></a></li>
-                    <li><a ui-sref="events">Events</a></li>
+                    <li ng-class="{disabled: $subject.id != 'physics'}">
+                        <span ng-if="$subject.id != 'physics'" data-ot="We currently do not run {{ $subject.title }} events." aria-haspopup="true"><a ui-sref="events">Events</a></span>
+                        <span ng-if="$subject.id == 'physics'"><a ui-sref="events">Events</a></span>
+                    </li>
                     <li><a ui-sref="faq">FAQs</a></li>
-<!--                     <li class="hide-for-small-only"><a href="javascript:void(0)" class="desktop-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>
-                    <li class="show-for-small-only"><a href="javascript:void(0)" class="mobile-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>    -->                 
+                    <!--                     <li class="hide-for-small-only"><a href="javascript:void(0)" class="desktop-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>
+                                        <li class="show-for-small-only"><a href="javascript:void(0)" class="mobile-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>    -->
                 </ul>
-            </li>            
+            </li>
             <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER')">
                 <h6 ng-click="menuForward($event)">Admin Pages</h6>
                 <ul class="dl-level2">
@@ -122,7 +125,7 @@
                     <li><a ui-sref="contentErrors">Content Errors &nbsp;<span ng-if="contentProblems > 0" data-ot="There are {{contentProblems}} outstanding problems." class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{contentProblems}}</span></a></li>
                     <li><a ui-sref="adminStats">Site Statistics</a></li>
                 </ul>
-            </li>            
+            </li>
         </ul>
     </nav>
 </div>
