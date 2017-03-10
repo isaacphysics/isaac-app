@@ -48,7 +48,8 @@
             </div>
          </div>
          <div ng-if="assignmentsVisible == null || assignmentsVisible.length == 0">
-            <p class="small-text-center" style="margin-top: 1.25rem;">There are no assignments to display.</p>   
+            <p class="small-text-center" style="margin-top: 1.25rem;" ng-hide="assignmentsVisible == myAssignments.inProgressRecent && myAssignments.inProgressOld.length > 0">There are no assignments to display.</p>
+            <P class="small-text-center" style="margin-top: 1.25rem;" ng-show="assignmentsVisible == myAssignments.inProgressRecent && myAssignments.inProgressOld.length > 0"> You have <a ng-click="setVisibleBoard('IN_PROGRESS_OLD')">unfinished older assignments</a>.</p>
          </div>
       </div>
    </div>

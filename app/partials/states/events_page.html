@@ -110,6 +110,7 @@
   </div>
   
   <div ng-if="!globalFlags.loading && events.length == 0" class="small-16 text-center columns">
-      <p>Sorry, we can not find any events that match your filter settings.</p>
+      <p>Sorry, we cannot find any events that match your filter settings.</p>
+      <p ng-show="filterEventsByStatus=='showBookedOnly'">N.B. Events booked via EventBrite may not appear here; for these if you have received email confirmation you are booked.</p>
   </div>
 </div>

@@ -183,6 +183,8 @@ define([], function() {
 
         $scope.additionalInformation = {}
 
+        $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
+
         $scope.school = {"schoolOther" : $scope.user.schoolOther, "schoolId": $scope.user.schoolId};
 
         $scope.verifyEmailRequestSent = false;
@@ -287,6 +289,23 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });                
             }
+        }
+
+        $scope.googleCalendarTemplate =  function() {
+            // https://calendar.google.com/calendar/event?action=TEMPLATE&text=[event_name]&dates=[start_date as YYYYMMDDTHHMMSS or YYYYMMDD]/[end_date as YYYYMMDDTHHMMSS or YYYYMMDD]&details=[extra_info]&location=[full_address_here]
+            var eventDetails = $scope.jsonLd;
+            var startDate = eventDetails.startDate.replace(/(\d{4})\-(\d{2})\-(\d{2})T(\d{1,2})\:(\d{2})/, '$1$2$3T$4$500');
+            var address = 'location' in eventDetails ? [eventDetails.location.name, eventDetails.location.address.streetAddress, eventDetails.location.address.addressLocality, eventDetails.location.address.postalCode] : [];
+
+            var calendarTemplateUrl = [
+                "https://calendar.google.com/calendar/event?action=TEMPLATE",
+                "text=" + encodeURI(eventDetails.name),
+                "dates=" + encodeURI(startDate) + '/' + encodeURI(startDate),
+                "details=" + encodeURI(eventDetails.description),
+                "location=" + encodeURI(address.join(', '))
+            ];
+
+            window.open(calendarTemplateUrl.join('&'),'_blank');
         }
 
         var getEventDetails = function() {
