@@ -104,7 +104,8 @@
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
                                 <td>{{booking.additionalInformation.emergencyNumber}}</td>
-                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a></td>
+                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
+                                &nbsp; <a href="javascript:void(0);" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a></td>
                             </tr>
                         </table>
                         <p ng-show="bookings.length == 0">There are no bookings for this event.</p>

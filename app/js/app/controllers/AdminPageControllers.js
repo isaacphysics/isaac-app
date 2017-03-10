@@ -320,6 +320,19 @@ define([], function() {
             	});
 			}
 		}
+
+		$scope.resendConfirmationEmail = function(eventId, userId){
+			var resendEmail = $window.confirm('Are you sure you want to resend the confirmation email for this booking?');   
+			if (resendEmail) {
+				api.eventBookings.resendConfirmation({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					$scope.showToast($scope.toastTypes.Success, "Event Email Sent", "Email send to user " + userId);
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Email Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
+			}
+		}
 	}]
 
 	return {
