@@ -57,6 +57,8 @@ define([], function() {
 
                 scope.groupAssignments[groupId] = scope.groupAssignments[groupId] || [];
                 scope.groupAssignments[groupId].push(a);
+
+                scope.groupExpanded[groupId] = false;
             }
 
             scope.setLoading(false);
@@ -69,12 +71,17 @@ define([], function() {
             if (scope.groupExpanded[groupId]) {
                 scope.groupExpanded[groupId] = false;
                 return;
-            } 
+            }
+            else if (!scope.groupExpanded[groupId] && !$.isEmptyObject(scope.assignments)){
+                scope.groupExpanded[groupId] = true;
+                return;
+            }
 
             if (!scope.groupAssignments[groupId]) {
                 // this means there are no assignments set
                 return;
             }
+
             
             scope.setLoading(true);
 
