@@ -29,7 +29,8 @@
 
     <div class="row">
       <div class="small-16 columns">
-        <h3 ng-show="boards && boards.totalResults > 0">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
+        <h3 ng-show="boards && boards.totalResults > 1">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
+        <h3 ng-show="boards && boards.totalResults == 1">You have <strong>{{boards.totalResults}}</strong></span> board ready to assign...</h3>
         <h3 ng-show="boards.totalResults == 0">You have no boards to assign; select an option above to add a board.</h3>        
       </div>
     </div>
@@ -64,10 +65,10 @@
             <div class="row">
    			   <h3><a tabindex="0" href="javascript:void(0)" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
-               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                  <div>
-                     {{shareUrl}}
-                  </div>
+               <div class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
+                  <div>{{shareUrl}}</div>
+                  <hr />
+                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item"">Clone and Edit</div></a>
                </div>
                 <p>By: <strong><span ng-if="board.ownerUserId == user._id">Me</span>
                     <span ng-if="board.ownerUserId != user._id">Someone else</span></strong></p>

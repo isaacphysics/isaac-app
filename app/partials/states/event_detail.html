@@ -25,6 +25,7 @@
     <!--
       Title
     -->
+    <a ng-click="googleCalendarTemplate()" ng-if="isStaffUser"><span class="calendar-img" alt="Add to Google Calendar">Add to Calendar</span></a>
     <h1>{{event.title}}</h1>
     <p class="event-subtitle">{{event.subtitle}}</p>
 
@@ -69,7 +70,7 @@
           </tr>
           <tr ng-show="event.bookingDeadline">
             <td>Booking Deadline</td>
-            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEEE d MMM yyyy'}} <br><span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time></td>
+            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEEE d MMM yyyy'}} <br><span ng-if="!event.all_day">{{event.bookingDeadline | date:'shortTime'}}</span></time></td>
           </tr>        
         </tbody>
       </table>

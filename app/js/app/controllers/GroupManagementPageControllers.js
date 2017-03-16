@@ -52,6 +52,7 @@ define([], function() {
 				$scope.selectedGroupToken = null;
 				$scope.groupJoinURL = null;
 			} else {
+				$scope.setLoading(true);
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
 
@@ -59,7 +60,11 @@ define([], function() {
 					$timeout(function(){
 						Opentip.findElements();
 					}, 500);
-				})
+					$scope.setLoading(false);
+				}).catch(function(e) {
+					console.error(e)
+					$scope.setLoading(false);
+				});
 
 				api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id}).$promise.then(function(result){
 					$scope.selectedGroupToken = result;
