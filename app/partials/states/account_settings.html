@@ -26,7 +26,7 @@
 
     <div class="small-16 columns end">
         <dl class="tabs no-print">
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid || (editingSelf && !atLeastOne(subjectInterests))}" ng-click="activateTab(0)" class="ng-scope">
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid}" ng-click="activateTab(0)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Profile</a>
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
@@ -180,9 +180,9 @@
                         <div id="subject-interest" ng-if="editingSelf">
                             <div class="small-16 columns">
                                 <label for="subject-interests">
-                                    <strong>Subject Level Interest</strong>
-                                    <span ng-if="!atLeastOne(subjectInterests)" data-ot="Indicating your subjects of interest will help us to send only relevant information to you." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                                    <span class="ru-error-message" ng-if="!atLeastOne(subjectInterests)">Select at least one subject</span>
+                                    <strong>Subject Interests</strong>
+                                    <span aria-haspopup="true" class="icon-help has-tip" data-ot="Let us know which subject(s) you study or teach and at what level. We'll use this to help only send you relevant information about Isaac's offerings. Don't forget to update it from time to time."></span>
+                                    <span ng-if="!atLeastOne(subjectInterests)" data-ot="Isaac is aimed at students and teachers of these subjects; we recommend indicating any relevant to you." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                                 </label>
                             </div>
                             <table>
@@ -200,19 +200,19 @@
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch00">&nbsp;</label>
-                                                <input id="ch00" type="checkbox" ng-model="subjectInterests.PHYSICS_GCSE" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch00" type="checkbox" ng-model="subjectInterests.PHYSICS_GCSE" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch01">&nbsp;</label>
-                                                <input id="ch01" type="checkbox" ng-model="subjectInterests.PHYSICS_ALEVEL" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch01" type="checkbox" ng-model="subjectInterests.PHYSICS_ALEVEL" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch02">&nbsp;</label>
-                                                <input id="ch02" type="checkbox" ng-model="subjectInterests.PHYSICS_UNI" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch02" type="checkbox" ng-model="subjectInterests.PHYSICS_UNI" input-animation>
                                             </div>
                                         </td>
                                     </tr>
@@ -221,19 +221,19 @@
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch10">&nbsp;</label>
-                                                <input id="ch10" type="checkbox" ng-model="subjectInterests.CHEMISTRY_GCSE" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch10" type="checkbox" ng-model="subjectInterests.CHEMISTRY_GCSE" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch11">&nbsp;</label>
-                                                <input id="ch11" type="checkbox" ng-model="subjectInterests.CHEMISTRY_ALEVEL" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch11" type="checkbox" ng-model="subjectInterests.CHEMISTRY_ALEVEL" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch12">&nbsp;</label>
-                                                <input id="ch12" type="checkbox" ng-model="subjectInterests.CHEMISTRY_UNI" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch12" type="checkbox" ng-model="subjectInterests.CHEMISTRY_UNI" input-animation>
                                             </div>
                                         </td>
                                     </tr>
@@ -242,19 +242,19 @@
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch20">&nbsp;</label>
-                                                <input id="ch20" type="checkbox" ng-model="subjectInterests.MATHS_GCSE" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch20" type="checkbox" ng-model="subjectInterests.MATHS_GCSE" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch21">&nbsp;</label>
-                                                <input id="ch21" type="checkbox" ng-model="subjectInterests.MATHS_ALEVEL" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch21" type="checkbox" ng-model="subjectInterests.MATHS_ALEVEL" input-animation>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="ac-custom ac-checkbox ac-checkmark">
                                                 <label for="ch22">&nbsp;</label>
-                                                <input id="ch22" type="checkbox" ng-model="subjectInterests.MATHS_UNI" ng-required="!atLeastOne(subjectInterests)" input-animation>
+                                                <input id="ch22" type="checkbox" ng-model="subjectInterests.MATHS_UNI" input-animation>
                                             </div>
                                         </td>
                                     </tr>
