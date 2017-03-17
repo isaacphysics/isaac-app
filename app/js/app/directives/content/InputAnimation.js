@@ -49,7 +49,7 @@ define([], function() {
     function draw(el, type) {
         var svg = el.parentNode.querySelector('svg');
         var pathDef = pathDefs[type];
-        var animDef = pathDefs[type];
+        var animDef = animDefs[type];
 
         var paths = [];
         paths.push(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
