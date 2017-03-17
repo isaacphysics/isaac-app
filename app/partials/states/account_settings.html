@@ -357,17 +357,32 @@
                     <tr>
                       <td>News and Updates</td>
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
-                      <td class="email-checkbox"><input name="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r1">&nbsp;</label>
+                          <input id="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>Assignments</td>
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
-                      <td class="email-checkbox"><input name="r3" type="checkbox"  ng-model="emailPreferences.ASSIGNMENTS"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r3">&nbsp;</label>
+                          <input id="r3" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>Events</td>
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
-                      <td class="email-checkbox"><input name="r2" type="checkbox" ng-model="emailPreferences.EVENTS"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r2">&nbsp;</label>
+                          <input id="r2" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

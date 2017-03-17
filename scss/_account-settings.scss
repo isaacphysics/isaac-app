@@ -93,7 +93,19 @@
 			
 		}
 		.email-checkbox{
+			position: relative;
 			text-align: center;
+			input {
+				left: 26px;
+			}
+			label {
+				padding-left: 36px;
+				margin-top: 7px;
+				margin-bottom: 7px;
+			}
+			>div>svg {
+				margin: -25px 0 0 8px; 
+			}
 		}
 	}
 
