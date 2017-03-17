@@ -66,14 +66,8 @@ define([], function() {
 			api.user.getEmailPreferences().$promise.then(function(result){
 				$scope.emailPreferences = result;
 			});
-		}
-
-		if ($scope.editingSelf) {
 			api.user.getSubjectInterests().$promise.then(function(result){
 				$scope.subjectInterests = result;
-				if (angular.equals($scope.subjectInterests, {})) {
-					$scope.subjectInterests[subject.id.toUpperCase()] = true;
-				}
 			});
 		}
 
@@ -284,8 +278,6 @@ define([], function() {
         		// bad email address given
 	        	} else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
 	        		$scope.errorMessage = "Email address missing or invalid."
-	        	} else if (!$scope.atLeastOne($scope.subjectInterests)) {
-	        		$scope.errorMessage = "At least one subject interest must be selected."
 	        	}
 	        }
         }
