@@ -59,6 +59,7 @@ define([], function() {
 
         for (var i = 0, len = paths.length; i < len; ++i) {
             var path = paths[i];
+            svg.appendChild(path);
 
             path.setAttributeNS(null, 'd', pathDef[i]);
 
@@ -77,7 +78,6 @@ define([], function() {
             path.style.transition = path.style.WebkitTransition = path.style.MozTransition = 'stroke-dashoffset ' + animDef.speed + 's ' + animDef.easing + ' ' + i * animDef.speed + 's';
             // Go!
             path.style.strokeDashoffset = '0';
-            svg.appendChild(path);
         }
     }
 
@@ -96,38 +96,41 @@ define([], function() {
                 initInput(element[0]);
 
                 if (attrs.ngModel != null && attrs.ngModel.length > 0) {
-                    var dotPos = attrs.ngModel.indexOf('.');
-                    var watchCollection;
-                    if (dotPos > -1) {
-                        watchCollection = attrs.ngModel.substr(0, dotPos);
-                    } else {
-                        watchCollection = attrs.ngModel;
-                    }
-                    scope.$watchCollection(watchCollection, function() {
-                        var animate, animation;
-                        var elementType = element[0].type;
-                        var selectedVal = scope.$eval(attrs.ngModel);
+                    var elementType = element[0].type;
 
-                        if (elementType === "checkbox") {
-                            animate = selectedVal === true;
-                            animation = 'checkmark';
-                        } else if (elementType === "radio") {
+                    if (elementType === "checkbox") {
+                        scope.$watch(attrs.ngModel, function() {
+                            if (scope.$eval(attrs.ngModel)) {
+                                draw(element[0], 'checkmark');
+                            } else {
+                                reset(element[0]);
+                            }
+                        });
+                    } else if (elementType === "radio") {
+                        var dotPos = attrs.ngModel.indexOf('.');
+                        var watchCollection;
+                        if (dotPos > -1) {
+                            watchCollection = attrs.ngModel.substr(0, dotPos);
+                        } else {
+                            watchCollection = attrs.ngModel;
+                        }
+                        scope.$watchCollection(watchCollection, function() {
                             // Can't necessarily use 'attrs.value' - due to a race condition it might not be defined;
                             // in which case use 'attrs.ngValue' which should be.
                             var buttonValue = attrs.value ? attrs.value : scope.$eval(attrs.ngValue);
+                            var selectedVal = scope.$eval(attrs.ngModel);
+                            
                             // Use == to compare values as they may be different types
-                            animate = selectedVal != null && selectedVal == buttonValue;
-                            animation = 'fill';
-                        } else {
-                            throw 'Error: input-animation directive is not yet implemented for inputs of type: "' + elementType + '"';
-                        }
+                            if (selectedVal != null && selectedVal == buttonValue) {
+                                draw(element[0], 'fill');
+                            } else {
+                                reset(element[0]);
+                            }
+                        });
+                    } else {
+                        throw 'Error: input-animation directive is not yet implemented for inputs of type: "' + elementType + '"';
+                    }
 
-                        if (animate) {
-                            draw(element[0], animation);
-                        } else {
-                            reset(element[0]);
-                        }
-                    });
                 }
             }
         };
