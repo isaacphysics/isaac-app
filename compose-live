@@ -44,6 +44,7 @@ services:
     restart: always
     extra_hosts:
       - elasticsearch:$LOCAL_ELASTICSEARCH
+      - local-smtp:$LOCAL_SMTP
     external_links:
       - pg-live:postgres
       - etl:etl
