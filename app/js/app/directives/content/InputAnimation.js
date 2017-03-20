@@ -27,7 +27,7 @@ define([], function() {
         checkmark : { speed : .2, easing : 'ease-in-out' },
     };
 
-    function initRadioButton(el) {
+    function initInput(el) {
 
         function createSVGEl(def) {
             var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -47,21 +47,12 @@ define([], function() {
     }
 
     function draw(el, type) {
-        var paths = [], pathDef, animDef, svg = el.parentNode.querySelector('svg');
+        var svg = el.parentNode.querySelector('svg');
+        var pathDef = pathDefs[type];
+        var animDef = animDefs[type];
 
-        switch (type) {
-            case 'fill':
-                pathDef = pathDefs.fill;
-                animDef = animDefs.fill;
-                break;
-            case 'checkmark':
-                pathDef = pathDefs.checkmark;
-                animDef = animDefs.checkmark;
-                break;
-        };
-
+        var paths = [];
         paths.push(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
-
         if (type === 'cross' || type === 'list') {
             paths.push(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
         }
@@ -102,41 +93,44 @@ define([], function() {
             restrict: 'A',
 
             link: function(scope, element, attrs) {
-                initRadioButton(element[0]);
+                initInput(element[0]);
 
                 if (attrs.ngModel != null && attrs.ngModel.length > 0) {
-                    var dotPos = attrs.ngModel.indexOf('.');
-                    var watchCollection;
-                    if (dotPos > -1) {
-                        watchCollection = attrs.ngModel.substr(0, dotPos);
-                    } else {
-                        watchCollection = attrs.ngModel;
-                    }
-                    scope.$watchCollection(watchCollection, function() {
-                        var animate, animation;
-                        var elementType = element[0].type;
-                        var selectedVal = scope.$eval(attrs.ngModel);
+                    var elementType = element[0].type;
 
-                        if (elementType === "checkbox") {
-                            animate = selectedVal === true;
-                            animation = 'checkmark';
-                        } else if (elementType === "radio") {
-                            // Use == to compare values as they may be different types
+                    if (elementType === "checkbox") {
+                        scope.$watch(attrs.ngModel, function() {
+                            if (scope.$eval(attrs.ngModel)) {
+                                draw(element[0], 'checkmark');
+                            } else {
+                                reset(element[0]);
+                            }
+                        });
+                    } else if (elementType === "radio") {
+                        var dotPos = attrs.ngModel.indexOf('.');
+                        var watchCollection;
+                        if (dotPos > -1) {
+                            watchCollection = attrs.ngModel.substr(0, dotPos);
+                        } else {
+                            watchCollection = attrs.ngModel;
+                        }
+                        scope.$watchCollection(watchCollection, function() {
                             // Can't necessarily use 'attrs.value' - due to a race condition it might not be defined;
                             // in which case use 'attrs.ngValue' which should be.
                             var buttonValue = attrs.value ? attrs.value : scope.$eval(attrs.ngValue);
-                            animate = selectedVal != null && selectedVal == buttonValue;
-                            animation = 'fill';
-                        } else {
-                            throw 'Error: input-animation directive is not yet implemented for inputs of type: "' + elementType + '"';
-                        }
+                            var selectedVal = scope.$eval(attrs.ngModel);
+                            
+                            // Use == to compare values as they may be different types
+                            if (selectedVal != null && selectedVal == buttonValue) {
+                                draw(element[0], 'fill');
+                            } else {
+                                reset(element[0]);
+                            }
+                        });
+                    } else {
+                        throw 'Error: input-animation directive is not yet implemented for inputs of type: "' + elementType + '"';
+                    }
 
-                        if (animate) {
-                            draw(element[0], animation);
-                        } else {
-                            reset(element[0]);
-                        }
-                    });
                 }
             }
         };
