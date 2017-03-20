@@ -111,10 +111,10 @@ define([], function() {
 			if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["differentiation", "There are no Differentiation questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "integration") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
+			if (contains(topics, "integration") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["integration", "There are no Integration questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "differential_eq") && !(contains(levels, 5) || levels.length == 0))
+			if (contains(topics, "differential_eq") && !(contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["differential_eq", "There are no Differential Equations questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
 			if (contains(topics, "geom_vectors") && !(contains(levels, 2) || contains(levels, 5) || contains(levels, 6) ||  levels.length == 0))

@@ -145,7 +145,8 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * 20, this.scale * 20);
+                    var dpSize = this.s.baseFontSize/3;
+                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * dpSize, this.scale * dpSize);
                     // this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
                 }
                 //}

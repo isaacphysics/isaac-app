@@ -69,10 +69,9 @@ define([], function() {
 		}
 
 		if ($scope.editingSelf) {
-			// TODO something like this:
 			api.user.getSubjectInterests().$promise.then(function(result){
 				$scope.subjectInterests = result;
-				if (!result.hasOwnProperty(subject.id.toUpperCase())) {
+				if (angular.equals($scope.subjectInterests, {})) {
 					$scope.subjectInterests[subject.id.toUpperCase()] = true;
 				}
 			});
