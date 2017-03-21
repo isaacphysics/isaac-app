@@ -29,7 +29,7 @@
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid}" ng-click="activateTab(0)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Profile</a>
             </dd>
-            <dd ng-if="user.hasSegueAccount" class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a>
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
@@ -277,8 +277,8 @@
             </div>
 
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
-               <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
-                   <div>
+                <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                    <div ng-if="user.hasSegueAccount">
                         <div id="password-current-wrap" class="row"  ng-if="user.hasSegueAccount  && editingSelf">
                             <div  class="large-6 columns">
                                 <label for="account-password-current">
@@ -310,6 +310,10 @@
                                 </span>
                             </div>
                         </div>
+                    </div>
+                    <div ng-if="!user.hasSegueAccount">
+                        <p>You do not currently have a password set for this account, you are signed in using <span ng-repeat="account in user.linkedAccounts"><span ng-if="$middle">, </span><span ng-if="user.linkedAccounts.length > 1 && $last"> or </span>{{account | capitalize}}</span>.</p>
+                        <p>Please <a ui-sref="pages({id: 'contact_us_teacher'})">contact us</a> if you would like to add password access to your account.</p>
                     </div>
                 </ul>
             </div>
