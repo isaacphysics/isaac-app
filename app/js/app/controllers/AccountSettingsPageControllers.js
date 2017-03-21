@@ -305,7 +305,7 @@ define([], function() {
         		return;
         	}
         	// Tokens so far are always uppercase; this is hardcoded in the API, so safe to assume here:
-			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase();
+			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
 				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.");
