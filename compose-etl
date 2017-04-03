@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: compose-release-live VERSION"
+    exit 1
+fi
+
+
+API_VERSION=$1
+ENV=live
+# We're done with the first argument. The remainder will be passed to docker-compose
+shift 1
+
+
+docker pull docker.isaacscience.org/isaac-api:$API_VERSION
+
+
+ETL_NAME=etl-$API_VERSION
+
+cat << EOF | docker-compose -p dc-etl -f - $@
+version: '2'
+services:
+  etl:
+    container_name: $ETL_NAME
+    image: docker.isaacscience.org/isaac-api:$API_VERSION
+    extra_hosts:
+      - elasticsearch:$LOCAL_ELASTICSEARCH
+    volumes:
+      - /local/data/m2:/root/.m2:rw
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
+      - /local/data/isaac-config/content_indices.properties:/local/data/rutherford/conf/content_indices.properties:rw
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/rutherford/keys:ro
+      - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+    logging:
+      driver: journald
+      options:
+        tag: isaac-etl
+networks:
+  default:
+    external:
+      name: isaac
+EOF
+
+exit 0
+
