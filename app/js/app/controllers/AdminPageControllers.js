@@ -20,29 +20,7 @@ define([], function() {
 
 		$scope.contentVersion = api.contentVersion.get();
 
-		$scope.indexQueue = null;
 		$scope.segueVersion = api.segueInfo.segueVersion();
-		$scope.cachedVersions = api.segueInfo.cachedVersion();
-		var updateIndexerQueue = function(){
-			api.contentVersion.currentIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;		
-			});
-		}
-		
-		updateIndexerQueue();
-
-		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
-		$scope.clearIndexQueue = function(){
-			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;
-			});
-		}
-
-		$scope.$on("$destroy", function() {
-	        if (indexQueueInterval) {
-	            $interval.cancel(indexQueueInterval);
-	        }
-	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 		$scope.tagsUrl = api.getTagsUrl();
@@ -339,6 +317,19 @@ define([], function() {
 				.catch(function(e){
                     console.log("error:" + e)
                     $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
+			}
+		}
+
+		$scope.resendConfirmationEmail = function(eventId, userId){
+			var resendEmail = $window.confirm('Are you sure you want to resend the confirmation email for this booking?');   
+			if (resendEmail) {
+				api.eventBookings.resendConfirmation({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					$scope.showToast($scope.toastTypes.Success, "Event Email Sent", "Email send to user " + userId);
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Email Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
             	});
 			}
 		}

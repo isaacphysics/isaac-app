@@ -99,7 +99,7 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0)) {
+                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0) && !response.data.bypassGenericSiteErrorPage) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
                         $state.go('error');
