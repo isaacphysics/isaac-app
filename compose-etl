@@ -33,6 +33,11 @@ services:
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+    command: ["mvn", "jetty:run", "-P", "etl"]
+    networks:
+      default:
+        aliases:
+          - etl
     logging:
       driver: journald
       options:
