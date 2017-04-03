@@ -51,7 +51,7 @@ services:
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
-#      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
     networks:
