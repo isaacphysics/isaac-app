@@ -54,7 +54,7 @@
                             <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
                         </div>
                         <div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
-                            <button ng-click="setVersion()">Set Version</button>
+                            <button type="button" ng-click="setVersion()">Set Version</button>
                         </div>
                     </form>
                     <form ng-if="isStaffUser && !isAdminUser">
