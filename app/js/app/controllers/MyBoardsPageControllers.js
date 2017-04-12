@@ -19,6 +19,8 @@ define([], function() {
 		
 		$rootScope.pageTitle = "My Boards";
 
+		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
+
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
 		$scope.filterOptions = [

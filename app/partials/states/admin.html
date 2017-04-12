@@ -24,8 +24,8 @@
                 <h2>Admin Console</h2>
                 <ul>
                     <li ng-show="segueVersion"><strong>API Version:</strong> {{segueVersion.segueVersion}}</li>                    
-                    <li ng-show="indexQueue" title="{{indexQueue.queue}}"><strong>Current Index Queue Size:</strong> {{indexQueue.queue.length}} <span ng-show="indexQueue.queue.length > 0">[<a href="javascript:void(0)" ng-click="clearIndexQueue()">Clear Unstarted jobs</a>]</span></li>
-                    <li ng-show="cachedVersions" title="{{cachedVersions.cachedVersions}}"><strong>Content Versions Cached:</strong> {{cachedVersions.cachedVersions.length}}</li>   
+                    <!-- <li ng-show="indexQueue" title="{{indexQueue.queue}}"><strong>Current Index Queue Size:</strong> {{indexQueue.queue.length}} <span ng-show="indexQueue.queue.length > 0">[<a href="javascript:void(0)" ng-click="clearIndexQueue()">Clear Unstarted jobs</a>]</span></li> -->
+                    <!-- <li ng-show="cachedVersions" title="{{cachedVersions.cachedVersions}}"><strong>Content Versions Cached:</strong> {{cachedVersions.cachedVersions.length}}</li>    -->
                 </ul>                
             </div>
         </div>            
@@ -54,7 +54,7 @@
                             <input id="content-version" type="text" ng-model="contentVersion.liveVersion" placeholder="Enter commit SHA" ng-change="versionChange = null">
                         </div>
                         <div class="medium-4 columns end" ng-if="versionChange != 'IN_PROGRESS'">
-                            <button ng-click="setVersion()">Set Version</button>
+                            <button type="button" ng-click="setVersion()">Set Version</button>
                         </div>
                     </form>
                     <form ng-if="isStaffUser && !isAdminUser">

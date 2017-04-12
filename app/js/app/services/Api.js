@@ -316,6 +316,10 @@ define([], function() {
 			'cancelMyBooking' : {
 				method: 'DELETE', 
 				url: urlPrefix + "/events/:eventId/bookings/cancel"			
+			},
+			'resendConfirmation' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/resend_confirmation"			
 			}
 		});	
 

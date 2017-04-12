@@ -24,29 +24,30 @@ define([], function() {
 		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES", subjectOfInterest: ""};
 		$scope.userManagerSelection = {};
 
-		$scope.indexQueue = null;
-		$scope.segueVersion = api.segueInfo.segueVersion();
-		$scope.cachedVersions = api.segueInfo.cachedVersion();
-		var updateIndexerQueue = function(){
-			api.contentVersion.currentIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;		
-			});
-		}
-		
-		updateIndexerQueue();
+		// FIXME - reimplement this, but in a more sensible location!
+        // $scope.indexQueue = null;
+        // $scope.segueVersion = api.segueInfo.segueVersion();
+        // $scope.cachedVersions = api.segueInfo.cachedVersion();
+        // var updateIndexerQueue = function(){
+        //     api.contentVersion.currentIndexQueue().$promise.then(function(result){
+        //         $scope.indexQueue = result;
+        //     });
+        // }
+        
+        // updateIndexerQueue();
 
-		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
-		$scope.clearIndexQueue = function(){
-			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;
-			});
-		}
+        // var indexQueueInterval = $interval(updateIndexerQueue, 30000)
+        // $scope.clearIndexQueue = function(){
+        //     api.contentVersion.emptyIndexQueue().$promise.then(function(result){
+        //         $scope.indexQueue = result;
+        //     });
+        // }
 
-		$scope.$on("$destroy", function() {
-	        if (indexQueueInterval) {
-	            $interval.cancel(indexQueueInterval);
-	        }
-	    });
+        // $scope.$on("$destroy", function() {
+        //     if (indexQueueInterval) {
+        //         $interval.cancel(indexQueueInterval);
+        //     }
+        // });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 

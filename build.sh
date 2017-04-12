@@ -28,8 +28,8 @@ else
           read -p "Override API version to target [$VERSION_TO_DEPLOY]" SEGUE_VERSION
 	else
           SEGUE_VERSION=$2
-        fi
-        SEGUE_VERSION=${SEGUE_VERSION:-$VERSION_TO_DEPLOY}
+    fi
+    SEGUE_VERSION=${SEGUE_VERSION:-$VERSION_TO_DEPLOY}
 
 	sed -i.bak "s/api\/[^\/]*\/api/api\/$SEGUE_VERSION\/api/g" app/js/app/app.js
 	rm app/js/app/app.js.bak
@@ -37,8 +37,8 @@ fi
 
 npm install
 grunt dist
-docker build -t "docker.isaacscience.org/isaac-app-${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION .
-docker push "docker.isaacscience.org/isaac-app-${VERSION_TO_DEPLOY,,}"
+docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION .
+docker push "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}"
 
 cd ..
 rm -rf isaac-app
@@ -46,8 +46,8 @@ rm -rf isaac-app
 git clone -b $SEGUE_VERSION --depth 1 https://github.com/ucam-cl-dtg/isaac-api.git
 cd isaac-api
 
-docker build -t "docker.isaacscience.org/isaac-api-$SEGUE_VERSION" .
-docker push "docker.isaacscience.org/isaac-api-$SEGUE_VERSION"
+docker build -t "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" .
+docker push "docker.isaacscience.org/isaac-api:$SEGUE_VERSION"
 
 cd ..
 rm -rf isaac-api

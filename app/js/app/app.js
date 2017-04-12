@@ -99,7 +99,7 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0)) {
+                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0) && !response.data.bypassGenericSiteErrorPage) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
                         $state.go('error');
@@ -119,7 +119,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.9.4/api");
+            apiProvider.urlPrefix("/api/v2.0.0/api");
         }
 
         NProgress.configure({ showSpinner: false });
