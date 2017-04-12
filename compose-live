@@ -1,0 +1,70 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: compose-release-live VERSION"
+    exit 1
+fi
+
+# Arg: app version
+
+APP_VERSION=$1
+ENV=live
+# We're done with the first argument. The remainder will be passed to docker-compose
+shift 1
+
+
+# Pull the correct App image, inspect it to find the required API version, pull that.
+
+docker pull docker.isaacscience.org/isaac-app:$APP_VERSION
+API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
+docker pull docker.isaacscience.org/isaac-api:$API_VERSION
+
+
+API_NAME=api-$ENV-$API_VERSION
+APP_NAME=app-$ENV-$APP_VERSION
+
+PG=pg-live
+CONTENT=live
+
+cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
+version: '2'
+services:
+  $APP_NAME:
+    container_name: $APP_NAME
+    image: docker.isaacscience.org/isaac-app:$APP_VERSION
+    restart: always
+    networks:
+      default:
+        aliases:
+          - app-$ENV
+  $API_NAME:
+    container_name: $API_NAME
+    image: docker.isaacscience.org/isaac-api:$API_VERSION
+    restart: always
+    extra_hosts:
+      - elasticsearch:$LOCAL_ELASTICSEARCH
+      - local-smtp:$LOCAL_SMTP
+    external_links:
+      - pg-live:postgres
+    volumes:
+      - /local/data/m2:/root/.m2:rw
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/rutherford/keys:ro
+      - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+    networks:
+      default:
+        aliases:
+          - api-$ENV-any
+    logging:
+      driver: journald
+      options:
+        tag: isaac-api-$ENV
+networks:
+  default:
+    external:
+      name: isaac
+EOF
+
+exit 0
