@@ -192,6 +192,7 @@
 	}
 	dd:first-child .group-accordion-header {
 		border-top: #999 1px solid;
+		border-bottom: #999 1px solid;
 	}
 
 	.group-accordion-arrow {
@@ -215,6 +216,7 @@
 	table-layout: auto;
 	border-collapse: collapse;
 	border: #999 1px solid;
+	border-top: 0px;
 	margin: 0;
 	width:100%;
 
@@ -281,6 +283,11 @@
 .archive-group-btn {
 	float: right;
 	font-weight: 600;
+}
+.profile-tabs-content {
+	.ru-button-big {
+		margin-top: 10px; 
+	}
 }
 @media #{$small-only} { 
 	.profile-tabs-content,

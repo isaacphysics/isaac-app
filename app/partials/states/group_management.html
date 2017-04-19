@@ -39,6 +39,9 @@
                 <span ng-hide="sortOption == 'created'" class="right"><a ng-click="sortOption='created'">[Group Created]</a></span></span> -->
                 <select class="right" ng-model="sortOption" ng-options="option.label for option in sortOptions" style="width:50%;margin-bottom:5px;"></select>
             </div>
+            <div ng-if="selectedGroup" class="show-for-large-up">
+                <a class="ru-button-big secondary expand" ng-click="setSelectedGroup(null)">Create new group</a>
+            </div>
             <dl class="group-nav">
                 <dd ng-class="{active: group._id == selectedGroup._id}" ng-repeat="group in myGroups | orderBy:sortOption.val:sortOption.reverse">
                     <a class="group-nav-header" ng-click="setSelectedGroup(group)">
@@ -57,9 +60,6 @@
                     <p class="small-text-center show-for-large-up">You do not have any groups to display.</p>
                 </dd>
             </dl>
-            <div ng-if="selectedGroup" class="show-for-large-up">
-                <a class="ru-button-big secondary expand" ng-click="setSelectedGroup(null)">Create new group</a>
-            </div>
 
             <!-- Archived groups navigation -->
             <div ng-if="archivedView">
