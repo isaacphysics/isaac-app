@@ -21,20 +21,11 @@
                     </div>
                 </div>
                 <div class='padded-right-float text-right'>
-                    <span ng-if="!$state.includes('chemistry')">
-                        <a class='ru-desktop-nav-item' ui-sref='chemistry'>
-                            <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner'>
-                                <span>Chemistry</span>
-                            </div>
-                        </a>
-                    </span>
-                    <span ng-if="$state.includes('chemistry')">
-                        <a class='ru-desktop-nav-item' ui-sref='home'>
-                            <div id="physics-tab-desktop" class='ru-desktop-nav-item-inner'>
-                                <span>Physics</span>
-                            </div>
-                        </a>
-                    </span>
+                    <a class='ru-desktop-nav-item' ui-sref='chemistry'>
+                        <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
+                            <span>Chemistry</span>
+                        </div>
+                    </a>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>
                         <div id="questions-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
                             <span>Questions</span>
