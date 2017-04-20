@@ -23,7 +23,7 @@
                 <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='chemistry'>
                         <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
-                            <span>Chemistry</span>
+                            <span class="multiline">Isaac Chemistry</span>
                         </div>
                     </a>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>
@@ -83,6 +83,11 @@
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
                 <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
                 <div class="ru-mobile-nav-container">
+                  <a class='ru-mobile-nav-item' ui-sref='chemistry'>
+                    <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('chemistry')}">
+                      <span class="multiline">Isaac Chemistry</span>
+                    </div>
+                  </a>
                   <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
                       <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
                           <span>Questions</span>
