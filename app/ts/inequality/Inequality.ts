@@ -71,8 +71,8 @@ export
     }
 
     preload = () => {
-        this.font_it = this.p.loadFont("/assets/STIXGeneral-Italic.otf");
-        this.font_up = this.p.loadFont("/assets/STIXGeneral-Regular.otf");
+        this.font_it = this.p.loadFont("/assets/STIXGeneral-Italic.ttf");
+        this.font_up = this.p.loadFont("/assets/STIXGeneral-Regular.ttf");
     };
 
     loadTestCase = (s) => {
