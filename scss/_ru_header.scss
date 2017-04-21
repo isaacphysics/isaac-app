@@ -64,6 +64,12 @@ $ru_nav_size : 7em;
     font-style: italic;
     font-weight: 300;
     color: #333333;
+
+    &.multiline {
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        top: 2.5em;
+    }
 }
 .ru-desktop-nav-item-inner:hover
 {
@@ -276,6 +282,12 @@ $ru_nav_size : 7em;
     position: relative;
     font-size: 1.0em;
     display: inline-block;
+
+    &.multiline {
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        top: 2.5em;
+    }
 }
 
 .ru-search-bg {
