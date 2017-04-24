@@ -2,16 +2,24 @@
 
 if [ $# -eq 0 ]
   then
-    echo "Usage: compose-release-live VERSION"
+    echo "Usage: compose-etl VERSION"
+    echo "Note: VERSION is the *APP* version, not API."
     exit 1
 fi
 
 
-API_VERSION=$1
+APP_VERSION=$1
 ENV=live
 # We're done with the first argument. The remainder will be passed to docker-compose
 shift 1
 
+if [ $1 = "create" ] || [ $1 = "exec" ] || [ $1 = "pull" ] || [ $1 = "push" ] || [ $1 = "run" ] || [ $1 = "start" ] || [ $1 = "up" ]; then
+  docker pull docker.isaacscience.org/isaac-app:$APP_VERSION
+  API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
+  docker pull docker.isaacscience.org/isaac-api:$API_VERSION
+else
+  API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
+fi 
 
 docker pull docker.isaacscience.org/isaac-api:$API_VERSION
 
