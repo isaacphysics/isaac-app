@@ -60,7 +60,6 @@ define([], function() {
 
                 scope.groupExpanded[groupId] = false;
             }
-
             scope.setLoading(false);
         })
 
@@ -69,16 +68,11 @@ define([], function() {
             var gameboardPromises = [];
 
             if (scope.groupExpanded[groupId]) {
+                // This group is already expanded. Collapse it and return.
                 scope.groupExpanded[groupId] = false;
                 return;
-            }
-            else if (!scope.groupExpanded[groupId] && !$.isEmptyObject(scope.assignments)){
-                scope.groupExpanded[groupId] = true;
-                return;
-            }
-
-            if (!scope.groupAssignments[groupId]) {
-                // this means there are no assignments set
+            } else if (!scope.groupAssignments[groupId]) {
+                // This group has no assignments
                 return;
             }
 
@@ -134,7 +128,7 @@ define([], function() {
                             }
 
                             // Calculate student totals and gameboard totals
-                            gameBoard.studentsCorrect = 0;
+                            scope.assignmentProgress[k].studentsCorrect = 0;
 
                             for (var j = 0; j < progress.length; j++) {
                                 var studentProgress = progress[j];
@@ -147,7 +141,7 @@ define([], function() {
                                 }
 
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
-                                    gameBoard.studentsCorrect++;
+                                    scope.assignmentProgress[k].studentsCorrect++;
                                 }
                             }
                         });

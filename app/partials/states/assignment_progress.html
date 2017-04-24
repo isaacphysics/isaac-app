@@ -84,8 +84,8 @@
                                     <!--
                                         Board progress overview
                                     -->
-                                    <div class="board-progress" ng-show="assignment.gameBoard.studentsCorrect != null">
-                                        <strong>{{assignment.gameBoard.studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <a target="_blank" ui-sref="board({'id':assignment.gameBoard.id})"><strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong></a><strong class="strong-mobile">correctly</strong>.
+                                    <div class="board-progress" ng-show="assignmentProgress[assignment._id].studentsCorrect != null">
+                                        <strong>{{assignmentProgress[assignment._id].studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <a target="_blank" ui-sref="board({'id':assignment.gameBoard.id})"><strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong></a><strong class="strong-mobile">correctly</strong>.
                                     </div>
 
                                     <!--
