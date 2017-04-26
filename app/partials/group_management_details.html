@@ -11,7 +11,7 @@
 
     <dl class="accordion group-accordion" ng-show="selectedGroup">
         <dd class="active">
-            <a class="group-accordion-header" ng-class="{'drop-bottom-border': selectedGroupMembers != null && selectedGroupMembers.length != 0}">
+            <a class="group-accordion-header" ng-class="{'remove-border-bottom': selectedGroupMembers != null && selectedGroupMembers.length != 0}">
                 {{selectedGroupMembers == null ? 0 : selectedGroupMembers.length}} users <span class="show-for-medium-up">in this group</span>
                 <!--span class="group-accordion-arrow"></span-->
             </a>
