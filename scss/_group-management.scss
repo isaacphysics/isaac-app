@@ -194,6 +194,9 @@
 		border-top: #999 1px solid;
 		border-bottom: #999 1px solid;
 	}
+	dd:first-child .drop-bottom-border {
+		border-bottom: 0px;
+	}
 
 	.group-accordion-arrow {
 		float: right;
