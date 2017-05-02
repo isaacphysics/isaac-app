@@ -270,9 +270,11 @@ export
 
         // These are used to correctly detect clicks and taps.
 
-        // Note that touchX and touchY are incorrect when using touch. Ironically.
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        // ~~~ Note that touchX and touchY are incorrect when using touch. Ironically.
+        // Note that, in 0.5.5, they removed touchX/Y, then they "fixed" them in 0.5.6, and now I don't even know
+        // what I'm doing anymore...
+        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         this.initialTouch = this.p.createVector(tx, ty);
 
@@ -332,8 +334,8 @@ export
 
     touchMoved = () => {
 
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         if (this.movingSymbol != null) {
             var d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
@@ -387,7 +389,7 @@ export
     touchEnded = () => {
 
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click
             // Close the menu when touching the canvas
             this.scope.$broadcast("closeMenus");
