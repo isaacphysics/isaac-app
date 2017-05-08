@@ -53,4 +53,4 @@ cd ..
 rm -rf isaac-api
 echo "Build complete"
 echo "Now run, for example:"
-echo "   compose-release $VERSION_TO_DEPLOY dev up -d"
+echo "   ./compose dev $VERSION_TO_DEPLOY up -d"
