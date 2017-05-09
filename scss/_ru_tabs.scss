@@ -12,6 +12,7 @@
     padding-bottom: 10px;
 }
 
+// Physics
 .tabs.ru_tabs.physics dd a, .tabs.ru_tabs.general dd a
 {
     background-color: $ru_physics !important;
@@ -42,6 +43,38 @@
     }
 }
 
+// Chemistry
+.tabs.ru_tabs.chemistry dd a
+{
+    background-color: $ru_chemistry !important;
+    border-top: $ru_chemistry 1px solid;
+    border-bottom: #ccc 1px solid;
+}
+.tabs.ru_tabs.chemistry
+{
+    dd:not(.active) a:hover
+    {
+        background-color: lighten($ru_chemistry,$ru_site_hover) !important;
+        border-top: lighten($ru_chemistry,$ru_site_hover) 1px solid;
+    }
+}
+
+.tabs.ru_tabs.chemistry.ru-answer dd a
+{
+    background-color: $ru_chemistry !important;
+    border-top: $ru_chemistry 1px solid;
+    border-bottom: $ru_footer 1px solid;
+}
+.tabs.ru_tabs.chemistry.ru-answer
+{
+    dd:not(.active) a:hover
+    {
+        background-color: lighten($ru_chemistry,$ru_site_hover) !important;
+        border-top: lighten($ru_chemistry,$ru_site_hover) 1px solid;
+    }
+}
+
+// Maths
 .tabs.ru_tabs.maths dd a
 {
     background-color: $ru_maths !important;
@@ -72,7 +105,9 @@
     }
 }
 
+// All
 .tabs.ru_tabs.physics.ru-answer dd.ru-answer a, 
+.tabs.ru_tabs.chemistry.ru-answer dd.ru-answer a,
 .tabs.ru_tabs.maths.ru-answer dd.ru-answer a
 {
     color: white;
@@ -81,6 +116,7 @@
 }
 
 .tabs.ru_tabs.physics.ru-answer dd.ru-answer:not(.active) a, 
+.tabs.ru_tabs.chemistry.ru-answer dd.ru-answer:not(.active) a, 
 .tabs.ru_tabs.maths.ru-answer dd.ru-answer:not(.active) a
 {
     &:hover
