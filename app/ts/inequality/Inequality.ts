@@ -21,19 +21,19 @@ limitations under the License.
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget'
-import { Symbol } from './Symbol'
-import { BinaryOperation } from './BinaryOperation';
-import { Fraction } from './Fraction';
-import { Brackets } from './Brackets';
-import { Radix } from './Radix';
-import { Num } from './Num';
-import { Fn } from './Fn';
-import { DockingPoint } from './DockingPoint';
-import { Relation } from './Relation';
-import { ChemicalElement } from './ChemicalElement';
-import { StateSymbol } from './StateSymbol';
-import { Particle } from './Particle';
+import { Widget, Rect } from './Widget.ts'
+import { Symbol } from './Symbol.ts'
+import { BinaryOperation } from './BinaryOperation.ts';
+import { Fraction } from './Fraction.ts';
+import { Brackets } from './Brackets.ts';
+import { Radix } from './Radix.ts';
+import { Num } from './Num.ts';
+import { Fn } from './Fn.ts';
+import { DockingPoint } from './DockingPoint.ts';
+import { Relation } from './Relation.ts';
+import { ChemicalElement } from './ChemicalElement.ts';
+import { StateSymbol } from './StateSymbol.ts';
+import { Particle } from './Particle.ts';
 
 // This is where the fun starts
 
