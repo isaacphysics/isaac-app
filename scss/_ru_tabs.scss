@@ -44,13 +44,13 @@
 }
 
 // Chemistry
-.tabs.ru_tabs.chemistry dd a, .tabs.ru_tabs.general dd a
+.tabs.ru_tabs.chemistry dd a
 {
     background-color: $ru_chemistry !important;
     border-top: $ru_chemistry 1px solid;
     border-bottom: #ccc 1px solid;
 }
-.tabs.ru_tabs.chemistry, .tabs.ru_tabs.general
+.tabs.ru_tabs.chemistry
 {
     dd:not(.active) a:hover
     {
@@ -59,13 +59,13 @@
     }
 }
 
-.tabs.ru_tabs.chemistry.ru-answer dd a, .tabs.ru_tabs.general.ru-answer dd a
+.tabs.ru_tabs.chemistry.ru-answer dd a
 {
     background-color: $ru_chemistry !important;
     border-top: $ru_chemistry 1px solid;
     border-bottom: $ru_footer 1px solid;
 }
-.tabs.ru_tabs.chemistry.ru-answer, .tabs.ru_tabs.general.ru-answer
+.tabs.ru_tabs.chemistry.ru-answer
 {
     dd:not(.active) a:hover
     {
