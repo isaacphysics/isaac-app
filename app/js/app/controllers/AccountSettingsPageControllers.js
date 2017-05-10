@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, $stateParams, $window, $location, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, persistence, $stateParams, $window, $location, $rootScope) {
 		/*
 		*  This controller manages the User Account Settings page, but it also
 		*  manages user Registration. Any changes to one will affect the other,
@@ -201,7 +201,12 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
-        	$scope.errorMessage = null;  // clear any old error message
+        	var afterAuth = persistence.load('afterAuth');
+        	if(afterAuth != "") {
+        		next = afterAuth;
+        		persistence.save('afterAuth', "");
+			}
+            $scope.errorMessage = null;  // clear any old error message
 
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
@@ -300,7 +305,7 @@ define([], function() {
         $scope.activeAuthorisations = api.authorisations.get();
         
         $scope.useToken = function() {
-        	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
+         	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}

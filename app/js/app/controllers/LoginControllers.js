@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$stateParams', '$window', function($scope, auth, api, $stateParams, $window) {
+	var PageController = ['$scope', 'auth', 'api', 'persistence', '$stateParams', '$window', function($scope, auth, api, persistence, $stateParams, $window) {
 
 		$scope.auth = auth;
 		$scope.target = $stateParams.target;
@@ -68,6 +68,7 @@ define([], function() {
 		}
 
 		$scope.signUpFunction = function() {
+			persistence.save('afterAuth', $scope.target || "");
 			$scope.$root.user.email = $scope.loginUser.email;
 			$scope.$root.user.password = $scope.loginUser.password;
 			return $scope.user;

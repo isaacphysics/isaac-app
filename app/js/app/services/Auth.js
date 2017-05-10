@@ -15,11 +15,11 @@
  */
 define([], function() {
 
-	var service = ['api', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
+	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
 
 		this.loginRedirect = function(provider, target) {
 			
-			$cookies.afterAuth = target || "";
+			persistence.save('afterAuth', target || "");
 
 			api.authentication.getAuthRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);
@@ -31,11 +31,10 @@ define([], function() {
 		}
 
 		this.providerCallback = function(provider, params) {
-            var next = $cookies.afterAuth;
+			var next = persistence.load('afterAuth');
+			persistence.save('afterAuth', '');
             next = next || "/";
             next = next.replace("#!", "");
-
-            delete $cookies.afterAuth;
 
             params.provider = provider;
 
@@ -48,7 +47,7 @@ define([], function() {
                 	setupUserConsistencyCheck();			
                 });
 
-                if (u.firstLogin) {
+                if (u.firstLogin && null == next.match(/\/account\?authToken=.*/) ) {
                 	$state.go("accountSettings", {next: next}, {location: "replace"});
                 } else {
 	                $location.replace();
@@ -63,7 +62,7 @@ define([], function() {
 		}
 
 		this.linkRedirect = function(provider) {
-			$cookies.afterAuth = "/account";
+			persistence.save('afterAuth', '/account');
 
 			api.authentication.getLinkRedirect({provider: provider}).$promise.then(function(data) {
 				console.log("Redirect data:", data);
