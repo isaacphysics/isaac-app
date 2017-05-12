@@ -247,7 +247,11 @@ define([], function() {
     			}
 
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
-	        		// we want to cause the internal user object to be updated just in case it has changed.
+                    if ($location.path() == "/register") {
+                        // The user object will be overridden below by updateUser, but want to temporarily preserve that this is the first login!
+                        persistence.session.save('firstLogin', true);
+                    }
+                    // Update the user object in case it has changed:
 	        		return auth.updateUser();
 	        	}).then(function(){
 	        		if (next) {
@@ -320,7 +324,9 @@ define([], function() {
 		        		$scope.activeAuthorisations = api.authorisations.get();
 		        		$scope.authenticationToken = {value: null};
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-		        		if ($scope.user.firstLogin) {
+                        // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
+		        		if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
+                            // If we've just signed up and used a group code immediately, change back to the main settings page:
                             $scope.activeTab = 0;
 						}
 		        	})						
