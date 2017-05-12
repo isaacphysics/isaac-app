@@ -47,8 +47,8 @@ define([], function() {
                 	setupUserConsistencyCheck();			
                 });
 
-                if (u.firstLogin && null == next.match(/\/account\?authToken=.*/) ) {
-                	$state.go("accountSettings", {next: next}, {location: "replace"});
+                if (u.firstLogin && '/' == next) {
+                	$state.go("accountSettings", {location: "replace"});
                 } else {
 	                $location.replace();
 	                $location.url(next);

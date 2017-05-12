@@ -320,6 +320,9 @@ define([], function() {
 		        		$scope.activeAuthorisations = api.authorisations.get();
 		        		$scope.authenticationToken = {value: null};
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
+		        		if ($scope.user.firstLogin) {
+                            $scope.activeTab = 0;
+						}
 		        	})						
 				}
         	}).catch(function(e){
