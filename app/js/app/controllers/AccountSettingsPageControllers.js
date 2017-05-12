@@ -35,7 +35,7 @@ define([], function() {
 		}
 
 		// the hash will be used as an anchor
-		if($location.hash){
+		if ($location.hash){
 			switch($location.hash()){
 				case "passwordreset":
 					$scope.activeTab = 1;
@@ -108,7 +108,7 @@ define([], function() {
 			}
 
 			// If the current month and year are selected, make sure days are limited to the past
-			if(today.getMonth() === month && today.getFullYear() === year){
+			if (today.getMonth() === month && today.getFullYear() === year){
 				days = today.getDate();
 			}
 
@@ -149,7 +149,7 @@ define([], function() {
 
 			var today = new Date();
 			// Restrict the months depending on the year
-			if($scope.dob.year === today.getFullYear()){
+			if ($scope.dob.year === today.getFullYear()){
 				$scope.datePicker.months = possibleMonths.slice(0,today.getMonth() + 1);
 			}
 			else{
@@ -170,7 +170,7 @@ define([], function() {
 			angular.forEach($scope.user.linkedAccounts, function(account){
 				Object.keys(linked).forEach(function(key) {
 					// If there is a match update to true
-					if(key === account) linked[key] = true;
+					if (key === account) linked[key] = true;
 				});
 				
             });
@@ -202,7 +202,7 @@ define([], function() {
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
         	var afterAuth = persistence.load('afterAuth');
-        	if(afterAuth != "") {
+        	if (afterAuth != "") {
         		next = afterAuth;
         		persistence.save('afterAuth', "");
 			}
@@ -217,9 +217,9 @@ define([], function() {
         	}
 
         	// if not a new user; confirm any email change, else undo it (but don't if invalid because it will just fail below anyway)
-        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
+        	if ($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
-        		if(promptResponse){
+        		if (promptResponse){
         			
         		}
         		else{
@@ -238,7 +238,7 @@ define([], function() {
         		}
 
         		// add the current password if it's confirmed, and put new password in user object
-        		if(!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
+        		if (!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
     				userSettings.registeredUser.password = $scope.password1;
         			userSettings.passwordCurrent = $scope.passwordChangeState.passwordCurrent;
 				// or if a new password set and editing someone else, just put new password in user object (security checks done in api)
@@ -347,7 +347,7 @@ define([], function() {
         $scope.revokeAuthorisation = function(userToRevoke){
         	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
 
-        	if(revoke) {
+        	if (revoke) {
 	        	api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
