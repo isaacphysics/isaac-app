@@ -690,19 +690,27 @@ define([
 
                 var lastNotificationTime = persistence.load("lastNotificationTime") || 0;
 
-                if (Date.now() - $rootScope.user.registrationDate > 2*24*60*60*1000) {
+                if (Date.now() - $rootScope.user.registrationDate > 1) {//2*24*60*60*1000) {
                     // User registration was at least two days ago
 
-                    if (Date.now() - lastNotificationTime > 24*60*60*1000) {
+                    if (Date.now() - lastNotificationTime > 1) { //24*60*60*1000) {
                         // Last notification was at least one day ago
 
                         api.notifications.query().$promise.then(function(ns) {
 
                             if (ns.length > 0) {
 
-                                $rootScope.notificationDoc = ns[0];
+                                // dirty hack for student/teacher questionnaires, but notifications wont be like this for long (05/17)
+                                for (var i = 0; i < ns.length; i++) {
 
-                                $rootScope.modals.notification.show();
+                                    if ($rootScope.user.role.toLowerCase() == ns[i].tags[0]) {
+
+                                        $rootScope.notificationDoc = ns[i];
+                                        $rootScope.modals.notification.show();
+                                        break;
+                                    }
+
+                                }
 
                                 persistence.save("lastNotificationTime", Date.now());
                             }
@@ -721,7 +729,7 @@ define([
             api.notifications.respond({id: notification.id, response: response}, {});
 
             // if they respond with dismissed then it means we should show them the external link if there is one
-            if (response == 'DISMISSED' && notification.externalReference.url) {
+            if (response == 'ACKNOWLEDGED' && notification.externalReference.url) {
                 var userIdToken = "{{currentUserId}}";
 
                 // if they have a token representing the user id then replace it.
