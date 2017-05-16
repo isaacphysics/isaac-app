@@ -295,15 +295,17 @@
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
-                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password">        
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
                             <div  class="large-6 columns">
-                                <label for="account-password2" ng-class="{'disabled' : !password1}"><strong>Confirm password</strong></label>
-                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!password1" match="password1" ng-model="password2" name="password2">
+                                <label for="account-password2" ng-class="{'disabled' : (!password1 || password1.length < 6)}"><strong>Confirm password</strong></label>
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2">
                                 <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent && editingSelf">
                                     Current password not provided
+                                </span>
+                                <span class="ru-error-message" ng-if="password1.length < 6">
+                                    Password must be at least 6 characters long
                                 </span>
                                 <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
                                     Passwords do not match
