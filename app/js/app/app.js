@@ -690,10 +690,10 @@ define([
 
                 var lastNotificationTime = persistence.load("lastNotificationTime") || 0;
 
-                if (Date.now() - $rootScope.user.registrationDate > 1) {//2*24*60*60*1000) {
+                if (Date.now() - $rootScope.user.registrationDate > 2*24*60*60*1000) {
                     // User registration was at least two days ago
 
-                    if (Date.now() - lastNotificationTime > 1) { //24*60*60*1000) {
+                    if (Date.now() - lastNotificationTime > 24*60*60*1000) {
                         // Last notification was at least one day ago
 
                         api.notifications.query().$promise.then(function(ns) {
