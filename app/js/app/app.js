@@ -728,7 +728,7 @@ define([
         $rootScope.notificationResponse = function(notification, response) {
             api.notifications.respond({id: notification.id, response: response}, {});
 
-            // if they respond with dismissed then it means we should show them the external link if there is one
+            // if they respond with 'acknowledged' then it means we should show them the external link if there is one
             if (response == 'ACKNOWLEDGED' && notification.externalReference.url) {
                 var userIdToken = "{{currentUserId}}";
 
