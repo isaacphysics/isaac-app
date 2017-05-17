@@ -295,6 +295,7 @@
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password">
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
