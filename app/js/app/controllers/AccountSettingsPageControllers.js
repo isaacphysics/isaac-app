@@ -229,7 +229,7 @@ define([], function() {
         	}
 
         	// Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1 == $scope.password2 && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
+        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
@@ -281,7 +281,10 @@ define([], function() {
         		// current password given/admin user, but new password not confirmed
 	        	} else if ($scope.password1 != $scope.password2) {
 	        		$scope.errorMessage = "Passwords do not match.";
-        		// first name or last name missing
+                // password not long enough:
+                } else if ($scope.password1.length < 6) {
+                    $scope.errorMessage = "Passwords must be at least 6 characters in length.";
+                // first name or last name missing
 	        	} else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
 	        		$scope.errorMessage = "Name field missing or invalid.";
         		// bad email address given
