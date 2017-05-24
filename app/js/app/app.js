@@ -119,7 +119,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.0.2/api");
+            apiProvider.urlPrefix("/api/v2.1.0/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -700,9 +700,17 @@ define([
 
                             if (ns.length > 0) {
 
-                                $rootScope.notificationDoc = ns[0];
+                                // dirty hack for student/teacher questionnaires, but notifications wont be like this for long (05/17)
+                                for (var i = 0; i < ns.length; i++) {
 
-                                $rootScope.modals.notification.show();
+                                    if ($rootScope.user.role.toLowerCase() == ns[i].tags[0]) {
+
+                                        $rootScope.notificationDoc = ns[i];
+                                        $rootScope.modals.notification.show();
+                                        break;
+                                    }
+
+                                }
 
                                 persistence.save("lastNotificationTime", Date.now());
                             }
@@ -720,8 +728,8 @@ define([
         $rootScope.notificationResponse = function(notification, response) {
             api.notifications.respond({id: notification.id, response: response}, {});
 
-            // if they respond with dismissed then it means we should show them the external link if there is one
-            if (response == 'DISMISSED' && notification.externalReference.url) {
+            // if they respond with 'acknowledged' then it means we should show them the external link if there is one
+            if (response == 'ACKNOWLEDGED' && notification.externalReference.url) {
                 var userIdToken = "{{currentUserId}}";
 
                 // if they have a token representing the user id then replace it.
