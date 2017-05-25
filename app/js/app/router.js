@@ -177,6 +177,8 @@ define(["angular-ui-router"], function() {
         // * Update /book (below) if you wish
         $sp.state('book_physics_skills_14', bookState("physics_skills_14"));
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
+        // This will need changing once the real index page is ready:
+        $sp.state('book_phys_book_gcse', genericPageState("/gcsebook", "phys_book_gcse_index"));
 
         $sp.state('book', {
             url: "/book",
