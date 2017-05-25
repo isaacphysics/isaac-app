@@ -42,7 +42,7 @@ define([], function() {
 
 			api.logger.log({
 				type: "VIEW_GAMEBOARD_BY_ID",
-				gameBoardId: $scope.gameBoard.id, 
+				gameboardId: $scope.gameBoard.id, 
 			})
 		}
 
