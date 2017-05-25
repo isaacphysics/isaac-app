@@ -507,7 +507,8 @@ export
                     "mhchem": symbolWithMostChildren.getExpression("mhchem").trim(),
                     "python": symbolWithMostChildren.getExpression("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
-                    "uniqueSymbols": this.flattenExpression(symbolWithMostChildren).join(', ')
+                    // removes everything that is not truthy, so this should avoid empty strings.
+                    "uniqueSymbols": _.remove(this.flattenExpression(symbolWithMostChildren), e => { return e } ).join(', ')
                 },
                 symbols: _.map(this.symbols, s => s.subtreeObject())
             });
