@@ -63,10 +63,9 @@ export
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
-        this.p.touchStarted = this.touchStarted;
-        this.p.touchMoved = this.touchMoved;
-        this.p.touchEnded = this.touchEnded;
-        this.p.mouseMoved = this.mouseMoved;
+        this.p.mousePressed = this.touchStarted;
+        this.p.mouseMoved = this.touchMoved;
+        this.p.mouseReleased = this.touchEnded;
         this.p.windowResized = this.windowResized;
     }
 
@@ -267,7 +266,6 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
-
         // These are used to correctly detect clicks and taps.
 
         // ~~~ Note that touchX and touchY are incorrect when using touch. Ironically.
@@ -334,6 +332,7 @@ export
 
     touchMoved = () => {
 
+        this.mouseMoved();
         var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
         var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
