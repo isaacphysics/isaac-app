@@ -481,7 +481,7 @@ export
         var list = [];
         while (stack.length > 0) {
             var e = stack.shift();
-            list.push(e.token());
+            list = list.concat(e.token());
             var children = e.getChildren();
             stack = stack.concat(children);
         }
