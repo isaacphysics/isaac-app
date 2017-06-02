@@ -388,21 +388,21 @@ export
     touchEnded = () => {
 
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
-            // Click
-            // Close the menu when touching the canvas
-            this.scope.$broadcast("closeMenus");
-            this.scope.selectedSymbols.length = 0;
-            this.scope.selectionHandleFlags.symbolModMenuOpen = false;
-
-            this.scope.dragMode = "selectionBox";
-            $(".selection-box").css({
-                left: -10,
-                top: -10,
-                width: 0,
-                height: 0
-            });
-        }
+        // if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
+        //     // Click
+        //     // Close the menu when touching the canvas
+        //     this.scope.$broadcast("closeMenus");
+        //     this.scope.selectedSymbols.length = 0;
+        //     this.scope.selectionHandleFlags.symbolModMenuOpen = false;
+        //
+        //     this.scope.dragMode = "selectionBox";
+        //     $(".selection-box").css({
+        //         left: -10,
+        //         top: -10,
+        //         width: 0,
+        //         height: 0
+        //     });
+        // }
 
         if (this.movingSymbol != null) {
             // When touches end, mark the symbol as not moving.
