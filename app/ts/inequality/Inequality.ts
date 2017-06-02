@@ -63,9 +63,10 @@ export
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
-        this.p.mousePressed = this.touchStarted;
-        this.p.mouseMoved = this.touchMoved;
-        this.p.mouseReleased = this.touchEnded;
+        this.p.touchStarted = this.touchStarted;
+        this.p.touchMoved = this.touchMoved;
+        this.p.touchEnded = this.touchEnded;
+        this.p.mouseMoved = this.mouseMoved;
         this.p.windowResized = this.windowResized;
     }
 
@@ -266,13 +267,12 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
+
         // These are used to correctly detect clicks and taps.
 
-        // ~~~ Note that touchX and touchY are incorrect when using touch. Ironically.
-        // Note that, in 0.5.5, they removed touchX/Y, then they "fixed" them in 0.5.6, and now I don't even know
-        // what I'm doing anymore...
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
+        // Note that touchX and touchY are incorrect when using touch. Ironically.
+        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
 
         this.initialTouch = this.p.createVector(tx, ty);
 
@@ -332,9 +332,8 @@ export
 
     touchMoved = () => {
 
-        this.mouseMoved();
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
+        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
 
         if (this.movingSymbol != null) {
             var d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
@@ -388,21 +387,21 @@ export
     touchEnded = () => {
 
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        // if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
-        //     // Click
-        //     // Close the menu when touching the canvas
-        //     this.scope.$broadcast("closeMenus");
-        //     this.scope.selectedSymbols.length = 0;
-        //     this.scope.selectionHandleFlags.symbolModMenuOpen = false;
-        //
-        //     this.scope.dragMode = "selectionBox";
-        //     $(".selection-box").css({
-        //         left: -10,
-        //         top: -10,
-        //         width: 0,
-        //         height: 0
-        //     });
-        // }
+        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+            // Click
+            // Close the menu when touching the canvas
+            this.scope.$broadcast("closeMenus");
+            this.scope.selectedSymbols.length = 0;
+            this.scope.selectionHandleFlags.symbolModMenuOpen = false;
+
+            this.scope.dragMode = "selectionBox";
+            $(".selection-box").css({
+                left: -10,
+                top: -10,
+                width: 0,
+                height: 0
+            });
+        }
 
         if (this.movingSymbol != null) {
             // When touches end, mark the symbol as not moving.
