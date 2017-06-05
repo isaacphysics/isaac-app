@@ -202,7 +202,7 @@ define([], function() {
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
         	var afterAuth = persistence.load('afterAuth');
-        	if (afterAuth != "") {
+        	if (afterAuth) {
         		next = afterAuth;
         		persistence.save('afterAuth', "");
 			}
