@@ -109,7 +109,9 @@ define([], function() {
 
                             // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
                             var questions = gameBoard.questions;
+                            console.log('TODO MT - ', questions);
                             scope.assignmentAverages[k] = [];
+                            gameBoard.totalQuestionParts = 0;
 
                             for (var i in questions) {
                                 var q = questions[i];
@@ -125,6 +127,7 @@ define([], function() {
 
                                 var tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
+                                gameBoard.totalQuestionParts += q.questionPartsTotal;
                             }
 
                             // Calculate student totals and gameboard totals
@@ -134,10 +137,16 @@ define([], function() {
                                 var studentProgress = progress[j];
 
                                 studentProgress.tickCount = 0;
+                                studentProgress.correctQuestionPartsCount = 0;
+                                studentProgress.totalQuestionPartsCount = 0;
+                                console.log('TODO MT student progress', studentProgress)
                                 for (var i in studentProgress.results) {
+                                    //studentProgress.correctQuestionPartsCount += studentProgress.results[i];
+                                    //studentProgress.totalQuestionPartsCount += 0;
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
+                                    studentProgress.correctQuestionPartsCount += studentProgress.questionPartResults[i];
                                 }
 
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
