@@ -25,7 +25,7 @@ define([], function() {
 		}
 
 		return {
-			generate: function(gameBoard) {
+			generateFromFilter: function(subjects, fields, topics, levels) {
 				// Find the most specific filter tag that is the only one at its level.
 
 				// E.g. Physics > Mechanics > Dynamics = Dynamics
@@ -35,33 +35,27 @@ define([], function() {
 				//      Physics, Maths = Physics & Maths
 
 				// TODO: I have removed !gameBoard.$resolved, not sure if this is required
+				var level = ""
+				if (levels && levels.length == 1) {
+					level = ", Level " + levels[0];
+				}
+
+				var title = "Physics & Maths";
+				if (topics && topics.length == 1) {
+					title = getTagTitle(topics[0]);
+				} else if (fields && fields.length == 1) {
+					title = getTagTitle(fields[0]);
+				} else if (subjects && subjects.length == 1) {
+					title = getTagTitle(subjects[0]);
+				}
+				return title + level;
+			},
+
+			generate: function(gameBoard) {
 				if (!gameBoard || !gameBoard.gameFilter)
 					return "";
-
 				var filter = gameBoard.gameFilter;
-
-				if (filter.levels && filter.levels.length == 1) {
-					var level = ", Level " + filter.levels[0];
-				}
-
-				if (filter.topics && filter.topics.length == 1) {
-
-					var title = getTagTitle(filter.topics[0]);
-
-				} else if (filter.fields && filter.fields.length == 1) {
-
-					var title = getTagTitle(filter.fields[0]);
-
-				} else if (filter.subjects && filter.subjects.length == 1) {
-
-					var title = getTagTitle(filter.subjects[0]);
-
-				} else {
-
-					var title = "Physics & Maths";
-				}
-
-				return title + (level || "");
+				return this.generateFromParams(filter.subjects, filter.fields, filter.topics, filter.levels);
 			}
 		}
 	}];
