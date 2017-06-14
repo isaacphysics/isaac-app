@@ -94,6 +94,8 @@ export
                     expression = (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}" : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
                 } else if (this.dockingPoints["mass_number"].child != null) {
                     expression = "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{}\\text{" + this.element + "}";
+                } else if (this.dockingPoints["proton_number"].child != null) {
+                    expression = "{}^{}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}\\text{" + this.element + "}";
                 }
             }
 
@@ -138,7 +140,7 @@ export
                 expression += '<mi>' + this.element + '</mi>';
             } else  {
                 expression += "<mmultiscripts>" + "<mi>" + this.element + "</mi>" + m_subscript + m_superscript;
-                expression += "<mprescripts />" + m_mass_number + m_proton_number + "</mmultiscripts>"
+                expression += "<mprescripts />" + m_proton_number + m_mass_number + "</mmultiscripts>"
             }
             if (this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.getExpression('mathml');
