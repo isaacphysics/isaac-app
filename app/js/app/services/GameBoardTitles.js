@@ -55,7 +55,7 @@ define([], function() {
 				if (!gameBoard || !gameBoard.gameFilter)
 					return "";
 				var filter = gameBoard.gameFilter;
-				return this.generateFromParams(filter.subjects, filter.fields, filter.topics, filter.levels);
+				return this.generateFromFilter(filter.subjects, filter.fields, filter.topics, filter.levels);
 			}
 		}
 	}];
