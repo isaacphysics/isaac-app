@@ -24,8 +24,7 @@ define([], function() {
 			}
 		}
 
-		return {
-			generateFromFilter: function(subjects, fields, topics, levels) {
+		function generateTitle(subjects, fields, topics, levels) {
 				// Find the most specific filter tag that is the only one at its level.
 
 				// E.g. Physics > Mechanics > Dynamics = Dynamics
@@ -49,13 +48,18 @@ define([], function() {
 					title = getTagTitle(subjects[0]);
 				}
 				return title + level;
+		}
+
+		return {
+			generateFromFilter: function(subjects, fields, topics, levels) {
+				return generateTitle(subjects, fields, topics, levels);
 			},
 
 			generate: function(gameBoard) {
 				if (!gameBoard || !gameBoard.gameFilter)
 					return "";
 				var filter = gameBoard.gameFilter;
-				return this.generateFromFilter(filter.subjects, filter.fields, filter.topics, filter.levels);
+				return generateTitle(filter.subjects, filter.fields, filter.topics, filter.levels);
 			}
 		}
 	}];
