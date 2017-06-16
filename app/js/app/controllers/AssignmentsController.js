@@ -30,7 +30,7 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -55,18 +55,8 @@ define([], function() {
            		$scope.modals.groupsWarning.show();
 		}
 
-		$scope.filterOptions = [
-			{label: "All Boards", val: null},
-			{label: "Not Started", val: "not_attempted"},
-			{label: "In Progress", val: "in_progress"},
-			{label: "Completed", val: "completed"}
-		];
-
-		$scope.sortOptions = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
-		];
-
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
