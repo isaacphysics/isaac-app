@@ -36,7 +36,7 @@ define(function(require) {
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
 
-	.service('boardSearchOptions', require("app/services/BoardSearchOptions"))
+	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
 
 	.provider('api', function ApiProvider() {
 
