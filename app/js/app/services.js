@@ -36,6 +36,8 @@ define(function(require) {
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
 
+	.service('boardSearchOptions', require("app/services/BoardSearchOptions"))
+
 	.provider('api', function ApiProvider() {
 
 		var urlPrefix = "";
@@ -69,7 +71,6 @@ define(function(require) {
 	.service('auth', auth.service)
 
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
-
 
 
 

@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout) {
 		
 		$rootScope.pageTitle = "My Boards";
 
@@ -35,6 +35,8 @@ define([], function() {
 			{label: "Date Visited", val: "visited"}
 		];
 
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
