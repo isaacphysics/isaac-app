@@ -144,6 +144,8 @@ define([], function() {
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.join(",");
 
+			params.title = gameBoardTitles.generateFromFilter($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels);
+
 			$scope.gameBoardLoading = true;
 			$scope.gameBoard = api.gameBoards.filter(params);
 
