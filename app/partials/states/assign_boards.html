@@ -120,6 +120,14 @@
 </ul>
 <div class="row" ng-hide="boards == null || boards.results.length == ''">
   <div class="large-5 medium-6 small-centered columns">
+      <div class="boards-filters columns">
+         <ul class="small-block-grid-1">
+            <li>
+               <label class="hide-for-small-only">Results</label>
+               <select ng-model="noBoardOption" ng-options="option.label for option in noBoards"></select>
+            </li>
+         </ul>
+      </div>
       <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
       <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
    </div>

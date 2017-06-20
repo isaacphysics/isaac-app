@@ -23,12 +23,15 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.filterOptions = boardSearchOptions.filter;
-		$scope.sortOptions = boardSearchOptions.sort;
-		$scope.filterOption = $scope.filterOptions[0];
-		$scope.sortOption = $scope.sortOptions[1];
+		$scope.filterOptions = boardSearchOptions.filter.values;
+		$scope.filterOption = $scope.filterOptions[boardSearchOptions.filter.default];
+		$scope.sortOptions = boardSearchOptions.sort.values;
+		$scope.sortOption = $scope.sortOptions[boardSearchOptions.sort.default];
+		$scope.noBoards = boardSearchOptions.noBoards.values;
+		$scope.noBoardOption = $scope.noBoards[boardSearchOptions.noBoards.default];
 
 		var updateBoards = function(limit) {
+			limit = limit || $scope.noBoardOption.val;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
@@ -37,21 +40,13 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
-			// TODO: For some reason these watch functions are being fired for no reason
+		$scope.$watchGroup(["filterOption", "sortOption", "noBoardOption"], function(newVal, oldVal) {
+			// TODO: For some reason this watch function is being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
 			updateBoards();
 		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
-		});
-
 		
 		updateBoards();
 

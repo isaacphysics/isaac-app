@@ -16,18 +16,33 @@
  define([], function() {
 	return function() {
 		return {
-			filter: [
-				{label: "All Boards", val: null},
-				{label: "Not Started", val: "not_attempted"},
-				{label: "In Progress", val: "in_progress"},
-				{label: "Completed", val: "completed"}
-			],
-			sort: [
-				{label: "Date Created", val: "created"},
-				{label: "Date Visited", val: "visited"},
-				{label: "Title Ascending", val: "title"},
-				{label: "Title Descending", val: "-title"}
-			]
+			filter: {
+				default: 0,
+				values: [
+					{label: "All Boards", val: null},
+					{label: "Not Started", val: "not_attempted"},
+					{label: "In Progress", val: "in_progress"},
+					{label: "Completed", val: "completed"}
+				]
+			},
+			sort: {
+				default: 1,
+				values: [
+					{label: "Date Created", val: "created"},
+					{label: "Date Visited", val: "visited"},
+					{label: "Title Ascending", val: "title"},
+					{label: "Title Descending", val: "-title"}
+				]
+			},
+			noBoards: {
+				default: 0,
+				values: [
+					{label: "6", val: "6"},
+					{label: "18", val: "18"},
+					{label: "60", val: "60"},
+					{label: "Show All", val: "ALL"}
+				]
+			}
 		};
 	}
 });
