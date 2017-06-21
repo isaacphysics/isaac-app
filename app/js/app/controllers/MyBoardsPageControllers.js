@@ -42,14 +42,14 @@ define([], function() {
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
 
 		$scope.$watch("sortOption", function(newVal, oldVal) {
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
 
 		
