@@ -76,15 +76,19 @@ define([], function() {
 
 			{
 				id: "electric",
+				title: "Electric Fields",
 				parent: "fields"
 			}, {
 				id: "magnetic",
+				title: "Magnetic Fields",
 				parent: "fields"
 			}, {
 				id: "gravitational",
+				title: "Gravitational Fields",
 				parent: "fields"
 			}, {
 				id: "combined",
+				title: "Combined Fields",
 				parent: "fields"
 			},
 
