@@ -76,8 +76,7 @@ define([], function() {
 				"lastName": $scope.contactForm.lastName,
 				"emailAddress": $scope.contactForm.emailAddress,
 				"subject": $scope.contactForm.subject,
-				"message": $scope.contactForm.message,
-				"userId": $scope.user._id
+				"message": $scope.contactForm.message
 			};
 
 			api.contactForm.send({}, message).$promise.then(function(response) {

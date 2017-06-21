@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout) {
 		
 		$rootScope.pageTitle = "My Boards";
 
@@ -23,18 +23,8 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.filterOptions = [
-			{label: "All Boards", val: null},
-			{label: "Not Started", val: "not_attempted"},
-			{label: "In Progress", val: "in_progress"},
-			{label: "Completed", val: "completed"}
-		];
-
-		$scope.sortOptions = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
-		];
-
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
