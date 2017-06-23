@@ -50,8 +50,8 @@
           <tr>
             <td>When:</td>
             <td>
-              <time datetime="{{event.date | date:'yyyy-MM-dd H:mm a'}}">{{event.date | date : 'EEEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> 
-              <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'dd/MM/yyyy'}}</time></span>
+              <time datetime="{{event.date | date:'yyyy-MM-dd H:mm a':'UTC'}}">{{event.date | date : 'EEEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date:'shortTime':'UTC'}}</span></time> 
+              <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm':'UTC'}}">{{event.endDate | date:'dd/MM/yyyy':'UTC'}}</time></span>
               <span ng-if="event.expired" class="error">This event is in the past.</span>
             </td>
           </tr>
@@ -70,7 +70,7 @@
           </tr>
           <tr ng-show="event.bookingDeadline">
             <td>Booking Deadline</td>
-            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEEE d MMM yyyy'}} <br><span ng-if="!event.all_day">{{event.bookingDeadline | date:'shortTime'}}</span></time></td>
+            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a':'UTC'}}">{{event.bookingDeadline | date:'EEEE d MMM yyyy':'UTC'}} <br><span ng-if="!event.all_day">{{event.bookingDeadline | date:'shortTime':'UTC'}}</span></time></td>
           </tr>        
         </tbody>
       </table>
