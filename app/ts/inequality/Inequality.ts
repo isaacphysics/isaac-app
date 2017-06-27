@@ -29,6 +29,7 @@ import { Brackets } from './Brackets.ts';
 import { Radix } from './Radix.ts';
 import { Num } from './Num.ts';
 import { Fn } from './Fn.ts';
+import { Differential } from './Differential.ts';
 import { DockingPoint } from './DockingPoint.ts';
 import { Relation } from './Relation.ts';
 import { ChemicalElement } from './ChemicalElement.ts';
@@ -112,6 +113,21 @@ export
         } catch (e) {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
+
+        this.parseSubtreeObject(
+            {
+                type: "Differential",
+                position: { x: 0, y: 0 },
+                properties: { letter: "d" },
+                children:
+                    { argument: {
+                        type: 'Symbol',
+                        position: {x: 0, y: 0},
+                        properties: {letter: 'x'}
+                    }
+                }
+            }
+        );
 
         this.centre(true);
 
@@ -238,6 +254,9 @@ export
                 break;
             case "Fn":
                 w = new Fn(this.p, this, node["properties"]["name"], node["properties"]["custom"], node["properties"]["allowSubscript"], node["properties"]["innerSuperscript"]);
+                break;
+            case "Differential":
+                w = new Differential(this.p, this, node["properties"]["letter"]);
                 break;
             case "Relation":
                 w = new Relation(this.p, this, node["properties"]["relation"]);

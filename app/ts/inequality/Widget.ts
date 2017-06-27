@@ -72,7 +72,7 @@ export
     position: p5.Vector;
 
     /** Points to which other widgets can dock */
-    dockingPoints: { [key: string]: DockingPoint; } = {};
+    _dockingPoints: { [key: string]: DockingPoint; } = {};
 
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
@@ -87,6 +87,13 @@ export
     isMainExpression = false;
     currentPlacement = "";
 
+    get dockingPoints() {
+        return this._dockingPoints;
+    }
+
+    set dockingPoints(a) {
+        this._dockingPoints = a;
+    }
 
     get typeAsString(): string {
         return "Widget";
