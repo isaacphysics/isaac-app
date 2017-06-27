@@ -63,7 +63,13 @@ class Differential extends Widget {
     getExpression(format: string): string {
         var expression = "";
         if (format == "latex") {
-            expression = this.letter;
+            if (this.letter == "δ") {
+                expression = "\\delta ";
+            } else if (this.letter == "∇") {
+                expression = "\\nabla ";
+            } else {
+                expression = this.letter;
+            }
             if (this.dockingPoints["order"].child != null) {
                 expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
             }
@@ -76,7 +82,14 @@ class Differential extends Widget {
                 }
             }
         } else if (format == "python") {
-            expression = "" + this.letter;
+            // FIXME This is broken and needs proper implementation
+            if (this.letter == "δ") {
+                expression = "delta ";
+            } else if (this.letter == "∇") {
+                expression = "nabla ";
+            } else {
+                expression = this.letter;
+            }
             if (this.dockingPoints["order"].child != null) {
                 expression += "**(" + this.dockingPoints["order"].child.getExpression(format) + ")";
             }
@@ -93,7 +106,7 @@ class Differential extends Widget {
             }
         } else if (format == "mathml") {
             expression = '';
-            // TODO Fix this mess
+            // FIXME Fix this mess
             // if (this.dockingPoints['subscript'].child == null && this.dockingPoints['order'].child == null) {
             //     expression += '<mi>' + this.letter + '</mi>';
             //

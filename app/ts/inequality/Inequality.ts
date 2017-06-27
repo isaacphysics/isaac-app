@@ -114,21 +114,6 @@ export
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
 
-        this.parseSubtreeObject(
-            {
-                type: "Differential",
-                position: { x: 0, y: 0 },
-                properties: { letter: "d" },
-                children:
-                    { argument: {
-                        type: 'Symbol',
-                        position: {x: 0, y: 0},
-                        properties: {letter: 'x'}
-                    }
-                }
-            }
-        );
-
         this.centre(true);
 
         _this.scope.log.initialState = [];
@@ -220,7 +205,6 @@ export
     };
 
     parseSubtreeObject = (root: Object) => {
-
         if (root) {
             var w: Widget = this._parseSubtreeObject(root);
             w.position.x = root["position"]["x"];

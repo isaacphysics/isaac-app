@@ -30,7 +30,7 @@
         <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
     <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && (editorMode == 'chemistry')">
-        <div symbol-menu symbols="symbolLibrary.chemOps"></div>
+        <div symbol-menu symbols="symbolLibrary."></div>
         <!--<div sub-menu></div>
         <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
         <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
@@ -43,6 +43,7 @@
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.augmentedTrig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="hypTrigTitle" symbol-menu symbols="symbolLibrary.hypTrigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
     <!--
     <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">

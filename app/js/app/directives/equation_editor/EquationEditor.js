@@ -1280,6 +1280,35 @@ define(function(require) {
                         }
                     }],
 
+                    derivatives: [{
+                        type: "Differential",
+                        properties: {
+                            letter: "d"
+                        },
+                        menu: {
+                            label: "d",
+                            texLabel: true
+                        }
+                    }, {
+                        type: "Differential",
+                        properties: {
+                            letter: "δ"
+                        },
+                        menu: {
+                            label: "\\delta",
+                            texLabel: true
+                        }
+                    }/*, { TODO Add nabla (gradient)
+                        type: "Differential",
+                        properties: {
+                            letter: "∆"
+                        },
+                        menu: {
+                            label: "\\nabla",
+                            texLabel: true
+                        }
+                    }*/]
+
                 };
 
                 scope.particlesTitle = {
@@ -1369,6 +1398,15 @@ define(function(require) {
                     type: "string",
                     menu: {
                         label: "\\log",
+                        texLabel: true,
+                        fontSize: '33px'
+                    }
+                };
+
+                scope.derivativesTitle = {
+                    type: "string",
+                    menu: {
+                        label: "\\delta",
                         texLabel: true,
                         fontSize: '33px'
                     }
