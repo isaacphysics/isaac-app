@@ -72,12 +72,12 @@ export
 	 * @returns {string} The expression in the specified format.
 	 */
     getExpression(format: string): string {
-        var needsSuperscript = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
+        var sonOfADifferential = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
 
         var expression = "";
         if (format == "latex") {
             expression = this.letter;
-            if (needsSuperscript && this.dockingPoints["superscript"].child != null) {
+            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
@@ -96,7 +96,7 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_" + this.dockingPoints["subscript"].child.getExpression("subscript");
             }
-            if (needsSuperscript && this.dockingPoints["superscript"].child != null) {
+            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
             }
             if (this.dockingPoints["right"].child != null) {
@@ -115,7 +115,7 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
-            if (needsSuperscript && this.dockingPoints["superscript"].child != null) {
+            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
             if (this.dockingPoints["right"].child != null) {
@@ -196,7 +196,7 @@ export
 	 * @private
 	 */
     _shakeIt() {
-        var needsSuperscript = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
+        var sonOfADifferential = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
         // Work out the size of all our children
         var boxes: { [key: string]: Rect } = {};
 
@@ -216,17 +216,17 @@ export
 
         var box = this.boundingBox();
         var parent_position = (box.y + box.h);
-        var parent_superscript_width = (needsSuperscript && this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        var parent_superscript_width = (sonOfADifferential && this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
         var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
         var parent_width = box.w;
         var parent_height = box.h;
         var child_height;
         var child_width;
         var docking_right = this.dockingPoints["right"];
-        var docking_superscript = needsSuperscript ? this.dockingPoints["superscript"] : null;
+        var docking_superscript = sonOfADifferential ? this.dockingPoints["superscript"] : null;
         var docking_subscript = this.dockingPoints["subscript"];
 
-        if(needsSuperscript) {
+        if(sonOfADifferential) {
             if ("superscript" in boxes) {
                 child_width = docking_superscript.child.boundingBox().w;
                 child_height = docking_superscript.child.boundingBox().h;
