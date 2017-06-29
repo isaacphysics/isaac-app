@@ -332,36 +332,41 @@
         &.selected {
             border-right: #666 1px solid;
             border-left: #666 1px solid;
-            background-color: #fff !important;
+            background-image: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.2) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(255, 255, 255, 0.2) 75%,
+                transparent 75%,
+                transparent);
         }
     }
 
     tbody {
         tr:nth-child(odd) {
-            background-color: #f5f5f5;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 100%) !important;
         }
         td {
             min-width: 38px;
             padding-top: 10px;
             padding-bottom: 5px;
 
+            &:first-child, &:last-child {
+                font-weight: 800;
+                border-right: #666 1px solid;
+                border-left: #666 1px solid;
+            }
             &:first-child {
                 width: auto;
                 color: $ru_green;
-                font-weight: 800;
                 text-align: left;
                 padding-right: 10px;
                 padding-left: 10px;
             }
-            &:nth-child(even) {
-                background-color: rgba(80, 158, 46, 0.1);
-            }
             &:last-child {
-                font-weight: 800;
-                text-transform: uppercase;
-                text-align: right;
-                background-color: transparent;
-                padding-right: 16px;
+                text-align: centre;
             }
         }
         .complete {
@@ -392,6 +397,24 @@
                 }
             }
         }
+
+    }
+
+    .perfect-mark {
+        background-color: $ru_green;
+        color: white;
+    }
+    .passed-mark {
+        background-color: black;
+        color: white;
+    }
+    .in-progress-mark {
+        background-color: $ru_darkpurple;
+        color: white;
+    }
+    .failed-mark {
+        background-color: $ru_red;
+        color: white;
     }
 
     thead, tfoot {
@@ -406,28 +429,25 @@
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
 
-                &:first-child {
-                    color: #fff;
-                    font-weight: 600;
+                &:first-child, &:last-child {
+                    color: white;
+                    font-weight: 100;
                     background-color:#666;
-                    min-width: 100px;
-                    padding: 9px 10px;
                 }
 
                 &.selected {
                     color: $ru_green;
                     font-weight: 600;
-                    border-top-color: #fff;
+                    background-color: white;
                 }
             }
         }
     }
-
     thead {
         tr {
             td {
                 &.selected {
-                    border-bottom-color: #fff;
+                    border-top-color: white;
                 }
             }
         }
@@ -742,7 +762,7 @@ div[d3-plot] {
 
             td {
                 min-width: 65px;
-                padding: 15px 0 0;
+                padding: 10px 0 5px 0;
 
                 &:first-child {
                     font-weight: 600;

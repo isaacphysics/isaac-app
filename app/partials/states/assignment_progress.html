@@ -93,11 +93,12 @@
                                     -->
                                     <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
                                         <a href="javascript:void(0)" class="icon-arrow-left" ng-show="assignmentSelectedQuestion[assignment._id] > 0" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
-
-                                        <div class="board-question">
-                                            <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
-                                            <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
-                                        </div>
+                                        <a ng-href="/questions/{{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].id}}?board={{assignment.gameBoard.id}}" target="_blank">
+                                            <div class="board-question">
+                                                <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
+                                                <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
+                                            </div>
+                                        </a>
 
                                         <a href="javascript:void(0)" class="icon-arrow-right" ng-show="assignmentSelectedQuestion[assignment._id] < assignment.gameBoard.questions.length-1" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] + 1"></a>
                                     </div>
@@ -111,7 +112,7 @@
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td></td>
+                                                    <td data-ot="Total Question Parts">Total</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -125,25 +126,28 @@
                                                     </td>
                                                     
                                                     <td ng-repeat="q in assignment.gameBoard.questions" 
-                                                        ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" 
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index">
-
-                                                        <span ng-class="{
-                                                            'icon-spinner': studentProgress.results[$index] == 'IN_PROGRESS',
-                                                            'icon-check': studentProgress.results[$index] == 'PASSED' || studentProgress.results[$index] == 'PERFECT',
-                                                            'ru_green': studentProgress.results[$index] == 'PERFECT',
-                                                            'icon-x': studentProgress.results[$index] == 'FAILED',
-                                                        }"></span>
+                                                        ng-class="{
+                                                            'selected': assignmentSelectedQuestion[assignment._id] == $index,
+                                                            'perfect-mark': studentProgress.results[$index] == 'PERFECT',
+                                                            'passed-mark': studentProgress.results[$index] == 'PASSED',
+                                                            'in-progress-mark': studentProgress.results[$index] == 'IN_PROGRESS',
+                                                            'failed-mark': studentProgress.results[$index] == 'FAILED',
+                                                        }" 
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot="Hello"
+                                                        >
+                                                        <span>{{studentProgress.questionPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}</span>
                                                     </td>
 
-                                                    <td><span>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</span></td>
+                                                    <td><span>{{studentProgress.correctQuestionPartsCount}}/{{assignment.gameBoard.totalQuestionParts}}</span></td>
+                                                    <!-- <td><span>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</span></td> -->
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td></td>
+                                                    <td>Total</td>
                                                 </tr>
                                             </tfoot>
                                         </table>

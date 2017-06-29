@@ -109,7 +109,6 @@ define([], function() {
 
                             // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
                             var questions = gameBoard.questions;
-                            console.log('TODO MT - ', questions);
                             scope.assignmentAverages[k] = [];
                             gameBoard.totalQuestionParts = 0;
 
@@ -139,7 +138,6 @@ define([], function() {
                                 studentProgress.tickCount = 0;
                                 studentProgress.correctQuestionPartsCount = 0;
                                 studentProgress.totalQuestionPartsCount = 0;
-                                console.log('TODO MT student progress', studentProgress)
                                 for (var i in studentProgress.results) {
                                     //studentProgress.correctQuestionPartsCount += studentProgress.results[i];
                                     //studentProgress.totalQuestionPartsCount += 0;
@@ -158,6 +156,11 @@ define([], function() {
                     scope.assignmentSelectedQuestion[k] = 0;
                 }
             }
+
+            // we need to tell opentip to reapply everytime we change state
+            $timeout(function(){
+                Opentip.findElements();
+            });
         });
 
         scope.getStudentClass = function(studentProgress) {
