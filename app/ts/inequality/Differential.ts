@@ -36,6 +36,19 @@ class Differential extends Widget {
     }
 
     /**
+     * Prevents Differentials from being detached from Derivatives when the user is not an admin/editor.
+     *
+     * TODO Complete this implementation for admins and editors.
+     */
+    get isDetachable() {
+        if (this.parentWidget != null) {
+            return this.parentWidget.typeAsString != "Derivative"; // TODO Add condition for editors
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
      * A Differential has three docking points:
      *
@@ -49,6 +62,7 @@ class Differential extends Widget {
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "differential_argument", "argument");
         this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "differential_order", "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, "differential", "right");
     }
 
     /**
@@ -202,6 +216,8 @@ class Differential extends Widget {
         var child_width = 0;
         var docking_argument = this.dockingPoints["argument"];
         var docking_order = this.dockingPoints["order"];
+        var docking_right = this.dockingPoints["right"];
+        var arg_width = 0;
 
         if ("order" in boxes) {
             child_width = docking_order.child.boundingBox().w;
@@ -217,10 +233,21 @@ class Differential extends Widget {
             child_width = docking_argument.child.boundingBox().w;
             docking_argument.child.position.x = this.scale * 5 + parent_order_width + ((parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2));
             docking_argument.child.position.y = 0;
+            arg_width = child_width;
         } else {
             docking_argument.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
             docking_argument.position.y = (this.dockingPoint.y);
+            arg_width = 0;
         }
+
+        if ("right" in boxes) {
+            docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width;
+            docking_right.child.position.y = 0; // FIXME Maybe?
+        } else {
+            docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w;
+            docking_right.position.y = -this.s.xBox.h / 2; // FIXME Maybe?
+        }
+
     }
 
     /**

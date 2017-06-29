@@ -3,6 +3,8 @@ import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Brackets } from "./Brackets.ts";
+import { Differential } from "./Differential.ts";
+import { Num } from "./Num.ts";
 
 export
     class Derivative extends Widget {
@@ -66,15 +68,35 @@ export
                 }
             }
         } else if (format == "python") {
-            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "(" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + ")";
-                if (this.dockingPoints["right"].child != null) {
-                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
-                    } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null &&
+                this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential" &&
+                this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
+                expression += "diff(" + this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
+                var stack: Array<Widget> = [this.dockingPoints["denominator"].child];
+                var list = [];
+                while(stack.length > 0) {
+                    var e = stack.shift();
+                    if (e.typeAsString == "Differential") {
+                        // WARNING: This stops at the first non-Differential, which is kinda OK, but may confuse people.
+                        var o = 1;
+                        var o_child: Widget = e.dockingPoints["order"].child
+                        if (o_child != null && o_child.typeAsString == "Num") {
+                            o = parseInt(o_child.getFullText());
+                        }
+                        do {
+                            if (e.dockingPoints["argument"].child != null) {
+                                list.push(e.dockingPoints["argument"].child.getExpression(format));
+                            } else {
+                                list.push("___MEH___");
+                            }
+                            o -= 1;
+                        } while(o > 0);
+                        if (e.dockingPoints["right"].child != null) {
+                            stack.push(e.dockingPoints["right"].child);
+                        }
                     }
                 }
+                expression += list.join(", ") + ")";
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {

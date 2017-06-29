@@ -87,6 +87,10 @@ export
     isMainExpression = false;
     currentPlacement = "";
 
+    get isDetachable() {
+        return true;
+    }
+
     get dockingPoints() {
         return this._dockingPoints;
     }

@@ -32,7 +32,7 @@ export
         super(p, s);
         this.s = s;
 
-        this.docksTo = ['symbol', 'operator', 'exponent', 'operator_brackets', 'relation'];
+        this.docksTo = ['symbol', 'operator', 'exponent', 'operator_brackets', 'relation', 'differential_argument'];
         this.baseHeight = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize).h;
     }
 

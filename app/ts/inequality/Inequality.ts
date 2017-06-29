@@ -30,6 +30,7 @@ import { Radix } from './Radix.ts';
 import { Num } from './Num.ts';
 import { Fn } from './Fn.ts';
 import { Differential } from './Differential.ts';
+import { Derivative } from './Derivative.ts';
 import { DockingPoint } from './DockingPoint.ts';
 import { Relation } from './Relation.ts';
 import { ChemicalElement } from './ChemicalElement.ts';
@@ -114,6 +115,66 @@ export
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
 
+        // this.parseSubtreeObject({ 'type': 'Derivative', 'position': { x: 0, y: 0 } });
+        this.parseSubtreeObject({
+            "type":"Derivative",
+            "position":{
+                "x":1271.5,
+                "y":342.3
+            },
+            "children":{
+                "numerator":{
+                    "type":"Differential",
+                    "children":{
+                        "argument":{
+                            "type":"Symbol",
+                            "children":{
+                                "right":{
+                                    "type":"Symbol",
+                                    "properties":{
+                                        "letter":"y"
+                                    }
+                                }
+                            },
+                            "properties":{
+                                "letter":"x"
+                            }
+                        }
+                    },
+                    "properties":{
+                        "letter":"d"
+                    }
+                },
+                "denominator":{
+                    "type":"Differential",
+                    "children":{
+                        "argument":{
+                            "type":"Symbol",
+                            "properties":{
+                                "letter":"x"
+                            }
+                        },
+                        "right":{
+                            "type":"Differential",
+                            "children":{
+                                "argument":{
+                                    "type":"Symbol",
+                                    "properties":{
+                                        "letter":"y"
+                                    }
+                                }
+                            },
+                            "properties":{
+                                "letter":"d"
+                            }
+                        }
+                    },
+                    "properties":{
+                        "letter":"d"
+                    }
+                }
+            }
+        });
         this.centre(true);
 
         _this.scope.log.initialState = [];
@@ -242,6 +303,9 @@ export
             case "Differential":
                 w = new Differential(this.p, this, node["properties"]["letter"]);
                 break;
+            case "Derivative":
+                w = new Derivative(this.p, this);
+                break;
             case "Relation":
                 w = new Relation(this.p, this, node["properties"]["relation"]);
                 break;
@@ -285,7 +349,7 @@ export
         _.some(this.symbols, (symbol, i) => {
             // .hit() propagates down the hierarchy
             var hitSymbol = symbol.hit(this.p.createVector(tx, ty));
-            if (hitSymbol != null) {
+            if (hitSymbol != null && hitSymbol.isDetachable) {
                 // If we hit that symbol, then mark it as moving
                 this.movingSymbol = hitSymbol;
                 this.scope.log.actions.push({
