@@ -71,14 +71,10 @@ define([], function() {
 				method: 'GET',
 				url: urlPrefix + "/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
 			},
-			'getEmailPreferences' : {
-				method: 'GET',
-				url: urlPrefix + "/users/email_preferences"
-			},
-			'getSubjectInterests' : {
-				method: 'GET',
-				url: urlPrefix + "/users/subject_interests"
-			},
+            'getUserPreferences' : {
+                method: 'GET',
+                url: urlPrefix + "/users/user_preferences"
+            },
 			'getUserIdSchoolLookup' : {
 				method: 'GET',
 				url: urlPrefix + "/users/school_lookup?user_ids=:user_ids"

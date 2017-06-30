@@ -63,11 +63,9 @@ define([], function() {
 		}
 
 		if ($scope.editingSelf) {
-			api.user.getEmailPreferences().$promise.then(function(result){
-				$scope.emailPreferences = result;
-			});
-			api.user.getSubjectInterests().$promise.then(function(result){
-				$scope.subjectInterests = result;
+			api.user.getUserPreferences().$promise.then(function(result){
+				$scope.emailPreferences = result.EMAIL_PREFERENCE;
+                $scope.subjectInterests = result.SUBJECT_INTEREST;
 			});
 		}
 
@@ -233,8 +231,10 @@ define([], function() {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
-        			emailPreferences : $scope.emailPreferences,
-        			subjectInterests : $scope.subjectInterests
+        			userPreferences : {
+                        EMAIL_PREFERENCE : $scope.emailPreferences,
+                        SUBJECT_INTEREST : $scope.subjectInterests
+					}
         		}
 
         		// add the current password if it's confirmed, and put new password in user object
