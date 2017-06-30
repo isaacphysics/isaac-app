@@ -79,7 +79,7 @@ class Differential extends Widget {
         if (format == "latex") {
             if (this.letter == "δ") {
                 expression = "\\delta ";
-            } else if (this.letter == "∇") {
+            } else if (this.letter == "∇") { // FIXME This should probably be Delta, not Nabla...
                 expression = "\\nabla ";
             } else {
                 expression = this.letter;
@@ -94,6 +94,9 @@ class Differential extends Widget {
                     // WARNING This assumes it's a Differential, hence produces a multiplication
                     expression += this.dockingPoints["argument"].child.getExpression(format);
                 }
+            }
+            if (this.dockingPoints["right"].child != null) {
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
             // FIXME This is broken and needs proper implementation
@@ -120,10 +123,9 @@ class Differential extends Widget {
             }
         } else if (format == "mathml") {
             expression = '';
-            // FIXME Fix this mess
+            // FIXME Fix this mess (@jps79)
             // if (this.dockingPoints['subscript'].child == null && this.dockingPoints['order'].child == null) {
             //     expression += '<mi>' + this.letter + '</mi>';
-            //
             // } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['order'].child == null) {
             //     expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
             //
