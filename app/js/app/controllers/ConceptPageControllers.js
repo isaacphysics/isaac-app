@@ -26,7 +26,7 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', function($scope, page, tags, $rootScope, persistence, $location, $window, api) {
+	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, editorURL) {
 		$scope.page = page;
 
 		$rootScope.pageTitle = page.title;
@@ -34,6 +34,8 @@ define([], function() {
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
+
+		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
 		$scope.backButtonVisible = false;
 
