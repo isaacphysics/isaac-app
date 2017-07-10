@@ -18,7 +18,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'EditorURL', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, editorURL) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
@@ -27,6 +27,8 @@ define([], function() {
 		$scope.modalPassedDisplayed = false;
 
 		$scope.state = {};
+
+		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
 		var pageTags = page.tags || [];
 

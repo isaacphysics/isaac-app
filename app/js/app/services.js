@@ -72,6 +72,6 @@ define(function(require) {
 
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
-
+	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
 });
