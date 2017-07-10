@@ -18,7 +18,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'EditorURL', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, editorURL) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'EditorURL', "$element", function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, editorURL, $element) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
@@ -176,6 +176,22 @@ define([], function() {
 		$scope.printingVisibility = {
 			hints : true
 		};
+
+		$scope.selectedQuestion = null;
+
+		$scope.$on("focusInputBox", function(_, question, box) {
+			var top = $(box).offset().top - $element.find(".content-row").offset().top;
+			$(".ru-floating-submit").css("margin-top", top);
+			$scope.selectedQuestion = question;
+		});
+
+		$scope.checkAnswer = function() {
+			var s = api.questionValidator.validate({id: $scope.selectedQuestion.id}, $scope.selectedQuestion.selectedChoice);
+
+			s.$promise.then(function (r) {
+				$scope.selectedQuestion.validationResponse = r;
+			});
+		}
 
 		$scope.$on("$destroy", function(){
 			$rootScope.pageSubject = "";

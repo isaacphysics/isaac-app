@@ -1,17 +1,24 @@
 // Accordion
 
 // Accordtion Title
-.accordion.ru_accordion dd a.ru_accordion_titlebar
+.accordion.ru_accordion 
 {
-    padding: 0;
-    font-size: 1.25rem;
-    font-weight: 400;
-    font-style: italic;
-    background-color: #f6f6f6;
-    height: 60px;
-    border-top: #cccccc 1px solid !important;
-    overflow: hidden;
-    text-overflow: clip;
+    border: #cccccc 1px solid;
+    border-top: none;
+    background-color: white;
+    margin-top: 20px;
+
+    dd a.ru_accordion_titlebar {
+        padding: 0;
+        font-size: 1.25rem;
+        font-weight: 400;
+        font-style: italic;
+        background-color: #f6f6f6;
+        height: 60px;
+        border-top: #cccccc 1px solid !important;
+        overflow: hidden;
+        text-overflow: clip;
+    }
 }
 
 .accordion-section-title-suffix 

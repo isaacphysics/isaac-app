@@ -19,65 +19,7 @@
                     <div ng-switch-when="isaacAnvilQuestion" isaac-anvil-question></div>
                 </div>
 
-                <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-wrong no-print' style="display:block;" ng-show="question.validationResponse.correct==false && doc.type!='isaacAnvilQuestion'">
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 columns end text-center">
-                            <h2>incorrect</h2>
-                            <div isaac-content doc="question.validationResponse.explanation"></div>
-                            <h5>Please try again.</h5>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- TODO Remove display:none from css -->
-                <div class='ru-answer-correct-wrap no-print' style="display:block;" ng-show="question.validationResponse.correct==true">
-                    <div class='ru-answer-correct {{pageSubject || "physics"}}'>
-                        <div class='row'>
-                            <div class="small-14 small-offset-1 columns end text-center">
-                                <h1>Correct!</h1>
-                            </div><!--
-                            <div class='small-15  medium-9  columns'>
-                                <img src='/assets/icon-award.png' class='img-responsive right'>
-                                <p class='text-right'>You have earned yourself a Top of the Class Isaac award and 25 bonus points!</p>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class='ru-answer-correct-summary {{pageSubject || "physics"}}'>
-                        <div class='row'>
-                            <div class="small-14 small-offset-1 columns end text-center">
-                                <p><strong>Well done!</strong></p>
-                                <div isaac-content doc="question.validationResponse.explanation"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class='ru-answer-check no-print' ng-hide="question.validationResponse.correct==true || doc.type=='isaacAnvilQuestion'">
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
-                            <p ng-show="doc.hints && doc.hints.length > 0 && !hlp">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
-                            <p ng-show="hlp" style="min-height:60px;font-size:1.2rem;font-weight:600;">
-                                If you're stuck,
-                                <span ng-show="doc.hints && doc.hints.length > 0"> check out the hints above or </span>
-                                <span ng-hide="doc.hints && doc.hints.length > 0"> have a </span>
-                                look at the <a href="/solving_problems" target="_blank">Solving Problems</a> page!
-                            </p>&nbsp;
-                        </div>
-                        <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button ng-disabled="!canSubmit" class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="question.validationResponse.correct">Check my answer</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='ru-answer-check no-print' ng-show="question.validationResponse && (doc.type=='isaacAnvilQuestion')">
-                    <div class='row'>
-                        <div class="small-14 small-offset-1 columns text-center">
-                            <div isaac-content doc="question.validationResponse.explanation"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div ng-repeat="hint in doc.hints" ng-class="{content: true, active: $index == activeTab, 'force-print' : printingVisibility.hints}"  ng-init="questionTabIndex = $index; contentChildIndex = padIndex($index)">
                 <div class='row'>

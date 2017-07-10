@@ -39,9 +39,9 @@
 
         <section>
             <div class="row ru-concept ru-question">
-                <div class="ru-concept-inner ru-border">
+                <div class="ru-concept-inner">
                     <div class="row">
-                        <div class="small-15 small-offset-1 columns end">
+                        <div class="small-16 columns end">
                             <div class="only-print print-header">
                                 <span class="{{pageSubject}}">{{shareUrl}}</span>
 
@@ -66,14 +66,13 @@
                                     {{shareUrl}}
                                 </div>
                             </div>
-                            <h2 class="print-question question-prefix">Q:</h2>
-                            <h2 class="question-title"><span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
+                            <h2 class="question-title">Q: <span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>
                     </div>
                     <div class="row" ng-if="!!questionPage.supersededBy">
-                        <div class="small-12 small-offset-2 columns">
+                        <div class="small-14 small-offset-1 columns">
                             <h4 class="superseded-warning">This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})"
                                 ng-click="logClickSupersededBy()">this question</a>.</h4>
                             <br class="no-print"><br class="no-print">
@@ -81,7 +80,22 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    <div isaac-content doc="questionPage"></div>
+                    <div class="row content-row">
+                        <div class="small-12 columns">
+                            <div isaac-content doc="questionPage"></div>
+                        </div>
+                        <div class="small-4 columns">
+                            <div class="ru-floating-submit" ng-show="selectedQuestion">
+                                <button class="ru-answer-button" ng-click="checkAnswer()">Check my answer</button>
+                                <div ng-if="selectedQuestion.validationResponse">
+                                    <h2 ng-if="selectedQuestion.validationResponse.correct">Correct!</h2>
+                                    <h2 ng-if="!selectedQuestion.validationResponse.correct">Incorrect</h2>
+                                    <div isaac-content doc="selectedQuestion.validationResponse.explanation"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="small-15 small-offset-1 columns">
                             <p class="ru-attribution">{{questionPage.attribution}}</p>

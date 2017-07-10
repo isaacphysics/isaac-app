@@ -409,6 +409,32 @@
     padding-bottom: 20px;
 }
 
+.ru-floating-submit
+{
+    background: #4b4b4b;
+    color: white;
+    text-align: center;
+    transition: margin-top 0.3s;
+
+    button.ru-answer-button {
+        width: 100%;
+        font-size: 1.1rem;
+        font-style: italic;
+        margin-bottom: 0;
+    }
+
+    h2 {
+        margin-top: 15px;
+        color: white;
+    }
+
+    >div {
+        padding: 10px;
+        padding-top: 0;
+        font-size: 0.5rem;
+    }
+}
+
 // Carousel
 
 .ru-answer-orbit .ru-answer-orbit-content
@@ -641,6 +667,10 @@
 
 .ru-question p {
     font-size: 1.4rem;
+}
+
+.ru-question .ru-floating-submit p {
+    font-size: 1rem;
 }
 
 .ru-question .panel p {

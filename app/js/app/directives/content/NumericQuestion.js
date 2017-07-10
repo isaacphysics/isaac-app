@@ -46,6 +46,10 @@ define(["app/honest/responsive_video"], function(rv) {
 					}
 				}
 
+				ctrl.focus = function(e) {
+					scope.$emit("focusInputBox", scope.question, e.target);
+				}
+
 				ctrl.unitOptions = [];
 
                 units.getUnits().then(function(allUnits) {
@@ -109,6 +113,8 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
 					scope.question.selectedChoice.value = v;
+
+					scope.$emit("selectChoice", scope.question);
 				})
 
 				scope.$watch("ctrl.selectedUnits", function(u, oldU) {
@@ -118,6 +124,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 					scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
 					scope.question.selectedChoice.units = u;
+					scope.$emit("selectChoice", scope.question);
 					ctrl.displayUnits = (u == '' ? "None" : "$\\units{" + u + "}$");
 
 					if (u) {
@@ -130,6 +137,7 @@ define(["app/honest/responsive_video"], function(rv) {
 				if (scope.question.selectedChoice) {
 					ctrl.selectedUnits = scope.question.selectedChoice.units;
 					ctrl.selectedValue = scope.question.selectedChoice.value;
+					scope.$emit("selectChoice", scope.question);
 					ctrl.displayUnits = (ctrl.selectedUnits == '' ? "None" : "$\\units{" + ctrl.selectedUnits + "}$");
 				}
 
