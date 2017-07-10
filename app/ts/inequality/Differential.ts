@@ -157,7 +157,7 @@ class Differential extends Widget {
     _draw() {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
-        this.p.textFont(this.s.font_it)
+        this.p.textFont(this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.letter, 0, 0);
