@@ -1286,7 +1286,7 @@ define(function(require) {
                             letter: "d"
                         },
                         menu: {
-                            label: "d",
+                            label: "\\mathrm{d}",
                             texLabel: true
                         }
                     }, {
@@ -1295,19 +1295,19 @@ define(function(require) {
                             letter: "δ"
                         },
                         menu: {
-                            label: "\\delta",
+                            label: "\\mathrm{\\delta}",
                             texLabel: true
                         }
-                    }/*, { TODO Add nabla (gradient)
+                    }, {
                         type: "Differential",
                         properties: {
                             letter: "∆"
                         },
                         menu: {
-                            label: "\\nabla",
+                            label: "\\mathrm{\\Delta}",
                             texLabel: true
                         }
-                    }*/]
+                    }]
 
                 };
 
@@ -1406,7 +1406,7 @@ define(function(require) {
                 scope.derivativesTitle = {
                     type: "string",
                     menu: {
-                        label: "\\delta",
+                        label: "\\frac{\\mathrm{d}x}{\\mathrm{d}y}",
                         texLabel: true,
                         fontSize: '33px'
                     }

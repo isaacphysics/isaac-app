@@ -24,7 +24,7 @@ class Differential extends Widget {
      * @returns {Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -78,9 +78,9 @@ class Differential extends Widget {
         var expression = "";
         if (format == "latex") {
             if (this.letter == "δ") {
-                expression = "\\delta ";
-            } else if (this.letter == "∇") { // FIXME This should probably be Delta, not Nabla...
-                expression = "\\nabla ";
+                expression = "\\mathrm{\\delta} ";
+            } else if (this.letter == "∆") {
+                expression = "\\mathrm{\\Delta} ";
             } else {
                 expression = this.letter;
             }
@@ -102,8 +102,8 @@ class Differential extends Widget {
             // FIXME This is broken and needs proper implementation
             if (this.letter == "δ") {
                 expression = "delta ";
-            } else if (this.letter == "∇") {
-                expression = "nabla ";
+            } else if (this.letter == "∆") {
+                expression = "Delta ";
             } else {
                 expression = this.letter;
             }
@@ -180,7 +180,7 @@ class Differential extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_it.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_up.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 
