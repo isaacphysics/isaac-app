@@ -327,7 +327,7 @@
 {
     position: relative;
    margin-top: 0.5rem;
-   padding: 0.3rem 0.3rem 0.7rem 0.3rem;
+   padding: 0.3rem 0.3rem 0.3rem 0.3rem;
    @include radius(6px);
 }
 
@@ -424,13 +424,12 @@
     }
 
     h2 {
-        margin-top: 15px;
+        margin-top: 5px;
         color: white;
     }
 
     >div {
         padding: 10px;
-        padding-top: 0;
         font-size: 0.5rem;
     }
 }

@@ -86,7 +86,7 @@
                         </div>
                         <div class="small-4 columns">
                             <div class="ru-floating-submit" ng-show="selectedQuestion">
-                                <button class="ru-answer-button" ng-click="checkAnswer()">Check my answer</button>
+                                <button class="ru-answer-button" ng-click="checkAnswer()" ng-hide="selectedQuestion.validationResponse">Check my answer</button>
                                 <div ng-if="selectedQuestion.validationResponse">
                                     <h2 ng-if="selectedQuestion.validationResponse.correct">Correct!</h2>
                                     <h2 ng-if="!selectedQuestion.validationResponse.correct">Incorrect</h2>

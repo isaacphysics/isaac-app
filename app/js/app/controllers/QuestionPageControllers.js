@@ -186,11 +186,21 @@ define([], function() {
 		});
 
 		$scope.checkAnswer = function() {
-			var s = api.questionValidator.validate({id: $scope.selectedQuestion.id}, $scope.selectedQuestion.selectedChoice);
+			if ($scope.selectedQuestion.selectedChoice != null && $scope.selectedQuestion.canSubmit) {
+				$scope.selectedQuestion.canSubmit = false;
+				var s = api.questionValidator.validate({id: $scope.selectedQuestion.id}, $scope.selectedQuestion.selectedChoice);
 
-			s.$promise.then(function (r) {
-				$scope.selectedQuestion.validationResponse = r;
-			});
+				if ($scope.selectedQuestion.type == "isaacSymbolicQuestion" || $scope.selectedQuestion.type == "isaacSymbolicChemistryQuestion") {
+					var symbols = JSON.parse($scope.selectedQuestion.selectedChoice.value).symbols;
+					if (Object.keys(symbols).length == 0) {
+						return;
+					}
+				}
+
+				s.$promise.then(function (r) {
+					$scope.selectedQuestion.validationResponse = r;
+				});
+			}
 		}
 
 		$scope.$on("$destroy", function(){

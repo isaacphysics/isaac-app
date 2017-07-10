@@ -63,11 +63,11 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
-				scope.canSubmit = false;
-			
+				scope.question.canSubmit = false;
+
 				scope.checkAnswer = function() {
-					if (scope.question.selectedChoice != null && scope.canSubmit) {
-						scope.canSubmit = false;
+					if (scope.question.selectedChoice != null && scope.question.canSubmit) {
+						scope.question.canSubmit = false;
 
 						if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
 							var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
@@ -145,7 +145,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 							}
 							scope.showToast(scope.toastTypes.Failure, eTitle, eMessage != undefined ? eMessage : "");
 							// If an error, after a little while allow them to submit the same answer again.
-							setTimeout(function() { scope.canSubmit = true; }, 5000);
+							setTimeout(function() { scope.question.canSubmit = true; }, 5000);
 						});
 
 					} else {
@@ -161,7 +161,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					if (newVal === oldVal)
 						return; // Init
 
-					scope.canSubmit = true;
+					scope.question.canSubmit = true;
 					scope.question.validationResponse = null;
 				}, true);
 
