@@ -8,12 +8,14 @@
 	<div ng-switch-when="isaacQuestion" isaac-quick-question></div>
 	<div ng-switch-when="anvilApp" anvil-app app="doc"></div>
 
-	<!-- All these question types render as question-tabs -->
-	<div ng-switch-when="isaacMultiChoiceQuestion" isaac-question-tabs></div>
-	<div ng-switch-when="isaacNumericQuestion" isaac-question-tabs></div>
-	<div ng-switch-when="isaacSymbolicQuestion" isaac-question-tabs></div>
-	<div ng-switch-when="isaacSymbolicChemistryQuestion" isaac-question-tabs></div>
-	<div ng-switch-when="isaacAnvilQuestion" isaac-question-tabs></div>
+	<div ng-switch-when="isaacHintTabs" isaac-hint-tabs></div>
+
+	<!-- All these question types render as hint-tabs -->
+	<div ng-switch-when="isaacMultiChoiceQuestion" isaac-hint-tabs></div>
+	<div ng-switch-when="isaacNumericQuestion" isaac-hint-tabs></div>
+	<div ng-switch-when="isaacSymbolicQuestion" isaac-hint-tabs></div>
+	<div ng-switch-when="isaacSymbolicChemistryQuestion" isaac-hint-tabs></div>
+	<div ng-switch-when="isaacAnvilQuestion" isaac-hint-tabs></div>
 
 	<!-- Other things -->
 	<div ng-switch-default ng-switch="doc.layout">

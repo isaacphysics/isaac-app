@@ -199,6 +199,9 @@ define([], function() {
 
 				s.$promise.then(function (r) {
 					$scope.selectedQuestion.validationResponse = r;
+
+					// TODO: Check gameboard progress (now not used in QuestionTabs.js)
+					// https://github.com/ucam-cl-dtg/isaac-app/blob/427b9fabc4cead34006f30ac49b81a1a8642e9d8/app/js/app/directives/content/QuestionTabs.js#L85
 				});
 			}
 		}

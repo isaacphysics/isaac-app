@@ -133,7 +133,9 @@ define(function(require) {
 
 	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))
 
-	.directive('isaacQuestionTabs', require("app/directives/content/QuestionTabs"))
+	.directive('isaacQuestionBase', require("app/directives/content/QuestionBase"))
+
+	.directive('isaacHintTabs', require("app/directives/content/HintTabs"))
 
 	.directive('isaacMultiChoiceQuestion', require("app/directives/content/MultiChoiceQuestion"))
 

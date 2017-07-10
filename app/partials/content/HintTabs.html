@@ -10,8 +10,11 @@
         <div class="tabs-content ru_tabs ru-answer">
             <div ng-class="{content: true, 'ru-answer': true, active: activeTab == -1}" class="force-print">
 
+                <!-- Hint tabs can only contain precisely one question for now. -->
+                <!-- We can relax this restriction when all the content is in the new format and we're not rendering old questions any more. -->
+
                 <!-- This is where the custom answer-input rendering goes for each question type. -->
-                <div class='ru-answer-area' ng-switch="doc.type">
+                <div class='ru-answer-area' ng-switch="doc.type == 'isaacHintTabs' ? doc.value.type : doc.type" ng-init="doc = (doc.type=='isaacHintTabs' ? doc.value : doc)" isaac-question-base>
                     <div ng-switch-when="isaacMultiChoiceQuestion" isaac-multi-choice-question></div>
                     <div ng-switch-when="isaacNumericQuestion" isaac-numeric-question></div>
                     <div ng-switch-when="isaacSymbolicQuestion" isaac-symbolic-question></div>
