@@ -152,7 +152,7 @@ export
         this.width = 50;
         var numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
         var denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
-        this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
+        this.width = Math.max(this.width, Math.max(numerator_width, denominator_width));
         return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
     }
 

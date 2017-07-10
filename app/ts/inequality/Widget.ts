@@ -460,9 +460,15 @@ export
         // Find the bounding box width for an entire expression.
         if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
             expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
+            if (this.typeAsString == "Differential") { // TODO This is HORRIBLE beyond belief and needs fixing, but derivatives are kind of an all-around hack, so...
+                expressionWidth += current_element.dockingPoints["right"].position.x;
+            }
         }
         if (current_element.dockingPoints.hasOwnProperty("argument") && current_element != undefined && current_element.dockingPoints["argument"].child != null) {
             expressionWidth += current_element.dockingPoints["argument"].child.getExpressionWidth();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("order") && current_element != undefined && current_element.dockingPoints["order"].child != null) {
+            expressionWidth += current_element.dockingPoints["order"].child.getExpressionWidth();
         }
         if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
             expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
