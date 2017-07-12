@@ -103,25 +103,21 @@ class Differential extends Widget {
         } else if (format == "python") {
             // FIXME This is broken and needs proper implementation
             if (this.letter == "δ") {
-                expression = "delta ";
+                expression = "differential_delta";
             } else if (this.letter == "∆") {
-                expression = "Delta ";
+                expression = "differential_Delta";
             } else {
-                expression = this.letter;
+                expression = "differential_d";
             }
             if (this.dockingPoints["order"].child != null) {
-                expression += "**(" + this.dockingPoints["order"].child.getExpression(format) + ")";
+                expression += "(" + this.dockingPoints["order"].child.getExpression(format) + ")";
+            } else {
+                expression += "()";
             }
             if (this.dockingPoints["argument"].child != null) {
-                if (this.dockingPoints["argument"].child instanceof BinaryOperation ||
-                    this.dockingPoints["argument"].child instanceof Relation) {
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
-                } else if (this.dockingPoints["argument"].child instanceof Num && (<Num>this.dockingPoints["argument"].child).isNegative()) {
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
-                } else {
-                    // WARNING This assumes it's a Differential by default, hence produces a multiplication (with a star)
-                    expression += "*" + this.dockingPoints["argument"].child.getExpression(format);
-                }
+                expression += "(" + this.dockingPoints["argument"].child.getExpression(format) + ")";
+            } else {
+                expression += "()";
             }
         } else if (format == "mathml") {
             expression = '';
@@ -223,6 +219,9 @@ class Differential extends Widget {
         var docking_right = this.dockingPoints["right"];
         var arg_width = 0;
 
+        console.log("Docked to: ", this.dockedTo);
+
+        // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
         if ("order" in boxes) {
             child_width = docking_order.child.boundingBox().w;
             child_height = docking_order.child.boundingBox().h;
@@ -246,10 +245,10 @@ class Differential extends Widget {
 
         if ("right" in boxes) {
             docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width;
-            docking_right.child.position.y = 0; // FIXME Maybe?
+            docking_right.child.position.y = 0;
         } else {
             docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w;
-            docking_right.position.y = -this.s.xBox.h / 2; // FIXME Maybe?
+            docking_right.position.y = -this.s.xBox.h / 2;
         }
 
     }

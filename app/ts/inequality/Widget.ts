@@ -77,6 +77,8 @@ export
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
 
+    dockedTo: string = "";
+
     mode: string;
 
     /** Convenience pointer to this widget's parent */
@@ -272,6 +274,7 @@ export
 
     /** Removes this widget from its parent. Also, shakes it. */
     removeFromParent() {
+        dockedTo = "";
         var oldParent = this.parentWidget;
         this.currentPlacement = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {

@@ -497,7 +497,17 @@ define(function (require) {
                                         console.debug("Did not parse custom function: " + name);
 
                                     }
+                                } else if (false) { // TODO s/false/whateverderivativeformat/
+                                    // TODO This is the branch for "available" derivatives.
+                                    //      We need to agree on a sensible format because SymPy is not expressive
+                                    //      enough for our needs (i.e. multiple differentials below the fraction sign).
 
+                                } else if (_.startsWith(p, "differential")) {
+                                    // TODO This is the branch for differentials to be available in the menu.
+                                    //      Probably something like differential(order?)(expression?)
+                                    //      e.g. differential(2)(xy) -> d^2 xy
+                                    //           differential()(sin(x)) -> d sin(x)
+                                    //           differential(2)() -> d^2
 
                                 } else {
                                     // otherwise we must have a symbol

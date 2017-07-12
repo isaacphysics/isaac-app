@@ -204,7 +204,7 @@ export
 
         if ("right" in boxes) {
             var p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
+            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4;
             p.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
             var docking_right = this.dockingPoints["right"];

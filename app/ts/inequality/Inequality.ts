@@ -477,7 +477,13 @@ export
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
             if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
+                // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
+                // FIXME Not sure why this doesn't work...
+                this.movingSymbol.dockedTo = this.activeDockingPoint.name;
+
+                // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
+
                 this.scope.log.actions.push({
                     event: "DOCK_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
