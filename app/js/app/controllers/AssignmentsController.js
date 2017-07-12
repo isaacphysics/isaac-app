@@ -72,19 +72,12 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
 			// TODO: For some reason these watch functions are being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
-		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
 
 		// update tooltips when this changes.
