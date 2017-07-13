@@ -224,7 +224,6 @@ export
             var p = this.dockingPoints["superscript"].child.position;
             supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
             argWidth = (this.dockingPoints["argument"] && this.dockingPoints['argument'].child) ? this.dockingPoints['argument'].child.getExpressionWidth() : supWidth;
-            console.log("argwidth", argWidth);
             p.x = (box.w + argWidth -supWidth/2);
             p.y = -(box.h - descent - this.scale * this.s.mBox.w / 6);
             // widest = Math.max(widest, this.dockingPoints["superscript"].child.subtreeBoundingBox().w);

@@ -12,7 +12,8 @@ export class DockingPoint {
     /** Sets a child Widget to this docking point properly (aka, also shakes it). */
     set child(child) {
         this._child = child;
-        if (child) {
+        if (null != child) {
+            this._child.dockedTo = this.name;
             this._child.parentWidget = this.widget;
             this._child.shakeIt();
         }

@@ -170,8 +170,6 @@ export
         } else if (format == "mathml") {
             expression = '';
         } else if (format == "mhchem") {
-
-            //console.log("obj", obj);
             expression = this.mhchemSymbol; // need to remove this so that we can append the element to mass/proton numbers
             // TODO: add support for mass/proton number, decide if we render both simultaneously or separately.
             // Should we render one if the other is ommitted? - for now, no.

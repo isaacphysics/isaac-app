@@ -187,7 +187,6 @@ export
     };
 
     windowResized = () => {
-        console.log(this.p.windowWidth, this.p.windowHeight);
         this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
     }
 
@@ -469,7 +468,6 @@ export
                 height: 0
             });
         }
-
         if (this.movingSymbol != null) {
             // When touches end, mark the symbol as not moving.
             this.prevTouch = null;
@@ -477,12 +475,10 @@ export
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
             if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
-                // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
-                // FIXME Not sure why this doesn't work...
-                this.movingSymbol.dockedTo = this.activeDockingPoint.name;
-
                 // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
+                // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
+                this.activeDockingPoint.child.dockedTo = this.activeDockingPoint.name;
 
                 this.scope.log.actions.push({
                     event: "DOCK_SYMBOL",
@@ -564,7 +560,6 @@ export
         var symbolWithMostChildren = null;
         var mostChildren = 0;
         _.each(this.symbols, symbol => {
-            //console.log(symbol.id + " -> " + symbol.getExpression("python"));
             var numChildren = symbol.getTotalSymbolCount();
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;

@@ -70,7 +70,6 @@ export
                 this.latexSymbol = {};
                 this.mhchemSymbol = this.pythonSymbol = this.mathmlSymbol = this.glyph = {};
         }
-        console.debug(this.mode);
         this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation', 'differential_argument'];
     }
 

@@ -39,15 +39,30 @@ class Differential extends Widget {
      * Prevents Differentials from being detached from Derivatives when the user is not an admin/editor.
      */
     get isDetachable() {
-        var sonOfADerivative = false;
+        var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        return userIsPrivileged || !this.sonOfADerivative;
+    }
+
+    get sonOfADerivative() {
+        var s = false;
         var p = this.parentWidget;
         while (p != null) {
-            sonOfADerivative |= p.typeAsString == 'Derivative';
+            s |= p.typeAsString == 'Derivative';
             p = p.parentWidget;
         }
-        var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        return s;
+    }
 
-        return userIsPrivileged || !sonOfADerivative;
+    get orderNeedsMoving() {
+        var a = false;
+        var n = this.dockedTo;
+        var w = this;
+        while (w != null) {
+            a |= n == "denominator";
+            w = w.parentWidget;
+            n = w != null ? "" : w.dockedTo;
+        }
+        return a;
     }
 
     /**
@@ -209,7 +224,6 @@ class Differential extends Widget {
         var box = this.boundingBox();
         var parent_position = (box.y + box.h);
         var parent_order_width = (this.dockingPoints["order"].child != null) ? (this.dockingPoints["order"].child.getExpressionWidth()) : 0;
-        console.log(parent_order_width);
         var parent_width = box.w;
         var parent_height = box.h;
         var child_height = 0;
@@ -219,14 +233,18 @@ class Differential extends Widget {
         var docking_right = this.dockingPoints["right"];
         var arg_width = 0;
 
-        console.log("Docked to: ", this.dockedTo);
-
         // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
         if ("order" in boxes) {
             child_width = docking_order.child.boundingBox().w;
             child_height = docking_order.child.boundingBox().h;
-            docking_order.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_order.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
+            if (this.orderNeedsMoving) {
+                // Compute the argument's size and move the order to its right. This needs to be done again below.
+                var argument_width = ("argument" in boxes) ? docking_argument.child.boundingBox().w : 0;
+                docking_order.child.position.x = argument_width + (parent_width + child_width)/2;
+            } else {
+                docking_order.child.position.x = (parent_width + child_width)/2;
+            }
+            docking_order.child.position.y = -0.8 * (parent_height + child_height)/2;
         } else {
             docking_order.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 10) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
             docking_order.position.y = -this.scale * this.s.mBox.h;

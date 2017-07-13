@@ -274,7 +274,6 @@ export
 
     /** Removes this widget from its parent. Also, shakes it. */
     removeFromParent() {
-        dockedTo = "";
         var oldParent = this.parentWidget;
         this.currentPlacement = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
@@ -287,6 +286,7 @@ export
                     timestamp: Date.now()
                 });
                 dockingPoint.child = null;
+                // this.dockedTo = "";
                 this.parentWidget = null;
             }
         });
