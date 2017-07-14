@@ -319,7 +319,9 @@
         vertical-align: top;
         text-align: center;
         padding: 0;
-
+        width: 100%;
+        height: 100%;
+        float: none !important;
         &.student-name {
             padding-top: 5px;
 
@@ -328,58 +330,80 @@
                 position: relative;            
             }
         }
-
-        &.selected {
+        &:first-child, &.total-column {
             border-right: #666 1px solid;
             border-left: #666 1px solid;
-            background-image: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0.2) 25%,
-                transparent 25%,
-                transparent 50%,
-                rgba(255, 255, 255, 0.2) 50%,
-                rgba(255, 255, 255, 0.2) 75%,
-                transparent 75%,
-                transparent);
+            padding-right: 10px;
+            padding-left: 10px;
         }
     }
 
     tbody {
-        tr:nth-child(odd) {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1) 100%) !important;
-        }
+        background-blend-mode: normal;
         td {
             min-width: 38px;
-            padding-top: 10px;
-            padding-bottom: 5px;
-
-            &:first-child, &:last-child {
-                font-weight: 800;
-                border-right: #666 1px solid;
-                border-left: #666 1px solid;
-            }
+            height: 1px;
             &:first-child {
+                font-weight: 800;
                 width: auto;
                 color: $ru_green;
                 text-align: left;
                 padding-right: 10px;
                 padding-left: 10px;
             }
-            &:last-child {
-                text-align: centre;
+            &.total-column {
+                font-weight: 200;
+                padding-top: 10px;
+                text-align: center;
+            }
+            div {
+                height: 100%;
+            }
+        }
+        .data-value {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        $status-opacity: 0.70;
+        $total-status-opacity: 0.80;
+        $perfect-fill: $ru_green;
+        $passed-fill: #333;
+        $in-progress-fill: $ru_darkpurple;
+        $failed-fill: $ru_red;
+
+        .complete, .passed, .in-progress, .fail {
+            td.total-column {
+                color: white;
             }
         }
         .complete {
             td {
-                &:first-child, &:last-child, a {
+                &:first-child a {
                     color: #944cbe;
                 }
+                &.total-column {
+                    background-image: linear-gradient(to right, rgba($perfect-fill, $total-status-opacity), rgba($perfect-fill, $total-status-opacity));
+                }
+            }
+        }
+        .passed {
+            td.total-column {
+                background-image: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
+            }
+        }
+        .in-progress {
+            td.total-column {
+                background-image: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity), rgba($in-progress-fill, $total-status-opacity));
             }
         }
         .fail {
             td {
-                &:first-child, &:last-child {
+                &:first-child {
                     color: #cc3333;
+                }
+                &.total-column {
+                    background-image: linear-gradient(to right, rgba($failed-fill, $total-status-opacity), rgba($failed-fill, $total-status-opacity));
                 }
             }
         }
@@ -387,34 +411,52 @@
             td {
                 &:first-child {
                     color: gray;
-                    
                     a {
                         text-decoration: line-through;
                     }
                 }
-                &:last-child span {
-                    display: none;
+                &.total-column span {
+                    display: none !important;
                 }
             }
         }
 
+        .perfect-mark, .passed-mark, .in-progress-mark, .failed-mark {
+            color: white;
+        }
+        .perfect-mark {
+            background-image: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
+        }
+        .passed-mark {
+            background-image: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity));
+        }
+        .in-progress-mark {
+            background-image: linear-gradient(to right, rgba($in-progress-fill, $status-opacity), rgba($in-progress-fill, $status-opacity));
+        }
+        .failed-mark {
+            background-image: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity));
+        }
+
+        .pupil-even-column {
+            background-image: linear-gradient(to right, rgba($ru_green, 0.1), rgba($ru_green, 0.1));
+        }
+        .pupil-even-row {
+            background-image: linear-gradient(to right, rgba($ru_green, 0.1), rgba($ru_green, 0.1));
+        }
     }
 
-    .perfect-mark {
-        background-color: $ru_green;
-        color: white;
-    }
-    .passed-mark {
-        background-color: black;
-        color: white;
-    }
-    .in-progress-mark {
-        background-color: $ru_darkpurple;
-        color: white;
-    }
-    .failed-mark {
-        background-color: $ru_red;
-        color: white;
+    .selected {
+        border-right: #666 1px solid;
+        border-left: #666 1px solid;
+        background-image: linear-gradient(
+            to bottom right,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent);
     }
 
     thead, tfoot {
@@ -422,20 +464,20 @@
             background: #f2f2f2;
             border-right: #999 1px solid;
             border-left: #999 1px solid;
-
             td {
                 font-weight: 200;
                 padding: 9px 0;
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
 
-                &:first-child, &:last-child {
-                    color: white;
-                    font-weight: 100;
-                    background-color:#666;
+                &:first-child, &.total-column {
+                    color: #555;
+                    font-weight: 500;
+                    background-color:#CCC;
                 }
 
                 &.selected {
+                    border-collapse: collapse;
                     color: $ru_green;
                     font-weight: 600;
                     background-color: white;
@@ -443,14 +485,8 @@
             }
         }
     }
-    thead {
-        tr {
-            td {
-                &.selected {
-                    border-top-color: white;
-                }
-            }
-        }
+    thead tr td.selected {
+        border-top-color: white;
     }
 
     .icon-x {
@@ -467,6 +503,7 @@
         font-size: 12px;
     }
 }
+
 .d3-line {
     .domain {
         stroke: #c4c5c7;
@@ -762,13 +799,8 @@ div[d3-plot] {
 
             td {
                 min-width: 65px;
-                padding: 10px 0 5px 0;
 
                 &:first-child {
-                    font-weight: 600;
-                }
-
-                &:last-child {
                     font-weight: 600;
                 }
 

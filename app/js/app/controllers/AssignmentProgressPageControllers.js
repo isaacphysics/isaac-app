@@ -137,10 +137,7 @@ define([], function() {
 
                                 studentProgress.tickCount = 0;
                                 studentProgress.correctQuestionPartsCount = 0;
-                                studentProgress.totalQuestionPartsCount = 0;
                                 for (var i in studentProgress.results) {
-                                    //studentProgress.correctQuestionPartsCount += studentProgress.results[i];
-                                    //studentProgress.totalQuestionPartsCount += 0;
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
@@ -163,7 +160,11 @@ define([], function() {
             });
         });
 
-        scope.getStudentClass = function(studentProgress) {
+        scope.asPercent = function(numerator, denominator) {
+            return Math.round(100 * numerator / denominator);
+        }
+
+        scope.getStudentClass = function(studentProgress, totalQuestionParts) {
             if (!studentProgress.user.authorisedFullAccess)
                 return "revoked";
 
@@ -176,8 +177,12 @@ define([], function() {
 
             if (stateCounts["PERFECT"] == questionCount)
                 return "complete";
+            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts >= 0.7)
+                return "passed";
             else if (stateCounts["FAILED"] > (questionCount * 0.3))
-                return "fail"
+                return "fail";
+            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts >= 0)
+                return "in-progress"
             else
                 return "";
         };

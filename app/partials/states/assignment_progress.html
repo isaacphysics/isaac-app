@@ -112,11 +112,12 @@
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td data-ot="Total Question Parts">Total</td>
+                                                    <td class="total-column" data-ot="Total Question Parts">Σ&nbsp;Parts</td>
+                                                    <td class="total-column" data-ot="Total Question Pages">Σ&nbsp;Pages</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress)">
+                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress, assignment.gameBoard.totalQuestionParts)" ng-class-odd="'pupil-odd-row'" ng-class-even="'pupil-even-row'">
                                                     <td class="student-name" >
                                                         <span class="icon-person"></span>
                                                         <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">
@@ -125,29 +126,31 @@
                                                         </a>
                                                     </td>
                                                     
-                                                    <td ng-repeat="q in assignment.gameBoard.questions" 
-                                                        ng-class="{
-                                                            'selected': assignmentSelectedQuestion[assignment._id] == $index,
+                                                    <td ng-repeat="q in assignment.gameBoard.questions" ng-class-odd="'pupil-odd-column'" ng-class-even="'pupil-even-column'" ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot="Hello">
+                                                        <div ng-class="{
                                                             'perfect-mark': studentProgress.results[$index] == 'PERFECT',
                                                             'passed-mark': studentProgress.results[$index] == 'PASSED',
                                                             'in-progress-mark': studentProgress.results[$index] == 'IN_PROGRESS',
                                                             'failed-mark': studentProgress.results[$index] == 'FAILED',
-                                                        }" 
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot="Hello"
-                                                        >
-                                                        <span>{{studentProgress.questionPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}</span>
+                                                        }">
+                                                            <div ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}">
+                                                                <div class="data-value">{{studentProgress.questionPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}</div>
+                                                            </div>
+                                                        </div>
                                                     </td>
-
-                                                    <td><span>{{studentProgress.correctQuestionPartsCount}}/{{assignment.gameBoard.totalQuestionParts}}</span></td>
-                                                    <!-- <td><span>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</span></td> -->
+                                                    <td class="total-column"><span>{{studentProgress.correctQuestionPartsCount}}/{{assignment.gameBoard.totalQuestionParts}}</span></td>
+                                                    <td class="total-column"><span>{{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}</span></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td>Total</td>
+                                                    <td class="total-column" data-ot="Total Question Parts">Σ&nbsp;Parts</td>
+                                                    <td class="total-column" data-ot="Total Question Pages">Σ&nbsp;Pages</td>
+                                                    <!-- <td class="total-column">&nbsp;</td> -->
+                                                    <!-- <td class="total-column">&nbsp;</td> -->
                                                 </tr>
                                             </tfoot>
                                         </table>
