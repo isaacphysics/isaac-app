@@ -30,7 +30,8 @@
     "owl.carousel": "2.0.0-beta.3",
     "react": "0.10.0",
     "reflect-metadata": "0.1.3",
-    "system.js": "0.19.25"
+    "system.js": "0.19.25",
+    "socket.io-client": "^1.7.2"
   },
   "resolutions": {
     "lodash": "4.13.1",

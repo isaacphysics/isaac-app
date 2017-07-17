@@ -37,6 +37,7 @@ define([
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
+    "socket.io-client"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
@@ -682,6 +683,101 @@ define([
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');
         });
+
+
+
+        // USER NOTIFICATIONS WEBSOCKETS
+
+        /*$rootScope.notificationList = [];
+
+        $rootScope.openNotificationSocket = function() {
+
+            $rootScope.user.$promise.then(function() {
+                // we are logged in
+
+                var socket = io('http://localhost:8090');
+                console.log("Connecting to 8090...");
+                socket.connect();
+
+
+
+                socket.on('message', function(msg) {
+
+                    $rootScope.notificationList.push(msg);
+                    console.log(msg);
+
+                });
+
+            });
+        }
+        $timeout($rootScope.openNotificationSocket, 1000);*/
+
+
+
+        $rootScope.notificationList = [];
+        $rootScope.webSocket = null;
+        var socketOpen = false;
+
+        $rootScope.openNotificationSocket = function() {
+
+            $rootScope.user.$promise.then(function() {
+             // we are logged in
+
+                //var websocketURI = "ws://localhost:8080/notifications-new/";// + $rootScope.user._id.toString();
+                var websocketURI = "ws://localhost:8080/isaac-api/hello";
+
+                // create websocket
+                $rootScope.webSocket = new WebSocket(websocketURI);
+
+
+                $rootScope.webSocket.onopen = function(event) {
+                    console.log("Connected to notification server.");
+                    alert("Connected to notification server.");
+                    socketOpen = true;
+                }
+
+                $rootScope.webSocket.onmessage = function(event) {
+
+                    var notificationReccord = JSON.parse(event.data);
+
+                    console.log(notificationReccord);
+
+                    $rootScope.notificationList = notificationReccord
+                        .value.notifications;
+
+                    console.log($rootScope.notificationList);
+
+                }
+
+                $rootScope.webSocket.onerror = function(error) {
+                    console.log(error.details);
+                }
+
+                $rootScope.webSocket.onclose = function(event) {
+                    console.log("Connection closed.");
+                    socketOpen = false;
+                }
+
+            });
+        }
+
+        $timeout($rootScope.openNotificationSocket, 1000);
+
+        var checkForWebSocket = function() {
+
+            if (!socketOpen) {
+                $rootScope.openNotificationSocket();
+            } else {
+                $rootScope.webSocket.send("hello");
+            }
+            $timeout(checkForWebSocket, 10000);
+
+        }
+
+        $timeout(checkForWebSocket, 5000);
+
+
+
 
         var checkForNotifications = function() {
 

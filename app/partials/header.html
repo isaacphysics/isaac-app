@@ -41,6 +41,12 @@
                             <span>Log in</span>
                         </div>
                     </a>
+                    <a id="login-tab" ng-if='user._id' class='ru-desktop-nav-item' ui-sref='#'>
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
+                            <span>{{notificationList.length}}</span>
+
+                        </div>
+                    </a>
                 </div>
             </nav>
         </div>

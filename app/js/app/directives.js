@@ -75,6 +75,8 @@ define(function(require) {
 
 	.directive('isaacModal', require("app/directives/IsaacModal"))
 
+		.directive('notification', require("app/directives/Notification"))
+
 	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
 
 	// Equation Editor Directives
