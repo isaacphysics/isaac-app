@@ -132,12 +132,12 @@ export
                                 "right":{
                                     "type":"Symbol",
                                     "properties":{
-                                        "letter":"y"
+                                        "letter":"x"
                                     }
                                 }
                             },
                             "properties":{
-                                "letter":"x"
+                                "letter":"a"
                             }
                         }
                     },
@@ -152,6 +152,20 @@ export
                             "type":"Symbol",
                             "properties":{
                                 "letter":"x"
+                            },
+                            "children":{
+                                "right":{
+                                    "type":"Symbol",
+                                    "properties":{
+                                        "letter":"y"
+                                    }
+                                }
+                            }
+                        },
+                        "order":{
+                            "type":"Num",
+                            "properties":{
+                                "significand":"2"
                             }
                         },
                         "right":{
@@ -160,7 +174,7 @@ export
                                 "argument":{
                                     "type":"Symbol",
                                     "properties":{
-                                        "letter":"y"
+                                        "letter":"z"
                                     }
                                 }
                             },

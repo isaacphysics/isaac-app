@@ -60,9 +60,9 @@ class Differential extends Widget {
         while (w != null) {
             a |= n == "denominator";
             w = w.parentWidget;
-            n = w != null ? "" : w.dockedTo;
+            n = null == w ? "" : w.dockedTo;
         }
-        return a;
+        return a && this.sonOfADerivative;
     }
 
     /**
@@ -101,7 +101,7 @@ class Differential extends Widget {
             } else {
                 expression = this.letter;
             }
-            if (this.dockingPoints["order"].child != null) {
+            if (this.dockingPoints["order"].child != null && !this.orderNeedsMoving) {
                 expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
             }
             if (this.dockingPoints["argument"].child != null) {
@@ -111,6 +111,10 @@ class Differential extends Widget {
                     // WARNING This assumes it's a Differential, hence produces a multiplication
                     expression += this.dockingPoints["argument"].child.getExpression(format);
                 }
+            }
+            // AAARGH! Curses, you Leibniz!
+            if (this.dockingPoints["order"].child != null && this.orderNeedsMoving) {
+                expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
             }
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
@@ -231,16 +235,17 @@ class Differential extends Widget {
         var docking_argument = this.dockingPoints["argument"];
         var docking_order = this.dockingPoints["order"];
         var docking_right = this.dockingPoints["right"];
-        var arg_width = 0;
+        var arg_width = ("argument" in boxes) ? docking_argument.child.subtreeBoundingBox().w : 0;
+        var order_width = 0;
 
         // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
         if ("order" in boxes) {
-            child_width = docking_order.child.boundingBox().w;
-            child_height = docking_order.child.boundingBox().h;
+            child_width = docking_order.child.subtreeBoundingBox().w;
+            child_height = docking_order.child.subtreeBoundingBox().h;
             if (this.orderNeedsMoving) {
-                // Compute the argument's size and move the order to its right. This needs to be done again below.
-                var argument_width = ("argument" in boxes) ? docking_argument.child.boundingBox().w : 0;
-                docking_order.child.position.x = argument_width + (parent_width + child_width)/2;
+                // Use the argument's size to move the order to its right. This needs to be done again below.
+                docking_order.child.position.x = 1.2*arg_width + (parent_width + child_width)/2;
+                order_width = child_width;
             } else {
                 docking_order.child.position.x = (parent_width + child_width)/2;
             }
@@ -253,6 +258,7 @@ class Differential extends Widget {
         if ("argument" in boxes) {
             child_width = docking_argument.child.boundingBox().w;
             docking_argument.child.position.x = this.scale * 5 + parent_order_width + ((parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2));
+            docking_argument.child.position.x -= order_width;
             docking_argument.child.position.y = 0;
             arg_width = child_width;
         } else {
@@ -262,10 +268,10 @@ class Differential extends Widget {
         }
 
         if ("right" in boxes) {
-            docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width;
+            docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width + order_width;
             docking_right.child.position.y = 0;
         } else {
-            docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w;
+            docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w+ arg_width + order_width;
             docking_right.position.y = -this.s.xBox.h / 2;
         }
 
