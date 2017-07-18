@@ -153,11 +153,6 @@ define([], function() {
                     scope.assignmentSelectedQuestion[k] = 0;
                 }
             }
-
-            // we need to tell opentip to reapply everytime we change state
-            $timeout(function(){
-                Opentip.findElements();
-            });
         });
 
         scope.asPercent = function(numerator, denominator) {
@@ -181,10 +176,10 @@ define([], function() {
                 return "passed";
             else if (stateCounts["FAILED"] > (questionCount * 0.3))
                 return "fail";
-            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts >= 0)
+            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts > 0)
                 return "in-progress"
             else
-                return "";
+                return "not-attempted";
         };
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {
@@ -231,6 +226,12 @@ define([], function() {
 
             // return api.getCSVDownloadLink(assignmentId);
         };
+
+        scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            $timeout(function(){
+                Opentip.findElements();
+            });
+        });
 
 	}];
 

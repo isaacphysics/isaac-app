@@ -77,6 +77,19 @@ define(function(require) {
 
 	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
 
+	.directive('onNgRepeatRender', function ($timeout) {
+		return {
+			restrict: 'A',
+			link: function (scope, element, attr) {
+				if (scope.$last === true) {
+					$timeout(function () {
+						scope.$emit(attr.onNgRepeatRender);
+					});
+				}
+			}
+		}
+	})
+
 	// Equation Editor Directives
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
