@@ -193,8 +193,8 @@ export
 
         if ("denominator" in boxes) {
             var p = this.dockingPoints["denominator"].child.position;
-            var fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            var denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
+            var fullDenominatorWidth = this.dockingPoints["denominator"].child.subtreeBoundingBox().w;
+            var denominatorRootWidth = this.dockingPoints["denominator"].child.boundingBox().w;
             var denominatorFullAscent = subtreeBoxes["denominator"].y;
 
             p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;

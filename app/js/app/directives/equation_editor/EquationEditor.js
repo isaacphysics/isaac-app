@@ -781,6 +781,70 @@ define(function (require) {
                     return result;
                 };
 
+                var derivativeFunctions = function(availableDerivatives) {
+                    var result = [];
+                    for (var j = 0; j < availableDerivatives.length; ++j) {
+                        var derivative = availableDerivatives[j];
+                        if (derivative.startsWith("diff")) {
+                            var pieces = derivative.split(",").map(function(s) { return s.replace(/[\(\)\s]/g, "") }).slice(1);
+                            var orders = {};
+                            // Count how many times one should derive each variable
+                            for (var i = 0; i < pieces.length; ++i) {
+                                var piece = pieces[i];
+                                if (orders.hasOwnProperty(piece)) {
+                                    orders[piece] += 1;
+                                } else {
+                                    orders[piece] = 1;
+                                }
+                            }
+                            var derivative_order = 0;
+                            // Build up the object
+                            // TODO Support letters other than d. This may be hard with the current syntax!
+                            var derivative_obj = {
+                                type: "Derivative",
+                                children: {
+                                    numerator: {
+                                        type: "Differential",
+                                        properties: { letter: "d" }
+                                    }
+                                }
+                            };
+                            var den_objects = [];
+                            for (var key in orders) {
+                                var c = orders[key];
+                                var o = {
+                                    type: "Differential",
+                                    properties: { letter: "d" },
+                                    children: {
+                                        argument: {
+                                            type: "Symbol",
+                                            properties: { letter: key }
+                                        }
+                                    }
+                                };
+                                if(c > 1) {
+                                    o.children["order"] = {
+                                        type: "Num",
+                                        properties: { significand: c }
+                                    }
+                                }
+                                derivative_order += c;
+                                den_objects.push(o);
+                            }
+                            // debugger;
+                            if (derivative_order > 1) {
+                                derivative_obj.children.numerator["children"] = { order: { type: "Num", properties: { significand: derivative_order } } };
+                            }
+                            derivative_obj.children["denominator"] = den_objects.reduceRight(function(a, v) { return v.children["right"] = a } );
+                            derivative_obj["menu"] = { label: "\\frac{\\mathrm{d}^{"+derivative_order+"}}{\\mathrm{d}}", texLabel: true };
+                            result.push(derivative_obj);
+                        } else {
+                            // DUH?
+                        }
+                    }
+                    return result;
+                }
+
                 scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
@@ -1290,7 +1354,7 @@ define(function (require) {
                         }
                     }],
 
-                    derivatives: [{
+                    derivatives: derivativeFunctions(["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"]) /*[{
                         type: "Differential",
                         properties: {
                             letter: "d"
@@ -1317,7 +1381,7 @@ define(function (require) {
                             label: "\\mathrm{\\Delta}",
                             texLabel: true
                         }
-                    }]
+                    }]*/
 
                 };
 

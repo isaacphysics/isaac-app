@@ -197,7 +197,7 @@ class Differential extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
+        var box = this.s.font_up.textBounds(this.letter || "D", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 

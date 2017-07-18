@@ -125,39 +125,21 @@ export
             "children":{
                 "numerator":{
                     "type":"Differential",
-                    "children":{
-                        "argument":{
-                            "type":"Symbol",
-                            "children":{
-                                "right":{
-                                    "type":"Symbol",
-                                    "properties":{
-                                        "letter":"x"
-                                    }
-                                }
-                            },
-                            "properties":{
-                                "letter":"a"
-                            }
-                        }
-                    },
                     "properties":{
                         "letter":"d"
                     }
-                },
-                "denominator":{
-                    "type":"Differential",
                     "children":{
                         "argument":{
-                            "type":"Symbol",
+                            "type":"Fn",
                             "properties":{
-                                "letter":"x"
+                                "name":"f",
+                                "custom":"true"
                             },
                             "children":{
-                                "right":{
+                                "argument":{
                                     "type":"Symbol",
                                     "properties":{
-                                        "letter":"y"
+                                        "letter":"x"
                                     }
                                 }
                             }
@@ -167,24 +149,27 @@ export
                             "properties":{
                                 "significand":"2"
                             }
-                        },
-                        "right":{
-                            "type":"Differential",
-                            "children":{
-                                "argument":{
-                                    "type":"Symbol",
-                                    "properties":{
-                                        "letter":"z"
-                                    }
-                                }
-                            },
-                            "properties":{
-                                "letter":"d"
-                            }
                         }
-                    },
+                    }
+                },
+                "denominator":{
+                    "type":"Differential",
                     "properties":{
                         "letter":"d"
+                    },
+                    "children":{
+                        "argument":{
+                            "type":"Symbol",
+                            "properties":{
+                                "letter":"x"
+                            }
+                        },
+                        "order":{
+                            "type":"Num",
+                            "properties":{
+                                "significand":"2"
+                            }
+                        }
                     }
                 }
             }
