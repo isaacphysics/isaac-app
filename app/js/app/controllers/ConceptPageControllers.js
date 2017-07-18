@@ -26,27 +26,17 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, editorURL) {
+	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, subject, editorURL) {
 		$scope.page = page;
 
 		$rootScope.pageTitle = page.title;
-
-		var pageTags = page.tags || [];
-
-		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
 		$scope.backButtonVisible = false;
 
-		// Find subject tags on page.
-		var pageSubject = "physics";
-		for(var i in subjects) {
-			if (pageTags.indexOf(subjects[i].id) > -1) {
-				pageSubject = subjects[i].id;
-				break;
-			}
-		}
+		$rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
+
 		$scope.sourceUrl = persistence.session.load("conceptPageSource");
 		if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions/") == 0) {
 			$scope.backText = "Back to your question";
@@ -76,8 +66,6 @@ define([], function() {
 			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
 			persistence.session.save("conceptPageSource", $location.url());
 		}
-
-		$rootScope.pageSubject = pageSubject;
 
 		$scope.go = function(url) {
 			if (url == "BACK") {
