@@ -92,15 +92,14 @@
                                         Question and control arrows
                                     -->
                                     <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
-                                        <a href="javascript:void(0)" class="icon-arrow-left" ng-show="assignmentSelectedQuestion[assignment._id] > 0" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
+                                        <a href="javascript:void(0)" class="icon-arrow-left" ng-class="{'hidden': assignmentSelectedQuestion[assignment._id] <= 0}" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
                                         <a ng-href="/questions/{{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].id}}?board={{assignment.gameBoard.id}}" target="_blank">
                                             <div class="board-question">
                                                 <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
                                                 <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
                                             </div>
                                         </a>
-
-                                        <a href="javascript:void(0)" class="icon-arrow-right" ng-show="assignmentSelectedQuestion[assignment._id] < assignment.gameBoard.questions.length-1" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] + 1"></a>
+                                        <a href="javascript:void(0)" class="icon-arrow-right" ng-class="{'hidden': assignmentSelectedQuestion[assignment._id] >= assignment.gameBoard.questions.length-1}" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] + 1"></a>
                                     </div>
 
                                     <!--

@@ -314,6 +314,9 @@ $total-status-opacity: 0.80;
         background-color: #666;
         padding-top: 5px;
         width: 70px;
+        &.hidden {
+            visibility: hidden;
+        }
     }
 
     .icon-arrow-left {
