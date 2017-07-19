@@ -32,7 +32,7 @@ define([], function() {
         scope.assignmentProgress = {}; // Key will be assignment ID, value progress for that assignment.
         scope.assignmentSelectedQuestion = {}; // Key will be assignment ID, value will be index of selected question.
         scope.assignmentAverages = {}; // Key will be assignment ID, value list of averages. One per question.
-
+        scope.assignmentTotalQuestionParts = {}; // Key - assignment ID, value - questionPartTotal 
         scope.assignmentCSVLink = null;
 
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
@@ -96,7 +96,6 @@ define([], function() {
         }
 
         scope.$watchCollection("assignmentExpanded", function() {
-
             for (var k in scope.assignmentExpanded) {
                 if (scope.assignmentExpanded[k] && !scope.assignmentProgress[k]) {
                     scope.setLoading(true);
@@ -110,7 +109,8 @@ define([], function() {
                             // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
                             var questions = gameBoard.questions;
                             scope.assignmentAverages[k] = [];
-                            gameBoard.totalQuestionParts = 0;
+                            scope.assignmentTotalQuestionParts[k] = 0;
+                            // // // gameBoard.totalQuestionParts = 0;
 
                             for (var i in questions) {
                                 var q = questions[i];
@@ -126,7 +126,8 @@ define([], function() {
 
                                 var tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
-                                gameBoard.totalQuestionParts += q.questionPartsTotal;
+                                // // // gameBoard.totalQuestionParts += q.questionPartsTotal;
+                                scope.assignmentTotalQuestionParts[k] += q.questionPartsTotal;
                             }
 
                             // Calculate student totals and gameboard totals

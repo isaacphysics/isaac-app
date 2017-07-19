@@ -129,7 +129,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress, assignment.gameBoard.totalQuestionParts)" ng-class-odd="'pupil-odd-row'" ng-class-even="'pupil-even-row'" on-ng-repeat-render="ngRepeatFinished">
+                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress, assignmentTotalQuestionParts[assignment._id])" ng-class-odd="'pupil-odd-row'" ng-class-even="'pupil-even-row'" on-ng-repeat-render="ngRepeatFinished">
                                                     <td class="student-name">
                                                         <span class="icon-person"></span>
                                                         <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">
@@ -150,8 +150,8 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="total-column" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignment.gameBoard.totalQuestionParts)}}%">
-                                                        <span>{{studentProgress.correctQuestionPartsCount}}/{{assignment.gameBoard.totalQuestionParts}}</span>
+                                                    <td class="total-column" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])}}%">
+                                                        <span>{{studentProgress.correctQuestionPartsCount}}/{{assignmentTotalQuestionParts[assignment._id]}}</span>
                                                     </td>
                                                     <td class="total-column" data-ot="{{asPercent(studentProgress.tickCount, assignment.gameBoard.questions.length)}}%">
                                                         <span>{{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}</span>
