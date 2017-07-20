@@ -797,7 +797,7 @@ define(function (require) {
                                     orders[piece] = 1;
                                 }
                             }
-                            var derivative_order = 0;
+                            var derivative_order = _.sum(_.values(orders));
                             // Build up the object
                             // TODO Support letters other than d. This may be hard with the current syntax!
                             var derivative_obj = {
@@ -805,37 +805,45 @@ define(function (require) {
                                 children: {
                                     numerator: {
                                         type: "Differential",
-                                        properties: { letter: "d" }
+                                        properties: { letter: "d" },
+                                        children: { }
                                     }
                                 }
                             };
+                            if (derivative_order > 1) {
+                                derivative_obj.children.numerator.children["order"] = { type: "Num", properties: { significand: derivative_order } };
+                            }
                             var den_objects = [];
-                            for (var key in orders) {
-                                var c = orders[key];
+                            _.each(_.entries(orders), function(p) {
+                                var letter = p[0];
+                                var order = p[1];
                                 var o = {
                                     type: "Differential",
                                     properties: { letter: "d" },
                                     children: {
                                         argument: {
                                             type: "Symbol",
-                                            properties: { letter: key }
+                                            properties: { letter: letter }
                                         }
                                     }
                                 };
-                                if(c > 1) {
+                                if(order > 1) {
                                     o.children["order"] = {
                                         type: "Num",
-                                        properties: { significand: c }
+                                        properties: { significand: order }
                                     }
                                 }
-                                derivative_order += c;
                                 den_objects.push(o);
+                            });
+
+                            var tail = den_objects.pop();
+                            while (den_objects.length > 0) {
+                                var acc = den_objects.pop();
+                                acc.children["right"] = tail;
+                                tail = acc;
                             }
-                            // debugger;
-                            if (derivative_order > 1) {
-                                derivative_obj.children.numerator["children"] = { order: { type: "Num", properties: { significand: derivative_order } } };
-                            }
-                            derivative_obj.children["denominator"] = den_objects.reduceRight(function(a, v) { return v.children["right"] = a } );
+
+                            derivative_obj.children["denominator"] = tail;
                             derivative_obj["menu"] = { label: "\\frac{\\mathrm{d}^{"+derivative_order+"}}{\\mathrm{d}}", texLabel: true };
                             result.push(derivative_obj);
                         } else {
