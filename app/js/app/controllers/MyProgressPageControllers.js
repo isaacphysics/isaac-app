@@ -17,7 +17,7 @@ define([], function() {
 
     var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
         // start and end dates for line graphs
-        var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)) //set it to a year ago
+        var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 5)) // Set it to five years ago at most!
         dataStartDate = dataStartDate.getTime();
         var dataEndDate = new Date().getTime();
 

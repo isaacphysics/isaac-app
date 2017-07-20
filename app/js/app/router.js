@@ -317,10 +317,7 @@ define(["angular-ui-router"], function() {
             views: {
                 "body": {
                     templateUrl: "/partials/states/generic_page.html",
-                    controller: ["$scope", "page", function($scope, page) {
-                        $scope.title = "Content object: " + page.id;
-                        $scope.doc = page;
-                    }]
+                    controller: "GenericPageController"
                 }
             }
         });

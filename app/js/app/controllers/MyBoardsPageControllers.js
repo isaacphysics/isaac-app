@@ -40,14 +40,18 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watchGroup(["filterOption", "sortOption", "noBoardOption"], function(newVal, oldVal) {
-			// TODO: For some reason this watch function is being fired for no reason
-			if (newVal === oldVal) {
-				return;
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				updateBoards($scope.boards.results.length);
 			}
-			updateBoards();
 		});
 		
+		$scope.$watch("noBoardOption", function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				updateBoards();
+			}
+		});
+
 		updateBoards();
 
 		var mergeInProgress = false;

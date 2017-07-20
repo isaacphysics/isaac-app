@@ -23,6 +23,8 @@ define([], function() {
 			var id = "chemistry";
 		} else if (document.location.host == "localhost:8002" || document.location.host.indexOf("isaacbiology") > -1) {
 			var id = "biology";
+		} else {
+			var id = "unknown";
 		}
 
 		var title = id[0].toUpperCase() + id.substring(1);
