@@ -807,11 +807,13 @@ define(function (require) {
                                         type: "Differential",
                                         properties: { letter: "d" },
                                         children: { }
-                                    }
-                                }
+                                    },
+                                    denominator: { }
+                                },
+                                menu: null
                             };
                             if (derivative_order > 1) {
-                                derivative_obj.children.numerator.children["order"] = { type: "Num", properties: { significand: derivative_order } };
+                                derivative_obj.children.numerator.children.order = { type: "Num", properties: { significand: derivative_order } };
                             }
                             var den_objects = [];
                             _.each(_.entries(orders), function(p) {
@@ -828,7 +830,7 @@ define(function (require) {
                                     }
                                 };
                                 if(order > 1) {
-                                    o.children["order"] = {
+                                    o.children.order = {
                                         type: "Num",
                                         properties: { significand: order }
                                     }
@@ -836,20 +838,22 @@ define(function (require) {
                                 den_objects.push(o);
                             });
 
+                            debugger;
                             var tail = den_objects.pop();
                             while (den_objects.length > 0) {
                                 var acc = den_objects.pop();
-                                acc.children["right"] = tail;
+                                acc.children.right = tail;
                                 tail = acc;
                             }
 
-                            derivative_obj.children["denominator"] = tail;
-                            derivative_obj["menu"] = { label: "\\frac{\\mathrm{d}^{"+derivative_order+"}}{\\mathrm{d}}", texLabel: true };
+                            derivative_obj.children.denominator = tail;
+                            derivative_obj.menu = { label: "\\frac{\\mathrm{d}^{"+derivative_order+"}}{\\mathrm{d}}", texLabel: true };
                             result.push(derivative_obj);
                         } else {
                             // DUH?
                         }
                     }
+                    console.log(result);
                     return result;
                 }
 
@@ -1362,7 +1366,7 @@ define(function (require) {
                         }
                     }],
 
-                    derivatives: derivativeFunctions(["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"]) /*[{
+                    derivatives: derivativeFunctions(["diff(_, x, y)", "diff(_, x, x, y)"]) /*[{ ["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"]
                         type: "Differential",
                         properties: {
                             letter: "d"
