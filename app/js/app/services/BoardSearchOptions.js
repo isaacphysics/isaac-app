@@ -1,5 +1,5 @@
 /**
- * Copyright 2014 Ian Davies
+ * Copyright 2017 Meurig Thomas
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', function($scope, page, tags, $rootScope, subject) {
-		$scope.doc = page;
-		$scope.page = page;
-		$rootScope.pageTitle = page.title;
-        $rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+ define([], function() {
+	return function() {
+		return {
+			filter: [
+				{label: "All Boards", val: null},
+				{label: "Not Started", val: "not_attempted"},
+				{label: "In Progress", val: "in_progress"},
+				{label: "Completed", val: "completed"}
+			],
+			sort: [
+				{label: "Date Created", val: "created"},
+				{label: "Date Visited", val: "visited"},
+				{label: "Title Ascending", val: "title"},
+				{label: "Title Descending", val: "-title"}
+			]
+		};
+	}
+});

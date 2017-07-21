@@ -68,7 +68,7 @@
                             </div>
                             <h2 class="print-question question-prefix">Q:</h2>
                             <h2 class="question-title"><span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
-                            <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}</h3>
+                            <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>
                     </div>

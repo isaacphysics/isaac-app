@@ -47,10 +47,26 @@ define(function(require) {
                         scope.mousePageX = pageX;
                         scope.mousePageY = pageY;
                         var tOff = element.find(".trash-button").position();
-                        var tWidth = element.find(".trash-button").width();
                         var tHeight = element.find(".trash-button").height();
-                        scope.trashActive = (mousePageX > tOff.left && mousePageX < tOff.left + tWidth && mousePageY > tOff.top && mousePageY < tOff.top + tHeight);
 
+                        if(null != sketch.potentialSymbol) {
+                            var sym = sketch.potentialSymbol;
+                            var box = sym.subtreeBoundingBox();
+                            var pos = sym.getAbsolutePosition();
+                            var bLeft = box.x + pos.x;
+                            var bRight = bLeft + box.w;
+                            var bTop = box.y + pos.y;
+                            var bBottom = bTop + box.h;
+                            // No need to check if we go past the right side of the button, as the button is stuck to
+                            // the right side of the screen anyway (and doing it right gave me headaches, so...)
+                            scope.trashActive =
+                                (bRight > tOff.left &&
+                                bBottom > tOff.top &&
+                                bBottom < tOff.top + tHeight) ||
+                                (mousePageX > tOff.left && // This second part is good to have when dragging hexagons
+                                mousePageY > tOff.top &&
+                                mousePageY < tOff.top + tHeight);
+                        }
                         sketch.updatePotentialSymbol(symbol, pageX, pageY);
                         scope.$digest();
 
@@ -58,10 +74,26 @@ define(function(require) {
 
                     scope.notifySymbolDrag = function(x, y) {
                         var tOff = element.find(".trash-button").position();
-                        var tWidth = element.find(".trash-button").width();
                         var tHeight = element.find(".trash-button").height();
 
-                        scope.trashActive = (x > tOff.left && x < tOff.left + tWidth && y > tOff.top && y < tOff.top + tHeight);
+                        if(null != sketch.movingSymbol) {
+                            var sym = sketch.movingSymbol;
+                            var box = sym.subtreeBoundingBox();
+                            var pos = sym.getAbsolutePosition();
+                            var bLeft = box.x + pos.x;
+                            var bRight = bLeft + box.w;
+                            var bTop = box.y + pos.y;
+                            var bBottom = bTop + box.h;
+                            // See above for right-side-stuff.
+                            scope.trashActive =
+                                (bRight > tOff.left &&
+                                bBottom > tOff.top &&
+                                bBottom < tOff.top + tHeight) ||
+                                (x > tOff.left && // This second part is safe to have anyway
+                                y > tOff.top &&
+                                y < tOff.top + tHeight);
+                        }
+
                         scope.$apply();
                     };
 
@@ -210,8 +242,6 @@ define(function(require) {
                             scope.history = [JSON.parse(JSON.stringify(scope.state))];
                             scope.historyPtr = 0;
                             //element.find("canvas").remove();
-
-                            // TODO: Redisplay old equations in the centre
 
                             scope.future = [];
                             var p = new p5(function(p) {

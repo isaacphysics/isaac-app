@@ -129,9 +129,6 @@ define([], function() {
 			if (contains(topics, "algebra") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
 				warnings.push(["algebra", "There are no Algebra questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "general_functions") && !(contains(levels, 1) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
-				warnings.push(["general_functions", "There are no General Functions questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-
 			return warnings;
 		}
 

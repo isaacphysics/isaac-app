@@ -36,6 +36,8 @@ define(function(require) {
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
 
+	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
+
 	.provider('api', function ApiProvider() {
 
 		var urlPrefix = "";
@@ -70,7 +72,6 @@ define(function(require) {
 
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
-
-
+	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
 });

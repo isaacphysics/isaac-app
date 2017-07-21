@@ -42,7 +42,7 @@ define([], function() {
 
 			api.logger.log({
 				type: "VIEW_GAMEBOARD_BY_ID",
-				gameBoardId: $scope.gameBoard.id, 
+				gameboardId: $scope.gameBoard.id, 
 			})
 		}
 
@@ -143,6 +143,8 @@ define([], function() {
 
 			if ($scope.filterConcepts.length > 0)
 				params.concepts = $scope.filterConcepts.join(",");
+
+			params.title = gameBoardTitles.generateFromFilter($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels);
 
 			$scope.gameBoardLoading = true;
 			$scope.gameBoard = api.gameBoards.filter(params);

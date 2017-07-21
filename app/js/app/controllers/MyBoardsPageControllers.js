@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout) {
 		
 		$rootScope.pageTitle = "My Boards";
 
@@ -23,18 +23,8 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.filterOptions = [
-			{label: "All Boards", val: null},
-			{label: "Not Started", val: "not_attempted"},
-			{label: "In Progress", val: "in_progress"},
-			{label: "Completed", val: "completed"}
-		];
-
-		$scope.sortOptions = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
-		];
-
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
@@ -47,21 +37,13 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
 			// TODO: For some reason these watch functions are being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
-		});
-
 		
 		updateBoards();
 

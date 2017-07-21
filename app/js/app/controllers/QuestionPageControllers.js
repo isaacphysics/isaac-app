@@ -18,7 +18,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
@@ -28,50 +28,35 @@ define([], function() {
 
 		$scope.state = {};
 
+		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
+
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = "physics";
-		for(var i in subjects) {
-			if (pageTags.indexOf(subjects[i].id) > -1) {
-				pageSubject = subjects[i].id;
-				break;
-			}
-		}
+		var pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
 
 		if (pageSubject) {
 
-			var fields = tags.tagArray.filter(function(t) { return t && t.parent == pageSubject; });
-
-			// Find field tags on page
+			var fields = tags.getAllFieldTags(pageTags);
 			var pageField = null;
-			for (var i in fields) {
-				if (pageTags.indexOf(fields[i].id) > -1) {
-					if (!pageField) {
-						pageField = fields[i].id;
-					} else {
-						pageField = "multiple_fields"; // We found tags for more than one field.
-					}
-				}
-			}
 
+			if (fields.length == 1) {
+				pageField = fields[0].id;
+			} else if (fields.length > 1) {
+				pageField = "multiple_fields"; // We found tags for more than one field.
+			}
 
 			if (pageField) {
 
-				var topics = tags.tagArray.filter(function(t) { return t && t.parent == pageField; });
-
-				// Find topic tags on page
+				var topics = tags.getAllTopicTags(pageTags);
 				var pageTopic = null;
-				for (var i in topics) {
-					if (pageTags.indexOf(topics[i].id) > -1) {
-						if (!pageTopic) {
-							pageTopic = topics[i].id;
-						} else {
-							pageTopic = "multiple_topics"; // We found tags for more than one topic.
-						}
-					}
+
+				if (topics.length == 1) {
+					pageTopic = topics[0].id;
+				} else if (topics.length > 1) {
+					pageTopic = "multiple_topics"; // We found tags for more than one topic.
 				}
 			}
 		}

@@ -64,7 +64,7 @@
       			</div>
             </a>
             <div class="row">
-   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
                   Created by:
                   <span ng-if="board.ownerUserId == user._id">Me</span>

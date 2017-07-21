@@ -13,6 +13,13 @@ define([], function() {
             link: function(scope, element, attrs) {
 
                 scope.edit = function() {
+
+                    history.pushState({'null':'is null'}, "A Fake Title", window.location.href);
+                    window.onpopstate = function(e) {
+                        e.preventDefault();
+                        $("#equationModal").foundation("reveal", "close");
+                    }
+
                     $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
                         scope.state = finalState;
                         scope.$apply();
