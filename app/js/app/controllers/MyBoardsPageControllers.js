@@ -23,32 +23,31 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.filterOptions = boardSearchOptions.filter.values;
-		$scope.filterOption = $scope.filterOptions[boardSearchOptions.filter.default];
-		$scope.sortOptions = boardSearchOptions.sort.values;
-		$scope.sortOption = $scope.sortOptions[boardSearchOptions.sort.default];
-		$scope.noBoards = boardSearchOptions.noBoards.values;
-		$scope.noBoardOption = $scope.noBoards[boardSearchOptions.noBoards.default];
+		$scope.boardSearchOptions = boardSearchOptions;
+		for (paramater in boardSearchOptions) {
+			// assign default values to boardSearchOptions
+			$scope['selected' + paramater.charAt(0).toUpperCase() + paramater.slice(1) + 'Option'] = boardSearchOptions[paramater].values[boardSearchOptions[paramater].default];
+		}
 
 		var updateBoards = function(limit) {
-			limit = limit || $scope.noBoardOption.val;
+			limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
+			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				$scope.setLoading(false);
 			})
 		};
 
 		// update boards when filters have been selected
-		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
+		$scope.$watchGroup(["selectedNoBoardsOption", "selectedFilterOption"], function(newVal, oldVal) {
 			if (newVal !== oldVal) {
-				updateBoards($scope.boards.results.length);
+				updateBoards();
 			}
 		});
 		
-		$scope.$watch("noBoardOption", function(newVal, oldVal) {
+		$scope.$watch("selectedSortOption", function(newVal, oldVal) {
 			if (newVal !== oldVal) {
-				updateBoards();
+				updateBoards($scope.boards.results.length);
 			}
 		});
 
@@ -59,7 +58,7 @@ define([], function() {
 			if (mergeInProgress) return;
 			mergeInProgress = true;
 			$scope.setLoading(true);
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
+			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Merge new boards into results 
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.setLoading(false);

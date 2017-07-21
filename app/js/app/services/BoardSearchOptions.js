@@ -19,28 +19,35 @@
 			filter: {
 				default: 0,
 				values: [
-					{label: "All Boards", val: null},
-					{label: "Not Started", val: "not_attempted"},
-					{label: "In Progress", val: "in_progress"},
-					{label: "Completed", val: "completed"}
+					{label: "All Boards", value: null},
+					{label: "Not Started", value: "not_attempted"},
+					{label: "In Progress", value: "in_progress"},
+					{label: "Completed", value: "completed"}
 				]
 			},
 			sort: {
 				default: 1,
 				values: [
-					{label: "Date Created", val: "created"},
-					{label: "Date Visited", val: "visited"},
-					{label: "Title Ascending", val: "title"},
-					{label: "Title Descending", val: "-title"}
+					{label: "Date Created", value: "created"},
+					{label: "Date Visited", value: "visited"},
+					{label: "Title Ascending", value: "title"},
+					{label: "Title Descending", value: "-title"}
 				]
 			},
 			noBoards: {
 				default: 0,
 				values: [
-					{label: "6", val: "6"},
-					{label: "18", val: "18"},
-					{label: "60", val: "60"},
-					{label: "Show All", val: "ALL"}
+					{label: "6", value: "6"},
+					{label: "18", value: "18"},
+					{label: "60", value: "60"},
+					{label: "Show All", value: "ALL"}
+				]
+			},
+			view: {
+				default: 0,
+				values: [
+					{label: "Assignment Cards", value: "card"},
+					{label: "Table of Records", value: "table"}
 				]
 			}
 		};

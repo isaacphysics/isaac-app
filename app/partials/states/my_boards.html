@@ -25,74 +25,111 @@
 </div>
 
 <div class="boards-filters" ng-show="boards != null">
-   <ul class="small-block-grid-2">
+   <ul class="small-block-grid-3">
+      <li>
+         <label class="hide-for-small-only">Display as</label>
+         <select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values"></select>
+      </li>
       <li>
          <label class="hide-for-small-only">Show</label>
-         <select ng-model="filterOption" ng-options="option.label for option in filterOptions"></select>
+         <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
       </li>
       <li>
          <label class="hide-for-small-only">Sort by</label>
-         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+         <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
       </li>
    </ul>
 </div>
-<ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
-      <!-- Loop all boards and add a class if complete -->
-   	<li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
-   		<div class="panel">
-            <span class="board-delete" ng-click="deleteBoard(board)">X</span>
-   			<a ui-sref="board({'id':board.id})">
-               <div class="row">
-                  <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
-                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
-                     </span>
-      					<span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
-                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>          
-                     </span>
-      				</div>
-      				<div class="board-percentage" ng-if="board.percentageCompleted == '100'">
-      					<span class="subject-complete"></span>
-      				</div>
-                  <div class="board-info">
-                     <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
-                     <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
-                     <div class="board-levels">
-                        <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
+<div ng-switch="selectedViewOption.value">
+   <div ng-switch-when="table">
+      <table>
+         <thead>
+            <tr>
+               <td>Board Name</td>
+               <td>Subjects</td>
+               <td>Completion</td>
+               <td>Created</td>
+               <td>Last Visited</td>
+               <td>Levels</td>
+               <td>Created by</td>
+               <td>Share</td>
+               <td>Delete</td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr ng-model="boards" ng-repeat="board in boards.results">
+               <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></td>
+               <td><span ng-repeat="subject in calculateBoardSubjects(board)">{{subject}} </span></td>
+               <td>{{board.percentageCompleted}}%</td>
+               <td>{{board.creationDate | date:'dd/MM/yyyy'}}</td>
+               <td>{{board.lastVisited | date:'dd/MM/yyyy'}}</td>
+               <td><span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}} </span></td>
+               <td><span ng-if="board.ownerUserId == user._id">Me</span><span ng-if="board.ownerUserId != user._id">Someone else</span></td>
+               <td>link</td>
+               <td><span ng-click="deleteBoard(board)">X</span></td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   <div ng-switch-default>
+      <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
+         <!-- Loop all boards and add a class if complete -->
+         <li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
+            <div class="panel">
+               <span class="board-delete" ng-click="deleteBoard(board)">X</span>
+               <a ui-sref="board({'id':board.id})">
+                  <div class="row">
+                     <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
+                        <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                           {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                        </span>
+                        <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                           {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                        </span>
+                     </div>
+                     <div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+                        <span class="subject-complete"></span>
+                     </div>
+                     <div class="board-info">
+                        <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                        <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
+                        <div class="board-levels">
+                           <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
+                        </div>
                      </div>
                   </div>
-      			</div>
-            </a>
-            <div class="row">
-   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
-               <div class="board-creator">
-                  Created by:
-                  <span ng-if="board.ownerUserId == user._id">Me</span>
-                  <span ng-if="board.ownerUserId != user._id">Someone else</span>
-               </div>
-
-               <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
-               <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
-                  <div>{{shareUrl}}</div>
-                  <hr />
-                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item"">Clone and Edit</div></a>
-               </div>
-               <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
-                  <div>
-                     {{shareUrl}}
+               </a>
+               <div class="row">
+                  <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+                  <div class="board-creator">
+                     Created by:
+                     <span ng-if="board.ownerUserId == user._id">Me</span>
+                     <span ng-if="board.ownerUserId != user._id">Someone else</span>
+                  </div>
+                  <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
+                  <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
+                     <div>{{shareUrl}}</div>
+                     <hr />
+                     <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item"">Clone and Edit</div></a>
+                  </div>
+                  <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
+                     <div>
+                        {{shareUrl}}
+                     </div>
                   </div>
                </div>
             </div>
-   		</div>
-   	</li>
-</ul>
+         </li>
+      </ul>
+   </div>
+</div>
 <div class="row" ng-hide="boards == null || boards.results.length == ''">
   <div class="large-5 medium-6 small-centered columns">
       <div class="boards-filters columns">
          <ul class="small-block-grid-1">
             <li>
                <label class="hide-for-small-only">Results</label>
-               <select ng-model="noBoardOption" ng-options="option.label for option in noBoards"></select>
+               <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values"></select>
             </li>
          </ul>
       </div>
