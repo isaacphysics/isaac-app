@@ -25,6 +25,8 @@ define(["d3"], function(d3) {
 
             link: function(scope, element, attrs) {
 
+                var dateFormat = d3.time.format("%b %Y");
+
                 scope.$watch('data', function(newData){
                     if (!newData) {
                         return;
@@ -150,7 +152,7 @@ define(["d3"], function(d3) {
                                     .duration(200)      
                                     .style("opacity", .9);
 
-                                d3tooltip.html(d.y)  
+                                d3tooltip.html(dateFormat(new Date(d.x)) + "<br><b>"+ d.y + "</b>")  
                                     .style("left", (d3.event.pageX) + "px")     
                                     .style("top", (d3.event.pageY - 28) + "px");    
                             })                  
@@ -167,7 +169,7 @@ define(["d3"], function(d3) {
                         .orient("bottom")
                         .ticks(6)
                         .tickSize(-h).tickSubdivide(true)
-                        .tickFormat(d3.time.format("%b %y"));
+                        .tickFormat(dateFormat);
 
                     //Define Y axis
                     var yAxis = d3.svg.axis()
