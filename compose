@@ -36,7 +36,7 @@ pg-$ENV:
 
   kafka-$ENV:
     container_name: kafka-$ENV
-    image: ucamcldtg/kafka
+    image: ucamcldtg/kafka-standalone
     links:
       - zookeeper-$ENV:zookeeper
     build:
@@ -50,7 +50,7 @@ pg-$ENV:
 
   zookeeper-$ENV:
     container_name: zookeeper-$ENV
-    image: ucamcldtg/zookeeper
+    image: ucamcldtg/zookeeper-standalone
     build:
       context: ../isaac-api/kafka
       dockerfile: Dockerfile-zookeeper
