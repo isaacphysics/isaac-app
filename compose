@@ -31,12 +31,14 @@ read -r -d '' PG_AND_KAFKA_SERVICE << EOM
 pg-$ENV:
     container_name: pg-$ENV
     image: isaac-pg
+    restart: always
     volumes:
       - pg-$ENV:/pgdata
 
   kafka-$ENV:
     container_name: kafka-$ENV
     image: ucamcldtg/kafka-standalone
+    restart: always
     links:
       - zookeeper-$ENV:zookeeper
     build:
@@ -51,6 +53,7 @@ pg-$ENV:
   zookeeper-$ENV:
     container_name: zookeeper-$ENV
     image: ucamcldtg/zookeeper-standalone
+    restart: always
     build:
       context: ../isaac-api/kafka
       dockerfile: Dockerfile-zookeeper
