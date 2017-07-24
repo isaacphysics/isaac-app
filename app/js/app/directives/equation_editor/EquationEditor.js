@@ -500,7 +500,8 @@ define(function (require) {
                                 } else if (false) { // TODO s/false/whateverderivativeformat/
                                     // TODO This is the branch for "available" derivatives.
                                     //      We need to agree on a sensible format because SymPy is not expressive
-                                    //      enough for our needs (i.e. multiple differentials below the fraction sign).
+                                    //      enough for our needs (i.e. multiple differentials below the fraction sign,
+                                    //      partial vs total derivatives, and so on...)
 
                                 } else if (_.startsWith(p, "differential")) {
                                     // TODO This is the branch for differentials to be available in the menu.
@@ -783,6 +784,43 @@ define(function (require) {
 
                 var derivativeFunctions = function(availableDerivatives) {
                     var result = [];
+                    var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+
+                    if(userIsPrivileged) {
+                        result.push({
+                            type: "Differential",
+                            properties: {
+                                letter: "d"
+                            },
+                            menu: {
+                                label: "\\mathrm{d}^{\\circ}\\circ",
+                                texLabel: true
+                            }
+                        });
+                        result.push({
+                            type: "Derivative",
+                            children: {
+                                numerator: {
+                                    type: "Differential",
+                                    properties: {
+                                        letter: "d"
+                                    }
+                                },
+                                denominator: {
+                                    type: "Differential",
+                                    properties: {
+                                        letter: "d"
+                                    }
+                                }
+                            },
+                            menu: {
+                                label: "\\frac{\\mathrm{d}\\ \\cdot}{\\mathrm{d}\\ \\cdots}",
+                                texLabel: true,
+                                fontSize: "1.5em"
+                            }
+                        });
+                    }
+
                     for (var j = 0; j < availableDerivatives.length; ++j) {
                         var derivative = availableDerivatives[j];
                         if (derivative.startsWith("diff")) {
@@ -816,12 +854,13 @@ define(function (require) {
                                 derivative_obj.children.numerator.children.order = { type: "Num", properties: { significand: ""+derivative_order } };
                             }
                             var den_objects = [];
+                            var texBottom = "";
                             _.each(_.entries(orders), function(p) {
                                 var letter = p[0];
                                 var order = p[1];
                                 var o = {
                                     type: "Differential",
-                                    properties: { letter: "d" },
+                                    properties: { letter: "d" }, // TODO Support other types of differentials
                                     children: {
                                         argument: {
                                             type: "Symbol",
@@ -829,16 +868,17 @@ define(function (require) {
                                         }
                                     }
                                 };
+                                texBottom += "d" + letter;
                                 if(order > 1) {
                                     o.children.order = {
                                         type: "Num",
                                         properties: { significand: ""+order }
                                     }
+                                    texBottom += "^{" + order + "}";
                                 }
                                 den_objects.push(o);
                             });
 
-                            debugger;
                             var tail = den_objects.pop();
                             while (den_objects.length > 0) {
                                 var acc = den_objects.pop();
@@ -847,7 +887,8 @@ define(function (require) {
                             }
 
                             derivative_obj.children.denominator = tail;
-                            derivative_obj.menu = { label: "\\frac{\\mathrm{d}^{"+derivative_order+"}}{\\mathrm{d}}", texLabel: true };
+                            var texLabel = "\\frac{\\mathrm{d}" + (derivative_order > 1 ? "^{" + derivative_order+"}" : "") + "}{" + texBottom + "}";
+                            derivative_obj.menu = { label: texLabel, texLabel: true, fontSize: "1.5em" };
                             result.push(derivative_obj);
                         } else {
                             // DUH?
@@ -1366,34 +1407,8 @@ define(function (require) {
                         }
                     }],
 
-                    derivatives: derivativeFunctions(["diff(_, x, y)", "diff(_, x, x, y)"]) /*[{ ["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"]
-                        type: "Differential",
-                        properties: {
-                            letter: "d"
-                        },
-                        menu: {
-                            label: "\\mathrm{d}",
-                            texLabel: true
-                        }
-                    }, {
-                        type: "Differential",
-                        properties: {
-                            letter: "δ"
-                        },
-                        menu: {
-                            label: "\\mathrm{\\delta}",
-                            texLabel: true
-                        }
-                    }, {
-                        type: "Differential",
-                        properties: {
-                            letter: "∆"
-                        },
-                        menu: {
-                            label: "\\mathrm{\\Delta}",
-                            texLabel: true
-                        }
-                    }]*/
+                    derivatives: derivativeFunctions(["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"])
+                    /* δ ∆ <- let's keep these handy, just in case... */
 
                 };
 

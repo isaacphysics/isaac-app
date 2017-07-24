@@ -114,66 +114,6 @@ export
         } catch (e) {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
-
-        // this.parseSubtreeObject({ 'type': 'Derivative', 'position': { x: 0, y: 0 } });
-        this.parseSubtreeObject({
-            "type":"Derivative",
-            "position":{
-                "x":1271.5,
-                "y":342.3
-            },
-            "children":{
-                "numerator":{
-                    "type":"Differential",
-                    "properties":{
-                        "letter":"d"
-                    }
-                    "children":{
-                        "argument":{
-                            "type":"Fn",
-                            "properties":{
-                                "name":"f",
-                                "custom":"true"
-                            },
-                            "children":{
-                                "argument":{
-                                    "type":"Symbol",
-                                    "properties":{
-                                        "letter":"x"
-                                    }
-                                }
-                            }
-                        },
-                        "order":{
-                            "type":"Num",
-                            "properties":{
-                                "significand":"2"
-                            }
-                        }
-                    }
-                },
-                "denominator":{
-                    "type":"Differential",
-                    "properties":{
-                        "letter":"d"
-                    },
-                    "children":{
-                        "argument":{
-                            "type":"Symbol",
-                            "properties":{
-                                "letter":"x"
-                            }
-                        },
-                        "order":{
-                            "type":"Num",
-                            "properties":{
-                                "significand":"2"
-                            }
-                        }
-                    }
-                }
-            }
-        });
         this.centre(true);
 
         _this.scope.log.initialState = [];

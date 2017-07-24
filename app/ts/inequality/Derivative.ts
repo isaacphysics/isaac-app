@@ -68,9 +68,13 @@ export
             }
         } else if (format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null &&
-                this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential" &&
-                this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
-                expression += "diff(" + this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
+                this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential") {
+                expression += "diff(";
+                if(this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
+                    expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
+                } else {
+                    expression += "_, ";
+                }
                 var stack: Array<Widget> = [this.dockingPoints["denominator"].child];
                 var list = [];
                 while(stack.length > 0) {
@@ -86,7 +90,7 @@ export
                             if (e.dockingPoints["argument"].child != null) {
                                 list.push(e.dockingPoints["argument"].child.getExpression(format));
                             } else {
-                                list.push("___MEH___");
+                                list.push("__YOU_ARE_MISSING_VARIABLES__");
                             }
                             o -= 1;
                         } while(o > 0);
