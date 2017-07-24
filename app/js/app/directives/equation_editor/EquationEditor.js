@@ -813,7 +813,7 @@ define(function (require) {
                                 menu: null
                             };
                             if (derivative_order > 1) {
-                                derivative_obj.children.numerator.children.order = { type: "Num", properties: { significand: derivative_order } };
+                                derivative_obj.children.numerator.children.order = { type: "Num", properties: { significand: ""+derivative_order } };
                             }
                             var den_objects = [];
                             _.each(_.entries(orders), function(p) {
@@ -832,7 +832,7 @@ define(function (require) {
                                 if(order > 1) {
                                     o.children.order = {
                                         type: "Num",
-                                        properties: { significand: order }
+                                        properties: { significand: ""+order }
                                     }
                                 }
                                 den_objects.push(o);
