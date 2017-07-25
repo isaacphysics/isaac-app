@@ -824,7 +824,8 @@ define(function (require) {
                     for (var j = 0; j < availableDerivatives.length; ++j) {
                         var derivative = availableDerivatives[j];
                         if (derivative.startsWith("diff")) {
-                            var pieces = derivative.split(",").map(function(s) { return s.replace(/[\(\)\s]/g, "") }).slice(1);
+                            // FIXME This ; is a backward-compatible, certified horrible hack
+                            var pieces = derivative.split(";").map(function(s) { return s.replace(/[\(\)\s]/g, "") }).slice(1);
                             var orders = {};
                             // Count how many times one should derive each variable
                             for (var i = 0; i < pieces.length; ++i) {
@@ -1407,7 +1408,7 @@ define(function (require) {
                         }
                     }],
 
-                    derivatives: derivativeFunctions(["diff(_, x)", "diff(_, x, x)", "diff(_, x, y)", "diff(_, x, x, y)", "diff(_, x, x, y, y)"])
+                    derivatives: derivativeFunctions(["diff(x^2; x)", "diff(_; x; x)", "diff(_; x; y)", "diff(_; x; x; y)", "diff(_; x; x; y; y)"])
                     /* δ ∆ <- let's keep these handy, just in case... */
 
                 };

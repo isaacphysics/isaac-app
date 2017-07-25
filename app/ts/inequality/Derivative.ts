@@ -122,7 +122,7 @@ export
     }
 
     token() {
-        return '';
+        return this.getExpression("python");
     }
 
     /** Paints the widget on the canvas. */

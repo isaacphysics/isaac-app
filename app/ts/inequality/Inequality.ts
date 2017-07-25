@@ -492,6 +492,7 @@ export
             var children = e.getChildren();
             stack = stack.concat(children);
         }
+        console.log("---", list);
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
@@ -507,6 +508,7 @@ export
         });
 
         if (symbolWithMostChildren != null) {
+            var flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return e.replace(/,/g, ";") });
             this.scope.newEditorState({
                 result: {
                     "tex": symbolWithMostChildren.getExpression("latex").trim(),
@@ -514,11 +516,10 @@ export
                     "python": symbolWithMostChildren.getExpression("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
-                    "uniqueSymbols": _.remove(this.flattenExpression(symbolWithMostChildren), e => { return e } ).join(', ')
+                    "uniqueSymbols": flattenedExpression.join(', ')
                 },
                 symbols: _.map(this.symbols, s => s.subtreeObject())
             });
-
         } else {
             this.scope.newEditorState({
                 result: null,
