@@ -492,7 +492,6 @@ export
             var children = e.getChildren();
             stack = stack.concat(children);
         }
-        console.log("---", list);
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 

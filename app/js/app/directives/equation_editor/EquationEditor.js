@@ -178,6 +178,10 @@ define(function (require) {
                                 scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(parsed.operators);
                                 customSymbolsParsed = true;
                             }
+                            if (parsed.derivatives.length > 0) {
+                                scope.symbolLibrary.derivatives = scope.symbolLibrary.derivatives.concat(parsed.derivatives);
+                                customSymbolsParsed = true;
+                            }
                             if (!customSymbolsParsed) {
                                 console.debug("No custom symbols.");
                             }
@@ -316,6 +320,8 @@ define(function (require) {
                 var chemicalSymbols = {};
                 var chemicalSymbolsArray = elements.concat(particles);
 
+                var derivativesStandard = [];
+
                 for (var i in chemicalSymbolsArray) {
                     chemicalSymbols[chemicalSymbolsArray[i]] = i;
                 }
@@ -396,7 +402,8 @@ define(function (require) {
                     var r = {
                         vars: [],
                         fns: [],
-                        operators: []
+                        operators: [],
+                        derivatives: []
                     };
 
                     for (var i in symbols) {
@@ -497,12 +504,12 @@ define(function (require) {
                                         console.debug("Did not parse custom function: " + name);
 
                                     }
-                                } else if (false) { // TODO s/false/whateverderivativeformat/
+                                } else if (_.startsWith(p, "diff(")) { // TODO s/false/whateverderivativeformat/
                                     // TODO This is the branch for "available" derivatives.
                                     //      We need to agree on a sensible format because SymPy is not expressive
                                     //      enough for our needs (i.e. multiple differentials below the fraction sign,
                                     //      partial vs total derivatives, and so on...)
-
+                                    partResults.push(derivativeFunctions(p));
                                 } else if (_.startsWith(p, "differential")) {
                                     // TODO This is the branch for differentials to be available in the menu.
                                     //      Probably something like differential(order?)(expression?)
@@ -558,6 +565,9 @@ define(function (require) {
                                     break;
                                 case "Relation":
                                     r.operators.push(root);
+                                    break;
+                                case "Derivative":
+                                    r.derivatives.push(root);
                                     break;
                             }
                         }
@@ -783,6 +793,7 @@ define(function (require) {
                 };
 
                 var derivativeFunctions = function(availableDerivatives) {
+                    // TODO Possibly remove the menu if no derivatives are available
                     var result = [];
                     var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
@@ -895,7 +906,6 @@ define(function (require) {
                             // DUH?
                         }
                     }
-                    console.log(result);
                     return result;
                 }
 
@@ -1408,7 +1418,7 @@ define(function (require) {
                         }
                     }],
 
-                    derivatives: derivativeFunctions(["diff(x^2; x)", "diff(_; x; x)", "diff(_; x; y)", "diff(_; x; x; y)", "diff(_; x; x; y; y)"])
+                    derivatives: derivativeFunctions(derivativesStandard)
                     /* δ ∆ <- let's keep these handy, just in case... */
 
                 };
