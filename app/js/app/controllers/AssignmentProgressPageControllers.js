@@ -22,7 +22,7 @@ define([], function() {
 
         scope.isUserStaff = function() {
             return scope.user.role == 'ADMIN' || scope.user.role == "CONTENT_EDITOR" || scope.user.role == "EVENT_MANAGER";
-        }
+        };
 
         scope.groups = [];
         scope.groupExpanded = {}; // Key will be group ID, value bool
@@ -34,6 +34,7 @@ define([], function() {
         scope.assignmentAverages = {}; // Key will be assignment ID, value list of averages. One per question.
         scope.assignmentTotalQuestionParts = {}; // Key - assignment ID, value - questionPartTotal 
         scope.assignmentCSVLink = null;
+        scope.passMark = 0.75;
 
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
@@ -61,7 +62,7 @@ define([], function() {
                 scope.groupExpanded[groupId] = false;
             }
             scope.setLoading(false);
-        })
+        });
 
         // this function moves the gameboard title resolution to happen as needed rather than for all assignments that could ever be displayed.
         scope.expandAssignments = function(groupId) {
@@ -93,7 +94,7 @@ define([], function() {
                 scope.$apply();
                 scope.groupExpanded[groupId] = true;
             });
-        }
+        };
 
         scope.$watchCollection("assignmentExpanded", function() {
             for (var k in scope.assignmentExpanded) {
@@ -138,11 +139,13 @@ define([], function() {
 
                                 studentProgress.tickCount = 0;
                                 studentProgress.correctQuestionPartsCount = 0;
+                                studentProgress.incorrectQuestionPartsCount = 0;
                                 for (var i in studentProgress.results) {
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
-                                    studentProgress.correctQuestionPartsCount += studentProgress.questionPartResults[i];
+                                    studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
+                                    studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
                                 }
 
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
@@ -158,29 +161,25 @@ define([], function() {
 
         scope.asPercent = function(numerator, denominator) {
             return Math.round(100 * numerator / denominator);
-        }
+        };
+        scope.asFraction = function(numerator, denominator) {
+            return numerator + " / " + denominator;
+        };
 
-        scope.getStudentClass = function(studentProgress, totalQuestionParts) {
-            if (!studentProgress.user.authorisedFullAccess)
-                return "revoked";
-
-            var questionCount = studentProgress.results.length;
-            var stateCounts = {};
-
-            for (var i in studentProgress.results) {
-                stateCounts[studentProgress.results[i]] = (stateCounts[studentProgress.results[i]] || 0) + 1; 
+        scope.getStateClass = function(authorised, correctParts, incorrectParts, totalParts) {
+            var result = "not-attempted";
+            if (!authorised) {
+                result = "revoked";
+            } else if (correctParts == totalParts) {
+                result = "completed";
+            } else if ((correctParts / totalParts) >= scope.passMark) {
+                result = "passed";
+            } else if ((incorrectParts / totalParts) > (1 - scope.passMark)) {
+                result = "failed";
+            } else if (correctParts > 0) {
+                result = "in-progress";
             }
-
-            if (stateCounts["PERFECT"] == questionCount)
-                return "complete";
-            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts >= 0.7)
-                return "passed";
-            else if (stateCounts["FAILED"] > (questionCount * 0.3))
-                return "fail";
-            else if (studentProgress.correctQuestionPartsCount / totalQuestionParts > 0)
-                return "in-progress"
-            else
-                return "not-attempted";
+            return result;
         };
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {
