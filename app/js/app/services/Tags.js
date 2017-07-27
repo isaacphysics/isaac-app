@@ -210,8 +210,7 @@ define([], function() {
 				parent: "functions"
 			}, {
 				id: "graph_sketching",
-				parent: "functions",
-				comingSoon: true,
+				parent: "functions"
 			},
 
 			// // Probability topics
