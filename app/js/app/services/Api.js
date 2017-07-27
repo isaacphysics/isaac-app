@@ -146,6 +146,11 @@ define([], function() {
 				method: 'GET', 
 				isArray: false 
 			},
+            'getNewStats' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/v2/",
+                isArray: false
+            },
 			'getGameboardPopularity' : {
 				method: 'GET',
 				url: urlPrefix + "/gameboards/popular", 

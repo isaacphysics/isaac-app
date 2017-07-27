@@ -598,6 +598,32 @@ define(["angular-ui-router"], function() {
                 }
             });
 
+        $sp.state('adminStatsNew', {
+            url: "/admin/stats/v2",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/admin_stats.html",
+                    controller: ["$scope", "api", function($scope, api) {
+                        // general stats
+                        $scope.statistics = null;
+                        $scope.setLoading(true)
+                        api.statisticsEndpoint.getNewStats().$promise.then(function(result) {
+                            $scope.statistics = result;
+                            $scope.setLoading(false)
+                        });
+                        api.eventBookings.getAllBookings({
+                            "count_only": true
+                        }).$promise.then(function(result) {
+                            $scope.eventBookingsCount = result.count;
+                        })
+                    }]
+                }
+            }
+        });
+
             $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
                 templateUrl: '/partials/admin_stats/school_user_summary_list.html',
