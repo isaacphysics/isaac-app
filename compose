@@ -79,21 +79,21 @@ pg-test:
     volumes:
       - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
 
-kafka-test:
-  container_name: kafka-test
-  image: ucamcldtg/kafka
-  links:
-    - zookeeper-test:zookeeper
-  volumes:
-    - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
-  depends_on:
-    - zookeeper-test
+  kafka-test:
+    container_name: kafka-test
+    image: ucamcldtg/kafka
+    links:
+      - zookeeper-test:zookeeper
+    volumes:
+      - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+    depends_on:
+      - zookeeper-test
 
-zookeeper-test:
-  container_name: zookeeper-test
-  image: ucamcldtg/zookeeper
-  volumes:
-    - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
+  zookeeper-test:
+    container_name: zookeeper-test
+    image: ucamcldtg/zookeeper
+    volumes:
+      - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
 EOM
 else
   echo "Must set environment to dev or staging."
