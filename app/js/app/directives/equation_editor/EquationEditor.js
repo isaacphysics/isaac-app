@@ -179,7 +179,7 @@ define(function (require) {
                                 customSymbolsParsed = true;
                             }
                             if (parsed.derivatives.length > 0) {
-                                scope.symbolLibrary.derivatives = scope.symbolLibrary.derivatives.concat(parsed.derivatives);
+                                scope.symbolLibrary.derivatives = parsed.derivatives;
                                 customSymbolsParsed = true;
                             }
                             if (!customSymbolsParsed) {
@@ -425,6 +425,14 @@ define(function (require) {
                                     relation: s
                                 }
                             })
+                        } else if(_.startsWith(s, "diff(")) {
+                            console.debug("Parsing derivatives:", s);
+                            var partResults = []; // WHAT THE...?!
+                            // TODO This is the branch for "available" derivatives.
+                            //      We need to agree on a sensible format because SymPy is not expressive
+                            //      enough for our needs (i.e. multiple differentials below the fraction sign,
+                            //      partial vs total derivatives, and so on...)
+                            r.derivatives = derivativeFunctions([s]);
                         } else {
                             console.debug("Parsing symbol:", s);
 
@@ -484,8 +492,6 @@ define(function (require) {
 
                                     } else if (trigFunctions.indexOf(name) != -1) {
                                         // otherwise we must have a standard trig function
-
-
                                         partResults.push({
                                             type: "Fn",
                                             properties: {
@@ -504,19 +510,6 @@ define(function (require) {
                                         console.debug("Did not parse custom function: " + name);
 
                                     }
-                                } else if (_.startsWith(p, "diff(")) { // TODO s/false/whateverderivativeformat/
-                                    // TODO This is the branch for "available" derivatives.
-                                    //      We need to agree on a sensible format because SymPy is not expressive
-                                    //      enough for our needs (i.e. multiple differentials below the fraction sign,
-                                    //      partial vs total derivatives, and so on...)
-                                    partResults.push(derivativeFunctions(p));
-                                } else if (_.startsWith(p, "differential")) {
-                                    // TODO This is the branch for differentials to be available in the menu.
-                                    //      Probably something like differential(order?)(expression?)
-                                    //      e.g. differential(2)(xy) -> d^2 xy
-                                    //           differential()(sin(x)) -> d sin(x)
-                                    //           differential(2)() -> d^2
-
                                 } else {
                                     // otherwise we must have a symbol
                                     var p1 = convertToLatexIfGreek(p.split("_")[0]);
@@ -565,9 +558,6 @@ define(function (require) {
                                     break;
                                 case "Relation":
                                     r.operators.push(root);
-                                    break;
-                                case "Derivative":
-                                    r.derivatives.push(root);
                                     break;
                             }
                         }
