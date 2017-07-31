@@ -425,7 +425,7 @@ define(function (require) {
                                     relation: s
                                 }
                             })
-                        } else if(_.startsWith(s, "diff(")) {
+                        } else if (_.startsWith(s, "diff(")) {
                             console.debug("Parsing derivatives:", s);
                             var partResults = []; // WHAT THE...?!
                             // TODO This is the branch for "available" derivatives.
@@ -787,7 +787,7 @@ define(function (require) {
                     var result = [];
                     var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
-                    if(userIsPrivileged) {
+                    if (userIsPrivileged) {
                         result.push({
                             type: "Differential",
                             properties: {
@@ -871,7 +871,7 @@ define(function (require) {
                                     }
                                 };
                                 texBottom += "d" + letter;
-                                if(order > 1) {
+                                if (order > 1) {
                                     o.children.order = {
                                         type: "Num",
                                         properties: { significand: ""+order }
