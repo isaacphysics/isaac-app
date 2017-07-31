@@ -69,7 +69,7 @@ export
         } else if (format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null &&
                 this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential") {
-                expression += "diff(";
+                expression += "Derivative(";
                 if(this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
                     expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
                 } else {
