@@ -92,14 +92,18 @@
                                         Question and control arrows
                                     -->
                                     <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
-                                        <a href="javascript:void(0)" class="icon-arrow-left" ng-class="{'hidden': assignmentSelectedQuestion[assignment._id] <= 0}" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
+                                        <a href="javascript:void(0)" class="icon-arrow-left"
+                                        ng-class="{'enabled': enabledLeftArrow(assignment._id)}"
+                                        ng-click="assignmentSelectedQuestion[assignment._id] = enabledLeftArrow(assignment._id) ? assignmentSelectedQuestion[assignment._id] - 1 : assignmentSelectedQuestion[assignment._id]"></a>
                                         <a ng-href="/questions/{{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].id}}?board={{assignment.gameBoard.id}}" target="_blank">
                                             <div class="board-question">
                                                 <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
                                                 <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
                                             </div>
                                         </a>
-                                        <a href="javascript:void(0)" class="icon-arrow-right" ng-class="{'hidden': assignmentSelectedQuestion[assignment._id] >= assignment.gameBoard.questions.length-1}" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] + 1"></a>
+                                        <a href="javascript:void(0)" class="icon-arrow-right"
+                                        ng-class="{'enabled': enabledRightArrow(assignment._id, assignment.gameBoard.questions.length)}"
+                                        ng-click="assignmentSelectedQuestion[assignment._id] = enabledRightArrow(assignment._id, assignment.gameBoard.questions.length) ? assignmentSelectedQuestion[assignment._id] + 1 : assignmentSelectedQuestion[assignment._id]"></a>
                                     </div>
 
                                     <!--
@@ -111,13 +115,13 @@
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
-                                                        <div>{{average}}%</div>
+                                                        {{average}}%
                                                     </td>
                                                     <td class="total-column" data-ot="Total number of correct question parts">
-                                                        <div>Total Parts</div>
+                                                        Total Parts
                                                     </td>
                                                     <td class="total-column" data-ot="Total number of correct questions">
-                                                        <div>Total Qs</div>
+                                                        Total Qs
                                                     </td>
                                                 </tr>
                                             </thead>
@@ -126,22 +130,19 @@
                                                 ng-class="getStateClass(studentProgress.user.authorisedFullAccess, studentProgress.correctQuestionPartsCount, studentProgress.incorrectQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])"
                                                 on-ng-repeat-render="ngRepeatFinished">
                                                     <td class="student-name">
-                                                        <span class="icon-person"></span>
-                                                        <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">
-                                                            {{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span>
-                                                        </a>
+                                                        <span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
                                                     </td>
-                                                    <td ng-repeat="q in assignment.gameBoard.questions" ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}" ng-class-odd="'pupil-odd-column'" ng-class-even="'pupil-even-column'" ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                    <td ng-repeat="q in assignment.gameBoard.questions"
+                                                        ng-class="getStateClass(studentProgress.user.authorisedFullAccess, studentProgress.correctPartResults[$index], studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, assignmentSelectedQuestion[assignment._id] == $index)"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
                                                         data-ot="{{asPercent(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal)}}%">
-                                                        <div ng-class="getStateClass(studentProgress.user.authorisedFullAccess, studentProgress.correctPartResults[$index], studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal)">
-                                                            <div class="data-value">{{studentProgress.correctPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}</div>
-                                                        </div>
+                                                            {{studentProgress.correctPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}
                                                     </td>
                                                     <td class="total-column" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])}}%">
-                                                        <span>{{studentProgress.correctQuestionPartsCount}}/{{assignmentTotalQuestionParts[assignment._id]}}</span>
+                                                        {{studentProgress.correctQuestionPartsCount}}/{{assignmentTotalQuestionParts[assignment._id]}}
                                                     </td>
                                                     <td class="total-column" data-ot="{{asPercent(studentProgress.tickCount, assignment.gameBoard.questions.length)}}%">
-                                                        <span>{{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}</span>
+                                                        {{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -149,13 +150,13 @@
                                                 <tr>
                                                     <td></td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
-                                                        <div>{{average}}%</div>
+                                                        {{average}}%
                                                     </td>
                                                     <td class="total-column" data-ot="Total number of correct question parts">
-                                                        <div>Total Parts</div>
+                                                        Total Parts
                                                     </td>
                                                     <td class="total-column" data-ot="Total number of correct questions">
-                                                        <div>Total Qs</div>
+                                                        Total Qs
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -176,24 +177,19 @@
             <div class="assignment-progress-key panel">
                 <ul class="small-block-grid-5">
                     <li>
-                        <dt class="key-cell"><span class="completed">&nbsp;</span></dt>
-                        <dd>All parts correct</dd>
+                        <div class="key-cell"><span class="completed">&nbsp;</span></div><div class="key-desctiption">All parts correct</div>
                     </li>
                     <li>
-                        <dt class="key-cell"><span class="passed">&nbsp;</span></dt>
-                        <dd>&ge;{{passMark * 100}}% correct (Mastery)</dd>
+                        <div class="key-cell"><span class="passed">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (Mastery)</div>
                     </li>
                     <li>
-                        <dt class="key-cell"><span class="in-progress">&nbsp;</span></dt>
-                        <dd>&lt;{{passMark * 100}}% correct</dd>
+                        <div class="key-cell"><span class="in-progress">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
                     </li>
                     <li>
-                        <dt class="key-cell"><span class="failed">&nbsp;</span></dt>
-                        <dd>&gt;{{100 - (passMark * 100)}}% incorrect</dd>
+                        <div class="key-cell"><span class="failed">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
                     </li>
                     <li>
-                        <dt class="key-cell"><span>&nbsp;</span></dt>
-                        <dd>Not attempted</dd>
+                        <div class="key-cell"><span>&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
                     </li>
                 </ul>
             </div>

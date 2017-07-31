@@ -166,20 +166,29 @@ define([], function() {
             return numerator + " / " + denominator;
         };
 
-        scope.getStateClass = function(authorised, correctParts, incorrectParts, totalParts) {
-            var result = "not-attempted";
+        scope.getStateClass = function(authorised, correctParts, incorrectParts, totalParts, selected) {
+            var result = selected ? "selected " : "";
             if (!authorised) {
-                result = "revoked";
+                result += "revoked";
             } else if (correctParts == totalParts) {
-                result = "completed";
+                result += "completed";
             } else if ((correctParts / totalParts) >= scope.passMark) {
-                result = "passed";
+                result += "passed";
             } else if ((incorrectParts / totalParts) > (1 - scope.passMark)) {
-                result = "failed";
+                result += "failed";
             } else if (correctParts > 0) {
-                result = "in-progress";
+                result += "in-progress";
+            } else {
+                result += "not-attempted";
             }
             return result;
+        };
+
+        scope.enabledLeftArrow = function(id) {
+            return scope.assignmentSelectedQuestion[id] > 0;
+        };
+        scope.enabledRightArrow = function(id, questionsLength) {
+            return scope.assignmentSelectedQuestion[id] < questionsLength - 1;
         };
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {

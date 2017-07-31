@@ -86,15 +86,12 @@ $total-status-opacity: 1;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
 
-    td, dt, tr {
+    td, div.key-cell, tr {
         .completed, .passed, .failed { color: white; }
         .completed { background-image: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity)); }
         .passed { background-image: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity)); }
         .in-progress { background-image: linear-gradient(to right, rgba($in-progress-fill, $status-opacity/2), rgba($in-progress-fill, $status-opacity/2)); }
         .failed { background-image: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity)); }
-
-        // TODO MT &.pupil-even-column { background-image: linear-gradient(to right, rgba($ru_green, 0.1), rgba($ru_green, 0.1)); }
-        // TODO MT &.pupil-even-row { background-image: linear-gradient(to right, rgba($ru_green, 0.1), rgba($ru_green, 0.1)); }
     }
 }
 .accordion-group {
@@ -309,29 +306,35 @@ $total-status-opacity: 1;
     .icon-arrow-left,
     .icon-arrow-right {
         display: table-cell;
-        color: #fff;
         vertical-align: middle;
         font-size: 26px;
-        background-color: #666;
+        background-color: #999;
+        color: #ccc;
         padding-top: 5px;
         width: 70px;
-        &.hidden {
-            visibility: hidden;
+        &.enabled {
+            background-color: #666;
+            color: #fff;
         }
     }
 
     .icon-arrow-left {
+        border-left: 1px solid #666;
         left: 0;
     }
     .icon-arrow-right {
+        border-right: 1px solid #666;
         right: 0;
     }
 
 
 }
+
 .table-responsive {
     overflow-x: auto;
+    width: auto;
 }
+
 .table-progress {
     border: none;
     table-layout: auto; 
@@ -361,9 +364,6 @@ $total-status-opacity: 1;
             padding-right: 10px;
             padding-left: 10px;
         }
-        div {
-            height: 100%;
-        }
     }
 
     tbody {
@@ -384,7 +384,6 @@ $total-status-opacity: 1;
                 padding-bottom: 10px;
                 text-align: center;
             }
-
         }
         .data-value {
             padding-top: 10px;
@@ -457,8 +456,6 @@ $total-status-opacity: 1;
     thead, tfoot {
         tr {
             background: #f2f2f2;
-            border-right: #999 1px solid;
-            border-left: #999 1px solid;
             td {
                 font-weight: 200;
                 border-top: #999 1px solid;
@@ -470,9 +467,9 @@ $total-status-opacity: 1;
                     background-color:#CCC;
                 }
 
-                div { padding: 9px 0; }
+                padding: 9px 0;
 
-                &.selected div {
+                &.selected {
                     color: $ru_green;
                     font-weight: 600;
                     background-color: white;
@@ -486,7 +483,7 @@ $total-status-opacity: 1;
             border-top-color: white;
         }
     }
-    tfoot tr td.selected {
+    tfoot tr td {
         border-bottom: #666 1px solid;
     }
 
@@ -495,19 +492,12 @@ $total-status-opacity: 1;
         border-left: #666 1px solid;
         border-right: #666 1px solid;
     }
-
-    .icon-x {
-        font-size: 20px;
-        color: #cc3333;
+    .total-column {
+        width: 70px;
+        min-width: 70px;
     }
     .icon-person {
         font-size: 15px;
-    }
-    .icon-check {
-        font-size: 16px;
-    }
-    .icon-spinner {
-        font-size: 12px;
     }
 }
 
@@ -818,7 +808,7 @@ div[d3-plot] {
         }
 
         thead, tfoot {
-            tr td div { padding: 12px 0; }
+            tr td { padding: 12px 0; }
         }
 
         .icon-x {
@@ -908,20 +898,24 @@ div[d3-plot] {
 }
 
 .assignment-progress-key {
-
-    dt, dd {
+    li {
+        padding-bottom: 0px;
+    }
+    div {
         line-height:20px;
         vertical-align: middle;
-        display:inline;
     }
-    dd {
-    }
-    dt.key-cell {
+    div.key-cell {
         font-size:20px;
         border: 1px solid black;
         span {
             padding-left:20px;
         }
-
+        padding-top: 2px;
+        padding-bottom: 2px;
+        float:left;
+    }
+    div.key-desctiption {
+        text-align: center;
     }
 }
