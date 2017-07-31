@@ -70,7 +70,7 @@ export
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null &&
                 this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential") {
                 expression += "Derivative(";
-                if(this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
+                if (this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
                     expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
                 } else {
                     expression += "_, ";
@@ -211,7 +211,7 @@ export
             p.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
             var docking_right = this.dockingPoints["right"];
-            if(docking_right.child instanceof Brackets) {
+            if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {

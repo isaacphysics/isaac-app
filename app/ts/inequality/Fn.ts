@@ -334,7 +334,7 @@ export
             p.y = 0;
             var docking_right = this.dockingPoints["right"];
             // FIXME HORRIBLE BRACKETS FIX
-            if(docking_right instanceof Brackets) {
+            if (docking_right instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
 

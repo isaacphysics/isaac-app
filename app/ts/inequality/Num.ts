@@ -248,7 +248,7 @@ export
               docking_right.child.position.y = 0;//-(child_height/2-parent_height/4);
             } else {
               child_width = docking_right.child.boundingBox().w;
-                if(docking_right.child instanceof ChemicalElement) {
+                if (docking_right.child instanceof ChemicalElement) {
                   var mass_width = (docking_right.child.dockingPoints['mass_number'] && docking_right.child.dockingPoints['mass_number'].child) ? docking_right.child.dockingPoints['mass_number'].child.boundingBox().w : 0;
                   var proton_width = (docking_right.child.dockingPoints['proton_number'] && docking_right.child.dockingPoints['proton_number'].child) ? docking_right.child.dockingPoints['proton_number'].child.boundingBox().w : 0;
                   child_width += (mass_width >= proton_width) ? mass_width : proton_width;
@@ -260,7 +260,7 @@ export
                 docking_right.child.position.y = 0;
             }
             // FIXME HORRIBLE BRACKETS FIX
-            if(docking_right.child instanceof Brackets) {
+            if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {

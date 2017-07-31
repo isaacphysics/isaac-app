@@ -145,7 +145,7 @@ export
                 dockingPoint.child.draw();
             } else {
                 // There is no child to paint, let's paint an empty docking point
-                //if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+                //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
                 var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
                 var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
@@ -441,7 +441,7 @@ export
         var n: Widget = this;
         while (n.parentWidget) {
 
-          if(this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
+          if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
             depth += 1;
             n = n.parentWidget;
           }

@@ -31,7 +31,7 @@ export
     get dockingPoints(): Array<Widget> {
         // BIG FAT FIXME: This needs to climb up the family tree to see if any ancestor is a Differential, otherwise
         // stuff like d(xy^2) are allowed, where y is squared, not d nor x.
-        if(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential') {
+        if (this.parentWidget != null && this.parentWidget.typeAsString == 'Differential') {
             return _.omit(this._dockingPoints, 'superscript');
         } else {
             return this._dockingPoints;
@@ -226,7 +226,7 @@ export
         var docking_superscript = sonOfADifferential ? this.dockingPoints["superscript"] : null;
         var docking_subscript = this.dockingPoints["subscript"];
 
-        if(sonOfADifferential) {
+        if (sonOfADifferential) {
             if ("superscript" in boxes) {
                 child_width = docking_superscript.child.boundingBox().w;
                 child_height = docking_superscript.child.boundingBox().h;
@@ -255,7 +255,7 @@ export
             docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             docking_right.child.position.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
-            if(docking_right.child instanceof Brackets) {
+            if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {

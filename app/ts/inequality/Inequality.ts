@@ -353,10 +353,10 @@ export
             // var top =    spos.y + sbox.y;
             // var bottom = spos.y + sbox.y + sbox.h;
             //
-            // if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
+            // if ((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
             // 	dx = 0;
             // }
-            // if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
+            // if ((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
             // 	dy = 0;
             // }
             // var d = this.p.createVector(dx, dy);
