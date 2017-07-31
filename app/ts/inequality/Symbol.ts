@@ -50,7 +50,7 @@ export
 	 * A Symbol has three docking points:
 	 *
 	 * - _right_: Binary operation (addition, subtraction), Symbol (multiplication)
-	 * - _superscript_: Exponent (unless it's the argument of a Differential (heh...)
+	 * - _superscript_: Exponent (unless it's the argument of a Differential (heh...))
 	 * - _subscript_: Subscript (duh?)
 	 */
     generateDockingPoints() {
