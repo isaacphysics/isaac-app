@@ -425,7 +425,7 @@ define(function (require) {
                                     relation: s
                                 }
                             })
-                        } else if (_.startsWith(s, "diff(")) {
+                        } else if (_.startsWith(s, "Derivative(")) {
                             console.debug("Parsing derivatives:", s);
                             var partResults = []; // WHAT THE...?!
                             // TODO This is the branch for "available" derivatives.
@@ -824,7 +824,7 @@ define(function (require) {
 
                     for (var j = 0; j < availableDerivatives.length; ++j) {
                         var derivative = availableDerivatives[j];
-                        if (derivative.startsWith("diff")) {
+                        if (derivative.startsWith("Derivative")) {
                             // FIXME This ; is a backward-compatible, certified horrible hack
                             var pieces = derivative.split(";").map(function(s) { return s.replace(/[\(\)\s]/g, "") }).slice(1);
                             var orders = {};
