@@ -48,8 +48,35 @@
                         </div>
                     </a>
 
-
                     <div ng-if="groupExpanded[group._id]" class="accordion-group-content">
+                        <div class="assignment-progress-key panel">
+                            <ul class="small-block-grid-5">
+                                <li>
+                                    <div class="key-cell"><span class="completed">&nbsp;</span></div><div class="key-desctiption">All parts correct</div>
+                                </li>
+                                <li>
+                                    <div class="key-cell"><span class="passed">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (Mastery)</div>
+                                </li>
+                                <li>
+                                    <div class="key-cell"><span class="in-progress">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
+                                </li>
+                                <li>
+                                    <div class="key-cell"><span class="failed">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
+                                </li>
+                                <li>
+                                    <div class="key-cell"><span>&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
+                                </li>
+                            </ul>
+<!-- TODO MT decide                            <ul class="small-block-grid-2">
+                                <li>
+                                    <label>View:&nbsp;<select ng-model="dataView" ng-options="option for option in ['Fraction', 'Percentage']"></select></label>
+                                </li>
+                                <li>
+                                    <label>Colour Blind Textures:&nbsp;<input type="checkbox" ng-model="colourBlind"></label>
+                                </li>
+                            </ul> -->
+
+                        </div>
                         <!--
                             SECOND LEVEL - boards accordion
                         -->
@@ -117,10 +144,10 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
                                                         {{average}}%
                                                     </td>
-                                                    <td class="total-column" data-ot="Total number of correct question parts">
+                                                    <td class="total-column left" data-ot="Total number of correct question parts">
                                                         Total Parts
                                                     </td>
-                                                    <td class="total-column" data-ot="Total number of correct questions">
+                                                    <td class="total-column right" data-ot="Total number of correct questions">
                                                         Total Qs
                                                     </td>
                                                 </tr>
@@ -138,10 +165,10 @@
                                                         data-ot="{{asPercent(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal)}}%">
                                                             {{studentProgress.correctPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}
                                                     </td>
-                                                    <td class="total-column" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])}}%">
+                                                    <td class="total-column left" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])}}%">
                                                         {{studentProgress.correctQuestionPartsCount}}/{{assignmentTotalQuestionParts[assignment._id]}}
                                                     </td>
-                                                    <td class="total-column" data-ot="{{asPercent(studentProgress.tickCount, assignment.gameBoard.questions.length)}}%">
+                                                    <td class="total-column right" data-ot="{{asPercent(studentProgress.tickCount, assignment.gameBoard.questions.length)}}%">
                                                         {{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}
                                                     </td>
                                                 </tr>
@@ -152,10 +179,10 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">
                                                         {{average}}%
                                                     </td>
-                                                    <td class="total-column" data-ot="Total number of correct question parts">
+                                                    <td class="total-column left" data-ot="Total number of correct question parts">
                                                         Total Parts
                                                     </td>
-                                                    <td class="total-column" data-ot="Total number of correct questions">
+                                                    <td class="total-column right" data-ot="Total number of correct questions">
                                                         Total Qs
                                                     </td>
                                                 </tr>
@@ -174,25 +201,6 @@
                     </div>
                 </dd>
             </dl>
-            <div class="assignment-progress-key panel">
-                <ul class="small-block-grid-5">
-                    <li>
-                        <div class="key-cell"><span class="completed">&nbsp;</span></div><div class="key-desctiption">All parts correct</div>
-                    </li>
-                    <li>
-                        <div class="key-cell"><span class="passed">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (Mastery)</div>
-                    </li>
-                    <li>
-                        <div class="key-cell"><span class="in-progress">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
-                    </li>
-                    <li>
-                        <div class="key-cell"><span class="failed">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
-                    </li>
-                    <li>
-                        <div class="key-cell"><span>&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

@@ -332,7 +332,6 @@ $total-status-opacity: 1;
 
 .table-responsive {
     overflow-x: auto;
-    width: auto;
 }
 
 .table-progress {
@@ -359,10 +358,18 @@ $total-status-opacity: 1;
             }
         }
         &:first-child, &.total-column {
-            border-right: #666 1px solid;
             border-left: #666 1px solid;
+            border-right: #666 1px solid;
             padding-right: 10px;
             padding-left: 10px;
+        }
+        &.total-column {
+            &.right {
+                border-left: 0px;
+            }
+            &.left {
+                border-right: 0px;
+            }
         }
     }
 
@@ -464,7 +471,7 @@ $total-status-opacity: 1;
                 &:first-child, &.total-column {
                     color: #555;
                     font-weight: 500;
-                    background-color:#CCC;
+                    background-color:#ddd;
                 }
 
                 padding: 9px 0;
@@ -898,6 +905,8 @@ div[d3-plot] {
 }
 
 .assignment-progress-key {
+    border: 1px solid #bbb;
+    border-top: 0px;
     li {
         padding-bottom: 0px;
     }
