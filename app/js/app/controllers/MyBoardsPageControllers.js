@@ -23,6 +23,14 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
+		$scope.propertyName = 'title';
+		$scope.reverse = false;
+
+		$scope.sortBy = function(propertyName) {
+			$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+			$scope.propertyName = propertyName;
+		};
+
 		$scope.boardSearchOptions = boardSearchOptions;
 		for (paramater in boardSearchOptions) {
 			// assign default values to boardSearchOptions
