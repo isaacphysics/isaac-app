@@ -189,6 +189,25 @@
 		padding-bottom: 0;
 	}
 }
+.boards-table {
+	border-collapse: collapse;
+	thead {
+		.headings {
+			th {
+				color: white;
+				background-color: $ru_green;
+			}
+		}
+		.filters {
+			th {
+				background-color: #666;
+			}
+		}
+		th {
+			font-weight: 300;
+		}
+	}
+}
 
 
 /*

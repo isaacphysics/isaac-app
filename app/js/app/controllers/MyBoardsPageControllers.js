@@ -16,7 +16,6 @@
 define([], function() {
 
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout) {
-		
 		$rootScope.pageTitle = "My Boards";
 
 		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
@@ -26,22 +25,49 @@ define([], function() {
 		$scope.propertyName = 'title';
 		$scope.reverse = false;
 
+		$scope.icon = {
+			sortable: '⇕',
+			ascending: '⇑',
+			descending: '⇓'
+		}
+
+		$scope.search = {
+			title: '',
+			subjects: '',
+			levels: ''
+		}
+
 		$scope.sortBy = function(propertyName) {
 			$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 			$scope.propertyName = propertyName;
 		};
 
 		$scope.boardSearchOptions = boardSearchOptions;
-		for (paramater in boardSearchOptions) {
-			// assign default values to boardSearchOptions
-			$scope['selected' + paramater.charAt(0).toUpperCase() + paramater.slice(1) + 'Option'] = boardSearchOptions[paramater].values[boardSearchOptions[paramater].default];
+		// assign default values to boardSearchOptions
+		var deviceSpecificDefaultField = Foundation.utils.is_small_only() ? 'mobileDefault' : 'tabletAndDesktopDefault';
+		for (boardSearchParameter in boardSearchOptions) {
+			var boardSearchOption = boardSearchOptions[boardSearchParameter];
+			var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
+			var indexOfDefaultValue = boardSearchOption[deviceSpecificDefaultField];
+			$scope[selectedOptionVariableName] = boardSearchOption.values[indexOfDefaultValue];
+		}
+
+		var augmentBoards = function(boards) {
+			for (boardIndex in boards.results) {
+				board = boards.results[boardIndex];
+				subjects = $scope.calculateBoardSubjects(board);
+				levels = $scope.calculateBoardLevels(board);
+				board.subjects = subjects.join(' ');
+				board.levels = levels.join(' ');
+			}
+			return boards;
 		}
 
 		var updateBoards = function(limit) {
 			limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
-				$scope.boards = boards;
+				$scope.boards = augmentBoards(boards);
 				$scope.setLoading(false);
 			})
 		};
@@ -52,7 +78,6 @@ define([], function() {
 				updateBoards();
 			}
 		});
-		
 		$scope.$watch("selectedSortOption", function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				updateBoards($scope.boards.results.length);
@@ -60,7 +85,7 @@ define([], function() {
 		});
 
 		updateBoards();
-
+		
 		var mergeInProgress = false;
 		$scope.loadMore = function() {
 			if (mergeInProgress) return;

@@ -24,53 +24,42 @@
    </div>
 </div>
 
-<div class="boards-filters" ng-show="boards != null">
-   <p>
-      <label>Fetch</label> 
-      <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
-      <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values" />
-      <label>, ordered by</label>
-      <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values" />
-      <label>, displayed as</label>
-      <select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
-   </p>
-</div>
 <div ng-switch="selectedViewOption.value">
    <div ng-switch-when="table">
-      <table>
+      <table class="boards-table">
          <thead>
-            <tr>
-               <td class="sortable" ng-click="sortBy('title')">Board Name:</td>
-               <td>Subjects</td>
-               <td class="sortable" ng-click="sortBy('percentageCompleted')">Completion</td>
-               <td class="sortable" ng-click="sortBy('creationDate')">Created</td>
-               <td class="sortable" ng-click="sortBy('lastVisited')">Last Visited</td>
-               <td>Levels</td>
-               <td>Created by</td>
-               <td>Share</td>
-               <td>Delete</td>
+            <tr class="headings">
+               <th ng-click="sortBy('title')"><h5>Board&nbsp;name&nbsp;{{propertyName === 'title' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th><h5>Subjects</h5></th>
+               <th ng-click="sortBy('percentageCompleted')"><h5>Completion&nbsp;{{propertyName === 'percentageCompleted' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th ng-click="sortBy('creationDate')"><h5>Created&nbsp;{{propertyName === 'creationDate' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th ng-click="sortBy('lastVisited')"><h5>Last&nbsp;viewed&nbsp;{{propertyName === 'lastVisited' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th><h5>Levels</h5></th>
+               <th><h5>Created&nbsp;by</h5></th>
+               <th><h5>Share</h5></th>
+               <th></th>
             </tr>
-            <tr>
-               <td><input ng-model="search.title" /></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
+            <tr class="filters">
+               <th><input ng-model="search.title" /></th>
+               <th><select ng-model="search.subjects" ng-options="subject for subject in ['', 'physics', 'chemistry', 'maths']"/></th>
+               <th></th>
+               <th></th>
+               <th></th>
+               <th><select ng-model="search.levels" ng-options="level for level in ['', '1', '2', '3', '4', '5', '6']"/></th>
+               <th></th>
+               <th></th>
+               <th></th>
             </tr>
          </thead>
          <tbody>
             <tr ng-model="boards" ng-repeat="board in boards.results | filter:search | orderBy:propertyName:reverse">
-               <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></td>
-               <td><span ng-repeat="subject in calculateBoardSubjects(board)">{{subject}} </span></td>
+               <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}"><strong>{{board.title || generateGameBoardTitle(board)}}</strong></a></td>
+               <td>{{board.subjects}}</td>
                <td>{{board.percentageCompleted}}%</td>
                <td>{{board.creationDate | date:'dd/MM/yyyy'}}</td>
                <td>{{board.lastVisited | date:'dd/MM/yyyy'}}</td>
-               <td><span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}} </span></td>
-               <td><span ng-if="board.ownerUserId == user._id">Me</span><span ng-if="board.ownerUserId != user._id">Someone else</span></td>
+               <td>{{board.levels}}</td>
+               <td>{{board.createdBy}}</td>
                <td>link</td>
                <td><span ng-click="deleteBoard(board)">X</span></td>
             </tr>
@@ -78,6 +67,19 @@
       </table>
    </div>
    <div ng-switch-default>
+      <div class="boards-filters" ng-show="boards != null">
+         <ul class="small-block-grid-3">
+            <li>
+               <label class="hide-for-small-only">Show</label>
+               <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
+               <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
+            </li>
+            <li>
+               <label class="hide-for-small-only">Sort by</label>
+               <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
+            </li>
+         </ul>
+      </div>
       <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
          <!-- Loop all boards and add a class if complete -->
          <li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
@@ -125,13 +127,16 @@
             </div>
          </li>
       </ul>
+      <div class="row" ng-hide="boards == null || boards.results.length == ''">
+        <div class="large-5 medium-6 small-centered columns">
+            <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
+            <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
+         </div>
+      </div>
    </div>
 </div>
-<div class="row" ng-hide="boards == null || boards.results.length == ''">
-  <div class="large-5 medium-6 small-centered columns">
-      <p class="text-center">Showing <strong>{{boards.results.length}}</strong> of <strong>{{boards.totalResults}}</strong></p>
-      <a tabindex="0" ng-if="boards.totalResults > boards.results.length" class="ru-button-big expand" ng-click="loadMore()">View more</a>
-   </div>
+<div class="boards-filters" ng-show="boards != null">
+   <label>Display as</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
 </div>
 <div class="row" ng-show="boards.results.length == ''">
    <p class="text-center">No Results</p>

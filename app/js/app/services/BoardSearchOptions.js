@@ -17,7 +17,8 @@
 	return function() {
 		return {
 			filter: {
-				default: 0,
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 0,
 				values: [
 					{label: "boards", value: null},
 					{label: "unstarted boards", value: "not_attempted"},
@@ -26,14 +27,16 @@
 				]
 			},
 			sort: {
-				default: 1,
+				mobileDefault: 1,
+				tabletAndDesktopDefault: 1,
 				values: [
 					{label: "date created", value: "created"},
 					{label: "date visited", value: "visited"}
 				]
 			},
 			noBoards: {
-				default: 0,
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 3,
 				values: [
 					{label: "6", value: "6"},
 					{label: "18", value: "18"},
@@ -42,7 +45,8 @@
 				]
 			},
 			view: {
-				default: 0,
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 1,
 				values: [
 					{label: "assignment cards", value: "card"},
 					{label: "a table of records", value: "table"}
