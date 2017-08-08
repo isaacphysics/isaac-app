@@ -18,65 +18,46 @@
 </div>
 <div class="row" ng-show="groups.length > 0">
     <div class="large-16 columns">
-<!--
-        <dl class="tabs profile-tabs no-print">
-            <dd class="active"><a href="javascript:void(0)">Active <span class="show-for-medium-up">Groups</span></a></dd>
-            <dd><a href="javascript:void(0)">Archived <span class="show-for-medium-up">Groups</span></a></dd>
-        </dl>
--->
         <div class="tabs-content progress-tabs-content">
+            <div class="assignment-progress-key panel">
+                <ul class="small-block-grid-5">
+                    <li>
+                        <div class="key-cell"><span class="completed" ng-class="{'colour-blind': colourBlind}">&nbsp;</span></div><div class="key-desctiption">All parts correct</div>
+                    </li>
+                    <li>
+                        <div class="key-cell"><span class="passed" ng-class="{'colour-blind': colourBlind}">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (Mastery)</div>
+                    </li>
+                    <li>
+                        <div class="key-cell"><span class="in-progress" ng-class="{'colour-blind': colourBlind}">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
+                    </li>
+                    <li>
+                        <div class="key-cell"><span class="failed" ng-class="{'colour-blind': colourBlind}">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
+                    </li>
+                    <li>
+                        <div class="key-cell"><span ng-class="{'colour-blind': colourBlind}">&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
+                    </li>
+                </ul>
+                <div class="row assignment-progress-options">
+                    <div class="columns small-3 small-offset-10"><label>Colour-blind&nbsp;<input type="checkbox" ng-model=colourBlind /></label></div>
+                    <div class="columns small-3"><label>Percent&nbsp;view&nbsp;<input type="checkbox" ng-model=formatAsPercentage /></label></div>
+                </div>
+            </div>
             <!--
                 FIRST LEVEL - groups accordion
             -->
             <dl class="accordion-group">
-                <dd ng-repeat="group in groups | orderBy:sortOption.val:sortOption.reverse" ng-class="{active: groupExpanded[group._id]}">
+                <dd ng-repeat="group in groups | orderBy:sortOption.val:sortOption.reverse" ng-class="{active: groupExpanded[group._id]}" class="group-panel">
                     <a class="accordion-group-header" href="javascript:void(0)" ng-click="expandAssignments(group._id)">
-
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
                             {{group.groupName}} <span class="hide-for-medium-up">({{groupAssignments[group._id].length || 0}})</span>
                         </div>
-
                         <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" ng-style="{visibility: groupAssignments[group._id].length ? 'visible':'hidden'}"/>
-<!--
-                        <div class="accordion-group-summary">
-                            <span class="show-for-medium-up"><strong>3</strong> Active boards / </span><strong>13</strong> Completed <span class="show-for-medium-up">boards</span>
-                        </div>
--->
                         <div class="accordion-group-summary">
                             <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments set</span>
                         </div>
                     </a>
-
                     <div ng-if="groupExpanded[group._id]" class="accordion-group-content">
-                        <div class="assignment-progress-key panel">
-                            <ul class="small-block-grid-5">
-                                <li>
-                                    <div class="key-cell"><span class="completed">&nbsp;</span></div><div class="key-desctiption">All parts correct</div>
-                                </li>
-                                <li>
-                                    <div class="key-cell"><span class="passed">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (Mastery)</div>
-                                </li>
-                                <li>
-                                    <div class="key-cell"><span class="in-progress">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
-                                </li>
-                                <li>
-                                    <div class="key-cell"><span class="failed">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
-                                </li>
-                                <li>
-                                    <div class="key-cell"><span>&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
-                                </li>
-                            </ul>
-<!-- TODO MT decide                            <ul class="small-block-grid-2">
-                                <li>
-                                    <label>View:&nbsp;<select ng-model="dataView" ng-options="option for option in ['Fraction', 'Percentage']"></select></label>
-                                </li>
-                                <li>
-                                    <label>Colour Blind Textures:&nbsp;<input type="checkbox" ng-model="colourBlind"></label>
-                                </li>
-                            </ul> -->
-
-                        </div>
                         <!--
                             SECOND LEVEL - boards accordion
                         -->
@@ -85,18 +66,7 @@
                                 <div href="javascript:void(0)" class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
                                         {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}
-<!--
-                                        <span class="accordion-board-level">
-                                             <span class="hide-for-medium-up">- L</span><span class="show-for-medium-up">Level </span>2
-                                        </span>
--->
                                     </div>
-<!--
-                                    <div class="accordion-board-date">
-                                        Due Date <span class="icon-calender"></span>
-                                    </div>
--->                                 
-
                                     <a href="javascript:void(0)" class="accordion-board-link">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </a> <span class="accordion-board-link">&nbsp; or &nbsp; </span>
@@ -154,22 +124,22 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'"
-                                                ng-class="getStateClass(studentProgress.user.authorisedFullAccess, studentProgress.correctQuestionPartsCount, studentProgress.incorrectQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])"
-                                                on-ng-repeat-render="ngRepeatFinished">
+                                                    ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], colourBlind)"
+                                                    on-ng-repeat-render="ngRepeatFinished">
                                                     <td class="student-name">
                                                         <span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
                                                     </td>
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
-                                                        ng-class="getStateClass(studentProgress.user.authorisedFullAccess, studentProgress.correctPartResults[$index], studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, assignmentSelectedQuestion[assignment._id] == $index)"
+                                                        ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot="{{asPercent(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal)}}%">
-                                                            {{studentProgress.correctPartResults[$index]}}/{{assignment.gameBoard.questions[$index].questionPartsTotal}}
+                                                        data-ot="{{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, !formatAsPercentage)}}">
+                                                        {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, formatAsPercentage)}}
                                                     </td>
-                                                    <td class="total-column left" data-ot="{{asPercent(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id])}}%">
-                                                        {{studentProgress.correctQuestionPartsCount}}/{{assignmentTotalQuestionParts[assignment._id]}}
+                                                    <td class="total-column left" data-ot="{{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], !formatAsPercentage)}}">
+                                                        {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], formatAsPercentage)}}
                                                     </td>
-                                                    <td class="total-column right" data-ot="{{asPercent(studentProgress.tickCount, assignment.gameBoard.questions.length)}}%">
-                                                        {{studentProgress.tickCount}}/{{assignment.gameBoard.questions.length}}
+                                                    <td class="total-column right" data-ot="{{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, !formatAsPercentage)}}">
+                                                        {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, formatAsPercentage)}}
                                                     </td>
                                                 </tr>
                                             </tbody>

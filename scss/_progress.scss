@@ -2,18 +2,52 @@
     My progress styles
 */
 
-$perfect-fill: $ru_green;
-$passed-fill: #666;
-$in-progress-fill: $ru_green;
-$failed-fill: $ru_red;
-$default-name-fill: #888;
+// GENERIC
 $status-opacity: 0.8;
 $total-status-opacity: 1;
+$default-name-fill: #888;
 
-.export-btn {
-    margin-top: 5px;
-    padding: 14px 25px 16px;
-}
+// COMPLETED
+$perfect-fill: $ru_green;
+$completed-bg-img: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
+$completed-total-bg-img: linear-gradient(to right, rgba($perfect-fill, $total-status-opacity), rgba($perfect-fill, $total-status-opacity));
+$completed-cb-bg-img: linear-gradient(
+    to bottom left, rgba($perfect-fill, $status-opacity / 1.5) 25%, 
+    rgba($perfect-fill, $status-opacity / 4) 25%, rgba($perfect-fill, $status-opacity / 4) 50%,
+    rgba($perfect-fill, $status-opacity / 1.5) 50%, rgba($perfect-fill, $status-opacity / 1.5) 75%,
+    rgba($perfect-fill, $status-opacity / 4) 75%, rgba($perfect-fill, $status-opacity / 4));
+$completed-bg-size: 50%;
+
+// PASSED
+$passed-fill: #666;
+$passed-bg-img: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity));
+$passed-total-bg-img: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
+$passed-cb-bg-img: linear-gradient(
+    to bottom left, rgba($passed-fill, $status-opacity / 1.5) 25%, 
+    rgba($passed-fill, $status-opacity / 2) 25%, rgba($passed-fill, $status-opacity / 2) 50%,
+    rgba($passed-fill, $status-opacity / 1.5) 50%, rgba($passed-fill, $status-opacity / 1.5) 75%,
+    rgba($passed-fill, $status-opacity / 2) 75%, rgba($passed-fill, $status-opacity / 2));
+$passed-bg-size: 100%;
+
+// IN-PROGRESS
+$in-progress-fill: $ru_green;
+$in-progress-bg-img: linear-gradient(to right, rgba($in-progress-fill, $status-opacity / 2), rgba($in-progress-fill, $status-opacity / 2));
+$in-progress-total-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
+$in-progress-cb-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
+$in-progress-bg-size: 100%;
+
+// FAILED
+$failed-fill: $ru_red;
+$failed-bg-img: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity));
+$failed-total-bg-img: linear-gradient(to right, rgba($failed-fill, $total-status-opacity), rgba($failed-fill, $total-status-opacity));
+$failed-cb-bg-img: 
+    linear-gradient(135deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient(225deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient(315deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient( 45deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%);
+$failed-bg-size: 35%;
+
+
 .progress-bar {
     float: left;
     width: 100%;
@@ -87,11 +121,30 @@ $total-status-opacity: 1;
     margin-right: -0.9375rem;
 
     td, div.key-cell, tr {
-        .completed, .passed, .failed { color: white; }
-        .completed { background-image: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity)); }
-        .passed { background-image: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity)); }
-        .in-progress { background-image: linear-gradient(to right, rgba($in-progress-fill, $status-opacity/2), rgba($in-progress-fill, $status-opacity/2)); }
-        .failed { background-image: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity)); }
+        .completed, .passed, .failed {
+            &.colour-blind { color: black; }
+            color: white;
+        }
+        .completed {
+            &.colour-blind { background-image: $completed-cb-bg-img; }
+            background-image: $completed-bg-img;
+            background-size: $completed-bg-size;
+        }
+        .passed { 
+            &.colour-blind { background-image: $passed-cb-bg-img; }
+            background-image: $passed-bg-img;
+            background-size: $passed-bg-size;
+        }
+        .in-progress {
+            &.colour-blind { background-image: $in-progress-cb-bg-img; } 
+            background-image: $in-progress-bg-img;
+            background-size: $in-progress-bg-size;
+        }
+        .failed {
+            &.colour-blind { background-image: $failed-cb-bg-img; } 
+            background-image: $failed-bg-img;
+            background-size: $failed-bg-size;
+        }
     }
 }
 .accordion-group {
@@ -102,14 +155,17 @@ $total-status-opacity: 1;
         margin: 0;
     }
 
+    .group-panel {
+        background-color: rgba(#eee, 0.4);
+    }
+
     .accordion-group-header {
         @extend .clearfix;
         display: block;
         background-color: #fff;
-        border-right: #999 1px solid;
-        border-bottom: #999 1px solid;
-        border-left: #999 1px solid;
+        border: #999 1px solid;
         cursor: pointer;
+        margin-top: 20px;
     }
 
     .accordion-group-title {
@@ -180,7 +236,7 @@ $total-status-opacity: 1;
         cursor: pointer;
     }
     .accordion-board-header-last {
-        background: #f2f2f2;
+        background: #fff;
         cursor: auto;
         border-top: #999 1px solid;
     }
@@ -398,48 +454,46 @@ $total-status-opacity: 1;
         }
 
         .completed, .passed, .failed {
-            td.total-column {
-                color: white;
+            &.colour-blind { td.total-column { color: black; } }
+            td.total-column { color: white; }
+        }
+
+        .completed.colour-blind td.total-column { background-image: $completed-cb-bg-img; }
+        .completed td {
+            &:first-child a, .icon-person { color: rgba($perfect-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $completed-total-bg-img;
+                background-size: $completed-bg-size;
             }
         }
-        .completed {
-            td {
-                &:first-child a, .icon-person {
-                    color: rgba($perfect-fill, $total-status-opacity);
-                }
-                &.total-column {
-                    background-image: linear-gradient(to right, rgba($perfect-fill, $total-status-opacity), rgba($perfect-fill, $total-status-opacity));
-                }
+
+        .passed.colour-blind td.total-column { background-image: $passed-cb-bg-img; }
+        .passed td {
+            &:first-child a, .icon-person { color: rgba($passed-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $passed-total-bg-img;
+                background-size: $passed-bg-size;
             }
         }
-        .passed {
-            td {
-                &:first-child a, .icon-person {
-                    color: rgba($passed-fill, $total-status-opacity);
-                }
-                &.total-column {
-                    background-image: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
-                }
+
+        .in-progress.colour-blind { td.total-column { background-image: $in-progress-cb-bg-img; } }        
+        .in-progress td {
+            &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $in-progress-total-bg-img;
+                background-size: $in-progress-bg-size;
             }
         }
-        .failed {
-            td {
-                &:first-child a, .icon-person  {
-                    color: rgba($failed-fill, $total-status-opacity);
-                }
-                &.total-column {
-                    background-image: linear-gradient(to right, rgba($failed-fill, $total-status-opacity), rgba($failed-fill, $total-status-opacity));
-                }
+            
+        .failed.colour-blind { td.total-column { background-image: $failed-cb-bg-img; } }        
+        .failed td {
+            &:first-child a, .icon-person { color: rgba($failed-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $failed-total-bg-img;
+                background-size: $failed-bg-size;
             }
         }
-        .in-progress {
-            td {
-                &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
-                &.total-column {
-                    background-image: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity/2), rgba($in-progress-fill, $total-status-opacity/2));
-                }
-            }
-        }
+        
         .not-attempted {
             td {
                 &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
@@ -905,7 +959,7 @@ div[d3-plot] {
 }
 
 .assignment-progress-key {
-    border: 1px solid #bbb;
+    border: 1px solid #999;
     border-top: 0px;
     li {
         padding-bottom: 0px;
@@ -927,4 +981,9 @@ div[d3-plot] {
     div.key-desctiption {
         text-align: center;
     }
+}
+.assignment-progress-options.row {
+    margin-top: 10px;
+    label { text-align: right; }
+    input { margin: 0px; }
 }

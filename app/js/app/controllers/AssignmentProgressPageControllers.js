@@ -160,15 +160,24 @@ define([], function() {
         });
 
         scope.asPercent = function(numerator, denominator) {
-            return Math.round(100 * numerator / denominator);
+            return Math.round(100 * numerator / denominator) + "%";
         };
         scope.asFraction = function(numerator, denominator) {
-            return numerator + " / " + denominator;
+            return numerator + "/" + denominator;
         };
 
-        scope.getStateClass = function(authorised, correctParts, incorrectParts, totalParts, selected) {
+        scope.formatMark = function(numerator, denominator, formatAsPercentage) {
+            var formatMethod = formatAsPercentage ? scope.asPercent : scope.asFraction;
+            return formatMethod(numerator, denominator);
+        };
+
+        scope.getStateClass = function(studentProgress, index, totalParts, colourBlind, selected) {
+            var correctParts = index != null ? studentProgress.correctPartResults[index] : studentProgress.correctQuestionPartsCount;
+            var incorrectParts = index != null ? studentProgress.incorrectPartResults[index] : studentProgress.incorrectQuestionPartsCount;
+
             var result = selected ? "selected " : "";
-            if (!authorised) {
+            result += colourBlind ? "colour-blind " : "";
+            if (!studentProgress.user.authorisedFullAccess) {
                 result += "revoked";
             } else if (correctParts == totalParts) {
                 result += "completed";
