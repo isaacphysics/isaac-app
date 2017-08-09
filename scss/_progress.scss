@@ -12,11 +12,8 @@ $perfect-fill: $ru_green;
 $completed-bg-img: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
 $completed-total-bg-img: linear-gradient(to right, rgba($perfect-fill, $total-status-opacity), rgba($perfect-fill, $total-status-opacity));
 $completed-cb-bg-img: linear-gradient(
-    to bottom left, rgba($perfect-fill, $status-opacity / 1.5) 25%, 
-    rgba($perfect-fill, $status-opacity / 4) 25%, rgba($perfect-fill, $status-opacity / 4) 50%,
-    rgba($perfect-fill, $status-opacity / 1.5) 50%, rgba($perfect-fill, $status-opacity / 1.5) 75%,
-    rgba($perfect-fill, $status-opacity / 4) 75%, rgba($perfect-fill, $status-opacity / 4));
-$completed-bg-size: 50%;
+    to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
+$completed-bg-size: 100%;
 
 // PASSED
 $passed-fill: #666;
@@ -27,13 +24,17 @@ $passed-cb-bg-img: linear-gradient(
     rgba($passed-fill, $status-opacity / 2) 25%, rgba($passed-fill, $status-opacity / 2) 50%,
     rgba($passed-fill, $status-opacity / 1.5) 50%, rgba($passed-fill, $status-opacity / 1.5) 75%,
     rgba($passed-fill, $status-opacity / 2) 75%, rgba($passed-fill, $status-opacity / 2));
-$passed-bg-size: 100%;
+$passed-bg-size: 50%;
 
 // IN-PROGRESS
 $in-progress-fill: $ru_green;
 $in-progress-bg-img: linear-gradient(to right, rgba($in-progress-fill, $status-opacity / 2), rgba($in-progress-fill, $status-opacity / 2));
 $in-progress-total-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
-$in-progress-cb-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
+$in-progress-cb-bg-img: linear-gradient(
+    to bottom left, rgba($in-progress-fill, $status-opacity / 1.5) 25%, 
+    rgba($in-progress-fill, $status-opacity / 4) 25%, rgba($in-progress-fill, $status-opacity / 4) 50%,
+    rgba($in-progress-fill, $status-opacity / 1.5) 50%, rgba($in-progress-fill, $status-opacity / 1.5) 75%,
+    rgba($in-progress-fill, $status-opacity / 4) 75%, rgba($in-progress-fill, $status-opacity / 4));
 $in-progress-bg-size: 100%;
 
 // FAILED
@@ -223,7 +224,8 @@ $failed-bg-size: 35%;
     margin: 0;
 
     dd {
-        margin: 0;
+        &.accordion-board-footer { margin: 0px; }
+        margin: 0 20px;
     }
 
     .accordion-board-header {
@@ -407,7 +409,7 @@ $failed-bg-size: 35%;
         height: 1px;
         &.student-name {
             padding-top: 5px;
-
+            padding-bottom: 5px;
             .icon-person {
                 top: 7px;
                 position: relative;            
