@@ -746,6 +746,10 @@ div[d3-plot] {
         display: none !important;
     }
 
+    .accordion-board dd {
+        margin: 0px;
+    }
+
 }
 @media #{$medium-up} { 
     .progress-wrap {
