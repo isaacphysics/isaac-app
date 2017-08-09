@@ -30,38 +30,58 @@
          <thead>
             <tr class="headings">
                <th ng-click="sortBy('title')"><h5>Board&nbsp;name&nbsp;{{propertyName === 'title' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
-               <th><h5>Subjects</h5></th>
                <th ng-click="sortBy('percentageCompleted')"><h5>Completion&nbsp;{{propertyName === 'percentageCompleted' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
-               <th ng-click="sortBy('creationDate')"><h5>Created&nbsp;{{propertyName === 'creationDate' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
-               <th ng-click="sortBy('lastVisited')"><h5>Last&nbsp;viewed&nbsp;{{propertyName === 'lastVisited' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th><h5>Subjects</h5></th>
                <th><h5>Levels</h5></th>
                <th><h5>Created&nbsp;by</h5></th>
-               <th><h5>Share</h5></th>
+               <th ng-click="sortBy('creationDate')"><h5>Created&nbsp;{{propertyName === 'creationDate' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
+               <th ng-click="sortBy('lastVisited')"><h5>Last&nbsp;viewed&nbsp;{{propertyName === 'lastVisited' ? reverse ? icon.ascending : icon.descending : icon.sortable}}</h5></th>
                <th></th>
             </tr>
             <tr class="filters">
-               <th><input ng-model="search.title" /></th>
+               <th><input ng-model="search.title" placeholder="Title search..." /></th>
+               <th><select ng-model="customSearch.completion" ng-options="level for level in ['', 'Completed', 'In progress', 'Not started']"/></th>
                <th><select ng-model="search.subjects" ng-options="subject for subject in ['', 'physics', 'chemistry', 'maths']"/></th>
-               <th></th>
-               <th></th>
-               <th></th>
                <th><select ng-model="search.levels" ng-options="level for level in ['', '1', '2', '3', '4', '5', '6']"/></th>
+               <th><select ng-model="search.createdBy" ng-options="level for level in ['', 'Me', 'Someone else']"/></th>
                <th></th>
                <th></th>
                <th></th>
             </tr>
          </thead>
          <tbody>
-            <tr ng-model="boards" ng-repeat="board in boards.results | filter:search | orderBy:propertyName:reverse">
+            <tr ng-model="boards" ng-repeat="board in boards.results | filter:search | filter:completionFilter | orderBy:propertyName:reverse">
                <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}"><strong>{{board.title || generateGameBoardTitle(board)}}</strong></a></td>
-               <td>{{board.subjects}}</td>
-               <td>{{board.percentageCompleted}}%</td>
-               <td>{{board.creationDate | date:'dd/MM/yyyy'}}</td>
-               <td>{{board.lastVisited | date:'dd/MM/yyyy'}}</td>
+               <td>
+                  <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
+                     <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                     </span>
+                     <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                     </span>
+                  </div>
+                  <div class="board-percentage" ng-if="board.percentageCompleted == '100'">
+                     <span class="subject-complete"></span>
+                  </div>
+               </td>
+               <td>{{board.subjects | uppercase}}</td>
                <td>{{board.levels}}</td>
                <td>{{board.createdBy}}</td>
-               <td>link</td>
-               <td><span ng-click="deleteBoard(board)">X</span></td>
+               <td>{{board.creationDate | date:'dd/MM/yyyy'}}</td>
+               <td>{{board.lastVisited | date:'dd/MM/yyyy'}}</td>
+               <td>
+                  <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
+                  <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
+                     <div>{{shareUrl}}</div>
+                     <hr />
+                     <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item"">Clone and Edit</div></a>
+                  </div>
+                  <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
+                     <div>{{shareUrl}}</div>
+                  </div>
+                  <span ng-click="deleteBoard(board)">X</span>
+               </td>
             </tr>
          </tbody>
       </table>

@@ -34,13 +34,32 @@ define([], function() {
 		$scope.search = {
 			title: '',
 			subjects: '',
-			levels: ''
+			levels: '',
+			createdBy: '',
+		}
+		$scope.customSearch = {
+			completion: '',
 		}
 
 		$scope.sortBy = function(propertyName) {
 			$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 			$scope.propertyName = propertyName;
 		};
+
+		$scope.completionFilter = function(board) {
+			var boardCompletionString = $scope.customSearch.completion;
+			var result;
+			if (boardCompletionString == 'Completed') {
+				result = board.percentageCompleted == 100;
+			} else if (boardCompletionString == 'In progress') {
+				result = 0 < board.percentageCompleted && board.percentageCompleted < 100;
+			} else if (boardCompletionString == 'Not started') {
+				result = board.percentageCompleted == 0;
+			} else {
+				result = true;
+			}
+			return result;
+		}
 
 		$scope.boardSearchOptions = boardSearchOptions;
 		// assign default values to boardSearchOptions
@@ -52,13 +71,13 @@ define([], function() {
 			$scope[selectedOptionVariableName] = boardSearchOption.values[indexOfDefaultValue];
 		}
 
-		var augmentBoards = function(boards) {
+		var augmentBoards = function(boards, user) {
 			for (boardIndex in boards.results) {
 				board = boards.results[boardIndex];
-				subjects = $scope.calculateBoardSubjects(board);
-				levels = $scope.calculateBoardLevels(board);
-				board.subjects = subjects.join(' ');
-				board.levels = levels.join(' ');
+				board.subjects = $scope.calculateBoardSubjects(board).join(' ');
+				board.levels = $scope.calculateBoardLevels(board).join(' ');
+				board.createdBy = board.ownerUserId == user._id ? "Me" : "Someone else";
+
 			}
 			return boards;
 		}
@@ -67,7 +86,7 @@ define([], function() {
 			limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
-				$scope.boards = augmentBoards(boards);
+				$scope.boards = augmentBoards(boards, $scope.user);
 				$scope.setLoading(false);
 			})
 		};
