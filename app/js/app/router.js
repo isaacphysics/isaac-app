@@ -575,7 +575,7 @@ define(["angular-ui-router"], function() {
         $sp.state('adminStats', {
                 url: "/admin/stats",
                 resolve: {
-                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+                    //requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
@@ -635,6 +635,17 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController",
             });
 
+            $sp.state('adminStatsNew.schoolUserSummaryList', {
+                url: "/schools",
+                templateUrl: '/partials/admin_stats/school_user_summary_list.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getNewSchoolPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
+
             $sp.state('adminStats.schoolUsersDetail', {
                 url: "/schools/:schoolId/user_list",
                 templateUrl: '/partials/admin_stats/school_user_detail_list.html',
@@ -648,6 +659,19 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController"
             });
 
+        $sp.state('adminStatsNew.schoolUsersDetail', {
+            url: "/schools/:schoolId/user_list",
+            templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+            resolve: {
+                "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                    return api.statisticsEndpoint.getNewSchoolUsers({
+                        id: $stateParams.schoolId
+                    });
+                }]
+            },
+            controller: "AdminStatsPageController"
+        });
+
             $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
                 templateUrl: '/partials/admin_stats/popular_gameboards.html',
@@ -660,6 +684,12 @@ define(["angular-ui-router"], function() {
             });
 
             $sp.state('adminStats.isaacAnalytics', {
+                url: "/isaac_analytics",
+                templateUrl: '/partials/admin_stats/analytics.html',
+                controller: "AnalyticsPageController",
+            });
+
+            $sp.state('adminStatsNew.isaacAnalytics', {
                 url: "/isaac_analytics",
                 templateUrl: '/partials/admin_stats/analytics.html',
                 controller: "AnalyticsPageController",

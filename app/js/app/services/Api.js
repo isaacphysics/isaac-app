@@ -161,11 +161,21 @@ define([], function() {
 				url: urlPrefix + "/admin/stats/schools/", 
 				isArray: true 
 			},
+            'getNewSchoolPopularity' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/schools/v2",
+                isArray: true
+            },
 			'getSchoolUsers' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/schools/:id", 
 				params: {id: '@id'},
 			},
+            'getNewSchoolUsers' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/users/schools/:id/v2",
+                params: {id: '@id'},
+            },
 			'getEventsOverTime' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
