@@ -575,12 +575,15 @@ define(["angular-ui-router"], function() {
         $sp.state('adminStats', {
                 url: "/admin/stats",
                 resolve: {
-                    //requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+                    requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
                 },
                 views: {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
                         controller: ["$scope", "api", function($scope, api) {
+
+                            $scope.state = 'adminStats';
+
                             // general stats
                             $scope.statistics = null;
                             $scope.setLoading(true)
@@ -605,8 +608,11 @@ define(["angular-ui-router"], function() {
             },
             views: {
                 "body": {
-                    templateUrl: "/partials/states/admin_stats.html",
+                    templateUrl: "/partials/states/admin_stats_new.html",
                     controller: ["$scope", "api", function($scope, api) {
+
+                        $scope.state = 'adminStatsNew';
+
                         // general stats
                         $scope.statistics = null;
                         $scope.setLoading(true)
@@ -682,6 +688,17 @@ define(["angular-ui-router"], function() {
                 },
                 controller: "AdminStatsPageController",
             });
+
+        $sp.state('adminStatsNew.popularGameboards', {
+            url: "/popular_gameboards",
+            templateUrl: '/partials/admin_stats/popular_gameboards.html',
+            resolve: {
+                "dataToShow": ["api", function(api) {
+                    return api.statisticsEndpoint.getGameboardPopularity();
+                }]
+            },
+            controller: "AdminStatsPageController",
+        });
 
             $sp.state('adminStats.isaacAnalytics', {
                 url: "/isaac_analytics",
