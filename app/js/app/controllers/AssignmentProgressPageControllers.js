@@ -111,8 +111,7 @@ define([], function() {
                             var questions = gameBoard.questions;
                             scope.assignmentAverages[k] = [];
                             scope.assignmentTotalQuestionParts[k] = 0;
-                            // // // gameBoard.totalQuestionParts = 0;
-
+                            
                             for (var i in questions) {
                                 var q = questions[i];
                                 var tickCount = 0;
@@ -127,7 +126,6 @@ define([], function() {
 
                                 var tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
-                                // // // gameBoard.totalQuestionParts += q.questionPartsTotal;
                                 scope.assignmentTotalQuestionParts[k] += q.questionPartsTotal;
                             }
 
@@ -159,16 +157,14 @@ define([], function() {
             }
         });
 
-        scope.asPercent = function(numerator, denominator) {
-            return Math.round(100 * numerator / denominator) + "%";
-        };
-        scope.asFraction = function(numerator, denominator) {
-            return numerator + "/" + denominator;
-        };
-
         scope.formatMark = function(numerator, denominator, formatAsPercentage) {
-            var formatMethod = formatAsPercentage ? scope.asPercent : scope.asFraction;
-            return formatMethod(numerator, denominator);
+            var result;
+            if (formatAsPercentage) {
+                result = Math.round(100 * numerator / denominator) + "%";
+            } else {
+                result = numerator + "/" + denominator;
+            }
+            return result;
         };
 
         scope.getStateClass = function(studentProgress, index, totalParts, colourBlind, selected) {
