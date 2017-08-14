@@ -643,7 +643,7 @@ define(["angular-ui-router"], function() {
 
             $sp.state('adminStatsNew.schoolUserSummaryList', {
                 url: "/schools",
-                templateUrl: '/partials/admin_stats/school_user_summary_list.html',
+                templateUrl: '/partials/admin_stats/school_user_summary_list_new.html',
                 resolve: {
                     "dataToShow": ["api", function(api) {
                         return api.statisticsEndpoint.getNewSchoolPopularity();
