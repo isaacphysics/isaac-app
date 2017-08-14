@@ -723,8 +723,8 @@ define([
             $rootScope.user.$promise.then(function() {
              // we are logged in
 
-                //var websocketURI = "ws://localhost:8080/notifications-new/";// + $rootScope.user._id.toString();
-                var websocketURI = "ws://localhost:8080/isaac-api/hello";
+                var websocketURI = "ws://localhost:8080/isaac-api/user-notifications/"
+                    + $rootScope.user._id.toString();
 
                 // create websocket
                 $rootScope.webSocket = new WebSocket(websocketURI);
@@ -732,7 +732,6 @@ define([
 
                 $rootScope.webSocket.onopen = function(event) {
                     console.log("Connected to notification server.");
-                    alert("Connected to notification server.");
                     socketOpen = true;
                 }
 
