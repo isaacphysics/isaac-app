@@ -581,6 +581,9 @@ define(["angular-ui-router"], function() {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
                         controller: ["$scope", "api", function($scope, api) {
+
+                            $scope.state = 'adminStats';
+
                             // general stats
                             $scope.statistics = null;
                             $scope.setLoading(true)
@@ -598,12 +601,52 @@ define(["angular-ui-router"], function() {
                 }
             });
 
+        $sp.state('adminStatsNew', {
+            url: "/admin/stats/v2",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/admin_stats_new.html",
+                    controller: ["$scope", "api", function($scope, api) {
+
+                        $scope.state = 'adminStatsNew';
+
+                        // general stats
+                        $scope.statistics = null;
+                        $scope.setLoading(true)
+                        api.statisticsEndpoint.getNewStats().$promise.then(function(result) {
+                            $scope.statistics = result;
+                            $scope.setLoading(false)
+                        });
+                        api.eventBookings.getAllBookings({
+                            "count_only": true
+                        }).$promise.then(function(result) {
+                            $scope.eventBookingsCount = result.count;
+                        })
+                    }]
+                }
+            }
+        });
+
             $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
                 templateUrl: '/partials/admin_stats/school_user_summary_list.html',
                 resolve: {
                     "dataToShow": ["api", function(api) {
                         return api.statisticsEndpoint.getSchoolPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
+
+            $sp.state('adminStatsNew.schoolUserSummaryList', {
+                url: "/schools",
+                templateUrl: '/partials/admin_stats/school_user_summary_list_new.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getNewSchoolPopularity();
                     }]
                 },
                 controller: "AdminStatsPageController",
@@ -622,6 +665,19 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController"
             });
 
+        $sp.state('adminStatsNew.schoolUsersDetail', {
+            url: "/schools/:schoolId/user_list",
+            templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+            resolve: {
+                "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                    return api.statisticsEndpoint.getNewSchoolUsers({
+                        id: $stateParams.schoolId
+                    });
+                }]
+            },
+            controller: "AdminStatsPageController"
+        });
+
             $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
                 templateUrl: '/partials/admin_stats/popular_gameboards.html',
@@ -633,7 +689,24 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController",
             });
 
+        $sp.state('adminStatsNew.popularGameboards', {
+            url: "/popular_gameboards",
+            templateUrl: '/partials/admin_stats/popular_gameboards.html',
+            resolve: {
+                "dataToShow": ["api", function(api) {
+                    return api.statisticsEndpoint.getGameboardPopularity();
+                }]
+            },
+            controller: "AdminStatsPageController",
+        });
+
             $sp.state('adminStats.isaacAnalytics', {
+                url: "/isaac_analytics",
+                templateUrl: '/partials/admin_stats/analytics.html',
+                controller: "AnalyticsPageController",
+            });
+
+            $sp.state('adminStatsNew.isaacAnalytics', {
                 url: "/isaac_analytics",
                 templateUrl: '/partials/admin_stats/analytics.html',
                 controller: "AnalyticsPageController",
