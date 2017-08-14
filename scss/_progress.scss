@@ -46,7 +46,7 @@ $failed-cb-bg-img:
     linear-gradient(225deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
     linear-gradient(315deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
     linear-gradient( 45deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%);
-$failed-bg-size: 35%;
+$failed-bg-size: 25%;
 
 
 .progress-bar {
