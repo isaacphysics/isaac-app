@@ -741,8 +741,10 @@ define([
 
                     console.log(notificationReccord);
 
-                    $rootScope.notificationList = notificationReccord
-                        .value.notifications;
+                    notificationReccord.notifications.forEach(function(entry) {
+                        $rootScope.notificationList.push(entry);
+                    });
+
 
                     console.log($rootScope.notificationList);
 
