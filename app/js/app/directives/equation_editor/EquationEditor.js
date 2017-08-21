@@ -1508,7 +1508,7 @@ define(function (require) {
                 scope.derivativesTitle = {
                     type: "string",
                     menu: {
-                        label: "\\frac{\\mathrm{d}x}{\\mathrm{d}y}",
+                        label: "\\frac{\\mathrm{d}y}{\\mathrm{d}x}",
                         texLabel: true,
                         fontSize: '33px'
                     }
