@@ -785,7 +785,7 @@ define(function (require) {
                 var derivativeFunctions = function(availableDerivatives) {
                     // TODO Possibly remove the menu if no derivatives are available
                     var result = [];
-                    var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+                    var userIsPrivileged = document.location.pathname == '/equality' || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
                     if (userIsPrivileged) {
                         result.push({

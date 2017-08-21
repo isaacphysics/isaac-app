@@ -40,7 +40,7 @@ class Differential extends Widget {
      */
     get isDetachable() {
         var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
-        return userIsPrivileged || !this.sonOfADerivative;
+        return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 
     get sonOfADerivative() {
