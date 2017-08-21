@@ -99,7 +99,7 @@ class Differential extends Widget {
             } else if (this.letter == "∆") {
                 expression = "\\mathrm{\\Delta} ";
             } else {
-                expression = this.letter;
+                expression = "\\mathrm{" + this.letter + "} ";
             }
             if (this.dockingPoints["order"].child != null && !this.orderNeedsMoving) {
                 expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
