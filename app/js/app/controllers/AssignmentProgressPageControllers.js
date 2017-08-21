@@ -40,7 +40,7 @@ define([], function() {
 
         scope.sortOptions = [
             {label: "Alphabetical", val: "groupName", reverse: false},
-            {label: "Group Created", val: "created", reverse: true}
+            {label: "Date Created", val: "created", reverse: true}
         ];
         scope.sortOption = scope.sortOptions[0];
 

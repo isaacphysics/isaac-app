@@ -35,8 +35,6 @@
 
             <div class="group-header show-for-large-up">
                 <span class="left" style="line-height: 35px;">Groups:</span>
-               <!--  <span ng-hide="sortOption == 'groupName'" class="right"><a ng-click="sortOption='groupName'">[Alphabetical]</a></span>
-                <span ng-hide="sortOption == 'created'" class="right"><a ng-click="sortOption='created'">[Group Created]</a></span></span> -->
                 <select class="right" ng-model="sortOption" ng-options="option.label for option in sortOptions" style="width:50%;margin-bottom:5px;"></select>
             </div>
             <div ng-if="selectedGroup" class="show-for-large-up">
