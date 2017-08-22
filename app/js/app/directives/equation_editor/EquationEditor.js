@@ -179,6 +179,13 @@ define(function (require) {
                                 customSymbolsParsed = true;
                             }
                             if (parsed.derivatives.length > 0) {
+                                if (customSymbolsParsed) {
+                                    if (scope.symbolLibrary.customFunctions) {
+                                        scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(parsed.derivatives.slice(2));
+                                    } else {
+                                        scope.symbolLibrary.customFunctions = parsed.derivatives.slice(2);
+                                    }
+                                }
                                 scope.symbolLibrary.derivatives = parsed.derivatives;
                                 customSymbolsParsed = true;
                             }
@@ -408,6 +415,7 @@ define(function (require) {
 
                     for (var i in symbols) {
                         var s = symbols[i].trim();
+
                         if (s.length == 0) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
