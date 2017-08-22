@@ -130,17 +130,26 @@
                                                         <span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
                                                     </td>
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
+                                                        ng-if="studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
                                                         data-ot="{{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, !formatAsPercentage)}}">
                                                         {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, formatAsPercentage)}}
                                                     </td>
-                                                    <td class="total-column left" data-ot="{{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], !formatAsPercentage)}}">
+                                                    <td ng-repeat="q in assignment.gameBoard.questions"
+                                                        ng-if="!studentProgress.user.authorisedFullAccess"
+                                                        ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot="Access Revoked">
+                                                    </td>
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="{{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], !formatAsPercentage)}}">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], formatAsPercentage)}}
                                                     </td>
-                                                    <td class="total-column right" data-ot="{{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, !formatAsPercentage)}}">
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Access Revoked"></td>
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="{{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, !formatAsPercentage)}}">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, formatAsPercentage)}}
                                                     </td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Access Revoked"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
