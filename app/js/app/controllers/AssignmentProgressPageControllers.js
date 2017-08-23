@@ -22,7 +22,7 @@ define([], function() {
 
         scope.isUserStaff = function() {
             return scope.user.role == 'ADMIN' || scope.user.role == "CONTENT_EDITOR" || scope.user.role == "EVENT_MANAGER";
-        }
+        };
 
         scope.groups = [];
         scope.groupExpanded = {}; // Key will be group ID, value bool
@@ -32,8 +32,9 @@ define([], function() {
         scope.assignmentProgress = {}; // Key will be assignment ID, value progress for that assignment.
         scope.assignmentSelectedQuestion = {}; // Key will be assignment ID, value will be index of selected question.
         scope.assignmentAverages = {}; // Key will be assignment ID, value list of averages. One per question.
-
+        scope.assignmentTotalQuestionParts = {}; // Key - assignment ID, value - questionPartTotal 
         scope.assignmentCSVLink = null;
+        scope.passMark = 0.75;
 
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
@@ -61,7 +62,7 @@ define([], function() {
                 scope.groupExpanded[groupId] = false;
             }
             scope.setLoading(false);
-        })
+        });
 
         // this function moves the gameboard title resolution to happen as needed rather than for all assignments that could ever be displayed.
         scope.expandAssignments = function(groupId) {
@@ -93,10 +94,9 @@ define([], function() {
                 scope.$apply();
                 scope.groupExpanded[groupId] = true;
             });
-        }
+        };
 
         scope.$watchCollection("assignmentExpanded", function() {
-
             for (var k in scope.assignmentExpanded) {
                 if (scope.assignmentExpanded[k] && !scope.assignmentProgress[k]) {
                     scope.setLoading(true);
@@ -110,7 +110,8 @@ define([], function() {
                             // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
                             var questions = gameBoard.questions;
                             scope.assignmentAverages[k] = [];
-
+                            scope.assignmentTotalQuestionParts[k] = 0;
+                            
                             for (var i in questions) {
                                 var q = questions[i];
                                 var tickCount = 0;
@@ -125,6 +126,7 @@ define([], function() {
 
                                 var tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
+                                scope.assignmentTotalQuestionParts[k] += q.questionPartsTotal;
                             }
 
                             // Calculate student totals and gameboard totals
@@ -134,10 +136,14 @@ define([], function() {
                                 var studentProgress = progress[j];
 
                                 studentProgress.tickCount = 0;
+                                studentProgress.correctQuestionPartsCount = 0;
+                                studentProgress.incorrectQuestionPartsCount = 0;
                                 for (var i in studentProgress.results) {
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
+                                    studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
+                                    studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
                                 }
 
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
@@ -151,23 +157,43 @@ define([], function() {
             }
         });
 
-        scope.getStudentClass = function(studentProgress) {
-            if (!studentProgress.user.authorisedFullAccess)
-                return "revoked";
-
-            var questionCount = studentProgress.results.length;
-            var stateCounts = {};
-
-            for (var i in studentProgress.results) {
-                stateCounts[studentProgress.results[i]] = (stateCounts[studentProgress.results[i]] || 0) + 1; 
+        scope.formatMark = function(numerator, denominator, formatAsPercentage) {
+            var result;
+            if (formatAsPercentage) {
+                result = Math.round(100 * numerator / denominator) + "%";
+            } else {
+                result = numerator + "/" + denominator;
             }
+            return result;
+        };
 
-            if (stateCounts["PERFECT"] == questionCount)
-                return "complete";
-            else if (stateCounts["FAILED"] > (questionCount * 0.3))
-                return "fail"
-            else
-                return "";
+        scope.getStateClass = function(studentProgress, index, totalParts, colourBlind, selected) {
+            var correctParts = index != null ? studentProgress.correctPartResults[index] : studentProgress.correctQuestionPartsCount;
+            var incorrectParts = index != null ? studentProgress.incorrectPartResults[index] : studentProgress.incorrectQuestionPartsCount;
+
+            var result = selected ? "selected " : "";
+            result += colourBlind ? "colour-blind " : "";
+            if (!studentProgress.user.authorisedFullAccess) {
+                result += "revoked";
+            } else if (correctParts == totalParts) {
+                result += "completed";
+            } else if ((correctParts / totalParts) >= scope.passMark) {
+                result += "passed";
+            } else if ((incorrectParts / totalParts) > (1 - scope.passMark)) {
+                result += "failed";
+            } else if (correctParts > 0) {
+                result += "in-progress";
+            } else {
+                result += "not-attempted";
+            }
+            return result;
+        };
+
+        scope.enabledLeftArrow = function(id) {
+            return scope.assignmentSelectedQuestion[id] > 0;
+        };
+        scope.enabledRightArrow = function(id, questionsLength) {
+            return scope.assignmentSelectedQuestion[id] < questionsLength - 1;
         };
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {
@@ -214,6 +240,12 @@ define([], function() {
 
             // return api.getCSVDownloadLink(assignmentId);
         };
+
+        scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+            $timeout(function(){
+                Opentip.findElements();
+            });
+        });
 
 	}];
 
