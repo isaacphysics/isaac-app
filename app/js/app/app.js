@@ -37,7 +37,7 @@ define([
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
-    "socket.io-client"
+    "ngAnimate"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
@@ -688,33 +688,9 @@ define([
 
         // USER NOTIFICATIONS WEBSOCKETS
 
-        /*$rootScope.notificationList = [];
-
-        $rootScope.openNotificationSocket = function() {
-
-            $rootScope.user.$promise.then(function() {
-                // we are logged in
-
-                var socket = io('http://localhost:8090');
-                console.log("Connecting to 8090...");
-                socket.connect();
-
-
-
-                socket.on('message', function(msg) {
-
-                    $rootScope.notificationList.push(msg);
-                    console.log(msg);
-
-                });
-
-            });
-        }
-        $timeout($rootScope.openNotificationSocket, 1000);*/
-
-
-
         $rootScope.notificationList = [];
+        $rootScope.notificationPopups = [];
+        $rootScope.notificationListLength = 0;
         $rootScope.webSocket = null;
         var socketOpen = false;
 
@@ -742,11 +718,16 @@ define([
                     console.log(notificationReccord);
 
                     notificationReccord.notifications.forEach(function(entry) {
-                        $rootScope.notificationList.push(entry);
+                        $rootScope.notificationList.unshift(entry);
+
+                        if (entry.status != 'RECEIVED') {
+                            $rootScope.notificationListLength++;
+                            $rootScope.notificationPopups.push(entry);
+                            setTimeout(function() {
+                                $rootScope.notificationPopups.shift();
+                            },12000);
+                        }
                     });
-
-
-                    console.log($rootScope.notificationList);
 
                 }
 

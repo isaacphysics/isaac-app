@@ -46,6 +46,8 @@
 
   </head>
   <body>
+
+
         <div ng-include="'/partials/mobile_pre_header.html'"></div>
 
         <!-- Toast message. Must be a child of root scope. -->
@@ -60,6 +62,7 @@
             <div class="hide-for-old-browser-only" ng-include="'/partials/cookie-message.html'"></div>
             <div class="hide-for-old-browser-only" ng-if="user._id!=null && user.emailVerificationStatus!='VERIFIED'" ng-include="'/partials/verification-message.html'"></div>
             <div class="hide-for-old-browser-only" ng-include="'/partials/header.html'"></div>
+            <div class="hide-for-old-browser-only" ng-include="'/partials/notifications.html'"></div>
 
             <div class="row">
               <div class="small-16 columns">
@@ -93,6 +96,10 @@
             </div>
         </div>
         <div class="hide-for-old-browser-only" ng-include="'/partials/footer.html'"></div>
+
+
+
+
 
         <div id="isaacModal" class="reveal-modal" data-reveal></div>
 

@@ -51,6 +51,7 @@ $ru_nav_size : 7em;
     height: 188px;
 	width: 7em;
 	position: relative;
+    z-index: 1000;
 }
 
 .ru-desktop-nav-item span
@@ -71,6 +72,90 @@ $ru_nav_size : 7em;
         top: 2.5em;
     }
 }
+
+
+.notification {
+    padding: 15px;
+    margin-top:15px;
+    float: left;
+    clear:left;
+    border:solid 1px #e3e3e3;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: #ffffff;
+
+    .ng-enter {
+        -webkit-animation: rubberBand 1s;
+        -moz-animation: rubberBand 1s;
+        -ms-animation: rubberBand 1s;
+        animation: rubberBand 1s;
+    }
+}
+
+.content-area {
+    border: 1px solid black;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.fadeMe {
+    animation:fadeInOut 12s linear forwards;
+    -webkit-animation:fadeInOut 12s linear forwards;
+}
+
+@keyframes fadeInOut {
+    0%,100% {
+        opacity:0
+    }
+    5%,95% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeInOut {
+    0%,100% {
+        opacity:0
+    }
+    5%,95% {
+        opacity: 1;
+    }
+}
+
+
+.dl-notifications {
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+    background: #fff;
+    border: #509e2e solid 1px;
+    width:100%;
+    top:10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    h6 {
+        padding: 10px;
+        text-align: left;
+    }
+
+    a {
+        display: block;
+        padding: 10px;
+        text-align: left;
+        border-top:solid 1px #e3e3e3;
+
+        &:hover {
+            background: #f2f2f2;
+        }
+
+        p {
+            margin: 0;
+            font-size: 80%;
+            color: #333;
+        }
+    }
+}
+
+
 .ru-desktop-nav-item-inner:hover
 {
     background-position: -249px -5px;

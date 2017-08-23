@@ -20,7 +20,7 @@
                         <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
                     </div>
                 </div>
-                <div class='padded-right-float text-right'>
+                <div class='padded-right-float text-right' style="position: relative">
                     <a class='ru-desktop-nav-item' ui-sref='chemistry'>
                         <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
                             <span class="multiline">Isaac Chemistry</span>
@@ -41,12 +41,24 @@
                             <span>Log in</span>
                         </div>
                     </a>
-                    <a id="login-tab" ng-if='user._id' class='ru-desktop-nav-item' ui-sref='#'>
+                    <a id="login-tab" ng-if='user._id' class='ru-desktop-nav-item' ng-click="notificationToggle()">
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
-                            <span>{{notificationList.length}}</span>
+                            <span>{{ notificationListLength }}</span>
 
                         </div>
                     </a>
+                    <div style="position:relative;">
+                        <div class="dl-notifications">
+                            <h6>Notifications</h6>
+                            <div style="height: 400px;overflow: auto;">
+                                <a href="#" ng-repeat="notification in notificationList">{{notification.message}}
+                                    <p>{{notification.timestamp | date:"d MMMM 'at' HH:mm"}}</p>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </nav>
         </div>
