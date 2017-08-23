@@ -30,8 +30,10 @@
 				mobileDefault: 1,
 				tabletAndDesktopDefault: 1,
 				values: [
-					{label: "date created", value: "created"},
-					{label: "date visited", value: "visited"}
+					{label: "Date Created", value: "created"},
+					{label: "Date Visited", value: "visited"},
+					{label: "Title Ascending", val: "title"},
+					{label: "Title Descending", val: "-title"}
 				]
 			},
 			noBoards: {
@@ -41,15 +43,15 @@
 					{label: "6", value: "6"},
 					{label: "18", value: "18"},
 					{label: "60", value: "60"},
-					{label: "all", value: "ALL"}
+					{label: "All", value: "ALL"}
 				]
 			},
 			view: {
 				mobileDefault: 0,
 				tabletAndDesktopDefault: 1,
 				values: [
-					{label: "assignment cards", value: "card"},
-					{label: "a table of records", value: "table"}
+					{label: "Card View", value: "card"},
+					{label: "Table View", value: "table"}
 				]
 			}
 		};

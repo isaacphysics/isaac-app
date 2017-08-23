@@ -15,15 +15,15 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', '$filter', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout, $filter) {
 		$rootScope.pageTitle = "My Boards";
 
 		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.propertyName = 'title';
-		$scope.reverse = false;
+		$scope.propertyName = 'lastVisited';
+		$scope.reverse = true;
 
 		$scope.icon = {
 			sortable: '⇕',
@@ -77,7 +77,8 @@ define([], function() {
 				board.subjects = $scope.calculateBoardSubjects(board).join(' ');
 				board.levels = $scope.calculateBoardLevels(board).join(' ');
 				board.createdBy = board.ownerUserId == user._id ? "Me" : "Someone else";
-
+				board.formattedCreationDate = $filter('date')(board.creationDate, 'dd/MM/yyyy');
+				board.formattedLastVisitedDate = $filter('date')(board.lastVisited, 'dd/MM/yyyy');
 			}
 			return boards;
 		}

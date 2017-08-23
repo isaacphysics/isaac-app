@@ -175,6 +175,9 @@
 
 	}
 }
+.filter-link {
+	cursor: pointer;
+}
 .boards-filters {
 	margin-top: 5px;
 	label {
@@ -189,26 +192,110 @@
 		padding-bottom: 0;
 	}
 }
-.boards-table {
-	border-collapse: collapse;
-	thead {
-		.headings {
-			th {
-				color: white;
-				background-color: $ru_green;
+.table-wrap {
+	width: 100%;
+	overflow-x: auto;
+	margin-bottom: 20px;
+	.boards-table {
+		border-collapse: collapse;
+		width: 100%;
+		border: solid 1px #999;
+		margin-bottom: 0px;
+		tr {
+			border-top: 1px solid #ccc;
+			td {
+				color: #666;
+			}
+			&.completed {
+				background-color: #dfdfdf;
+			}		
+		}
+		th, td {
+			font-size: 1rem;
+			font-weight: 500;
+		}
+		thead {
+			tr {
+				border-bottom: solid 1px #aaa;
+			}
+			.headings {
+				border-top: solid 1px #999;
+				th {
+					color: white;
+					background-color: $ru_green;
+					font-weight: 600;
+					font-size: 1.05rem;
+					.sort-icon {
+						font-weight: 500;
+					}
+				}
+			}
+			.filters th {
+				background-color: #eee;
+				font-weight: 300;
+				select {
+					margin: 0px;
+					background-size: 1.5rem;
+					height: inherit;
+				}
+				input {
+					width: 100%;
+					padding: 0.5rem;
+					border: 1px solid #999;
+					font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+					font-size: .875rem;
+				}
 			}
 		}
-		.filters {
-			th {
-				background-color: #666;
+		div.board-percentage {
+			float: none;
+			margin: auto;
+			width: 71px;
+			height: 82px;
+			span {
+				padding-top: 24px;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				left: 0px;
 			}
 		}
-		th {
-			font-weight: 300;
+		td.actions-cell {
+			position: relative;
+			width: 90px;
+			min-width: 90px;
+			a.board-share {
+				position: absolute;
+				top: 28px;
+				right: 25px;
+				height: 44px;
+				div.ru_share {
+					background-size: 38px;
+					width: 38px;
+					height: 44px;
+					margin: 0px;
+				}
+			}
+			div.deletion-cross {
+				position: relative;
+				top: -32px;
+				width: 100%;
+				span {
+					float: right;
+					font-weight: 500;
+					cursor: pointer;
+				}
+			}
+			div.ru_share_link {
+				position: absolute;
+				width: 290px;
+				height: auto;
+				left: -218px;
+				top: 28px;
+			}
 		}
 	}
 }
-
 
 /*
 	Styles for set assignments
