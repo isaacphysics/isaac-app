@@ -47,6 +47,8 @@ pg-$ENV:
     volumes:
       - /local/data/kafka-$ENV:/kafka-data:rw
       - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+      - ../isaac-api/kafka/run-kafka.sh:/run-kafka.sh:ro
+      - ../isaac-api/kafka/create-topics.sh:/create-topics.sh:ro
     depends_on:
       - zookeeper-$ENV
 
