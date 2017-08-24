@@ -88,6 +88,8 @@ pg-test:
       - zookeeper-test:zookeeper
     volumes:
       - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+      - ../isaac-api/kafka/run-kafka.sh:/run-kafka.sh:ro
+      - ../isaac-api/kafka/create-topics.sh:/create-topics.sh:ro
     depends_on:
       - zookeeper-test
 
