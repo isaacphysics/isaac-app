@@ -66,7 +66,7 @@
               <span ng-show="event.placesAvailable <= 0"><strong style="color:red">FULL</strong><span ng-show="(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - for student bookings</span></span>
               <span ng-show="user.email && event.userBooked"> - <span style="color:green">You are booked on this event!</span> </span> 
               <span ng-if="!event.userBooked && !event.userOnWaitList && event.placesAvailable <= 0 && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - Waiting list booking is available!</span>
-              <span ng-if="!event.userBooked && !event.userOnWaitList && event.placesAvailable <= 0 && (event.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - Teacher places available!</span>
+              <span style="color:green" ng-if="!event.userBooked && !event.userOnWaitList && event.placesAvailable <= 0 && (event.tags.indexOf('student') != -1 && user.role != 'STUDENT')"> - Teacher places available!</span>
               <span ng-show="user.email && event.userOnWaitList"> - You are on the waiting list for this event.</span></td>
           </tr>
           <tr ng-show="event.bookingDeadline">
