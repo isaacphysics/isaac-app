@@ -39,6 +39,7 @@ pg-$ENV:
     container_name: kafka-$ENV
     image: ucamcldtg/kafka-standalone
     restart: always
+    hostname: kafka
     links:
       - zookeeper-$ENV:zookeeper
     build:
@@ -84,6 +85,7 @@ pg-test:
   kafka-test:
     container_name: kafka-test
     image: ucamcldtg/kafka
+    hostname: kafka
     links:
       - zookeeper-test:zookeeper
     volumes:
