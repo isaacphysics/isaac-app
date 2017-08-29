@@ -20,10 +20,10 @@
 				mobileDefault: 0,
 				tabletAndDesktopDefault: 0,
 				values: [
-					{label: "boards", value: null},
-					{label: "unstarted boards", value: "not_attempted"},
-					{label: "in-progress boards", value: "in_progress"},
-					{label: "completed boards", value: "completed"}
+					{label: "Boards", value: null},
+					{label: "Unstarted Boards", value: "not_attempted"},
+					{label: "In-progress Boards", value: "in_progress"},
+					{label: "Completed Boards", value: "completed"}
 				]
 			},
 			sort: {

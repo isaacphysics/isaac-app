@@ -225,6 +225,9 @@
 					background-color: $ru_green;
 					font-weight: 600;
 					font-size: 1.05rem;
+					&.sortable {
+						cursor: pointer;
+					}
 					.sort-icon {
 						font-weight: 500;
 					}
