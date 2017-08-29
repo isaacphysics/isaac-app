@@ -85,6 +85,7 @@ pg-test:
   kafka-test:
     container_name: kafka-test
     image: ucamcldtg/kafka
+    restart: always
     hostname: kafka
     links:
       - zookeeper-test:zookeeper
