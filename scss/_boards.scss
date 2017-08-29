@@ -3,7 +3,6 @@
 */
 .boards-wrap {
 	margin: 10px -10px 0;
-
 	.row {
 		margin: 0;
 	}
@@ -175,8 +174,14 @@
 
 	}
 }
-.filter-link {
-	cursor: pointer;
+
+.body-wrap {
+	p {
+		margin-bottom: 10px;
+	}
+	.filter-link {
+		cursor: pointer;
+	}
 }
 .boards-filters {
 	margin-top: 5px;

@@ -34,8 +34,8 @@ define([], function() {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
-
 		$scope.myGroups = api.groupManagementEndpoint.get(); // get a list of all known groups for this user.
+		$scope.boardSearchOptions = boardSearchOptions;
 
 		$scope.openedAssignPanels = []; // shows those panels currently opened
 		$scope.pendingAssignment = {}; // boardId to group id mapping - allows us to know which group is being assigned which board.
@@ -55,30 +55,33 @@ define([], function() {
            		$scope.modals.groupsWarning.show();
 		}
 
-		$scope.boardSearchOptions = boardSearchOptions;
-		for (paramater in boardSearchOptions) {
-			// assign default values
-			$scope['selected' + paramater.charAt(0).toUpperCase() + paramater.slice(1) + 'Option'] = boardSearchOptions[paramater].values[boardSearchOptions[paramater].default];
-		}
+		var setDefaultBoardSearchOptions = function(deviceSpecificDefaultField) {
+			for (boardSearchParameter in $scope.boardSearchOptions) {
+				var boardSearchOption = boardSearchOptions[boardSearchParameter];
+				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
+				var indexOfDefaultValue = boardSearchOption[deviceSpecificDefaultField];
+				$scope[selectedOptionVariableName] = boardSearchOption.values[indexOfDefaultValue];
+			}
+		};
 
 		var updateBoards = function(limit) {
-			limit = limit || $scope.selectedNoBoardsOption.value;
+			var limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
+
 				updateGroupAssignmentMap($scope.boards.results)
+
 				$scope.setLoading(false);
 			})
 		};
 
-
 		// update boards when filters have been selected
-		$scope.$watchGroup(["selectedNoBoardsOption", "selectedFilterOption"], function(newVal, oldVal) {
+		$scope.$watch("selectedNoBoardsOption", function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				updateBoards();
 			}
 		});
-		
 		$scope.$watch("selectedSortOption", function(newVal, oldVal) {
 			if (newVal !== oldVal) {
 				updateBoards($scope.boards.results.length);
@@ -89,11 +92,11 @@ define([], function() {
 		$scope.$watch("boards.results", function(newVal, oldVal){
 			$timeout(function(){
 				Opentip.findElements();
-			}, 0);
-			
+			}, 0);			
 		}, true);
 
 		// Perform initial load
+		setDefaultBoardSearchOptions('mobileDefault');
 		updateBoards();
 
 		var mergeInProgress = false;

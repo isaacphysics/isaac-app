@@ -126,6 +126,7 @@ define([], function() {
 				if ($scope.selectedViewOption.value == 'table') {
 					// All sorting and filtering for table view is done in the browser so we ask the server for all boards
 					setDefaultBoardSearchOptions('tabletAndDesktopDefault');
+					window.scrollTo(0, 0);
 				}
 				updateBoards();
 			}
@@ -165,7 +166,7 @@ define([], function() {
 		};
 
 		var updateBoards = function(limit) {
-			limit = limit || $scope.selectedNoBoardsOption.value;
+			var limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = augmentBoards(boards);

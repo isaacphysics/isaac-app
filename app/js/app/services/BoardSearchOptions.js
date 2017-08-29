@@ -32,8 +32,8 @@
 				values: [
 					{label: "Date Created", value: "created"},
 					{label: "Date Visited", value: "visited"},
-					{label: "Title Ascending", val: "title"},
-					{label: "Title Descending", val: "-title"}
+					{label: "Title Ascending", value: "title"},
+					{label: "Title Descending", value: "-title"}
 				]
 			},
 			noBoards: {
