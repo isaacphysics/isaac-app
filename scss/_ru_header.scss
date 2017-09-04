@@ -71,6 +71,51 @@ $ru_nav_size : 7em;
         top: 2.5em;
     }
 }
+
+
+.check-element {
+    border: 1px solid black;
+    opacity: 1;
+    padding: 10px;
+}
+
+
+
+.dl-notifications {
+    display: none;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+    background: #fff;
+    border: #509e2e solid 1px;
+    width:100%;
+    top:10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    h6 {
+        padding: 10px;
+        text-align: left;
+    }
+
+    a {
+        display: block;
+        padding: 10px;
+        text-align: left;
+        border-top:solid 1px #e3e3e3;
+
+        &:hover {
+            background: #f2f2f2;
+        }
+
+        p {
+            margin: 0;
+            font-size: 80%;
+            color: #333;
+        }
+    }
+}
+
+
 .ru-desktop-nav-item-inner:hover
 {
     background-position: -249px -5px;

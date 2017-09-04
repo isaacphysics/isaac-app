@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$rootScope', '$scope', 'auth', 'api', function($rootScope, $scope, auth, api) {
 		
 		$scope.$root.segueEnvironment = "LIVE"; //Live by default
 
@@ -23,6 +23,15 @@ define([], function() {
 		api.environment.get().$promise.then(function(response){
 			$scope.$root.segueEnvironment = response.segueEnvironment;
 		});
+
+		$scope.notificationToggle = function() {
+
+            $rootScope.notificationWebSocket.send("VIEW_NOTIFICATIONS");
+            $rootScope.notificationListLength = 0;
+            $rootScope.notificationPopups = [];
+            $('.dl-notifications').slideToggle(200);
+
+		}
 
 	}];
 

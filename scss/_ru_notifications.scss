@@ -1,0 +1,59 @@
+// Notifications overlay
+
+.notification {
+  padding: 20px;
+  margin-top:15px;
+  float: left;
+  clear:left;
+  border:solid 1px #e3e3e3;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background: #ffffff;
+
+  &:hover {
+    background: #ededed;
+    cursor: pointer;
+  }
+
+
+  a {
+    position: relative;
+  }
+
+  span {
+
+    position: relative;
+    z-index: 1000;
+    font-weight: bold;
+
+    &:hover {
+      cursor: pointer;
+      color: #509e2e;
+    }
+
+  }
+
+}
+
+.notification.ng-enter {
+  -webkit-transition:all 0.4s linear;
+  -moz-transition:all 0.4s linear;
+  -o-transition:all 0.4s linear;
+  transition:all 0.4s linear;
+  opacity: 0;
+}
+
+.notification.ng-enter-active {
+  opacity: 1;
+}
+
+.notification.ng-leave {
+  -webkit-transition:all 0.4s linear;
+  -moz-transition:all 0.4s linear;
+  -o-transition:all 0.4s linear;
+  transition:all 0.4s linear;
+  opacity: 1;
+}
+
+.notification.ng-leave-active {
+  opacity: 0;
+}

@@ -1,0 +1,12 @@
+<div ng-controller="NotificationsController" style="position:fixed;bottom:50px;left:40px;z-index: 999;">
+    <div ng-repeat="notification in notificationPopups" class="notification"
+         ng-mouseover="resetTimeouts()">
+
+        <a ui-sref="{{notification.entry.link}}"
+           ng-click="popupInteraction(notification, 'CLICKED')">
+            {{notification.entry.message}}
+        </a>
+        <span style="margin-left: 15px;" ng-click="popupInteraction(notification, 'DISMISSED');">x</span>
+    </div>
+
+</div>

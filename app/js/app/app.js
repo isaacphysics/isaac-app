@@ -57,6 +57,7 @@ define([
         'uiGmapgoogle-maps',
         'ngCookies',
         'ui.date',
+        'ngAnimate'
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
@@ -682,6 +683,92 @@ define([
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');
         });
+
+
+
+        // USER NOTIFICATIONS VIA WEBSOCKETS
+
+        $rootScope.notificationList = [];
+        $rootScope.notificationPopups = [];
+        $rootScope.notificationListLength = 0;
+        $rootScope.notificationWebSocket = null;
+        var signOnTime = Number(new Date());
+        var socketOpen = false;
+
+        $rootScope.openNotificationSocket = function() {
+
+            $rootScope.user.$promise.then(function() {
+             // we are logged in
+
+
+                // set up websocket and connect to notification endpoint
+                var websocketURI = "ws://localhost:8080/isaac-api/user-notifications/";
+                $rootScope.notificationWebSocket = new WebSocket(websocketURI);
+
+
+                $rootScope.notificationWebSocket.onopen = function(event) {
+                    socketOpen = true;
+                }
+
+
+                $rootScope.notificationWebSocket.onmessage = function(event) {
+
+                    var notificationReccord = JSON.parse(event.data);
+
+
+                    notificationReccord.notifications.forEach(function(entry) {
+                        $rootScope.notificationList.unshift(entry);
+
+                        if (entry.status != 'RECEIVED') {
+                            $rootScope.notificationListLength++;
+
+                            // only display popup notifications for events that happen after sign on
+                            if (entry.timestamp > signOnTime) {
+
+                                var json = {
+                                    "index": $rootScope.notificationListLength - 1,
+                                    "entry": entry,
+                                    "timeout": setTimeout(function() {
+                                        $rootScope.notificationPopups.shift();
+                                    },12000)
+                                }
+
+                                $rootScope.notificationPopups.push(json);
+
+                            }
+                        }
+                    });
+
+                }
+
+
+                $rootScope.notificationWebSocket.onerror = function(error) {
+                    console.log(error.details);
+                }
+
+
+                $rootScope.notificationWebSocket.onclose = function(event) {
+                    socketOpen = false;
+                }
+
+            });
+        }
+
+        $timeout($rootScope.openNotificationSocket, 1000);
+
+        var checkForWebSocket = function() {
+
+            if (!socketOpen) {
+                $rootScope.openNotificationSocket();
+            }
+            $timeout(checkForWebSocket, 10000);
+
+        }
+
+        $timeout(checkForWebSocket, 5000);
+
+
+
 
         var checkForNotifications = function() {
 
