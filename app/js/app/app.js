@@ -37,6 +37,7 @@ define([
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
+    "ngAnimate"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
