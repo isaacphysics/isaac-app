@@ -84,7 +84,7 @@ pg-test:
 
   kafka-test:
     container_name: kafka-test
-    image: ucamcldtg/kafka
+    image: ucamcldtg/kafka-standalone
     restart: always
     hostname: kafka
     links:
