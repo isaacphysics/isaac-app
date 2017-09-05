@@ -1,10 +1,32 @@
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
 import { Relation } from "./Relation.ts";
 import { Num } from "./Num.ts";
 import { Brackets } from "./Brackets.ts";
-import {StateSymbol} from "./StateSymbol.ts";
+import { StateSymbol } from "./StateSymbol.ts";
 
 
 /** A class for representing variables and constants (aka, letters). */
@@ -24,7 +46,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -54,8 +76,8 @@ export
 	 * - _subscript_: Subscript (duh?)
 	 */
     generateDockingPoints() {
-        var box = this.boundingBox();
-        var descent = this.position.y - (box.y + box.h);
+        let box = this.boundingBox();
+        let descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
@@ -72,9 +94,9 @@ export
 	 * @returns {string} The expression in the specified format.
 	 */
     getExpression(format: string): string {
-        var sonOfADifferential = this.parentWidget != null && this.parentWidget.typeAsString == 'Differential';
+        let sonOfADifferential = this.parentWidget != null && this.parentWidget.typeAsString == 'Differential';
 
-        var expression = "";
+        let expression = "";
         if (format == "latex") {
             expression = this.letter;
             if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
@@ -160,7 +182,7 @@ export
 
     token() {
         // TODO Handle greek letters
-        var e = this.letter;
+        let e = this.letter;
         if (this.dockingPoints['subscript'].child) {
             e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
         }
@@ -194,7 +216,7 @@ export
 	 * @returns {Rect} The bounding box
 	 */
     boundingBox(): Rect {
-        var box = this.s.font_it.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 
@@ -205,9 +227,9 @@ export
 	 * @private
 	 */
     _shakeIt() {
-        var sonOfADifferential = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
+        let sonOfADifferential = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
         // Work out the size of all our children
-        var boxes: { [key: string]: Rect } = {};
+        let boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -223,17 +245,17 @@ export
           - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
         */
 
-        var box = this.boundingBox();
-        var parent_position = (box.y + box.h);
-        var parent_superscript_width = (sonOfADifferential && this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
-        var parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
-        var parent_width = box.w;
-        var parent_height = box.h;
-        var child_height;
-        var child_width;
-        var docking_right = this.dockingPoints["right"];
-        var docking_superscript = sonOfADifferential ? this.dockingPoints["superscript"] : null;
-        var docking_subscript = this.dockingPoints["subscript"];
+        let box = this.boundingBox();
+        let parent_position = (box.y + box.h);
+        let parent_superscript_width = (sonOfADifferential && this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
+        let parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
+        let parent_width = box.w;
+        let parent_height = box.h;
+        let child_height;
+        let child_width;
+        let docking_right = this.dockingPoints["right"];
+        let docking_superscript = sonOfADifferential ? this.dockingPoints["superscript"] : null;
+        let docking_subscript = this.dockingPoints["subscript"];
 
         if (sonOfADifferential) {
             if ("superscript" in boxes) {

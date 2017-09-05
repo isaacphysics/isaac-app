@@ -1,3 +1,26 @@
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+               Andrew Wells <aw684@cam.ac.uk>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
 import { Widget, Rect } from './Widget.ts';
 import { Brackets } from './Brackets.ts';
 import { DockingPoint } from "./DockingPoint.ts";
@@ -26,7 +49,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(0, -this.s.xBox.h / 2);
+        let p = this.p.createVector(0, -this.s.xBox.h / 2);
         return p;
     }
 
@@ -63,8 +86,8 @@ export
       - _right_: Symbol
      */
     generateDockingPoints() {
-        var box = this.boundingBox();
-        var descent = this.position.y - (box.y + box.h);
+        let box = this.boundingBox();
+        let descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
     }
@@ -79,7 +102,7 @@ export
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = " ";
+        let expression = " ";
         if (format == "latex") {
             expression += this.latexSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
@@ -149,11 +172,11 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var s = this.operation || "+";
+        let s = this.operation || "+";
         s = "+";
 
 
-        var box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+        let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
 
         return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
     }
@@ -167,7 +190,7 @@ export
     _shakeIt() {
 
         // Work out the size of all our children
-        var boxes: { [key: string]: Rect } = {};
+        let boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -183,16 +206,16 @@ export
 
         // Set position of all our children.
 
-        var box = this.boundingBox();
+        let box = this.boundingBox();
 
-        var parent_w = this.boundingBox().w;
-        var right;
+        let parent_w = this.boundingBox().w;
+        let right;
         if ("right" in boxes) {
             right = this.dockingPoints["right"].child;
-            var isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
-            var child_w = right.boundingBox().w;
-            var child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            var child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
+            let isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
+            let child_w = right.boundingBox().w;
+            let child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
+            let child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
             if (isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
                 child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
                 right.position.x = 1.2 * (parent_w / 2 + child_w / 2);

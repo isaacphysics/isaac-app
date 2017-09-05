@@ -1,3 +1,26 @@
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+               Andrew Wells <aw684@cam.ac.uk>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
 import { Widget, Rect } from './Widget.ts';
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { Relation } from "./Relation.ts";
@@ -19,7 +42,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var p = this.p.createVector(-this.boundingBox().w / 2, 0);
+        let p = this.p.createVector(-this.boundingBox().w / 2, 0);
         return p;
     }
 
@@ -39,7 +62,7 @@ export
      * - _denominator_: Symbol
      */
     generateDockingPoints() {
-        var box = this.boundingBox();
+        let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, "operator", "right");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
@@ -56,7 +79,7 @@ export
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = "";
+        let expression = "";
         if (format == "latex" || format == 'mhchem') {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
@@ -103,7 +126,7 @@ export
     _draw() {
         this.p.noFill().strokeWeight(5 * this.scale).stroke(this.color);
 
-        var box = this.boundingBox();
+        let box = this.boundingBox();
         this.p.line(-box.w / 2, -box.h / 2, box.w / 2, -box.h / 2);
 
         this.p.strokeWeight(1);
@@ -125,10 +148,10 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize);
         this.width = 50;
-        var numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
-        var denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
+        let numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
+        let denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
         this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
         return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
     }
@@ -141,8 +164,8 @@ export
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: { [key: string]: Rect } = {};
-        var subtreeBoxes: { [key: string]: Rect } = {};
+        let boxes: { [key: string]: Rect } = {};
+        let subtreeBoxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -156,40 +179,40 @@ export
         // Calculate our own geometry
         this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")) || 0);
 
-        var bbox = this.boundingBox();
+        let bbox = this.boundingBox();
         // Set position of all our children.
 
         if ("numerator" in boxes) {
-            var p = this.dockingPoints["numerator"].child.position;
-            var fullNumeratorWidth = subtreeBoxes["numerator"].w;
-            var numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
-            var numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
+            let p = this.dockingPoints["numerator"].child.position;
+            let fullNumeratorWidth = subtreeBoxes["numerator"].w;
+            let numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
+            let numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
 
             p.x = numeratorRootWidth / 2 - fullNumeratorWidth / 2;
             p.y = -bbox.h / 2 - this.scale * this.s.mBox.w / 4 - numeratorFullDescent;
         }
 
         if ("denominator" in boxes) {
-            var p = this.dockingPoints["denominator"].child.position;
-            var fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            var denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
-            var denominatorFullAscent = subtreeBoxes["denominator"].y;
+            let p = this.dockingPoints["denominator"].child.position;
+            let fullDenominatorWidth = subtreeBoxes["denominator"].w;
+            let denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
+            let denominatorFullAscent = subtreeBoxes["denominator"].y;
 
             p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;
             p.y = -bbox.h / 2 + this.scale * this.s.mBox.w / 4 - denominatorFullAscent;
         }
 
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
+            let p = this.dockingPoints["right"].child.position;
             p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
             p.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
-            var docking_right = this.dockingPoints["right"];
+            let docking_right = this.dockingPoints["right"];
             if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {
-            var p = this.dockingPoints["right"].position;
+            let p = this.dockingPoints["right"].position;
             if ("denominator" in boxes) {
                 p.x = this.width / 2 + this.scale * this.s.mBox.w / 2;
             } else {

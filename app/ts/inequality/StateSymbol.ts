@@ -1,3 +1,25 @@
+/*
+Copyright 2016 Andrew Wells <aw684@cam.ac.uk>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
 import { Widget, Rect } from './Widget.ts';
 import { Symbol } from './Symbol.ts';
 import { DockingPoint } from "./DockingPoint.ts";
@@ -26,7 +48,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -78,8 +100,8 @@ export
      - _right_: Symbol
      */
     generateDockingPoints() {
-        var box = this.boundingBox();
-        var descent = this.position.y - (box.y + box.h);
+        let box = this.boundingBox();
+        let descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "state_symbol", "right");
     }
@@ -94,7 +116,7 @@ export
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = "";
+        let expression = "";
         if (format == "latex") {
             expression += this.latexSymbol;
             if (this.dockingPoints["right"].child != null) {
@@ -158,7 +180,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
+        let box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
         return new Rect(-(box.w - 10) / 2, box.y - 1000, box.w - 10, box.h);
     }
 
@@ -172,7 +194,7 @@ export
     _shakeIt() {
 
         // Work out the size of all our children
-        var boxes: { [key: string]: Rect } = {};
+        let boxes: { [key: string]: Rect } = {};
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
                 dockingPoint.child.scale = this.scale * dockingPoint.scale;
@@ -181,22 +203,22 @@ export
             }
         });
 
-        var box = this.boundingBox();
+        let box = this.boundingBox();
 
         if ("right" in boxes) {
-            var p = this.dockingPoints["right"].child.position;
-            var child_width = this.dockingPoints["right"].child.boundingBox().w;
-            var parent_width = this.boundingBox().w;
+            let p = this.dockingPoints["right"].child.position;
+            let child_width = this.dockingPoints["right"].child.boundingBox().w;
+            let parent_width = this.boundingBox().w;
             // If either subscripts or superscripts or both exist
             p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
             p.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
-            var docking_right = this.dockingPoints["right"];
+            let docking_right = this.dockingPoints["right"];
             if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {
-            var p = this.dockingPoints["right"].position;
+            let p = this.dockingPoints["right"].position;
             p.x = box.w / 2 + this.scale * this.s.mBox.w / 4;
             p.y = -this.s.xBox.h / 2;
         }

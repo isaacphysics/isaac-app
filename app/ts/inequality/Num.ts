@@ -1,3 +1,26 @@
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+               Andrew Wells <aw684@cam.ac.uk>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
 import { Widget, Rect } from './Widget.ts'
 import {BinaryOperation} from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
@@ -102,9 +125,6 @@ export
 
         } else if (format == "python") {
             expression = "" + this.getFullText("python");
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += this.dockingPoints["subscript"].child.getExpression("subscript");
-            //}
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
             }
@@ -114,15 +134,12 @@ export
                 } else if (this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol, hence produces a multiplication
+                    // WARNING This assumes it's a "Symbol", hence produces a multiplication
                     expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
             expression = "" + this.getFullText();
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += this.dockingPoints["subscript"].child.getExpression(format);
-            //}
             if (this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
