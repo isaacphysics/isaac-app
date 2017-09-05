@@ -116,6 +116,9 @@ class Differential extends Widget {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
+            // These are only for the list of available symbols,
+            // and we don't even use them anyway
+            // so... let's get rid of them maybe?
             if (this.letter == "δ") {
                 expression = "differential_delta";
             } else if (this.letter == "∆") {

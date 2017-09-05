@@ -90,7 +90,7 @@ export
                             if (e.dockingPoints["argument"].child != null) {
                                 list.push(e.dockingPoints["argument"].child.getExpression(format));
                             } else {
-                                list.push("__YOU_ARE_MISSING_VARIABLES__");
+                                list.push("?");
                             }
                             o -= 1;
                         } while(o > 0);
