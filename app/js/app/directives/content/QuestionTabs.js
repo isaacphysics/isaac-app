@@ -26,7 +26,6 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 			templateUrl: "/partials/content/QuestionTabs.html",
 
 			link: function(scope, element, attrs, ctrls, transclude) {
-
 				if (scope.accordionChildMetrics) {
 					scope.accordionChildMetrics.questionCount++;
 				}
@@ -40,6 +39,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					gameBoardCompletedPerfect: false,
 					id: scope.doc.id,
 					type: scope.doc.type,
+					relatedContent: scope.doc.relatedContent,
 				};
 
 				if (scope.doc.bestAttempt) {
@@ -64,7 +64,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 				// A flag to prevent someone clicking submit multiple times without changing their answer.
 				scope.canSubmit = false;
-			
+
 				scope.checkAnswer = function() {
 					if (scope.question.selectedChoice != null && scope.canSubmit) {
 						scope.canSubmit = false;
@@ -178,6 +178,13 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
+				// console.log('TODO MT -- scope -- ', scope)
+				// console.log('TODO MT -- element -- ', element)
+				// console.log('TODO MT -- attrs -- ', attrs)
+				// console.log('TODO MT -- ctrls -- ', ctrls)
+				// console.log('TODO MT -- transclude -- ', transclude)
+				console.log('TODO MT -- question -- ', scope.question)
+				// console.log('TODO MT -- doc -- ', scope.doc)
 			}
 		};
 	}];
