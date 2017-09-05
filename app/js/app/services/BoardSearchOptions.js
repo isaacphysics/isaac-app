@@ -16,18 +16,44 @@
  define([], function() {
 	return function() {
 		return {
-			filter: [
-				{label: "All Boards", val: null},
-				{label: "Not Started", val: "not_attempted"},
-				{label: "In Progress", val: "in_progress"},
-				{label: "Completed", val: "completed"}
-			],
-			sort: [
-				{label: "Date Created", val: "created"},
-				{label: "Date Visited", val: "visited"},
-				{label: "Title Ascending", val: "title"},
-				{label: "Title Descending", val: "-title"}
-			]
+			filter: {
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 0,
+				values: [
+					{label: "Boards", value: null},
+					{label: "Unstarted Boards", value: "not_attempted"},
+					{label: "In-progress Boards", value: "in_progress"},
+					{label: "Completed Boards", value: "completed"}
+				]
+			},
+			sort: {
+				mobileDefault: 1,
+				tabletAndDesktopDefault: 1,
+				values: [
+					{label: "Date Created", value: "created"},
+					{label: "Date Visited", value: "visited"},
+					{label: "Title Ascending", value: "title"},
+					{label: "Title Descending", value: "-title"}
+				]
+			},
+			noBoards: {
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 3,
+				values: [
+					{label: "6", value: "6"},
+					{label: "18", value: "18"},
+					{label: "60", value: "60"},
+					{label: "All", value: "ALL"}
+				]
+			},
+			view: {
+				mobileDefault: 0,
+				tabletAndDesktopDefault: 1,
+				values: [
+					{label: "Card View", value: "card"},
+					{label: "Table View", value: "table"}
+				]
+			}
 		};
 	}
 });
