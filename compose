@@ -48,8 +48,6 @@ pg-$ENV:
     volumes:
       - /local/data/kafka-$ENV:/kafka-data:rw
       - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
-      - ../isaac-api/kafka/run-kafka.sh:/run-kafka.sh:ro
-      - ../isaac-api/kafka/create-topics.sh:/create-topics.sh:ro
     depends_on:
       - zookeeper-$ENV
 
@@ -84,15 +82,16 @@ pg-test:
 
   kafka-test:
     container_name: kafka-test
-    image: ucamcldtg/kafka
+    image: ucamcldtg/kafka-standalone
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-kafka
     restart: always
     hostname: kafka
     links:
       - zookeeper-test:zookeeper
     volumes:
       - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
-      - ../isaac-api/kafka/run-kafka.sh:/run-kafka.sh:ro
-      - ../isaac-api/kafka/create-topics.sh:/create-topics.sh:ro
     depends_on:
       - zookeeper-test
 
