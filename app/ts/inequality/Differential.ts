@@ -1,10 +1,6 @@
 import { Widget, Rect } from './Widget.ts'
 import { BinaryOperation } from "./BinaryOperation.ts";
 import { DockingPoint } from "./DockingPoint.ts";
-import { Relation } from "./Relation.ts";
-import { Num } from "./Num.ts";
-import { Brackets } from "./Brackets.ts";
-import {StateDifferential} from "./StateDifferential.ts";
 
 
 /** A class for representing variables and constants (aka, letters). */
@@ -24,7 +20,7 @@ class Differential extends Widget {
      * @returns {Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        const box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -39,13 +35,13 @@ class Differential extends Widget {
      * Prevents Differentials from being detached from Derivatives when the user is not an admin/editor.
      */
     get isDetachable() {
-        var userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 
     get sonOfADerivative() {
-        var s = false;
-        var p = this.parentWidget;
+        let s = false;
+        let p = this.parentWidget;
         while (p != null) {
             s |= p.typeAsString == 'Derivative';
             p = p.parentWidget;
@@ -54,9 +50,9 @@ class Differential extends Widget {
     }
 
     get orderNeedsMoving() {
-        var a = false;
-        var n = this.dockedTo;
-        var w = this;
+        let a = false;
+        let n = this.dockedTo;
+        let w: Widget = this;
         while (w != null) {
             a |= n == "denominator";
             w = w.parentWidget;
@@ -74,8 +70,8 @@ class Differential extends Widget {
      * - _subscript_: Subscript (duh?)
      */
     generateDockingPoints() {
-        var box = this.boundingBox();
-        var descent = this.position.y - (box.y + box.h);
+        let box = this.boundingBox();
+        // let descent = this.position.y - (box.y + box.h);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "differential_argument", "argument");
         this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "differential_order", "order");
@@ -92,7 +88,7 @@ class Differential extends Widget {
      * @returns {string} The expression in the specified format.
      */
     getExpression(format: string): string {
-        var expression = "";
+        let expression = "";
         if (format == "latex") {
             if (this.letter == "δ") {
                 expression = "\\mathrm{\\delta} ";
@@ -120,7 +116,6 @@ class Differential extends Widget {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-            // FIXME This is broken and needs proper implementation
             if (this.letter == "δ") {
                 expression = "differential_delta";
             } else if (this.letter == "∆") {
@@ -140,20 +135,14 @@ class Differential extends Widget {
             }
         } else if (format == "mathml") {
             expression = '';
-            // FIXME Fix this mess (@jps79)
-            // if (this.dockingPoints['subscript'].child == null && this.dockingPoints['order'].child == null) {
-            //     expression += '<mi>' + this.letter + '</mi>';
-            // } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['order'].child == null) {
-            //     expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
-            //
-            // } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints['order'].child != null) {
-            //     expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['order'].child.getExpression(format) + '</mrow></msup>';
-            //
-            // } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['order'].child != null) {
-            //     expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['order'].child.getExpression(format) + '</mrow></msubsup>';
-            // }
-            if (this.dockingPoints["argument"].child != null) {
-                expression += this.dockingPoints["argument"].child.getExpression('mathml');
+            if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
+                expression += "<mi>" + this.letter + this.dockingPoints["argument"].child.getExpression(format) + "</mi>";
+            } else if (this.dockingPoints["order"].child != null && this.dockingPoints["argument"].child != null) {
+                if (this.orderNeedsMoving) {
+                    expression += `<msup><mi>${this.letter}${this.dockingPoints["argument"].child.getExpression(format)}</mi><mrow>${this.dockingPoints["order"].child.getExpression(format)}</mrow></msup>`;
+                } else {
+                    expression += `<msup><mi>${this.letter}</mi><mrow>${this.dockingPoints["order"].child.getExpression(format)}</mrow></msup>${this.dockingPoints["argument"].child.getExpression(format)}`;
+                }
             }
         }
         return expression;
@@ -166,8 +155,7 @@ class Differential extends Widget {
     }
 
     token() {
-        var e = this.letter;
-        return e;
+        return this.letter;
     }
 
     /** Paints the widget on the canvas. */
@@ -197,7 +185,7 @@ class Differential extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        var box = this.s.font_up.textBounds(this.letter || "D", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_up.textBounds(this.letter || "D", 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 
@@ -209,7 +197,7 @@ class Differential extends Widget {
      */
     _shakeIt() {
         // Work out the size of all our children
-        var boxes: { [key: string]: Rect } = {};
+        let boxes: { [key: string]: Rect } = {};
 
         _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
             if (dockingPoint.child != null) {
@@ -225,18 +213,18 @@ class Differential extends Widget {
          - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
          */
 
-        var box = this.boundingBox();
-        var parent_position = (box.y + box.h);
-        var parent_order_width = (this.dockingPoints["order"].child != null) ? (this.dockingPoints["order"].child.getExpressionWidth()) : 0;
-        var parent_width = box.w;
-        var parent_height = box.h;
-        var child_height = 0;
-        var child_width = 0;
-        var docking_argument = this.dockingPoints["argument"];
-        var docking_order = this.dockingPoints["order"];
-        var docking_right = this.dockingPoints["right"];
-        var arg_width = ("argument" in boxes) ? docking_argument.child.subtreeBoundingBox().w : 0;
-        var order_width = 0;
+        let box = this.boundingBox();
+        // let parent_position = (box.y + box.h);
+        let parent_order_width = (this.dockingPoints["order"].child != null) ? (this.dockingPoints["order"].child.getExpressionWidth()) : 0;
+        let parent_width = box.w;
+        let parent_height = box.h;
+        let child_height = 0;
+        let child_width = 0;
+        let docking_argument = this.dockingPoints["argument"];
+        let docking_order = this.dockingPoints["order"];
+        let docking_right = this.dockingPoints["right"];
+        let arg_width = ("argument" in boxes) ? docking_argument.child.subtreeBoundingBox().w : 0;
+        let order_width = 0;
 
         // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
         if ("order" in boxes) {
