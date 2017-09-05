@@ -72,12 +72,12 @@ export
 	 * @returns {string} The expression in the specified format.
 	 */
     getExpression(format: string): string {
-        var sonOfADifferential = !(this.parentWidget != null && this.parentWidget.typeAsString == 'Differential');
+        var sonOfADifferential = this.parentWidget != null && this.parentWidget.typeAsString == 'Differential';
 
         var expression = "";
         if (format == "latex") {
             expression = this.letter;
-            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
@@ -96,7 +96,7 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_" + this.dockingPoints["subscript"].child.getExpression("subscript");
             }
-            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
             }
             if (this.dockingPoints["right"].child != null) {
@@ -115,30 +115,39 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
-            if (sonOfADifferential && this.dockingPoints["superscript"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
             if (this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
-            // expression = '';
-            // if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
-            //     expression += '<mi>' + this.letter + '</mi>';
-            //
-            // } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
-            //     expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
-            //
-            // } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
-            //     expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
-            //
-            // } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
-            //     expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
-            //
-            // }
-            // if (this.dockingPoints['right'].child != null) {
-            //     expression += this.dockingPoints['right'].child.getExpression('mathml');
-            // }
+            expression = '';
+            if (sonOfADifferential) {
+                if (this.dockingPoints['subscript'].child == null) {
+                    expression += '<mi>' + this.letter + '</mi>';
+
+                } else if (this.dockingPoints['subscript'].child != null) {
+                    expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                }
+            } else {
+                if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
+                    expression += '<mi>' + this.letter + '</mi>';
+
+                } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
+                    expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+
+                } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
+                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+
+                } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
+                    expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                }
+            }
+
+            if (this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression('mathml');
+            }
         }
         return expression;
     }
