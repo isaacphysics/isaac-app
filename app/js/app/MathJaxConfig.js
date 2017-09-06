@@ -25,7 +25,7 @@ define([], function() {
 	}
 
 	// Specify where to find the official Accessibility extension:
-	MathJax.Ajax.config.path["a11y"] = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/extensions/a11y";
+	MathJax.Ajax.config.path["a11y"] = "https://cdn.isaacphysics.org/vendor/mathjax/mathjax-a11y-v1.1.0";
 
 	// Allow inline maths with single $s, define Isaac macros:
 	MathJax.Hub.Config({
