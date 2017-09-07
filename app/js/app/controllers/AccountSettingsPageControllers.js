@@ -201,6 +201,16 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
+
+            // Some users apparently confuse the Save and Teacher Connect button; help make it clear that Connect must be clicked before Save:
+            if ($scope.authenticationToken.value != null && $scope.authenticationToken.value != "") {
+                var confirm = $window.confirm("You have entered a teacher connection code but haven't yet clicked 'Connect'. Do you want to use the code before saving? You will need to click 'Save' again after using the code.");
+                if (confirm) {
+                    $scope.activeTab = 2;
+                    return;
+                }
+            }
+
         	var afterAuth = persistence.load('afterAuth');
         	if (afterAuth) {
         		next = afterAuth;
