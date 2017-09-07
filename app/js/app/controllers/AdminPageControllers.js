@@ -242,6 +242,7 @@ define([], function() {
         })
 
 		$scope.findUsers = function() {
+			// This function is only used for event booking user searches:
 			if ($scope.userSearch.searchTerms != "") {
 				var role = $scope.userSearch.searchTerms.role;
 
