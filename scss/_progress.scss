@@ -1,10 +1,54 @@
 /*
     My progress styles
 */
-.export-btn {
-    margin-top: 5px;
-    padding: 14px 25px 16px;
-}
+
+// GENERIC
+$status-opacity: 0.8;
+$total-status-opacity: 1;
+$default-name-fill: #888;
+
+// COMPLETED
+$perfect-fill: $ru_green;
+$completed-bg-img: linear-gradient(to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
+$completed-total-bg-img: linear-gradient(to right, rgba($perfect-fill, $total-status-opacity), rgba($perfect-fill, $total-status-opacity));
+$completed-cb-bg-img: linear-gradient(
+    to right, rgba($perfect-fill, $status-opacity), rgba($perfect-fill, $status-opacity));
+$completed-bg-size: 100%;
+
+// PASSED
+$passed-fill: #666;
+$passed-bg-img: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity));
+$passed-total-bg-img: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
+$passed-cb-bg-img: linear-gradient(
+    to bottom left, rgba($passed-fill, $status-opacity / 1.5) 25%, 
+    rgba($passed-fill, $status-opacity / 2) 25%, rgba($passed-fill, $status-opacity / 2) 50%,
+    rgba($passed-fill, $status-opacity / 1.5) 50%, rgba($passed-fill, $status-opacity / 1.5) 75%,
+    rgba($passed-fill, $status-opacity / 2) 75%, rgba($passed-fill, $status-opacity / 2));
+$passed-bg-size: 50%;
+
+// IN-PROGRESS
+$in-progress-fill: $ru_green;
+$in-progress-bg-img: linear-gradient(to right, rgba($in-progress-fill, $status-opacity / 2), rgba($in-progress-fill, $status-opacity / 2));
+$in-progress-total-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
+$in-progress-cb-bg-img: linear-gradient(
+    to bottom left, rgba($in-progress-fill, $status-opacity / 1.5) 25%, 
+    rgba($in-progress-fill, $status-opacity / 4) 25%, rgba($in-progress-fill, $status-opacity / 4) 50%,
+    rgba($in-progress-fill, $status-opacity / 1.5) 50%, rgba($in-progress-fill, $status-opacity / 1.5) 75%,
+    rgba($in-progress-fill, $status-opacity / 4) 75%, rgba($in-progress-fill, $status-opacity / 4));
+$in-progress-bg-size: 100%;
+
+// FAILED
+$failed-fill: $ru_red;
+$failed-bg-img: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity));
+$failed-total-bg-img: linear-gradient(to right, rgba($failed-fill, $total-status-opacity), rgba($failed-fill, $total-status-opacity));
+$failed-cb-bg-img: 
+    linear-gradient(135deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient(225deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient(315deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
+    linear-gradient( 45deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%);
+$failed-bg-size: 25%;
+
+
 .progress-bar {
     float: left;
     width: 100%;
@@ -76,6 +120,33 @@
     margin-top: -1px;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
+
+    td, div.key-cell, tr {
+        .completed, .passed, .failed {
+            &.colour-blind { color: black; }
+            color: white;
+        }
+        .completed {
+            &.colour-blind { background-image: $completed-cb-bg-img; }
+            background-image: $completed-bg-img;
+            background-size: $completed-bg-size;
+        }
+        .passed { 
+            &.colour-blind { background-image: $passed-cb-bg-img; }
+            background-image: $passed-bg-img;
+            background-size: $passed-bg-size;
+        }
+        .in-progress {
+            &.colour-blind { background-image: $in-progress-cb-bg-img; } 
+            background-image: $in-progress-bg-img;
+            background-size: $in-progress-bg-size;
+        }
+        .failed {
+            &.colour-blind { background-image: $failed-cb-bg-img; } 
+            background-image: $failed-bg-img;
+            background-size: $failed-bg-size;
+        }
+    }
 }
 .accordion-group {
     margin: 0;
@@ -85,14 +156,17 @@
         margin: 0;
     }
 
+    .group-panel {
+        background-color: rgba(#eee, 0.4);
+    }
+
     .accordion-group-header {
         @extend .clearfix;
         display: block;
         background-color: #fff;
-        border-right: #999 1px solid;
-        border-bottom: #999 1px solid;
-        border-left: #999 1px solid;
+        border: #999 1px solid;
         cursor: pointer;
+        margin-top: 20px;
     }
 
     .accordion-group-title {
@@ -150,7 +224,8 @@
     margin: 0;
 
     dd {
-        margin: 0;
+        &.accordion-board-footer { margin: 0px; }
+        margin: 0 20px;
     }
 
     .accordion-board-header {
@@ -158,15 +233,14 @@
         display: block;
         color: #333;
         background-color: #fff;
-        border-left: #999 1px solid;
-        border-bottom: #999 1px solid;
-        border-right: #999 1px solid;
+        border: #999 1px solid;
+        margin-top: 20px;
         cursor: pointer;
     }
     .accordion-board-header-last {
-        background: #f2f2f2;
+        background: #fff;
         cursor: auto;
-        //border-top: #333 1px solid;
+        border-top: #999 1px solid;
     }
     .accordion-board-title {
         position: relative;
@@ -185,7 +259,7 @@
             counter-increment: board-count;
             content: counter(board-count) ". ";
             background-color: $ru_green;
-            padding: 8px 6px 0;
+            padding: 8px 10px 0;
             min-width: 35px;
             text-align: right;
         }
@@ -251,7 +325,10 @@
     line-height: 17px;
     color: #fff;
     text-align: center;
-    background-color: #333;
+    background-color: #eee;
+    border: 1px solid #999;
+    color: black;
+    border-top: 0px;
     padding: 13px 35px 14px;
 
     strong {
@@ -287,25 +364,34 @@
     .icon-arrow-left,
     .icon-arrow-right {
         display: table-cell;
-        color: #fff;
         vertical-align: middle;
         font-size: 26px;
-        background-color: #333;
+        background-color: #999;
+        color: #ccc;
         padding-top: 5px;
+        width: 70px;
+        &.enabled {
+            background-color: #666;
+            color: #fff;
+        }
     }
 
     .icon-arrow-left {
+        border-left: 1px solid #666;
         left: 0;
     }
     .icon-arrow-right {
+        border-right: 1px solid #666;
         right: 0;
     }
 
 
 }
+
 .table-responsive {
     overflow-x: auto;
 }
+
 .table-progress {
     border: none;
     table-layout: auto; 
@@ -316,79 +402,115 @@
         color: #333;
         font-size: 11px;
         line-height: 13px;
-        vertical-align: top;
+        vertical-align: middle;
         text-align: center;
         padding: 0;
-
+        float: none !important;
+        height: 1px;
         &.student-name {
             padding-top: 5px;
-
+            padding-bottom: 5px;
             .icon-person {
                 top: 7px;
                 position: relative;            
             }
         }
-
-        &.selected {
-            border-right: #666 1px solid;
+        &:first-child, &.total-column {
             border-left: #666 1px solid;
-            background-color: #fff !important;
+            border-right: #666 1px solid;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        &.total-column {
+            &.right {
+                border-left: 0px;
+            }
+            &.left {
+                border-right: 0px;
+            }
         }
     }
 
     tbody {
-        tr:nth-child(odd) {
-            background-color: #f5f5f5;
-        }
+        background-blend-mode: normal;
         td {
             min-width: 38px;
-            padding-top: 10px;
-            padding-bottom: 5px;
-
             &:first-child {
+                font-weight: 800;
                 width: auto;
                 color: $ru_green;
-                font-weight: 800;
                 text-align: left;
                 padding-right: 10px;
                 padding-left: 10px;
             }
-            &:nth-child(even) {
-                background-color: rgba(80, 158, 46, 0.1);
-            }
-            &:last-child {
-                font-weight: 800;
-                text-transform: uppercase;
-                text-align: right;
-                background-color: transparent;
-                padding-right: 16px;
+            &.total-column {
+                font-weight: 200;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                text-align: center;
             }
         }
-        .complete {
-            td {
-                &:first-child, &:last-child, a {
-                    color: #944cbe;
-                }
+        .data-value {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .completed, .passed, .failed {
+            &.colour-blind { td.total-column { color: black; } }
+            td.total-column { color: white; }
+        }
+
+        .completed.colour-blind td.total-column { background-image: $completed-cb-bg-img; }
+        .completed td {
+            &:first-child a, .icon-person { color: rgba($perfect-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $completed-total-bg-img;
+                background-size: $completed-bg-size;
             }
         }
-        .fail {
-            td {
-                &:first-child, &:last-child {
-                    color: #cc3333;
-                }
+
+        .passed.colour-blind td.total-column { background-image: $passed-cb-bg-img; }
+        .passed td {
+            &:first-child a, .icon-person { color: rgba($passed-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $passed-total-bg-img;
+                background-size: $passed-bg-size;
             }
+        }
+
+        .in-progress.colour-blind { td.total-column { background-image: $in-progress-cb-bg-img; } }        
+        .in-progress td {
+            &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $in-progress-total-bg-img;
+                background-size: $in-progress-bg-size;
+            }
+        }
+            
+        .failed.colour-blind { td.total-column { background-image: $failed-cb-bg-img; } }        
+        .failed td {
+            &:first-child a, .icon-person { color: rgba($failed-fill, $total-status-opacity); }
+            &.total-column {
+                background-image: $failed-total-bg-img;
+                background-size: $failed-bg-size;
+            }
+        }
+        
+        .not-attempted {
+            td {
+                &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
+            }        
         }
         .revoked {
             td {
-                &:first-child {
+                &:first-child, .icon-person {
                     color: gray;
-                    
                     a {
                         text-decoration: line-through;
                     }
                 }
-                &:last-child span {
-                    display: none;
+                &.total-column span {
+                    display: none !important;
                 }
             }
         }
@@ -397,56 +519,51 @@
     thead, tfoot {
         tr {
             background: #f2f2f2;
-            border-right: #999 1px solid;
-            border-left: #999 1px solid;
-
             td {
                 font-weight: 200;
-                padding: 9px 0;
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
 
-                &:first-child {
-                    color: #fff;
-                    font-weight: 600;
-                    background-color:#666;
-                    min-width: 100px;
-                    padding: 9px 10px;
+                &:first-child, &.total-column {
+                    color: #555;
+                    font-weight: 500;
+                    background-color:#ddd;
                 }
+
+                padding: 9px 0;
 
                 &.selected {
                     color: $ru_green;
                     font-weight: 600;
-                    border-top-color: #fff;
+                    background-color: white;
                 }
             }
         }
     }
-
-    thead {
-        tr {
-            td {
-                &.selected {
-                    border-bottom-color: #fff;
-                }
-            }
+    thead tr td {
+        border-top: #666 1px solid;
+        &.selected {
+            border-top-color: white;
         }
     }
+    tfoot tr td {
+        border-bottom: #666 1px solid;
+    }
 
-    .icon-x {
-        font-size: 20px;
-        color: #cc3333;
+    .selected { 
+        font-weight: 600;
+        border-left: #666 1px solid;
+        border-right: #666 1px solid;
+    }
+    .total-column {
+        width: 70px;
+        min-width: 70px;
     }
     .icon-person {
         font-size: 15px;
     }
-    .icon-check {
-        font-size: 16px;
-    }
-    .icon-spinner {
-        font-size: 12px;
-    }
 }
+
 .d3-line {
     .domain {
         stroke: #c4c5c7;
@@ -629,6 +746,10 @@ div[d3-plot] {
         display: none !important;
     }
 
+    .accordion-board dd {
+        margin: 0px;
+    }
+
 }
 @media #{$medium-up} { 
     .progress-wrap {
@@ -742,13 +863,8 @@ div[d3-plot] {
 
             td {
                 min-width: 65px;
-                padding: 15px 0 0;
 
                 &:first-child {
-                    font-weight: 600;
-                }
-
-                &:last-child {
                     font-weight: 600;
                 }
 
@@ -759,12 +875,7 @@ div[d3-plot] {
         }
 
         thead, tfoot {
-            tr {
-
-                td {
-                    padding: 12px 0;
-                }
-            }
+            tr td { padding: 12px 0; }
         }
 
         .icon-x {
@@ -798,7 +909,6 @@ div[d3-plot] {
 @media #{$large-up} { 
     .table-progress {
         tbody {
-
             td {
                 .show-for-large-up {
                     display: inline !important;
@@ -855,36 +965,31 @@ div[d3-plot] {
 }
 
 .assignment-progress-key {
-
-    dt, dd {
-        display:inline;
+    border: 1px solid #999;
+    border-top: 0px;
+    li {
+        padding-bottom: 0px;
+    }
+    div {
         line-height:20px;
         vertical-align: middle;
     }
-
-    dt {
+    div.key-cell {
         font-size:20px;
+        span {
+            padding-left:20px;
+            border: 1px solid black;
+        }
+        padding-top: 2px;
+        padding-bottom: 2px;
+        float:left;
     }
-
-    dd {
-        margin-right: 15px;
+    div.key-desctiption {
+        text-align: center;
     }
-
-    .blank-even, .blank-odd {
-        border: 1px solid black;
-        padding-left:20px;
-    }
-    .icon-x {
-        color: #cc3333;
-        font-size: 35px;
-        display:inline-block;
-        height:15px;
-    }
-    .blank-even {
-        background-color: rgba(80, 158, 46, 0.1);
-    }
-
-    .blank-odd {
-        background-color: #f5f5f5;
-    }
+}
+.assignment-progress-options.row {
+    margin-top: 10px;
+    label { text-align: right; }
+    input { margin: 0px; }
 }
