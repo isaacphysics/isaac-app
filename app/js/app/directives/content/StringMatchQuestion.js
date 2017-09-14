@@ -34,7 +34,7 @@ define(["app/honest/responsive_video"], function(rv) {
                         return; // Init
                     }
 
-                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "quantity" };
+                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "choice" };
                     scope.question.selectedChoice.value = v;
                 });
 

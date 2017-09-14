@@ -298,6 +298,17 @@
 
     .isaac-string-match-question & {
         font-size: 1.4rem;
+
+        &::-webkit-input-placeholder { /* Chrome */
+            color: #cccccc;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+            color: #cccccc;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+              color: #cccccc;
+              opacity: 1;
+        }
     }
 
 }
