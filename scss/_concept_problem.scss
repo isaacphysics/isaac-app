@@ -288,18 +288,21 @@
 
 }
 
-.ru-answer-block input
-{
+.ru-answer-block input {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;
     font-size: 1.6rem;
     padding: 0 0.5rem 0 0.5rem;
     font-style: italic;
+
+    .isaac-string-match-question & {
+        font-size: 1.4rem;
+    }
+
 }
 
-.ru-answer-block button
-{
+.ru-answer-block button {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;
