@@ -228,12 +228,12 @@ define([], function() {
 
 		$scope.now = new Date();
 
-		var fourWeeksAgo = new Date(new Date() - (4 * 7 * 24 * 60 * 60 * 1000));
+		var fourWeeksAgo = new Date($scope.now - (4 * 7 * 24 * 60 * 60 * 1000));
 		api.assignments.getMyAssignments().$promise.then(function(results) {
 			angular.forEach(results, function(assignment, index) {
 				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
-					if ((assignment.dueDate && !(new Date() > assignment.dueDate)) || creationDate > fourWeeksAgo) {
+					if ((assignment.dueDate && !($scope.now > assignment.dueDate)) || creationDate > fourWeeksAgo) {
 						$scope.myAssignments.inProgressRecent.push(assignment);
 					} else {
 						$scope.myAssignments.inProgressOld.push(assignment);
