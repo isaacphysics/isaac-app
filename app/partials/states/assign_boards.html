@@ -81,11 +81,11 @@
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
                <h6>Group:</h6>
                <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups | orderBy:'groupName'"></select>
-               <div ng-if="false">
+               <div >
                   <h6>Due Date <span class="lighter">(optional):</span></h6>
 
-                  <div class="ui-date-wrap">
-                     <input ui-date="{showOn: 'button', buttonText: ''}" placeholder="Select your due date..." type="text" />
+                  <div class="ui-date-wrap" style="position: relative; z-index: 100000;">
+                     <input ng-model="pendingAssignment[board.id].dueDate" ui-date="{showOn: 'both', buttonText: '', dateFormat: 'dd/mm/yy'}" placeholder="Select your due date..." type="text" />
                   </div>
                </div>
 

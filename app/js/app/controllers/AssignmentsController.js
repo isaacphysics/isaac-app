@@ -170,9 +170,11 @@ define([], function() {
 
 		$scope.assignBoard = function(board) {
 			if ($scope.pendingAssignment[board.id]) {
+				var dueDate = $scope.pendingAssignment[board.id].dueDate;
 				var groupToAssign = $scope.pendingAssignment[board.id]._id;
+				var assignmentToPost = {"gameboardId" : board.id, "groupId": groupToAssign, "dueDate": Date.UTC(dueDate.getFullYear(), dueDate.getMonth() + 1, dueDate.getDate())}
 
-				api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
+				api.assignments.assignBoard(assignmentToPost).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
