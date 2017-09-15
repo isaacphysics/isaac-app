@@ -15,17 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
-/* tslint:disable: no-unused-variable */
+/* tslint:disable: all */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts'
-import { Symbol } from "./Symbol.ts";
-import { BinaryOperation } from "./BinaryOperation.ts";
-import { Relation } from "./Relation.ts";
-import { DockingPoint } from "./DockingPoint.ts";
+import { Widget, Rect } from './Widget'
+import { Symbol } from "./Symbol";
+import { BinaryOperation } from "./BinaryOperation";
+import { Relation } from "./Relation";
+import { DockingPoint } from "./DockingPoint";
 
 /** Brackets. "We got both kinds, we got country and western". */
 export

@@ -15,15 +15,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts';
-import { Brackets } from './Brackets.ts';
-import { DockingPoint } from "./DockingPoint.ts";
+import { Widget, Rect } from './Widget';
+import { Brackets } from './Brackets';
+import { DockingPoint } from "./DockingPoint";
 
 /**
  * Binary operations, such as plus and minus.

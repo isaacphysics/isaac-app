@@ -15,16 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts';
-import { Symbol } from './Symbol.ts';
-import { DockingPoint } from "./DockingPoint.ts";
-import { Brackets } from "./Brackets.ts";
+import { Widget, Rect } from './Widget';
+import { Symbol } from './Symbol';
+import { DockingPoint } from "./DockingPoint";
+import { Brackets } from "./Brackets";
 
 /**
  * Relations, such as equalities, inequalities, and unexpected friends.

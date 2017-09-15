@@ -16,27 +16,27 @@ limitations under the License.
 */
 
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts'
-import { Symbol } from './Symbol.ts'
-import { BinaryOperation } from './BinaryOperation.ts';
-import { Fraction } from './Fraction.ts';
-import { Brackets } from './Brackets.ts';
-import { Radix } from './Radix.ts';
-import { Num } from './Num.ts';
-import { Fn } from './Fn.ts';
-import { Differential } from './Differential.ts';
-import { Derivative } from './Derivative.ts';
-import { DockingPoint } from './DockingPoint.ts';
-import { Relation } from './Relation.ts';
-import { ChemicalElement } from './ChemicalElement.ts';
-import { StateSymbol } from './StateSymbol.ts';
-import { Particle } from './Particle.ts';
+import { Widget, Rect } from './Widget'
+import { Symbol } from './Symbol'
+import { BinaryOperation } from './BinaryOperation';
+import { Fraction } from './Fraction';
+import { Brackets } from './Brackets';
+import { Radix } from './Radix';
+import { Num } from './Num';
+import { Fn } from './Fn';
+import { Differential } from './Differential';
+import { Derivative } from './Derivative';
+import { DockingPoint } from './DockingPoint';
+import { Relation } from './Relation';
+import { ChemicalElement } from './ChemicalElement';
+import { StateSymbol } from './StateSymbol';
+import { Particle } from './Particle';
 
 // This is where the fun starts
 

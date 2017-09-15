@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget } from './Widget.ts';
+import { Widget } from './Widget';
 
 /** A class to encapsulate all the info on docking points */
 export class DockingPoint {

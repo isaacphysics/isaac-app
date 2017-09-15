@@ -15,17 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts';
-import { BinaryOperation } from "./BinaryOperation.ts";
-import { Relation } from "./Relation.ts";
-import { DockingPoint } from "./DockingPoint.ts";
-import { Brackets } from "./Brackets.ts";
+import { Widget, Rect } from './Widget';
+import { BinaryOperation } from "./BinaryOperation";
+import { Relation } from "./Relation";
+import { DockingPoint } from "./DockingPoint";
+import { Brackets } from "./Brackets";
 
 export
     class Fraction extends Widget {

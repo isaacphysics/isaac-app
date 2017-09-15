@@ -14,19 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts'
-import { BinaryOperation } from "./BinaryOperation.ts";
-import { DockingPoint } from "./DockingPoint.ts";
-import { Relation } from "./Relation.ts";
-import { Num } from "./Num.ts";
-import { Brackets } from "./Brackets.ts";
-import { StateSymbol } from "./StateSymbol.ts";
+import { Widget, Rect } from './Widget'
+import { BinaryOperation } from "./BinaryOperation";
+import { DockingPoint } from "./DockingPoint";
+import { Relation } from "./Relation";
+import { Num } from "./Num";
+import { Brackets } from "./Brackets";
+import { StateSymbol } from "./StateSymbol";
 
 
 /** A class for representing variables and constants (aka, letters). */

@@ -19,14 +19,15 @@ limitations under the License.
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
+/* tslint:disable:  */
 
-import { Widget, Rect } from './Widget.ts';
-import { BinaryOperation } from "./BinaryOperation.ts";
-import { Relation } from "./Relation.ts";
-import { DockingPoint } from "./DockingPoint.ts";
-import { Brackets } from "./Brackets.ts";
-import { Differential } from "./Differential.ts";
-import { Num } from "./Num.ts";
+import { Widget, Rect } from './Widget';
+import { BinaryOperation } from "./BinaryOperation";
+import { Relation } from "./Relation";
+import { DockingPoint } from "./DockingPoint";
+import { Brackets } from "./Brackets";
+import { Differential } from "./Differential";
+import { Num } from "./Num";
 
 export
     class Derivative extends Widget {

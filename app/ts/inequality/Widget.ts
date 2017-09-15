@@ -14,13 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { DockingPoint } from './DockingPoint.ts';
+import { DockingPoint } from './DockingPoint';
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
