@@ -123,6 +123,9 @@ export
                     }
                 }
                 expression += list.join(", ") + ")";
+                if(this.dockingPoints["right"].child != null) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                }
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
