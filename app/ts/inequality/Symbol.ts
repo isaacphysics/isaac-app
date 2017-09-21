@@ -50,7 +50,7 @@ export
         return this.p.createVector(0, - box.h / 2);
     }
 
-    get dockingPoints(): Array<Widget> {
+    get dockingPoints(): { [key: string]: DockingPoint; } {
         // BIG FAT FIXME: This needs to climb up the family tree to see if any ancestor is a Differential, otherwise
         // stuff like d(xy^2) are allowed, where y is squared, not d nor x.
         if (this.parentWidget != null && this.parentWidget.typeAsString == 'Differential') {

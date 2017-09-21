@@ -539,9 +539,9 @@ export
     centre = (init = false) => {
         let top = this.height / 2;
         _.each(this.symbols, (symbol, i) => {
-            let sbox = symbol.subtreeBoundingBox();
+            let sbox = symbol.boundingBox();
             symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h;
+            top += sbox.h*2;
             symbol.shakeIt();
         });
         if (!init) {
