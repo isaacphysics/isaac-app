@@ -54,7 +54,7 @@ export
         // BIG FAT FIXME: This needs to climb up the family tree to see if any ancestor is a Differential, otherwise
         // stuff like d(xy^2) are allowed, where y is squared, not d nor x.
         if (this.parentWidget != null && this.parentWidget.typeAsString == 'Differential') {
-            return _.omit(this._dockingPoints, 'superscript');
+            return _.omit(this._dockingPoints, ['right', 'superscript']);
         } else {
             return this._dockingPoints;
         }
@@ -105,7 +105,7 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
             }
-            if (this.dockingPoints["right"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
@@ -121,7 +121,7 @@ export
             if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
             }
-            if (this.dockingPoints["right"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation ||
                     this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
@@ -140,7 +140,7 @@ export
             if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
-            if (this.dockingPoints["right"].child != null) {
+            if (!sonOfADifferential && this.dockingPoints["right"].child != null) {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
@@ -167,7 +167,7 @@ export
                 }
             }
 
-            if (this.dockingPoints['right'].child != null) {
+            if (!sonOfADifferential && this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.getExpression('mathml');
             }
         }
@@ -281,17 +281,19 @@ export
 
         parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
 
-        if ("right" in boxes) {
-            child_width = docking_right.child.boundingBox().w;
-            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            docking_right.child.position.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+        if(sonOfADifferential) {
+            if ("right" in boxes) {
+                child_width = docking_right.child.boundingBox().w;
+                docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
+                docking_right.child.position.y = 0;
+                // FIXME HORRIBLE BRACKETS FIX
+                if (docking_right.child instanceof Brackets) {
+                    docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+                }
+            } else {
+                docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
+                docking_right.position.y = (this.dockingPoint.y);
             }
-        } else {
-            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_right.position.y = (this.dockingPoint.y);
         }
     }
 
