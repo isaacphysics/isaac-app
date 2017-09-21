@@ -190,6 +190,15 @@ define(["angular-ui-router"], function() {
             }],
         });
 
+        $sp.state('answers', {
+            // People try this URL for answers; point them to the FAQ:
+            url: "/answers",
+            onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                $state.go('faq', {'#': 'answers'}, {location: "replace"});
+                $rootScope.setLoading(false);
+            }],
+        });
+
         $sp.state('teacher_features', {
             url: "/teacher_features?redirectModal",
             views: {

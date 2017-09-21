@@ -201,7 +201,7 @@ export
                     expression = brackets;
                 }
                 if (this.dockingPoints['right'].child) {
-                    expression = brackets + this.dockingPoints['right'].child.getExpression(format);
+                    expression += this.dockingPoints['right'].child.getExpression(format);
                 }
             }
         }
