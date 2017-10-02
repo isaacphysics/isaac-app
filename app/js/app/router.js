@@ -115,6 +115,7 @@ define(["angular-ui-router"], function() {
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
         $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+        $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
 
