@@ -51,9 +51,12 @@
                         <div class="dl-notifications">
                             <h6>Notifications</h6>
                             <div style="height: 400px;overflow: auto;">
-                                <a href="#" ng-repeat="notification in notificationList">{{notification.message}}
-                                    <p>{{notification.timestamp | date:"d MMMM 'at' HH:mm"}}</p>
-                                </a>
+                                <div ng-repeat="notification in notificationList">
+                                    <a ui-sref="{{notification.link}}">
+                                        {{notification.message}}
+                                        <p>{{notification.timestamp | date:"d MMMM 'at' HH:mm"}}</p>
+                                    </a>
+                                </div>
                             </div>
 
                         </div>

@@ -58,6 +58,7 @@ define([
         'uiGmapgoogle-maps',
         'ngCookies',
         'ui.date',
+        'ngAnimate'
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
@@ -686,12 +687,13 @@ define([
 
 
 
-        // USER NOTIFICATIONS WEBSOCKETS
+        // USER NOTIFICATIONS VIA WEBSOCKETS
 
         $rootScope.notificationList = [];
         $rootScope.notificationPopups = [];
         $rootScope.notificationListLength = 0;
-        $rootScope.webSocket = null;
+        $rootScope.notificationWebSocket = null;
+        var signOnTime = Number(new Date());
         var socketOpen = false;
 
         $rootScope.openNotificationSocket = function() {
@@ -699,64 +701,72 @@ define([
             $rootScope.user.$promise.then(function() {
              // we are logged in
 
-                var websocketURI = "ws://localhost:8080/isaac-api/user-notifications/"
-                    + $rootScope.user._id.toString();
 
-                // create websocket
-                $rootScope.webSocket = new WebSocket(websocketURI);
+                // set up websocket and connect to notification endpoint
+                var websocketURI = "ws://localhost:8080/isaac-api/user-notifications/";
+                $rootScope.notificationWebSocket = new WebSocket(websocketURI);
 
 
-                $rootScope.webSocket.onopen = function(event) {
-                    console.log("Connected to notification server.");
+                $rootScope.notificationWebSocket.onopen = function(event) {
                     socketOpen = true;
                 }
 
-                $rootScope.webSocket.onmessage = function(event) {
+
+                $rootScope.notificationWebSocket.onmessage = function(event) {
 
                     var notificationReccord = JSON.parse(event.data);
 
-                    console.log(notificationReccord);
 
                     notificationReccord.notifications.forEach(function(entry) {
                         $rootScope.notificationList.unshift(entry);
 
                         if (entry.status != 'RECEIVED') {
                             $rootScope.notificationListLength++;
-                            $rootScope.notificationPopups.push(entry);
-                            setTimeout(function() {
-                                $rootScope.notificationPopups.shift();
-                            },12000);
+
+                            // only display popup notifications for events that happen after sign on
+                            if (entry.timestamp > signOnTime) {
+
+                                var json = {
+                                    "index": $rootScope.notificationListLength - 1,
+                                    "entry": entry,
+                                    "timeout": setTimeout(function() {
+                                        $rootScope.notificationPopups.shift();
+                                    },12000)
+                                }
+
+                                $rootScope.notificationPopups.push(json);
+
+                            }
                         }
                     });
 
                 }
 
-                $rootScope.webSocket.onerror = function(error) {
+
+                $rootScope.notificationWebSocket.onerror = function(error) {
                     console.log(error.details);
                 }
 
-                $rootScope.webSocket.onclose = function(event) {
-                    console.log("Connection closed.");
+
+                $rootScope.notificationWebSocket.onclose = function(event) {
                     socketOpen = false;
                 }
 
             });
         }
 
-        $timeout($rootScope.openNotificationSocket, 1000);
+        /*$timeout($rootScope.openNotificationSocket, 1000);
 
         var checkForWebSocket = function() {
 
             if (!socketOpen) {
                 $rootScope.openNotificationSocket();
-            } else {
-                $rootScope.webSocket.send("hello");
             }
             $timeout(checkForWebSocket, 10000);
 
         }
 
-        $timeout(checkForWebSocket, 5000);
+        $timeout(checkForWebSocket, 5000);*/
 
 
 

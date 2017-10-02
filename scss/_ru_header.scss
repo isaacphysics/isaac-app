@@ -74,51 +74,12 @@ $ru_nav_size : 7em;
 }
 
 
-.notification {
-    padding: 15px;
-    margin-top:15px;
-    float: left;
-    clear:left;
-    border:solid 1px #e3e3e3;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background: #ffffff;
-
-    .ng-enter {
-        -webkit-animation: rubberBand 1s;
-        -moz-animation: rubberBand 1s;
-        -ms-animation: rubberBand 1s;
-        animation: rubberBand 1s;
-    }
-}
-
-.content-area {
+.check-element {
     border: 1px solid black;
-    margin-top: 10px;
+    opacity: 1;
     padding: 10px;
 }
 
-.fadeMe {
-    animation:fadeInOut 12s linear forwards;
-    -webkit-animation:fadeInOut 12s linear forwards;
-}
-
-@keyframes fadeInOut {
-    0%,100% {
-        opacity:0
-    }
-    5%,95% {
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes fadeInOut {
-    0%,100% {
-        opacity:0
-    }
-    5%,95% {
-        opacity: 1;
-    }
-}
 
 
 .dl-notifications {

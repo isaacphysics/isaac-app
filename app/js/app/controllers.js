@@ -48,6 +48,8 @@ define(function(require) {
 
 	var headerControllers = require("app/controllers/HeaderControllers");
 
+    var notificationsController = require("app/controllers/NotificationsController");
+
 	var authErrorPageControllers = require("app/controllers/AuthErrorPageControllers");
 
 	var adminPageControllers = require("app/controllers/AdminPageControllers");
@@ -112,6 +114,8 @@ define(function(require) {
 	.controller('VerifyEmailPageController', verifyEmailPageControllers.PageController)
 
 	.controller('HeaderController', headerControllers.PageController)
+
+        .controller('NotificationsController', notificationsController.PageController)
 
 	.controller('AuthErrorPageController', authErrorPageControllers.PageController)
 

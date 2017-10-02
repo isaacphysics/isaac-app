@@ -15,23 +15,29 @@
  */
 define([], function() {
 
-    var PageController = ['$rootScope', '$scope', 'auth', 'api', function($rootScope, $scope, auth, api) {
+    var PageController = ['$rootScope', '$scope', '$animate', function($rootScope, $scope) {
 
-        $scope.notificationPopups = [];
 
-        $scope.$root.segueEnvironment = "LIVE"; //Live by default
+        $scope.popupInteraction = function(notification, action) {
 
-        //Find out which version we're on
-        api.environment.get().$promise.then(function(response){
-            $scope.$root.segueEnvironment = response.segueEnvironment;
-        });
+            $rootScope.notificationListLength--;
 
-        $scope.notificationToggle = function() {
+            var index =  $rootScope.notificationPopups.indexOf(notification);
+            clearTimeout(notification.timeout);
 
-            $rootScope.webSocket.send("VIEW_NOTIFICATIONS");
-            $rootScope.notificationListLength = 0;
-            $('.dl-notifications').slideToggle(200);
+            $rootScope.notificationPopups.splice(index, 1);
 
+        }
+
+        $scope.resetTimeouts = function() {
+            $rootScope.notificationPopups.forEach(function(entry) {
+
+                clearTimeout(entry.timeout);
+
+                entry.timeout = setTimeout(function() {
+                    $rootScope.notificationPopups.shift();
+                },12000)
+            });
         }
 
     }];
