@@ -53,25 +53,25 @@
                     </div>
                 </div>
 
-                <div class='ru-answer-check no-print' ng-hide="doc.type=='isaacAnvilQuestion'">
+                <!-- Primary and Secondary action buttons -->
+                <div class='ru-answer-check no-print' ng-hide="!(primaryAction || secondaryAction) || doc.type=='isaacAnvilQuestion'">
                     <div class='row'>
-                        <!-- Left Button -->
-                        <div ng-hide="question.validationResponse.correct" class="small-14 small-offset-1 medium-6 medium-offset-1 columns">
-                            <button class='expand ru-answer-button' ng-click="checkAnswer()">Try an easier question</button>
+                        <!-- Secondary Action -->
+                        <div class="small-14 small-offset-1 medium-6 medium-offset-1 columns" ng-show="secondaryAction">
+                            <button ng-hide="secondaryAction.hide" ng-disabled="secondaryAction.disabled" class='expand ru-answer-button' ng-click="secondaryAction.onClick()">{{secondaryAction.label}}</button>
                         </div>
-                        <div ng-show="question.validationResponse.correct" class="small-14 small-offset-1 medium-6 medium-offset-1 columns">
-                            <p>&nbsp;</p>
+                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns" ng-hide="secondaryAction">
+                            <p ng-show="doc.hints && doc.hints.length > 0 && !hlp && question.validationResponse.correct==false">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
+                            <p ng-show="hlp" style="min-height:60px;font-size:1.2rem;font-weight:600;">
+                                If you're stuck,
+                                <span ng-show="doc.hints && doc.hints.length > 0"> check out the hints above or </span>
+                                <span ng-hide="doc.hints && doc.hints.length > 0"> have a </span>
+                                look at the <a href="/solving_problems" target="_blank">Solving Problems</a> page!
+                            </p>&nbsp;
                         </div>
-
-                        <!-- Right Button -->
-                        <div ng-show="canSubmit" class="small-14 small-offset-1 medium-6 medium-offset-2 columns end">
-                            <button ng-disabled="!canSubmit" class='expand ru-answer-button' ng-click="checkAnswer()">Check my answer</button>
-                        </div>
-                        <div ng-hide="question.validationResponse.correct || canSubmit" class="small-14 small-offset-1 medium-6 medium-offset-2 columns end">
-                            <button class='expand ru-answer-button' ng-click="checkAnswer()">Retry</button>
-                        </div>
-                        <div ng-show="question.validationResponse.correct && !canSubmit" class="small-14 small-offset-1 medium-6 medium-offset-2 columns end">
-                            <button class='expand ru-answer-button' ng-click="checkAnswer()">Next Question Part</button>
+                        <!-- Primary Action -->
+                        <div class="small-14 small-offset-1 medium-6 columns end" ng-class="{'medium-offset-1': !secondaryAction, 'medium-offset-2': secondaryAction}" ng-show="primaryAction">
+                            <button ng-hide="primaryAction.hide" ng-disabled="primaryAction.disabled" class='expand ru-answer-button' ng-click="primaryAction.onClick()">{{primaryAction.label}}</button>
                         </div>
                     </div>
                 </div>

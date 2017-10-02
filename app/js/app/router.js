@@ -298,7 +298,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('question', {
-            url: "/questions/:id?board&questionStack",
+            url: "/questions/:id?board&questionHistory",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
                     return api.questionPages.get({

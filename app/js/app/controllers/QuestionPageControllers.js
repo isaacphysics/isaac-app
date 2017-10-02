@@ -135,6 +135,8 @@ define([], function() {
 			});
 		}
 
+		$scope.questionHistory = $stateParams.questionHistory ? $stateParams.questionHistory.split(',') : [];
+
 		$scope.backToBoard = function() {
 			$location.url("/gameboards#" + $stateParams.board)
 		}
