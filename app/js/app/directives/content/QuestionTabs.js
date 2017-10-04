@@ -130,10 +130,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 									//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
 									for(var i = 0; i < board.questions.length; i++){
 										// page progress
-										if (board.question[i].id == scope.page.id) {
-											scope.question.pageCompleted == board.question[i].state == "PERFECT";
-										}
-										if (board.questions[i].state != "PERFECT" ){
+										if (board.questions[i].state != "PERFECT"){
 											gameBoardCompletedPerfect = false;
 										}
 										if (board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
