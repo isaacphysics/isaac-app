@@ -49,13 +49,13 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
 						var isEasier = relatedContent.level < scope.page.level;
-						var isUnanswered = true // TODO MT need to add this to API response
+						var isUnanswered = !relatedContent.completed;
 						return isQuestionPage && isEasier && isUnanswered;
 					})),
 					relatedUnansweredSupportingQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
 						var isEqualOrHarder = relatedContent.level >= scope.page.level;
-						var isUnanswered = true // TODO MT need to add this to API response
+						var isUnanswered = !relatedContent.completed;
 						return isQuestionPage && isEqualOrHarder && isUnanswered;
 					}))
 				};
