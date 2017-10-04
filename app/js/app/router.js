@@ -115,6 +115,7 @@ define(["angular-ui-router"], function() {
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
         $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+        $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
 
@@ -186,6 +187,15 @@ define(["angular-ui-router"], function() {
                 $state.go('book_physics_skills_14', {}, {
                     location: "replace"
                 });
+                $rootScope.setLoading(false);
+            }],
+        });
+
+        $sp.state('answers', {
+            // People try this URL for answers; point them to the FAQ:
+            url: "/answers",
+            onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                $state.go('faq', {'#': 'answers'}, {location: "replace"});
                 $rootScope.setLoading(false);
             }],
         });
