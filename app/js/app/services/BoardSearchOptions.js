@@ -38,7 +38,7 @@
 			},
 			noBoards: {
 				mobileDefault: 0,
-				tabletAndDesktopDefault: 3,
+				tabletAndDesktopDefault: 0,
 				values: [
 					{label: "6", value: "6"},
 					{label: "18", value: "18"},
@@ -48,7 +48,7 @@
 			},
 			view: {
 				mobileDefault: 0,
-				tabletAndDesktopDefault: 1,
+				tabletAndDesktopDefault: 0,
 				values: [
 					{label: "Card View", value: "card"},
 					{label: "Table View", value: "table"}

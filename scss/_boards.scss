@@ -200,6 +200,7 @@
 .table-wrap {
 	width: 100%;
 	overflow-x: auto;
+	margin-top: 10px;
 	margin-bottom: 20px;
 	.boards-table {
 		border-collapse: collapse;
@@ -646,6 +647,10 @@
 		}
 	}
 
+	.boards-filters label {
+		margin-left: 0px;
+		margin-bottom: 8px;
+	}
 	.assignment {
 		.columns {
 			padding-left: 0;

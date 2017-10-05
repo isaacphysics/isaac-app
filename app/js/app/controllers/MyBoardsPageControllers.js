@@ -125,10 +125,10 @@ define([], function() {
 			if (newVal !== oldVal) {
 				if ($scope.selectedViewOption.value == 'table') {
 					// All sorting and filtering for table view is done in the browser so we ask the server for all boards
-					setDefaultBoardSearchOptions('tabletAndDesktopDefault');
-					window.scrollTo(0, 0);
+					$scope.selectedNoBoardsOption = boardSearchOptions.noBoards.values[3]; // TODO MT change to a dictionary
+					updateBoards();
 				}
-				updateBoards();
+				window.scrollTo(0, 0);
 			}
 		});
 

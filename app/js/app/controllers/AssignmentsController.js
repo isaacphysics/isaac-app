@@ -92,7 +92,7 @@ define([], function() {
 		$scope.$watch("boards.results", function(newVal, oldVal){
 			$timeout(function(){
 				Opentip.findElements();
-			}, 0);			
+			}, 0);
 		}, true);
 
 		// Perform initial load

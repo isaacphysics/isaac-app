@@ -87,17 +87,18 @@
       </tbody>
    </table>
 </div>
+
 <!-- Card View -->
 <div ng-show="selectedViewOption.value == 'card'">
    <div class="boards-filters" ng-show="boards != null">
-      <ul class="small-block-grid-3">
+      <ul class="small-block-grid-2">
          <li>
-            <label class="hide-for-small-only">Show</label>
+            <label>Show</label>
             <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
             <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
          </li>
          <li>
-            <label class="hide-for-small-only">Sort by</label>
+            <label>Sort by</label>
             <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
          </li>
       </ul>
@@ -158,8 +159,9 @@
 </div>
 
 <div class="boards-filters" ng-show="boards != null">
-   <label>Display</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
+   <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
 </div>
+
 <div class="row" ng-show="boards.results.length == ''">
    <p class="text-center">No Results</p>
 </div>
