@@ -181,9 +181,10 @@ define(function (require) {
                             if (parsed.derivatives.length > 0) {
                                 if (customSymbolsParsed) {
                                     if (scope.symbolLibrary.customFunctions) {
-                                        scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(parsed.derivatives.slice(2));
+                                        var theseDerivatives = userIsPrivileged ? parsed.derivatives.slice(2) : parsed.derivatives;
+                                        scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(theseDerivatives);
                                     } else {
-                                        scope.symbolLibrary.customFunctions = parsed.derivatives.slice(2);
+                                        scope.symbolLibrary.customFunctions = theseDerivatives;                                        }
                                     }
                                 }
                                 scope.symbolLibrary.derivatives = parsed.derivatives;
