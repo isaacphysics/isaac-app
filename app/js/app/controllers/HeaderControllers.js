@@ -24,11 +24,34 @@ define([], function() {
 			$scope.$root.segueEnvironment = response.segueEnvironment;
 		});
 
+        var notificationsOpen = false;
+
 		$scope.notificationToggle = function() {
 
-            $rootScope.notificationWebSocket.send("VIEW_NOTIFICATIONS");
-            $rootScope.notificationListLength = 0;
-            $rootScope.notificationPopups = [];
+			notificationsOpen = !notificationsOpen;
+
+			if (notificationsOpen) {
+
+				var notificationSeenList = [];
+
+                for (var i = 0; i < $rootScope.notificationList.length; i++) {
+
+                    notificationSeenList.push($rootScope.notificationList[i].id);
+                }
+
+                $rootScope.notificationWebSocket.send(JSON.stringify({
+                    "feedbackType" : "NOTIFICATION_VIEW_LIST",
+					"notificationIds" : notificationSeenList
+                }));
+
+
+
+
+
+                $rootScope.notificationListLength = 0;
+                $rootScope.notificationPopups = [];
+			}
+
             $('.dl-notifications').slideToggle(200);
 
 		}

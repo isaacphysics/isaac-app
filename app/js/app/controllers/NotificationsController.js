@@ -20,12 +20,24 @@ define([], function() {
 
         $scope.popupInteraction = function(notification, action) {
 
-            $rootScope.notificationListLength--;
+            for (var i = 0; i < $rootScope.notificationPopups.length; i++) {
 
-            var index =  $rootScope.notificationPopups.indexOf(notification);
-            clearTimeout(notification.timeout);
+                if ($rootScope.notificationPopups[i].id && $rootScope.notificationPopups[i].id == notification.id) {
 
-            $rootScope.notificationPopups.splice(index, 1);
+                    clearTimeout($rootScope.notificationPopups[i].timeout);
+
+                    $rootScope.notificationListLength--;
+                    $rootScope.notificationPopups.splice(i, 1);
+                    break;
+                }
+            }
+
+
+            $rootScope.notificationWebSocket.send(JSON.stringify({
+                "feedbackType" : action,
+                "notificationId" : notification.id
+            }));
+
 
         }
 

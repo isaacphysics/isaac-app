@@ -703,7 +703,7 @@ define([
 
 
                 // set up websocket and connect to notification endpoint
-                var websocketURI = "ws://localhost:8080/isaac-api/user-notifications/";
+                var websocketURI = "ws://localhost:8080/isaac-api/user-alerts/";
                 $rootScope.notificationWebSocket = new WebSocket(websocketURI);
 
 
@@ -720,14 +720,14 @@ define([
                     notificationReccord.notifications.forEach(function(entry) {
                         $rootScope.notificationList.unshift(entry);
 
-                        if (entry.status != 'RECEIVED') {
+                        if (entry.seen == null) {
                             $rootScope.notificationListLength++;
 
                             // only display popup notifications for events that happen after sign on
-                            if (entry.timestamp > signOnTime) {
+                            if (entry.created > signOnTime) {
 
                                 var json = {
-                                    "index": $rootScope.notificationListLength - 1,
+                                    "id": entry.id,
                                     "entry": entry,
                                     "timeout": setTimeout(function() {
                                         $rootScope.notificationPopups.shift();
@@ -735,6 +735,13 @@ define([
                                 }
 
                                 $rootScope.notificationPopups.push(json);
+
+                                $rootScope.notificationWebSocket.send(JSON.stringify({
+                                    "feedbackType" : "SEEN",
+                                    "notificationId" : entry.id
+
+                                }));
+
 
                             }
                         }

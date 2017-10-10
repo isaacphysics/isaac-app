@@ -54,7 +54,7 @@
                                 <div ng-repeat="notification in notificationList">
                                     <a ui-sref="{{notification.link}}">
                                         {{notification.message}}
-                                        <p>{{notification.timestamp | date:"d MMMM 'at' HH:mm"}}</p>
+                                        <p>{{notification.created | date:"d MMMM 'at' HH:mm"}}</p>
                                     </a>
                                 </div>
                             </div>
