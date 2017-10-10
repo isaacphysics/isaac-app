@@ -179,15 +179,16 @@ define(function (require) {
                                 customSymbolsParsed = true;
                             }
                             if (parsed.derivatives.length > 0) {
+                                var theseDerivatives = null;
                                 if (customSymbolsParsed) {
+                                    theseDerivatives = userIsPrivileged ? parsed.derivatives.slice(2) : parsed.derivatives;
                                     if (scope.symbolLibrary.customFunctions) {
-                                        var theseDerivatives = userIsPrivileged ? parsed.derivatives.slice(2) : parsed.derivatives;
                                         scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(theseDerivatives);
                                     } else {
-                                        scope.symbolLibrary.customFunctions = theseDerivatives;                                        }
+                                        scope.symbolLibrary.customFunctions = theseDerivatives;
                                     }
                                 }
-                                scope.symbolLibrary.derivatives = parsed.derivatives;
+                                scope.symbolLibrary.derivatives = theseDerivatives;
                                 customSymbolsParsed = true;
                             }
                             if (!customSymbolsParsed) {
