@@ -4,7 +4,7 @@
 
 // GENERIC
 $status-opacity: 0.8;
-$total-status-opacity: 1;
+$total-status-opacity: 1.0;
 $default-name-fill: #888;
 
 // COMPLETED
@@ -16,7 +16,7 @@ $completed-cb-bg-img: linear-gradient(
 $completed-bg-size: 100%;
 
 // PASSED
-$passed-fill: #666;
+$passed-fill: #444;//#60be37;
 $passed-bg-img: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity));
 $passed-total-bg-img: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
 $passed-cb-bg-img: linear-gradient(
@@ -27,7 +27,7 @@ $passed-cb-bg-img: linear-gradient(
 $passed-bg-size: 50%;
 
 // IN-PROGRESS
-$in-progress-fill: $ru_green;
+$in-progress-fill: #555;//#73e442;
 $in-progress-bg-img: linear-gradient(to right, rgba($in-progress-fill, $status-opacity / 2), rgba($in-progress-fill, $status-opacity / 2));
 $in-progress-total-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
 $in-progress-cb-bg-img: linear-gradient(
@@ -116,8 +116,6 @@ $failed-bg-size: 25%;
 .progress-tabs-content {
     position: relative;
     width: auto;
-    border-top: #999 1px solid;
-    margin-top: -1px;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
 
@@ -444,7 +442,7 @@ $failed-bg-size: 25%;
                 padding-left: 10px;
             }
             &.total-column {
-                font-weight: 200;
+                font-weight: 600;
                 padding-top: 10px;
                 padding-bottom: 10px;
                 text-align: center;
@@ -857,6 +855,7 @@ div[d3-plot] {
         td {
             font-size: 18px;
             line-height: 20px;
+            font-weight: 500;
         }
 
          tbody {
@@ -966,7 +965,7 @@ div[d3-plot] {
 
 .assignment-progress-key {
     border: 1px solid #999;
-    border-top: 0px;
+    margin: 20px;
     li {
         padding-bottom: 0px;
     }
@@ -986,6 +985,7 @@ div[d3-plot] {
     }
     div.key-desctiption {
         text-align: center;
+        font-weight: 400;
     }
 }
 .assignment-progress-options.row {
