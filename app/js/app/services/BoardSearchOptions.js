@@ -17,42 +17,42 @@
 	return function() {
 		return {
 			filter: {
-				mobileDefault: 0,
-				tabletAndDesktopDefault: 0,
-				values: [
-					{label: "Boards", value: null},
-					{label: "Unstarted Boards", value: "not_attempted"},
-					{label: "In-progress Boards", value: "in_progress"},
-					{label: "Completed Boards", value: "completed"}
-				]
+				mobileDefault: 'all',
+				tabletAndDesktopDefault: 'all',
+				values: {
+					all: {label: "Boards", value: null},
+					unstarted: {label: "Unstarted Boards", value: "not_attempted"},
+					inProgress: {label: "In-progress Boards", value: "in_progress"},
+					completed: {label: "Completed Boards", value: "completed"}
+				}
 			},
 			sort: {
-				mobileDefault: 1,
-				tabletAndDesktopDefault: 1,
-				values: [
-					{label: "Date Created", value: "created"},
-					{label: "Date Visited", value: "visited"},
-					{label: "Title Ascending", value: "title"},
-					{label: "Title Descending", value: "-title"}
-				]
+				mobileDefault: 'visited',
+				tabletAndDesktopDefault: 'visited',
+				values: {
+					created: {label: "Date Created", value: "created"},
+					visited: {label: "Date Visited", value: "visited"},
+					titleAscending: {label: "Title Ascending", value: "title"},
+					titleDescending: {label: "Title Descending", value: "-title"}
+				}
 			},
 			noBoards: {
-				mobileDefault: 0,
-				tabletAndDesktopDefault: 0,
-				values: [
-					{label: "6", value: "6"},
-					{label: "18", value: "18"},
-					{label: "60", value: "60"},
-					{label: "All", value: "ALL"}
-				]
+				mobileDefault: 'six',
+				tabletAndDesktopDefault: 'six',
+				values: {
+					six: {label: "6", value: "6"},
+					eighteen: {label: "18", value: "18"},
+					sixty: {label: "60", value: "60"},
+					all: {label: "All", value: "ALL"}
+				}
 			},
 			view: {
-				mobileDefault: 0,
-				tabletAndDesktopDefault: 0,
-				values: [
-					{label: "Card View", value: "card"},
-					{label: "Table View", value: "table"}
-				]
+				mobileDefault: 'card',
+				tabletAndDesktopDefault: 'card',
+				values: {
+					card: {label: "Card View", value: "card"},
+					label: {label: "Table View", value: "table"}
+				}
 			}
 		};
 	}

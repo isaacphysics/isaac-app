@@ -59,8 +59,8 @@ define([], function() {
 			for (boardSearchParameter in $scope.boardSearchOptions) {
 				var boardSearchOption = boardSearchOptions[boardSearchParameter];
 				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
-				var indexOfDefaultValue = boardSearchOption[deviceSpecificDefaultField];
-				$scope[selectedOptionVariableName] = boardSearchOption.values[indexOfDefaultValue];
+				var defaultValueKey = boardSearchOption[deviceSpecificDefaultField];
+				$scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
 			}
 		};
 

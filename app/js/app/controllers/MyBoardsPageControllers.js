@@ -56,16 +56,16 @@ define([], function() {
 				// Warn user before deleting
 				var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
 				if (confirmation){
-	       			// TODO: This needs to be reviewed
-	       			// Currently reloading boards after delete
+					// TODO: This needs to be reviewed
+					// Currently reloading boards after delete
 					$scope.setLoading(true);
-	       			api.deleteGameBoard(board.id).$promise.then(function(){
-				        updateBoards($scope.boards.results.length);
-				        $scope.setLoading(false);
-				        $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
-	       			}).catch(function(e){
+					api.deleteGameBoard(board.id).$promise.then(function(){
+						updateBoards($scope.boards.results.length);
+						$scope.setLoading(false);
+						$scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
+					}).catch(function(e){
 						$scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-	       			});
+					});
 				}
 			})
 		}
@@ -85,7 +85,7 @@ define([], function() {
 			}
 
 			levels.sort(function (a, b) {
-   				return a > b ? 1 : a < b ? -1 : 0;
+				return a > b ? 1 : a < b ? -1 : 0;
 			});
 
 			return levels;
@@ -125,7 +125,7 @@ define([], function() {
 			if (newVal !== oldVal) {
 				if ($scope.selectedViewOption.value == 'table') {
 					// All sorting and filtering for table view is done in the browser so we ask the server for all boards
-					$scope.selectedNoBoardsOption = boardSearchOptions.noBoards.values[3]; // TODO MT change to a dictionary
+					$scope.selectedNoBoardsOption = boardSearchOptions.noBoards.values.all;
 					updateBoards();
 				}
 				window.scrollTo(0, 0);
@@ -137,8 +137,8 @@ define([], function() {
 			for (boardSearchParameter in $scope.boardSearchOptions) {
 				var boardSearchOption = boardSearchOptions[boardSearchParameter];
 				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
-				var indexOfDefaultValue = boardSearchOption[deviceSpecificDefaultField];
-				$scope[selectedOptionVariableName] = boardSearchOption.values[indexOfDefaultValue];
+				var defaultValueKey = boardSearchOption[deviceSpecificDefaultField];
+				$scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
 			}
 			// Front-end filters
 			$scope.search = {
