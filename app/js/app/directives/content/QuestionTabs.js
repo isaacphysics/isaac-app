@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv, scope) {
 
-	return ["$location", "$filter", "api", function($location, $filter, api) {
+	return ["$location", "$filter", "$state", "api", "questionActions", function($location, $filter, $state, api, questionActions) {
 
 		return {
 
@@ -49,13 +49,13 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
 						var isEasier = relatedContent.level < scope.page.level;
-						var isUnanswered = !relatedContent.completed;
+						var isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEasier && isUnanswered;
 					})),
 					relatedUnansweredSupportingQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
 						var isEqualOrHarder = relatedContent.level >= scope.page.level;
-						var isUnanswered = !relatedContent.completed;
+						var isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEqualOrHarder && isUnanswered;
 					}))
 				};
@@ -101,6 +101,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					return pageCompleted;
 				}
 
+				// TODO MT move this over to question actions
 				var checkAnswer = function() {
 					if (scope.question.selectedChoice != null && scope.canSubmit) {
 						scope.canSubmit = false;
@@ -193,182 +194,47 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				};
 
-				// TODO MT move this into a service //static helper class
-				// TODO MT maybe actions can be a directive
 				// TODO MT try to see if links can be made to be actual links
-				var defaultAction = {
-					disabled: false
-				}
-				var ActionBuilder = {
-					checkMyAnswer: function() {
-						return {
-							prototype: defaultAction,
-							label: "Check my answer",
-							disabled: !scope.canSubmit,
-							onClick: checkAnswer,
-						};
-					},
-					tryEasierQuestion: function(easierQuestion, currentQuestionId, pageCompleted, questionHistory, gameboard) {
-						// label
-						var calculatedLabel = easierQuestion.level == '2' ? 'Revise ' : 'Practice ';
-						var defaultConceptDescriptor = 'this concept'
-						calculatedLabel += easierQuestion.title.length < defaultConceptDescriptor.length ? easierQuestion.title : defaultConceptDescriptor;
-
-						// link location
-						if (!pageCompleted) {
-							questionHistory.push(currentQuestionId);
-						}
-						var urlParameters = [];
-						if (questionHistory.length) {
-							urlParameters.push('questionHistory=' + questionHistory.join(','));
-						}
-						if (gameboard) {
-							urlParameters.push('board=' + gameboard);
-						}
-						var easierQuestionLocation = '/questions/' + easierQuestion.id;
-						if (urlParameters.length) {
-							easierQuestionLocation += '?' + urlParameters.join('&');
-						}
-						return {
-							prototype: defaultAction,
-							label: calculatedLabel,
-							onClick: function() {
-								$location.url(easierQuestionLocation);
-							},
-						};
-					},
-					trySupportingQuestion: function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboard) {
-						// label
-						var defaultConceptDescriptor = 'this concept'
-						var calculatedLabel;
-						if (supportingQuestion.title.length < defaultConceptDescriptor.length) {
-							calculatedLabel = `More ${supportingQuestion.title} ${supportingQuestion.level == '2' ? 'revision' : 'practice'}`;
-						} else {
-							calculatedLabel = `More ${supportingQuestion.level == '2' ? 'revision' : 'practice'} of ${defaultConceptDescriptor}`;
-						}
-
-						// link location
-						if (!pageCompleted) {
-							questionHistory.push(currentQuestionId);
-						}
-						var urlParameters = [];
-						if (questionHistory.length) {
-							urlParameters.push('questionHistory=' + questionHistory.join(','));
-						}
-						if (gameboard) {
-							urlParameters.push('board=' + gameboard);
-						}
-						var supportingQuestionLocation = '/questions/' + supportingQuestion.id;
-						if (urlParameters.length) {
-							supportingQuestionLocation += '?' + urlParameters.join('&');
-						}
-						return {
-							prototype: defaultAction,
-							label: calculatedLabel,
-							onClick: function() {
-								$location.url(supportingQuestionLocation);
-							},
-						};
-					},
-					showRelatedConceptPage: function(conceptPage) {
-						return {
-							prototype: defaultAction,
-							label: "Read related concept page",
-							onClick: function() {
-								$location(`/concepts/${conceptPage.id}`);
-							},
-						};
-					},
-					retryPreviousQuestion: function(questionHistory, gameboard) {
-						var previousQuestionId = questionHistory.pop();
-						var urlParameters = [];
-						if (questionHistory.length) {
-							urlParameters.push('questionHistory=' + questionHistory.join(','));
-						}
-						if (gameboard) {
-							urlParameters.push('board=' + gameboard);
-						}
-						var previousQuestionLocation = '/questions/' + previousQuestionId;
-						if (urlParameters.length) {
-							previousQuestionLocation += '?' + urlParameters.join('&');
-						}
-						// TODO MT need to check that there are no , & etc in url or we need to escape them
-						return {
-							prototype: defaultAction,
-							label: "Retry previous question",
-							onClick: function() {
-								$location.url(previousQuestionLocation);
-							},
-						};
-					},
-					goToNextQuestionPart: function() {
-						// some js to select the next textbox and ensure it is in view
-						return {
-							prototype: defaultAction,
-							label: "Try next quesiton part",
-							disabled: true,
-							onClick: function() {
-								// link to content page
-								console.log('Go to next Q Part');
-							},
-						};
-					},
-					goToNextBoardQuestion: function() {
-						// might already be implemented but commented out
-						return {
-							prototype: defaultAction,
-							label: "Go to next board Q",
-							onClick: function() {
-								// link to content page
-								console.log('Go to next board Q')
-							},
-						};
-					}
-				}
-
-				var calculatePrimaryAction = function(questionPart, questionPage, questionHistory, gameboard) {
+				var determinePrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					var questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
 					if (questionPartAnsweredCorrectly) {
 						if (questionPart.pageCompleted) {
 							if (questionHistory.length) {
-								return ActionBuilder.retryPreviousQuestion(questionHistory, gameboard);
+								return questionActions.retryPreviousQuestion(questionHistory, gameboardId);
 							} else {
-								if (gameboard  && !questionPart.gameBoardCompletedPerfect) {
-									return ActionBuilder.goToNextBoardQuestion(gameboard);
+								if (gameboardId  && !questionPart.gameBoardCompletedPerfect) {
+									return questionActions.goToNextBoardQuestion(gameboardId);
 								} else {
 									return null;
 								}
 							}
 						} else {
-							return ActionBuilder.goToNextQuestionPart();
+							return questionActions.goToNextQuestionPart();
 						}
 					} else  {
-						return ActionBuilder.checkMyAnswer();
+						return questionActions.checkMyAnswer(scope.canSubmit);
 					}
 				}
 
-				var calculateSecondaryAction = function(questionPart, questionPage, questionHistory, gameboard) {
+				var determineSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					var questionPartNotAnsweredCorrectly = !(questionPart.validationResponse && questionPart.validationResponse.correct);
 					if (questionPartNotAnsweredCorrectly && questionPart.relatedUnansweredEasierQuestions.length) {
 						var easierQuestion = questionPart.relatedUnansweredEasierQuestions[0];
-						return ActionBuilder.tryEasierQuestion(easierQuestion, questionPage.Id, questionPart.pageCompleted, questionHistory, gameboard);
-
+						return questionActions.tryEasierQuestion(easierQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
 					} else if (questionPart.relatedUnansweredSupportingQuestions.length) {
 						var supportingQuestion = questionPart.relatedUnansweredSupportingQuestions[0];
-						return ActionBuilder.trySupportingQuestion(supportingQuestion);
-
+						return questionActions.trySupportingQuestion(supportingQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
 					} else if (questionPart.relatedConcepts.length) {
 						var relatedConcept = questionPart.relatedConcepts[0];
-						return ActionBuilder.showRelatedConceptPage(relatedConcept);
-
+						return questionActions.showRelatedConceptPage(relatedConcept);
 					} else {
 						return null;
 					}
 				}
 
-				var calculateActions = function() {
-					scope.primaryAction = calculatePrimaryAction(scope.question, scope.page, scope.questionHistory, scope.gameboard);
-					scope.secondaryAction = calculateSecondaryAction(scope.question, scope.page, scope.questionHistory, scope.gameboard);
+				var determineActions = function() {
+					scope.primaryAction = determinePrimaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
+					scope.secondaryAction = determineSecondaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
 				}
 
 				scope.$watch("question.selectedChoice", function(newVal, oldVal) {
@@ -383,7 +249,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				}, true);
 
 				scope.$watchGroup(["canSubmit", "question.selectedChoice", "question.validationResponse"], function(newVal, oldVal) {
-					calculateActions();
+					determineActions();
 				});
 
 				scope.$on("ensureVisible", function(e) {
@@ -399,7 +265,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
-				calculateActions();
+				determineActions();
 				scope.question.pageCompleted = isPageCompleted(scope.page);
 
 				//TODO MT value.type == "isaacFastTrackQuestionPage" && value.level

@@ -302,6 +302,7 @@ define(["angular-ui-router"], function() {
             url: "/questions/:id?board&questionHistory",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
+                    console.log('TODO MT -- Gone through $sp question');
                     return api.questionPages.get({
                         id: $stateParams.id
                     }).$promise;

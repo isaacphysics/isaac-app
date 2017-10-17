@@ -38,6 +38,8 @@ define(function(require) {
 
 	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
 
+	.factory('questionActions', require("app/services/questionActions"))
+
 	.provider('api', function ApiProvider() {
 
 		var urlPrefix = "";
