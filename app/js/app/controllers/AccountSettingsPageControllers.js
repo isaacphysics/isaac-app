@@ -326,7 +326,9 @@ define([], function() {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
-        	// Tokens so far are always uppercase; this is hardcoded in the API, so safe to assume here:
+            // Some users paste the URL in the token box, so remove the token from the end if they do.
+        	// Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
+            $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
 			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
