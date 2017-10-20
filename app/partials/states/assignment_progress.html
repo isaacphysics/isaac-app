@@ -114,13 +114,13 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed the question page titled: "{{assignment.gameBoard.questions[$index].title}}"'>
+                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         {{average}}%
                                                     </td>
-                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts for this assignment">
+                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts in this assignment">
                                                         Total Parts
                                                     </td>
-                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions for this assignment">
+                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions in this assignment">
                                                         Total Qs
                                                     </td>
                                                 </tr>
@@ -137,9 +137,10 @@
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
                                                         data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
                                                         Question: {{assignment.gameBoard.questions[$index].title}}<br/>
-                                                        Parts correct: {{studentProgress.correctPartResults[$index]}} ({{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br />
-                                                        Parts not attempted: {{studentProgress.notAttemptedPartResults[$index]}} ({{formatMark(studentProgress.notAttemptedPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br />
+                                                        Parts correct: {{studentProgress.correctPartResults[$index]}} ({{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
+                                                        Parts not attempted: {{studentProgress.notAttemptedPartResults[$index]}} ({{formatMark(studentProgress.notAttemptedPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
                                                         Parts incorrect: {{studentProgress.incorrectPartResults[$index]}} ({{formatMark(studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})">
                                                         {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.formatAsPercentage)}}
                                                     </td>
@@ -151,13 +152,21 @@
                                                     </td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column left"
-                                                        data-ot="For the {{assignment.gameBoard.title}} assignment, {{studentProgress.user.givenName}} {{studentProgress.user.familyName}} answered {{studentProgress.correctQuestionPartsCount}} question parts correctly from a possible {{assignmentTotalQuestionParts[assignment._id]}} ({{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], true)}})">
+                                                        data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Question parts correct: {{studentProgress.correctQuestionPartsCount}} ({{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], true)}})<br/>
+                                                        Total number of question parts: {{assignmentTotalQuestionParts[assignment._id]}}">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Access Revoked"></td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column right"
-                                                        data-ot="For the {{assignment.gameBoard.title}} assignment, {{studentProgress.user.givenName}} {{studentProgress.user.familyName}} completed {{studentProgress.tickCount}} questions correctly from a possible {{assignment.gameBoard.questions.length}} ({{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, true)}})">
+                                                        data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Question pages correct: {{studentProgress.tickCount}} ({{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, true)}})<br/>
+                                                        Total number of question pages: {{assignment.gameBoard.questions.length}}">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Access Revoked"></td>
@@ -169,13 +178,13 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed the "{{assignment.gameBoard.questions[$index].title}}" question'>
+                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         {{average}}%
                                                     </td>
-                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts for this assignment">
+                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts in this assignment">
                                                         Total Parts
                                                     </td>
-                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions for this assignment">
+                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions in this assignment">
                                                         Total Qs
                                                     </td>
                                                 </tr>
