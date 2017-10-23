@@ -3,8 +3,8 @@
 */
 
 // GENERIC
-$status-opacity: 0.8;
-$total-status-opacity: 1;
+$status-opacity: 0.5;
+$total-status-opacity: 0.5;
 $default-name-fill: #888;
 
 // COMPLETED
@@ -16,7 +16,7 @@ $completed-cb-bg-img: linear-gradient(
 $completed-bg-size: 100%;
 
 // PASSED
-$passed-fill: #666;
+$passed-fill: #2C2C2C;
 $passed-bg-img: linear-gradient(to right, rgba($passed-fill, $status-opacity), rgba($passed-fill, $status-opacity));
 $passed-total-bg-img: linear-gradient(to right, rgba($passed-fill, $total-status-opacity), rgba($passed-fill, $total-status-opacity));
 $passed-cb-bg-img: linear-gradient(
@@ -27,7 +27,7 @@ $passed-cb-bg-img: linear-gradient(
 $passed-bg-size: 50%;
 
 // IN-PROGRESS
-$in-progress-fill: $ru_green;
+$in-progress-fill: #555;
 $in-progress-bg-img: linear-gradient(to right, rgba($in-progress-fill, $status-opacity / 2), rgba($in-progress-fill, $status-opacity / 2));
 $in-progress-total-bg-img: linear-gradient(to right, rgba($in-progress-fill, $total-status-opacity / 2), rgba($in-progress-fill, $total-status-opacity / 2));
 $in-progress-cb-bg-img: linear-gradient(
@@ -42,10 +42,10 @@ $failed-fill: $ru_red;
 $failed-bg-img: linear-gradient(to right, rgba($failed-fill, $status-opacity), rgba($failed-fill, $status-opacity));
 $failed-total-bg-img: linear-gradient(to right, rgba($failed-fill, $total-status-opacity), rgba($failed-fill, $total-status-opacity));
 $failed-cb-bg-img: 
-    linear-gradient(135deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
-    linear-gradient(225deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
-    linear-gradient(315deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%),
-    linear-gradient( 45deg, rgba($failed-fill, $status-opacity / 2) 25%, rgba($failed-fill, $status-opacity / 4) 25%);
+    linear-gradient(135deg, rgba($failed-fill, $status-opacity / 1.5) 25%, rgba($failed-fill, $status-opacity / 6) 25%),
+    linear-gradient(225deg, rgba($failed-fill, $status-opacity / 1.5) 25%, rgba($failed-fill, $status-opacity / 6) 25%),
+    linear-gradient(315deg, rgba($failed-fill, $status-opacity / 1.5) 25%, rgba($failed-fill, $status-opacity / 6) 25%),
+    linear-gradient( 45deg, rgba($failed-fill, $status-opacity / 1.5) 25%, rgba($failed-fill, $status-opacity / 6) 25%);
 $failed-bg-size: 25%;
 
 
@@ -116,16 +116,10 @@ $failed-bg-size: 25%;
 .progress-tabs-content {
     position: relative;
     width: auto;
-    border-top: #999 1px solid;
-    margin-top: -1px;
     margin-left: -0.9375rem;
     margin-right: -0.9375rem;
 
     td, div.key-cell, tr {
-        .completed, .passed, .failed {
-            &.colour-blind { color: black; }
-            color: white;
-        }
         .completed {
             &.colour-blind { background-image: $completed-cb-bg-img; }
             background-image: $completed-bg-img;
@@ -444,7 +438,7 @@ $failed-bg-size: 25%;
                 padding-left: 10px;
             }
             &.total-column {
-                font-weight: 200;
+                font-weight: 600;
                 padding-top: 10px;
                 padding-bottom: 10px;
                 text-align: center;
@@ -455,14 +449,9 @@ $failed-bg-size: 25%;
             padding-bottom: 10px;
         }
 
-        .completed, .passed, .failed {
-            &.colour-blind { td.total-column { color: black; } }
-            td.total-column { color: white; }
-        }
-
         .completed.colour-blind td.total-column { background-image: $completed-cb-bg-img; }
         .completed td {
-            &:first-child a, .icon-person { color: rgba($perfect-fill, $total-status-opacity); }
+            &:first-child a, .icon-person { color: rgba($perfect-fill, 1); }
             &.total-column {
                 background-image: $completed-total-bg-img;
                 background-size: $completed-bg-size;
@@ -471,7 +460,7 @@ $failed-bg-size: 25%;
 
         .passed.colour-blind td.total-column { background-image: $passed-cb-bg-img; }
         .passed td {
-            &:first-child a, .icon-person { color: rgba($passed-fill, $total-status-opacity); }
+            &:first-child a, .icon-person { color: rgba($passed-fill, 1); }
             &.total-column {
                 background-image: $passed-total-bg-img;
                 background-size: $passed-bg-size;
@@ -480,7 +469,7 @@ $failed-bg-size: 25%;
 
         .in-progress.colour-blind { td.total-column { background-image: $in-progress-cb-bg-img; } }        
         .in-progress td {
-            &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
+            &:first-child a, .icon-person  { color: rgba($default-name-fill, 1); }
             &.total-column {
                 background-image: $in-progress-total-bg-img;
                 background-size: $in-progress-bg-size;
@@ -489,7 +478,7 @@ $failed-bg-size: 25%;
             
         .failed.colour-blind { td.total-column { background-image: $failed-cb-bg-img; } }        
         .failed td {
-            &:first-child a, .icon-person { color: rgba($failed-fill, $total-status-opacity); }
+            &:first-child a, .icon-person { color: rgba($failed-fill, 1); }
             &.total-column {
                 background-image: $failed-total-bg-img;
                 background-size: $failed-bg-size;
@@ -498,7 +487,7 @@ $failed-bg-size: 25%;
         
         .not-attempted {
             td {
-                &:first-child a, .icon-person  { color: rgba($default-name-fill, $total-status-opacity); }
+                &:first-child a, .icon-person  { color: rgba($default-name-fill, 1); }
             }        
         }
         .revoked {
@@ -526,7 +515,7 @@ $failed-bg-size: 25%;
 
                 &:first-child, &.total-column {
                     color: #555;
-                    font-weight: 500;
+                    font-weight: 300;
                     background-color:#ddd;
                 }
 
@@ -857,6 +846,7 @@ div[d3-plot] {
         td {
             font-size: 18px;
             line-height: 20px;
+            font-weight: 300;
         }
 
          tbody {
@@ -966,7 +956,7 @@ div[d3-plot] {
 
 .assignment-progress-key {
     border: 1px solid #999;
-    border-top: 0px;
+    margin: 20px;
     li {
         padding-bottom: 0px;
     }
@@ -986,6 +976,7 @@ div[d3-plot] {
     }
     div.key-desctiption {
         text-align: center;
+        font-weight: 400;
     }
 }
 .assignment-progress-options.row {
