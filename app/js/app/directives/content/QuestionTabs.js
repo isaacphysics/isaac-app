@@ -59,7 +59,6 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 						return isQuestionPage && isEqualOrHarder && isUnanswered;
 					}))
 				};
-
 				if (scope.doc.bestAttempt) {
 					scope.question.validationResponse = scope.doc.bestAttempt;
 					scope.question.selectedChoice = scope.question.validationResponse.answer;
@@ -78,20 +77,16 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
-				scope.activateTab(-1); // Activate "Answer now" tab by default.
-
-				// A flag to prevent someone clicking submit multiple times without changing their answer.
-				scope.canSubmit = false;
-
 				var isPageCompleted = function(questionPage) {
 					var walkForIncorrectBestAnswers = function(content, numberOfIncorrectBestAnswers) {
+						console.log("TODO MT number of incorrect", numberOfIncorrectBestAnswers)
 						if (content.bestAttempt) {
 							numberOfIncorrectBestAnswers += !content.bestAttempt.correct;
 						}
 						if (content.children) {
 							for (child of content.children) {
 								if (child) {
-									numberOfIncorrectBestAnswers = walkForIncorrectBestAnswers(child, numberOfIncorrectBestAnswers);
+									numberOfIncorrectBestAnswers += walkForIncorrectBestAnswers(child, numberOfIncorrectBestAnswers);
 								}
 							}
 						}
@@ -101,7 +96,6 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					return pageCompleted;
 				}
 
-				// TODO MT try to see if links can be made to be actual links
 				var determinePrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					var questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
 					if (questionPartAnsweredCorrectly) {
@@ -112,7 +106,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 								if (gameboardId  && !questionPart.gameBoardCompletedPerfect) {
 									return questionActions.goToNextBoardQuestion(gameboardId);
 								} else {
-									return null;
+									return null; // All completed
 								}
 							}
 						} else {
@@ -156,7 +150,12 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				}, true);
 
 				scope.$watchGroup(["canSubmit", "question.selectedChoice", "question.validationResponse"], function(newVal, oldVal) {
+					if (newVal === oldVal)
+						return;
 					determineActions();
+					console.log('TODO MT page == ', scope.page);
+
+					scope.question.pageCompleted = isPageCompleted(scope.page);
 				});
 
 				scope.$on("ensureVisible", function(e) {
@@ -172,14 +171,15 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
+				scope.activateTab(-1); // Activate "Answer now" tab by default.
+				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.
 				determineActions();
-				scope.question.pageCompleted = isPageCompleted(scope.page);
 
 				//TODO MT value.type == "isaacFastTrackQuestionPage" && value.level
 				//console.log('TODO MT QUESTION PART -------------')
 				//console.log('TODO MT scope', scope);
 				//console.log('TODO MT scope.doc', scope.doc);
-				//console.log('TODO MT scope.page', scope.page);
+				console.log('TODO MT scope.page', scope.page);
 				//console.log('TODO MT scope.question', scope.question);
 
 			}

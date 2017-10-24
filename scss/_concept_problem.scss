@@ -222,6 +222,12 @@
     padding-right: 0.5rem;
     margin: 0rem;
     font-style: italic;
+    &.fasttrack-button {
+        background-color: $ru_maths;
+        &:hover, &:focus {
+            background-color: lighten($ru_maths, $ru_site_hover);
+        }
+    }
 }
 
 @media #{$small-only}
@@ -233,18 +239,16 @@
     .ru-answer-wrong * h5 { font-size: $h5-font-size * 1.5;}
     .ru-answer-wrong * h6 { font-size: $h6-font-size * 1.5;}
     .ru-answer-wrong * p  { font-size: 1.25rem  !important; margin-bottom: 4px;}
-    .ru-answer-wrong
-    {
+    .ru-answer-wrong {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
     }
-    .ru-answer-check * button
-    {
+    .ru-answer-check * button {
         font-size: 1.25rem;
         margin: 0 0 1.25rem;
-        &.end {
-            margin: 0rem;
-        }
+    }
+    .ru-answer-check * div.end * button {
+        margin: 0rem;
     }
 }
 

@@ -17,7 +17,8 @@ define([], function() {
 	// TODO MT View Service	is more suitable http://demisx.github.io/angularjs/2014/09/14/angular-what-goes-where.html
 	return ["$state", function($state) {
 		var defaultAction = {
-			disabled: false
+			disabled: false,
+			title: ''
 		}
 
 		this.checkMyAnswer = function(scope, api) {
@@ -88,12 +89,6 @@ define([], function() {
 								// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 								// question for a gameboard and the question has been passed, not completed. See issue #419
 							});
-						} else {
-							// TODO MT this actually won't work... a gameboard will be defined even on the lower levels
-							//Check question page progress
-							api.questionPages.get({id: scope.page.id}).$promise.then(function(questionPage) {
-								scope.question.pageCompleted = isPageCompleted(questionPage);
-							})
 						}
 					}, function bar(e) {
 						console.error("Error validating answer:", e);
@@ -123,45 +118,45 @@ define([], function() {
 		};
 
 		this.tryEasierQuestion = function(easierQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {			
-			// label
-			var calculatedLabel = easierQuestion.level == '2' ? 'Revise ' : 'Practice ';
-			var defaultConceptDescriptor = 'this concept'
-			calculatedLabel += easierQuestion.title.length < defaultConceptDescriptor.length ? easierQuestion.title : defaultConceptDescriptor;
-			
-			// alter state logic
+			var fullLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} ${easierQuestion.title.toLowerCase()}`;
+			var abbreviatedLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} this concept`;
+			if (fullLabel.length <= abbreviatedLabel.length) {
+				abbreviatedLabel = fullLabel;
+			}
+
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
+			commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
-				label: calculatedLabel,
+				title: fullLabel,
+				label: abbreviatedLabel,
 				onClick: function() {
-					$state.go('question', {id:easierQuestion.id, questionHistory: questionHistory.join(','), board: gameboardId});
-				},
+					$state.go('question', {id:easierQuestion.id, questionHistory:commaSeparatedQuestionHistory, board:gameboardId});
+				}
 			};
 		};
 
-		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboard) {
-			// label
-			var defaultConceptDescriptor = 'this concept'
-			var calculatedLabel;
-			if (supportingQuestion.title.length < defaultConceptDescriptor.length) {
-				calculatedLabel = `More ${supportingQuestion.title} ${supportingQuestion.level == '2' ? 'revision' : 'practice'}`;
-			} else {
-				calculatedLabel = `More ${supportingQuestion.level == '2' ? 'revision' : 'practice'} of ${defaultConceptDescriptor}`;
+		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
+			var fullLabel = `More ${supportingQuestion.title.toLowerCase()} ${supportingQuestion.level == '2' ? 'revision' : 'practice'}`;
+			var abbreviatedLabel = `More ${supportingQuestion.level == '2' ? 'revision' : 'practice'} of this concept`; 
+			if (fullLabel.length <= abbreviatedLabel.length) {
+				abbreviatedLabel = fullLabel;
 			}
 
-			// alter state logic
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
+			var commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
-				label: calculatedLabel,
+				title: fullLabel,
+				label: abbreviatedLabel,
 				onClick: function() {
-					$state.go('question', {id:supportingQuestion.id, questionHistory: questionHistory.join(','), board: gameboardId});
+					$state.go('question', {id:supportingQuestion.id, questionHistory:commaSeparatedQuestionHistory, board:gameboardId});
 				},
 			};
 		};
@@ -171,36 +166,26 @@ define([], function() {
 				prototype: defaultAction,
 				label: "Read related concept page",
 				onClick: function() {
-					$location(`/concepts/${conceptPage.id}`);
+					$state.go('concept', {id:conceptPage.id}); //TODO MT need to test this
 				},
 			};
 		};
 
-		this.retryPreviousQuestion = function(questionHistory, gameboard) {
+		this.retryPreviousQuestion = function(questionHistory, gameboardId) {
 			var previousQuestionId = questionHistory.pop();
-			var urlParameters = [];
-			if (questionHistory.length) {
-				urlParameters.push('questionHistory=' + questionHistory.join(','));
-			}
-			if (gameboard) {
-				urlParameters.push('board=' + gameboard);
-			}
-			var previousQuestionLocation = '/questions/' + previousQuestionId;
-			if (urlParameters.length) {
-				previousQuestionLocation += '?' + urlParameters.join('&');
-			}
-			// TODO MT need to check that there are no , & etc in url or we need to escape them
+			var commaSeparatedQuestionHistory = questionHistory.join(',')
+
 			return {
 				prototype: defaultAction,
 				label: "Retry previous question",
 				onClick: function() {
-					$location.url(previousQuestionLocation);
+					$state.go('question', {id:previousQuestionId, questionHistory:commaSeparatedQuestionHistory, board:gameboardId})
 				}
 			};
 		};
 
 		this.goToNextQuestionPart = function() {
-			// some js to select the next textbox and ensure it is in view
+			// TODO MT some js to select the next textbox and ensure it is in view
 			return {
 				prototype: defaultAction,
 				label: "Try next quesiton part",
@@ -213,13 +198,14 @@ define([], function() {
 		};
 
 		this.goToNextBoardQuestion = function() {
-			// might already be implemented but commented out
+			// TODO MT might already be implemented but commented out
 			return {
+				disabled: true,
 				prototype: defaultAction,
-				label: "Go to next board Q",
+				label: "Go to next board Question",
 				onClick: function() {
 					// link to content page
-					console.log('Go to next board Q')
+					console.log('Go to next board Quesiton')
 				},
 			};
 		}
