@@ -159,6 +159,8 @@ define(function (require) {
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
                         scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
 
+                        var userIsPrivileged = document.location.pathname == '/equality' || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+
                         if (editorMode == "maths" && questionDoc && questionDoc.availableSymbols) {
 
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
