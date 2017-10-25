@@ -23,6 +23,7 @@ define([], function() {
 
 		this.checkMyAnswer = function(scope, api) {
 			// TODO MT checkAnswer needs breaking up and passed less info
+			// TODO MT move canSubmit to the question object
 			var checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
@@ -35,61 +36,8 @@ define([], function() {
 					}
 
 					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
-
-					s.$promise.then(function foo(r) {
-						scope.question.validationResponse = r;
-
-						// Check the gameboard progress
-						if (scope.gameBoard) {
-							// Re-load the game board to check for updated progress
-							var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
-							var gameBoardCompletedPassed =  true;
-							var gameBoardCompletedPerfect =  true;
-
-							api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
-								scope.question.gameBoardPercentComplete = board.percentageCompleted;
-
-								//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
-								for(var i = 0; i < board.questions.length; i++){
-									// page progress
-									if (board.questions[i].state != "PERFECT"){
-										gameBoardCompletedPerfect = false;
-									}
-									if (board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
-										gameBoardCompletedPassed = false;
-									}
-								}
-								// If things have changed, and the answer is correct, show the modal
-								if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
-									gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
-									initialGameBoardPercent < board.percentageCompleted) && r.correct) {
-									scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
-									scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
-									scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
-									scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
-
-									if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
-										scope.modals["congrats"].show();
-										scope.$emit("modalPassedDisplayed", true);
-									}
-
-									if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
-										scope.modals["congrats"].show();
-										scope.$emit("modalPerfectDisplayed", true);
-									}
-								}
-
-								//
-								// if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
-								// 		scope.modals["congrats"].show();
-								// 		scope.$emit("modalCompleteDisplayed", true);
-								// }
-
-
-								// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
-								// question for a gameboard and the question has been passed, not completed. See issue #419
-							});
-						}
+					s.$promise.then(function foo(validationResponse) {
+						scope.question.validationResponse = validationResponse;
 					}, function bar(e) {
 						console.error("Error validating answer:", e);
 						var eMessage = e.data.errorMessage;
@@ -103,9 +51,6 @@ define([], function() {
 						setTimeout(function() { scope.canSubmit = true; }, 5000);
 					});
 
-				} else {
-					console.log("Not submitting answer - either no answer selected or previous answer unchanged");
-					// TODO: Somehow tell the user that their answer was not submitted. Better: Disable the button so we never get here.
 				}
 			};
 

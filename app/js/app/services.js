@@ -76,4 +76,6 @@ define(function(require) {
 
 	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
+	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
+
 });

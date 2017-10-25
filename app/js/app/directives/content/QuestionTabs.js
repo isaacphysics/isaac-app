@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv, scope) {
 
-	return ["$location", "$filter", "$state", "api", "questionActions", function($location, $filter, $state, api, questionActions) {
+	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
 
 		return {
 
@@ -77,22 +77,81 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
+				var checkGamebaordProgress = function() {
+					var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
+					var gameBoardCompletedPassed =  true;
+					var gameBoardCompletedPerfect =  true;
+
+					// Re-load the game board to check for updated progress
+					api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
+						scope.question.gameBoardPercentComplete = board.percentageCompleted;
+
+						//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
+						for(var i = 0; i < board.questions.length; i++){
+							// page progress
+							if (board.questions[i].state != "PERFECT"){
+								gameBoardCompletedPerfect = false;
+							}
+							if (board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
+								gameBoardCompletedPassed = false;
+							}
+						}
+						// If things have changed, and the answer is correct, show the modal
+						if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
+							gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
+							initialGameBoardPercent < board.percentageCompleted) && r.correct) {
+							scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
+							scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
+							scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
+							scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
+
+							if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
+								scope.modals["congrats"].show();
+								scope.$emit("modalPassedDisplayed", true);
+							}
+
+							if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
+								scope.modals["congrats"].show();
+								scope.$emit("modalPerfectDisplayed", true);
+							}
+						}
+
+						// if(board.percentageCompleted == '100' && !scope.modalDisplayed && validationResponse.correct) {
+						// 		scope.modals["congrats"].show();
+						// 		scope.$emit("modalCompleteDisplayed", true);
+						// }
+						// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
+						// question for a gameboard and the question has been passed, not completed. See issue #419
+					});
+				}
+
+				var applyValidationResponseToQuestionPart = function(content, validationResponse) {
+					if (QUESTION_TYPES.includes(content.type) && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
+						content.bestAttempt = validationResponse;
+					}
+					if (content.children) {
+						for (child of content.children) {
+							applyValidationResponseToQuestionPart(child, validationResponse);
+						}
+					}
+				}
+
 				var isPageCompleted = function(questionPage) {
-					var walkForIncorrectBestAnswers = function(content, numberOfIncorrectBestAnswers) {
-						console.log("TODO MT number of incorrect", numberOfIncorrectBestAnswers)
-						if (content.bestAttempt) {
-							numberOfIncorrectBestAnswers += !content.bestAttempt.correct;
+					var hasIncorrectOrUnansweredQuestion = function(content) {
+						var foundIncorrectQuestionPart = false;
+						if (QUESTION_TYPES.includes(content.type)) {
+							if (!content.bestAttempt || !content.bestAttempt.correct) {
+								foundIncorrectQuestionPart = true;
+							}
 						}
 						if (content.children) {
 							for (child of content.children) {
-								if (child) {
-									numberOfIncorrectBestAnswers += walkForIncorrectBestAnswers(child, numberOfIncorrectBestAnswers);
-								}
+								foundIncorrectQuestionPart |= hasIncorrectOrUnansweredQuestion(child);
 							}
 						}
-						return numberOfIncorrectBestAnswers;
+						return foundIncorrectQuestionPart
 					}
-					var pageCompleted = !walkForIncorrectBestAnswers(questionPage, 0);
+					var pageCompleted = !hasIncorrectOrUnansweredQuestion(questionPage);
 					return pageCompleted;
 				}
 
@@ -106,7 +165,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 								if (gameboardId  && !questionPart.gameBoardCompletedPerfect) {
 									return questionActions.goToNextBoardQuestion(gameboardId);
 								} else {
-									return null; // All completed
+									return null; // Gameboard completed
 								}
 							}
 						} else {
@@ -149,14 +208,25 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.question.validationResponse = null;
 				}, true);
 
-				scope.$watchGroup(["canSubmit", "question.selectedChoice", "question.validationResponse"], function(newVal, oldVal) {
-					if (newVal === oldVal)
-						return;
-					determineActions();
-					console.log('TODO MT page == ', scope.page);
-
-					scope.question.pageCompleted = isPageCompleted(scope.page);
+				scope.$watchGroup(["canSubmit", "question.selectedChoice"], function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						determineActions();
+					}
 				});
+				scope.$watch("question.validationResponse", function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						if (scope.question.validationResponse) {
+							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
+							scope.question.pageCompleted = isPageCompleted(scope.page);
+							determineActions();
+						}
+					}					
+				});
+				scope.$watch("question.pageCompleted", function(newVal, oldVal) {
+					if (scope.gameboard && newVal !== oldVal) {
+						checkGameboardProgress();
+					}
+				})
 
 				scope.$on("ensureVisible", function(e) {
 					if (e.targetScope == scope)
@@ -171,15 +241,16 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
-				scope.activateTab(-1); // Activate "Answer now" tab by default.
+				scope.question.pageCompleted = isPageCompleted(scope.page);
 				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.
+				scope.activateTab(-1); // Activate "Answer now" tab by default.
 				determineActions();
 
 				//TODO MT value.type == "isaacFastTrackQuestionPage" && value.level
 				//console.log('TODO MT QUESTION PART -------------')
 				//console.log('TODO MT scope', scope);
 				//console.log('TODO MT scope.doc', scope.doc);
-				console.log('TODO MT scope.page', scope.page);
+				//console.log('TODO MT scope.page', scope.page);
 				//console.log('TODO MT scope.question', scope.question);
 
 			}
