@@ -65,7 +65,7 @@
                             <dd ng-repeat="assignment in groupAssignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
                                 <div href="javascript:void(0)" class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
-                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}
+                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}<span class="accordion-board-due-date" ng-show="assignment.dueDate">(Due: {{assignment.dueDate | date:'dd/MM/yyyy'}})</span>
                                     </div>
                                     <a href="javascript:void(0)" class="accordion-board-link">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>

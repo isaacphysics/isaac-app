@@ -266,6 +266,15 @@ $failed-bg-size: 25%;
         }
     }
 
+    .accordion-board-due-date {
+        color: #666666;
+        display: inline;
+        font-size: 12px;
+        line-height: 25px;
+        padding-top: 13px;
+        margin-left: 1em;
+    }
+
     .accordion-board-date {
         display: none;
         float: left;
