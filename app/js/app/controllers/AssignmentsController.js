@@ -172,8 +172,15 @@ define([], function() {
 			if ($scope.pendingAssignment[board.id]) {
 				var dueDate = $scope.pendingAssignment[board.id].dueDate;
 				
-				if (dueDate != null)
-					dueDate = Date.UTC(dueDate.getFullYear(), dueDate.getMonth() + 1, dueDate.getDate());
+				if (dueDate != null) {
+					dueDate = Date.UTC(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+					var today = new Date();
+					today.setUTCHours(0, 0, 0, 0);
+					if ((dueDate - today) < 0) {
+						$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error: Due date cannot be in the past.");
+						return;
+					}
+				}
 
 				var groupToAssign = $scope.pendingAssignment[board.id]._id;
 				var assignmentToPost = {"gameboardId" : board.id, "groupId": groupToAssign, "dueDate": dueDate}
