@@ -3,6 +3,9 @@
 	font-weight: 200;
 	width: 307px;
 	box-shadow: 0px 0px 20px 1px rgba(0,0,0,0.2);
+	position: absolute;
+    right: -99999px;
+    top: -99999px;
 }
 .ui-datepicker-header {
 	color: #fff;
@@ -14,23 +17,30 @@
 
 	.ui-datepicker-prev {
 		float: left;
-		width: 14px;
-		height: 26px;
+		width: 18px;
+		height: 30px;
 		text-indent: -9999999em;
-		background: url(../assets/ru.png) no-repeat -261px -348px;
+		background: url(../assets/icon-arrow-white.png) no-repeat;
+		background-size: 16px;
+		-webkit-transform: rotate(180deg);
+  		transform: rotate(180deg);
+  		margin-top: 7px;
 	}
 	.ui-datepicker-next {
 		float: right;
-		width: 14px;
-		height: 26px;
+		width: 18px;
+		height: 30px;
 		text-indent: -9999999em;
-		background: url(../assets/ru.png) no-repeat -276px -348px;
+		background: url(../assets/icon-arrow-white.png) no-repeat;
+		background-size: 16px;
+		margin-top: 7px;
 	}
 }
 .ui-datepicker-calendar {
 	border: none;
 	border-collapse: collapse;
 	margin: 0;
+	width: 100%;
 
 	thead {
 		color: #fff;

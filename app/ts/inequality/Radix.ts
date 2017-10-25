@@ -133,7 +133,7 @@ export
     }
 
     properties(): Object {
-        return {};
+        return null;
     }
 
     token() {

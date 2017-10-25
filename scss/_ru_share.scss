@@ -6,7 +6,7 @@
     width: 50px;
     height: 80px;
     background-repeat: no-repeat;
-    z-index: 101;
+    z-index: 1;
     float: right;
     position: relative;
     margin-right: 10px;
@@ -42,7 +42,7 @@
     {
         position: relative;
         height: 57px;
-        z-index: 100;
+        z-index: 0;
         //width: 0px;
         left: 25px;
         background-color: white;
