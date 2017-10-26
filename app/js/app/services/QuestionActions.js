@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 define([], function() {
-	// TODO MT View Service	is more suitable http://demisx.github.io/angularjs/2014/09/14/angular-what-goes-where.html
-	return ["$state", function($state) {
+	return ["$state", "$location", function($state, $location) {
+		var MAX_LABEL_LENGTH = 20;
 		var defaultAction = {
-			disabled: false,
-			title: ''
+			disabled: false
 		}
 
 		this.checkMyAnswer = function(scope, api) {
-			// TODO MT checkAnswer needs breaking up and passed less info
+			// TODO MT checkAnswer needs to be passed less info
 			// TODO MT move canSubmit to the question object
 			var checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
@@ -59,13 +58,14 @@ define([], function() {
 				label: "Check my answer",
 				disabled: !scope.canSubmit,
 				onClick: checkAnswer,
+				title: "Submit answer for marking",
 			};
 		};
 
 		this.tryEasierQuestion = function(easierQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {			
 			var fullLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} ${easierQuestion.title.toLowerCase()}`;
 			var abbreviatedLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} this concept`;
-			if (fullLabel.length <= abbreviatedLabel.length) {
+			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
 
@@ -87,7 +87,7 @@ define([], function() {
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
 			var fullLabel = `More ${supportingQuestion.title.toLowerCase()} ${supportingQuestion.level == '2' ? 'revision' : 'practice'}`;
 			var abbreviatedLabel = `More ${supportingQuestion.level == '2' ? 'revision' : 'practice'} of this concept`; 
-			if (fullLabel.length <= abbreviatedLabel.length) {
+			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
 
@@ -109,6 +109,7 @@ define([], function() {
 		this.showRelatedConceptPage = function(conceptPage) {
 			return {
 				prototype: defaultAction,
+				title: "Read suggested related concept page",
 				label: "Read related concept page",
 				onClick: function() {
 					$state.go('concept', {id:conceptPage.id}); //TODO MT need to test this
@@ -122,6 +123,7 @@ define([], function() {
 
 			return {
 				prototype: defaultAction,
+				title: "Retry previous question page"
 				label: "Retry previous question",
 				onClick: function() {
 					$state.go('question', {id:previousQuestionId, questionHistory:commaSeparatedQuestionHistory, board:gameboardId})
@@ -129,28 +131,14 @@ define([], function() {
 			};
 		};
 
-		this.goToNextQuestionPart = function() {
-			// TODO MT some js to select the next textbox and ensure it is in view
+		this.backToBoard = function(gameboardId) {
+			// could go to next board question
 			return {
 				prototype: defaultAction,
-				label: "Try next quesiton part",
-				disabled: true,
+				title: "This question is completed, return to gameboard"
+				label: "Return to Top 10",
 				onClick: function() {
-					// link to content page
-					console.log('Go to next Q Part');
-				},
-			};
-		};
-
-		this.goToNextBoardQuestion = function() {
-			// TODO MT might already be implemented but commented out
-			return {
-				disabled: true,
-				prototype: defaultAction,
-				label: "Go to next board Question",
-				onClick: function() {
-					// link to content page
-					console.log('Go to next board Quesiton')
+					$location.url("/gameboards#" + gameboardId);
 				},
 			};
 		}

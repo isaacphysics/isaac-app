@@ -155,7 +155,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					return pageCompleted;
 				}
 
-				var determinePrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+				var determineFastTrackPrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					var questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
 					if (questionPartAnsweredCorrectly) {
 						if (questionPart.pageCompleted) {
@@ -163,20 +163,20 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 								return questionActions.retryPreviousQuestion(questionHistory, gameboardId);
 							} else {
 								if (gameboardId  && !questionPart.gameBoardCompletedPerfect) {
-									return questionActions.goToNextBoardQuestion(gameboardId);
+									return questionActions.backToBoard(gameboardId);
 								} else {
 									return null; // Gameboard completed
 								}
 							}
 						} else {
-							return questionActions.goToNextQuestionPart();
+							return null; // questionActions.goToNextQuestionPart();
 						}
 					} else  {
 						return questionActions.checkMyAnswer(scope, api);
 					}
 				}
 
-				var determineSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+				var determineFastTrackSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					var questionPartNotAnsweredCorrectly = !(questionPart.validationResponse && questionPart.validationResponse.correct);
 					if (questionPartNotAnsweredCorrectly && questionPart.relatedUnansweredEasierQuestions.length) {
 						var easierQuestion = questionPart.relatedUnansweredEasierQuestions[0];
@@ -192,9 +192,21 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
+				var determinePrimaryAction = function(validationResponse) {
+					var action = null;
+					if (!validationResponse || !validationResponse.correct) {
+						action = questionActions.checkMyAnswer(scope, api);
+					}
+					return action;
+				}
+
 				var determineActions = function() {
-					scope.primaryAction = determinePrimaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
-					scope.secondaryAction = determineSecondaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
+					if (scope.page.type != 'isaacFastTrackQuestionPage') {
+						scope.primaryAction = determinePrimaryAction(scope.question.validationResponse);
+					} else {
+						scope.primaryAction = determineFastTrackPrimaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
+						scope.secondaryAction = determineFastTrackSecondaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
+					}
 				}
 
 				scope.$watch("question.selectedChoice", function(newVal, oldVal) {
@@ -207,26 +219,6 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.canSubmit = true;
 					scope.question.validationResponse = null;
 				}, true);
-
-				scope.$watchGroup(["canSubmit", "question.selectedChoice"], function(newVal, oldVal) {
-					if (newVal !== oldVal) {
-						determineActions();
-					}
-				});
-				scope.$watch("question.validationResponse", function(newVal, oldVal) {
-					if (newVal !== oldVal) {
-						if (scope.question.validationResponse) {
-							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
-							scope.question.pageCompleted = isPageCompleted(scope.page);
-							determineActions();
-						}
-					}					
-				});
-				scope.$watch("question.pageCompleted", function(newVal, oldVal) {
-					if (scope.gameboard && newVal !== oldVal) {
-						checkGameboardProgress();
-					}
-				})
 
 				scope.$on("ensureVisible", function(e) {
 					if (e.targetScope == scope)
@@ -241,18 +233,32 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
+				scope.$watchGroup(["canSubmit", "question.selectedChoice"], function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						determineActions();
+					}
+				});
+
+				scope.$watch("question.validationResponse", function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						if (scope.question.validationResponse) {
+							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
+							scope.question.pageCompleted = isPageCompleted(scope.page);
+							determineActions();
+						}
+					}					
+				});
+
+				scope.$watch("question.pageCompleted", function(newVal, oldVal) {
+					if (scope.gameboard && newVal !== oldVal) {
+						checkGameboardProgress();
+					}
+				})
+
 				scope.question.pageCompleted = isPageCompleted(scope.page);
 				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.
 				scope.activateTab(-1); // Activate "Answer now" tab by default.
 				determineActions();
-
-				//TODO MT value.type == "isaacFastTrackQuestionPage" && value.level
-				//console.log('TODO MT QUESTION PART -------------')
-				//console.log('TODO MT scope', scope);
-				//console.log('TODO MT scope.doc', scope.doc);
-				//console.log('TODO MT scope.page', scope.page);
-				//console.log('TODO MT scope.question', scope.question);
-
 			}
 		};
 	}];
