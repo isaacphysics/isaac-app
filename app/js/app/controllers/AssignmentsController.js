@@ -240,7 +240,7 @@ define([], function() {
 			angular.forEach(results, function(assignment, index) {
 				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
-					if ((assignment.dueDate && !($scope.now > assignment.dueDate)) || creationDate > fourWeeksAgo) {
+					if (creationDate > fourWeeksAgo) {
 						$scope.myAssignments.inProgressRecent.push(assignment);
 					} else {
 						$scope.myAssignments.inProgressOld.push(assignment);

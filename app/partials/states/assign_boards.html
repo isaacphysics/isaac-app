@@ -82,7 +82,7 @@
                <h6>Group:</h6>
                <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups | orderBy:'groupName'"></select>
                <div >
-                  <h6>Due Date <span class="lighter">(optional):</span></h6>
+                  <h6>Due Date Reminder <span class="lighter">(optional):</span></h6>
                   <div class="ui-date-wrap">
                      <input ng-model="pendingAssignment[board.id].dueDate" ui-date="{showOn: 'both', buttonText: '', dateFormat: 'dd/mm/yy'}" placeholder="Select your due date..." type="text" />
                   </div>
