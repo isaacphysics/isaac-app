@@ -15,7 +15,7 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		var MAX_LABEL_LENGTH = 20;
+		var MAX_LABEL_LENGTH = 24;
 		var defaultAction = {
 			disabled: false
 		}
@@ -124,7 +124,7 @@ define([], function() {
 			return {
 				prototype: defaultAction,
 				title: "Retry previous question page",
-				label: "Retry previous question",
+				label: "Return to previous question",
 				onClick: function() {
 					$state.go('question', {id:previousQuestionId, questionHistory:commaSeparatedQuestionHistory, board:gameboardId})
 				}

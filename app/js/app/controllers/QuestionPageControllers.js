@@ -18,7 +18,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
@@ -106,6 +106,7 @@ define([], function() {
 
 		if ($stateParams.board) {
 			$scope.gameboardId = $stateParams.board;
+			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
 			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
 			$scope.gameBoard.$promise.then(function(board) {
 
@@ -132,12 +133,14 @@ define([], function() {
 				}
 
 				$scope.nextQuestion = board.questions[thisIndex + 1];
-
 			});
 		}
 
 		$scope.questionHistory = $stateParams.questionHistory ? $stateParams.questionHistory.split(',') : [];
-		
+		if ($scope.questionHistory.length) {
+			$scope.backToPreviousQuestion = questionActions.retryPreviousQuestion($scope.questionHistory.slice(0, 1), $scope.gameboardId);
+		}
+
 		$scope.backToBoard = function() {
 			$location.url("/gameboards#" + $stateParams.board)
 		}

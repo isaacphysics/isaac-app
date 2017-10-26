@@ -73,7 +73,6 @@
 
                 <!-- FastTrack question action buttons -->
                 <div class='ru-answer-check no-print' ng-show="(primaryAction || secondaryAction) && page.type=='isaacFastTrackQuestionPage'">
-                    <!-- TODO MT both actions -->
                     <div class='row'>
                         <!-- Secondary Action -->
                         <div ng-show="secondaryAction" class="columns small-14 small-offset-1"
@@ -86,8 +85,6 @@
                             <button ng-hide="primaryAction.hide" ng-disabled="primaryAction.disabled" ng-click="primaryAction.onClick()" title="{{primaryAction.title}}" class="expand ru-answer-button fasttrack-primary">{{primaryAction.label}}</button>
                         </div>
                     </div>
-                    <!-- TODO MT only one action -->
-
                 </div>
 
                 <div class='ru-answer-check no-print' ng-show="question.validationResponse && (doc.type=='isaacAnvilQuestion')">
