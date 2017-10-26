@@ -123,7 +123,7 @@ define([], function() {
 
 			return {
 				prototype: defaultAction,
-				title: "Retry previous question page"
+				title: "Retry previous question page",
 				label: "Retry previous question",
 				onClick: function() {
 					$state.go('question', {id:previousQuestionId, questionHistory:commaSeparatedQuestionHistory, board:gameboardId})
@@ -135,13 +135,13 @@ define([], function() {
 			// could go to next board question
 			return {
 				prototype: defaultAction,
-				title: "This question is completed, return to gameboard"
+				title: "This question is completed, return to gameboard",
 				label: "Return to Top 10",
 				onClick: function() {
 					$location.url("/gameboards#" + gameboardId);
 				},
 			};
-		}
+		};
 
 		// TOOD MT for each method in factory wrap result with prototype default action
 

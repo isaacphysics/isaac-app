@@ -224,19 +224,23 @@
     font-style: italic;
     &.fasttrack-primary {
         background-color: $ru_maths;
-        &:hover, &:focus, &:not(.disabled) {
-            background-color: lighten($ru_maths, $ru_site_hover);
+        &:hover, &:focus {
+            &:not(.disabled) {
+                background-color: lighten($ru_maths, $ru_site_hover);
+            }
         }
     }
     &.fasttrack-secondary {
         background: none;
         color: white;
         border: 2px solid $ru_maths;
-        &:hover, &:focus, &:not(.disabled) {
-            border-color: lighten($ru_maths, $ru_site_hover);
-            color: lighten($ru_maths, $ru_site_hover);
-            transition: border-color 300ms ease-out;
-            transition: color 300ms ease-out;
+        &:hover, &:focus {
+            &:not(.disabled) {
+                border-color: lighten($ru_maths, $ru_site_hover);
+                color: lighten($ru_maths, $ru_site_hover);
+                transition: border-color 300ms ease-out;
+                transition: color 300ms ease-out;
+            }
         }
     }
 }
