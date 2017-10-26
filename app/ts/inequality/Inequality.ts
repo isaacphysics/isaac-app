@@ -508,7 +508,7 @@ export
         });
 
         if (symbolWithMostChildren != null) {
-            let flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return e.replace(/,/g, ";") });
+            let flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return undefined == e ? '' : e.replace(/,/g, ";") });
             this.scope.newEditorState({
                 result: {
                     "tex": symbolWithMostChildren.getExpression("latex").trim(),
