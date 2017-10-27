@@ -136,8 +136,9 @@ export
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "mathml") {
+            expression += '<mo>' + this.state + "</mo>"
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + this.state + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.getExpression(format);
             }
         }
         return expression;
