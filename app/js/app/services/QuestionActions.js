@@ -20,9 +20,7 @@ define([], function() {
 			disabled: false
 		}
 
-		this.checkMyAnswer = function(scope, api) {
-			// TODO MT checkAnswer needs to be passed less info
-			// TODO MT move canSubmit to the question object
+		this.checkMyAnswer = function(scope, api) { // TODO refactor so that less is passed to this function
 			var checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
@@ -112,7 +110,7 @@ define([], function() {
 				title: "Read suggested related concept page",
 				label: "Read related concept page",
 				onClick: function() {
-					$state.go('concept', {id:conceptPage.id}); //TODO MT need to test this
+					$state.go('concept', {id:conceptPage.id});
 				},
 			};
 		};

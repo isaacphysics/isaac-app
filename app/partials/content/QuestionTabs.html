@@ -56,8 +56,8 @@
                 <!-- General question action buttons -->
                 <div class='ru-answer-check no-print' ng-hide="!primaryAction || doc.type=='isaacAnvilQuestion' || page.type=='isaacFastTrackQuestionPage'">
                     <div class='row'>
-                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns"><!-- TODO MT needs conditionals -->
-                            <p ng-show="doc.hints && doc.hints.length > 0 && !hlp && question.validationResponse.correct==false">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
+                        <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
+                            <p ng-show="doc.hints && doc.hints.length > 0 && !hlp">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
                             <p ng-show="hlp" style="min-height:60px;font-size:1.2rem;font-weight:600;">
                                 If you're stuck,
                                 <span ng-show="doc.hints && doc.hints.length > 0"> check out the hints above or </span>
