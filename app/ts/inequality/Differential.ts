@@ -161,13 +161,16 @@ class Differential extends Widget {
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
-                expression += "<mi>" + this.letter + this.dockingPoints["argument"].child.getExpression(format) + "</mi>";
+                expression += "<mi>" + this.letter  + "</mi>" + this.dockingPoints["argument"].child.getExpression(format);
             } else if (this.dockingPoints["order"].child != null && this.dockingPoints["argument"].child != null) {
                 if (this.orderNeedsMoving) {
-                    expression += `<msup><mi>${this.letter}${this.dockingPoints["argument"].child.getExpression(format)}</mi><mrow>${this.dockingPoints["order"].child.getExpression(format)}</mrow></msup>`;
+                    expression += '<msup><mrow><mi>' + this.letter + '</mi>' + this.dockingPoints["argument"].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>';
                 } else {
-                    expression += `<msup><mi>${this.letter}</mi><mrow>${this.dockingPoints["order"].child.getExpression(format)}</mrow></msup>${this.dockingPoints["argument"].child.getExpression(format)}`;
+                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>' + this.dockingPoints["argument"].child.getExpression(format);
                 }
+            }
+            if (this.dockingPoints['right'].child != null) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         return expression;
