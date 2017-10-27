@@ -38,6 +38,8 @@ define(function(require) {
 
 	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
 
+	.factory('questionActions', require("app/services/questionActions"))
+
 	.provider('api', function ApiProvider() {
 
 		var urlPrefix = "";
@@ -73,5 +75,7 @@ define(function(require) {
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
 	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
+
+	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
 
 });

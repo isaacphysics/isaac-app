@@ -1,6 +1,5 @@
-
 <!-- Additional Information Panel -->
-<div class="row no-print">
+<div ng-if="relatedQuestions.length || relatedEasierQuestions.length || relatedHarderQuestions.length" class="row no-print">
     <div class='ru-concept-inner'>
         <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
             <li>
@@ -10,11 +9,11 @@
                     </div>
                     <hr>
                     <ul class="pod-scroll-list">
-                    	<li ng-repeat="c in relatedConcepts">
+                        <li ng-repeat="c in relatedConcepts">
                             <a ui-sref="concept({id: c.id})">{{c.title}}</a>
                             <h6>{{c.summary}}</h6>
-                    	</li>
-	                    <li ng-hide="relatedConcepts.length" class="text-center">- No related concepts -</li>
+                        </li>
+                        <li ng-hide="relatedConcepts.length" class="text-center">- No related concepts -</li>
                     </ul>
                 </div>
             </li>

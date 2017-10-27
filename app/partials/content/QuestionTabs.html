@@ -53,8 +53,8 @@
                     </div>
                 </div>
 
-
-                <div class='ru-answer-check no-print' ng-hide="question.validationResponse.correct==true || doc.type=='isaacAnvilQuestion'">
+                <!-- General question action buttons -->
+                <div class='ru-answer-check no-print' ng-hide="!primaryAction || doc.type=='isaacAnvilQuestion' || page.type=='isaacFastTrackQuestionPage'">
                     <div class='row'>
                         <div class="small-14 small-offset-1 medium-7 medium-offset-1 columns">
                             <p ng-show="doc.hints && doc.hints.length > 0 && !hlp">Don’t forget to use the <strong>hint</strong> tabs above if you need help.</p>
@@ -65,8 +65,24 @@
                                 look at the <a href="/solving_problems" target="_blank">Solving Problems</a> page!
                             </p>&nbsp;
                         </div>
-                        <div class="small-14 small-offset-1 medium-6 columns end">
-                            <button ng-disabled="!canSubmit" class='expand ru-answer-button' ng-click="checkAnswer()" ng-hide="question.validationResponse.correct">Check my answer</button>
+                        <div class="small-14 small-offset-1 medium-6 columns end" ng-class="{'medium-offset-1': !secondaryAction, 'medium-offset-2': secondaryAction}" ng-show="primaryAction">
+                            <button ng-hide="primaryAction.hide" ng-disabled="primaryAction.disabled" ng-click="primaryAction.onClick()" title="{{primaryAction.title}}" class="expand ru-answer-button">{{primaryAction.label}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FastTrack question action buttons -->
+                <div class='ru-answer-check no-print' ng-show="(primaryAction || secondaryAction) && page.type=='isaacFastTrackQuestionPage'">
+                    <div class='row'>
+                        <!-- Secondary Action -->
+                        <div ng-show="secondaryAction" class="columns small-14 small-offset-1"
+                             ng-class="primaryAction ? 'medium-7 medium-offset-1' : 'medium-8 medium-offset-4'">
+                            <button ng-hide="secondaryAction.hide" ng-disabled="secondaryAction.disabled" ng-click="secondaryAction.onClick()" title="{{secondaryAction.title}}" class="expand ru-answer-button fasttrack-button fasttrack-secondary">{{secondaryAction.label}}</button>
+                        </div>
+                        <!-- Primary Action -->
+                        <div ng-show="primaryAction" class="columns end small-14 small-offset-1"
+                             ng-class="secondaryAction ? 'medium-7 medium-offset-0' : 'medium-8 medium-offset-4'">
+                            <button ng-hide="primaryAction.hide" ng-disabled="primaryAction.disabled" ng-click="primaryAction.onClick()" title="{{primaryAction.title}}" class="expand ru-answer-button fasttrack-primary">{{primaryAction.label}}</button>
                         </div>
                     </div>
                 </div>

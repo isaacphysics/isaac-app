@@ -15,7 +15,7 @@
  */
 define(["app/honest/responsive_video"], function(rv, scope) {
 
-	return ["api", function(api) {
+	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
 
 		return {
 
@@ -26,10 +26,14 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 			templateUrl: "/partials/content/QuestionTabs.html",
 
 			link: function(scope, element, attrs, ctrls, transclude) {
-
 				if (scope.accordionChildMetrics) {
 					scope.accordionChildMetrics.questionCount++;
 				}
+
+				var emptyListIfUndefined = function(originalResult) {
+					var result = originalResult ? originalResult : [];
+					return result;
+				};
 
 				// An object to hold a load of state for this particular question. Keep it together like this
 				// so that child scopes can read/write values safely without shadowing.
@@ -38,10 +42,23 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					selectedChoice: null,
 					gameBoardCompletedPassed: false,
 					gameBoardCompletedPerfect: false,
+					pageCompleted: false,
 					id: scope.doc.id,
 					type: scope.doc.type,
+					relatedConcepts: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, {type: "isaacConceptPage"})),
+					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
+						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
+						var isEasier = relatedContent.level < scope.page.level;
+						var isUnanswered = !relatedContent.correct;
+						return isQuestionPage && isEasier && isUnanswered;
+					})),
+					relatedUnansweredSupportingQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
+						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
+						var isEqualOrHarder = relatedContent.level >= scope.page.level;
+						var isUnanswered = !relatedContent.correct;
+						return isQuestionPage && isEqualOrHarder && isUnanswered;
+					}))
 				};
-
 				if (scope.doc.bestAttempt) {
 					scope.question.validationResponse = scope.doc.bestAttempt;
 					scope.question.selectedChoice = scope.question.validationResponse.answer;
@@ -60,97 +77,135 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
-				scope.activateTab(-1); // Activate "Answer now" tab by default.
+				var checkGamebaordProgress = function() {
+					var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
+					var gameBoardCompletedPassed =  true;
+					var gameBoardCompletedPerfect =  true;
 
-				// A flag to prevent someone clicking submit multiple times without changing their answer.
-				scope.canSubmit = false;
-			
-				scope.checkAnswer = function() {
-					if (scope.question.selectedChoice != null && scope.canSubmit) {
-						scope.canSubmit = false;
+					// Re-load the game board to check for updated progress
+					api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
+						scope.question.gameBoardPercentComplete = board.percentageCompleted;
 
-						if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
-							var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
-							if (Object.keys(symbols).length == 0) {
-								return;
+						//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
+						for(var i = 0; i < board.questions.length; i++){
+							// page progress
+							if (board.questions[i].state != "PERFECT"){
+								gameBoardCompletedPerfect = false;
+							}
+							if (board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
+								gameBoardCompletedPassed = false;
+							}
+						}
+						// If things have changed, and the answer is correct, show the modal
+						if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
+							gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
+							initialGameBoardPercent < board.percentageCompleted) && r.correct) {
+							scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
+							scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
+							scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
+							scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
+
+							if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
+								scope.modals["congrats"].show();
+								scope.$emit("modalPassedDisplayed", true);
+							}
+
+							if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
+								scope.modals["congrats"].show();
+								scope.$emit("modalPerfectDisplayed", true);
 							}
 						}
 
-						var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
+						// if(board.percentageCompleted == '100' && !scope.modalDisplayed && validationResponse.correct) {
+						// 		scope.modals["congrats"].show();
+						// 		scope.$emit("modalCompleteDisplayed", true);
+						// }
+						// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
+						// question for a gameboard and the question has been passed, not completed. See issue #419
+					});
+				}
 
-						s.$promise.then(function foo(r) {
-							scope.question.validationResponse = r;
+				var applyValidationResponseToQuestionPart = function(content, validationResponse) {
+					if (QUESTION_TYPES.includes(content.type) && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
+						content.bestAttempt = validationResponse;
+					}
+					if (content.children) {
+						for (child of content.children) {
+							applyValidationResponseToQuestionPart(child, validationResponse);
+						}
+					}
+				}
 
-							// Check the gameboard progress
-							if (scope.gameBoard) {
-								// Re-load the game board to check for updated progress
-								var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
-								var gameBoardCompletedPassed =  true;
-								var gameBoardCompletedPerfect =  true;
-
-								api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
-									scope.question.gameBoardPercentComplete = board.percentageCompleted;
-
-									//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
-									for(var i = 0; i < board.questions.length; i++){
-										if(board.questions[i].state != "PERFECT" ){
-											gameBoardCompletedPerfect = false;
-										}
-										if(board.questions[i].state != "PASSED" && board.questions[i].state != "PERFECT"){
-											gameBoardCompletedPassed = false;
-										}
-									}
-									// If things have changed, and the answer is correct, show the modal
-									if ((gameBoardCompletedPassed != !!scope.question.gameBoardCompletedPassed ||
-									   gameBoardCompletedPerfect != !!scope.question.gameBoardCompletedPerfect ||
-									   initialGameBoardPercent < board.percentageCompleted) && r.correct) {
-										scope.question.gameBoardCompletedPassed = gameBoardCompletedPassed;
-										scope.question.gameBoardCompletedPerfect = gameBoardCompletedPerfect;
-										scope.$emit('gameBoardCompletedPassed', scope.question.gameBoardCompletedPassed);
-										scope.$emit('gameBoardCompletedPerfect', scope.question.gameBoardCompletedPerfect);
-
-										if(!scope.modalPassedDisplayed && scope.question.gameBoardCompletedPassed) {
-											scope.modals["congrats"].show();
-											scope.$emit("modalPassedDisplayed", true);
-										}
-
-										if(!scope.modalPerfectDisplayed && scope.question.gameBoardCompletedPerfect) {
-											scope.modals["congrats"].show();
-											scope.$emit("modalPerfectDisplayed", true);
-										}
-
-									}
-
-
-									//
-									// if(board.percentageCompleted == '100' && !scope.modalDisplayed && r.correct) {
-									// 		scope.modals["congrats"].show();
-									// 		scope.$emit("modalCompleteDisplayed", true);
-									// }
-
-
-									// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
-									// question for a gameboard and the question has been passed, not completed. See issue #419
-
-								});
+				var isPageCompleted = function(questionPage) {
+					var hasIncorrectOrUnansweredQuestion = function(content) {
+						var foundIncorrectQuestionPart = false;
+						if (QUESTION_TYPES.includes(content.type)) {
+							if (!content.bestAttempt || !content.bestAttempt.correct) {
+								foundIncorrectQuestionPart = true;
 							}
-
-						}, function bar(e) {
-							console.error("Error validating answer:", e);
-							var eMessage = e.data.errorMessage;
-							var eTitle = "Can't Submit Answer";
-							if (eMessage != null && eMessage.indexOf("ValidatorUnavailableException:") == 0) {
-								eTitle = "Error Checking Answer"
-								eMessage = eMessage.replace("ValidatorUnavailableException:", "");
+						}
+						if (content.children) {
+							for (child of content.children) {
+								foundIncorrectQuestionPart |= hasIncorrectOrUnansweredQuestion(child);
 							}
-							scope.showToast(scope.toastTypes.Failure, eTitle, eMessage != undefined ? eMessage : "");
-							// If an error, after a little while allow them to submit the same answer again.
-							setTimeout(function() { scope.canSubmit = true; }, 5000);
-						});
+						}
+						return foundIncorrectQuestionPart
+					}
+					var pageCompleted = !hasIncorrectOrUnansweredQuestion(questionPage);
+					return pageCompleted;
+				}
 
+				var determineFastTrackPrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+					var questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
+					if (questionPartAnsweredCorrectly) {
+						if (questionPart.pageCompleted) {
+							if (questionHistory.length) {
+								return questionActions.retryPreviousQuestion(questionHistory, gameboardId);
+							} else {
+								if (gameboardId  && !questionPart.gameBoardCompletedPerfect) {
+									return questionActions.backToBoard(gameboardId);
+								} else {
+									return null; // Gameboard completed
+								}
+							}
+						} else {
+							return null; // questionActions.goToNextQuestionPart();
+						}
+					} else  {
+						return questionActions.checkMyAnswer(scope, api);
+					}
+				}
+
+				var determineFastTrackSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+					var questionPartNotAnsweredCorrectly = !(questionPart.validationResponse && questionPart.validationResponse.correct);
+					if (questionPartNotAnsweredCorrectly && questionPart.relatedUnansweredEasierQuestions.length) {
+						var easierQuestion = questionPart.relatedUnansweredEasierQuestions[0];
+						return questionActions.tryEasierQuestion(easierQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
+					} else if (questionPart.relatedUnansweredSupportingQuestions.length) {
+						var supportingQuestion = questionPart.relatedUnansweredSupportingQuestions[0];
+						return questionActions.trySupportingQuestion(supportingQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
+					} else if (questionPart.relatedConcepts.length) {
+						var relatedConcept = questionPart.relatedConcepts[0];
+						return questionActions.showRelatedConceptPage(relatedConcept);
 					} else {
-						console.log("Not submitting answer - either no answer selected or previous answer unchanged");
-						// TODO: Somehow tell the user that their answer was not submitted. Better: Disable the button so we never get here.
+						return null;
+					}
+				}
+
+				var determinePrimaryAction = function(validationResponse) {
+					var action = null;
+					if (!validationResponse || !validationResponse.correct) {
+						action = questionActions.checkMyAnswer(scope, api);
+					}
+					return action;
+				}
+
+				var determineActions = function() {
+					if (scope.page.type != 'isaacFastTrackQuestionPage') {
+						scope.primaryAction = determinePrimaryAction(scope.question.validationResponse);
+					} else {
+						scope.primaryAction = determineFastTrackPrimaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
+						scope.secondaryAction = determineFastTrackSecondaryAction(scope.question, scope.page, scope.questionHistory.slice(), scope.gameboardId);
 					}
 				}
 
@@ -178,6 +233,32 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					scope.$emit("ensureVisible");
 				});
 
+				scope.$watchGroup(["canSubmit", "question.selectedChoice"], function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						determineActions();
+					}
+				});
+
+				scope.$watch("question.validationResponse", function(newVal, oldVal) {
+					if (newVal !== oldVal) {
+						if (scope.question.validationResponse) {
+							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
+							scope.question.pageCompleted = isPageCompleted(scope.page);
+							determineActions();
+						}
+					}					
+				});
+
+				scope.$watch("question.pageCompleted", function(newVal, oldVal) {
+					if (scope.gameboard && newVal !== oldVal) {
+						checkGameboardProgress();
+					}
+				})
+
+				scope.question.pageCompleted = isPageCompleted(scope.page);
+				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.
+				scope.activateTab(-1); // Activate "Answer now" tab by default.
+				determineActions();
 			}
 		};
 	}];
