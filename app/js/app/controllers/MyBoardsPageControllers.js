@@ -30,7 +30,8 @@ define([], function() {
 
 		var roundUpToNearestSix = function(initialValue) {
 			var valueModuloSix = initialValue % 6;
-			return valueModuloSix || initialValue == 0 ? initialValue + 6 - valueModuloSix : initialValue;
+			var valueNeedsIncreasing = valueModuloSix != 0 || initialValue == 0;
+			return valueNeedsIncreasing ? initialValue + 6 - valueModuloSix : initialValue;
 		}
 
 		var updateBoards = function(limit) {
