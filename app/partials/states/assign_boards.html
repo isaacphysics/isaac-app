@@ -79,7 +79,7 @@
             </div>
             <a class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)" ng-show="openedAssignPanels.indexOf(board.id) == -1">Assign / Unassign</a>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
-               <h6>Group:</h6>
+               <h6>Group:<span data-ot="Only unarchived groups are visible in this list. You can unarchive a group from your group management page." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Groups disappeared?</span></h6>
                <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups | orderBy:'groupName'"></select>
                <div >
                   <h6>Due Date Reminder <span class="lighter">(optional):</span></h6>
