@@ -182,6 +182,7 @@ export
         } else if (this.pythonSymbol) {
             return this.pythonSymbol;
         }
+        return '';
     }
 
     /** Paints the widget on the canvas. */
