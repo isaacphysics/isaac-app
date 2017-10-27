@@ -113,12 +113,13 @@ class Differential extends Widget {
         let expression = "";
         if (format == "latex") {
             if (this.letter == "δ") {
-                expression = "\\mathrm{\\delta} ";
+                expression = "\\mathrm{\\delta}";
             } else if (this.letter == "∆") {
-                expression = "\\mathrm{\\Delta} ";
+                expression = "\\mathrm{\\Delta}";
             } else {
-                expression = "\\mathrm{" + this.letter + "} ";
+                expression = "\\mathrm{" + this.letter + "}";
             }
+            
             if (this.dockingPoints["order"].child != null && !this.orderNeedsMoving) {
                 expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
             }
