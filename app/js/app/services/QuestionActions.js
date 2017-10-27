@@ -141,7 +141,7 @@ define([], function() {
 			};
 		};
 
-		// TOOD MT for each method in factory wrap result with prototype default action
+		// TODO for each method in factory wrap result with prototype default action
 
 		return this;
 	}];

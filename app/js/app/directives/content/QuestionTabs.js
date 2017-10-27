@@ -130,7 +130,8 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 						content.bestAttempt = validationResponse;
 					}
 					if (content.children) {
-						for (child of content.children) {
+						for (var i=0; i < content.children.length; i++) {
+							var child = content.children[i];
 							applyValidationResponseToQuestionPart(child, validationResponse);
 						}
 					}
@@ -145,7 +146,8 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 							}
 						}
 						if (content.children) {
-							for (child of content.children) {
+							for (var i=0; i < content.children.length; i++) {
+								var child = content.children[i];
 								foundIncorrectQuestionPart |= hasIncorrectOrUnansweredQuestion(child);
 							}
 						}

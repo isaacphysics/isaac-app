@@ -38,7 +38,7 @@ define(function(require) {
 
 	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
 
-	.factory('questionActions', require("app/services/questionActions"))
+	.factory('questionActions', require("app/services/QuestionActions"))
 
 	.provider('api', function ApiProvider() {
 

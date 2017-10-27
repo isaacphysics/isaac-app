@@ -36,8 +36,10 @@ define([], function() {
 
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
-			var roundedUpLimit = roundUpToNearestSix(limit);
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, roundedUpLimit).$promise.then(function(boards) {
+			if (limit != null) {
+				limit = roundUpToNearestSix(limit);
+			}
+			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				$scope.setLoading(false);
 			})
