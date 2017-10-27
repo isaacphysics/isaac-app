@@ -61,8 +61,10 @@ define([], function() {
 		};
 
 		this.tryEasierQuestion = function(easierQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {			
-			var fullLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} ${easierQuestion.title.toLowerCase()}`;
-			var abbreviatedLabel = `${easierQuestion.level == '2' ? 'Revise' : 'Practice'} this concept`;
+			var fullLabel = easierQuestion.level == '2' ? 'Revise' : 'Practice';
+			fullLabel += " " + easierQuestion.title.toLowerCase();
+			var abbreviatedLabel = easierQuestion.level == '2' ? 'Revise' : 'Practice';
+			abbreviatedLabel += " this concept";
 			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
@@ -83,8 +85,11 @@ define([], function() {
 		};
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
-			var fullLabel = `More ${supportingQuestion.title.toLowerCase()} ${supportingQuestion.level == '2' ? 'revision' : 'practice'}`;
-			var abbreviatedLabel = `More ${supportingQuestion.level == '2' ? 'revision' : 'practice'} of this concept`; 
+			var fullLabel = "More " + supportingQuestion.title.toLowerCase() + " ";
+			fullLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
+			var abbreviatedLabel = "More ";
+			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
+			abbreviatedLabel += " of this concept";
 			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
