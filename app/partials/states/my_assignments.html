@@ -31,6 +31,7 @@
                         <span ng-repeat="level in calculateBoardLevels(assignment.gameboard)" class="level-{{level}}">{{level}}</span>
                   </div>
                   <p>Assigned: <strong>{{assignment.creationDate | date:'dd/MM/yyyy'}}</strong></p>
+                  <p ng-show="assignment.dueDate">Due: <strong>{{assignment.dueDate | date:'dd/MM/yyyy'}}</strong></p>
                   <p ng-show="assignment.assignerSummary.familyName">By: <strong>{{(assignment.assignerSummary.givenName ? assignment.assignerSummary.givenName.charAt(0) + ". " : "") + assignment.assignerSummary.familyName}}</strong></p>
                </div>
             </div>
@@ -44,7 +45,7 @@
             </div>
             <div class="large-4 medium-3 columns board-link reorder-wrap">
                <a class="reorder-bottom" href="javascript:void(0)" ui-sref="board({id: assignment.gameboard.id})">View Assignment <span class="icon-link"></span></a>
-               <p ng-if="false" class="reorder-top"><span class="overdue">Overdue:</span> 21/01/2014</p>
+               <p ng-show="now > assignment.dueDate" class="reorder-top"><span class="overdue">Overdue:</span> {{assignment.dueDate | date:'dd/MM/yyyy'}}</p>
             </div>
          </div>
          <div ng-if="assignmentsVisible == null || assignmentsVisible.length == 0">

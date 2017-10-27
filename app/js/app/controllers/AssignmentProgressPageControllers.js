@@ -35,6 +35,10 @@ define([], function() {
         scope.assignmentTotalQuestionParts = {}; // Key - assignment ID, value - questionPartTotal 
         scope.assignmentCSVLink = null;
         scope.passMark = 0.75;
+        scope.pageSettings = {
+            colourBlind: false,
+            formatAsPercentage: false
+        };
 
         var myGroupsPromise = api.groupManagementEndpoint.get().$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
@@ -131,10 +135,9 @@ define([], function() {
 
                             // Calculate student totals and gameboard totals
                             scope.assignmentProgress[k].studentsCorrect = 0;
-
                             for (var j = 0; j < progress.length; j++) {
                                 var studentProgress = progress[j];
-
+                                studentProgress.notAttemptedPartResults = [];
                                 studentProgress.tickCount = 0;
                                 studentProgress.correctQuestionPartsCount = 0;
                                 studentProgress.incorrectQuestionPartsCount = 0;
@@ -144,8 +147,8 @@ define([], function() {
                                     }
                                     studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
                                     studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
+                                    studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
                                 }
-
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
                                     scope.assignmentProgress[k].studentsCorrect++;
                                 }
@@ -170,6 +173,7 @@ define([], function() {
         scope.getStateClass = function(studentProgress, index, totalParts, colourBlind, selected) {
             var correctParts = index != null ? studentProgress.correctPartResults[index] : studentProgress.correctQuestionPartsCount;
             var incorrectParts = index != null ? studentProgress.incorrectPartResults[index] : studentProgress.incorrectQuestionPartsCount;
+            var status = studentProgress.results[index];
 
             var result = selected ? "selected " : "";
             result += colourBlind ? "colour-blind " : "";
@@ -177,9 +181,9 @@ define([], function() {
                 result += "revoked";
             } else if (correctParts == totalParts) {
                 result += "completed";
-            } else if ((correctParts / totalParts) >= scope.passMark) {
+            } else if (status == "PASSED" || (correctParts / totalParts) >= scope.passMark) {
                 result += "passed";
-            } else if ((incorrectParts / totalParts) > (1 - scope.passMark)) {
+            } else if (status == "FAILED" || (incorrectParts / totalParts) > (1 - scope.passMark)) {
                 result += "failed";
             } else if (correctParts > 0) {
                 result += "in-progress";
