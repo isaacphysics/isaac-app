@@ -116,7 +116,7 @@ export
         } else if (format == "mhchem") {
           expression += this.mhchemSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.dockingPoints["right"].child.getExpression(format) + " ";
+                expression += " " + this.dockingPoints["right"].child.getExpression(format);
             } else {
                 // This is a charge, most likely:
                 expression = this.operation.replace(/−/g, "-");
