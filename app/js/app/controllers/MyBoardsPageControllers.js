@@ -30,12 +30,12 @@ define([], function() {
 
 		var roundUpToNearestSix = function(initialValue) {
 			var valueModuloSix = initialValue % 6;
-			return valueModuloSix || initialValue == 0 ? initialValue + 6 - valueModuloSix : initialValue; 
+			return valueModuloSix || initialValue == 0 ? initialValue + 6 - valueModuloSix : initialValue;
 		}
 
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
-			var roundedUpLimit = roundUpToNearestSix(limit); 
+			var roundedUpLimit = roundUpToNearestSix(limit);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, roundedUpLimit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				$scope.setLoading(false);
