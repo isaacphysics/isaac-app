@@ -899,6 +899,17 @@ define(["angular-ui-router"], function() {
                 });
             }],
         });
+
+        $sp.state('assignmentRedirect', {
+            url: "/assignment/:boardId",
+            resolve: {
+                requireLogin: getLoggedInPromise,
+            },
+            onEnter: ['$stateParams', '$state', '$rootScope', function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.boardId}, {location: "replace"});
+                $rootScope.setLoading(false);
+            }],
+        });
     }])
 
     .run(['$rootScope', '$state', '$location', function($rootScope, $state, $location) {
