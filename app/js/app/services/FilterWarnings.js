@@ -131,9 +131,6 @@ define([], function() {
 			if (contains(topics, "trigonometry") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || levels.length == 0))
 				warnings.push(["trigonometry", "There are no Trigonometry questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-			if (contains(topics, "algebra") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
-				warnings.push(["algebra", "There are no Algebra questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
-
 			if (contains(topics, "graph_sketching") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
 				warnings.push(["graph_sketching", "There are no Graph Sketching questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
