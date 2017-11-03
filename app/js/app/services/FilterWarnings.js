@@ -95,8 +95,8 @@ define([], function() {
                 warnings.push(["wave_motion", "There are no Wave Motion questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Calculus field:
-            if (topics.length == 0 && contains(fields, "Calculus") && !(contains(levels, 2) || (contains(levels, 3) || (contains(levels, 4) || (contains(levels, 5) || (contains(levels, 6) || levels.length == 0))
-                warnings.push(["Calculus", "There are no Calculus questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
+            if (topics.length == 0 && contains(fields, "calculus") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+                warnings.push(["calculus", "There are no Calculus questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Algebra field:
             if (topics.length == 0 && contains(fields, "algebra") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 6) || levels.length == 0))
