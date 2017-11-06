@@ -42,6 +42,8 @@ define([
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
+    var x =`hello`;
+
 	//var rv = System.amdRequire("app/honest/responsive_video.js");
 
 	// Declare app level module which depends on filters, and services
@@ -64,7 +66,6 @@ define([
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
-
         // Polyfill a console for browsers (IE) that don't support one!
         // https://github.com/h5bp/html5-boilerplate/blob/master/src/js/plugins.js
         (function() {
