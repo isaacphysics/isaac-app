@@ -42,8 +42,6 @@ define([
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-    var x =`hello`;
-
 	//var rv = System.amdRequire("app/honest/responsive_video.js");
 
 	// Declare app level module which depends on filters, and services
