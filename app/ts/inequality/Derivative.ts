@@ -1,6 +1,5 @@
 /*
-Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
-               Andrew Wells <aw684@cam.ac.uk>
+Copyright 2017 Andrea Franceschini <andrea.franceschini@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,25 +14,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-///// <reference path="../../typings/p5.d" />
-///// <reference path="../../typings/lodash.d" />
+///// <reference path="../../typings/p5.d.ts" />
+///// <reference path="../../typings/lodash.d.ts" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
+/* tslint:disable:  */
 
 import { Widget, Rect } from './Widget';
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
 import { Brackets } from "./Brackets";
+import { Differential } from "./Differential";
+import { Num } from "./Num";
 
 export
-    class Fraction extends Widget {
+    class Derivative extends Widget {
     protected s: any;
     private width: number;
 
     get typeAsString(): string {
-        return "Fraction";
+        return "Derivative";
     }
 
     /**
@@ -51,22 +53,22 @@ export
         this.s = s;
         this.width = 0;
 
-        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'symbol_subscript', 'differential_argument'];
+        this.docksTo = ['operator', 'symbol', 'operator_brackets', 'relation'];
     }
 
     /** Generates all the docking points in one go and stores them in this.dockingPoints.
-     * A Fraction has three docking point:
+     * A Derivative has three docking point:
      *
      * - _right_: Binary operation (addition, subtraction), Symbol (multiplication)
-     * - _numerator_: Symbol
-     * - _denominator_: Symbol
+     * - _numerator_: Differential
+     * - _denominator_: Differential
      */
     generateDockingPoints() {
         let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, "operator", "right");
-        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
-        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol", "denominator");
+        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "differential", "numerator");
+        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "differential", "denominator");
     }
 
     /**
@@ -80,7 +82,7 @@ export
      */
     getExpression(format: string): string {
         let expression = "";
-        if (format == "latex" || format == 'mhchem') {
+        if (format == "latex") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
                 expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
                 if (this.dockingPoints["right"].child != null) {
@@ -88,19 +90,46 @@ export
                 }
             }
         } else if (format == "python") {
-            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "(" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + ")";
-                if (this.dockingPoints["right"].child != null) {
-                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
-                    } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+            if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null &&
+                this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential") {
+                expression += "Derivative(";
+                if (this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
+                    expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
+                } else {
+                    expression += "_, ";
+                }
+                let stack: Array<Widget> = [this.dockingPoints["denominator"].child];
+                let list = [];
+                while(stack.length > 0) {
+                    let e = stack.shift();
+                    if (e.typeAsString == "Differential") {
+                        // WARNING: This stops at the first non-Differential, which is kinda OK, but may confuse people.
+                        let o = 1;
+                        let o_child: Widget = e.dockingPoints["order"].child
+                        if (o_child != null && o_child.typeAsString == "Num") {
+                            o = parseInt(o_child.getFullText());
+                        }
+                        do {
+                            if (e.dockingPoints["argument"].child != null) {
+                                list.push(e.dockingPoints["argument"].child.getExpression(format));
+                            } else {
+                                list.push("?");
+                            }
+                            o -= 1;
+                        } while(o > 0);
+                        if (e.dockingPoints["right"].child != null) {
+                            stack.push(e.dockingPoints["right"].child);
+                        }
                     }
+                }
+                expression += list.join(", ") + ")";
+                if(this.dockingPoints["right"].child != null) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += "[FRACTION:" + this.id + "]";
+                expression += "[Derivative:" + this.id + "]";
             }
         } else if (format == 'mathml') {
             expression = '';
@@ -119,7 +148,7 @@ export
     }
 
     token() {
-        return '';
+        return this.getExpression("python");
     }
 
     /** Paints the widget on the canvas. */
@@ -152,7 +181,7 @@ export
         this.width = 50;
         let numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
         let denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
-        this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
+        this.width = Math.max(this.width, Math.max(numerator_width, denominator_width));
         return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
     }
 
@@ -194,8 +223,8 @@ export
 
         if ("denominator" in boxes) {
             let p = this.dockingPoints["denominator"].child.position;
-            let fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            let denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
+            let fullDenominatorWidth = this.dockingPoints["denominator"].child.subtreeBoundingBox().w;
+            let denominatorRootWidth = this.dockingPoints["denominator"].child.boundingBox().w;
             let denominatorFullAscent = subtreeBoxes["denominator"].y;
 
             p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;
@@ -204,7 +233,7 @@ export
 
         if ("right" in boxes) {
             let p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
+            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4;
             p.y = 0;
             // FIXME HORRIBLE BRACKETS FIX
             let docking_right = this.dockingPoints["right"];

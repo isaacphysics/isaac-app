@@ -115,6 +115,7 @@ define(["angular-ui-router"], function() {
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
         $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+        $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
 
@@ -186,6 +187,15 @@ define(["angular-ui-router"], function() {
                 $state.go('book_physics_skills_14', {}, {
                     location: "replace"
                 });
+                $rootScope.setLoading(false);
+            }],
+        });
+
+        $sp.state('answers', {
+            // People try this URL for answers; point them to the FAQ:
+            url: "/answers",
+            onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                $state.go('faq', {'#': 'answers'}, {location: "replace"});
                 $rootScope.setLoading(false);
             }],
         });
@@ -289,7 +299,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('question', {
-            url: "/questions/:id?board",
+            url: "/questions/:id?board&questionHistory",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
                     return api.questionPages.get({
@@ -665,18 +675,18 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController"
             });
 
-        $sp.state('adminStatsNew.schoolUsersDetail', {
-            url: "/schools/:schoolId/user_list",
-            templateUrl: '/partials/admin_stats/school_user_detail_list.html',
-            resolve: {
-                "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
-                    return api.statisticsEndpoint.getNewSchoolUsers({
-                        id: $stateParams.schoolId
-                    });
-                }]
-            },
-            controller: "AdminStatsPageController"
-        });
+            $sp.state('adminStatsNew.schoolUsersDetail', {
+                url: "/schools/:schoolId/user_list",
+                templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+                resolve: {
+                    "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.statisticsEndpoint.getNewSchoolUsers({
+                            id: $stateParams.schoolId
+                        });
+                    }]
+                },
+                controller: "AdminStatsPageController"
+            });
 
             $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
@@ -689,16 +699,16 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController",
             });
 
-        $sp.state('adminStatsNew.popularGameboards', {
-            url: "/popular_gameboards",
-            templateUrl: '/partials/admin_stats/popular_gameboards.html',
-            resolve: {
-                "dataToShow": ["api", function(api) {
-                    return api.statisticsEndpoint.getGameboardPopularity();
-                }]
-            },
-            controller: "AdminStatsPageController",
-        });
+            $sp.state('adminStatsNew.popularGameboards', {
+                url: "/popular_gameboards",
+                templateUrl: '/partials/admin_stats/popular_gameboards.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getGameboardPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
 
             $sp.state('adminStats.isaacAnalytics', {
                 url: "/isaac_analytics",
@@ -887,6 +897,17 @@ define(["angular-ui-router"], function() {
                     console.error("Error saving board.");
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });
+            }],
+        });
+
+        $sp.state('assignmentRedirect', {
+            url: "/assignment/:boardId",
+            resolve: {
+                requireLogin: getLoggedInPromise,
+            },
+            onEnter: ['$stateParams', '$state', '$rootScope', function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.boardId}, {location: "replace"});
+                $rootScope.setLoading(false);
             }],
         });
     }])

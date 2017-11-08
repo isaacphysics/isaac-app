@@ -64,7 +64,6 @@ define([
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
-
         // Polyfill a console for browsers (IE) that don't support one!
         // https://github.com/h5bp/html5-boilerplate/blob/master/src/js/plugins.js
         (function() {
@@ -119,7 +118,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.1.8/api");
+            apiProvider.urlPrefix("/api/v2.2.3/api");
         }
 
         NProgress.configure({ showSpinner: false });

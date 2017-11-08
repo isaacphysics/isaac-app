@@ -93,12 +93,26 @@
 
         <!-- Buttons -->
         <section>
-            <div class="row no-print">
+            <!-- Back to board button -->
+            <div ng-hide="questionPage.type=='isaacFastTrackQuestionPage'" class="row no-print">
                 <div class="large-12 large-offset-2 medium-12 medium-offset-2 small-16 columns ru-concept-buttons">
                     <ul ng-show="gameBoard.$resolved" class='medium-block-grid-1 small-block-grid-1 ru-pad'>
                         <li><a class='ru-concept-button' ng-click="backToBoard()">Back to Board</a></li>
                         <!--<li><a class='ru-concept-button' ng-show="nextQuestion" ui-sref="question({id: nextQuestion.id})">Next Question</a></li>-->
                     </ul>
+                </div>
+            </div>
+            <!-- FastTrack buttons -->
+            <div ng-show="questionPage.type=='isaacFastTrackQuestionPage'" class="no-print ru-concept-buttons">
+                <div class="row">
+                    <div ng-show="backToPreviousQuestion" class="large-12 large-offset-2 medium-12 medium-offset-2 small-16 columns">
+                        <button ng-hide="backToPreviousQuestion.hide" ng-disabled="backToPreviousQuestion.disabled" ng-click="backToPreviousQuestion.onClick()" title="{{backToPreviousQuestion.title}}" class="expand ru-answer-button fasttrack-button fasttrack-primary ru-concept-button">{{backToPreviousQuestion.label}}</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div ng-show="backToTopTen" class="large-12 large-offset-2 medium-12 medium-offset-2 small-16 columns">
+                        <button ng-hide="backToTopTen.hide" ng-disabled="backToTopTen.disabled" ng-click="backToTopTen.onClick()" title="{{backToTopTen.title}}" class="expand ru-answer-button fasttrack-primary ru-concept-button">{{backToTopTen.label}}</button>
+                    </div>
                 </div>
             </div>
         </section>

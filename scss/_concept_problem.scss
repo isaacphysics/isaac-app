@@ -218,6 +218,9 @@
 .ru-answer-check * button
 {
     font-size: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0rem;
     font-style: italic;
 }
 
@@ -230,14 +233,16 @@
     .ru-answer-wrong * h5 { font-size: $h5-font-size * 1.5;}
     .ru-answer-wrong * h6 { font-size: $h6-font-size * 1.5;}
     .ru-answer-wrong * p  { font-size: 1.25rem  !important; margin-bottom: 4px;}
-    .ru-answer-wrong
-    {
+    .ru-answer-wrong {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
     }
-    .ru-answer-check * button
-    {
+    .ru-answer-check * button {
         font-size: 1.25rem;
+        margin: 0 0 1.25rem;
+    }
+    .ru-answer-check * div.end button {
+        margin: 0rem;
     }
 }
 
@@ -419,8 +424,8 @@
 .ru-answer-check
 {
     padding-top: 30px;
+    padding-bottom: 30px;
     background-color: #4b4b4b;
-    padding-bottom: 20px;
 }
 
 // Carousel

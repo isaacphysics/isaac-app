@@ -273,8 +273,7 @@ define([], function() {
 			},					
 			'assignBoard' : {
 				method: 'POST',
-				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
-				params: {gameId: '@gameId', groupId: '@groupId'}
+				url: urlPrefix + "/assignments/assign/"
 			},			
 			'unassignBoard' : {
 				method: 'DELETE',

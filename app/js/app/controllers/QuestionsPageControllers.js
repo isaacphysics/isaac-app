@@ -29,12 +29,13 @@ define([], function() {
 			page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
 
 			$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
-				var item = {};
-				item.title = q.title;
-				item.subtitle = tags.getFieldTag(q.tags).title;
-				item.level = q.level;
-				item.url = "/questions/" + q.id + "?board=" + q.boardId;
-				return item;
+				var fieldTag = tags.getFieldTag(q.tags) || {};
+				return {
+					title: q.title,
+					subtitle: fieldTag.title || "",
+					level: q.level,
+					url: "/questions/" + q.id + "?board=" + q.boardId,
+				};
 			});
 
 			$scope.featuredQuestions.sort(function(a,b) {return a.level - b.level});

@@ -1,8 +1,30 @@
-import { DockingPoint } from './DockingPoint.ts';
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
+import { DockingPoint } from './DockingPoint';
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
-export var wId = 0;
+export let wId = 0;
 
 export
     class Rect {
@@ -72,10 +94,12 @@ export
     position: p5.Vector;
 
     /** Points to which other widgets can dock */
-    dockingPoints: { [key: string]: DockingPoint; } = {};
+    _dockingPoints: { [key: string]: DockingPoint; } = {};
 
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
+
+    dockedTo: string = "";
 
     mode: string;
 
@@ -87,6 +111,17 @@ export
     isMainExpression = false;
     currentPlacement = "";
 
+    get isDetachable() {
+        return true;
+    }
+
+    get dockingPoints() {
+        return this._dockingPoints;
+    }
+
+    set dockingPoints(a) {
+        this._dockingPoints = a;
+    }
 
     get typeAsString(): string {
         return "Widget";
@@ -122,7 +157,7 @@ export
     /** Paints the widget on the canvas. */
     draw() {
         this.p.translate(this.position.x, this.position.y);
-        var alpha = 255;
+        let alpha = 255;
         if (this.s.movingSymbol != null && this.id == this.s.movingSymbol.id) {
             alpha = 127;
         }
@@ -132,12 +167,12 @@ export
                 dockingPoint.child.draw();
             } else {
                 // There is no child to paint, let's paint an empty docking point
-                //if(this.depth() < 2) { // This stops docking points from being shown, but not from being used.
-                var drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
-                var highlightThisOne = this.s.activeDockingPoint == dockingPoint;
+                //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+                let drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
+                let highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
                 if (drawThisOne || window.location.hash === "#debug") {
-                    var ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
+                    let ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
                     this.p.stroke(0, 127, 255, ptAlpha);
                     this.p.strokeWeight(1);
                     if (highlightThisOne && drawThisOne) {
@@ -145,7 +180,7 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    var dpSize = this.s.baseFontSize/3;
+                    let dpSize = this.s.baseFontSize/3;
                     this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * dpSize, this.scale * dpSize);
                     // this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
                 }
@@ -155,11 +190,11 @@ export
 
         this.p.noFill();
         if (window.location.hash === "#debug") {
-            var box = this.boundingBox();
+            let box = this.boundingBox();
             this.p.stroke(255, 0, 0, 64);
             this.p.rect(box.x, box.y, box.w, box.h);
 
-            var subtreeBox = this.subtreeBoundingBox();
+            let subtreeBox = this.subtreeBoundingBox();
             this.p.stroke(0, 0, 255, 64);
             this.p.rect(subtreeBox.x, subtreeBox.y, subtreeBox.w, subtreeBox.h);
         }
@@ -190,8 +225,8 @@ export
 	 * @returns {{type: string}}
 	 */
     subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
-        var p = this.getAbsolutePosition();
-        var o = {
+        let p = this.getAbsolutePosition();
+        let o = {
             type: this.typeAsString
         };
         if (includeIds) {
@@ -205,7 +240,7 @@ export
             };
         }
         if (processChildren) {
-            var dockingPoints = {};
+            let dockingPoints = {};
             _.each(this.dockingPoints, (dockingPoint, key) => {
                 if (dockingPoint.child != null) {
                     dockingPoints[key] = dockingPoint.child.subtreeObject(processChildren, includeIds, minimal);
@@ -215,7 +250,7 @@ export
                 o["children"] = dockingPoints;
             }
         }
-        var properties = this._properties();
+        let properties = this._properties();
         if (properties) {
             o["properties"] = properties;
         }
@@ -235,19 +270,19 @@ export
      */
     subtreeBoundingBox(): Rect {
 
-        var box = this.boundingBox();
+        let box = this.boundingBox();
 
-        var subtree = _.map(this.getChildren(), c => {
-            var b = c.subtreeBoundingBox();
+        let subtree = _.map(this.getChildren(), c => {
+            let b = c.subtreeBoundingBox();
             b.x += c.position.x;
             b.y += c.position.y;
             return b;
         });
 
-        var left = box.x;
-        var right = box.x + box.w;
-        var top = box.y;
-        var bottom = box.y + box.h;
+        let left = box.x;
+        let right = box.x + box.w;
+        let top = box.y;
+        let bottom = box.y + box.h;
 
         _.each(subtree, c => {
             if (left > c.x) { left = c.x; }
@@ -261,7 +296,7 @@ export
 
     /** Removes this widget from its parent. Also, shakes it. */
     removeFromParent() {
-        var oldParent = this.parentWidget;
+        let oldParent = this.parentWidget;
         this.currentPlacement = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
@@ -273,6 +308,7 @@ export
                     timestamp: Date.now()
                 });
                 dockingPoint.child = null;
+                // this.dockedTo = "";
                 this.parentWidget = null;
             }
         });
@@ -288,7 +324,7 @@ export
 	 * @returns {Widget} This widget, if hit; null if not.
      */
     hit(p: p5.Vector): Widget {
-        var w: Widget = null;
+        let w: Widget = null;
         _.some(this.dockingPoints, dockingPoint => {
             if (dockingPoint.child != null) {
                 w = dockingPoint.child.hit(p5.Vector.sub(p, this.position));
@@ -308,7 +344,7 @@ export
 	 * Turns on and off highlight recursively.
 	 */
     highlight(on = true) {
-        var mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(0, 0, 0, 127);
+        let mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(0, 0, 0, 127);
         this.isHighlighted = on;
         this.color = on ? this.p.color(72, 123, 174) : mainColor;
         _.each(this.dockingPoints, dockingPoint => {
@@ -326,7 +362,7 @@ export
 	 * @return {DockingPoint} The best overlapped candidate DockingPoint, or null if no docking point was selected.
 	 */
     dockingPointsHit(w: Widget): DockingPoint {
-        var hitPoint: DockingPoint = null;
+        let hitPoint: DockingPoint = null;
 
         _.some(this.getChildren(), child => {
             hitPoint = child.dockingPointsHit(w);
@@ -334,16 +370,16 @@ export
         });
 
         // FIXME hic sunt leones. This works, but the code could be a bit clearer (if not better/more efficient)
-        var wAP = w.getAbsolutePosition();
-        var wBox = w.subtreeBoundingBox();
-        var testRect = new Rect(wBox.x + wAP.x, wBox.y + wAP.y, wBox.w, wBox.h);
-        var thisAP = this.getAbsolutePosition();
+        let wAP = w.getAbsolutePosition();
+        let wBox = w.subtreeBoundingBox();
+        let testRect = new Rect(wBox.x + wAP.x, wBox.y + wAP.y, wBox.w, wBox.h);
+        let thisAP = this.getAbsolutePosition();
 
-        var hitPoints: Array<DockingPoint> = [];
+        let hitPoints: Array<DockingPoint> = [];
         if (!hitPoint) {
             _.each(this.dockingPoints, point => {
                 if (point.child == null) {
-                    var dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
+                    let dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
                     if (testRect.contains(dp)) {
                         hitPoints.push(point);
                     }
@@ -353,8 +389,8 @@ export
         if (!_.isEmpty(hitPoints)) {
             [hitPoint, ...hitPoints] = hitPoints;
             _.each(hitPoints, hp => {
-                var hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
-                var currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
+                let hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
+                let currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
                 if (p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
                     hitPoint = hp;
                 }
@@ -371,9 +407,9 @@ export
     }
 
     getTotalSymbolCount(): number {
-        var total = 1;
-        for (var i in this.dockingPoints) {
-            var c = this.dockingPoints[i].child;
+        let total = 1;
+        for (let i in this.dockingPoints) {
+            let c = this.dockingPoints[i].child;
             if (c != null) {
                 total += c.getTotalSymbolCount();
             }
@@ -423,11 +459,11 @@ export
 	 * Computes this widget's depth in the tree.
 	 */
     depth(): number {
-        var depth = 0;
-        var n: Widget = this;
+        let depth = 0;
+        let n: Widget = this;
         while (n.parentWidget) {
 
-          if(this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
+          if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
             depth += 1;
             n = n.parentWidget;
           }
@@ -443,15 +479,21 @@ export
 		Finds the width of the bounding box around an entire expression.
 		*/
     getExpressionWidth(): number {
-        var current_element: any = this;
-        var expressionWidth = this.boundingBox().w;
+        let current_element: any = this;
+        let expressionWidth = this.boundingBox().w;
 
         // Find the bounding box width for an entire expression.
         if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
             expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
+            if (this.typeAsString == "Differential") { // TODO This is HORRIBLE beyond belief and needs fixing, but derivatives are kind of an all-around hack, so...
+                expressionWidth += current_element.dockingPoints["right"].position.x;
+            }
         }
         if (current_element.dockingPoints.hasOwnProperty("argument") && current_element != undefined && current_element.dockingPoints["argument"].child != null) {
             expressionWidth += current_element.dockingPoints["argument"].child.getExpressionWidth();
+        }
+        if (current_element.dockingPoints.hasOwnProperty("order") && current_element != undefined && current_element.dockingPoints["order"].child != null) {
+            expressionWidth += current_element.dockingPoints["order"].child.getExpressionWidth();
         }
         if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
             expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
@@ -468,10 +510,10 @@ export
         return expressionWidth;
     }
     getExpressionHeight(): number {
-        var current_element: any = this;
-        var expressionHeight = this.boundingBox().h;
-        var subscript_height;
-        var superscript_height;
+        let current_element: any = this;
+        let expressionHeight = this.boundingBox().h;
+        let subscript_height;
+        let superscript_height;
         // Find the bounding box width for an entire expression.
         if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
             subscript_height += current_element.dockingPoints["subscript"].child.getExpressionHeight();
