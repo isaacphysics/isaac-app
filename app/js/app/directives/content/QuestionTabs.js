@@ -246,6 +246,9 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 						if (scope.question.validationResponse) {
 							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
 							scope.question.pageCompleted = isPageCompleted(scope.page);
+							if (scope.question.pageCompleted) {
+								scope.$emit('pageCompleted');
+							}
 							determineActions();
 						}
 					}					

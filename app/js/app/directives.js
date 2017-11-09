@@ -69,6 +69,8 @@ define(function(require) {
 
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
+	.directive('fastTrackProgressBar', require("app/directives/fastTrackProgressBar"))
+
 	.directive('toast', require("app/directives/Toast"))
 
 	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
