@@ -675,18 +675,18 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController"
             });
 
-        $sp.state('adminStatsNew.schoolUsersDetail', {
-            url: "/schools/:schoolId/user_list",
-            templateUrl: '/partials/admin_stats/school_user_detail_list.html',
-            resolve: {
-                "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
-                    return api.statisticsEndpoint.getNewSchoolUsers({
-                        id: $stateParams.schoolId
-                    });
-                }]
-            },
-            controller: "AdminStatsPageController"
-        });
+            $sp.state('adminStatsNew.schoolUsersDetail', {
+                url: "/schools/:schoolId/user_list",
+                templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+                resolve: {
+                    "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.statisticsEndpoint.getNewSchoolUsers({
+                            id: $stateParams.schoolId
+                        });
+                    }]
+                },
+                controller: "AdminStatsPageController"
+            });
 
             $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
@@ -699,16 +699,16 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController",
             });
 
-        $sp.state('adminStatsNew.popularGameboards', {
-            url: "/popular_gameboards",
-            templateUrl: '/partials/admin_stats/popular_gameboards.html',
-            resolve: {
-                "dataToShow": ["api", function(api) {
-                    return api.statisticsEndpoint.getGameboardPopularity();
-                }]
-            },
-            controller: "AdminStatsPageController",
-        });
+            $sp.state('adminStatsNew.popularGameboards', {
+                url: "/popular_gameboards",
+                templateUrl: '/partials/admin_stats/popular_gameboards.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getGameboardPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
 
             $sp.state('adminStats.isaacAnalytics', {
                 url: "/isaac_analytics",
@@ -897,6 +897,17 @@ define(["angular-ui-router"], function() {
                     console.error("Error saving board.");
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });
+            }],
+        });
+
+        $sp.state('assignmentRedirect', {
+            url: "/assignment/:boardId",
+            resolve: {
+                requireLogin: getLoggedInPromise,
+            },
+            onEnter: ['$stateParams', '$state', '$rootScope', function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.boardId}, {location: "replace"});
+                $rootScope.setLoading(false);
             }],
         });
     }])
