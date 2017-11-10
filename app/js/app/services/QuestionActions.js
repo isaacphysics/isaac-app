@@ -85,9 +85,9 @@ define([], function() {
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
 			var fullLabel = "Try more " + supportingQuestion.title.toLowerCase() + " ";
-			fullLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
+			fullLabel += supportingQuestion.level == '2' ? 'revision?' : 'practice?';
 			var abbreviatedLabel = "Try more concept ";
-			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
+			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision?' : 'practice?';
 			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
