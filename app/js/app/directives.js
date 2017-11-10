@@ -69,7 +69,7 @@ define(function(require) {
 
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
-	.directive('fastTrackProgressBar', require("app/directives/fastTrackProgressBar"))
+	.directive('fastTrackProgressBar', require("app/directives/FastTrackProgressBar"))
 
 	.directive('toast', require("app/directives/Toast"))
 
