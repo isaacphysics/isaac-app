@@ -15,7 +15,7 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		var MAX_LABEL_LENGTH = 24;
+		var MAX_LABEL_LENGTH = 17;
 		var defaultAction = {
 			disabled: false
 		}
@@ -47,7 +47,6 @@ define([], function() {
 						// If an error, after a little while allow them to submit the same answer again.
 						setTimeout(function() { scope.canSubmit = true; }, 5000);
 					});
-
 				}
 			};
 
@@ -85,11 +84,10 @@ define([], function() {
 		};
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
-			var fullLabel = "More " + supportingQuestion.title.toLowerCase() + " ";
-			fullLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
-			var abbreviatedLabel = "More ";
-			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
-			abbreviatedLabel += " of this concept";
+			var fullLabel = "Try more " + supportingQuestion.title.toLowerCase() + " ";
+			fullLabel += supportingQuestion.level == '2' ? 'revision?' : 'practice?';
+			var abbreviatedLabel = "Try more concept ";
+			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision?' : 'practice?';
 			if (fullLabel.length <= MAX_LABEL_LENGTH) {
 				abbreviatedLabel = fullLabel;
 			}
@@ -135,11 +133,10 @@ define([], function() {
 		};
 
 		this.backToBoard = function(gameboardId) {
-			// could go to next board question
 			return {
 				prototype: defaultAction,
 				title: "This question is completed, return to gameboard",
-				label: "Return to Top 10",
+				label: "Return to Top 10 Board",
 				onClick: function() {
 					$location.url("/gameboards#" + gameboardId);
 				},
