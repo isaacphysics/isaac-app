@@ -133,6 +133,7 @@ services:
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+      - /var/log/isaac/$ENV:/isaac-logs:rw
     networks:
       default:
         aliases:
