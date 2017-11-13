@@ -115,6 +115,7 @@ define(["angular-ui-router"], function() {
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
         $sp.state('privacy', genericPageState("/privacy", "privacy_policy"));
+        $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
 
@@ -186,6 +187,15 @@ define(["angular-ui-router"], function() {
                 $state.go('book_physics_skills_14', {}, {
                     location: "replace"
                 });
+                $rootScope.setLoading(false);
+            }],
+        });
+
+        $sp.state('answers', {
+            // People try this URL for answers; point them to the FAQ:
+            url: "/answers",
+            onEnter: ["$state", "$rootScope", function($state, $rootScope) {
+                $state.go('faq', {'#': 'answers'}, {location: "replace"});
                 $rootScope.setLoading(false);
             }],
         });
@@ -289,7 +299,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('question', {
-            url: "/questions/:id?board",
+            url: "/questions/:id?board&questionHistory",
             resolve: {
                 "page": ["api", "$stateParams", function(api, $stateParams) {
                     return api.questionPages.get({
@@ -317,10 +327,7 @@ define(["angular-ui-router"], function() {
             views: {
                 "body": {
                     templateUrl: "/partials/states/generic_page.html",
-                    controller: ["$scope", "page", function($scope, page) {
-                        $scope.title = "Content object: " + page.id;
-                        $scope.doc = page;
-                    }]
+                    controller: "GenericPageController"
                 }
             }
         });
@@ -584,6 +591,9 @@ define(["angular-ui-router"], function() {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
                         controller: ["$scope", "api", function($scope, api) {
+
+                            $scope.state = 'adminStats';
+
                             // general stats
                             $scope.statistics = null;
                             $scope.setLoading(true)
@@ -601,12 +611,52 @@ define(["angular-ui-router"], function() {
                 }
             });
 
+        $sp.state('adminStatsNew', {
+            url: "/admin/stats/v2",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/admin_stats_new.html",
+                    controller: ["$scope", "api", function($scope, api) {
+
+                        $scope.state = 'adminStatsNew';
+
+                        // general stats
+                        $scope.statistics = null;
+                        $scope.setLoading(true)
+                        api.statisticsEndpoint.getNewStats().$promise.then(function(result) {
+                            $scope.statistics = result;
+                            $scope.setLoading(false)
+                        });
+                        api.eventBookings.getAllBookings({
+                            "count_only": true
+                        }).$promise.then(function(result) {
+                            $scope.eventBookingsCount = result.count;
+                        })
+                    }]
+                }
+            }
+        });
+
             $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
                 templateUrl: '/partials/admin_stats/school_user_summary_list.html',
                 resolve: {
                     "dataToShow": ["api", function(api) {
                         return api.statisticsEndpoint.getSchoolPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
+
+            $sp.state('adminStatsNew.schoolUserSummaryList', {
+                url: "/schools",
+                templateUrl: '/partials/admin_stats/school_user_summary_list_new.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getNewSchoolPopularity();
                     }]
                 },
                 controller: "AdminStatsPageController",
@@ -625,6 +675,19 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController"
             });
 
+            $sp.state('adminStatsNew.schoolUsersDetail', {
+                url: "/schools/:schoolId/user_list",
+                templateUrl: '/partials/admin_stats/school_user_detail_list.html',
+                resolve: {
+                    "dataToShow": ["api", "$stateParams", function(api, $stateParams) {
+                        return api.statisticsEndpoint.getNewSchoolUsers({
+                            id: $stateParams.schoolId
+                        });
+                    }]
+                },
+                controller: "AdminStatsPageController"
+            });
+
             $sp.state('adminStats.popularGameboards', {
                 url: "/popular_gameboards",
                 templateUrl: '/partials/admin_stats/popular_gameboards.html',
@@ -636,7 +699,24 @@ define(["angular-ui-router"], function() {
                 controller: "AdminStatsPageController",
             });
 
+            $sp.state('adminStatsNew.popularGameboards', {
+                url: "/popular_gameboards",
+                templateUrl: '/partials/admin_stats/popular_gameboards.html',
+                resolve: {
+                    "dataToShow": ["api", function(api) {
+                        return api.statisticsEndpoint.getGameboardPopularity();
+                    }]
+                },
+                controller: "AdminStatsPageController",
+            });
+
             $sp.state('adminStats.isaacAnalytics', {
+                url: "/isaac_analytics",
+                templateUrl: '/partials/admin_stats/analytics.html',
+                controller: "AnalyticsPageController",
+            });
+
+            $sp.state('adminStatsNew.isaacAnalytics', {
                 url: "/isaac_analytics",
                 templateUrl: '/partials/admin_stats/analytics.html',
                 controller: "AnalyticsPageController",
@@ -817,6 +897,17 @@ define(["angular-ui-router"], function() {
                     console.error("Error saving board.");
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });
+            }],
+        });
+
+        $sp.state('assignmentRedirect', {
+            url: "/assignment/:boardId",
+            resolve: {
+                requireLogin: getLoggedInPromise,
+            },
+            onEnter: ['$stateParams', '$state', '$rootScope', function($stateParams, $state, $rootScope) {
+                $state.go('gameBoards', {'#': $stateParams.boardId}, {location: "replace"});
+                $rootScope.setLoading(false);
             }],
         });
     }])

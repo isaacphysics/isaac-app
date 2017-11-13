@@ -50,6 +50,7 @@ services:
       - local-smtp:$LOCAL_SMTP
     external_links:
       - pg-live:postgres
+      - kafka-cluster-live:kafka
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro

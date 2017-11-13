@@ -30,7 +30,7 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -55,18 +55,8 @@ define([], function() {
            		$scope.modals.groupsWarning.show();
 		}
 
-		$scope.filterOptions = [
-			{label: "All Boards", val: null},
-			{label: "Not Started", val: "not_attempted"},
-			{label: "In Progress", val: "in_progress"},
-			{label: "Completed", val: "completed"}
-		];
-
-		$scope.sortOptions = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
-		];
-
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
@@ -82,19 +72,12 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
 			// TODO: For some reason these watch functions are being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
-		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
 
 		// update tooltips when this changes.
@@ -187,9 +170,22 @@ define([], function() {
 
 		$scope.assignBoard = function(board) {
 			if ($scope.pendingAssignment[board.id]) {
-				var groupToAssign = $scope.pendingAssignment[board.id]._id;
+				var dueDate = $scope.pendingAssignment[board.id].dueDate;
+				
+				if (dueDate != null) {
+					dueDate = Date.UTC(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+					var today = new Date();
+					today.setUTCHours(0, 0, 0, 0);
+					if ((dueDate - today) < 0) {
+						$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error: Due date cannot be in the past.");
+						return;
+					}
+				}
 
-				api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
+				var groupToAssign = $scope.pendingAssignment[board.id]._id;
+				var assignmentToPost = {"gameboardId" : board.id, "groupId": groupToAssign, "dueDate": dueDate}
+
+				api.assignments.assignBoard(assignmentToPost).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
@@ -237,7 +233,9 @@ define([], function() {
 
 		$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
 
-		var fourWeeksAgo = new Date(new Date() - (4 * 7 * 24 * 60 * 60 * 1000));
+		$scope.now = new Date();
+
+		var fourWeeksAgo = new Date($scope.now - (4 * 7 * 24 * 60 * 60 * 1000));
 		api.assignments.getMyAssignments().$promise.then(function(results) {
 			angular.forEach(results, function(assignment, index) {
 				var creationDate = new Date(assignment.creationDate);

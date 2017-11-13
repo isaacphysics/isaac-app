@@ -53,6 +53,8 @@ define([], function() {
 			},
 		});
 
+		this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+
 		this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
 		this.currentUser = $resource(urlPrefix + "/users/current_user", {}, {
@@ -146,6 +148,11 @@ define([], function() {
 				method: 'GET', 
 				isArray: false 
 			},
+            'getNewStats' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/v2/",
+                isArray: false
+            },
 			'getGameboardPopularity' : {
 				method: 'GET',
 				url: urlPrefix + "/gameboards/popular", 
@@ -156,11 +163,21 @@ define([], function() {
 				url: urlPrefix + "/admin/stats/schools/", 
 				isArray: true 
 			},
+            'getNewSchoolPopularity' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/schools/v2",
+                isArray: true
+            },
 			'getSchoolUsers' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/schools/:id", 
 				params: {id: '@id'},
 			},
+            'getNewSchoolUsers' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/users/schools/:id/v2",
+                params: {id: '@id'},
+            },
 			'getEventsOverTime' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
@@ -258,8 +275,7 @@ define([], function() {
 			},					
 			'assignBoard' : {
 				method: 'POST',
-				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
-				params: {gameId: '@gameId', groupId: '@groupId'}
+				url: urlPrefix + "/assignments/assign/"
 			},			
 			'unassignBoard' : {
 				method: 'DELETE',
@@ -392,13 +408,13 @@ define([], function() {
 			return urlPrefix + "/content/units";
 		}
 
-		this.admin = {
-			synchroniseDatastores: function() {
-				return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-					console.warn("Synchronising Datastores. The next page load will take a while.");
-				});
-			}
-		};
+		// this.admin = {
+		// 	synchroniseDatastores: function() {
+		// 		return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
+		// 			console.warn("Synchronising Datastores. The next page load will take a while.");
+		// 		});
+		// 	}
+		// };
 
 		this.account = $resource(urlPrefix + "/users", {}, {
 			saveSettings: {

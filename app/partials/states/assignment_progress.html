@@ -18,58 +18,55 @@
 </div>
 <div class="row" ng-show="groups.length > 0">
     <div class="large-16 columns">
-<!--
-        <dl class="tabs profile-tabs no-print">
-            <dd class="active"><a href="javascript:void(0)">Active <span class="show-for-medium-up">Groups</span></a></dd>
-            <dd><a href="javascript:void(0)">Archived <span class="show-for-medium-up">Groups</span></a></dd>
-        </dl>
--->
         <div class="tabs-content progress-tabs-content">
             <!--
                 FIRST LEVEL - groups accordion
             -->
             <dl class="accordion-group">
-                <dd ng-repeat="group in groups | orderBy:sortOption.val:sortOption.reverse" ng-class="{active: groupExpanded[group._id]}">
+                <dd ng-repeat="group in groups | orderBy:sortOption.val:sortOption.reverse" ng-class="{active: groupExpanded[group._id]}" class="group-panel">
                     <a class="accordion-group-header" href="javascript:void(0)" ng-click="expandAssignments(group._id)">
-
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
                             {{group.groupName}} <span class="hide-for-medium-up">({{groupAssignments[group._id].length || 0}})</span>
                         </div>
-
                         <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" ng-style="{visibility: groupAssignments[group._id].length ? 'visible':'hidden'}"/>
-<!--
-                        <div class="accordion-group-summary">
-                            <span class="show-for-medium-up"><strong>3</strong> Active boards / </span><strong>13</strong> Completed <span class="show-for-medium-up">boards</span>
-                        </div>
--->
                         <div class="accordion-group-summary">
                             <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments set</span>
                         </div>
                     </a>
-
-
                     <div ng-if="groupExpanded[group._id]" class="accordion-group-content">
                         <!--
                             SECOND LEVEL - boards accordion
                         -->
                         <dl class="accordion-board">
+                            <div class="assignment-progress-key panel">
+                                <ul class="small-block-grid-5">
+                                    <li>
+                                        <div class="key-cell"><span class="completed" ng-class="{'colour-blind': pageSettings.colourBlind}">&nbsp;</span></div><div class="key-desctiption">100% correct</div>
+                                    </li>
+                                    <li>
+                                        <div class="key-cell"><span class="passed" ng-class="{'colour-blind': pageSettings.colourBlind}">&nbsp;</span></div><div class="key-desctiption">&ge;{{passMark * 100}}% correct (or Mastery)</div>
+                                    </li>
+                                    <li>
+                                        <div class="key-cell"><span class="in-progress" ng-class="{'colour-blind': pageSettings.colourBlind}">&nbsp;</span></div><div class="key-desctiption">&lt;{{passMark * 100}}% correct</div>
+                                    </li>
+                                    <li>
+                                        <div class="key-cell"><span ng-class="{'colour-blind': pageSettings.colourBlind}">&nbsp;</span></div><div class="key-desctiption">Not attempted</div>
+                                    </li>
+                                    <li>
+                                        <div class="key-cell"><span class="failed" ng-class="{'colour-blind': pageSettings.colourBlind}">&nbsp;</span></div><div class="key-desctiption">&gt;{{100 - (passMark * 100)}}% incorrect</div>
+                                    </li>
+                                </ul>
+                                <div class="row assignment-progress-options">
+                                    <div class="columns small-3 small-offset-10"><label>Colour-blind&nbsp;<input type="checkbox" ng-model=pageSettings.colourBlind /></label></div>
+                                    <div class="columns small-3"><label>Percent view&nbsp;<input type="checkbox" ng-model=pageSettings.formatAsPercentage /></label></div>
+                                </div>
+                            </div>
                             <dd ng-repeat="assignment in groupAssignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
                                 <div href="javascript:void(0)" class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
-                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}
-<!--
-                                        <span class="accordion-board-level">
-                                             <span class="hide-for-medium-up">- L</span><span class="show-for-medium-up">Level </span>2
-                                        </span>
--->
+                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}<span class="accordion-board-due-date" ng-show="assignment.dueDate">(Due: {{assignment.dueDate | date:'dd/MM/yyyy'}})</span>
                                     </div>
-<!--
-                                    <div class="accordion-board-date">
-                                        Due Date <span class="icon-calender"></span>
-                                    </div>
--->                                 
-
                                     <a href="javascript:void(0)" class="accordion-board-link">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </a> <span class="accordion-board-link">&nbsp; or &nbsp; </span>
@@ -92,14 +89,18 @@
                                         Question and control arrows
                                     -->
                                     <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
-                                        <a href="javascript:void(0)" class="icon-arrow-left" ng-show="assignmentSelectedQuestion[assignment._id] > 0" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] - 1"></a>
-
-                                        <div class="board-question">
-                                            <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
-                                            <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
-                                        </div>
-
-                                        <a href="javascript:void(0)" class="icon-arrow-right" ng-show="assignmentSelectedQuestion[assignment._id] < assignment.gameBoard.questions.length-1" ng-click="assignmentSelectedQuestion[assignment._id] = assignmentSelectedQuestion[assignment._id] + 1"></a>
+                                        <a href="javascript:void(0)" class="icon-arrow-left"
+                                        ng-class="{'enabled': enabledLeftArrow(assignment._id)}"
+                                        ng-click="assignmentSelectedQuestion[assignment._id] = enabledLeftArrow(assignment._id) ? assignmentSelectedQuestion[assignment._id] - 1 : assignmentSelectedQuestion[assignment._id]"></a>
+                                        <a ng-href="/questions/{{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].id}}?board={{assignment.gameBoard.id}}" target="_blank">
+                                            <div class="board-question">
+                                                <strong class="show-for-medium-up">Question:</strong> {{assignment.gameBoard.questions[assignmentSelectedQuestion[assignment._id]].title}}
+                                                <p class="hidden-for-medium-up"><strong>Question {{assignmentSelectedQuestion[assignment._id]+1}}</strong> out of <strong>{{assignment.gameBoard.questions.length}}</strong></p>
+                                            </div>
+                                        </a>
+                                        <a href="javascript:void(0)" class="icon-arrow-right"
+                                        ng-class="{'enabled': enabledRightArrow(assignment._id, assignment.gameBoard.questions.length)}"
+                                        ng-click="assignmentSelectedQuestion[assignment._id] = enabledRightArrow(assignment._id, assignment.gameBoard.questions.length) ? assignmentSelectedQuestion[assignment._id] + 1 : assignmentSelectedQuestion[assignment._id]"></a>
                                     </div>
 
                                     <!--
@@ -110,47 +111,89 @@
                                             <thead>
                                                 <tr>
                                                     <td></td>
-                                                    <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td></td>
+                                                    <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
+                                                        ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        {{average}}%
+                                                    </td>
+                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts in this assignment">
+                                                        Total Parts
+                                                    </td>
+                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions in this assignment">
+                                                        Total Qs
+                                                    </td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'" ng-class="getStudentClass(studentProgress)">
-                                                    <td class="student-name" >
-                                                        <span class="icon-person"></span>
-                                                        <a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">
-                                                            {{studentProgress.user.givenName}} 
-                                                            <span class="show-for-large-up">{{studentProgress.user.familyName}}</span>
-                                                        </a>
+                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:'user.familyName'"
+                                                    ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], pageSettings.colourBlind)"
+                                                    on-repeat-render="ngRepeatFinished">
+                                                    <td class="student-name">
+                                                        <span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
                                                     </td>
-                                                    
-                                                    <td ng-repeat="q in assignment.gameBoard.questions" 
-                                                        ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" 
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index">
-
-                                                        <span ng-class="{
-                                                            'icon-spinner': studentProgress.results[$index] == 'IN_PROGRESS',
-                                                            'icon-check': studentProgress.results[$index] == 'PASSED' || studentProgress.results[$index] == 'PERFECT',
-                                                            'ru_green': studentProgress.results[$index] == 'PERFECT',
-                                                            'icon-x': studentProgress.results[$index] == 'FAILED',
-                                                        }"></span>
+                                                    <td ng-repeat="q in assignment.gameBoard.questions"
+                                                        ng-if="studentProgress.user.authorisedFullAccess"
+                                                        ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
+                                                        Question: {{assignment.gameBoard.questions[$index].title}}<br/>
+                                                        Parts correct: {{studentProgress.correctPartResults[$index]}} ({{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
+                                                        Parts not attempted: {{studentProgress.notAttemptedPartResults[$index]}} ({{formatMark(studentProgress.notAttemptedPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
+                                                        Parts incorrect: {{studentProgress.incorrectPartResults[$index]}} ({{formatMark(studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})">
+                                                        {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.formatAsPercentage)}}
                                                     </td>
-
-                                                    <td><span>{{studentProgress.tickCount}} / {{assignment.gameBoard.questions.length}}</span></td>
+                                                    <td ng-repeat="q in assignment.gameBoard.questions"
+                                                        ng-if="!studentProgress.user.authorisedFullAccess"
+                                                        ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot="Access Revoked">
+                                                    </td>
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess"
+                                                        class="total-column left"
+                                                        data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Question parts correct: {{studentProgress.correctQuestionPartsCount}} ({{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], true)}})<br/>
+                                                        Total number of question parts: {{assignmentTotalQuestionParts[assignment._id]}}">
+                                                        {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
+                                                    </td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Access Revoked"></td>
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess"
+                                                        class="total-column right"
+                                                        data-ot="
+                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Question pages correct: {{studentProgress.tickCount}} ({{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, true)}})<br/>
+                                                        Total number of question pages: {{assignment.gameBoard.questions.length}}">
+                                                        {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}
+                                                    </td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Access Revoked"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <td></td>
-                                                    <td ng-repeat="average in assignmentAverages[assignment._id] track by $index" ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}" ng-click="assignmentSelectedQuestion[assignment._id] = $index">{{average}}%</td>
-                                                    <td></td>
+                                                    <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
+                                                        ng-class="{selected: assignmentSelectedQuestion[assignment._id] == $index}"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        {{average}}%
+                                                    </td>
+                                                    <td class="total-column left" data-ot="Number of correct question parts from the total number of question parts in this assignment">
+                                                        Total Parts
+                                                    </td>
+                                                    <td class="total-column right" data-ot="Number of completed questions from the total number of questions in this assignment">
+                                                        Total Qs
+                                                    </td>
                                                 </tr>
                                             </tfoot>
                                         </table>
                                     </div>
                                 </div>
                             </dd>
-                            <dd ng-class="{active: assignmentExpanded[assignment._id]}">
+                            <dd class="accordion-board-footer" ng-class="{active: assignmentExpanded[assignment._id]}">
                                 <div class="accordion-board-header accordion-board-header-last">
                                     <div class="accordion-board-title accordion-board-title-no-counter">&nbsp;</div>
                                     <a ng-click="getGroupProgressDownloadLink(group._id, $event)" class="accordion-board-link" target="_blank"><span>Download Group CSV</span><span class="icon-link invisible"></span></a>
@@ -160,37 +203,21 @@
                     </div>
                 </dd>
             </dl>
-            <div class="assignment-progress-key show-for-medium-up panel">
-                <dl>
-                    <dt class="icon-check ru_green"></dt>
-                    <dd>All parts correct</dd>
-                    <dt class="icon-check"></dt>
-                    <dd>Pass mark achieved</dd>
-                    <dt class="icon-spinner"></dt>
-                    <dd>In progress</dd>
-                    <dt class="icon-x"></dt>
-                    <dd>Incorrect</dd>
-                    <dt><span class="blank-even">&nbsp;</span><span class="blank-odd">&nbsp;</span></dt>
-                    <dd>Not attempted</dd>                
-                </dl>
-            </div>            
         </div>
     </div>
 </div>
 
 <div isaac-modal="assignmentProgressCSVDownload">
-  <div class="reveal-modal-head">
-    <h2>Privacy Notice</h2>
-    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body">
+    <div class="reveal-modal-head">
+        <h2>Privacy Notice</h2>
+        <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+    </div>
+    <div class="reveal-modal-body">
         <div isaac-page-fragment="csv_download_notice"> </div>
         <div class="row">
             <div class="small-16 text-center columns">
                 <a class="button" href="{{assignmentCSVLink}}" target="_blank" ng-click="modals.assignmentProgressCSVDownload.hide()">Download CSV</a>          
             </div>
-            
         </div>
-        
-  </div>
+    </div>
 </div>

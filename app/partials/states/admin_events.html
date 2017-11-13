@@ -99,8 +99,8 @@
                                 <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                 <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
                                 <td>{{booking.bookingStatus}}</td>
-                                <td>{{booking.bookingDate | date:'dd/MM/yyyy'}}</td>
-                                <td>{{booking.updated | date:'dd/MM/yyyy'}}</td>
+                                <td>{{booking.bookingDate | date:'dd/MM/yyyy h:m:s a'}}</td>
+                                <td>{{booking.updated | date:'dd/MM/yyyy h:m:s a'}}</td>
                                 <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
@@ -171,7 +171,7 @@
                                     <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event (no user emails)</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
                                     <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>

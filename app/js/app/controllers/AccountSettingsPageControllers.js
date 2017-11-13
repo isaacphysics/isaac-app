@@ -201,8 +201,18 @@ define([], function() {
 
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
+
+            // Some users apparently confuse the Save and Teacher Connect button; help make it clear that Connect must be clicked before Save:
+            if ($scope.authenticationToken.value != null && $scope.authenticationToken.value != "") {
+                var confirm = $window.confirm("You have entered a teacher connection code but haven't yet clicked 'Connect'. Do you want to use the code before saving? You will need to click 'Save' again after using the code.");
+                if (confirm) {
+                    $scope.activeTab = 2;
+                    return;
+                }
+            }
+
         	var afterAuth = persistence.load('afterAuth');
-        	if (afterAuth != "") {
+        	if (afterAuth) {
         		next = afterAuth;
         		persistence.save('afterAuth', "");
 			}
@@ -229,7 +239,7 @@ define([], function() {
         	}
 
         	// Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1 == $scope.password2 && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
+        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
@@ -281,7 +291,10 @@ define([], function() {
         		// current password given/admin user, but new password not confirmed
 	        	} else if ($scope.password1 != $scope.password2) {
 	        		$scope.errorMessage = "Passwords do not match.";
-        		// first name or last name missing
+                // password not long enough:
+                } else if ($scope.password1.length < 6) {
+                    $scope.errorMessage = "Passwords must be at least 6 characters in length.";
+                // first name or last name missing
 	        	} else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
 	        		$scope.errorMessage = "Name field missing or invalid.";
         		// bad email address given
@@ -313,7 +326,9 @@ define([], function() {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
-        	// Tokens so far are always uppercase; this is hardcoded in the API, so safe to assume here:
+            // Some users paste the URL in the token box, so remove the token from the end if they do.
+        	// Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
+            $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
 			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
@@ -336,7 +351,7 @@ define([], function() {
         		if (e.status == 429) {
 					$scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
         		} else {
-        			$scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 letters in length.");
+        			$scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
         		}
         	});
         }

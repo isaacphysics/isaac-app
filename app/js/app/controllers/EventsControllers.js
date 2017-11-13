@@ -279,14 +279,14 @@ define([], function() {
         }
 
         $scope.cancelEventBooking = function(){
-            var cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to rebook especially if there is a waiting list.');   
+            var cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to re-book, especially if there is a waiting list.');   
             if(cancel) {
                 api.eventBookings.cancelMyBooking({"eventId": $stateParams.id}).$promise.then(function(){
                     getEventDetails();
                     $scope.showToast($scope.toastTypes.Success, "Your booking has been cancelled", "Your booking has successfully been cancelled.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });                
             }
         }

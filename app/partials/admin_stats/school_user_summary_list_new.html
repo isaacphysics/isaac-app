@@ -1,0 +1,35 @@
+<div class="panel white clearfix">
+    <div class="small-16 columns">
+        <h2>Schools By User Links <span ng-if="dataToShow">({{dataToShow.length}} schools)</span></h2>
+    </div>
+    <div ng-if="!globalFlags.loading">
+        <div class="small-16 columns">
+            <table>
+                <tr>
+                    <th>URN</th>
+                    <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'school.name'; reverse=!reverse">School Name</a></th>
+                    <th>Postcode</th>
+                    <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'teachers'; reverse=!reverse">Teachers</a></th>
+                    <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'connections'; reverse=!reverse">Total Users</a></th>
+                    <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'teachersActiveLastThirtyDays'; reverse=!reverse">Teachers active (last 30 days)</a></th>
+                    <th><a href="javascript:void(0);" ng-click="schoolListSortPredicate = 'numberActiveLastThirtyDays'; reverse=!reverse">Total users active (last 30 days)</a></th>
+                </tr>
+                <tr ng-repeat="item in dataToShow | orderBy:schoolListSortPredicate:reverse">
+                    <td>
+                        <a ng-show="item.school.urn" href="javascript:void(0)" target="_blank" ui-sref="adminStatsNew.schoolUsersDetail({schoolId:item.school.urn})">
+                            <span ng-hide="item.school.dataSource == 'USER_ENTERED'">{{item.school.urn}}</span>
+                            <span ng-show="item.school.dataSource == 'USER_ENTERED'">NON-DFE</span>
+                        </a>
+                        <span ng-hide="item.school.urn">NON-DFE</span>
+                    </td>
+                    <td>{{item.school.name}}</td>
+                    <td>{{item.school.postcode}}</td>
+                    <td>{{item.teachers}}</td>
+                    <td>{{item.connections}}</td>
+                    <td>{{item.teachersActiveLastThirtyDays}}</td>
+                    <td>{{item.numberActiveLastThirtyDays}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
