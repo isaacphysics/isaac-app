@@ -1,3 +1,11 @@
+
+.ft-upper-colour {
+    color: $ft-upper-colour !important;
+}
+.ft-lower-colour {
+    color: $ft-lower-colour !important;
+}
+
 div.ft-progress-bar-panel {
     @media #{$medium-up} {
         margin: 0 10px !important;
@@ -26,7 +34,8 @@ div.ft-progress-bar-panel {
     span {
         position: absolute !important;
         top: -2px;
-        margin-left: 5px
+        margin-left: 5px;
+        font-weight: 400;
     }
     svg {
         something: "hereTODO MT";
