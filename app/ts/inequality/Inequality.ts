@@ -1,5 +1,6 @@
 /*
 Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+               Andrew Wells <aw684@cam.ac.uk>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,25 +16,27 @@ limitations under the License.
 */
 
 
-///// <reference path="../../typings/p5.d.ts" />
-///// <reference path="../../typings/lodash.d.ts" />
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
 
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
-import { Widget, Rect } from './Widget.ts'
-import { Symbol } from './Symbol.ts'
-import { BinaryOperation } from './BinaryOperation.ts';
-import { Fraction } from './Fraction.ts';
-import { Brackets } from './Brackets.ts';
-import { Radix } from './Radix.ts';
-import { Num } from './Num.ts';
-import { Fn } from './Fn.ts';
-import { DockingPoint } from './DockingPoint.ts';
-import { Relation } from './Relation.ts';
-import { ChemicalElement } from './ChemicalElement.ts';
-import { StateSymbol } from './StateSymbol.ts';
-import { Particle } from './Particle.ts';
+import { Widget, Rect } from './Widget'
+import { Symbol } from './Symbol'
+import { BinaryOperation } from './BinaryOperation';
+import { Fraction } from './Fraction';
+import { Brackets } from './Brackets';
+import { Radix } from './Radix';
+import { Num } from './Num';
+import { Fn } from './Fn';
+import { Differential } from './Differential';
+import { Derivative } from './Derivative';
+import { DockingPoint } from './DockingPoint';
+import { Relation } from './Relation';
+import { ChemicalElement } from './ChemicalElement';
+import { StateSymbol } from './StateSymbol';
+import { Particle } from './Particle';
 
 // This is where the fun starts
 
@@ -112,7 +115,6 @@ export
         } catch (e) {
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
-
         this.centre(true);
 
         _this.scope.log.initialState = [];
@@ -125,7 +127,6 @@ export
     };
 
     windowResized = () => {
-        console.log(this.p.windowWidth, this.p.windowHeight);
         this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
     }
 
@@ -204,9 +205,8 @@ export
     };
 
     parseSubtreeObject = (root: Object) => {
-
         if (root) {
-            var w: Widget = this._parseSubtreeObject(root);
+            let w: Widget = this._parseSubtreeObject(root);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
             this.symbols.push(w);
@@ -216,7 +216,7 @@ export
     };
 
     _parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
-        var w: Widget = null;
+        let w: Widget = null;
         switch (node["type"]) {
             case "Symbol":
                 w = new Symbol(this.p, this, node["properties"]["letter"]);
@@ -238,6 +238,12 @@ export
                 break;
             case "Fn":
                 w = new Fn(this.p, this, node["properties"]["name"], node["properties"]["custom"], node["properties"]["allowSubscript"], node["properties"]["innerSuperscript"]);
+                break;
+            case "Differential":
+                w = new Differential(this.p, this, node["properties"]["letter"]);
+                break;
+            case "Derivative":
+                w = new Derivative(this.p, this);
                 break;
             case "Relation":
                 w = new Relation(this.p, this, node["properties"]["relation"]);
@@ -271,18 +277,18 @@ export
         // These are used to correctly detect clicks and taps.
 
         // Note that touchX and touchY are incorrect when using touch. Ironically.
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
 
         this.initialTouch = this.p.createVector(tx, ty);
 
         this.movingSymbol = null;
-        var index = -1;
-        var movingSymbolDocksTo: Array<string> = [];
+        let index = -1;
+        let movingSymbolDocksTo: Array<string> = [];
         _.some(this.symbols, (symbol, i) => {
             // .hit() propagates down the hierarchy
-            var hitSymbol = symbol.hit(this.p.createVector(tx, ty));
-            if (hitSymbol != null) {
+            let hitSymbol = symbol.hit(this.p.createVector(tx, ty));
+            if (hitSymbol != null && hitSymbol.isDetachable) {
                 // If we hit that symbol, then mark it as moving
                 this.movingSymbol = hitSymbol;
                 this.scope.log.actions.push({
@@ -318,7 +324,7 @@ export
         // Put the moving symbol on top (bottom?) of the list (this only works with roots,
         // and may not be necessary at all, but eye candy, right?)
         if (index > -1) {
-            var e = this.symbols.splice(index, 1)[0];
+            let e = this.symbols.splice(index, 1)[0];
             this.symbols.push(e);
             index = -1;
         }
@@ -332,29 +338,29 @@ export
 
     touchMoved = () => {
 
-        var tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        var ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
 
         if (this.movingSymbol != null) {
-            var d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
+            let d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
 
             // TODO NOT DELETE the following commented section.
-            // var sbox = this.movingSymbol.subtreeBoundingBox();
-            // var spos = this.movingSymbol.getAbsolutePosition();
-            // var dx = this.p.touchX - this.prevTouch.x;
-            // var dy = this.p.touchY - this.prevTouch.y;
-            // var left =   spos.x + sbox.x;
-            // var right =  spos.x + sbox.x + sbox.w;
-            // var top =    spos.y + sbox.y;
-            // var bottom = spos.y + sbox.y + sbox.h;
+            // let sbox = this.movingSymbol.subtreeBoundingBox();
+            // let spos = this.movingSymbol.getAbsolutePosition();
+            // let dx = this.p.touchX - this.prevTouch.x;
+            // let dy = this.p.touchY - this.prevTouch.y;
+            // let left =   spos.x + sbox.x;
+            // let right =  spos.x + sbox.x + sbox.w;
+            // let top =    spos.y + sbox.y;
+            // let bottom = spos.y + sbox.y + sbox.h;
             //
-            // if((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
+            // if ((dx < 0 && left <= 0) || (dx > 0 && right >= this.width)) {
             // 	dx = 0;
             // }
-            // if((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
+            // if ((dy < 0 && top <= 0) || (dy > 0 && bottom >= this.height)) {
             // 	dy = 0;
             // }
-            // var d = this.p.createVector(dx, dy);
+            // let d = this.p.createVector(dx, dy);
 
             this.movingSymbol.position.add(d);
             // FIXME GO AHEAD PUNK, MAKE MY DAY
@@ -366,7 +372,7 @@ export
                 this.activeDockingPoint = null;
 
                 // This is the point where the mouse/touch is.
-                var touchPoint = this.p.createVector(tx, ty);
+                let touchPoint = this.p.createVector(tx, ty);
                 // This is less refined than doing the proximity detection thing, but works much better (#4)
                 if (symbol != null && symbol.id != this.movingSymbol.id) {
                     // TODO: This is broken. Make sure we don't hit docking points of the wrong type
@@ -402,7 +408,6 @@ export
                 height: 0
             });
         }
-
         if (this.movingSymbol != null) {
             // When touches end, mark the symbol as not moving.
             this.prevTouch = null;
@@ -410,7 +415,11 @@ export
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
             if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
+                // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
+                // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
+                this.activeDockingPoint.child.dockedTo = this.activeDockingPoint.name;
+
                 this.scope.log.actions.push({
                     event: "DOCK_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
@@ -444,10 +453,10 @@ export
 
         this.initialTouch = null;
 
-        var symbolWithMostChildren = null;
-        var mostChildren = 0;
+        let symbolWithMostChildren = null;
+        let mostChildren = 0;
         _.each(this.symbols, symbol => {
-            var numChildren = symbol.getTotalSymbolCount();
+            let numChildren = symbol.getTotalSymbolCount();
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;
                 symbolWithMostChildren = symbol;
@@ -465,10 +474,10 @@ export
     };
 
     mouseMoved = () => {
-        var p = this.p.createVector(this.p.mouseX, this.p.mouseY);
+        let p = this.p.createVector(this.p.mouseX, this.p.mouseY);
         _.each(this.symbols, symbol => {
             symbol.highlight(false);
-            var hitSymbol = symbol.hit(p);
+            let hitSymbol = symbol.hit(p);
             if (hitSymbol) {
                 hitSymbol.highlight(true);
             }
@@ -476,23 +485,22 @@ export
     };
 
     flattenExpression = (w: Widget) => {
-        var stack: Array<Widget> = [w];
-        var list = [];
+        let stack: Array<Widget> = [w];
+        let list = [];
         while (stack.length > 0) {
-            var e = stack.shift();
+            let e = stack.shift();
             list.push(e.token());
-            var children = e.getChildren();
+            let children = e.getChildren();
             stack = stack.concat(children);
         }
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
     updateState = () => {
-        var symbolWithMostChildren = null;
-        var mostChildren = 0;
+        let symbolWithMostChildren = null;
+        let mostChildren = 0;
         _.each(this.symbols, symbol => {
-            //console.log(symbol.id + " -> " + symbol.getExpression("python"));
-            var numChildren = symbol.getTotalSymbolCount();
+            let numChildren = symbol.getTotalSymbolCount();
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;
                 symbolWithMostChildren = symbol;
@@ -500,6 +508,7 @@ export
         });
 
         if (symbolWithMostChildren != null) {
+            let flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return undefined == e ? '' : e.replace(/,/g, ";") });
             this.scope.newEditorState({
                 result: {
                     "tex": symbolWithMostChildren.getExpression("latex").trim(),
@@ -507,11 +516,10 @@ export
                     "python": symbolWithMostChildren.getExpression("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
-                    "uniqueSymbols": _.remove(this.flattenExpression(symbolWithMostChildren), e => { return e } ).join(', ')
+                    "uniqueSymbols": flattenedExpression.join(', ')
                 },
                 symbols: _.map(this.symbols, s => s.subtreeObject())
             });
-
         } else {
             this.scope.newEditorState({
                 result: null,
@@ -521,7 +529,7 @@ export
     };
 
     getExpressionObjects = () => {
-        var subtreeObjects = [];
+        let subtreeObjects = [];
         _.each(this.symbols, symbol => {
             subtreeObjects.push(symbol.subtreeObject());
         });
@@ -529,11 +537,11 @@ export
     };
 
     centre = (init = false) => {
-        var top = this.height / 2;
+        let top = this.height / 2;
         _.each(this.symbols, (symbol, i) => {
-            var sbox = symbol.subtreeBoundingBox();
+            let sbox = symbol.boundingBox();
             symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h;
+            top += sbox.h*2;
             symbol.shakeIt();
         });
         if (!init) {

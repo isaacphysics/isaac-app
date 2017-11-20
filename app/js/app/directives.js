@@ -69,6 +69,8 @@ define(function(require) {
 
 	.directive('progressBar', require("app/directives/ProgressBar"))
 
+	.directive('fastTrackProgressBar', require("app/directives/FastTrackProgressBar"))
+
 	.directive('toast', require("app/directives/Toast"))
 
 	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
@@ -77,18 +79,18 @@ define(function(require) {
 
 	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
 
-	.directive('onNgRepeatRender', function ($timeout) {
+	.directive('onRepeatRender', ['$timeout', function ($timeout) {
 		return {
 			restrict: 'A',
 			link: function (scope, element, attr) {
 				if (scope.$last === true) {
 					$timeout(function () {
-						scope.$emit(attr.onNgRepeatRender);
+						scope.$emit(attr.onRepeatRender);
 					});
 				}
 			}
 		}
-	})
+	}])
 
 	// Equation Editor Directives
 
@@ -155,6 +157,8 @@ define(function(require) {
 	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
 
 	.directive('isaacSymbolicChemistryQuestion', require("app/directives/content/SymbolicChemistryQuestion"))
+
+	.directive('isaacStringMatchQuestion', require("app/directives/content/StringMatchQuestion"))
 
 	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
 

@@ -18,6 +18,41 @@ define([], function() {
 	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', '$filter', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout, $filter) {
 		
 		$rootScope.pageTitle = "My Boards";
+
+		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
+
+		$scope.generateGameBoardTitle = gameBoardTitles.generate;
+
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
+		$scope.filterOption = $scope.filterOptions[0];
+		$scope.sortOption = $scope.sortOptions[1];
+
+		var roundUpToNearestSix = function(initialValue) {
+			var valueModuloSix = initialValue % 6;
+			var valueNeedsIncreasing = valueModuloSix != 0 || initialValue == 0;
+			return valueNeedsIncreasing ? initialValue + 6 - valueModuloSix : initialValue;
+		}
+
+		var updateBoards = function(limit) {
+			$scope.setLoading(true);
+			if (limit != null) {
+				limit = roundUpToNearestSix(limit);
+			}
+			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
+				$scope.boards = boards;
+				$scope.setLoading(false);
+			})
+		};
+
+		// update boards when filters have been selected
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
+			// TODO: For some reason these watch functions are being fired for no reason
+			if (newVal === oldVal) {
+				return;
+			}
+			updateBoards($scope.boards.results.length);
+		});
 		
 		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
 		$scope.boardSearchOptions = boardSearchOptions;

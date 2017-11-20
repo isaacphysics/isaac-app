@@ -53,6 +53,8 @@ define([], function() {
 			},
 		});
 
+		this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+
 		this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
 		this.currentUser = $resource(urlPrefix + "/users/current_user", {}, {
@@ -273,8 +275,7 @@ define([], function() {
 			},					
 			'assignBoard' : {
 				method: 'POST',
-				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
-				params: {gameId: '@gameId', groupId: '@groupId'}
+				url: urlPrefix + "/assignments/assign/"
 			},			
 			'unassignBoard' : {
 				method: 'DELETE',

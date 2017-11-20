@@ -1,4 +1,6 @@
-<div desktop-panel class="no-print">
+<div ng-if="questionPage.type=='isaacFastTrackQuestionPage' && gameboardId && fastTrackProgressEnabledBoards.includes(gameboardId)" fast-track-progress-bar gameboard="gameBoard" page="questionPage" class="ft-progress-bar-panel row no-print"></div>
+
+<div desktop-panel class="no-print" ng-hide="questionPage.type=='isaacFastTrackQuestionPage'">
     <div class='ru-desktop-panel-content'>
         <div class='medium-12 columns'>
             <ul ng-class='["ru-crumb", pageSubject]'>
@@ -16,7 +18,7 @@
         <div class='clearfix'></div>
     </div>
 </div>
-<div mobile-panel class="no-print">
+<div mobile-panel class="no-print" ng-hide="questionPage.type=='isaacFastTrackQuestionPage'">
     <div class='row'>
         <div class='small-16 columns text-right'>
             <span class='ru-level-{{pageSubject}}-{{questionPage.level}} ru-level' aria-label='{{pageSubject}} Level {{questionPage.level}}'></span>
@@ -67,7 +69,11 @@
                                 </div>
                             </div>
                             <h2 class="print-question question-prefix">Q:</h2>
-                            <h2 class="question-title"><span class='ru_{{pageSubject}}' math-jax>{{questionPage.title}}</span></h2>
+                            <h2 class="question-title">
+                                <span class='ru_{{pageSubject}}' ng-class="{'ft-upper-colour': questionPage.tags.includes('ft_upper'), 'ft-lower-colour': questionPage.tags.includes('ft_lower')}" math-jax>
+                                    {{questionPage.title}}
+                                </span>
+                            </h2>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>
@@ -93,11 +99,21 @@
 
         <!-- Buttons -->
         <section>
-            <div class="row no-print">
+            <!-- Back to board button -->
+            <div ng-hide="questionPage.type=='isaacFastTrackQuestionPage'" class="row no-print">
                 <div class="large-12 large-offset-2 medium-12 medium-offset-2 small-16 columns ru-concept-buttons">
                     <ul ng-show="gameBoard.$resolved" class='medium-block-grid-1 small-block-grid-1 ru-pad'>
                         <li><a class='ru-concept-button' ng-click="backToBoard()">Back to Board</a></li>
                         <!--<li><a class='ru-concept-button' ng-show="nextQuestion" ui-sref="question({id: nextQuestion.id})">Next Question</a></li>-->
+                    </ul>
+                </div>
+            </div>
+            <!-- FastTrack buttons -->
+            <div ng-show="questionPage.type=='isaacFastTrackQuestionPage'" class="row no-print">
+                <div class="small-16 columns ru-concept-buttons" ng-class="backToPreviousQuestion && backToTopTen ? 'medium-16' : 'medium-12 medium-offset-2'">
+                    <ul class='small-block-grid-1 ru-pad' ng-class="backToPreviousQuestion && backToTopTen ? 'medium-block-grid-2' : 'medium-block-grid-1'">
+                        <li ng-show="backToPreviousQuestion"><a ng-hide="backToPreviousQuestion.hide" ng-disabled="backToPreviousQuestion.disabled" ng-click="backToPreviousQuestion.onClick()" title="{{backToPreviousQuestion.title}}" class="expand ru-concept-button">{{backToPreviousQuestion.label}}</a></li>
+                        <li ng-show="backToTopTen"><a ng-hide="backToTopTen.hide" ng-disabled="backToTopTen.disabled" ng-click="backToTopTen.onClick()" title="{{backToTopTen.title}}" class="expand ru-concept-button">{{backToTopTen.label}}</a></li>
                     </ul>
                 </div>
             </div>

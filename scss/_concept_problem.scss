@@ -218,6 +218,9 @@
 .ru-answer-check * button
 {
     font-size: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0rem;
     font-style: italic;
 }
 
@@ -230,14 +233,16 @@
     .ru-answer-wrong * h5 { font-size: $h5-font-size * 1.5;}
     .ru-answer-wrong * h6 { font-size: $h6-font-size * 1.5;}
     .ru-answer-wrong * p  { font-size: 1.25rem  !important; margin-bottom: 4px;}
-    .ru-answer-wrong
-    {
+    .ru-answer-wrong {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
     }
-    .ru-answer-check * button
-    {
+    .ru-answer-check * button {
         font-size: 1.25rem;
+        margin: 0 0 1.25rem;
+    }
+    .ru-answer-check * div.end button {
+        margin: 0rem;
     }
 }
 
@@ -288,18 +293,32 @@
 
 }
 
-.ru-answer-block input
-{
+.ru-answer-block input {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;
     font-size: 1.6rem;
     padding: 0 0.5rem 0 0.5rem;
     font-style: italic;
+
+    .isaac-string-match-question & {
+        font-size: 1.4rem;
+
+        &::-webkit-input-placeholder { /* Chrome */
+            color: #cccccc;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+            color: #cccccc;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+              color: #cccccc;
+              opacity: 1;
+        }
+    }
+
 }
 
-.ru-answer-block button
-{
+.ru-answer-block button {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;
@@ -405,8 +424,8 @@
 .ru-answer-check
 {
     padding-top: 30px;
+    padding-bottom: 30px;
     background-color: #4b4b4b;
-    padding-bottom: 20px;
 }
 
 // Carousel

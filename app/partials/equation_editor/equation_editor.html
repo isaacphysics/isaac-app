@@ -43,16 +43,17 @@
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.augmentedTrig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="hypTrigTitle" symbol-menu symbols="symbolLibrary.hypTrigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
+        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
-    <!--
-    <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
-        <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
-    </div>
+        <!--
+        <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
+            <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
+        </div>
 
-    <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
+        <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
 
-    <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
--->
+        <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
+    -->
     <!-- BUTTONS -->
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>

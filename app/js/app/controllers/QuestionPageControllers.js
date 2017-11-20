@@ -18,13 +18,14 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
 		$rootScope.pageTitle = page.title;
 		$scope.modalPerfectDisplayed = false;
 		$scope.modalPassedDisplayed = false;
+		$scope.fastTrackProgressEnabledBoards = fastTrackProgressEnabledBoards;
 
 		$scope.state = {};
 
@@ -74,6 +75,44 @@ define([], function() {
 			}
 		}
 
+		var updateBoardProgressDetails = function() {
+			$scope.gameboardId = $stateParams.board;
+			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
+			if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
+				!$scope.fastTrackProgressEnabledBoards.includes($scope.gameboardId)) {
+				$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
+			} else {
+				$scope.gameBoard = api.fastTrackGameboards.get({id: $scope.gameboardId});
+			}
+
+			$scope.gameBoard.$promise.then(function(board) {
+
+				console.debug("Question is from board:", board);
+				// Cause this board to be persisted for the current user.
+				// This will fail if we're not logged in, but that doesn't matter.
+				api.saveGameBoard(board.id);
+				// Find the index of this question on the game board.
+
+				var thisIndex = null;
+				for(var i = 0; i < board.questions.length; i++) {
+
+					var q = board.questions[i];
+
+					if(q.id == page.id) {
+						thisIndex = i;
+						break;
+					}
+				}
+
+				if (thisIndex == null) {
+					console.error("Question not found in linked game board.");
+					return;
+				}
+
+				$scope.nextQuestion = board.questions[thisIndex + 1];
+			});
+		}
+
 		$scope.getTagTitle = function(id) {
 
 			switch(id) {
@@ -102,37 +141,18 @@ define([], function() {
 		$scope.$on('gameBoardCompletedPerfect', function(e, data) {
 			$scope.gameBoardCompletedPerfect = data;
 		});
+		$scope.$on('pageCompleted', function(e) {
+			updateBoardProgressDetails();
+		})
 		persistence.session.save("conceptPageSource", $location.url());
 
 		if ($stateParams.board) {
-			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
-			$scope.gameBoard.$promise.then(function(board) {
+			updateBoardProgressDetails();
+		}
 
-				console.debug("Question is from board:", board);
-				// Cause this board to be persisted for the current user.
-				// This will fail if we're not logged in, but that doesn't matter.
-				api.saveGameBoard(board.id);
-				// Find the index of this question on the game board.
-
-				var thisIndex = null;
-				for(var i = 0; i < board.questions.length; i++) {
-
-					var q = board.questions[i];
-
-					if(q.id == page.id) {
-						thisIndex = i;
-						break;
-					}
-				}
-
-				if (thisIndex == null) {
-					console.error("Question not found in linked game board.");
-					return;
-				}
-
-				$scope.nextQuestion = board.questions[thisIndex + 1];
-
-			});
+		$scope.questionHistory = $stateParams.questionHistory ? $stateParams.questionHistory.split(',') : [];
+		if ($scope.questionHistory.length) {
+			$scope.backToPreviousQuestion = questionActions.retryPreviousQuestion($scope.questionHistory.slice(), $scope.gameboardId);
 		}
 
 		$scope.backToBoard = function() {
@@ -163,8 +183,6 @@ define([], function() {
 		$scope.$on("$destroy", function(){
 			$rootScope.pageSubject = "";
 		});
-
-
 	}]
 
 	return {
