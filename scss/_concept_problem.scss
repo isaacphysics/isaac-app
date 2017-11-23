@@ -293,18 +293,32 @@
 
 }
 
-.ru-answer-block input
-{
+.ru-answer-block input {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;
     font-size: 1.6rem;
     padding: 0 0.5rem 0 0.5rem;
     font-style: italic;
+
+    .isaac-string-match-question & {
+        font-size: 1.4rem;
+
+        &::-webkit-input-placeholder { /* Chrome */
+            color: #cccccc;
+        }
+        &:-ms-input-placeholder { /* IE 10+ */
+            color: #cccccc;
+        }
+        &::-moz-placeholder { /* Firefox 19+ */
+              color: #cccccc;
+              opacity: 1;
+        }
+    }
+
 }
 
-.ru-answer-block button
-{
+.ru-answer-block button {
     @include radius(3px);
     box-shadow: none;
     height: 2.7rem;

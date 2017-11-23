@@ -18,13 +18,14 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
 		$rootScope.pageTitle = page.title;
 		$scope.modalPerfectDisplayed = false;
 		$scope.modalPassedDisplayed = false;
+		$scope.fastTrackProgressEnabledBoards = fastTrackProgressEnabledBoards;
 
 		$scope.state = {};
 
@@ -74,40 +75,16 @@ define([], function() {
 			}
 		}
 
-		$scope.getTagTitle = function(id) {
-
-			switch(id) {
-				case "multiple_subjects":
-					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
-				case "multiple_fields":
-					return $sce.trustAsHtml("Multiple Fields");
-				case "multiple_topics":
-					return $sce.trustAsHtml("Multiple Topics");
-			}
-
-			for (var i in tags.tagArray) {
-				if (tags.tagArray[i].id == id)
-					return $sce.trustAsHtml(tags.tagArray[i].title);
-			}
-		}
-		$scope.$on("modalPerfectDisplayed", function(e, b) {
-			$scope.modalPerfectDisplayed = b;
-		});
-		$scope.$on("modalPassedDisplayed", function(e, b) {
-			$scope.modalPassedDisplayed = b;
-		});
-		$scope.$on('gameBoardCompletedPassed', function(e, data) {
-			$scope.gameBoardCompletedPassed = data;
-		});
-		$scope.$on('gameBoardCompletedPerfect', function(e, data) {
-			$scope.gameBoardCompletedPerfect = data;
-		});
-		persistence.session.save("conceptPageSource", $location.url());
-
-		if ($stateParams.board) {
+		var updateBoardProgressDetails = function() {
 			$scope.gameboardId = $stateParams.board;
 			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
-			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
+			if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
+				!$scope.fastTrackProgressEnabledBoards.includes($scope.gameboardId)) {
+				$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
+			} else {
+				$scope.gameBoard = api.fastTrackGameboards.get({id: $scope.gameboardId});
+			}
+
 			$scope.gameBoard.$promise.then(function(board) {
 
 				console.debug("Question is from board:", board);
@@ -136,9 +113,46 @@ define([], function() {
 			});
 		}
 
+		$scope.getTagTitle = function(id) {
+
+			switch(id) {
+				case "multiple_subjects":
+					return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+				case "multiple_fields":
+					return $sce.trustAsHtml("Multiple Fields");
+				case "multiple_topics":
+					return $sce.trustAsHtml("Multiple Topics");
+			}
+
+			for (var i in tags.tagArray) {
+				if (tags.tagArray[i].id == id)
+					return $sce.trustAsHtml(tags.tagArray[i].title);
+			}
+		}
+		$scope.$on("modalPerfectDisplayed", function(e, b) {
+			$scope.modalPerfectDisplayed = b;
+		});
+		$scope.$on("modalPassedDisplayed", function(e, b) {
+			$scope.modalPassedDisplayed = b;
+		});
+		$scope.$on('gameBoardCompletedPassed', function(e, data) {
+			$scope.gameBoardCompletedPassed = data;
+		});
+		$scope.$on('gameBoardCompletedPerfect', function(e, data) {
+			$scope.gameBoardCompletedPerfect = data;
+		});
+		$scope.$on('pageCompleted', function(e) {
+			updateBoardProgressDetails();
+		})
+		persistence.session.save("conceptPageSource", $location.url());
+
+		if ($stateParams.board) {
+			updateBoardProgressDetails();
+		}
+
 		$scope.questionHistory = $stateParams.questionHistory ? $stateParams.questionHistory.split(',') : [];
 		if ($scope.questionHistory.length) {
-			$scope.backToPreviousQuestion = questionActions.retryPreviousQuestion($scope.questionHistory.slice(0, 1), $scope.gameboardId);
+			$scope.backToPreviousQuestion = questionActions.retryPreviousQuestion($scope.questionHistory.slice(), $scope.gameboardId);
 		}
 
 		$scope.backToBoard = function() {
@@ -169,8 +183,6 @@ define([], function() {
 		$scope.$on("$destroy", function(){
 			$rootScope.pageSubject = "";
 		});
-
-
 	}]
 
 	return {

@@ -78,4 +78,5 @@ define(function(require) {
 
 	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
 
+	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017'])
 });

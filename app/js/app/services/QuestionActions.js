@@ -15,7 +15,7 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		var MAX_LABEL_LENGTH = 24;
+		var MAX_LABEL_LENGTH = 17;
 		var defaultAction = {
 			disabled: false
 		}
@@ -47,7 +47,6 @@ define([], function() {
 						// If an error, after a little while allow them to submit the same answer again.
 						setTimeout(function() { scope.canSubmit = true; }, 5000);
 					});
-
 				}
 			};
 
@@ -61,14 +60,6 @@ define([], function() {
 		};
 
 		this.tryEasierQuestion = function(easierQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {			
-			var fullLabel = easierQuestion.level == '2' ? 'Revise' : 'Practice';
-			fullLabel += " " + easierQuestion.title.toLowerCase();
-			var abbreviatedLabel = easierQuestion.level == '2' ? 'Revise' : 'Practice';
-			abbreviatedLabel += " this concept";
-			if (fullLabel.length <= MAX_LABEL_LENGTH) {
-				abbreviatedLabel = fullLabel;
-			}
-
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
@@ -76,8 +67,8 @@ define([], function() {
 
 			return {
 				prototype: defaultAction,
-				title: fullLabel,
-				label: abbreviatedLabel,
+				title: "Try an easier question on " + easierQuestion.title.toLowerCase(),
+				label: "Easier question?",
 				onClick: function() {
 					$state.go('question', {id:easierQuestion.id, questionHistory:commaSeparatedQuestionHistory, board:gameboardId});
 				}
@@ -85,15 +76,7 @@ define([], function() {
 		};
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
-			var fullLabel = "More " + supportingQuestion.title.toLowerCase() + " ";
-			fullLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
-			var abbreviatedLabel = "More ";
-			abbreviatedLabel += supportingQuestion.level == '2' ? 'revision' : 'practice';
-			abbreviatedLabel += " of this concept";
-			if (fullLabel.length <= MAX_LABEL_LENGTH) {
-				abbreviatedLabel = fullLabel;
-			}
-
+			var fullLabel = "Try more questions of a similar difficulty on " + supportingQuestion.title.toLowerCase();
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
@@ -102,7 +85,7 @@ define([], function() {
 			return {
 				prototype: defaultAction,
 				title: fullLabel,
-				label: abbreviatedLabel,
+				label: "More practice questions?",
 				onClick: function() {
 					$state.go('question', {id:supportingQuestion.id, questionHistory:commaSeparatedQuestionHistory, board:gameboardId});
 				},
@@ -127,7 +110,7 @@ define([], function() {
 			return {
 				prototype: defaultAction,
 				title: "Retry previous question page",
-				label: "Return to previous question",
+				label: "Return to Previous Question",
 				onClick: function() {
 					$state.go('question', {id:previousQuestionId, questionHistory:commaSeparatedQuestionHistory, board:gameboardId})
 				}
@@ -135,18 +118,15 @@ define([], function() {
 		};
 
 		this.backToBoard = function(gameboardId) {
-			// could go to next board question
 			return {
 				prototype: defaultAction,
-				title: "This question is completed, return to gameboard",
-				label: "Return to Top 10",
+				title: "Return to Top 10 question gameboard",
+				label: "Return to Top 10 Questions",
 				onClick: function() {
 					$location.url("/gameboards#" + gameboardId);
 				},
 			};
 		};
-
-		// TODO for each method in factory wrap result with prototype default action
 
 		return this;
 	}];

@@ -1,3 +1,46 @@
+
+.ft-upper-colour {
+    color: $ft-upper-colour !important;
+}
+.ft-lower-colour {
+    color: $ft-lower-colour !important;
+}
+
+div.ft-progress-bar-panel {
+    @media #{$medium-up} {
+        margin: 0 10px !important;
+    }
+    @media #{$small-only} {
+        margin: 0 1px !important;
+    }
+    div.board-title {
+        margin-bottom: 0.5rem;
+    }
+    div.ft-progress-bar {
+        margin-bottom: 30px;
+    }
+}
+.ft-board-title {
+    @media #{$medium-up} {
+        padding-top: 4px;
+    }
+    @media #{$small-only} {
+        padding-top: 9px;
+    }
+    padding-bottom: 6px;
+}
+.progress-bar-key {
+    margin-top: 11px;
+    span {
+        position: absolute !important;
+        top: -2px;
+        margin-left: 5px;
+        font-weight: 400;
+    }
+    svg {
+        something: "hereTODO MT";
+    }
+}
 button {
     &.fasttrack-primary {
         background-color: $ru_maths;

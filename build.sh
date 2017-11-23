@@ -35,19 +35,20 @@ else
 	rm app/js/app/app.js.bak
 fi
 
-npm install
-grunt dist
-docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION .
-docker push "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}"
+npm install &&
+grunt dist &&
+docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION . &&
+docker push "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" ||
+exit 1
 
 cd ..
 rm -rf isaac-app
 
-git clone -b $SEGUE_VERSION --depth 1 https://github.com/ucam-cl-dtg/isaac-api.git
-cd isaac-api
-
-docker build -t "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" .
-docker push "docker.isaacscience.org/isaac-api:$SEGUE_VERSION"
+git clone -b $SEGUE_VERSION --depth 1 https://github.com/ucam-cl-dtg/isaac-api.git &&
+cd isaac-api &&
+docker build -t "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" . &&
+docker push "docker.isaacscience.org/isaac-api:$SEGUE_VERSION" ||
+exit 1
 
 cd ..
 rm -rf isaac-api
