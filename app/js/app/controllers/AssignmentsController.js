@@ -96,7 +96,7 @@ define([], function() {
 		}, true);
 
 		// Perform initial load
-		setDefaultBoardSearchOptions('mobileDefault');
+		setDefaultBoardSearchOptions('cardDefault');
 		updateBoards();
 
 		var mergeInProgress = false;

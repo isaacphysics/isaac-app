@@ -267,7 +267,35 @@
 				right: 0px;
 				bottom: 0px;
 				left: 0px;
+				&.subject-maths+.subject-physics {
+					top: 0px;
+					left: 10px;
+				}
 			}
+		}
+		th.completion-col {
+			min-width: 128px;
+		}
+		th.board-name-col {
+			min-width: 218px;
+		}
+		th.subjects-col {
+			min-width: 92px;
+		}
+		th.levels-col {
+			min-width: 92px;
+		}
+		th.created-by-col {
+			min-width: 92px;
+		}
+		th.created-col {
+			min-width: 128px;
+		}
+		th.last-viewed-col {
+			min-width: 128px;
+		}
+		th.action-col {
+			min-width: 90px;
 		}
 		td.actions-cell {
 			position: relative;

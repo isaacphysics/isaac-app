@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', '$filter', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout, $filter) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', '$filter', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout, $filter, $stateParams, $state) {
 		
 		$rootScope.pageTitle = "My Boards";
 
@@ -23,46 +23,19 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.filterOptions = boardSearchOptions.filter;
-		$scope.sortOptions = boardSearchOptions.sort;
-		$scope.filterOption = $scope.filterOptions[0];
-		$scope.sortOption = $scope.sortOptions[1];
-
-		var roundUpToNearestSix = function(initialValue) {
-			var valueModuloSix = initialValue % 6;
-			var valueNeedsIncreasing = valueModuloSix != 0 || initialValue == 0;
-			return valueNeedsIncreasing ? initialValue + 6 - valueModuloSix : initialValue;
-		}
-
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
-			if (limit != null) {
-				limit = roundUpToNearestSix(limit);
-			}
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
-				$scope.boards = boards;
+			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
+				$scope.boards = augmentBoards(boards);
 				$scope.setLoading(false);
 			})
 		};
 
-		// update boards when filters have been selected
-		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
-			// TODO: For some reason these watch functions are being fired for no reason
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards($scope.boards.results.length);
-		});
-		
 		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
 		$scope.boardSearchOptions = boardSearchOptions;
 		$scope.propertyName = 'lastVisited';
 		$scope.reverse = true;
-		$scope.sortIcon = {
-			sortable: '⇕',
-			ascending: '⇑',
-			descending: '⇓'
-		}
+		$scope.sortIcon = {sortable: '⇕', ascending: '⇑', descending: '⇓'};
 
 		$scope.loadMore = function() {
 			if (mergeInProgress) return;
@@ -90,7 +63,7 @@ define([], function() {
 				var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
 				// Warn user before deleting
 				var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
-				if (confirmation){
+				if (confirmation) {
 					// TODO: This needs to be reviewed
 					// Currently reloading boards after delete
 					$scope.setLoading(true);
@@ -146,7 +119,7 @@ define([], function() {
 
 		$scope.$watchGroup(["selectedNoBoardsOption", "selectedFilterOption"], function(newVal, oldVal) {
 			if (newVal !== oldVal) {
-				updateBoards();
+				updateBoards($scope.selectedNoBoardsOption.value);
 			}
 		});
 		
@@ -158,32 +131,35 @@ define([], function() {
 
 		$scope.$watch("selectedViewOption", function(newVal, oldVal) {
 			if (newVal !== oldVal) {
-				if ($scope.selectedViewOption.value == 'table') {
-					// All sorting and filtering for table view is done in the browser so we ask the server for all boards
-					$scope.selectedNoBoardsOption = boardSearchOptions.noBoards.values.all;
-					updateBoards();
-				}
+				var allBoardsLoaded = $scope.selectedFilterOption == boardSearchOptions.filter.values.all && $scope.selectedNoBoardsOption == boardSearchOptions.noBoards.values.all; 
+				$state.go('boards', {view: $scope.selectedViewOption.value}, {notify: !allBoardsLoaded}); // only request boards if all boards are not already loaded
+				setDefaultBoardSearchOptions($scope.selectedViewOption.defaultFieldName, allBoardsLoaded);
 				window.scrollTo(0, 0);
 			}
 		});
 
-		var setDefaultBoardSearchOptions = function(deviceSpecificDefaultField) {
-			// API arguments
-			for (boardSearchParameter in $scope.boardSearchOptions) {
-				var boardSearchOption = boardSearchOptions[boardSearchParameter];
-				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
-				var defaultValueKey = boardSearchOption[deviceSpecificDefaultField];
-				$scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
-			}
-			// Front-end filters
-			$scope.search = {
-				completion: '',
-				title: '',
-				subjects: '',
-				levels: '',
-				createdBy: '',
-				formattedCreationDate: '',
-				formattedLastVisitedDate: ''
+		var setDefaultBoardSearchOptions = function(viewDefaultField, allBoardsLoaded) {
+			if (['cardDefault', 'tableDefault'].includes(viewDefaultField)) {
+				// API parameters
+				for (boardSearchParameter in $scope.boardSearchOptions) {
+					var boardSearchOption = boardSearchOptions[boardSearchParameter];
+					var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
+					var defaultValueKey = boardSearchOption[viewDefaultField];
+					// if all boards are loaded ignore default assignment for selectedNoBoardsOption
+					if (!(allBoardsLoaded && selectedOptionVariableName == 'selectedNoBoardsOption')) {
+						$scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
+					}
+				}
+				// Front-end filters
+				$scope.search = {
+					completion: '',
+					title: '',
+					subjects: '',
+					levels: '',
+					createdBy: '',
+					formattedCreationDate: '',
+					formattedLastVisitedDate: ''
+				}
 			}
 		};
 
@@ -200,25 +176,19 @@ define([], function() {
 			return boards;
 		};
 
-		var updateBoards = function(limit) {
-			var limit = limit || $scope.selectedNoBoardsOption.value;
-			$scope.setLoading(true);
-			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
-				$scope.boards = augmentBoards(boards);
-				$scope.setLoading(false);
-			})
-		};
-
 		var lookupAssignedGroups = function(board) {
 			var groups = api.assignments.getAssignedGroups({gameId: board.id});
 			return groups;
 		};
 
 		// main
-		var deviceSpecificDefaultField = Foundation.utils.is_small_only() ? 'mobileDefault' : 'tabletAndDesktopDefault';
 		var mergeInProgress = false;
-		setDefaultBoardSearchOptions(deviceSpecificDefaultField);
-		updateBoards();
+		var initialViewValue = boardSearchOptions.view.values.card; 
+		if ($stateParams.view && boardSearchOptions.view.values[$stateParams.view]) {
+			initialViewValue = boardSearchOptions.view.values[$stateParams.view];
+		}
+		setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
+		updateBoards($scope.selectedNoBoardsOption.value);
 	}];
 
 	return {

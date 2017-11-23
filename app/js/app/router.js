@@ -378,7 +378,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('boards', {
-            url: "/boards",
+            url: "/boards?view",
             resolve: {
                 requireLogin: getLoggedInPromise
             },

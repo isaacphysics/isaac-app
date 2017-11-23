@@ -17,8 +17,8 @@
 	return function() {
 		return {
 			filter: {
-				mobileDefault: 'all',
-				tabletAndDesktopDefault: 'all',
+				cardDefault: "all",
+				tableDefault: "all",
 				values: {
 					all: {label: "Boards", value: null},
 					unstarted: {label: "Unstarted Boards", value: "not_attempted"},
@@ -27,8 +27,8 @@
 				}
 			},
 			sort: {
-				mobileDefault: 'visited',
-				tabletAndDesktopDefault: 'visited',
+				cardDefault: "visited",
+				tableDefault: "visited",
 				values: {
 					created: {label: "Date Created", value: "created"},
 					visited: {label: "Date Visited", value: "visited"},
@@ -37,21 +37,21 @@
 				}
 			},
 			noBoards: {
-				mobileDefault: 'six',
-				tabletAndDesktopDefault: 'six',
+				cardDefault: "six",
+				tableDefault: "all",
 				values: {
-					six: {label: "6", value: "6"},
-					eighteen: {label: "18", value: "18"},
-					sixty: {label: "60", value: "60"},
+					six: {label: "6", value: 6},
+					eighteen: {label: "18", value: 18},
+					sixty: {label: "60", value: 60},
 					all: {label: "All", value: "ALL"}
 				}
 			},
 			view: {
-				mobileDefault: 'card',
-				tabletAndDesktopDefault: 'card',
+				cardDefault: "card",
+				tableDefault: "table",
 				values: {
-					card: {label: "Card View", value: "card"},
-					label: {label: "Table View", value: "table"}
+					card: {label: "Card View", value: "card", defaultFieldName: "cardDefault"},
+					table: {label: "Table View", value: "table", defaultFieldName: "tableDefault"}
 				}
 			}
 		};

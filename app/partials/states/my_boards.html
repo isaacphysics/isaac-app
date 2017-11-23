@@ -10,7 +10,7 @@
             <p class="hide-for-small-only boards-description"><strong>
                You have completed 
                <span class="ru_green filter-link" ng-click="search.completion = 'Completed'">{{boards.totalCompleted}}</span> of
-               <span class="ru_green filter-link" ng-click="search.completion = ''">{{boards.totalResults}}</span>
+               <span class="ru_green filter-link" ng-click="search.completion = ''">{{boards.totalCompleted + boards.totalInProgress + boards.totalNotStarted}}</span>
                board<span ng-if="boards.totalCompleted != 1">s</span>, with
                <span class="ru_green filter-link" ng-click="search.completion = 'In progress'">{{boards.totalInProgress}}</span>
                on the go and
@@ -30,23 +30,23 @@
    <table class="boards-table">
       <thead>
          <tr class="headings">
-            <th ng-click="sortBy('percentageCompleted')" class="sortable text-center">Completion&nbsp;<span class="sort-icon">{{propertyName === 'percentageCompleted' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
-            <th ng-click="sortBy('title')" class="sortable">Board&nbsp;name&nbsp;<span class="sort-icon">{{propertyName === 'title' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
-            <th class="text-center">Subjects</th>
-            <th class="text-center">Levels</th>
-            <th class="text-center">Created&nbsp;by</th>
-            <th ng-click="sortBy('creationDate')" class="text-center sortable">Created&nbsp;<span class="sort-icon">{{propertyName === 'creationDate' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
-            <th ng-click="sortBy('lastVisited')" class="text-center sortable">Last&nbsp;viewed&nbsp;<span class="sort-icon">{{propertyName === 'lastVisited' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
-            <th></th>
+            <th class="completion-col sortable text-center" ng-click="sortBy('percentageCompleted')">Completion&nbsp;<span class="sort-icon">{{propertyName === 'percentageCompleted' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
+            <th class="board-name-col sortable" ng-click="sortBy('title')">Board&nbsp;name&nbsp;<span class="sort-icon">{{propertyName === 'title' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
+            <th class="subjects-col text-center">Subjects</th>
+            <th class="levels-col text-center">Levels</th>
+            <th class="created-by-col text-center">Creator</th>
+            <th class="created-col text-center sortable" ng-click="sortBy('creationDate')">Created&nbsp;<span class="sort-icon">{{propertyName === 'creationDate' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
+            <th class="last-viewed-col text-center sortable" ng-click="sortBy('lastVisited')">Last&nbsp;viewed&nbsp;<span class="sort-icon">{{propertyName === 'lastVisited' ? reverse ? sortIcon.ascending : sortIcon.descending : sortIcon.sortable}}</span></th>
+            <th class="action-col"></th>
          </tr>
          <tr class="filters">
             <th><select ng-model="search.completion" ng-options="level for level in ['', 'Completed', 'In progress', 'Not started']"/></th>
             <th><input ng-model="search.title" placeholder="Title search" /></th>
             <th><select ng-model="search.subjects" ng-options="subject for subject in ['', 'Physics', 'Chemistry', 'Maths']"/></th>
             <th><select ng-model="search.levels" ng-options="level for level in ['', '1', '2', '3', '4', '5', '6']"/></th>
-            <th><select ng-model="search.createdBy" ng-options="level for level in ['', 'Me', 'Someone else']"/></th>
-            <th><input ng-model="search.formattedCreationDate" placeholder="Date search" /></th>
-            <th><input ng-model="search.formattedLastVisitedDate" placeholder="Date search" /></th>
+            <th><select ng-model="search.createdBy" ng-options="creator for creator in ['', 'Me', 'Someone else']"/></th>
+            <th><!--input ng-model="search.formattedCreationDate" placeholder="Date search" /--></th>
+            <th><!--input ng-model="search.formattedLastVisitedDate" placeholder="Date search" /--></th>
             <th></th>
          </tr>
       </thead>
@@ -65,10 +65,10 @@
                   <span class="subject-complete"></span>
                </div>
             </td>
-            <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 50 ? board.title : null}}"><strong>{{board.title.length > 50 ? board.title.slice(0, 50) + '…' : board.title}}</strong></a></td>
-            <td class="text-center">{{board.subjects | uppercase}}</td>
+            <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 42 ? board.title : null}}"><strong>{{board.title.length > 42 ? board.title.slice(0, 42) + '…' : board.title}}</strong></a></td>
+            <td class="text-center">{{board.subjects | splitList | splitCapitalize}}</td>
             <td class="text-center">{{board.levels}}</td>
-            <td class="text-center">{{board.createdBy}}</td>
+            <td class="text-center">{{board.createdBy != 'Someone else' ? board.createdBy : ''}}</td>
             <td class="text-center">{{board.formattedCreationDate}}</td>
             <td class="text-center">{{board.formattedLastVisitedDate}}</td>
             <td class="actions-cell">
@@ -158,10 +158,10 @@
    </div>
 </div>
 
-<div class="boards-filters" ng-show="boards != null">
-   <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
+<div class="row" ng-show="boards.results.length == 0">
+   <p class="text-center">No Results</p>
 </div>
 
-<div class="row" ng-show="boards.results.length == ''">
-   <p class="text-center">No Results</p>
+<div class="boards-filters" ng-show="boards != null">
+   <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
 </div>
