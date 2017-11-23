@@ -20,7 +20,7 @@
                         <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
                     </div>
                 </div>
-                <div class='padded-right-float text-right'>
+                <div class='padded-right-float text-right' style="position: relative">
                     <a class='ru-desktop-nav-item' ui-sref='chemistry'>
                         <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
                             <span class="multiline">Isaac Chemistry</span>
@@ -39,6 +39,16 @@
                     <a id="login-tab" ng-if='!user._id' class='ru-desktop-nav-item' ui-sref='login'>
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
                             <span>Log in</span>
+                        </div>
+                    </a>
+                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress'>
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                            <!--<span>{{ notificationListLength }}</span>-->
+                            <span class="multiline" style="display: grid; line-height: 1.5em;">
+                                <em id="streakNum">{{ currentActivityStreakLength }}</em>
+                                day streak
+                            </span>
+
                         </div>
                     </a>
                 </div>

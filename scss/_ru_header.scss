@@ -51,6 +51,12 @@ $ru_nav_size : 7em;
     height: 188px;
 	width: 7em;
 	position: relative;
+
+    em#streakNum {
+        font-weight: 800;
+        color: #509e2e;
+        font-size: 20px;
+    }
 }
 
 .ru-desktop-nav-item span
@@ -90,6 +96,10 @@ $ru_nav_size : 7em;
 {
     font-weight: 600;
     color: #fff;
+
+    em#streakNum {
+        color: #fff;
+    }
 }
 
 .ru-desktop-panel

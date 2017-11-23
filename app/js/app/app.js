@@ -37,6 +37,7 @@ define([
     "lib/opentip-jquery.js",
     "js/templates.js",
     "angular-google-maps",
+    "ngAnimate"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
@@ -57,6 +58,7 @@ define([
         'uiGmapgoogle-maps',
         'ngCookies',
         'ui.date',
+        'ngAnimate'
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
@@ -682,6 +684,119 @@ define([
         $('body').on('click', '.joyride-expose-cover', function(){
             $('.joyride-modal-bg').trigger('click');
         });
+
+
+
+        // USER NOTIFICATIONS VIA WEBSOCKETS
+
+        //$rootScope.notificationList = [];
+        //$rootScope.notificationPopups = [];
+        //$rootScope.notificationListLength = 0;
+        $rootScope.currentActivityStreakLength = 0;
+        $rootScope.notificationWebSocket = null;
+        //var signOnTime = Number(new Date());
+        var socketOpen = false;
+
+        $rootScope.openNotificationSocket = function() {
+
+            $rootScope.user.$promise.then(function() {
+             // we are logged in
+
+                // set up websocket and connect to notification endpoint
+                var websocketURI = "ws://localhost:8080/isaac-api/user-alerts/";
+                $rootScope.notificationWebSocket = new WebSocket(websocketURI);
+
+
+                $rootScope.notificationWebSocket.onopen = function(event) {
+                    socketOpen = true;
+                }
+
+
+                $rootScope.notificationWebSocket.onmessage = function(event) {
+
+                    var websocketMessage = JSON.parse(event.data);
+
+
+                    if (websocketMessage.userSnapshot) {
+
+                        $rootScope.currentActivityStreakLength = websocketMessage.userSnapshot.dailyStreakRecord;
+
+                    } else if (websocketMessage.notifications) {
+
+                        websocketMessage.notifications.forEach(function(entry) {
+
+                            if (entry.message.includes("streak")) {
+
+                                $rootScope.currentActivityStreakLength = entry.message.split(":")[1];
+
+                            }
+
+                        });
+                    }
+
+
+                    /*notificationReccord.notifications.forEach(function(entry) {
+                        $rootScope.notificationList.unshift(entry);
+
+                        if (entry.seen == null) {
+                            $rootScope.notificationListLength++;
+
+                            // only display popup notifications for events that happen after sign on
+                            if (entry.created > signOnTime) {
+
+                                var json = {
+                                    "id": entry.id,
+                                    "entry": entry,
+                                    "timeout": setTimeout(function() {
+                                        $rootScope.notificationPopups.shift();
+                                    },12000)
+                                }
+
+                                $rootScope.notificationPopups.push(json);
+
+                                $rootScope.notificationWebSocket.send(JSON.stringify({
+                                    "feedbackType" : "SEEN",
+                                    "notificationId" : entry.id
+
+                                }));
+
+
+                            }
+                        }
+                    });*/
+
+                }
+
+
+                $rootScope.notificationWebSocket.onerror = function(error) {
+                    console.log(error.details);
+                }
+
+
+                $rootScope.notificationWebSocket.onclose = function(event) {
+                    socketOpen = false;
+                }
+
+            });
+        }
+
+        $timeout($rootScope.openNotificationSocket, 1000);
+
+        var checkForWebSocket = function() {
+
+            if (!socketOpen) {
+                $rootScope.openNotificationSocket();
+            } else {
+                $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+            }
+            $timeout(checkForWebSocket, 10000);
+
+        }
+
+        $timeout(checkForWebSocket, 5000);
+
+
+
 
         var checkForNotifications = function() {
 

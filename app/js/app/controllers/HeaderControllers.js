@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', function($scope, auth, api) {
+	var PageController = ['$rootScope', '$scope', 'auth', 'api', function($rootScope, $scope, auth, api) {
 		
 		$scope.$root.segueEnvironment = "LIVE"; //Live by default
 
@@ -23,6 +23,38 @@ define([], function() {
 		api.environment.get().$promise.then(function(response){
 			$scope.$root.segueEnvironment = response.segueEnvironment;
 		});
+
+        var notificationsOpen = false;
+
+		$scope.notificationToggle = function() {
+
+			notificationsOpen = !notificationsOpen;
+
+			if (notificationsOpen) {
+
+				var notificationSeenList = [];
+
+                for (var i = 0; i < $rootScope.notificationList.length; i++) {
+
+                    notificationSeenList.push($rootScope.notificationList[i].id);
+                }
+
+                $rootScope.notificationWebSocket.send(JSON.stringify({
+                    "feedbackType" : "NOTIFICATION_VIEW_LIST",
+					"notificationIds" : notificationSeenList
+                }));
+
+
+
+
+
+                $rootScope.notificationListLength = 0;
+                $rootScope.notificationPopups = [];
+			}
+
+            $('.dl-notifications').slideToggle(200);
+
+		}
 
 	}];
 
