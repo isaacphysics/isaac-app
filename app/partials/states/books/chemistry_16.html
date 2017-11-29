@@ -1,11 +1,10 @@
-<div class="medium-16 columns">
+<div class="medium-16 columns chemistry">
   <div class="book-intro">
     <h1 class="book-heading">{{introText.title}}</h1>
     <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
     <img class="book-cover" src="assets/books/chemistry_16.jpg" alt="Cover image of the book.">
     <div isaac-content doc="introText" />
   </div>
-  <!-- TODO: Fix this! -->
   
   <h4>Chapters:</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
@@ -128,7 +127,7 @@
     </li>
   </ul>
 </div>
-<div isaac-modal="bookChapterOptions">
+<div isaac-modal="bookChapterOptions" class="chemistry">
   <div class="reveal-modal-head">
     <h2>{{modalContent.title}}</h2>
     <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
