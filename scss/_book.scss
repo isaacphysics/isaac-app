@@ -61,6 +61,7 @@
 	height: 300px;
 	border: 1px solid #cccccc;
 }
+
 .book-levels {
 	margin: 18px -0.625rem 0 -0.625rem;
 
@@ -104,8 +105,63 @@
 			color: #fff;
 			background-color: $ru_burgundy;
 		}
+
+		.chapter-subheading {
+			font-size: 0.8rem;
+			margin-left: 1em;
+			vertical-align: middle;
+		}
+
+
+		/* Subjects can change the default colours: */
+		.physics & {
+			color: $ru_physics;
+			&:hover {
+				color: #fff;
+				background-color: $ru_physics;
+			}
+		}
+		.chemistry & {
+			color: $ru_chemistry;
+			&:hover {
+				color: #fff;
+				background-color: $ru_chemistry;
+			}
+		}
+		.maths & {
+			color: $ru_maths;
+			&:hover {
+				color: #fff;
+				background-color: $ru_maths;
+			}
+		}
 	}
 }
+
+svg.book-page-icon {
+    width:40px;
+
+    polygon {
+        fill: $ru_burgundy;
+        .physics & {
+        	fill: $ru_physics;
+        }
+        .chemistry & {
+        	fill: $ru_chemistry;
+        }
+        .maths & {
+        	fill: $ru_maths;
+        }
+    }
+
+    text {
+        font-style: normal;
+        fill: white;
+        text-anchor: middle; 
+    }
+}
+
+
 .breadcrumb {
 	border-bottom: #ccc 1px solid;
 }
@@ -488,7 +544,7 @@
 }
 @media #{$medium-up} { 
 	.book-intro {
-		margin-bottom: 100px;
+		margin-bottom: 50px;
 	}	
 	.book-cover {
 		float: right;
