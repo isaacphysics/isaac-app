@@ -1,0 +1,84 @@
+<div class="medium-16 columns physics">
+  <div class="book-intro">
+    <h1 class="book-heading">{{introText.title}}</h1>
+    <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
+    <img class="book-cover" src="assets/books/phys_book_gcse.jpg" alt="Cover image of the book.">
+    <div isaac-content doc="introText" />
+  </div>
+  
+  <h4>Chapters:</h4>
+  <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch1_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">1</span>
+        </span>
+        Skills <span class="chapter-subheading">(Sections 1-7)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch2_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">2</span>
+        </span>
+        Mechanics <span class="chapter-subheading">(Sections 8-21)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch3_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">3</span>
+        </span>
+        Electricity <span class="chapter-subheading">(Sections 22-29)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch4_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">4</span>
+        </span>
+        Energy <span class="chapter-subheading">(Sections 30-37)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch5_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">5</span>
+        </span>
+        Waves and Optics <span class="chapter-subheading">(Sections 38-50)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch6_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">6</span>
+        </span>
+        Nuclear <span class="chapter-subheading">(Sections 51-58)</span>
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('gcse_ch7_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">7</span>
+        </span>
+        Gas <span class="chapter-subheading">(Sections 59-62)</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div isaac-modal="bookChapterOptions" class="physics">
+  <div class="reveal-modal-head">
+    <h2>{{modalContent.title}}</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body book-chapter-options">
+    <div isaac-content doc="modalContent" />
+  </div>
+</div>
