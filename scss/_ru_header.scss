@@ -76,6 +76,18 @@ $ru_nav_size : 7em;
         display: inline-flex;
         top: 2.5em;
     }
+
+    circle.dot {
+        fill: #333333;
+
+        &.highlighted {
+            fill: #509e2e;
+        }
+    }
+
+    #streak-text {
+        fill: #509e2e;
+    }
 }
 .ru-desktop-nav-item-inner:hover
 {
@@ -85,6 +97,18 @@ $ru_nav_size : 7em;
 .ru-desktop-nav-item-inner:hover span
 {
     color: #fff;
+
+    #streak-text {
+        fill: #509e2e;
+    }
+
+    circle.dot {
+        fill: #D6D6D6;
+
+        &.highlighted {
+            fill: #509e2e;
+        }
+    }
 }
 
 .ru-desktop-nav-item-inner.active
@@ -97,8 +121,16 @@ $ru_nav_size : 7em;
     font-weight: 600;
     color: #fff;
 
-    em#streakNum {
-        color: #fff;
+    #streak-text {
+        fill: #fff;
+    }
+
+    circle.dot {
+        fill: #333333;
+
+        &.highlighted {
+            fill: #fff;
+        }
     }
 }
 

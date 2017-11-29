@@ -20,7 +20,7 @@
                         <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
                     </div>
                 </div>
-                <div class='padded-right-float text-right' style="position: relative">
+                <div class='padded-right-float text-right'>
                     <a class='ru-desktop-nav-item' ui-sref='chemistry'>
                         <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
                             <span class="multiline">Isaac Chemistry</span>
@@ -41,15 +41,37 @@
                             <span>Log in</span>
                         </div>
                     </a>
-                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress'>
+                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress' ng-init="streakDialToggle(currentActivityStreakLength)">
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
-                            <!--<span>{{ notificationListLength }}</span>-->
-                            <span class="multiline" style="display: grid; line-height: 1.5em;">
-                                <em id="streakNum">{{ currentActivityStreakLength }}</em>
-                                day streak
+                            <span style="display: grid;top: 0; width: auto;">
+                                <p style="font-style: normal; margin-bottom: 0; font-weight:
+                                bold; font-size: 0.55em; margin-top: 0.8em;">STREAK</p>
+
+                                    <svg id="svg-progress" width="100%" height="50" version="1.1"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                    <text id="streak-text" text-anchor="middle" x="50%" y="31" font-weight="bold">
+                                        {{ currentActivityStreakLength }}
+                                    </text>
+                                </svg>
+                                Progress
+
+                            </span>
+                            <!--<span style="top:0.2em;">
+                                <svg id="svg-progress" width="50" height="50" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <text text-anchor="middle" x="25" y="30" font-weight="bold">
+                                        {{ currentActivityStreakLength }}
+                                    </text>
+                                </svg>
+                            </span>-->
+                        </div>
+
+                        <!--<div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                            <!--<span>
+
                             </span>
 
-                        </div>
+                        </div>-->
                     </a>
                 </div>
             </nav>

@@ -716,18 +716,29 @@ define([
                     var websocketMessage = JSON.parse(event.data);
 
 
+                    // user snapshot update
                     if (websocketMessage.userSnapshot) {
 
-                        $rootScope.currentActivityStreakLength = websocketMessage.userSnapshot.dailyStreakRecord;
+                        var streak = websocketMessage.userSnapshot.dailyStreakRecord;
+
+                        if ($rootScope.currentActivityStreakLength != streak) {
+                            $rootScope.currentActivityStreakLength = streak;
+                            $rootScope.streakDialToggle(streak);
+                        }
 
                     } else if (websocketMessage.notifications) {
 
                         websocketMessage.notifications.forEach(function(entry) {
 
+                            // specific user streak update
                             if (entry.message.includes("streak")) {
 
-                                $rootScope.currentActivityStreakLength = entry.message.split(":")[1];
+                                var streak = entry.message.split(":")[1];
 
+                                if ($rootScope.currentActivityStreakLength != streak) {
+                                    $rootScope.currentActivityStreakLength = streak;
+                                    $rootScope.streakDialToggle(streak);
+                                }
                             }
 
                         });
