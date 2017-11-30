@@ -63,7 +63,7 @@ define([], function() {
             $('#svg-progress').find(".dot").remove();
 
             var dotsPerCircle = 12;
-
+            var streakPerDot = 60/dotsPerCircle;
             var interval = (Math.PI * 2) / dotsPerCircle;
 
             var centerX = $('#svg-progress').width()/2;
@@ -80,8 +80,8 @@ define([], function() {
 
                 var className = "dot";
 
-                if (i < streakNum) {
-                    var className = "dot highlighted";
+                if (i < Math.ceil(streakNum/streakPerDot)) {
+                    className = "dot highlighted";
                 }
 
 
