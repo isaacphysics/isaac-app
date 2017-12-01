@@ -36,8 +36,7 @@ define([
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
-    "angular-google-maps",
-    "ngAnimate"
+    "angular-google-maps"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
@@ -57,8 +56,7 @@ define([
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date',
-        'ngAnimate'
+        'ui.date'
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
@@ -702,8 +700,7 @@ define([
              // we are logged in
 
                 // set up websocket and connect to notification endpoint
-                var websocketURI = "ws://localhost:8080/isaac-api/user-alerts/";
-                $rootScope.notificationWebSocket = new WebSocket(websocketURI);
+                $rootScope.notificationWebSocket = api.getWebsocket("/user-alerts");
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
