@@ -700,7 +700,7 @@ define([
              // we are logged in
 
                 // set up websocket and connect to notification endpoint
-                $rootScope.notificationWebSocket = api.getWebsocket("/user-alerts");
+                $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {

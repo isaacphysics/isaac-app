@@ -534,7 +534,7 @@ define([], function() {
 		this.questionsAnswered = $resource(urlPrefix + "/stats/questions_answered/count");
 
 		this.getWebsocket = function(uri) {
-			return new WebSocket(urlPrefix.replace(/^http/, "ws") + uri);
+			return new WebSocket(urlPrefix.replace(/^http/, "ws") + "/" + uri);
 		}
 
 	}
