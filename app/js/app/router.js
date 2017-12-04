@@ -155,6 +155,16 @@ define(["angular-ui-router"], function() {
                 },
                 reloadOnSearch: false,
             });
+
+            $sp.state('qmp', {
+                url: "/qmp",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_quantum_mechanics_primer', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
         }
 
 
@@ -179,6 +189,7 @@ define(["angular-ui-router"], function() {
         $sp.state('book_physics_skills_14', bookState("physics_skills_14"));
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
+        $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
 
         // Old book page URLs still need to work
         $sp.state('book', {
