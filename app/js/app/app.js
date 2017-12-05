@@ -689,9 +689,10 @@ define([
         //$rootScope.notificationList = [];
         //$rootScope.notificationPopups = [];
         //$rootScope.notificationListLength = 0;
-        $rootScope.currentActivityStreakLength = 0;
-        $rootScope.notificationWebSocket = null;
         //var signOnTime = Number(new Date());
+        $rootScope.currentDailyStreakLength = 0;
+        $rootScope.streakIncremented = false;
+        $rootScope.notificationWebSocket = null;
         var socketOpen = false;
 
         $rootScope.openNotificationSocket = function() {
@@ -712,30 +713,25 @@ define([
 
                     var websocketMessage = JSON.parse(event.data);
 
-
                     // user snapshot update
                     if (websocketMessage.userSnapshot) {
 
-                        var streak = websocketMessage.userSnapshot.dailyStreakRecord;
+                        var todayActivityLength = websocketMessage.userSnapshot.currentActivity;
 
-                        if ($rootScope.currentActivityStreakLength != streak) {
-                            $rootScope.currentActivityStreakLength = streak;
-                            $rootScope.streakDialToggle(streak);
-                        }
+                        $rootScope.streakDialToggle(todayActivityLength);
 
                     } else if (websocketMessage.notifications) {
 
                         websocketMessage.notifications.forEach(function(entry) {
 
+                            var notificationMessage = JSON.parse(entry.message);
+
                             // specific user streak update
-                            if (entry.message.includes("streak")) {
+                            if (notificationMessage.streakData) {
 
-                                var streak = entry.message.split(":")[1];
+                                var todayActivityLength = notificationMessage.streakData.currentActivity;
 
-                                if ($rootScope.currentActivityStreakLength != streak) {
-                                    $rootScope.currentActivityStreakLength = streak;
-                                    $rootScope.streakDialToggle(streak);
-                                }
+                                $rootScope.streakDialToggle(todayActivityLength);
                             }
 
                         });

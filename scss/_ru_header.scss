@@ -77,18 +77,45 @@ $ru_nav_size : 7em;
         top: 2.5em;
     }
 
-    circle.dot {
-        fill: #333333;
-
-        &.highlighted {
-            fill: #509e2e;
-        }
+    #streak-value {
+        position: absolute;
+        width: 100%;
+        top: 35%;
+        color: #509e2e;
+        font-weight: 600;
     }
 
-    #streak-text {
-        fill: #509e2e;
+    circle#empty-bar {
+        fill: none;
+        stroke: #e6e6e6;
+    }
+
+    circle#progress-bar {
+        fill: none;
+        stroke: #509e2e;
+
+        -webkit-transition: stroke-dashoffset 0.5s ease-in-out;
+        -moz-transition: stroke-dashoffset 0.5s ease-in-out;
+        -ms-transition: stroke-dashoffset 0.5s ease-in-out;
+        -o-transition: stroke-dashoffset 0.5s ease-in-out;
+        transition: stroke-dashoffset 0.5s ease-in-out;
+        -moz-transform-origin: 100% 50%;
+        -webkit-transform-origin: 100% 50%;
+        -o-transform-origin: 100% 50%;
+        -ms-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
     }
 }
+
+@keyframes progress {
+    from {
+        stroke-dashoffset: 125.664;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 .ru-desktop-nav-item-inner:hover
 {
     background-position: -249px -5px;
@@ -97,18 +124,6 @@ $ru_nav_size : 7em;
 .ru-desktop-nav-item-inner:hover span
 {
     color: #fff;
-
-    #streak-text {
-        fill: #509e2e;
-    }
-
-    circle.dot {
-        fill: #D6D6D6;
-
-        &.highlighted {
-            fill: #509e2e;
-        }
-    }
 }
 
 .ru-desktop-nav-item-inner.active
@@ -121,16 +136,18 @@ $ru_nav_size : 7em;
     font-weight: 600;
     color: #fff;
 
-    #streak-text {
-        fill: #fff;
+    #streak-value {
+        color: #fff;
     }
 
-    circle.dot {
-        fill: #333333;
+    circle#empty-bar {
+        fill: none;
+        stroke: #333;
+    }
 
-        &.highlighted {
-            fill: #fff;
-        }
+    circle#progress-bar {
+        fill: none;
+        stroke: #fff;
     }
 }
 

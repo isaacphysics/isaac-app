@@ -57,43 +57,25 @@ define([], function() {
 		}
 
 
-        $rootScope.streakDialToggle = function(streakNum) {
 
-            // if we are rendering a new dial, remove the current one
-            $('#svg-progress').find(".dot").remove();
+        $rootScope.streakDialToggle = function(questionPartsCorrectToday) {
 
-            var dotsPerCircle = 12;
-            var streakPerDot = 60/dotsPerCircle;
-            var interval = (Math.PI * 2) / dotsPerCircle;
-
-            var centerX = $('#svg-progress').width()/2;
-            var centerY = $('#svg-progress').height()/2;
+		    var progressValue = $('#progress-bar');
             var radius = 20;
+            var circumference = 2 * Math.PI * radius;
+            var dashOffset = circumference;
 
-
-            for (var i = 0; i < dotsPerCircle; i++) {
-
-                desiredRadianAngleOnCircle = interval * i;
-
-                var x = centerX + radius * Math.sin(desiredRadianAngleOnCircle);
-                var y = centerY - radius * Math.cos(desiredRadianAngleOnCircle);
-
-                var className = "dot";
-
-                if (i < Math.ceil(streakNum/streakPerDot)) {
-                    className = "dot highlighted";
-                }
-
-
-                var shape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                shape.setAttributeNS(null, "class", className);
-                shape.setAttributeNS(null, "cx", x);
-                shape.setAttributeNS(null, "cy", y);
-                shape.setAttributeNS(null, "r", 2.6);
-
-                $('#svg-progress').append(shape);
-
+            if (questionPartsCorrectToday != 0 && questionPartsCorrectToday <= 3) {
+                dashOffset = circumference * (1 - (questionPartsCorrectToday/3));
             }
+
+            if (questionPartsCorrectToday >= 3 && !$rootScope.streakIncremented) {
+                $rootScope.currentDailyStreakLength += 1;
+                $rootScope.streakIncremented = true;
+            }
+
+            progressValue.attr('stroke-dashoffset', String(dashOffset));
+
         }
 
 	}];
