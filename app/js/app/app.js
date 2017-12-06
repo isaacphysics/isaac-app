@@ -690,7 +690,7 @@ define([
         //$rootScope.notificationPopups = [];
         //$rootScope.notificationListLength = 0;
         //var signOnTime = Number(new Date());
-        $rootScope.currentDailyStreakLength = 0;
+        $rootScope.currentDailyStreakLength = null;
         $rootScope.streakIncremented = false;
         $rootScope.notificationWebSocket = null;
         var socketOpen = false;
@@ -716,8 +716,10 @@ define([
                     // user snapshot update
                     if (websocketMessage.userSnapshot) {
 
+                        if ($rootScope.currentDailyStreakLength == null) {
+                            $rootScope.currentDailyStreakLength = websocketMessage.userSnapshot.dailyStreakRecord;
+                        }
                         var todayActivityLength = websocketMessage.userSnapshot.currentActivity;
-
                         $rootScope.streakDialToggle(todayActivityLength);
 
                     } else if (websocketMessage.notifications) {
@@ -729,8 +731,10 @@ define([
                             // specific user streak update
                             if (notificationMessage.streakData) {
 
+                                if ($rootScope.currentDailyStreakLength == null) {
+                                    $rootScope.currentDailyStreakLength = notificationMessage.streakData.dailyStreakRecord;
+                                }
                                 var todayActivityLength = notificationMessage.streakData.currentActivity;
-
                                 $rootScope.streakDialToggle(todayActivityLength);
                             }
 

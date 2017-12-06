@@ -59,8 +59,11 @@
                                                 stroke-dasharray="125.664" stroke-dashoffset="125.664"></circle>
                                 </svg>
 
-                                <div id="streak-value">
+                                <div class="streak-value" ng-if="currentDailyStreakLength != null">
                                     {{ currentDailyStreakLength }}
+                                </div>
+                                <div class="streak-value" ng-if="currentDailyStreakLength == null">
+                                    0
                                 </div>
                                 Progress
 
