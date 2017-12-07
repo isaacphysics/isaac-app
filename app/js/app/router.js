@@ -165,12 +165,40 @@ define(["angular-ui-router"], function() {
                     $rootScope.setLoading(false);
                 }],
             });
+            $sp.state('gcsebook', {
+                url: "/gcsebook",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_phys_book_gcse', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('physics_skills_14', {
+                url: "/physics_skills_14",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_physics_skills_14', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
         }
 
 
         if (subject.id == "chemistry") {
 
             // Create chemistry generic pages and register them here.
+
+            $sp.state('book16', {
+                url: "/book16",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_chemistry_16', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
         }
 
         if (subject.id == "biology") {
@@ -201,7 +229,6 @@ define(["angular-ui-router"], function() {
                 $rootScope.setLoading(false);
             }],
         });
-        $sp.state('book_phys_book_gcse_old', genericPageState("/gcsebook", "phys_book_gcse_index"));
 
         $sp.state('answers', {
             // People try this URL for answers; point them to the FAQ:
