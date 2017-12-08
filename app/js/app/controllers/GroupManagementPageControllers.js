@@ -130,7 +130,7 @@ define([], function() {
         		$scope.setSelectedGroup(null);
         		$scope.newGroup = {};
 
-                $scope.showToast($scope.toastTypes.Success, "Group archive status updated", groupToSave.groupName + " group archive sstatus has been saved.");
+                $scope.showToast($scope.toastTypes.Success, "Group archive status updated", groupToSave.groupName + " group archive status has been saved.");
         	}).catch(function(e) {
         		$scope.showToast($scope.toastTypes.Failure, "Group archive status update failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
