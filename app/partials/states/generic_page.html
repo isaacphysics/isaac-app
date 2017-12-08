@@ -1,10 +1,30 @@
-<div class='small-16 columns'>
-	<h1>{{doc.title}}</h1>
-	<h2 class="subheader">{{doc.subtitle}}</h2>
-</div>
-
 <div class="row">
-	<div class='large-16 medium-16 columns'>
-		<div isaac-content doc="doc" ></div>
-	</div>
+	<div class='large-16 medium-16 columns print-no-side-padding'>
+        <section>
+            <div class="row ru-concept">
+                <div class="ru-concept-inner ru-border">
+                    <div class="row">
+                        <div class="small-15 small-offset-1 columns end">
+                            <div class="only-print print-header">
+                                <span class="{{pageSubject}}">{{shareUrl}}</span>
+                            </div>
+
+                            <a ui-sref='home' class='only-print print-logo'><img alt='Isaac Physics. You work it out.'
+                                                                                 src='/assets/isaac-logo-strap-print.svg'></a>
+                            <a print-button></a>
+                            <a share-button></a>
+                            <div class='ru_share_link slide-animate' ng-show="showShareUrl">
+                                <div>
+                                    {{shareUrl}}
+                                </div>
+                            </div>
+                            <h2 class="ru_{{pageSubject}}" math-jax>{{page.title}}</h2>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div isaac-content doc="page"></div>
+                </div>
+            </div>
+    </div>
 </div>
