@@ -3,10 +3,11 @@
 
     <input ng-show="selectedGroup" type="text" ng-model="selectedGroup.groupName" />
     <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
+    <a class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
     <div ng-if="emailInviteFeatureAvailable">
         <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
         <p>Email addresses MUST be seperated by a comma.</p>
-        <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>        
+        <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
     </div>
 
     <dl class="accordion group-accordion" ng-show="selectedGroup">
@@ -58,62 +59,11 @@
             </div>
         </dd>
     </dl>
-    <a class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
-    <div class="row" ng-if="archivedView">
+    
+    <div class="row" ng-if="selectedGroup">
         <div class="large-16 columns">
-            <span title="What does this do?" class="has-tip icon-help right" aria-haspopup="true" data-tooltip=""></span>
-            <a class="archive-group-btn" href="javascript:void(0)">Archive this group</a>
+            <a ng-if="!archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(true)">Archive this group</a>
+            <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   
         </div>
     </div>
     <!-- End active group -->
-    
-    <!-- Start archived group -->
-    <div ng-if="archivedView">
-        <h3 class="ru_green show-for-large-up">Dolphins</h3>
-            <dl class="accordion group-accordion archived">
-                <dd class="active">
-                    <a class="group-accordion-header">
-                        3 Active members <span class="show-for-medium-up">in this group</span>
-                        <span class="group-accordion-arrow"></span>
-                    </a>
-                    <div class="group-accordion-content">
-                        <table class="group-table">
-                            <tbody>
-                                <tr>
-                                    <td><span class="group-table-person"></span>David Simmons</td>
-                                    <td>DaveyBoy@hotmail.com</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="group-table-person"></span>Jane Brown</td>
-                                    <td>Jane123@googlemail.com</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="group-table-person"></span>John Reece</td>
-                                    <td>JReece@gmail.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </dd>
-                <dd>
-                    <a class="group-accordion-header">
-                        2 Invitations not yet accepted <span class="show-for-medium-up">in this group</span>
-                        <span class="group-accordion-arrow"></span>
-                    </a>
-                    <div class="group-accordion-content">
-                        <table class="group-table">
-                            <tbody>
-                                <tr>
-                                    <td><span class="group-table-person"></span>Jane123@googlemail.com</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="group-table-person"></span>JReece@gmail.com</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </dd>
-            </dl>
-        <a class="ru-button-big secondary expand">Un-archive this group</a>        
-    </div>
-    <!-- End archived group

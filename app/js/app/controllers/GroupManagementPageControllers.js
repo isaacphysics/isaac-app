@@ -20,9 +20,9 @@ define([], function() {
 		$rootScope.pageTitle = "Group Management";
 
 		$scope.archivedView = false;
-		$scope.emailInviteFeatureAvailable = false;
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
 
-		$scope.myGroups = api.groupManagementEndpoint.get();
+		$scope.emailInviteFeatureAvailable = false;
 
 		$scope.selectedGroup = null;
 		$scope.selectedGroupMembers = null;
@@ -44,6 +44,16 @@ define([], function() {
 				$scope.hasExistingAssignments = true;
 			}
 		})
+
+		$scope.changeArchivedGroupsView = function(newValue) {
+			if ($scope.archivedView != newValue) {
+				$scope.setSelectedGroup(null);
+				$scope.archivedView = newValue;
+				$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
+			}
+			// don't do anything as there is no change.
+		}
+		
 
 		$scope.setSelectedGroup = function(group) {
 			if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
@@ -98,6 +108,32 @@ define([], function() {
 				}
 			}
 
+		}
+
+		$scope.changeGroupArchiveState = function(archiveState) {
+        	var Group = api.groupManagementEndpoint;
+        	var groupToSave = null;
+
+        	groupToSave = new Group($scope.selectedGroup);
+
+        	if (groupToSave.archived == false) {
+        		var archiveGroup = $window.confirm('Are you sure you would like to archive this group?');   
+				if (!archiveGroup) {
+					return;
+				}
+        	}
+
+        	groupToSave.archived = archiveState;
+
+        	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
+        		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
+        		$scope.setSelectedGroup(null);
+        		$scope.newGroup = {};
+
+                $scope.showToast($scope.toastTypes.Success, "Group archive status updated", groupToSave.groupName + " group archive status has been saved.");
+        	}).catch(function(e) {
+        		$scope.showToast($scope.toastTypes.Failure, "Group archive status update failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        	});
 		}
 
 		$scope.saveGroup = function(isUpdate) {
