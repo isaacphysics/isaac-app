@@ -20,7 +20,7 @@ define([], function() {
 		$rootScope.pageTitle = "Group Management";
 
 		$scope.archivedView = false;
-		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_Only":$scope.archivedView});
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
 
 		$scope.emailInviteFeatureAvailable = false;
 
@@ -49,7 +49,7 @@ define([], function() {
 			if ($scope.archivedView != newValue) {
 				$scope.setSelectedGroup(null);
 				$scope.archivedView = newValue;
-				$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_Only":$scope.archivedView});
+				$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
 			}
 			// don't do anything as there is no change.
 		}
@@ -126,7 +126,7 @@ define([], function() {
         	groupToSave.archived = archiveState;
 
         	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
-        		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_Only":$scope.archivedView});
+        		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
         		$scope.setSelectedGroup(null);
         		$scope.newGroup = {};
 

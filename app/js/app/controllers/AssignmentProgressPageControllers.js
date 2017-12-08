@@ -40,7 +40,7 @@ define([], function() {
             formatAsPercentage: false
         };
 
-        var myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_Only":false}).$promise;
+        var myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_only":false}).$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
 
         scope.sortOptions = [

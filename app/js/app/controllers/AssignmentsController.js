@@ -35,7 +35,7 @@ define([], function() {
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_Only":false}); // get a list of all known unarchived groups for this user.
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":false}); // get a list of all known unarchived groups for this user.
 
 		$scope.openedAssignPanels = []; // shows those panels currently opened
 		$scope.pendingAssignment = {}; // boardId to group id mapping - allows us to know which group is being assigned which board.
