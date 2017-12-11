@@ -26,9 +26,15 @@ define([], function() {
 					scope.canSubmit = false;
 
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
-						var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
-						if (Object.keys(symbols).length == 0) {
-							return;
+						var selectedChoice = JSON.parse(scope.question.selectedChoice.value);
+						if (selectedChoice.hasOwnProperty("symbols")) {
+                            var symbols = selectedChoice.symbols;
+                            if (Object.keys(symbols).length == 0) {
+                            	return;
+							}
+						} else if (selectedChoice.hasOwnProperty("type") && selectedChoice.type == "text-entry") {
+							// We're good to go :)
+							// We may want to do things here.
 						}
 					}
 
