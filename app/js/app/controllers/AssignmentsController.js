@@ -34,8 +34,9 @@ define([], function() {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
-		$scope.myGroups = api.groupManagementEndpoint.get(); // get a list of all known groups for this user.
 		$scope.boardSearchOptions = boardSearchOptions;
+
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":false}); // get a list of all known unarchived groups for this user.
 
 		$scope.openedAssignPanels = []; // shows those panels currently opened
 		$scope.pendingAssignment = {}; // boardId to group id mapping - allows us to know which group is being assigned which board.
@@ -225,7 +226,7 @@ define([], function() {
 		}
 	}];
 
-	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
+	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout, $location) {
 
 		$scope.setLoading(true);
 		
@@ -238,8 +239,6 @@ define([], function() {
 		$scope.myAssignments.completed = [];
 		$scope.myAssignments.inProgressRecent = [];
 		$scope.myAssignments.inProgressOld = [];
-
-		$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
 
 		$scope.now = new Date();
 
@@ -275,6 +274,21 @@ define([], function() {
 		}
 
 		$scope.calculateBoardLevels = calculateBoardLevels;
+
+		// Update the currently shown assignments based on URL hash:
+		switch ($location.hash()) {
+			case "inprogress":
+				$scope.setVisibleBoard('IN_PROGRESS_RECENT');
+				break;
+			case "older":
+				$scope.setVisibleBoard('IN_PROGRESS_OLD');
+				break;
+			case "completed":
+				$scope.setVisibleBoard('COMPLETED');
+				break;
+			default:
+				$scope.setVisibleBoard('IN_PROGRESS_RECENT');
+		}
 	}];
 
 	return {
