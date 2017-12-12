@@ -43,9 +43,11 @@
                     </a>
                     <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress' ng-init="streakDialToggle(todayActivityLength)">
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
-                            <span style="display: grid;top: 0; width: auto;">
+                            <span style="display: grid;top: 0; width: auto;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                    <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                                  aria-haspopup="true">
                                 <p style="font-style: normal; margin-bottom: 0; font-weight:
-                                bold; font-size: 0.55em; margin-top: 0.8em;">DAY STREAK</p>
+                                bold; font-size: 0.55em; margin-top: 1.9em;"></p>
 
                                     <svg id="svg-progress" width="100%" height="50" version="1.1"
                                          xmlns="http://www.w3.org/2000/svg"
@@ -57,25 +59,17 @@
                                         <circle id="progress-bar" r="20" cx="56" cy="25"
                                                 stroke-width="6"
                                                 stroke-dasharray="125.664" stroke-dashoffset="125.664"></circle>
-                                </svg>
+                                    </svg>
 
-                                <div class="streak-value" ng-if="currentDailyStreakLength != null">
-                                    {{ currentDailyStreakLength }}
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
+                                    {{ user.userSnapshot.streakRecord.currentStreak }}
                                 </div>
-                                <div class="streak-value" ng-if="currentDailyStreakLength == null">
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">
                                     0
                                 </div>
                                 Progress
 
                             </span>
-                            <!--<span style="top:0.2em;">
-                                <svg id="svg-progress" width="50" height="50" version="1.1"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <text text-anchor="middle" x="25" y="30" font-weight="bold">
-                                        {{ currentActivityStreakLength }}
-                                    </text>
-                                </svg>
-                            </span>-->
                         </div>
 
                         <!--<div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">

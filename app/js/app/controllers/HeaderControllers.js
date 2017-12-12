@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$rootScope', '$scope', 'auth', 'api', function($rootScope, $scope, auth, api) {
+	var PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
 		
 		$scope.$root.segueEnvironment = "LIVE"; //Live by default
 
@@ -23,6 +23,8 @@ define([], function() {
 		api.environment.get().$promise.then(function(response){
 			$scope.$root.segueEnvironment = response.segueEnvironment;
 		});
+
+
 
         var notificationsOpen = false;
 
@@ -65,13 +67,11 @@ define([], function() {
             var circumference = 2 * Math.PI * radius;
             var dashOffset = circumference;
 
-            if (questionPartsCorrectToday != 0 && questionPartsCorrectToday <= 3) {
-                dashOffset = circumference * (1 - (questionPartsCorrectToday/3));
-            }
 
-            if (questionPartsCorrectToday >= 3 && !$rootScope.streakIncremented) {
-                $rootScope.currentDailyStreakLength += 1;
-                $rootScope.streakIncremented = true;
+            if (questionPartsCorrectToday <= 3) {
+                dashOffset = circumference * (1 - (questionPartsCorrectToday/3));
+            } else if (questionPartsCorrectToday > 3) {
+                dashOffset = 0;
             }
 
             progressValue.attr('stroke-dashoffset', String(dashOffset));
