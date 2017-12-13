@@ -12,7 +12,8 @@ System.config({
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": false,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "defaultExtension": "ts"
     },
 
     // Configure default extensions so we can use old-style imports.
@@ -25,6 +26,9 @@ System.config({
         },
         "bower_components/jquery-ui": {
             defaultExtension: 'min.js'
+        },
+        "ts": {
+            defaultExtension: 'ts'
         }
     },
 

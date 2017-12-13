@@ -122,8 +122,10 @@
                     <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="admin">Site Admin</a></li>
                     <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="adminUserManager">User Manager</a></li>
                     <li ng-show="user.role && (user.role == 'ADMIN' || user.role == 'EVENT_MANAGER')"><a ui-sref="adminEvents">Event Admin</a></li>
-                    <li><a ui-sref="contentErrors">Content Errors &nbsp;<span ng-if="contentProblems > 0" data-ot="There are {{contentProblems}} outstanding problems." class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{contentProblems}}</span></a></li>
+                    <li><a ui-sref="contentErrors">Content Errors &nbsp;<span ng-if="contentProblems !== 0" data-ot="There are {{contentProblems}} content errors!" class="dl-alert warning hide-for-small-only" aria-haspopup="true">{{contentProblems || '!'}}</span></a></li>
                     <li><a ui-sref="adminStats">Site Statistics</a></li>
+                    <li><a ui-sref="adminStatsNew">Faster Site Statistics (Beta)</a></li>
+                    <!-- <li><a ui-sref="adminStatsNew">Faster Site Statistics (Beta)</a></li> -->
                 </ul>
             </li>
         </ul>

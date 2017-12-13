@@ -10,8 +10,8 @@
 <div class="group-management-wrap row">
     <div class="large-6 columns">
         <dl class="tabs profile-tabs no-print">
-            <dd class="active"><a href="javascript:void(0)">Active Groups</a></dd>
-            <dd ng-if="archivedView"><a href="javascript:void(0)">Archived Groups</a></dd>
+            <dd ng-class="{active: !archivedView}"><a href="javascript:void(0)" ng-click="changeArchivedGroupsView(false)">Active Groups</a></dd>
+            <dd ng-class="{active: archivedView}"><a href="javascript:void(0)" ng-click="changeArchivedGroupsView(true)">Archived Groups</a></dd>
         </dl>
         <div class="tabs-content profile-tabs-content">
 
@@ -35,8 +35,6 @@
 
             <div class="group-header show-for-large-up">
                 <span class="left" style="line-height: 35px;">Groups:</span>
-               <!--  <span ng-hide="sortOption == 'groupName'" class="right"><a ng-click="sortOption='groupName'">[Alphabetical]</a></span>
-                <span ng-hide="sortOption == 'created'" class="right"><a ng-click="sortOption='created'">[Group Created]</a></span></span> -->
                 <select class="right" ng-model="sortOption" ng-options="option.label for option in sortOptions" style="width:50%;margin-bottom:5px;"></select>
             </div>
             <div ng-if="selectedGroup" class="show-for-large-up">
@@ -60,79 +58,6 @@
                     <p class="small-text-center show-for-large-up">You do not have any groups to display.</p>
                 </dd>
             </dl>
-
-            <!-- Archived groups navigation -->
-            <div ng-if="archivedView">
-                <div class="group-header show-for-large-up">
-                	<span class="left">Group Name</span>
-                	<span class="right">Archived</span>
-                </div>
-                <dl class="group-nav">
-                    <dd class="active">
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Dolphins
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Tigers
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Monkeys
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Lions
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-          
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Elephants
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Panthers
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-             
-                    </dd>
-                    <dd>
-                        <a class="group-nav-header" href="#">
-                            <span class="group-icon"></span>
-                            Tigers
-                            <img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" />
-                            <span class="group-nav-right">1st Nov 2014</span>
-                        </a>
-
-                    </dd>
-                </dl>
-            </div>
         </div>
     </div>
 
@@ -168,19 +93,8 @@
             </div>          
         </div>
         <div class="row">
-            <div class="small-5 columns">
-                <button ng-click="modals.shareCode.hide()" ui-sref="book">Set work from our Physics book</button>  
-            </div>
-            <div class="small-5 columns">
-                <button ng-click="modals.shareCode.hide()" ui-sref="setAssignments">Set one of your boards</button>  
-            </div>               
-            <div class="small-5 columns end">
-                <button ng-click="modals.shareCode.hide()" ui-sref="gameEditor">Create a new board</button>    
-            </div>
-            <!--
-            <div class="small-8 columns">
-                <button ng-click="modals.shareCode.hide()" ui-sref="top_boards">Select from our popular boards</button>    
-            </div>-->    
+            <button class="small-offset-2 small-5 columns" ng-click="modals.shareCode.hide();setSelectedGroup(null)">Create another group</button>  
+            <button class="small-offset-2 small-5 columns end" ng-click="modals.shareCode.hide()" ui-sref="setAssignments">Set an assignment</button>    
         </div>      
       </div>    
   </div>

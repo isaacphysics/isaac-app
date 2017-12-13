@@ -28,8 +28,17 @@ define([], function() {
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
+		var roundUpToNearestSix = function(initialValue) {
+			var valueModuloSix = initialValue % 6;
+			var valueNeedsIncreasing = valueModuloSix != 0 || initialValue == 0;
+			return valueNeedsIncreasing ? initialValue + 6 - valueModuloSix : initialValue;
+		}
+
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
+			if (limit != null) {
+				limit = roundUpToNearestSix(limit);
+			}
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				$scope.setLoading(false);
@@ -37,21 +46,13 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
 			// TODO: For some reason these watch functions are being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
-		});
-
 		
 		updateBoards();
 

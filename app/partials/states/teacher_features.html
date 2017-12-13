@@ -71,10 +71,10 @@
 				</a>
 			</div>
 			<div class="small-16 medium-8 large-4 columns">
-				<a ui-sref="book" class="hexagon">
+				<a ng-click="modals.isaacBooks.show();" href="javascript:void(0)" class="hexagon">
 					<img class="hexagon-field" src="/assets/teacher_features_sprite.svg#skills-book-cover"></img>
 					<div class="hexagon-title">
-						Book of core skills problems
+						Books of core skills problems
 					</div>
 				</a>
 			</div>
@@ -98,5 +98,28 @@
   </div>
   <div class="reveal-modal-body">
 		<div isaac-page-fragment="teacher_feature_help"> </div>
+  </div>
+</div>
+
+<div isaac-modal="isaacBooks">
+  <div class="reveal-modal-head">
+    <h2>Isaac Skills Books</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading set-boards-books-preview">
+    <div class="row">
+      <h4>Mastering Essential...</h4>
+    </div>
+    <div class="row text-center">
+      <div class="small-offset-1 small-4 columns">
+        <a ui-sref="book_phys_book_gcse"><img src="assets/books/phys_book_gcse.jpg"><span>GCSE Physics</span></a>
+      </div> 
+      <div class="small-offset-1 small-4 columns">
+        <a ui-sref="book_physics_skills_14"><img src="assets/books/physics_skills_14.jpg"><span>Pre-University Physics</span></a>
+      </div> 
+      <div class="small-offset-1 small-4 columns end">
+        <a ui-sref="book_chemistry_16"><img src="assets/books/chemistry_16.jpg"><span>Pre-University Physical Chemistry</span></a>
+      </div>
+    </div>
   </div>
 </div>

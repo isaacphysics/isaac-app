@@ -35,6 +35,8 @@ define([], function() {
 
                 var ps = {};
 
+                ps.hostname = location.hostname;
+
                 if (scope.$root.user && scope.$root.user._id) {
                     ps.user_id = scope.$root.user._id;
                     ps.user_role = scope.$root.user.role;

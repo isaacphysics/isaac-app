@@ -27,12 +27,41 @@ fi
 API_NAME=api-$ENV-$API_VERSION
 APP_NAME=app-$ENV-$APP_VERSION
 
-read -r -d '' PG_SERVICE << EOM
+read -r -d '' PG_AND_KAFKA_SERVICE << EOM
 pg-$ENV:
     container_name: pg-$ENV
     image: isaac-pg
+    restart: always
     volumes:
       - pg-$ENV:/pgdata
+
+  kafka-$ENV:
+    container_name: kafka-$ENV
+    image: ucamcldtg/kafka-standalone
+    restart: always
+    hostname: kafka
+    links:
+      - zookeeper-$ENV:zookeeper
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-kafka
+    volumes:
+      - /local/data/kafka-$ENV:/kafka-data:rw
+      - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+    depends_on:
+      - zookeeper-$ENV
+
+  zookeeper-$ENV:
+    container_name: zookeeper-$ENV
+    image: ucamcldtg/zookeeper-standalone
+    restart: always
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-zookeeper
+    volumes:
+      - /local/data/zookeeper-$ENV:/zookeeper-data:rw
+      - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
+
 EOM
 
 
@@ -44,12 +73,33 @@ elif [ "$ENV" == "live" ]; then
   echo "Cannot manage live deployment with this script any more. Please use compose-live."
   exit 1
 elif [ "$ENV" == "test" ]; then
-  read -r -d '' PG_SERVICE << EOM
+  read -r -d '' PG_AND_KAFKA_SERVICE << EOM
 pg-test:
     container_name: pg-test
     image: isaac-pg
     volumes:
       - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
+
+  kafka-test:
+    container_name: kafka-test
+    image: ucamcldtg/kafka-standalone
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-kafka
+    restart: always
+    hostname: kafka
+    links:
+      - zookeeper-test:zookeeper
+    volumes:
+      - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+    depends_on:
+      - zookeeper-test
+
+  zookeeper-test:
+    container_name: zookeeper-test
+    image: ucamcldtg/zookeeper-standalone
+    volumes:
+      - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
 EOM
 else
   echo "Must set environment to dev or staging."
@@ -76,12 +126,14 @@ services:
       - local-smtp:$LOCAL_SMTP
     links:
       - pg-$ENV:postgres
+      - kafka-$ENV:kafka
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
       - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
       - /local/data/keys:/local/data/rutherford/keys:ro
       - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+      - /var/log/isaac/$ENV:/isaac-logs:rw
     networks:
       default:
         aliases:
@@ -90,7 +142,7 @@ services:
       driver: journald
       options:
         tag: isaac-api-$ENV
-  $PG_SERVICE
+  $PG_AND_KAFKA_SERVICE
 networks:
   default:
     external:

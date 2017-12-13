@@ -1,9 +1,32 @@
-import { Widget, Rect } from './Widget.ts'
-import {BinaryOperation} from "./BinaryOperation.ts";
-import { DockingPoint } from "./DockingPoint.ts";
-import { ChemicalElement } from "./ChemicalElement.ts";
-import { Relation } from "./Relation.ts";
-import { Brackets } from "./Brackets.ts";
+/*
+Copyright 2016 Andrea Franceschini <andrea.franceschini@gmail.com>
+               Andrew Wells <aw684@cam.ac.uk>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+///// <reference path="../../typings/p5.d" />
+///// <reference path="../../typings/lodash.d" />
+
+/* tslint:disable: no-unused-variable */
+/* tslint:disable: comment-format */
+
+import { Widget, Rect } from './Widget'
+import {BinaryOperation} from "./BinaryOperation";
+import { DockingPoint } from "./DockingPoint";
+import { ChemicalElement } from "./ChemicalElement";
+import { Relation } from "./Relation";
+import { Brackets } from "./Brackets";
 
 /** A class for representing numbers */
 export
@@ -38,7 +61,7 @@ export
         this.s = s;
 
 
-        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'symbol_subscript', 'bottom-left', 'particle', 'relation', 'operator_brackets'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'top-left', 'symbol_subscript', 'bottom-left', 'particle', 'relation', 'operator_brackets', 'differential_order', 'differential_argument'];
     }
 
     getFullText(type?: string): string {
@@ -102,9 +125,6 @@ export
 
         } else if (format == "python") {
             expression = "" + this.getFullText("python");
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += this.dockingPoints["subscript"].child.getExpression("subscript");
-            //}
             if (this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
             }
@@ -114,15 +134,12 @@ export
                 } else if (this.dockingPoints["right"].child instanceof Relation) {
                     expression += this.dockingPoints["right"].child.getExpression(format);
                 } else {
-                    // WARNING This assumes it's a Symbol, hence produces a multiplication
+                    // WARNING This assumes it's a "Symbol", hence produces a multiplication
                     expression += "*" + this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
             expression = "" + this.getFullText();
-            //if (this.dockingPoints["subscript"].child != null) {
-            //    expression += this.dockingPoints["subscript"].child.getExpression(format);
-            //}
             if (this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.getExpression(format);
             }
@@ -248,7 +265,7 @@ export
               docking_right.child.position.y = 0;//-(child_height/2-parent_height/4);
             } else {
               child_width = docking_right.child.boundingBox().w;
-                if(docking_right.child instanceof ChemicalElement) {
+                if (docking_right.child instanceof ChemicalElement) {
                   var mass_width = (docking_right.child.dockingPoints['mass_number'] && docking_right.child.dockingPoints['mass_number'].child) ? docking_right.child.dockingPoints['mass_number'].child.boundingBox().w : 0;
                   var proton_width = (docking_right.child.dockingPoints['proton_number'] && docking_right.child.dockingPoints['proton_number'].child) ? docking_right.child.dockingPoints['proton_number'].child.boundingBox().w : 0;
                   child_width += (mass_width >= proton_width) ? mass_width : proton_width;
@@ -260,7 +277,7 @@ export
                 docking_right.child.position.y = 0;
             }
             // FIXME HORRIBLE BRACKETS FIX
-            if(docking_right.child instanceof Brackets) {
+            if (docking_right.child instanceof Brackets) {
                 docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
             }
         } else {
