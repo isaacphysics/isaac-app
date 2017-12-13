@@ -64,7 +64,7 @@
 		            <div class="small-16 columns">
 		                <h2>Email Type</h2>
 		                <p>The type of email you are sending. Users who have opted out of this type of email will not receive anything.
-		             	<select name="emailTypeSelection" ng-model="selectedEmailType" ng-options="item.name for item in emailTypes" ng-change="emailTypeChanged(selectedEmailType.id)">
+		             	<select name="emailTypeSelection" ng-model="selectedEmailType" ng-options="item.name for item in emailTypes" ng-change="emailTypeChanged(selectedEmailType)">
 		             		 <option value="">-- make a selection --</option>
 						</select>
 		            </div>            
