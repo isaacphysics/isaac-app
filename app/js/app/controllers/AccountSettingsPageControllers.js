@@ -23,7 +23,7 @@ define([], function() {
         */
         $scope.activeTab = 0;
 
-        $scope.emailPreferences = {};
+        $scope.emailPreferences = {"NEWS_AND_UPDATES": true, "ASSIGNMENTS": true, "EVENTS": true};
         $scope.subjectInterests = {};
         $scope.passwordChangeState = {
             passwordCurrent : ""
@@ -64,8 +64,9 @@ define([], function() {
 
         if ($scope.editingSelf) {
             api.user.getUserPreferences().$promise.then(function(result){
-                $scope.emailPreferences = result.EMAIL_PREFERENCE;
-                $scope.subjectInterests = result.SUBJECT_INTEREST;
+                // Only update values if response contains key:
+                $scope.emailPreferences = result.EMAIL_PREFERENCE || $scope.emailPreferences;
+                $scope.subjectInterests = result.SUBJECT_INTEREST || $scope.subjectInterests;
             });
         }
 
