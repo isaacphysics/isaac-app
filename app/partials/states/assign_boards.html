@@ -59,7 +59,7 @@
    			   <h3><a tabindex="0" href="javascript:void(0)" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
                <div class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
-                  <div>{{shareUrl}}</div>
+                  <div id="share-url-div">{{shareUrl}}</div>
                   <hr />
                   <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item">Clone and Edit</div></a>
                </div>
