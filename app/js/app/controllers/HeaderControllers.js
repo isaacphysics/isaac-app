@@ -74,7 +74,9 @@ define([], function() {
                 dashOffset = 0;
             }
 
-            progressValue.attr('stroke-dashoffset', String(dashOffset));
+            progressValue.animate({'stroke-dashoffset' : dashOffset}, 500)
+
+            //progressValue.attr('stroke-dashoffset', String(dashOffset));
 
         }
 

@@ -715,7 +715,7 @@ define([
                     if (websocketMessage.userSnapshot) {
 
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
-                        $rootScope.streakDialToggle($rootScope.user.userSnapshot.streakRecord.currentActivity);
+                        $rootScope.streakDialToggle(websocketMessage.userSnapshot.streakRecord.currentActivity);
 
                     } else if (websocketMessage.notifications) {
 
