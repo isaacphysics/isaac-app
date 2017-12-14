@@ -44,7 +44,7 @@
             <th><input ng-model="search.title" placeholder="Title search" /></th>
             <th><select ng-model="search.subjects" ng-options="subject for subject in ['', 'Physics', 'Chemistry', 'Maths']"/></th>
             <th><select ng-model="search.levels" ng-options="level for level in ['', '1', '2', '3', '4', '5', '6']"/></th>
-            <th><select ng-model="search.createdBy" ng-options="creator for creator in ['', 'Me', 'Someone else']"/></th>
+            <th><select ng-model="search.createdBy" ng-options="creator for creator in ['', 'Me', 'Isaac', 'Someone else']"/></th>
             <th><!--input ng-model="search.formattedCreationDate" placeholder="Date search" /--></th>
             <th><!--input ng-model="search.formattedLastVisitedDate" placeholder="Date search" /--></th>
             <th></th>
@@ -54,10 +54,10 @@
          <tr ng-model="boards" ng-repeat="board in boards.results | filter:search | filter:completionFilter | orderBy:propertyName:reverse" ng-class="{'completed': board.percentageCompleted == '100'}">
             <td class="text-center">
                <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-                  <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                  <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
                      {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                   </span>
-                  <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                  <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
                      {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                   </span>
                </div>
@@ -66,8 +66,8 @@
                </div>
             </td>
             <td><a ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 42 ? board.title : null}}"><strong>{{board.title.length > 42 ? board.title.slice(0, 42) + '…' : board.title}}</strong></a></td>
-            <td class="text-center">{{board.subjects | splitList | splitCapitalize}}</td>
-            <td class="text-center">{{board.levels}}</td>
+            <td class="text-center">{{board.subjects.join(' ') | splitCommaList | splitCapitalize}}</td>
+            <td class="text-center">{{board.levels.join(' ')}}</td>
             <td class="text-center">{{board.createdBy != 'Someone else' ? board.createdBy : ''}}</td>
             <td class="text-center">{{board.formattedCreationDate}}</td>
             <td class="text-center">{{board.formattedLastVisitedDate}}</td>
@@ -111,10 +111,10 @@
             <a ui-sref="board({'id':board.id})">
                <div class="row">
                   <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
-                     <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'maths'">
+                     <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
-                     <span ng-repeat="subject in calculateBoardSubjects(board)" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                     <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
                   </div>
@@ -125,7 +125,7 @@
                      <p>Created: <strong>{{board.creationDate | date:'dd/MM/yyyy'}}</strong></p>
                      <p>Last visited: <strong>{{board.lastVisited | date:'dd/MM/yyyy'}}</strong></p>
                      <div class="board-levels">
-                        <span ng-repeat="level in calculateBoardLevels(board)" class="level-{{level}}">{{level}}</span>
+                        <span ng-repeat="level in board.levels" class="level-{{level}}">{{level}}</span>
                      </div>
                   </div>
                </div>
@@ -133,9 +133,7 @@
             <div class="row">
                <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title}}</a></h3>
                <div class="board-creator">
-                  Created by:
-                  <span ng-if="board.ownerUserId == user._id">Me</span>
-                  <span ng-if="board.ownerUserId != user._id">Someone else</span>
+                  Created by: <span>{{board.createdBy}}</span>
                </div>
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
                <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">

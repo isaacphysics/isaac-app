@@ -15,18 +15,14 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$timeout', '$filter', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $timeout, $filter, $stateParams, $state) {
+	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$timeout', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $timeout, $stateParams, $state) {
 		
 		$rootScope.pageTitle = "My Boards";
-
-		$scope.isTeacher = $scope.user != null && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
-
-		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
-				$scope.boards = augmentBoards(boards);
+				$scope.boards = boardProcessor.augmentBoards(boards, $scope.user._id);
 				$scope.setLoading(false);
 			})
 		};
@@ -43,6 +39,7 @@ define([], function() {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Merge new boards into results 
+				boardProcessor.augmentBoards(newBoards, $scope.user._id);
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.setLoading(false);
 				mergeInProgress = false;
@@ -82,40 +79,6 @@ define([], function() {
 			$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 			$scope.propertyName = propertyName;
 		};
-
-		$scope.calculateBoardLevels = function(board) {
-			// TODO: this logic is duplicated in the assignments controller. We should refactor.
-			levels = [];
-			for(var i = 0; i < board.questions.length; i++) {
-				if (levels.indexOf(board.questions[i].level) == -1 && board.questions[i].level != 0) {
-					levels.push(board.questions[i].level);
-				}
-			}
-
-			levels.sort(function (a, b) {
-				return a > b ? 1 : a < b ? -1 : 0;
-			});
-
-			return levels;
-		};
-
-		$scope.calculateBoardSubjects = function(board) {
-			subjects = [];
-			for(i = 0; i < board.questions.length; i++) {
-				var q = board.questions[i];
-
-				if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1) {
-					subjects.push("maths");
-				} else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1) {
-					subjects.push("physics");
-				} else if (q.tags && q.tags.indexOf("chemistry") > -1 && subjects.indexOf("physics") == -1) {
-					// FIXME - Hack for now to avoid having to change the sprite image!
-					subjects.push("physics");
-				}
-			}
-
-			return subjects;
-		}
 
 		$scope.$watchGroup(["selectedNoBoardsOption", "selectedFilterOption"], function(newVal, oldVal) {
 			if (newVal !== oldVal) {
@@ -161,19 +124,6 @@ define([], function() {
 					formattedLastVisitedDate: ''
 				}
 			}
-		};
-
-		var augmentBoards = function(boards) {
-			for (boardIndex in boards.results) {
-				board = boards.results[boardIndex];
-				board.completion = board.percentageCompleted == 100 ? 'Completed' : board.percentageCompleted == 0 ? 'Not Started' : 'In Progress'
-				board.subjects = $scope.calculateBoardSubjects(board).join(' ');
-				board.levels = $scope.calculateBoardLevels(board).join(' ');
-				board.createdBy = board.ownerUserId == $scope.user._id ? "Me" : "Someone else";
-				board.formattedCreationDate = $filter('date')(board.creationDate, 'dd/MM/yyyy');
-				board.formattedLastVisitedDate = $filter('date')(board.lastVisited, 'dd/MM/yyyy');
-			}
-			return boards;
 		};
 
 		var lookupAssignedGroups = function(board) {
