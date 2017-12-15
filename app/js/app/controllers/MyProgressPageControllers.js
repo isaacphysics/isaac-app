@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($scope, auth, api, tags, $stateParams, $timeout) {
+    var PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($rootScope, $scope, auth, api, tags, $stateParams, $timeout) {
         // start and end dates for line graphs
         var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 5)) // Set it to five years ago at most!
         dataStartDate = dataStartDate.getTime();
@@ -187,6 +187,26 @@ define([], function() {
                 $scope.questionsVisible.topicsSubject = newField.parent;
 
             })
+
+
+
+            // --- STREAK PROGRESS --- //
+            $scope.streakRecord = $scope.progress.userSnapshot.streakRecord;
+
+            var currentProgressValue = $('#current-streak-progress-bar');
+            var radius = 40;
+            var circumference = 2 * Math.PI * radius;
+            var currentDashOffset = circumference;
+
+            if ($scope.streakRecord.currentActivity <= 3) {
+                currentDashOffset = circumference * (1 - ($scope.streakRecord.currentActivity/3));
+            } else if ($scope.streakRecord.currentActivity > 3) {
+                currentDashOffset = 0;
+            }
+
+            currentProgressValue.animate({'stroke-dashoffset' : currentDashOffset}, 500)
+
+            //currentProgressValue.attr('stroke-dashoffset', String(currentDashOffset));
 
 
 
