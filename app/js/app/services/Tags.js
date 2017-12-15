@@ -175,10 +175,10 @@ define([], function() {
 			// Calculus topics
 
 			{
-				id: "integration",
+				id: "differentiation",
 				parent: "calculus"
 			}, {
-				id: "differentiation",
+				id: "integration",
 				parent: "calculus"
 			}, {
 				id: "differential_eq",

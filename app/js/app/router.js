@@ -155,12 +155,50 @@ define(["angular-ui-router"], function() {
                 },
                 reloadOnSearch: false,
             });
+
+            $sp.state('qmp', {
+                url: "/qmp",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_quantum_mechanics_primer', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('gcsebook', {
+                url: "/gcsebook",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_phys_book_gcse', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('physics_skills_14', {
+                url: "/physics_skills_14",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_physics_skills_14', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
         }
 
 
         if (subject.id == "chemistry") {
 
             // Create chemistry generic pages and register them here.
+
+            $sp.state('book16', {
+                url: "/book16",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_chemistry_16', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
         }
 
         if (subject.id == "biology") {
@@ -178,9 +216,10 @@ define(["angular-ui-router"], function() {
         // * Update /book (below) if you wish
         $sp.state('book_physics_skills_14', bookState("physics_skills_14"));
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
-        // This will need changing once the real index page is ready:
-        $sp.state('book_phys_book_gcse', genericPageState("/gcsebook", "phys_book_gcse_index"));
+        $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
+        $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
 
+        // Old book page URLs still need to work
         $sp.state('book', {
             url: "/book",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {

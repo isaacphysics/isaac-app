@@ -203,7 +203,7 @@ define([], function() {
 			},
 		});
 
-		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id", {id: "@id"}, {
+		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id?archived_groups_only=:archived_groups_only", {id: "@id"}, {
 			'get' : {
 				method: 'GET', 
 				isArray: true 
