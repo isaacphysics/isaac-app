@@ -47,13 +47,13 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					type: scope.doc.type,
 					relatedConcepts: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, {type: "isaacConceptPage"})),
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
-						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
+						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >= 0;
 						var isEasier = relatedContent.level < scope.page.level;
 						var isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEasier && isUnanswered;
 					})),
 					relatedUnansweredSupportingQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
-						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].includes(relatedContent.type);
+						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >=0;
 						var isEqualOrHarder = relatedContent.level >= scope.page.level;
 						var isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEqualOrHarder && isUnanswered;
@@ -126,7 +126,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				}
 
 				var applyValidationResponseToQuestionPart = function(content, validationResponse) {
-					if (QUESTION_TYPES.includes(content.type) && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
+					if (QUESTION_TYPES.indexOf(content.type) >= 0 && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
 						content.bestAttempt = validationResponse;
 					}
 					if (content.children) {
@@ -140,7 +140,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				var isPageCompleted = function(questionPage) {
 					var hasIncorrectOrUnansweredQuestion = function(content) {
 						var foundIncorrectQuestionPart = false;
-						if (QUESTION_TYPES.includes(content.type)) {
+						if (QUESTION_TYPES.indexOf(content.type) >= 0) {
 							if (!content.bestAttempt || !content.bestAttempt.correct) {
 								foundIncorrectQuestionPart = true;
 							}
