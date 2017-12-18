@@ -126,18 +126,18 @@
                                 </div>                   
                                 <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
                                     <div class="small-5 columns">
-                                        <label for="r1"><span>Male</span></label>
-                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" input-animation>
+                                        <label for="v1"><span>Male</span></label>
+                                        <input id="v1" name="r1" type="radio" ng-model="user.gender" value="MALE" input-animation>
                                     </div>
                                     <div class="small-5 columns">
-                                        <label for="r2"><span class="centeral-label">Female</span></label>
-                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
+                                        <label for="v2"><span class="centeral-label">Female</span></label>
+                                        <input id="v2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
                                     </div>
                                     <div class="small-6 columns">
-                                        <label for="r3"><span>Other</span></label>
-                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" input-animation>
-                                    </div>                        
-                                </div>                    
+                                        <label for="v3"><span>Other</span></label>
+                                        <input id="v3" name="r1" type="radio" ng-model="user.gender" value="OTHER" input-animation>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div ng-show="!editingSelf && myUserRole == 'ADMIN'" class="large-16 columns">
@@ -159,7 +159,7 @@
                                  <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                             </label>
                             <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
-                                {{schools}}      
+                                {{schools}}
                             </div>
                             <input ng-hide="user.schoolId" ng-model="user.schoolOther" type="text" placeholder="School Other (if not listed above)">
 
