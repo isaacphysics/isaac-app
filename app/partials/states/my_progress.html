@@ -11,16 +11,101 @@
 <div class="row">
   <div class="small-16 columns progress-wrap">
     <div ng-show="progress && progress.totalQuestionsAttempted != 0">
-       <div class="row progress-space">
-        <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
+       <div class="row progress-space" id="questionAttemptInfo">
+        <div class="medium-12 small-16 columns end progress-bar-box" style="width:90%;">
           <h6>Questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></h6>
           <div progress-bar class="progress-bar" value="progress.totalQuestionsCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrectQuestions}}%"></div>
         </div>
-        <div class="medium-12 small-16 columns medium-offset-2 end progress-bar-box">
+        <div class="medium-12 small-16 columns end progress-bar-box" style="width:90%;">
           <h6>Question parts <span class="ru_green">correct</span> of those <span class="progress-attempted">attempted</span></h6>
           <div progress-bar class="progress-bar" value="progress.totalQuestionPartsCorrect" max="progress.totalQuestionPartsAttempted" title="{{progress.percentCorrectQuestionParts}}%"></div>
         </div>
        </div>
+        <div id="streak-info">
+            <h6>Daily streak</h6>
+
+            <div>
+                <div style="position: relative; height: 100px;">
+                    <svg id="svg-progress-current-streak" width="100%" height="100%" version="1.1"
+                         xmlns="http://www.w3.org/2000/svg"
+                         style="transform: rotate(-90deg);">
+
+                        <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                stroke-width="15" fill="none"></circle>
+
+                        <circle id="current-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                stroke-width="16"
+                                stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                fill="none"></circle>
+                    </svg>
+                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak != null">
+                        {{ streakRecord.currentStreak }}
+                    </div>
+                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak == null">
+                        0
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    Longest streak: {{ streakRecord.largestStreak }}
+                    day<span ng-if="streakRecord.largestStreak > 1">s</span>
+                    <span style="cursor: pointer;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                    <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                          class="dl-alert warning hide-for-small-only" aria-haspopup="true">?</span>
+                </div>
+                <!--<ul class="medium-block-grid-2 small-block-grid-1 progress-space" style="margin-bottom: 0;">
+                    <li style="padding-bottom: 0;">
+                        <div class="graph-wrapper">
+                            <h6>Current</span></h6>
+                            <div style="position: relative;">
+                                <svg id="svg-progress-current-streak" width="100%" height="100%" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     style="transform: rotate(-90deg);">
+
+                                    <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="15" fill="none"></circle>
+
+                                    <circle id="current-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="16"
+                                            stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                            fill="none"></circle>
+                                </svg>
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
+                                    {{ user.userSnapshot.streakRecord.currentStreak }}
+                                </div>
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">
+                                    0
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li style="padding-bottom: 0;">
+                        <div class="graph-wrapper">
+                            <div style="position: relative;">
+                                <svg id="svg-progress" width="100%" height="100%" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     style="transform: rotate(-90deg);">
+
+                                    <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="15" fill="none" stroke="#999"></circle>
+
+                                    <circle id="largest-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="16"
+                                            stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                            fill="none"></circle>
+                                </svg>
+                                <div class="streak-value largest" ng-if="user.userSnapshot.streakRecord.largestStreak != null">
+                                    {{ user.userSnapshot.streakRecord.largestStreak }}
+                                </div>
+                                <div class="streak-value largest" ng-if="user.userSnapshot.streakRecord.largestStreak == null">
+                                    0
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+
+            </div>
+        </div>
        <div class="row">
           <div class="large-16 columns">
 

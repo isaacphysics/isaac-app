@@ -22,7 +22,7 @@
                     <label class="ru-error-message" ng-show="form.email.$invalid && loginAttempted || form.email.$invalid && forgottenPassword">
                         Enter a valid email
                     </label>
-                    <input name="email" type="email" placeholder="Email address" ng-model="loginUser.email" required/>
+                    <input name="email" type="email" placeholder="Email address" ng-model="loginUser.email" required autocomplete="username email"/>
                 </div>
             </div>
             <div class="row">
@@ -30,7 +30,7 @@
                     <label class="ru-error-message" ng-show="form.password.$invalid && loginAttempted">
                         Enter your password
                     </label>
-                    <input name="password" type="password" placeholder="Password" ng-model="loginUser.password" required/>
+                    <input name="password" type="password" placeholder="Password" ng-model="loginUser.password" required autocomplete="current-password"/>
                 </div>
             </div>
             <div class="row">
