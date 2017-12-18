@@ -14,7 +14,7 @@
 		                            Required
 		                        </span>
 				    </label>
-				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required>
+				    <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" required autocomplete="name given-name">
 			    </div>
 			    <div class="large-8 medium-8 small-16 columns">
 				    <label for="account-lastname">
@@ -24,7 +24,7 @@
 		                            Required
 		                        </span>
 				    </label>
-				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required>
+				    <input id="account-lastname" name="secondname" type="text" ng-model="user.familyName" required autocomplete="name family-name">
 			    </div>
 		    </div>
 		    <div>
@@ -35,8 +35,7 @@
                         	Password must be at least 6 characters long
 						</span>
 	                </label>
-	                <input id="account-password" type="password" ng-model="user.password"
-	                       placeholder="Enter password" name="password" required>
+	                <input id="account-password" type="password" ng-model="user.password" placeholder="Enter password" name="password" required autocomplete="new-password">
 	            </div>
 	            <div class="large-8 medium-8 small-16 columns">
 	                <label for="account-password2" ng-class="{'disabled' : !user.password || user.password.length < 6}">
@@ -47,7 +46,7 @@
 	                    </span>
 	                </label>
 	                <input id="account-password2" type="password" placeholder="Re-enter password"
-	                       ng-disabled="!user.password || user.password.length < 6" match="user.password" name="password2" ng-model="password2" required>
+	                       ng-disabled="!user.password || user.password.length < 6" match="user.password" name="password2" ng-model="password2" required autocomplete="new-password">
 	            </div>
 		    </div>
 		    <div>
@@ -59,7 +58,7 @@
 	                            Enter a valid email
 	                        </span>
 				    </label>
-				    <input id="account-email" name="email" type="email" ng-model="user.email" required>
+				    <input id="account-email" name="email" type="email" ng-model="user.email" required autocomplete="username email">
 			    </div>
 			    <div class="large-8 medium-8 small-16 columns">
 				    <label class="hide-for-small">&nbsp;</label>
