@@ -748,8 +748,18 @@ div[d3-plot] {
         margin: 0px;
     }
 
+    div#streak-info {
+        width:100%;
+        display:inline-block;
+        margin-bottom: 1.5rem;
+
+        h6 {
+            text-align: left;
+        }
+    }
+
 }
-@media #{$medium-up} { 
+@media #{$medium-up} {
     .progress-wrap {
         background-color: #fff;
         padding: 15px 20px 20px 20px;
@@ -898,6 +908,21 @@ div[d3-plot] {
     .d3-plot-key {
         margin-top: -25px;
     }
+
+    div#streak-info {
+        width:20%;
+        display:inline-block;
+
+        h6 {
+            text-align: center;
+        }
+    }
+
+    div#questionAttemptInfo {
+        width:80%;
+        float:left;
+    }
+
 }
 @media #{$medium-only} { 
     .export-btn {
@@ -929,6 +954,24 @@ div[d3-plot] {
         top: 0;
         right: 0;
     }
+
+    div#streak-info {
+        width:20%;
+        display:inline-block;
+
+        h6 {
+            text-align: center;
+        }
+    }
+
+    div#questionAttemptInfo {
+        width:80%;
+        float:left;
+    }
+
+    .progress-space {
+        margin-bottom: 2.5rem;
+    }
 }
 
 .progress-wrap {
@@ -943,11 +986,12 @@ div[d3-plot] {
         max-width: 48%;
     }
 
-    .progress-space {
-        margin-bottom: 2.5rem;
-    }
     .progress-small-space {
         margin-bottom: 0.75rem;
+    }
+
+    .progress-space {
+        margin-bottom: 1.5rem;
     }
 
     .progress-bar-box {
@@ -992,4 +1036,47 @@ div[d3-plot] {
     margin-top: 10px;
     label { text-align: right; }
     input { margin: 0px; }
+}
+
+
+
+circle.streak-empty-bar {
+    fill: none;
+    stroke: #c7c7c7;
+}
+
+.streak-value-progress {
+    position: absolute;
+    width: 100%;
+    top: 30%;
+    color: #509e2e;
+    font-weight: 600;
+    font-size: 26px;
+    text-align: center;
+
+    &.largest {
+        color: rgb(108, 56, 140);
+    }
+}
+
+circle#current-streak-progress-bar {
+    stroke: #509e2e;
+}
+
+circle#largest-streak-progress-bar {
+    stroke: rgb(108, 56, 140);
+}
+
+circle.streak-progress-bar {
+    fill: none;
+    -webkit-transition: stroke-dashoffset 0.5s ease-in-out;
+    -moz-transition: stroke-dashoffset 0.5s ease-in-out;
+    -ms-transition: stroke-dashoffset 0.5s ease-in-out;
+    -o-transition: stroke-dashoffset 0.5s ease-in-out;
+    transition: stroke-dashoffset 0.5s ease-in-out;
+    -moz-transform-origin: 100% 50%;
+    -webkit-transform-origin: 100% 50%;
+    -o-transform-origin: 100% 50%;
+    -ms-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
 }
