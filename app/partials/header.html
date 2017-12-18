@@ -68,11 +68,8 @@
 
                                     </svg>
 
-                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
-                                    {{ user.userSnapshot.streakRecord.currentStreak }}
-                                </div>
-                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">
-                                    0
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord != null">
+                                    {{ user.userSnapshot.streakRecord.currentStreak || 0 }}
                                 </div>
                                 Progress
 
