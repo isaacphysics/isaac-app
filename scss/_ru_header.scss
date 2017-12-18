@@ -51,13 +51,19 @@ $ru_nav_size : 7em;
     height: 188px;
 	width: 7em;
 	position: relative;
+
+    em#streakNum {
+        font-weight: 800;
+        color: #509e2e;
+        font-size: 20px;
+    }
 }
 
 .ru-desktop-nav-item span
 {
     width: $ru_nav_size - 0.7;
     text-align: center;
-    top: 3.5em;
+    top: 4.1em;
     position: relative;
     font-size: 1.1em;
     display: inline-block;
@@ -70,7 +76,49 @@ $ru_nav_size : 7em;
         display: inline-flex;
         top: 2.5em;
     }
+
+    .streak-value {
+        position: absolute;
+        width: 100%;
+        top: 20%;
+        color: #509e2e;
+        font-weight: 600;
+    }
+
+    circle#empty-bar {
+        fill: none;
+        stroke: #c7c7c7;
+    }
+
+    circle#progress-bar {
+        fill: none;
+        stroke: #509e2e;
+
+        //transform: rotate(270deg);
+
+        /*-webkit-transition: stroke-dashoffset 0.5s ease-in-out;
+        -moz-transition: stroke-dashoffset 0.5s ease-in-out;
+        -o-transition: stroke-dashoffset 0.5s ease-in-out;
+        transition: stroke-dashoffset 0.5s ease-in-out;*/
+
+        /*-moz-transform-origin: 56px;
+        -webkit-transform-origin: 56px;
+        -o-transform-origin: 56px;
+        transform-origin: 56px;*/
+
+
+    }
 }
+
+@keyframes progress {
+    from {
+        stroke-dashoffset: 125.664;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 .ru-desktop-nav-item-inner:hover
 {
     background-position: -249px -5px;
@@ -90,6 +138,20 @@ $ru_nav_size : 7em;
 {
     font-weight: 600;
     color: #fff;
+
+    .streak-value {
+        color: #fff;
+    }
+
+    circle#empty-bar {
+        fill: none;
+        stroke: #35671e;
+    }
+
+    circle#progress-bar {
+        fill: none;
+        stroke: #fff;
+    }
 }
 
 .ru-desktop-panel

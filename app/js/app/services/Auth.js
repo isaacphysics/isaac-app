@@ -116,6 +116,7 @@ define([], function() {
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
+					$rootScope.openNotificationSocket();
 		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){
