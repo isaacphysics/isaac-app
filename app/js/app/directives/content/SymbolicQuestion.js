@@ -30,17 +30,15 @@ define(["app/honest/responsive_video"], function(rv) {
                 scope.editorMode = 'maths';
 
                 ctrl.selectedFormula = {
-                    symbols: {}
+                    symbols: {},
+                    formula: '',
                 };
-
-                ctrl.selectedTextFormula = '';
 
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
                     console.debug("Loading the previous answer.");
                     try {
                         ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.value);
-                        ctrl.selectedTextFormula = scope.question.selectedChoice.pythonExpression;
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
@@ -60,9 +58,9 @@ define(["app/honest/responsive_video"], function(rv) {
                     // We have no answer and no seed
                     console.debug("No previous answer or seed.");
                     ctrl.selectedFormula = {
-                        symbols: {}
+                        symbols: {},
+                        formula: '',
                     };
-                    ctrl.selectedTextFormula = '';
                 }
 
                 // TODO: Why do we do this?! Surely scope.doc would be enough? - Ian
@@ -75,27 +73,21 @@ define(["app/honest/responsive_video"], function(rv) {
                     }
 
                     if (f) {
-                        scope.question.selectedChoice = {
-                            type: "formula",
-                            value: JSON.stringify(f),
-                            pythonExpression: f.result ? f.result.python : "",
-                        };
-                    } else {
-                        scope.question.selectedChoice = null;
-                    }
-                }, true);
-
-                scope.$watch("ctrl.selectedTextFormula", function(f, oldF) {
-                    if (f === oldF) {
-                        return; // Init
-                    }
-
-                    if (f) {
-                        scope.question.selectedChoice = {
-                            type: "formula",
-                            value: JSON.stringify({ type: 'text-entry' }),
-                            pythonExpression: f || "",
-                        };
+                        if (f.hasOwnProperty('formula')) {
+                            // Text entry
+                            scope.question.selectedChoice = {
+                                type: "formula",
+                                value: JSON.stringify( { type: "text-entry-formula" } ),
+                                pythonExpression: f.formula || "",
+                            };
+                        } else {
+                            // Graphical entry
+                            scope.question.selectedChoice = {
+                                type: "formula",
+                                value: JSON.stringify(f),
+                                pythonExpression: f.result ? f.result.python : "",
+                            };
+                        }
                     } else {
                         scope.question.selectedChoice = null;
                     }
