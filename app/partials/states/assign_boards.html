@@ -31,8 +31,12 @@
 <div class="boards-filters" ng-show="boards != null && boards.results.length > 0">
    <ul class="small-block-grid-2">
       <li>
-         <label class="hide-for-small-only">Sort by</label>
-         <select ng-model="sortOption" ng-options="option.label for option in sortOptions"></select>
+         <label>Show</label>
+         <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
+      </li>
+      <li>
+         <label>Sort by</label>
+         <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
       </li>
    </ul>
 </div>
