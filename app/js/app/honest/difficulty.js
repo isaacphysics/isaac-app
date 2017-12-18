@@ -2,7 +2,7 @@
  * Library to handle difficulty filter
  * Requires jQuery 
  */
-define([ 'jquery', 'app/honest/hexagon', 'lib/honest/d3.min'],
+define([ 'jquery', 'app/honest/hexagon', 'd3'],
     function($, hexagon, d3) 
     { 
         /**

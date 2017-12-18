@@ -29,10 +29,10 @@
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 0, 'ru-error-message': account.email.$invalid || account.firstname.$invalid || account.secondname.$invalid}" ng-click="activateTab(0)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Profile</a>
             </dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': account.password2.$invalid && account.password2.$dirty}" ng-click="activateTab(1)" class="ng-scope">
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 1, 'ru-error-message': password1.length < 6 || (account.password2.$invalid && account.password2.$dirty)}" ng-click="activateTab(1)" class="ng-scope">
                 <a href="javascript:void(0);" class="ng-binding">Change <span>Password</span></a>
             </dd>
-            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding"ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
         </dl>
 
@@ -94,28 +94,6 @@
                             </div>
                         </li>
                         <li>
-                            <div>
-                                <div class="small-16 columns">
-                                    <label for="account-gender">
-                                        <strong>Gender</strong>
-                                        <span ng-if="!user.gender" data-ot="Providing your gender will enable us to monitor the use of Isaac resources." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-                                    </label>
-                                </div>                   
-                                <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
-                                    <div class="small-5 columns">
-                                        <label for="r1"><span>Male</span></label>
-                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" question-radio-button>
-                                    </div>
-                                    <div class="small-5 columns">
-                                        <label for="r2"><span class="centeral-label">Female</span></label>
-                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" question-radio-button>
-                                    </div>
-                                    <div class="small-6 columns">
-                                        <label for="r3"><span>Other</span></label>
-                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" question-radio-button>
-                                    </div>                        
-                                </div>                    
-                            </div>
                             <div class="row">
                                 <!-- Again this is due to the divisible by 3 issue -->
                                 <div class="large-16 medium-16 columns">
@@ -139,7 +117,28 @@
                                     </li>
                                 </ul>
                             </div>
-
+                            <div>
+                                <div class="small-16 columns">
+                                    <label for="account-gender">
+                                        <strong>Gender</strong>
+                                        <span ng-if="!user.gender" data-ot="Providing your gender helps us evaluate Isaac." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                    </label>
+                                </div>                   
+                                <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
+                                    <div class="small-5 columns">
+                                        <label for="r1"><span>Male</span></label>
+                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" input-animation>
+                                    </div>
+                                    <div class="small-5 columns">
+                                        <label for="r2"><span class="centeral-label">Female</span></label>
+                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
+                                    </div>
+                                    <div class="small-6 columns">
+                                        <label for="r3"><span>Other</span></label>
+                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" input-animation>
+                                    </div>                        
+                                </div>                    
+                            </div>
                             <div class="row">
                                 <div ng-show="!editingSelf && myUserRole == 'ADMIN'" class="large-16 columns">
                                     <label>
@@ -154,23 +153,9 @@
                             </div>
                         </li>
                         <li>
-                            <div class="row">
-                                <div class="large-16 medium-16 columns account-level">
-                                    <label><strong>Starting level</strong><span aria-haspopup="true" class="icon-help has-tip" data-ot="Select your preferred question level."></span></label>
-                                    <select ng-model="user.defaultLevel">
-                                        <option value="1">1 (GCSE)</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6 (Post A-Level)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        
                             <label>
                                 <strong>School</strong> 
-                                 <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for UK schools and universities. Use the 'other' box if you study outside of the UK or to type 'none' if you are not at school."></span>
+                                 <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for schools and universities in the UK or Ireland. Use the 'other' box if you study elsewhere or to type 'none' if you are not at school."></span>
                                  <span ng-if="!user.schoolId && !user.schoolOther" data-ot="Entering your school or university enables us to inform you of local events and provide extra support in your area." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
                             </label>
                             <div class="school-wrap" school-dropdown selected-school-urn="user.schoolId">
@@ -191,6 +176,93 @@
                             </ul>
                         </li>
                     </ul>
+                    <div class="small-16 columns">
+                        <div id="subject-interest" ng-if="editingSelf">
+                            <div class="small-16 columns">
+                                <label for="subject-interests">
+                                    <strong>Subject Interests</strong>
+                                    <span aria-haspopup="true" class="icon-help has-tip" data-ot="Let us know which subject(s) you study or teach and at what level. We'll use this to help only send you relevant information about Isaac's offerings. Don't forget to update it from time to time."></span>
+                                    <span ng-if="!atLeastOne(subjectInterests)" data-ot="Isaac is aimed at students and teachers of these subjects; we recommend indicating any relevant to you." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
+                                </label>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>GCSE<p>14-16 yrs</p></th>
+                                        <th><span class="hide-for-small-only">A&nbsp;Level</span><span class="show-for-small-only">A&nbsp;&amp;&nbsp;AS</span><p>16-18 yrs</p></th>
+                                        <th><span class="hide-for-small-only">University</span><span class="show-for-small-only">Uni</span><p>18+ yrs</p></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="hide-for-small-only">Physics</span><span class="show-for-small-only">Phys</span></td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch00">&nbsp;</label>
+                                                <input id="ch00" type="checkbox" ng-model="subjectInterests.PHYSICS_GCSE" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch01">&nbsp;</label>
+                                                <input id="ch01" type="checkbox" ng-model="subjectInterests.PHYSICS_ALEVEL" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch02">&nbsp;</label>
+                                                <input id="ch02" type="checkbox" ng-model="subjectInterests.PHYSICS_UNI" input-animation>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="hide-for-small-only">Chemistry</span><span class="show-for-small-only">Chem</span></td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch10">&nbsp;</label>
+                                                <input id="ch10" type="checkbox" ng-model="subjectInterests.CHEMISTRY_GCSE" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch11">&nbsp;</label>
+                                                <input id="ch11" type="checkbox" ng-model="subjectInterests.CHEMISTRY_ALEVEL" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch12">&nbsp;</label>
+                                                <input id="ch12" type="checkbox" ng-model="subjectInterests.CHEMISTRY_UNI" input-animation>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Maths</td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch20">&nbsp;</label>
+                                                <input id="ch20" type="checkbox" ng-model="subjectInterests.MATHS_GCSE" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch21">&nbsp;</label>
+                                                <input id="ch21" type="checkbox" ng-model="subjectInterests.MATHS_ALEVEL" input-animation>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ac-custom ac-checkbox ac-checkmark">
+                                                <label for="ch22">&nbsp;</label>
+                                                <input id="ch22" type="checkbox" ng-model="subjectInterests.MATHS_UNI" input-animation>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </form>
                 <div ng-show="user.role == 'STUDENT' && editingSelf" class="large-16 columns account-warning">
                     <span class="icon-warning"></span><p><strong>Are you a teacher?</strong> <a ui-sref="pages({id: 'contact_us_teacher'})">Contact us</a> to let us know and we'll  convert your account to a teacher account.</p>
@@ -205,8 +277,8 @@
             </div>
 
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
-               <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
-                   <div>
+                <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
+                    <div ng-show="user.hasSegueAccount || !editingSelf">
                         <div id="password-current-wrap" class="row"  ng-if="user.hasSegueAccount  && editingSelf">
                             <div  class="large-6 columns">
                                 <label for="account-password-current">
@@ -223,15 +295,18 @@
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
-                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password">        
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}">
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
                             <div  class="large-6 columns">
-                                <label for="account-password2" ng-class="{'disabled' : !password1}"><strong>Confirm password</strong></label>
-                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="!password1" match="password1" ng-model="password2" name="password2">
+                                <label for="account-password2" ng-class="{'disabled' : (!password1 || password1.length < 6)}"><strong>Confirm password</strong></label>
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2">
                                 <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent && editingSelf">
                                     Current password not provided
+                                </span>
+                                <span class="ru-error-message" ng-if="password1.length < 6">
+                                    Password must be at least 6 characters long
                                 </span>
                                 <span class="ru-error-message" ng-if="account.password2.$invalid && account.password2.$dirty">
                                     Passwords do not match
@@ -239,17 +314,21 @@
                             </div>
                         </div>
                     </div>
+                    <div ng-hide="user.hasSegueAccount || !editingSelf">
+                        <p>You do not currently have a password set for this account; you sign in using <span ng-repeat="account in user.linkedAccounts"><span ng-if="$middle">, </span><span ng-if="user.linkedAccounts.length > 1 && $last"> or </span>{{account | capitalize}}</span>.</p>
+                        <p>Please <a ui-sref="contact({subject: 'Account Password'})">contact us</a> if you would like to add password access to your account.</p>
+                    </div>
                 </ul>
             </div>
 
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a token to grant access to your data; your teacher can provide this. This token is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
                         <p>Enter the code given to connect with a teacher.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
-                            <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Apply Code</a>
+                            <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Connect</a>
                         </form>
                     </div>
                 </div>
@@ -285,17 +364,32 @@
                     <tr>
                       <td>News and Updates</td>
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
-                      <td class="email-checkbox"><input name="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r1">&nbsp;</label>
+                          <input id="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>Assignments</td>
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
-                      <td class="email-checkbox"><input name="r3" type="checkbox"  ng-model="emailPreferences.ASSIGNMENTS"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r3">&nbsp;</label>
+                          <input id="r3" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
+                        </div>
+                      </td>
                     </tr>
                     <tr>
                       <td>Events</td>
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
-                      <td class="email-checkbox"><input name="r2" type="checkbox" ng-model="emailPreferences.EVENTS"> </td>
+                      <td class="email-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="r2">&nbsp;</label>
+                          <input id="r2" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

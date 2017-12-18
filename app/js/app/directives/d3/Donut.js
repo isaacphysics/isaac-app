@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["d3"], function(d3) {
     return function() {
         return {
             restrict: 'A',
@@ -49,8 +49,8 @@ define([], function() {
                     // switch colours
                     switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
-                            range = ['#6c388c', '#189ace'];
-                            label_range = ['#ffffff', '#ffffff']
+                            range = ['#6c388c', '#189ace', '#ef3e36'];
+                            label_range = ['#ffffff', '#ffffff', '#ffffff']
                             break;
                         case 'physics':
                             range = [];

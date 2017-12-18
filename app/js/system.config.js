@@ -12,7 +12,8 @@ System.config({
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": false,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "defaultExtension": "ts"
     },
 
     // Configure default extensions so we can use old-style imports.
@@ -25,6 +26,9 @@ System.config({
         },
         "bower_components/jquery-ui": {
             defaultExtension: 'min.js'
+        },
+        "ts": {
+            defaultExtension: 'ts'
         }
     },
 
@@ -39,7 +43,8 @@ System.config({
         "angular-recursion": 'bower_components/angular-recursion/angular-recursion.js',
         "angular-cookies": 'bower_components/angular-cookies/angular-cookies.js',
         "angular-ui-date" : 'bower_components/angular-ui-date/dist/date.js',
-        "angular-google-maps": 'bower_components/angular-google-maps/dist/angular-google-maps.min.js',
+        "angular-google-maps": 'bower_components/angular-google-maps/dist/angular-google-maps.js',
+        "nemlogging": 'bower_components/angular-simple-logger/dist/angular-simple-logger.min.js',
         "foundation": 'bower_components/foundation/js/foundation.js',
         "d3" : 'bower_components/d3/d3.js',
         "owl-carousel2" : "bower_components/owl.carousel/dist/owl.carousel.js",
@@ -74,7 +79,8 @@ System.config({
         "angulartics": { deps: ["angular"], format: 'global'},
         "angular-recursion": { deps: ["angular"], format: 'global'},
         "angular-cookies": { deps: ["angular"], format: 'global'},
-        "angular-google-maps": { deps: ["angular", "lodash"], format: 'global'},
+        "nemlogging": { deps: ["angular"], format: 'global'},
+        "angular-google-maps": { deps: ["angular", "lodash", "nemlogging"], format: 'global'},
         "lib/showdown/extensions/table": { deps: ["lib/showdown/showdown"], format: 'global'},
         "templates": { deps: ['angular'], format: 'global'},
         "lib/opentip-jquery": { deps: ['angular'], format: 'global'},

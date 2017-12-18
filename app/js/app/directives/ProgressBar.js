@@ -31,13 +31,19 @@ define([], function() {
                 var rightSpan = element.children("span");
 
                 var update = function() {
-                    if (scope.value != null && scope.max != null && scope.max > 0) {
+                    element.children("div").remove(".text-center");
+                    if (scope.max != null && scope.max > 0) {
+                        if (scope.value == null) {
+                            scope.value = 0;
+                        }
                         leftSpan.text(scope.value + " of " + scope.max);
 
                         // Uncomment if we prefer "A vs B" instead of "A out of A+B"
                         // rightSpan.text(scope.max - scope.value);
 
                         element.children("div").css("width", ((scope.value / scope.max) * 100) + "%");
+                    } else {
+                        element.append("<div class='text-center'><i>No Data</i></div>");
                     }
                 };
 

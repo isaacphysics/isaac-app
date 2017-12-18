@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	return function TagsConstructor() {
+	return ['subject', function TagsConstructor(subjectService) {
 		this.tagArray = [
 
 			// Subjects
@@ -24,7 +24,9 @@ define([], function() {
 				id: "physics"
 			}, {
 				id: "maths"
-			}, 
+			}, {
+				id: "chemistry"
+			},
 
 			// Physics fields
 
@@ -74,15 +76,19 @@ define([], function() {
 
 			{
 				id: "electric",
+				title: "Electric Fields",
 				parent: "fields"
 			}, {
 				id: "magnetic",
+				title: "Magnetic Fields",
 				parent: "fields"
 			}, {
 				id: "gravitational",
+				title: "Gravitational Fields",
 				parent: "fields"
 			}, {
 				id: "combined",
+				title: "Combined Fields",
 				parent: "fields"
 			},
 
@@ -119,6 +125,11 @@ define([], function() {
 			{
 			    id: "thermodynamics",
 			    parent: "chemphysics"
+			}, {
+				id:"kinetics",
+				parent: "chemphysics",
+				title: "Reaction Kinetics",
+				comingSoon: true,
 			},
 
 			// Maths fields
@@ -134,8 +145,7 @@ define([], function() {
 				parent: "maths"
 			}, {
 				id: "functions",
-				parent: "maths",
-				comingSoon:true,
+				parent: "maths"
 			},
 			// Removed 18/8/16
 			// {
@@ -165,10 +175,10 @@ define([], function() {
 			// Calculus topics
 
 			{
-				id: "integration",
+				id: "differentiation",
 				parent: "calculus"
 			}, {
-				id: "differentiation",
+				id: "integration",
 				parent: "calculus"
 			}, {
 				id: "differential_eq",
@@ -199,9 +209,8 @@ define([], function() {
 				id: "general_functions",
 				parent: "functions"
 			}, {
-				id: "sketching",
-				parent: "functions",
-				title: "Graph Sketching"
+				id: "graph_sketching",
+				parent: "functions"
 			},
 
 			// // Probability topics
@@ -229,6 +238,7 @@ define([], function() {
 		};
 
 		this.getSpecifiedTag = function(tagType, tagArray) {
+			// Return the first (as ordered in tagArray) tag an object has of a given type!
 			if (tagArray == null) return null;
 
 			for (var i in tagArray) {
@@ -237,13 +247,52 @@ define([], function() {
 					return tag;
 				}
 			}
+
+			return null;
+		};
+
+		this.getAllSpecifiedTags = function(tagType, tagArray) {
+			// Return all tags an object has of a given type!
+			if (tagArray == null) return [];
+
+			var tags = [];
+			for (var i in tagArray) {
+				var tag = this.getById(tagArray[i]);
+				if (tag != null && tag.type === tagType) {
+					tags.push(tag);
+				}
+			}
+
+			return tags;
+		};
+
+		this.getPageSubjectTag = function(tagArray) {
+			// Extract the subject tag from a tag array,
+			// defaulting to the current site subject if no tags
+			// and intelligently choosing if more than one subject tag.
+			var globalSubjectTagId = subjectService.id;
+
+			if (tagArray == null || tagArray.length == 0) {
+				return this.getById(globalSubjectTagId);
+			}
+
+			var subjectTags = this.getAllSpecifiedTags("subject", tagArray);			
+			for (var i in subjectTags) {
+				if (subjectTags[i].id == globalSubjectTagId) {
+					return subjectTags[i];
+				}
+			}
+			return subjectTags[0];
 		};
 
 		this.getSubjectTag = this.getSpecifiedTag.bind(this, "subject");
+		this.getAllSubjectTags = this.getAllSpecifiedTags.bind(this, "subject");
 
 		this.getFieldTag = this.getSpecifiedTag.bind(this, "field");
+		this.getAllFieldTags = this.getAllSpecifiedTags.bind(this, "field");
 
 		this.getTopicTag = this.getSpecifiedTag.bind(this, "topic");
+		this.getAllTopicTags = this.getAllSpecifiedTags.bind(this, "topic");
 
 		this.getDeepestTag = function(tagArray) {
 			if (tagArray == null) return null;
@@ -294,6 +343,6 @@ define([], function() {
 			this.tagArray[i].type = tagHeirarchy[j];
 			this.tagArray[i].level = j;
 		}
-	};
+	}];
 
 });

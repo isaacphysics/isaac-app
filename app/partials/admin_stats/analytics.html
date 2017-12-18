@@ -10,7 +10,7 @@
         <label ng-show="customLocationDates" for="startDateInput">Start Date (default 1 month ago):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.start" name="startDateInput">
         <label ng-show="customLocationDates" for="endDateInput">End Date (default today):</label><input ng-show="customLocationDates" type="date" ng-model="locationDates.end" name="endDateInput">
         
-        <div ng-show="locations.length != 0">
+        <div ng-if="locations.length != 0">
             <ui-gmap-google-map center='map.center' zoom='map.zoom'>
                 <ui-gmap-markers models="locations" coords="'self'" icon="'icon'">
                 </ui-gmap-markers>
@@ -25,11 +25,12 @@
             <ul class="no-bullet results-list">
                 <li ng-repeat="eventType in eventsAvailable.results | orderBy: eventType"> <input type="checkbox" ng-model="eventsSelected[eventType]"><label>{{eventType}}</label></li>
             </ul>
-            <a href="javascript:void(0)" ng-click="updateGraph()" class="button small">Update Graph</a>                        
+            <a href="javascript:void(0)" ng-click="updateGraph()" class="button small">Update Graph</a>
         </div>
         <hr/>
         <div ng-show="questionsAnsweredOverTime">
-            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>            
+            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <a ng-href="{{getDownloadEventsOverTimeLink()}}" class="button small" target="_blank">Download CSV</a>
         </div>
     </div>
 </div>

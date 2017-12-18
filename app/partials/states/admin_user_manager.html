@@ -21,6 +21,22 @@
                             <option value="">Any School</option>
                             <option ng-repeat="school in schoolOtherEntries | orderBy:'name'" ng-value="school.name">{{school.name}}</option>
                         </select>
+
+                        <label>
+                            <strong>Find users by subject interest:</strong>
+                        </label>
+                        <select id="user-search-subject" ng-model="userSearch.searchTerms.subjectOfInterest">
+                            <option value="">Any Subject</option>
+                            <option value="PHYSICS_GCSE">Physics GCSE</option>
+                            <option value="PHYSICS_ALEVEL">Physics A-Level</option>
+                            <option value="PHYSICS_UNI">Physics Uni</option>
+                            <option value="CHEMISTRY_GCSE">Chemistry GCSE</option>
+                            <option value="CHEMISTRY_ALEVEL">Chemistry A-Level</option>
+                            <option value="CHEMISTRY_UNI">Chemistry Uni</option>
+                            <option value="MATHS_GCSE">Maths GCSE</option>
+                            <option value="MATHS_ALEVEL">Maths A-Level</option>
+                            <option value="MATHS_UNI">Maths Uni</option>
+                        </select>
                     </div>
                     <div class="medium-8 columns">
                         <label for="user-search-role">
@@ -45,6 +61,8 @@
                             <div class="medium-6 columns">
                                 <select id="user-search-postcode_radius" ng-model="userSearch.searchTerms.postcoderadius">
                                   <option value="TEN_MILES">10 Miles</option>
+                                  <option value="FIFTEEN_MILES">15 Miles</option>
+                                  <option value="TWENTY_MILES">20 Miles</option>
                                   <option value="TWENTY_FIVE_MILES">25 Miles</option>
                                   <option value="FIFTY_MILES">50 Miles</option>
                                 </select>
@@ -58,7 +76,7 @@
                     </div>
 
                     <div class="medium-16 columns end">
-                        <button class="button small" ng-click="findUsers()" type="submit">Search</button>
+                        <button class="button small" type="submit">Search</button>
                     </div>
                 </form>
             </div>
@@ -106,7 +124,7 @@
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'familyName'; reverse=!reverse">Name</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'email'; reverse=!reverse">Email</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'role'; reverse=!reverse">User Role</a></th>
-                                    <th>School Set</th>
+                                    <th>School</th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'registrationDate'; reverse=!reverse">Member Since</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'verificationStatus'; reverse=!reverse">Verification Status</a></th>
                                     <th><a href="javascript:void(0);" ng-click="userSearchSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen</a></th>
@@ -123,7 +141,7 @@
                                     <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
                                     <td>{{result.email}}</td>
                                     <td>{{result.role || "NOT_SET"}}</td>
-                                    <td>{{result.schoolId != null ? 'Yes (UK)' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                    <td title="{{result.schoolOther != null ? result.schoolOther : null}}">{{result.schoolId != null ? result.schoolId : result.schoolOther != null ? '(Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.emailVerificationStatus || "NOT_SET"}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>

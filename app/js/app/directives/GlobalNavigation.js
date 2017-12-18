@@ -62,9 +62,15 @@ define([], function() {
 
                         scope.user.$promise.then(function(user) {
                             if (user.role == 'STAFF' || user.role == 'CONTENT_EDITOR' || user.role == 'EVENT_MANAGER' || user.role == 'ADMIN') {
-                                api.contentProblems.get().$promise.then(function(result){
-                                    scope.contentProblems = result.totalErrors;
-                                })
+                                if (scope.segueEnvironment == "DEV") {
+                                    api.contentProblems.get().$promise.then(function(result){
+                                        scope.contentProblems = result.totalErrors;
+                                    })
+                                } else {
+                                    // Make this non-numeric, so that the default "!" symbol is shown regardless and the
+                                    // "There are {{contentProblems}} content errors!" alert still makes sense.
+                                    scope.contentProblems = "";
+                                }
                             }
                         });
                     }

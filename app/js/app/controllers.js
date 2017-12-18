@@ -140,7 +140,7 @@ define(function(require) {
 	.controller('EventsPageController', eventsControllers.ListController)
 	.controller('EventDetailController', eventsControllers.DetailController)
 
-	.controller('BooksControllers', booksControllers.PageController)
+	.controller('BooksController', booksControllers.PageController)
 	.controller('TeacherFeaturesPageController', teacherFeaturesPageController.PageController)
 
 	.controller('QuestionsPageControllers', questionsPageControllers.PageController)

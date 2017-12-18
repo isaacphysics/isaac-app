@@ -10,6 +10,7 @@
           <select ng-model="filterEventsByStatus">
             <option value="all">All Events</option>
             <option value="upcoming">Upcoming Events</option>
+            <option ng-show="user.email" value="showBookedOnly">My Booked Events</option>
           </select>
           <select ng-model="filterEventsByType">
             <option value="all">All Events</option>
@@ -19,6 +20,22 @@
           </select>
         </div>
     </div>
+</div>
+<div class="events-map" ng-if="locations.length != 0 && filterEventsByStatus != 'showBookedOnly' && filterEventsByType != 'virtual'">
+  <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+    <ui-gmap-markers models="locations" coords="'self'" icon="'icon'" type="'spider'" typeEvents="typeEvents">
+    </ui-gmap-markers>
+    <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" closeclick="map.window.closeClick()">
+      <div>
+        <h3><a href="/events/{{eventPopup.id}}" target="_blank">{{eventPopup.title}}</a></h3>
+        {{eventPopup.subtitle}}<br>
+        <b>When:  </b><time datetime="{{eventPopup.date | date:'yyyy-MM-dd H:mm'}}">{{eventPopup.date | date : 'EEE d MMM yyyy'}}</time><br>
+        <b>Location:  </b>{{eventPopup.address.addressLine1}}{{eventPopup.address.town ? ", "+eventPopup.address.town : ""}}<br>
+        <div ng-if="eventPopup.status == 'OPEN'"><b>Places: </b>{{eventPopup.numberOfPlaces - eventPopup.numberOfConfirmedBookings}}<br></div>
+        <a href="/events/{{eventPopup.id}}" target="_blank"><b>View Full Details</b></a>
+       </div>
+    </ui-gmap-window>
+  </ui-gmap-google-map>
 </div>
 <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1">
     <li class="event" ng-repeat="event in events" ng-class="{expired: event.expired}">
@@ -57,26 +74,33 @@
 -->
                     <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date : 'shortTime'}}</span></time></td>
                  </tr>
-                 <tr ng-show="event.location">
+                 <tr ng-show="event.location.address.addressLine1">
                     <td>Location:</td>
-                    <td>{{event.location.addressLine1}}<span ng-if="event.location.town">,</span> {{event.location.town}}</td>
+                    <td>{{event.location.address.addressLine1}}<span ng-if="event.location.address.town">,</span> {{event.location.address.town}}</td>
                  </tr>
-                 <tr ng-show="!event.location && event.virtual">
+                 <tr ng-show="!event.location.address.addressLine1 && event.virtual">
                     <td>Location:</td>
                     <td>Online</td>
                  </tr>
               </tbody>
            </table>
            <a class="event-link" ui-sref="event({id: event.id})">View details</a>
-<!--
-           <div class="event-attend">
+
+           <div ng-if="event.userBooked" class="event-attend">
               <span class="icon-stack">
                 <span class="icon-hexagon"></span>
                 <span class="icon-check"></span>
               </span>
-              Attending
+              Booked
            </div>
--->
+          
+          <div ng-if="event.userOnWaitList" class="event-attend">
+              <span class="icon-stack">
+                <span class="icon-hexagon"></span>
+                <span class="icon-check"></span>
+              </span>
+              Waiting list
+           </div>
       </div>
     </li>
 </ul>
@@ -86,6 +110,7 @@
   </div>
   
   <div ng-if="!globalFlags.loading && events.length == 0" class="small-16 text-center columns">
-      <p>Sorry, we can not find any events that match your filter settings.</p>
+      <p>Sorry, we cannot find any events that match your filter settings.</p>
+      <p ng-show="filterEventsByStatus=='showBookedOnly'">N.B. Events booked via EventBrite may not appear here; for these if you have received email confirmation you are booked.</p>
   </div>
 </div>

@@ -21,32 +21,33 @@ define([], function() {
 		$scope.contentVersion = api.contentVersion.get();
 		$scope.userSearch = {};
 		$scope.userSearch.isLoading = false;
-		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES"};
+		$scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES", subjectOfInterest: ""};
 		$scope.userManagerSelection = {};
 
-		$scope.indexQueue = null;
-		$scope.segueVersion = api.segueInfo.segueVersion();
-		$scope.cachedVersions = api.segueInfo.cachedVersion();
-		var updateIndexerQueue = function(){
-			api.contentVersion.currentIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;		
-			});
-		}
-		
-		updateIndexerQueue();
+		// FIXME - reimplement this, but in a more sensible location!
+        // $scope.indexQueue = null;
+        // $scope.segueVersion = api.segueInfo.segueVersion();
+        // $scope.cachedVersions = api.segueInfo.cachedVersion();
+        // var updateIndexerQueue = function(){
+        //     api.contentVersion.currentIndexQueue().$promise.then(function(result){
+        //         $scope.indexQueue = result;
+        //     });
+        // }
+        
+        // updateIndexerQueue();
 
-		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
-		$scope.clearIndexQueue = function(){
-			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;
-			});
-		}
+        // var indexQueueInterval = $interval(updateIndexerQueue, 30000)
+        // $scope.clearIndexQueue = function(){
+        //     api.contentVersion.emptyIndexQueue().$promise.then(function(result){
+        //         $scope.indexQueue = result;
+        //     });
+        // }
 
-		$scope.$on("$destroy", function() {
-	        if (indexQueueInterval) {
-	            $interval.cancel(indexQueueInterval);
-	        }
-	    });
+        // $scope.$on("$destroy", function() {
+        //     if (indexQueueInterval) {
+        //         $interval.cancel(indexQueueInterval);
+        //     }
+        // });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 
@@ -60,31 +61,18 @@ define([], function() {
 			$(document).foundation(); // Make sure the elevate/demote dropdowns now work, turning a bug into a feature!
 
 			if ($scope.userSearch.searchTerms != "") {
-				var role = $scope.userSearch.searchTerms.role;
-				var schoolOther = $scope.userSearch.searchTerms.schoolOther;
-				var postcode = $scope.userSearch.searchTerms.postcode;
-				var postcoderadius = $scope.userSearch.searchTerms.postcoderadius;
-
-				if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
-					role = null;
-				}
-				
-				if ($scope.userSearch.searchTerms.schoolOther == "") {
-					schoolOther = null;
-				}
-
-				if ($scope.userSearch.searchTerms.postcode == "") {
-					postcode = null;
-				}
 
 				$scope.userSearch.isLoading = true;
-				api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 
-										    'email' : $scope.userSearch.searchTerms.email, 
-											'role' : role, 
-											'schoolOther': schoolOther, 
-										 	'schoolURN' : $scope.userSearch.searchTerms.schoolURN, 
-											'postcode' : postcode,
-										    'postcodeRadius': postcoderadius}).$promise.then(function(result){
+                // If any of the string based search terms are the empty string, correct them to null to prevent matching on this!
+				api.adminUserSearch.search({'familyName' : ($scope.userSearch.searchTerms.familyName == "") ? null : $scope.userSearch.searchTerms.familyName, 
+										    'email' : ($scope.userSearch.searchTerms.email == "") ? null : $scope.userSearch.searchTerms.email, 
+											'role' : ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") ? null : $scope.userSearch.searchTerms.role, 
+											'schoolURN': ($scope.userSearch.searchTerms.schoolURN == "") ? null : $scope.userSearch.searchTerms.schoolURN, 
+										 	'schoolOther' : ($scope.userSearch.searchTerms.schoolOther == "") ? null : $scope.userSearch.searchTerms.schoolOther, 
+											'postcode' : ($scope.userSearch.searchTerms.postcode == "") ? null : $scope.userSearch.searchTerms.postcode,
+										    'postcodeRadius': ($scope.userSearch.searchTerms.postcoderadius == "") ? null : $scope.userSearch.searchTerms.postcoderadius,
+										    'subjectOfInterest': ($scope.userSearch.searchTerms.subjectOfInterest == "") ? null : $scope.userSearch.searchTerms.subjectOfInterest,
+                                        }).$promise.then(function(result){
 					$scope.userSearch.results = result;
 					$scope.userSearch.isLoading = false;
 
@@ -137,20 +125,46 @@ define([], function() {
 			return(emails);
 		}
 
-		$scope.modifySelectedUsersRole = function(role) {
-			$scope.userSearch.isLoading = true;
-
-			var userIdSet = $scope.getSelectedUserIds();
-			var userIds = Array.from(userIdSet);
-
-			api.adminUserManagerChange.change_role({'role': role}, userIds).$promise.then(function(result){
-				$scope.userSearch.isLoading = false;
-				$scope.findUsers();
-			}).catch(function(e){
-				$scope.showToast($scope.toastTypes.Failure, "Demotion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-				$scope.userSearch.isLoading = false;
-			});
+		var confirmUnverifiedUserPromotions = function(){
+			ids = $scope.getSelectedUserIds();
+			for (var resultItem in $scope.userSearch.results) {
+				var id = $scope.userSearch.results[resultItem]._id;
+				if ($scope.userSearch.results.hasOwnProperty(resultItem) && !resultItem.startsWith("$") && ids.has("" + id)) {
+					// This user is to be promoted
+					if ($scope.userSearch.results[resultItem].emailVerificationStatus != "VERIFIED") {
+						var promoteUser = $window.confirm('Are you really sure you want to promote unverified user: (' + $scope.userSearch.results[resultItem].email + ')?'
+                            + '\nThey may not be who they claim to be, may have an invalid email or have not yet verified their account.'
+							+ '\n\nPressing "Cancel" will abort promotion for all selected users.');
+						if (!promoteUser) {
+							return(false);
+						}
+					}
+				}
+			}
+			return(true);
 		}
+
+        $scope.modifySelectedUsersRole = function(role) {
+            $scope.userSearch.isLoading = true;
+
+            var userIdSet = $scope.getSelectedUserIds();
+            var userIds = Array.from(userIdSet);
+
+            // Do not require confirmation for demotion to student role:
+            var confirmed = (role == "STUDENT") || confirmUnverifiedUserPromotions();
+            if (confirmed) {
+                api.adminUserManagerChange.change_role({'role': role}, userIds).$promise.then(function(result){
+                    $scope.userSearch.isLoading = false;
+                    $scope.findUsers();
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Role Change Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.userSearch.isLoading = false;
+                });
+            } else {
+            	$scope.showToast($scope.toastTypes.Failure, "No Users Promoted", "Promotion of users was aborted!");
+                $scope.userSearch.isLoading = false;
+            }
+        }
 
 		$scope.toggleUserSelectionState = false;
 		$scope.toggleUserSelection = function(){

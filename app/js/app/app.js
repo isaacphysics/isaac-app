@@ -36,7 +36,7 @@ define([
     "app/MathJaxConfig",
     "lib/opentip-jquery.js",
     "js/templates.js",
-    "angular-google-maps",
+    "angular-google-maps"
     ], function(rv, ineq) {
 
     window.Promise = RSVP.Promise;
@@ -56,14 +56,37 @@ define([
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date',
+        'ui.date'
 	])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
 
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
         $httpProvider.defaults.withCredentials = true;
+        // Polyfill a console for browsers (IE) that don't support one!
+        // https://github.com/h5bp/html5-boilerplate/blob/master/src/js/plugins.js
+        (function() {
+            var method;
+            var noop = function () {};
+            var methods = [
+                'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+                'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+                'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+                'timeStamp', 'trace', 'warn'
+            ];
+            var length = methods.length;
+            var console = (window.console = window.console || {});
+
+            while (length--) {
+                method = methods[length];
+
+                // Only stub undefined methods.
+                if (!console[method]) {
+                    console[method] = noop;
+                }
+            }
+        }());
 
         $httpProvider.interceptors.push(["$q", "$injector", function($q, $injector) {
             return {
@@ -75,7 +98,7 @@ define([
                     return response;
                 },
                 responseError: function(response) {
-                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0)) {
+                    if (response.status >= 500 && (response.data.errorMessage == null || response.data.errorMessage.indexOf("ValidatorUnavailableException") != 0) && !response.data.bypassGenericSiteErrorPage) {
                         var $state = $injector.get("$state");
                         $injector.get("$rootScope").setLoading(false);
                         $state.go('error');
@@ -95,14 +118,20 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v1.8.1/api");
+            apiProvider.urlPrefix("/api/v2.2.6/api");
         }
 
         NProgress.configure({ showSpinner: false });
+
+        uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y',
+        });
+
 	}])
 
-	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile) {
+	.run(['$rootScope', 'api', '$state', 'auth', '$location' , '$timeout', 'persistence', '$compile', 'subject', function($rootScope, api, $state, auth, $location, $timeout, persistence, $compile, subject) {
 
+        $rootScope.$subject = subject;
         /*
             Tooltip settings
         */
@@ -653,6 +682,123 @@ define([
             $('.joyride-modal-bg').trigger('click');
         });
 
+
+
+        // USER NOTIFICATIONS VIA WEBSOCKETS
+
+        //$rootScope.notificationList = [];
+        //$rootScope.notificationPopups = [];
+        //$rootScope.notificationListLength = 0;
+        //var signOnTime = Number(new Date());
+        $rootScope.notificationWebSocket = null;
+        var socketOpen = false;
+
+        $rootScope.openNotificationSocket = function() {
+
+            $rootScope.user.$promise.then(function() {
+             // we are logged in
+
+                // set up websocket and connect to notification endpoint
+                $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
+
+
+                $rootScope.notificationWebSocket.onopen = function(event) {
+                    socketOpen = true;
+                }
+
+
+                $rootScope.notificationWebSocket.onmessage = function(event) {
+
+                    var websocketMessage = JSON.parse(event.data);
+
+                    // user snapshot update
+                    if (websocketMessage.userSnapshot) {
+
+                        $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
+                        $rootScope.streakDialToggle(websocketMessage.userSnapshot.streakRecord.currentActivity);
+
+                    } else if (websocketMessage.notifications) {
+
+                        websocketMessage.notifications.forEach(function(entry) {
+
+                            var notificationMessage = JSON.parse(entry.message);
+
+                            // specific user streak update
+                            if (notificationMessage.streakData) {
+
+                                $rootScope.user.userSnapshot.streakRecord
+                                    = notificationMessage.streakData;
+
+                                $rootScope.streakDialToggle($rootScope.user.userSnapshot.streakRecord.currentActivity);
+                            }
+
+                        });
+                    }
+
+
+                    /*notificationReccord.notifications.forEach(function(entry) {
+                        $rootScope.notificationList.unshift(entry);
+
+                        if (entry.seen == null) {
+                            $rootScope.notificationListLength++;
+
+                            // only display popup notifications for events that happen after sign on
+                            if (entry.created > signOnTime) {
+
+                                var json = {
+                                    "id": entry.id,
+                                    "entry": entry,
+                                    "timeout": setTimeout(function() {
+                                        $rootScope.notificationPopups.shift();
+                                    },12000)
+                                }
+
+                                $rootScope.notificationPopups.push(json);
+
+                                $rootScope.notificationWebSocket.send(JSON.stringify({
+                                    "feedbackType" : "SEEN",
+                                    "notificationId" : entry.id
+
+                                }));
+
+
+                            }
+                        }
+                    });*/
+
+                }
+
+
+                $rootScope.notificationWebSocket.onerror = function(error) {
+                    console.log(error.details);
+                }
+
+
+                $rootScope.notificationWebSocket.onclose = function(event) {
+                    socketOpen = false;
+                }
+
+            });
+        }
+
+        $timeout($rootScope.openNotificationSocket, 1000);
+
+        var checkForWebSocket = function() {
+
+            if (!socketOpen) {
+                $rootScope.openNotificationSocket();
+            } else {
+                $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+            }
+            $timeout(checkForWebSocket, 10000);
+
+        }
+
+        $timeout(checkForWebSocket, 5000);
+
+
+
+
         var checkForNotifications = function() {
 
             $rootScope.user.$promise.then(function() {
@@ -670,9 +816,17 @@ define([
 
                             if (ns.length > 0) {
 
-                                $rootScope.notificationDoc = ns[0];
+                                // dirty hack for student/teacher questionnaires, but notifications wont be like this for long (05/17)
+                                for (var i = 0; i < ns.length; i++) {
 
-                                $rootScope.modals.notification.show();
+                                    if ($rootScope.user.role.toLowerCase() == ns[i].tags[0]) {
+
+                                        $rootScope.notificationDoc = ns[i];
+                                        $rootScope.modals.notification.show();
+                                        break;
+                                    }
+
+                                }
 
                                 persistence.save("lastNotificationTime", Date.now());
                             }
@@ -690,8 +844,8 @@ define([
         $rootScope.notificationResponse = function(notification, response) {
             api.notifications.respond({id: notification.id, response: response}, {});
 
-            // if they respond with dismissed then it means we should show them the external link if there is one
-            if (response == 'DISMISSED' && notification.externalReference.url) {
+            // if they respond with 'acknowledged' then it means we should show them the external link if there is one
+            if (response == 'ACKNOWLEDGED' && notification.externalReference.url) {
                 var userIdToken = "{{currentUserId}}";
 
                 // if they have a token representing the user id then replace it.
@@ -758,6 +912,7 @@ define([
 	/////////////////////////////////////
 	// Bootstrap AngularJS
 	/////////////////////////////////////
+
 
 	var root = $("html");
 	angular.bootstrap(root, ['isaac']);

@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-	var Api = function ApiConstructor($resource, urlPrefix, $http) {
+	var Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
 
 		this.pages = $resource(urlPrefix + "/pages/:id");
 
 		this.pageFragments = $resource(urlPrefix + "/pages/fragments/:id");
 
-		this.pods = $resource(urlPrefix + "/pages/pods");
+		this.pods = $resource(urlPrefix + "/pages/pods/" + subject.id);
 
 		this.questionsPage = $resource(urlPrefix + "/pages/question_summary/top_boards_content");
 
@@ -53,6 +53,8 @@ define([], function() {
 			},
 		});
 
+		this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+
 		this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
 		this.currentUser = $resource(urlPrefix + "/users/current_user", {}, {
@@ -74,6 +76,14 @@ define([], function() {
 			'getEmailPreferences' : {
 				method: 'GET',
 				url: urlPrefix + "/users/email_preferences"
+			},
+			'getSubjectInterests' : {
+				method: 'GET',
+				url: urlPrefix + "/users/subject_interests"
+			},
+			'getUserIdSchoolLookup' : {
+				method: 'GET',
+				url: urlPrefix + "/users/school_lookup?user_ids=:user_ids"
 			},
 		})
 
@@ -138,6 +148,11 @@ define([], function() {
 				method: 'GET', 
 				isArray: false 
 			},
+            'getNewStats' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/v2/",
+                isArray: false
+            },
 			'getGameboardPopularity' : {
 				method: 'GET',
 				url: urlPrefix + "/gameboards/popular", 
@@ -148,11 +163,21 @@ define([], function() {
 				url: urlPrefix + "/admin/stats/schools/", 
 				isArray: true 
 			},
+            'getNewSchoolPopularity' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/schools/v2",
+                isArray: true
+            },
 			'getSchoolUsers' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/schools/:id", 
 				params: {id: '@id'},
 			},
+            'getNewSchoolUsers' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/users/schools/:id/v2",
+                params: {id: '@id'},
+            },
 			'getEventsOverTime' : {
 				method: 'GET',
 				url: urlPrefix + "/admin/users/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events&bin_data=:bin_data"
@@ -168,13 +193,17 @@ define([], function() {
 			},			
 		});
 
+		this.makeDownloadEventsOverTimeLink = function(startDate, endDate, events, binData) {
+			return urlPrefix + "/admin/users/event_data/over_time/download?from_date=" + startDate + "&to_date=" + endDate + "&events=" + events.join() + "&bin_data=" + binData;
+		}
+
 		this.adminDeleteUser = $resource(urlPrefix + "/admin/users/:userId", {}, {
 			'delete' : {
 				method: 'DELETE'
 			},
 		});
 
-		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id", {id: "@id"}, {
+		this.groupManagementEndpoint = $resource(urlPrefix + "/groups/:id?archived_groups_only=:archived_groups_only", {id: "@id"}, {
 			'get' : {
 				method: 'GET', 
 				isArray: true 
@@ -246,8 +275,7 @@ define([], function() {
 			},					
 			'assignBoard' : {
 				method: 'POST',
-				url: urlPrefix + "/assignments/assign/:gameId/:groupId",
-				params: {gameId: '@gameId', groupId: '@groupId'}
+				url: urlPrefix + "/assignments/assign/"
 			},			
 			'unassignBoard' : {
 				method: 'DELETE',
@@ -262,6 +290,10 @@ define([], function() {
 		});			
 
         this.events = $resource(urlPrefix + "/events/:id");
+        
+        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
+
+        this.eventMapData = $resource(urlPrefix + "/events/map_data?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
 		this.eventBookings = $resource(urlPrefix + "/events/:eventId/bookings/:userId", {eventId: '@eventId', userId: '@userId'}, {
 			'getAllBookings' : {
@@ -277,10 +309,34 @@ define([], function() {
 				method: 'POST', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'requestBooking' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings"
+			},
+			'addToWaitingList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/waiting_list"
+			},
 			'deleteBooking' : {
 				method: 'DELETE', 
 				url: urlPrefix + "/events/:eventId/bookings/:userId"			
 			},
+			'promoteFromWaitList' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/promote"			
+			},
+			'cancelBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/cancel"			
+			},
+			'cancelMyBooking' : {
+				method: 'DELETE', 
+				url: urlPrefix + "/events/:eventId/bookings/cancel"			
+			},
+			'resendConfirmation' : {
+				method: 'POST', 
+				url: urlPrefix + "/events/:eventId/bookings/:userId/resend_confirmation"			
+			}
 		});	
 
 		// allows the resource to be constructed with a promise that can be used to cancel a request
@@ -301,7 +357,6 @@ define([], function() {
 		var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
 		var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
 		var eventsList = $resource(urlPrefix + "/events");
-
 
 		this.getQuestionList = function(page){
 			return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -331,8 +386,8 @@ define([], function() {
 			return conceptList.query();
 		}
 
-		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags) {
-			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags});
+		this.getEventsList = function(startIndex, limit, showActiveOnly, showInactiveOnly, tags, showBookedOnly) {
+			return eventsList.get({start_index: startIndex, limit: limit, show_active_only: showActiveOnly, show_inactive_only: showInactiveOnly, tags: tags, show_booked_only:showBookedOnly});
 		}
 
 		this.getImageUrl = function(path) {
@@ -353,13 +408,13 @@ define([], function() {
 			return urlPrefix + "/content/units";
 		}
 
-		this.admin = {
-			synchroniseDatastores: function() {
-				return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-					console.warn("Synchronising Datastores. The next page load will take a while.");
-				});
-			}
-		};
+		// this.admin = {
+		// 	synchroniseDatastores: function() {
+		// 		return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
+		// 			console.warn("Synchronising Datastores. The next page load will take a while.");
+		// 		});
+		// 	}
+		// };
 
 		this.account = $resource(urlPrefix + "/users", {}, {
 			saveSettings: {
@@ -469,10 +524,26 @@ define([], function() {
 		})
 		
 		this.getCSVDownloadLink = function(assignmentId) {
-			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download"
+			return urlPrefix + "/assignments/assign/" + assignmentId + "/progress/download";
+		}
+
+		this.getGroupProgressCSVDownloadLink = function(groupId) {
+			return urlPrefix + "/assignments/assign/group/" + groupId + "/progress/download";
 		}
 
 		this.questionsAnswered = $resource(urlPrefix + "/stats/questions_answered/count");
+
+		this.getWebsocket = function(uri) {
+			// FIXME: this seems a little hacky, and not as neat as the rest . . .
+			if (urlPrefix.indexOf("http") > -1){
+				// APP and API on separate domains, urlPrefix is full URL:
+				return new WebSocket(urlPrefix.replace(/^http/, "ws") + "/" + uri);
+			} else {
+				// APP and API on same domain, need window.location.origin for full URL:
+				return new WebSocket(window.location.origin.replace(/^http/, "ws") + urlPrefix + "/" + uri);
+			}
+			
+		}
 
 	}
 

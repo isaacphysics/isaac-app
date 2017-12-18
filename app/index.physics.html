@@ -37,7 +37,7 @@
 
     <script src="/js/lib/nprogress.js"></script>
 
-    <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.6/MathJax.js?delayStartupUntil=configured"> </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?delayStartupUntil=configured"> </script>
 
     <link rel="stylesheet" href="/css/app.css" />
 
@@ -104,8 +104,8 @@
               <div isaac-content doc="notificationDoc"></div>
               <!-- TODO: Add response buttons here -->
               <div class="text-right">
-                <button ng-click="notificationResponse(notificationDoc, 'DISMISSED')">Yes, view questionnaire</button>
-                <button ng-click="notificationResponse(notificationDoc, 'DISABLED')">No thanks</button>
+                <button ng-click="notificationResponse(notificationDoc, 'ACKNOWLEDGED')">Yes, view questionnaire</button>
+                <button ng-click="notificationResponse(notificationDoc, 'DISABLED')">No thanks</button>  
                 <button ng-click="notificationResponse(notificationDoc, 'POSTPONED')">Ask me later</button>
               </div>
           </div>

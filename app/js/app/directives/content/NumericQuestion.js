@@ -49,49 +49,45 @@ define(["app/honest/responsive_video"], function(rv) {
 				ctrl.unitOptions = [];
 
                 units.getUnits().then(function(allUnits) {
+					/*
+					* STEP 0: Add to unitOptions all units required to answer
+					* the question, and choose all known incorrect choices.
+					*/
+					if (typeof scope.doc.knownUnits !== "undefined") {
+						for (var i = 0; i < scope.doc.knownUnits.length; i++) {
 
-                    /*
-                     * STEP 1: Initialize unitOptions list with available units,
-                     * removing duplicates and with spaces trimmed.
-                     */
-                    if (typeof scope.doc.availableUnits !== "undefined") {
-                      for (var i = 0; i < scope.doc.availableUnits.length; i++) {
+						    // Get a knwn unit from choice.
+						    var unitFromQuestion = scope.doc.knownUnits[i];
 
-                          // Trim the space of availableUnit, and remove redundant backslashes.
-                          var availableUnit = scope.doc.availableUnits[i].trim().replace("\\\\", "\\");
+						    // Only add to options when it is not null and not duplicated.
+						    if (unitFromQuestion && ctrl.unitOptions.indexOf(unitFromQuestion) == -1) {
+						        ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitFromQuestion);
+						    }
+						}
+					}
+	                /*
+	                 * STEP 1: Add availableUnits to the list until we reach 6 units or
+	                 * run out of available units, removing duplicates and trimming spaces.
+	                 */
+	                if (typeof scope.doc.availableUnits !== "undefined") {
 
-                          // Only add to options when it is not null and not duplicated.
-                          if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1)
-                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
-                      }
-                    }
+	                	var availableUnits = scope.doc.availableUnits.slice(0);
 
-                    /*
-                     * STEP 2: Add to the unitOptions list all known units at random
-                     * location, unless the unit is a duplicate.
-                     *
-                     * Known units are units from question choices.
-                     */
-                    if (typeof scope.doc.knownUnits !== "undefined") {
-                      for (var i = 0; i < scope.doc.knownUnits.length; i++) {
+	                  	while (ctrl.unitOptions.length < 6 && availableUnits.length > 0) {
+                            // Pick a random availableUnit, trim spaces and remove redundant backslashes.
+                            var availableUnit = availableUnits.splice(Math.floor(Math.random() * availableUnits.length), 1)[0].trim().replace("\\\\", "\\");
 
-                          // Get a knwn unit from choice.
-                          var unitsFromQuestion = scope.doc.knownUnits[i];
-
-                          // Only add to options when it is not null and not duplicated.
-                          if (unitsFromQuestion && ctrl.unitOptions.indexOf(unitsFromQuestion) == -1)
-                              ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, unitsFromQuestion);
-                      }
-                    }
-
+                            // Only add to options when it is not null and not duplicated.
+                            if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1) {
+                                ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, availableUnit);
+                            }
+	                  	}
+	                }
                     // Get the pool of all available units.
                     var unitsPool = JSON.parse(JSON.stringify(allUnits));
-
                     /*
-                     * STEP 3: Fill the unit options up with other random units in pool.
-                     *
-                     * Procedure terminates after unitOptions list has not less than 6
-                     * elements, or unitPool gone empty.
+                     * STEP 2: If we still don't have 6 units, add them from the global pool,
+                     * until we have the required number of units or the pool is empty.
                      */
                     while (ctrl.unitOptions.length < 6 && unitsPool.length > 0) {
                         // Gets a random unit from pool, and removes it from pool.
@@ -103,8 +99,8 @@ define(["app/honest/responsive_video"], function(rv) {
                             ctrl.unitOptions.splice(Math.floor(Math.random() * (ctrl.unitOptions.length + 1)), 0, u);
                         }
                     }
-
                 });
+
 
 				scope.$watch("ctrl.selectedValue", function(v, oldV) {
 					if (v === oldV) {

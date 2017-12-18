@@ -8,7 +8,7 @@
   "dependencies": {
     "angular": "1.5.7",
     "angular-cookies": "1.5.7",
-    "angular-google-maps": "2.1.0",
+    "angular-google-maps": "2.4.0",
     "angular-loader": "1.5.7",
     "angular-mocks": "1.5.7",
     "angular-recursion": "1.0.5",
@@ -18,7 +18,7 @@
     "angular-tipped": "1.0.0-7",
     "angular-ui-date": "1.0.1",
     "angular-ui-router": "0.2.18",
-    "d3": "3.5.5",
+    "d3": "3.5.17",
     "foundation": "5.5.1",
     "jquery": "2.1.1",
     "jquery.cookie": "1.4.1",

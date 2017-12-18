@@ -1,9 +1,9 @@
-/*! angular-google-maps 2.1.0 2015-04-27
+/*! angular-google-maps 2.4.0 2016-09-19
  *  AngularJS directives for Google Maps
  *  git: https://github.com/angular-ui/angular-google-maps.git
  */
 ;
-(function( window, angular, undefined ){
+(function( window, angular, _, undefined ){
   'use strict';
 /*
 !
@@ -38,7 +38,7 @@ Nicholas McCready - https://twitter.com/nmccready
  */
 
 (function() {
-  angular.module('uiGmapgoogle-maps.providers', []);
+  angular.module('uiGmapgoogle-maps.providers', ['nemLogging']);
 
   angular.module('uiGmapgoogle-maps.wrapped', []);
 
@@ -61,11 +61,25 @@ Nicholas McCready - https://twitter.com/nmccready
   angular.module('uiGmapgoogle-maps', ['uiGmapgoogle-maps.directives.api', 'uiGmapgoogle-maps.providers']);
 
 }).call(this);
+;angular.module('uiGmapgoogle-maps.wrapped')
+.service('uiGmapuuid', function() {
+  //BEGIN REPLACE
+  /* istanbul ignore next */
+  /*
+ Version: core-1.0
+ The MIT License: Copyright (c) 2012 LiosK.
+*/
+function UUID(){}UUID.generate=function(){var a=UUID._gri,b=UUID._ha;return b(a(32),8)+"-"+b(a(16),4)+"-"+b(16384|a(12),4)+"-"+b(32768|a(14),4)+"-"+b(a(48),12)};UUID._gri=function(a){return 0>a?NaN:30>=a?0|Math.random()*(1<<a):53>=a?(0|1073741824*Math.random())+1073741824*(0|Math.random()*(1<<a-30)):NaN};UUID._ha=function(a,b){for(var c=a.toString(16),d=b-c.length,e="0";0<d;d>>>=1,e+=e)d&1&&(c=e+c);return c};
+
+  //END REPLACE
+return UUID;
+});
 ;(function() {
   angular.module('uiGmapgoogle-maps.providers').factory('uiGmapMapScriptLoader', [
     '$q', 'uiGmapuuid', function($q, uuid) {
-      var getScriptUrl, includeScript, isGoogleMapsLoaded, scriptId;
+      var getScriptUrl, includeScript, isGoogleMapsLoaded, scriptId, usedConfiguration;
       scriptId = void 0;
+      usedConfiguration = void 0;
       getScriptUrl = function(options) {
         if (options.china) {
           return 'http://maps.google.cn/maps/api/js?';
@@ -78,8 +92,8 @@ Nicholas McCready - https://twitter.com/nmccready
         }
       };
       includeScript = function(options) {
-        var omitOptions, query, script;
-        omitOptions = ['transport', 'isGoogleMapsForWork', 'china'];
+        var omitOptions, query, script, scriptElem;
+        omitOptions = ['transport', 'isGoogleMapsForWork', 'china', 'preventLoad'];
         if (options.isGoogleMapsForWork) {
           omitOptions.push('key');
         }
@@ -87,14 +101,15 @@ Nicholas McCready - https://twitter.com/nmccready
           return k + '=' + v;
         });
         if (scriptId) {
-          document.getElementById(scriptId).remove();
+          scriptElem = document.getElementById(scriptId);
+          scriptElem.parentNode.removeChild(scriptElem);
         }
         query = query.join('&');
         script = document.createElement('script');
         script.id = scriptId = "ui_gmap_map_load_" + (uuid.generate());
         script.type = 'text/javascript';
         script.src = getScriptUrl(options) + query;
-        return document.body.appendChild(script);
+        return document.head.appendChild(script);
       };
       isGoogleMapsLoaded = function() {
         return angular.isDefined(window.google) && angular.isDefined(window.google.maps);
@@ -112,16 +127,29 @@ Nicholas McCready - https://twitter.com/nmccready
             window[randomizedFunctionName] = null;
             deferred.resolve(window.google.maps);
           };
-          if (window.navigator.connection && window.Connection && window.navigator.connection.type === window.Connection.NONE) {
+          if (window.navigator.connection && window.Connection && window.navigator.connection.type === window.Connection.NONE && !options.preventLoad) {
             document.addEventListener('online', function() {
               if (!isGoogleMapsLoaded()) {
                 return includeScript(options);
               }
             });
-          } else {
+          } else if (!options.preventLoad) {
             includeScript(options);
           }
+          usedConfiguration = options;
+          usedConfiguration.randomizedFunctionName = randomizedFunctionName;
           return deferred.promise;
+        },
+        manualLoad: function() {
+          var config;
+          config = usedConfiguration;
+          if (!isGoogleMapsLoaded()) {
+            return includeScript(config);
+          } else {
+            if (window[config.randomizedFunctionName]) {
+              return window[config.randomizedFunctionName]();
+            }
+          }
         }
       };
     }
@@ -130,10 +158,10 @@ Nicholas McCready - https://twitter.com/nmccready
       transport: 'https',
       isGoogleMapsForWork: false,
       china: false,
-      v: '3.17',
+      v: '3',
       libraries: '',
       language: 'en',
-      sensor: 'false'
+      preventLoad: false
     };
     this.configure = function(options) {
       angular.extend(this.options, options);
@@ -146,70 +174,301 @@ Nicholas McCready - https://twitter.com/nmccready
       })(this)
     ];
     return this;
-  });
+  }).service('uiGmapGoogleMapApiManualLoader', [
+    'uiGmapMapScriptLoader', function(loader) {
+      return {
+        load: function() {
+          loader.manualLoad();
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 ;(function() {
   angular.module('uiGmapgoogle-maps.directives.api.utils').service('uiGmapLogger', [
-    '$log', function($log) {
-      var LEVELS, Logger, log, maybeExecLevel;
-      LEVELS = {
-        log: 1,
-        info: 2,
-        debug: 3,
-        warn: 4,
-        error: 5,
-        none: 6
+    'nemSimpleLogger', function(nemSimpleLogger) {
+      return nemSimpleLogger.spawn();
+    }
+  ]);
+
+}).call(this);
+;
+/*global _:true, angular:true, google:true */
+
+(function() {
+  angular.module('uiGmapgoogle-maps.directives.api.utils').service('uiGmapGmapUtil', [
+    'uiGmapLogger', '$compile', function(Logger, $compile) {
+      var _isFalse, _isTruthy, getCoords, getLatitude, getLongitude, validateCoords;
+      _isTruthy = function(value, bool, optionsArray) {
+        return value === bool || optionsArray.indexOf(value) !== -1;
       };
-      maybeExecLevel = function(level, current, fn) {
-        if (level >= current) {
-          return fn();
-        }
+      _isFalse = function(value) {
+        return _isTruthy(value, false, ['false', 'FALSE', 0, 'n', 'N', 'no', 'NO']);
       };
-      log = function(logLevelFnName, msg) {
-        if ($log != null) {
-          return $log[logLevelFnName](msg);
+      getLatitude = function(value) {
+        if (Array.isArray(value) && value.length === 2) {
+          return value[1];
+        } else if (angular.isDefined(value.type) && value.type === 'Point') {
+          return value.coordinates[1];
         } else {
-          return console[logLevelFnName](msg);
+          return value.latitude;
         }
       };
-      Logger = (function() {
-        function Logger() {
-          var logFns;
-          this.doLog = true;
-          logFns = {};
-          ['log', 'info', 'debug', 'warn', 'error'].forEach((function(_this) {
-            return function(level) {
-              return logFns[level] = function(msg) {
-                if (_this.doLog) {
-                  return maybeExecLevel(LEVELS[level], _this.currentLevel, function() {
-                    return log(level, msg);
-                  });
-                }
-              };
-            };
-          })(this));
-          this.LEVELS = LEVELS;
-          this.currentLevel = LEVELS.error;
-          this.log = logFns['log'];
-          this.info = logFns['info'];
-          this.debug = logFns['debug'];
-          this.warn = logFns['warn'];
-          this.error = logFns['error'];
+      getLongitude = function(value) {
+        if (Array.isArray(value) && value.length === 2) {
+          return value[0];
+        } else if (angular.isDefined(value.type) && value.type === 'Point') {
+          return value.coordinates[0];
+        } else {
+          return value.longitude;
         }
+      };
+      getCoords = function(value) {
+        if (!value) {
+          return;
+        }
+        if (value instanceof google.maps.LatLng) {
+          return value;
+        } else if (Array.isArray(value) && value.length === 2) {
+          return new google.maps.LatLng(value[1], value[0]);
+        } else if (angular.isDefined(value.type) && value.type === 'Point') {
+          return new google.maps.LatLng(value.coordinates[1], value.coordinates[0]);
+        } else {
+          return new google.maps.LatLng(value.latitude, value.longitude);
+        }
+      };
+      validateCoords = function(coords) {
+        if (angular.isUndefined(coords)) {
+          return false;
+        }
+        if (_.isArray(coords)) {
+          if (coords.length === 2) {
+            return true;
+          }
+        } else if ((coords != null) && (coords != null ? coords.type : void 0)) {
+          if (coords.type === 'Point' && _.isArray(coords.coordinates) && coords.coordinates.length === 2) {
+            return true;
+          }
+        }
+        if (coords && angular.isDefined((coords != null ? coords.latitude : void 0) && angular.isDefined(coords != null ? coords.longitude : void 0))) {
+          return true;
+        }
+        return false;
+      };
+      return {
+        setCoordsFromEvent: function(prevValue, newLatLon) {
+          if (!prevValue) {
+            return;
+          }
+          if (Array.isArray(prevValue) && prevValue.length === 2) {
+            prevValue[1] = newLatLon.lat();
+            prevValue[0] = newLatLon.lng();
+          } else if (angular.isDefined(prevValue.type) && prevValue.type === 'Point') {
+            prevValue.coordinates[1] = newLatLon.lat();
+            prevValue.coordinates[0] = newLatLon.lng();
+          } else {
+            prevValue.latitude = newLatLon.lat();
+            prevValue.longitude = newLatLon.lng();
+          }
+          return prevValue;
+        },
+        getLabelPositionPoint: function(anchor) {
+          var xPos, yPos;
+          if (anchor === void 0) {
+            return void 0;
+          }
+          anchor = /^([-\d\.]+)\s([-\d\.]+)$/.exec(anchor);
+          xPos = parseFloat(anchor[1]);
+          yPos = parseFloat(anchor[2]);
+          if ((xPos != null) && (yPos != null)) {
+            return new google.maps.Point(xPos, yPos);
+          }
+        },
+        createWindowOptions: function(gMarker, scope, content, defaults) {
+          var options;
+          if ((content != null) && (defaults != null) && ($compile != null)) {
+            options = angular.extend({}, defaults, {
+              content: this.buildContent(scope, defaults, content),
+              position: defaults.position != null ? defaults.position : angular.isObject(gMarker) ? gMarker.getPosition() : getCoords(scope.coords)
+            });
+            if ((gMarker != null) && ((options != null ? options.pixelOffset : void 0) == null)) {
+              if (options.boxClass == null) {
 
-        Logger.prototype.spawn = function() {
-          return new Logger();
-        };
-
-        Logger.prototype.setLog = function(someLogger) {
-          return $log = someLogger;
-        };
-
-        return Logger;
-
-      })();
-      return new Logger();
+              } else {
+                options.pixelOffset = {
+                  height: 0,
+                  width: -2
+                };
+              }
+            }
+            return options;
+          } else {
+            if (!defaults) {
+              Logger.error('infoWindow defaults not defined');
+              if (!content) {
+                return Logger.error('infoWindow content not defined');
+              }
+            } else {
+              return defaults;
+            }
+          }
+        },
+        buildContent: function(scope, defaults, content) {
+          var parsed, ret;
+          if (defaults.content != null) {
+            ret = defaults.content;
+          } else {
+            if ($compile != null) {
+              content = content.replace(/^\s+|\s+$/g, '');
+              parsed = content === '' ? '' : $compile(content)(scope);
+              if (parsed.length > 0) {
+                ret = parsed[0];
+              }
+            } else {
+              ret = content;
+            }
+          }
+          return ret;
+        },
+        defaultDelay: 50,
+        isTrue: function(value) {
+          return _isTruthy(value, true, ['true', 'TRUE', 1, 'y', 'Y', 'yes', 'YES']);
+        },
+        isFalse: _isFalse,
+        isFalsy: function(value) {
+          return _isTruthy(value, false, [void 0, null]) || _isFalse(value);
+        },
+        getCoords: getCoords,
+        validateCoords: validateCoords,
+        equalCoords: function(coord1, coord2) {
+          return getLatitude(coord1) === getLatitude(coord2) && getLongitude(coord1) === getLongitude(coord2);
+        },
+        validatePath: function(path) {
+          var array, i, polygon, trackMaxVertices;
+          i = 0;
+          if (angular.isUndefined(path.type)) {
+            if (!Array.isArray(path) || path.length < 2) {
+              return false;
+            }
+            while (i < path.length) {
+              if (!((angular.isDefined(path[i].latitude) && angular.isDefined(path[i].longitude)) || (typeof path[i].lat === 'function' && typeof path[i].lng === 'function'))) {
+                return false;
+              }
+              i++;
+            }
+            return true;
+          } else {
+            if (angular.isUndefined(path.coordinates)) {
+              return false;
+            }
+            if (path.type === 'Polygon') {
+              if (path.coordinates[0].length < 4) {
+                return false;
+              }
+              array = path.coordinates[0];
+            } else if (path.type === 'MultiPolygon') {
+              trackMaxVertices = {
+                max: 0,
+                index: 0
+              };
+              _.forEach(path.coordinates, function(polygon, index) {
+                if (polygon[0].length > this.max) {
+                  this.max = polygon[0].length;
+                  return this.index = index;
+                }
+              }, trackMaxVertices);
+              polygon = path.coordinates[trackMaxVertices.index];
+              array = polygon[0];
+              if (array.length < 4) {
+                return false;
+              }
+            } else if (path.type === 'LineString') {
+              if (path.coordinates.length < 2) {
+                return false;
+              }
+              array = path.coordinates;
+            } else {
+              return false;
+            }
+            while (i < array.length) {
+              if (array[i].length !== 2) {
+                return false;
+              }
+              i++;
+            }
+            return true;
+          }
+        },
+        convertPathPoints: function(path) {
+          var array, i, latlng, result, trackMaxVertices;
+          i = 0;
+          result = new google.maps.MVCArray();
+          if (angular.isUndefined(path.type)) {
+            while (i < path.length) {
+              latlng;
+              if (angular.isDefined(path[i].latitude) && angular.isDefined(path[i].longitude)) {
+                latlng = new google.maps.LatLng(path[i].latitude, path[i].longitude);
+              } else if (typeof path[i].lat === 'function' && typeof path[i].lng === 'function') {
+                latlng = path[i];
+              }
+              result.push(latlng);
+              i++;
+            }
+          } else {
+            array;
+            if (path.type === 'Polygon') {
+              array = path.coordinates[0];
+            } else if (path.type === 'MultiPolygon') {
+              trackMaxVertices = {
+                max: 0,
+                index: 0
+              };
+              _.forEach(path.coordinates, function(polygon, index) {
+                if (polygon[0].length > this.max) {
+                  this.max = polygon[0].length;
+                  return this.index = index;
+                }
+              }, trackMaxVertices);
+              array = path.coordinates[trackMaxVertices.index][0];
+            } else if (path.type === 'LineString') {
+              array = path.coordinates;
+            }
+            while (i < array.length) {
+              result.push(new google.maps.LatLng(array[i][1], array[i][0]));
+              i++;
+            }
+          }
+          return result;
+        },
+        getPath: function(object, key) {
+          var obj;
+          if ((key == null) || !_.isString(key)) {
+            return key;
+          }
+          obj = object;
+          _.each(key.split('.'), function(value) {
+            if (obj) {
+              return obj = obj[value];
+            }
+          });
+          return obj;
+        },
+        validateBoundPoints: function(bounds) {
+          if (angular.isUndefined(bounds.sw.latitude) || angular.isUndefined(bounds.sw.longitude) || angular.isUndefined(bounds.ne.latitude) || angular.isUndefined(bounds.ne.longitude)) {
+            return false;
+          }
+          return true;
+        },
+        convertBoundPoints: function(bounds) {
+          var result;
+          result = new google.maps.LatLngBounds(new google.maps.LatLng(bounds.sw.latitude, bounds.sw.longitude), new google.maps.LatLng(bounds.ne.latitude, bounds.ne.longitude));
+          return result;
+        },
+        fitMapBounds: function(map, bounds) {
+          return map.fitBounds(bounds);
+        }
+      };
     }
   ]);
 
@@ -237,7 +496,7 @@ Nicholas McCready - https://twitter.com/nmccready
             return _.compact(_.map(eventObj.events, function(eventHandler, eventName) {
               var doIgnore;
               if (ignores) {
-                doIgnore = _(ignores).contains(eventName);
+                doIgnore = _(ignores).includes(eventName);
               }
               if (eventObj.events.hasOwnProperty(eventName) && angular.isFunction(eventObj.events[eventName]) && !doIgnore) {
                 return google.maps.event.addListener(gObject, eventName, function() {
@@ -251,14 +510,16 @@ Nicholas McCready - https://twitter.com/nmccready
           }
         },
         removeEvents: function(listeners) {
+          var key, l;
           if (!listeners) {
             return;
           }
-          return listeners.forEach(function(l) {
-            if (l) {
-              return google.maps.event.removeListener(l);
+          for (key in listeners) {
+            l = listeners[key];
+            if (l && listeners.hasOwnProperty(key)) {
+              google.maps.event.removeListener(l);
             }
-          });
+          }
         }
       };
     }
@@ -413,4 +674,4 @@ StreetViewPanorama Directive to care of basic initialization of StreetViewPanora
   ]);
 
 }).call(this);
-}( window,angular));
+}( window, angular, _));

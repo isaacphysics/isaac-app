@@ -82,7 +82,7 @@ table {
 }
 @media #{$small-only} { 
     .ru-alert-box {
-        position: absolute;
+        position: relative;
         top: 42px;
         left: 0;
         right: 0;
@@ -107,6 +107,10 @@ table {
                 margin-right: 10px;
             }
         }
+    }
+    .ru-alert-columns {
+        padding-left: 0px;
+        padding-right: 0px;
     }
     .ru-page-heading {
         h1 {
@@ -148,18 +152,4 @@ input.error.submitted,
 input.ru-input-error {
     border-color: #cc6666;
     background: #fff;
-}
-
-svg.book-page-icon {
-    width:40px;
-
-    polygon {
-        fill: $ru_burgundy;
-    }
-
-    text {
-        font-style: normal;
-        fill: white;
-        text-anchor: middle; 
-    }
 }

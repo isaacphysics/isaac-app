@@ -70,8 +70,7 @@ $menu-handle-width: 160px;
         }
     }
     .top-menu {
-        /* Giving this any z-index at all prevents .dragging-background from going behind it. */
-        /* z-index: 100; */
+        z-index: 100;
         background: #509e2e;
         position: absolute;
         left: 0;
@@ -200,7 +199,6 @@ $menu-handle-width: 160px;
                 margin: 7px 0 0 60px;
                 li {
                     text-align: center;
-                    z-index: 1000px;
                     cursor: pointer;
                     width: 50px;
                     height: 65px;
@@ -218,7 +216,6 @@ $menu-handle-width: 160px;
                 }
                 .wedgeFit {
                     margin-top: -14px;
-                    z-index: 100px !important;
                 }
             }
             .number-input-panel {
@@ -444,4 +441,17 @@ $menu-handle-width: 160px;
         top: 35%;
         font-size: 4rem;
     }
+}
+input.equation-seed {
+    border-radius: 3px;
+    box-shadow: none;
+    font-size: 1.5rem;
+    color: #000 !important;
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid #999;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    background: white;
 }

@@ -34,7 +34,7 @@
 	position:absolute;
 	left:15px;
 	top:0;
-	
+
 	&:hover, &:active, &:focus, &:visited {
 		color: #333;
 		background-color: transparent;
@@ -46,39 +46,39 @@
 	}
 	span, span:before, span:after {
 		cursor: pointer;
-    	height: 2px;
-    	width: 14px;
-    	background-color: $ru_green;
-    	position: absolute;
-    	display: block;
-    	content: '';
-    	transition: all 200ms ease-in-out;
-    	-webkit-transition: all 200ms ease-in-out;
+		height: 2px;
+		width: 14px;
+		background-color: $ru_green;
+		position: absolute;
+		display: block;
+		content: '';
+		transition: all 200ms ease-in-out;
+		-webkit-transition: all 200ms ease-in-out;
 	}
 
 	span:before {
-    	top: -5px;
+		top: -5px;
 	}
 	span:after {
-    	bottom: -5px;
+		bottom: -5px;
 	}
 
 	&.active {
 		span {
-    		background-color: transparent;
+			background-color: transparent;
 
 			&:before {
 				top: 0;
-    			transform: rotate(45deg);
-    			-webkit-transform: rotate(45deg);
-    		}
-    		&:after {
-    			top: 0;
-    			bottom: 0;
-	    		transform: rotate(-45deg);
-	    		-webkit-transform: rotate(-45deg);
-    		}
-    	}
+				transform: rotate(45deg);
+				-webkit-transform: rotate(45deg);
+			}
+			&:after {
+				top: 0;
+				bottom: 0;
+				transform: rotate(-45deg);
+				-webkit-transform: rotate(-45deg);
+			}
+		}
 	}
 
 }
@@ -105,10 +105,14 @@
 		}
 	}
 	.disabled {
-			
+
 		a, a:hover {
 			color: #ccc;
 			/*cursor: default;*/
+		}
+
+		span {
+			float: left;
 		}
 	}
 	.login-notification {
@@ -130,7 +134,7 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
-}	
+}
 .dl-level2 li {
 	padding: 6px 15px 9px;
 	border-bottom: $ru_green 1px solid;
@@ -180,10 +184,10 @@
 	&.warning {
 		background-color: $ru_orange;
 		font-weight: bold;
-  		font-size: 1.1em;
+		font-size: 1.1em;
 	}
 }
-@media #{$small-only} { 
+@media #{$small-only} {
 	.status-panel {
 		margin-right: -0.9375rem;
 		margin-left: -0.9375rem;

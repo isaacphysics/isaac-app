@@ -224,9 +224,12 @@ $footer_height : 250px;
     text-align: center;
 }
 
-.ru_maths, .panel.maths *
-{
+.ru_maths, .panel.maths * {
     color: $ru_maths !important;
+}
+
+.ru_chemistry, .panel.chemistry * {
+    color: $ru_chemistry !important;
 }
 
 .ru-figure-ref
@@ -239,6 +242,10 @@ $footer_height : 250px;
 
     &.maths {
         color: $ru_maths !important;
+    }
+
+    &.chemistry {
+        color: $ru_chemistry !important;
     }
 }
 
@@ -476,9 +483,18 @@ h6~.subheader { position: relative; bottom:  8px;}
 
 
 // Questions
-.question-prefix{
+.question-prefix {
     position:absolute;
-    margin-left:-30px
+    margin-left:-35px;
+}
+
+@media #{$small-only} {
+    .question-prefix {
+        margin-left:0px;
+    }
+    .question-title {
+        text-indent: 1em;
+    }
 }
 
 .superseded-warning {

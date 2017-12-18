@@ -6,14 +6,26 @@
             <nav class='row'>
                 <div class='padded-left-float'>
                     <a id="isaac-logo" ui-sref='home'>
-                        <img alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
-                             data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
-                             [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]"></a>
-                         <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
-                            <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
-                         </div>
+                        <img ng-if="$subject.id == 'physics'" alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]" />
+                        <img ng-if="$subject.id == 'chemistry'" alt="isaac logo" title='Isaac Chemistry. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-chemistry-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-chemistry-strap@2x.png, (large_retina)]" />
+                        <img ng-if="$subject.id == 'biology'" alt="isaac logo" title='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src=''
+                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-biology-strap.png, (medium_large)],
+                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-biology-strap@2x.png, (large_retina)]" />
+                    </a>
+                    <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
+                        <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
+                    </div>
                 </div>
                 <div class='padded-right-float text-right'>
+                    <a class='ru-desktop-nav-item' ui-sref='chemistry'>
+                        <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
+                            <span class="multiline">Isaac Chemistry</span>
+                        </div>
+                    </a>
                     <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>
                         <div id="questions-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
                             <span>Questions</span>
@@ -28,6 +40,48 @@
                         <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
                             <span>Log in</span>
                         </div>
+                    </a>
+                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress' ng-init="streakDialToggle(todayActivityLength)">
+                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                            <span style="top: 0.5em; vertical-align: text-top;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                    <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                                  aria-haspopup="true">
+
+                                    <svg id="svg-progress" width="100%" height="60" version="1.1"
+                                         xmlns="http://www.w3.org/2000/svg" style="display:block;">
+
+                                        <circle id="empty-bar" r="20" cx="56" cy="30"
+                                                stroke-width="5"></circle>
+
+                                        <circle id="progress-bar" r="20" cx="56" cy="30"
+                                                stroke-width="6"
+                                                stroke-dasharray="125.664" stroke-dashoffset="125.664"
+                                        transform="rotate(270, 56, 30)"></circle>
+
+                                        <!--<text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
+                                              class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
+                                            {{ user.userSnapshot.streakRecord.currentStreak }}
+                                        </text>
+                                        <text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
+                                              class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">0</text>-->
+
+
+                                    </svg>
+
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord != null">
+                                    {{ user.userSnapshot.streakRecord.currentStreak || 0 }}
+                                </div>
+                                Progress
+
+                            </span>
+                        </div>
+
+                        <!--<div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                            <!--<span>
+
+                            </span>
+
+                        </div>-->
                     </a>
                 </div>
             </nav>
@@ -71,6 +125,11 @@
                                 data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
                 <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
                 <div class="ru-mobile-nav-container">
+                  <a class='ru-mobile-nav-item' ui-sref='chemistry'>
+                    <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('chemistry')}">
+                      <span class="multiline">Isaac Chemistry</span>
+                    </div>
+                  </a>
                   <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
                       <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
                           <span>Questions</span>

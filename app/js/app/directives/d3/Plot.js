@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["d3"], function(d3) {
     return function() {
         return {
             restrict: 'A',
@@ -24,6 +24,8 @@ define([], function() {
             },
 
             link: function(scope, element, attrs) {
+
+                var dateFormat = d3.time.format("%b %Y");
 
                 scope.$watch('data', function(newData){
                     if (!newData) {
@@ -87,10 +89,8 @@ define([], function() {
 
                     // Define axis ranges & scales        
                     var xScale = d3.time.scale()
-                        .domain([minX, maxX])
+                        .domain([minX, maxX]).nice(d3.time.year)
                         .range([padding, w - 30]);
-
-                        console.log('Start date = ' + new Date(minX).toString());
 
                     var yScale = d3.scale.linear()
                         .domain([0, maxY])
@@ -152,7 +152,7 @@ define([], function() {
                                     .duration(200)      
                                     .style("opacity", .9);
 
-                                d3tooltip.html(d.y)  
+                                d3tooltip.html(dateFormat(new Date(d.x)) + "<br><b>"+ d.y + "</b>")  
                                     .style("left", (d3.event.pageX) + "px")     
                                     .style("top", (d3.event.pageY - 28) + "px");    
                             })                  
@@ -167,9 +167,9 @@ define([], function() {
                     var xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
-                        .ticks(5)
+                        .ticks(6)
                         .tickSize(-h).tickSubdivide(true)
-                        .tickFormat(d3.time.format("%b"));
+                        .tickFormat(dateFormat);
 
                     //Define Y axis
                     var yAxis = d3.svg.axis()

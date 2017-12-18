@@ -20,9 +20,9 @@ define([], function() {
 		$rootScope.pageTitle = "Group Management";
 
 		$scope.archivedView = false;
-		$scope.emailInviteFeatureAvailable = false;
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
 
-		$scope.myGroups = api.groupManagementEndpoint.get();
+		$scope.emailInviteFeatureAvailable = false;
 
 		$scope.selectedGroup = null;
 		$scope.selectedGroupMembers = null;
@@ -33,7 +33,7 @@ define([], function() {
 
         $scope.sortOptions = [
             {label: "Alphabetical", val: "groupName", reverse: false},
-            {label: "Group Created", val: "created", reverse: true}
+            {label: "Date Created", val: "created", reverse: true}
         ];
 		$scope.sortOption = $scope.sortOptions[0];
 
@@ -45,6 +45,16 @@ define([], function() {
 			}
 		})
 
+		$scope.changeArchivedGroupsView = function(newValue) {
+			if ($scope.archivedView != newValue) {
+				$scope.setSelectedGroup(null);
+				$scope.archivedView = newValue;
+				$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
+			}
+			// don't do anything as there is no change.
+		}
+		
+
 		$scope.setSelectedGroup = function(group) {
 			if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
 				$scope.selectedGroup = null;
@@ -52,6 +62,7 @@ define([], function() {
 				$scope.selectedGroupToken = null;
 				$scope.groupJoinURL = null;
 			} else {
+				$scope.setLoading(true);
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
 
@@ -59,7 +70,11 @@ define([], function() {
 					$timeout(function(){
 						Opentip.findElements();
 					}, 500);
-				})
+					$scope.setLoading(false);
+				}).catch(function(e) {
+					console.error(e)
+					$scope.setLoading(false);
+				});
 
 				api.groupManagementEndpoint.getToken({id: $scope.selectedGroup._id}).$promise.then(function(result){
 					$scope.selectedGroupToken = result;
@@ -80,7 +95,7 @@ define([], function() {
 					$scope.groupJoinURL = null;
 				}
 
-				var deleteGroup = $window.confirm('Are you sure you want to delete ' + group.groupName + '?'); 
+				var deleteGroup = $window.confirm("Are you sure you want to permanently delete the group '" + group.groupName + "' and remove all associated assignments?\n\nTHIS ACTION CANNOT BE UNDONE!"); 
 				if(deleteGroup){
 					api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(result){
 						$scope.myGroups = api.groupManagementEndpoint.get();
@@ -93,6 +108,32 @@ define([], function() {
 				}
 			}
 
+		}
+
+		$scope.changeGroupArchiveState = function(archiveState) {
+        	var Group = api.groupManagementEndpoint;
+        	var groupToSave = null;
+
+        	groupToSave = new Group($scope.selectedGroup);
+
+        	if (groupToSave.archived == false) {
+        		var archiveGroup = $window.confirm('Are you sure you would like to archive this group?');   
+				if (!archiveGroup) {
+					return;
+				}
+        	}
+
+        	groupToSave.archived = archiveState;
+
+        	var savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
+        		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
+        		$scope.setSelectedGroup(null);
+        		$scope.newGroup = {};
+
+                $scope.showToast($scope.toastTypes.Success, "Group archive status updated", groupToSave.groupName + " group archive status has been saved.");
+        	}).catch(function(e) {
+        		$scope.showToast($scope.toastTypes.Failure, "Group archive status update failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        	});
 		}
 
 		$scope.saveGroup = function(isUpdate) {
@@ -121,7 +162,7 @@ define([], function() {
 		}
 
 		$scope.deleteMember = function(group, user) {
-			var deleteMember = $window.confirm('Are you sure you want to delete?');   
+			var deleteMember = $window.confirm('Are you sure you want to remove this user from the group?');   
 			if (deleteMember) {
 				api.groupManagementEndpoint.deleteMember({id: group._id, userId: user.id}).$promise.then(function(result){
 					$scope.selectedGroupMembers = result;

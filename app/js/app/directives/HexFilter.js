@@ -40,8 +40,8 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 					// TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
 
 					// For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
-
-					var subjects = tags.filter(function(t) { return t && !t.parent; });
+					// FIXME - temporary hack to remove chemistry from the filter!
+					var subjects = tags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
 
 					for (var i in subjects) {
 						var s = subjects[i];

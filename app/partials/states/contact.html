@@ -47,6 +47,9 @@
 						<div ng-show="errorDuringSubmit">
 							<span class="error">There was an error while trying to submit the form to the server.</span>
 						</div>
+						<div ng-show="invalidEmail">
+							<span class="error">The email you've specified can't be used; please change it or email us directly.</span>
+						</div>
 						<div>
 							<button class="button ru-button submit" type="button" ng-click="sendForm()">Submit</button>
 						</div>
@@ -63,6 +66,11 @@
 		</div>
 	</div>
 	<div class='large-5 medium-16 columns' style="float: left;">
+		<h3>Frequently Asked Question?</h3>
+		<p>
+			You might like to check our <b><a ui-sref="faq">FAQs</a></b> page to see if they can help you!
+		</p>
+
 		<h3>Upcoming events</h3>
 		<p>
 			If you'd like to find out more about our upcoming events visit our <span class="contact-info-highlight"><a ui-sref="events">events page.</a></span>
@@ -84,4 +92,16 @@
 		</p>
 	</div>
 	<div class="clearfix"></div>
+
+	<div isaac-modal="emailWarning">
+		<div class="reveal-modal-head">
+			<h2>Unable to reply</h2>
+			<a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+		</div>
+		<div class="reveal-modal-body text-center ru-page-heading">
+			<p>One or more emails we've previously sent to your address have failed. This means we won't be able email you back on the email address you've specified. Please use a different email address and update the email on your My Account page.</p>
+			<p>If you believe your email is correct, please email <a href="mailto:webmaster@isaacphysics.org">webmaster@isaacphysics.org</a> and we'll look into it!</p>
+		</div>
+	</div>
+</div>
 </div>

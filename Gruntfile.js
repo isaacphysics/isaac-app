@@ -127,7 +127,7 @@ module.exports = function(grunt) {
     .catch(function(err) {
       console.log('Build error');
       console.error(err);
-      done();
+      done(false);
     });
 
   });

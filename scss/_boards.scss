@@ -195,6 +195,16 @@
 	Styles for set assignments
 */
 
+.set-boards-books-preview {
+	img {
+		border: solid 1px #cccccc;
+	}
+
+	h4 {
+		margin-bottom: 1rem;
+	}
+}
+
 .set-assign-header {
 	.subtitle {
 		margin-top:10px;
@@ -308,14 +318,14 @@
 	line-height: 110%;
 	font-weight: 100;
 	font-style: normal;
-	padding-top: 18px;
+	padding-top: 19px;
 
 	strong {
 		display: block;
-		font-size: 15px;
+		font-size: 30px;
 		font-weight: 600;
 		font-style: italic;
-		padding-bottom: 2px;
+		padding-bottom: 8px;
 	}
 }
 
@@ -489,6 +499,7 @@
 	.assign-board-wrap {
 		.ru_share_link {
 			right: 40px;
+			z-index: 0;
 		}
 	}
 	.board-link {

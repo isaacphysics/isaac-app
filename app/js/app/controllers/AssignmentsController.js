@@ -30,12 +30,12 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
 
-		$scope.myGroups = api.groupManagementEndpoint.get(); // get a list of all known groups for this user.
+		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":false}); // get a list of all known unarchived groups for this user.
 
 		$scope.openedAssignPanels = []; // shows those panels currently opened
 		$scope.pendingAssignment = {}; // boardId to group id mapping - allows us to know which group is being assigned which board.
@@ -55,18 +55,8 @@ define([], function() {
            		$scope.modals.groupsWarning.show();
 		}
 
-		$scope.filterOptions = [
-			{label: "All Boards", val: null},
-			{label: "Not Started", val: "not_attempted"},
-			{label: "In Progress", val: "in_progress"},
-			{label: "Completed", val: "completed"}
-		];
-
-		$scope.sortOptions = [
-			{label: "Date Created", val: "created"},
-			{label: "Date Visited", val: "visited"}
-		];
-
+		$scope.filterOptions = boardSearchOptions.filter;
+		$scope.sortOptions = boardSearchOptions.sort;
 		$scope.filterOption = $scope.filterOptions[0];
 		$scope.sortOption = $scope.sortOptions[1];
 
@@ -82,19 +72,12 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watch("filterOption", function(newVal, oldVal) {
+		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
 			// TODO: For some reason these watch functions are being fired for no reason
 			if (newVal === oldVal) {
 				return;
 			}
-			updateBoards();
-		});
-
-		$scope.$watch("sortOption", function(newVal, oldVal) {
-			if (newVal === oldVal) {
-				return;
-			}
-			updateBoards();
+			updateBoards($scope.boards.results.length);
 		});
 
 		// update tooltips when this changes.
@@ -114,10 +97,14 @@ define([], function() {
 			mergeInProgress = true;
 			$scope.setLoading(true);
 			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
-				// Merge new boards into results 
-				updateGroupAssignmentMap(newBoards.results)
-
-				$.merge($scope.boards.results, newBoards.results);
+				// Augment new boards and merge them into results:
+				updateGroupAssignmentMap(newBoards.results);
+				// Remove duplicate boards caused by changing board list in another tab. Test uniqueness on board ID.
+				$scope.boards.results = _.unionWith($scope.boards.results, newBoards.results, function(a,b) {return a.id == b.id});
+				// Avoid issues if boards have been deleted in another tab:
+				if ($scope.boards.totalResults > newBoards.totalResults) {
+					$scope.boards.totalResults = newBoards.totalResults;
+				}
 				$scope.setLoading(false);
 				mergeInProgress = false;
 			});
@@ -183,9 +170,22 @@ define([], function() {
 
 		$scope.assignBoard = function(board) {
 			if ($scope.pendingAssignment[board.id]) {
-				var groupToAssign = $scope.pendingAssignment[board.id]._id;
+				var dueDate = $scope.pendingAssignment[board.id].dueDate;
+				
+				if (dueDate != null) {
+					dueDate = Date.UTC(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+					var today = new Date();
+					today.setUTCHours(0, 0, 0, 0);
+					if ((dueDate - today) < 0) {
+						$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", "Error: Due date cannot be in the past.");
+						return;
+					}
+				}
 
-				api.assignments.assignBoard({gameId: board.id, groupId: groupToAssign}).$promise.then(function(){
+				var groupToAssign = $scope.pendingAssignment[board.id]._id;
+				var assignmentToPost = {"gameboardId" : board.id, "groupId": groupToAssign, "dueDate": dueDate}
+
+				api.assignments.assignBoard(assignmentToPost).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
@@ -217,7 +217,7 @@ define([], function() {
 		}
 	}];
 
-	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout) {
+	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout, $location) {
 
 		$scope.setLoading(true);
 		
@@ -228,14 +228,21 @@ define([], function() {
 		$scope.myAssignments = {};
 		
 		$scope.myAssignments.completed = [];
-		$scope.myAssignments.inProgress = [];
+		$scope.myAssignments.inProgressRecent = [];
+		$scope.myAssignments.inProgressOld = [];
 
-		$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+		$scope.now = new Date();
 
+		var fourWeeksAgo = new Date($scope.now - (4 * 7 * 24 * 60 * 60 * 1000));
 		api.assignments.getMyAssignments().$promise.then(function(results) {
 			angular.forEach(results, function(assignment, index) {
+				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
-					$scope.myAssignments.inProgress.push(assignment);
+					if (creationDate > fourWeeksAgo) {
+						$scope.myAssignments.inProgressRecent.push(assignment);
+					} else {
+						$scope.myAssignments.inProgressOld.push(assignment);
+					}
 				} else {
 					$scope.myAssignments.completed.push(assignment);
 				}
@@ -247,15 +254,32 @@ define([], function() {
             });
 		});
 
-		$scope.toggleVisibleBoards = function(){
-			if ($scope.assignmentsVisible == $scope.myAssignments.inProgress) {
-				$scope.assignmentsVisible = $scope.myAssignments.completed;
+		$scope.setVisibleBoard = function(state){
+			if (state === 'IN_PROGRESS_RECENT') {
+				$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
+			} else if (state === 'IN_PROGRESS_OLD') {
+				$scope.assignmentsVisible = $scope.myAssignments.inProgressOld;
 			} else {
-				$scope.assignmentsVisible = $scope.myAssignments.inProgress;
+				$scope.assignmentsVisible = $scope.myAssignments.completed;
 			}
 		}
 
 		$scope.calculateBoardLevels = calculateBoardLevels;
+
+		// Update the currently shown assignments based on URL hash:
+		switch ($location.hash()) {
+			case "inprogress":
+				$scope.setVisibleBoard('IN_PROGRESS_RECENT');
+				break;
+			case "older":
+				$scope.setVisibleBoard('IN_PROGRESS_OLD');
+				break;
+			case "completed":
+				$scope.setVisibleBoard('COMPLETED');
+				break;
+			default:
+				$scope.setVisibleBoard('IN_PROGRESS_RECENT');
+		}
 	}];
 
 	return {

@@ -1,13 +1,17 @@
 <div class="game-editor">
 	<div class="row ru-page-heading">
-	    <div class="medium-13 columns">
+	    <div class="medium-14 columns">
 	        <h1>Build an Assignment</h1>
-	        <p class="hide-for-small-only">Build and share game boards. Click <strong><a ng-click="findBookQuestions()">here</a></strong> to choose question pages from our <a target="_blank" ui-sref="book">book</a>.</p>
 	    </div>
-	    <div class="medium-3 columns text-right hide-for-small-only">
+	    <div class="medium-2 columns text-right hide-for-small-only">
 	        <a ng-click="modals.gameEditorHelp.show();" href="javascript:void(0)" data-ot="Click for a tutorial video." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</a>
 	    </div>
-	</div>	
+	</div>
+	<div class="row ru-page-heading">
+		<div class="columns">
+			<p class="hide-for-small-only">Click the following links to show questions from our Mastering Essential <strong><a ng-click="findBookQuestions('phys_book_gcse')">GCSE Physics</a></strong>, <strong><a ng-click="findBookQuestions('physics_skills_14')">Pre-University Physics</a></strong> or <strong><a ng-click="findBookQuestions('chemistry_16')">Physical Chemistry</a></strong> books.</p>
+		</div>
+	</div>
 		<div class='small-16 columns' ng-show="!boardCreatedSuccessfully">
 			<form ng-submit="saveGameBoard()">
 				<div class="row">
@@ -20,7 +24,7 @@
 				                   	<input type="text" ng-model="currentGameBoard.title" placeholder="Enter title of your game board here" required  maxlength="255" />				                    
 				                </span>
 							</li>
-							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF' || user.role == 'EVENT_MANAGER'">
+							<li ng-show="isStaffUser">
 				                <span>
 				                    <label><strong>Choose your URL (must be unique and not contain spaces)</strong></label>
 				                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
@@ -58,7 +62,7 @@
 							<li>
 								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
 							</li>
-							<li ng-show="user.role == 'ADMIN' || user.role == 'CONTENT_EDITOR' || user.role == 'STAFF' || user.role == 'EVENT_MANAGER'">
+							<li ng-show="isStaffUser">
 								<label><strong>Choose your Wildcard</strong></label>									
 								<div class="row">
 									<div class="small-16 columns">

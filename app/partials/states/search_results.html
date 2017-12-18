@@ -28,7 +28,7 @@
             <div class='row ru-mobile-searchbar-wrap'>
                 <div class='small-16 columns'>
                     <div class="ru-search-result-bar">
-                        <h4 class="left">Search Results</h4>
+                        <h4 class="left">Search Results<span ng-if="response.filteredResults">  ({{response.filteredResults.length}})</span></h4>
                         <div class="right">
                             <span class='hide-for-small-only'>Filter</span>
                             <input type="checkbox" id="includeProblems" ng-model="models.includeQuestions"><label for="includeProblems">Search problems</label>
@@ -39,19 +39,19 @@
                 </div>
             </div>
             <div class="ru-concept-results">
-                <div ng-repeat="result in response.results" class='row ru-mobile-answer-wrap' ng-init="maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}" ng-if="result.id != '_regression_test_'">
+                <div ng-repeat="result in response.filteredResults" class='row ru-mobile-answer-wrap' ng-init="hidden = result.tags.indexOf('nofilter') > -1; maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1; chemistry = result.tags.indexOf('chemistry') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}">
                     <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id})}}">
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even, concept: (result.type == 'isaacConceptPage'), maths: maths && !physics, physics: physics}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">
-                                <h4><span ng-class="{maths: maths && !physics, physics: physics}">{{result.title}}</span></h4>
+                                <h4><span ng-class="{maths: maths && !physics, chemistry: chemistry && !physics, physics: physics, hidden: hidden}">{{result.title}}</span></h4>
                                     <p>{{result.summary}}</p>
                             </div>
                             <div class="clearfix"></div>
                         </div>
                     </a>
                 </div>
-                <div class='row ru-mobile-answer-wrap both' ng-if="response.results.length == 0">
+                <div class='row ru-mobile-answer-wrap both' ng-if="response.filteredResults.length == 0">
                     <a class='small-16 columns'>
                         <div class="ru-search-result even">
                             <div class="ru-search-result-content">

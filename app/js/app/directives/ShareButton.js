@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  *
  * You may obtain a copy of the License at
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,40 +16,50 @@
 define([], function() {
 
     return ["$http", "$location", "api", "$timeout", function($http, $location, api, $timeout) {
-		return {
+        return {
 
-			restrict: "A",
+            restrict: "A",
 
             template: '<div class="ru_share" ng-click="getShareLink()"></div>',
 
-			link: function(scope, element, attrs) {
-				scope.showShareUrl = false;
-				scope.shareUrl = null;
+            link: function(scope, element, attrs) {
+                scope.showShareUrl = false;
+                scope.shareUrl = null;
 
                 scope.getShareLink = function() {
-	                scope.showShareUrl = !scope.showShareUrl;
-	                if (scope.showShareUrl) {
+                    scope.showShareUrl = !scope.showShareUrl;
+                    if (scope.showShareUrl) {
 
-						if(attrs.sharelink) {
-							var data = {"longUrl": 'http://'+window.location.host+'/'+attrs.sharelink};
-						}
-						else {
-							var data = {"longUrl": window.location.href};
-						}
+                        if (attrs.sharelink) {
+                            var data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
+                        }
+                        else {
+                            var data = {"longUrl": window.location.href};
+                        }
 
-						$http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
-							scope.shareUrl = response.data.id.replace("http://goo.gl/", "http://isaacphysics.org/s/");
-						}).catch(function() {
-							// Fail silently
-						});
-
-	                	api.logger.log({
-		                	type: "SHOW_SHARE_URL",
-		                	shortURL : scope.shareUrl,
-		                });
-	                }
+                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
+                            scope.shareUrl = response.data.id.replace("https://goo.gl/", window.location.origin + "/s/");
+                            var shortCode = response.data.id.replace("https://goo.gl/", "");
+                            api.logger.log({
+                                type: "SHOW_SHARE_URL",
+                                shortCode: shortCode,
+                                longUrl: data.longUrl,
+                            });
+                            // Attempt to select the share URL for users with a modern browser:
+                            var shareUrlDiv = element.parent().find(".share-url-div")[0];
+                            if (window.getSelection && shareUrlDiv) {
+                                selection = window.getSelection();        
+                                range = document.createRange();
+                                range.selectNodeContents(shareUrlDiv);
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                            }
+                        }).catch(function() {
+                            // Fail silently
+                        });
+                    }
                 };
-			}
-		};
-	}]
+            }
+        };
+    }]
 });

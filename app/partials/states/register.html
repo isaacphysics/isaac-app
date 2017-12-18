@@ -4,7 +4,7 @@
 </div>
 <div class="row account-settings-wrap">
     <div class="small-16 columns">
-	    <form class="panel" ng-submit="save('/')" name="account" novalidate>
+	    <form class="panel" ng-submit="save('/account')" name="account" novalidate>
 		    <div>
 			    <div class="large-8 medium-8 small-16 columns">
 				    <label for="account-firstname">
@@ -31,12 +31,15 @@
 	            <div class="large-8 medium-8 small-16 columns">
 	                <label for="account-password">
 	                    <strong>Password</strong>
+						<span class="ru-error-message" ng-if="user.password.length < 6">
+                        	Password must be at least 6 characters long
+						</span>
 	                </label>
 	                <input id="account-password" type="password" ng-model="user.password"
 	                       placeholder="Enter password" name="password" required>
 	            </div>
 	            <div class="large-8 medium-8 small-16 columns">
-	                <label for="account-password2" ng-class="{'disabled' : !user.password}">
+	                <label for="account-password2" ng-class="{'disabled' : !user.password || user.password.length < 6}">
 	                	<strong>Confirm password</strong>
 					    <span class="ru-form-required"></span>
 	                    <span class="ru-error-message" ng-if="account.password2.$dirty && account.password2.$invalid">
@@ -44,7 +47,7 @@
 	                    </span>
 	                </label>
 	                <input id="account-password2" type="password" placeholder="Re-enter password"
-	                       ng-disabled="!user.password" match="user.password" name="password2" ng-model="password2" required>
+	                       ng-disabled="!user.password || user.password.length < 6" match="user.password" name="password2" ng-model="password2" required>
 	            </div>
 		    </div>
 		    <div>

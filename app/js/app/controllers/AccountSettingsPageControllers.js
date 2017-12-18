@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, $stateParams, $window, $location, $rootScope) {
+	var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, persistence, $stateParams, $window, $location, $rootScope) {
 		/*
 		*  This controller manages the User Account Settings page, but it also
 		*  manages user Registration. Any changes to one will affect the other,
@@ -24,6 +24,7 @@ define([], function() {
 		$scope.activeTab = 0;
 
 		$scope.emailPreferences = {};
+		$scope.subjectInterests = {};
 		$scope.passwordChangeState = {
 			passwordCurrent : ""
 		};
@@ -34,7 +35,7 @@ define([], function() {
 		}
 
 		// the hash will be used as an anchor
-		if($location.hash){
+		if ($location.hash){
 			switch($location.hash()){
 				case "passwordreset":
 					$scope.activeTab = 1;
@@ -61,9 +62,12 @@ define([], function() {
 			$scope.editingSelf = true;
 		}
 
-		if($scope.editingSelf){
+		if ($scope.editingSelf) {
 			api.user.getEmailPreferences().$promise.then(function(result){
 				$scope.emailPreferences = result;
+			});
+			api.user.getSubjectInterests().$promise.then(function(result){
+				$scope.subjectInterests = result;
 			});
 		}
 
@@ -104,7 +108,7 @@ define([], function() {
 			}
 
 			// If the current month and year are selected, make sure days are limited to the past
-			if(today.getMonth() === month && today.getFullYear() === year){
+			if (today.getMonth() === month && today.getFullYear() === year){
 				days = today.getDate();
 			}
 
@@ -145,7 +149,7 @@ define([], function() {
 
 			var today = new Date();
 			// Restrict the months depending on the year
-			if($scope.dob.year === today.getFullYear()){
+			if ($scope.dob.year === today.getFullYear()){
 				$scope.datePicker.months = possibleMonths.slice(0,today.getMonth() + 1);
 			}
 			else{
@@ -166,7 +170,7 @@ define([], function() {
 			angular.forEach($scope.user.linkedAccounts, function(account){
 				Object.keys(linked).forEach(function(key) {
 					// If there is a match update to true
-					if(key === account) linked[key] = true;
+					if (key === account) linked[key] = true;
 				});
 				
             });
@@ -182,11 +186,37 @@ define([], function() {
 			auth.linkRedirect(provider);
 		}
 
+		$scope.atLeastOne = function(object) {
+			var oneOrMoreTrue = false;
+			// Avoid all the horrible angular properties:
+			angular.forEach(JSON.parse(JSON.stringify(object)), function(key) {
+				if (key === true) {
+					oneOrMoreTrue = true;
+				}
+			});
+			return oneOrMoreTrue;
+		}
+
         // Work out what state we're in. If we have a "next" query param then we need to display skip button.
 
         $scope.showSkip = !!$stateParams.next;
         $scope.save = function(next) {
-        	$scope.errorMessage = null;  // clear any old error message
+
+            // Some users apparently confuse the Save and Teacher Connect button; help make it clear that Connect must be clicked before Save:
+            if ($scope.authenticationToken.value != null && $scope.authenticationToken.value != "") {
+                var confirm = $window.confirm("You have entered a teacher connection code but haven't yet clicked 'Connect'. Do you want to use the code before saving? You will need to click 'Save' again after using the code.");
+                if (confirm) {
+                    $scope.activeTab = 2;
+                    return;
+                }
+            }
+
+        	var afterAuth = persistence.load('afterAuth');
+        	if (afterAuth) {
+        		next = afterAuth;
+        		persistence.save('afterAuth', "");
+			}
+            $scope.errorMessage = null;  // clear any old error message
 
         	if ($scope.user.role == "") {
         		$scope.user.role = null; // fix to stop invalid role being sent to the server
@@ -197,9 +227,9 @@ define([], function() {
         	}
 
         	// if not a new user; confirm any email change, else undo it (but don't if invalid because it will just fail below anyway)
-        	if($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
+        	if ($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
         		var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
-        		if(promptResponse){
+        		if (promptResponse){
         			
         		}
         		else{
@@ -209,15 +239,16 @@ define([], function() {
         	}
 
         	// Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1 == $scope.password2 && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
+        	if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
         		//TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
         		var userSettings = {
         			registeredUser : $scope.user,
-        			emailPreferences : $scope.emailPreferences
+        			emailPreferences : $scope.emailPreferences,
+        			subjectInterests : $scope.subjectInterests
         		}
 
         		// add the current password if it's confirmed, and put new password in user object
-        		if(!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
+        		if (!!$scope.passwordChangeState && !!$scope.passwordChangeState.passwordCurrent){
     				userSettings.registeredUser.password = $scope.password1;
         			userSettings.passwordCurrent = $scope.passwordChangeState.passwordCurrent;
 				// or if a new password set and editing someone else, just put new password in user object (security checks done in api)
@@ -226,7 +257,11 @@ define([], function() {
     			}
 
 	        	api.account.saveSettings(userSettings).$promise.then(function() {
-	        		// we want to cause the internal user object to be updated just in case it has changed.
+                    if ($location.path() == "/register") {
+                        // The user object will be overridden below by updateUser, but want to temporarily preserve that this is the first login!
+                        persistence.session.save('firstLogin', true);
+                    }
+                    // Update the user object in case it has changed:
 	        		return auth.updateUser();
 	        	}).then(function(){
 	        		if (next) {
@@ -256,14 +291,16 @@ define([], function() {
         		// current password given/admin user, but new password not confirmed
 	        	} else if ($scope.password1 != $scope.password2) {
 	        		$scope.errorMessage = "Passwords do not match.";
-        		// first name or last name missing
+                // password not long enough:
+                } else if ($scope.password1.length < 6) {
+                    $scope.errorMessage = "Passwords must be at least 6 characters in length.";
+                // first name or last name missing
 	        	} else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
 	        		$scope.errorMessage = "Name field missing or invalid.";
         		// bad email address given
 	        	} else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
 	        		$scope.errorMessage = "Email address missing or invalid."
 	        	}
-
 	        }
         }
 
@@ -285,26 +322,37 @@ define([], function() {
         $scope.activeAuthorisations = api.authorisations.get();
         
         $scope.useToken = function() {
-        	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
+         	if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
         		$scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
         		return;
         	}
-        	
+            // Some users paste the URL in the token box, so remove the token from the end if they do.
+        	// Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
+            $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
+			$scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
+
         	api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.")
+				var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.");
 
 				if (confirm) {
 		        	api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
 		        		$scope.activeAuthorisations = api.authorisations.get();
 		        		$scope.authenticationToken = {value: null};
 		        		$scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-		        	}).catch(function(e){
-		        		// this is likely to be a throttling error message.
-		        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-		        	})  						
+                        // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
+		        		if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
+                            // If we've just signed up and used a group code immediately, change back to the main settings page:
+                            $scope.activeTab = 0;
+						}
+		        	})						
 				}
         	}).catch(function(e){
-        		$scope.showToast($scope.toastTypes.Failure, "Token Operation Failed", "With error message (" + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        		console.error(e);
+        		if (e.status == 429) {
+					$scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
+        		} else {
+        			$scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
+        		}
         	});
         }
 
@@ -320,7 +368,7 @@ define([], function() {
         $scope.revokeAuthorisation = function(userToRevoke){
         	var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
 
-        	if(revoke) {
+        	if (revoke) {
 	        	api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
 	        		$scope.activeAuthorisations = api.authorisations.get();
 	        		$scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");

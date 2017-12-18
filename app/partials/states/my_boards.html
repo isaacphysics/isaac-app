@@ -64,7 +64,7 @@
       			</div>
             </a>
             <div class="row">
-   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+   			   <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <div class="board-creator">
                   Created by:
                   <span ng-if="board.ownerUserId == user._id">Me</span>
@@ -72,10 +72,13 @@
                </div>
 
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
-               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                  <div>
-                     {{shareUrl}}
-                  </div>
+               <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
+                  <div class="share-url-div">{{shareUrl}}</div>
+                  <hr />
+                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item">Clone and Edit</div></a>
+               </div>
+               <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
+                  <div class="share-url-div">{{shareUrl}}</div>
                </div>
             </div>
    		</div>

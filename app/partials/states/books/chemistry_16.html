@@ -1,128 +1,133 @@
-<div class="medium-16 columns">
+<div class="medium-16 columns chemistry">
   <div class="book-intro">
     <h1 class="book-heading">{{introText.title}}</h1>
     <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
-    <img class="book-cover" src="assets/skills-book-cover.png" width="150" alt="Clip art style image of the book.">
+    <img class="book-cover" src="assets/books/chemistry_16.jpg" alt="Cover image of the book.">
     <div isaac-content doc="introText" />
   </div>
-
-  <h4>AS-Level (or equivalent)</h4>
+  
+  <h4>Chapters:</h4>
   <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_a_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_a_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">a</span>
         </span>
-        General Questions
+        Formulae &amp; Equations
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_b_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_b_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">b</span>
         </span>
-        Mechanics
+        Amount of Substance
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_c_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_c_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">c</span>
         </span>
-        Electric Circuits
+        Gas Laws
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_d_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_d_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">d</span>
         </span>
-        Waves
+        Atomic Structure
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_e_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_e_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">e</span>
         </span>
-        Uncertainties
+        Electronic Spectroscopy
       </a>
     </li>
-  </ul>
-
-  <h4>A2-Level (or equivalent)</h4>
-  <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_f_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_f_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">f</span>
         </span>
-        Mechanics
+        Enthalpy Changes
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_g_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_g_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">g</span>
         </span>
-        Gases
+        Entropy
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_h_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_h_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">h</span>
         </span>
-        Fields
+        Free Energy
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_i_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_i_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">i</span>
         </span>
-        Capacitors
+        Equilibrium
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_j_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_j_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">j</span>
         </span>
-        Nuclear Physics
+        Acids &amp; Bases
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_k_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_k_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">k</span>
         </span>
-        Modelling the Universe
+        Redox
       </a>
     </li>
     <li>
-      <a href="javascript:void(0)" ng-click="selectChapter('ch_l_boards')">
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_l_boards')">
         <span class="icon-stack">
           <span class="icon-hexagon"></span>
           <span class="count">l</span>
         </span>
-        Fact Sheets
+        Electrochemistry
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('chem_16_m_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">m</span>
+        </span>
+        Rate Laws, Graphs &amp; Half-life
       </a>
     </li>
   </ul>
 </div>
-<div isaac-modal="bookChapterOptions">
+<div isaac-modal="bookChapterOptions" class="chemistry">
   <div class="reveal-modal-head">
     <h2>{{modalContent.title}}</h2>
     <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>

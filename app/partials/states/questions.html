@@ -27,14 +27,14 @@
 		</div>
 	<!-- Top Boards -->
 		<!-- Either display the Top Boards. -->
-		<div ng-show="topBoards" class="small-16 medium-8 large-4 columns">
+		<!--<div ng-show="topBoards" class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Try a Top Board</h3>
 			</div>
 			<div hex-carousel class="owl-carousel owl-theme" hexagon-items="topBoards" hexagon-icon-class="top-board"></div>
-		</div>
+		</div>-->
 		<!-- OR display a static error placeholder, if server returns nothing. -->
-		<div ng-hide="topBoards" class="small-16 medium-8 large-4 columns">
+		<!--<div ng-hide="topBoards" class="small-16 medium-8 large-4 columns">
 			<div class="column-title">
 				<h3>Top Boards</h3>
 			</div>
@@ -45,6 +45,22 @@
 				</div>
 				<div class="hexagon-title">
 					Top Boards Unavailable
+				</div>
+			</a>
+		</div>-->
+	<!-- Board Building -->
+		<!-- This is a static link, so no alternate needed. -->
+		<div class="small-16 medium-8 large-4 columns">
+			<div class="column-title">
+				<h3>Try a Top Board</h3>
+			</div>
+			<a href="javascript:void(0)" ui-sref="pages({id: 'pre_made_gameboards'})" class="hexagon">
+				<div class="hexagon-field top-board"></div>
+				<div class="hexagon-subtitle">
+
+				</div>
+				<div class="hexagon-title">
+					Browse boards by lesson
 				</div>
 			</a>
 		</div>

@@ -10,10 +10,11 @@
 <div class="row assignments-wrap">
     <div class="large-16 columns">
       <dl class="tabs profile-tabs no-print">
-         <dd ng-class="assignmentsVisible == myAssignments.inProgress ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span class="show-for-medium-up">Assignments </span>To Do ({{myAssignments.inProgress.length || 0}})</a></dd>
-         <dd ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()">Completed <span class="show-for-medium-up">Assignments </span>({{myAssignments.completed.length || 0}})</span></a></dd>
-      </dl>
-      <div class="tabs-content profile-tabs-content">
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressRecent ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_RECENT')"><span class="show-for-medium-up">Assignments</span> To&nbsp;Do ({{myAssignments.inProgressRecent.length || 0}})</a></dd>
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.inProgressOld ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('IN_PROGRESS_OLD')">Older <span class="show-for-medium-up">Assignments</span> ({{myAssignments.inProgressOld.length || 0}})</a></dd>
+         <dd class="assignments" ng-class="assignmentsVisible == myAssignments.completed ? 'active' : ''"><a href="javascript:void(0)" ng-click="setVisibleBoard('COMPLETED')"><span class="show-for-medium-up">Completed Assignments ({{myAssignments.completed.length || 0}})</span><span class="show-for-small-only">Done ({{myAssignments.completed.length || 0}})</span></a></dd>
+       </dl>
+       <div class="tabs-content profile-tabs-content">
          <div ng-repeat="assignment in assignmentsVisible | orderBy:'creationDate':true" class="assignment">
             <div class="large-6 medium-7 columns">
                <div class="board-percentage">
@@ -30,7 +31,8 @@
                         <span ng-repeat="level in calculateBoardLevels(assignment.gameboard)" class="level-{{level}}">{{level}}</span>
                   </div>
                   <p>Assigned: <strong>{{assignment.creationDate | date:'dd/MM/yyyy'}}</strong></p>
-                  <p ng-show="assignment.assignerSummary.givenName && assignment.assignerSummary.familyName">By: <strong>{{assignment.assignerSummary.givenName.charAt(0) + ". " + assignment.assignerSummary.familyName}}</strong></p>
+                  <p ng-show="assignment.dueDate">Due: <strong>{{assignment.dueDate | date:'dd/MM/yyyy'}}</strong></p>
+                  <p ng-show="assignment.assignerSummary.familyName">By: <strong>{{(assignment.assignerSummary.givenName ? assignment.assignerSummary.givenName.charAt(0) + ". " : "") + assignment.assignerSummary.familyName}}</strong></p>
                </div>
             </div>
             <div class="medium-6 columns board-overview">
@@ -43,11 +45,12 @@
             </div>
             <div class="large-4 medium-3 columns board-link reorder-wrap">
                <a class="reorder-bottom" href="javascript:void(0)" ui-sref="board({id: assignment.gameboard.id})">View Assignment <span class="icon-link"></span></a>
-               <p ng-if="false" class="reorder-top"><span class="overdue">Overdue:</span> 21/01/2014</p>
+               <p ng-show="now > assignment.dueDate" class="reorder-top"><span class="overdue">Overdue:</span> {{assignment.dueDate | date:'dd/MM/yyyy'}}</p>
             </div>
          </div>
          <div ng-if="assignmentsVisible == null || assignmentsVisible.length == 0">
-            <p class="small-text-center">There are no assignments to display.</p>   
+            <p class="small-text-center" style="margin-top: 1.25rem;" ng-hide="assignmentsVisible == myAssignments.inProgressRecent && myAssignments.inProgressOld.length > 0">There are no assignments to display.</p>
+            <P class="small-text-center" style="margin-top: 1.25rem;" ng-show="assignmentsVisible == myAssignments.inProgressRecent && myAssignments.inProgressOld.length > 0"> You have <a ng-click="setVisibleBoard('IN_PROGRESS_OLD')">unfinished older assignments</a>.</p>
          </div>
       </div>
    </div>

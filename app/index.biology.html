@@ -9,19 +9,19 @@
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-		<meta name="application-name" content="Isaac Physics" />
+		<meta name="application-name" content="Isaac Biology" />
 		<meta name="msapplication-TileImage" content="/assets/favicon/isaac-favicon-196x196.png">
 		<meta name="msapplication-TileColor" content="#FFFFFF">
-    <meta name="Description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.">
+    <meta name="Description" content="Isaac Biology a project designed to offer support and activities in Biology problem solving to teachers and students from GCSE level through to university.">
 
-    <meta property="og:url" content="https://isaacphysics.org{{relativeCanonicalUrl}}" /> 
-    <meta property="og:site_name" content="Isaac Physics" />
-    <meta property="og:title" ng-content="(pageTitle ? pageTitle : 'Isaac Physics' )" />
-    <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
+    <meta property="og:url" content="https://isaacBiology.org{{relativeCanonicalUrl}}" /> 
+    <meta property="og:site_name" content="Isaac Biology" />
+    <meta property="og:title" ng-content="(pageTitle ? pageTitle : 'Isaac Biology' )" />
+    <meta property="og:description" content="Isaac Biology a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
     <meta property="og:image" content="https://isaacphysics.org/assets/isaac-logo@2xWider.png" />
     <meta property="fb:app_id" content="760382960667256" />
 
-    <title ng-bind="'Isaac Physics' + (pageTitle ? ' - ' + pageTitle : '' )">Isaac Biology</title>
+    <title ng-bind="'Isaac Biology' + (pageTitle ? ' - ' + pageTitle : '' )">Isaac Biology</title>
     <link rel="canonical" ng-href="https://isaacphysics.org{{relativeCanonicalUrl}}" />
     <link rel="icon" href="/assets/favicon/isaac-favicon-196x196.png" sizes="196x196">
     <link rel="icon" href="/assets/favicon/isaac-favicon-96x96.png"   sizes="96x96">
@@ -37,7 +37,7 @@
 
     <script src="/js/lib/nprogress.js"></script>
     
-    <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.6/MathJax.js?delayStartupUntil=configured"> </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?delayStartupUntil=configured"> </script>
 
     <link rel="stylesheet" href="/css/app.css" />
 
@@ -66,10 +66,10 @@
                 <div class="body-wrap">
                   <main class='ru-body hide-for-old-browser-only' fade-on-search ui-view="body"></main>
                   <noscript>
-                    <h1><img alt='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src='/assets/isaac-logo-strap.png' /></h1>
-                    <h2>Isaac Physics</h2>
+                    <h1><img alt='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src='/assets/logo-biology-strap.png' /></h1>
+                    <h2>Isaac Biology</h2>
                     <p>
-                      Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.
+                      Isaac Biology a project designed to offer support and activities in Biology problem solving to teachers and students from GCSE level through to university.
                     </p>
                     <h2>JavaScript. You work it out.</h2>
                     <p>
@@ -78,14 +78,14 @@
                     <a style="display:none;" href="https://plus.google.com/118214242928754076411" rel="publisher"></a>
                   </noscript>
                   <div class="show-for-old-browser-only">
-                    <h1><img alt='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src='/assets/isaac-logo-strap.png' /></h1>
-                    <h2>Isaac Physics</h2>
+                    <h1><img alt='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src='/assets/logo-biology-strap.png' /></h1>
+                    <h2>Isaac Biology</h2>
                     <p>
-                      Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.
+                      Isaac Biology a project designed to offer support and activities in Biology problem solving to teachers and students from GCSE level through to university.
                     </p>
                     <h2>Your browser is out of date</h2>
                     <p>
-                      Your browser is out of date. Isaac Physics supports the latest version of Chrome, Firefox, Safari and Internet Explorer 10 and above. Please <a href="https://browser-update.org/update.html" target="_blank" rel="nofollow">update your browser</a>.
+                      Your browser is out of date. Isaac Biology supports the latest version of Chrome, Firefox, Safari and Internet Explorer 10 and above. Please <a href="https://browser-update.org/update.html" target="_blank" rel="nofollow">update your browser</a>.
                     </p>                    
                   </div>
                 </div>
@@ -105,7 +105,7 @@
               <div isaac-content doc="notificationDoc"></div>
               <!-- TODO: Add response buttons here -->
               <div class="text-right">
-                <button ng-click="notificationResponse(notificationDoc, 'DISMISSED')">Yes, view questionnaire</button>                  
+                <button ng-click="notificationResponse(notificationDoc, 'ACKNOWLEDGED')">Yes, view questionnaire</button>
                 <button ng-click="notificationResponse(notificationDoc, 'DISABLED')">No thanks</button>  
                 <button ng-click="notificationResponse(notificationDoc, 'POSTPONED')">Ask me later</button>  
               </div>

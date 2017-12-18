@@ -21,10 +21,11 @@ define([], function() {
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
 		$scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
 		$scope.loading = false;
+		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
 
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
-		var largeNumberOfResults = 99999; //TODO: Fix this when search works properly in the API
+		var largeNumberOfResults = -1; // assumes -1 limit will return all possible results.
 
 		$scope.hasGroups = false;
 		$scope.boardCreatedSuccessfully = false;
@@ -35,8 +36,8 @@ define([], function() {
 			}
 		});
 
-		$scope.findBookQuestions = function() {
-			$scope.questionSearchText = "book";
+		$scope.findBookQuestions = function(book_id) {
+			$scope.questionSearchText = "\"" + book_id + "\"";
 			$scope.questionSearchSubject = "";
 			$scope.questionSearchLevel = null;
 			sortField = "title"	;
@@ -62,6 +63,22 @@ define([], function() {
 
 		$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
 		$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
+
+		// Allow cloning of existing gameboards:
+		if ($stateParams.base != null && $stateParams.base != '' && $stateParams.base != 'true') {
+			api.gameBoards.get({id: $stateParams.base}).$promise.then(function(response) {
+				for (var i = 0; i < response.questions.length; i++) {
+					var question = response.questions[i];
+					if (!$scope.isStaffUser && question.tags && question.tags.indexOf("nofilter") > -1) {
+						continue;  // But don't allow including of nofilter questions!
+					}
+					$scope.enabledQuestions[question.id] = true;
+					$scope.currentGameBoard.questions.push({id: question.id, tags: question.tags, level: question.level, title: question.title});
+				}
+			}).catch(function() {
+				$scope.showToast($scope.toastTypes.Failure, "Can't Find Gameboard", "No gameboard found with ID: " + $stateParams.base);
+			});
+		}
 
 		// get the index of a question in a gameboard by id.
 		var getGameBoardIndex = function(questionId) {
@@ -125,12 +142,15 @@ define([], function() {
             	.$promise.then(function(questionsFromServer){
 					httpCanceller = null;
         			// update the view
-        			$scope.searchResults = questionsFromServer.results;
+        			$scope.searchResults = questionsFromServer.results.filter(function(r) {
+	        				var keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
+							return keepElement || $scope.isStaffUser;
+        			});;
         			// try to sort the results if requested.
         			if (sortField) {
 	        			$scope.searchResults.sort(function(a,b) {
 	        				return a[sortField] > b[sortField] ? 1 : -1;
-	        			})        				
+	        			});
         			}
         			$scope.loading = false;
             	});
@@ -154,7 +174,7 @@ define([], function() {
 			// clone questions so that the gameboard knows to update.
 			var questionCopies = JSON.parse(JSON.stringify($scope.currentGameBoard.questions))
 			updateWildCard();
-			
+
 			var newGameBoard = {questions:questionCopies, wildCard: $scope.currentGameBoard.wildCard, title: $scope.currentGameBoard.title, id: $scope.currentGameBoard.id};
 			for (questionId in $scope.enabledQuestions) {
 				var gameBoardIndex = getGameBoardIndex(questionId);
@@ -189,7 +209,7 @@ define([], function() {
 		$scope.$watch("userSelectedBoardWildCardId", updateGameBoardPreview);
 
         $scope.saveGameBoard = function() {
-        	var saveConfirmed = $window.confirm('Are you sure you want save this game board?');   
+        	var saveConfirmed = $window.confirm('Are you sure you want to save this game board?');   
 
         	if (!saveConfirmed) {
         		return;
@@ -207,6 +227,14 @@ define([], function() {
 
 				if (question.tags.indexOf("maths") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("maths") == -1) {
 					gameBoardToSave.gameFilter.subjects.push("maths");
+				}
+
+				if (question.tags.indexOf("chemistry") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("chemistry") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("chemistry");
+				}
+
+				if (question.tags.indexOf("biology") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("biology") == -1) {
+					gameBoardToSave.gameFilter.subjects.push("biology");
 				}
 			});
 

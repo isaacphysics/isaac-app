@@ -5,62 +5,198 @@
         <p ng-if="viewingOwnData" class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="View your progress on Isaac Physics. A question is usually a single hexagon, which can contain several question parts." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot="View your progress on Isaac. <br><br>A <i>question</i> (or question page) is usually a single hexagon from a board, which can contain several <i>question parts</i>. <br><br>Symbolic questions are those which require an equation as an answer." data-html="true" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="row">
   <div class="small-16 columns progress-wrap">
-    <div ng-show="progress.totalQuestionsAttempted != 0">
-       <div class="row progress-space">
-        <div class="medium-12 small-16 columns medium-offset-2 end">
-          <h6>Question parts answered <span class="ru_green">correctly</span></h6>
-          <div progress-bar class="progress-bar" value="progress.totalCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrect}}%"></div>
-         </div>
+    <div ng-show="progress && progress.totalQuestionsAttempted != 0">
+       <div class="row progress-space" id="questionAttemptInfo">
+        <div class="medium-12 small-16 columns end progress-bar-box" style="width:90%;">
+          <h6>Questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></h6>
+          <div progress-bar class="progress-bar" value="progress.totalQuestionsCorrect" max="progress.totalQuestionsAttempted" title="{{progress.percentCorrectQuestions}}%"></div>
+        </div>
+        <div class="medium-12 small-16 columns end progress-bar-box" style="width:90%;">
+          <h6>Question parts <span class="ru_green">correct</span> of those <span class="progress-attempted">attempted</span></h6>
+          <div progress-bar class="progress-bar" value="progress.totalQuestionPartsCorrect" max="progress.totalQuestionPartsAttempted" title="{{progress.percentCorrectQuestionParts}}%"></div>
+        </div>
        </div>
+        <div id="streak-info">
+            <h6>Daily streak</h6>
+
+            <div>
+                <div style="position: relative; height: 100px;">
+                    <svg id="svg-progress-current-streak" width="100%" height="100%" version="1.1"
+                         xmlns="http://www.w3.org/2000/svg"
+                         style="transform: rotate(-90deg);">
+
+                        <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                stroke-width="15" fill="none"></circle>
+
+                        <circle id="current-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                stroke-width="16"
+                                stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                fill="none"></circle>
+                    </svg>
+                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak != null">
+                        {{ streakRecord.currentStreak }}
+                    </div>
+                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak == null">
+                        0
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    Longest streak: {{ streakRecord.largestStreak }}
+                    day<span ng-if="streakRecord.largestStreak > 1">s</span>
+                    <span style="cursor: pointer;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                    <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                          class="dl-alert warning hide-for-small-only" aria-haspopup="true">?</span>
+                </div>
+                <!--<ul class="medium-block-grid-2 small-block-grid-1 progress-space" style="margin-bottom: 0;">
+                    <li style="padding-bottom: 0;">
+                        <div class="graph-wrapper">
+                            <h6>Current</span></h6>
+                            <div style="position: relative;">
+                                <svg id="svg-progress-current-streak" width="100%" height="100%" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     style="transform: rotate(-90deg);">
+
+                                    <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="15" fill="none"></circle>
+
+                                    <circle id="current-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="16"
+                                            stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                            fill="none"></circle>
+                                </svg>
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
+                                    {{ user.userSnapshot.streakRecord.currentStreak }}
+                                </div>
+                                <div class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">
+                                    0
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li style="padding-bottom: 0;">
+                        <div class="graph-wrapper">
+                            <div style="position: relative;">
+                                <svg id="svg-progress" width="100%" height="100%" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     style="transform: rotate(-90deg);">
+
+                                    <circle class="streak-empty-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="15" fill="none" stroke="#999"></circle>
+
+                                    <circle id="largest-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
+                                            stroke-width="16"
+                                            stroke-dasharray="251.327" stroke-dashoffset="251.327"
+                                            fill="none"></circle>
+                                </svg>
+                                <div class="streak-value largest" ng-if="user.userSnapshot.streakRecord.largestStreak != null">
+                                    {{ user.userSnapshot.streakRecord.largestStreak }}
+                                </div>
+                                <div class="streak-value largest" ng-if="user.userSnapshot.streakRecord.largestStreak == null">
+                                    0
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>-->
+
+            </div>
+        </div>
        <div class="row">
           <div class="large-16 columns">
-             <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
 
-    <!--            <li class="show-for-medium-up">
-                   <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
-                </li> -->
-    <!--
-                <li>
-                <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-                   <div d3-donut data="subjectData" color-palette="subjects"></div>
-                </li>
-    -->
-                <li>
-                  <div class="graph-wrapper">
-                    <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
-                    <div d3-donut data="subjectData" color-palette="'subjects'"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="graph-wrapper">
-                   <h6>Question attempts in &nbsp;
-                    <select ng-model="field.selection" ng-options="field.title for field in fields"></select>
-                   </h6>
-                   <div d3-donut data="fieldData" color-palette="topicsSubject"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="graph-wrapper">
-                    <h6>Questions attempted by <span class="ru_green">Level</span></h6>
-                    <div d3-donut data="levelData" color-palette="'levels'"></div>
-                  </div>
-                </li>
+              <dl class="tabs profile-tabs no-print" id="progressTabs">
+                  <dd ng-class="questionsVisible == correctQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Correct <span class="show-for-medium-up">Questions</span></span></a></dd>
+                  <dd ng-class="questionsVisible == attemptedQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Attempted <span class="show-for-medium-up">Questions</span></span></a></dd>
+              </dl>
 
-    <!--             <li class="hide-for-medium-up">
-                   <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
-                </li> -->
-             </ul>
+              <div class="profile-tabs-content" id="progressTabsContent">
+                  <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
+
+                      <!--            <li class="show-for-medium-up">
+                                     <a class="ru-button-big expand export-btn" href="javascript:void(0)" ng-click="modals.export.show()">Export/share your data</a>
+                                  </li> -->
+                      <!--
+                                  <li>
+                                  <h6>Questions attempted by <span class="ru_green">Subject</span></h6>
+                                     <div d3-donut data="subjectData" color-palette="subjects"></div>
+                                  </li>
+                      -->
+
+                      <!--<div class="profile-tabs-content">-->
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6>Questions by <span class="ru_green">Subject</span></h6>
+                              <div d3-donut data="questionsVisible.subjectData" color-palette="'subjects'"></div>
+                          </div>
+                      </li>
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6 ng-hide="questionsVisible.fields.length == 0">Questions in &nbsp;
+                                  <select ng-model="questionsVisible.field.selection" ng-options="field.title for field in questionsVisible.fields"></select>
+                              </h6>
+                              <h6 ng-show="questionsVisible.fields.length == 0">Questions by <span class="ru_green">Topic</span></h6>
+                              <div d3-donut data="questionsVisible.fieldData" color-palette="questionsVisible.topicsSubject"></div>
+                          </div>
+                      </li>
+                      <li>
+                          <div class="graph-wrapper">
+                              <h6>Questions by <span class="ru_green">Level</span></h6>
+                              <div d3-donut data="questionsVisible.levelData" color-palette="'levels'"></div>
+                          </div>
+                      </li>
+                      <!--</div>-->
+
+
+                      <!--             <li class="hide-for-medium-up">
+                                     <a class="ru-button-big expand export-btn" data-reveal-id="exportModal" href="javascript:void(0)">Export/share your data</a>
+                                  </li> -->
+                  </ul>
+              </div>
+
+
+            <h6>Isaac Books</h6>
+            <ul class="small-block-grid-1 progress-space">
+              <li>
+                <div class="progress-bar-box">
+                  <span><a class="book-title" ui-sref="book_physics_skills_14">Mastering Essential Pre-University Physics</a> sections completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
+                  <div progress-bar class="progress-bar" value="progress.correctByTag['physics_skills_14']" max="progress.attemptsByTag['physics_skills_14']" title="{{progress.percentCorrectPhysicsSkills14}}%"></div>
+                </div>
+              </li>
+            </ul>
+
+            <h6>Question parts correct by <span class="ru_green">Type</span></h6>
+            <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 progress-space">
+              <li>
+                <div class="progress-bar-box">
+                  <span>Numeric questions <span class="ru_green">correct</span></span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacNumericQuestion']" max="progress.attemptsByType['isaacNumericQuestion']" title="{{progress.percentCorrectNumeric}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box">
+                  <span>Multiple Choice questions <span class="ru_green">correct</span></span>
+                  <div progress-bar class="progress-bar" value="progress.correctByType['isaacMultiChoiceQuestion']" max="progress.attemptsByType['isaacMultiChoiceQuestion']" title="{{progress.percentCorrectMultiChoice}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box end">
+                  <span>Symbolic questions <span class="ru_green">correct</span></span>
+                  <div progress-bar class="progress-bar" value="progress.symbolicCorrect" max="progress.symbolicAttempts" title="{{progress.percentCorrectSymbolic}}%"></div>
+                </div>
+              </li>
+            </ul>
 
             <!-- 
               Line graph
             -->
             <h6>Question attempts <span class="ru_green">over time</span></h6>
-            <div d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <div ng-show="showQuestionsOverTime" d3-plot data="questionsAnsweredOverTime" type="line"></div>
+            <div ng-hide="showQuestionsOverTime" class='text-center'><i>No Data</i></div>
 
             <!-- 
               Area graph
@@ -91,10 +227,11 @@
       </div>
     </div>
 
-    <div ng-show="progress.totalQuestionsAttempted == 0">
+    <div ng-show="!progress || progress.totalQuestionsAttempted == 0">
        <div class="row">
           <div class="small-16 text-center columns">
-             <p>You have not answered any questions yet. There are no statistics to display.</p>
+             <p ng-if="viewingOwnData">You have not answered any questions yet. There are no statistics to display.</p>
+             <p ng-if="!viewingOwnData">This user has not answered any questions yet. There are no statistics to display.</p>
           </div>
        </div>
     </div>

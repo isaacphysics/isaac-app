@@ -18,60 +18,46 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout) {
+	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
 		$rootScope.pageTitle = page.title;
 		$scope.modalPerfectDisplayed = false;
 		$scope.modalPassedDisplayed = false;
+		$scope.fastTrackProgressEnabledBoards = fastTrackProgressEnabledBoards;
 
 		$scope.state = {};
+
+		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
 		var pageTags = page.tags || [];
 
 		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = "physics";
-		for(var i in subjects) {
-			if (pageTags.indexOf(subjects[i].id) > -1) {
-				pageSubject = subjects[i].id;
-				break;
-			}
-		}
+		var pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
 
 		if (pageSubject) {
 
-			var fields = tags.tagArray.filter(function(t) { return t && t.parent == pageSubject; });
-
-			// Find field tags on page
+			var fields = tags.getAllFieldTags(pageTags);
 			var pageField = null;
-			for (var i in fields) {
-				if (pageTags.indexOf(fields[i].id) > -1) {
-					if (!pageField) {
-						pageField = fields[i].id;
-					} else {
-						pageField = "multiple_fields"; // We found tags for more than one field.
-					}
-				}
-			}
 
+			if (fields.length == 1) {
+				pageField = fields[0].id;
+			} else if (fields.length > 1) {
+				pageField = "multiple_fields"; // We found tags for more than one field.
+			}
 
 			if (pageField) {
 
-				var topics = tags.tagArray.filter(function(t) { return t && t.parent == pageField; });
-
-				// Find topic tags on page
+				var topics = tags.getAllTopicTags(pageTags);
 				var pageTopic = null;
-				for (var i in topics) {
-					if (pageTags.indexOf(topics[i].id) > -1) {
-						if (!pageTopic) {
-							pageTopic = topics[i].id;
-						} else {
-							pageTopic = "multiple_topics"; // We found tags for more than one topic.
-						}
-					}
+
+				if (topics.length == 1) {
+					pageTopic = topics[0].id;
+				} else if (topics.length > 1) {
+					pageTopic = "multiple_topics"; // We found tags for more than one topic.
 				}
 			}
 		}
@@ -87,6 +73,44 @@ define([], function() {
 					$scope.breadCrumbs.push(pageTopic);
 				}
 			}
+		}
+
+		var updateBoardProgressDetails = function() {
+			$scope.gameboardId = $stateParams.board;
+			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
+			if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
+				!$scope.fastTrackProgressEnabledBoards.includes($scope.gameboardId)) {
+				$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
+			} else {
+				$scope.gameBoard = api.fastTrackGameboards.get({id: $scope.gameboardId});
+			}
+
+			$scope.gameBoard.$promise.then(function(board) {
+
+				console.debug("Question is from board:", board);
+				// Cause this board to be persisted for the current user.
+				// This will fail if we're not logged in, but that doesn't matter.
+				api.saveGameBoard(board.id);
+				// Find the index of this question on the game board.
+
+				var thisIndex = null;
+				for(var i = 0; i < board.questions.length; i++) {
+
+					var q = board.questions[i];
+
+					if(q.id == page.id) {
+						thisIndex = i;
+						break;
+					}
+				}
+
+				if (thisIndex == null) {
+					console.error("Question not found in linked game board.");
+					return;
+				}
+
+				$scope.nextQuestion = board.questions[thisIndex + 1];
+			});
 		}
 
 		$scope.getTagTitle = function(id) {
@@ -117,42 +141,31 @@ define([], function() {
 		$scope.$on('gameBoardCompletedPerfect', function(e, data) {
 			$scope.gameBoardCompletedPerfect = data;
 		});
+		$scope.$on('pageCompleted', function(e) {
+			updateBoardProgressDetails();
+		})
 		persistence.session.save("conceptPageSource", $location.url());
 
 		if ($stateParams.board) {
-			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
-			$scope.gameBoard.$promise.then(function(board) {
+			updateBoardProgressDetails();
+		}
 
-				console.debug("Question is from board:", board);
-				// Cause this board to be persisted for the current user.
-				// This will fail if we're not logged in, but that doesn't matter.
-				api.saveGameBoard(board.id);
-				// Find the index of this question on the game board.
-
-				var thisIndex = null;
-				for(var i = 0; i < board.questions.length; i++) {
-
-					var q = board.questions[i];
-
-					if(q.id == page.id) {
-						thisIndex = i;
-						break;
-					}
-				}
-
-				if (thisIndex == null) {
-					console.error("Question not found in linked game board.");
-					return;
-				}
-
-				$scope.nextQuestion = board.questions[thisIndex + 1];
-
-			});
+		$scope.questionHistory = $stateParams.questionHistory ? $stateParams.questionHistory.split(',') : [];
+		if ($scope.questionHistory.length) {
+			$scope.backToPreviousQuestion = questionActions.retryPreviousQuestion($scope.questionHistory.slice(), $scope.gameboardId);
 		}
 
 		$scope.backToBoard = function() {
 			$location.url("/gameboards#" + $stateParams.board)
 		}
+
+		$scope.logClickSupersededBy = function(){
+			api.logger.log({
+				type: "VIEW_SUPERSEDED_BY_QUESTION",
+				questionId: page.id,
+				supersededBy: page.supersededBy,
+			});
+		};
 
 		$scope.$on("accordionsectionopen", function(e, idx, doc) {
 			api.logger.log({
@@ -170,8 +183,6 @@ define([], function() {
 		$scope.$on("$destroy", function(){
 			$rootScope.pageSubject = "";
 		});
-
-
 	}]
 
 	return {

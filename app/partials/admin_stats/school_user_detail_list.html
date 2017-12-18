@@ -4,15 +4,15 @@
     </div>
     <div ng-if="!globalFlags.loading">
         <div class="small-16 columns">
-        <table>
+        <table ng-init="userListSortPredicate='familyName'">
             <tr>
-                <th>Name</th>
-                <th>Role</th>
+                <th><a href="javascript:void(0);" ng-click="userListSortPredicate = 'familyName'; reverse=!reverse">Name</a></th>
+                <th><a href="javascript:void(0);" ng-click="userListSortPredicate = 'role'; reverse=!reverse">Role</a></th>
                 <th>Gender</th>
-                <th>Registration Date</th>
-                <th>Last Seen Date</th>
+                <th><a href="javascript:void(0);" ng-click="userListSortPredicate = 'registrationDate'; reverse=!reverse">Registration Date</a></th>
+                <th><a href="javascript:void(0);" ng-click="userListSortPredicate = 'lastSeen'; reverse=!reverse">Last Seen Date</a></th>
             </tr>
-            <tr ng-repeat="item in dataToShow.users | orderBy:'familyName':reverse">
+            <tr ng-repeat="item in dataToShow.users | orderBy:userListSortPredicate:reverse">
                 <td>{{item.familyName}}, {{item.givenName}}</td>
                 <td>{{item.role || 'NOT_SET (Student)'}}</td>
                 <td>{{item.gender}}</td>

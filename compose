@@ -1,0 +1,156 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo "Usage: compose [dev|staging|test] VERSION"
+    exit 1
+fi
+
+ENV=$1
+APP_VERSION=$2
+
+if [ $2 = "dev" ] || [ $2 = "staging" ] || [ $2 = "test" ] || [ $2 = "live" ]; then
+  echo "Environment is now first argument to this script. Sorry James."
+  echo "Usage: compose [dev|staging|test] VERSION"
+  exit 1
+fi
+shift 2
+
+if [ $1 = "create" ] || [ $1 = "exec" ] || [ $1 = "pull" ] || [ $1 = "push" ] || [ $1 = "run" ] || [ $1 = "start" ] || [ $1 = "up" ]; then
+  docker pull docker.isaacscience.org/isaac-app:$APP_VERSION
+  API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
+  docker pull docker.isaacscience.org/isaac-api:$API_VERSION
+else
+  API_VERSION=`docker inspect -f '{{.Config.Labels.apiVersion}}' docker.isaacscience.org/isaac-app:$APP_VERSION`
+fi 
+
+API_NAME=api-$ENV-$API_VERSION
+APP_NAME=app-$ENV-$APP_VERSION
+
+read -r -d '' PG_AND_KAFKA_SERVICE << EOM
+pg-$ENV:
+    container_name: pg-$ENV
+    image: isaac-pg
+    restart: always
+    volumes:
+      - pg-$ENV:/pgdata
+
+  kafka-$ENV:
+    container_name: kafka-$ENV
+    image: ucamcldtg/kafka-standalone
+    restart: always
+    hostname: kafka
+    links:
+      - zookeeper-$ENV:zookeeper
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-kafka
+    volumes:
+      - /local/data/kafka-$ENV:/kafka-data:rw
+      - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+    depends_on:
+      - zookeeper-$ENV
+
+  zookeeper-$ENV:
+    container_name: zookeeper-$ENV
+    image: ucamcldtg/zookeeper-standalone
+    restart: always
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-zookeeper
+    volumes:
+      - /local/data/zookeeper-$ENV:/zookeeper-data:rw
+      - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
+
+EOM
+
+
+if [ "$ENV" == "dev" ]; then
+  : # Continue
+elif [ "$ENV" == "staging" ]; then
+  : # Continue
+elif [ "$ENV" == "live" ]; then
+  echo "Cannot manage live deployment with this script any more. Please use compose-live."
+  exit 1
+elif [ "$ENV" == "test" ]; then
+  read -r -d '' PG_AND_KAFKA_SERVICE << EOM
+pg-test:
+    container_name: pg-test
+    image: isaac-pg
+    volumes:
+      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
+
+  kafka-test:
+    container_name: kafka-test
+    image: ucamcldtg/kafka-standalone
+    build:
+      context: ../isaac-api/kafka
+      dockerfile: Dockerfile-kafka
+    restart: always
+    hostname: kafka
+    links:
+      - zookeeper-test:zookeeper
+    volumes:
+      - ../isaac-api/kafka/server.properties:/opt/kafka/config/server.properties:ro
+    depends_on:
+      - zookeeper-test
+
+  zookeeper-test:
+    container_name: zookeeper-test
+    image: ucamcldtg/zookeeper-standalone
+    volumes:
+      - ../isaac-api/kafka/zoo.cfg:/opt/zookeeper/conf/zoo.cfg:ro
+EOM
+else
+  echo "Must set environment to dev or staging."
+  exit 1
+fi
+
+cat << EOF | docker-compose -p dc-$APP_NAME -f - $@
+version: '2'
+services:
+  $APP_NAME:
+    container_name: $APP_NAME
+    image: docker.isaacscience.org/isaac-app:$APP_VERSION
+    restart: always
+    networks:
+      default:
+        aliases:
+          - app-$ENV
+  $API_NAME:
+    container_name: $API_NAME
+    image: docker.isaacscience.org/isaac-api:$API_VERSION
+    restart: always
+    extra_hosts:
+      - elasticsearch:$LOCAL_ELASTICSEARCH
+      - local-smtp:$LOCAL_SMTP
+    links:
+      - pg-$ENV:postgres
+      - kafka-$ENV:kafka
+    volumes:
+      - /local/data/m2:/root/.m2:rw
+      - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
+      - /local/data/rutherford-content:/local/data/rutherford/git-contentstore/rutherford-content:rw
+      - /local/data/keys:/local/data/rutherford/keys:ro
+      - /local/data/school_list_2016.csv:/local/data/rutherford/school_list_2016.csv:ro
+      - /var/log/isaac/$ENV:/isaac-logs:rw
+    networks:
+      default:
+        aliases:
+          - api-$ENV-any
+    logging:
+      driver: journald
+      options:
+        tag: isaac-api-$ENV
+  $PG_AND_KAFKA_SERVICE
+networks:
+  default:
+    external:
+      name: isaac
+volumes:
+  pg-$ENV:
+    external: true
+
+EOF
+
+exit 0

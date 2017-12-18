@@ -36,6 +36,10 @@ define(function(require) {
 
 	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
 
+	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
+
+	.factory('questionActions', require("app/services/QuestionActions"))
+
 	.provider('api', function ApiProvider() {
 
 		var urlPrefix = "";
@@ -44,13 +48,24 @@ define(function(require) {
 			urlPrefix = value;
 		}
 
-		this.$get = ["$resource", "$http", function ApiFactory($resource, $http) {
+		this.$get = ["$resource", "$http", "subject", function ApiFactory($resource, $http, subject) {
 
 			var Api = require("app/services/Api");
 
-			return new Api($resource, urlPrefix, $http);
+			return new Api($resource, urlPrefix, $http, subject);
 				
 		}];
+	})
+
+	.provider('subject', function SubjectProvider() {
+
+		var subject = require("app/services/Subject")();
+
+		for(var k in subject) {
+			this[k] = subject[k];
+		}
+		
+		this.$get = function() { return subject; };
 	})
 
 	.service('persistence', require("app/services/Persistence"))
@@ -59,7 +74,9 @@ define(function(require) {
 
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
+	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
+	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
 
-
+	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017'])
 });

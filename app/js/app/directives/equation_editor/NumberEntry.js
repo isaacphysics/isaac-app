@@ -40,6 +40,9 @@ define([], function() {
                 }
 
                 scope.$on("numberClicked", function(_, num) {
+                    if(num == undefined) {
+                        return;
+                    }
                     if (num == "^") {
                         scope.currentExponent = "";
                     } else if (num == "-") {
@@ -119,6 +122,11 @@ define([], function() {
                     if (pageY > element.height()) {
                         scope.clearOnClose = false;
                         scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
+                        // scope.$emit("triggerCloseMenus");
+                    }
+
+                    if (pageY > element.position().top + element.height() && $(window).height() <= 768) {
+                        scope.$emit("triggerCloseMenus");
                     }
                 })
 

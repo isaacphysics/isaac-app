@@ -66,10 +66,13 @@
 	}
 
 	.account-settings-personal-information{
-		overflow:auto;
+		overflow: inherit;
 		&.content.active{
 			padding-top:0;
 		}	
+		li {
+			padding-bottom: 0px;
+		}
 	}
 
 	.account-settings-password-reset{
@@ -90,7 +93,19 @@
 			
 		}
 		.email-checkbox{
+			position: relative;
 			text-align: center;
+			input {
+				left: 26px;
+			}
+			label {
+				padding-left: 36px;
+				margin-top: 7px;
+				margin-bottom: 7px;
+			}
+			>div>svg {
+				margin: -25px 0 0 8px; 
+			}
 		}
 	}
 
@@ -137,6 +152,7 @@ input.account-settings-input {
 	background: #fff;
 	border-left: 1px solid #999;
 	border-right: 1px solid #999;
+	border-bottom: 1px solid #999;
 	li {
 		padding: 5px 10px;
 		&:hover {
@@ -378,6 +394,44 @@ input.account-settings-input {
 		color: #509e2e;
 	}
 }
+
+#subject-interest {
+	padding-top: 1rem;
+	.columns {
+		padding: 0px;
+	}
+	table {
+		width: 100%;
+		border: 0px;
+		tr {
+			background-color: white;
+		}
+		th, td {
+			font-size: 1rem;
+			font-weight: bold;
+			color: #000;
+		}
+		th {
+			background-color: #f9f9f9;
+			padding-top: 0px;
+			padding-bottom: 0px;
+			p {
+				margin: 0 0 0.25rem 0;
+			}
+		}
+		td {
+			position: relative;
+		}
+		label {
+			margin: 7px 0px 7px 0px;
+			padding: 0px;
+		}
+		svg {
+			margin: -25px 0px 0px -6px;
+		}
+	}
+}
+
 @media #{$small-only} { 
 	.account-settings-wrap {
 		background: #f6f6f6;
@@ -459,8 +513,22 @@ input.account-settings-input {
 	.ru-required-msg {
 		margin-right: 18px;
 	}
-	
 }
+
+@media #{$large-up} {
+	.account-settings-personal-information {
+		>ul>li:first-child input {
+			margin-bottom: 0.5rem;
+		}
+		.linked-accounts-title {
+			margin-top: 30px;
+		}
+		#account-gender {
+			margin-top: 42px;
+		}
+	}
+}
+
 @media #{$small-up} {
 	#account-gender {
 		margin-top: 10px;
@@ -493,7 +561,7 @@ input.account-settings-input {
 
 	#account-gender {
 		margin-top: 32px;
-		margin-bottom: 44px;
+		margin-bottom: 0px;
 	}
 	.linked-accounts {
 		margin: 0;
@@ -501,10 +569,6 @@ input.account-settings-input {
 	.connect-list-inner {
 		height: 138px;
 		overflow-y: scroll;
-	}
-	#account-firstname,
-	#account-lastname {
-		margin-bottom: 40px;
 	}
 }
 

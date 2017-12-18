@@ -34,7 +34,7 @@ define([], function() {
 
 					lst.css("left", newLeft);
 
-					if (pageY > element.offset().top + element.height() && $(window).height() <= 640) {
+					if (pageY > element.position().top + element.height() && $(window).height() <= 768) {
 						scope.$emit("triggerCloseMenus");
 					}
 

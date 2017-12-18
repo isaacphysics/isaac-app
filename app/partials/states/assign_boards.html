@@ -9,24 +9,21 @@
       </div>      
     </div>
     <div class="row button-menu">
-      <div class="small-16 medium-4 columns">
-        <button ui-sref="book">our book</button>
+      <div class="small-16 medium-5 columns">
+        <button ng-click="modals.isaacBooks.show()">our GCSE &amp; A-Level books</button>
       </div> 
-      <!--
-      <div class="small-16 medium-4 columns">
-        <button ui-sref="top_boards">our top boards</button>
-      </div>--> 
-      <div class="small-16 medium-4 columns">
-        <button ui-sref="gameEditor">create a board</button>
+      <div class="small-16 medium-5 columns">
+          <button ui-sref="pages({id: 'pre_made_gameboards'})">boards for lessons</button>
       </div> 
-      <div class="small-16 medium-4 columns">
-        &nbsp;
-      </div> 
+      <div class="small-16 medium-5 columns end">
+          <button ui-sref="gameEditor">create a board</button>
+      </div>
     </div>
 
     <div class="row">
       <div class="small-16 columns">
-        <h3 ng-show="boards && boards.totalResults > 0">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
+        <h3 ng-show="boards && boards.totalResults > 1">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
+        <h3 ng-show="boards && boards.totalResults == 1">You have <strong>{{boards.totalResults}}</strong></span> board ready to assign...</h3>
         <h3 ng-show="boards.totalResults == 0">You have no boards to assign; select an option above to add a board.</h3>        
       </div>
     </div>
@@ -47,7 +44,7 @@
                <div ng-click="toggleAssignPanel(board)" data-ot="{{getListOfGroups(groupAssignmentInfo[board.id])}}" data-ot-style="ru_boards" class="board-percentage test">
                   <!-- Remember to change subject class, this will change the colour -->
       				<span class="groups-assigned subject-physics">
-                     <strong>{{groupAssignmentInfo[board.id].length || 0}}</strong> Groups Assigned
+                     <strong>{{groupAssignmentInfo[board.id].length || 0}}</strong> Group<span ng-hide="groupAssignmentInfo[board.id].length == 1">s</span> Assigned
                   </span>
       			</div>
 
@@ -61,10 +58,10 @@
             <div class="row">
    			   <h3><a tabindex="0" href="javascript:void(0)" ui-sref="board({id: board.id})">{{board.title || generateGameBoardTitle(board)}}</a></h3>
                <a class="board-share" share-button sharelink="board/{{board.id}}"></a>
-               <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                  <div>
-                     {{shareUrl}}
-                  </div>
+               <div class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
+                  <div class="share-url-div">{{shareUrl}}</div>
+                  <hr />
+                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item">Clone and Edit</div></a>
                </div>
                 <p>By: <strong><span ng-if="board.ownerUserId == user._id">Me</span>
                     <span ng-if="board.ownerUserId != user._id">Someone else</span></strong></p>
@@ -82,13 +79,12 @@
             </div>
             <a class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)" ng-show="openedAssignPanels.indexOf(board.id) == -1">Assign / Unassign</a>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
-               <h6>Group:</h6>
+               <h6>Group:<span data-ot="Only unarchived groups are visible in this list. You can unarchive a group from your group management page." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Groups disappeared?</span></h6>
                <select ng-model="pendingAssignment[board.id]" ng-options="group.groupName for group in myGroups | orderBy:'groupName'"></select>
-               <div ng-if="false">
-                  <h6>Due Date <span class="lighter">(optional):</span></h6>
-
+               <div >
+                  <h6>Due Date Reminder <span class="lighter">(optional):</span></h6>
                   <div class="ui-date-wrap">
-                     <input ui-date="{showOn: 'button', buttonText: ''}" placeholder="Select your due date..." type="text" />
+                     <input ng-model="pendingAssignment[board.id].dueDate" ui-date="{showOn: 'both', buttonText: '', dateFormat: 'dd/mm/yy'}" placeholder="Select your due date..." type="text" />
                   </div>
                </div>
 
@@ -98,7 +94,7 @@
                <a ng-if="false" class="ru-button-big tertiary expand">Edit Assigned Groups</a>
             </div>
             <div ng-show="openedAssignPanels.indexOf(board.id) != -1" class="row board-section">
-               <h6>Assigned groups</h6>
+               <h6>Board currently assigned to:</h6>
                <table class="group-table">
                   <tbody>
                      <tr ng-repeat="groupsAssigned in groupAssignmentInfo[board.id]">
@@ -108,7 +104,7 @@
                      </tr>
                   </tbody>
                </table>
-               <p ng-show="groupAssignmentInfo[board.id] == null || groupAssignmentInfo[board.id].length == 0">No groups are assigned.</p>
+               <p ng-show="groupAssignmentInfo[board.id] == null || groupAssignmentInfo[board.id].length == 0">No groups.</p>
                <a href="javascript:void(0)" class="ru-button-big tertiary expand" ng-click="toggleAssignPanel(board)">Close</a>
             </div>
    		</div>
@@ -129,5 +125,28 @@
   <div class="reveal-modal-body text-center ru-page-heading">
     <p>You have not created a group to assign work to. You should create a new group before assigning a gameboard.</p>
     <a class="ru-button-big" ng-click="modals.groupsWarning.hide()" href="/groups">Create a new group</a>
+  </div>
+</div>
+
+<div isaac-modal="isaacBooks">
+  <div class="reveal-modal-head">
+    <h2>Find boards from Isaac Books</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading set-boards-books-preview">
+    <div class="row">
+      <h4>Mastering Essential...</h4>
+    </div>
+    <div class="row text-center">
+      <div class="small-offset-1 small-4 columns">
+        <a ui-sref="book_phys_book_gcse"><img src="assets/books/phys_book_gcse.jpg"><span>GCSE Physics</span></a>
+      </div> 
+      <div class="small-offset-1 small-4 columns">
+        <a ui-sref="book_physics_skills_14"><img src="assets/books/physics_skills_14.jpg"><span>Pre-University Physics</span></a>
+      </div> 
+      <div class="small-offset-1 small-4 columns end">
+        <a ui-sref="book_chemistry_16"><img src="assets/books/chemistry_16.jpg"><span>Pre-University Physical Chemistry</span></a>
+      </div>
+    </div>
   </div>
 </div>

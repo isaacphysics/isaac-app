@@ -20,29 +20,7 @@ define([], function() {
 
 		$scope.contentVersion = api.contentVersion.get();
 
-		$scope.indexQueue = null;
 		$scope.segueVersion = api.segueInfo.segueVersion();
-		$scope.cachedVersions = api.segueInfo.cachedVersion();
-		var updateIndexerQueue = function(){
-			api.contentVersion.currentIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;		
-			});
-		}
-		
-		updateIndexerQueue();
-
-		var indexQueueInterval = $interval(updateIndexerQueue, 30000)
-		$scope.clearIndexQueue = function(){
-			api.contentVersion.emptyIndexQueue().$promise.then(function(result){
-				$scope.indexQueue = result;
-			});
-		}
-
-		$scope.$on("$destroy", function() {
-	        if (indexQueueInterval) {
-	            $interval.cancel(indexQueueInterval);
-	        }
-	    });
 
 		$scope.schoolOtherEntries = api.schools.getSchoolOther();
 		$scope.tagsUrl = api.getTagsUrl();
@@ -167,10 +145,26 @@ define([], function() {
 					$scope.setLoading(false);
 				});
 			}
-		}]		
+
+			$scope.getDownloadEventsOverTimeLink = function() {
+				var eventsForGraph = [];
+				for (var eventType in $scope.eventsSelected) {
+					if ($scope.eventsSelected[eventType]) {
+						eventsForGraph.push(eventType);
+					}
+				}
+
+				if (eventsForGraph.length < 1) {
+					return;
+				}
+
+				var url = api.makeDownloadEventsOverTimeLink(dataStartDate, dataEndDate, eventsForGraph, true);
+                return url;
+			}
+		}]
 
 	// TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
-	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope', function($scope, auth, api, $window, $rootScope) {
+	var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope','$location', '$anchorScroll', function($scope, auth, api, $window, $rootScope, $location, $anchorScroll) {
 		$rootScope.pageTitle = "Admin Page";
 
 		$scope.contentVersion = api.contentVersion.get();
@@ -188,13 +182,34 @@ define([], function() {
 		$scope.bookings = [];
 		$scope.userBookings = [];
 		$scope.eventIdForBooking = null;
+		$scope.eventSelected = null;
 
+		$scope.userIdToSchoolMapping = {}
 
-		api.getEventsList(0, -1, false, false, null).$promise.then(function(result) {
-                $scope.setLoading(false);
-                
-				$scope.events = result.results;
-        });
+		$scope.showActiveOnly = true;
+		$scope.filterEventsByStatus = "active";
+
+		var updateEventOverviewList = function(){
+			api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly}).$promise.then(function(result) {
+	                $scope.setLoading(false);
+	                
+					$scope.events = result.results;
+	        });			
+		}
+
+		$scope.$watch('filterEventsByStatus', function(newValue, oldValue){
+			if (newValue == "all") {
+				$scope.showActiveOnly = false;	
+			} else {
+				$scope.showActiveOnly = true;	
+			}
+			
+			updateEventOverviewList();
+		});
+
+		$scope.updateBookingInfo = function(eventId) {
+			$scope.eventIdForBooking = eventId;
+		}
 
 		var updateBookingInfo = function(){
     		api.eventBookings.getBookings({eventId: $scope.eventIdForBooking}).$promise.then(function(result){
@@ -204,16 +219,30 @@ define([], function() {
 				angular.forEach($scope.bookings, function(booking, key){
 					$scope.userBookings.push(booking.userBooked.id);
 				});
+
+				if ($scope.userBookings.length > 0) {
+					$scope.userIdToSchoolMapping = api.user.getUserIdSchoolLookup({"user_ids" : $scope.userBookings.join()})
+				}
     		})				
 		}
+
+		$scope.goToTag = function(tagToGoTo) {
+		      $location.hash(tagToGoTo);
+		      $anchorScroll();
+		};
 
         $scope.$watch('eventIdForBooking', function(){
         	if ($scope.eventIdForBooking) {
 				updateBookingInfo();
+				api.events.get({id:$scope.eventIdForBooking}).$promise.then(function(value){
+					$scope.eventSelected = value;
+					$scope.goToTag('event-booking-details');
+				});
         	}        	
         })
 
 		$scope.findUsers = function() {
+			// This function is only used for event booking user searches:
 			if ($scope.userSearch.searchTerms != "") {
 				var role = $scope.userSearch.searchTerms.role;
 
@@ -232,20 +261,79 @@ define([], function() {
 		}
 
 		$scope.bookUserOnEvent = function(eventId, userId){
+
 			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
 				updateBookingInfo();
-			});
+			})
+			.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+		}
+
+		$scope.addToWaitingList = function(eventId, userId){
+			api.eventBookings.addToWaitingList({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+				updateBookingInfo();
+			})			
+			.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+		}
+
+		$scope.promoteFromWaitList = function(eventId, userId){
+			var promote = $window.confirm('Are you sure you want to promote this user from the waiting list?');   
+
+			if (promote) {
+				api.eventBookings.promoteFromWaitList({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					updateBookingInfo();
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});				
+			}
 		}
 		
 		$scope.unbookUserFromEvent = function(eventId, userId){
-			var deleteBooking = $window.confirm('Are you sure you want to unbook this user?');   
+			var deleteBooking = $window.confirm('Are you sure you want to delete this booking permanently?');   
 
 			if (deleteBooking) {
 				api.eventBookings.deleteBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
 					updateBookingInfo();
-				});
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
 			}
-		}		
+		}
+
+		$scope.cancelEventBooking = function(eventId, userId){
+			var cancelBooking = $window.confirm('Are you sure you want to cancel this booking?');   
+			if (cancelBooking) {
+				api.eventBookings.cancelBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					updateBookingInfo();
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
+			}
+		}
+
+		$scope.resendConfirmationEmail = function(eventId, userId){
+			var resendEmail = $window.confirm('Are you sure you want to resend the confirmation email for this booking?');   
+			if (resendEmail) {
+				api.eventBookings.resendConfirmation({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+					$scope.showToast($scope.toastTypes.Success, "Event Email Sent", "Email send to user " + userId);
+				})
+				.catch(function(e){
+                    console.log("error:" + e)
+                    $scope.showToast($scope.toastTypes.Failure, "Event Email Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            	});
+			}
+		}
 	}]
 
 	return {
