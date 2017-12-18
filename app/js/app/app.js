@@ -771,7 +771,7 @@ define([
 
 
                 $rootScope.notificationWebSocket.onerror = function(error) {
-                    console.log(error.details);
+                    console.error("WebSocket error:", error);
                 }
 
 
@@ -782,7 +782,7 @@ define([
             });
         }
 
-        $timeout($rootScope.openNotificationSocket, 1000);
+        $timeout($rootScope.openNotificationSocket, 500);
 
         var checkForWebSocket = function() {
 
@@ -795,7 +795,7 @@ define([
 
         }
 
-        $timeout(checkForWebSocket, 5000);
+        $timeout(checkForWebSocket, 3000);
 
 
 
