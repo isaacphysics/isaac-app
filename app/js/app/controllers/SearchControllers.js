@@ -123,7 +123,7 @@ define([], function() {
 
 		$scope.triggerSearch = function() {
 			$rootScope.globalFlags.siteSearchOpen = false;
-			if($state.indexOf('searchResults') == -1) {
+			if(!$state.includes('searchResults')) {
 				$state.go('searchResults', {query: $scope.models.query, types: $scope.models.typesToInclude});
 			}
 		}
