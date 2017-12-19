@@ -158,73 +158,51 @@ define([], function() {
                 }
             }
 
-            //check if any attempts have been made, if not, return
-            if (attemptedFields.length == 0) {
-                return;
-            }
+            // Check if any attempts have been made, otherwise don't need to register listeners:
+            if (attemptedFields.length > 0) {
 
-            $scope.attemptedQuestions.field = {
-                selection: attemptedFields[0],
-            };
-
-            $scope.attemptedQuestions.topicsSubject = attemptedFields[0].parent;
-
-            if (correctFields.length != 0) {
-                $scope.correctQuestions.field = {
-                    selection: correctFields[0],
+                $scope.attemptedQuestions.field = {
+                    selection: attemptedFields[0],
                 };
-                $scope.correctQuestions.topicsSubject = correctFields[0].parent;
-            }
 
-            $scope.$watch("questionsVisible.field.selection", function(newField) {
+                $scope.attemptedQuestions.topicsSubject = attemptedFields[0].parent;
 
-                $scope.questionsVisible.fieldData = [];
-
-                if ($scope.questionsVisible.field == null) {
-                    return;
+                if (correctFields.length != 0) {
+                    $scope.correctQuestions.field = {
+                        selection: correctFields[0],
+                    };
+                    $scope.correctQuestions.topicsSubject = correctFields[0].parent;
                 }
 
-                var topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
-                for(var i in topics) {
-                    var t = topics[i];
-                    var value;
+                $scope.$watch("questionsVisible.field.selection", function(newField) {
 
-                    if ($scope.questionsVisible == $scope.correctQuestions) {
-                        value = $scope.progress.correctByTag[t.id] || 0;
-                    } else {
-                        value = $scope.progress.attemptsByTag[t.id] || 0;
+                    $scope.questionsVisible.fieldData = [];
+
+                    if ($scope.questionsVisible.field == null) {
+                        return;
                     }
 
-                    $scope.questionsVisible.fieldData.push({
-                        label: t.title,
-                        val: value
-                    })
-                }
+                    var topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
+                    for(var i in topics) {
+                        var t = topics[i];
+                        var value;
 
-                $scope.questionsVisible.topicsSubject = newField.parent;
+                        if ($scope.questionsVisible == $scope.correctQuestions) {
+                            value = $scope.progress.correctByTag[t.id] || 0;
+                        } else {
+                            value = $scope.progress.attemptsByTag[t.id] || 0;
+                        }
 
-            })
+                        $scope.questionsVisible.fieldData.push({
+                            label: t.title,
+                            val: value
+                        })
+                    }
 
+                    $scope.questionsVisible.topicsSubject = newField.parent;
+                });
 
-
-            // --- STREAK PROGRESS --- //
-            $scope.streakRecord = $scope.progress.userSnapshot.streakRecord;
-
-            var currentProgressValue = $('#current-streak-progress-bar');
-            var radius = 40;
-            var circumference = 2 * Math.PI * radius;
-            var currentDashOffset = circumference;
-
-            if ($scope.streakRecord.currentActivity <= 3) {
-                currentDashOffset = circumference * (1 - ($scope.streakRecord.currentActivity/3));
-            } else if ($scope.streakRecord.currentActivity > 3) {
-                currentDashOffset = 0;
             }
-
-            currentProgressValue.animate({'stroke-dashoffset' : currentDashOffset}, 500)
-
-            //currentProgressValue.attr('stroke-dashoffset', String(currentDashOffset));
-
 
 
         }).catch(function(e) {
