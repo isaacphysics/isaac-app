@@ -82,20 +82,22 @@ define([], function() {
 
 
             // --- STREAK PROGRESS --- //
-            var currentProgressValue = $('#current-streak-progress-bar');
-            var radius = 40;
-            var circumference = 2 * Math.PI * radius;
-            var currentDashOffset = circumference;
+            if ($scope.progress.userSnapshot.streakRecord) {
+                var currentProgressValue = $('#current-streak-progress-bar');
+                var radius = 40;
+                var circumference = 2 * Math.PI * radius;
+                var currentDashOffset = circumference;
 
-            if ($scope.progress.userSnapshot.streakRecord.currentActivity <= 3) {
-                currentDashOffset = circumference * (1 - ($scope.progress.userSnapshot.streakRecord.currentActivity/3));
-            } else if ($scope.progress.userSnapshot.streakRecord.currentActivity > 3) {
-                currentDashOffset = 0;
+                if ($scope.progress.userSnapshot.streakRecord.currentActivity <= 3) {
+                    currentDashOffset = circumference * (1 - ($scope.progress.userSnapshot.streakRecord.currentActivity/3));
+                } else if ($scope.progress.userSnapshot.streakRecord.currentActivity > 3) {
+                    currentDashOffset = 0;
+                }
+
+                currentProgressValue.animate({'stroke-dashoffset' : currentDashOffset}, 500)
+
+                //currentProgressValue.attr('stroke-dashoffset', String(currentDashOffset));
             }
-
-            currentProgressValue.animate({'stroke-dashoffset' : currentDashOffset}, 500)
-
-            //currentProgressValue.attr('stroke-dashoffset', String(currentDashOffset));
 
 
 
