@@ -696,7 +696,11 @@ define([
         $rootScope.openNotificationSocket = function() {
 
             $rootScope.user.$promise.then(function() {
-             // we are logged in
+
+                if (!$rootScope.user._id) {
+                    // Promise resolved, but no user!
+                    return;
+                }
 
                 // set up websocket and connect to notification endpoint
                 $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
