@@ -80,6 +80,7 @@ define(function(require) {
                     var freeSymbols = [],
                         curves = [];
 
+
                     // for drawing curve
                     var drawnPts = [],
                         drawnColorIdx,

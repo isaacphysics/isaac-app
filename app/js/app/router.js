@@ -265,7 +265,7 @@ define(["angular-ui-router"], function() {
             },
         });
 
-        .state('sketcher', {
+        $sp.state('sketcher', {
             url: "/sketcher",
             resolve: {
                 // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
