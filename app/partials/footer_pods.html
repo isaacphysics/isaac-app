@@ -1,5 +1,5 @@
 <!-- Additional Information Panel -->
-<div ng-if="relatedQuestions.length || relatedEasierQuestions.length || relatedHarderQuestions.length" class="row no-print">
+<div ng-if="page.type != 'isaacFastTrackQuestionPage' || relatedConcepts.length || relatedEasierQuestions.length || relatedHarderQuestions.length" class="row no-print">
     <div class='ru-concept-inner'>
         <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad ru_pods">
             <li>
@@ -17,13 +17,13 @@
                     </ul>
                 </div>
             </li>
-            <li ng-if="page.type !='isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedQuestions" title="'Related Questions'"></li>
+            <li ng-if="page.type != 'isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedQuestions" title="'Related Questions'"></li>
 
-            <li ng-if="page.type=='isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedEasierQuestions" title="'Easier Questions'"></li>
+            <li ng-if="page.type == 'isaacFastTrackQuestionPage'" question-pod parent-question-id="questionId" questions="relatedEasierQuestions" title="'Easier Questions'"></li>
 
-            <li ng-if="page.type=='isaacFastTrackQuestionPage' && relatedHarderQuestions.length > 0" question-pod parent-question-id="questionId" questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
+            <li ng-if="page.type == 'isaacFastTrackQuestionPage' && relatedHarderQuestions.length > 0" question-pod parent-question-id="questionId" questions="relatedHarderQuestions" title="'Other Related Questions'"></li>
 
-            <li ng-if="page.type !='isaacFastTrackQuestionPage' || relatedHarderQuestions.length == 0 ">
+            <li ng-if="page.type != 'isaacFastTrackQuestionPage' || relatedHarderQuestions.length == 0 ">
                 <div class="panel ru_pod ru_pod_forum">
                     <div class='ru_pod_title'>
                         <h5>Events</h5>
