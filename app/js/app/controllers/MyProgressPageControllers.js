@@ -81,6 +81,30 @@ define([], function() {
             $scope.questionsVisible = $scope.correctQuestions;
 
 
+            if ($scope.user.role != 'STUDENT') {
+                $scope.progressType = 'teacherProgress';
+            } else {
+                $scope.progressType = 'studentProgress';
+            }
+
+            $scope.toggleProgressType = function() {
+                if ($scope.progressType == 'teacherProgress') {
+                    $scope.progressType = 'studentProgress'
+                } else {
+                    $scope.progressType = 'teacherProgress'
+                }
+            }
+
+
+            // set up the teacher badges
+            var userSnapshot = $scope.progress.userSnapshot;
+
+            if (userSnapshot.teacherActivityRecord) {
+                console.log(userSnapshot.teacherActivityRecord);
+            }
+
+
+
             // --- STREAK PROGRESS --- //
             if ($scope.progress.userSnapshot.streakRecord) {
                 var currentProgressValue = $('#current-streak-progress-bar');

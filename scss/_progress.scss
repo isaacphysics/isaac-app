@@ -1080,3 +1080,68 @@ circle.streak-progress-bar {
     -ms-transform-origin: 100% 50%;
     transform-origin: 100% 50%;
 }
+
+#teacherBadges {
+
+    width:100%;
+    text-align: center;
+
+    a {
+        display: inline-block;
+    }
+
+    div {
+        background-image: url("../assets/teacher-badges.png");
+        width: 5.6em;
+        height: 124px;
+    }
+
+    #groupBadge {
+        background-position: -1px 0px;
+
+        &:hover {
+            background-position: -96px 0px;
+        }
+    }
+
+    #boardBadge {
+        background-position: -1px 369px;
+
+        &:hover {
+            background-position: -191px 369px;
+        }
+    }
+
+    #assignmentBadge {
+        background-position: -1px 123px;
+
+        &:hover {
+            background-position: -96px 123px;
+        }
+    }
+
+    #bookPageBadge {
+        background-position: -1px 493px;
+
+        &:hover {
+            background-position: -96px 493px;
+        }
+    }
+
+    #cpdBadge {
+        background-position: -1px 244px;
+
+        &:hover {
+            background-position: -96px 244px;
+        }
+    }
+}
+
+@media #{$medium-up} {
+
+    #teacherBadges {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 5%;
+    }
+}
