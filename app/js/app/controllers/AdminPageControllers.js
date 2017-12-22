@@ -262,8 +262,9 @@ define([], function() {
 
 		$scope.bookUserOnEvent = function(eventId, userId){
 
-			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
+			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(booking){
 				updateBookingInfo();
+				$scope.showToast($scope.toastTypes.Success, booking.bookingStatus + " Booking Created", "The user now has a " + booking.bookingStatus + " booking");
 			})
 			.catch(function(e){
                     console.log("error:" + e)
@@ -281,8 +282,8 @@ define([], function() {
             });
 		}
 
-		$scope.promoteFromWaitList = function(eventId, userId){
-			var promote = $window.confirm('Are you sure you want to promote this user from the waiting list?');   
+		$scope.promoteBooking = function(eventId, userId){
+			var promote = $window.confirm('Are you sure you want to convert this to a confirmed booking?');   
 
 			if (promote) {
 				api.eventBookings.promoteFromWaitList({"eventId": eventId, "userId" : userId}).$promise.then(function(){

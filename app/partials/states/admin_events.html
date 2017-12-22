@@ -105,7 +105,7 @@
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
                                 <td>{{booking.additionalInformation.emergencyNumber}}</td>
-                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
+                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteBooking(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
                                 &nbsp; <a href="javascript:void(0);" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a></td>
                             </tr>
                         </table>
@@ -171,7 +171,8 @@
                                     <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Add to waiting list</a>
                                     <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>
