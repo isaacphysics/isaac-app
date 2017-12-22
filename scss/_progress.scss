@@ -1099,7 +1099,7 @@ circle.streak-progress-bar {
     #groupBadge {
         background-position: -1px 0px;
 
-        &:hover {
+        &.unlocked {
             background-position: -96px 0px;
         }
     }
@@ -1107,7 +1107,7 @@ circle.streak-progress-bar {
     #boardBadge {
         background-position: -1px 369px;
 
-        &:hover {
+        &.unlocked {
             background-position: -191px 369px;
         }
     }
@@ -1115,7 +1115,7 @@ circle.streak-progress-bar {
     #assignmentBadge {
         background-position: -1px 123px;
 
-        &:hover {
+        &.unlocked {
             background-position: -96px 123px;
         }
     }
@@ -1123,7 +1123,7 @@ circle.streak-progress-bar {
     #bookPageBadge {
         background-position: -1px 493px;
 
-        &:hover {
+        &.unlocked {
             background-position: -96px 493px;
         }
     }
@@ -1131,7 +1131,7 @@ circle.streak-progress-bar {
     #cpdBadge {
         background-position: -1px 244px;
 
-        &:hover {
+        &.unlocked {
             background-position: -96px 244px;
         }
     }

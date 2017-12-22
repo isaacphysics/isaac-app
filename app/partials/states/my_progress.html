@@ -252,27 +252,27 @@
 
         <div id="teacherBadges">
             <a>
-                <div id="groupBadge">
+                <div id="groupBadge" ng-class="progress.userSnapshot.teacherActivityRecord.groups_created >= 1 ? 'unlocked' : ''">
                 </div>
             </a>
 
             <a>
-                <div id="boardBadge">
+                <div id="boardBadge" ng-class="progress.userSnapshot.teacherActivityRecord.boards_created >= 1 ? 'unlocked' : ''">
                 </div>
             </a>
 
             <a>
-                <div id="assignmentBadge">
+                <div id="assignmentBadge" ng-class="progress.userSnapshot.teacherActivityRecord.assignments_set >= 1 ? 'unlocked' : ''">
                 </div>
             </a>
 
             <a>
-                <div id="bookPageBadge">
+                <div id="bookPageBadge" ng-class="progress.userSnapshot.teacherActivityRecord.book_pages_set >= 1 ? 'unlocked' : ''">
                 </div>
             </a>
 
             <a>
-                <div id="cpdBadge">
+                <div id="cpdBadge" ng-class="progress.userSnapshot.teacherActivityRecord.cpd_events_attended >= 1 ? 'unlocked' : ''">
                 </div>
             </a>
         </div>
