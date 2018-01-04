@@ -691,7 +691,8 @@ define([
         //$rootScope.notificationListLength = 0;
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
-        var socketOpen = false;
+        $rootScope.notificationWebSocketOpen = false;
+        $rootScope.webSocketCheckTimeout = null;
 
         $rootScope.openNotificationSocket = function() {
 
@@ -707,7 +708,7 @@ define([
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    socketOpen = true;
+                    $rootScope.notificationWebSocketOpen = true;
                 }
 
 
@@ -780,7 +781,20 @@ define([
 
 
                 $rootScope.notificationWebSocket.onclose = function(event) {
-                    socketOpen = false;
+                    $rootScope.notificationWebSocketOpen = false;
+
+                    // Check if a server error caused the problem, and if so prevent retrying:
+                    if ((event.code != 1000 && event.code != 1001) && $rootScope.webSocketCheckTimeout != null) {
+                        console.error("WebSocket closed by server error. Aborting retry!")
+                        $timeout.cancel($rootScope.webSocketCheckTimeout);
+                        api.logger.log({
+                            type: "WEBSOCKET_ERROR",
+                            code: event.code,
+                            reason: event.reason,
+                            userId: $rootScope.user._id,
+                            userAgent: navigator.userAgent,
+                        });
+                    }
                 }
 
             });
@@ -790,16 +804,16 @@ define([
 
         var checkForWebSocket = function() {
 
-            if (!socketOpen) {
+            if (!$rootScope.notificationWebSocketOpen) {
                 $rootScope.openNotificationSocket();
             } else {
                 $rootScope.notificationWebSocket.send("user-snapshot-nudge");
             }
-            $timeout(checkForWebSocket, 10000);
+            $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
 
         }
 
-        $timeout(checkForWebSocket, 3000);
+        $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 3000);
 
 
 
