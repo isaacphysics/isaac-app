@@ -784,8 +784,10 @@ define([
 
 
                 $rootScope.notificationWebSocket.onclose = function(event) {
-                    // Check if a server error caused the problem, and if so prevent retrying:
-                    if ((event.code != 1000 && event.code != 1001) && $rootScope.webSocketCheckTimeout != null) {
+                    // Check if a server error caused the problem, and if so prevent retrying.
+                    // Close codes are: 1000='Normal Closure', 1001='Going Away', 1006='Abnormal Closure'.
+                    // The abnormal closure seems to be mainly caused by network interruptions.
+                    if ((event.code != 1000 && event.code != 1001 && event.code != 1006) && $rootScope.webSocketCheckTimeout != null) {
                         console.error("WebSocket closed by server error. Aborting retry!")
                         $timeout.cancel($rootScope.webSocketCheckTimeout);
                         api.logger.log({
