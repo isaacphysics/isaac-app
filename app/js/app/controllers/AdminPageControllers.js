@@ -260,10 +260,23 @@ define([], function() {
 			}
 		}
 
-		$scope.bookUserOnEvent = function(eventId, userId){
+		$scope.targetUser = null;
+		$scope.additionalInformation = {}
 
-			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(booking){
+		$scope.chooseUserForEvent = function(user) {
+			$scope.targetUser = user;
+			$scope.modals.eventBookingModal.show()
+		}
+
+		$scope.bookUserOnEvent = function(eventId, userId, additionalInformation){
+			if ($scope.additionalInformation.authorisation == undefined || ($scope.additionalInformation.authorisation == 'OTHER' && $scope.additionalInformation.authorisationOther == undefined)) {
+				$scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "You must provide an authorisation reason to complete this request.");				
+				return;
+			}
+
+			api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}, additionalInformation).$promise.then(function(booking){
 				updateBookingInfo();
+				$scope.modals.eventBookingModal.hide()
 				$scope.showToast($scope.toastTypes.Success, booking.bookingStatus + " Booking Created", "The user now has a " + booking.bookingStatus + " booking");
 			})
 			.catch(function(e){

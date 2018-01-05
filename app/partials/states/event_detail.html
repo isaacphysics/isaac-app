@@ -79,116 +79,10 @@
         Event body copy 
       -->
       <div isaac-content doc="event"></div>
-
+      
       <div class="event-booking-form" ng-show="user.email && event.eventStatus != 'CLOSED' && bookingFormOpen && !(event.userBooked || event.userOnWaitList)">
-      <h3>Event Booking Form</h3>
-        <form>         
-          <fieldset>
-            <legend>Your Account Information (<a ui-sref="accountSettings">update</a>)</legend>
-            <div class="row">
-              <div class="columns small-16 medium-8">
-                <label for="account-firstname">
-                  <strong>First Name</strong>
-                  <span class="ru-error-message" ng-if="account.firstname.$invalid && account.firstname.$dirty">
-                    Required
-                  </span>
-                </label>
-                <input id="account-firstname" name="firstname" type="text" ng-model="user.givenName" disabled=true required/>
-              </div>
-              <div class="columns small-16 medium-8">
-                <label for="account-lastname">
-                  <strong>Last Name</strong>
-                  <span class="ru-error-message" ng-if="account.secondname.$invalid && account.secondname.$dirty">
-                    Required
-                  </span>
-                </label>
-                <input id="account-lastname" name="secondname" type="text" disabled=true ng-model="user.familyName"/>              
-              </div>
-            </div>
-
-            <label for="account-email">
-              <strong>Your Email Address</strong>
-              <span ng-if="user.emailVerificationStatus != 'VERIFIED'" data-ot="You must verify your email address to book on events. This is so we can send you details about the event." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span>
-              <span class="ru-form-required"></span>
-              <span class="ru-error-message" ng-if="account.email.$invalid && account.email.$dirty">
-                Enter a valid email
-              </span>
-            </label>
-            <input id="account-email" name="email" type="email" disabled=true ng-model="user.email"/>
-            <a ng-show="user.emailVerificationStatus != 'VERIFIED' && !verifyEmailRequestSent" href="javascript:void(0)" ng-click="requestEmailVerification(); verifyEmailRequestSent=true">Verify your email before booking</a>
-            <span ng-show="user.emailVerificationStatus != 'VERIFIED' && verifyEmailRequestSent">We have sent an email to {{user.email}}. Please follow the instructions in the email prior to booking.</span>
-          </fieldset>
-          <fieldset>
-            <legend>Event Booking Details</legend>  
-            <label>
-              <strong>Your School</strong> 
-              <span aria-haspopup="true" class="icon-help has-tip" data-ot="You can search for schools and universities in the UK or Ireland. Use the 'other' box if you study elsewhere or to type 'none' if you are not at school."></span>
-              <span class="ru-form-required"></span>
-            </label>
-            <div class="school-wrap" school-dropdown selected-school-urn="school.schoolId">
-              {{schools}}      
-            </div>
-            <input ng-hide="school.schoolId" ng-model="school.schoolOther" type="text" placeholder="School Other (if not listed above)">
-            
-            <span ng-if="user.role!='STUDENT'">
-              <label for="job-title">
-                <strong>Job Title</strong>
-                <span class="ru-form-required"></span>
-              </label>
-              <input id="job-title" name="job-title" type="text" ng-model="additionalInformation.jobTitle" required>
-            </span>
-
-            <span ng-if="user.role=='STUDENT'">
-              <label for="year-group">
-                <strong>School Year Group</strong>
-                <span class="ru-form-required"></span>
-              </label>
-              <select id="year-group" name="year-group" ng-model="additionalInformation.yearGroup" required>
-                                        <option value="9">Year 9</option>
-                                        <option value="10">Year 10</option>
-                                        <option value="11">Year 11</option>
-                                        <option value="12">Year 12</option>
-                                        <option value="13">Year 13</option>
-                                        <option value="TEACHER">N/A - Teacher</option>
-                                        <option value="OTHER">N/A - Other</option>
-              </select>
-
-              <strong ng-show="event.teacher && additionalInformation.yearGroup == 'TEACHER' && user.role != 'TEACHER'"><a ui-sref="pages({id: 'contact_us_teacher'})" target="_blank">Click to upgrade to a teacher account</a> for free!</strong>
-            </span>
-
-            <label for="medical-reqs">
-              <strong>Dietary Requirements or Relevant Medical Conditions</strong>
-              <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, it is important for us to know if you have a severe allergy and/or carry an EpiPen, are prone to fainting, suffer from epilepsy..."></span>
-            </label>
-            <input id="medical-reqs" name="medical-reqs" type="text" ng-model="additionalInformation.medicalRequirements">
-
-            <label for="access-reqs">
-              <strong>Accessibility Requirements</strong>
-              <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, please let us know if you need wheelchair access, hearing loop or if we can help with any special adjustments."></span>
-            </label>
-            <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements">
-
-            <div ng-show="additionalInformation.yearGroup != 'TEACHER' && additionalInformation.yearGroup != 'OTHER'" class="row">
-              <div class="columns small-16">
-                <h3>Emergency Contact Details</h3>
-              </div>             
-              <div class="columns small-16 medium-8">            
-                <label for="emergency-name">
-                  <strong>Contact Name</strong>
-                  <span class="ru-form-required"></span>
-                </label>
-                <input id="emergency-name" name="emergency-name" ng-model="additionalInformation.emergencyName" type="text" required/>
-              </div>
-              <div class="columns small-16 medium-8">            
-                <label for="emergency-number">
-                  <strong>Contact Telephone Number</strong>
-                  <span class="ru-form-required"></span>
-                </label>
-                <input id="emergency-number" name="emergency-number" type="text" ng-model="additionalInformation.emergencyNumber" required/>
-              </div>
-            </div>
-
-          </fieldset>
+            <div event-booking-form ></div>
+      
           <span ng-if="!event.expired">
             <span ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast && (event.placesAvailable > 0 || (event.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
               <p><small>By requesting to book on this event, you are granting event organisers access to the information provided in the form above. You are also giving them permission to set you pre-event work and view your progress.  You can manage access to your progress data in your <a ui-sref="accountSettings">account settings</a>.</small></p>
@@ -197,8 +91,7 @@
 
             <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable <= 0 || bookingDeadlinePast) && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
-        </form>    
-      </div>    
+      </div>
 
       <!-- options for those not logged in -->
       <span ng-show="!user._id">
