@@ -691,10 +691,13 @@ define([
         //$rootScope.notificationListLength = 0;
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
-        $rootScope.notificationWebSocketOpen = false;
         $rootScope.webSocketCheckTimeout = null;
 
         $rootScope.openNotificationSocket = function() {
+
+            if ($rootScope.notificationWebSocket != null) {
+                return;
+            }
 
             $rootScope.user.$promise.then(function() {
 
@@ -703,12 +706,12 @@ define([
                     return;
                 }
 
-                // set up websocket and connect to notification endpoint
+                // Set up websocket and connect to notification endpoint:
                 $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    $rootScope.notificationWebSocketOpen = true;
+                    return;
                 }
 
 
@@ -716,7 +719,7 @@ define([
 
                     var websocketMessage = JSON.parse(event.data);
 
-                    // user snapshot update
+                    // User snapshot update:
                     if (websocketMessage.userSnapshot) {
 
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
@@ -781,8 +784,6 @@ define([
 
 
                 $rootScope.notificationWebSocket.onclose = function(event) {
-                    $rootScope.notificationWebSocketOpen = false;
-
                     // Check if a server error caused the problem, and if so prevent retrying:
                     if ((event.code != 1000 && event.code != 1001) && $rootScope.webSocketCheckTimeout != null) {
                         console.error("WebSocket closed by server error. Aborting retry!")
@@ -795,6 +796,7 @@ define([
                             userAgent: navigator.userAgent,
                         });
                     }
+                    $rootScope.notificationWebSocket = null;
                 }
 
             });
@@ -804,10 +806,10 @@ define([
 
         var checkForWebSocket = function() {
 
-            if (!$rootScope.notificationWebSocketOpen) {
-                $rootScope.openNotificationSocket();
-            } else {
+            if ($rootScope.notificationWebSocket != null) {
                 $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+            } else {
+                $rootScope.openNotificationSocket();
             }
             $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
 
