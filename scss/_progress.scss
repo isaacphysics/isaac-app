@@ -1085,63 +1085,106 @@ circle.streak-progress-bar {
 
     width:100%;
     text-align: center;
+    padding: 5% 10%;
 
-    a {
+    div.badgeEntry {
+        width:100%;
         display: inline-block;
+        margin-bottom: 2%;
     }
 
-    div {
+
+
+    span.badgeIcon {
         background-image: url("../assets/teacher-badges.png");
         width: 5.6em;
         height: 124px;
+        display: block;
+        margin: 0 auto 3%;
     }
 
     #groupBadge {
-        background-position: -1px 0px;
 
-        &.unlocked {
-            background-position: -96px 0px;
+        span.badgeIcon {
+            background-position: -1px 0px;
+
+            &.unlocked {
+                background-position: -96px 0px;
+            }
         }
     }
 
     #boardBadge {
-        background-position: -1px 369px;
 
-        &.unlocked {
-            background-position: -191px 369px;
+        span.badgeIcon {
+            background-position: -1px 369px;
+
+            &.unlocked {
+                background-position: -191px 369px;
+            }
         }
     }
 
     #assignmentBadge {
-        background-position: -1px 123px;
 
-        &.unlocked {
-            background-position: -96px 123px;
+        span.badgeIcon {
+            background-position: -1px 123px;
+
+            &.unlocked {
+                background-position: -96px 123px;
+            }
         }
     }
 
     #bookPageBadge {
-        background-position: -1px 493px;
 
-        &.unlocked {
-            background-position: -96px 493px;
+        span.badgeIcon {
+            background-position: -1px 493px;
+
+            &.unlocked {
+                background-position: -96px 493px;
+            }
         }
     }
 
     #cpdBadge {
-        background-position: -1px 244px;
 
-        &.unlocked {
-            background-position: -96px 244px;
+        span.badgeIcon {
+            background-position: -1px 244px;
+
+            &.unlocked {
+                background-position: -96px 244px;
+            }
         }
     }
+
+
+    .explanation {
+
+        //background-color: #EFEFEF;
+        display:inline-block;
+        text-align:left;
+
+        span.count {
+            color: #509e2e;
+            font-weight: 600;
+        }
+
+    }
 }
+
 
 @media #{$medium-up} {
 
     #teacherBadges {
-        display: flex;
-        justify-content: space-between;
-        padding: 0 5%;
+
+        span.badgeIcon {
+            float:left;
+        }
+
+        div.explanation {
+            width:80%;
+        }
+
     }
 }

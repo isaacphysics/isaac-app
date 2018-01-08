@@ -248,33 +248,70 @@
         </div>
     </div>
     <div ng-show="progressType == 'teacherProgress'" class="small-16 columns progress-wrap" style="margin-top:-1px;">
-        <h6>Teacher Badges</h6>
 
         <div id="teacherBadges">
-            <a>
-                <div id="groupBadge" ng-class="progress.userSnapshot.teacherActivityRecord.groups_created >= 1 ? 'unlocked' : ''">
-                </div>
-            </a>
 
-            <a>
-                <div id="boardBadge" ng-class="progress.userSnapshot.gameboardRecord.creations.builder >= 1 ? 'unlocked' : ''">
+            <div id="groupBadge" class="badgeEntry">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.groups_created >= 1 ? 'unlocked' : ''">
+                </span>
+                <div class="explanation">
+                    <p>You have created
+                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.groups_created }}</span>
+                        group<span ng-if="progress.userSnapshot.teacherActivityRecord.groups_created != 1">s</span>.</p>
+                    <p>To create a group go to the <a ui-sref="groups">Manage Groups</a> page, enter a name for your new group and click the Create button.</p>
                 </div>
-            </a>
+            </div>
 
-            <a>
-                <div id="assignmentBadge" ng-class="progress.userSnapshot.teacherActivityRecord.assignments_set >= 1 ? 'unlocked' : ''">
+            <div id="assignmentBadge" class="badgeEntry">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.assignments_set >= 1 ? 'unlocked' : ''">
+                </span>
+                <div class="explanation">
+                    <p>You have set
+                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.assignments_set }}</span>
+                        assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.assignments_set != 1">s</span>.</p>
+                    <p>Once you have created a group you can assign a board of questions to that group from the <a ui-sref="setAssignments">Set Assignments</a> page.</p>
                 </div>
-            </a>
+            </div>
 
-            <a>
-                <div id="bookPageBadge" ng-class="progress.userSnapshot.teacherActivityRecord.book_pages_set >= 1 ? 'unlocked' : ''">
+            <div id="bookPageBadge" class="badgeEntry">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.book_pages_set >= 1 ? 'unlocked' : ''">
+                </span>
+                <div class="explanation">
+                    <p>You have set
+                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.book_pages_set }}</span>
+                        book page assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.book_pages_set != 1">s</span>.</p>
+                    <p>
+                        <a ng-click="modals.isaacBooks.show()">our GCSE &amp; A-Level books</a>
+                    </p>
                 </div>
-            </a>
+            </div>
 
-            <a>
-                <div id="cpdBadge" ng-class="progress.userSnapshot.teacherActivityRecord.cpd_events_attended >= 1 ? 'unlocked' : ''">
+            <div id="boardBadge" class="badgeEntry">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.gameboardRecord.creations.builder >= 1 ? 'unlocked' : ''">
+                </span>
+                <div class="explanation">
+                    <p>You have created
+                        <span class="count">{{ progress.userSnapshot.gameboardRecord.creations.builder }}</span>
+                        custom gameboard<span ng-if="progress.userSnapshot.gameboardRecord.creations.builder != 1">s</span>.</p>
+                    <p>
+                        If you want finer control over what questions go in an assignment, say to customise a book board
+                        or to mix book questions and other Isaac questions, you can do this on the <a ui-sref="gameEditor">Create a Board / Build an Assignment</a> page.
+                    </p>
                 </div>
-            </a>
+            </div>
+
+            <div id="cpdBadge" class="badgeEntry">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.cpd_events_attended >= 1 ? 'unlocked' : ''">
+                </span>
+                <div class="explanation">
+                    <p>You have attended
+                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.cpd_events_attended }}</span>
+                        CPD event<span ng-if="progress.userSnapshot.teacherActivityRecord.cpd_events_attended != 1">s</span>.</p>
+                    <p>
+                        <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})" id="home-page-menu-teach-3">CPD Events</a>
+                    </p>
+                </div>
+            </div>
         </div>
 
     </div>
