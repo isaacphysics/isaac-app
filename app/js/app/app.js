@@ -785,18 +785,43 @@ define([
 
                 $rootScope.notificationWebSocket.onclose = function(event) {
                     // Check if a server error caused the problem, and if so prevent retrying.
-                    // Close codes are: 1000='Normal Closure', 1001='Going Away', 1006='Abnormal Closure'.
                     // The abnormal closure seems to be mainly caused by network interruptions.
-                    if ((event.code != 1000 && event.code != 1001 && event.code != 1006) && $rootScope.webSocketCheckTimeout != null) {
-                        console.error("WebSocket closed by server error. Aborting retry!")
-                        $timeout.cancel($rootScope.webSocketCheckTimeout);
-                        api.logger.log({
-                            type: "WEBSOCKET_ERROR",
-                            code: event.code,
-                            reason: event.reason,
-                            userId: $rootScope.user._id,
-                            userAgent: navigator.userAgent,
-                        });
+                    switch (event.code) {
+                        case 1000:  // 'Normal': should try to reopen connection.
+                        case 1001:  // 'Going Away': should try to reopen connection.
+                        case 1006:  // 'Abnormal Closure': should try to reopen connection.
+                        case 1013:  // 'Try Again Later': should attempt to reopen, but in at least a minute!
+                            // Cancel any existing WebSocket poll timeout:
+                            if ($rootScope.webSocketCheckTimeout != null) {
+                                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                            }
+                            // Attempt to re-open the WebSocket later, with timeout depending on close reason:
+                            if (event.reason == 'TRY_AGAIN_LATER') {
+                                // The status code 1013 isn't yet supported properly, and IE/Edge don't support custom codes.
+                                // So use the event 'reason' to indicate too many connections, try again in 1 min.
+                                console.log("WebSocket endpoint overloaded. Trying again later!")
+                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
+                            } else {
+                                // This is likely a network interrupt or else a server restart.
+                                // For the latter, we really don't want all reconnections at once.
+                                // Wait a random time between 10s and 60s, and then attempt reconnection:
+                                var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
+                                console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
+                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, randomRetryIntervalSeconds * 1000);
+                            }
+                            break;
+                        default: // Unexpected closure code: log and abort retrying!
+                            console.error("WebSocket closed by server error (Code " + event.code + "). Aborting retry!");
+                            if ($rootScope.webSocketCheckTimeout != null) {
+                                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                            }
+                            api.logger.log({
+                                type: "WEBSOCKET_ERROR",
+                                code: event.code,
+                                reason: event.reason,
+                                userId: $rootScope.user._id,
+                                userAgent: navigator.userAgent,
+                            });
                     }
                     $rootScope.notificationWebSocket = null;
                 }
