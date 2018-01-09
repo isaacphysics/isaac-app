@@ -196,7 +196,6 @@ define([], function() {
                 }
 
                 $scope.$watchGroup(["questionsVisible.field.selection", "questionsVisible"], function(newField) {
-                //$scope.$watch("questionsVisible.field.selection", function(newField) {
 
                     $scope.questionsVisible.fieldData = [];
 
