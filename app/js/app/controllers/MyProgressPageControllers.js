@@ -96,13 +96,8 @@ define([], function() {
             }
 
 
-            // set up the teacher badges
+            // get the user snapshot object for aggregated stats
             var userSnapshot = $scope.progress.userSnapshot;
-
-            if (userSnapshot.teacherActivityRecord) {
-                console.log(userSnapshot.teacherActivityRecord);
-            }
-
 
 
             // --- STREAK PROGRESS --- //
