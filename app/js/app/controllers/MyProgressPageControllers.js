@@ -195,7 +195,8 @@ define([], function() {
                     $scope.correctQuestions.topicsSubject = correctFields[0].parent;
                 }
 
-                $scope.$watch("questionsVisible.field.selection", function(newField) {
+                $scope.$watchGroup(["questionsVisible.field.selection", "questionsVisible"], function(newField) {
+                //$scope.$watch("questionsVisible.field.selection", function(newField) {
 
                     $scope.questionsVisible.fieldData = [];
 
@@ -218,11 +219,11 @@ define([], function() {
                             label: t.title,
                             val: value
                         })
+
                     }
 
-                    $scope.questionsVisible.topicsSubject = newField.parent;
+                    $scope.questionsVisible.topicsSubject = newField[0].parent;
                 });
-
             }
 
 
