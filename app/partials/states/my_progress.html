@@ -9,14 +9,14 @@
     </div>
 </div>
 <div class="row">
-    <dl ng-show="user.role != 'STUDENT'" class="tabs profile-tabs no-print">
+    <dl id="progressTypeTabs" ng-show="user.role != 'STUDENT'" class="tabs profile-tabs no-print" style="margin:0; position: relative; z-index: 99;">
         <dd ng-class="progressType == 'teacherProgress' ? 'active' : ''">
-            <a style="border:#999 solid 1px; border-bottom: #fff solid 1px !important;" href="javascript:void(0)" ng-click="toggleProgressType()">
+            <a href="javascript:void(0)" ng-click="toggleProgressType()">
                 <span>Teacher</span></span>
             </a>
         </dd>
         <dd ng-class="progressType == 'studentProgress' ? 'active' : ''">
-            <a style="border:#999 solid 1px; border-bottom: #fff solid 1px !important;" href="javascript:void(0)" ng-click="toggleProgressType()">
+            <a href="javascript:void(0)" ng-click="toggleProgressType()">
                 <span>Student</span></span>
             </a>
         </dd>

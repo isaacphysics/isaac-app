@@ -1083,17 +1083,15 @@ circle.streak-progress-bar {
 
 #teacherBadges {
 
-    width:100%;
+    width: 100%;
     text-align: center;
     padding: 5% 10%;
 
     div.badgeEntry {
-        width:100%;
+        width: 100%;
         display: inline-block;
         margin-bottom: 2%;
     }
-
-
 
     span.badgeIcon {
         background-image: url("../assets/teacher-badges.png");
@@ -1158,12 +1156,11 @@ circle.streak-progress-bar {
         }
     }
 
-
     .explanation {
 
         //background-color: #EFEFEF;
-        display:inline-block;
-        text-align:left;
+        display: inline-block;
+        text-align: left;
 
         span.count {
             color: #509e2e;
@@ -1187,4 +1184,17 @@ circle.streak-progress-bar {
         }
 
     }
+}
+
+
+dl#progressTypeTabs dd {
+
+    a {
+        border:#999 solid 1px;
+    }
+
+    &.active a {
+        border-bottom: #fff solid 1px;
+    }
+
 }
