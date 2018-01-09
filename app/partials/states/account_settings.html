@@ -126,16 +126,16 @@
                                 </div>                   
                                 <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
                                     <div class="small-5 columns">
-                                        <label for="r1"><span>Male</span></label>
-                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" input-animation>
+                                        <label for="gender-male"><span>Male</span></label>
+                                        <input id="gender-male" name="gender-male" type="radio" ng-model="user.gender" value="MALE" input-animation>
                                     </div>
                                     <div class="small-5 columns">
-                                        <label for="r2"><span class="centeral-label">Female</span></label>
-                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
+                                        <label for="gender-female"><span class="centeral-label">Female</span></label>
+                                        <input id="gender-female" name="gender-female" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
                                     </div>
                                     <div class="small-6 columns">
-                                        <label for="r3"><span>Other</span></label>
-                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" input-animation>
+                                        <label for="gender-other"><span>Other</span></label>
+                                        <input id="gender-other" name="gender-other" type="radio" ng-model="user.gender" value="OTHER" input-animation>
                                     </div>                        
                                 </div>                    
                             </div>
@@ -284,7 +284,7 @@
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
                                 </label>
-                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" ng-class="{'ng-invalid': (password1 || password2) && !passwordChangeState.passwordCurrent}" name="passwordCurrent" placeholder="Current password">        
+                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" ng-class="{'ng-invalid': (password1 || password2) && !passwordChangeState.passwordCurrent}" name="passwordCurrent" placeholder="Current password" autocomplete="off">        
                             </div>
                         </div>
                         <div id="password-wrap" class="row">
@@ -295,13 +295,13 @@
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
-                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}">
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}" autocomplete="new-password">
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
                             <div  class="large-6 columns">
                                 <label for="account-password2" ng-class="{'disabled' : (!password1 || password1.length < 6)}"><strong>Confirm password</strong></label>
-                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2">
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2" autocomplete="new-password">
                                 <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent && editingSelf">
                                     Current password not provided
                                 </span>
@@ -366,8 +366,8 @@
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r1">&nbsp;</label>
-                          <input id="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
+                          <label for="emails-news-and-updates">&nbsp;</label>
+                          <input id="emails-news-and-updates" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
                         </div>
                       </td>
                     </tr>
@@ -376,8 +376,8 @@
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r3">&nbsp;</label>
-                          <input id="r3" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
+                          <label for="emails-assignments">&nbsp;</label>
+                          <input id="emails-assignments" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
                         </div>
                       </td>
                     </tr>
@@ -386,8 +386,8 @@
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r2">&nbsp;</label>
-                          <input id="r2" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
+                          <label for="emails-events">&nbsp;</label>
+                          <input id="emails-events" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
                         </div>
                       </td>
                     </tr>

@@ -1,4 +1,4 @@
-<div ng-if="questionPage.type=='isaacFastTrackQuestionPage' && gameboardId && fastTrackProgressEnabledBoards.includes(gameboardId)" fast-track-progress-bar gameboard="gameBoard" page="questionPage" class="ft-progress-bar-panel row no-print"></div>
+<div ng-if="questionPage.type=='isaacFastTrackQuestionPage' && gameboardId && fastTrackProgressEnabledBoards.indexOf(gameboardId) >= 0" fast-track-progress-bar gameboard="gameBoard" page="questionPage" class="ft-progress-bar-panel row no-print"></div>
 
 <div desktop-panel class="no-print" ng-hide="questionPage.type=='isaacFastTrackQuestionPage'">
     <div class='ru-desktop-panel-content'>
@@ -64,13 +64,11 @@
                             </div>
                             <a share-button></a>
                             <div class='ru_share_link slide-animate' ng-show="showShareUrl">
-                                <div>
-                                    {{shareUrl}}
-                                </div>
+                                <div class="share-url-div">{{shareUrl}}</div>
                             </div>
                             <h2 class="print-question question-prefix">Q:</h2>
                             <h2 class="question-title">
-                                <span class='ru_{{pageSubject}}' ng-class="{'ft-upper-colour': questionPage.tags.includes('ft_upper'), 'ft-lower-colour': questionPage.tags.includes('ft_lower')}" math-jax>
+                                <span class='ru_{{pageSubject}}' ng-class="{'ft-upper-colour': questionPage.tags.indexOf('ft_upper') >= 0, 'ft-lower-colour': questionPage.tags.indexOf('ft_lower') >= 0}" math-jax>
                                     {{questionPage.title}}
                                 </span>
                             </h2>

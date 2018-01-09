@@ -529,6 +529,18 @@ define([], function() {
 
         this.questionsAnswered = $resource(urlPrefix + "/stats/questions_answered/count");
 
+        this.getWebsocket = function(uri) {
+            // FIXME: this seems a little hacky, and not as neat as the rest . . .
+            if (urlPrefix.indexOf("http") > -1) {
+                // APP and API on separate domains, urlPrefix is full URL:
+                return new WebSocket(urlPrefix.replace(/^http/, "ws") + "/" + uri);
+            } else {
+                // APP and API on same domain, need window.location.origin for full URL:
+                return new WebSocket(window.location.origin.replace(/^http/, "ws") + urlPrefix + "/" + uri);
+            }
+
+        }
+
     }
 
     return Api;

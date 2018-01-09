@@ -34,6 +34,7 @@ define([], function() {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
+		$scope.boardSearchOptions = boardSearchOptions;
 
 		$scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":false}); // get a list of all known unarchived groups for this user.
 
@@ -55,14 +56,19 @@ define([], function() {
            		$scope.modals.groupsWarning.show();
 		}
 
-		$scope.filterOptions = boardSearchOptions.filter;
-		$scope.sortOptions = boardSearchOptions.sort;
-		$scope.filterOption = $scope.filterOptions[0];
-		$scope.sortOption = $scope.sortOptions[1];
+		var setDefaultBoardSearchOptions = function(deviceSpecificDefaultField) {
+			for (boardSearchParameter in $scope.boardSearchOptions) {
+				var boardSearchOption = boardSearchOptions[boardSearchParameter];
+				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
+				var defaultValueKey = boardSearchOption[deviceSpecificDefaultField];
+				$scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
+			}
+		};
 
 		var updateBoards = function(limit) {
+			var limit = limit || $scope.selectedNoBoardsOption.value;
 			$scope.setLoading(true);
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, 0, limit).$promise.then(function(boards) {
+			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 
 				updateGroupAssignmentMap($scope.boards.results)
@@ -72,12 +78,15 @@ define([], function() {
 		};
 
 		// update boards when filters have been selected
-		$scope.$watchGroup(["filterOption", "sortOption"], function(newVal, oldVal) {
-			// TODO: For some reason these watch functions are being fired for no reason
-			if (newVal === oldVal) {
-				return;
+		$scope.$watch("selectedNoBoardsOption", function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				updateBoards();
 			}
-			updateBoards($scope.boards.results.length);
+		});
+		$scope.$watch("selectedSortOption", function(newVal, oldVal) {
+			if (newVal !== oldVal) {
+				updateBoards($scope.boards.results.length);
+			}
 		});
 
 		// update tooltips when this changes.
@@ -85,10 +94,10 @@ define([], function() {
 			$timeout(function(){
 				Opentip.findElements();
 			}, 0);
-			
 		}, true);
 
 		// Perform initial load
+		setDefaultBoardSearchOptions('cardDefault');
 		updateBoards();
 
 		var mergeInProgress = false;
@@ -96,7 +105,7 @@ define([], function() {
 			if (mergeInProgress) return;
 			mergeInProgress = true;
 			$scope.setLoading(true);
-			api.userGameBoards($scope.filterOption.val, $scope.sortOption.val, $scope.boards.results.length).$promise.then(function(newBoards){
+			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Augment new boards and merge them into results:
 				updateGroupAssignmentMap(newBoards.results);
 				// Remove duplicate boards caused by changing board list in another tab. Test uniqueness on board ID.
