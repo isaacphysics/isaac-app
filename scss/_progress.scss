@@ -421,8 +421,6 @@ $failed-bg-size: 25%;
         &:first-child, &.total-column {
             border-left: #666 1px solid;
             border-right: #666 1px solid;
-            padding-right: 10px;
-            padding-left: 10px;
         }
         &.total-column {
             &.right {
@@ -521,6 +519,7 @@ $failed-bg-size: 25%;
                 font-weight: 200;
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
+                padding: 0px;
 
                 &:first-child, &.total-column {
                     color: #555;
@@ -528,12 +527,13 @@ $failed-bg-size: 25%;
                     background-color:#ddd;
                 }
 
-                padding: 9px 0;
-
                 &.selected {
                     color: $ru_green;
                     font-weight: 600;
                     background-color: white;
+                    .sortable {
+                        text-align: center;
+                    }
                 }
             }
         }
