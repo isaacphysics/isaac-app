@@ -43,11 +43,11 @@ define([], function() {
         var myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_only":false}).$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
 
-        scope.sortOptions = [
-            {label: "Alphabetical", val: "groupName", reverse: false},
-            {label: "Date Created", val: "created", reverse: true}
+        scope.groupSortOptions = [
+            {label: "Alphabetical", value: "groupName", reverse: false},
+            {label: "Date Created", value: "created", reverse: true}
         ];
-        scope.sortOption = scope.sortOptions[0];
+        scope.groupSortOption = scope.groupSortOptions[0];
 
         Promise.all([myGroupsPromise, mySetAssignmentsPromise]).then(function(r) {
             var groups = r[0];
@@ -85,15 +85,37 @@ define([], function() {
             scope.setLoading(true);
 
             for (var i = 0; i < scope.groupAssignments[groupId].length; i++) {
-                var a = scope.groupAssignments[groupId][i];
+                var assignment = scope.groupAssignments[groupId][i];
 
-                a.gameBoard = api.gameBoards.get({id: a.gameboardId});
-                gameboardPromises.push(a.gameBoard.$promise);
-
-                scope.assignments[a._id] = a;
+                assignment.gameBoard = api.gameBoards.get({id: assignment.gameboardId});
+                gameboardPromises.push(assignment.gameBoard.$promise);
+                // assignment local sort options
+                assignment.pupilSortOptions = {
+                    familyName: {value: 'user.familyName', reverse: false},
+                    totalQuestionPercentage: {value: 'tickCount', reverse: true},
+                    totalQuestionPartPercentage: {value: 'correctQuestionPartsCount', reverse: true}
+                };
+                assignment.pupilSortOption = assignment.pupilSortOptions.familyName;
+                assignment.sortPupilsBy = function (property) {
+                    var sortOptionToSet = this.pupilSortOptions[property];
+                    if (sortOptionToSet == this.pupilSortOption) {
+                        this.pupilSortOption.reverse = !this.pupilSortOption.reverse;  
+                    } else if (sortOptionToSet != undefined) {
+                        this.pupilSortOption = sortOptionToSet;
+                    } else {
+                        console.error("Property '" + property + "' is not a valid pupilSortOption");
+                    }
+                };
+                scope.assignments[assignment._id] = assignment;
             }
 
             Promise.all(gameboardPromises).then(function() {
+                // add a sort option for each question in each assignment
+                scope.groupAssignments[groupId].forEach(function (assignment) {
+                    assignment.gameBoard.questions.forEach(function (question, index) {
+                        assignment.pupilSortOptions['questionPage' + index] = {value: 'questionPage' + index, reverse: true};
+                    });
+                });
                 scope.setLoading(false);
                 scope.$apply();
                 scope.groupExpanded[groupId] = true;
@@ -145,6 +167,7 @@ define([], function() {
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
+                                    studentProgress['questionPage' + i] = studentProgress.correctPartResults[i];
                                     studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
                                     studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
                                     studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);

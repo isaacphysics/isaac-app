@@ -403,7 +403,7 @@ $failed-bg-size: 25%;
 
     td {
         color: #333;
-        font-size: 11px;
+        font-size: 12px;
         line-height: 13px;
         vertical-align: middle;
         text-align: center;
@@ -726,7 +726,7 @@ div[d3-plot] {
 /*
     All media quires 
 */
-@media #{$small-only} { 
+@media #{$small-only} {
     .accordion-group {
         .hide-for-medium-up {
             display: inline !important;
@@ -758,6 +758,13 @@ div[d3-plot] {
         }
     }
 
+    div.key-description {
+        font-size: 14px;
+        clear: both;
+    }
+    div.assignment-progress-options {
+        font-size: 14px;
+    }
 }
 @media #{$medium-up} {
     .progress-wrap {
@@ -863,7 +870,7 @@ div[d3-plot] {
     .table-progress {
 
         td {
-            font-size: 18px;
+            font-size: 17px;
             line-height: 20px;
             font-weight: 300;
         }
@@ -1027,7 +1034,7 @@ div[d3-plot] {
         padding-bottom: 2px;
         float:left;
     }
-    div.key-desctiption {
+    div.key-description {
         text-align: center;
         font-weight: 400;
     }
