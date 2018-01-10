@@ -115,22 +115,22 @@
                                                     </td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy('questionPage' + $index);"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
                                                         data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
-                                                                'ascending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && assignment.pupilSortOption.reverse,
-                                                                'descending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && !assignment.pupilSortOption.reverse}">
+                                                                'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
+                                                                'descending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && !assignment.pupilSortOption.reverse}">
                                                             {{average}}%
                                                         </div>
                                                     </td>
                                                     <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" data-ot="Number of correct question parts from the total number of question parts in this assignment">
-                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions['totalQuestionPartPercentage'] ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
+                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPartPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Parts
                                                         </div>
                                                     </td>
                                                     <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" data-ot="Number of completed questions from the total number of questions in this assignment">
-                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions['totalQuestionPercentage'] ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
+                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Qs
                                                         </div>
                                                     </td>
@@ -190,22 +190,22 @@
                                                     </td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy('questionPage' + $index);"
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
                                                         data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
-                                                                'ascending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && assignment.pupilSortOption.reverse,
-                                                                'descending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && !assignment.pupilSortOption.reverse}">
+                                                                'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
+                                                                'descending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && !assignment.pupilSortOption.reverse}">
                                                             {{average}}%
                                                         </div>
                                                     </td>
                                                     <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" data-ot="Number of correct question parts from the total number of question parts in this assignment">
-                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions['totalQuestionPartPercentage'] ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
+                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPartPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Parts
                                                         </div>
                                                     </td>
                                                     <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" data-ot="Number of completed questions from the total number of questions in this assignment">
-                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions['totalQuestionPercentage'] ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
+                                                        <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Qs
                                                         </div>
                                                     </td>

@@ -39,6 +39,7 @@ define([], function() {
             colourBlind: false,
             formatAsPercentage: false
         };
+        scope.questionPageLabel = "questionPage";
 
         var myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_only":false}).$promise;
         var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
@@ -113,7 +114,7 @@ define([], function() {
                 // add a sort option for each question in each assignment
                 scope.groupAssignments[groupId].forEach(function (assignment) {
                     assignment.gameBoard.questions.forEach(function (question, index) {
-                        assignment.pupilSortOptions['questionPage' + index] = {value: 'questionPage' + index, reverse: true};
+                        assignment.pupilSortOptions[scope.questionPageLabel + index] = {value: scope.quesitonPageLabel + index, reverse: true};
                     });
                 });
                 scope.setLoading(false);
@@ -167,7 +168,7 @@ define([], function() {
                                     if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                         studentProgress.tickCount++;
                                     }
-                                    studentProgress['questionPage' + i] = studentProgress.correctPartResults[i];
+                                    studentProgress[scope.quesitonPageLabel + i] = studentProgress.correctPartResults[i];
                                     studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
                                     studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
                                     studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
