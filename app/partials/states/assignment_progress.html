@@ -194,8 +194,8 @@
                                                         data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
-                                                                'ascending sortable': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && assignment.pupilSortOption.reverse,
-                                                                'descending sortable': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && !assignment.pupilSortOption.reverse}">
+                                                                'ascending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && assignment.pupilSortOption.reverse,
+                                                                'descending': assignment.pupilSortOption == assignment.pupilSortOptions['questionPage' + $index] && !assignment.pupilSortOption.reverse}">
                                                             {{average}}%
                                                         </div>
                                                     </td>
