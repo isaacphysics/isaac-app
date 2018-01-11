@@ -94,10 +94,7 @@ define([], function() {
                     $scope.progressType = 'teacherProgress'
                 }
             }
-
-
-            // get the user snapshot object for aggregated stats
-            console.log($scope.progress);
+            
 
 
             // --- STREAK PROGRESS --- //
