@@ -97,7 +97,7 @@ define([], function() {
 
 
             // get the user snapshot object for aggregated stats
-            var userSnapshot = $scope.progress.userSnapshot;
+            console.log($scope.progress);
 
 
             // --- STREAK PROGRESS --- //
