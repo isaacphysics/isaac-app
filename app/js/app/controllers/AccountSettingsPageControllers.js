@@ -65,7 +65,14 @@ define([], function() {
         if ($scope.editingSelf) {
             api.user.getUserPreferences().$promise.then(function(result){
                 // Only update values if response contains key:
-                $scope.emailPreferences = result.EMAIL_PREFERENCE || $scope.emailPreferences;
+                if (result.EMAIL_PREFERENCE) {
+                    // Loop over provided preferences and update existing object (which contains the
+                    // default values in case no preference is already provided for an email type).
+                    // Note the function(value, key) order!
+                    angular.forEach(result.EMAIL_PREFERENCE, function(value, key) {
+                        $scope.emailPreferences[key] = value;
+                    });
+                }
                 $scope.subjectInterests = result.SUBJECT_INTEREST || $scope.subjectInterests;
             });
         }
