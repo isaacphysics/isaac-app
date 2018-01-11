@@ -116,7 +116,7 @@ define([], function() {
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
-					$rootScope.openNotificationSocket();
+					//$rootScope.openNotificationSocket(); // The page gets reloaded immediately anyway, unnecessary?
 		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){
