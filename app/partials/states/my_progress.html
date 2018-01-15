@@ -12,12 +12,12 @@
     <dl id="progressTypeTabs" ng-show="user.role != 'STUDENT'" class="tabs profile-tabs no-print" style="margin:0; position: relative; z-index: 99;">
         <dd ng-class="progressType == 'teacherProgress' ? 'active' : ''">
             <a href="javascript:void(0)" ng-click="toggleProgressType()">
-                <span>Teacher</span></span>
+                <span><span class="show-for-medium-up">Isaac</span> Teacher Activity</span></span>
             </a>
         </dd>
         <dd ng-class="progressType == 'studentProgress' ? 'active' : ''">
             <a href="javascript:void(0)" ng-click="toggleProgressType()">
-                <span>Student</span></span>
+                <span>Question Activity</span></span>
             </a>
         </dd>
     </dl>
@@ -257,7 +257,7 @@
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.groups_created == 0" class="explanation">
                     <p>Now you have a teacher account, you can start creating groups for your classes and set assignments.</p>
                     <p>
-                        <a class="ru-button" ui-sref="groups">Create a group</a>
+                        <a class="ru-button getStarted" ui-sref="groups" ng-click="achievementsGetStarted('CREATE_GROUP');">Get Started</a>
                     </p>
                 </div>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.groups_created > 0" class="explanation">
@@ -274,7 +274,7 @@
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.assignments_set == 0" class="explanation">
                     <p>Once you have created a group you can set assignments and save time on marking homeworks!</p>
                     <p>
-                        <a class="ru-button" ui-sref="setAssignments">Set an Assignment</a>
+                        <a class="ru-button getStarted" ui-sref="setAssignments" ng-click="achievementsGetStarted('CREATE_ASSIGNMENT');">Get Started</a>
                     </p>
                 </div>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.assignments_set > 0" class="explanation">
@@ -291,7 +291,7 @@
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.book_pages_set == 0" class="explanation">
                     <p>You can even chose to set a pre-made assignment from one of our text books!</p>
                     <p>
-                        <a class="ru-button" ng-click="modals.isaacBooks.show()">Set a Book Page Assignment</a>
+                        <a class="ru-button getStarted" ui-sref="setAssignments({books: 'show'})" ng-click="achievementsGetStarted('CREATE_BOOK_ASSIGNMENT');">Get Started</a>
                     </p>
                 </div>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.book_pages_set > 0" class="explanation">
@@ -312,7 +312,7 @@
                     <p>If you want finer control over what questions go in an assignment, say to customise a book board
                         or to mix book questions and other Isaac questions, you can create your own board.</p>
                     <p>
-                        <a class="ru-button" ui-sref="gameEditor">Create a Board</a>
+                        <a class="ru-button getStarted" ui-sref="gameEditor" ng-click="achievementsGetStarted('CREATE_BOARD');">Get Started</a>
                     </p>
                 </div>
                 <div ng-show="progress.userSnapshot.gameboardRecord.creations.builder > 0" class="explanation">
@@ -332,7 +332,8 @@
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.cpd_events_attended == 0" class="explanation">
                     <p>You can book onto one of our professional development events and find out more about what Isaacphysics can offer you.</p>
                     <p>
-                        <a class="ru-button" href="javascript:void(0)" ui-sref="events({types: 'teacher'})">Book a CPD Event</a>
+                        <a class="ru-button getStarted" href="javascript:void(0)" ui-sref="events({types: 'teacher'})"
+                         ng-click="achievementsGetStarted('BOOK_CPD_EVENT');">Get Started</a>
                     </p>
                 </div>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.cpd_events_attended > 0" class="explanation">

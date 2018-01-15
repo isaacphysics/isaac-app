@@ -125,6 +125,14 @@ define([], function() {
                 }
             }
 
+            $scope.achievementsGetStarted = function(achievementType) {
+
+                api.logger.log({
+                    type: "ACHIEVEMENT_GET_STARTED",
+                    achievementType: achievementType ,
+                });
+            }
+
             $scope.correctQuestions.levelData = [];
             $scope.attemptedQuestions.levelData = [];
 

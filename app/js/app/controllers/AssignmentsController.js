@@ -30,7 +30,8 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', '$location', '$stateParams',
+		function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout, $location, $stateParams) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -42,6 +43,7 @@ define([], function() {
 		$scope.pendingAssignment = {}; // boardId to group id mapping - allows us to know which group is being assigned which board.
 
 		$scope.groupAssignmentInfo = {}; // map of boardId to group list - shows groups currently assigned.
+
 
 		// allows the view to change which panels are open.
 		$scope.toggleAssignPanel = function(board) {
@@ -222,6 +224,24 @@ define([], function() {
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", e.data.errorMessage || ("Error " + e.status));
 				});				
+			}
+		}
+
+
+		// if we want to load the page with the Isaac Book modal displayed
+		var stopWatchingForBookPopup;
+
+		if ($stateParams.books) {
+
+			if ($stateParams.books == 'show') {
+
+                stopWatchingForBookPopup = $scope.$watch("modals", function(newModals) {
+
+                    if (newModals.isaacBooks) {
+                        $scope.modals.isaacBooks.show();
+                        stopWatchingForBookPopup();
+                    }
+                });
 			}
 		}
 	}];

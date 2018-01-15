@@ -841,7 +841,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('setAssignments', {
-            url: "/set_assignments",
+            url: "/set_assignments?books",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
             },

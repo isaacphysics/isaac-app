@@ -1118,7 +1118,7 @@ circle.streak-progress-bar {
             background-position: -1px 369px;
 
             &.unlocked {
-                background-position: -191px 369px;
+                background-position: -96px 369px;
             }
         }
     }
@@ -1158,9 +1158,8 @@ circle.streak-progress-bar {
 
     .explanation {
 
-        //background-color: #EFEFEF;
         display: inline-block;
-        text-align: left;
+        text-align: center;
 
         span.count {
             color: #509e2e;
@@ -1181,6 +1180,13 @@ circle.streak-progress-bar {
 
         div.explanation {
             width:80%;
+            margin-top:2%;
+            text-align: left;
+
+            a.getStarted {
+                float:right;
+            }
+
         }
 
     }
