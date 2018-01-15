@@ -159,22 +159,31 @@ define([], function() {
                             // Calculate student totals and gameboard totals
                             scope.assignmentProgress[k].studentsCorrect = 0;
                             for (var j = 0; j < progress.length; j++) {
+
                                 var studentProgress = progress[j];
-                                studentProgress.notAttemptedPartResults = [];
-                                studentProgress.tickCount = 0;
-                                studentProgress.correctQuestionPartsCount = 0;
-                                studentProgress.incorrectQuestionPartsCount = 0;
-                                for (var i in studentProgress.results) {
-                                    if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
-                                        studentProgress.tickCount++;
+
+                                if (progress[j].user.authorisedFullAccess) {
+
+                                    studentProgress.tickCount = 0;
+                                    studentProgress.correctQuestionPartsCount = 0;
+                                    studentProgress.incorrectQuestionPartsCount = 0;
+                                    studentProgress.notAttemptedPartResults = [];
+
+                                    for (var i in studentProgress.results) {
+                                        if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
+                                            studentProgress.tickCount++;
+                                        }
+                                        studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
+                                        studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
+                                        studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
+                                        // for sorting the table on the particular question, student progress needs a unique attribute name for this value
+                                        studentProgress[scope.questionPageLabel + i] = studentProgress.correctPartResults[i];
                                     }
-                                    studentProgress[scope.questionPageLabel + i] = studentProgress.correctPartResults[i];
-                                    studentProgress.correctQuestionPartsCount += studentProgress.correctPartResults[i];
-                                    studentProgress.incorrectQuestionPartsCount += studentProgress.incorrectPartResults[i];
-                                    studentProgress.notAttemptedPartResults.push(questions[i].questionPartsTotal - studentProgress.correctPartResults[i] - studentProgress.incorrectPartResults[i]);
-                                }
-                                if (studentProgress.tickCount == gameBoard.questions.length) {
-                                    scope.assignmentProgress[k].studentsCorrect++;
+
+                                    if (studentProgress.tickCount == gameBoard.questions.length) {
+                                        scope.assignmentProgress[k].studentsCorrect++;
+                                    }
+
                                 }
                             }
                         });

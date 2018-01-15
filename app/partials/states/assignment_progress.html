@@ -137,7 +137,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:assignment.pupilSortOption.value:assignment.pupilSortOption.reverse"
+                                                <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:assignment.pupilSortOption.value:assignment.pupilSortOption.reverse | showUndefinedLast:assignment.pupilSortOption.value"
                                                     ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], pageSettings.colourBlind)"
                                                     on-repeat-render="ngRepeatFinished">
                                                     <td class="student-name">
