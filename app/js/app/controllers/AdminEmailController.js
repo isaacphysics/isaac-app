@@ -29,7 +29,7 @@ define([], function() {
 	    $scope.subjectPreview = "";
 
 	    $scope.emailToSend = {
-	    	emailType : -1,
+	    	emailType : null,
 	    	contentObjectId : "", 
 	    	users: {
 		    	ADMIN : false,
@@ -43,7 +43,6 @@ define([], function() {
 	    };
 
 	    $scope.getInitialUserFilterState = function() {
-	    	debugger
 	    	if($stateParams.userIds != ""){
 	    		$scope.csvuseridlist = $stateParams.userIds;
 	    		return('csvuseridlist');
@@ -137,8 +136,8 @@ define([], function() {
 	    	});
 	    };
 
-        $scope.emailTypeChanged = function(idOfSelectedEmailType){
-			$scope.emailToSend.emailType = idOfSelectedEmailType;         
+        $scope.emailTypeChanged = function(emailType){
+			$scope.emailToSend.emailType = emailType.name;         
 		};
 
 	    $scope.validateAndSendEmails = function(){
@@ -207,7 +206,7 @@ define([], function() {
 		        	return;
 				}).catch(function(e){
 					$scope.setLoading(false);
-	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
+	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", e.status + " " + e.statusText + ": " + (e.data.errorMessage || ""));
 		        	return;
 				});
 			}
@@ -221,8 +220,8 @@ define([], function() {
 	    			$scope.showToast($scope.toastTypes.Success, "Success!", "Email has been sent (and filtered) successfully!");
 	    			return;
 				}).catch(function(e){
-	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", "With error message (" + e.status + ") " + e.statusText);
 		        	$scope.setLoading(false);
+	    			$scope.showToast($scope.toastTypes.Failure, "Email sending failed", e.status + " " + e.statusText + ": " + (e.data.errorMessage || ""));
 		        	return;
 				});
 			}
