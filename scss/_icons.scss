@@ -87,3 +87,33 @@
 .icon-check:before {
   content: "u";
 }
+
+td .sortable {
+    padding-right: 20px;
+    padding-left: 6px;
+    position: relative;
+    text-align: left;
+    cursor: pointer;
+}
+td .sortable:before, td .sortable:after{
+    content: "";
+    display: block;
+    border: 4px solid transparent;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+}
+td .sortable:before {
+    border-bottom-color: #666;
+    margin-top: -9px;
+}
+td .sortable:after {
+    border-top-color: #666;
+    margin-top: 1px;
+}
+td .sortable.descending:before {
+    border-bottom-color: #bbb; 
+}
+td .sortable.ascending:after {
+    border-top-color: #bbb; 
+}
