@@ -403,7 +403,7 @@ $failed-bg-size: 25%;
 
     td {
         color: #333;
-        font-size: 11px;
+        font-size: 12px;
         line-height: 13px;
         vertical-align: middle;
         text-align: center;
@@ -421,8 +421,6 @@ $failed-bg-size: 25%;
         &:first-child, &.total-column {
             border-left: #666 1px solid;
             border-right: #666 1px solid;
-            padding-right: 10px;
-            padding-left: 10px;
         }
         &.total-column {
             &.right {
@@ -521,6 +519,7 @@ $failed-bg-size: 25%;
                 font-weight: 200;
                 border-top: #999 1px solid;
                 border-bottom: #999 1px solid;
+                padding: 0px;
 
                 &:first-child, &.total-column {
                     color: #555;
@@ -528,12 +527,13 @@ $failed-bg-size: 25%;
                     background-color:#ddd;
                 }
 
-                padding: 9px 0;
-
                 &.selected {
                     color: $ru_green;
                     font-weight: 600;
                     background-color: white;
+                    .sortable {
+                        text-align: center;
+                    }
                 }
             }
         }
@@ -726,7 +726,7 @@ div[d3-plot] {
 /*
     All media quires 
 */
-@media #{$small-only} { 
+@media #{$small-only} {
     .accordion-group {
         .hide-for-medium-up {
             display: inline !important;
@@ -758,6 +758,13 @@ div[d3-plot] {
         }
     }
 
+    div.key-description {
+        font-size: 14px;
+        clear: both;
+    }
+    div.assignment-progress-options {
+        font-size: 14px;
+    }
 }
 @media #{$medium-up} {
     .progress-wrap {
@@ -863,7 +870,7 @@ div[d3-plot] {
     .table-progress {
 
         td {
-            font-size: 18px;
+            font-size: 17px;
             line-height: 20px;
             font-weight: 300;
         }
@@ -1027,7 +1034,7 @@ div[d3-plot] {
         padding-bottom: 2px;
         float:left;
     }
-    div.key-desctiption {
+    div.key-description {
         text-align: center;
         font-weight: 400;
     }

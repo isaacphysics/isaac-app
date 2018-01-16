@@ -118,7 +118,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.2.6/api");
+            apiProvider.urlPrefix("/api/v2.3.1/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -691,19 +691,27 @@ define([
         //$rootScope.notificationListLength = 0;
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
-        var socketOpen = false;
+        $rootScope.webSocketCheckTimeout = null;
 
         $rootScope.openNotificationSocket = function() {
 
-            $rootScope.user.$promise.then(function() {
-             // we are logged in
+            if ($rootScope.notificationWebSocket != null) {
+                return;
+            }
 
-                // set up websocket and connect to notification endpoint
+            $rootScope.user.$promise.then(function() {
+
+                if (!$rootScope.user._id) {
+                    // Promise resolved, but no user!
+                    return;
+                }
+
+                // Set up websocket and connect to notification endpoint:
                 $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    socketOpen = true;
+                    return;
                 }
 
 
@@ -711,7 +719,7 @@ define([
 
                     var websocketMessage = JSON.parse(event.data);
 
-                    // user snapshot update
+                    // User snapshot update:
                     if (websocketMessage.userSnapshot) {
 
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
@@ -771,31 +779,70 @@ define([
 
 
                 $rootScope.notificationWebSocket.onerror = function(error) {
-                    console.log(error.details);
+                    console.error("WebSocket error:", error);
                 }
 
 
                 $rootScope.notificationWebSocket.onclose = function(event) {
-                    socketOpen = false;
+                    // Check if a server error caused the problem, and if so prevent retrying.
+                    // The abnormal closure seems to be mainly caused by network interruptions.
+                    switch (event.code) {
+                        case 1000:  // 'Normal': should try to reopen connection.
+                        case 1001:  // 'Going Away': should try to reopen connection.
+                        case 1006:  // 'Abnormal Closure': should try to reopen connection.
+                        case 1013:  // 'Try Again Later': should attempt to reopen, but in at least a minute!
+                            // Cancel any existing WebSocket poll timeout:
+                            if ($rootScope.webSocketCheckTimeout != null) {
+                                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                            }
+                            // Attempt to re-open the WebSocket later, with timeout depending on close reason:
+                            if (event.reason == 'TRY_AGAIN_LATER') {
+                                // The status code 1013 isn't yet supported properly, and IE/Edge don't support custom codes.
+                                // So use the event 'reason' to indicate too many connections, try again in 1 min.
+                                console.log("WebSocket endpoint overloaded. Trying again later!")
+                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
+                            } else {
+                                // This is likely a network interrupt or else a server restart.
+                                // For the latter, we really don't want all reconnections at once.
+                                // Wait a random time between 10s and 60s, and then attempt reconnection:
+                                var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
+                                console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
+                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, randomRetryIntervalSeconds * 1000);
+                            }
+                            break;
+                        default: // Unexpected closure code: log and abort retrying!
+                            console.error("WebSocket closed by server error (Code " + event.code + "). Aborting retry!");
+                            if ($rootScope.webSocketCheckTimeout != null) {
+                                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                            }
+                            api.logger.log({
+                                type: "WEBSOCKET_ERROR",
+                                code: event.code,
+                                reason: event.reason,
+                                userId: $rootScope.user._id,
+                                userAgent: navigator.userAgent,
+                            });
+                    }
+                    $rootScope.notificationWebSocket = null;
                 }
 
             });
         }
 
-        $timeout($rootScope.openNotificationSocket, 1000);
+        $timeout($rootScope.openNotificationSocket, 500);
 
         var checkForWebSocket = function() {
 
-            if (!socketOpen) {
-                $rootScope.openNotificationSocket();
-            } else {
+            if ($rootScope.notificationWebSocket != null) {
                 $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+            } else {
+                $rootScope.openNotificationSocket();
             }
-            $timeout(checkForWebSocket, 10000);
+            $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
 
         }
 
-        $timeout(checkForWebSocket, 5000);
+        $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 3000);
 
 
 
