@@ -34,9 +34,12 @@
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 4}" ng-click="activateTab(4)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Beta <span>Features</span></a></dd>
         </dl>
 
         <form class="panel" ng-submit="save()" name="account" novalidate>
+
+        <!-- TAB 0 -->
         <div class="tabs-content tabs-account-settings-content">
             <div class="account-settings-personal-information" ng-class="{content: true, active: 0 == activeTab}">
                     <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
@@ -276,6 +279,7 @@
                 </div>
             </div>
 
+            <!-- TAB 1 -->
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
                 <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
                     <div ng-show="user.hasSegueAccount || !editingSelf">
@@ -321,6 +325,7 @@
                 </ul>
             </div>
 
+            <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
@@ -349,6 +354,7 @@
                 </div>
             </div>
 
+            <!-- TAB 3 -->
             <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}"  ng-if="editingSelf" >
                 Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
 
@@ -395,6 +401,37 @@
                 </table>
                 For more information about privacy and Isaac, please refer to our <a href='/privacy'>privacy policy</a>. 
             </div>
+        
+            <!-- TAB 4 -->
+            <div class="account-settings-beta-features"  ng-class="{content: true, active: 4 == activeTab}"  ng-if="editingSelf" >
+                <p class="beta-warning"><span class="beta-warning"><img src="/assets/warning.png" alt="!" class="beta-warning" /> Experimental Features <img src="/assets/warning.png" alt="!" class="beta-warning" /><span><p>
+                <p>These features are new and experimental. They may not work correctly on all browsers and we can't offer much support if you decide to use them.</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th width="150">Feature</th>
+                      <th class="hide-for-small-only">Description</th>
+                      <th width="50">Enable?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Equation Text Entry</td>
+                      <td class="hide-for-small-only">Type answers to symbolic questions using a basic maths syntax. You will see an additional box which allows you to enter answers using the keyboard.
+                                                      The equation editor <a ui-sref='equality' target='_blank'>can be used to generate examples</a>.</td>
+                      <td class="feature-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="eqn-editor-text-entry">&nbsp;</label>
+                          <input id="eqn-editor-text-entry" type="checkbox" ng-model="betaFeatures.EQN_TEXT_ENTRY" input-animation>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                If you want to provide feedback or experience serious problems using these features, you can <a ui-sref="contact({subject: 'Beta Features'})">let us know here</a>.
+            </div>
+
+            <!-- END TABS -->
         </div>
     </form>
 </div>
