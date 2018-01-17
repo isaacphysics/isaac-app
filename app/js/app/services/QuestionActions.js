@@ -27,13 +27,12 @@ define([], function() {
 
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
 						var selectedChoice = JSON.parse(scope.question.selectedChoice.value);
-						if (selectedChoice.hasOwnProperty("type") && selectedChoice.type == "formula") {
-                            if (selectedChoice.hasOwnProperty("symbols") && Object.keys(selectedChoice.symbols).length == 0) {
-		                        return;
-                            }
-						} else if (selectedChoice.hasOwnProperty("type") && selectedChoice.type == "text-entry-formula") {
-							// We're OK
-                        }
+						if (selectedChoice.hasOwnProperty("symbols")) {
+							// If we have symbols, this was definitely the graphical editor. Ensure an answer was provided:
+							if (Object.keys(selectedChoice.symbols).length == 0) {
+								return;
+							}
+						}
 					}
 
 					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);

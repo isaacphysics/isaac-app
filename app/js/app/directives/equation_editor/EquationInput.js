@@ -12,10 +12,17 @@ define([], function() {
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
 
+
+                var timer = null;
                 scope.textEdit = function() {
-                    // This is on a keyUp event so it should not fire when showEquationEditor returns (see below)
-                    scope.state.formula = element.find(".eqn-text-input")[0].value;
-                    scope.$apply();
+                    if (timer) {
+                        $timeout.cancel(timer);
+                        timer = null;
+                    }
+                    timer = $timeout(function() {
+                        // This is on a keyUp event so it should not fire when showEquationEditor returns (see below)
+                        scope.state = {result: {python: element.find(".eqn-text-input")[0].value}, textEntry: true};
+                    }, 250);
                 };
 
                 scope.edit = function() {
@@ -37,10 +44,22 @@ define([], function() {
 
                 scope.$watch("state", function(s) {
                     if (s && s.result) {
-                        katex.render(s.result.tex, element.find(".eqn-preview")[0]);
+                        // We have an existing answer to the question.
+                        // If we have the LaTeX form, render it; else answer was typed:
+                        if (s.result.tex) {
+                            katex.render(s.result.tex, element.find(".eqn-preview")[0]);
+                        } else {
+                            element.find(".eqn-preview").html("Click to replace your typed answer");
+                        }
+                        // If we have the python form, add it to the text entry box:
+                        if (s.result.python) {
+                            element.find(".eqn-text-input")[0].value = s.result.python;
+                        }
                     } else if (scope.questionDoc) {
+                        // This is a question part not yet attempted:
                         element.find(".eqn-preview").html("Click to enter your answer");
                     } else {
+                        // This is probably the /equality page:
                         element.find(".eqn-preview").html("Click to enter a formula!");
                     }
                 })

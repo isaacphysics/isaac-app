@@ -1,5 +1,5 @@
 <div>
-    <a href="javascript:void(0)" ng-click="edit()" class="eqn-preview" editor-mode="editorMode" ng-style="{color: state.result ? 'black' : '#ddd'}" style="border-radius: 3px;
+    <a href="javascript:void(0)" ng-click="edit()" class="eqn-preview" editor-mode="editorMode" ng-style="{color: state.result.tex ? 'black' : '#ddd'}" style="border-radius: 3px;
   box-shadow: none;
   font-size: 2rem;
   padding: 0.5rem;
@@ -14,8 +14,6 @@
   &nbsp;
 </a>
 </div>
-<div ng-show="$root.segueEnvironment=='DEV'">
-    <p>... or type your answer <strong>(beta)</strong>
-        <input ng-keyup="textEdit()" type="text" class="eqn-text-input" placeholder="Type your answer here."></input>
-    </p>
+<div ng-show="editorMode == 'maths' && questionDoc.type && $root.userPreferences.BETA_FEATURE.EQN_TEXT_ENTRY">
+    <input ng-keyup="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="Or type your answer (beta!)" style="font-family: monospace; font-size: 1.4rem;"></input>
 </div>

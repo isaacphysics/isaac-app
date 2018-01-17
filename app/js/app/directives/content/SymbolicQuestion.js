@@ -71,23 +71,12 @@ define(["app/honest/responsive_video"], function(rv) {
                     if (f === oldF) {
                         return; // Init
                     }
-
                     if (f) {
-                        if (f.hasOwnProperty('formula')) {
-                            // Text entry
-                            scope.question.selectedChoice = {
-                                type: "formula",
-                                value: JSON.stringify( { type: "text-entry-formula" } ),
-                                pythonExpression: f.formula || "",
-                            };
-                        } else {
-                            // Graphical entry
-                            scope.question.selectedChoice = {
-                                type: "formula",
-                                value: JSON.stringify(f),
-                                pythonExpression: f.result ? f.result.python : "",
-                            };
-                        }
+                        scope.question.selectedChoice = {
+                            type: "formula",
+                            value: JSON.stringify(f),
+                            pythonExpression: f.result ? f.result.python.trim() : "",
+                        };
                     } else {
                         scope.question.selectedChoice = null;
                     }
