@@ -12,6 +12,15 @@ define([], function() {
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
 
+                if (scope.questionDoc && scope.questionDoc.availableSymbols) {
+                    try {
+                        scope.symbolList = scope.questionDoc.availableSymbols.map(function (str) {return str.trim().replace(';', ',')}).join(", ");
+                    } catch (err) {
+                        // Do not let invalid availableSymbols prevent anyone from answering the question!
+                        scope.symbolList = null;
+                    }
+                }
+
 
                 var timer = null;
                 scope.textEdit = function() {

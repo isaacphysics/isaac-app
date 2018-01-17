@@ -16,4 +16,5 @@
 </div>
 <div ng-show="editorMode == 'maths' && questionDoc.type && $root.userPreferences.BETA_FEATURE.EQN_TEXT_ENTRY">
     <input ng-keyup="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="Or type your answer (beta!)" style="font-family: monospace; font-size: 1.4rem;"></input>
+    <div ng-show="symbolList" style='font-size: 1rem;margin-bottom:10px;color:#aaa;'>The following symbols may be useful: <pre style='display:inline;'> {{symbolList}}<pre></div>
 </div>
