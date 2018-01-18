@@ -25,6 +25,7 @@ define([], function() {
 
         $scope.emailPreferences = {"NEWS_AND_UPDATES": true, "ASSIGNMENTS": true, "EVENTS": true};
         $scope.subjectInterests = {};
+        $scope.betaFeatures = {};
         $scope.passwordChangeState = {
             passwordCurrent : ""
         };
@@ -45,6 +46,9 @@ define([], function() {
                     break;
                 case "emailpreferences":
                     $scope.activeTab = 3;
+                    break;
+                case "betafeatures":
+                    $scope.activeTab = 4;
                     break;
             }
         }
@@ -74,6 +78,7 @@ define([], function() {
                     });
                 }
                 $scope.subjectInterests = result.SUBJECT_INTEREST || $scope.subjectInterests;
+                $scope.betaFeatures = result.BETA_FEATURE || $scope.betaFeatures;
             });
         }
 
@@ -251,7 +256,8 @@ define([], function() {
                     registeredUser : $scope.user,
                     userPreferences : {
                         EMAIL_PREFERENCE : $scope.emailPreferences,
-                        SUBJECT_INTEREST : $scope.subjectInterests
+                        SUBJECT_INTEREST : $scope.subjectInterests,
+                        BETA_FEATURE: $scope.betaFeatures
                     }
                 }
 

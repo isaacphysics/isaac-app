@@ -109,6 +109,41 @@
 		}
 	}
 
+	.account-settings-beta-features{
+		overflow:auto;
+		padding:20px;
+		background:white;
+		&table{
+			margin: 0px;
+			
+		}
+		p.beta-warning {
+			text-align: center;
+			font-weight: bold;
+		}
+
+		img.beta-warning {
+			padding-bottom: 5px;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.feature-checkbox{
+			position: relative;
+			text-align: center;
+			input {
+				left: 26px;
+			}
+			label {
+				padding-left: 36px;
+				margin-top: 7px;
+				margin-bottom: 7px;
+			}
+			>div>svg {
+				margin: -25px 0 0 -2px; 
+			}
+		}
+	}
+
 	.account-settings-teacher-connections{
 		overflow:auto;
 		padding:20px;

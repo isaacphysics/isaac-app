@@ -26,9 +26,12 @@ define([], function() {
 					scope.canSubmit = false;
 
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
-						var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
-						if (Object.keys(symbols).length == 0) {
-							return;
+						var selectedChoice = JSON.parse(scope.question.selectedChoice.value);
+						if (selectedChoice.hasOwnProperty("symbols")) {
+							// If we have symbols, this was definitely the graphical editor. Ensure an answer was provided:
+							if (Object.keys(selectedChoice.symbols).length == 0) {
+								return;
+							}
 						}
 					}
 
