@@ -22,3 +22,6 @@ tunnels:
         addr: 8002
         subdomain: isaacbiology
         bind_tls: true
+# If you want these domains to work, you will need to modify
+# you local version of isaac-api/override-api-web.xml to add
+# the domains to 'allowedOrigins'!
