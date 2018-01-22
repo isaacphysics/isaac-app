@@ -161,8 +161,8 @@ define(['jquery'], function($) {
                     if (scope.boardState.$resolved) {
                         scope.boardState = scope.boardState;
                         var workingOn = {
-                            title: scope.currentPage.tags.includes(scope.FT_STATES.ft_top_ten.tagName) ? scope.currentPage.id : scope.currentPage.title,
-                            level: scope.currentPage.tags.includes(scope.FT_STATES.ft_top_ten.tagName) ? scope.FT_STATES.ft_top_ten.tagName : (scope.currentPage.tags.includes(scope.FT_STATES.ft_upper.tagName)) ? scope.FT_STATES.ft_upper.tagName : scope.FT_STATES.ft_lower.tagName,
+                            title: scope.currentPage.tags.indexOf(scope.FT_STATES.ft_top_ten.tagName) >= 0 ? scope.currentPage.id : scope.currentPage.title,
+                            level: scope.currentPage.tags.indexOf(scope.FT_STATES.ft_top_ten.tagName) >= 0 ? scope.FT_STATES.ft_top_ten.tagName : (scope.currentPage.tags.indexOf(scope.FT_STATES.ft_upper.tagName) >= 0) ? scope.FT_STATES.ft_upper.tagName : scope.FT_STATES.ft_lower.tagName,
                         }
                         var progressValues = evaluateProgress(scope.boardState, workingOn);
                         renderProgress(progressValues);

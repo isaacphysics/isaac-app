@@ -27,9 +27,9 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 		};
 	}])
 	.filter('capitalize', [function() {
-			return function(input) {
-					return (!!input) ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
-			}
+		return function(input) {
+			return (!!input) ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
+		}
 	}])
 	.filter('showdown', [function() {
 		var Showdown = require("lib/showdown/showdown.js");
@@ -41,12 +41,39 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 			return converter.makeHtml(input);
 		}
 	}])
-
 	.filter('indexToPart', [function() {
-
 		return function(input) {
 			return String.fromCharCode(65 + input);
 		}
 	}])
-
+	.filter('splitCapitalize', [function() {
+		return function(input) {
+			var splitInput = input.split(' ');
+			var out = [];
+			for (var i = 0; i < splitInput.length; i++) {
+				var segment = splitInput[i];
+				out.push(segment.charAt(0).toUpperCase() + segment.substring(1).toLowerCase())
+			}
+			return out.join(' ');
+		};
+	}])
+	.filter('splitList', [function() {
+		return function(input) {
+			var splitInput = input.split(' ');
+			return (splitInput.length > 1) ? [splitInput.slice(0,-1).join(', '), splitInput.slice(-1)].join(' & ') : input;
+		};
+	}])
+	.filter("showUndefinedLast", function () {
+	    return function (array, key) {
+	        if (angular.isArray(array)) {
+		        var definedValues = array.filter(function (item) {
+		            return item[key] !== undefined;
+		        });
+		        var undefinedValues = array.filter(function (item) {
+		            return item[key] === undefined;
+		        });
+		        return definedValues.concat(undefinedValues);
+		    }
+	    };
+	})
 });

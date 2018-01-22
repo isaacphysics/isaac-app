@@ -34,20 +34,17 @@
                                 stroke-width="15" fill="none"></circle>
 
                         <circle id="current-streak-progress-bar" class="streak-progress-bar" r="40" cx="50%" cy="50%"
-                                stroke-width="16"
+                                stroke-width="15"
                                 stroke-dasharray="251.327" stroke-dashoffset="251.327"
                                 fill="none"></circle>
                     </svg>
-                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak != null">
-                        {{ streakRecord.currentStreak }}
-                    </div>
-                    <div class="streak-value-progress" ng-if="streakRecord.currentStreak == null">
-                        0
+                    <div class="streak-value-progress">
+                        {{ progress.userSnapshot.streakRecord.currentStreak || 0 }}
                     </div>
                 </div>
                 <div style="text-align: center;">
-                    Longest streak: {{ streakRecord.largestStreak }}
-                    day<span ng-if="streakRecord.largestStreak > 1">s</span>
+                    Longest streak: {{ progress.userSnapshot.streakRecord.largestStreak || 0 }}
+                    day<span ng-if="progress.userSnapshot.streakRecord.largestStreak != 1">s</span>
                     <span style="cursor: pointer;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
                     <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
                           class="dl-alert warning hide-for-small-only" aria-haspopup="true">?</span>

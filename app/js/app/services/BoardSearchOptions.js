@@ -16,18 +16,44 @@
  define([], function() {
 	return function() {
 		return {
-			filter: [
-				{label: "All Boards", val: null},
-				{label: "Not Started", val: "not_attempted"},
-				{label: "In Progress", val: "in_progress"},
-				{label: "Completed", val: "completed"}
-			],
-			sort: [
-				{label: "Date Created", val: "created"},
-				{label: "Date Visited", val: "visited"},
-				{label: "Title Ascending", val: "title"},
-				{label: "Title Descending", val: "-title"}
-			]
+			filter: {
+				cardDefault: "all",
+				tableDefault: "all",
+				values: {
+					all: {label: "Boards", value: null},
+					unstarted: {label: "Unstarted Boards", value: "not_attempted"},
+					inProgress: {label: "In-progress Boards", value: "in_progress"},
+					completed: {label: "Completed Boards", value: "completed"}
+				}
+			},
+			sort: {
+				cardDefault: "visited",
+				tableDefault: "visited",
+				values: {
+					created: {label: "Date Created", value: "created"},
+					visited: {label: "Date Visited", value: "visited"},
+					titleAscending: {label: "Title Ascending", value: "title"},
+					titleDescending: {label: "Title Descending", value: "-title"}
+				}
+			},
+			noBoards: {
+				cardDefault: "six",
+				tableDefault: "all",
+				values: {
+					six: {label: "6", value: 6},
+					eighteen: {label: "18", value: 18},
+					sixty: {label: "60", value: 60},
+					all: {label: "All", value: "ALL"}
+				}
+			},
+			view: {
+				cardDefault: "card",
+				tableDefault: "table",
+				values: {
+					card: {label: "Card View", value: "card", defaultFieldName: "cardDefault"},
+					table: {label: "Table View", value: "table", defaultFieldName: "tableDefault"}
+				}
+			}
 		};
 	}
 });
