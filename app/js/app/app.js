@@ -711,7 +711,7 @@ define([
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    return;
+                    $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
                 }
 
 
@@ -835,17 +835,12 @@ define([
 
             if ($rootScope.notificationWebSocket != null) {
                 $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
             } else {
                 $rootScope.openNotificationSocket();
             }
-            $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
 
         }
-
-        $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 3000);
-
-
-
 
         var checkForNotifications = function() {
 
