@@ -30,7 +30,7 @@ define([], function() {
 			return levels;
 	}
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout, $location) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -71,7 +71,10 @@ define([], function() {
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 
-				updateGroupAssignmentMap($scope.boards.results)
+				updateGroupAssignmentMap($scope.boards.results);
+				if ($location.hash()) {
+					$scope.toggleAssignPanel({id: $location.hash()});
+				}
 
 				$scope.setLoading(false);
 			})

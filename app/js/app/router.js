@@ -924,7 +924,7 @@ define(["angular-ui-router"], function() {
 
                 api.saveGameBoard($stateParams.boardId).$promise.then(function() {
                     if (requireLogin.role == "TEACHER" || requireLogin.role == "CONTENT_EDITOR" || requireLogin.role == "EVENT_MANAGER" || requireLogin.role == "ADMIN") {
-                        $state.go("setAssignments", {}, {
+                        $state.go("setAssignments", {'#': $stateParams.boardId}, {
                             location: "replace"
                         });
                     } else {
