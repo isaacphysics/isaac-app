@@ -6,15 +6,15 @@
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
       <span data-ot="Assign any of the boards you have created to your groups." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
-    </div>      
+    </div>
   </div>
   <div class="row button-menu">
     <div class="small-16 medium-5 columns">
       <button ng-click="modals.isaacBooks.show()">our GCSE &amp; A-Level books</button>
-    </div> 
+    </div>
     <div class="small-16 medium-5 columns">
       <button ui-sref="pages({id: 'pre_made_gameboards'})">boards for lessons</button>
-    </div> 
+    </div>
     <div class="small-16 medium-5 columns end">
       <button ui-sref="gameEditor">create a board</button>
     </div>
@@ -23,7 +23,7 @@
     <div class="small-16 columns">
       <h3 ng-show="boards && boards.totalResults > 1">You have <strong>{{boards.totalResults}}</strong></span> boards ready to assign...</h3>
       <h3 ng-show="boards && boards.totalResults == 1">You have <strong>{{boards.totalResults}}</strong></span> board ready to assign...</h3>
-      <h3 ng-show="boards.totalResults == 0">You have no boards to assign; select an option above to add a board.</h3>        
+      <h3 ng-show="boards.totalResults == 0">You have no boards to assign; select an option above to add a board.</h3>
     </div>
   </div>
 </div>

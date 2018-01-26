@@ -53,7 +53,7 @@ define([], function() {
 		if (board.ownerUserId == userId) {
 			creator = "Me";
 		}
-		else {
+		else if (board.tags) {
 			for (var i = 0; i < PRIORITISED_BOARD_TAGS.length; i++) {
 				var boardTag = PRIORITISED_BOARD_TAGS[i];
 				if (board.tags.indexOf(boardTag.identifier) >= 0) {

@@ -64,16 +64,16 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 		};
 	}])
 	.filter("showUndefinedLast", function () {
-	    return function (array, key) {
-	        if (angular.isArray(array)) {
-		        var definedValues = array.filter(function (item) {
-		            return item[key] !== undefined;
-		        });
-		        var undefinedValues = array.filter(function (item) {
-		            return item[key] === undefined;
-		        });
-		        return definedValues.concat(undefinedValues);
-		    }
-	    };
+		return function (array, key) {
+			if (angular.isArray(array)) {
+				var definedValues = array.filter(function (item) {
+					return item[key] !== undefined;
+				});
+				var undefinedValues = array.filter(function (item) {
+					return item[key] === undefined;
+				});
+				return definedValues.concat(undefinedValues);
+			}
+		};
 	})
 });
