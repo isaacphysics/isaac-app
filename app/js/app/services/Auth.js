@@ -88,6 +88,11 @@ define([], function() {
 			return p;
 		}
 
+		var updateUserPreferences = function() {
+			$rootScope.userPreferences = api.user.getUserPreferences();
+			return $rootScope.userPreferences.$promise;
+		}
+
 		this.updateUser = function() {
 			return new Promise(function(resolve, reject) {
 				var userResource = api.currentUser.get();
@@ -96,12 +101,18 @@ define([], function() {
 				}
 				
 				userResource.$promise.then(function(u) {
-					$timeout(function() {
-						$rootScope.user = u;
-						setupUserConsistencyCheck();
-						$rootScope.$apply();
+
+					return new Promise(function(resolve, reject) {
+						$timeout(function() {
+							$rootScope.user = u;
+							setupUserConsistencyCheck();
+							$rootScope.$apply();
+							resolve();
+						});
+					}).then(updateUserPreferences).then(function() {
 						resolve(u);
 					});
+
 				}).catch(function(){
 					cancelUserConsistencyCheck();
 					reject();
@@ -116,6 +127,7 @@ define([], function() {
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
+					//$rootScope.openNotificationSocket(); // The page gets reloaded immediately anyway, unnecessary?
 		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){

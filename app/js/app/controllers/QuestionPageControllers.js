@@ -79,7 +79,7 @@ define([], function() {
 			$scope.gameboardId = $stateParams.board;
 			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
 			if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
-				!$scope.fastTrackProgressEnabledBoards.includes($scope.gameboardId)) {
+				$scope.fastTrackProgressEnabledBoards.indexOf($scope.gameboardId) == -1) {
 				$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
 			} else {
 				$scope.gameBoard = api.fastTrackGameboards.get({id: $scope.gameboardId});

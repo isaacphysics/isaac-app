@@ -46,7 +46,7 @@ define([], function() {
                                 longUrl: data.longUrl,
                             });
                             // Attempt to select the share URL for users with a modern browser:
-                            var shareUrlDiv = document.getElementById('share-url-div');
+                            var shareUrlDiv = element.parent().find(".share-url-div")[0];
                             if (window.getSelection && shareUrlDiv) {
                                 selection = window.getSelection();        
                                 range = document.createRange();

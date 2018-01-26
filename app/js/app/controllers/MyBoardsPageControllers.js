@@ -102,7 +102,7 @@ define([], function() {
 		});
 
 		var setDefaultBoardSearchOptions = function(viewDefaultField, allBoardsLoaded) {
-			if (['cardDefault', 'tableDefault'].includes(viewDefaultField)) {
+			if (['cardDefault', 'tableDefault'].indexOf(viewDefaultField) >= 0) {
 				// API parameters
 				for (boardSearchParameter in $scope.boardSearchOptions) {
 					var boardSearchOption = boardSearchOptions[boardSearchParameter];

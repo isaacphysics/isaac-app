@@ -34,9 +34,12 @@
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 4}" ng-click="activateTab(4)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Beta <span>Features</span></a></dd>
         </dl>
 
         <form class="panel" ng-submit="save()" name="account" novalidate>
+
+        <!-- TAB 0 -->
         <div class="tabs-content tabs-account-settings-content">
             <div class="account-settings-personal-information" ng-class="{content: true, active: 0 == activeTab}">
                     <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
@@ -126,16 +129,16 @@
                                 </div>                   
                                 <div id="account-gender" class="ac-custom ac-radio ac-fill row">                 
                                     <div class="small-5 columns">
-                                        <label for="r1"><span>Male</span></label>
-                                        <input id="r1" name="r1" type="radio" ng-model="user.gender" value="MALE" input-animation>
+                                        <label for="gender-male"><span>Male</span></label>
+                                        <input id="gender-male" name="gender-male" type="radio" ng-model="user.gender" value="MALE" input-animation>
                                     </div>
                                     <div class="small-5 columns">
-                                        <label for="r2"><span class="centeral-label">Female</span></label>
-                                        <input id="r2" name="r1" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
+                                        <label for="gender-female"><span class="centeral-label">Female</span></label>
+                                        <input id="gender-female" name="gender-female" type="radio" ng-model="user.gender" value="FEMALE" input-animation>
                                     </div>
                                     <div class="small-6 columns">
-                                        <label for="r3"><span>Other</span></label>
-                                        <input id="r3" name="r1" type="radio" ng-model="user.gender" value="OTHER" input-animation>
+                                        <label for="gender-other"><span>Other</span></label>
+                                        <input id="gender-other" name="gender-other" type="radio" ng-model="user.gender" value="OTHER" input-animation>
                                     </div>                        
                                 </div>                    
                             </div>
@@ -276,6 +279,7 @@
                 </div>
             </div>
 
+            <!-- TAB 1 -->
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
                 <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
                     <div ng-show="user.hasSegueAccount || !editingSelf">
@@ -284,7 +288,7 @@
                                 <label for="account-password-current">
                                     <strong>Current password</strong>
                                 </label>
-                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" ng-class="{'ng-invalid': (password1 || password2) && !passwordChangeState.passwordCurrent}" name="passwordCurrent" placeholder="Current password">        
+                                <input id="account-password-current" type="password" ng-model="passwordChangeState.passwordCurrent" ng-class="{'ng-invalid': (password1 || password2) && !passwordChangeState.passwordCurrent}" name="passwordCurrent" placeholder="Current password" autocomplete="off">        
                             </div>
                         </div>
                         <div id="password-wrap" class="row">
@@ -295,13 +299,13 @@
                                     <strong ng-if="!user.hasSegueAccount">Set password</strong>
                                 </label>
                                 <!-- Can't set new password if not confirmed old one, or if don't have account with a password. Unless admin. -->
-                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}">
+                                <input id="account-password" ng-disabled="(!passwordChangeState.passwordCurrent || !user.hasSegueAccount)  && editingSelf" type="password" ng-model="password1" name="password" placeholder="Enter password" ng-class="{'ng-invalid': password1.length < 6}" autocomplete="new-password">
                             </div>
                         </div>
                         <div id="password2-wrap" class="row">
                             <div  class="large-6 columns">
                                 <label for="account-password2" ng-class="{'disabled' : (!password1 || password1.length < 6)}"><strong>Confirm password</strong></label>
-                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2">
+                                <input id="account-password2" type="password" placeholder="Re-enter password" ng-disabled="(!password1 || password1.length < 6)" match="password1" ng-model="password2" name="password2" autocomplete="new-password">
                                 <span class="ru-error-message" ng-if="(password1 || password2) && !passwordChangeState.passwordCurrent && editingSelf">
                                     Current password not provided
                                 </span>
@@ -321,6 +325,7 @@
                 </ul>
             </div>
 
+            <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
@@ -349,6 +354,7 @@
                 </div>
             </div>
 
+            <!-- TAB 3 -->
             <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}"  ng-if="editingSelf" >
                 Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
 
@@ -366,8 +372,8 @@
                       <td class="hide-for-small-only">New content and website feature updates, as well as interesting news about Isaac. </td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r1">&nbsp;</label>
-                          <input id="r1" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
+                          <label for="emails-news-and-updates">&nbsp;</label>
+                          <input id="emails-news-and-updates" type="checkbox" ng-model="emailPreferences.NEWS_AND_UPDATES" input-animation>
                         </div>
                       </td>
                     </tr>
@@ -376,8 +382,8 @@
                       <td class="hide-for-small-only ">Get notified when your teacher gives your group a new assignment.</td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r3">&nbsp;</label>
-                          <input id="r3" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
+                          <label for="emails-assignments">&nbsp;</label>
+                          <input id="emails-assignments" type="checkbox" ng-model="emailPreferences.ASSIGNMENTS" input-animation>
                         </div>
                       </td>
                     </tr>
@@ -386,8 +392,8 @@
                       <td class="hide-for-small-only">Information about new virtual or real world physics events.</td>
                       <td class="email-checkbox">
                         <div class="ac-custom ac-checkbox ac-checkmark">
-                          <label for="r2">&nbsp;</label>
-                          <input id="r2" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
+                          <label for="emails-events">&nbsp;</label>
+                          <input id="emails-events" type="checkbox" ng-model="emailPreferences.EVENTS" input-animation>
                         </div>
                       </td>
                     </tr>
@@ -395,6 +401,37 @@
                 </table>
                 For more information about privacy and Isaac, please refer to our <a href='/privacy'>privacy policy</a>. 
             </div>
+        
+            <!-- TAB 4 -->
+            <div class="account-settings-beta-features"  ng-class="{content: true, active: 4 == activeTab}"  ng-if="editingSelf" >
+                <p class="beta-warning"><span class="beta-warning"><img src="/assets/warning.png" alt="!" class="beta-warning" /> Experimental Features <img src="/assets/warning.png" alt="!" class="beta-warning" /><span><p>
+                <p>These features are new and experimental. They may not work correctly on all browsers and we can't offer much support if you decide to use them. You'll find more information about them on our <a href="https://labs.isaacphysics.org" target="_blank">technical blog</a>!</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th width="150">Feature</th>
+                      <th class="hide-for-small-only">Description</th>
+                      <th width="50">Enable?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Equation Text Entry</td>
+                      <td class="hide-for-small-only">Type answers to symbolic questions using a basic maths syntax. You will see an additional box which allows you to enter answers using the keyboard.
+                                                      The equation editor <a ui-sref='equality' target='_blank'>can be used to generate examples</a>.</td>
+                      <td class="feature-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="eqn-editor-text-entry">&nbsp;</label>
+                          <input id="eqn-editor-text-entry" type="checkbox" ng-model="betaFeatures.EQN_TEXT_ENTRY" input-animation>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                If you want to provide feedback or experience serious problems using these features, you can <a ui-sref="contact({subject: 'Beta Features'})">let us know here</a>.
+            </div>
+
+            <!-- END TABS -->
         </div>
     </form>
 </div>

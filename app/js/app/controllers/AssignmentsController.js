@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -57,6 +57,9 @@ define([], function() {
 				$scope.boards = boards;
 				boardProcessor.augmentBoards(boards, $scope.user._id);
 				updateGroupAssignmentMap($scope.boards.results);
+				if ($location.hash()) {
+					$scope.toggleAssignPanel({id: $location.hash()});
+				}
 
 				$scope.setLoading(false);
 			})
@@ -146,7 +149,7 @@ define([], function() {
 		}
 
 		$scope.getListOfGroups = function(listOfGroups) {
-			if (listOfGroups.length == 0) {
+			if (listOfGroups && listOfGroups.length == 0) {
 				return "No groups have been assigned."
 			}
 
