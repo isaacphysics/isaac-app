@@ -68,6 +68,8 @@ define(function(require) {
 		this.$get = function() { return subject; };
 	})
 
+    .service('boardProcessor', require("app/services/BoardProcessor"))
+
 	.service('persistence', require("app/services/Persistence"))
 
 	.service('auth', auth.service)
