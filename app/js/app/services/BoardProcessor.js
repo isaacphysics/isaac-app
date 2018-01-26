@@ -18,7 +18,7 @@ define([], function() {
 	var boardTags = {
 		isaac: {identifier: 'ISAAC_BOARD', createdByLabel: 'Isaac'}
 	}
-	var boardTagPriority = ['isaac']
+	var priorityOrderedBoardTags = ['isaac']
 
 	var calculateBoardLevels = function(board) {
 		levels = [];
@@ -50,13 +50,11 @@ define([], function() {
 	};
 
 	var calculateBoardCreator = function(board, userId) {
-		var creator = "Someone else";
-		if (board.ownerUserId == userId) {
-			creator = "Me";
-		}
-		else if (board.tags) {
-			for (var i = 0; i < boardTagPriority.length; i++) {
-				var boardTag = boardTags[boardTagPriority[i]];
+		var creator = board.ownerUserId == userId ? "Me" : "Someone else";
+		// A tagged gameboard overrides creator
+		if (board.tags) {
+			for (var i = 0; i < priorityOrderedBoardTags.length; i++) {
+				var boardTag = boardTags[priorityOrderedBoardTags[i]];
 				if (board.tags.indexOf(boardTag.identifier) >= 0) {
 					creator = boardTag.createdByLabel;
 					break;
