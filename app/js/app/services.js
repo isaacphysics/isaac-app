@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
+ 'use strict';
 
-define(function(require) {
+ define(function(require) {
 
-	/* Services */
+ 	/* Services */
 
-	var auth = require("app/services/Auth");
+ 	var auth = require("app/services/Auth");
 
 	// Demonstrate how to register services
 	// In this case it is a simple value service.
@@ -53,7 +53,6 @@ define(function(require) {
 			var Api = require("app/services/Api");
 
 			return new Api($resource, urlPrefix, $http, subject);
-				
 		}];
 	})
 
@@ -68,7 +67,7 @@ define(function(require) {
 		this.$get = function() { return subject; };
 	})
 
-    .service('boardProcessor', require("app/services/BoardProcessor"))
+	.service('boardProcessor', require("app/services/BoardProcessor"))
 
 	.service('persistence', require("app/services/Persistence"))
 

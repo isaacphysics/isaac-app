@@ -15,9 +15,10 @@
  */
 define([], function() {
 
-	var PRIORITISED_BOARD_TAGS = [
-		{identifier: 'ISAAC_BOARD', createdByLabel: 'Isaac'}
-	]
+	var boardTags = {
+		isaac: {identifier: 'ISAAC_BOARD', createdByLabel: 'Isaac'}
+	}
+	var boardTagPriority = ['isaac']
 
 	var calculateBoardLevels = function(board) {
 		levels = [];
@@ -54,8 +55,8 @@ define([], function() {
 			creator = "Me";
 		}
 		else if (board.tags) {
-			for (var i = 0; i < PRIORITISED_BOARD_TAGS.length; i++) {
-				var boardTag = PRIORITISED_BOARD_TAGS[i];
+			for (var i = 0; i < boardTagPriority.length; i++) {
+				var boardTag = boardTags[boardTagPriority[i]];
 				if (board.tags.indexOf(boardTag.identifier) >= 0) {
 					creator = boardTag.createdByLabel;
 					break;
@@ -66,6 +67,7 @@ define([], function() {
 	}
 
 	return ['$filter', function PersistenceConstructor($filter) {
+		this.boardTags = boardTags;
 		this.augmentBoards = function(boards, userId) {
 			for (boardIndex in boards.results) {
 				board = boards.results[boardIndex];
