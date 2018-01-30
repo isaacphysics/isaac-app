@@ -57,23 +57,23 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 			return out.join(' ');
 		};
 	}])
-	.filter('splitList', [function() {
+	.filter('splitCommaList', [function() {
 		return function(input) {
 			var splitInput = input.split(' ');
 			return (splitInput.length > 1) ? [splitInput.slice(0,-1).join(', '), splitInput.slice(-1)].join(' & ') : input;
 		};
 	}])
 	.filter("showUndefinedLast", function () {
-	    return function (array, key) {
-	        if (angular.isArray(array)) {
-		        var definedValues = array.filter(function (item) {
-		            return item[key] !== undefined;
-		        });
-		        var undefinedValues = array.filter(function (item) {
-		            return item[key] === undefined;
-		        });
-		        return definedValues.concat(undefinedValues);
-		    }
-	    };
+		return function (array, key) {
+			if (angular.isArray(array)) {
+				var definedValues = array.filter(function (item) {
+					return item[key] !== undefined;
+				});
+				var undefinedValues = array.filter(function (item) {
+					return item[key] === undefined;
+				});
+				return definedValues.concat(undefinedValues);
+			}
+		};
 	})
 });

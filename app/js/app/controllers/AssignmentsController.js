@@ -15,22 +15,7 @@
  */
 define([], function() {
 
-	var calculateBoardLevels = function(board){
-			levels = [];
-			for(var i = 0; i < board.questions.length; i++) {
-				if (levels.indexOf(board.questions[i].level) == -1 && board.questions[i].level != 0) {
-					levels.push(board.questions[i].level);
-				}
-			}
-
-			levels.sort(function (a, b) {
-   				return a > b ? 1 : a < b ? -1 : 0;
-			});
-
-			return levels;
-	}
-
-	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', '$rootScope', '$window', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardSearchOptions, $rootScope, $window, $timeout, $location) {
+	var SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location) {
 		$rootScope.pageTitle = "Assign Boards";
 
 		$scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -70,7 +55,7 @@ define([], function() {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
-
+				boardProcessor.augmentBoards(boards, $scope.user._id);
 				updateGroupAssignmentMap($scope.boards.results);
 				if ($location.hash()) {
 					$scope.toggleAssignPanel({id: $location.hash()});
@@ -110,6 +95,7 @@ define([], function() {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Augment new boards and merge them into results:
+				boardProcessor.augmentBoards(newBoards, $scope.user._id);
 				updateGroupAssignmentMap(newBoards.results);
 				// Remove duplicate boards caused by changing board list in another tab. Test uniqueness on board ID.
 				$scope.boards.results = _.unionWith($scope.boards.results, newBoards.results, function(a,b) {return a.id == b.id});
@@ -151,8 +137,6 @@ define([], function() {
 			})
 		}
 
-		$scope.calculateBoardLevels = calculateBoardLevels;
-
 		var lookupAssignedGroups = function(board) {
 			var groups = api.assignments.getAssignedGroups({gameId: board.id});
 			return groups;
@@ -165,7 +149,7 @@ define([], function() {
 		}
 
 		$scope.getListOfGroups = function(listOfGroups) {
-			if (listOfGroups.length == 0) {
+			if (listOfGroups && listOfGroups.length == 0) {
 				return "No groups have been assigned."
 			}
 

@@ -15,13 +15,14 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', function($scope, $state, api, $timeout, $q, $stateParams, $window) {
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', 'boardProcessor', function($scope, $state, api, $timeout, $q, $stateParams, $window, boardProcessor) {
 		// setup defaults.
 		$scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
 		$scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
 		$scope.loading = false;
 		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
+		$scope.boardTags = boardProcessor.boardTags;
 
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
@@ -246,6 +247,13 @@ define([], function() {
         	// empty the id field if not set so the server can create one
         	if (gameBoardToSave.id == "") {
         		gameBoardToSave.id = null;
+        	}
+
+        	// a board can currently only have one tag so this is good enough for now
+        	if (gameBoardToSave.tags) {
+        		gameBoardToSave.tags = [gameBoardToSave.tags]
+        	} else if (gameBoardToSave.tags == "") {
+        		gameBoardToSave.tags = [];
         	}
 
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
