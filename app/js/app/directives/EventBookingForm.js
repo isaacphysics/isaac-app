@@ -26,7 +26,8 @@ define([], function() {
 			templateUrl: "/partials/event_booking_form.html",
 
 			link: function(scope, element, attrs) {
-				scope.editingSelf = scope.targetUser._id == scope.user._id
+				
+				scope.editingSelf = scope.targetUser != null && scope.user._id == scope.targetUser._id
 			}
 		};
 	}];
