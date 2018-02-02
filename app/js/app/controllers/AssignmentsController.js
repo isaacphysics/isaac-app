@@ -213,7 +213,7 @@ define([], function() {
 		}
 	}];
 
-	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$rootScope', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, $rootScope, $timeout, $location) {
+	var MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardProcessor', '$rootScope', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardProcessor, $rootScope, $timeout, $location) {
 
 		$scope.setLoading(true);
 		
@@ -231,6 +231,7 @@ define([], function() {
 
 		var fourWeeksAgo = new Date($scope.now - (4 * 7 * 24 * 60 * 60 * 1000));
 		api.assignments.getMyAssignments().$promise.then(function(results) {
+			boardProcessor.augmentBoards(results);
 			angular.forEach(results, function(assignment, index) {
 				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
@@ -259,8 +260,6 @@ define([], function() {
 				$scope.assignmentsVisible = $scope.myAssignments.completed;
 			}
 		}
-
-		$scope.calculateBoardLevels = calculateBoardLevels;
 
 		// Update the currently shown assignments based on URL hash:
 		switch ($location.hash()) {
