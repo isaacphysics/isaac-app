@@ -171,8 +171,8 @@
                                     <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Book on event</a>
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Add to waiting list</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Add to waiting list</a>
                                     <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>
@@ -206,8 +206,8 @@
 
               <input ng-show="additionalInformation.authorisation == 'OTHER'" type="text" name="authorisation", ng-model="additionalInformation.authorisationOther"/>
 
-              <a class="button" ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Book on event</a>
-              <a class="button" ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Add to waiting list</a>
+              <a class="button" ng-show="eventSelected.eventStatus != 'WAITING_LIST_ONLY' && userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Book on event</a>
+              <a class="button" ng-show="eventSelected.eventStatus == 'WAITING_LIST_ONLY' || (userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Add to waiting list</a>
         </span>
   </div>
 </div>

@@ -84,12 +84,12 @@
             <div event-booking-form ></div>
       
           <span ng-if="!event.expired">
-            <span ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast && (event.placesAvailable > 0 || (event.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
+            <span ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !bookingDeadlinePast && event.eventStatus != 'WAITING_LIST_ONLY' && (event.placesAvailable > 0 || (event.tags.indexOf('student') != -1 && user.role != 'STUDENT'))">
               <p><small>By requesting to book on this event, you are granting event organisers access to the information provided in the form above. You are also giving them permission to set you pre-event work and view your progress.  You can manage access to your progress data in your <a ui-sref="accountSettings">account settings</a>.</small></p>
               <a href="javascript:void(0)" ng-click="requestBooking()" class="ru-button-big">Book now</a>
             </span>
 
-            <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.placesAvailable <= 0 || bookingDeadlinePast) && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Add to waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
+            <a ng-if="user._id && event.numberOfPlaces > 0 && !event.userBooked && !event.userOnWaitList && (event.eventStatus == 'WAITING_LIST_ONLY' || event.placesAvailable <= 0 || bookingDeadlinePast) && !(event.tags.indexOf('student') != -1 && user.role != 'STUDENT')" href="javascript:void(0)" ng-click="addToWaitingList()" class="ru-button-big">Join waiting list<span ng-if="bookingDeadlinePast"> - deadline past</span></a>
           </span>
       </div>
 
