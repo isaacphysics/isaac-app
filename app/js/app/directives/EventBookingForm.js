@@ -26,28 +26,7 @@ define([], function() {
 			templateUrl: "/partials/event_booking_form.html",
 
 			link: function(scope, element, attrs) {
-
 				scope.editingSelf = scope.targetUser._id == scope.user._id
-
-				scope.makeBooking = function(eventId, userId, additionalInformation){
-
-					if (!scope.editingSelf) {
-						// route used by event managers to force book users on to an event (with minimal validation)
-						api.eventBookings.makeBooking({"eventId": eventId, "userId" : userId}, additionalInformation).$promise.then(function(booking){
-							$rootScope.modals.eventBookingModal.hide()
-							$rootScope.showToast($rootScope.toastTypes.Success, booking.bookingStatus + " Booking Created", "The user now has a " + booking.bookingStatus + " booking");
-							scope.callback();
-						})
-						.catch(function(e){
-			                    console.log("error:" + e)
-			                    $rootScope.showToast($rootScope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-			            });
-					} else {
-						// user process
-
-					}
-					
-				}
 			}
 		};
 	}];
