@@ -387,11 +387,11 @@ define([], function() {
         }
 
         this.getImageUrl = function(path) {
-            // check if the image source is a fully qualified link (suggesting it is external to the Isaac site)
-            if(path.indexOf("http") > -1){
+            // Check if the image source is a fully qualified link (suggesting it is external to the Isaac site),
+            // or else an asset link served by the APP, not the API.
+            if ((path.indexOf("http") > -1) || (path.indexOf("/assets/") > -1)) {
                 return path;
-            }
-            else{
+            } else {
                 return urlPrefix + "/images/" + path;
             }
         }
