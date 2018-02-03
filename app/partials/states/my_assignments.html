@@ -45,7 +45,7 @@
             </div>
             <div class="large-4 medium-3 columns board-link reorder-wrap">
                <a class="reorder-bottom" href="javascript:void(0)" ui-sref="board({id: assignment.gameboard.id})">View Assignment <span class="icon-link"></span></a>
-               <p ng-show="now > assignment.dueDate" class="reorder-top"><span class="overdue">Overdue:</span> {{assignment.dueDate | date:'dd/MM/yyyy'}}</p>
+               <p ng-show="now > assignment.dueDate && assignment.gameboard.percentageCompleted != 100" class="reorder-top"><span class="overdue">Overdue:</span> {{assignment.dueDate | date:'dd/MM/yyyy'}}</p>
             </div>
          </div>
          <div ng-if="assignmentsVisible == null || assignmentsVisible.length == 0">
