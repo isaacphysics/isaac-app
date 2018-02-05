@@ -447,7 +447,7 @@ define(function (require) {
                             r.derivatives = derivativeFunctions([s]);
                         } else {
                             console.debug("Parsing symbol:", s);
-
+debugger;
                             var parts = s.split(" ");
 
                             var partResults = [];
@@ -524,31 +524,40 @@ define(function (require) {
                                     }
                                 } else {
                                     // otherwise we must have a symbol
-                                    var p1 = convertToLatexIfGreek(p.split("_")[0]);
-                                    var newSym = {
+                                    var parts = p.split("_");
+                                    var letter = convertToLatexIfGreek(parts[0]);
+                                    var newSymbol = {
                                         type: "Symbol",
                                         properties: {
-                                            letter: letterMap[p1] || p1,
+                                            letter: letterMap[letter] || letter,
                                         },
                                         menu: {
-                                            label: p1,
+                                            label: letter,
                                             texLabel: true,
                                         }
                                     };
-                                    var p2 = convertToLatexIfGreek(p.split("_")[1]);
-                                    if (p2) {
-                                        newSym.children = {
-                                            subscript: {
+                                    var modifiers = ["prime"];
+                                    if (parts.length > 1) {
+                                        if (_.find(modifiers, parts[1])) {
+                                            newSymbol.properties.modifier = parts[1];
+                                            newSymbol.menu.label = letter + "'";
+                                        }
+                                        if (!_.find(modifiers, parts[parts.length-1])) {
+                                            var subscriptLetter = parts[parts.length-1];
+                                            var subscriptSymbol = {
                                                 type: "Symbol",
                                                 properties: {
-                                                    letter: letterMap[p2] || p2,
-                                                    upright: p2.length > 1
+                                                    letter: letterMap[subscriptLetter] || subscriptLetter,
+                                                    upright: subscriptLetter.length > 1
                                                 }
-                                            }
-                                        };
-                                        newSym.menu.label += "_{" + p2 + "}";
+                                            };
+                                            newSymbol.children = {
+                                                subscript: subscriptSymbol,
+                                            };
+                                            newSymbol.menu.label += "_{" + subscriptLetter + "}";
+                                        }
                                     }
-                                    partResults.push(newSym);
+                                    partResults.push(newSymbol);
                                 }
                             }
                         }
