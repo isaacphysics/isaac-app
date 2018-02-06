@@ -219,7 +219,7 @@ export
         let w: Widget = null;
         switch (node["type"]) {
             case "Symbol":
-                w = new Symbol(this.p, this, node["properties"]["letter"]);
+                w = new Symbol(this.p, this, node["properties"]["letter"], node["properties"]["modifier"]);
                 break;
             case "BinaryOperation":
                 w = new BinaryOperation(this.p, this, node["properties"]["operation"]);

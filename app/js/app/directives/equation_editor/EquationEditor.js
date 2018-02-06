@@ -447,7 +447,6 @@ define(function (require) {
                             r.derivatives = derivativeFunctions([s]);
                         } else {
                             console.debug("Parsing symbol:", s);
-debugger;
                             var parts = s.split(" ");
 
                             var partResults = [];
@@ -538,11 +537,11 @@ debugger;
                                     };
                                     var modifiers = ["prime"];
                                     if (parts.length > 1) {
-                                        if (_.find(modifiers, parts[1])) {
+                                        if (_.indexOf(modifiers, parts[1]) > -1) {
                                             newSymbol.properties.modifier = parts[1];
                                             newSymbol.menu.label = letter + "'";
                                         }
-                                        if (!_.find(modifiers, parts[parts.length-1])) {
+                                        if (_.indexOf(modifiers, parts[parts.length-1]) == -1) {
                                             var subscriptLetter = parts[parts.length-1];
                                             var subscriptSymbol = {
                                                 type: "Symbol",
