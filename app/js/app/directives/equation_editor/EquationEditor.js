@@ -445,6 +445,59 @@ define(function (require) {
                             //      enough for our needs (i.e. multiple differentials below the fraction sign,
                             //      partial vs total derivatives, and so on...)
                             r.derivatives = derivativeFunctions([s]);
+                        } else if (/(delta|Delta|diff)(?:\((.*)\))?/.test(s)) {
+                            var parsedDiff = /(delta|Delta|diff)(?:\((.*)\))?/.exec(s);
+                            var diffType = parsedDiff[1];
+                            var args = parsedDiff[2] || null;
+                            var diffLetter = {"delta":"δ","Delta":"∆","diff":"d"}[diffType] || "?";
+                            var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","diff":"d"}[diffType] || "?" ) + "}";
+
+                            var diffSymbol = {
+                                type: "Differential",
+                                properties: {
+                                    letter: diffLetter,
+                                },
+                                children: {},
+                                menu: {
+                                    label: diffLatex,
+                                    texLabel: true,
+                                }
+                            };
+
+                            if (args) {
+                                var parsedArgs = args.split(";").map(function(x) { return x.trim() });
+                                for (var j = 0; j < parsedArgs.length; ++j) {
+                                    var e = parsedArgs[j];
+                                    if (!isNaN(e)) {
+                                        // This is not a not a number (I know...) so it's the differential's order
+                                        diffSymbol.children["order"] = {
+                                            type: "Num",
+                                            properties: {
+                                                significand: "" + parsedArgs[0],
+                                            }
+                                        };
+                                        diffSymbol.menu.label = diffSymbol.menu.label + "^{" + e + "}";
+                                    } else {
+                                        // This is a string, so make it an argument
+                                        // Executive decision: NO SUPERSCRIPTS TO ARGUMENTS
+                                        var symParts = e.split("_");
+                                        var subscriptSymbol = symParts[1] ? { type: "Symbol", properties: { letter: symParts[1] } } : null;
+                                        diffSymbol.children["argument"] = {
+                                            type: "Symbol",
+                                            properties: { letter: symParts[0] },
+                                        };
+                                        diffSymbol.menu.label = diffSymbol.menu.label + symParts[0];
+                                        if (null != subscriptSymbol) {
+                                            diffSymbol.children["argument"]["children"] = {
+                                                subscript: subscriptSymbol,
+                                            };
+                                            diffSymbol.menu.label = diffSymbol.menu.label + "_{" + symParts[1] + "}";
+                                        }
+
+                                    }
+                                }
+                            }
+                            var partResults = [diffSymbol];
                         } else {
                             console.debug("Parsing symbol:", s);
                             var parts = s.split(" ");
@@ -571,6 +624,7 @@ define(function (require) {
                             }
                             switch (partResults[0].type) {
                                 case "Symbol":
+                                case "Differential":
                                     r.vars.push(root);
                                     break;
                                 case "Fn":

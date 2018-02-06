@@ -143,22 +143,20 @@ class Differential extends Widget {
             // and we don't even use them anyway
             // so... let's get rid of them maybe?
             if (this.letter == "δ") {
-                expression = "differential_delta";
+                expression = "delta(";
             } else if (this.letter == "∆") {
-                expression = "differential_Delta";
+                expression = "Delta(";
             } else {
-                expression = "differential_d";
+                expression = "diff(";
             }
+            let args = [];
             if (this.dockingPoints["order"].child != null) {
-                expression += "(" + this.dockingPoints["order"].child.getExpression(format) + ")";
-            } else {
-                expression += "()";
+                args.push(this.dockingPoints["order"].child.getExpression(format));
             }
             if (this.dockingPoints["argument"].child != null) {
-                expression += "(" + this.dockingPoints["argument"].child.getExpression(format) + ")";
-            } else {
-                expression += "()";
+                args.push(this.dockingPoints["argument"].child.getExpression(format));
             }
+            expression += args.join(", ") + ")";
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
@@ -184,7 +182,7 @@ class Differential extends Widget {
     }
 
     token() {
-        return this.letter;
+        return this.getExpression("python");
     }
 
     /** Paints the widget on the canvas. */
