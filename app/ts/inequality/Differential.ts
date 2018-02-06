@@ -65,7 +65,7 @@ class Differential extends Widget {
         let s = false;
         let p = this.parentWidget;
         while (p != null) {
-            s |= p.typeAsString == 'Derivative';
+            s = s || p.typeAsString == 'Derivative';
             p = p.parentWidget;
         }
         return s;
@@ -76,7 +76,7 @@ class Differential extends Widget {
         let n = this.dockedTo;
         let w: Widget = this;
         while (w != null) {
-            a |= n == "denominator";
+            a = a || n == "denominator";
             w = w.parentWidget;
             n = null == w ? "" : w.dockedTo;
         }
