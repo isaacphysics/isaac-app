@@ -170,6 +170,8 @@ define(function(require) {
 
 	.directive('inputAnimation', require("app/directives/content/InputAnimation"))
 
+	.directive('eventBookingForm', require("app/directives/EventBookingForm"))
+
 	.directive('fadeOnSearch', [function() {
 		return {
 			link: function(scope, element, attrs) {
