@@ -105,7 +105,7 @@
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
                                 <td>{{booking.additionalInformation.emergencyNumber}}</td>
-                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
+                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteBooking(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
                                 &nbsp; <a href="javascript:void(0);" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a></td>
                             </tr>
                         </table>
@@ -171,7 +171,8 @@
                                     <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                     <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                     <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Book on event</a>
+                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Add to waiting list</a>
                                     <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
                                 </tr>
                             </table>
@@ -183,3 +184,30 @@
     </div>
 </div>
 
+<div isaac-modal="eventBookingModal">
+  <div class="reveal-modal-head">
+    <h2>Admin - Create a <span ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0">waiting list</span> booking</h2>
+    <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body">
+        <div event-booking-form></div>
+        <span>          
+              <p><small>Warning, by booking a user on this event, it may eventually lead to their personal information being shared with a third party. You must therefore confirm how this booking has been authorised. The data owner is always the isaac user being booked on to the event.</small></p>
+              
+              <label for="authorisation">
+                <strong>Booking / Personal Data Sharing Authorised By</strong>
+                <span class="ru-form-required"></span>
+              </label>
+              <select id="authorisation" name="authorisation" ng-model="additionalInformation.authorisation" required>
+                                        <option value="Telephone-Owner">Telephone - Data Owner</option>
+                                        <option value="Email-Owner">Verified Email - Data Owner</option>
+                                        <option value="OTHER">Other - Please specify</option>
+              </select>
+
+              <input ng-show="additionalInformation.authorisation == 'OTHER'" type="text" name="authorisation", ng-model="additionalInformation.authorisationOther"/>
+
+              <a class="button" ng-show="eventSelected.eventStatus != 'WAITING_LIST_ONLY' && userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Book on event</a>
+              <a class="button" ng-show="eventSelected.eventStatus == 'WAITING_LIST_ONLY' || (userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Add to waiting list</a>
+        </span>
+  </div>
+</div>

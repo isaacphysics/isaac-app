@@ -489,7 +489,7 @@ define(["angular-ui-router"], function() {
 
         $sp.state('shareLink', {
             url: "/s/:shortCode",
-            onEnter: ["$stateParams", "api", "$http", function($stateParams, api, $http) {
+            onEnter: ["$state", "$stateParams", "api", "$http", function($state, $stateParams, api, $http) {
                 var redirectURL = "https://goo.gl/" + $stateParams.shortCode;
 
                 api.logger.log({
@@ -503,17 +503,31 @@ define(["angular-ui-router"], function() {
                         if (longUrl.indexOf(window.location.origin) == 0) {
                             document.location.href = longUrl;
                         } else {
-                            console.error("This is an external URL: " + longUrl);
-                            // FIXME - do something smarter here!
-                            document.location.href = longUrl;
+                            $state.go("externalLink", {link: longUrl}, {location: false});
                         }
                     } else {
-                        // FIXME - don't fail silently! Not 'OK' means malware or deleted.
+                        // Not 'OK' means malware or deleted.
+                        $state.go("404", {target: "/s/" + $stateParams.shortCode});
                     }
                 }).catch(function() {
-                    // FIXME - don't fail silently!
+                    $state.go("404", {target: "/s/" + $stateParams.shortCode});
                 });
             }]
+        });
+
+        $sp.state('externalLink', {
+            url: "/redirect",
+            params: {
+                "link": null
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/external_link.html",
+                    controller: ["$scope", "$stateParams", function($scope, $stateParams) {
+                        $scope.link = $stateParams.link;
+                    }],
+                },
+            },
         });
 
         $sp.state('404', {

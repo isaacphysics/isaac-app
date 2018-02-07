@@ -189,6 +189,8 @@ define([], function() {
 
         $scope.verifyEmailRequestSent = false;
 
+        $scope.targetUser = $scope.user;
+
         // validate pre-requisites for event booking
         var validUserProfile = function() {
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
