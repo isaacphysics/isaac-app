@@ -96,8 +96,6 @@ define(function(require) {
 
 	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
 
-
-
 	.directive('elementsMenu', require("app/directives/equation_editor/ElementsMenu"))
 
 	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
@@ -116,8 +114,12 @@ define(function(require) {
 
 	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
 
+	// Sketcher directives
+	.directive('graphInput', require("app/directives/graph_sketcher/GraphInput"))
+	
+	.directive('graphSketcher', require("app/directives/graph_sketcher/GraphSketcher"))
 
-
+	.directive('graphPreview', require("app/directives/graph_sketcher/GraphPreview"))
 
 
 	// Content Directives
@@ -157,6 +159,8 @@ define(function(require) {
 	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
 
 	.directive('isaacSymbolicChemistryQuestion', require("app/directives/content/SymbolicChemistryQuestion"))
+
+	.directive('isaacGraphSketcherQuestion', require("app/directives/content/GraphSketcherQuestion"))
 
 	.directive('isaacStringMatchQuestion', require("app/directives/content/StringMatchQuestion"))
 
