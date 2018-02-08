@@ -182,10 +182,10 @@ export
 
     token() {
         // TODO Handle greek letters
-        let e = this.letter;
-        if (this.dockingPoints['subscript'].child) {
-            e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
-        }
+        var e = this.letter;
+        // if (this.dockingPoints['subscript'].child) {
+        //     e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+        // }
         return e;
     }
 
@@ -303,6 +303,6 @@ export
 
 
     getChildren(): Array<Widget> {
-        return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
+        return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 }

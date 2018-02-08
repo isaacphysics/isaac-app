@@ -488,9 +488,9 @@ export
         let stack: Array<Widget> = [w];
         let list = [];
         while (stack.length > 0) {
-            let e = stack.shift();
-            list.push(e.token());
-            let children = e.getChildren();
+            var e = stack.shift();
+            list = list.concat(e.token());
+            var children = e.getChildren();
             stack = stack.concat(children);
         }
         return _.reject(_.uniq(list), i => { return i == ''; });
