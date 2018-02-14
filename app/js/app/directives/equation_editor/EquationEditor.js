@@ -417,11 +417,16 @@ define(function (require) {
                         derivatives: []
                     };
 
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
+                    var theseSymbols = symbols;
+                    var i = 0;
+                    while (i < theseSymbols.length) {
+                        var s = theseSymbols[i].trim();
+                        i = i+1;
+
+                        var diffRegex = /(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
 
                         if (s.length == 0) {
-                            console.warn("Tried to parse zero-length symbol in list:", symbols);
+                            console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
                             continue;
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Parsing operator:", s);
@@ -445,10 +450,24 @@ define(function (require) {
                             //      enough for our needs (i.e. multiple differentials below the fraction sign,
                             //      partial vs total derivatives, and so on...)
                             r.derivatives = derivativeFunctions([s]);
-                        } else if (/(delta|Delta|diff)(?:\((.*)\))?/.test(s)) {
-                            var parsedDiff = /(delta|Delta|diff)(?:\((.*)\))?/.exec(s);
+                        } else if (diffRegex.test(s)) {
+                            /*
+                            Deltax
+                            Deltay_6
+                            deltax
+                            deltax_5
+                            dx
+                            dx_prime
+                            Delta^2x_4
+                            Delta
+                            delta
+                            Delta^2x
+                            deltax_2^3
+                             */
+                            var parsedDiff = diffRegex.exec(s);
                             var diffType = parsedDiff[1];
-                            var args = parsedDiff[2] || null;
+                            var diffOrder = parsedDiff[2] || 0;
+                            var diffArgument = parsedDiff[3] || null;
                             var diffLetter = {"delta":"δ","Delta":"∆","diff":"d"}[diffType] || "?";
                             var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","diff":"d"}[diffType] || "?" ) + "}";
 
@@ -464,37 +483,29 @@ define(function (require) {
                                 }
                             };
 
-                            if (args) {
-                                var parsedArgs = args.split(";").map(function(x) { return x.trim() });
-                                for (var j = 0; j < parsedArgs.length; ++j) {
-                                    var e = parsedArgs[j];
-                                    if (!isNaN(e)) {
-                                        // This is not a not a number (I know...) so it's the differential's order
-                                        diffSymbol.children["order"] = {
-                                            type: "Num",
-                                            properties: {
-                                                significand: "" + parsedArgs[0],
-                                            }
-                                        };
-                                        diffSymbol.menu.label = diffSymbol.menu.label + "^{" + e + "}";
-                                    } else {
-                                        // This is a string, so make it an argument
-                                        // Executive decision: NO SUPERSCRIPTS TO ARGUMENTS
-                                        var symParts = e.split("_");
-                                        var subscriptSymbol = symParts[1] ? { type: "Symbol", properties: { letter: symParts[1] } } : null;
-                                        diffSymbol.children["argument"] = {
-                                            type: "Symbol",
-                                            properties: { letter: symParts[0] },
-                                        };
-                                        diffSymbol.menu.label = diffSymbol.menu.label + symParts[0];
-                                        if (null != subscriptSymbol) {
-                                            diffSymbol.children["argument"]["children"] = {
-                                                subscript: subscriptSymbol,
-                                            };
-                                            diffSymbol.menu.label = diffSymbol.menu.label + "_{" + symParts[1] + "}";
-                                        }
-
+                            if (diffOrder > 0) {
+                                diffSymbol.children["order"] = {
+                                    type: "Num",
+                                    properties: {
+                                        significand: "" + diffOrder,
                                     }
+                                };
+                                diffSymbol.menu.label = diffSymbol.menu.label + "^{" + diffOrder + "}";
+                            }
+
+                            if (null != diffArgument) {
+                                var argParts = diffArgument.split("_");
+                                var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
+                                diffSymbol.children["argument"] = {
+                                    type: "Symbol",
+                                    properties: { letter: argParts[0] },
+                                };
+                                diffSymbol.menu.label = diffSymbol.menu.label + argParts[0];
+                                if (null != argSubscript) {
+                                    diffSymbol.children["argument"]["children"] = {
+                                        subscript: argSubscript,
+                                    };
+                                    diffSymbol.menu.label = diffSymbol.menu.label + "_{" + argParts[1] + "}";
                                 }
                             }
                             var partResults = [diffSymbol];
