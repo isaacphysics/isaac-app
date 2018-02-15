@@ -409,6 +409,55 @@ define(function (require) {
                     return custom;
                 };
 
+                var parseCustomSymbol_Differential = function (symbol) {
+                    var parsedDiff = diffRegex.exec(s);
+                    var diffType = parsedDiff[1];
+                    var diffOrder = parsedDiff[2] || 0;
+                    var diffArgument = parsedDiff[3] || null;
+                    var diffLetter = {"delta":"δ","Delta":"∆","diff":"d"}[diffType] || "?";
+                    var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","diff":"d"}[diffType] || "?" ) + "}";
+
+                    var diffSymbol = {
+                        type: "Differential",
+                        properties: {
+                            letter: diffLetter,
+                        },
+                        children: {},
+                        menu: {
+                            label: diffLatex,
+                            texLabel: true,
+                        }
+                    };
+
+                    if (diffOrder > 0) {
+                        diffSymbol.children["order"] = {
+                            type: "Num",
+                            properties: {
+                                significand: "" + diffOrder,
+                            }
+                        };
+                        diffSymbol.menu.label = diffSymbol.menu.label + "^{" + diffOrder + "}";
+                    }
+
+                    if (null != diffArgument) {
+                        var argParts = diffArgument.split("_");
+                        var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
+                        diffSymbol.children["argument"] = {
+                            type: "Symbol",
+                            properties: { letter: argParts[0] },
+                        };
+                        diffSymbol.menu.label = diffSymbol.menu.label + argParts[0];
+                        if (null != argSubscript) {
+                            diffSymbol.children["argument"]["children"] = {
+                                subscript: argSubscript,
+                            };
+                            diffSymbol.menu.label = diffSymbol.menu.label + "_{" + argParts[1] + "}";
+                        }
+                    }
+
+                    return diffSymbol;
+                };
+
                 var parseCustomSymbols = function (symbols) {
                     var r = {
                         vars: [],
@@ -423,15 +472,15 @@ define(function (require) {
                         var s = theseSymbols[i].trim();
                         i = i+1;
 
+                        var partResults = [];
+
                         var diffRegex = /(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
 
-                        if (s.length == 0) {
+                        if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
                             continue;
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Parsing operator:", s);
-                            var partResults = [];
-
                             partResults.push({
                                 type: 'Relation',
                                 menu: {
@@ -441,80 +490,16 @@ define(function (require) {
                                 properties: {
                                     relation: s
                                 }
-                            })
+                            });
                         } else if (_.startsWith(s, "Derivative(")) {
                             console.debug("Parsing derivatives:", s);
-                            var partResults = []; // WHAT THE...?!
-                            // TODO This is the branch for "available" derivatives.
-                            //      We need to agree on a sensible format because SymPy is not expressive
-                            //      enough for our needs (i.e. multiple differentials below the fraction sign,
-                            //      partial vs total derivatives, and so on...)
                             r.derivatives = derivativeFunctions([s]);
                         } else if (diffRegex.test(s)) {
                             console.log("Parsing Delta|delta|d");
-                            /*
-                            Deltax
-                            Deltay_6
-                            deltax
-                            deltax_5
-                            dx
-                            dx_prime
-                            Delta^2x_4
-                            Delta
-                            delta
-                            Delta^2x
-                            deltax_2^3
-                             */
-                            var parsedDiff = diffRegex.exec(s);
-                            var diffType = parsedDiff[1];
-                            var diffOrder = parsedDiff[2] || 0;
-                            var diffArgument = parsedDiff[3] || null;
-                            var diffLetter = {"delta":"δ","Delta":"∆","diff":"d"}[diffType] || "?";
-                            var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","diff":"d"}[diffType] || "?" ) + "}";
-
-                            var diffSymbol = {
-                                type: "Differential",
-                                properties: {
-                                    letter: diffLetter,
-                                },
-                                children: {},
-                                menu: {
-                                    label: diffLatex,
-                                    texLabel: true,
-                                }
-                            };
-
-                            if (diffOrder > 0) {
-                                diffSymbol.children["order"] = {
-                                    type: "Num",
-                                    properties: {
-                                        significand: "" + diffOrder,
-                                    }
-                                };
-                                diffSymbol.menu.label = diffSymbol.menu.label + "^{" + diffOrder + "}";
-                            }
-
-                            if (null != diffArgument) {
-                                var argParts = diffArgument.split("_");
-                                var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
-                                diffSymbol.children["argument"] = {
-                                    type: "Symbol",
-                                    properties: { letter: argParts[0] },
-                                };
-                                diffSymbol.menu.label = diffSymbol.menu.label + argParts[0];
-                                if (null != argSubscript) {
-                                    diffSymbol.children["argument"]["children"] = {
-                                        subscript: argSubscript,
-                                    };
-                                    diffSymbol.menu.label = diffSymbol.menu.label + "_{" + argParts[1] + "}";
-                                }
-                            }
-                            var partResults = [diffSymbol];
+                            partResults = parseCustomSymbol_Differential(s);
                         } else {
                             console.debug("Parsing symbol:", s);
                             var parts = s.split(" ");
-
-                            var partResults = [];
                             for (var j in parts) {
                                 var p = parts[j];
                                 var name = p.replace(/\(\)/g, "");
@@ -524,9 +509,9 @@ define(function (require) {
                                 if (_.endsWith(p, "()")) {
 
                                     var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
-                                    var allowSubscript = name == "log";
+                                    var allowSubscript = name === "log";
                                     // which is an inverse trig function
-                                    if (name.substring(0, 3) == "arc") {
+                                    if (name.substring(0, 3) === "arc") {
                                         // finds the index of the function in the symbol library to retrieve the label.
 
                                         partResults.push({
@@ -550,7 +535,7 @@ define(function (require) {
                                                 fontSize: '15px'
                                             }
                                         });
-                                    } else if (name == 'log' || name == 'ln') {
+                                    } else if (name === 'log' || name === 'ln') {
                                         // or if we have log or natural log
                                         partResults.push({
                                             type: "Fn",
@@ -566,7 +551,7 @@ define(function (require) {
                                             }
                                         });
 
-                                    } else if (trigFunctions.indexOf(name) != -1) {
+                                    } else if (trigFunctions.indexOf(name) !== -1) {
                                         // otherwise we must have a standard trig function
                                         partResults.push({
                                             type: "Fn",
@@ -606,7 +591,7 @@ define(function (require) {
                                             newSymbol.properties.modifier = parts[1];
                                             newSymbol.menu.label = letter + "'";
                                         }
-                                        if (_.indexOf(modifiers, parts[parts.length-1]) == -1) {
+                                        if (_.indexOf(modifiers, parts[parts.length-1]) === -1) {
                                             var subscriptLetter = parts[parts.length-1];
                                             var subscriptSymbol = {
                                                 type: "Symbol",
@@ -717,7 +702,7 @@ define(function (require) {
                     if (a > b) return 1;
                     if (a < b) return -1;
                     return 0;
-                }
+                };
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
@@ -961,7 +946,7 @@ define(function (require) {
                                     o.children.order = {
                                         type: "Num",
                                         properties: { significand: ""+order }
-                                    }
+                                    };
                                     texBottom += "^{" + order + "}";
                                 }
                                 den_objects.push(o);
@@ -983,7 +968,7 @@ define(function (require) {
                         }
                     }
                     return result;
-                }
+                };
 
                 scope.symbolLibrary = {
 
