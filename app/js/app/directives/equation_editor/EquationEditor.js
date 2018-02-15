@@ -451,6 +451,7 @@ define(function (require) {
                             //      partial vs total derivatives, and so on...)
                             r.derivatives = derivativeFunctions([s]);
                         } else if (diffRegex.test(s)) {
+                            console.log("Parsing Delta|delta|d");
                             /*
                             Deltax
                             Deltay_6
