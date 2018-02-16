@@ -103,8 +103,8 @@
                                     <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                     <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
                                     <td>{{booking.bookingStatus}}</td>
-                                    <td>{{booking.bookingDate | date:'dd/MM/yyyy h:m:s a'}}</td>
-                                    <td>{{booking.updated | date:'dd/MM/yyyy h:m:s a'}}</td>
+                                    <td>{{booking.bookingDate | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                    <td>{{booking.updated | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
                                     <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                     <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                     <td>{{booking.additionalInformation.emergencyName}}</td>
@@ -235,8 +235,8 @@
                                 <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                 <td>{{booking.userBooked.role}}</td>
                                 <td>{{booking.userBooked.email}}</td>
-                                <td>{{booking.bookingDate | date:'dd/MM/yyyy h:m:s a'}}</td>
-                                <td>{{booking.updated | date:'dd/MM/yyyy h:m:s a'}}</td>
+                                <td>{{booking.bookingDate | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                <td>{{booking.updated | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
                                 <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
