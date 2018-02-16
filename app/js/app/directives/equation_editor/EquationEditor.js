@@ -409,8 +409,7 @@ define(function (require) {
                     return custom;
                 };
 
-                var parseCustomSymbol_Differential = function (symbol) {
-                    var parsedDiff = diffRegex.exec(s);
+                var parseCustomSymbol_Differential = function (parsedDiff) {
                     var diffType = parsedDiff[1];
                     var diffOrder = parsedDiff[2] || 0;
                     var diffArgument = parsedDiff[3] || null;
@@ -496,7 +495,7 @@ define(function (require) {
                             r.derivatives = derivativeFunctions([s]);
                         } else if (diffRegex.test(s)) {
                             console.log("Parsing Delta|delta|d");
-                            partResults = parseCustomSymbol_Differential(s);
+                            partResults = parseCustomSymbol_Differential(diffRegex.exec(s));
                         } else {
                             console.debug("Parsing symbol:", s);
                             var parts = s.split(" ");
