@@ -248,7 +248,7 @@ define([], function() {
             'getTokenOwner' : {
                 method: 'GET',
                 url: urlPrefix + "/authorisations/token/:token/owner", 
-                isArray: false 
+                isArray: true 
             },              
         }); 
 

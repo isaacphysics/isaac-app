@@ -346,7 +346,12 @@ define([], function() {
             $scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
             api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-                var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.");
+                    var usersToGrantAccess = []
+                    angular.forEach(result, function(value, key) {
+                        usersToGrantAccess.push("\n"+(value.givenName ? value.givenName.charAt(0) + ". " : "") + value.familyName + " (" + value.email + ")");
+                    });
+
+                var confirm = $window.confirm("Are you sure you would like to grant access to your data to the following users: " + usersToGrantAccess + "? \n For more details about the data which is shared, see our privacy policy.");
 
                 if (confirm) {
                     api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
