@@ -67,8 +67,8 @@ define([], function() {
 	return ['$filter', function PersistenceConstructor($filter) {
 		this.boardTags = boardTags;
 		this.augmentBoards = function(boards, userId) {
-			for (boardIndex in boards.results) {
-				board = boards.results[boardIndex];
+			for (var i = 0; i < boards.length; i++) {
+				board = boards[i];
 				board.completion = board.percentageCompleted == 100 ? 'Completed' : board.percentageCompleted == 0 ? 'Not Started' : 'In Progress'
 				board.subjects = calculateBoardSubjects(board);
 				board.levels = calculateBoardLevels(board)
