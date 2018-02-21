@@ -226,9 +226,14 @@ define([], function() {
 		$scope.myAssignments.completed = [];
 		$scope.myAssignments.inProgressRecent = [];
 		$scope.myAssignments.inProgressOld = [];
+		$scope.sortPredicate = null;
 
 		$scope.now = new Date();
 		var fourWeeksAgo = new Date($scope.now - (4 * 7 * 24 * 60 * 60 * 1000));
+		// Midnight five days ago:
+		var fiveDaysAgo = new Date($scope.now);
+		fiveDaysAgo.setDate($scope.now.getDate() - 5);
+		fiveDaysAgo.setHours(0, 0, 0, 0);
 
 		var extractBoardsFrom = function(assignments) {
 			var boards = []
@@ -243,9 +248,12 @@ define([], function() {
 			boardsForProcessing = extractBoardsFrom(assignments);
 			boardProcessor.augmentBoards(boardsForProcessing, $scope.user._id);
 			angular.forEach(assignments, function(assignment, index) {
-				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
-					if (creationDate > fourWeeksAgo) {
+					var noDueDateButRecent = !assignment.dueDate && (assignment.creationDate > fourWeeksAgo);
+					assignment.overdue = assignment.dueDate && (assignment.dueDate < $scope.now);
+					var onlyJustOverdue = assignment.overdue && (assignment.dueDate >= fiveDaysAgo);
+					if (noDueDateButRecent || onlyJustOverdue) {
+						// Assignment only just overdue, or within last month but no due date.
 						$scope.myAssignments.inProgressRecent.push(assignment);
 					} else {
 						$scope.myAssignments.inProgressOld.push(assignment);
@@ -255,7 +263,7 @@ define([], function() {
 				}
 			})
 			$scope.setLoading(false);
-			// Log this in the front end because the count is used in the gloabl nav, which incorrectly caused a log event.
+			// Log this in the front end because the count is used in the global nav, which incorrectly caused a log event.
             api.logger.log({
                 type : "VIEW_MY_ASSIGNMENTS"
             });
@@ -263,10 +271,13 @@ define([], function() {
 
 		$scope.setVisibleBoard = function(state){
 			if (state === 'IN_PROGRESS_RECENT') {
+				$scope.sortPredicate = ['!overdue', '-creationDate'];
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
 			} else if (state === 'IN_PROGRESS_OLD') {
+				$scope.sortPredicate = ['!overdue', '-creationDate'];
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressOld;
 			} else {
+				$scope.sortPredicate = '-creationDate';
 				$scope.assignmentsVisible = $scope.myAssignments.completed;
 			}
 		}
