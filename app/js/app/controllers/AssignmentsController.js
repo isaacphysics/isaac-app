@@ -241,7 +241,7 @@ define([], function() {
 
 		api.assignments.getMyAssignments().$promise.then(function(assignments) {
 			boardsForProcessing = extractBoardsFrom(assignments);
-			boardProcessor.augmentBoards(boardsForProcessing, null); // owner id null as the page uses assignerSummary
+			boardProcessor.augmentBoards(boardsForProcessing, $scope.user._id);
 			angular.forEach(assignments, function(assignment, index) {
 				var creationDate = new Date(assignment.creationDate);
 				if (assignment.gameboard.percentageCompleted < 100) {
