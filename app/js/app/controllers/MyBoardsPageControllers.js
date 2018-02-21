@@ -22,7 +22,8 @@ define([], function() {
 		var updateBoards = function(limit) {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
-				$scope.boards = boardProcessor.augmentBoards(boards, $scope.user._id);
+				$scope.boards = boards;
+				boardProcessor.augmentBoards(boards.results, $scope.user._id);
 				$scope.setLoading(false);
 			})
 		};
@@ -39,7 +40,7 @@ define([], function() {
 			$scope.setLoading(true);
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, $scope.boards.results.length).$promise.then(function(newBoards){
 				// Merge new boards into results 
-				boardProcessor.augmentBoards(newBoards, $scope.user._id);
+				boardProcessor.augmentBoards(newBoards.results, $scope.user._id);
 				$.merge($scope.boards.results, newBoards.results);
 				$scope.setLoading(false);
 				mergeInProgress = false;
