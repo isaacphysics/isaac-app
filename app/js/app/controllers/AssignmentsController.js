@@ -250,10 +250,9 @@ define([], function() {
 			angular.forEach(assignments, function(assignment, index) {
 				if (assignment.gameboard.percentageCompleted < 100) {
 					var noDueDateButRecent = !assignment.dueDate && (assignment.creationDate > fourWeeksAgo);
-					assignment.overdue = assignment.dueDate && (assignment.dueDate < $scope.now);
-					var onlyJustOverdue = assignment.overdue && (assignment.dueDate >= fiveDaysAgo);
-					if (noDueDateButRecent || onlyJustOverdue) {
-						// Assignment only just overdue, or within last month but no due date.
+					var dueDateAndCurrent = assignment.dueDate && (assignment.dueDate >= fiveDaysAgo);
+					if (noDueDateButRecent || dueDateAndCurrent) {
+						// Assignment either not/only just overdue, or else set within last month but no due date.
 						$scope.myAssignments.inProgressRecent.push(assignment);
 					} else {
 						$scope.myAssignments.inProgressOld.push(assignment);
