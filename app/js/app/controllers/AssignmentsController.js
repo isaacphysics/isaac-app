@@ -271,10 +271,10 @@ define([], function() {
 
 		$scope.setVisibleBoard = function(state){
 			if (state === 'IN_PROGRESS_RECENT') {
-				$scope.sortPredicate = ['!overdue', '-creationDate'];
+				$scope.sortPredicate = ['!dueDate', 'dueDate', '-creationDate'];
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressRecent;
 			} else if (state === 'IN_PROGRESS_OLD') {
-				$scope.sortPredicate = ['!overdue', '-creationDate'];
+				$scope.sortPredicate = ['!dueDate', 'dueDate', '-creationDate'];
 				$scope.assignmentsVisible = $scope.myAssignments.inProgressOld;
 			} else {
 				$scope.sortPredicate = '-creationDate';
