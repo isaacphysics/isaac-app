@@ -413,8 +413,8 @@ define(function (require) {
                     var diffType = parsedDiff[1];
                     var diffOrder = parsedDiff[2] || 0;
                     var diffArgument = parsedDiff[3] || null;
-                    var diffLetter = {"delta":"δ","Delta":"∆","diff":"d"}[diffType] || "?";
-                    var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","diff":"d"}[diffType] || "?" ) + "}";
+                    var diffLetter = {"delta":"δ","Delta":"∆","d":"d"}[diffType] || "?";
+                    var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","d":"d"}[diffType] || "?" ) + "}";
 
                     var diffSymbol = {
                         type: "Differential",
