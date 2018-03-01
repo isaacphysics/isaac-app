@@ -23,6 +23,7 @@ limitations under the License.
 import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
+import isNumber = require("lodash/isNumber");
 
 
 /** A class for representing variables and constants (aka, letters). */
@@ -139,24 +140,31 @@ class Differential extends Widget {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-            // These are only for the list of available symbols,
-            // and we don't even use them anyway
-            // so... let's get rid of them maybe?
             if (this.letter == "δ") {
-                expression = "delta(";
+                expression = "delta";
             } else if (this.letter == "∆") {
-                expression = "Delta(";
+                expression = "Delta";
             } else {
-                expression = "diff(";
+                expression = "d";
             }
             let args = [];
-            if (this.dockingPoints["order"].child != null) {
-                args.push(this.dockingPoints["order"].child.getExpression(format));
-            }
             if (this.dockingPoints["argument"].child != null) {
                 args.push(this.dockingPoints["argument"].child.getExpression(format));
             }
-            expression += args.join(", ") + ")";
+            expression += args.join("");
+
+            // FIXME We need to decide what to do with orders.
+            if (this.dockingPoints["order"].child != null) {
+                var n = parseInt(this.dockingPoints["order"].child.getExpression(format));
+                if (!isNaN(n) && n > 1) {
+                    expression += _.repeat(" * " + expression, n-1);
+                }
+            }
+
+            if (this.dockingPoints["right"].child != null) {
+                expression += ' * ' + this.dockingPoints["right"].child.getExpression(format);
+            }
+
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
@@ -182,7 +190,22 @@ class Differential extends Widget {
     }
 
     token() {
-        return this.getExpression("python");
+        // DRY this out.
+        var expression;
+        if (this.letter == "δ") {
+            expression = "delta";
+        } else if (this.letter == "∆") {
+            expression = "Delta";
+        } else {
+            expression = "d";
+        }
+        let args = [];
+        if (this.dockingPoints["argument"].child != null) {
+            args.push(this.dockingPoints["argument"].child.getExpression("python"));
+        }
+        expression += args.join(" ");
+
+        return expression;
     }
 
     /** Paints the widget on the canvas. */
