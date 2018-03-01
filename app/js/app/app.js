@@ -815,13 +815,6 @@ define([
                             if ($rootScope.webSocketCheckTimeout != null) {
                                 $timeout.cancel($rootScope.webSocketCheckTimeout);
                             }
-                            api.logger.log({
-                                type: "WEBSOCKET_ERROR",
-                                code: event.code,
-                                reason: event.reason,
-                                userId: $rootScope.user._id,
-                                userAgent: navigator.userAgent,
-                            });
                     }
                     $rootScope.notificationWebSocket = null;
                 }
