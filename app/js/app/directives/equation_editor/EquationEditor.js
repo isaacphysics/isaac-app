@@ -454,7 +454,7 @@ define(function (require) {
                         }
                     }
 
-                    return diffSymbol;
+                    return [diffSymbol];
                 };
 
                 var parseCustomSymbols = function (symbols) {
@@ -615,7 +615,7 @@ define(function (require) {
                             for (var k = 0; k < partResults.length - 1; k++) {
                                 partResults[k].children = {
                                     right: partResults[k + 1]
-                                }
+                                };
                                 root.menu.label += " " + partResults[k + 1].menu.label;
                             }
                             switch (partResults[0].type) {
