@@ -22,7 +22,7 @@
                 <div class="small-16 columns">
                     <h2>Statistics at a glance</h2>
                 </div>
-                <div ng-show="statistics.totalUsers">
+                <div>
                     <div class="medium-8 small-16 columns">
                         <ul>
                             <li>
@@ -39,13 +39,13 @@
                                     <li>
                                         <strong>Role</strong>
                                         <ul>
-                                            <li>Student (unknown role): {{statistics.role.STUDENT}}</li>
-                                            <li>Teacher: {{statistics.role.TEACHER}}</li>
-                                            <li>Event Manager: {{statistics.role.EVENT_MANAGER}}</li>
-                                            <li>Content Editor: {{statistics.role.CONTENT_EDITOR}}</li>
-                                            <li>Admin: {{statistics.role.ADMIN}}</li>
-                                            <li>Tester: {{statistics.role.TESTER}}</li>
-                                            <li>Staff: {{statistics.role.STAFF}}</li>
+                                            <li>Student (unknown role): {{statistics.role.STUDENT || 0 }}</li>
+                                            <li>Teacher: {{statistics.role.TEACHER || 0 }}</li>
+                                            <li>Event Manager: {{statistics.role.EVENT_MANAGER || 0 }}</li>
+                                            <li>Content Editor: {{statistics.role.CONTENT_EDITOR || 0 }}</li>
+                                            <li>Admin: {{statistics.role.ADMIN || 0 }}</li>
+                                            <li>Tester: {{statistics.role.TESTER || 0 }}</li>
+                                            <li>Staff: {{statistics.role.STAFF || 0 }}</li>
                                         </ul>
                                     </li>
                                     <li>
@@ -58,8 +58,9 @@
                                     <li>
                                         <strong>Last Seen Data (non-staff)</strong>
                                         <ul>
-                                            <li>Last 7 days: {{statistics.activeUsersLastWeek}} (Teachers: {{statistics.activeTeachersLastWeek}}, Students: {{statistics.activeStudentsLastWeek}})</li>
-                                            <li>Last 30 days: {{statistics.activeUsersLastThirtyDays}} (Teachers: {{statistics.activeTeachersLastThirtyDays}}, Students: {{statistics.activeStudentsLastThirtyDays}})</li>
+                                            <li>Last 7 days: {{statistics.activeUsers.sevenDays.total || 0}} (Teachers: {{statistics.activeUsers.sevenDays.TEACHER || 0}}, Students: {{statistics.activeUsers.sevenDays.STUDENT || 0}})</li>
+                                            <li>Last 30 days: {{statistics.activeUsers.thirtyDays.total || 0}} (Teachers: {{statistics.activeUsers.thirtyDays.TEACHER || 0}}, Students: {{statistics.activeUsers.thirtyDays.STUDENT || 0}})</li>
+                                            <li>Last 90 days: {{statistics.activeUsers.ninetyDays.total || 0}} (Teachers: {{statistics.activeUsers.ninetyDays.TEACHER || 0}}, Students: {{statistics.activeUsers.ninetyDays.STUDENT || 0}})</li>
                                         </ul>
                                     </li>                                                            
                                 </ul>
@@ -74,8 +75,9 @@
                                     <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
                                     <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}})</li>
                                     <li># of Users Answering Questions<ul>
-                                        <li>Last 7 days: Teachers: {{statistics.questionsAnsweredLastWeekTeachers}}, Students: {{statistics.questionsAnsweredLastWeekStudents}}</li>
-                                        <li>Last 30 days: Teachers: {{statistics.questionsAnsweredLastThirtyDaysTeachers}}, Students: {{statistics.questionsAnsweredLastThirtyDaysStudents}}</li>                    
+                                        <li>Last 7 days: Teachers: {{statistics.answeringUsers.sevenDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.sevenDays.STUDENT || 0}}</li>
+                                        <li>Last 30 days: Teachers: {{statistics.answeringUsers.thirtyDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.thirtyDays.STUDENT || 0}}</li>
+                                        <li>Last 90 days: Teachers: {{statistics.answeringUsers.ninetyDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.ninetyDays.STUDENT || 0}}</li>                    
                                     </ul></li>
                                 </ul>
                             </li> 
