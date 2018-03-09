@@ -255,7 +255,7 @@
                 <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.groups_created >= 1 ? 'unlocked' : ''">
                 </span>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.groups_created == 0" class="explanation">
-                    <p>Now you have a teacher account, you can start creating groups for your classes and set assignments.</p>
+                    <p>Want to set work for your students on Isaac? The first step is to create a Class Group for your students to join.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="groups" ng-click="achievementsGetStarted('CREATE_GROUP');">Get Started</a>
                     </p>
@@ -264,7 +264,7 @@
                     <p>You have created
                         <span class="count">{{ progress.userSnapshot.teacherActivityRecord.groups_created }}</span>
                         group<span ng-if="progress.userSnapshot.teacherActivityRecord.groups_created != 1">s</span>.</p>
-                    <p>To create a group go to the <a ui-sref="groups">Manage Groups</a> page, enter a name for your new group and click the Create button.</p>
+                    <p>Create more groups the the <a ui-sref="groups">Manage Groups</a> page.</p>
                 </div>
             </div>
 
@@ -272,7 +272,7 @@
                 <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.assignments_set >= 1 ? 'unlocked' : ''">
                 </span>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.assignments_set == 0" class="explanation">
-                    <p>Once you have created a group you can set assignments and save time on marking homeworks!</p>
+                    <p>Set an assignment for your students and get the marking done for free.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="setAssignments" ng-click="achievementsGetStarted('CREATE_ASSIGNMENT');">Get Started</a>
                     </p>
@@ -281,7 +281,7 @@
                     <p>You have set
                         <span class="count">{{ progress.userSnapshot.teacherActivityRecord.assignments_set }}</span>
                         assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.assignments_set != 1">s</span>.</p>
-                    <p>Once you have created a group you can assign a board of questions to that group from the <a ui-sref="setAssignments">Set Assignments</a> page.</p>
+                    <p>Set more assignments on the <a ui-sref="setAssignments">Set Assignments</a> page.</p>
                 </div>
             </div>
 
@@ -289,7 +289,7 @@
                 <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.book_pages_set >= 1 ? 'unlocked' : ''">
                 </span>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.book_pages_set == 0" class="explanation">
-                    <p>You can even chose to set a pre-made assignment from one of our text books!</p>
+                    <p>Improve your students’ core understanding and key skills by setting work from one of our Mastering Essential Skills books.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="setAssignments({books: 'show'})" ng-click="achievementsGetStarted('CREATE_BOOK_ASSIGNMENT');">Get Started</a>
                     </p>
@@ -299,7 +299,7 @@
                         <span class="count">{{ progress.userSnapshot.teacherActivityRecord.book_pages_set }}</span>
                         book page assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.book_pages_set != 1">s</span>.</p>
                     <p>
-                        <a ng-click="modals.isaacBooks.show()">our GCSE &amp; A-Level books</a>
+                        Set more book pages on the <a ui-sref="setAssignments({books: 'show'})">Set Assignments</a> page.
                     </p>
                 </div>
             </div>
@@ -309,8 +309,8 @@
                 </span>
                 <div ng-show="progress.userSnapshot.gameboardRecord.creations.builder == 0 ||
                 progress.userSnapshot.gameboardRecord.creations.builder ==  null" class="explanation">
-                    <p>If you want finer control over what questions go in an assignment, say to customise a book board
-                        or to mix book questions and other Isaac questions, you can create your own board.</p>
+                    <p>Improve your students’ problem solving skills and give them more of a challenge by setting some of our levelled questions.
+                        Or combine mastery questions with levelled questions in one assignment.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="gameEditor" ng-click="achievementsGetStarted('CREATE_BOARD');">Get Started</a>
                     </p>
@@ -320,8 +320,7 @@
                         <span class="count">{{ progress.userSnapshot.gameboardRecord.creations.builder || 0 }}</span>
                         custom gameboard<span ng-if="progress.userSnapshot.gameboardRecord.creations.builder != 1">s</span>.</p>
                     <p>
-                        If you want finer control over what questions go in an assignment, say to customise a book board
-                        or to mix book questions and other Isaac questions, you can do this on the <a ui-sref="gameEditor">Create a Board / Build an Assignment</a> page.
+                        Create more custom boards on the <a ui-sref="gameEditor">Board Builder</a> page.
                     </p>
                 </div>
             </div>
@@ -330,7 +329,7 @@
                 <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.cpd_events_attended >= 1 ? 'unlocked' : ''">
                 </span>
                 <div ng-show="progress.userSnapshot.teacherActivityRecord.cpd_events_attended == 0" class="explanation">
-                    <p>You can book onto one of our professional development events and find out more about what Isaacphysics can offer you.</p>
+                    <p>Receive more guidance on how to use isaacphysics.org by attending one of our professional development events.</p>
                     <p>
                         <a class="ru-button getStarted" href="javascript:void(0)" ui-sref="events({types: 'teacher'})"
                          ng-click="achievementsGetStarted('BOOK_CPD_EVENT');">Get Started</a>
@@ -341,7 +340,7 @@
                         <span class="count">{{ progress.userSnapshot.teacherActivityRecord.cpd_events_attended }}</span>
                         CPD event<span ng-if="progress.userSnapshot.teacherActivityRecord.cpd_events_attended != 1">s</span>.</p>
                     <p>
-                        <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})">CPD Events</a>
+                        Book onto more CPD events on the <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})">Events</a> page.
                     </p>
                 </div>
             </div>
