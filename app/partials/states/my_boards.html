@@ -16,12 +16,14 @@
                on the go and
                <span class="ru_green filter-link" ng-click="search.completion = 'Not started'">{{boards.totalNotStarted}}</span>
                not started.
-            </strong></p>
+            </strong>
+            </p>
          </div>
       </div>
    </div>
    <div class="medium-3 columns text-right hide-for-small-only">
       <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+      <button style="float:right; padding: 4% 8%; margin: 10px 0;" ng-show="selectedViewOption.value == 'table' && selectedBoards.length > 0" ng-click="deleteBoards()">Delete {{ selectedBoards.length }} board<span ng-show="selectedBoards.length > 1">s</span></button>
    </div>
 </div>
 
@@ -81,7 +83,8 @@
                <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>{{shareUrl}}</div>
                </div>
-               <div class="deletion-cross"><span ng-click="deleteBoard(board)">X</span></div>
+               <!--<div class="deletion-cross"><span ng-click="deleteBoard(board)">X</span></div>-->
+               <div class="deletion-cross"><span><input type="checkbox" ng-click="boardSelectToggle(board)"></span></div>
             </td>
          </tr>
       </tbody>
