@@ -1,5 +1,5 @@
 <!-- Start active group -->
-    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup"><a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a></span></h6>
+    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup"><a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a> &nbsp; <a href="javascript:void(0)" ng-if="selectedGroup && selectedGroup.ownerId == user._id" ng-click="modals.groupManagers.show()">Edit Group Managers</a></span></h6>
 
     <input ng-show="selectedGroup" type="text" ng-model="selectedGroup.groupName" />
     <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
@@ -41,6 +41,7 @@
                 2 Invitations not yet accepted <span class="show-for-medium-up">in this group</span>
                 <span class="group-accordion-arrow"></span>
             </a>
+            
             <div class="group-accordion-content">
                 <table class="group-table">
                     <tbody>

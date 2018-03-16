@@ -26,6 +26,7 @@ define([], function() {
 
 		$scope.selectedGroup = null;
 		$scope.selectedGroupMembers = null;
+		$scope.selectedGroupAdditionalManagers = null;
 		$scope.selectedGroupToken = null;
 		$scope.groupJoinURL = null;
 
@@ -38,6 +39,8 @@ define([], function() {
 		$scope.sortOption = $scope.sortOptions[0];
 
 		$scope.hasExistingAssignments = false;
+
+		$scope.newAdditionalManager = {}
 
 		api.userGameBoards(null, null, 0, 1).$promise.then(function(boards) {
 			if(boards.totalResults > 0){
@@ -65,7 +68,8 @@ define([], function() {
 				$scope.setLoading(true);
 				$scope.selectedGroup = JSON.parse(JSON.stringify(group));	
 				$scope.selectedGroupMembers = api.groupManagementEndpoint.getMembers({id: $scope.selectedGroup._id});
-
+				$scope.selectedGroupAdditionalManagers = $scope.selectedGroup.additionalManagers;
+				
 				$scope.selectedGroupMembers.$promise.then(function(){
 					$timeout(function(){
 						Opentip.findElements();
@@ -174,6 +178,32 @@ define([], function() {
 				return;
 			}
 		}
+
+		$scope.addManager = function(group, email) {
+			api.groupManagementEndpoint.addManager({id: group._id, email: email}).$promise.then(function(result){
+				$scope.selectedGroup = result;
+				$scope.newAdditionalManager.email = ''
+				$scope.myGroups = api.groupManagementEndpoint.get();
+				$scope.showToast($scope.toastTypes.Success, "Group Manager Added", "The user has been added successfully.");
+			}).catch(function(e) {
+				$scope.showToast($scope.toastTypes.Failure, "Group Manager Addition Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+			});
+		}
+
+		$scope.deleteManager = function(group, user) {
+			var deleteMember = $window.confirm('Are you sure you want to remove this teacher from the group?');   
+			if (deleteMember) {
+				api.groupManagementEndpoint.deleteManager({id: group._id, userId: user.id}).$promise.then(function(result){
+					$scope.selectedGroup = result;
+					$scope.myGroups = api.groupManagementEndpoint.get();
+					$scope.showToast($scope.toastTypes.Success, "Group Manager Removed", "The user has been removed successfully.");
+				}).catch(function(e) {
+        			$scope.showToast($scope.toastTypes.Failure, "Group Manager Removal Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				});
+			} else {
+				return;
+			}
+		}		
 
 	}]
 

@@ -101,3 +101,36 @@
       </div>    
   </div>
 </div>
+
+<div isaac-modal="groupManagers">
+  <div class="reveal-modal-head">
+    <h2>Share your group</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <h3>Selected group: {{selectedGroup.groupName}}</h3>
+    <p>Sharing this group will let other teachers edit the group, set assigments and view assignment progress but will not automatically let them see detailed mark data unless they have already given access to the new teacher.</p> 
+    
+    <div class="group-accordion-content">
+        <h4>Current group managers</h4>
+        <p ng-if="selectedGroup.additionalManagers.length != 0">The users below have permission to manage this group.</p>
+        <p ng-if="selectedGroup.additionalManagers.length == 0">There are no additional group managers for this group.</p>
+        <table class="group-table">
+            <tbody>
+                <tr ng-repeat="member in selectedGroup.additionalManagers" ng-class="{disabled: !member.authorisedFullAccess}">
+                    <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} ({{member.email}})</td>
+                    <td class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <h5>Add additional managers</h5> 
+        <p>Enter the email of another isaac teacher account below to add them as a group manager.</p>
+        <form>
+            <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter the email address here"/>
+            <p><small><strong>Remember:</strong> Students may need to use the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
+            <a class="ru-button-big expand" ng-click="addManager(selectedGroup, newAdditionalManager.email)">Add group manager</a>
+        </form>
+    </div>     
+  </div>
+</div>
