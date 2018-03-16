@@ -223,7 +223,17 @@ define([], function() {
                 method: 'GET',
                 url: urlPrefix + "/authorisations/token/:id", 
                 isArray: false 
-            },      
+            },
+            'addManager' : {
+                method: 'POST',
+                url: urlPrefix + "/groups/:id/manager", 
+                isArray: false 
+            },
+            'deleteManager' : {
+                method: 'DELETE',
+                url: urlPrefix + "/groups/:id/manager/:userId", 
+                isArray: false 
+            },
         });
 
         this.authorisations = $resource(urlPrefix + "/authorisations/", {}, {
