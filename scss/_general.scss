@@ -281,6 +281,17 @@ body
 {
     overflow-x: hidden;
 }*/
+
+.hexagon-offset-even {
+    @media only screen and (min-width: 64.063em) {
+        margin-top: -72px !important;
+        left: 4px;
+    } 
+    @media only screen {
+        margin-top: -15px;
+    }
+}   
+
     
 @media #{$small-only}
 {
