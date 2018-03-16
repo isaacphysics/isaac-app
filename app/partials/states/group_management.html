@@ -126,7 +126,7 @@
         <br>
         <h5>Add additional managers</h5> 
         <p>Enter the email of another isaac teacher account below to add them as a group manager.</p>
-        <form>
+        <form ng-submit="addManager(selectedGroup, newAdditionalManager.email)">
             <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter the email address here"/>
             <p><small><strong>Remember:</strong> Students may need to use the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
             <a class="ru-button-big expand" ng-click="addManager(selectedGroup, newAdditionalManager.email)">Add group manager</a>
