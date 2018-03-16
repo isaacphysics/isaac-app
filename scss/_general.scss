@@ -224,11 +224,13 @@ $footer_height : 250px;
     text-align: center;
 }
 
-.ru_maths, .panel.maths * {
+.ru_maths, .panel.maths * 
+{
     color: $ru_maths !important;
 }
 
-.ru_chemistry, .panel.chemistry * {
+.ru_chemistry, .panel.chemistry * 
+{
     color: $ru_chemistry !important;
 }
 

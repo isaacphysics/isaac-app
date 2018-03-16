@@ -14,41 +14,50 @@
  * limitations under the License.
  */
 define([], function() {
-    return ['$compile', '$location', '$anchorScroll', function($compile, $location, $anchorScroll) {
+    return ['$compile', '$location', '$anchorScroll', '$timeout', function($compile, $location, $anchorScroll, $timeout) {
         return {
             restrict: 'A',
-
-            link: function(scope, element, attrs) {
-
+            compile: function(element) {
+                // Take a copy of the element before Angular has done any compilation.
                 var rawClone = element.clone();
 
-                scope.modals = scope.modals || {};
+                return function(scope, element, attrs) {
 
-                scope.$on("$stateChangeStart", function() {
-                    $("#isaacModal").foundation("reveal", "close");
-                });
+                    scope.modals = scope.modals || {};
 
-                scope.modals[attrs.isaacModal] = {
-                    show: function() {
-                        $("#isaacModal").empty().append($compile(rawClone)(scope));
-                        $("#isaacModal").foundation("reveal", "open");
-
-                        var windowHeight = $(window).height(),
-                            modalHeight = $("#isaacModal").height(),
-                            modalPosition = (33/100*windowHeight) - (modalHeight/2);
-
-                        var scrollPos = $(window).scrollTop();
-
-                        $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : scrollPos);
-                        
-                        // make sure the top of the modal is in view.
-                        if (!('noHash' in attrs)) {
-                            $location.hash('isaacModal');
-                        }
-                    },
-                    hide: function() {
+                    scope.$on("$stateChangeStart", function() {
                         $("#isaacModal").foundation("reveal", "close");
-                    },
+                    });
+
+                    scope.modals[attrs.isaacModal] = {
+                        show: function() {
+
+                            var r = $compile(rawClone)(scope);
+                            
+                            // Safely call $digest, even if we're already in the digest loop. Ew.
+                            $timeout();
+
+                            $("#isaacModal").empty().append(r);
+
+                            $("#isaacModal").foundation("reveal", "open");
+
+                            var windowHeight = $(window).height(),
+                                modalHeight = $("#isaacModal").height(),
+                                modalPosition = (33/100*windowHeight) - (modalHeight/2);
+
+                            var scrollPos = $(window).scrollTop();
+
+                            $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : scrollPos);
+                            
+                            // make sure the top of the modal is in view.
+                            if (!('noHash' in attrs)) {
+                                $location.hash('isaacModal');
+                            }
+                        },
+                        hide: function() {
+                            $("#isaacModal").foundation("reveal", "close");
+                        },
+                    }
                 }
             }
         }
