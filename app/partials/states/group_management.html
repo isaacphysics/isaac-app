@@ -48,10 +48,12 @@
                         <!--img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" /-->
                         <span class="group-nav-right"><strong></strong></span>
                     </a> 
-                    <a class="group-nav-delete" ng-click="deleteSelectedGroup(group)">
+                    <a ng-if="group && group.ownerId == user._id" class="group-nav-delete" href="javascript:void(0)" ng-click="deleteSelectedGroup(group)">
                         X
                     </a>
-                    
+                    <a ng-if="group && group.ownerId != user._id" class="group-nav-delete" href="javascript:void(0)" >
+                        &nbsp;
+                    </a>
                     <div ng-show="selectedGroup" class="group-nav-content hide-for-large-up" ng-class="{'hide-for-small-up': selectedGroup == null || selectedGroup._id != group._id}" ng-include="'/partials/group_management_details.html'"></div>
                 </dd>
                 <dd ng-if="myGroups == null || myGroups.length == 0">
