@@ -282,17 +282,16 @@ body
     overflow-x: hidden;
 }*/
 
-@media only screen and (min-width: 64.063em) {
-    .large-topoffset-0 {
-        margin-top: -70px !important; 
+.hexagon-offset-even {
+    @media only screen and (min-width: 64.063em) {
+        margin-top: -72px !important;
+        left: 4px;
     } 
+    @media only screen {
+        margin-top: -15px;
+    }
 }   
 
-@media only screen {
-    .small-topoffset-0 {
-        margin-top: -15px;
-    } 
-}
     
 @media #{$small-only}
 {
