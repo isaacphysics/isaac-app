@@ -51,7 +51,7 @@ class Differential extends Widget {
         super(p, s);
         this.letter = letter;
         this.s = s;
-        this.docksTo = ['operator', 'differential'];
+        this.docksTo = ['operator', 'differential', 'relation'];
     }
 
     /**
@@ -96,9 +96,9 @@ class Differential extends Widget {
         let box = this.boundingBox();
         // let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "differential_argument", "argument");
-        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "differential_order", "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, "differential", "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["differential_argument"], "argument");
+        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["differential_order"], "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential"], "right");
     }
 
     /**

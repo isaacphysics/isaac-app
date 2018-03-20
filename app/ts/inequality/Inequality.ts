@@ -182,7 +182,15 @@ export
 
     commitPotentialSymbol = () => {
         // Make sure we have an active docking point, and that the moving symbol can dock to it.
-        if (this.activeDockingPoint != null && this.potentialSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+        let idx = -1;
+        for (let d in this.potentialSymbol.docksTo) {
+            if (this.activeDockingPoint) {
+                idx = Math.max(idx, _.findIndex(this.activeDockingPoint.type, (x) => {
+                    return x == d
+                }));
+            }
+        }
+        if (this.activeDockingPoint != null && idx > -1) {
             this.activeDockingPoint.child = this.potentialSymbol;
             this.scope.log.actions.push({
                 event: "DOCK_POTENTIAL_SYMBOL",
@@ -413,7 +421,15 @@ export
             this.prevTouch = null;
 
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
-            if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+            let idx = -1;
+            for (let d of this.movingSymbol.docksTo) {
+                if (this.activeDockingPoint) {
+                    idx = Math.max(idx, _.findIndex(this.activeDockingPoint.type, (x) => {
+                        return x == d
+                    }));
+                }
+            }
+            if (this.activeDockingPoint != null && idx > -1) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
                 // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
