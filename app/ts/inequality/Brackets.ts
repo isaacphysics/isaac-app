@@ -145,9 +145,11 @@ export
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         if (format == "mhchem") {
@@ -161,9 +163,11 @@ export
                 if (this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         } else if (format == "python") {
             lhs = this.pythonSymbol['lhs'];
@@ -176,12 +180,14 @@ export
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                 }
-                if (this.dockingPoints["right"].child != null) {
-                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
-                    } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
-                    }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    expression += " * " + this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
@@ -200,9 +206,9 @@ export
                 } else {
                     expression = brackets;
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         return expression;
