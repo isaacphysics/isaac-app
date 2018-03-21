@@ -39,7 +39,7 @@ define([], function() {
                         var badCharacters = RegExp(regexStr);
                         var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
                         if (/[{}\\]/.test(pycode)) {
-                            scope.textEntryError = 'LaTeX syntax is not allowed.';
+                            scope.textEntryError = 'LaTeX syntax is not supported.';
                         } else if (badCharacters.test(pycode)) {
                             scope.textEntryError = 'Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(', ')
                         } else if (openBracketsCount != closeBracketsCount) {
@@ -47,8 +47,6 @@ define([], function() {
                         } else {
                             scope.textEntryError = '';
                         }
-
-                        // scope.textEntryError = pycode;
                     }, 250);
                 };
 
