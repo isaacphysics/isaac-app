@@ -31,8 +31,8 @@ define([], function() {
                     }
                     timer = $timeout(function() {
                         var pycode = element.find(".eqn-text-input")[0].value;
-                        var openBracketsCount = pycode.split('(').length;
-                        var closeBracketsCount = pycode.split(')').length;
+                        var openBracketsCount = pycode.split('(').length - 1;
+                        var closeBracketsCount = pycode.split(')').length - 1;
 
                         scope.state = {result: {python: pycode}, textEntry: true};
                         var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
