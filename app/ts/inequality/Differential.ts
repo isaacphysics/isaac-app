@@ -160,9 +160,11 @@ class Differential extends Widget {
                     expression += _.repeat(" * " + expression, n-1);
                 }
             }
-
             if (this.dockingPoints["right"].child != null) {
-                expression += ' * ' + this.dockingPoints["right"].child.getExpression(format);
+                let op = (this.dockingPoints["right"].child.typeAsString == 'Relation' ||
+                      this.dockingPoints["right"].child.typeAsString == 'BinaryOperation')
+                      ? '' : ' * ';
+                expression += op + this.dockingPoints["right"].child.getExpression(format);
             }
 
         } else if (format == "mathml") {
