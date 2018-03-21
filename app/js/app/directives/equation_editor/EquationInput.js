@@ -60,8 +60,8 @@ define([], function() {
                         } else {
                             element.find(".eqn-preview").html("Click to replace your typed answer");
                         }
-                        // If we have the python form, add it to the text entry box:
-                        if (s.result.python) {
+                        // If we have the python form, add it to the text entry box (unless we're currently typing in the box; Safari bug!):
+                        if (s.result.python && !(element.find(".eqn-text-input")[0] === document.activeElement)) {
                             element.find(".eqn-text-input")[0].value = s.result.python;
                         }
                     } else if (scope.questionDoc) {
