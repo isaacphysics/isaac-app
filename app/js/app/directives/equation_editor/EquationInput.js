@@ -35,11 +35,13 @@ define([], function() {
                         var closeBracketsCount = pycode.split(')').length;
 
                         scope.state = {result: {python: pycode}, textEntry: true};
-                        var badCharacters = /[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+/;
-                        if (/\\/.test(pycode)) {
+                        var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
+                        var badCharacters = RegExp(regexStr);
+                        var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
+                        if (/[{}\\]/.test(pycode)) {
                             scope.textEntryError = 'LaTeX syntax is not allowed.';
                         } else if (badCharacters.test(pycode)) {
-                            scope.textEntryError = 'Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(RegExp(_.uniq(pycode.split(badCharacters)).join('|'), 'g'), '')).join(', ')
+                            scope.textEntryError = 'Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(', ')
                         } else if (openBracketsCount != closeBracketsCount) {
                             scope.textEntryError = 'You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.';
                         } else {
