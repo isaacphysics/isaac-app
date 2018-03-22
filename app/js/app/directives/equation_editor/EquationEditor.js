@@ -440,13 +440,17 @@ define(function (require) {
 
                     if (null != diffArgument) {
                         var argParts = diffArgument.split("_");
-                        var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
+
                         diffSymbol.children["argument"] = {
                             type: "Symbol",
                             properties: { letter: argParts[0] },
                         };
                         diffSymbol.menu.label = diffSymbol.menu.label + argParts[0];
-                        if (null != argSubscript) {
+                        if (argParts[1] == "prime") {
+                            diffSymbol.children["argument"].properties.modifier = argParts[1];
+                            diffSymbol.menu.label += "'";
+                        } else if (argParts[1]) {
+                            var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
                             diffSymbol.children["argument"]["children"] = {
                                 subscript: argSubscript,
                             };
