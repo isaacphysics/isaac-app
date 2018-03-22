@@ -76,7 +76,7 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation', 'differential'];
     }
 
     /**
