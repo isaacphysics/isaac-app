@@ -69,6 +69,22 @@ export
         this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets', 'differential_argument'];
     }
 
+    /**
+     * Prevents Symbols from being detached from Differentials when the user is not an admin/editor.
+     */
+    get isDetachable() {
+        const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADifferential;
+    }
+
+    /**
+     *  Checks if this symbol is the direct child of a differential.
+     */
+    get sonOfADifferential() {
+        let p = this.parentWidget;
+        return p && p.typeAsString == 'Differential';
+    }
+
 	/**
 	 * Generates all the docking points in one go and stores them in this.dockingPoints.
 	 * A Symbol has three docking points:
