@@ -168,13 +168,7 @@ export
             } else {
                 // There is no child to paint, let's paint an empty docking point
                 //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
-                let idx = -1;
-                for (let d of this.s.visibleDockingPointTypes) {
-                    idx = Math.max(idx, _.findIndex(dockingPoint.type, (x) => {
-                        return x == d
-                    }));
-                }
-                let drawThisOne = idx > -1;
+                let drawThisOne = _.intersection(this.s.visibleDockingPointTypes, dockingPoint.type).length > 0;
                 let highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
                 if (drawThisOne || window.location.hash === "#debug") {
