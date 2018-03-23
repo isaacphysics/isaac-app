@@ -457,3 +457,27 @@
     <h2>Your account has been successfully updated.</h2>
     <a class="close-reveal-modal"><img src="/assets/Close-button.jpg" alt="Close" /></a>
 </div>
+
+<div isaac-modal="tokenVerification">
+  <div class="reveal-modal-head">
+    <h2>Sharing your data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <p>Are you sure you would like to give the following isaac users access to your data?</p> 
+    
+    <div class="group-accordion-content">
+        <table class="group-table">
+            <tbody>
+                <tr ng-repeat="member in usersToGrantAccess">
+                    <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} - ({{member.email}})</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <p><small><strong>Remember</strong>: you can always revoke access to your data from your account settings page.</small></p>
+        <a class="ru-button-big" ng-click="applyToken()">Confirm</a>
+        <a class="ru-button-big secondary" ng-click="modals.tokenVerification.hide()">Cancel</a>
+    </div>     
+  </div>
+</div>

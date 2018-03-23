@@ -335,43 +335,45 @@ define([], function() {
         $scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
         
-        $scope.useToken = function() {
+        $scope.useToken = function(){
             if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
                 $scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
                 return;
             }
+            
             // Some users paste the URL in the token box, so remove the token from the end if they do.
             // Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
             $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
             $scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
             api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-                    var usersToGrantAccess = []
-                    angular.forEach(result, function(value, key) {
-                        usersToGrantAccess.push("\n"+(value.givenName ? value.givenName.charAt(0) + ". " : "") + value.familyName + " (" + value.email + ")");
-                    });
-
-                var confirm = $window.confirm("Are you sure you would like to grant access to your data to the following users: " + usersToGrantAccess + "? \n For more details about the data which is shared, see our privacy policy.");
-
-                if (confirm) {
-                    api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
-                        $scope.activeAuthorisations = api.authorisations.get();
-                        $scope.authenticationToken = {value: null};
-                        $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-                        // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
-                        if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
-                            // If we've just signed up and used a group code immediately, change back to the main settings page:
-                            $scope.activeTab = 0;
-                        }
-                    })                      
-                }
+                $scope.usersToGrantAccess = result;
+                angular.forEach($scope.usersToGrantAccess, function(value, key) {
+                    value.givenName = value.givenName ? value.givenName.charAt(0) + ". " : "";
+                });
+                $scope.modals.tokenVerification.show();
             }).catch(function(e){
                 console.error(e);
                 if (e.status == 429) {
                     $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
-                } else {
-                    $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
                 }
+            });
+        }
+
+        $scope.applyToken = function(){
+            api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
+                $scope.activeAuthorisations = api.authorisations.get();
+                $scope.authenticationToken = {value: null};
+                $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
+                // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
+                if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
+                    // If we've just signed up and used a group code immediately, change back to the main settings page:
+                    $scope.activeTab = 0;
+                }
+                $scope.modals.tokenVerification.hide();
+            }).catch(function(e){
+                console.error(e);
+                $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
             });
         }
 
