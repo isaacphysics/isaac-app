@@ -76,7 +76,7 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation', 'differential'];
     }
 
     /**
@@ -89,7 +89,7 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "right");
     }
 
     /**

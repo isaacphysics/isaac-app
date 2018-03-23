@@ -182,7 +182,7 @@ export
 
     commitPotentialSymbol = () => {
         // Make sure we have an active docking point, and that the moving symbol can dock to it.
-        if (this.activeDockingPoint != null && this.potentialSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+        if (this.activeDockingPoint != null && _.intersection(this.potentialSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
             this.activeDockingPoint.child = this.potentialSymbol;
             this.scope.log.actions.push({
                 event: "DOCK_POTENTIAL_SYMBOL",
@@ -219,7 +219,7 @@ export
         let w: Widget = null;
         switch (node["type"]) {
             case "Symbol":
-                w = new Symbol(this.p, this, node["properties"]["letter"]);
+                w = new Symbol(this.p, this, node["properties"]["letter"], node["properties"]["modifier"]);
                 break;
             case "BinaryOperation":
                 w = new BinaryOperation(this.p, this, node["properties"]["operation"]);
@@ -413,7 +413,7 @@ export
             this.prevTouch = null;
 
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
-            if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+            if (this.activeDockingPoint != null && _.intersection(this.movingSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
                 // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;

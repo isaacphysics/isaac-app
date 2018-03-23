@@ -35,6 +35,7 @@ export
 
     protected s: any;
     protected letter: string;
+    protected modifier: string;
 
     get typeAsString(): string {
         return "Symbol";
@@ -60,11 +61,28 @@ export
         }
     }
 
-    public constructor(p: any, s: any, letter: string) {
+    public constructor(p: any, s: any, letter: string, modifier = "") {
         super(p, s);
         this.letter = letter;
         this.s = s;
+        this.modifier = modifier;
         this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets', 'differential_argument'];
+    }
+
+    /**
+     * Prevents Symbols from being detached from Differentials when the user is not an admin/editor.
+     */
+    get isDetachable() {
+        const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
+        return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADifferential;
+    }
+
+    /**
+     *  Checks if this symbol is the direct child of a differential.
+     */
+    get sonOfADifferential() {
+        let p = this.parentWidget;
+        return p && p.typeAsString == 'Differential';
     }
 
 	/**
@@ -79,9 +97,9 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "exponent", "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, "symbol_subscript", "subscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["operator"], "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["exponent"], "superscript");
+        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 0.666, ["symbol_subscript"], "subscript");
     }
 
     /**
@@ -99,6 +117,9 @@ export
         let expression = "";
         if (format == "latex") {
             expression = this.letter;
+            if(this.modifier == "prime") {
+                expression += "'"
+            }
             if (!sonOfADifferential && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
             }
@@ -115,6 +136,9 @@ export
             }
         } else if (format == "python") {
             expression = "" + this.letter;
+            if(this.modifier == "prime") {
+                expression += "_prime"
+            }
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_" + this.dockingPoints["subscript"].child.getExpression("subscript");
             }
@@ -134,6 +158,9 @@ export
             }
         } else if (format == "subscript") {
             expression = "" + this.letter;
+            if(this.modifier == "prime") {
+                expression += "_prime"
+            }
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.getExpression(format);
             }
@@ -145,25 +172,29 @@ export
             }
         } else if (format == "mathml") {
             expression = '';
+            let l = this.letter;
+            if(this.modifier == "prime") {
+                l += "_prime"
+            }
             if (sonOfADifferential) {
                 if (this.dockingPoints['subscript'].child == null) {
-                    expression += '<mi>' + this.letter + '</mi>';
+                    expression += '<mi>' + l + '</mi>';
 
                 } else if (this.dockingPoints['subscript'].child != null) {
-                    expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
                 }
             } else {
                 if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child == null) {
-                    expression += '<mi>' + this.letter + '</mi>';
+                    expression += '<mi>' + l + '</mi>';
 
                 } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child == null) {
-                    expression += '<msub><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
 
                 } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                    expression += '<msup><mi>' + l + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
 
                 } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msubsup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                    expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
                 }
             }
 
@@ -176,13 +207,16 @@ export
 
     properties(): Object {
         return {
-            letter: this.letter
+            letter: this.letter,
+            modifier: this.modifier
         };
     }
 
     token() {
-        // TODO Handle greek letters
         let e = this.letter;
+        if(this.modifier == "prime") {
+            e += "_prime"
+        }
         if (this.dockingPoints['subscript'].child) {
             e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
         }
@@ -196,7 +230,7 @@ export
         this.p.textFont(this.s.font_it)
             .textSize(this.s.baseFontSize * this.scale)
             .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.letter, 0, 0);
+            .text(this.letter + (this.modifier == "prime" ? "'" : ""), 0, 0);
         this.p.strokeWeight(1);
 
         if (window.location.hash === "#debug") {
@@ -216,7 +250,8 @@ export
 	 * @returns {Rect} The bounding box
 	 */
     boundingBox(): Rect {
-        let box = this.s.font_it.textBounds(this.letter || "x", 0, 1000, this.scale * this.s.baseFontSize);
+        let text = (this.letter || "x") + (this.modifier == "prime" ? "''" : "");
+        let box = this.s.font_it.textBounds(text, 0, 1000, this.scale * this.s.baseFontSize);
         return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
     }
 
