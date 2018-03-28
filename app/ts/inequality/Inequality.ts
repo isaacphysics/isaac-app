@@ -140,8 +140,6 @@ export
         if (this.potentialSymbol) {
             this.potentialSymbol.draw();
         }
-
-        console.log(this.p.frameRate());
     };
 
     updatePotentialSymbol = (spec, x?, y?) => {
