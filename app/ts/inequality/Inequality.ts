@@ -99,6 +99,7 @@ export
         });
     }
     setup = () => {
+        this.p.frameRate(7);
         this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
         this.mBox = this.font_it.textBounds("M", 0, 1000, this.baseFontSize);
 
@@ -139,6 +140,8 @@ export
         if (this.potentialSymbol) {
             this.potentialSymbol.draw();
         }
+
+        console.log(this.p.frameRate());
     };
 
     updatePotentialSymbol = (spec, x?, y?) => {
@@ -202,6 +205,8 @@ export
 
         this.updatePotentialSymbol(null);
         this.updateState();
+
+        this.p.frameRate(7);
     };
 
     parseSubtreeObject = (root: Object) => {
@@ -273,7 +278,7 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
-
+        this.p.frameRate(60);
         // These are used to correctly detect clicks and taps.
 
         // Note that touchX and touchY are incorrect when using touch. Ironically.
@@ -471,6 +476,8 @@ export
             }
         });
         this.updateState();
+
+        this.p.frameRate(7);
     };
 
     mouseMoved = () => {

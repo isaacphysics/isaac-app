@@ -43,6 +43,7 @@ define(function (require) {
                 });
 
                 scope.$on("newSymbolDrag", function (_, symbol, pageX, pageY, mousePageX, mousePageY) {
+                    sketch.p.frameRate(60);
                     scope.draggingNewSymbol = true;
                     scope.mousePageX = pageX;
                     scope.mousePageY = pageY;
@@ -108,6 +109,8 @@ define(function (require) {
                         sketch.updatePotentialSymbol(null);
                         scope.$digest();
                     }
+
+                    sketch.p.frameRate(7);
                 });
 
                 scope.$on("spawnSymbol", function (_e) {
@@ -124,6 +127,7 @@ define(function (require) {
                             timestamp: Date.now()
                         });
                         sketch.updatePotentialSymbol(null);
+                        sketch.p.frameRate(7);
                         return;
                     }
 
