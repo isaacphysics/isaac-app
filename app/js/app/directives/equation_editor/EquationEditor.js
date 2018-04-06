@@ -413,6 +413,43 @@ define(function (require) {
                     return custom;
                 };
 
+                var parseCustomSymbol_Letter = function (p) {
+                    var parts = p.split("_");
+                    var letter = convertToLatexIfGreek(parts[0]);
+                    var newSymbol = {
+                        type: "Symbol",
+                        properties: {
+                            letter: letterMap[letter] || letter,
+                        },
+                        menu: {
+                            label: letter,
+                            texLabel: true,
+                        }
+                    };
+                    var modifiers = ["prime"];
+                    if (parts.length > 1) {
+                        if (_.indexOf(modifiers, parts[1]) > -1) {
+                            newSymbol.properties.modifier = parts[1];
+                            newSymbol.menu.label = letter + "'";
+                        }
+                        if (_.indexOf(modifiers, parts[parts.length-1]) === -1) {
+                            var subscriptLetter = parts[parts.length-1];
+                            var subscriptSymbol = {
+                                type: "Symbol",
+                                properties: {
+                                    letter: letterMap[subscriptLetter] || subscriptLetter,
+                                    upright: subscriptLetter.length > 1
+                                }
+                            };
+                            newSymbol.children = {
+                                subscript: subscriptSymbol,
+                            };
+                            newSymbol.menu.label += "_{" + subscriptLetter + "}";
+                        }
+                    }
+                    return newSymbol;
+                };
+
                 var parseCustomSymbol_Differential = function (parsedDiff) {
                     var diffType = parsedDiff[1];
                     var diffOrder = parsedDiff[2] || 0;
@@ -432,7 +469,7 @@ define(function (require) {
                         }
                     };
 
-                    if (diffOrder > 0) {
+                    if (diffOrder > 1) {
                         diffSymbol.children["order"] = {
                             type: "Num",
                             properties: {
@@ -443,23 +480,8 @@ define(function (require) {
                     }
 
                     if (null != diffArgument) {
-                        var argParts = diffArgument.split("_");
-
-                        diffSymbol.children["argument"] = {
-                            type: "Symbol",
-                            properties: { letter: argParts[0] },
-                        };
-                        diffSymbol.menu.label = diffSymbol.menu.label + argParts[0];
-                        if (argParts[1] == "prime") {
-                            diffSymbol.children["argument"].properties.modifier = argParts[1];
-                            diffSymbol.menu.label += "'";
-                        } else if (argParts[1]) {
-                            var argSubscript = argParts[1] ? { type: "Symbol", properties: { letter: argParts[1] } } : null;
-                            diffSymbol.children["argument"]["children"] = {
-                                subscript: argSubscript,
-                            };
-                            diffSymbol.menu.label = diffSymbol.menu.label + "_{" + argParts[1] + "}";
-                        }
+                        diffSymbol.children["argument"] = parseCustomSymbol_Letter(diffArgument);
+                        diffSymbol.menu.label = diffSymbol.menu.label + diffSymbol.children["argument"].menu.label;
                     }
 
                     return [diffSymbol];
@@ -502,8 +524,18 @@ define(function (require) {
                             console.debug("Parsing derivatives:", s);
                             r.derivatives = derivativeFunctions([s]);
                         } else if (diffRegex.test(s)) {
-                            console.log("Parsing Delta|delta|d");
-                            partResults = parseCustomSymbol_Differential(diffRegex.exec(s));
+                            var parsedDiff = diffRegex.exec(s);
+                            var diffType = parsedDiff[1];
+                            var diffOrder = parsedDiff[2] || 0;
+                            var diffArgument = parsedDiff[3] || null;
+
+                            if (diffType == "d" && diffOrder == 0 && diffArgument == null) {
+                                // We parse this as a letter d, plus optional subscript, ignoring order.
+                                partResults.push(parseCustomSymbol_Letter(s));
+                            } else {
+                                console.log("Parsing Delta|delta|d");
+                                partResults = parseCustomSymbol_Differential(parsedDiff);
+                            }
                         } else {
                             console.debug("Parsing symbol:", s);
                             var parts = s.split(" ");
@@ -580,39 +612,7 @@ define(function (require) {
                                     }
                                 } else {
                                     // otherwise we must have a symbol
-                                    var parts = p.split("_");
-                                    var letter = convertToLatexIfGreek(parts[0]);
-                                    var newSymbol = {
-                                        type: "Symbol",
-                                        properties: {
-                                            letter: letterMap[letter] || letter,
-                                        },
-                                        menu: {
-                                            label: letter,
-                                            texLabel: true,
-                                        }
-                                    };
-                                    var modifiers = ["prime"];
-                                    if (parts.length > 1) {
-                                        if (_.indexOf(modifiers, parts[1]) > -1) {
-                                            newSymbol.properties.modifier = parts[1];
-                                            newSymbol.menu.label = letter + "'";
-                                        }
-                                        if (_.indexOf(modifiers, parts[parts.length-1]) === -1) {
-                                            var subscriptLetter = parts[parts.length-1];
-                                            var subscriptSymbol = {
-                                                type: "Symbol",
-                                                properties: {
-                                                    letter: letterMap[subscriptLetter] || subscriptLetter,
-                                                    upright: subscriptLetter.length > 1
-                                                }
-                                            };
-                                            newSymbol.children = {
-                                                subscript: subscriptSymbol,
-                                            };
-                                            newSymbol.menu.label += "_{" + subscriptLetter + "}";
-                                        }
-                                    }
+                                    var newSymbol = parseCustomSymbol_Letter(p);
                                     partResults.push(newSymbol);
                                 }
                             }
