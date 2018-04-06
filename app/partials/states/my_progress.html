@@ -252,52 +252,55 @@
         <div id="teacherBadges">
 
             <div id="groupBadge" class="badgeEntry">
-                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.groups_created >= 1 ? 'unlocked' : ''">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED >= 1 ? 'unlocked' : ''">
                 </span>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.groups_created == 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED == 0 ||
+                     progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED ==  null" class="explanation">
                     <p>Want to set work for your students on Isaac? The first step is to create a Class Group for your students to join.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="groups" ng-click="achievementsGetStarted('CREATE_GROUP');">Get Started</a>
                     </p>
                 </div>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.groups_created > 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED > 0" class="explanation">
                     <p>You have created
-                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.groups_created }}</span>
-                        group<span ng-if="progress.userSnapshot.teacherActivityRecord.groups_created != 1">s</span>.</p>
+                        <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED }}</span>
+                        group<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED != 1">s</span>.</p>
                     <p>Create more groups the the <a ui-sref="groups">Manage Groups</a> page.</p>
                 </div>
             </div>
 
             <div id="assignmentBadge" class="badgeEntry">
-                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.assignments_set >= 1 ? 'unlocked' : ''">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET >= 1 ? 'unlocked' : ''">
                 </span>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.assignments_set == 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET == 0 ||
+                     progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET ==  null" class="explanation">
                     <p>Set an assignment for your students and get the marking done for free.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="setAssignments" ng-click="achievementsGetStarted('CREATE_ASSIGNMENT');">Get Started</a>
                     </p>
                 </div>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.assignments_set > 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET > 0" class="explanation">
                     <p>You have set
-                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.assignments_set }}</span>
-                        assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.assignments_set != 1">s</span>.</p>
+                        <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET }}</span>
+                        assignment<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET != 1">s</span>.</p>
                     <p>Set more assignments on the <a ui-sref="setAssignments">Set Assignments</a> page.</p>
                 </div>
             </div>
 
             <div id="bookPageBadge" class="badgeEntry">
-                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.book_pages_set >= 1 ? 'unlocked' : ''">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET >= 1 ? 'unlocked' : ''">
                 </span>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.book_pages_set == 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET == 0 ||
+                     progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET ==  null" class="explanation">
                     <p>Improve your students’ core understanding and key skills by setting work from one of our Mastering Essential Skills books.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="setAssignments({books: 'show'})" ng-click="achievementsGetStarted('CREATE_BOOK_ASSIGNMENT');">Get Started</a>
                     </p>
                 </div>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.book_pages_set > 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET > 0" class="explanation">
                     <p>You have set
-                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.book_pages_set }}</span>
-                        book page assignment<span ng-if="progress.userSnapshot.teacherActivityRecord.book_pages_set != 1">s</span>.</p>
+                        <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET }}</span>
+                        book page assignment<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET != 1">s</span>.</p>
                     <p>
                         Set more book pages on the <a ui-sref="setAssignments({books: 'show'})">Set Assignments</a> page.
                     </p>
@@ -305,20 +308,20 @@
             </div>
 
             <div id="boardBadge" class="badgeEntry">
-                <span class="badgeIcon" ng-class="progress.userSnapshot.gameboardRecord.creations.builder > 0 ? 'unlocked' : ''">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED > 0 ? 'unlocked' : ''">
                 </span>
-                <div ng-show="progress.userSnapshot.gameboardRecord.creations.builder == 0 ||
-                progress.userSnapshot.gameboardRecord.creations.builder ==  null" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED == 0 ||
+                progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED ==  null" class="explanation">
                     <p>Improve your students’ problem solving skills and give them more of a challenge by setting some of our levelled questions.
                         Or combine mastery questions with levelled questions in one assignment.</p>
                     <p>
                         <a class="ru-button getStarted" ui-sref="gameEditor" ng-click="achievementsGetStarted('CREATE_BOARD');">Get Started</a>
                     </p>
                 </div>
-                <div ng-show="progress.userSnapshot.gameboardRecord.creations.builder > 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED > 0" class="explanation">
                     <p>You have created
-                        <span class="count">{{ progress.userSnapshot.gameboardRecord.creations.builder || 0 }}</span>
-                        custom gameboard<span ng-if="progress.userSnapshot.gameboardRecord.creations.builder != 1">s</span>.</p>
+                        <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED || 0 }}</span>
+                        custom gameboard<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED != 1">s</span>.</p>
                     <p>
                         Create more custom boards on the <a ui-sref="gameEditor">Board Builder</a> page.
                     </p>
@@ -326,19 +329,20 @@
             </div>
 
             <div id="cpdBadge" class="badgeEntry">
-                <span class="badgeIcon" ng-class="progress.userSnapshot.teacherActivityRecord.cpd_events_attended >= 1 ? 'unlocked' : ''">
+                <span class="badgeIcon" ng-class="progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED >= 1 ? 'unlocked' : ''">
                 </span>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.cpd_events_attended == 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED == 0 ||
+                     progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED ==  null" class="explanation">
                     <p>Receive more guidance on how to use isaacphysics.org by attending one of our professional development events.</p>
                     <p>
                         <a class="ru-button getStarted" href="javascript:void(0)" ui-sref="events({types: 'teacher'})"
                          ng-click="achievementsGetStarted('BOOK_CPD_EVENT');">Get Started</a>
                     </p>
                 </div>
-                <div ng-show="progress.userSnapshot.teacherActivityRecord.cpd_events_attended > 0" class="explanation">
+                <div ng-show="progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED > 0" class="explanation">
                     <p>You have attended
-                        <span class="count">{{ progress.userSnapshot.teacherActivityRecord.cpd_events_attended }}</span>
-                        CPD event<span ng-if="progress.userSnapshot.teacherActivityRecord.cpd_events_attended != 1">s</span>.</p>
+                        <span class="count">{{ progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED }}</span>
+                        CPD event<span ng-if="progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED != 1">s</span>.</p>
                     <p>
                         Book onto more CPD events on the <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})">Events</a> page.
                     </p>
