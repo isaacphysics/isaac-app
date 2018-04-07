@@ -376,7 +376,7 @@ define([], function() {
 
         $scope.attendanceSymbol = function(bookingStatus) {
             symbolMap = {
-                ATTENDED: '✅',
+                ATTENDED: '✔️',
                 ABSENT: '❌'
             }
             return symbolMap.hasOwnProperty(bookingStatus) ? symbolMap[bookingStatus] : "";
