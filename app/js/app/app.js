@@ -118,7 +118,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.4.3/api");
+            apiProvider.urlPrefix("/api/v2.4.6/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -815,13 +815,6 @@ define([
                             if ($rootScope.webSocketCheckTimeout != null) {
                                 $timeout.cancel($rootScope.webSocketCheckTimeout);
                             }
-                            api.logger.log({
-                                type: "WEBSOCKET_ERROR",
-                                code: event.code,
-                                reason: event.reason,
-                                userId: $rootScope.user._id,
-                                userAgent: navigator.userAgent,
-                            });
                     }
                     $rootScope.notificationWebSocket = null;
                 }

@@ -218,7 +218,7 @@ define([], function() {
                 result += "passed";
             } else if (status == "FAILED" || (incorrectParts / totalParts) > (1 - scope.passMark)) {
                 result += "failed";
-            } else if (correctParts > 0) {
+            } else if (correctParts > 0 || incorrectParts > 0) {
                 result += "in-progress";
             } else {
                 result += "not-attempted";

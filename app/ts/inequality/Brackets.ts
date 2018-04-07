@@ -110,14 +110,14 @@ export
         let descent = this.position.y - (box.y + box.h);
         let pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, "operator_brackets", "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "exponent", "superscript");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, ["operator_brackets"], "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, ["exponent"], "superscript");
         if (this.mode == 'chemistry') {
-          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript", "subscript");
+          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, ["subscript"], "subscript");
         }
         else {
-          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, "subscript_maths", "subscript");
+          this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 0.666, ["subscript_maths"], "subscript");
         }
     }
 
@@ -145,9 +145,11 @@ export
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         if (format == "mhchem") {
@@ -161,9 +163,11 @@ export
                 if (this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         } else if (format == "python") {
             lhs = this.pythonSymbol['lhs'];
@@ -176,12 +180,14 @@ export
                 if (this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
                 }
-                if (this.dockingPoints["right"].child != null) {
-                    if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
-                    } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
-                    }
+            } else {
+                expression += lhs + rhs;
+            }
+            if (this.dockingPoints["right"].child != null) {
+                if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
+                    expression += this.dockingPoints["right"].child.getExpression(format);
+                } else {
+                    expression += " * " + this.dockingPoints["right"].child.getExpression(format);
                 }
             }
         } else if (format == "subscript") {
@@ -200,9 +206,9 @@ export
                 } else {
                     expression = brackets;
                 }
-                if (this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
-                }
+            }
+            if (this.dockingPoints['right'].child) {
+                expression += this.dockingPoints['right'].child.getExpression(format);
             }
         }
         return expression;
