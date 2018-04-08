@@ -20,6 +20,18 @@ define([], function() {
 	}
 	var priorityOrderedBoardTags = ['isaac']
 
+	var calculateBoardCompletionStatus = function(board) {
+		var completionStatus;
+		if (board.percentageCompleted == 100) {
+			completionStatus = 'Completed';
+		} else if (board.percentageCompleted > 0) {
+			completionStatus = 'In Progress';
+		} else {
+			completionStatus = 'Not Started';
+		}
+		return completionStatus
+	}
+
 	var calculateBoardLevels = function(board) {
 		levels = [];
 		for(var i = 0; i < board.questions.length; i++) {
@@ -50,7 +62,7 @@ define([], function() {
 	};
 
 	var calculateBoardCreator = function(board, userId) {
-		var creator = board.ownerUserId == userId ? "Me" : "Someone else";
+		var creator = board.ownerUserId == userId ? "Me " : "Someone else";
 		// A tagged gameboard overrides creator
 		if (board.tags) {
 			for (var i = 0; i < priorityOrderedBoardTags.length; i++) {
@@ -69,7 +81,7 @@ define([], function() {
 		this.augmentBoards = function(boards, userId) {
 			for (var i = 0; i < boards.length; i++) {
 				board = boards[i];
-				board.completion = board.percentageCompleted == 100 ? 'Completed' : board.percentageCompleted == 0 ? 'Not Started' : 'In Progress'
+				board.completion = calculateBoardCompletionStatus(board);
 				board.subjects = calculateBoardSubjects(board);
 				board.levels = calculateBoardLevels(board)
 				board.createdBy = calculateBoardCreator(board, userId);
