@@ -261,7 +261,9 @@ define([], function() {
 		}
 
 		$scope.targetUser = null;
-		$scope.additionalInformation = {}
+		$scope.additionalInformation = {};
+		$scope.sortPredicate = 'date';
+		$scope.reverse = true;
 
 		$scope.chooseUserForEvent = function(user) {
 			$scope.targetUser = user;
