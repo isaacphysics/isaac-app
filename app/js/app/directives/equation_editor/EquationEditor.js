@@ -503,7 +503,7 @@ define(function (require) {
 
                         var partResults = [];
 
-                        var diffRegex = /(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
+                        var diffRegex = /^(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
 
                         if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
