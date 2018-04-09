@@ -434,13 +434,23 @@ define(function (require) {
                         }
                         if (_.indexOf(modifiers, parts[parts.length-1]) === -1) {
                             var subscriptLetter = parts[parts.length-1];
-                            var subscriptSymbol = {
-                                type: "Symbol",
-                                properties: {
-                                    letter: letterMap[subscriptLetter] || subscriptLetter,
-                                    upright: subscriptLetter.length > 1
-                                }
-                            };
+                            var subscriptSymbol;
+                            if (isNaN(subscriptLetter)) {
+                                subscriptSymbol = {
+                                    type: "Symbol",
+                                    properties: {
+                                        letter: letterMap[subscriptLetter] || subscriptLetter,
+                                        upright: subscriptLetter.length > 1
+                                    }
+                                };
+                            } else {
+                                subscriptSymbol = {
+                                    type: "Num",
+                                    properties: {
+                                        significand: subscriptLetter
+                                    }
+                                };
+                            }
                             newSymbol.children = {
                                 subscript: subscriptSymbol,
                             };
