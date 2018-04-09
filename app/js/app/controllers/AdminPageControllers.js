@@ -259,19 +259,21 @@ define([], function() {
                 if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
                     role = null;
                 }
-                
+
                 $scope.userSearch.isLoading = true;
                 api.adminUserSearch.search({'familyName' : $scope.userSearch.searchTerms.familyName, 'email' : $scope.userSearch.searchTerms.email, 'role' : role}).$promise.then(function(result){
                     $scope.userSearch.results = result;
                     $scope.userSearch.isLoading = false;
                 });
-                
+
                 $scope.userSearch.hasSearched = true;
             }
         }
 
         $scope.targetUser = null;
         $scope.additionalInformation = {}
+        $scope.sortPredicate = 'date';
+        $scope.reverse = true;
 
         $scope.chooseUserForEvent = function(user) {
             $scope.targetUser = user;
