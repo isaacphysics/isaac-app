@@ -98,7 +98,7 @@ class Differential extends Widget {
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["differential_argument"], "argument");
         this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["differential_order"], "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential", "operator"], "right");
     }
 
     /**
