@@ -86,7 +86,7 @@ export
      */
     get sonOfADifferential() {
         let p = this.parentWidget;
-        return p && p.typeAsString == 'Differential';
+        return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
     }
 
 	/**
