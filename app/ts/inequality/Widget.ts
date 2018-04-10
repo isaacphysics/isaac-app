@@ -298,6 +298,7 @@ export
     removeFromParent() {
         let oldParent = this.parentWidget;
         this.currentPlacement = "";
+        this.dockedTo = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
                 this.s.scope.log.actions.push({
@@ -308,7 +309,6 @@ export
                     timestamp: Date.now()
                 });
                 dockingPoint.child = null;
-                // this.dockedTo = "";
                 this.parentWidget = null;
             }
         });
