@@ -120,7 +120,7 @@ define([], function() {
 					completion: undefined,
 					createdBy: undefined
 				};
-				window.pm = $scope.partialMatch = {
+				$scope.partialMatch = {
 					title: undefined,
 					subjects: undefined,
 					levels: undefined
