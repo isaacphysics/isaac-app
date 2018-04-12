@@ -259,77 +259,50 @@ export
 
 	/**
 	 * Internal companion method to shakeIt(). This is the one that actually does the work, and the one that should be
-	 * overridden by children of this class.
+	 * overridden.
 	 *
 	 * @private
 	 */
     _shakeIt() {
         // Work out the size of all our children
         let boxes: { [key: string]: Rect } = {};
-
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                child.scale = this.scale * this.dockingPoints[name].scale;
+                child._shakeIt();
             }
-        });
-
-        /*
-          - Positions widgets to the right, top-right or bottom-right of the parent symbol. Children are the symbols docked to the right,
-          superscript and subscript positions respectively.
-          - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
-        */
-
-        let box = this.boundingBox();
-        let parent_position = (box.y + box.h);
-        let parent_superscript_width = (!this.sonOfADifferential && this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
-        let parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
-        let parent_width = box.w;
-        let parent_height = box.h;
-        let child_height;
-        let child_width;
-        let docking_right = this.dockingPoints["right"];
-        let docking_superscript = !this.sonOfADifferential ? this.dockingPoints["superscript"] : null;
-        let docking_subscript = this.dockingPoints["subscript"];
-
-        if (!this.sonOfADifferential) {
-            if ("superscript" in boxes) {
-                child_width = docking_superscript.child.boundingBox().w;
-                child_height = docking_superscript.child.boundingBox().h;
-                docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
-                docking_superscript.child.position.y = -0.8 * (parent_height / 2 + child_height / 2);
-            } else {
-                docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-                docking_superscript.position.y = -this.scale * this.s.mBox.h;
-            }
+            boxes[name] = child ? child.boundingBox() : null;
+        }
+        let thisBox = this.boundingBox();
+        // superscript
+        if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
+            let childBox = this.dockingPoints["superscript"].child.boundingBox();
+            // FIXME There's a subtle excess when "this" has an ascent -- i.e., taller than an "x".
+            this.dockingPoints["superscript"].child.position.x = thisBox.w / 2 + childBox.w / 2 + this.s.xBox.w / 4;
+            this.dockingPoints["superscript"].child.position.y = - this.s.xBox.h;
+        } else {
+            this.dockingPoints["superscript"].position = this.p.createVector(thisBox.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h)
         }
 
-        if ("subscript" in boxes) {
-            child_width = docking_subscript.child.boundingBox().w;
-            child_height = docking_subscript.child.boundingBox().h;
-            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_subscript.child.position.y = (parent_height / 2 + child_height / 5);
+        // subscript
+        if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
+            let childBox = this.dockingPoints["subscript"].child.boundingBox();
+            this.dockingPoints["subscript"].child.position.x = thisBox.w / 2 + childBox.w / 2;
+            this.dockingPoints["subscript"].child.position.y = this.s.xBox.h / 2;
+
         } else {
-            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_subscript.position.y = parent_position;
+            this.dockingPoints["subscript"].position = this.p.createVector(thisBox.w / 2 + this.scale * 20, 0);
         }
 
-        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-
-        if ("right" in boxes) {
-            child_width = docking_right.child.boundingBox().w;
-            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            docking_right.child.position.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : -docking_right.child.boundingBox().h/4;
-            }
+        // right
+        if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
+            // TODO
+            let childBox = this.dockingPoints["right"].child.boundingBox();
+            this.dockingPoints["right"].child.position.x = 0;
+            this.dockingPoints["right"].child.position.y = 0;
         } else {
-            if (docking_right) {
-                docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-                docking_right.position.y = (this.dockingPoint.y);
-            }
+            this.dockingPoints["right"].position = this.p.createVector(thisBox.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2)
         }
     }
 

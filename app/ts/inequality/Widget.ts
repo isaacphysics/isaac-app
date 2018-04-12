@@ -115,6 +115,10 @@ export
         return true;
     }
 
+    get dockingPoint(): p5.Vector {
+        return this.p.createVector(0, 0);
+    }
+
     get dockingPoints() {
         return this._dockingPoints;
     }
@@ -205,13 +209,6 @@ export
 
     abstract _draw();
 
-	/**
-	 * This widget's tight bounding box. This is used for the cursor hit testing.
-	 *
-	 * @returns {Rect} The bounding box
-     */
-    abstract boundingBox(): Rect;
-
     abstract token(): string;
 
     // ************ //
@@ -261,37 +258,6 @@ export
 
     _properties(): Object {
         return this.properties();
-    }
-
-	/**
-	 * The bounding box including this widget's whole subtree.
-	 *
-	 * @returns {Rect}
-     */
-    subtreeBoundingBox(): Rect {
-
-        let box = this.boundingBox();
-
-        let subtree = _.map(this.getChildren(), c => {
-            let b = c.subtreeBoundingBox();
-            b.x += c.position.x;
-            b.y += c.position.y;
-            return b;
-        });
-
-        let left = box.x;
-        let right = box.x + box.w;
-        let top = box.y;
-        let bottom = box.y + box.h;
-
-        _.each(subtree, c => {
-            if (left > c.x) { left = c.x; }
-            if (top > c.y) { top = c.y; }
-            if (right < c.x + c.w) { right = c.x + c.w; }
-            if (bottom < c.y + c.h) { bottom = c.y + c.h; }
-        });
-
-        return new Rect(left, top, this.getExpressionWidth(), bottom - top);
     }
 
     /** Removes this widget from its parent. Also, shakes it. */
@@ -417,15 +383,25 @@ export
         return total;
     }
 
-	/**
-	 * @returns {Vector} The absolute position of this widget relative to the canvas.
+    /**
+     * Computes this widget's depth in the tree.
      */
-    getAbsolutePosition(): p5.Vector {
-        if (this.parentWidget) {
-            return p5.Vector.add(this.parentWidget.getAbsolutePosition(), this.position);
-        } else {
-            return this.position;
+    depth(): number {
+        let depth = 0;
+        let n: Widget = this;
+        while (n.parentWidget) {
+
+            if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
+                depth += 1;
+                n = n.parentWidget;
+            }
+            else {
+
+                n = n.parentWidget;
+            }
+
         }
+        return depth;
     }
 
 	/**
@@ -448,79 +424,89 @@ export
      */
     abstract _shakeIt();
 
-	/**
+
+
+    // ********* SIZING AND PLACING AND STUFF *********//
+
+    /**
+     * This widget's tight bounding box. This is used for the cursor hit testing.
+     *
+     * @returns {Rect} The bounding box
+     */
+    abstract boundingBox(): Rect;
+
+    /**
+     * @returns {Vector} The absolute position of this widget relative to the canvas.
+     */
+    getAbsolutePosition(): p5.Vector {
+        if (this.parentWidget) {
+            return p5.Vector.add(this.parentWidget.getAbsolutePosition(), this.position);
+        } else {
+            return this.position;
+        }
+    }
+
+    /**
+     * @returns {Rect} The absolute bounding box of this widget relative to the canvas.
+     */
+    getAbsoluteBoundingBox(): Rect {
+        let box = this.boundingBox();
+        let pos = this.getAbsolutePosition();
+
+        return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
+    }
+
+    /**
 	 * Internal aid for placing stuff as children.
 	 */
     offsetBox(): Rect {
         return this.boundingBox();
     }
 
-	/**
-	 * Computes this widget's depth in the tree.
-	 */
-    depth(): number {
-        let depth = 0;
-        let n: Widget = this;
-        while (n.parentWidget) {
+    /**
+     * The bounding box including this widget's whole subtree.
+     *
+     * @returns {Rect}
+     */
+    subtreeBoundingBox(): Rect {
+        let thisAbsPosition = this.getAbsolutePosition();
+        let thisAbsBox = this.getAbsoluteBoundingBox();
 
-          if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
-            depth += 1;
-            n = n.parentWidget;
-          }
-          else {
+        let left = thisAbsBox.x;
+        let top = thisAbsBox.y;
+        let right = left + thisAbsBox.w;
+        let bottom = top + thisAbsBox.h;
 
-            n = n.parentWidget;
-          }
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                let childAbsBox = child.getAbsoluteBoundingBox();
+                let childLeft = childAbsBox.x;
+                let childTop = childAbsBox.y;
+                let childRight = childLeft + childAbsBox.w;
+                let childBottom = childTop + childAbsBox.h;
 
-        }
-        return depth;
-    }
-		/*
-		Finds the width of the bounding box around an entire expression.
-		*/
-    getExpressionWidth(): number {
-        let current_element: any = this;
-        let expressionWidth = this.boundingBox().w;
-
-        // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
-            expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
-            if (this.typeAsString == "Differential") { // TODO This is HORRIBLE beyond belief and needs fixing, but derivatives are kind of an all-around hack, so...
-                expressionWidth += current_element.dockingPoints["right"].position.x;
+                left = Math.min(left, childLeft);
+                top = Math.min(top, childTop);
+                right = Math.max(right, childRight);
+                bottom = Math.max(bottom, childBottom);
             }
         }
-        if (current_element.dockingPoints.hasOwnProperty("argument") && current_element != undefined && current_element.dockingPoints["argument"].child != null) {
-            expressionWidth += current_element.dockingPoints["argument"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("order") && current_element != undefined && current_element.dockingPoints["order"].child != null) {
-            expressionWidth += current_element.dockingPoints["order"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
-            expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("superscript") && current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
-            expressionWidth += current_element.dockingPoints["superscript"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("mass_number") && current_element != undefined && current_element.dockingPoints["mass_number"].child != null) {
-            expressionWidth += current_element.dockingPoints["mass_number"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("proton_number") && current_element != undefined && current_element.dockingPoints["proton_number"].child != null) {
-            expressionWidth += current_element.dockingPoints["proton_number"].child.getExpressionWidth();
-        }
-        return expressionWidth;
+
+        return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
     }
+
+    /**
+     * Finds the width of the bounding box around an entire expression.
+     */
+    getExpressionWidth(): number {
+        return this.subtreeBoundingBox().w;
+    }
+
+    /**
+     * Finds the height of the bounding box around an entire expression.
+     */
     getExpressionHeight(): number {
-        let current_element: any = this;
-        let expressionHeight = this.boundingBox().h;
-        let subscript_height;
-        let superscript_height;
-        // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
-            subscript_height += current_element.dockingPoints["subscript"].child.getExpressionHeight();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("superscript") &&  current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
-            subscript_height += current_element.dockingPoints["superscript"].child.getExpressionHeight();
-        }
-        return (subscript_height >= superscript_height) ? (expressionHeight + subscript_height) : (expressionHeight + superscript_height);
+        return this.subtreeBoundingBox().h;
     }
 }

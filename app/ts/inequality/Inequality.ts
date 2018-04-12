@@ -97,7 +97,8 @@ export
         this.symbols.forEach(function(e) {
             _this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
-    }
+    };
+
     setup = () => {
         this.p.frameRate(7);
         this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
@@ -129,7 +130,7 @@ export
 
     windowResized = () => {
         this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
-    }
+    };
 
     draw = () => {
         this.p.clear();
