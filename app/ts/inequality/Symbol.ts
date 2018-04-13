@@ -99,7 +99,7 @@ export
 	 */
     generateDockingPoints() {
         let box = this.boundingBox();
-        let descent = this.position.y - (box.y + box.h);
+        let descent = this.position.y - (box.y + box.h); // TODO Check that `descent` is necessary...
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["operator"], "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["exponent"], "superscript");
@@ -264,16 +264,8 @@ export
 	 * @private
 	 */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-        for (let name in this.dockingPoints) {
-            let child = this.dockingPoints[name].child;
-            if (child) {
-                child.scale = this.scale * this.dockingPoints[name].scale;
-                child._shakeIt();
-            }
-            boxes[name] = child ? child.boundingBox() : null;
-        }
+        this._shakeItDown();
+
         let thisBox = this.boundingBox();
 
         // FIXME I don't like this but hey...

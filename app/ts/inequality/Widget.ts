@@ -424,7 +424,20 @@ export
      */
     abstract _shakeIt();
 
-
+    /**
+     * Shake it down...
+     *
+     * @private
+     */
+    _shakeItDown() {
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                child.scale = this.scale * this.dockingPoints[name].scale;
+                child._shakeIt();
+            }
+        }
+    }
 
     // ********* SIZING AND PLACING AND STUFF *********//
 
