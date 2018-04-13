@@ -65,9 +65,9 @@
                             <strong>Event:</strong> <a href="" ui-sref="event({id: eventSelected.id})" target="_blank">{{eventSelected.title}} {{eventSelected.subtitle}}</a><br>
                             <strong>Location:</strong> {{eventSelected.location.address.addressLine1}}, {{eventSelected.location.address.town}},{{eventSelected.location.address.postalCode}}<br>
                             <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
-                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy h:ma'}} - {{eventSelected.endDate | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Booking Deadline:</strong> {{eventSelected.bookingDeadline | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Prepwork Deadline:</strong> {{eventSelected.prepWorkDeadline | date:'dd/MM/yyyy h:ma'}}<br>
+                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy h:mma'}} - {{eventSelected.endDate | date:'dd/MM/yyyy h:mma'}}<br>
+                            <strong>Booking Deadline:</strong> {{eventSelected.bookingDeadline | date:'dd/MM/yyyy h:mma'}}<br>
+                            <strong>Prepwork Deadline:</strong> {{eventSelected.prepWorkDeadline | date:'dd/MM/yyyy h:mma'}}<br>
                             <strong>Group Auth Code:</strong> {{eventSelected.isaacGroupToken}} <br>
                             <span ng-show="eventSelected.placesAvailable < 0"><strong style="color:red">Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
                             <span ng-show="eventSelected.placesAvailable >= 0"><strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
@@ -77,14 +77,14 @@
                         <h3>Step 2: Review bookings</h3>
                         <table ng-show="bookings.length > 0">
                             <tr>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.familyName'; reverse=!reverse">Name</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.email'; reverse=!reverse">Email</a></th>
                                 <th>Account Type</th>
                                 <th>School</th>
                                 <th>Job / Year Group</th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Booking Status</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingStatus'; reverse=!reverse">Booking Status</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingDate'; reverse=!reverse">Booking Created</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'updated'; reverse=!reverse">Booking Updated</a></th>
                                 <th>Accessibility Requirements</th>
                                 <th>Medical Requirements</th>
                                 <th>Emergency Name</th>
@@ -99,8 +99,8 @@
                                 <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                 <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
                                 <td>{{booking.bookingStatus}}</td>
-                                <td>{{booking.bookingDate | date:'dd/MM/yyyy h:m:s a'}}</td>
-                                <td>{{booking.updated | date:'dd/MM/yyyy h:m:s a'}}</td>
+                                <td>{{booking.bookingDate | date:'dd/MM/yyyy h:mm:ss a'}}</td>
+                                <td>{{booking.updated | date:'dd/MM/yyyy h:mm:ss a'}}</td>
                                 <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                 <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                 <td>{{booking.additionalInformation.emergencyName}}</td>
