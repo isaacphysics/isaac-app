@@ -59,16 +59,15 @@ define([], function() {
 		subjects = [];
 		for(i = 0; i < board.questions.length; i++) {
 			var q = board.questions[i];
-			if (q.tags && q.tags.indexOf("maths") > -1 && subjects.indexOf("maths") == -1) {
-				subjects.push("maths");
+			if (q.tags && q.tags.indexOf("maths") > -1) {
+				pushIfNotPresent(subjects, "maths");
 				pushIfNotPresent(options, "Maths");
-			} else if (q.tags && q.tags.indexOf("physics") > -1 && subjects.indexOf("physics") == -1) {
-				subjects.push("physics");
+			} else if (q.tags && q.tags.indexOf("physics") > -1) {
+				pushIfNotPresent(subjects, "physics");
 				pushIfNotPresent(options, "Physics");
-			} else if (q.tags && q.tags.indexOf("chemistry") > -1 && subjects.indexOf("physics") == -1) {
-				// FIXME - Hack for now to avoid having to change the sprite image!
-				subjects.push("physics");
-				pushIfNotPresent(options, "Physics");
+			} else if (q.tags && q.tags.indexOf("chemistry") > -1) {
+				pushIfNotPresent(subjects, "chemistry");
+				pushIfNotPresent(options, "Chemistry");
 			}
 		}
 		return subjects;

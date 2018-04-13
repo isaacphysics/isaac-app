@@ -60,6 +60,10 @@
                   <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
                      {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                   </span>
+                  <span class="subject-physics" ng-if="board.subjects.indexOf('physics') == -1 && board.subjects.indexOf('chemistry') > -1">
+                     <!-- Hack to show chemistry boards as if they're tagged physics for now! -->
+                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                  </span>
                </div>
                <div class="board-percentage" ng-if="board.percentageCompleted == '100'">
                   <span class="subject-complete"></span>
@@ -115,6 +119,10 @@
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
                      <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                     </span>
+                     <span class="subject-physics" ng-if="board.subjects.indexOf('physics') == -1 && board.subjects.indexOf('chemistry') > -1">
+                        <!-- Hack to show chemistry boards as if they're tagged physics for now! -->
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
                   </div>
