@@ -128,8 +128,6 @@ export
      */
     generateDockingPoints() {
         let box = this.boundingBox();
-        let descent = this.position.y - (box.y + box.h);
-
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["relation"], "right");
     }
 
@@ -206,6 +204,8 @@ export
         }
     }
 
+    private _asymMult: number = 1.5;
+
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
      *
@@ -215,16 +215,16 @@ export
         let s = this.relation || "+";
         if (s == "−") {
             let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-            return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+            return new Rect(-box.w/2, box.y - 1000, this._asymMult * box.w, box.h);
         }
         else if (s == "⋅"){
           s = "⋅";
           let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w, box.y-1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+          return new Rect(-box.w/2, box.y-1000, this._asymMult * box.w, box.h);
         }
         else {
           let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+          return new Rect(-box.w/2, box.y - 1000, this._asymMult * box.w, box.h);
         }
     }
 
@@ -235,40 +235,14 @@ export
      * @private
      */
     _shakeIt() {
+        this._shakeItDown();
+        let thisBox = this.boundingBox();
 
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
+        if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
+            let childBox = this.dockingPoints["right"].child.boundingBox();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
-            }
-        });
-
-        // Calculate our own geometry
-
-        // Nothing to do for Relation
-
-        // Set position of all our children.
-
-
-        let parent_w = this.boundingBox().w;
-        let right;
-        if ("right" in boxes) {
-            right = this.dockingPoints["right"].child;
-            let child_w = right.boundingBox().w;
-            let child_mass_w = (right.dockingPoints["mass_number"] && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            let child_proton_w = (right.dockingPoints["proton_number"] && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
-            child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-            right.position.x = parent_w / 2 + child_w / 2;
-            right.position.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            if (right.child instanceof Brackets) {
-                right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
-
+        } else {
+            this.dockingPoints["right"].position = this.p.createVector(this.scale * (this._asymMult * thisBox.w / 2 + 20), this.scale * (-this.s.xBox.h / 2));
         }
     }
 }
