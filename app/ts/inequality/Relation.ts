@@ -240,9 +240,11 @@ export
 
         if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
             let childBox = this.dockingPoints["right"].child.boundingBox();
-
+            this.dockingPoints["right"].child.position.x = this._asymMult * thisBox.w/2 + childBox.w / 2;
+            this.dockingPoints["right"].child.position.y = 0;
         } else {
-            this.dockingPoints["right"].position = this.p.createVector(this.scale * (this._asymMult * thisBox.w / 2 + 20), this.scale * (-this.s.xBox.h / 2));
+            this.dockingPoints["right"].position.x = this.scale * (this._asymMult * thisBox.w / 2 + this.dockingPointSize);
+            this.dockingPoints["right"].position.y = this.scale * (-this.s.xBox.h / 2);
         }
     }
 }
