@@ -268,40 +268,39 @@ export
 
         let thisBox = this.boundingBox();
 
-        // FIXME I don't like this but hey...
-        let subsupWidth = 0;
-
         // superscript
+        let supWidth = 0;
         if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
             let childBox = this.dockingPoints["superscript"].child.boundingBox();
             // FIXME There's a subtle excess when "this" has an ascent -- i.e., taller than an "x".
-            this.dockingPoints["superscript"].child.position.x = thisBox.w / 2 + childBox.w / 2 + this.s.xBox.w / 4;
-            this.dockingPoints["superscript"].child.position.y = - this.s.xBox.h;
-            subsupWidth = Math.max(subsupWidth + this.dockingPoints["superscript"].child.subtreeBoundingBox().w, this.dockingPoints["superscript"].child.position.x);
+            this.dockingPoints["superscript"].child.position.x = (thisBox.w / 2 + childBox.w / 2) + (this.scale * this.s.xBox.w / 4);
+            this.dockingPoints["superscript"].child.position.y = -this.scale * this.s.xBox.h; // TODO Investigate the following: + this.scale*(this.s.xBox.h - this.dockingPoints["superscript"].child.subtreeBoundingBox().h);
+            supWidth = this.dockingPoints["superscript"].child.subtreeBoundingBox().w - childBox.w/2;
         } else {
-            this.dockingPoints["superscript"].position = this.p.createVector(thisBox.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h)
-            subsupWidth = Math.max(subsupWidth, this.dockingPoints["superscript"].position.x);
+            this.dockingPoints["superscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+            this.dockingPoints["superscript"].position.y = (-this.scale * this.s.mBox.h);
         }
 
         // subscript
+        let subWidth = 0;
         if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
             let childBox = this.dockingPoints["subscript"].child.boundingBox();
             this.dockingPoints["subscript"].child.position.x = thisBox.w / 2 + childBox.w / 2;
-            this.dockingPoints["subscript"].child.position.y = this.s.xBox.h / 2;
-            subsupWidth = Math.max(subsupWidth + this.dockingPoints["subscript"].child.subtreeBoundingBox().w, this.dockingPoints["subscript"].child.position.x);
+            this.dockingPoints["subscript"].child.position.y = this.scale * this.s.xBox.h / 2;
+            subWidth = this.dockingPoints["subscript"].child.subtreeBoundingBox().w - childBox.w/2;
         } else {
-            this.dockingPoints["subscript"].position = this.p.createVector(thisBox.w / 2 + this.scale * 20, 0);
-            subsupWidth = Math.max(subsupWidth, this.dockingPoints["subscript"].position.x);
+            this.dockingPoints["subscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+            this.dockingPoints["subscript"].position.y = 0;
         }
 
         // right
         if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
             // TODO Check this, but it looks good enough for the moment.
-            let childBox = this.dockingPoints["right"].child.boundingBox();
-            this.dockingPoints["right"].child.position.x = thisBox.w/2 + childBox.w / 2 + subsupWidth;
+            this.dockingPoints["right"].child.position.x = this.scale * 1.5 * this.s.xBox.w + thisBox.w / 2 + Math.max(supWidth, subWidth);
             this.dockingPoints["right"].child.position.y = 0;
         } else {
-            this.dockingPoints["right"].position = this.p.createVector(thisBox.w / 2 + this.s.mBox.w / 4 + subsupWidth, -this.s.xBox.h / 2)
+            this.dockingPoints["right"].position.x = this.scale * 1.5 * this.s.xBox.w + this.subtreeBoundingBox().w - this.boundingBox().w / 2;
+            this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
         }
     }
 
