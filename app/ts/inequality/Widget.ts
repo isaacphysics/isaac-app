@@ -493,7 +493,9 @@ export
         for (let name in this.dockingPoints) {
             let child = this.dockingPoints[name].child;
             if (child) {
-                let childAbsBox = child.getAbsoluteBoundingBox();
+                let childAbsPosition = child.getAbsolutePosition();
+                let childSubBox = child.subtreeBoundingBox();
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.getAbsolutePosition().y, childSubBox.w, childSubBox.h);
                 let childLeft = childAbsBox.x;
                 let childTop = childAbsBox.y;
                 let childRight = childLeft + childAbsBox.w;
