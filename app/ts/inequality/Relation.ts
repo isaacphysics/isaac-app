@@ -215,16 +215,16 @@ export
         let s = this.relation || "+";
         if (s == "−") {
             let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-            return new Rect(-box.w/2, box.y - 1000, this._asymMult * box.w, box.h);
+            return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
         }
         else if (s == "⋅"){
           s = "⋅";
           let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w/2, box.y-1000, this._asymMult * box.w, box.h);
+          return new Rect(-box.w / 2, box.y-1000, this._asymMult * box.w, box.h);
         }
         else {
           let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w/2, box.y - 1000, this._asymMult * box.w, box.h);
+          return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
         }
     }
 
@@ -240,7 +240,7 @@ export
 
         if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
             let childBox = this.dockingPoints["right"].child.boundingBox();
-            this.dockingPoints["right"].child.position.x = this._asymMult * thisBox.w/2 + childBox.w / 2;
+            this.dockingPoints["right"].child.position.x = this._asymMult * thisBox.w / 2 + childBox.w / 2;
             this.dockingPoints["right"].child.position.y = 0;
         } else {
             this.dockingPoints["right"].position.x = this.scale * (this._asymMult * thisBox.w / 2 + this.dockingPointSize);
