@@ -733,10 +733,10 @@ define([
                             var notificationMessage = JSON.parse(entry.message);
 
                             // specific user streak update
-                            if (notificationMessage.streakData) {
+                            if (notificationMessage.streakRecord) {
 
                                 $rootScope.user.userSnapshot.streakRecord
-                                    = notificationMessage.streakData;
+                                    = notificationMessage.streakRecord;
 
                                 $rootScope.streakDialToggle($rootScope.user.userSnapshot.streakRecord.currentActivity);
                             }
