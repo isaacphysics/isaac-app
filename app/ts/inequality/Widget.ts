@@ -342,7 +342,7 @@ export
         let thisAP = this.getAbsolutePosition();
 
         let hitPoints: Array<DockingPoint> = [];
-        if (!hitPoint) {
+        if (null == hitPoint) {
             _.each(this.dockingPoints, point => {
                 if (point.child == null) {
                     let dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
