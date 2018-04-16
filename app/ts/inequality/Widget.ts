@@ -95,6 +95,9 @@ export
 
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
+    get dockingPointSize() {
+        return this.scale * this.s.baseFontSize / 3;
+    }
 
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
@@ -184,22 +187,19 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    let dpSize = this.s.baseFontSize/3;
-                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * dpSize, this.scale * dpSize);
-                    // this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
+                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.dockingPointSize, this.dockingPointSize);
                 }
-                //}
             }
         });
 
         this.p.noFill();
         if (window.location.hash === "#debug") {
             let box = this.boundingBox();
-            this.p.stroke(255, 0, 0, 64);
+            this.p.stroke(255, 0, 0, 128);
             this.p.rect(box.x, box.y, box.w, box.h);
 
             let subtreeBox = this.subtreeBoundingBox();
-            this.p.stroke(0, 0, 255, 64);
+            this.p.stroke(0, 0, 255, 128);
             this.p.rect(subtreeBox.x, subtreeBox.y, subtreeBox.w, subtreeBox.h);
         }
 
