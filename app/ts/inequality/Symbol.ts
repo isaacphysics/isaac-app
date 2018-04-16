@@ -295,7 +295,6 @@ export
 
         // right
         if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
-            // TODO Check this, but it looks good enough for the moment.
             this.dockingPoints["right"].child.position.x = this.scale * 1.5 * this.s.xBox.w + thisBox.w / 2 + Math.max(supWidth, subWidth);
             this.dockingPoints["right"].child.position.y = 0;
         } else {
