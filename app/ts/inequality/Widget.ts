@@ -533,6 +533,64 @@ export
         return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
     }
 
+    dpBoxes(): Array<Rect> {
+        let ax = this.position.x;
+        let ay = this.position.y;
+        let thisBox = new Rect(this.boundingBox().x + ax, this.boundingBox().y + ay, this.boundingBox().w, this.boundingBox().h);
+        let dpBoxes: Array<Rect> = [thisBox];
+        for (let k in this.dockingPoints) {
+            let dp = this.dockingPoints[k];
+            if (null == dp.child || undefined == dp.child) {
+                dpBoxes.push(new Rect(dp.position.x-this.dockingPointSize/2 + ax, dp.position.y-this.dockingPointSize/2 + ay, this.dockingPointSize, this.dockingPointSize));
+            }
+        }
+        return dpBoxes;
+    }
+
+    dpBoundingBox(): Rect {
+        let dpBoxes = this.dpBoxes();
+        let ax = this.position.x;
+        let ay = this.position.y;
+
+        let x = _.min(_.map(dpBoxes, b => { return b.x }));
+        let y = _.min(_.map(dpBoxes, b => { return b.y }));
+        let w = _.max(_.map(dpBoxes, b => { return b.x+b.w }));
+        let h = _.max(_.map(dpBoxes, b => { return b.y+b.h }));
+
+        return new Rect(x-ax,y-ay,w-x,h-y);
+    }
+
+    subtreeDPBoundingBox(): Rect {
+        let thisAbsPosition = this.getAbsolutePosition();
+        let thisAbsBox = this.getAbsoluteBoundingBox();
+
+        let left = thisAbsBox.x;
+        let top = thisAbsBox.y;
+        let right = left + thisAbsBox.w;
+        let bottom = top + thisAbsBox.h;
+
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                let childAbsPosition = child.getAbsolutePosition();
+                let childSubBox = child.subtreeDPBoundingBox();
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.getAbsolutePosition().y, childSubBox.w, childSubBox.h);
+                let childLeft = childAbsBox.x;
+                let childTop = childAbsBox.y;
+                let childRight = childLeft + childAbsBox.w;
+                let childBottom = childTop + childAbsBox.h;
+
+                left = Math.min(left, childLeft);
+                top = Math.min(top, childTop);
+                right = Math.max(right, childRight);
+                bottom = Math.max(bottom, childBottom);
+            }
+        }
+
+        return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
+
+    }
+
     /**
      * Finds the width of the bounding box around an entire expression.
      */
