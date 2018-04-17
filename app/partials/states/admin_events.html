@@ -142,47 +142,46 @@
                             </div>
                         </form>
                     </div>
+
+                    <!-- Results TODO: stolen from search page this needs tidying up -->
+                    <section ng-if="userSearch.hasSearched">
+                        <div class="small-16 columns" ng-if="userSearch.isLoading">
+                            <h4>User search results</h4>
+                            <div class="text-center">
+                                <img src="/assets/loading.gif">
+                            </div>
+                        </div>
+
+                        <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
+                            <div class="small-16 columns">
+                                <h4>User search results ({{userSearch.results.length}})</h4>
+                                <table>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>User Role</th>
+                                        <th>School Set</th>
+                                        <th>Member Since</th>
+                                        <th>Last Seen</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    <tr ng-repeat="result in userSearch.results">
+                                        <td>{{result.familyName}}, {{result.givenName}}</td>
+                                        <td>{{result.email}}</td>
+                                        <td>{{result.role || "NOT_SET"}}</td>
+                                        <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                        <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
+                                        <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Book</a>
+                                            <a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Add to WL</a>
+                                            <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-
-                <!-- Results TODO: stolen from search page this needs tidying up -->
-                <section ng-if="userSearch.hasSearched">
-                    <div class="small-16 columns" ng-if="userSearch.isLoading">
-                        <h4>User search results</h4>
-                        <div class="text-center">
-                            <img src="/assets/loading.gif">
-                        </div>
-                    </div>
-
-                    <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
-                        <div class="small-16 columns">
-                            <h4>User search results ({{userSearch.results.length}})</h4>
-                            <table>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>User Role</th>
-                                    <th>School Set</th>
-                                    <th>Member Since</th>
-                                    <th>Last Seen</th>
-                                    <th>Actions</th>
-                                </tr>
-                                <tr ng-repeat="result in userSearch.results">
-                                    <td>{{result.familyName}}, {{result.givenName}}</td>
-                                    <td>{{result.email}}</td>
-                                    <td>{{result.role || "NOT_SET"}}</td>
-                                    <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
-                                    <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
-                                    <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Book on event</a></td>
-                                    <td>
-                                        <a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="chooseUserForEvent(result)">Add to waiting list</a>
-                                        <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </section>
             </div>
             <div class="panel white clearfix accordion-group" ng-show="canTakeEventAttendance(eventSelected.date)">
                 <div ng-click="attendancePanelVisible = !attendancePanelVisible" ng-class="{'active': attendancePanelVisible}">
