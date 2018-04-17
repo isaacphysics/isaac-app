@@ -720,7 +720,16 @@ define([
                     var websocketMessage = JSON.parse(event.data);
 
                     // User snapshot update:
-                    if (websocketMessage.userSnapshot) {
+                    if (websocketMessage.heartbeat) {
+
+                        var clientTime = new Date();
+                        var serverTime = websocketMessage.heartbeat;
+
+                        if (clientTime.getDate() > new Date(serverTime).getDate()) {
+                            $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+                        }
+
+                    } else if (websocketMessage.userSnapshot) {
 
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
                         var currentActivity = websocketMessage.userSnapshot.streakRecord ? websocketMessage.userSnapshot.streakRecord.currentActivity : 0;
@@ -827,8 +836,8 @@ define([
         var checkForWebSocket = function() {
 
             if ($rootScope.notificationWebSocket != null) {
-                $rootScope.notificationWebSocket.send("user-snapshot-nudge");
-                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
+                $rootScope.notificationWebSocket.send("heartbeat");
+                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
             } else {
                 $rootScope.openNotificationSocket();
             }
