@@ -308,10 +308,10 @@ class Differential extends Widget {
         }
 
         if ("right" in boxes) {
-            docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width + order_width;
+            docking_right.child.position.x = box.w / 2 + this.s.mBox.w + arg_width + order_width;
             docking_right.child.position.y = 0;
         } else {
-            docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w+ arg_width + order_width;
+            docking_right.position.x = box.w / 2 + this.s.mBox.w+ arg_width + order_width;
             docking_right.position.y = -this.s.xBox.h / 2;
         }
 

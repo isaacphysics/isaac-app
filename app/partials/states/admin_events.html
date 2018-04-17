@@ -76,14 +76,14 @@
                             <table ng-show="bookings.length > 0">
                                 <tr>
                                     <th>Actions</th>
-                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
-                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.familyName'; reverse=!reverse">Name</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.email'; reverse=!reverse">Email</a></th>
                                     <th>Account Type</th>
                                     <th>School</th>
                                     <th>Job / Year Group</th>
-                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Booking Status</a></th>
-                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
-                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingStatus'; reverse=!reverse">Booking Status</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingDate'; reverse=!reverse">Booking Created</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'updated'; reverse=!reverse">Booking Updated</a></th>
                                     <th>Accessibility Requirements</th>
                                     <th>Medical Requirements</th>
                                     <th>Emergency Name</th>
@@ -103,8 +103,8 @@
                                     <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
                                     <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
                                     <td>{{booking.bookingStatus}}</td>
-                                    <td>{{booking.bookingDate | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
-                                    <td>{{booking.updated | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                    <td>{{booking.bookingDate | date:'dd/MM/yyyy h:mm:ss a'}}</td>
+                                    <td>{{booking.updated | date:'dd/MM/yyyy h:mm:ss a'}}</td>
                                     <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
                                     <td>{{booking.additionalInformation.medicalRequirements}}</td>
                                     <td>{{booking.additionalInformation.emergencyName}}</td>
@@ -195,7 +195,7 @@
                             <tr>
                                 <th>Actions</th>
                                 <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Attendance</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a><p><input ng-model="filter.userBooked.familyName" placeholder="Surname filter" /></p></th>
                                 <th>Job / Year Group</th>
                                 <th>School</th>
                                 <th>Account Type</th>
@@ -206,21 +206,6 @@
                                 <th>Medical Requirements</th>
                                 <th>Emergency Name</th>
                                 <th>Emergency Telephone</th>
-                            </tr>
-                            <tr><!-- filters -->
-                                <th></th>
-                                <th></th>
-                                <th><input ng-model="filter.userBooked.familyName" placeholder="Surname filter" /></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                             </tr>
                             <tr ng-repeat="booking in bookings | filter:filter | orderBy:sortPredicate:reverse">
                                 <td>

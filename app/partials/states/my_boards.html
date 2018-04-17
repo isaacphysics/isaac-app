@@ -40,24 +40,28 @@
             <th class="action-col"></th>
          </tr>
          <tr class="filters">
-            <th><select ng-model="search.completion" ng-options="level for level in ['', 'Completed', 'In progress', 'Not started']"/></th>
-            <th><input ng-model="search.title" placeholder="Title search" /></th>
-            <th><select ng-model="search.subjects" ng-options="subject for subject in ['', 'Physics', 'Chemistry', 'Maths']"/></th>
-            <th><select ng-model="search.levels" ng-options="level for level in ['', '1', '2', '3', '4', '5', '6']"/></th>
-            <th><select ng-model="search.createdBy" ng-options="creator for creator in ['', 'Me', 'Isaac', 'Someone else']"/></th>
-            <th><!--input ng-model="search.formattedCreationDate" placeholder="Date search" /--></th>
-            <th><!--input ng-model="search.formattedLastVisitedDate" placeholder="Date search" /--></th>
+            <th><select ng-model="exactMatch.completion" ng-options="option.value as option.label for option in filterOptions.completion"/></th>
+            <th><input ng-model="partialMatch.title" placeholder="Title search" /></th>
+            <th><select ng-model="partialMatch.subjects" ng-options="option.value as option.label for option in filterOptions.subjects"/></th>
+            <th><select ng-model="partialMatch.levels" ng-options="option.value as option.label for option in filterOptions.levels"/></th>
+            <th><select ng-model="exactMatch.createdBy" ng-options="option.value as option.label for option in filterOptions.createdBy"/></th>
+            <th></th>
+            <th></th>
             <th></th>
          </tr>
       </thead>
       <tbody>
-         <tr ng-model="boards" ng-repeat="board in boards.results | filter:search | filter:completionFilter | orderBy:propertyName:reverse" ng-class="{'completed': board.percentageCompleted == '100'}">
+         <tr ng-model="boards" ng-repeat="board in boards.results | filter:exactMatch:true | filter:partialMatch | orderBy:propertyName:reverse" ng-class="{'completed': board.percentageCompleted == '100'}">
             <td class="text-center">
                <div class="board-percentage" ng-if="board.percentageCompleted != '100'">
                   <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'maths'">
                      {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                   </span>
                   <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                     {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                  </span>
+                  <span class="subject-physics" ng-if="board.subjects.indexOf('physics') == -1 && board.subjects.indexOf('chemistry') > -1">
+                     <!-- Hack to show chemistry boards as if they're tagged physics for now! -->
                      {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                   </span>
                </div>
@@ -76,7 +80,7 @@
                <div ng-if="isTeacher" class='ru_share_link ru_two_item_menu slide-animate' ng-show="showShareUrl">
                   <div>{{shareUrl}}</div>
                   <hr />
-                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item"">Clone and Edit</div></a>
+                  <a tabindex="0" href="javascript:void(0)" ui-sref="gameEditor({base: board.id})"><div class="menu_item">Clone and Edit</div></a>
                </div>
                <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>{{shareUrl}}</div>
@@ -115,6 +119,10 @@
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
                      <span ng-repeat="subject in board.subjects" class="subject-{{subject}}" ng-if="subject == 'physics'">
+                        {{board.percentageCompleted}}<span class="percent-symbol">%</span>
+                     </span>
+                     <span class="subject-physics" ng-if="board.subjects.indexOf('physics') == -1 && board.subjects.indexOf('chemistry') > -1">
+                        <!-- Hack to show chemistry boards as if they're tagged physics for now! -->
                         {{board.percentageCompleted}}<span class="percent-symbol">%</span>
                      </span>
                   </div>
