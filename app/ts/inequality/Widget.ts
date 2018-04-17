@@ -40,6 +40,15 @@ export
         this.h = h;
     }
 
+    static fromObject(box) {
+        if (box.hasOwnProperty("x") && box.hasOwnProperty("y") && box.hasOwnProperty("w") && box.hasOwnProperty("h")) {
+            return new Rect(box.x, box.y, box.w, box.h);
+        } else {
+            return null;
+        }
+    }
+
+
 	/**
 	 * Re-positions this Rect with the TL corner in the new position
 	 *
@@ -192,6 +201,8 @@ export
             }
         });
 
+        this._draw();
+
         this.p.noFill();
         if (window.location.hash === "#debug") {
             let box = this.boundingBox();
@@ -201,9 +212,20 @@ export
             let subtreeBox = this.subtreeBoundingBox();
             this.p.stroke(0, 0, 255, 128);
             this.p.rect(subtreeBox.x, subtreeBox.y, subtreeBox.w, subtreeBox.h);
+
+            // let dpBox = this.dpBoundingBox();
+            // this.p.stroke(0, 128, 0, 128);
+            // this.p.rect(dpBox.x, dpBox.y, dpBox.w, dpBox.h);
+
+            this.p.stroke(0, 0, 255, 128).strokeWeight(2);
+            this.p.point(this.dockingPoint.x, this.dockingPoint.y);
+            this.p.strokeWeight(1).ellipse(this.dockingPoint.x, this.dockingPoint.y, 15, 15);
+
+            this.p.stroke(255, 0, 0, 128).strokeWeight(2);
+            this.p.point(0, 0);
+            this.p.strokeWeight(1).ellipse(0, 0, 15, 15);
         }
 
-        this._draw();
         this.p.translate(-this.position.x, -this.position.y);
     }
 
