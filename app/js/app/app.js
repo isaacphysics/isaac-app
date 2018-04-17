@@ -692,6 +692,7 @@ define([
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
         $rootScope.webSocketCheckTimeout = null;
+        var lastRecievedServerTime = null;
 
         $rootScope.openNotificationSocket = function() {
 
@@ -722,18 +723,20 @@ define([
                     // User snapshot update:
                     if (websocketMessage.heartbeat) {
 
-                        var clientTime = new Date();
                         var serverTime = websocketMessage.heartbeat;
 
-                        if (clientTime.getDate() > new Date(serverTime).getDate()) {
+                        if (null == lastRecievedServerTime ||
+                            new Date(lastRecievedServerTime).getDate() < new Date(serverTime).getDate()) {
                             $rootScope.notificationWebSocket.send("user-snapshot-nudge");
                         }
+                        lastRecievedServerTime = serverTime;
 
                     } else if (websocketMessage.userSnapshot) {
 
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
                         var currentActivity = websocketMessage.userSnapshot.streakRecord ? websocketMessage.userSnapshot.streakRecord.currentActivity : 0;
                         $rootScope.streakDialToggle(currentActivity);
+                        lastRecievedServerTime = websocketMessage.userSnapshot.heartbeat;
 
                     } else if (websocketMessage.notifications) {
 
@@ -751,6 +754,8 @@ define([
                             }
 
                         });
+
+                        lastRecievedServerTime = websocketMessage.userSnapshot.heartbeat;
                     }
 
 
