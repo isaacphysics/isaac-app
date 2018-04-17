@@ -173,8 +173,6 @@ define([], function() {
         $scope.userSearch.searchTerms = {role:"", email:"", familyName:""};
 
         $scope.isAdminUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
-        
-        $scope.setLoading(true);
 
         $scope.hasSearched = false;
         $scope.events = [];
@@ -196,8 +194,9 @@ define([], function() {
         $scope.filter = {}
 
         var updateEventOverviewList = function(){
+            $rootScope.setLoading(true);
             api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly, "showInactiveOnly":$scope.showInactiveOnly}).$promise.then(function(result) {
-                $scope.setLoading(false);
+                $rootScope.setLoading(false);
                 $scope.events = result.results;
             });         
         }
