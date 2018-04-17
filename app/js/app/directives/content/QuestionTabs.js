@@ -261,7 +261,8 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 				});
 
 				scope.incorrectSigFigs = function(validationResponse) {
-					return validationResponse.explanation.tags && validationResponse.explanation.tags.indexOf('sig_figs') >= 0;
+					var explanationPresent = validationResponse && validationResponse.explanation;
+					return explanationPresent && validationResponse.explanation.tags && validationResponse.explanation.tags.indexOf('sig_figs') >= 0;
 				}
 
 				scope.question.pageCompleted = isPageCompleted(scope.page);
