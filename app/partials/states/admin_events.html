@@ -34,14 +34,14 @@
                                     <th>Actions</th>
                                 </tr>
                                 <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
-                                    <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">{{event.title}} - {{event.subtitle}}</a></td>
+                                    <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} - {{event.subtitle}}</a></td>
                                     <td>{{event.date | date:'dd/MM/yyyy'}}</td>
                                     <td>{{event.bookingDeadline | date:'dd/MM/yyyy hh:mma'}}</td>
                                     <td>{{event.location.address.town}}</td>
                                     <td>{{event.eventStatus}}</td>
                                     <td>{{event.numberOfConfirmedBookings}} / {{event.numberOfPlaces}}</td>
                                     <td>{{event.numberOfWaitingListBookings}}</td>
-                                    <td><a ui-sref="event({id: event.id})" target="_blank">Event Page</a></td>
+                                    <td><a class="button small" href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage</a></td>
                                 </tr>
                             </table>
                         </div>
