@@ -227,38 +227,21 @@ export
     _draw() {
         let box = this.boundingBox();
 
-        this.p.fill(this.color).strokeWeight(0).noStroke();
-        this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.LEFT, this.p.CENTER);
-        this.p.text(this.glyph['lhs'], box.x, box.y + box.h/2);
-        this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.RIGHT, this.p.CENTER);
-        this.p.text(this.glyph['rhs'], box.x+box.w, box.y + box.h/2);
-        // let argWidth = this.s.xBox.w;
-        // let argHeight = this.s.xBox.h;
-        // if (this.dockingPoints['argument'].child) {
-        //     let subtreeBB = this.dockingPoints['argument'].child.subtreeBoundingBox();
-        //     argWidth = subtreeBB.w;
-        //     argHeight = subtreeBB.h;
-        // }
-        // this.p.push();
-        // this.p.scale(1, 1 + ((argHeight / this.s.xBox.h) - 1) / 2);
-        //
         // this.p.fill(this.color).strokeWeight(0).noStroke();
-        //
-        // this.p.textFont(this.s.font_up)
-        //     .textSize(this.s.baseFontSize * this.scale)
-        //     .textAlign(this.p.RIGHT, this.p.CENTER);
-        //
-        // this.p.text(this.glyph['lhs'], -argWidth / 2, -this.s.xBox.h / 4);
-        //
         // this.p.textFont(this.s.font_up)
         //     .textSize(this.s.baseFontSize * this.scale)
         //     .textAlign(this.p.LEFT, this.p.CENTER);
-        // this.p.text(this.glyph['rhs'], argWidth / 2 + this.scale * 40, -this.s.xBox.h / 4); // FIXME This 40 is hard-coded
-        // this.p.pop();
+        // this.p.text(this.glyph['lhs'], box.x, box.y + box.h/2);
+        // this.p.textFont(this.s.font_up)
+        //     .textSize(this.s.baseFontSize * this.scale)
+        //     .textAlign(this.p.RIGHT, this.p.CENTER);
+        // this.p.text(this.glyph['rhs'], box.x+box.w, box.y + box.h/2);
+        // FIXME This is temporary
+        this.p.noFill().stroke(this.color).strokeWeight(2);
+        this.p.line(box.x+20, -box.h/2, box.x, 0);
+        this.p.line(box.x, 0, box.x+20, box.h/2);
+        this.p.line(box.w/2-20, -box.h/2, box.w/2, 0);
+        this.p.line(box.w/2, 0, box.w/2-20, box.h/2);
         this.p.strokeWeight(1);
     }
 
@@ -293,16 +276,42 @@ export
     _shakeIt() {
         this._shakeItDown();
 
-        let thisBox = this.boundingBox();
-
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             let child = this.dockingPoints["argument"].child;
             let sdpBox = child.subtreeDockingPointsBoundingBox();
-            this.dockingPoints["argument"].child.position.x = -sdpBox.w/2;
-            this.dockingPoints["argument"].child.position.y = -child.dockingPoint.y;
+            child.position.x = -sdpBox.w/2;
+            child.position.y = -child.dockingPoint.y;
         } else {
             this.dockingPoints["argument"].position.x = 0;
             this.dockingPoints["argument"].position.y = 0;
+        }
+
+        let thisBox = this.boundingBox();
+
+        if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
+            let child = this.dockingPoints["right"].child;
+            child.position.x = (thisBox.w + child.boundingBox().w)/2 + this.dockingPointSize;
+            child.position.y = -child.dockingPoint.y;
+        } else {
+            this.dockingPoints["right"].position.x = thisBox.w/2 + this.dockingPointSize;
+            this.dockingPoints["right"].position.y = 0;
+        }
+
+        // FIXME subsupWidth thing
+        if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
+            let child = this.dockingPoints["superscript"].child;
+            child.position.x = (thisBox.w + this.dockingPointSize)/2 + child.boundingBox().w/2;
+            child.position.y = -(thisBox.h/2 + child.subtreeBoundingBox().h/2) + this.dockingPointSize;
+        } else {
+            this.dockingPoints["superscript"].position.x = (thisBox.w + this.dockingPointSize)/2;
+            this.dockingPoints["superscript"].position.y = -thisBox.h/2;
+        }
+
+        if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
+            let child = this.dockingPoints["subscript"].child;
+        } else {
+            this.dockingPoints["subscript"].position.x = (thisBox.w + this.dockingPointSize)/2;
+            this.dockingPoints["subscript"].position.y = thisBox.h/2;
         }
 
     }
