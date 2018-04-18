@@ -285,7 +285,7 @@ export
 
         // right
         if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
-            this.dockingPoints["right"].child.position.x = this.scale * 1.5 * this.s.xBox.w + thisBox.w / 2 + Math.max(supWidth, subWidth);
+            this.dockingPoints["right"].child.position.x = this.scale * 1.5 * this.s.xBox.w + thisBox.w / 2 + Math.max(supWidth, subWidth) + this.dockingPointSize;
             this.dockingPoints["right"].child.position.y = this.dockingPoint.y - this.dockingPoints["right"].child.dockingPoint.y;
         } else {
             this.dockingPoints["right"].position.x = this.scale * 1.5 * this.s.xBox.w + this.subtreeBoundingBox().w - this.boundingBox().w / 2;
