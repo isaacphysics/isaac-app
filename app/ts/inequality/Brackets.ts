@@ -273,7 +273,7 @@ export
         let argBox = new Rect(0, 0, this.dockingPointSize, 0);
         let flag = 1;
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            argBox = this.dockingPoints["argument"].child.subtreeDPBoundingBox();
+            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
             flag = 2;
         }
         // FIXME thinner boxes than m-boxes don't work as well as m-boxes.
@@ -297,8 +297,7 @@ export
 
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             let child = this.dockingPoints["argument"].child;
-            let stBox = child.subtreeBoundingBox();
-            let sdpBox = child.subtreeDPBoundingBox();
+            let sdpBox = child.subtreeDockingPointsBoundingBox();
             this.dockingPoints["argument"].child.position.x = -sdpBox.w/2;
             this.dockingPoints["argument"].child.position.y = -child.dockingPoint.y;
         } else {
