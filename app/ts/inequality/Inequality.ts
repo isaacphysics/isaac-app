@@ -547,7 +547,7 @@ export
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox();
             symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h*2;
+            top += sbox.h*1.5;
             symbol.shakeIt();
         });
         if (!init) {
