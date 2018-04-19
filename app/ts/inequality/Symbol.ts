@@ -259,14 +259,13 @@ export
         let thisBox = this.boundingBox();
 
         // superscript
-        let supWidth = 0;
+        let superscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["superscript"]) {
             try {
-                let childBox = this.dockingPoints["superscript"].child.boundingBox();
-                // FIXME There's a subtle excess when "this" has an ascent -- i.e., taller than an "x".
-                this.dockingPoints["superscript"].child.position.x = (thisBox.w / 2 + childBox.w / 2) + (this.scale * this.s.xBox.w / 4);
-                this.dockingPoints["superscript"].child.position.y = -this.scale * this.s.xBox.h; // TODO Investigate the following: + this.scale*(this.s.xBox.h - this.dockingPoints["superscript"].child.subtreeBoundingBox().h);
-                supWidth = this.dockingPoints["superscript"].child.subtreeBoundingBox().w - childBox.w / 2;
+                let child = this.dockingPoints["superscript"].child;
+                child.position.x = (thisBox.w / 2 + child.boundingBox().w / 2) + (this.scale * this.s.xBox.w / 4);
+                child.position.y = -this.scale * this.s.xBox.h; // TODO Investigate the following: + this.scale*(this.s.xBox.h - child.subtreeBoundingBox().h);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
                 this.dockingPoints["superscript"].position.y = (-this.scale * this.s.mBox.h);
@@ -274,13 +273,13 @@ export
         }
 
         // subscript
-        let subWidth = 0;
+        let subscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["subscript"]) {
             try {
-                let childBox = this.dockingPoints["subscript"].child.boundingBox();
-                this.dockingPoints["subscript"].child.position.x = thisBox.w / 2 + childBox.w / 2;
-                this.dockingPoints["subscript"].child.position.y = this.scale * this.s.xBox.h / 2;
-                subWidth = this.dockingPoints["subscript"].child.subtreeBoundingBox().w - childBox.w / 2;
+                let child = this.dockingPoints["subscript"].child;
+                child.position.x = thisBox.w / 2 + child.boundingBox().w / 2;
+                child.position.y = this.scale * this.s.xBox.h / 2;
+                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["subscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
                 this.dockingPoints["subscript"].position.y = 0;
@@ -290,8 +289,9 @@ export
         // right
         if (this.dockingPoints["right"]) {
             try {
-                this.dockingPoints["right"].child.position.x = this.scale * 1.5 * this.s.xBox.w + thisBox.w / 2 + Math.max(supWidth, subWidth) + this.dockingPointSize;
-                this.dockingPoints["right"].child.position.y = this.dockingPoint.y - this.dockingPoints["right"].child.dockingPoint.y;
+                let child = this.dockingPoints["right"].child;
+                child.position.x = thisBox.w / 2 + child.boundingBox().w/2 + Math.max(superscriptWidth, subscriptWidth);
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["right"].position.x = this.scale * 1.5 * this.s.xBox.w + this.subtreeBoundingBox().w - this.boundingBox().w / 2;
                 this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);

@@ -116,7 +116,7 @@ export
         if (this.mode == 'chemistry') {
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["subscript"], "subscript");
         } else {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["subscript_maths"], "subscript");
+            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["symbol_subscript", "subscript_maths"], "subscript");
         }
     }
 
@@ -254,13 +254,11 @@ export
         let box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
 
         let argBox = new Rect(0, 0, this.dockingPointSize, 0);
-        let flag = 1;
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
-            flag = 2;
         }
         // FIXME thinner boxes than m-boxes don't work as well as m-boxes.
-        let width = flag * box.w + argBox.w;
+        let width = box.w + argBox.w;
         let height = Math.max(box.h, argBox.h);
 
         return new Rect(-width/2, -height/2, width, height);
@@ -276,11 +274,13 @@ export
     _shakeIt() {
         this._shakeItDown();
 
+        let thisBox = this.boundingBox();
+
         if (this.dockingPoints["argument"]) {
             try {
                 let child = this.dockingPoints["argument"].child;
-                let sdpBox = child.subtreeDockingPointsBoundingBox();
-                child.position.x = -sdpBox.w / 2;
+                // FIXME The last -this.dockingPointSize is probably wrong but I can't find a better substitute
+                child.position.x = thisBox.w/2 - child.subtreeDockingPointsBoundingBox().w + child.boundingBox().w/2 - this.dockingPointSize;
                 child.position.y = -child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["argument"].position.x = 0;
@@ -288,24 +288,26 @@ export
             }
         }
 
-
-        let thisBox = this.boundingBox();
-
-        // FIXME subsupWidth thing
+        let superscriptWidth = 0;
         if (this.dockingPoints["superscript"]) {
             try {
                 let child = this.dockingPoints["superscript"].child;
-                child.position.x = (thisBox.w + this.dockingPointSize) / 2 + child.boundingBox().w / 2;
-                child.position.y = -(thisBox.h / 2 + child.subtreeBoundingBox().h / 2) + this.dockingPointSize;
+                child.position.x = (thisBox.w + child.boundingBox().w) / 2;
+                child.position.y = -(thisBox.h + child.subtreeBoundingBox().h) / 2 + this.dockingPointSize;
+                superscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = (thisBox.w + this.dockingPointSize) / 2;
                 this.dockingPoints["superscript"].position.y = -thisBox.h / 2;
             }
         }
 
+        let subscriptWidth = 0;
         if (this.dockingPoints["subscript"]) {
             try {
                 let child = this.dockingPoints["subscript"].child;
+                child.position.x = (thisBox.w + child.boundingBox().w) / 2;
+                child.position.y = (thisBox.h + child.subtreeBoundingBox().h) / 2;
+                subscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } catch (e) {
                 this.dockingPoints["subscript"].position.x = (thisBox.w + this.dockingPointSize) / 2;
                 this.dockingPoints["subscript"].position.y = thisBox.h / 2;
@@ -315,10 +317,10 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                child.position.x = (thisBox.w + child.boundingBox().w) / 2 + this.dockingPointSize;
+                child.position.x = Math.max(superscriptWidth, subscriptWidth) + (thisBox.w + child.boundingBox().w) / 2 + this.dockingPointSize;
                 child.position.y = -child.dockingPoint.y;
             } catch (e) {
-                this.dockingPoints["right"].position.x = thisBox.w / 2 + this.dockingPointSize;
+                this.dockingPoints["right"].position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.w / 2 + this.dockingPointSize;
                 this.dockingPoints["right"].position.y = 0;
             }
         }
