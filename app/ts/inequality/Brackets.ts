@@ -276,43 +276,51 @@ export
     _shakeIt() {
         this._shakeItDown();
 
-        if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            let child = this.dockingPoints["argument"].child;
-            let sdpBox = child.subtreeDockingPointsBoundingBox();
-            child.position.x = -sdpBox.w/2;
-            child.position.y = -child.dockingPoint.y;
-        } else {
-            this.dockingPoints["argument"].position.x = 0;
-            this.dockingPoints["argument"].position.y = 0;
+        if (this.dockingPoints["argument"]) {
+            try {
+                let child = this.dockingPoints["argument"].child;
+                let sdpBox = child.subtreeDockingPointsBoundingBox();
+                child.position.x = -sdpBox.w / 2;
+                child.position.y = -child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["argument"].position.x = 0;
+                this.dockingPoints["argument"].position.y = 0;
+            }
         }
+
 
         let thisBox = this.boundingBox();
 
-        if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
-            let child = this.dockingPoints["right"].child;
-            child.position.x = (thisBox.w + child.boundingBox().w)/2 + this.dockingPointSize;
-            child.position.y = -child.dockingPoint.y;
-        } else {
-            this.dockingPoints["right"].position.x = thisBox.w/2 + this.dockingPointSize;
-            this.dockingPoints["right"].position.y = 0;
-        }
-
         // FIXME subsupWidth thing
-        if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
-            let child = this.dockingPoints["superscript"].child;
-            child.position.x = (thisBox.w + this.dockingPointSize)/2 + child.boundingBox().w/2;
-            child.position.y = -(thisBox.h/2 + child.subtreeBoundingBox().h/2) + this.dockingPointSize;
-        } else {
-            this.dockingPoints["superscript"].position.x = (thisBox.w + this.dockingPointSize)/2;
-            this.dockingPoints["superscript"].position.y = -thisBox.h/2;
+        if (this.dockingPoints["superscript"]) {
+            try {
+                let child = this.dockingPoints["superscript"].child;
+                child.position.x = (thisBox.w + this.dockingPointSize) / 2 + child.boundingBox().w / 2;
+                child.position.y = -(thisBox.h / 2 + child.subtreeBoundingBox().h / 2) + this.dockingPointSize;
+            } catch (e) {
+                this.dockingPoints["superscript"].position.x = (thisBox.w + this.dockingPointSize) / 2;
+                this.dockingPoints["superscript"].position.y = -thisBox.h / 2;
+            }
         }
 
-        if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
-            let child = this.dockingPoints["subscript"].child;
-        } else {
-            this.dockingPoints["subscript"].position.x = (thisBox.w + this.dockingPointSize)/2;
-            this.dockingPoints["subscript"].position.y = thisBox.h/2;
+        if (this.dockingPoints["subscript"]) {
+            try {
+                let child = this.dockingPoints["subscript"].child;
+            } catch (e) {
+                this.dockingPoints["subscript"].position.x = (thisBox.w + this.dockingPointSize) / 2;
+                this.dockingPoints["subscript"].position.y = thisBox.h / 2;
+            }
         }
 
+        if (this.dockingPoints["right"]) {
+            try {
+                let child = this.dockingPoints["right"].child;
+                child.position.x = (thisBox.w + child.boundingBox().w) / 2 + this.dockingPointSize;
+                child.position.y = -child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["right"].position.x = thisBox.w / 2 + this.dockingPointSize;
+                this.dockingPoints["right"].position.y = 0;
+            }
+        }
     }
 }
