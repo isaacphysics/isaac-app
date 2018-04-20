@@ -228,13 +228,15 @@ export
         this._shakeItDown();
         let thisBox = this.boundingBox();
 
-        if (this.dockingPoints["right"] && this.dockingPoints["right"].child) {
-            let childBox = this.dockingPoints["right"].child.boundingBox();
-            this.dockingPoints["right"].child.position.x = this._asymMult * thisBox.w / 2 + childBox.w / 2;
-            this.dockingPoints["right"].child.position.y = 0;
-        } else {
-            this.dockingPoints["right"].position.x = this.scale * (this._asymMult * thisBox.w / 2 + this.dockingPointSize);
-            this.dockingPoints["right"].position.y = this.scale * (-this.s.xBox.h / 2);
+        if (this.dockingPoints["right"]) {
+            try {
+                let child = this.dockingPoints["right"].child;
+                child.position.x = this._asymMult * thisBox.w / 2 + child.boundingBox().w / 2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["right"].position.x = this.scale * (this._asymMult * thisBox.w / 2 + this.dockingPointSize);
+                this.dockingPoints["right"].position.y = this.scale * (-this.s.xBox.h / 2);
+            }
         }
     }
 }
