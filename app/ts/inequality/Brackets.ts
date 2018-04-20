@@ -108,7 +108,6 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
-        let pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "argument");
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, ["operator_brackets"], "right");
@@ -236,12 +235,32 @@ export
         //     .textSize(this.s.baseFontSize * this.scale)
         //     .textAlign(this.p.RIGHT, this.p.CENTER);
         // this.p.text(this.glyph['rhs'], box.x+box.w, box.y + box.h/2);
-        // FIXME This is temporary
-        this.p.noFill().stroke(this.color).strokeWeight(2);
-        this.p.line(box.x+20, -box.h/2, box.x, 0);
-        this.p.line(box.x, 0, box.x+20, box.h/2);
-        this.p.line(box.w/2-20, -box.h/2, box.w/2, 0);
-        this.p.line(box.w/2, 0, box.w/2-20, box.h/2);
+
+        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+
+        this.p.beginShape();
+        this.p.vertex(      box.x + 21, -box.h/2 +  1);
+        this.p.bezierVertex(box.x +  4, -box.h/2 + 20,
+                            box.x +  4,  box.h/2 - 20,
+                            box.x + 21,  box.h/2 -  1);
+        this.p.vertex(      box.x + 20,  box.h/2);
+        this.p.bezierVertex(box.x -  4,  box.h/2 - 20,
+                            box.x -  4, -box.h/2 + 20,
+                            box.x + 20, -box.h/2);
+        this.p.endShape();
+
+        this.p.beginShape();
+        this.p.vertex(      box.w/2 - 21, -box.h/2 +  1);
+        this.p.bezierVertex(box.w/2 -  4, -box.h/2 + 20,
+                            box.w/2 -  4,  box.h/2 - 20,
+                            box.w/2 - 21,  box.h/2 -  1);
+        this.p.vertex(      box.w/2 - 20,  box.h/2);
+        this.p.bezierVertex(box.w/2 +  4,  box.h/2 - 20,
+                            box.w/2 +  4, -box.h/2 + 20,
+                            box.w/2 - 20, -box.h/2);
+        this.p.endShape();
+
+
         this.p.strokeWeight(1);
     }
 
