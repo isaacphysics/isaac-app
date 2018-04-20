@@ -692,7 +692,7 @@ define([
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
         $rootScope.webSocketCheckTimeout = null;
-        var lastRecievedServerTime = null;
+        var lastKnownServerTime = null;
 
         $rootScope.openNotificationSocket = function() {
 
@@ -720,42 +720,30 @@ define([
 
                     var websocketMessage = JSON.parse(event.data);
 
-                    // User snapshot update:
                     if (websocketMessage.heartbeat) {
-
-                        var serverTime = websocketMessage.heartbeat;
-
-                        if (null == lastRecievedServerTime ||
-                            new Date(lastRecievedServerTime).getDate() < new Date(serverTime).getDate()) {
+                        // Update the last known server time from the message heartbeat.
+                        var newServerTime = websocketMessage.heartbeat;
+                        if (null != lastKnownServerTime && new Date(lastKnownServerTime).getDate() != new Date(newServerTime).getDate()) {
+                            // If the server time has passed midnight, streaks reset, so request a snapshot update:
                             $rootScope.notificationWebSocket.send("user-snapshot-nudge");
                         }
-                        lastRecievedServerTime = serverTime;
+                        lastKnownServerTime = newServerTime;
+                    }
 
-                    } else if (websocketMessage.userSnapshot) {
-
+                    if (websocketMessage.userSnapshot) {
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
                         var currentActivity = websocketMessage.userSnapshot.streakRecord ? websocketMessage.userSnapshot.streakRecord.currentActivity : 0;
                         $rootScope.streakDialToggle(currentActivity);
-                        lastRecievedServerTime = websocketMessage.userSnapshot.heartbeat;
 
                     } else if (websocketMessage.notifications) {
-
                         websocketMessage.notifications.forEach(function(entry) {
-
                             var notificationMessage = JSON.parse(entry.message);
-
                             // specific user streak update
                             if (notificationMessage.streakRecord) {
-
-                                $rootScope.user.userSnapshot.streakRecord
-                                    = notificationMessage.streakRecord;
-
+                                $rootScope.user.userSnapshot.streakRecord = notificationMessage.streakRecord;
                                 $rootScope.streakDialToggle($rootScope.user.userSnapshot.streakRecord.currentActivity);
                             }
-
                         });
-
-                        lastRecievedServerTime = websocketMessage.userSnapshot.heartbeat;
                     }
 
 
@@ -841,7 +829,13 @@ define([
         var checkForWebSocket = function() {
 
             if ($rootScope.notificationWebSocket != null) {
-                $rootScope.notificationWebSocket.send("heartbeat");
+                if (!$rootScope.user.userSnapshot) {
+                    // If we don't have a snapshot, request one.
+                    $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+                } else {
+                    // Else just ping to keep connection alive.
+                    $rootScope.notificationWebSocket.send("heartbeat");
+                }
                 $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
             } else {
                 $rootScope.openNotificationSocket();
