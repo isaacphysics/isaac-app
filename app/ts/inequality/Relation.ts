@@ -202,20 +202,9 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = this.relation || "+";
-        if (s == "−") {
-            let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-            return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
-        }
-        else if (s == "⋅"){
-          s = "⋅";
-          let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w / 2, box.y-1000, this._asymMult * box.w, box.h);
-        }
-        else {
-          let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
-        }
+        let s = this.relation || "=";
+        let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
+        return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
     }
 
     /**
