@@ -226,18 +226,9 @@ export
     _draw() {
         let box = this.boundingBox();
 
-        // this.p.fill(this.color).strokeWeight(0).noStroke();
-        // this.p.textFont(this.s.font_up)
-        //     .textSize(this.s.baseFontSize * this.scale)
-        //     .textAlign(this.p.LEFT, this.p.CENTER);
-        // this.p.text(this.glyph['lhs'], box.x, box.y + box.h/2);
-        // this.p.textFont(this.s.font_up)
-        //     .textSize(this.s.baseFontSize * this.scale)
-        //     .textAlign(this.p.RIGHT, this.p.CENTER);
-        // this.p.text(this.glyph['rhs'], box.x+box.w, box.y + box.h/2);
-
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
+        // LHS
         this.p.beginShape();
         this.p.vertex(      box.x + 21, -box.h/2 +  1);
         this.p.bezierVertex(box.x +  4, -box.h/2 + 20,
@@ -249,6 +240,7 @@ export
                             box.x + 20, -box.h/2);
         this.p.endShape();
 
+        // RHS
         this.p.beginShape();
         this.p.vertex(      box.w/2 - 21, -box.h/2 +  1);
         this.p.bezierVertex(box.w/2 -  4, -box.h/2 + 20,
