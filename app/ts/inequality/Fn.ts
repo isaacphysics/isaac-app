@@ -220,40 +220,43 @@ export
 
     /** Paints the widget on the canvas. */
     _draw() {
-        let argWidth = this.s.xBox.w;
-        if (this.dockingPoints['argument'].child) {
-            argWidth = this.s.xBox.w / 2 + this.dockingPoints['argument'].child.subtreeBoundingBox().w;
-        }
-        let subWidth = 0;
-        if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-            subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
-        }
-        let supWidth = 0;
-        if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
-        }
+        let thisBox = this.boundingBox();
+        let nameWidth = this.s.font_up.textBounds(this.name, 0, 1000, this.scale, this.s.baseFontSize).w;
+
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
             .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.CENTER, this.p.BASELINE);
-        this.p.text(this.name, 0, 0);
+            .textAlign(this.p.LEFT, this.p.BASELINE);
+        this.p.text(this.name, -thisBox.w/2, 0);
 
-        let box = this.offsetBox(); //this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
+        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
-        // this.p.fill(0,0,0,48);
-        // this.p.rect(box.x-box.w/2, box.y, box.w, box.h);
-        // this.p.fill(this.color);
+        // LHS
+        this.p.beginShape();
+        this.p.vertex(      this.s.xBox.w / 2 + nameWidth + 21, thisBox.y             +  1);
+        this.p.bezierVertex(this.s.xBox.w / 2 + nameWidth +  4, thisBox.y             + 20,
+                            this.s.xBox.w / 2 + nameWidth +  4, thisBox.y + thisBox.h - 20,
+                            this.s.xBox.w / 2 + nameWidth + 21, thisBox.y + thisBox.h -  1);
+        this.p.vertex(      this.s.xBox.w / 2 + nameWidth + 20, thisBox.y + thisBox.h);
+        this.p.bezierVertex(this.s.xBox.w / 2 + nameWidth -  4, thisBox.y + thisBox.h - 20,
+                            this.s.xBox.w / 2 + nameWidth -  4, thisBox.y             + 20,
+                            this.s.xBox.w / 2 + nameWidth + 20, thisBox.y);
+        this.p.endShape();
 
-        let bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
-        this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.RIGHT, this.p.BASELINE);
-        this.p.text('(', box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth), 0);
-        this.p.textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(')', box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + argWidth, 0);
+        // RHS
+        this.p.beginShape();
+        this.p.vertex(      thisBox.w/2 - 21, thisBox.y             +  1);
+        this.p.bezierVertex(thisBox.w/2 -  4, thisBox.y             + 20,
+                            thisBox.w/2 -  4, thisBox.y + thisBox.h - 20,
+                            thisBox.w/2 - 21, thisBox.y + thisBox.h -  1);
+        this.p.vertex(      thisBox.w/2 - 20, thisBox.y + thisBox.h);
+        this.p.bezierVertex(thisBox.w/2 +  4, thisBox.y + thisBox.h - 20,
+                            thisBox.w/2 +  4, thisBox.y             + 20,
+                            thisBox.w/2 - 20, thisBox.y);
+        this.p.endShape();
 
-        this.p.strokeWeight(1);
+
     }
 
     /**
@@ -262,24 +265,33 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds(this.name + '()' || '', 0, 1000, this.scale * this.s.baseFontSize);
-        let argWidth = this.s.xBox.w;
-        if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-            argWidth = this.dockingPoints['argument'].child.subtreeBoundingBox().w;
-        }
-        let subWidth = 0;
-        if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-            subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
-        }
-        let supWidth = 0;
-        if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
+        let baseBox = this.s.font_up.textBounds(this.name + '()', 0, 1000, this.scale * this.s.baseFontSize);
+
+        let argBox: Rect = null;
+        try {
+            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
+        } catch (e) {
+            argBox = new Rect(0, 0, this.dockingPointSize, 0);
         }
 
-        let bracketsBox = this.s.font_up.textBounds('()', 0, 1000, this.scale * this.s.baseFontSize);
-        let width = box.w;
-        let dpWidth = 0;
-        return new Rect(-width / 2 + bracketsBox.w / 2, box.y - 1000, width + argWidth + Math.max(subWidth, supWidth) + dpWidth, Math.max(box.h, bracketsBox.h));
+        let superscriptBox: Rect = null;
+        try {
+            superscriptBox = this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox();
+        } catch (e) {
+            superscriptBox = new Rect(0, 0, 0, 0);
+        }
+
+        let subscriptBox: Rect = null;
+        try {
+            subscriptBox = this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox();
+        } catch (e) {
+            subscriptBox = new Rect(0,0,0,0);
+        }
+
+        let width = baseBox.w + argBox.w + Math.max(superscriptBox.w, subscriptBox.w);
+        let height = Math.max(baseBox.h, argBox.h);
+
+        return new Rect(-width/2, -height/2 + this.dockingPoint.y, width, height);
     }
 
     /**
@@ -289,72 +301,8 @@ export
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
+        this._shakeItDown();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
-            }
-        });
-
-        // Calculate our own geometry
-
-        // Nothing to do for Symbol
-
-        // Set position of all our children.
-
-        let box = this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
-        // box.y -= 1000;
-        let bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
-        let stBox = this.subtreeBoundingBox();
-        let descent = (box.y + box.h);
-
-        let widest = 0;
-        let subWidth = 0;
-        let supWidth = 0;
-
-        if ("subscript" in boxes) {
-            let p = this.dockingPoints['subscript'].child.position = this.p.createVector(box.w / 2 + this.dockingPoints['subscript'].child.offsetBox().w / 2, -this.dockingPoint.y);
-            subWidth = this.dockingPoints['subscript'].child.subtreeBoundingBox().w;
-        } else if ("subscript" in this.dockingPoints) {
-            this.dockingPoints['subscript'].position = this.p.createVector(box.w / 2, -this.dockingPoint.y);
-        }
-        if ("superscript" in boxes) {
-            let p = this.dockingPoints['superscript'].child.position = this.p.createVector(box.w / 2 + this.dockingPoints['superscript'].child.offsetBox().w / 2, -Math.max(box.h, bracketBox.h) - (this.dockingPoint.y));
-            supWidth = this.dockingPoints['superscript'].child.subtreeBoundingBox().w;
-        } else if ("superscript" in this.dockingPoints) {
-            this.dockingPoints['superscript'].position = this.p.createVector(box.w / 2, -Math.max(box.h, bracketBox.h) - (this.dockingPoint.y));
-        }
-
-        if ("argument" in boxes) {
-            let p: any = this.dockingPoints["argument"].child.position;
-            let w = this.dockingPoints["argument"].child.offsetBox().w;
-            p.x = box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + this.dockingPoints["argument"].child.offsetBox().w / 2;
-            p.y = 0;
-            widest += w;
-        } else {
-            this.dockingPoints["argument"].position = this.p.createVector(box.w / 2 + bracketBox.w + Math.max(subWidth, supWidth) + this.s.xBox.w / 2, -this.s.xBox.h / 2);
-        }
-
-        // TODO: Tweak this with kerning.
-        if ("right" in boxes) {
-            let p: any = this.dockingPoints["right"].child.position;
-            p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2 + this.dockingPoints["right"].child.offsetBox().w / 2;
-            p.y = 0;
-            let docking_right = this.dockingPoints["right"];
-            // FIXME HORRIBLE BRACKETS FIX
-            if (docking_right instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
-
-        } else {
-            let p: any = this.dockingPoints["right"].position;
-            p.x = this.boundingBox().w - this.offsetBox().w / 2 + this.s.xBox.w / 2;
-            p.y = -this.s.xBox.h / 2;
-        }
     }
 
     offsetBox() {
