@@ -228,6 +228,8 @@ export
 
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
+        // FIXME Scale the hardcoded numbers
+        // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
         // LHS
         this.p.beginShape();
         this.p.vertex(      box.x + 21, -box.h/2 +  1);

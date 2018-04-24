@@ -221,42 +221,54 @@ export
     /** Paints the widget on the canvas. */
     _draw() {
         let thisBox = this.boundingBox();
-        let nameWidth = this.s.font_up.textBounds(this.name, 0, 1000, this.scale, this.s.baseFontSize).w;
 
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.LEFT, this.p.BASELINE);
-        this.p.text(this.name, -thisBox.w/2, 0);
+              .textSize(this.s.baseFontSize * this.scale)
+              .textAlign(this.p.RIGHT, this.p.BASELINE);
+        this.p.text(this.name, 0, 0);
 
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
+        let argumentBox = this._argumentBox;
+        let superscriptBox = this._superscriptBox;
+        let subscriptBox = this._subscriptBox;
+
+        let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
+        let bracketsW = 40*this.scale + argumentBox.w;
+        let bracketsBox = new Rect(bracketsX, thisBox.y, bracketsW, thisBox.h);
+
+        this._drawBracketsInBox(bracketsBox);
+    }
+
+    _drawBracketsInBox(box: Rect) {
+        // FIXME Scale the hardcoded numbers
         // LHS
         this.p.beginShape();
-        this.p.vertex(      this.s.xBox.w / 2 + nameWidth + 21, thisBox.y             +  1);
-        this.p.bezierVertex(this.s.xBox.w / 2 + nameWidth +  4, thisBox.y             + 20,
-                            this.s.xBox.w / 2 + nameWidth +  4, thisBox.y + thisBox.h - 20,
-                            this.s.xBox.w / 2 + nameWidth + 21, thisBox.y + thisBox.h -  1);
-        this.p.vertex(      this.s.xBox.w / 2 + nameWidth + 20, thisBox.y + thisBox.h);
-        this.p.bezierVertex(this.s.xBox.w / 2 + nameWidth -  4, thisBox.y + thisBox.h - 20,
-                            this.s.xBox.w / 2 + nameWidth -  4, thisBox.y             + 20,
-                            this.s.xBox.w / 2 + nameWidth + 20, thisBox.y);
+        this.p.vertex(       box.x         + 21*this.scale,      box.y         +    this.scale );
+        this.p.bezierVertex( box.x         +  4*this.scale,      box.y         + 20*this.scale  ,
+                             box.x         +  4*this.scale,      box.y + box.h - 20*this.scale  ,
+                             box.x         + 21*this.scale,      box.y + box.h -    this.scale );
+        this.p.vertex(       box.x         + 20*this.scale,      box.y + box.h                 );
+        this.p.bezierVertex( box.x         -  4*this.scale,      box.y + box.h - 20*this.scale  ,
+                             box.x         -  4*this.scale,      box.y         + 20*this.scale  ,
+                             box.x         + 20*this.scale,      box.y                         );
         this.p.endShape();
+
+        // box.w = 42;
 
         // RHS
         this.p.beginShape();
-        this.p.vertex(      thisBox.w/2 - 21, thisBox.y             +  1);
-        this.p.bezierVertex(thisBox.w/2 -  4, thisBox.y             + 20,
-                            thisBox.w/2 -  4, thisBox.y + thisBox.h - 20,
-                            thisBox.w/2 - 21, thisBox.y + thisBox.h -  1);
-        this.p.vertex(      thisBox.w/2 - 20, thisBox.y + thisBox.h);
-        this.p.bezierVertex(thisBox.w/2 +  4, thisBox.y + thisBox.h - 20,
-                            thisBox.w/2 +  4, thisBox.y             + 20,
-                            thisBox.w/2 - 20, thisBox.y);
+        this.p.vertex(       box.x + box.w - 21*this.scale,      box.y         +    this.scale );
+        this.p.bezierVertex( box.x + box.w -  4*this.scale,      box.y         + 20*this.scale  ,
+                             box.x + box.w -  4*this.scale,      box.y + box.h - 20*this.scale  ,
+                             box.x + box.w - 21*this.scale,      box.y + box.h -    this.scale );
+        this.p.vertex(       box.x + box.w - 20*this.scale,      box.y + box.h                 );
+        this.p.bezierVertex( box.x + box.w +  4*this.scale,      box.y + box.h - 20*this.scale  ,
+                             box.x + box.w +  4*this.scale,      box.y         + 20*this.scale  ,
+                             box.x + box.w - 20*this.scale,      box.y                         );
         this.p.endShape();
-
-
     }
 
     /**
@@ -265,33 +277,52 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let baseBox = this.s.font_up.textBounds(this.name + '()', 0, 1000, this.scale * this.s.baseFontSize);
+        let argumentBox = this._argumentBox;
+        let superscriptBox = this._superscriptBox;
+        let subscriptBox = this._subscriptBox;
 
-        let argBox: Rect = null;
+        let width = this._nameBox.w + Math.max(superscriptBox.w, subscriptBox.w) + 40*this.scale + argumentBox.w;
+        let height = Math.max(this._baseBox.h, argumentBox.h);
+
+        return new Rect(-this._nameBox.w, -height/2 + this.dockingPoint.y, width, height);
+    }
+
+    get _baseBox(): Rect {
+        return Rect.fromObject(this.s.font_up.textBounds(this.name + '()', 0, 0, this.scale * this.s.baseFontSize));
+    }
+
+    get _nameBox(): Rect {
+        return Rect.fromObject(this.s.font_up.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize));
+    }
+
+    get _argumentBox(): Rect {
+        let argumentBox: Rect = null;
         try {
-            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
+            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
         } catch (e) {
-            argBox = new Rect(0, 0, this.dockingPointSize, 0);
+            argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
+        return argumentBox;
+    }
 
+    get _superscriptBox(): Rect {
         let superscriptBox: Rect = null;
         try {
             superscriptBox = this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox();
         } catch (e) {
-            superscriptBox = new Rect(0, 0, 0, 0);
+            superscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
+        return superscriptBox;
+    }
 
+    get _subscriptBox(): Rect {
         let subscriptBox: Rect = null;
         try {
             subscriptBox = this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox();
         } catch (e) {
-            subscriptBox = new Rect(0,0,0,0);
+            subscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
-
-        let width = baseBox.w + argBox.w + Math.max(superscriptBox.w, subscriptBox.w);
-        let height = Math.max(baseBox.h, argBox.h);
-
-        return new Rect(-width/2, -height/2 + this.dockingPoint.y, width, height);
+        return subscriptBox;
     }
 
     /**
@@ -303,10 +334,33 @@ export
     _shakeIt() {
         this._shakeItDown();
 
+        let thisBox = this.boundingBox();
+
+        if (this.dockingPoints["superscript"]) {
+            try {
+                let child = this.dockingPoints["superscript"].child;
+                child.position.x = 0;
+                child.position.y = 0;
+            } catch (e) {
+                this.dockingPoints["superscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                this.dockingPoints["superscript"].position.y = this._nameBox.y;
+            }
+        }
+
+        if (this.dockingPoints["subscript"]) {
+            try {
+                let child = this.dockingPoints["subscript"].child;
+                child.position.x = 0;
+                child.position.y = 0;
+            } catch (e) {
+                this.dockingPoints["subscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                this.dockingPoints["subscript"].position.y = this._nameBox.y + this._nameBox.h;
+            }
+        }
     }
 
     offsetBox() {
-        let box = this.custom ? this.s.font_it.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize) : this.s.font_up.textBounds(this.name, 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(box.x, box.y - 1000, box.w, box.h);
+        let box = this.custom ? this.s.font_it.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize) : this.s.font_up.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize);
+        return new Rect(box.x, box.y, box.w, box.h);
     }
 }

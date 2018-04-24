@@ -290,7 +290,8 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                child.position.x = thisBox.w / 2 + child.boundingBox().w/2 + Math.max(superscriptWidth, subscriptWidth);
+                let childLeft = child.dockingPoint.x - child.boundingBox().x;
+                child.position.x = thisBox.w / 2 + childLeft + Math.max(superscriptWidth, subscriptWidth);
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["right"].position.x = this.scale * 1.5 * this.s.xBox.w + this.subtreeBoundingBox().w - this.boundingBox().w / 2;
