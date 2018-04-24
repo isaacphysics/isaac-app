@@ -281,8 +281,8 @@ export
         // These are used to correctly detect clicks and taps.
 
         // Note that touchX and touchY are incorrect when using touch. Ironically.
-        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         this.initialTouch = this.p.createVector(tx, ty);
 
@@ -341,9 +341,8 @@ export
     };
 
     touchMoved = () => {
-
-        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         if (this.movingSymbol != null) {
             let d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
