@@ -348,8 +348,13 @@ define([], function() {
 
             api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
                 $scope.usersToGrantAccess = result;
+                var userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
+                $scope.anyUsersAuthorisedAlready = false;
+
                 angular.forEach($scope.usersToGrantAccess, function(value, key) {
                     value.givenName = value.givenName ? value.givenName.charAt(0) + ". " : "";
+                    value.authorisedAlready = userIdsAlreadyAuthorised.indexOf(value.id) > -1;
+                    $scope.anyUsersAuthorisedAlready = $scope.anyUsersAuthorisedAlready || value.authorisedAlready;
                 });
                 $scope.modals.tokenVerification.show();
             }).catch(function(e){
