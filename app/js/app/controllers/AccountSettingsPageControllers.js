@@ -355,7 +355,9 @@ define([], function() {
             }).catch(function(e){
                 console.error(e);
                 if (e.status == 429) {
-                    $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
+                    $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have entered too many tokens. Please check your code with your teacher and try again later!");
+                } else {
+                    $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
                 }
             });
         }
