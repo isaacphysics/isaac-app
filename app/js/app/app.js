@@ -694,7 +694,7 @@ define([
         $rootScope.webSocketCheckTimeout = null;
         var lastKnownServerTime = null;
 
-        $rootScope.openNotificationSocket = function() {
+        var openNotificationSocket = function() {
 
             if ($rootScope.notificationWebSocket != null) {
                 return;
@@ -712,7 +712,7 @@ define([
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
+                    $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
                 }
 
 
@@ -802,14 +802,14 @@ define([
                                 // The status code 1013 isn't yet supported properly, and IE/Edge don't support custom codes.
                                 // So use the event 'reason' to indicate too many connections, try again in 1 min.
                                 console.log("WebSocket endpoint overloaded. Trying again later!")
-                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
+                                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 60000);
                             } else {
                                 // This is likely a network interrupt or else a server restart.
                                 // For the latter, we really don't want all reconnections at once.
                                 // Wait a random time between 10s and 60s, and then attempt reconnection:
                                 var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
                                 console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
-                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, randomRetryIntervalSeconds * 1000);
+                                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, randomRetryIntervalSeconds * 1000);
                             }
                             break;
                         default: // Unexpected closure code: log and abort retrying!
@@ -824,10 +824,7 @@ define([
             });
         }
 
-        $timeout($rootScope.openNotificationSocket, 500);
-
-        var checkForWebSocket = function() {
-
+        $rootScope.checkForWebSocket = function() {
             if ($rootScope.notificationWebSocket != null) {
                 if (!$rootScope.user.userSnapshot) {
                     // If we don't have a snapshot, request one.
@@ -836,11 +833,11 @@ define([
                     // Else just ping to keep connection alive.
                     $rootScope.notificationWebSocket.send("heartbeat");
                 }
-                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
+                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 60000);
             } else {
-                $rootScope.openNotificationSocket();
+                openNotificationSocket();
             }
-
         }
 
         var checkForNotifications = function() {
