@@ -117,7 +117,7 @@
         <p ng-if="selectedGroup.additionalManagers.length == 0">There are no additional group managers for this group.</p>
         <table class="group-table">
             <tbody>
-                <tr ng-repeat="member in selectedGroup.additionalManagers" ng-class="{disabled: !member.authorisedFullAccess}">
+                <tr ng-repeat="member in selectedGroup.additionalManagers | orderBy:'familyName'" ng-class="{disabled: !member.authorisedFullAccess}">
                     <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} ({{member.email}})</td>
                     <td class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
                 </tr>

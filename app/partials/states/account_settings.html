@@ -469,7 +469,7 @@
     <div class="group-accordion-content">
         <table class="group-table">
             <tbody>
-                <tr ng-repeat="member in usersToGrantAccess">
+                <tr ng-repeat="member in usersToGrantAccess | orderBy:'familyName'">
                     <td ng-class="{'ru_green': member.authorisedAlready}">
                         <span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} - ({{member.email}})</span>
                     </td>
