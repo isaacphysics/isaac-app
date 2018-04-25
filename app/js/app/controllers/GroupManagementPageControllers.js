@@ -191,7 +191,7 @@ define([], function() {
 		}
 
 		$scope.deleteManager = function(group, user) {
-			var deleteMember = $window.confirm('Are you sure you want to remove this teacher from the group?');   
+			var deleteMember = $window.confirm('Are you sure you want to remove this teacher from the group?\nThey may still have access to student data until students revoke the connection from their My Account pages.');   
 			if (deleteMember) {
 				api.groupManagementEndpoint.deleteManager({id: group._id, userId: user.id}).$promise.then(function(result){
 					$scope.selectedGroup = result;
