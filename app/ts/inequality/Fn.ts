@@ -220,29 +220,19 @@ export
 
     /** Paints the widget on the canvas. */
     _draw() {
-        let thisBox = this.boundingBox();
-
         this.p.fill(this.color).strokeWeight(0).noStroke();
-
         this.p.textFont(this.custom ? this.s.font_it : this.s.font_up)
               .textSize(this.s.baseFontSize * this.scale)
               .textAlign(this.p.RIGHT, this.p.BASELINE);
         this.p.text(this.name, 0, 0);
 
-        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
-
-        let argumentBox = this._argumentBox;
-        let superscriptBox = this._superscriptBox;
-        let subscriptBox = this._subscriptBox;
-
-        let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
-        let bracketsW = 40*this.scale + argumentBox.w;
-        let bracketsBox = new Rect(bracketsX, thisBox.y, bracketsW, thisBox.h);
-
-        this._drawBracketsInBox(bracketsBox);
+        this._drawBracketsInBox(this._bracketsBox);
     }
 
     _drawBracketsInBox(box: Rect) {
+        // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Brackets
+        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+
         // FIXME Scale the hardcoded numbers
         // LHS
         this.p.beginShape();
@@ -305,6 +295,20 @@ export
         return argumentBox;
     }
 
+    get _bracketsBox(): Rect {
+        let argumentBox = this._argumentBox;
+        let superscriptBox = this._superscriptBox;
+        let subscriptBox = this._subscriptBox;
+
+        // See Fn::boundingBox()
+        let height = Math.max(this._baseBox.h, argumentBox.h);
+
+        let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
+        let bracketsW = 40*this.scale + argumentBox.w;
+
+        return new Rect(bracketsX, this.boundingBox().y, bracketsW, height);
+    }
+
     get _superscriptBox(): Rect {
         let superscriptBox: Rect = null;
         try {
@@ -339,22 +343,46 @@ export
         if (this.dockingPoints["superscript"]) {
             try {
                 let child = this.dockingPoints["superscript"].child;
-                child.position.x = 0;
-                child.position.y = 0;
+                child.position.x = child.boundingBox().w / 2;
+                child.position.y = -this.scale*this.s.mBox.h - child.subtreeBoundingBox().h / 2 + this.dockingPointSize; // TODO Double-check this
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
-                this.dockingPoints["superscript"].position.y = this._nameBox.y;
+                this.dockingPoints["superscript"].position.y = -this.scale * this.s.mBox.h;
             }
         }
 
         if (this.dockingPoints["subscript"]) {
             try {
                 let child = this.dockingPoints["subscript"].child;
-                child.position.x = 0;
-                child.position.y = 0;
+                child.position.x = child.boundingBox().w / 2;
+                child.position.y = child.subtreeBoundingBox().h / 2;
             } catch (e) {
                 this.dockingPoints["subscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
-                this.dockingPoints["subscript"].position.y = this._nameBox.y + this._nameBox.h;
+                this.dockingPoints["subscript"].position.y = 0;
+            }
+        }
+
+        if (this.dockingPoints["argument"]) {
+            try {
+                let child = this.dockingPoints["argument"].child;
+                // FIXME This 20 is the width of a bracket (more or less). The result is a bit off. Investigate.
+                child.position.x = this._bracketsBox.center.x - child.subtreeDockingPointsBoundingBox().w/2 + 20*this.scale;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["argument"].position.x = this._bracketsBox.center.x;
+                this.dockingPoints["argument"].position.y = this.dockingPoint.y;
+            }
+        }
+
+        if (this.dockingPoints["right"]) {
+            try {
+                let child = this.dockingPoints["right"].child;
+                let childLeft = child.dockingPoint.x - child.boundingBox().x;
+                child.position.x = this._bracketsBox.x + this._bracketsBox.w + childLeft + this.dockingPointSize;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["right"].position.x = this._bracketsBox.x + this._bracketsBox.w + this.dockingPointSize;
+                this.dockingPoints["right"].position.y = this.dockingPoint.y;
             }
         }
     }
