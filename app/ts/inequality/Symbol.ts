@@ -265,7 +265,7 @@ export
                 let child = this.dockingPoints["superscript"].child;
                 let childLeft = child.dockingPoint.x - child.boundingBox().x;
                 child.position.x = thisBox.w/2 + childLeft + this.dockingPointSize*child.scale/2;
-                child.position.y = -this.scale*this.s.xBox.h - child.subtreeDockingPointsBoundingBox().h/2 - child.dockingPoint.y;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
@@ -279,7 +279,7 @@ export
             try {
                 let child = this.dockingPoints["subscript"].child;
                 child.position.x = thisBox.w / 2 + child.boundingBox().w / 2;
-                child.position.y = (child.subtreeBoundingBox().h) / 2;
+                child.position.y = -child.dockingPoint.y; // TODO Investigate if this can be improved. Ideally push down only if box extends upwards. ( + child.subtreeDockingPointsBoundingBox().h/2;)
                 subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["subscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
