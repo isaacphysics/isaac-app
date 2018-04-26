@@ -621,6 +621,10 @@ export
 
     }
 
+    get leftBound(): number {
+        return this.dockingPoint.x - this.subtreeDockingPointsBoundingBox().x;
+    }
+
     /**
      * Finds the width of the bounding box around an entire expression.
      */
