@@ -215,9 +215,9 @@ class Differential extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.letter, 0, 0);
+              .textSize(this.s.baseFontSize * this.scale)
+              .textAlign(this.p.CENTER, this.p.BASELINE)
+              .text(this.letter, 0, 0);
         this.p.strokeWeight(1);
     }
 
@@ -227,8 +227,8 @@ class Differential extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds(this.letter || "D", 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
+        let box = this.s.font_up.textBounds(this.letter || "D", 0, 0, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w / 2, box.y, box.w, box.h);
     }
 
     /**
@@ -238,80 +238,52 @@ class Differential extends Widget {
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
+        this._shakeItDown();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        let thisBox = this.boundingBox();
+
+        // order
+        let orderWidth = this.dockingPointSize;
+        if (this.dockingPoints["order"]) {
+            try {
+                let child = this.dockingPoints["order"].child;
+                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+            } catch (e) {
+                this.dockingPoints["order"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+                this.dockingPoints["order"].position.y = (-this.scale * this.s.mBox.h);
             }
-        });
+        }
 
-        /*
-         - Positions widgets to the right, top-right or bottom-right of the parent Differential. Children are the Differentials docked to the right,
-         order and subscript positions respectively.
-         - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
-         */
-
-        let box = this.boundingBox();
-        // let parent_position = (box.y + box.h);
-        let parent_order_width = (this.dockingPoints["order"].child != null) ? (this.dockingPoints["order"].child.getExpressionWidth()) : 0;
-        let parent_width = box.w;
-        let parent_height = box.h;
-        let child_height = 0;
-        let child_width = 0;
-        let docking_argument = this.dockingPoints["argument"];
-        let docking_order = this.dockingPoints["order"];
-        let docking_right = this.dockingPoints["right"];
-        let arg_width = ("argument" in boxes) ? docking_argument.child.subtreeBoundingBox().w : 0;
-        let order_width = 0;
-
-        // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
-        if ("order" in boxes) {
-            child_width = docking_order.child.subtreeBoundingBox().w;
-            child_height = docking_order.child.subtreeBoundingBox().h;
-            if (this.orderNeedsMoving) {
-                // Use the argument's size to move the order to its right. This needs to be done again below.
-                docking_order.child.position.x = 1.2*arg_width + (parent_width + child_width)/2;
-                order_width = child_width;
-            } else {
-                docking_order.child.position.x = (parent_width + child_width)/2;
+        // argument
+        if (this.dockingPoints["argument"]) {
+            try {
+                let child = this.dockingPoints["argument"].child;
+                child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["argument"].position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
+                this.dockingPoints["argument"].position.y = (-this.scale * this.s.xBox.h / 2);
             }
-            docking_order.child.position.y = -0.8 * (parent_height + child_height)/2;
-        } else {
-            docking_order.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 10) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
-            docking_order.position.y = -this.scale * this.s.mBox.h;
         }
 
-        if ("argument" in boxes) {
-            child_width = docking_argument.child.boundingBox().w;
-            docking_argument.child.position.x = this.scale * 5 + parent_order_width + ((parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2));
-            docking_argument.child.position.x -= order_width;
-            docking_argument.child.position.y = 0;
-            arg_width = child_width;
-        } else {
-            docking_argument.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_argument.position.y = (this.dockingPoint.y);
-            arg_width = 0;
+        // right
+        if (this.dockingPoints["right"]) {
+            try {
+                let child = this.dockingPoints["right"].child;
+                child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["right"].position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
+                this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
+            }
         }
-
-        if ("right" in boxes) {
-            docking_right.child.position.x = box.w / 2 + this.s.mBox.w + arg_width + order_width;
-            docking_right.child.position.y = 0;
-        } else {
-            docking_right.position.x = box.w / 2 + this.s.mBox.w+ arg_width + order_width;
-            docking_right.position.y = -this.s.xBox.h / 2;
-        }
-
     }
 
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-
-
     getChildren(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
