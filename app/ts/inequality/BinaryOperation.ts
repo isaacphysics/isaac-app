@@ -164,9 +164,9 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = this.operation || "+";
-        let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-        return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
+        let s = "+";
+        let box = this.s.font_up.textBounds(s, 0, 0, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w / 2, box.y, box.w, box.h);
     }
 
     /**
@@ -182,10 +182,10 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                child.position.x = this._asymMult * thisBox.w / 2 + child.boundingBox().w / 2;
+                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
-                this.dockingPoints["right"].position.x = this.scale * (this._asymMult * thisBox.w / 2 + this.dockingPointSize);
+                this.dockingPoints["right"].position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
                 this.dockingPoints["right"].position.y = this.scale * (-this.s.xBox.h / 2);
             }
         }
