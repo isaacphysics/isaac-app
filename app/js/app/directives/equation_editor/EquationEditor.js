@@ -887,6 +887,26 @@ define(function (require) {
                             }
                         });
                         result.push({
+                            type: "Differential",
+                            properties: {
+                                letter: "∆"
+                            },
+                            menu: {
+                                label: "\\mathrm{\\Delta}^{\\circ}\\circ",
+                                texLabel: true
+                            }
+                        });
+                        result.push({
+                            type: "Differential",
+                            properties: {
+                                letter: "δ"
+                            },
+                            menu: {
+                                label: "\\mathrm{\\delta}^{\\circ}\\circ",
+                                texLabel: true
+                            }
+                        });
+                        result.push({
                             type: "Derivative",
                             children: {
                                 numerator: {
