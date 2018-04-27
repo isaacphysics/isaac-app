@@ -211,8 +211,8 @@ export
         if (this.dockingPoints["superscript"]) {
             try {
                 let child = this.dockingPoints["superscript"].child;
-                child.position.x = (thisBox.w / 2 + child.boundingBox().w / 2) + (this.scale * this.s.xBox.w / 4);
-                child.position.y = -this.scale * this.s.xBox.h;
+                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
@@ -224,10 +224,10 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                child.position.x = thisBox.w / 2 + child.boundingBox().w/2 + superscriptWidth;
+                child.position.x = thisBox.w/2 + child.leftBound + superscriptWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
-                this.dockingPoints["right"].position.x = this.scale * 1.5 * this.s.xBox.w + this.subtreeBoundingBox().w - this.boundingBox().w / 2;
+                this.dockingPoints["right"].position.x = thisBox.w/2 + superscriptWidth + this.dockingPointSize;
                 this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
             }
         }
