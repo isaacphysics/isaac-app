@@ -44,7 +44,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let p = this.p.createVector(-this.boundingBox().w / 2, 0);
+        let p = this.p.createVector(0, 0);
         return p;
     }
 
@@ -153,10 +153,10 @@ export
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.noFill().strokeWeight(5 * this.scale).stroke(this.color);
+        this.p.noFill().strokeCap(this.p.SQUARE).strokeWeight(4 * this.scale).stroke(this.color);
 
         let box = this.boundingBox();
-        this.p.line(-box.w / 2, -box.h / 2, box.w / 2, -box.h / 2);
+        this.p.line(-box.w / 2, 0, box.w / 2, 0);
 
         this.p.strokeWeight(1);
     }
@@ -167,12 +167,31 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize);
-        this.width = 50;
-        let numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
-        let denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
-        this.width = Math.max(this.width, Math.max(numerator_width, denominator_width));
-        return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
+        let box = this.s.font_up.textBounds("+", 0, 0, this.scale * this.s.baseFontSize);
+
+        let width = Math.max(box.w, this._numeratorBox.w, this._denominatorBox.w);
+
+        return new Rect(-width/2, -box.h/2, width, box.h);
+    }
+
+    get _numeratorBox(): Rect {
+        let numeratorBox: Rect = null;
+        try {
+            numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox();
+        } catch (e) {
+            numeratorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        }
+        return numeratorBox;
+    }
+
+    get _denominatorBox(): Rect {
+        let denominatorBox: Rect = null;
+        try {
+            denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox();
+        } catch (e) {
+            denominatorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        }
+        return denominatorBox;
     }
 
     /**
@@ -182,62 +201,43 @@ export
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-        let subtreeBoxes: { [key: string]: Rect } = {};
+        this._shakeItDown();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
-                subtreeBoxes[dockingPointName] = dockingPoint.child.subtreeBoundingBox();
+        let thisBox = this.boundingBox();
+
+        if (this.dockingPoints["numerator"]) {
+            try {
+                let child = this.dockingPoints["numerator"].child;
+                // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
+                child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
+                child.position.y = -(this.dockingPointSize + child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
+            } catch (e) {
+                this.dockingPoints["numerator"].position.x = 0;
+                this.dockingPoints["numerator"].position.y = -(this.dockingPointSize + this.s.xBox.h/2);
             }
-        });
-
-        // Calculate our own geometry
-        this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")) || 0);
-
-        let bbox = this.boundingBox();
-        // Set position of all our children.
-
-        if ("numerator" in boxes) {
-            let p = this.dockingPoints["numerator"].child.position;
-            let fullNumeratorWidth = subtreeBoxes["numerator"].w;
-            let numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
-            let numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
-
-            p.x = numeratorRootWidth / 2 - fullNumeratorWidth / 2;
-            p.y = -bbox.h / 2 - this.scale * this.s.mBox.w / 4 - numeratorFullDescent;
         }
 
-        if ("denominator" in boxes) {
-            let p = this.dockingPoints["denominator"].child.position;
-            let fullDenominatorWidth = this.dockingPoints["denominator"].child.subtreeBoundingBox().w;
-            let denominatorRootWidth = this.dockingPoints["denominator"].child.boundingBox().w;
-            let denominatorFullAscent = subtreeBoxes["denominator"].y;
-
-            p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;
-            p.y = -bbox.h / 2 + this.scale * this.s.mBox.w / 4 - denominatorFullAscent;
+        if (this.dockingPoints["denominator"]) {
+            try {
+                let child = this.dockingPoints["denominator"].child;
+                // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
+                child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
+                child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox().y;
+            } catch (e) {
+                this.dockingPoints["denominator"].position.x = 0;
+                this.dockingPoints["denominator"].position.y = this.dockingPointSize + this.s.xBox.h/2;
+            }
         }
 
-        if ("right" in boxes) {
-            let p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4;
-            p.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            let docking_right = this.dockingPoints["right"];
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+        if (this.dockingPoints["right"]) {
+            try {
+                let child = this.dockingPoints["right"].child;
+                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
+                child.position.y = - child.dockingPoint.y;
+            } catch (e) {
+                this.dockingPoints["right"].position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
+                this.dockingPoints["right"].position.y = 0;
             }
-        } else {
-            let p = this.dockingPoints["right"].position;
-            if ("denominator" in boxes) {
-                p.x = this.width / 2 + this.scale * this.s.mBox.w / 2;
-            } else {
-                p.x = this.width / 2 + this.scale * this.s.mBox.w / 4;
-            }
-            p.y = -this.boundingBox().h / 2;
         }
     }
 }
