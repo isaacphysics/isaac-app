@@ -277,11 +277,11 @@ export
         if (this.dockingPoints["subscript"]) {
             try {
                 let child = this.dockingPoints["subscript"].child;
-                child.position.x = thisBox.w / 2 + child.boundingBox().w / 2;
-                child.position.y = -child.dockingPoint.y; // TODO Investigate if this can be improved. Ideally push down only if box extends upwards. ( + child.subtreeDockingPointsBoundingBox().h/2;)
+                child.position.x = thisBox.w / 2 + child.leftBound + child.scale*this.dockingPointSize/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
+                child.position.y = child.topBound;
                 subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
-                this.dockingPoints["subscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+                this.dockingPoints["subscript"].position.x = thisBox.w/2 + this.dockingPointSize/2;
                 this.dockingPoints["subscript"].position.y = 0;
             }
         }

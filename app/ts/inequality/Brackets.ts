@@ -305,7 +305,7 @@ export
         if (this.dockingPoints["superscript"]) {
             try {
                 let child = this.dockingPoints["superscript"].child;
-                child.position.x = (thisBox.w + child.boundingBox().w) / 2;
+                child.position.x = thisBox.w/2 + child.leftBound;
                 child.position.y = -(thisBox.h + child.subtreeBoundingBox().h) / 2 + this.dockingPointSize;
                 superscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } catch (e) {
@@ -318,7 +318,7 @@ export
         if (this.dockingPoints["subscript"]) {
             try {
                 let child = this.dockingPoints["subscript"].child;
-                child.position.x = (thisBox.w + child.boundingBox().w) / 2;
+                child.position.x = thisBox.w/2 + child.leftBound;
                 child.position.y = (thisBox.h + child.subtreeBoundingBox().h) / 2;
                 subscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } catch (e) {
