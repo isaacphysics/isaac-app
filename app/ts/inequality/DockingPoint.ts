@@ -27,7 +27,7 @@ export class DockingPoint {
 
     private _child: Widget = null;
 
-    public constructor(public widget: Widget, public position: p5.Vector, public scale: number, public type: string, public name: string) {
+    public constructor(public widget: Widget, public position: p5.Vector, public scale: number, public type: [string], public name: string) {
 
     }
 

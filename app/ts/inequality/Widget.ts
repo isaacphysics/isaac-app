@@ -168,7 +168,7 @@ export
             } else {
                 // There is no child to paint, let's paint an empty docking point
                 //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
-                let drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
+                let drawThisOne = _.intersection(this.s.visibleDockingPointTypes, dockingPoint.type).length > 0;
                 let highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
                 if (drawThisOne || window.location.hash === "#debug") {
@@ -298,6 +298,7 @@ export
     removeFromParent() {
         let oldParent = this.parentWidget;
         this.currentPlacement = "";
+        this.dockedTo = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
                 this.s.scope.log.actions.push({
@@ -308,7 +309,6 @@ export
                     timestamp: Date.now()
                 });
                 dockingPoint.child = null;
-                // this.dockedTo = "";
                 this.parentWidget = null;
             }
         });

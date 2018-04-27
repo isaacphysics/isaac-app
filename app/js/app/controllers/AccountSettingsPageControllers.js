@@ -279,6 +279,7 @@ define([], function() {
                     return auth.updateUser();
                 }).then(function(){
                     if (next) {
+                        $scope.cancelOnDestroyEvent(); // Don't need this handler to fire if we've saved and are redirecting!
                         $location.url(next)
                     } else {
                         $scope.updateSuccess = true;
@@ -327,7 +328,7 @@ define([], function() {
             $scope.updateFail = false;
         })
 
-        $scope.$on("$destroy", function() {
+        $scope.cancelOnDestroyEvent = $scope.$on("$destroy", function() { // This returns an unsubscribe function to cancel the handler.
             auth.updateUser();
         })
 

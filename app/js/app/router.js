@@ -511,7 +511,8 @@ define(["angular-ui-router"], function() {
                         $state.go("404", {target: "/s/" + $stateParams.shortCode});
                     }
                 }).catch(function() {
-                    $state.go("404", {target: "/s/" + $stateParams.shortCode});
+                    // Google are deprecating this API, try sending the user directly to the Google URL:
+                    document.location.href = redirectURL;
                 });
             }]
         });

@@ -297,7 +297,7 @@ define([], function() {
 
         this.events = $resource(urlPrefix + "/events/:id");
         
-        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
+        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly&show_inactive_only=:showInactiveOnly");
 
         this.eventMapData = $resource(urlPrefix + "/events/map_data?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
@@ -342,6 +342,11 @@ define([], function() {
             'resendConfirmation' : {
                 method: 'POST', 
                 url: urlPrefix + "/events/:eventId/bookings/:userId/resend_confirmation"            
+            },
+            'recordEventAttendance' : {
+                method: 'POST',
+                url: urlPrefix + "/events/:eventId/bookings/:userId/record_attendance",
+                params: {attended: '@attended'}
             }
         }); 
 

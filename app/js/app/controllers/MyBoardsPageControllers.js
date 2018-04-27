@@ -24,6 +24,7 @@ define([], function() {
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				boardProcessor.augmentBoards(boards.results, $scope.user._id);
+				$scope.filterOptions = boardProcessor.filterOptions;
 				$scope.setLoading(false);
 			})
 		};
@@ -60,7 +61,7 @@ define([], function() {
 				
 				var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
 				// Warn user before deleting
-				var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
+				var confirmation = confirm("You are about to delete " + boardTitle + " board?");
 				if (confirmation) {
 					// TODO: This needs to be reviewed
 					// Currently reloading boards after delete
@@ -115,15 +116,15 @@ define([], function() {
 					}
 				}
 				// Front-end filters
-				$scope.search = {
-					completion: '',
-					title: '',
-					subjects: '',
-					levels: '',
-					createdBy: '',
-					formattedCreationDate: '',
-					formattedLastVisitedDate: ''
-				}
+				$scope.exactMatch = {
+					completion: undefined,
+					createdBy: undefined
+				};
+				$scope.partialMatch = {
+					title: undefined,
+					subjects: undefined,
+					levels: undefined
+				};
 			}
 		};
 

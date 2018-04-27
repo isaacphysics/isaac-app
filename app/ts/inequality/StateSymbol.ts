@@ -103,7 +103,7 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "state_symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["state_symbol"], "right");
     }
 
     /**
