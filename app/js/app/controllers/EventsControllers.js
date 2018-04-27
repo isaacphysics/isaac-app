@@ -258,7 +258,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Event Booking Confirmed", "You have been successfully booked on to this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 }); 
             })
         }
@@ -274,7 +274,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Waiting List Booking Confirmed", "You have been successfully added to the waiting list for this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             })
 
@@ -288,7 +288,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Your booking has been cancelled", "Your booking has successfully been cancelled.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });                
             }
         }

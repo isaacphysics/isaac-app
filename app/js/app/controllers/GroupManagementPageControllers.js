@@ -104,7 +104,7 @@ define([], function() {
 					api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(result){
 						$scope.myGroups = api.groupManagementEndpoint.get();
 					}).catch(function(e) {
-        				$scope.showToast($scope.toastTypes.Failure, "Group Delete Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        				$scope.showToast($scope.toastTypes.Failure, "Group Delete Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 					});
 				}
 				else{
@@ -136,7 +136,7 @@ define([], function() {
 
                 $scope.showToast($scope.toastTypes.Success, "Group archive status updated", groupToSave.groupName + " group archive status has been saved.");
         	}).catch(function(e) {
-        		$scope.showToast($scope.toastTypes.Failure, "Group archive status update failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        		$scope.showToast($scope.toastTypes.Failure, "Group archive status update failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
 		}
 
@@ -161,7 +161,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
                 }
         	}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Group Save failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Group Save failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
         	});
 		}
 
@@ -172,7 +172,7 @@ define([], function() {
 					$scope.selectedGroupMembers = result;
 					$scope.showToast($scope.toastTypes.Success, "User Removed", "The user has been removed successfully.");
 				}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Member Delete Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});
 			} else {
 				return;
@@ -182,11 +182,11 @@ define([], function() {
 		$scope.addManager = function(group, email) {
 			api.groupManagementEndpoint.addManager({id: group._id, email: email}).$promise.then(function(result){
 				$scope.selectedGroup = result;
-				$scope.newAdditionalManager.email = ''
+				$scope.newAdditionalManager.email = '';
 				$scope.myGroups = api.groupManagementEndpoint.get();
 				$scope.showToast($scope.toastTypes.Success, "Group Manager Added", "The user has been added successfully.");
 			}).catch(function(e) {
-				$scope.showToast($scope.toastTypes.Failure, "Group Manager Addition Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				$scope.showToast($scope.toastTypes.Failure, "Group Manager Addition Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 			});
 		}
 
@@ -198,7 +198,7 @@ define([], function() {
 					$scope.myGroups = api.groupManagementEndpoint.get();
 					$scope.showToast($scope.toastTypes.Success, "Group Manager Removed", "The user has been removed successfully.");
 				}).catch(function(e) {
-        			$scope.showToast($scope.toastTypes.Failure, "Group Manager Removal Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        			$scope.showToast($scope.toastTypes.Failure, "Group Manager Removal Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});
 			} else {
 				return;

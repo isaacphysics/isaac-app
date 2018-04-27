@@ -335,7 +335,7 @@ define([], function() {
         $scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
         
-        $scope.useToken = function(){
+        $scope.useToken = function() {
             if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
                 $scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
                 return;
@@ -346,7 +346,7 @@ define([], function() {
             $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
             $scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
-            api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
+            api.authorisations.getTokenOwner({token: $scope.authenticationToken.value}).$promise.then(function(result) {
                 $scope.usersToGrantAccess = result;
                 var userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
                 $scope.anyUsersAuthorisedAlready = false;
@@ -357,7 +357,7 @@ define([], function() {
                     $scope.anyUsersAuthorisedAlready = $scope.anyUsersAuthorisedAlready || value.authorisedAlready;
                 });
                 $scope.modals.tokenVerification.show();
-            }).catch(function(e){
+            }).catch(function(e) {
                 console.error(e);
                 if (e.status == 429) {
                     $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have entered too many tokens. Please check your code with your teacher and try again later!");
@@ -367,7 +367,7 @@ define([], function() {
             });
         }
 
-        $scope.applyToken = function(){
+        $scope.applyToken = function() {
             api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
                 $scope.activeAuthorisations = api.authorisations.get();
                 $scope.authenticationToken = {value: null};
@@ -378,7 +378,7 @@ define([], function() {
                     $scope.activeTab = 0;
                 }
                 $scope.modals.tokenVerification.hide();
-            }).catch(function(e){
+            }).catch(function(e) {
                 console.error(e);
                 $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
             });
