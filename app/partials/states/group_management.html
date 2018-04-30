@@ -105,12 +105,13 @@
 
 <div isaac-modal="groupManagers">
   <div class="reveal-modal-head">
-    <h2>Share your group</h2>
+    <h2 ng-show="selectedGroup.ownerId == user._id">Share your group</h2>
+    <h2 ng-show="selectedGroup.ownerId != user._id">Shared group</h2>
     <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
   </div>
   <div class="reveal-modal-body ru-page-heading">
     <h3>Selected group: {{selectedGroup.groupName}}</h3>
-    <p>Sharing this group will let other teachers edit the group name, add and remove students, set new assigments and view assignment progress but will not automatically let them see detailed mark data unless students have already given access to the new teacher.</p> 
+    <p>Sharing this group lets other teachers edit the group name, add and remove students, set new assigments and view assignment progress. It will not automatically let additional teachers see detailed mark data unless students give access to the new teacher.</p> 
     
     <div class="group-accordion-content">
         <h4>Current group managers</h4>
@@ -120,18 +121,20 @@
             <tbody>
                 <tr ng-repeat="member in selectedGroup.additionalManagers | orderBy:'familyName'" ng-class="{disabled: !member.authorisedFullAccess}">
                     <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} ({{member.email}})</td>
-                    <td class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
+                    <td ng-if="selectedGroup.ownerId == user._id" class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
                 </tr>
             </tbody>
         </table>
-        <br>
-        <h5>Add additional managers</h5> 
-        <p>Enter the email of another Isaac teacher account below to add them as a group manager.</p>
-        <form ng-submit="addManager(selectedGroup, newAdditionalManager.email)">
-            <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter email address here"/>
-            <p><small><strong>Remember:</strong> Students may need to reuse the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
-            <a class="ru-button-big expand" ng-click="addManager(selectedGroup, newAdditionalManager.email)">Add group manager</a>
-        </form>
+        <div ng-show="selectedGroup.ownerId == user._id">
+            <br>
+            <h5>Add additional managers</h5> 
+            <p>Enter the email of another Isaac teacher account below to add them as a group manager.</p>
+            <form ng-submit="addManager(selectedGroup, newAdditionalManager.email)">
+                <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter email address here"/>
+                <p><small><strong>Remember:</strong> Students may need to reuse the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
+                <a class="ru-button-big expand" ng-click="addManager(selectedGroup, newAdditionalManager.email)">Add group manager</a>
+            </form>
+        </div>
     </div>     
   </div>
 </div>
