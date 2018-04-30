@@ -77,7 +77,7 @@
   </div>
   <div class="reveal-modal-body ru-page-heading">
     <h3>Invite users</h2>
-    <p>Use one of the following methods to add users to your group:</p>
+    <p>Use one of the following methods to add users to your group. Students joining your group will be shown your name and account email and asked to confirm sharing data.</p>
     <div class="panel">
         <h4>Option 1: Share link</h3>
         <p>Share the following link with your students to have them join your group:</p>
@@ -128,7 +128,7 @@
         <div ng-show="selectedGroup.ownerId == user._id">
             <br>
             <h5>Add additional managers</h5> 
-            <p>Enter the email of another Isaac teacher account below to add them as a group manager.</p>
+            <p>Enter the email of another Isaac teacher account below to add them as a group manager. Note that this will share their email address with the students.</p>
             <form ng-submit="addManager(selectedGroup, newAdditionalManager.email)">
                 <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter email address here"/>
                 <p><small><strong>Remember:</strong> Students may need to reuse the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
