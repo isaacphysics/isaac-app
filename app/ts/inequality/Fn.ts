@@ -271,7 +271,7 @@ export
         let superscriptBox = this._superscriptBox;
         let subscriptBox = this._subscriptBox;
 
-        let width = this._nameBox.w + Math.max(superscriptBox.w, subscriptBox.w) + 40*this.scale + argumentBox.w;
+        let width = this._nameBox.w + Math.max(superscriptBox.w, subscriptBox.w) + 40*this.scale + argumentBox.w + this.dockingPointSize;
         let height = Math.max(this._baseBox.h, argumentBox.h);
 
         return new Rect(-this._nameBox.w, -height/2 + this.dockingPoint.y, width, height);
@@ -301,12 +301,13 @@ export
         let subscriptBox = this._subscriptBox;
 
         // See Fn::boundingBox()
-        let height = Math.max(this._baseBox.h, argumentBox.h);
+        // The Math.min() here is to limit how much the brackets expand vertically.
+        let height = Math.min(Math.max(this._baseBox.h, argumentBox.h), this.s.mBox.h*3);
 
         let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
-        let bracketsW = 40*this.scale + argumentBox.w;
+        let bracketsW = 40*this.scale + argumentBox.w + this.dockingPointSize;
 
-        return new Rect(bracketsX, this.boundingBox().y, bracketsW, height);
+        return new Rect(bracketsX, this.boundingBox().y + this.boundingBox().h/2 - height/2, bracketsW, height);
     }
 
     get _superscriptBox(): Rect {
@@ -365,7 +366,7 @@ export
         if (this.dockingPoints["argument"]) {
             try {
                 let child = this.dockingPoints["argument"].child;
-                child.position.x = this._bracketsBox.x + child.leftBound + this.dockingPointSize/2;
+                child.position.x = this._bracketsBox.x + child.leftBound + this.dockingPointSize;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["argument"].position.x = this._bracketsBox.center.x;
