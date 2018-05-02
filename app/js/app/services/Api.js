@@ -144,11 +144,6 @@ define([], function() {
                 method: 'GET', 
                 isArray: false 
             },
-            'getNewStats' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/stats/v2/",
-                isArray: false
-            },
             'getGameboardPopularity' : {
                 method: 'GET',
                 url: urlPrefix + "/gameboards/popular", 
@@ -159,19 +154,9 @@ define([], function() {
                 url: urlPrefix + "/admin/stats/schools/", 
                 isArray: true 
             },
-            'getNewSchoolPopularity' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/stats/schools/v2",
-                isArray: true
-            },
             'getSchoolUsers' : {
                 method: 'GET',
                 url: urlPrefix + "/admin/users/schools/:id", 
-                params: {id: '@id'},
-            },
-            'getNewSchoolUsers' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/users/schools/:id/v2",
                 params: {id: '@id'},
             },
             'getEventsOverTime' : {
