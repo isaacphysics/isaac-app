@@ -228,30 +228,33 @@ export
 
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
-        // FIXME Scale the hardcoded numbers
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
+        let m = Math.sqrt(Math.max(1, box.h / this.s.mBox.h));
+        let a = 20 * m;
+        let b = 21 * m;
+        let c = Math.sqrt(4 * m + 1);
         // LHS
         this.p.beginShape();
-        this.p.vertex(      box.x + 21, -box.h/2 +  1);
-        this.p.bezierVertex(box.x +  4, -box.h/2 + 20,
-                            box.x +  4,  box.h/2 - 20,
-                            box.x + 21,  box.h/2 -  1);
-        this.p.vertex(      box.x + 20,  box.h/2);
-        this.p.bezierVertex(box.x -  4,  box.h/2 - 20,
-                            box.x -  4, -box.h/2 + 20,
-                            box.x + 20, -box.h/2);
+        this.p.vertex(      box.x + b, -box.h/2 + m);
+        this.p.bezierVertex(box.x + c, -box.h/2 + a,
+                            box.x + c,  box.h/2 - a,
+                            box.x + b,  box.h/2 - m);
+        this.p.vertex(      box.x + a,  box.h/2);
+        this.p.bezierVertex(box.x - c,  box.h/2 - a,
+                            box.x - c, -box.h/2 + a,
+                            box.x + a, -box.h/2);
         this.p.endShape();
 
         // RHS
         this.p.beginShape();
-        this.p.vertex(      box.w/2 - 21, -box.h/2 +  1);
-        this.p.bezierVertex(box.w/2 -  4, -box.h/2 + 20,
-                            box.w/2 -  4,  box.h/2 - 20,
-                            box.w/2 - 21,  box.h/2 -  1);
-        this.p.vertex(      box.w/2 - 20,  box.h/2);
-        this.p.bezierVertex(box.w/2 +  4,  box.h/2 - 20,
-                            box.w/2 +  4, -box.h/2 + 20,
-                            box.w/2 - 20, -box.h/2);
+        this.p.vertex(      box.w/2 - b, -box.h/2 + m);
+        this.p.bezierVertex(box.w/2 - c, -box.h/2 + a,
+                            box.w/2 - c,  box.h/2 - a,
+                            box.w/2 - b,  box.h/2 - m);
+        this.p.vertex(      box.w/2 - a,  box.h/2);
+        this.p.bezierVertex(box.w/2 + c,  box.h/2 - a,
+                            box.w/2 + c, -box.h/2 + a,
+                            box.w/2 - a, -box.h/2);
         this.p.endShape();
 
 
@@ -270,7 +273,6 @@ export
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
         }
-        // FIXME thinner boxes than m-boxes don't work as well as m-boxes.
         let width = box.w + argBox.w;
         let height = Math.max(box.h, argBox.h);
 
@@ -292,8 +294,7 @@ export
         if (this.dockingPoints["argument"]) {
             try {
                 let child = this.dockingPoints["argument"].child;
-                // FIXME The last -this.dockingPointSize is probably wrong but I can't find a better substitute
-                child.position.x = thisBox.w/2 - child.subtreeDockingPointsBoundingBox().w + child.boundingBox().w/2 - this.dockingPointSize;
+                child.position.x = this.boundingBox().x + child.leftBound + this.dockingPointSize;
                 child.position.y = -child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["argument"].position.x = 0;
