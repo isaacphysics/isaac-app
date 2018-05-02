@@ -177,7 +177,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let width = this._radixCharacterBox.w + this._argumentBox.w;
+        let width = this._radixCharacterBox.w + this._argumentBox.w + this.s.xBox.w/2;
         let height = Math.max(this._radixCharacterBox.h, this._argumentBox.h);
         return new Rect(-this._radixCharacterBox.w, -height/2 + this.dockingPoint.y, width, height);
     }
@@ -210,9 +210,9 @@ export
         if (this.dockingPoints["argument"]) {
             try {
                 let child = this.dockingPoints["argument"].child;
-                // FIXME This 20 is the width of a bracket (more or less). The result is a bit off. Investigate.
-                child.position.x = this._argumentBox.w/2 - child.leftBound;
-                child.position.y = this.dockingPoint.y + child.topBound - child.subtreeDockingPointsBoundingBox().h/2;
+                // Half the x-box width is a nice beautification addition, but requires expanding the bounding box.
+                child.position.x = child.leftBound + this.s.xBox.w/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y + child.topBound - this._argumentBox.h/2;
             } catch (e) {
                 this.dockingPoints["argument"].position.x = this._argumentBox.center.x;
                 this.dockingPoints["argument"].position.y = this.dockingPoint.y;
@@ -224,7 +224,7 @@ export
             try {
                 let child = this.dockingPoints["superscript"].child;
                 child.position.x = this._argumentBox.w + child.leftBound + this.dockingPointSize / 2;
-                child.position.y = this.boundingBox().y - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                child.position.y = this.boundingBox().y - child.dockingPoint.y - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = this.boundingBox().x + this.boundingBox().w + this.dockingPointSize;
@@ -235,7 +235,7 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                child.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + child.leftBound + this.dockingPointSize/2;
+                child.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + child.leftBound;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["right"].position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + this.dockingPointSize;
