@@ -343,8 +343,8 @@ export
         if (this.dockingPoints["superscript"]) {
             try {
                 let child = this.dockingPoints["superscript"].child;
-                child.position.x = child.boundingBox().w / 2;
-                child.position.y = -this.scale*this.s.mBox.h - child.subtreeBoundingBox().h / 2 + this.dockingPointSize; // TODO Double-check this
+                child.position.x = child.leftBound;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
             } catch (e) {
                 this.dockingPoints["superscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
                 this.dockingPoints["superscript"].position.y = -this.scale * this.s.mBox.h;
@@ -354,8 +354,8 @@ export
         if (this.dockingPoints["subscript"]) {
             try {
                 let child = this.dockingPoints["subscript"].child;
-                child.position.x = child.boundingBox().w / 2;
-                child.position.y = child.subtreeBoundingBox().h / 2;
+                child.position.x = child.leftBound;
+                child.position.y = child.topBound;
             } catch (e) {
                 this.dockingPoints["subscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
                 this.dockingPoints["subscript"].position.y = 0;
@@ -365,8 +365,7 @@ export
         if (this.dockingPoints["argument"]) {
             try {
                 let child = this.dockingPoints["argument"].child;
-                // FIXME This 20 is the width of a bracket (more or less). The result is a bit off. Investigate.
-                child.position.x = this._bracketsBox.center.x - child.subtreeDockingPointsBoundingBox().w/2 + 20*this.scale;
+                child.position.x = this._bracketsBox.x + child.leftBound + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["argument"].position.x = this._bracketsBox.center.x;
@@ -377,8 +376,7 @@ export
         if (this.dockingPoints["right"]) {
             try {
                 let child = this.dockingPoints["right"].child;
-                let childLeft = child.dockingPoint.x - child.boundingBox().x;
-                child.position.x = this._bracketsBox.x + this._bracketsBox.w + childLeft + this.dockingPointSize;
+                child.position.x = this._bracketsBox.x + this._bracketsBox.w + child.leftBound + this.dockingPointSize;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } catch (e) {
                 this.dockingPoints["right"].position.x = this._bracketsBox.x + this._bracketsBox.w + this.dockingPointSize;
