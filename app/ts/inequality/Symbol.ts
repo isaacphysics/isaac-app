@@ -47,7 +47,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -243,8 +243,8 @@ export
 	 */
     boundingBox(): Rect {
         let text = (this.letter || "x") + (this.modifier == "prime" ? "''" : "");
-        let box = this.s.font_it.textBounds(text, 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
+        let box = this.s.font_it.textBounds(text, 0, 0, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w / 2, box.y, box.w, box.h);
     }
 
 	/**

@@ -203,8 +203,8 @@ export
      */
     boundingBox(): Rect {
         let s = this.relation || "=";
-        let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-        return new Rect(-box.w / 2, box.y - 1000, this._asymMult * box.w, box.h);
+        let box = this.s.font_up.textBounds(s, 0, 0, this.scale * this.s.baseFontSize * 0.8);
+        return new Rect(-box.w / 2, box.y, this._asymMult * box.w, box.h);
     }
 
     /**

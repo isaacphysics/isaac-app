@@ -49,7 +49,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("()", 0, 0, this.scale * this.s.baseFontSize);
         let p = this.p.createVector(0, 0);
         return p;
     }
@@ -267,7 +267,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds("()", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_up.textBounds("()", 0, 0, this.scale * this.s.baseFontSize);
 
         let argBox = new Rect(0, 0, this.dockingPointSize, 0);
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {

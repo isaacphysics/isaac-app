@@ -45,7 +45,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
         let p = this.p.createVector(0, - box.h / 2);
         return p;
     }
@@ -55,7 +55,7 @@ export
         this.s = s;
 
         this.docksTo = ['symbol', 'operator', 'exponent', 'operator_brackets', 'relation', 'differential_argument'];
-        this.baseHeight = this.s.font_up.textBounds("\u221A", 0, 1000, this.scale * this.s.baseFontSize).h;
+        this.baseHeight = this.s.font_up.textBounds("\u221A", 0, 0, this.scale * this.s.baseFontSize).h;
     }
 
     /**
@@ -69,7 +69,7 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
-        let pBox = this.s.font_it.textBounds("(", 0, 1000, this.scale * this.s.baseFontSize);
+        let pBox = this.s.font_it.textBounds("(", 0, 0, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.xBox.w / 2, -this.s.xBox.h / 2), 1, ["symbol"], "argument");
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w + this.scale * this.s.xBox.w / 2, -this.s.xBox.h / 2), 1, ["operator"], "right");

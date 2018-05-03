@@ -43,7 +43,7 @@ class Differential extends Widget {
      * @returns {Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        const box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        const box = this.s.font_up.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 

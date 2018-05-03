@@ -101,8 +101,8 @@ export
 
     setup = () => {
         this.p.frameRate(7);
-        this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
-        this.mBox = this.font_it.textBounds("M", 0, 1000, this.baseFontSize);
+        this.xBox = Rect.fromObject(this.font_it.textBounds("x", 0, 0, this.baseFontSize));
+        this.mBox = Rect.fromObject(this.font_it.textBounds("M", 0, 0, this.baseFontSize));
 
         this.symbols = [];
 
