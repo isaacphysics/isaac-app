@@ -625,8 +625,16 @@ export
         return this.dockingPoint.x - this.subtreeDockingPointsBoundingBox().x;
     }
 
+    get rightBound(): number {
+        return this.dockingPoint.x - (this.subtreeDockingPointsBoundingBox().x + this.subtreeDockingPointsBoundingBox().w);
+    }
+
     get topBound(): number {
         return this.dockingPoint.y - this.subtreeDockingPointsBoundingBox().y;
+    }
+
+    get bottomBound(): number {
+        return this.dockingPoint.y - (this.subtreeDockingPointsBoundingBox().y + this.subtreeDockingPointsBoundingBox().h);
     }
 
     /**
