@@ -245,38 +245,41 @@ class Differential extends Widget {
         // order
         let orderWidth = this.dockingPointSize;
         if (this.dockingPoints["order"]) {
-            try {
-                let child = this.dockingPoints["order"].child;
+            let dp = this.dockingPoints["order"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
                 child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
-            } catch (e) {
-                this.dockingPoints["order"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
-                this.dockingPoints["order"].position.y = (-this.scale * this.s.mBox.h);
+            } else {
+                dp.position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+                dp.position.y = (-this.scale * this.s.mBox.h);
             }
         }
 
         // argument
         if (this.dockingPoints["argument"]) {
-            try {
-                let child = this.dockingPoints["argument"].child;
+            let dp = this.dockingPoints["argument"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["argument"].position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
-                this.dockingPoints["argument"].position.y = (-this.scale * this.s.xBox.h / 2);
+            } else {
+                dp.position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
+                dp.position.y = (-this.scale * this.s.xBox.h / 2);
             }
         }
 
         // right
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
+            } else {
+                dp.position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
+                dp.position.y = (-this.scale * this.s.xBox.h / 2);
             }
         }
     }

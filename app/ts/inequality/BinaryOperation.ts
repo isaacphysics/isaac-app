@@ -180,13 +180,14 @@ export
         let thisBox = this.boundingBox();
 
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = this.scale * (-this.s.xBox.h / 2);
+            } else {
+                dp.position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
+                dp.position.y = this.scale * (-this.s.xBox.h / 2);
             }
         }
     }

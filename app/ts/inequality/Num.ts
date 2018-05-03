@@ -209,26 +209,28 @@ export
         // superscript
         let superscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["superscript"]) {
-            try {
-                let child = this.dockingPoints["superscript"].child;
+            let dp = this.dockingPoints["superscript"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
                 child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
-            } catch (e) {
-                this.dockingPoints["superscript"].position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
-                this.dockingPoints["superscript"].position.y = (-this.scale * this.s.mBox.h);
+            } else {
+                dp.position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
+                dp.position.y = (-this.scale * this.s.mBox.h);
             }
         }
 
         // right
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + superscriptWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = thisBox.w/2 + superscriptWidth + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
+            } else {
+                dp.position.x = thisBox.w/2 + superscriptWidth + this.dockingPointSize;
+                dp.position.y = (-this.scale * this.s.xBox.h / 2);
             }
         }
     }

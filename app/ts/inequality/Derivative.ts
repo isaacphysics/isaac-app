@@ -206,37 +206,40 @@ export
         let thisBox = this.boundingBox();
 
         if (this.dockingPoints["numerator"]) {
-            try {
-                let child = this.dockingPoints["numerator"].child;
+            let dp = this.dockingPoints["numerator"];
+            if (dp.child) {
+                let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
                 child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
                 child.position.y = -(this.dockingPointSize + child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-            } catch (e) {
-                this.dockingPoints["numerator"].position.x = 0;
-                this.dockingPoints["numerator"].position.y = -(this.dockingPointSize + this.s.xBox.h/2);
+            } else {
+                dp.position.x = 0;
+                dp.position.y = -(this.dockingPointSize + this.s.xBox.h/2);
             }
         }
 
         if (this.dockingPoints["denominator"]) {
-            try {
-                let child = this.dockingPoints["denominator"].child;
+            let dp = this.dockingPoints["denominator"];
+            if (dp.child) {
+                let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
                 child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
                 child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox().y;
-            } catch (e) {
-                this.dockingPoints["denominator"].position.x = 0;
-                this.dockingPoints["denominator"].position.y = this.dockingPointSize + this.s.xBox.h/2;
+            } else {
+                dp.position.x = 0;
+                dp.position.y = this.dockingPointSize + this.s.xBox.h/2;
             }
         }
 
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
                 child.position.y = - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = 0;
+            } else {
+                dp.position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
+                dp.position.y = 0;
             }
         }
     }

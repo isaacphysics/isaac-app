@@ -342,46 +342,50 @@ export
         let thisBox = this.boundingBox();
 
         if (this.dockingPoints["superscript"]) {
-            try {
-                let child = this.dockingPoints["superscript"].child;
+            let dp = this.dockingPoints["superscript"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = child.leftBound;
                 child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
-            } catch (e) {
-                this.dockingPoints["superscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
-                this.dockingPoints["superscript"].position.y = -this.scale * this.s.mBox.h;
+            } else {
+                dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                dp.position.y = -this.scale * this.s.mBox.h;
             }
         }
 
         if (this.dockingPoints["subscript"]) {
-            try {
-                let child = this.dockingPoints["subscript"].child;
+            let dp = this.dockingPoints["subscript"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = child.leftBound;
                 child.position.y = child.topBound;
-            } catch (e) {
-                this.dockingPoints["subscript"].position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
-                this.dockingPoints["subscript"].position.y = 0;
+            } else {
+                dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                dp.position.y = 0;
             }
         }
 
         if (this.dockingPoints["argument"]) {
-            try {
-                let child = this.dockingPoints["argument"].child;
+            let dp = this.dockingPoints["argument"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = this._bracketsBox.x + child.leftBound + this.dockingPointSize;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["argument"].position.x = this._bracketsBox.center.x;
-                this.dockingPoints["argument"].position.y = this.dockingPoint.y;
+            } else {
+                dp.position.x = this._bracketsBox.center.x;
+                dp.position.y = this.dockingPoint.y;
             }
         }
 
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = this._bracketsBox.x + this._bracketsBox.w + child.leftBound + this.dockingPointSize;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = this._bracketsBox.x + this._bracketsBox.w + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = this.dockingPoint.y;
+            } else {
+                dp.position.x = this._bracketsBox.x + this._bracketsBox.w + this.dockingPointSize;
+                dp.position.y = this.dockingPoint.y;
             }
         }
     }

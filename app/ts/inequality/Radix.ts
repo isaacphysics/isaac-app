@@ -208,38 +208,41 @@ export
         let thisBox = this.boundingBox();
 
         if (this.dockingPoints["argument"]) {
-            try {
-                let child = this.dockingPoints["argument"].child;
+            let dp = this.dockingPoints["argument"];
+            if (dp.child) {
+                let child = dp.child;
                 // Half the x-box width is a nice beautification addition, but requires expanding the bounding box.
                 child.position.x = child.leftBound + this.s.xBox.w/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y + child.topBound - this._argumentBox.h/2;
-            } catch (e) {
-                this.dockingPoints["argument"].position.x = this._argumentBox.center.x;
-                this.dockingPoints["argument"].position.y = this.dockingPoint.y;
+            } else {
+                dp.position.x = this._argumentBox.center.x;
+                dp.position.y = this.dockingPoint.y;
             }
         }
 
         let superscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["superscript"]) {
-            try {
-                let child = this.dockingPoints["superscript"].child;
+            let dp = this.dockingPoints["superscript"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = this._argumentBox.w + child.leftBound + this.dockingPointSize / 2;
                 child.position.y = this.boundingBox().y - child.dockingPoint.y - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
-            } catch (e) {
-                this.dockingPoints["superscript"].position.x = this.boundingBox().x + this.boundingBox().w + this.dockingPointSize;
-                this.dockingPoints["superscript"].position.y = this.boundingBox().y;
+            } else {
+                dp.position.x = this.boundingBox().x + this.boundingBox().w + this.dockingPointSize;
+                dp.position.y = this.boundingBox().y;
             }
         }
 
         if (this.dockingPoints["right"]) {
-            try {
-                let child = this.dockingPoints["right"].child;
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
                 child.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + child.leftBound;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-            } catch (e) {
-                this.dockingPoints["right"].position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + this.dockingPointSize;
-                this.dockingPoints["right"].position.y = (-this.scale * this.s.xBox.h / 2);
+            } else {
+                dp.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + this.dockingPointSize;
+                dp.position.y = (-this.scale * this.s.xBox.h / 2);
             }
         }
 
