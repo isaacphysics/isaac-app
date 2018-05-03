@@ -63,7 +63,7 @@ export
      * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
+        let box = this.s.font_it.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
         return this.p.createVector(0, - box.h / 2);
     }
 
@@ -97,7 +97,8 @@ export
                 this.latexSymbol = '\\nu';
                 break;
             case 'antineutrino':
-                this.particle = 'ν̅';
+                // It's better to use the Unicode escape sequence
+                this.particle = 'ν\u0305';
                 this.pythonSymbol = '\\antineutrino';
                 this.mhchemSymbol = '\\antineutrino';
                 this.latexSymbol = '\\bar{\\nu}';
@@ -237,13 +238,13 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        if (this.pythonSymbol == '\\antineutrino') {
-            return new Rect(-36.72 / 2, -73.44, 36.72, 73.44);
-        }
-
-        else {
-            let box = this.s.font_it.textBounds(this.particle || "x", 0, 1000, this.s.baseFontSize);
-            return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
+        if (this.mhchemSymbol == '\\antineutrino') {
+            // FIXME The unicode combining overline makes things a bit weird here. This approximation is good enough, though.
+            let box = this.s.font_it.textBounds("h", 0, 0, this.s.baseFontSize);
+            return new Rect(-box.w / 2, box.y, box.w, box.h);
+        } else {
+            let box = this.s.font_it.textBounds(this.particle || "x", 0, 0, this.s.baseFontSize);
+            return new Rect(-box.w / 2, box.y, box.w, box.h);
         }
     }
 
@@ -255,100 +256,91 @@ export
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
+        // This is how Chemistry works:
+        // ----------------------------------
+        //   mass_number       superscript
+        //              Element            right
+        // proton_number       subscript
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        this._shakeItDown();
+        let thisBox = this.boundingBox();
+
+        let massNumberWidth = this.dockingPointSize;
+        if (this.dockingPoints["mass_number"]) {
+            let dp = this.dockingPoints["mass_number"];
+            if (dp.child) {
+                let child = dp.child;
+                // FIXME The commented variant is horrible with regard to spacing.
+                // FIXME The issue is likely to go away once I rewrite the docking code, if I can make the flexible spacing thing work.
+                // FIXME I'm keeping it like this for now because it's easier on the eyes.
+                // child.position.x = thisBox.x + child.rightBound;
+                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                massNumberWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+            } else {
+                dp.position.x = thisBox.x - this.dockingPointSize/2;
+                dp.position.y = (-this.scale * this.s.mBox.h);
             }
-        });
-
-        // Calculate our own geometry
-
-        // Nothing to do for ChemicalElement
-
-        // Set position of all our children.
-
-        let box = this.boundingBox();
-        let descent = (box.y + box.h);
-
-
-
-        let box = this.boundingBox();
-        let parent_position = (box.y + box.h);
-        let parent_superscript_width = (this.dockingPoints["superscript"].child != null) ? (this.dockingPoints["superscript"].child.getExpressionWidth()) : 0;
-        let parent_subscript_width = (this.dockingPoints["subscript"].child != null) ? (this.dockingPoints["subscript"].child.getExpressionWidth()) : 0;
-        let parent_width = box.w;
-        let parent_height = box.h;
-        let child_height;
-        let child_width;
-        let docking_right = this.dockingPoints["right"];
-        let docking_superscript = this.dockingPoints["superscript"];
-        let docking_subscript = this.dockingPoints["subscript"];
-        let docking_mass = this.dockingPoints["mass_number"];
-        let docking_proton_number = this.dockingPoints["proton_number"];
-
-        if ("superscript" in boxes) {
-            child_width = docking_superscript.child.boundingBox().w;
-            child_height = docking_superscript.child.boundingBox().h;
-            docking_superscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_superscript.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
-        } else {
-            docking_superscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_superscript.position.y = -this.scale * this.s.mBox.h;
         }
 
-        if ("subscript" in boxes) {
-            child_width = docking_subscript.child.boundingBox().w;
-            child_height = docking_subscript.child.boundingBox().h;
-            docking_subscript.child.position.x = (parent_width / 2 + child_width / 2);
-            docking_subscript.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
-        } else {
-            docking_subscript.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_subscript.position.y = parent_position;
-        }
-
-
-        if ("mass_number" in boxes) {
-            child_width = docking_mass.child.boundingBox().w;
-            child_height = docking_mass.child.boundingBox().h;
-            docking_mass.child.position.x = 0 - 1.1 * (parent_width / 2 + child_width / 2);
-            docking_mass.child.position.y = -0.7 * (parent_height / 2 + child_height / 2);
-        } else {
-            docking_mass.position.x = (parent_width == this.boundingBox().w) ? (0 - (parent_width / 2 + this.scale * 20)) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
-            docking_mass.position.y = -this.scale * this.s.mBox.h;
-        }
-
-        // Positioned bottom left side of element.
-        if ("proton_number" in boxes) {
-            child_width = docking_proton_number.child.boundingBox().w;
-            child_height = docking_proton_number.child.boundingBox().h;
-            docking_proton_number.child.position.x = -1.1 * (parent_width / 2 + child_width / 2);
-            docking_proton_number.child.position.y = 0.7 * (parent_height / 2 + child_height / 5);
-        } else {
-            docking_proton_number.position.x = (parent_width == this.boundingBox().w) ? (-parent_width / 2 - this.scale * 20) : (-parent_width + this.boundingBox().w / 2 - this.scale * 20);
-            docking_proton_number.position.y = parent_position;
-        }
-
-
-
-
-        parent_width += (parent_subscript_width >= parent_superscript_width) ? parent_subscript_width : parent_superscript_width;
-
-        if ("right" in boxes) {
-            child_width = docking_right.child.boundingBox().w;
-            docking_right.child.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            docking_right.child.position.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
+        let protonNumberWidth = this.dockingPointSize;
+        if (this.dockingPoints["proton_number"]) {
+            let dp = this.dockingPoints["proton_number"];
+            if (dp.child) {
+                let child = dp.child;
+                // FIXME The commented variant is horrible with regard to spacing.
+                // FIXME The issue is likely to go away once I rewrite the docking code, if I can make the flexible spacing thing work.
+                // FIXME I'm keeping it like this for now because it's easier on the eyes.
+                // child.position.x = thisBox.x + child.rightBound;
+                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
+                child.position.y = child.topBound; // -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                massNumberWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+            } else {
+                dp.position.x = thisBox.x - this.dockingPointSize/2;
+                dp.position.y = 0;
             }
-        } else {
-            docking_right.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_right.position.y = (this.dockingPoint.y);
+        }
+
+        let superscriptWidth = this.dockingPointSize;
+        if (this.dockingPoints["superscript"]) {
+            let dp = this.dockingPoints["superscript"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize / 2;
+                dp.position.y = -this.scale * this.s.mBox.h;
+            }
+        }
+
+        // subscript
+        let subscriptWidth = this.dockingPointSize;
+        if (this.dockingPoints["subscript"]) {
+            let dp = this.dockingPoints["subscript"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.y = child.topBound;
+                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.y = 0;
+            }
+        }
+
+        // right
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
+                dp.position.y = -this.scale * this.s.xBox.h / 2;
+            }
         }
     }
     /**
