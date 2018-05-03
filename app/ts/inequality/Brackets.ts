@@ -335,7 +335,8 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = Math.max(superscriptWidth, subscriptWidth) + (thisBox.w + child.boundingBox().w) / 2 + this.dockingPointSize;
+                let sBoxWidth = Math.max(superscriptWidth, subscriptWidth);
+                child.position.x = thisBox.w/2 + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : this.dockingPointSize);
                 child.position.y = -child.dockingPoint.y;
             } else {
                 dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.w / 2 + this.dockingPointSize;
