@@ -264,7 +264,7 @@ export
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
+                child.position.x = thisBox.w/2 + child.leftBound + child.scale*this.dockingPointSize/2;
                 child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } else {
