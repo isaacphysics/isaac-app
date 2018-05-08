@@ -48,10 +48,12 @@
                         <!--img class="group-nav-toggle" src="/assets/icon-expand-arrow.png" alt="" /-->
                         <span class="group-nav-right"><strong></strong></span>
                     </a> 
-                    <a class="group-nav-delete" ng-click="deleteSelectedGroup(group)">
+                    <a ng-if="group && group.ownerId == user._id" class="group-nav-delete" href="javascript:void(0)" ng-click="deleteSelectedGroup(group)">
                         X
                     </a>
-                    
+                    <a ng-if="group && group.ownerId != user._id" class="group-nav-delete" href="javascript:void(0)" >
+                        &nbsp;
+                    </a>
                     <div ng-show="selectedGroup" class="group-nav-content hide-for-large-up" ng-class="{'hide-for-small-up': selectedGroup == null || selectedGroup._id != group._id}" ng-include="'/partials/group_management_details.html'"></div>
                 </dd>
                 <dd ng-if="myGroups == null || myGroups.length == 0">
@@ -75,7 +77,7 @@
   </div>
   <div class="reveal-modal-body ru-page-heading">
     <h3>Invite users</h2>
-    <p>Use one of the following methods to add users to your group:</p>
+    <p>Use one of the following methods to add users to your group. Students joining your group will be shown your name and account email and asked to confirm sharing data.</p>
     <div class="panel">
         <h4>Option 1: Share link</h3>
         <p>Share the following link with your students to have them join your group:</p>
@@ -93,9 +95,46 @@
             </div>          
         </div>
         <div class="row">
-            <button class="small-offset-2 small-5 columns" ng-click="modals.shareCode.hide();setSelectedGroup(null)">Create another group</button>  
-            <button class="small-offset-2 small-5 columns end" ng-click="modals.shareCode.hide()" ui-sref="setAssignments">Set an assignment</button>    
+            <button class="small-offset-2 small-5 columns" ng-click="modals.shareCode.hide();setSelectedGroup(null)">Create another group</button>
+            <button class="small-offset-2 small-5 columns" ng-click="modals.shareCode.hide()" ui-sref="setAssignments">Set an assignment</button>
+            <button ng-show="$root.userPreferences.BETA_FEATURE.ADDITIONAL_GROUP_MANAGERS" class="small-offset-2 small-5 columns end" ng-click="modals.shareCode.hide();modals.groupManagers.show()">Edit group managers</button>
         </div>      
       </div>    
+  </div>
+</div>
+
+<div isaac-modal="groupManagers">
+  <div class="reveal-modal-head">
+    <h2 ng-show="selectedGroup.ownerId == user._id">Share your group</h2>
+    <h2 ng-show="selectedGroup.ownerId != user._id">Shared group</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <h3>Selected group: {{selectedGroup.groupName}}</h3>
+    <p>Sharing this group lets other teachers edit the group name, add and remove students, set new assigments and view assignment progress. It will not automatically let additional teachers see detailed mark data unless students give access to the new teacher.</p> 
+    
+    <div class="group-accordion-content">
+        <h4>Current group managers</h4>
+        <p ng-if="selectedGroup.additionalManagers.length != 0">The users below have permission to manage this group.</p>
+        <p ng-if="selectedGroup.additionalManagers.length == 0">There are no additional group managers for this group.</p>
+        <table class="group-table">
+            <tbody>
+                <tr ng-repeat="member in selectedGroup.additionalManagers | orderBy:'familyName'" ng-class="{disabled: !member.authorisedFullAccess}">
+                    <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} ({{member.email}})</td>
+                    <td ng-if="selectedGroup.ownerId == user._id" class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div ng-show="selectedGroup.ownerId == user._id">
+            <br>
+            <h5>Add additional managers</h5> 
+            <p>Enter the email of another Isaac teacher account below to add them as a group manager. Note that this will share their email address with the students.</p>
+            <form ng-submit="addManager(selectedGroup, newAdditionalManager.email)">
+                <input type="text" ng-model="newAdditionalManager.email" placeholder="Enter email address here"/>
+                <p><small><strong>Remember:</strong> Students may need to reuse the <a href="javascript:void(0)" ng-click="modals.shareCode.show()">group link</a> to approve access to their data for any new teachers.</small></p>
+                <a class="ru-button-big expand" ng-click="addManager(selectedGroup, newAdditionalManager.email)">Add group manager</a>
+            </form>
+        </div>
+    </div>     
   </div>
 </div>

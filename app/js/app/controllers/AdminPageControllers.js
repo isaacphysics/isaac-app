@@ -292,7 +292,7 @@ define([], function() {
             })
             .catch(function(e){
                     console.log("error:", e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
             });
         }
 
@@ -302,7 +302,7 @@ define([], function() {
             })          
             .catch(function(e){
                     console.log("error:", e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
             });
         }
 
@@ -315,7 +315,7 @@ define([], function() {
                 })
                 .catch(function(e){
                     console.log("error:", e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });             
             }
         }
@@ -329,7 +329,7 @@ define([], function() {
                 })
                 .catch(function(e){
                     console.log("error:", e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             }
         }
@@ -342,7 +342,7 @@ define([], function() {
                 })
                 .catch(function(e){
                     console.log("error:", e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             }
         }
@@ -355,7 +355,7 @@ define([], function() {
                 })
                 .catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Email Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Email Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             }
         }
@@ -366,7 +366,7 @@ define([], function() {
             })
             .catch(function(e){
                 console.log("error:", e)
-                $scope.showToast($scope.toastTypes.Failure, "Failed to Record Attendance", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                $scope.showToast($scope.toastTypes.Failure, "Failed to Record Attendance", e.data.errorMessage != undefined ? e.data.errorMessage : "");
             });
         }
 
