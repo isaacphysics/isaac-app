@@ -406,9 +406,8 @@ export
     };
 
     touchEnded = () => {
-
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+        if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
             // Click
             // Close the menu when touching the canvas
             this.scope.$broadcast("closeMenus");
@@ -554,10 +553,10 @@ export
     };
 
     centre = (init = false) => {
-        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height / 2;
+        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox();
-            symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
+            symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
             top += sbox.h*1.5;
             symbol.shakeIt();
         });
