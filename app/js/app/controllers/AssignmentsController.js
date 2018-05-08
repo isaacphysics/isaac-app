@@ -131,7 +131,7 @@ define([], function() {
 				        $scope.setLoading(false);
 				        $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
 	       			}).catch(function(e){
-						$scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+						$scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 	       			});
 				}
 			})

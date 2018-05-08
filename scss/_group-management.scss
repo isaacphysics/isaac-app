@@ -327,6 +327,10 @@
 		height: 18px;
 		background: url(../assets/ru.png) -357px -320px no-repeat;
 		margin: 8px 10px 0 0;
+
+		.ru_green & {
+			background: url(../assets/ru.png) -357px -302px no-repeat;
+		}
 	}
 	a .group-table-person {
 		background-position: -357px -302px;
