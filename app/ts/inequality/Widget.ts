@@ -511,13 +511,6 @@ export
     }
 
     /**
-	 * Internal aid for placing stuff as children.
-	 */
-    offsetBox(): Rect {
-        return this.boundingBox();
-    }
-
-    /**
      * The bounding box including this widget's whole subtree.
      *
      * @returns {Rect}
@@ -590,6 +583,9 @@ export
         return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
     }
 
+    /**
+     * @returns {Rect} The (relative?) bounding box of the sub tree AND docking points.
+     */
     subtreeDockingPointsBoundingBox(): Rect {
         let thisAbsPosition = this.getAbsolutePosition();
         let thisAbsBox = this.getAbsoluteDockingPointsBoundingBox();
@@ -618,7 +614,6 @@ export
         }
 
         return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
-
     }
 
     get leftBound(): number {

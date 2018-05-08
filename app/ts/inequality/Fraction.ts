@@ -64,7 +64,7 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, ["operator"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox_w / 4, -box.h / 2), 1, ["operator"], "right");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, ["symbol"], "numerator");
         this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, ["symbol"], "denominator");
     }
@@ -146,21 +146,17 @@ export
     }
 
     get _numeratorBox(): Rect {
-        let numeratorBox: Rect = null;
-        try {
+        let numeratorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
             numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox();
-        } catch (e) {
-            numeratorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
         return numeratorBox;
     }
 
     get _denominatorBox(): Rect {
-        let denominatorBox: Rect = null;
-        try {
+        let denominatorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
             denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox();
-        } catch (e) {
-            denominatorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
         return denominatorBox;
     }
@@ -181,11 +177,11 @@ export
             if (dp.child) {
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
-                child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
-                child.position.y = -(this.dockingPointSize + child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
+                child.position.x = -child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
+                child.position.y = -this.dockingPointSize - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
             } else {
                 dp.position.x = 0;
-                dp.position.y = -(this.dockingPointSize + this.s.xBox.h/2);
+                dp.position.y = -this.s.xBox_h/2 - this.dockingPointSize;
             }
         }
 
@@ -194,11 +190,11 @@ export
             if (dp.child) {
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
-                child.position.x = - child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
+                child.position.x = -child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
                 child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox().y;
             } else {
                 dp.position.x = 0;
-                dp.position.y = this.dockingPointSize + this.s.xBox.h/2;
+                dp.position.y = this.s.xBox_h/2 + this.dockingPointSize;
             }
         }
 
@@ -206,8 +202,8 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
-                child.position.y = - child.dockingPoint.y;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize/2;
+                child.position.y = -child.dockingPoint.y;
             } else {
                 dp.position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
                 dp.position.y = 0;

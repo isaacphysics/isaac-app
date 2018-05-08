@@ -106,8 +106,8 @@ export
         let box = this.s.font_up.textBounds(this.name || '', 0, 0, this.scale * this.s.baseFontSize);
         let bracketBox = this.s.font_up.textBounds('(', 0, 0, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + bracketBox.w, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["operator"], "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + bracketBox.w, -this.s.xBox_h / 2), 1, ["symbol", "differential"], "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["operator"], "right");
 
         if (this.allowSubscript) {
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, 0), 2/3, ["symbol"], "subscript");
@@ -286,11 +286,9 @@ export
     }
 
     get _argumentBox(): Rect {
-        let argumentBox: Rect = null;
-        try {
+        let argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
-        } catch (e) {
-            argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
         return argumentBox;
     }
@@ -302,7 +300,7 @@ export
 
         // See Fn::boundingBox()
         // The Math.min() here is to limit how much the brackets expand vertically.
-        let height = Math.min(Math.max(this._baseBox.h, argumentBox.h), this.s.mBox.h*3);
+        let height = Math.min(Math.max(this._baseBox.h, argumentBox.h), this.s.mBox_h*3);
 
         let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
         let bracketsW = 40*this.scale + argumentBox.w + this.dockingPointSize;
@@ -346,10 +344,10 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = child.leftBound;
-                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
             } else {
                 dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
-                dp.position.y = -this.scale * this.s.mBox.h;
+                dp.position.y = -this.scale * this.s.mBox_h;
             }
         }
 
@@ -388,10 +386,5 @@ export
                 dp.position.y = this.dockingPoint.y;
             }
         }
-    }
-
-    offsetBox() {
-        let box = this.custom ? this.s.font_it.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize) : this.s.font_up.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize);
-        return new Rect(box.x, box.y, box.w, box.h);
     }
 }

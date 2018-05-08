@@ -101,8 +101,8 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h); // TODO Check that `descent` is necessary...
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["operator"], "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 2/3, ["exponent"], "superscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["operator"], "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 2/3, ["symbol_subscript"], "subscript");
     }
 
@@ -244,7 +244,7 @@ export
     boundingBox(): Rect {
         let text = (this.letter || "x") + (this.modifier == "prime" ? "''" : "");
         let box = this.s.font_it.textBounds(text, 0, 0, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y, box.w, box.h);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
 	/**
@@ -258,46 +258,44 @@ export
 
         let thisBox = this.boundingBox();
 
-        // superscript
         let superscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + child.scale*this.dockingPointSize/2;
-                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } else {
-                dp.position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
-                dp.position.y = (-this.scale * this.s.mBox.h);
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.y = -this.scale * this.s.mBox_h;
             }
         }
 
-        // subscript
         let subscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["subscript"]) {
             let dp = this.dockingPoints["subscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w / 2 + child.leftBound + child.scale*this.dockingPointSize/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
                 child.position.y = child.topBound;
                 subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } else {
-                dp.position.x = thisBox.w/2 + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = 0;
             }
         }
 
-        // right
         if (this.dockingPoints["right"]) {
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.w/2 + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
-                dp.position.y = (-this.scale * this.s.xBox.h / 2);
+                console.log(this.scale);
+                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
     }
@@ -305,8 +303,6 @@ export
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-
-
     getChildren(): Array<Widget> {
         return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }

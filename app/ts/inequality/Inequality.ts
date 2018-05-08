@@ -51,7 +51,19 @@ export
     prevTouch: p5.Vector = null;
 
     xBox: Rect = null;
+    get xBox_w(): number {
+        return this.xBox.w;
+    }
+    get xBox_h(): number {
+        return this.xBox.h;
+    }
     mBox: Rect = null;
+    get mBox_w(): number {
+        return this.mBox.w;
+    }
+    get mBox_h(): number {
+        return this.mBox.h;
+    }
 
     baseFontSize = 50;
     font_it: p5.Font = null;

@@ -96,9 +96,9 @@ class Differential extends Widget {
         let box = this.boundingBox();
         // let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["differential_argument"], "argument");
-        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 2/3, ["differential_order"], "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential", "operator"], "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["differential_argument"], "argument");
+        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["differential_order"], "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox_w, -this.s.xBox_h / 2), 1, ["differential", "operator"], "right");
     }
 
     /**
@@ -248,12 +248,12 @@ class Differential extends Widget {
             let dp = this.dockingPoints["order"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize*child.scale/2;
-                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize*child.scale/2;
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
                 orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } else {
-                dp.position.x = (thisBox.w / 2) + this.dockingPointSize / 2;
-                dp.position.y = (-this.scale * this.s.mBox.h);
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.y = -this.scale*this.s.mBox_h;
             }
         }
 
@@ -262,11 +262,11 @@ class Differential extends Widget {
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
-                dp.position.y = (-this.scale * this.s.xBox.h / 2);
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + this.dockingPointSize;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
 
@@ -275,11 +275,11 @@ class Differential extends Widget {
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.w/2 + orderWidth + this.dockingPointSize;
-                dp.position.y = (-this.scale * this.s.xBox.h / 2);
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + this.dockingPointSize;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
     }

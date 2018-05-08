@@ -102,7 +102,7 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["state_symbol"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["state_symbol"], "right");
     }
 
     /**
@@ -194,7 +194,7 @@ export
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize;
-                dp.position.y = (-this.scale * this.s.xBox.h / 2);
+                dp.position.y = -this.scale * this.s.xBox_h/2;
             }
         }
     }

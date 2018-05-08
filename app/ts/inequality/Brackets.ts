@@ -109,8 +109,8 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4 + this.scale * 20, -this.s.xBox.h / 2), 1, ["operator_brackets"], "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox_h / 2), 1, ["symbol", "differential"], "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox_w / 4 + this.scale * 20, -this.s.xBox_h / 2), 1, ["operator_brackets"], "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["exponent"], "superscript");
         if (this.mode == 'chemistry') {
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["subscript"], "subscript");
@@ -229,7 +229,7 @@ export
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
-        let m = Math.sqrt(Math.max(1, box.h / this.s.mBox.h));
+        let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
         let a = 20 * m;
         let b = 21 * m;
         let c = Math.sqrt(4 * m + 1);
@@ -308,12 +308,12 @@ export
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound;
-                child.position.y = -(thisBox.h + child.subtreeBoundingBox().h) / 2 + this.dockingPointSize;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound;
+                child.position.y = -(thisBox.h + child.subtreeBoundingBox().h)/2 + this.dockingPointSize;
                 superscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } else {
-                dp.position.x = (thisBox.w + this.dockingPointSize) / 2;
-                dp.position.y = -thisBox.h / 2;
+                dp.position.x = (thisBox.w + this.dockingPointSize)/2;
+                dp.position.y = -thisBox.h/2;
             }
         }
 
@@ -322,12 +322,12 @@ export
             let dp = this.dockingPoints["subscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound;
-                child.position.y = (thisBox.h + child.subtreeBoundingBox().h) / 2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound;
+                child.position.y = (thisBox.h + child.subtreeBoundingBox().h)/2;
                 subscriptWidth = child.subtreeDockingPointsBoundingBox().w;
             } else {
-                dp.position.x = (thisBox.w + this.dockingPointSize) / 2;
-                dp.position.y = thisBox.h / 2;
+                dp.position.x = (thisBox.w + this.dockingPointSize)/2;
+                dp.position.y = thisBox.h/2;
             }
         }
 
@@ -336,10 +336,10 @@ export
             if (dp.child) {
                 let child = dp.child;
                 let sBoxWidth = Math.max(superscriptWidth, subscriptWidth);
-                child.position.x = thisBox.w/2 + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : this.dockingPointSize);
+                child.position.x = thisBox.x + thisBox.w + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : this.dockingPointSize);
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.w / 2 + this.dockingPointSize;
+                dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.x + thisBox.w + this.dockingPointSize;
                 dp.position.y = 0;
             }
         }

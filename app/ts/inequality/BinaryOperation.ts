@@ -49,8 +49,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let p = this.p.createVector(0, -this.s.xBox.h / 2);
-        return p;
+        return this.p.createVector(0, -this.s.xBox_h/2);
     }
 
     constructor(p: any, s: any, operation: string) {
@@ -87,9 +86,7 @@ export
      */
     generateDockingPoints() {
         let box = this.boundingBox();
-        let descent = this.position.y - (box.y + box.h);
-
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["symbol", "differential"], "right");
     }
 
     /**
@@ -156,8 +153,6 @@ export
         this.p.strokeWeight(1);
     }
 
-    private _asymMult: number = 1.5;
-
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
      *
@@ -165,8 +160,8 @@ export
      */
     boundingBox(): Rect {
         let s = "+";
-        let box = this.s.font_up.textBounds(s, 0, 0, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y, box.w, box.h);
+        let box = this.s.font_up.textBounds(s, 0, 0, this.scale*this.s.baseFontSize*0.8);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
     /**
@@ -183,11 +178,11 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.w/2 + child.leftBound + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
-                dp.position.y = this.scale * (-this.s.xBox.h / 2);
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
     }

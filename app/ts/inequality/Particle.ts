@@ -136,8 +136,8 @@ export
 
         // Create the docking points - added mass number and proton number
         // TODO: add a flag to toggle the mass/proton number docking points? e.g. boolean nuclearMode
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["particle"], "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 2/3, ["exponent"], "superscript");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["particle"], "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
         this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, descent), 2/3, ["subscript"], "subscript");
         this.dockingPoints["mass_number"] = new DockingPoint(this, this.p.createVector(0, 0), 2/3, ["top-left"], "mass_number");
         this.dockingPoints["proton_number"] = new DockingPoint(this, this.p.createVector(0, 0), 2/3, ["bottom-left"], "proton_number");
@@ -265,7 +265,6 @@ export
         this._shakeItDown();
         let thisBox = this.boundingBox();
 
-        let massNumberWidth = this.dockingPointSize;
         if (this.dockingPoints["mass_number"]) {
             let dp = this.dockingPoints["mass_number"];
             if (dp.child) {
@@ -275,15 +274,13 @@ export
                 // FIXME I'm keeping it like this for now because it's easier on the eyes.
                 // child.position.x = thisBox.x + child.rightBound;
                 child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
-                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
-                massNumberWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
             } else {
                 dp.position.x = thisBox.x - this.dockingPointSize/2;
-                dp.position.y = (-this.scale * this.s.mBox.h);
+                dp.position.y = (-this.scale * this.s.mBox_h);
             }
         }
 
-        let protonNumberWidth = this.dockingPointSize;
         if (this.dockingPoints["proton_number"]) {
             let dp = this.dockingPoints["proton_number"];
             if (dp.child) {
@@ -293,8 +290,7 @@ export
                 // FIXME I'm keeping it like this for now because it's easier on the eyes.
                 // child.position.x = thisBox.x + child.rightBound;
                 child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
-                child.position.y = child.topBound; // -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
-                massNumberWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = child.topBound;
             } else {
                 dp.position.x = thisBox.x - this.dockingPointSize/2;
                 dp.position.y = 0;
@@ -307,15 +303,14 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
-                child.position.y = -this.scale*this.s.xBox.h - (child.subtreeDockingPointsBoundingBox().h+child.subtreeDockingPointsBoundingBox().y);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
                 superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize / 2;
-                dp.position.y = -this.scale * this.s.mBox.h;
+                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.y = -this.scale * this.s.mBox_h;
             }
         }
 
-        // subscript
         let subscriptWidth = this.dockingPointSize;
         if (this.dockingPoints["subscript"]) {
             let dp = this.dockingPoints["subscript"];
@@ -330,7 +325,6 @@ export
             }
         }
 
-        // right
         if (this.dockingPoints["right"]) {
             let dp = this.dockingPoints["right"];
             if (dp.child) {
@@ -339,10 +333,11 @@ export
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
                 dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
-                dp.position.y = -this.scale * this.s.xBox.h / 2;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
     }
+
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
