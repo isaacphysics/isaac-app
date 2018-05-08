@@ -49,8 +49,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        var box = this.s.font_up.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
-        return this.p.createVector(0, - box.h / 2);
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
 

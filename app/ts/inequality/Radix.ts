@@ -45,9 +45,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("x", 0, 0, this.scale * this.s.baseFontSize);
-        let p = this.p.createVector(0, - box.h / 2);
-        return p;
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
     constructor(p: any, s: any) {
