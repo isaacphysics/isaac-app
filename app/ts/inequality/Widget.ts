@@ -239,7 +239,6 @@ export
             // this.p.rect(dpB.x, dpB.y, dpB.w, dpB.h);
 
             // +++ SUBTREE BOUNDING BOX INCLUDING DOCKING POINTS +++
-            // Also draws local boxes because recursion.
             let sdpB = this.subtreeDockingPointsBoundingBox();
             this.p.stroke(128,64,0,128).strokeWeight(2);
             this.p.rect(sdpB.x, sdpB.y, sdpB.w, sdpB.h);
