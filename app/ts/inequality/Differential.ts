@@ -95,9 +95,9 @@ class Differential extends Widget {
         let box = this.boundingBox();
         // let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["differential_argument"], "argument");
-        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["differential_order"], "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox_w, -this.s.xBox_h / 2), 1, ["differential", "operator"], "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w / 4, -this.s.xBox_h/2), 1, ["differential_argument"], "argument");
+        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["differential_order"], "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + 1.25*this.s.mBox_w, -this.s.xBox_h/2), 1, ["differential", "operator"], "right");
     }
 
     /**
@@ -227,7 +227,7 @@ class Differential extends Widget {
      */
     boundingBox(): Rect {
         let box = this.s.font_up.textBounds(this.letter || "D", 0, 0, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y, box.w, box.h);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
     /**

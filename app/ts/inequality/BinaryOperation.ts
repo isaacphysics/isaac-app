@@ -86,7 +86,7 @@ export
      */
     generateDockingPoints() {
         let box = this.boundingBox();
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox_w / 4, -this.s.xBox_h / 2), 1, ["symbol", "differential"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w / 4, -this.s.xBox_h/2), 1, ["symbol", "differential"], "right");
     }
 
     /**

@@ -74,7 +74,7 @@ export
 	 * @returns {Vector} The centre of this Rect, in canvas coordinates.
      */
     get center() {
-        return new p5.Vector(this.x + this.w / 2, this.y + this.h / 2);
+        return new p5.Vector(this.x + this.w/2, this.y + this.h/2);
     }
 }
 

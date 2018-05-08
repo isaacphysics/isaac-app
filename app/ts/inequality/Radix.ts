@@ -69,9 +69,9 @@ export
         let descent = this.position.y - (box.y + box.h);
         let pBox = this.s.font_it.textBounds("(", 0, 0, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.xBox_w / 2, -this.s.xBox_h / 2), 1, ["symbol"], "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w + this.scale * this.s.xBox_w / 2, -this.s.xBox_h / 2), 1, ["operator"], "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale * this.s.xBox_w / 2, -(box.h + descent + this.scale * 20)), 2/3, ["exponent"], "superscript");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.xBox_w/2, -this.s.xBox_h/2), 1, ["symbol"], "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w + this.scale * this.s.xBox_w/2, -this.s.xBox_h/2), 1, ["operator"], "right");
+        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w + this.scale * this.s.xBox_w/2, -(box.h + descent + this.scale * 20)), 2/3, ["exponent"], "superscript");
     }
 
     /**
