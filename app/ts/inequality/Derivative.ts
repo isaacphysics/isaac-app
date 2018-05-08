@@ -65,7 +65,7 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox_w / 4, -box.h/2), 1, ["operator"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox_w/4, -box.h/2), 1, ["operator"], "right");
         this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, ["differential"], "numerator");
         this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, ["differential"], "denominator");
     }

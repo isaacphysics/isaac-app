@@ -105,7 +105,7 @@ export
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
     get dockingPointSize() {
-        return this.scale * this.s.baseFontSize / 3;
+        return this.scale * this.s.baseFontSize/3;
     }
 
     /** An array of the types of docking points that this widget can dock to */

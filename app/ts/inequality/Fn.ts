@@ -106,7 +106,7 @@ export
         let bracketBox = this.s.font_up.textBounds('(', 0, 0, this.scale * this.s.baseFontSize);
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + bracketBox.w, -this.s.xBox_h/2), 1, ["symbol", "differential"], "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox_w / 4, -this.s.xBox_h/2), 1, ["operator"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["operator"], "right");
 
         if (this.allowSubscript) {
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2, 0), 2/3, ["symbol"], "subscript");
