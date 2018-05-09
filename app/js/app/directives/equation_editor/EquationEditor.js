@@ -52,8 +52,8 @@ define(function (require) {
 
                     if (null != sketch.potentialSymbol) {
                         var sym = sketch.potentialSymbol;
-                        var box = sym.subtreeBoundingBox();
-                        var pos = sym.getAbsolutePosition();
+                        var box = sym.subtreeBoundingBox;
+                        var pos = sym.absolutePosition;
                         var bLeft = box.x + pos.x;
                         var bRight = bLeft + box.w;
                         var bTop = box.y + pos.y;
@@ -79,8 +79,8 @@ define(function (require) {
 
                     if (null != sketch.movingSymbol) {
                         var sym = sketch.movingSymbol;
-                        var box = sym.subtreeBoundingBox();
-                        var pos = sym.getAbsolutePosition();
+                        var box = sym.subtreeBoundingBox;
+                        var pos = sym.absolutePosition;
                         var bLeft = box.x + pos.x;
                         var bRight = bLeft + box.w;
                         var bTop = box.y + pos.y;
