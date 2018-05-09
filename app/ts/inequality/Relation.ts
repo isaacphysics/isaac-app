@@ -139,28 +139,28 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             let rel = this.mathmlSymbol ? this.mathmlSymbol : this.relation;
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         }
         return expression;

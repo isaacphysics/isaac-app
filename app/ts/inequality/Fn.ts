@@ -128,24 +128,24 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
                 let sub = '';
                 if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-                    sub += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
+                    sub += '_{' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '}';
                 }
                 let sup = '';
                 if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    sup += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+                    sup += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
 
                 let esc = this.custom ? "" : "\\";
 
-                expression += esc + this.latexSymbol + sup + sub + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                expression += esc + this.latexSymbol + sup + sub + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
                 if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                    expression += this.dockingPoints['right'].child.getExpression(format);
+                    expression += this.dockingPoints['right'].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "python") {
@@ -153,47 +153,47 @@ export
                 if (this.pythonSymbol == 'ln' || this.pythonSymbol == 'log') {
                     if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                         // Logarithm with base
-                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', ' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ', ' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + ')';
                     } else if (this.pythonSymbol == 'log') {
-                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ', 10)'; // Python assumes log is base e (i.e. ln) otherwise!
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ', 10)'; // Python assumes log is base e (i.e. ln) otherwise!
                     } else {
-                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
                     }
                 } else {
                     if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
                         // Function with subscript
-                        expression += this.pythonSymbol + '_' + this.dockingPoints['subscript'].child.getExpression(format) + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '_' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
                     } else {
-                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                        expression += this.pythonSymbol + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
                     }
                 }
                 if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    let supExp = this.dockingPoints['superscript'].child.getExpression(format);
+                    let supExp = this.dockingPoints['superscript'].child.formatExpressionAs(format);
                     if (Number(supExp) == -1 && this.innerSuperscript) {
                         expression = 'arc' + expression;
                     } else {
-                        expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                        expression += '**(' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + ')';
                     }
                 }
                 if (this.dockingPoints["right"].child != null) {
                     if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
+                        expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                     } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                        expression += " * " + this.dockingPoints["right"].child.formatExpressionAs(format);
                     }
                 }
             }
         } else if (format == 'mathml') {
             if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-                let right = ('right' in this.dockingPoints && this.dockingPoints['right'].child) ? this.dockingPoints['right'].child.getExpression(format) : '';
+                let right = ('right' in this.dockingPoints && this.dockingPoints['right'].child) ? this.dockingPoints['right'].child.formatExpressionAs(format) : '';
                 if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child && 'superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    expression += '<mrow><msubsup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                    expression += '<mrow><msubsup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>' + right + '</mrow>';
                 } else if ('subscript' in this.dockingPoints && this.dockingPoints['subscript'].child) {
-                    expression += '<mrow><msub><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                    expression += '<mrow><msub><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>' + right + '</mrow>';
                 } else if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    expression += '<mrow><msup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                    expression += '<mrow><msup><mi>' + this.name + '</mi><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>' + right + '</mrow>';
                 } else {
-                    expression += '<mrow><mi>' + this.name + '</mi><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>' + right + '</mrow>';
+                    expression += '<mrow><mi>' + this.name + '</mi><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>' + right + '</mrow>';
                 }
             }
         }
@@ -210,7 +210,7 @@ export
     }
 
     token() {
-        if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.getExpression("python")) == -1 && this.innerSuperscript) {
+        if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.formatExpressionAs("python")) == -1 && this.innerSuperscript) {
             return "arc" + this.name + "()";
         } else {
             return this.name + "()";
@@ -287,7 +287,7 @@ export
     get _argumentBox(): Rect {
         let argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
+            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         }
         return argumentBox;
     }
@@ -310,7 +310,7 @@ export
     get _superscriptBox(): Rect {
         let superscriptBox: Rect = null;
         try {
-            superscriptBox = this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox();
+            superscriptBox = this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox;
         } catch (e) {
             superscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
@@ -320,7 +320,7 @@ export
     get _subscriptBox(): Rect {
         let subscriptBox: Rect = null;
         try {
-            subscriptBox = this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox();
+            subscriptBox = this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox;
         } catch (e) {
             subscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
@@ -343,7 +343,7 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = child.leftBound;
-                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
                 dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
                 dp.position.y = -this.scale * this.s.mBox_h;

@@ -53,7 +53,7 @@ export
         // TODO Handle greek elements
         let e = this.particle;
         // if (this.dockingPoints['subscript'].child) {
-        //     e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+        //     e += '_' + this.dockingPoints['subscript'].child.formatExpressionAs('subscript');
         // }
         return e;
     }
@@ -142,50 +142,50 @@ export
         this.dockingPoints["proton_number"] = new DockingPoint(this, this.p.createVector(0, 0), 2/3, ["bottom-left"], "proton_number");
     }
 
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             expression = this.latexSymbol;
             //  KaTeX doesn't support the mhchem package so padding is used to align proton number correctly.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                let mass_number_length = this.dockingPoints["mass_number"].child.getExpression(format).length;
-                let proton_number_length = this.dockingPoints["proton_number"].child.getExpression(format).length;
+                let mass_number_length = this.dockingPoints["mass_number"].child.formatExpressionAs(format).length;
+                let proton_number_length = this.dockingPoints["proton_number"].child.formatExpressionAs(format).length;
                 let number_of_spaces = Math.abs(proton_number_length - mass_number_length);
                 let padding = "";
                 // Temporary hack to align mass number and proton number correctly.
                 for (let _i = 0; _i < number_of_spaces; _i++) {
                     padding += "\\enspace";
                 }
-                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.latexSymbol : "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.latexSymbol;
+                expression += (mass_number_length <= proton_number_length) ? "{}^{" + padding + this.dockingPoints["mass_number"].child.formatExpressionAs(format) + "}_{" + this.dockingPoints["proton_number"].child.formatExpressionAs(format) + "}" + this.latexSymbol : "{}^{" + this.dockingPoints["mass_number"].child.formatExpressionAs(format) + "}_{" + padding + this.dockingPoints["proton_number"].child.formatExpressionAs(format) + "}" + this.latexSymbol;
             }
 
             if (this.dockingPoints["superscript"].child != null) {
-                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
-                expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
+                expression += "_{" + this.dockingPoints["subscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
                 else if (this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["subscript"].child != null) {
-                expression += this.dockingPoints["subscript"].child.getExpression(format);
+                expression += this.dockingPoints["subscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["superscript"].child != null) {
-                expression += this.dockingPoints["superscript"].child.getExpression(format);
+                expression += this.dockingPoints["superscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             expression = "";
@@ -197,23 +197,23 @@ export
             // Should we render one if the other is ommitted? - for now, no.
             if (this.dockingPoints["mass_number"].child != null && this.dockingPoints["proton_number"].child != null) {
                 expression = "";
-                expression += "{}^{" + this.dockingPoints["mass_number"].child.getExpression(format) + "}_{" + this.dockingPoints["proton_number"].child.getExpression(format) + "}" + this.mhchemSymbol;
+                expression += "{}^{" + this.dockingPoints["mass_number"].child.formatExpressionAs(format) + "}_{" + this.dockingPoints["proton_number"].child.formatExpressionAs(format) + "}" + this.mhchemSymbol;
             }
             if (this.dockingPoints["subscript"].child != null) {
-                expression += this.dockingPoints["subscript"].child.getExpression(format);
+                expression += this.dockingPoints["subscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["superscript"].child != null) {
-                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
                 else if (this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a ChemicalElement, hence produces a multiplication
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         }
@@ -272,8 +272,8 @@ export
                 // FIXME The issue is likely to go away once I rewrite the docking code, if I can make the flexible spacing thing work.
                 // FIXME I'm keeping it like this for now because it's easier on the eyes.
                 // child.position.x = thisBox.x + child.rightBound;
-                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
-                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
+                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox.w - child.subtreeBoundingBox.w;
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
                 dp.position.x = thisBox.x - this.dockingPointSize/2;
                 dp.position.y = (-this.scale * this.s.mBox_h);
@@ -288,7 +288,7 @@ export
                 // FIXME The issue is likely to go away once I rewrite the docking code, if I can make the flexible spacing thing work.
                 // FIXME I'm keeping it like this for now because it's easier on the eyes.
                 // child.position.x = thisBox.x + child.rightBound;
-                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox().w - child.subtreeBoundingBox().w;
+                child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox.w - child.subtreeBoundingBox.w;
                 child.position.y = child.topBound;
             } else {
                 dp.position.x = thisBox.x - this.dockingPointSize/2;
@@ -302,8 +302,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
-                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
@@ -317,7 +317,7 @@ export
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
                 child.position.y = child.topBound;
-                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = 0;
@@ -340,7 +340,7 @@ export
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }
 

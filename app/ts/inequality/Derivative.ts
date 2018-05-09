@@ -79,13 +79,13 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
+                expression += "\\frac{" + this.dockingPoints["numerator"].child.formatExpressionAs(format) + "}{" + this.dockingPoints["denominator"].child.formatExpressionAs(format) + "}";
                 if (this.dockingPoints["right"].child != null) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "python") {
@@ -93,7 +93,7 @@ export
                 this.dockingPoints["numerator"].child.typeAsString == "Differential" && this.dockingPoints["denominator"].child.typeAsString == "Differential") {
                 expression += "Derivative(";
                 if (this.dockingPoints["numerator"].child.dockingPoints["argument"].child != null) {
-                    expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.getExpression(format) + ", ";
+                    expression += this.dockingPoints["numerator"].child.dockingPoints["argument"].child.formatExpressionAs(format) + ", ";
                 } else {
                     expression += "_, ";
                 }
@@ -110,7 +110,7 @@ export
                         }
                         do {
                             if (e.dockingPoints["argument"].child != null) {
-                                list.push(e.dockingPoints["argument"].child.getExpression(format));
+                                list.push(e.dockingPoints["argument"].child.formatExpressionAs(format));
                             } else {
                                 list.push("?");
                             }
@@ -123,7 +123,7 @@ export
                 }
                 expression += list.join(", ") + ")";
                 if(this.dockingPoints["right"].child != null) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
@@ -133,10 +133,10 @@ export
         } else if (format == 'mathml') {
             expression = '';
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.getExpression(format) + '</mrow></mfrac>';
+                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.formatExpressionAs(format) + '</mrow></mfrac>';
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -147,7 +147,7 @@ export
     }
 
     token() {
-        return this.getExpression("python");
+        return this.formatExpressionAs("python");
     }
 
     /** Paints the widget on the canvas. */
@@ -176,7 +176,7 @@ export
     get _numeratorBox(): Rect {
         let numeratorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
-            numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox();
+            numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox;
         }
         return numeratorBox;
     }
@@ -184,7 +184,7 @@ export
     get _denominatorBox(): Rect {
         let denominatorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
-            denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox();
+            denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox;
         }
         return denominatorBox;
     }
@@ -205,8 +205,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
-                child.position.x = -child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
-                child.position.y = -this.dockingPointSize - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
+                child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
+                child.position.y = -this.dockingPointSize - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
                 dp.position.x = 0;
                 dp.position.y = -this.s.xBox_h/2 - this.dockingPointSize;
@@ -218,8 +218,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
-                child.position.x = -child.subtreeBoundingBox().x - child.subtreeBoundingBox().w/2;
-                child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox().y;
+                child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
+                child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox.y;
             } else {
                 dp.position.x = 0;
                 dp.position.y = this.s.xBox_h/2 - this.dockingPointSize;
@@ -233,7 +233,7 @@ export
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize/2;
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = this.subtreeBoundingBox().w/2 + this.dockingPointSize;
+                dp.position.x = this.subtreeBoundingBox.w/2 + this.dockingPointSize;
                 dp.position.y = 0;
             }
         }

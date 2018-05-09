@@ -45,4 +45,8 @@ export class DockingPoint {
     get child() {
         return this._child;
     }
+
+    get absolutePosition(): p5.Vector {
+        return p5.Vector.add(this.widget.absolutePosition, this.position);
+    }
 }

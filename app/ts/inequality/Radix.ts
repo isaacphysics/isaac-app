@@ -83,31 +83,31 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         // TODO Triple check
         let expression = "";
         if (format == "latex") {
             if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-                expression += '\\sqrt{' + this.dockingPoints['argument'].child.getExpression(format) + '}';
+                expression += '\\sqrt{' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '}';
             }
             if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+                expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
             }
             if ('right' in this.dockingPoints && this.dockingPoints['right'].child) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-                expression += 'sqrt(' + this.dockingPoints['argument'].child.getExpression(format) + ')';
+                expression += 'sqrt(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
             }
             if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                expression += '**(' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + ')';
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
-                    expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                    expression += " * " + this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
@@ -116,15 +116,15 @@ export
             expression = '';
             // TODO Include indexes when they will be implemented
             if ('argument' in this.dockingPoints && this.dockingPoints['argument'].child) {
-                let sqrt = '<msqrt>' + this.dockingPoints['argument'].child.getExpression(format) + '</msqrt>';
+                let sqrt = '<msqrt>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</msqrt>';
                 if ('superscript' in this.dockingPoints && this.dockingPoints['superscript'].child) {
-                    expression += '<msup>' + sqrt + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                    expression += '<msup>' + sqrt + '<mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
                 } else {
                     expression += sqrt;
                 }
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression('mathml');
+                expression += this.dockingPoints['right'].child.formatExpressionAs('mathml');
             }
         }
         return expression;
@@ -188,7 +188,7 @@ export
     get _argumentBox(): Rect {
         let argumentBox: Rect = null;
         try {
-            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
+            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         } catch (e) {
             argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         }
@@ -225,8 +225,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = this._argumentBox.w + child.leftBound + this.dockingPointSize/2;
-                child.position.y = this.boundingBox().y - child.dockingPoint.y - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = this.boundingBox().y - child.dockingPoint.y - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = this.boundingBox().x + this.boundingBox().w + this.dockingPointSize;
                 dp.position.y = this.boundingBox().y;

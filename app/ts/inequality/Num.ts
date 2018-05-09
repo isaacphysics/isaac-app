@@ -93,57 +93,57 @@ export
      * @returns {string} The expression in the specified format.
      */
 
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         var expression = "";
         if (format == "latex") {
             expression = this.getFullText("latex");
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
-                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Number, hence produces a multiplication
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "mhchem") {
             expression = this.getFullText("mhchem");
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
-                expression += "^" + this.dockingPoints["superscript"].child.getExpression(format) + "";
+                expression += "^" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "";
             }
             if (this.right && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Number, hence produces a multiplication
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
 
         } else if (format == "python") {
             expression = "" + this.getFullText("python");
             if (this.dockingPoints["superscript"].child != null) {
-                expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
+                expression += "**(" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + ")";
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else if (this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a "Symbol", hence produces a multiplication
-                    expression += "*" + this.dockingPoints["right"].child.getExpression(format);
+                    expression += "*" + this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
             expression = "" + this.getFullText();
             if (this.dockingPoints["superscript"].child != null) {
-                expression += this.dockingPoints["superscript"].child.getExpression(format);
+                expression += this.dockingPoints["superscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             expression = '';
@@ -151,11 +151,11 @@ export
                 expression += '<mn>' + this.getFullText() + '</mn>';
 
             } else {
-                expression += '<msup><mn>' + this.getFullText() + '</mn><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                expression += '<msup><mn>' + this.getFullText() + '</mn><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
 
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression('mathml');
+                expression += this.dockingPoints['right'].child.formatExpressionAs('mathml');
             }
         }
         return expression;
@@ -211,8 +211,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
-                child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = -this.scale * this.s.mBox_h;

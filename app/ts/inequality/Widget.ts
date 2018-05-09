@@ -131,7 +131,7 @@ export
         return this.p.createVector(0, 0);
     }
 
-    get dockingPoints() {
+    get dockingPoints(): { [key: string]: DockingPoint; } {
         return this._dockingPoints;
     }
 
@@ -166,7 +166,7 @@ export
 	 * @param format A string to specify the output format. Supports: latex, python.
 	 * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         return "";
     }
 
@@ -183,7 +183,7 @@ export
                 dockingPoint.child.draw();
             } else {
                 // There is no child to paint, let's paint an empty docking point
-                //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
+                //if (this.depth < 2) { // This stops docking points from being shown, but not from being used.
                 let drawThisOne = _.intersection(this.s.visibleDockingPointTypes, dockingPoint.type).length > 0;
                 let highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
@@ -221,7 +221,7 @@ export
 
             // +++ SUBTREE BOUNDING BOX +++
             // +++ Also draws local boxes because recursion.
-            let subtreeBox = this.subtreeBoundingBox();
+            let subtreeBox = this.subtreeBoundingBox;
             this.p.stroke(0, 0, 255, 128);
             this.p.rect(subtreeBox.x, subtreeBox.y, subtreeBox.w, subtreeBox.h);
 
@@ -234,12 +234,12 @@ export
             // }
 
             // +++ LOCAL BOUNDING BOX INCLUDING DOCKING POINTS +++
-            // let dpB = this.dockingPointsBoundingBox();
+            // let dpB = this.dockingPointsBoundingBox;
             // this.p.stroke(0,128,0,128).strokeWeight(2);
             // this.p.rect(dpB.x, dpB.y, dpB.w, dpB.h);
 
             // +++ SUBTREE BOUNDING BOX INCLUDING DOCKING POINTS +++
-            let sdpB = this.subtreeDockingPointsBoundingBox();
+            let sdpB = this.subtreeDockingPointsBoundingBox;
             this.p.stroke(128,64,0,128).strokeWeight(2);
             this.p.rect(sdpB.x, sdpB.y, sdpB.w, sdpB.h);
 
@@ -263,7 +263,7 @@ export
 	 * @returns {{type: string}}
 	 */
     subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
-        let p = this.getAbsolutePosition();
+        let p = this.absolutePosition;
         let o = {
             type: this.typeAsString
         };
@@ -273,8 +273,8 @@ export
         if (!this.parentWidget && !minimal) {
             o["position"] = { x: p.x, y: p.y };
             o["expression"] = {
-                latex: this.getExpression("latex"),
-                python: this.getExpression("python")
+                latex: this.formatExpressionAs("latex"),
+                python: this.formatExpressionAs("python")
             };
         }
         if (processChildren) {
@@ -363,62 +363,18 @@ export
     }
 
 	/**
-	 * Overlapping test for this widget's docking points.
-	 *
-	 * @param w The overlapping Widget
-	 * @return {DockingPoint} The best overlapped candidate DockingPoint, or null if no docking point was selected.
-	 */
-    dockingPointsHit(w: Widget): DockingPoint {
-        let hitPoint: DockingPoint = null;
-
-        _.some(this.getChildren(), child => {
-            hitPoint = child.dockingPointsHit(w);
-            return hitPoint != null;
-        });
-
-        // FIXME hic sunt leones. This works, but the code could be a bit clearer (if not better/more efficient)
-        let wAP = w.getAbsolutePosition();
-        let wBox = w.subtreeBoundingBox();
-        let testRect = new Rect(wBox.x + wAP.x, wBox.y + wAP.y, wBox.w, wBox.h);
-        let thisAP = this.getAbsolutePosition();
-
-        let hitPoints: Array<DockingPoint> = [];
-        if (null == hitPoint) {
-            _.each(this.dockingPoints, point => {
-                if (point.child == null) {
-                    let dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
-                    if (testRect.contains(dp)) {
-                        hitPoints.push(point);
-                    }
-                }
-            });
-        }
-        if (!_.isEmpty(hitPoints)) {
-            [hitPoint, ...hitPoints] = hitPoints;
-            _.each(hitPoints, hp => {
-                let hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
-                let currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
-                if (p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
-                    hitPoint = hp;
-                }
-            });
-        }
-        return hitPoint;
-    }
-
-	/**
 	 * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 
-    getTotalSymbolCount(): number {
+    get totalSymbolCount(): number {
         let total = 1;
         for (let i in this.dockingPoints) {
             let c = this.dockingPoints[i].child;
             if (c != null) {
-                total += c.getTotalSymbolCount();
+                total += c.totalSymbolCount;
             }
         }
         return total;
@@ -427,7 +383,7 @@ export
     /**
      * Computes this widget's depth in the tree.
      */
-    depth(): number {
+    get depth(): number {
         let depth = 0;
         let n: Widget = this;
         while (n.parentWidget) {
@@ -487,14 +443,15 @@ export
      *
      * @returns {Rect} The bounding box
      */
+    // FIXME Upgrade TypeScript to get abstract getters and setters
     abstract boundingBox(): Rect;
 
     /**
      * @returns {Vector} The absolute position of this widget relative to the canvas.
      */
-    getAbsolutePosition(): p5.Vector {
+    get absolutePosition(): p5.Vector {
         if (null != this.parentWidget) {
-            return p5.Vector.add(this.parentWidget.getAbsolutePosition(), this.position);
+            return p5.Vector.add(this.parentWidget.absolutePosition, this.position);
         } else {
             return this.position;
         }
@@ -503,9 +460,9 @@ export
     /**
      * @returns {Rect} The absolute bounding box of this widget relative to the canvas.
      */
-    getAbsoluteBoundingBox(): Rect {
+    get absoluteBoundingBox(): Rect {
         let box = this.boundingBox();
-        let pos = this.getAbsolutePosition();
+        let pos = this.absolutePosition;
         return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
     }
 
@@ -514,9 +471,9 @@ export
      *
      * @returns {Rect}
      */
-    subtreeBoundingBox(): Rect {
-        let thisAbsPosition = this.getAbsolutePosition();
-        let thisAbsBox = this.getAbsoluteBoundingBox();
+    get subtreeBoundingBox(): Rect {
+        let thisAbsPosition = this.absolutePosition;
+        let thisAbsBox = this.absoluteBoundingBox;
 
         let left = thisAbsBox.x;
         let top = thisAbsBox.y;
@@ -526,9 +483,9 @@ export
         for (let name in this.dockingPoints) {
             let child = this.dockingPoints[name].child;
             if (child) {
-                let childAbsPosition = child.getAbsolutePosition();
-                let childSubBox = child.subtreeBoundingBox();
-                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.getAbsolutePosition().y, childSubBox.w, childSubBox.h);
+                let childAbsPosition = child.absolutePosition;
+                let childSubBox = child.subtreeBoundingBox;
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.absolutePosition.y, childSubBox.w, childSubBox.h);
                 let childLeft = childAbsBox.x;
                 let childTop = childAbsBox.y;
                 let childRight = childLeft + childAbsBox.w;
@@ -547,7 +504,7 @@ export
     /**
      * @returns {Array<Rect>} The bounding boxes corresponding to this widget's docking points.
      */
-    dockingPointsBoxes(): Array<Rect> {
+    get dockingPointsBoxes(): Array<Rect> {
         let dpBoxes: Array<Rect> = [];
         for (let k in this.dockingPoints) {
             let dp = this.dockingPoints[k];
@@ -558,11 +515,11 @@ export
         return dpBoxes;
     }
 
-    dockingPointsBoundingBox(): Rect {
+    get dockingPointsBoundingBox(): Rect {
         let ax = this.position.x;
         let ay = this.position.y;
         let thisBox = new Rect(this.boundingBox().x, this.boundingBox().y, this.boundingBox().w, this.boundingBox().h);
-        let dpBoxes = [thisBox, ...this.dockingPointsBoxes()];
+        let dpBoxes = [thisBox, ...this.dockingPointsBoxes];
 
         let x = _.min(_.map(dpBoxes, b => { return b.x+ax }));
         let y = _.min(_.map(dpBoxes, b => { return b.y+ay }));
@@ -575,9 +532,9 @@ export
     /**
      * @returns {Rect} The absolute bounding box of this widget AND docking points, relative to the canvas.
      */
-    getAbsoluteDockingPointsBoundingBox(): Rect {
-        let box = this.dockingPointsBoundingBox();
-        let pos = this.getAbsolutePosition();
+    get absoluteDockingPointsBoundingBox(): Rect {
+        let box = this.dockingPointsBoundingBox;
+        let pos = this.absolutePosition;
 
         return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
     }
@@ -585,9 +542,9 @@ export
     /**
      * @returns {Rect} The (relative?) bounding box of the sub tree AND docking points.
      */
-    subtreeDockingPointsBoundingBox(): Rect {
-        let thisAbsPosition = this.getAbsolutePosition();
-        let thisAbsBox = this.getAbsoluteDockingPointsBoundingBox();
+    get subtreeDockingPointsBoundingBox(): Rect {
+        let thisAbsPosition = this.absolutePosition;
+        let thisAbsBox = this.absoluteDockingPointsBoundingBox;
 
         let left = thisAbsBox.x;
         let top = thisAbsBox.y;
@@ -597,9 +554,9 @@ export
         for (let name in this.dockingPoints) {
             let child = this.dockingPoints[name].child;
             if (child) {
-                let childAbsPosition = child.getAbsolutePosition();
-                let childSubBox = child.subtreeDockingPointsBoundingBox();
-                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.getAbsolutePosition().y, childSubBox.w, childSubBox.h);
+                let childAbsPosition = child.absolutePosition;
+                let childSubBox = child.subtreeDockingPointsBoundingBox;
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.absolutePosition.y, childSubBox.w, childSubBox.h);
                 let childLeft = childAbsBox.x;
                 let childTop = childAbsBox.y;
                 let childRight = childLeft + childAbsBox.w;
@@ -616,32 +573,18 @@ export
     }
 
     get leftBound(): number {
-        return this.dockingPoint.x - this.subtreeDockingPointsBoundingBox().x;
+        return this.dockingPoint.x - this.subtreeDockingPointsBoundingBox.x;
     }
 
     get rightBound(): number {
-        return this.dockingPoint.x - (this.subtreeDockingPointsBoundingBox().x + this.subtreeDockingPointsBoundingBox().w);
+        return this.dockingPoint.x - (this.subtreeDockingPointsBoundingBox.x + this.subtreeDockingPointsBoundingBox.w);
     }
 
     get topBound(): number {
-        return this.dockingPoint.y - this.subtreeDockingPointsBoundingBox().y;
+        return this.dockingPoint.y - this.subtreeDockingPointsBoundingBox.y;
     }
 
     get bottomBound(): number {
-        return this.dockingPoint.y - (this.subtreeDockingPointsBoundingBox().y + this.subtreeDockingPointsBoundingBox().h);
-    }
-
-    /**
-     * Finds the width of the bounding box around an entire expression.
-     */
-    getExpressionWidth(): number {
-        return this.subtreeBoundingBox().w;
-    }
-
-    /**
-     * Finds the height of the bounding box around an entire expression.
-     */
-    getExpressionHeight(): number {
-        return this.subtreeBoundingBox().h;
+        return this.dockingPoint.y - (this.subtreeDockingPointsBoundingBox.y + this.subtreeDockingPointsBoundingBox.h);
     }
 }

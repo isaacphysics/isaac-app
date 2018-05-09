@@ -114,7 +114,7 @@ export
 	 * @param format A string to specify the output format. Supports: latex, python, subscript.
 	 * @returns {string} The expression in the specified format.
 	 */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             expression = this.letter;
@@ -122,17 +122,17 @@ export
                 expression += "'"
             }
             if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
-                expression += "^{" + this.dockingPoints["superscript"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
-                expression += "_{" + this.dockingPoints["subscript"].child.getExpression(format) + "}";
+                expression += "_{" + this.dockingPoints["subscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Symbol, hence produces a multiplication
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "python") {
@@ -141,20 +141,20 @@ export
                 expression += "_prime"
             }
             if (this.dockingPoints["subscript"].child != null) {
-                expression += "_" + this.dockingPoints["subscript"].child.getExpression("subscript");
+                expression += "_" + this.dockingPoints["subscript"].child.formatExpressionAs("subscript");
             }
             if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
-                expression += "**(" + this.dockingPoints["superscript"].child.getExpression(format) + ")";
+                expression += "**(" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + ")";
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation ||
                     this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else if (this.dockingPoints["right"] && this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Symbol by default, hence produces a multiplication (with a star)
-                    expression += "*" + this.dockingPoints["right"].child.getExpression(format);
+                    expression += "*" + this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
@@ -163,13 +163,13 @@ export
                 expression += "_prime"
             }
             if (this.dockingPoints["subscript"].child != null) {
-                expression += this.dockingPoints["subscript"].child.getExpression(format);
+                expression += this.dockingPoints["subscript"].child.formatExpressionAs(format);
             }
             if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
-                expression += this.dockingPoints["superscript"].child.getExpression(format);
+                expression += this.dockingPoints["superscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             expression = '';
@@ -182,25 +182,25 @@ export
                     expression += '<mi>' + l + '</mi>';
 
                 } else if (this.dockingPoints['subscript'].child != null) {
-                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
                 }
             } else {
                 if (this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
                     expression += '<mi>' + l + '</mi>';
 
                 } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
-                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
 
                 } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msup><mi>' + l + '</mi><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                    expression += '<msup><mi>' + l + '</mi><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
 
                 } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                    expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
                 }
             }
 
             if (this.dockingPoints["right"] && this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression('mathml');
+                expression += this.dockingPoints['right'].child.formatExpressionAs('mathml');
             }
         }
         return expression;
@@ -219,7 +219,7 @@ export
             e += "_prime"
         }
         if (this.dockingPoints['subscript'].child) {
-            e += '_' + this.dockingPoints['subscript'].child.getExpression('subscript');
+            e += '_' + this.dockingPoints['subscript'].child.formatExpressionAs('subscript');
         }
         return e;
     }
@@ -263,8 +263,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
-                child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
@@ -278,7 +278,7 @@ export
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
                 child.position.y = child.topBound;
-                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = 0;
@@ -292,7 +292,6 @@ export
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                console.log(this.scale);
                 dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
@@ -302,7 +301,7 @@ export
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));
     }
 }

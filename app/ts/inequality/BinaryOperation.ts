@@ -98,22 +98,22 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = " ";
         if (format == "latex") {
             expression += this.latexSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             expression += this.pythonSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mhchem") {
           expression += this.mhchemSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             } else {
                 // This is a charge, most likely:
                 expression = this.operation.replace(/−/g, "-");
@@ -121,12 +121,12 @@ export
         } else if (format == "subscript") {
             expression = "";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             expression = '<mo>' + this.mathmlSymbol + "</mo>";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         }
         return expression;

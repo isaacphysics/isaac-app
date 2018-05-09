@@ -126,7 +126,7 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         // TODO Triple check
         let expression = "";
         let lhs = '(', rhs = ')';
@@ -134,56 +134,56 @@ export
             lhs = this.latexSymbol['lhs'];
             rhs = this.latexSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+                expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
                 if (this.dockingPoints['superscript'].child) {
-                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+                    expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
                 if (this.dockingPoints['subscript'].child) {
-                    expression += '_{' + this.dockingPoints['subscript'].child.getExpression(format) + '}';
+                    expression += '_{' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
                 expression += lhs + rhs;
             }
             if (this.dockingPoints['right'].child) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         if (format == "mhchem") {
             lhs = this.mhchemSymbol['lhs'];
             rhs = this.mhchemSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+                expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
                 if (this.dockingPoints['subscript'].child) {
-                    expression += this.dockingPoints['subscript'].child.getExpression(format);
+                    expression += this.dockingPoints['subscript'].child.formatExpressionAs(format);
                 }
                 if (this.dockingPoints['superscript'].child) {
-                    expression += '^{' + this.dockingPoints['superscript'].child.getExpression(format) + '}';
+                    expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
                 expression += lhs + rhs;
             }
             if (this.dockingPoints['right'].child) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             lhs = this.pythonSymbol['lhs'];
             rhs = this.pythonSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
-                expression += lhs + this.dockingPoints['argument'].child.getExpression(format) + rhs;
+                expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
                 if (this.dockingPoints['superscript'].child) {
-                    expression += '**(' + this.dockingPoints['superscript'].child.getExpression(format) + ')';
+                    expression += '**(' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + ')';
                 }
                 if (this.dockingPoints['subscript'].child) {
-                    expression += '_(' + this.dockingPoints['subscript'].child.getExpression(format) + ')';
+                    expression += '_(' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + ')';
                 }
             } else {
                 expression += lhs + rhs;
             }
             if (this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else {
-                    expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                    expression += " * " + this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "subscript") {
@@ -192,19 +192,19 @@ export
             lhs = this.mathmlSymbol['lhs'];
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
-                let brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.getExpression(format) + '</mrow></mfenced>';
+                let brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>';
                 if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
-                    expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msubsup>';
+                    expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
                 } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
-                    expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.getExpression(format) + '</mrow></msup>';
+                    expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
                 } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
-                    expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.getExpression(format) + '</mrow></msub>';
+                    expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
                 } else {
                     expression = brackets;
                 }
             }
             if (this.dockingPoints['right'].child) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -269,7 +269,7 @@ export
 
         let argBox = new Rect(0, 0, this.dockingPointSize, 0);
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox();
+            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         }
         let width = box.w + argBox.w;
         let height = Math.max(box.h, argBox.h);
@@ -307,8 +307,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound;
-                child.position.y = -(thisBox.h + child.subtreeBoundingBox().h)/2 + this.dockingPointSize;
-                superscriptWidth = child.subtreeDockingPointsBoundingBox().w;
+                child.position.y = -(thisBox.h + child.subtreeBoundingBox.h)/2 + this.dockingPointSize;
+                superscriptWidth = child.subtreeDockingPointsBoundingBox.w;
             } else {
                 dp.position.x = (thisBox.w + this.dockingPointSize)/2;
                 dp.position.y = -thisBox.h/2;
@@ -321,8 +321,8 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound;
-                child.position.y = (thisBox.h + child.subtreeBoundingBox().h)/2;
-                subscriptWidth = child.subtreeDockingPointsBoundingBox().w;
+                child.position.y = (thisBox.h + child.subtreeBoundingBox.h)/2;
+                subscriptWidth = child.subtreeDockingPointsBoundingBox.w;
             } else {
                 dp.position.x = (thisBox.w + this.dockingPointSize)/2;
                 dp.position.y = thisBox.h/2;

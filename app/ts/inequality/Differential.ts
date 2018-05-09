@@ -109,7 +109,7 @@ class Differential extends Widget {
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if (this.letter == "δ") {
@@ -121,22 +121,22 @@ class Differential extends Widget {
             }
             
             if (this.dockingPoints["order"].child != null && !this.orderNeedsMoving) {
-                expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["order"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["argument"].child != null) {
                 if (this.dockingPoints["argument"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
+                    expression += this.dockingPoints["argument"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Differential, hence produces a multiplication
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
+                    expression += this.dockingPoints["argument"].child.formatExpressionAs(format);
                 }
             }
             // AAARGH! Curses, you Leibniz!
             if (this.dockingPoints["order"].child != null && this.orderNeedsMoving) {
-                expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["order"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             if (this.letter == "δ") {
@@ -148,13 +148,13 @@ class Differential extends Widget {
             }
             let args = [];
             if (this.dockingPoints["argument"].child != null) {
-                args.push(this.dockingPoints["argument"].child.getExpression(format));
+                args.push(this.dockingPoints["argument"].child.formatExpressionAs(format));
             }
             expression += args.join("");
 
             // FIXME We need to decide what to do with orders.
             if (this.dockingPoints["order"].child != null) {
-                var n = parseInt(this.dockingPoints["order"].child.getExpression(format));
+                var n = parseInt(this.dockingPoints["order"].child.formatExpressionAs(format));
                 if (!isNaN(n) && n > 1) {
                     expression += _.repeat(" * " + expression, n-1);
                 }
@@ -163,22 +163,22 @@ class Differential extends Widget {
                 let op = (this.dockingPoints["right"].child.typeAsString == 'Relation' ||
                       this.dockingPoints["right"].child.typeAsString == 'BinaryOperation')
                       ? '' : ' * ';
-                expression += op + this.dockingPoints["right"].child.getExpression(format);
+                expression += op + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
 
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
-                expression += "<mi>" + this.letter  + "</mi>" + this.dockingPoints["argument"].child.getExpression(format);
+                expression += "<mi>" + this.letter  + "</mi>" + this.dockingPoints["argument"].child.formatExpressionAs(format);
             } else if (this.dockingPoints["order"].child != null && this.dockingPoints["argument"].child != null) {
                 if (this.orderNeedsMoving) {
-                    expression += '<msup><mrow><mi>' + this.letter + '</mi>' + this.dockingPoints["argument"].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>';
+                    expression += '<msup><mrow><mi>' + this.letter + '</mi>' + this.dockingPoints["argument"].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints["order"].child.formatExpressionAs(format) + '</mrow></msup>';
                 } else {
-                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>' + this.dockingPoints["argument"].child.getExpression(format);
+                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints["order"].child.formatExpressionAs(format) + '</mrow></msup>' + this.dockingPoints["argument"].child.formatExpressionAs(format);
                 }
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -202,7 +202,7 @@ class Differential extends Widget {
         }
         let args = [];
         if (this.dockingPoints["argument"].child != null) {
-            args.push(this.dockingPoints["argument"].child.getExpression("python"));
+            args.push(this.dockingPoints["argument"].child.formatExpressionAs("python"));
         }
         expression += args.join(" ");
 
@@ -248,8 +248,8 @@ class Differential extends Widget {
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize*child.scale/2;
-                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox().y + child.subtreeDockingPointsBoundingBox().h);
-                orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox().w);
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
                 dp.position.y = -this.scale*this.s.mBox_h;
@@ -286,7 +286,7 @@ class Differential extends Widget {
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 }
