@@ -478,7 +478,10 @@
         </table>
         <br>
         <p ng-show="anyUsersAuthorisedAlready"><small>You already share some data with the users highlighted in green above; but you still need to approve joining additional groups they manage, or allow additional users access to your data.<small></p>
-        <p><small><strong>Remember</strong>: you can always revoke access to your data from the Teacher Connections tab on this page.</small></p>
+        <p>
+            <small><strong>Remember</strong>: you can always revoke access to your data from the Teacher Connections tab on this page.</small><br>
+            <small>For more details about what information is shared, see our <a ui-sref="privacy" target="_blank">Privacy Policy</a>.</small>
+        </p>
         <a class="ru-button-big" ng-click="applyToken()">Confirm</a>
         <a class="ru-button-big secondary" ng-click="modals.tokenVerification.hide()">Cancel</a>
     </div>     
