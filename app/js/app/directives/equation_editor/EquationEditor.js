@@ -282,56 +282,13 @@ define(function (require) {
                 var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
                 var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
                 var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
-                var opsMap = {
-                    "<": "<",
-                    ">": ">",
-                    "<=": "\\leq",
-                    ">=": "\\geq",
-                };
+                var opsMap = {"<": "<", ">": ">", "<=": "\\leq", ">=": "\\geq"};
                 var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
                 var trigFunctionsStandard = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot"];
                 var trigFunctionsHyp = ["sinh", "cosh", "tanh", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
                 var trigReduced = ["sin", "cos", "tan"];
                 var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
-                var letterMap = {
-                    "\\alpha": "α",
-                    "\\beta": "β",
-                    "\\gamma": "γ",
-                    "\\delta": "δ",
-                    "\\epsilon": "ε",
-                    "\\varepsilon": "ε",
-                    "\\zeta": "ζ",
-                    "\\eta": "η",
-                    "\\theta": "θ",
-                    "\\iota": "ι",
-                    "\\kappa": "κ",
-                    "\\lambda": "λ",
-                    "\\mu": "μ",
-                    "\\nu": "ν",
-                    "\\xi": "ξ",
-                    "\\omicron": "ο",
-                    "\\pi": "π",
-                    "\\rho": "ρ",
-                    "\\sigma": "σ",
-                    "\\tau": "τ",
-                    "\\upsilon": "υ",
-                    "\\phi": "ϕ",
-                    "\\chi": "χ",
-                    "\\psi": "ψ",
-                    "\\omega": "ω",
-                    "\\Gamma": "Γ",
-                    "\\Delta": "Δ",
-                    "\\Theta": "Θ",
-                    "\\Lambda": "Λ",
-                    "\\Xi": "Ξ",
-                    "\\Pi": "Π",
-                    "\\Sigma": "Σ",
-                    "\\Upsilon": "Υ",
-                    "\\Phi": "Φ",
-                    "\\Psi": "Ψ",
-                    "\\Omega": "Ω",
-                };
-
+                var letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
                 var chemicalSymbols = {};
                 var chemicalSymbolsArray = elements.concat(particles);
 
@@ -861,7 +818,7 @@ define(function (require) {
                                 texLabel: true,
                                 fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) == 'arc') ? '15px' : '18px'
                             }
-                        }
+                        };
                         if (children != null) {
                             result[count].children = children;
                         }
@@ -1117,7 +1074,8 @@ define(function (require) {
                             particle: 'e',
                             type: 'electron'
                         }
-                    },],
+                    }
+                    ],
 
                     theStates: [{
                         type: 'StateSymbol',
@@ -1169,7 +1127,9 @@ define(function (require) {
                         properties: {
                             state: 'metal',
                         }
-                    }],
+                    }
+                    ],
+
                     hiddenOps: [{
                         type: 'Relation',
                         menu: {
@@ -1206,7 +1166,9 @@ define(function (require) {
                         properties: {
                             relation: '>'
                         }
-                    },],
+                    }
+                    ],
+
                     chemOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -1278,7 +1240,9 @@ define(function (require) {
                         properties: {
                             relation: '.'
                         }
-                    },],
+                    }
+                    ],
+
                     reducedOps: [{
                         type: "BinaryOperation",
                         properties: {
@@ -1337,130 +1301,8 @@ define(function (require) {
                         properties: {
                             relation: '='
                         }
-                    }],
-
-                    // equality: [{
-                    //     type: "string",
-                    //     label: "=",
-                    //     token: "=",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "<",
-                    //     token: "<",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: ">",
-                    //     token: ">",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\leq",
-                    //     token: "\\leq",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\geq",
-                    //     token: "\\geq",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }],
-
-                    // calculus: [{
-                    //     type: "string",
-                    //     label: "\\int",
-                    //     token: "\\int",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\mathrm{d}",
-                    //     token: "\\mathrm{d}",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\mathrm{e}",
-                    //     token: "\\mathrm{e}",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\ln",
-                    //     token: "\\ln",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\log",
-                    //     token: "\\log",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }],
-
-                    // operators: [{
-                    //     type: "string",
-                    //     label: "+",
-                    //     token: "+",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "line",
-                    //     label: "-",
-                    //     token: "-",
-                    //     length: 40,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\times",
-                    //     token: "\\times",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "line",
-                    //     label: "\\frac{a}{b}",
-                    //     token: ":frac",
-                    //     length: 100,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "\\pm",
-                    //     token: "\\pm",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }, {
-                    //     type: "container",
-                    //     subType: "sqrt",
-                    //     width: 148,
-                    //     height: 60,
-                    //     label: "\\sqrt{x}",
-                    //     texLabel: true
-                    // }, {
-                    //     type: "container",
-                    //     subType: "brackets",
-                    //     width: 220,
-                    //     height: 70,
-                    //     label: "(x)",
-                    //     texLabel: true
-                    // }, {
-                    //     type: "container",
-                    //     subType: "abs",
-                    //     width: 148,
-                    //     height: 60,
-                    //     label: "|x|",
-                    //     texLabel: true
-                    // }, {
-                    //     type: "string",
-                    //     label: "!",
-                    //     token: "!",
-                    //     fontSize: 48,
-                    //     texLabel: true
-                    // }],
+                    }
+                    ],
 
                     trig: [{
                         type: "Fn",
@@ -1492,7 +1334,8 @@ define(function (require) {
                             label: "\\tan",
                             texLabel: true
                         }
-                    },],
+                    }
+                    ],
 
                     otherFns: [{
                         type: "Fn",
@@ -1514,7 +1357,8 @@ define(function (require) {
                             label: "\\log",
                             texLabel: true
                         }
-                    }],
+                    }
+                    ],
 
                     derivatives: derivativeFunctions(derivativesStandard)
                     /* δ ∆ <- let's keep these handy, just in case... */
@@ -1565,28 +1409,7 @@ define(function (require) {
                         texLabel: true
                     }
                 };
-                /*
-                 scope.equalityTitle = {
-                 fontSize: 48,
-                 type: "string",
-                 label: "="
-                 };
 
-                 scope.operatorMenuTitle = {
-                 fontSize: 48,
-                 type: "string",
-                 label: "\\pm",
-                 texLabel: true
-                 };
-
-                 scope.calculusTitle = {
-                 type: "string",
-                 menu: {
-                 label: "\\int",
-                 texLabel: true
-                 }
-                 };
-                 */
                 scope.trigTitle = {
                     type: "string",
                     menu: {
@@ -1679,9 +1502,10 @@ define(function (require) {
 
                 scope.centre = function () {
                     sketch.centre();
-                }
+                };
 
                 element.on("keydown", function (e) {
+                    debugger;
                     var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
                     if ($stateParams.testing) {
                         console.log("KeyDown", e.which || e.keyCode);
@@ -1721,143 +1545,11 @@ define(function (require) {
                     }
                 });
 
-                // TODO: Make this work under new regime
-                var updateSelectionRender = function () {
-                    return;
-                    var selectionHandle = element.find("[selection-handle]");
-                    var canvasOffset = element.offset();
-
-                    var maxX = 0;
-                    var maxY = 0;
-
-                    for (var i in scope.selectedSymbols) {
-                        var sid = scope.selectedSymbols[i];
-                        var e = $("#" + sid + " .canvas-symbol");
-                        var offset = e.offset();
-
-                        var localPos = {
-                            left: offset.left - canvasOffset.left,
-                            top: offset.top - canvasOffset.top,
-                            width: e.width(),
-                            height: e.height()
-                        };
-
-                        maxX = Math.max(maxX, localPos.left + localPos.width);
-                        maxY = Math.max(maxY, localPos.top + localPos.height);
-                    }
-
-                    selectionHandle.css({
-                        left: maxX,
-                        top: maxY
-                    });
-
-                    scope.selectionHandleFlags.showCalc = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].fromCalc;
-                    scope.selectionHandleFlags.showResize = scope.selectedSymbols.length == 1;
-                    scope.selectionHandleFlags.enableSymbolModMenu = scope.selectedSymbols.length == 1 && scope.state.symbols[scope.selectedSymbols[0]].enableMods;
-                    //scope.selectionHandleFlags.symbolModMenuOpen = false
-                };
-
-                // TODO: As above
-                scope.$watchCollection("selectedSymbols", updateSelectionRender);
-
-                // TODO: Decide how to edit numbers.
-                /*
-                 scope.$on("selection_calc", function(_, e) {
-
-                 // If we got here, there should be precisely one symbol selected.
-
-                 if (scope.selectedSymbols.length != 1) {
-                 console.error(new Error("Can only edit single numbers"));
-                 debugger;
-                 }
-
-                 scope.$broadcast("editNumber", scope.state.symbols[scope.selectedSymbols[0]]);
-
-                 scope.$digest();
-
-                 e.stopPropagation();
-                 e.preventDefault();
-                 });*/
-
-                // TODO: Implement symbol mods in TypeScript
-                /*
-                 var rebuildSymbolToken = function(s) {
-                 s.token = s.baseToken;
-
-                 if(s.vector== 1) {
-                 s.token = "\\mathbf{" + s.token + "}";
-                 } else if (s.vector == 2) {
-                 s.token = "\\mathbf{\\hat " + s.token + "}";
-                 }
-
-
-
-                 if (s.dot == 1) {
-                 s.token = "\\dot{" + s.token + "}";
-                 } else if (s.dot == 2) {
-                 s.token = "\\ddot{" + s.token + "}";
-                 }
-
-                 for (var i = 0; i < s.prime || 0; i++) {
-                 s.token += "'";
-                 }
-
-                 };
-
-                 scope.$on("selection_mod", function(_, type, e) {
-
-                 // If we got here, there should be precisely one symbol selected.
-                 if (scope.selectedSymbols.length != 1) {
-                 console.error(new Error("Can only modify single symbols"));
-                 debugger;
-                 }
-
-                 var s = scope.state.symbols[scope.selectedSymbols[0]];
-                 console.debug("Add mod:", type, s);
-
-                 switch(type) {
-                 case "dot":
-                 s.dot = s.dot || 0;
-                 s.dot = (s.dot + 1) % 3;
-                 rebuildSymbolToken(s);
-                 break;
-                 case "prime":
-
-                 s.prime = s.prime || 0;
-                 s.prime = (s.prime + 1) % 3;
-                 rebuildSymbolToken(s);
-                 break;
-                 case "vector":
-                 s.vector = s.vector || 0;
-                 s.vector = (s.vector + 1) % 3;
-                 rebuildSymbolToken(s);
-                 break;
-                 }
-                 scope.$apply();
-
-                 e.stopPropagation();
-                 e.preventDefault();
-                 });
-                 */
-
                 scope.$on("menuOpened", function () {
-                    // TODO: Deselect symbols when opening menus
-                    //scope.selectedSymbols.length = 0;
-                    //scope.selectionHandleFlags.symbolModMenuOpen = false
+
                 });
 
                 scope.trash = function () {
-                    // TODO: Delete selected symbols
-                    /*
-                     if (scope.selectedSymbols.length > 0) {
-                     for (var i in scope.selectedSymbols){
-                     var sid = scope.selectedSymbols[i];
-                     delete scope.state.symbols[sid];
-                     }
-                     scope.selectedSymbols.length = 0;
-                     scope.selectionHandleFlags.symbolModMenuOpen = false;
-                     }
-                     */
                     scope.$emit("historyCheckpoint");
                 }
             }
