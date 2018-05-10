@@ -1505,7 +1505,6 @@ define(function (require) {
                 };
 
                 element.on("keydown", function (e) {
-                    debugger;
                     var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
                     if ($stateParams.testing) {
                         console.log("KeyDown", e.which || e.keyCode);
