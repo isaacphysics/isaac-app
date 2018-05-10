@@ -25,6 +25,7 @@ import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
 import { Brackets } from "./Brackets";
+import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 /** Functions. */
 export
@@ -270,7 +271,7 @@ export
         let superscriptBox = this._superscriptBox;
         let subscriptBox = this._subscriptBox;
 
-        let width = this._nameBox.w + Math.max(superscriptBox.w, subscriptBox.w) + 40*this.scale + argumentBox.w + this.dockingPointSize;
+        let width = this._nameBox.w + Math.max(superscriptBox.w, subscriptBox.w) + 40*this.scale + argumentBox.w;
         let height = Math.max(this._baseBox.h, argumentBox.h);
 
         return new Rect(-this._nameBox.w, -height/2 + this.dockingPoint.y, width, height);
@@ -284,12 +285,13 @@ export
         return Rect.fromObject(this.s.font_up.textBounds(this.name, 0, 0, this.scale * this.s.baseFontSize));
     }
 
+    // FIXME The argument box could use some extra space to the right to accommodate docking points more nicely. OK for now.
     get _argumentBox(): Rect {
-        let argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
+            return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
         }
-        return argumentBox;
     }
 
     get _bracketsBox(): Rect {
@@ -302,29 +304,25 @@ export
         let height = Math.min(Math.max(this._baseBox.h, argumentBox.h), this.s.mBox_h*3);
 
         let bracketsX = Math.max(superscriptBox.w, subscriptBox.w);
-        let bracketsW = 40*this.scale + argumentBox.w + this.dockingPointSize;
+        let bracketsW = 40*this.scale + argumentBox.w;
 
         return new Rect(bracketsX, this.boundingBox().y + this.boundingBox().h/2 - height/2, bracketsW, height);
     }
 
     get _superscriptBox(): Rect {
-        let superscriptBox: Rect = null;
-        try {
-            superscriptBox = this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox;
-        } catch (e) {
-            superscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
+            return this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
         }
-        return superscriptBox;
     }
 
     get _subscriptBox(): Rect {
-        let subscriptBox: Rect = null;
-        try {
-            subscriptBox = this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox;
-        } catch (e) {
-            subscriptBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
+            return this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
         }
-        return subscriptBox;
     }
 
     /**
@@ -345,7 +343,7 @@ export
                 child.position.x = child.leftBound;
                 child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
-                dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + this._nameBox.w + dp.size/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
             }
         }
@@ -357,7 +355,7 @@ export
                 child.position.x = child.leftBound;
                 child.position.y = child.topBound;
             } else {
-                dp.position.x = thisBox.x + this._nameBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + this._nameBox.w + dp.size/2;
                 dp.position.y = 0;
             }
         }
@@ -366,7 +364,7 @@ export
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = this._bracketsBox.x + child.leftBound + this.dockingPointSize;
+                child.position.x = this._bracketsBox.x + child.leftBound + dp.size;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
                 dp.position.x = this._bracketsBox.center.x;
@@ -378,10 +376,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = this._bracketsBox.x + this._bracketsBox.w + child.leftBound + this.dockingPointSize;
+                child.position.x = this._bracketsBox.x + this._bracketsBox.w + child.leftBound + dp.size;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = this._bracketsBox.x + this._bracketsBox.w + this.dockingPointSize;
+                dp.position.x = this._bracketsBox.x + this._bracketsBox.w + dp.size;
                 dp.position.y = this.dockingPoint.y;
             }
         }

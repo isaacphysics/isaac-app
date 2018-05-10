@@ -39,7 +39,7 @@ import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
 // This is where the fun starts
-
+export let BASE_DOCKING_POINT_SIZE = 100/3;
 
 // This is the "main" app with the update/render loop and all that jazz.
 export
@@ -388,6 +388,14 @@ export
         // Tell the other symbols to show only these points. Achievement unlocked: Usability!
         this.visibleDockingPointTypes = movingSymbolDocksTo;
 
+        // Trigger visibility attribute. TODO: We may want to rely on this in the future.
+        for (let dp of this._canvasDockingPoints) {
+            dp.isVisible = _.intersection(this.visibleDockingPointTypes, dp.type).length > 0;
+        }
+        for (let symbol of this.symbols) {
+            symbol.shakeIt();
+        }
+
         // FIXME if you can. This is quite the hack.
         this.touchMoved();
     };
@@ -472,8 +480,6 @@ export
                 this.activeDockingPoint.child = this.movingSymbol;
                 // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
                 this.activeDockingPoint.child.dockedTo = this.activeDockingPoint.name;
-                // Update the list of free docking points
-                this.updateCanvasDockingPoints();
 
                 this.scope.log.actions.push({
                     event: "DOCK_SYMBOL",
@@ -506,6 +512,14 @@ export
         this.movingSymbol = null;
         this.activeDockingPoint = null;
         this.visibleDockingPointTypes = [];
+        for (let dp of this._canvasDockingPoints) {
+            dp.isVisible = false; // TODO Rely on this in the future maybe.
+        }
+        // Update the list of free docking points
+        this.updateCanvasDockingPoints();
+        for (let symbol of this.symbols) {
+            symbol.shakeIt();
+        }
 
         this.initialTouch = null;
 
@@ -520,11 +534,7 @@ export
         });
 
         _.each(this.symbols, symbol => {
-            if (symbol != symbolWithMostChildren) {
-                symbol.isMainExpression = false;
-            } else {
-                symbol.isMainExpression = true;
-            }
+            symbol.isMainExpression = (symbol == symbolWithMostChildren);
         });
         this.updateState();
 

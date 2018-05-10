@@ -76,9 +76,7 @@ export
      * - _subscript_: Subscript (duh?)
      */
     generateDockingPoints() {
-        var box = this.boundingBox();
-        var descent = this.position.y - (box.y + box.h);
-
+        let box = this.boundingBox();
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["operator"], "right");
         this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
     }
@@ -94,7 +92,7 @@ export
      */
 
     formatExpressionAs(format: string): string {
-        var expression = "";
+        let expression = "";
         if (format == "latex") {
             expression = this.getFullText("latex");
             if (this.superscript && this.dockingPoints["superscript"].child != null) {
@@ -182,8 +180,6 @@ export
         this.p.strokeWeight(1);
     }
 
-
-
     /**
      * This widget's tight bounding box. This is used for the cursor hit testing.
      *
@@ -205,17 +201,18 @@ export
 
         let thisBox = this.boundingBox();
 
-        let superscriptWidth = this.dockingPointSize;
+        let superscriptWidth: number;
         if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*dp.size/2;
                 child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                superscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
+                superscriptWidth = dp.size;
             }
         }
 
@@ -223,10 +220,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + superscriptWidth + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + superscriptWidth + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + superscriptWidth + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + superscriptWidth + dp.size;
                 dp.position.y = -this.scale * this.s.xBox_h/2;
             }
         }

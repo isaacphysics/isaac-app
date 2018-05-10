@@ -21,11 +21,14 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget } from './Widget';
+import { BASE_DOCKING_POINT_SIZE } from './Inequality';
 
 /** A class to encapsulate all the info on docking points */
 export class DockingPoint {
 
     private _child: Widget = null;
+
+    isVisible = false;
 
     public constructor(public widget: Widget, public position: p5.Vector, public scale: number, public type: Array<string>, public name: string) {
 
@@ -48,5 +51,11 @@ export class DockingPoint {
 
     get absolutePosition(): p5.Vector {
         return p5.Vector.add(this.widget.absolutePosition, this.position);
+    }
+
+    get size(): number {
+        // TODO Work on the variable docking points size thing. It looks cool, but needs some care when space is 0.
+        // return this.isVisible ? this.widget.scale * BASE_DOCKING_POINT_SIZE : 0;
+        return this.widget.scale * BASE_DOCKING_POINT_SIZE;
     }
 }

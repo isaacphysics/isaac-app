@@ -26,6 +26,7 @@ import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
 import { Brackets } from "./Brackets";
+import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 /** Radix. Or, as they say, the _nth_ principal root of its argument. */
 export
@@ -186,13 +187,11 @@ export
     }
 
     get _argumentBox(): Rect {
-        let argumentBox: Rect = null;
-        try {
-            argumentBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
-        } catch (e) {
-            argumentBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
+            return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
         }
-        return argumentBox;
     }
 
     /**
@@ -203,8 +202,6 @@ export
      */
     _shakeIt() {
         this._shakeItDown();
-
-        let thisBox = this.boundingBox();
 
         if (this.dockingPoints["argument"]) {
             let dp = this.dockingPoints["argument"];
@@ -219,17 +216,18 @@ export
             }
         }
 
-        let superscriptWidth = this.dockingPointSize;
+        let superscriptWidth = 0;
         if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = this._argumentBox.w + child.leftBound + this.dockingPointSize/2;
+                child.position.x = this._argumentBox.w + child.leftBound + dp.size/2;
                 child.position.y = this.boundingBox().y - child.dockingPoint.y - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                superscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = this.boundingBox().x + this.boundingBox().w + this.dockingPointSize;
+                dp.position.x = this.boundingBox().x + this.boundingBox().w + dp.size;
                 dp.position.y = this.boundingBox().y;
+                superscriptWidth = dp.size;
             }
         }
 
@@ -240,7 +238,7 @@ export
                 child.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + child.leftBound;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + this.dockingPointSize;
+                dp.position.x = this.boundingBox().x + this.boundingBox().w + superscriptWidth + dp.size;
                 dp.position.y = (-this.scale * this.s.xBox_h/2);
             }
         }

@@ -24,6 +24,7 @@ import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import isNumber = require("lodash/isNumber");
+import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 
 /** A class for representing variables and constants (aka, letters). */
@@ -154,7 +155,7 @@ class Differential extends Widget {
 
             // FIXME We need to decide what to do with orders.
             if (this.dockingPoints["order"].child != null) {
-                var n = parseInt(this.dockingPoints["order"].child.formatExpressionAs(format));
+                let n = parseInt(this.dockingPoints["order"].child.formatExpressionAs(format));
                 if (!isNaN(n) && n > 1) {
                     expression += _.repeat(" * " + expression, n-1);
                 }
@@ -192,7 +193,7 @@ class Differential extends Widget {
 
     token() {
         // DRY this out.
-        var expression;
+        let expression;
         if (this.letter == "δ") {
             expression = "delta";
         } else if (this.letter == "∆") {
@@ -241,43 +242,41 @@ class Differential extends Widget {
 
         let thisBox = this.boundingBox();
 
-        // order
-        let orderWidth = this.dockingPointSize;
+        let orderWidth = 0;
         if (this.dockingPoints["order"]) {
             let dp = this.dockingPoints["order"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize*child.scale/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size*child.scale/2;
                 child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                orderWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                orderWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = -this.scale*this.s.mBox_h;
+                orderWidth = dp.size;
             }
         }
 
-        // argument
         if (this.dockingPoints["argument"]) {
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + orderWidth + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
 
-        // right
         if (this.dockingPoints["right"]) {
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + orderWidth + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }

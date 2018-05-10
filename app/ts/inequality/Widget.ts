@@ -21,6 +21,7 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { DockingPoint } from './DockingPoint';
+import { BASE_DOCKING_POINT_SIZE } from "./Inequality";
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
@@ -105,7 +106,7 @@ export
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
     get dockingPointSize() {
-        return this.scale * this.s.baseFontSize/3;
+        return this.scale * BASE_DOCKING_POINT_SIZE;
     }
 
     /** An array of the types of docking points that this widget can dock to */
@@ -123,14 +124,25 @@ export
     isMainExpression = false;
     currentPlacement = "";
 
+    /**
+     * @returns {boolean} True if this widget can be detached from its parent.
+     *
+     * @see Differential, Derivative
+     */
     get isDetachable() {
         return true;
     }
 
+    /**
+     * @returns {p5.Vector} A reference point that other widgets can use to dock this widget to themselves with the correct alignment.
+     */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, 0);
     }
 
+    /**
+     * @returns {{[p: string]: DockingPoint}} A list of this widget's docking points.
+     */
     get dockingPoints(): { [key: string]: DockingPoint; } {
         return this._dockingPoints;
     }
@@ -139,6 +151,11 @@ export
         this._dockingPoints = a;
     }
 
+    /**
+     * This widget's type as a string. Must be overridden by subclasses.
+     *
+     * @returns {string}
+     */
     get typeAsString(): string {
         return "Widget";
     }
@@ -156,7 +173,9 @@ export
         this.generateDockingPoints();
     }
 
-    /** Generates all the docking points in one go and stores them in this.dockingPoints. */
+    /**
+     * Generates all the docking points in one go and stores them in this.dockingPoints.
+     */
     generateDockingPoints() { };
 
 	/**
@@ -369,6 +388,9 @@ export
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 
+    /**
+     * @returns {number} How many widgets this subtree is made of.
+     */
     get totalSymbolCount(): number {
         let total = 1;
         for (let i in this.dockingPoints) {
@@ -515,6 +537,11 @@ export
         return dpBoxes;
     }
 
+    /**
+     * @returns {Rect} The bounding box of this widget AND its empty docking points.
+     *
+     * @see dockingPointsBoxes()
+     */
     get dockingPointsBoundingBox(): Rect {
         let ax = this.position.x;
         let ay = this.position.y;
@@ -531,6 +558,8 @@ export
 
     /**
      * @returns {Rect} The absolute bounding box of this widget AND docking points, relative to the canvas.
+     *
+     * @see dockingPointsBoundingBox()
      */
     get absoluteDockingPointsBoundingBox(): Rect {
         let box = this.dockingPointsBoundingBox;

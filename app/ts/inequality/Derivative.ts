@@ -28,6 +28,7 @@ import { DockingPoint } from "./DockingPoint";
 import { Brackets } from "./Brackets";
 import { Differential } from "./Differential";
 import { Num } from "./Num";
+import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 export
     class Derivative extends Widget {
@@ -174,7 +175,7 @@ export
     }
 
     get _numeratorBox(): Rect {
-        let numeratorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        let numeratorBox = new Rect(0, 0, BASE_DOCKING_POINT_SIZE, BASE_DOCKING_POINT_SIZE);
         if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
             numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox;
         }
@@ -182,7 +183,7 @@ export
     }
 
     get _denominatorBox(): Rect {
-        let denominatorBox = new Rect(0, 0, this.dockingPointSize, this.dockingPointSize);
+        let denominatorBox = new Rect(0, 0, BASE_DOCKING_POINT_SIZE, BASE_DOCKING_POINT_SIZE);
         if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
             denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox;
         }
@@ -206,10 +207,10 @@ export
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
                 child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
-                child.position.y = -this.dockingPointSize - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                child.position.y = -dp.size - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
                 dp.position.x = 0;
-                dp.position.y = -this.s.xBox_h/2 - this.dockingPointSize;
+                dp.position.y = -this.s.xBox_h/2 - dp.size;
             }
         }
 
@@ -219,10 +220,10 @@ export
                 let child = dp.child;
                 // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
                 child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
-                child.position.y = this.dockingPointSize - child.subtreeDockingPointsBoundingBox.y;
+                child.position.y = dp.size - child.subtreeDockingPointsBoundingBox.y;
             } else {
                 dp.position.x = 0;
-                dp.position.y = this.s.xBox_h/2 - this.dockingPointSize;
+                dp.position.y = this.s.xBox_h/2 + dp.size;
             }
         }
 
@@ -230,10 +231,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = this.subtreeBoundingBox.w/2 + this.dockingPointSize;
+                dp.position.x = this.subtreeBoundingBox.w/2 + dp.size;
                 dp.position.y = 0;
             }
         }

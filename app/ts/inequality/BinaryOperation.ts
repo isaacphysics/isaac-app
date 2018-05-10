@@ -178,10 +178,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }

@@ -22,10 +22,10 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget'
-import { Symbol } from "./Symbol";
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
+import { BASE_DOCKING_POINT_SIZE } from "./Inequality";
 
 /** Brackets. "We got both kinds, we got country and western". */
 export
@@ -267,16 +267,19 @@ export
     boundingBox(): Rect {
         let box = this.s.font_up.textBounds("()", 0, 0, this.scale * this.s.baseFontSize);
 
-        let argBox = new Rect(0, 0, this.dockingPointSize, 0);
-        if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
-            argBox = this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
-        }
-        let width = box.w + argBox.w;
-        let height = Math.max(box.h, argBox.h);
+        let width = box.w + this._argumentBox.w;
+        let height = Math.max(box.h, this._argumentBox.h);
 
         return new Rect(-width/2, -height/2, width, height);
     }
 
+    get _argumentBox(): Rect {
+        if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
+            return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+        }
+    }
 
     /**
      * Internal companion method to shakeIt(). This is the one that actually does the work, and the one that should be
@@ -293,7 +296,7 @@ export
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = this.boundingBox().x + child.leftBound + this.dockingPointSize;
+                child.position.x = this.boundingBox().x + child.leftBound + dp.size;
                 child.position.y = -child.dockingPoint.y;
             } else {
                 dp.position.x = 0;
@@ -307,11 +310,12 @@ export
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound;
-                child.position.y = -(thisBox.h + child.subtreeBoundingBox.h)/2 + this.dockingPointSize;
+                child.position.y = -(thisBox.h + child.subtreeBoundingBox.h)/2 + dp.size;
                 superscriptWidth = child.subtreeDockingPointsBoundingBox.w;
             } else {
-                dp.position.x = (thisBox.w + this.dockingPointSize)/2;
+                dp.position.x = (thisBox.w + dp.size)/2;
                 dp.position.y = -thisBox.h/2;
+                superscriptWidth = dp.size;
             }
         }
 
@@ -324,8 +328,9 @@ export
                 child.position.y = (thisBox.h + child.subtreeBoundingBox.h)/2;
                 subscriptWidth = child.subtreeDockingPointsBoundingBox.w;
             } else {
-                dp.position.x = (thisBox.w + this.dockingPointSize)/2;
+                dp.position.x = (thisBox.w + dp.size)/2;
                 dp.position.y = thisBox.h/2;
+                subscriptWidth = dp.size;
             }
         }
 
@@ -334,10 +339,10 @@ export
             if (dp.child) {
                 let child = dp.child;
                 let sBoxWidth = Math.max(superscriptWidth, subscriptWidth);
-                child.position.x = thisBox.x + thisBox.w + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : this.dockingPointSize);
+                child.position.x = thisBox.x + thisBox.w + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : dp.size);
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.x + thisBox.w + this.dockingPointSize;
+                dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.x + thisBox.w + dp.size;
                 dp.position.y = 0;
             }
         }

@@ -25,9 +25,7 @@ import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
 import { Num } from "./Num";
-import { Brackets } from "./Brackets";
-import { StateSymbol } from "./StateSymbol";
-
+import { BASE_DOCKING_POINT_SIZE } from './Inequality';
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -257,31 +255,33 @@ export
 
         let thisBox = this.boundingBox();
 
-        let superscriptWidth = this.dockingPointSize;
+        let superscriptWidth = 0;
         if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*dp.size/2;
                 child.position.y = -this.scale * this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                superscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
+                superscriptWidth = dp.size;
             }
         }
 
-        let subscriptWidth = this.dockingPointSize;
+        let subscriptWidth = 0;
         if (this.dockingPoints["subscript"]) {
             let dp = this.dockingPoints["subscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*dp.size/3; // 3 is a prettyfication factor to make the subscript follow the letter's slant.
                 child.position.y = child.topBound;
-                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                subscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = 0;
+                subscriptWidth = dp.size;
             }
         }
 
@@ -289,10 +289,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }

@@ -275,7 +275,7 @@ export
                 child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox.w - child.subtreeBoundingBox.w;
                 child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
-                dp.position.x = thisBox.x - this.dockingPointSize/2;
+                dp.position.x = thisBox.x - dp.size/2;
                 dp.position.y = (-this.scale * this.s.mBox_h);
             }
         }
@@ -291,36 +291,38 @@ export
                 child.position.x = thisBox.x + child.rightBound + child.subtreeDockingPointsBoundingBox.w - child.subtreeBoundingBox.w;
                 child.position.y = child.topBound;
             } else {
-                dp.position.x = thisBox.x - this.dockingPointSize/2;
+                dp.position.x = thisBox.x - dp.size/2;
                 dp.position.y = 0;
             }
         }
 
-        let superscriptWidth = this.dockingPointSize;
+        let superscriptWidth = 0;
         if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*dp.size/2;
                 child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                superscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                superscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = -this.scale * this.s.mBox_h;
+                superscriptWidth = dp.size;
             }
         }
 
-        let subscriptWidth = this.dockingPointSize;
+        let subscriptWidth = 0;
         if (this.dockingPoints["subscript"]) {
             let dp = this.dockingPoints["subscript"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + child.scale*dp.size/2;
                 child.position.y = child.topBound;
-                subscriptWidth = Math.max(this.dockingPointSize, child.subtreeDockingPointsBoundingBox.w);
+                subscriptWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                dp.position.x = thisBox.x + thisBox.w + this.dockingPointSize/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
                 dp.position.y = 0;
+                subscriptWidth = dp.size;
             }
         }
 
@@ -328,10 +330,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + Math.max(superscriptWidth, subscriptWidth) + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + this.dockingPointSize;
+                dp.position.x = thisBox.x + thisBox.w + Math.max(superscriptWidth, subscriptWidth) + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
