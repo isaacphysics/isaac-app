@@ -106,7 +106,7 @@ export
                         let o = 1;
                         let o_child: Widget = e.dockingPoints["order"].child;
                         if (o_child != null && o_child.typeAsString == "Num") {
-                            o = parseInt(o_child.getFullText());
+                            o = parseInt((o_child as Num).getFullText());
                         }
                         do {
                             if (e.dockingPoints["argument"].child != null) {
