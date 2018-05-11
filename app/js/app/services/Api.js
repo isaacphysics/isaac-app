@@ -234,6 +234,10 @@ define([], function() {
             'revoke' : {
                 method: 'DELETE',
                 url: urlPrefix + "/authorisations/:id" 
+            },
+            'release' : {
+                method: 'DELETE',
+                url: urlPrefix + "/authorisations/:id" 
             },          
             'getOthers' : {
                 method: 'GET',

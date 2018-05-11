@@ -327,9 +327,11 @@
 
             <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
+                <div ng-if="editingSelf" class="large-16 medium-16 columns">
+                    <h3>Teachers and Assignments Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
                         <p>Enter the code given to connect with a teacher.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
@@ -346,6 +348,25 @@
                                 <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
                             </ul>
                             <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
+                            <ul ng-if="false" class="teachers-disconnected">
+                                <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="editingSelf" class="large-16 medium-16 columns">
+                    <hr>
+                    <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their isaac data with you. These students are also able to view your name and email address in their teacher connections page."></span></h3>
+                </div>
+                <div ng-if="editingSelf" class="large-16 medium-16 columns">
+                    <div class="connect-list">
+                        <h3><span class="person-icon-active"></span> Student connections</h3>
+
+                        <div class="connect-list-inner">
+                            <ul class="teachers-connected">
+                                <li ng-repeat="studentUser in activeStudentAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="You have access to this user's data and they can see your name and email address. To remove this access, click 'Revoke'.">{{studentUser.givenName}} {{studentUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(studentUser)">Revoke</a></li>
+                            </ul>
+                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active student connections</p>
                             <ul ng-if="false" class="teachers-disconnected">
                                 <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
                             </ul>

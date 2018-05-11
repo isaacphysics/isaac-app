@@ -335,6 +335,7 @@ define([], function() {
         // authorisation (token) stuff
         $scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
+        $scope.activeStudentAuthorisations = api.authorisations.getOthers();
         
         $scope.useToken = function() {
             if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
@@ -400,6 +401,21 @@ define([], function() {
             if (revoke) {
                 api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
                     $scope.activeAuthorisations = api.authorisations.get();
+                    $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
+        $scope.releaseAuthorisation = function(userToRevoke){
+            var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+
+            if (revoke) {
+                api.authorisations.release({id: userToRevoke.id}).$promise.then(function(){
+                    $scope.activeStudentAuthorisations = api.authorisations.getOthers();
                     $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
                 }).catch(function(e){
                     $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
