@@ -167,9 +167,15 @@ define([], function() {
                 $scope.datePicker.months = possibleMonths;
             }
 
+            var thirteen_years_ago = Date.UTC(today.getFullYear() - 13, today.getMonth(), today.getDate());
+
             var dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
-            if (!isNaN(dob_unix)) {
+            if (!isNaN(dob_unix) && $scope.datePicker.months.indexOf($scope.dob.month) > -1) {
                 $scope.user.dateOfBirth = dob_unix;
+                $scope.confirmed_over_thirteen = dob_unix <= thirteen_years_ago;
+            } else {
+                $scope.confirmed_over_thirteen = false;
+                $scope.user.dateOfBirth = null;
             }
         });
 
@@ -250,7 +256,10 @@ define([], function() {
             }
 
             // Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-            if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
+            var formValid = $scope.account.$valid && $scope.account.email.$valid;
+            var passwordsValidated = (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)));
+            var confirmedThirteen = $scope.confirmed_over_thirteen || (!$scope.user.dateOfBirth && $scope.user._id); // If there is a user ID, they have already registered and confirmed their age!
+            if (formValid && passwordsValidated && confirmedThirteen) {
                 //TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
                 var userSettings = {
                     registeredUser : $scope.user,
@@ -304,17 +313,24 @@ define([], function() {
                 if (!$scope.passwordChangeState.passwordCurrent && !!$scope.password1 && $scope.editingSelf) {
                     $scope.errorMessage = "Current password not confirmed.";
                 // current password given/admin user, but new password not confirmed
-                } else if ($scope.password1 != $scope.password2) {
+                } else if (($scope.password1 && $scope.password1 != $scope.password2) || ($scope.user.password && $scope.user.password != $scope.password2)) {
                     $scope.errorMessage = "Passwords do not match.";
                 // password not long enough:
-                } else if ($scope.password1.length < 6) {
+                } else if ($scope.password1 && $scope.password1.length < 6) {
                     $scope.errorMessage = "Passwords must be at least 6 characters in length.";
                 // first name or last name missing
                 } else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
                     $scope.errorMessage = "Name field missing or invalid.";
                 // bad email address given
                 } else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
-                    $scope.errorMessage = "Email address missing or invalid."
+                    $scope.errorMessage = "Email address missing or invalid.";
+                } else if ($scope.user.dateOfBirth && !$scope.confirmed_over_thirteen) {
+                    if ($scope.user._id) {
+                        // They already have an account, but are apparently too young. Ask them to get in touch!
+                        $scope.errorMessage = "You should be at least 13 years old to have an Isaac account. Please contact us!";
+                    } else {
+                        $scope.errorMessage = "You must be at least 13 years old to have an Isaac account!";
+                    }
                 }
             }
         }

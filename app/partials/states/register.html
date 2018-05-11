@@ -61,7 +61,40 @@
 				    <input id="account-email" name="email" type="email" ng-model="user.email" required autocomplete="username email">
 			    </div>
 			    <div class="large-8 medium-8 small-16 columns">
-				    <label class="hide-for-small">&nbsp;</label>
+                    <label>
+                        <strong>Date of Birth</strong>
+                    </label>
+                    <ul class="large-block-grid-3 medium-block-grid-3 small-block-grid-3 ru-pad dob-wrap">
+                        <li>
+                            <select ng-model="dob.day" ng-options="day for day in datePicker.days">
+                            </select>
+                        </li>
+                        <li>
+                            <select ng-model="dob.month" ng-options="month for month in datePicker.months">
+                            </select>
+                        </li>
+                        <li>
+                            <select ng-model="dob.year" ng-options="year for year in datePicker.years">
+                            </select>
+                        </li>
+                    </ul>
+			    </div>
+		    </div>
+		    <div>
+		    	<div class="medium-8 medium-offset-5 small-16 columns">
+			    	<div class="ac-custom confirm-age">
+	                    <label for="ch00">
+                            I confirm I am at least 13 years old
+                            <span ng-show="!confirmed_over_thirteen"><span data-ot="You must be at least 13 years old to have an Isaac account. Please see our Privacy Policy for more information." class="dl-alert warning hide-for-small-only field-marker" aria-haspopup="true">!</span></span>
+                            <span class="ru-form-required"></span>
+                        </label>
+	                    <input id="ch00" type="checkbox" ng-model="confirmed_over_thirteen" ng-disabled="user.dateOfBirth" input-animation>
+	                </div>
+            	</div>
+		    </div>
+		    <div>
+			    <div class="large-8 medium-8 medium-offset-4 small-16 columns">
+				    <label>&nbsp;</label>
 				    <input class="ru-button-big expand" type="submit" value="Register Now">
 			    </div>
 		    </div>
