@@ -649,6 +649,27 @@ define(function (require) {
                         if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
                             continue;
+                        } else if (s === 'trigs') {
+                            theseSymbols.push('cos()', 'sin()', 'tan()');
+                            continue;
+                        } else if (s === '1/trigs') {
+                            theseSymbols.push('cosec()', 'sec()', 'cot()');
+                            continue;
+                        } else if (s === 'inv_trigs') {
+                            theseSymbols.push('arccos()', 'arcsin()', 'arctan()');
+                            continue;
+                        } else if (s === 'inv_1/trigs') {
+                            theseSymbols.push('arccosec()', 'arcsec()', 'arccot()');
+                            continue;
+                        } else if (s === 'hyp_trigs') {
+                            theseSymbols.push('cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
+                            continue;
+                        } else if (s === 'inv_hyp_trigs') {
+                            theseSymbols.push('arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
+                            continue;
+                        } else if (s === 'logs') {
+                            theseSymbols.push('log()', 'ln()');
+                            continue;
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Parsing operator:", s);
                             partResults.push({
@@ -682,7 +703,6 @@ define(function (require) {
                             // Allow compound (multiplied) symbols separated by a space.
                             // ? Is this being used?
                             var parts = s.split(" ");
-                            console.log(parts);
                             for (var j in parts) {
                                 var p = parts[j];
                                 var name = p.replace(/\(\)/g, "");
@@ -1489,7 +1509,6 @@ define(function (require) {
 
                     derivatives: derivativeFunctions(derivativesStandard)
                     /* δ ∆ <- let's keep these handy, just in case... */
-
                 };
 
                 scope.particlesTitle = {
