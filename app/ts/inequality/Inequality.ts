@@ -60,8 +60,6 @@ export
     visibleDockingPointTypes: Array<string> = [];
     activeDockingPoint: DockingPoint = null;
 
-    private newExpressionCallback = null;
-
     constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
@@ -97,7 +95,8 @@ export
         this.symbols.forEach(function(e) {
             _this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
-    }
+    };
+
     setup = () => {
         this.p.frameRate(7);
         this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
@@ -129,7 +128,7 @@ export
 
     windowResized = () => {
         this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
-    }
+    };
 
     draw = () => {
         this.p.clear();
@@ -340,7 +339,6 @@ export
     };
 
     touchMoved = () => {
-
         let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
         let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
 
@@ -531,14 +529,6 @@ export
                 symbols: [],
             })
         }
-    };
-
-    getExpressionObjects = () => {
-        let subtreeObjects = [];
-        _.each(this.symbols, symbol => {
-            subtreeObjects.push(symbol.subtreeObject());
-        });
-        return subtreeObjects;
     };
 
     centre = (init = false) => {

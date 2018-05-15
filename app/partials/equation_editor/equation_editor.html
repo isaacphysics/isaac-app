@@ -23,19 +23,9 @@
     <div top-menu="+\, -\, \sqrt{x}" ng-if="isLandscape && (editorMode == 'maths')">
         <div ng-if="symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.augmentedOps"></div>
         <div ng-if="!symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.reducedOps"></div>
-        <!--<div sub-menu></div>
-        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
-        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
-        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
-        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
     <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && (editorMode == 'chemistry')">
         <div symbol-menu symbols="symbolLibrary.chemOps"></div>
-        <!--<div sub-menu></div>
-        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
-        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
-        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
-        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
     <div top-menu="\sin\,\, \int" ng-if="isLandscape && (editorMode == 'maths')" style="font-size: 23px !important;">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
@@ -45,15 +35,6 @@
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
-        <!--
-        <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
-            <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
-        </div>
-
-        <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
-
-        <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
-    -->
     <!-- BUTTONS -->
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
