@@ -10,8 +10,10 @@ define(function (require) {
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_editor.html",
             link: function (scope, element, attrs) {
-
-                element.on("touchstart touchmove", "canvas", function (e) {
+                // The DOM element that holds the menus and the canvas.
+                scope.equationEditorElement = element;
+                // Prevent default event handling on the canvas.
+                element.on("touchstart touchmove touchended", "canvas", function (e) {
                     e.preventDefault();
                 });
 
