@@ -877,21 +877,20 @@ define(function (require) {
                     }
                     return elements;
                 };
-                var numberStrings = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 
-                var theNumbers = function (numberArray) {
-                    var elements = [];
+                var theNumbers = function (numberStrings) {
+                    var elements = {};
                     for (var i = 0; i < 10; i++) {
                         var numString = i.toString();
 
                         elements[numberStrings[i]] = {
                             type: "Num",
                             properties: {
-                                significand: numString,
+                                significand: numString
                             },
                             menu: {
                                 label: numString,
-                                texLabel: false,
+                                texLabel: false
                             }
                         }
                     }
@@ -1105,7 +1104,7 @@ define(function (require) {
 
                     chemicalElements: chemicalElements(elements),
 
-                    theNumbers: theNumbers(numberStrings),
+                    theNumbers: theNumbers(['zero','one','two','three','four','five','six','seven','eight','nine']),
 
                     trigFunctions: trigFunction(trigFunctions),
 
