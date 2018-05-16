@@ -340,14 +340,11 @@ define(function (require) {
                                 customSymbolsParsed = true;
                             }
                             if (parsedSymbols.derivatives.length > 0) {
-                                var theseDerivatives = null;
-                                if (customSymbolsParsed) {
-                                    theseDerivatives = userIsPrivileged ? parsedSymbols.derivatives.slice(2) : parsedSymbols.derivatives;
-                                    if (scope.symbolLibrary.customFunctions) {
-                                        scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(theseDerivatives);
-                                    } else {
-                                        scope.symbolLibrary.customFunctions = theseDerivatives;
-                                    }
+                                var theseDerivatives = userIsPrivileged ? parsedSymbols.derivatives.slice(2) : parsedSymbols.derivatives;
+                                if (scope.symbolLibrary.customFunctions) {
+                                    scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(theseDerivatives);
+                                } else {
+                                    scope.symbolLibrary.customFunctions = theseDerivatives;
                                 }
                                 scope.symbolLibrary.derivatives = theseDerivatives;
                                 customSymbolsParsed = true;
@@ -1039,7 +1036,7 @@ define(function (require) {
                         var derivative = availableDerivatives[j];
                         if (derivative.startsWith("Derivative")) {
                             // FIXME This ; is a backward-compatible, certified horrible hack
-                            var pieces = derivative.split(";").map(function(s) { return s.replace(/[\(\)\s]/g, "") }).slice(1);
+                            var pieces = derivative.split(";").map(function(s) { return s.replace(/[()\s]/g, "") }).slice(1);
                             var orders = {};
                             // Count how many times one should derive each variable
                             for (var i = 0; i < pieces.length; ++i) {
@@ -1052,7 +1049,6 @@ define(function (require) {
                             }
                             var derivative_order = _.sum(_.values(orders));
                             // Build up the object
-                            // TODO Support letters other than d. This may be hard with the current syntax!
                             var derivative_obj = {
                                 type: "Derivative",
                                 children: {

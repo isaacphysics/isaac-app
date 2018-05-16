@@ -33,7 +33,7 @@
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.augmentedTrig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="hypTrigTitle" symbol-menu symbols="symbolLibrary.hypTrigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
-        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
+        <div ng-if="!symbolLibrary.customFunctions && symbolLibrary.derivatives.length > 0" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
     <!-- BUTTONS -->
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
