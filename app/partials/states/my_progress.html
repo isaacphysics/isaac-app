@@ -265,7 +265,7 @@
                     <p>You have created
                         <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED }}</span>
                         group<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_GROUPS_CREATED != 1">s</span>.</p>
-                    <p>Create more groups the the <a ui-sref="groups">Manage Groups</a> page.</p>
+                    <p>Create more groups the the <a ui-sref="groups" ng-click="achievementsGetStarted('CREATE_GROUP');">Manage Groups</a> page.</p>
                 </div>
             </div>
 
@@ -283,7 +283,7 @@
                     <p>You have set
                         <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET }}</span>
                         assignment<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_ASSIGNMENTS_SET != 1">s</span>.</p>
-                    <p>Set more assignments on the <a ui-sref="setAssignments">Set Assignments</a> page.</p>
+                    <p>Set more assignments on the <a ui-sref="setAssignments" ng-click="achievementsGetStarted('CREATE_ASSIGNMENT');">Set Assignments</a> page.</p>
                 </div>
             </div>
 
@@ -302,7 +302,7 @@
                         <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET }}</span>
                         book page assignment<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_BOOK_PAGES_SET != 1">s</span>.</p>
                     <p>
-                        Set more book pages on the <a ui-sref="setAssignments({books: 'show'})">Set Assignments</a> page.
+                        Set more book pages on the <a ui-sref="setAssignments({books: 'show'})" ng-click="achievementsGetStarted('CREATE_BOOK_ASSIGNMENT');">Set Assignments</a> page.
                     </p>
                 </div>
             </div>
@@ -323,7 +323,7 @@
                         <span class="count">{{ progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED || 0 }}</span>
                         custom gameboard<span ng-if="progress.userSnapshot.achievementsRecord.TEACHER_GAMEBOARDS_CREATED != 1">s</span>.</p>
                     <p>
-                        Create more custom boards on the <a ui-sref="gameEditor">Board Builder</a> page.
+                        Create more custom boards on the <a ui-sref="gameEditor" ng-click="achievementsGetStarted('CREATE_BOARD');">Board Builder</a> page.
                     </p>
                 </div>
             </div>
@@ -344,7 +344,8 @@
                         <span class="count">{{ progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED }}</span>
                         CPD event<span ng-if="progress.userSnapshot.achievementsRecord.CPD_EVENTS_ATTENDED != 1">s</span>.</p>
                     <p>
-                        Book onto more CPD events on the <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})">Events</a> page.
+                        Book onto more CPD events on the <a href="javascript:void(0)" ui-sref="events({types: 'teacher'})"
+                                                            ng-click="achievementsGetStarted('BOOK_CPD_EVENT');">Events</a> page.
                     </p>
                 </div>
             </div>
