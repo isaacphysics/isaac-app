@@ -315,6 +315,7 @@ define(function (require) {
                         delete scope.symbolLibrary.customFunctions;
                         delete scope.symbolLibrary.customChemicalSymbols;
                         delete scope.symbolLibrary.augmentedOps;
+                        delete scope.symbolLibrary.allowVars;
 
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
                         scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
@@ -326,10 +327,13 @@ define(function (require) {
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             var parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
 
+                            scope.symbolLibrary.allowVars = parsedSymbols.allowVars;
+
                             var customSymbolsParsed = false;
                             if (parsedSymbols.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsedSymbols.vars;
                                 customSymbolsParsed = true;
+                                scope.symbolLibrary.allowVars = true;
                             }
                             if (parsedSymbols.fns.length > 0) {
                                 scope.symbolLibrary.customFunctions = parsedSymbols.fns;
@@ -632,7 +636,8 @@ define(function (require) {
                         vars: [],
                         fns: [],
                         operators: [],
-                        derivatives: []
+                        derivatives: [],
+                        allowVars: true
                     };
 
                     var theseSymbols = symbols.slice(0);
@@ -652,6 +657,9 @@ define(function (require) {
                             theseSymbols.splice(i, 1, 'arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
                         } else if (theseSymbols[i] === 'logs') {
                             theseSymbols.splice(i, 1, 'log()', 'ln()');
+                        } else if (theseSymbols[i] === 'no_alphabet') {
+                            theseSymbols.splice(i, 1);
+                            r.allowVars = false;
                         }
                         i += 1;
                     }
@@ -786,10 +794,10 @@ define(function (require) {
                             }
                             switch (partResults[0].type) {
                                 case "Symbol":
-                                case "Differential":
                                     r.vars.push(root);
                                     break;
                                 case "Fn":
+                                case "Differential":
                                     r.fns.push(root);
                                     break;
                                 case "Relation":

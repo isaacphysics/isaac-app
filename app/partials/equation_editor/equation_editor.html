@@ -12,7 +12,7 @@
     <div top-menu="(aq)\, (g)\, (l)" ng-if="(editorMode == 'chemistry') && isLandscape">
         <div symbol-menu symbols="symbolLibrary.theStates"></div>
     </div>
-    <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && (editorMode == 'maths')">
+    <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && (editorMode == 'maths') && symbolLibrary.allowVars">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
