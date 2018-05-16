@@ -643,21 +643,21 @@ define(function (require) {
                     var theseSymbols = symbols.slice(0);
                     var i = 0;
                     while (i < theseSymbols.length) {
-                        if (theseSymbols[i] === 'trigs') {
+                        if (theseSymbols[i] === '_trigs') {
                             theseSymbols.splice(i, 1, 'cos()', 'sin()', 'tan()');
-                        } else if (theseSymbols[i] === '1/trigs') {
+                        } else if (theseSymbols[i] === '_1/trigs') {
                             theseSymbols.splice(i, 1, 'cosec()', 'sec()', 'cot()');
-                        } else if (theseSymbols[i] === 'inv_trigs') {
+                        } else if (theseSymbols[i] === '_inv_trigs') {
                             theseSymbols.splice(i, 1, 'arccos()', 'arcsin()', 'arctan()');
-                        } else if (theseSymbols[i] === 'inv_1/trigs') {
+                        } else if (theseSymbols[i] === '_inv_1/trigs') {
                             theseSymbols.splice(i, 1, 'arccosec()', 'arcsec()', 'arccot()');
-                        } else if (theseSymbols[i] === 'hyp_trigs') {
+                        } else if (theseSymbols[i] === '_hyp_trigs') {
                             theseSymbols.splice(i, 1, 'cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
-                        } else if (theseSymbols[i] === 'inv_hyp_trigs') {
+                        } else if (theseSymbols[i] === '_inv_hyp_trigs') {
                             theseSymbols.splice(i, 1, 'arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
-                        } else if (theseSymbols[i] === 'logs') {
+                        } else if (theseSymbols[i] === '_logs') {
                             theseSymbols.splice(i, 1, 'log()', 'ln()');
-                        } else if (theseSymbols[i] === 'no_alphabet') {
+                        } else if (theseSymbols[i] === '_no_alphabet') {
                             theseSymbols.splice(i, 1);
                             r.allowVars = false;
                         }
