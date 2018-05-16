@@ -455,9 +455,9 @@ define([], function() {
             },
         });
 
-        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail/:email", null, {
+        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail", null, {
             requestEmailVerification: {
-                method: "GET"
+                method: "POST"
             },
         });
 
