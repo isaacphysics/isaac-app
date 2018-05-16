@@ -639,6 +639,27 @@ define(function (require) {
                     };
 
                     var theseSymbols = symbols.slice(0);
+                    var i = 0;
+                    while (i < theseSymbols.length) {
+                        if (theseSymbols[i] === 'trigs') {
+                            theseSymbols.splice(i, 1, 'cos()', 'sin()', 'tan()');
+                        } else if (theseSymbols[i] === '1/trigs') {
+                            theseSymbols.splice(i, 1, 'cosec()', 'sec()', 'cot()');
+                        } else if (theseSymbols[i] === 'inv_trigs') {
+                            theseSymbols.splice(i, 1, 'arccos()', 'arcsin()', 'arctan()');
+                        } else if (theseSymbols[i] === 'inv_1/trigs') {
+                            theseSymbols.splice(i, 1, 'arccosec()', 'arcsec()', 'arccot()');
+                        } else if (theseSymbols[i] === 'hyp_trigs') {
+                            theseSymbols.splice(i, 1, 'cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
+                        } else if (theseSymbols[i] === 'inv_hyp_trigs') {
+                            theseSymbols.splice(i, 1, 'arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
+                        } else if (theseSymbols[i] === 'logs') {
+                            theseSymbols.splice(i, 1, 'log()', 'ln()');
+                        }
+                        i += 1;
+                    }
+                    theseSymbols = _.uniq(theseSymbols);
+
                     while (theseSymbols.length > 0) {
                         var s = theseSymbols.shift().trim();
 
@@ -648,27 +669,6 @@ define(function (require) {
 
                         if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
-                            continue;
-                        } else if (s === 'trigs') {
-                            theseSymbols.push('cos()', 'sin()', 'tan()');
-                            continue;
-                        } else if (s === '1/trigs') {
-                            theseSymbols.push('cosec()', 'sec()', 'cot()');
-                            continue;
-                        } else if (s === 'inv_trigs') {
-                            theseSymbols.push('arccos()', 'arcsin()', 'arctan()');
-                            continue;
-                        } else if (s === 'inv_1/trigs') {
-                            theseSymbols.push('arccosec()', 'arcsec()', 'arccot()');
-                            continue;
-                        } else if (s === 'hyp_trigs') {
-                            theseSymbols.push('cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
-                            continue;
-                        } else if (s === 'inv_hyp_trigs') {
-                            theseSymbols.push('arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
-                            continue;
-                        } else if (s === 'logs') {
-                            theseSymbols.push('log()', 'ln()');
                             continue;
                         } else if (opsMap.hasOwnProperty(s)) {
                             console.debug("Parsing operator:", s);
