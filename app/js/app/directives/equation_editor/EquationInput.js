@@ -39,16 +39,16 @@ define([], function() {
                         var badCharacters = RegExp(regexStr);
                         var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
                         scope.textEntryError = [];
-                        if (/[{}\\]/.test(pycode)) {
+                        if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                             scope.textEntryError.push('LaTeX syntax is not supported.');
                         }
                         if (badCharacters.test(pycode)) {
-                            scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(', '));
+                            scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
                         }
                         if (openBracketsCount != closeBracketsCount) {
                             scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
                         }
-                        if (/\./.test(pycode)) {
+                        if (/\.[0-9]/.test(pycode)) {
                             scope.textEntryError.push('Please convert decimal numbers to fractions.');
                         }
                     }, 250);
