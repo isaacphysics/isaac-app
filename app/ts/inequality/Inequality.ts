@@ -39,7 +39,7 @@ import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
 // This is where the fun starts
-export let BASE_DOCKING_POINT_SIZE = 100/3;
+export let BASE_DOCKING_POINT_SIZE = 50/3;
 
 // This is the "main" app with the update/render loop and all that jazz.
 export
