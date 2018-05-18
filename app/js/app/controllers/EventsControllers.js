@@ -193,6 +193,7 @@ define([], function() {
 
         // validate pre-requisites for event booking
         var validUserProfile = function() {
+
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
                 $scope.showToast($scope.toastTypes.Failure, "School Information Required", "You must enter a school in order to book on to this event.");
                 return false;
@@ -204,11 +205,13 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group Required", "You must enter a year group to proceed.");
                     return false;   
                 }
-
-                if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
-                    $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
-                    return false;   
-                }    
+                
+                if (!event.virtual) {
+                    if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
+                        $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
+                        return false;   
+                    }                        
+                }
             }
             
             // validation for users that are teachers
