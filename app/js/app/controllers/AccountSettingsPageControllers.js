@@ -331,6 +331,8 @@ define([], function() {
                     } else {
                         $scope.errorMessage = "You must be at least 13 years old to have an Isaac account!";
                     }
+                } else if (!$scope.user._id && !$scope.confirmed_over_thirteen) {
+                    $scope.errorMessage = "You must confirm you are at least 13 years old to have an Isaac account.";
                 }
             }
         }
