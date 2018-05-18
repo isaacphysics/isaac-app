@@ -257,15 +257,18 @@ class Differential extends Widget {
             }
         }
 
+        let argumentWidth = 0;
         if (this.dockingPoints["argument"]) {
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
                 child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+                argumentWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
                 dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
+                argumentWidth = 2*dp.size;
             }
         }
 
@@ -273,10 +276,10 @@ class Differential extends Widget {
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + argumentWidth + dp.size/2;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
-                dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + argumentWidth + dp.size;
                 dp.position.y = -this.scale*this.s.xBox_h/2;
             }
         }
