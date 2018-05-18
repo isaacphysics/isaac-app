@@ -227,11 +227,11 @@ export
             // +++ REFERENCE POINTS +++
             this.p.stroke(0, 0, 255, 128).strokeWeight(2);
             this.p.point(this.dockingPoint.x, this.dockingPoint.y);
-            this.p.strokeWeight(1).ellipse(this.dockingPoint.x, this.dockingPoint.y, 15, 15);
+            this.p.strokeWeight(1).ellipse(this.dockingPoint.x, this.dockingPoint.y, this.dockingPointSize/2, this.dockingPointSize/2);
 
             this.p.stroke(255, 0, 0, 128).strokeWeight(2);
             this.p.point(0, 0);
-            this.p.strokeWeight(1).ellipse(0, 0, 15, 15);
+            this.p.strokeWeight(1).ellipse(0, 0, this.dockingPointSize/2, this.dockingPointSize/2);
 
             // +++ LOCAL BOUNDING BOX +++
             // let box = this.boundingBox();
