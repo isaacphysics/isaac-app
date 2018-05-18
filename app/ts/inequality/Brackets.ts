@@ -228,8 +228,8 @@ export
 
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
         let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
-        let a = 20 * m;
-        let b = 21 * m;
+        let a = m * this.s.baseFontSize/5;
+        let b = m * (3+this.s.baseFontSize)/5;
         let c = Math.sqrt(4 * m + 1);
         // LHS
         this.p.beginShape();
