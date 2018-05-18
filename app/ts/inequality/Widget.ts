@@ -545,7 +545,7 @@ export
     get dockingPointsBoundingBox(): Rect {
         let ax = this.position.x;
         let ay = this.position.y;
-        let thisBox = new Rect(this.boundingBox().x, this.boundingBox().y, this.boundingBox().w, this.boundingBox().h);
+        let thisBox = Rect.fromObject(this.boundingBox());
         let dpBoxes = [thisBox, ...this.dockingPointsBoxes];
 
         let x = _.min(_.map(dpBoxes, b => { return b.x+ax }));
