@@ -408,7 +408,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('verifyEmail', {
-            url: "/verifyemail?userid&token&email&requested",
+            url: "/verifyemail?userid&token&requested",
             views: {
                 "body": {
                     templateUrl: "/partials/states/verify_email.html",

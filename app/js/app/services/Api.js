@@ -449,7 +449,7 @@ define([], function() {
             },
         });
 
-        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:email/:token", null, {
+        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:token", null, {
             verify: {
                 method: "GET"
             },
