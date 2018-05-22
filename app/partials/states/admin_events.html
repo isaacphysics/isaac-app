@@ -92,8 +92,8 @@
                                 <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
                                     <td>
                                         <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteBooking(eventIdForBooking, booking.userBooked.id)">Promote</a>
-                                        <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a>
-                                        <a ng-show="user.role='ADMIN'" class="button small" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
+                                        <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookinStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a>
+                                        <a ng-show="user.role == 'ADMIN'" class="button small" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
                                         <a href="javascript:void(0);" class="button small" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a>
                                     </td>
                                     <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
