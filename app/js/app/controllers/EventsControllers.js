@@ -17,7 +17,7 @@ define([], function() {
 
     var augmentEvent = function(e, api) {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
-            e.multiDay = new Date(e.date).getDay() != new Date(e.endDate).getDay();
+            e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
             e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
