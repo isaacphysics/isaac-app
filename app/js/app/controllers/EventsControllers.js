@@ -17,13 +17,13 @@ define([], function() {
 
     var augmentEvent = function(e, api) {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
-            e.all_day = e.endDate - e.date >= 24*3600*1000;  // If start and end times 24 hours apart; assume an all day event
+            e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
             e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
             e.inProgress =  false;
-            e.all_day = false;
+            e.multiDay = false;
         }
 
         e.teacher = e.tags.indexOf("teacher") > -1;
