@@ -1,0 +1,15 @@
+<div class="row">
+	
+	<div class="small-16-columns">
+		<h1>{{title}} Support</h1>
+
+		<div class="support-page-hexagons">
+			<div ng-repeat="k in categories[type]">
+				<a href="javascript:void(0)" ui-sref="support({type: type, idSuffix: k.idSuffix})" ng-class="{active: k == activeCategory}">{{k.title}}</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div isaac-page-fragment="{{fragmentId}}"></div>
+

@@ -111,6 +111,31 @@ define(["angular-ui-router"], function() {
             }
         }
 
+        $sp.state('support', {
+            url: "/support/:type/:idSuffix",
+            resolve: {
+                categories: [function() {
+                    return {
+                        teacher: {
+                            general: { idSuffix: "general", title: "General" }, 
+                            about: { idSuffix: "about", title: "About" }
+                        },
+                        student: {},
+                    };
+                }],
+                activeCategory: ["categories", "$stateParams", function(categories, $stateParams) {
+                    return categories[$stateParams.type] && categories[$stateParams.type][$stateParams.idSuffix] || Promise.reject({status: 404});
+                }],
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/support.html",
+                    controller: "SupportPageController",
+                },
+            },
+        });
+
+
         // These routes apply to all of the sites
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));

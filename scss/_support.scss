@@ -1,0 +1,14 @@
+.support-page-hexagons {
+	display: flex; 
+	flex-wrap: nowrap;
+	margin:30px 0;
+
+	>div {
+		flex: 1 0 0; 
+		text-align:center;
+
+		a.active {
+			background: pink;
+		}
+	}
+}

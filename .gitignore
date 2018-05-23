@@ -11,3 +11,4 @@ app/js/isaac.js.map
 app/js/isaac.js
 app/ts/**/*.js*
 ngrok.yml
+npm-debug.log
