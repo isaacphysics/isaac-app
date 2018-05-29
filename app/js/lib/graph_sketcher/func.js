@@ -3,8 +3,9 @@ define(function(require) {
     var b = require("lib/graph_sketcher/bezier.js");
 
     return {
-        createPoint: function(x, y) {
+        createPoint: function(x, y, c) {
             var obj = {};
+            obj.ind = c;
             obj.x = x;
             obj.y = y;
             return obj;

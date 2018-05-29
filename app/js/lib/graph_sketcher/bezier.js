@@ -2,11 +2,12 @@ define(function(require) {
   var m = require('lib/math.js');
   var b = require('lib/graph_sketcher/bezier.js');
   var f = require('lib/graph_sketcher/func.js');
+  var d = require('lib/graph_sketcher/linear.js');
 
     return {
-        numOfPts: 100,
+        numOfPts: 200,
 
-        genericBezier: function(pts) {
+        lineStyle: function(pts) {
 
             var n = pts.length - 1;
             var comb = [];
@@ -37,7 +38,7 @@ define(function(require) {
                     sy += tmp3 * pts[r].y;
                 }
                 // createPoint from point.js
-                bezier.push(f.createPoint(sx, sy));
+                bezier.push(f.createPoint(sx, sy, i));
             }
             bezier.push(pts[pts.length - 1]);
             return bezier;

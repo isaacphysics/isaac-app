@@ -280,6 +280,21 @@ define(["angular-ui-router"], function() {
             },
         })
 
+        $sp.state('sketcher_question', {
+            url: "/sketcher_question",
+            resolve: {
+                // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
+                // we may want to revert this policy at some point.
+                // requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/content/GraphSketcherQuestion.html",
+                    controller: "SketcherPageController"
+                },
+            },
+        })
+
 
         $sp.state('contact', {
             url: "/contact?preset&subject",

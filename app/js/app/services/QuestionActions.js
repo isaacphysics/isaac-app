@@ -35,6 +35,15 @@ define([], function() {
 						}
 					}
 
+					if (scope.doc.type == "isaacGraphSketcherQuestion") {
+						$rootscope.setLoading = function(GraphSketcher) {
+							var data = scope.p.decodeData(scope.state);
+							if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
+								return;
+							}
+						}	
+					}
+
 					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
 					s.$promise.then(function foo(validationResponse) {
 						scope.question.validationResponse = validationResponse;

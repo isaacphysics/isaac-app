@@ -312,27 +312,30 @@ $menu-handle-width: 160px;
         position: absolute;
         bottom: 18px;
         cursor: pointer;
-        &.centre,
+        // &.centre,
         &.redo,
         &.undo,
+        &.poly,
+        &.straight,
+        &.mirro,
         &.clearAll {
             width: 68px;
             height: 80px;
         }
-        &.centre {
-            left: 18px;
-            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
-            background-size: contain;
-        }
+        // &.centre {
+        //     left: 18px;
+        //     background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+        //     background-size: contain;
+        // }
         &.clearAll {
             left: 18px;
             background: url("/assets/equation_editor/hex-button-clear-all.png") no-repeat;
             background-size: contain;
         }
-        &.centre:hover {
-            background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
-            background-size: contain;
-        }
+        // &.centre:hover {
+        //     background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+        //     background-size: contain;
+        // }
         &.undo {
             left: 102px;
             background: url("/assets/equation_editor/hex-button-undo.png") no-repeat;
@@ -344,6 +347,36 @@ $menu-handle-width: 160px;
 
             &.graph {
                 left: 18px;
+            }
+        }
+        &.poly {
+            top: 18px;
+            right: 250px;
+            background: url("/assets/equation_editor/hex-button-polynomial.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-polynomial-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.straight {
+            top: 18px;
+            right: 335px;
+            background: url("/assets/equation_editor/hex-button-straight.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-straight-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.mirro {
+            top: 18px;
+            right: 420px;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+                background-size: contain;
             }
         }
         &.redo {

@@ -11,7 +11,7 @@ define(function(require) {
             restrict: "A",
             templateUrl: "/partials/graph_sketcher/graph_preview.html",
             link: function(scope, element, attrs) {
-
+                console.log("graph previewed.js")
                 var graphPreviewDiv = element.find(".graph-preview");
 
                 var b = require('lib/graph_sketcher/bezier.js');
@@ -457,7 +457,7 @@ define(function(require) {
                     if (scope.preview == undefined) {
                         scope.preview = new p5(scope.sketch, graphPreviewDiv[0]);
                     }
-                    scope.preview.decodeData(scope.state);
+                    scope.preview.decodeData(scope.dat);
                 }
 
 
