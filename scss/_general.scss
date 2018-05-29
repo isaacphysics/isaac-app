@@ -224,11 +224,13 @@ $footer_height : 250px;
     text-align: center;
 }
 
-.ru_maths, .panel.maths * {
+.ru_maths, .panel.maths * 
+{
     color: $ru_maths !important;
 }
 
-.ru_chemistry, .panel.chemistry * {
+.ru_chemistry, .panel.chemistry * 
+{
     color: $ru_chemistry !important;
 }
 
@@ -279,6 +281,17 @@ body
 {
     overflow-x: hidden;
 }*/
+
+.hexagon-offset-even {
+    @media only screen and (min-width: 64.063em) {
+        margin-top: -72px !important;
+        left: 4px;
+    } 
+    @media only screen {
+        margin-top: -15px;
+    }
+}   
+
     
 @media #{$small-only}
 {

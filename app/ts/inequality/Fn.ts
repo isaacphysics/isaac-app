@@ -106,14 +106,14 @@ export
         let box = this.s.font_up.textBounds(this.name || '', 0, 1000, this.scale * this.s.baseFontSize);
         let bracketBox = this.s.font_up.textBounds('(', 0, 1000, this.scale * this.s.baseFontSize);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + bracketBox.w, -this.s.xBox.h / 2), 1, "symbol", "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "operator", "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + bracketBox.w, -this.s.xBox.h / 2), 1, ["symbol", "differential"], "argument");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["operator"], "right");
 
         if (this.allowSubscript) {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, 0), 0.666, "symbol", "subscript");
+            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, 0), 0.666, ["symbol"], "subscript");
         }
         if (this.innerSuperscript) {
-            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, -bracketBox.h), 0.666, "symbol", "superscript");
+            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w / 2, -bracketBox.h), 0.666, ["symbol"], "superscript");
         } else {
             // This is where we would generate the 'outer' superscript docking point, should we ever need it.
             // If we ever do this, we'll need to change all the Math.max calls below.

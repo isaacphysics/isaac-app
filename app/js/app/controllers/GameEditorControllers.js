@@ -15,13 +15,14 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', function($scope, $state, api, $timeout, $q, $stateParams, $window) {
+	var PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$stateParams', '$window', 'boardProcessor', function($scope, $state, api, $timeout, $q, $stateParams, $window, boardProcessor) {
 		// setup defaults.
 		$scope.questionSearchText = $stateParams.query ? $stateParams.query : "";
 		$scope.questionSearchSubject = $stateParams.subject ? $stateParams.subject : "";
 		$scope.questionSearchLevel = $stateParams.level ? ($stateParams.level == "any" ? null : $stateParams.level) : "1";
 		$scope.loading = false;
 		$scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
+		$scope.boardTags = boardProcessor.boardTags;
 
 		var sortField = $stateParams.sort ? $stateParams.sort : null;
 
@@ -29,6 +30,7 @@ define([], function() {
 
 		$scope.hasGroups = false;
 		$scope.boardCreatedSuccessfully = false;
+        $scope.baseBoardId = null;
 
 		api.groupManagementEndpoint.get().$promise.then(function(results){
 			if (results.length > 0) {
@@ -67,6 +69,7 @@ define([], function() {
 		// Allow cloning of existing gameboards:
 		if ($stateParams.base != null && $stateParams.base != '' && $stateParams.base != 'true') {
 			api.gameBoards.get({id: $stateParams.base}).$promise.then(function(response) {
+                $scope.baseBoardId = $stateParams.base;
 				for (var i = 0; i < response.questions.length; i++) {
 					var question = response.questions[i];
 					if (!$scope.isStaffUser && question.tags && question.tags.indexOf("nofilter") > -1) {
@@ -202,6 +205,7 @@ define([], function() {
 			$scope.boardCreatedSuccessfully = false;
 			$scope.currentGameBoard = {questions:[], wildCard: randomWildCard, title: null} // used for rendering the current version of the gameBoard
 			$scope.enabledQuestions = {}; // used to track the selected question ids in the checkboxes.
+            $scope.baseBoardId = null;
 		}
 
 		// detect changes in the selected questions list and update the gameboard
@@ -248,8 +252,23 @@ define([], function() {
         		gameBoardToSave.id = null;
         	}
 
+        	// a board can currently only have one tag so this is good enough for now
+        	if (gameBoardToSave.tags) {
+        		gameBoardToSave.tags = [gameBoardToSave.tags]
+        	} else if (gameBoardToSave.tags == "") {
+        		gameBoardToSave.tags = [];
+        	}
+
         	var savedItem = gameBoardToSave.$save().then(function(gb) {
         		$scope.currentGameBoard = gb;
+
+                if ($scope.baseBoardId != null) {
+                    api.logger.log({
+                        type: "CLONE_GAMEBOARD",
+                        gameboardId: $scope.baseBoardId,
+                        newGameboardId: $scope.currentGameBoard.id
+                    });
+                }
 
         		$scope.modals.gameCreated.show();
 				$scope.boardCreatedSuccessfully = true;

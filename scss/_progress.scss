@@ -55,7 +55,7 @@ $failed-bg-size: 25%;
     height:28px;
     color: #fff;
     text-align: right;
-    background-color: #999;
+    background-color: #ddd;
     margin-top: 5px;
     position: relative;
 
@@ -63,12 +63,23 @@ $failed-bg-size: 25%;
         float: left;
         height:100%;
         text-align: left;
-        background-color: #509e2e;
+        background-color: $ru_green;
 
         span {
             left: 0;
         }
     }
+    // Custom colours for progress bars, parent-level class:
+    &.bar-burgundy .bar {
+        background-color: $ru_burgundy;
+    }
+    &.bar-purple .bar {
+        background-color: $ru_purple;
+    }
+    &.bar-orangered .bar {
+        background-color: $ru_orangered;
+    }
+
     >span {
         right: 0;
     }
@@ -501,7 +512,7 @@ $failed-bg-size: 25%;
             td {
                 &:first-child, .icon-person {
                     color: gray;
-                    a {
+                    .progress-name {
                         text-decoration: line-through;
                     }
                 }
@@ -1006,7 +1017,7 @@ div[d3-plot] {
     }
 
     .progress-attempted {
-        color: #666666;
+        color: #999;
     }
 
     .book-title {

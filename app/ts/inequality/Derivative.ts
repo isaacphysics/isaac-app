@@ -66,9 +66,9 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, "operator", "right");
-        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "differential", "numerator");
-        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "differential", "denominator");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, ["operator"], "right");
+        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, ["differential"], "numerator");
+        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, ["differential"], "denominator");
     }
 
     /**
@@ -105,7 +105,7 @@ export
                     if (e.typeAsString == "Differential") {
                         // WARNING: This stops at the first non-Differential, which is kinda OK, but may confuse people.
                         let o = 1;
-                        let o_child: Widget = e.dockingPoints["order"].child
+                        let o_child: Widget = e.dockingPoints["order"].child;
                         if (o_child != null && o_child.typeAsString == "Num") {
                             o = parseInt(o_child.getFullText());
                         }

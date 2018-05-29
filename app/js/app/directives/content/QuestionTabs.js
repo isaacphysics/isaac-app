@@ -258,7 +258,12 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					if (scope.gameboard && newVal !== oldVal) {
 						checkGameboardProgress();
 					}
-				})
+				});
+
+				scope.incorrectSigFigs = function(validationResponse) {
+					var explanationPresent = validationResponse && validationResponse.explanation;
+					return explanationPresent && validationResponse.explanation.tags && validationResponse.explanation.tags.indexOf('sig_figs') >= 0;
+				}
 
 				scope.question.pageCompleted = isPageCompleted(scope.page);
 				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.

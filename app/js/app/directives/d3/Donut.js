@@ -49,7 +49,7 @@ define(["d3"], function(d3) {
                     // switch colours
                     switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
-                            range = ['#6c388c', '#189ace', '#ef3e36'];
+                            range = ['#944cbe', '#009acd', '#ef3e36'];
                             label_range = ['#ffffff', '#ffffff', '#ffffff']
                             break;
                         case 'physics':

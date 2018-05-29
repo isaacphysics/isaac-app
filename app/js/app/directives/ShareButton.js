@@ -38,7 +38,7 @@ define([], function() {
                         }
 
                         $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
-                            scope.shareUrl = response.data.id.replace("https://goo.gl/", window.location.origin + "/s/");
+                            scope.shareUrl = response.data.id.replace("https://goo.gl/", window.location.host + "/s/");
                             var shortCode = response.data.id.replace("https://goo.gl/", "");
                             api.logger.log({
                                 type: "SHOW_SHARE_URL",

@@ -23,6 +23,7 @@ limitations under the License.
 import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
+import isNumber = require("lodash/isNumber");
 
 
 /** A class for representing variables and constants (aka, letters). */
@@ -50,7 +51,7 @@ class Differential extends Widget {
         super(p, s);
         this.letter = letter;
         this.s = s;
-        this.docksTo = ['operator', 'differential'];
+        this.docksTo = ['operator', 'differential', 'relation'];
     }
 
     /**
@@ -65,7 +66,7 @@ class Differential extends Widget {
         let s = false;
         let p = this.parentWidget;
         while (p != null) {
-            s |= p.typeAsString == 'Derivative';
+            s = s || p.typeAsString == 'Derivative';
             p = p.parentWidget;
         }
         return s;
@@ -76,7 +77,7 @@ class Differential extends Widget {
         let n = this.dockedTo;
         let w: Widget = this;
         while (w != null) {
-            a |= n == "denominator";
+            a = a || n == "denominator";
             w = w.parentWidget;
             n = null == w ? "" : w.dockedTo;
         }
@@ -95,9 +96,9 @@ class Differential extends Widget {
         let box = this.boundingBox();
         // let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "differential_argument", "argument");
-        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, "differential_order", "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, "differential", "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["differential_argument"], "argument");
+        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["differential_order"], "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential", "operator"], "right");
     }
 
     /**
@@ -139,26 +140,33 @@ class Differential extends Widget {
                 expression += this.dockingPoints["right"].child.getExpression(format);
             }
         } else if (format == "python") {
-            // These are only for the list of available symbols,
-            // and we don't even use them anyway
-            // so... let's get rid of them maybe?
             if (this.letter == "δ") {
-                expression = "differential_delta";
+                expression = "delta";
             } else if (this.letter == "∆") {
-                expression = "differential_Delta";
+                expression = "Delta";
             } else {
-                expression = "differential_d";
+                expression = "d";
             }
-            if (this.dockingPoints["order"].child != null) {
-                expression += "(" + this.dockingPoints["order"].child.getExpression(format) + ")";
-            } else {
-                expression += "()";
-            }
+            let args = [];
             if (this.dockingPoints["argument"].child != null) {
-                expression += "(" + this.dockingPoints["argument"].child.getExpression(format) + ")";
-            } else {
-                expression += "()";
+                args.push(this.dockingPoints["argument"].child.getExpression(format));
             }
+            expression += args.join("");
+
+            // FIXME We need to decide what to do with orders.
+            if (this.dockingPoints["order"].child != null) {
+                var n = parseInt(this.dockingPoints["order"].child.getExpression(format));
+                if (!isNaN(n) && n > 1) {
+                    expression += _.repeat(" * " + expression, n-1);
+                }
+            }
+            if (this.dockingPoints["right"].child != null) {
+                let op = (this.dockingPoints["right"].child.typeAsString == 'Relation' ||
+                      this.dockingPoints["right"].child.typeAsString == 'BinaryOperation')
+                      ? '' : ' * ';
+                expression += op + this.dockingPoints["right"].child.getExpression(format);
+            }
+
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
@@ -184,7 +192,22 @@ class Differential extends Widget {
     }
 
     token() {
-        return this.letter;
+        // DRY this out.
+        var expression;
+        if (this.letter == "δ") {
+            expression = "delta";
+        } else if (this.letter == "∆") {
+            expression = "Delta";
+        } else {
+            expression = "d";
+        }
+        let args = [];
+        if (this.dockingPoints["argument"].child != null) {
+            args.push(this.dockingPoints["argument"].child.getExpression("python"));
+        }
+        expression += args.join(" ");
+
+        return expression;
     }
 
     /** Paints the widget on the canvas. */
@@ -285,10 +308,10 @@ class Differential extends Widget {
         }
 
         if ("right" in boxes) {
-            docking_right.child.position.x = box.w / 2 + 1.25*this.s.mBox.w + arg_width + order_width;
+            docking_right.child.position.x = box.w / 2 + this.s.mBox.w + arg_width + order_width;
             docking_right.child.position.y = 0;
         } else {
-            docking_right.position.x = box.w / 2 + 1.25*this.s.mBox.w+ arg_width + order_width;
+            docking_right.position.x = box.w / 2 + this.s.mBox.w+ arg_width + order_width;
             docking_right.position.y = -this.s.xBox.h / 2;
         }
 

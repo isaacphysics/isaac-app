@@ -144,11 +144,6 @@ define([], function() {
                 method: 'GET', 
                 isArray: false 
             },
-            'getNewStats' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/stats/v2/",
-                isArray: false
-            },
             'getGameboardPopularity' : {
                 method: 'GET',
                 url: urlPrefix + "/gameboards/popular", 
@@ -159,19 +154,9 @@ define([], function() {
                 url: urlPrefix + "/admin/stats/schools/", 
                 isArray: true 
             },
-            'getNewSchoolPopularity' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/stats/schools/v2",
-                isArray: true
-            },
             'getSchoolUsers' : {
                 method: 'GET',
                 url: urlPrefix + "/admin/users/schools/:id", 
-                params: {id: '@id'},
-            },
-            'getNewSchoolUsers' : {
-                method: 'GET',
-                url: urlPrefix + "/admin/users/schools/:id/v2",
                 params: {id: '@id'},
             },
             'getEventsOverTime' : {
@@ -223,7 +208,17 @@ define([], function() {
                 method: 'GET',
                 url: urlPrefix + "/authorisations/token/:id", 
                 isArray: false 
-            },      
+            },
+            'addManager' : {
+                method: 'POST',
+                url: urlPrefix + "/groups/:id/manager", 
+                isArray: false 
+            },
+            'deleteManager' : {
+                method: 'DELETE',
+                url: urlPrefix + "/groups/:id/manager/:userId", 
+                isArray: false 
+            },
         });
 
         this.authorisations = $resource(urlPrefix + "/authorisations/", {}, {
@@ -248,7 +243,7 @@ define([], function() {
             'getTokenOwner' : {
                 method: 'GET',
                 url: urlPrefix + "/authorisations/token/:token/owner", 
-                isArray: false 
+                isArray: true 
             },              
         }); 
 
@@ -287,7 +282,7 @@ define([], function() {
 
         this.events = $resource(urlPrefix + "/events/:id");
         
-        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
+        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly&show_inactive_only=:showInactiveOnly");
 
         this.eventMapData = $resource(urlPrefix + "/events/map_data?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
@@ -332,6 +327,11 @@ define([], function() {
             'resendConfirmation' : {
                 method: 'POST', 
                 url: urlPrefix + "/events/:eventId/bookings/:userId/resend_confirmation"            
+            },
+            'recordEventAttendance' : {
+                method: 'POST',
+                url: urlPrefix + "/events/:eventId/bookings/:userId/record_attendance",
+                params: {attended: '@attended'}
             }
         }); 
 
@@ -387,11 +387,11 @@ define([], function() {
         }
 
         this.getImageUrl = function(path) {
-            // check if the image source is a fully qualified link (suggesting it is external to the Isaac site)
-            if(path.indexOf("http") > -1){
+            // Check if the image source is a fully qualified link (suggesting it is external to the Isaac site),
+            // or else an asset link served by the APP, not the API.
+            if ((path.indexOf("http") > -1) || (path.indexOf("/assets/") > -1)) {
                 return path;
-            }
-            else{
+            } else {
                 return urlPrefix + "/images/" + path;
             }
         }
@@ -449,15 +449,15 @@ define([], function() {
             },
         });
 
-        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:email/:token", null, {
+        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:token", null, {
             verify: {
                 method: "GET"
             },
         });
 
-        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail/:email", null, {
+        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail", null, {
             requestEmailVerification: {
-                method: "GET"
+                method: "POST"
             },
         });
 

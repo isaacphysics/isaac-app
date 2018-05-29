@@ -90,11 +90,13 @@
                         <br/>
                         <strong>
                             <a ng-show="gameBoard.$resolved && editedGameBoardTitle == null && !gameBoard.savedToCurrentUser" 
-                               href="javascript:void(0)" 
-                               ui-sref="addBoard({boardId:gameBoard.id})"
-                               ng-switch="$root.user.role">
+                               href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})" ng-switch="$root.user.role">
                                <span ng-switch-when="STUDENT">Save to My Boards</span>
                                <span ng-switch-default>Save board or set as assignment</span>
+                            </a>
+                            <a ng-show="gameBoard.$resolved && editedGameBoardTitle == null && gameBoard.savedToCurrentUser && $root.user.role!='STUDENT'"
+                               href="javascript:void(0)" ui-sref="addBoard({boardId:gameBoard.id})">
+                               <span>Set Assignment</span>
                             </a>
                         </strong>
 

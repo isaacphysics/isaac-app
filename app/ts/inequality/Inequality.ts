@@ -99,6 +99,7 @@ export
         });
     }
     setup = () => {
+        this.p.frameRate(7);
         this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
         this.mBox = this.font_it.textBounds("M", 0, 1000, this.baseFontSize);
 
@@ -182,7 +183,7 @@ export
 
     commitPotentialSymbol = () => {
         // Make sure we have an active docking point, and that the moving symbol can dock to it.
-        if (this.activeDockingPoint != null && this.potentialSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+        if (this.activeDockingPoint != null && _.intersection(this.potentialSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
             this.activeDockingPoint.child = this.potentialSymbol;
             this.scope.log.actions.push({
                 event: "DOCK_POTENTIAL_SYMBOL",
@@ -202,6 +203,8 @@ export
 
         this.updatePotentialSymbol(null);
         this.updateState();
+
+        this.p.frameRate(7);
     };
 
     parseSubtreeObject = (root: Object) => {
@@ -219,7 +222,7 @@ export
         let w: Widget = null;
         switch (node["type"]) {
             case "Symbol":
-                w = new Symbol(this.p, this, node["properties"]["letter"]);
+                w = new Symbol(this.p, this, node["properties"]["letter"], node["properties"]["modifier"]);
                 break;
             case "BinaryOperation":
                 w = new BinaryOperation(this.p, this, node["properties"]["operation"]);
@@ -273,7 +276,7 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
-
+        this.p.frameRate(60);
         // These are used to correctly detect clicks and taps.
 
         // Note that touchX and touchY are incorrect when using touch. Ironically.
@@ -413,7 +416,7 @@ export
             this.prevTouch = null;
 
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
-            if (this.activeDockingPoint != null && this.movingSymbol.docksTo.indexOf(this.activeDockingPoint.type) > -1) {
+            if (this.activeDockingPoint != null && _.intersection(this.movingSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
                 // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
@@ -471,6 +474,8 @@ export
             }
         });
         this.updateState();
+
+        this.p.frameRate(7);
     };
 
     mouseMoved = () => {

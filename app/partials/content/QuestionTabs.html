@@ -25,7 +25,8 @@
                 <div class='ru-answer-wrong no-print' style="display:block;" ng-show="question.validationResponse.correct==false && doc.type!='isaacAnvilQuestion'">
                     <div class='row'>
                         <div class="small-14 small-offset-1 columns end text-center">
-                            <h2>incorrect</h2>
+                            <h2 ng-hide="incorrectSigFigs(question.validationResponse)">Incorrect</h2>
+                            <h2 ng-show="incorrectSigFigs(question.validationResponse)">Significant Figures</h2>
                             <div isaac-content doc="question.validationResponse.explanation"></div>
                             <h5>Please try again.</h5>
                         </div>

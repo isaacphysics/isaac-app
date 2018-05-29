@@ -104,9 +104,9 @@
             </div>
         </div>
        <div class="row">
-          <div class="large-16 columns">
+          <div class="large-16 columns progress-space">
 
-              <dl class="tabs profile-tabs no-print" id="progressTabs">
+              <dl class="tabs profile-tabs no-print progress-space" id="progressTabs">
                   <dd ng-class="questionsVisible == correctQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Correct <span class="show-for-medium-up">Questions</span></span></a></dd>
                   <dd ng-class="questionsVisible == attemptedQuestions ? 'active' : ''"><a href="javascript:void(0)" ng-click="toggleVisibleBoards()"><span>Attempted <span class="show-for-medium-up">Questions</span></span></a></dd>
               </dl>
@@ -155,13 +155,29 @@
                   </ul>
               </div>
 
+            </div><div class="large-16 columns">
 
             <h6>Isaac Books</h6>
             <ul class="small-block-grid-1 progress-space">
               <li>
                 <div class="progress-bar-box">
-                  <span><a class="book-title" ui-sref="book_physics_skills_14">Mastering Essential Pre-University Physics</a> sections completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
-                  <div progress-bar class="progress-bar" value="progress.correctByTag['physics_skills_14']" max="progress.attemptsByTag['physics_skills_14']" title="{{progress.percentCorrectPhysicsSkills14}}%"></div>
+                  <span>
+                     Mastering Essential <a class="book-title" ui-sref="book_physics_skills_14">Pre-University Physics</a> sections completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span>
+                     <span data-ot="Note that for the Pre-University Physics book we are only able to count sections, not individual questions as in the other books!" class="has-tip hide-for-small-only" aria-haspopup="true"><span class="icon-help"></span></span>
+                  </span>
+                  <div progress-bar class="progress-bar bar-burgundy" value="progress.correctByTag['physics_skills_14']" max="progress.attemptsByTag['physics_skills_14']" title="{{progress.percentCorrectPhysicsSkills14}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box">
+                  <span>Mastering Essential <a class="book-title" ui-sref="book_phys_book_gcse">GCSE Physics</a> questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
+                  <div progress-bar class="progress-bar bar-purple" value="progress.correctByTag['phys_book_gcse']" max="progress.attemptsByTag['phys_book_gcse']" title="{{progress.percentCorrectPhysBookGCSE}}%"></div>
+                </div>
+              </li>
+              <li>
+                <div class="progress-bar-box end">
+                   <span>Mastering Essential <a class="book-title" ui-sref="book_chemistry_16">Pre-University Physical Chemistry</a> questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
+                  <div progress-bar class="progress-bar bar-orangered" value="progress.correctByTag['chemistry_16']" max="progress.attemptsByTag['chemistry_16']" title="{{progress.percentCorrectChemistry16}}%"></div>
                 </div>
               </li>
             </ul>

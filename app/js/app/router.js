@@ -218,6 +218,7 @@ define(["angular-ui-router"], function() {
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
         $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
+        $sp.state('book_pre_uni_maths', bookState("pre_uni_maths"));
 
         // Old book page URLs still need to work
         $sp.state('book', {
@@ -438,7 +439,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('verifyEmail', {
-            url: "/verifyemail?userid&token&email&requested",
+            url: "/verifyemail?userid&token&requested",
             views: {
                 "body": {
                     templateUrl: "/partials/states/verify_email.html",
@@ -520,7 +521,7 @@ define(["angular-ui-router"], function() {
 
         $sp.state('shareLink', {
             url: "/s/:shortCode",
-            onEnter: ["$stateParams", "api", "$http", function($stateParams, api, $http) {
+            onEnter: ["$state", "$stateParams", "api", "$http", function($state, $stateParams, api, $http) {
                 var redirectURL = "https://goo.gl/" + $stateParams.shortCode;
 
                 api.logger.log({
@@ -534,17 +535,32 @@ define(["angular-ui-router"], function() {
                         if (longUrl.indexOf(window.location.origin) == 0) {
                             document.location.href = longUrl;
                         } else {
-                            console.error("This is an external URL: " + longUrl);
-                            // FIXME - do something smarter here!
-                            document.location.href = longUrl;
+                            $state.go("externalLink", {link: longUrl}, {location: false});
                         }
                     } else {
-                        // FIXME - don't fail silently! Not 'OK' means malware or deleted.
+                        // Not 'OK' means malware or deleted.
+                        $state.go("404", {target: "/s/" + $stateParams.shortCode});
                     }
                 }).catch(function() {
-                    // FIXME - don't fail silently!
+                    // Google are deprecating this API, try sending the user directly to the Google URL:
+                    document.location.href = redirectURL;
                 });
             }]
+        });
+
+        $sp.state('externalLink', {
+            url: "/redirect",
+            params: {
+                "link": null
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/external_link.html",
+                    controller: ["$scope", "$stateParams", function($scope, $stateParams) {
+                        $scope.link = $stateParams.link;
+                    }],
+                },
+            },
         });
 
         $sp.state('404', {
@@ -680,35 +696,6 @@ define(["angular-ui-router"], function() {
                     }
                 }
             });
-
-        $sp.state('adminStatsNew', {
-            url: "/admin/stats/v2",
-            resolve: {
-                requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
-            },
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/admin_stats_new.html",
-                    controller: ["$scope", "api", function($scope, api) {
-
-                        $scope.state = 'adminStatsNew';
-
-                        // general stats
-                        $scope.statistics = null;
-                        $scope.setLoading(true)
-                        api.statisticsEndpoint.getNewStats().$promise.then(function(result) {
-                            $scope.statistics = result;
-                            $scope.setLoading(false)
-                        });
-                        api.eventBookings.getAllBookings({
-                            "count_only": true
-                        }).$promise.then(function(result) {
-                            $scope.eventBookingsCount = result.count;
-                        })
-                    }]
-                }
-            }
-        });
 
             $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
@@ -955,7 +942,7 @@ define(["angular-ui-router"], function() {
 
                 api.saveGameBoard($stateParams.boardId).$promise.then(function() {
                     if (requireLogin.role == "TEACHER" || requireLogin.role == "CONTENT_EDITOR" || requireLogin.role == "EVENT_MANAGER" || requireLogin.role == "ADMIN") {
-                        $state.go("setAssignments", {}, {
+                        $state.go("setAssignments", {'#': $stateParams.boardId}, {
                             location: "replace"
                         });
                     } else {
