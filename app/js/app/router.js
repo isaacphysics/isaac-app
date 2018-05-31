@@ -118,9 +118,16 @@ define(["angular-ui-router"], function() {
                     return {
                         teacher: {
                             general: { idSuffix: "general", title: "General" }, 
-                            about: { idSuffix: "about", title: "About" }
+                            assignments: { idSuffix: "assignments", title: "Assigning Work" },
+                            progress: { idSuffix: "progress", title: "Viewing Student Progress" },
+                            suggestions: { idSuffix: "suggestions", title: "Teaching Suggestions" },
+                            direct: { idSuffix: "direct", title: "One-to-One Support" },
                         },
-                        student: {},
+                        student: {
+                            general: { idSuffix: "general", title: "General" },
+                            homework: { idSuffix: "homework", title: "Finding Homework" },
+                            questions: { idSuffix: "questions", title: "Answering Questions" },
+                        },
                     };
                 }],
                 activeCategory: ["categories", "$stateParams", function(categories, $stateParams) {
@@ -133,6 +140,33 @@ define(["angular-ui-router"], function() {
                     controller: "SupportPageController",
                 },
             },
+        });
+        $sp.state('supportRoot', {
+            url: "/support",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'}, {
+                    location: "replace"
+                });
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportStudents', {
+            url: "/support/student",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'}, {
+                    location: "replace"
+                });
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportTeacher', {
+            url: "/support/teacher",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'teacher', idSuffix: 'general'}, {
+                    location: "replace"
+                });
+                $rootScope.setLoading(false);
+            }],
         });
 
 
