@@ -168,6 +168,9 @@ define(["angular-ui-router"], function() {
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
+            $sp.state('gcse', staticPageState("/gcse", "gcse"));
+            $sp.state('alevel', staticPageState("/alevel", "alevel"));
+
 
             // The events page shouldn't be accessible from the other sites to avoid confusion!
             $sp.state('events', {
