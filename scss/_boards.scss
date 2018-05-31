@@ -199,9 +199,11 @@
 }
 .table-wrap {
 	width: 100%;
-	overflow-x: auto;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	@media #{$small-only} {
+		overflow-x: auto;
+	}
 	.boards-table {
 		border-collapse: collapse;
 		width: 100%;
