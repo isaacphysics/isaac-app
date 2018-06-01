@@ -149,6 +149,7 @@ export
     draw = () => {
         this.p.clear();
         _.each(this.symbols, symbol => {
+            symbol.shakeIt();
             symbol.draw();
         });
 
@@ -215,12 +216,15 @@ export
                 this.activeDockingPoint = null;
 
                 symbol.highlight(false);
+                symbol.contractDockingPoints();
                 if (symbol != null) {
                     if (this.activeDockingPoint = this.findClosestDockingPoint(this.p.createVector(this.potentialSymbol.position.x, this.potentialSymbol.position.y))) {
                         this.activeDockingPoint.widget.highlight(true);
+                        this.activeDockingPoint.widget.expandDockingPoints();
                         return true;
                     }
                 }
+                symbol.shakeIt();
             });
 
         } else {
@@ -439,6 +443,7 @@ export
                 // This is less refined than doing the proximity detection thing, but works much better (#4)
                 if (symbol != null && symbol.id != this.movingSymbol.id) {
                     symbol.highlight(false);
+                    symbol.contractDockingPoints();
                     if (this.activeDockingPoint = this.findClosestDockingPoint(this.p.createVector(this.p.mouseX, this.p.mouseY))) {
                         this.activeDockingPoint.widget.highlight(true);
                         return true;
@@ -514,6 +519,7 @@ export
         this.visibleDockingPointTypes = [];
         for (let dp of this._canvasDockingPoints) {
             dp.isVisible = false; // TODO Rely on this in the future maybe.
+            dp.widget.expandDockingPoints();
         }
         // Update the list of free docking points
         this.updateCanvasDockingPoints();

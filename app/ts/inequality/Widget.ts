@@ -120,6 +120,19 @@ export
     parentWidget: Widget = null;
 
     isHighlighted = false;
+    mustExpand = false;
+
+    expandDockingPoints() {
+        this.mustExpand = true;
+    }
+
+    contractDockingPoints() {
+        this.mustExpand = false;
+        for (let w of this.children) {
+            w.contractDockingPoints();
+        }
+    }
+
     color = null;
     isMainExpression = false;
     currentPlacement = "";

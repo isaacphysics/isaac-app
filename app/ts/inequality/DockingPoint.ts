@@ -55,7 +55,7 @@ export class DockingPoint {
 
     get size(): number {
         // TODO Work on the variable docking points size thing. It looks cool, but needs some care when space is 0.
-        // return this.isVisible ? this.widget.scale * BASE_DOCKING_POINT_SIZE : 0;
+        // return (this.widget.mustExpand) ? this.widget.scale * BASE_DOCKING_POINT_SIZE : this.widget.scale * BASE_DOCKING_POINT_SIZE/2;
         return this.widget.scale * BASE_DOCKING_POINT_SIZE;
     }
 }
