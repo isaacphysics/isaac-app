@@ -72,39 +72,39 @@
 
               <strong ng-show="event.teacher && additionalInformation.yearGroup == 'TEACHER' && targetUser.role != 'TEACHER'"><a ui-sref="pages({id: 'contact_us_teacher'})" target="_blank">Click to upgrade to a teacher account</a> for free!</strong>
             </span>
+            <div ng-if="!event.virtual">
+              <label for="medical-reqs">
+                <strong>Dietary Requirements or Relevant Medical Conditions</strong>
+                <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, it is important for us to know if you have a severe allergy and/or carry an EpiPen, are prone to fainting, suffer from epilepsy..."></span>
+              </label>
+              <input id="medical-reqs" name="medical-reqs" type="text" ng-model="additionalInformation.medicalRequirements">
 
-            <label for="medical-reqs">
-              <strong>Dietary Requirements or Relevant Medical Conditions</strong>
-              <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, it is important for us to know if you have a severe allergy and/or carry an EpiPen, are prone to fainting, suffer from epilepsy..."></span>
-            </label>
-            <input id="medical-reqs" name="medical-reqs" type="text" ng-model="additionalInformation.medicalRequirements">
+              <label for="access-reqs">
+                <strong>Accessibility Requirements</strong>
+                <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, please let us know if you need wheelchair access, hearing loop or if we can help with any special adjustments."></span>
+              </label>
+              <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements">
 
-            <label for="access-reqs">
-              <strong>Accessibility Requirements</strong>
-              <span aria-haspopup="true" class="icon-help has-tip" data-ot="For example, please let us know if you need wheelchair access, hearing loop or if we can help with any special adjustments."></span>
-            </label>
-            <input id="access-reqs" name="access-reqs" type="text" ng-model="additionalInformation.accessibilityRequirements">
-
-            <div ng-show="additionalInformation.yearGroup != 'TEACHER' && additionalInformation.yearGroup != 'OTHER'" class="row">
-              <div class="columns small-16">
-                <h3>Emergency Contact Details</h3>
-              </div>             
-              <div class="columns small-16 medium-8">            
-                <label for="emergency-name">
-                  <strong>Contact Name</strong>
-                  <span class="ru-form-required"></span>
-                </label>
-                <input id="emergency-name" name="emergency-name" ng-model="additionalInformation.emergencyName" type="text" required/>
+              <div ng-show="additionalInformation.yearGroup != 'TEACHER' && additionalInformation.yearGroup != 'OTHER'" class="row">
+                <div class="columns small-16">
+                  <h3>Emergency Contact Details</h3>
+                </div>             
+                <div class="columns small-16 medium-8">            
+                  <label for="emergency-name">
+                    <strong>Contact Name</strong>
+                    <span class="ru-form-required"></span>
+                  </label>
+                  <input id="emergency-name" name="emergency-name" ng-model="additionalInformation.emergencyName" type="text" required/>
+                </div>
+                <div class="columns small-16 medium-8">            
+                  <label for="emergency-number">
+                    <strong>Contact Telephone Number</strong>
+                    <span class="ru-form-required"></span>
+                  </label>
+                  <input id="emergency-number" name="emergency-number" type="text" ng-model="additionalInformation.emergencyNumber" required/>
+                </div>
               </div>
-              <div class="columns small-16 medium-8">            
-                <label for="emergency-number">
-                  <strong>Contact Telephone Number</strong>
-                  <span class="ru-form-required"></span>
-                </label>
-                <input id="emergency-number" name="emergency-number" type="text" ng-model="additionalInformation.emergencyNumber" required/>
-              </div>
-            </div>
-          
+          </div>
           </fieldset>  
           
         
