@@ -21,12 +21,9 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget'
-import { Symbol } from "./Symbol";
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
-import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 /** Radix. Or, as they say, the _nth_ principal root of its argument. */
 export
@@ -190,7 +187,7 @@ export
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 

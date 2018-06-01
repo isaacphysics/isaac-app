@@ -154,6 +154,8 @@ define(function (require) {
 
                     return new Promise(function (resolve, reject) {
 
+                        scope.hashDebug = window.location.hash === '#debug';
+
                         delete scope.symbolLibrary.customVars;
                         delete scope.symbolLibrary.customFunctions;
                         delete scope.symbolLibrary.customChemicalSymbols;
@@ -1679,7 +1681,7 @@ define(function (require) {
 
                 scope.centre = function () {
                     sketch.centre();
-                }
+                };
 
                 element.on("keydown", function (e) {
                     var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;

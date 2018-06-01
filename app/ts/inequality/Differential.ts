@@ -23,9 +23,6 @@ limitations under the License.
 import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
-import isNumber = require("lodash/isNumber");
-import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
-
 
 /** A class for representing variables and constants (aka, letters). */
 export

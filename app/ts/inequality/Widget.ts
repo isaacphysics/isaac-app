@@ -21,7 +21,6 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { DockingPoint } from './DockingPoint';
-import { BASE_DOCKING_POINT_SIZE } from "./Inequality";
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
 // This may very well be a relic of my C++ multi-threaded past, but it served me well so far...
@@ -106,7 +105,7 @@ export
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
     get dockingPointSize() {
-        return this.scale * BASE_DOCKING_POINT_SIZE;
+        return this.scale * this.s.baseDockingPointSize;
     }
 
     /** An array of the types of docking points that this widget can dock to */
@@ -228,7 +227,8 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.dockingPointSize, this.dockingPointSize);
+                    let dps = this.s.scope.editorMode === 'chemistry' ? this.dockingPointSize*(50/30) : this.dockingPointSize;
+                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, dps, dps);
                 }
             }
         });

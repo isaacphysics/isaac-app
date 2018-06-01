@@ -24,8 +24,6 @@ import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
-import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 /** Functions. */
 export
@@ -290,7 +288,7 @@ export
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 
@@ -313,7 +311,7 @@ export
         if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child) {
             return this.dockingPoints["superscript"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 
@@ -321,7 +319,7 @@ export
         if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child) {
             return this.dockingPoints["subscript"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 

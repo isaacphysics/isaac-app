@@ -39,7 +39,6 @@ import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
 // This is where the fun starts
-export let BASE_DOCKING_POINT_SIZE = 50/3;
 
 // This is the "main" app with the update/render loop and all that jazz.
 export
@@ -66,6 +65,22 @@ export
     }
 
     baseFontSize = 50;
+    baseDockingPointSize = this.baseFontSize/3;
+
+    changeBaseFontSizeBy = (amount) => {
+        if (this.baseFontSize + amount > 0) {
+            this.baseFontSize += amount;
+            this.updateLetterBoxes();
+        }
+    };
+
+    changeBaseDockingPointSizeBy = (amount) => {
+        if (this.baseDockingPointSize + amount/3 > 0) {
+            this.baseDockingPointSize += amount/3;
+            this.updateLetterBoxes();
+        }
+    };
+
     font_it: p5.Font = null;
     font_up: p5.Font = null;
 
@@ -113,10 +128,26 @@ export
         this.updateCanvasDockingPoints();
     };
 
-    setup = () => {
-        this.p.frameRate(7);
+    updateLetterBoxes = () => {
         this.xBox = Rect.fromObject(this.font_it.textBounds("x", 0, 0, this.baseFontSize));
         this.mBox = Rect.fromObject(this.font_it.textBounds("M", 0, 0, this.baseFontSize));
+    };
+
+    setup = () => {
+        this.p.frameRate(7);
+
+        switch (_this.scope.editorMode) {
+            case 'maths':
+                this.baseFontSize = 50;
+                this.baseDockingPointSize = 50/3;
+                break;
+            case 'chemistry':
+                this.baseFontSize = 50;
+                this.baseDockingPointSize = 30/3;
+                break;
+        }
+
+        this.updateLetterBoxes();
 
         this.symbols = [];
 

@@ -25,7 +25,6 @@ import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { BASE_DOCKING_POINT_SIZE } from "./Inequality";
 
 /** Brackets. "We got both kinds, we got country and western". */
 export
@@ -277,7 +276,7 @@ export
         if (this.dockingPoints["argument"] && this.dockingPoints["argument"].child) {
             return this.dockingPoints["argument"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 

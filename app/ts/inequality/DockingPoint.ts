@@ -21,7 +21,6 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget } from './Widget';
-import { BASE_DOCKING_POINT_SIZE } from './Inequality';
 
 /** A class to encapsulate all the info on docking points */
 export class DockingPoint {
@@ -55,7 +54,7 @@ export class DockingPoint {
 
     get size(): number {
         // TODO Work on the variable docking points size thing. It looks cool, but needs some care when space is 0.
-        // return (this.widget.mustExpand) ? this.widget.scale * BASE_DOCKING_POINT_SIZE : this.widget.scale * BASE_DOCKING_POINT_SIZE/2;
-        return this.widget.scale * BASE_DOCKING_POINT_SIZE;
+        // return (this.widget.mustExpand) ? this.widget.scale * this.s.baseDockingPointSize : this.widget.scale * this.s.baseDockingPointSize/2;
+        return this.widget.scale * this.widget.s.baseDockingPointSize;
     }
 }

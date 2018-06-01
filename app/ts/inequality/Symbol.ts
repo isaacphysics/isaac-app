@@ -25,7 +25,6 @@ import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
 import { Num } from "./Num";
-import { BASE_DOCKING_POINT_SIZE } from './Inequality';
 
 /** A class for representing variables and constants (aka, letters). */
 export

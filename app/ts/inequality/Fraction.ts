@@ -25,8 +25,6 @@ import { Widget, Rect } from './Widget';
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
-import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 export
     class Fraction extends Widget {
@@ -149,7 +147,7 @@ export
         if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
             return this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 
@@ -157,7 +155,7 @@ export
         if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
             return this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox;
         } else {
-            return new Rect(0, 0, BASE_DOCKING_POINT_SIZE, 0);
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
         }
     }
 

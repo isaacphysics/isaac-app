@@ -22,13 +22,9 @@ limitations under the License.
 /* tslint:disable:  */
 
 import { Widget, Rect } from './Widget';
-import { BinaryOperation } from "./BinaryOperation";
-import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
 import { Differential } from "./Differential";
 import { Num } from "./Num";
-import {BASE_DOCKING_POINT_SIZE} from "./Inequality";
 
 export
     class Derivative extends Widget {
@@ -175,7 +171,7 @@ export
     }
 
     get _numeratorBox(): Rect {
-        let numeratorBox = new Rect(0, 0, BASE_DOCKING_POINT_SIZE, BASE_DOCKING_POINT_SIZE);
+        let numeratorBox = new Rect(0, 0, this.s.baseDockingPointSize, this.s.baseDockingPointSize);
         if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
             numeratorBox = this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox;
         }
@@ -183,7 +179,7 @@ export
     }
 
     get _denominatorBox(): Rect {
-        let denominatorBox = new Rect(0, 0, BASE_DOCKING_POINT_SIZE, BASE_DOCKING_POINT_SIZE);
+        let denominatorBox = new Rect(0, 0, this.s.baseDockingPointSize, this.s.baseDockingPointSize);
         if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
             denominatorBox = this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox;
         }
