@@ -18,6 +18,18 @@
 
 }
 
+.ru_share_link {
+    div {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        user-select: all;
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+    }
+}
+
 .ru_print
 {
     background-image: url('../assets/print.svg');

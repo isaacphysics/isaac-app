@@ -11,7 +11,7 @@ define([], function() {
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
-                scope.textEntryError = '';
+                scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
                         scope.symbolList = scope.questionDoc.availableSymbols.map(function (str) {return str.trim().replace(';', ',')}).join(", ");
@@ -38,14 +38,18 @@ define([], function() {
                         var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
                         var badCharacters = RegExp(regexStr);
                         var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
-                        if (/[{}\\]/.test(pycode)) {
-                            scope.textEntryError = 'LaTeX syntax is not supported.';
-                        } else if (badCharacters.test(pycode)) {
-                            scope.textEntryError = 'Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(', ')
-                        } else if (openBracketsCount != closeBracketsCount) {
-                            scope.textEntryError = 'You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.';
-                        } else {
-                            scope.textEntryError = '';
+                        scope.textEntryError = [];
+                        if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
+                            scope.textEntryError.push('LaTeX syntax is not supported.');
+                        }
+                        if (badCharacters.test(pycode)) {
+                            scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
+                        }
+                        if (openBracketsCount != closeBracketsCount) {
+                            scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
+                        }
+                        if (/\.[0-9]/.test(pycode)) {
+                            scope.textEntryError.push('Please convert decimal numbers to fractions.');
                         }
                     }, 250);
                 };
