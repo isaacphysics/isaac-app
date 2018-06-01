@@ -117,16 +117,16 @@ define(["angular-ui-router"], function() {
                 categories: [function() {
                     return {
                         teacher: {
-                            general: { idSuffix: "general", title: "General" }, 
-                            assignments: { idSuffix: "assignments", title: "Assigning Work" },
-                            progress: { idSuffix: "progress", title: "Viewing Student Progress" },
-                            suggestions: { idSuffix: "suggestions", title: "Teaching Suggestions" },
-                            direct: { idSuffix: "direct", title: "One-to-One Support" },
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" }, 
+                            assignments: { idSuffix: "assignments", title: "Assigning Work", icon: "faq" },
+                            progress: { idSuffix: "progress", title: "Viewing Student Progress", icon: "faq" },
+                            suggestions: { idSuffix: "suggestions", title: "Teaching Suggestions", icon: "teacher-hat" },
+                            direct: { idSuffix: "direct", title: "One-to-One Support", icon: "teacher-hat" },
                         },
                         student: {
-                            general: { idSuffix: "general", title: "General" },
-                            homework: { idSuffix: "homework", title: "Finding Homework" },
-                            questions: { idSuffix: "questions", title: "Answering Questions" },
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" },
+                            homework: { idSuffix: "homework", title: "Finding Homework", icon: "faq" },
+                            questions: { idSuffix: "questions", title: "Answering Questions", icon: "faq" },
                         },
                     };
                 }],
@@ -141,6 +141,7 @@ define(["angular-ui-router"], function() {
                 },
             },
         });
+        // Add redirects for the URL subsections:
         $sp.state('supportRoot', {
             url: "/support",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
@@ -150,7 +151,7 @@ define(["angular-ui-router"], function() {
                 $rootScope.setLoading(false);
             }],
         });
-        $sp.state('supportStudents', {
+        $sp.state('supportStudent', {
             url: "/support/student",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
                 $state.go("support", {type:'student', idSuffix: 'general'}, {
@@ -168,7 +169,6 @@ define(["angular-ui-router"], function() {
                 $rootScope.setLoading(false);
             }],
         });
-
 
         // These routes apply to all of the sites
         $sp.state('home', staticPageState("/", "home", "HomePageController"));

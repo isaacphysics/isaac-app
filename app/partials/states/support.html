@@ -1,15 +1,30 @@
-<div class="row">
-	
-	<div class="small-16-columns">
-		<h1>{{title}} Support</h1>
+<div class="support-page row">
+    <h1>{{title}} Support</h1>
+    <h3>Help with ...</h3>
 
-		<div class="support-page-hexagons">
-			<div ng-repeat="k in categories[type]">
-				<a href="javascript:void(0)" ui-sref="support({type: type, idSuffix: k.idSuffix})" ng-class="{active: k == activeCategory}">{{k.title}}</a>
-			</div>
-		</div>
-	</div>
+    <div class="small-16-columns">
+        <!-- For large screens, show hexagon links: -->
+        <div class="show-for-large-up">
+            <div class="support-page-hexagons">
+                <div ng-repeat="k in categories[type]">
+                    <a href="javascript:void(0)" ui-sref="support({type: type, idSuffix: k.idSuffix})" ng-class="{active: k == activeCategory}" class="hexagon">
+                        <img class="hexagon-icon" src="/assets/support_sprite.svg#{{k.icon}}{{k == activeCategory ? '-active' : ''}}">
+                        <div class="hexagon-title">{{k.title}}</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Otherwise show buttons that wrap nicely: -->
+        <div class="hide-for-large-up">
+            <div class="row">
+                <div ng-repeat="k in categories[type]" class="columns small-8 end">
+                        <a href="javascript:void(0)" ui-sref="support({type: type, idSuffix: k.idSuffix})" ng-class="{active: k == activeCategory}" class="button expand">{{k.title}}</a>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div isaac-page-fragment="{{fragmentId}}"></div>    
+
 </div>
-
-<div isaac-page-fragment="{{fragmentId}}"></div>
-
