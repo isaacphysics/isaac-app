@@ -5,7 +5,7 @@ define(function(require) {
   var d = require('lib/graph_sketcher/linear.js');
 
     return {
-        numOfPts: 200,
+        numOfPts: 100,
 
         lineStyle: function(pts) {
 

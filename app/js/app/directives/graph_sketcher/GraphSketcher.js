@@ -5,11 +5,12 @@ define(function(require) {
         var b = require('lib/graph_sketcher/bezier.js');
         var f = require('lib/graph_sketcher/func.js');
         var s = require('lib/graph_sketcher/sampler.js');
-        var MySketch = require("inequality").MySketch;
+        // var MySketch = require("inequality").MySketch;
 
         var instanceCounter = 0;
         return {
-            scope: true,
+            // scope: true,
+            // transclude: true,
             restrict: "A",
             templateUrl: "/partials/graph_sketcher/graph_sketcher.html",
 
@@ -30,6 +31,10 @@ define(function(require) {
                     $("#graphModal").foundation("reveal", "close");
                     // console.log("graph submitted")
                 };
+
+                // scope.limit = function() {
+                //     scope.showToast(scope.toastTypes.Failure, "Only 3 curves accepted", "Please delete one to draw more");
+                // }
 
                 scope.logOnClose = function(event) {
                     // This ought to catch people who navigate away without closing the editor!
@@ -159,17 +164,19 @@ define(function(require) {
                     }
 
                     function reDraw() {
-                        drawBackground();
-                        drawCurves(curves);
-                        // refreshFreeSymbols();
-                        dat = encodeData();
-                        scope.dat = dat;
-                        drawSymbols(freeSymbols);
-                        //drawKnot3(clickedKnot);
+                        if (curves.length < 4){
+                            drawBackground();
+                            drawCurves(curves);
+                            // refreshFreeSymbols();
+                            dat = encodeData();
+                            scope.dat = dat;
+                            drawSymbols(freeSymbols);
+                            //drawKnot3(clickedKnot);
 
-                        drawStretchBox(clickedCurveIdx);
-                        if (isUndoable() == false) {
-                            mirrorClicked = 0;
+                            drawStretchBox(clickedCurveIdx);
+                            if (isUndoable() == false) {
+                                mirrorClicked = 0;
+                            }
                         }
                     }
 
@@ -1140,9 +1147,17 @@ define(function(require) {
                         }
                     }
 
+
                     window.onkeydown = function(event) {
                        if (event.keyCode == 46) {
                             console.log("delete key pressed");
+                            // if (curves.length > 1) {
+                            //     console.log("limit");
+                            //     scope.limit();
+                            //     scope.$digest();
+                            //     reDraw();
+                            //     // scope.showToast(scope.toastTypes.Failure, "Assignment Saved", "This assignment has been saved successfully.");
+                            // }
                             checkPointsUndo.push(checkPoint);
                             checkPointsRedo = [];
                             if (clickedCurveIdx != undefined) {
@@ -1430,7 +1445,35 @@ define(function(require) {
 
 
                         // if it is drawing curve
-                        action = "DRAW_CURVE";
+
+                        // var keyboardEvent = document.createEvent("KeyboardEvent");
+                        // var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+
+
+                        // keyboardEvent[initMethod](
+                        //                    "keydown", // event type : keydown, keyup, keypress
+                        //                     true, // bubbles
+                        //                     true, // cancelable
+                        //                     window, // viewArg: should be window
+                        //                     false, // ctrlKeyArg
+                        //                     false, // altKeyArg
+                        //                     false, // shiftKeyArg
+                        //                     false, // metaKeyArg
+                        //                     40, // keyCodeArg : unsigned long the virtual key code, else 0
+                        //                     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
+                        // );
+
+
+                        if (curves.length < 3){
+                            action = "DRAW_CURVE";
+                        // } else if (curves.length > 1) {
+                        //     console.log("limit");
+                        //     scope.limit();
+                        //     document.dispatchEvent(keyboardEvent);
+                        //     reDraw();
+                        //     return;
+                        //     // scope.showToast(scope.toastTypes.Failure, "Assignment Saved", "This assignment has been saved successfully.");
+                        }
 
 
                         if (clickedCurveIdx != undefined || clickedKnot != null) {
@@ -2034,30 +2077,30 @@ define(function(require) {
 
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
+                            if (curves.length < 3) {
+                                if (drawMode == "curve") {
+                                    p.push();
+                                    p.stroke(CURVE_COLORS[drawnColorIdx]);
+                                    p.strokeWeight(CURVE_STRKWEIGHT);
+                                    if (drawnPts.length > 0) {
+                                        var prev = drawnPts[drawnPts.length - 1];
+                                        p.line(prev.x, prev.y, current.x, current.y);
+                                    }
+                                    p.pop();
 
-                            if (drawMode == "curve") {
-                                p.push();
-                                p.stroke(CURVE_COLORS[drawnColorIdx]);
-                                p.strokeWeight(CURVE_STRKWEIGHT);
-                                if (drawnPts.length > 0) {
-                                    var prev = drawnPts[drawnPts.length - 1];
-                                    p.line(prev.x, prev.y, current.x, current.y);
+                                    drawnPts.push(current);
+                                } else {
+                                    reDraw();
+
+                                    p.push();
+                                    p.stroke(CURVE_COLORS[drawnColorIdx]);
+                                    p.strokeWeight(CURVE_STRKWEIGHT);
+                                    p.line(lineStart.x, lineStart.y, current.x, current.y);
+                                    p.pop();
+
+                                    lineEnd = current;
                                 }
-                                p.pop();
-
-                                drawnPts.push(current);
-                            } else {
-                                reDraw();
-
-                                p.push();
-                                p.stroke(CURVE_COLORS[drawnColorIdx]);
-                                p.strokeWeight(CURVE_STRKWEIGHT);
-                                p.line(lineStart.x, lineStart.y, current.x, current.y);
-                                p.pop();
-
-                                lineEnd = current;
                             }
-                            
                         }
                     }
 
@@ -2228,119 +2271,122 @@ define(function(require) {
                             reDraw();
 
                         } else if (action == "DRAW_CURVE") {
+                            if (curves.length < 3){
 
-                            var curve;
+                                var curve;
 
-                            if (drawMode == "curve") {
-                                 // neglect if curve drawn is too short
-                                if (s.sample(drawnPts).length < 3) {
-                                    return;
+                                if (drawMode == "curve") {
+                                     // neglect if curve drawn is too short
+                                    if (s.sample(drawnPts).length < 2) {
+                                        return;
+                                    }
+
+                                    checkPointsUndo.push(checkPoint);
+                                    checkPointsRedo = [];
+                                    scope.$apply();
+
+                                    // adjustment of start and end to attach to the axis automatically.
+                                    if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
+                                        drawnPts[0].y = canvasHeight/2;
+                                    }
+                                    if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
+                                        drawnPts[0].x = canvasWidth/2;
+                                    }
+                                    if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
+                                        drawnPts[drawnPts.length - 1].y = canvasHeight/2;
+                                    }
+                                    if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
+                                        drawnPts[drawnPts.length - 1].x = canvasWidth/2;
+                                    }
+
+                                    // sampler.sample, bezier.genericBezier
+                                    var pts = b.lineStyle(s.sample(drawnPts));
+                                    curve = {};
+                                    curve.pts = pts;
+
+                                    var minX = pts[0].x;
+                                    var maxX = pts[0].x;
+                                    var minY = pts[0].y;
+                                    var maxY = pts[0].y;
+                                    for (var i = 1; i < pts.length; i++) {
+                                        minX = Math.min(pts[i].x, minX);
+                                        maxX = Math.max(pts[i].x, maxX);
+                                        minY = Math.min(pts[i].y, minY);
+                                        maxY = Math.max(pts[i].y, maxY);
+                                    }
+                                    curve.minX = minX;
+                                    curve.maxX = maxX;
+                                    curve.minY = minY;
+                                    curve.maxY = maxY;
+
+                                    curve.endPt = findEndPts(pts);
+                                    curve.interX = findInterceptX(pts);
+                                    curve.interY = findInterceptY(pts);
+                                    curve.maxima = findTurnPts(pts, 'maxima');
+                                    curve.minima = findTurnPts(pts, 'minima');
+                                    curve.colorIdx = drawnColorIdx;
+
+                                } else {
+                                    checkPointsUndo.push(checkPoint);
+                                    checkPointsRedo = [];
+                                    scope.$apply();
+
+
+                                    var n = 100;
+                                    var rx = lineEnd.x - lineStart.x;
+                                    var ry = lineEnd.y - lineStart.y;
+                                    var sx = rx / n;
+                                    var sy = ry / n;
+                                    var pts = [];
+                                    for (var i = 0; i <= n; i++) {
+                                        var x = lineStart.x + i * sx;
+                                        var y = lineStart.y + i * sy;
+                                        pts.push(f.createPoint(x, y, i));
+                                    }
+
+                                    curve = {};
+                                    curve.pts = pts;
+
+                                    curve.minX = Math.min(lineStart.x, lineEnd.x);
+                                    curve.maxX = Math.max(lineStart.x, lineEnd.x);
+                                    curve.minY = Math.min(lineStart.y, lineEnd.y);
+                                    curve.maxY = Math.max(lineStart.y, lineEnd.y);
+
+                                    curve.endPt = findEndPts(pts);
+                                    curve.interX = findInterceptX(pts);
+                                    curve.interY = findInterceptY(pts);
+                                    curve.maxima = [];
+                                    curve.minima = [];
+                                    curve.colorIdx = drawnColorIdx;
                                 }
+                            
 
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
-
-                                // adjustment of start and end to attach to the axis automatically.
-                                if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
-                                    drawnPts[0].y = canvasHeight/2;
-                                }
-                                if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
-                                    drawnPts[0].x = canvasWidth/2;
-                                }
-                                if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
-                                    drawnPts[drawnPts.length - 1].y = canvasHeight/2;
-                                }
-                                if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
-                                    drawnPts[drawnPts.length - 1].x = canvasWidth/2;
-                                }
-
-                                // sampler.sample, bezier.genericBezier
-                                var pts = b.lineStyle(s.sample(drawnPts));
-                                curve = {};
-                                curve.pts = pts;
-
-                                var minX = pts[0].x;
-                                var maxX = pts[0].x;
-                                var minY = pts[0].y;
-                                var maxY = pts[0].y;
-                                for (var i = 1; i < pts.length; i++) {
-                                    minX = Math.min(pts[i].x, minX);
-                                    maxX = Math.max(pts[i].x, maxX);
-                                    minY = Math.min(pts[i].y, minY);
-                                    maxY = Math.max(pts[i].y, maxY);
-                                }
-                                curve.minX = minX;
-                                curve.maxX = maxX;
-                                curve.minY = minY;
-                                curve.maxY = maxY;
-
-                                curve.endPt = findEndPts(pts);
-                                curve.interX = findInterceptX(pts);
-                                curve.interY = findInterceptY(pts);
-                                curve.maxima = findTurnPts(pts, 'maxima');
-                                curve.minima = findTurnPts(pts, 'minima');
-                                curve.colorIdx = drawnColorIdx;
-
-                            } else {
-                                checkPointsUndo.push(checkPoint);
-                                checkPointsRedo = [];
-                                scope.$apply();
-
-
-                                var n = 100;
-                                var rx = lineEnd.x - lineStart.x;
-                                var ry = lineEnd.y - lineStart.y;
-                                var sx = rx / n;
-                                var sy = ry / n;
-                                var pts = [];
-                                for (var i = 0; i <= n; i++) {
-                                    var x = lineStart.x + i * sx;
-                                    var y = lineStart.y + i * sy;
-                                    pts.push(f.createPoint(x, y, i));
-                                }
-
-                                curve = {};
-                                curve.pts = pts;
-
-                                curve.minX = Math.min(lineStart.x, lineEnd.x);
-                                curve.maxX = Math.max(lineStart.x, lineEnd.x);
-                                curve.minY = Math.min(lineStart.y, lineEnd.y);
-                                curve.maxY = Math.max(lineStart.y, lineEnd.y);
-
-                                curve.endPt = findEndPts(pts);
-                                curve.interX = findInterceptX(pts);
-                                curve.interY = findInterceptY(pts);
-                                curve.maxima = [];
-                                curve.minima = [];
-                                curve.colorIdx = drawnColorIdx;
-                            }
-
-                            function loop(knots) {
-                                for (var i = 0; i < knots.length; i++) {
-                                    var knot = knots[i];
-                                    for (var j = 0; j < freeSymbols.length; j++) {
-                                        var sym = freeSymbols[j];
-                                        if (f.getDist(knot, sym) < 20) {
-                                            sym.x = knot.x;
-                                            sym.y = knot.y;
-                                            knot.symbol = sym;
-                                            freeSymbols.splice(j, 1);
+                                function loop(knots) {
+                                    for (var i = 0; i < knots.length; i++) {
+                                        var knot = knots[i];
+                                        for (var j = 0; j < freeSymbols.length; j++) {
+                                            var sym = freeSymbols[j];
+                                            if (f.getDist(knot, sym) < 20) {
+                                                sym.x = knot.x;
+                                                sym.y = knot.y;
+                                                knot.symbol = sym;
+                                                freeSymbols.splice(j, 1);
+                                            }
                                         }
                                     }
                                 }
+
+                                loop(curve.maxima);
+                                loop(curve.minima);
+                                loop(curve.interX);
+                                loop(curve.interY);
+
+                                curves.push(curve);
+                                reDraw();
                             }
 
-                            loop(curve.maxima);
-                            loop(curve.minima);
-                            loop(curve.interX);
-                            loop(curve.interY);
-
-                            curves.push(curve);
-                            reDraw();
+                            return;
                         }
-
-                        return;
                     }
 
                     function clone(obj) {
@@ -2392,8 +2438,8 @@ define(function(require) {
                             var x = (pt.x - canvasWidth/2) / canvasWidth;
                             var y = (canvasHeight/2 - pt.y) / canvasHeight;
                             if (trunc) {
-                                pt.x = Math.trunc(x * 10000) / 10000;
-                                pt.y = Math.trunc(y * 10000) / 10000;
+                                pt.x = Math.trunc(x * 1000) / 1000;
+                                pt.y = Math.trunc(y * 1000) / 1000;
                             } else {
                                 pt.x = x;
                                 pt.y = y;
@@ -2434,16 +2480,16 @@ define(function(require) {
                             var tmp;
 
                             tmp = (clonedCurves[i].minX - canvasWidth/2) / canvasWidth;
-                            clonedCurves[i].minX = Math.trunc(tmp * 10000) / 10000;
+                            clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
 
                             tmp = (clonedCurves[i].maxX - canvasWidth/2) / canvasWidth;
-                            clonedCurves[i].maxX = Math.trunc(tmp * 10000) / 10000;
+                            clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
 
                             tmp = (canvasHeight/2 - clonedCurves[i].minY) / canvasHeight;
-                            clonedCurves[i].minY = Math.trunc(tmp * 10000) / 10000;
+                            clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
 
                             tmp = (canvasHeight/2 - clonedCurves[i].maxY) / canvasHeight;
-                            clonedCurves[i].maxY = Math.trunc(tmp * 10000) / 10000;
+                            clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
 
 
                             var interX = clonedCurves[i].interX;
@@ -2721,12 +2767,19 @@ define(function(require) {
 
                     scope.dat = dat;
 
+                    // function stateReturn() {
+                    //     state = encodeData();
+                    //     scope.state = state;
+                    //     return scope.state;
+                    // }
+
                     function dataReturn() {
                         dat = encodeData();
                         scope.dat = dat;
                         return scope.dat;
                     }
                     dataReturn();
+                    // stateReturn();
                 }
 
                 $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode, oldDat) {
@@ -2765,9 +2818,9 @@ define(function(require) {
                         // scope.state = initialState;
 
                         //console.log(scope.state);
-                        scope.state = initialState || {
-                                freeSymbols: []
-                            }
+                        // scope.state = initialState || {
+                        //         freeSymbols: []
+                        //     }
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode
                         
@@ -2789,7 +2842,8 @@ define(function(require) {
                         // Log the editor being closed and submit log event to server:
                         eqnModal.one("close", function(e) {
                             scope.log.finalState = [];
-                            console.log(scope.dat.curves);
+                            // console.log(scope.dat.curves);
+                            // scope.updateGraphPreview();
                             scope.dat.curves.forEach(function(e) {
                                 scope.log.finalState.push(e);
                                 // console.log(e.curves);
@@ -2798,12 +2852,15 @@ define(function(require) {
                                 event: "CLOSE",
                                 timestamp: Date.now()
                             });
-                            if (scope.segueEnvironment == "DEV") {
+                            // if (scope.segueEnvironment == "DEV") {
                                 console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
-                            }
+                            // }
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
                             scope.log = null;
+                            console.log(scope.dat);
+                            console.log(scope.state);
+                            return(scope.state);
                         });
                         
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
@@ -2812,6 +2869,8 @@ define(function(require) {
 
                         scope.future = [];
                         console.log("gets to here");
+                        console.log(scope.state);
+
                         // var p = new p5(function (p) {
                         //     // mysketch = new sketch(scope);
                         //     if (scope.dat) {
@@ -2829,15 +2888,17 @@ define(function(require) {
                         // scope.p / var p
 
                         // scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
-                        scope.p.reDraw();
+                        // scope.p.reDraw();
                         // console.log("p5 generated");
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
-                        console.debug("within graphSketcher scope.state: ", scope.state);
-                        // console.log(scope.state.curves);
+                        console.log("within graphSketcher scope.state: ", scope.state);
+                        console.log(scope.dat.curves);
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
-                            scope.p.decodeData(scope.state);
-                            scope.p.reDraw();
+                            console.log("TO DO BH test each open");
+                            scope.sketch.decodeData(scope.dat);
+                            scope.sketch.reDraw();
+                            console.log("TO DO BH post decode redraw");
                             scope.history = [JSON.parse(JSON.stringify(scope.state))];
                             // console.log(scope.history);
                             scope.historyPtr = 0;
@@ -2845,25 +2906,28 @@ define(function(require) {
                         }
                         // to here, figure out how to load it as a useable object, not an image //////////////////
 
-                        eqnModal.one("close d.fndtn.reveal", function() {
-                            // update local state
-                            // console.log("new state logged")
+                        // eqnModal.one("close d.fndtn.reveal", function() {
+                        //     // update local state
+                        //     // console.log("new state logged")
 
-                            // scope.newEditorState(scope.p.state);
-                            // console.log("closed reveal")
-                            // remove p5 object
-                            sketch.p.remove();
+                        //     // scope.newEditorState(scope.p.state);
+                        //     // console.log("closed reveal")
+                        //     // remove p5 object
+                        //     sketch.p.remove();
 
-                            // update ctrl.selectedFormula (in scope of GraphSketcherQuestion.js)
-                            resolve(scope.state);
-                            scope.p.reDraw();
-                        });
+                        //     // update ctrl.selectedFormula (in scope of GraphSketcherQuestion.js)
+                        //     // console.log(scope.dat);
+                        //     resolve(scope.state);
+                        //     scope.p.reDraw();
+
+                        // });
+
 
                     });
                     // console.log("showing graph sketched")
                 };
 
-
+                // console.log(scope.state);
                 scope.centre = function(p) {
                     sketch.centre();
                     // console.log("done")
