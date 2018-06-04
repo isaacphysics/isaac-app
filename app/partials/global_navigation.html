@@ -105,12 +105,12 @@
                 <ul class="dl-level2">
                     <li class="dl-back show-for-small-only"><a href="javascript:void(0)"><span></span>Back</a></li>
                     <li><a ui-sref="solving_problems">Problem Solving Guide</a></li>
-                    <li><a ui-sref='pages({id: "teach_with_isaac"})'}><span>Teaching with Isaac</span></a></li>
+                    <li><a ui-sref="supportTeacher"}><span>Teacher Support</span></a></li>
+                    <li><a ui-sref="supportStudent"}><span>Student Support</span></a></li>
                     <li ng-class="{disabled: $subject.id != 'physics'}">
                         <span ng-if="$subject.id != 'physics'" data-ot="We currently do not run {{ $subject.title }} events." aria-haspopup="true"><a ui-sref="events">Events</a></span>
                         <span ng-if="$subject.id == 'physics'"><a ui-sref="events">Events</a></span>
                     </li>
-                    <li><a ui-sref="faq">FAQs</a></li>
                     <!--                     <li class="hide-for-small-only"><a href="javascript:void(0)" class="desktop-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>
                                         <li class="show-for-small-only"><a href="javascript:void(0)" class="mobile-tutorial-trigger" ng-click="menuClose()">Tutorial</a></li>    -->
                 </ul>
