@@ -145,27 +145,21 @@ define(["angular-ui-router"], function() {
         $sp.state('supportRoot', {
             url: "/support",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go("support", {type:'student', idSuffix: 'general'}, {
-                    location: "replace"
-                });
+                $state.go("support", {type:'student', idSuffix: 'general'});
                 $rootScope.setLoading(false);
             }],
         });
         $sp.state('supportStudent', {
             url: "/support/student",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go("support", {type:'student', idSuffix: 'general'}, {
-                    location: "replace"
-                });
+                $state.go("support", {type:'student', idSuffix: 'general'});
                 $rootScope.setLoading(false);
             }],
         });
         $sp.state('supportTeacher', {
             url: "/support/teacher",
             onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go("support", {type:'teacher', idSuffix: 'general'}, {
-                    location: "replace"
-                });
+                $state.go("support", {type:'teacher', idSuffix: 'general'});
                 $rootScope.setLoading(false);
             }],
         });
