@@ -52,8 +52,8 @@ define(function (require) {
 
                     if (null != sketch.potentialSymbol) {
                         var sym = sketch.potentialSymbol;
-                        var box = sym.subtreeBoundingBox();
-                        var pos = sym.getAbsolutePosition();
+                        var box = sym.subtreeBoundingBox;
+                        var pos = sym.absolutePosition;
                         var bLeft = box.x + pos.x;
                         var bRight = bLeft + box.w;
                         var bTop = box.y + pos.y;
@@ -79,8 +79,8 @@ define(function (require) {
 
                     if (null != sketch.movingSymbol) {
                         var sym = sketch.movingSymbol;
-                        var box = sym.subtreeBoundingBox();
-                        var pos = sym.getAbsolutePosition();
+                        var box = sym.subtreeBoundingBox;
+                        var pos = sym.absolutePosition;
                         var bLeft = box.x + pos.x;
                         var bRight = bLeft + box.w;
                         var bTop = box.y + pos.y;
@@ -153,6 +153,8 @@ define(function (require) {
                 $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
 
                     return new Promise(function (resolve, reject) {
+
+                        scope.hashDebug = window.location.hash === '#debug';
 
                         delete scope.symbolLibrary.customVars;
                         delete scope.symbolLibrary.customFunctions;
@@ -1679,7 +1681,7 @@ define(function (require) {
 
                 scope.centre = function () {
                     sketch.centre();
-                }
+                };
 
                 element.on("keydown", function (e) {
                     var test_cases_lib = ($stateParams.mode == 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;

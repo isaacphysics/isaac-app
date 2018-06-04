@@ -23,8 +23,6 @@ limitations under the License.
 import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
-import isNumber = require("lodash/isNumber");
-
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -43,8 +41,7 @@ class Differential extends Widget {
      * @returns {Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        const box = this.s.font_up.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
-        return this.p.createVector(0, - box.h / 2);
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
     public constructor(p: any, s: any, letter: string) {
@@ -96,9 +93,9 @@ class Differential extends Widget {
         let box = this.boundingBox();
         // let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["differential_argument"], "argument");
-        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.scale * 20, -this.scale * this.s.mBox.h), 0.666, ["differential_order"], "order");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + 1.25*this.s.mBox.w, -this.s.xBox.h / 2), 1, ["differential", "operator"], "right");
+        this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["differential_argument"], "argument");
+        this.dockingPoints["order"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["differential_order"], "order");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + 1.25*this.s.mBox_w, -this.s.xBox_h/2), 1, ["differential", "operator"], "right");
     }
 
     /**
@@ -110,7 +107,7 @@ class Differential extends Widget {
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if (this.letter == "δ") {
@@ -122,22 +119,22 @@ class Differential extends Widget {
             }
             
             if (this.dockingPoints["order"].child != null && !this.orderNeedsMoving) {
-                expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["order"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["argument"].child != null) {
                 if (this.dockingPoints["argument"].child instanceof BinaryOperation) {
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
+                    expression += this.dockingPoints["argument"].child.formatExpressionAs(format);
                 } else {
                     // WARNING This assumes it's a Differential, hence produces a multiplication
-                    expression += this.dockingPoints["argument"].child.getExpression(format);
+                    expression += this.dockingPoints["argument"].child.formatExpressionAs(format);
                 }
             }
             // AAARGH! Curses, you Leibniz!
             if (this.dockingPoints["order"].child != null && this.orderNeedsMoving) {
-                expression += "^{" + this.dockingPoints["order"].child.getExpression(format) + "}";
+                expression += "^{" + this.dockingPoints["order"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             if (this.letter == "δ") {
@@ -149,13 +146,13 @@ class Differential extends Widget {
             }
             let args = [];
             if (this.dockingPoints["argument"].child != null) {
-                args.push(this.dockingPoints["argument"].child.getExpression(format));
+                args.push(this.dockingPoints["argument"].child.formatExpressionAs(format));
             }
             expression += args.join("");
 
             // FIXME We need to decide what to do with orders.
             if (this.dockingPoints["order"].child != null) {
-                var n = parseInt(this.dockingPoints["order"].child.getExpression(format));
+                let n = parseInt(this.dockingPoints["order"].child.formatExpressionAs(format));
                 if (!isNaN(n) && n > 1) {
                     expression += _.repeat(" * " + expression, n-1);
                 }
@@ -164,22 +161,22 @@ class Differential extends Widget {
                 let op = (this.dockingPoints["right"].child.typeAsString == 'Relation' ||
                       this.dockingPoints["right"].child.typeAsString == 'BinaryOperation')
                       ? '' : ' * ';
-                expression += op + this.dockingPoints["right"].child.getExpression(format);
+                expression += op + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
 
         } else if (format == "mathml") {
             expression = '';
             if (this.dockingPoints["order"].child == null && this.dockingPoints["argument"].child != null) {
-                expression += "<mi>" + this.letter  + "</mi>" + this.dockingPoints["argument"].child.getExpression(format);
+                expression += "<mi>" + this.letter  + "</mi>" + this.dockingPoints["argument"].child.formatExpressionAs(format);
             } else if (this.dockingPoints["order"].child != null && this.dockingPoints["argument"].child != null) {
                 if (this.orderNeedsMoving) {
-                    expression += '<msup><mrow><mi>' + this.letter + '</mi>' + this.dockingPoints["argument"].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>';
+                    expression += '<msup><mrow><mi>' + this.letter + '</mi>' + this.dockingPoints["argument"].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints["order"].child.formatExpressionAs(format) + '</mrow></msup>';
                 } else {
-                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints["order"].child.getExpression(format) + '</mrow></msup>' + this.dockingPoints["argument"].child.getExpression(format);
+                    expression += '<msup><mi>' + this.letter + '</mi><mrow>' + this.dockingPoints["order"].child.formatExpressionAs(format) + '</mrow></msup>' + this.dockingPoints["argument"].child.formatExpressionAs(format);
                 }
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -193,7 +190,7 @@ class Differential extends Widget {
 
     token() {
         // DRY this out.
-        var expression;
+        let expression;
         if (this.letter == "δ") {
             expression = "delta";
         } else if (this.letter == "∆") {
@@ -203,7 +200,7 @@ class Differential extends Widget {
         }
         let args = [];
         if (this.dockingPoints["argument"].child != null) {
-            args.push(this.dockingPoints["argument"].child.getExpression("python"));
+            args.push(this.dockingPoints["argument"].child.formatExpressionAs("python"));
         }
         expression += args.join(" ");
 
@@ -215,20 +212,10 @@ class Differential extends Widget {
         this.p.fill(this.color).strokeWeight(0).noStroke();
 
         this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.letter, 0, 0);
+              .textSize(this.s.baseFontSize * this.scale)
+              .textAlign(this.p.CENTER, this.p.BASELINE)
+              .text(this.letter, 0, 0);
         this.p.strokeWeight(1);
-
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
-
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
-        }
     }
 
     /**
@@ -237,8 +224,8 @@ class Differential extends Widget {
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds(this.letter || "D", 0, 1000, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w / 2, box.y - 1000, box.w, box.h);
+        let box = this.s.font_up.textBounds(this.letter || "D", 0, 0, this.scale * this.s.baseFontSize);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
     /**
@@ -248,81 +235,57 @@ class Differential extends Widget {
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
+        this._shakeItDown();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
-            }
-        });
+        let thisBox = this.boundingBox();
 
-        /*
-         - Positions widgets to the right, top-right or bottom-right of the parent Differential. Children are the Differentials docked to the right,
-         order and subscript positions respectively.
-         - When docking from the right, we use getExpressionWidth() to find the size of the child expression.
-         */
-
-        let box = this.boundingBox();
-        // let parent_position = (box.y + box.h);
-        let parent_order_width = (this.dockingPoints["order"].child != null) ? (this.dockingPoints["order"].child.getExpressionWidth()) : 0;
-        let parent_width = box.w;
-        let parent_height = box.h;
-        let child_height = 0;
-        let child_width = 0;
-        let docking_argument = this.dockingPoints["argument"];
-        let docking_order = this.dockingPoints["order"];
-        let docking_right = this.dockingPoints["right"];
-        let arg_width = ("argument" in boxes) ? docking_argument.child.subtreeBoundingBox().w : 0;
-        let order_width = 0;
-
-        // FIXME When a differential is below the fraction line, the order goes on the other side... curse you, Leibniz!
-        if ("order" in boxes) {
-            child_width = docking_order.child.subtreeBoundingBox().w;
-            child_height = docking_order.child.subtreeBoundingBox().h;
-            if (this.orderNeedsMoving) {
-                // Use the argument's size to move the order to its right. This needs to be done again below.
-                docking_order.child.position.x = 1.2*arg_width + (parent_width + child_width)/2;
-                order_width = child_width;
+        let orderWidth = 0;
+        if (this.dockingPoints["order"]) {
+            let dp = this.dockingPoints["order"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size*child.scale/2;
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                orderWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
             } else {
-                docking_order.child.position.x = (parent_width + child_width)/2;
+                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
+                dp.position.y = -this.scale*this.s.mBox_h;
+                orderWidth = dp.size;
             }
-            docking_order.child.position.y = -0.8 * (parent_height + child_height)/2;
-        } else {
-            docking_order.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 10) : (parent_width - this.boundingBox().w / 2 + this.scale * 10);
-            docking_order.position.y = -this.scale * this.s.mBox.h;
         }
 
-        if ("argument" in boxes) {
-            child_width = docking_argument.child.boundingBox().w;
-            docking_argument.child.position.x = this.scale * 5 + parent_order_width + ((parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2));
-            docking_argument.child.position.x -= order_width;
-            docking_argument.child.position.y = 0;
-            arg_width = child_width;
-        } else {
-            docking_argument.position.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + this.scale * 20) : (parent_width - this.boundingBox().w / 2 + this.scale * 20);
-            docking_argument.position.y = (this.dockingPoint.y);
-            arg_width = 0;
+        let argumentWidth = 0;
+        if (this.dockingPoints["argument"]) {
+            let dp = this.dockingPoints["argument"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+                argumentWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
+                argumentWidth = 2*dp.size;
+            }
         }
 
-        if ("right" in boxes) {
-            docking_right.child.position.x = box.w / 2 + this.s.mBox.w + arg_width + order_width;
-            docking_right.child.position.y = 0;
-        } else {
-            docking_right.position.x = box.w / 2 + this.s.mBox.w+ arg_width + order_width;
-            docking_right.position.y = -this.s.xBox.h / 2;
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + argumentWidth + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + orderWidth + argumentWidth + dp.size;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
+            }
         }
-
     }
 
     /**
      * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-
-
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 }

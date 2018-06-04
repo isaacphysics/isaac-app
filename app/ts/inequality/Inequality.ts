@@ -40,7 +40,6 @@ import { Particle } from './Particle';
 
 // This is where the fun starts
 
-
 // This is the "main" app with the update/render loop and all that jazz.
 export
     class MySketch {
@@ -51,14 +50,43 @@ export
     prevTouch: p5.Vector = null;
 
     xBox: Rect = null;
+    get xBox_w(): number {
+        return this.xBox.w;
+    }
+    get xBox_h(): number {
+        return this.xBox.h;
+    }
     mBox: Rect = null;
+    get mBox_w(): number {
+        return this.mBox.w;
+    }
+    get mBox_h(): number {
+        return this.mBox.h;
+    }
 
     baseFontSize = 50;
+    baseDockingPointSize = this.baseFontSize/3;
+
+    changeBaseFontSizeBy = (amount) => {
+        if (this.baseFontSize + amount > 0) {
+            this.baseFontSize += amount;
+            this.updateLetterBoxes();
+        }
+    };
+
+    changeBaseDockingPointSizeBy = (amount) => {
+        if (this.baseDockingPointSize + amount/3 > 0) {
+            this.baseDockingPointSize += amount/3;
+            this.updateLetterBoxes();
+        }
+    };
+
     font_it: p5.Font = null;
     font_up: p5.Font = null;
 
     visibleDockingPointTypes: Array<string> = [];
     activeDockingPoint: DockingPoint = null;
+    private _canvasDockingPoints: Array<DockingPoint> = [];
 
     private newExpressionCallback = null;
 
@@ -97,11 +125,29 @@ export
         this.symbols.forEach(function(e) {
             _this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
-    }
+        this.updateCanvasDockingPoints();
+    };
+
+    updateLetterBoxes = () => {
+        this.xBox = Rect.fromObject(this.font_it.textBounds("x", 0, 0, this.baseFontSize));
+        this.mBox = Rect.fromObject(this.font_it.textBounds("M", 0, 0, this.baseFontSize));
+    };
+
     setup = () => {
         this.p.frameRate(7);
-        this.xBox = this.font_it.textBounds("x", 0, 1000, this.baseFontSize);
-        this.mBox = this.font_it.textBounds("M", 0, 1000, this.baseFontSize);
+
+        switch (_this.scope.editorMode) {
+            case 'maths':
+                this.baseFontSize = 50;
+                this.baseDockingPointSize = 50/3;
+                break;
+            case 'chemistry':
+                this.baseFontSize = 50;
+                this.baseDockingPointSize = 30/3;
+                break;
+        }
+
+        this.updateLetterBoxes();
 
         this.symbols = [];
 
@@ -120,26 +166,63 @@ export
 
         _this.scope.log.initialState = [];
 
-
         this.symbols.forEach(function(e) {
             _this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
+        this.updateCanvasDockingPoints();
 
     };
 
     windowResized = () => {
         this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
-    }
+    };
 
     draw = () => {
         this.p.clear();
         _.each(this.symbols, symbol => {
+            symbol.shakeIt();
             symbol.draw();
         });
 
         if (this.potentialSymbol) {
             this.potentialSymbol.draw();
         }
+    };
+
+    updateCanvasDockingPoints = () => {
+        this._canvasDockingPoints = [];
+        // We need a copy of this.symbols because assignment is done by reference because
+        //     let a = this.symbols; a.shift();
+        // destroys this.symbols.
+        let q: Array<Widget> = _.without(this.symbols.slice(0), this.movingSymbol);
+        while (q.length > 0) {
+            let widget = q.shift();
+            for (let e in widget.dockingPoints) {
+                let dockingPoint = widget.dockingPoints[e];
+                if (dockingPoint.child) {
+                    q.push(dockingPoint.child)
+                } else {
+                    this._canvasDockingPoints.push(dockingPoint);
+                }
+            }
+        }
+    };
+
+    findClosestDockingPoint = (testPoint: p5.Vector): DockingPoint => {
+        let minDistance = Infinity;
+        let candidateDockingPoint: DockingPoint = null;
+        let availablePoints = _.filter(this._canvasDockingPoints, (e: DockingPoint) => {
+            return _.intersection(this.visibleDockingPointTypes, e.type).length > 0;
+        });
+        for (let dockingPoint of availablePoints) {
+            let d = testPoint.dist(dockingPoint.absolutePosition);
+            if (d < minDistance) {
+                minDistance = d;
+                candidateDockingPoint = dockingPoint;
+            }
+        }
+        // TODO Fiddle with this parameter to find the optimal value.
+        return minDistance <= this.baseFontSize*1.5 ? candidateDockingPoint : null;
     };
 
     updatePotentialSymbol = (spec, x?, y?) => {
@@ -164,15 +247,15 @@ export
                 this.activeDockingPoint = null;
 
                 symbol.highlight(false);
+                symbol.contractDockingPoints();
                 if (symbol != null) {
-                    // TODO: This is broken. Make sure we don't hit docking points of the wrong type
-                    if (this.activeDockingPoint = symbol.dockingPointsHit(this.potentialSymbol)) {
-                        // We have hit a docking point, short-circuit the rest of this loop, because we
-                        // don't care if we hit another one.
+                    if (this.activeDockingPoint = this.findClosestDockingPoint(this.p.createVector(this.potentialSymbol.position.x, this.potentialSymbol.position.y))) {
                         this.activeDockingPoint.widget.highlight(true);
+                        this.activeDockingPoint.widget.expandDockingPoints();
                         return true;
                     }
                 }
+                symbol.shakeIt();
             });
 
         } else {
@@ -200,9 +283,9 @@ export
                 timestamp: Date.now()
             });
         }
-
         this.updatePotentialSymbol(null);
         this.updateState();
+        this.updateCanvasDockingPoints();
 
         this.p.frameRate(7);
     };
@@ -213,6 +296,7 @@ export
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
             this.symbols.push(w);
+            this.updateCanvasDockingPoints();
             w.shakeIt();
         }
         this.updateState();
@@ -280,8 +364,8 @@ export
         // These are used to correctly detect clicks and taps.
 
         // Note that touchX and touchY are incorrect when using touch. Ironically.
-        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         this.initialTouch = this.p.createVector(tx, ty);
 
@@ -305,8 +389,11 @@ export
                 // Remove symbol from the hierarchy, place it back with the roots.
                 if (hitSymbol.parentWidget != null) {
                     this.symbols.push(hitSymbol);
+                    // Update the list of free docking points
+                    this.updateCanvasDockingPoints();
+
                     hitSymbol.scale = 1.0;
-                    hitSymbol.position = hitSymbol.getAbsolutePosition();
+                    hitSymbol.position = hitSymbol.absolutePosition;
                     hitSymbol.removeFromParent();
                 }
 
@@ -329,27 +416,35 @@ export
         if (index > -1) {
             let e = this.symbols.splice(index, 1)[0];
             this.symbols.push(e);
+            this.updateCanvasDockingPoints();
             index = -1;
         }
 
         // Tell the other symbols to show only these points. Achievement unlocked: Usability!
         this.visibleDockingPointTypes = movingSymbolDocksTo;
 
+        // Trigger visibility attribute. TODO: We may want to rely on this in the future.
+        for (let dp of this._canvasDockingPoints) {
+            dp.isVisible = _.intersection(this.visibleDockingPointTypes, dp.type).length > 0;
+        }
+        for (let symbol of this.symbols) {
+            symbol.shakeIt();
+        }
+
         // FIXME if you can. This is quite the hack.
         this.touchMoved();
     };
 
     touchMoved = () => {
-
-        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.touchX;
-        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.touchY;
+        let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
+        let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
         if (this.movingSymbol != null) {
             let d = this.p.createVector(tx - this.prevTouch.x, ty - this.prevTouch.y);
 
             // TODO NOT DELETE the following commented section.
-            // let sbox = this.movingSymbol.subtreeBoundingBox();
-            // let spos = this.movingSymbol.getAbsolutePosition();
+            // let sbox = this.movingSymbol.subtreeBoundingBox;
+            // let spos = this.movingSymbol.absolutePosition;
             // let dx = this.p.touchX - this.prevTouch.x;
             // let dy = this.p.touchY - this.prevTouch.y;
             // let left =   spos.x + sbox.x;
@@ -378,11 +473,9 @@ export
                 let touchPoint = this.p.createVector(tx, ty);
                 // This is less refined than doing the proximity detection thing, but works much better (#4)
                 if (symbol != null && symbol.id != this.movingSymbol.id) {
-                    // TODO: This is broken. Make sure we don't hit docking points of the wrong type
                     symbol.highlight(false);
-                    if (this.activeDockingPoint = symbol.dockingPointsHit(this.movingSymbol)) {
-                        // We have hit a docking point, short-circuit the rest of this loop, because we
-                        // don't care if we hit another one.
+                    symbol.contractDockingPoints();
+                    if (this.activeDockingPoint = this.findClosestDockingPoint(this.p.createVector(this.p.mouseX, this.p.mouseY))) {
                         this.activeDockingPoint.widget.highlight(true);
                         return true;
                     }
@@ -394,9 +487,8 @@ export
     };
 
     touchEnded = () => {
-
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        if (this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+        if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
             // Click
             // Close the menu when touching the canvas
             this.scope.$broadcast("closeMenus");
@@ -411,6 +503,7 @@ export
                 height: 0
             });
         }
+
         if (this.movingSymbol != null) {
             // When touches end, mark the symbol as not moving.
             this.prevTouch = null;
@@ -418,6 +511,7 @@ export
             // Make sure we have an active docking point, and that the moving symbol can dock to it.
             if (this.activeDockingPoint != null && _.intersection(this.movingSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
                 this.symbols = _.without(this.symbols, this.movingSymbol);
+                this.updateCanvasDockingPoints();
                 // Do the actual docking
                 this.activeDockingPoint.child = this.movingSymbol;
                 // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
@@ -437,6 +531,7 @@ export
                     timestamp: Date.now()
                 });
                 this.symbols = _.without(this.symbols, this.movingSymbol);
+                this.updateCanvasDockingPoints();
             } else {
                 this.scope.log.actions.push({
                     event: "DROP_SYMBOL",
@@ -453,13 +548,22 @@ export
         this.movingSymbol = null;
         this.activeDockingPoint = null;
         this.visibleDockingPointTypes = [];
+        for (let dp of this._canvasDockingPoints) {
+            dp.isVisible = false; // TODO Rely on this in the future maybe.
+            dp.widget.expandDockingPoints();
+        }
+        // Update the list of free docking points
+        this.updateCanvasDockingPoints();
+        for (let symbol of this.symbols) {
+            symbol.shakeIt();
+        }
 
         this.initialTouch = null;
 
         let symbolWithMostChildren = null;
         let mostChildren = 0;
         _.each(this.symbols, symbol => {
-            let numChildren = symbol.getTotalSymbolCount();
+            let numChildren = symbol.totalSymbolCount;
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;
                 symbolWithMostChildren = symbol;
@@ -467,11 +571,7 @@ export
         });
 
         _.each(this.symbols, symbol => {
-            if (symbol != symbolWithMostChildren) {
-                symbol.isMainExpression = false;
-            } else {
-                symbol.isMainExpression = true;
-            }
+            symbol.isMainExpression = (symbol == symbolWithMostChildren);
         });
         this.updateState();
 
@@ -495,7 +595,7 @@ export
         while (stack.length > 0) {
             let e = stack.shift();
             list.push(e.token());
-            let children = e.getChildren();
+            let children = e.children;
             stack = stack.concat(children);
         }
         return _.reject(_.uniq(list), i => { return i == ''; });
@@ -505,7 +605,7 @@ export
         let symbolWithMostChildren = null;
         let mostChildren = 0;
         _.each(this.symbols, symbol => {
-            let numChildren = symbol.getTotalSymbolCount();
+            let numChildren = symbol.totalSymbolCount;
             if (numChildren > mostChildren) {
                 mostChildren = numChildren;
                 symbolWithMostChildren = symbol;
@@ -516,10 +616,10 @@ export
             let flattenedExpression = _.map(this.flattenExpression(symbolWithMostChildren), e => { return undefined == e ? '' : e.replace(/,/g, ";") });
             this.scope.newEditorState({
                 result: {
-                    "tex": symbolWithMostChildren.getExpression("latex").trim(),
-                    "mhchem": symbolWithMostChildren.getExpression("mhchem").trim(),
-                    "python": symbolWithMostChildren.getExpression("python").trim(),
-                    "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.getExpression("mathml").trim() + '</math>',
+                    "tex": symbolWithMostChildren.formatExpressionAs("latex").trim(),
+                    "mhchem": symbolWithMostChildren.formatExpressionAs("mhchem").trim(),
+                    "python": symbolWithMostChildren.formatExpressionAs("python").trim(),
+                    "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.formatExpressionAs("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
                     "uniqueSymbols": flattenedExpression.join(', ')
                 },
@@ -542,11 +642,11 @@ export
     };
 
     centre = (init = false) => {
-        let top = this.height / 2;
+        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
         _.each(this.symbols, (symbol, i) => {
-            let sbox = symbol.boundingBox();
-            symbol.position = this.p.createVector(this.width / 2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h*2;
+            let sbox = symbol.subtreeDockingPointsBoundingBox;
+            symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
+            top += sbox.h*1.5;
             symbol.shakeIt();
         });
         if (!init) {

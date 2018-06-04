@@ -49,8 +49,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let p = this.p.createVector(0, -this.s.xBox.h / 2);
-        return p;
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
     constructor(p: any, s: any, relation: string) {
@@ -60,7 +59,7 @@ export
         switch (relation) {
             case 'rightarrow':
                 this.relation = '→';
-                this.mhchemSymbol = '->'
+                this.mhchemSymbol = '->';
                 this.latexSymbol = '\\rightarrow ';
                 break;
             case 'leftarrow':
@@ -73,7 +72,7 @@ export
                 break;
             case 'equilibrium':
                 this.relation = '⇌';
-                this.mhchemSymbol = '<=>'
+                this.mhchemSymbol = '<=>';
                 this.latexSymbol = '\\rightleftharpoons ';
                 break;
             case '<=':
@@ -128,9 +127,7 @@ export
      */
     generateDockingPoints() {
         let box = this.boundingBox();
-        let descent = this.position.y - (box.y + box.h);
-
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["relation"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["relation"], "right");
     }
 
     /**
@@ -142,28 +139,28 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.latexSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.pythonSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mhchem") {
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.mhchemSymbol + " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             let rel = this.mathmlSymbol ? this.mathmlSymbol : this.relation;
             if (this.dockingPoints["right"].child != null) {
-                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.getExpression(format);
+                expression += '<mo>' + rel + "</mo>" + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -194,16 +191,6 @@ export
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.relation, 0, 0);
         this.p.strokeWeight(1);
-
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
-
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
-        }
     }
 
     /**
@@ -212,20 +199,9 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = this.relation || "+";
-        if (s == "−") {
-            let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-            return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
-        }
-        else if (s == "⋅"){
-          s = "⋅";
-          let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w, box.y-1000, box.w * 2, box.h); // TODO: Assymetrical BBox
-        }
-        else {
-          let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-          return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
-        }
+        let s = this.relation || "=";
+        let box = this.s.font_up.textBounds(s, 0, 0, this.scale*this.s.baseFontSize*0.8);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
     /**
@@ -235,40 +211,19 @@ export
      * @private
      */
     _shakeIt() {
+        this._shakeItDown();
+        let thisBox = this.boundingBox();
 
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + dp.size;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
-        });
-
-        // Calculate our own geometry
-
-        // Nothing to do for Relation
-
-        // Set position of all our children.
-
-
-        let parent_w = this.boundingBox().w;
-        let right;
-        if ("right" in boxes) {
-            right = this.dockingPoints["right"].child;
-            let child_w = right.boundingBox().w;
-            let child_mass_w = (right.dockingPoints["mass_number"] && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            let child_proton_w = (right.dockingPoints["proton_number"] && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
-            child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-            right.position.x = parent_w / 2 + child_w / 2;
-            right.position.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            if (right.child instanceof Brackets) {
-                right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
-
         }
     }
 }
