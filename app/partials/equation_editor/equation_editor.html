@@ -36,6 +36,21 @@
         <div ng-if="!symbolLibrary.customFunctions && symbolLibrary.derivatives.length > 0" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
     <!-- BUTTONS -->
+    <div class="hex-button resize" ng-click="alert()" ng-if="isLandscape && hashDebug"></div>
+    <div class="hex-button-panel resize" ng-if="isLandscape && hashDebug">
+        <div class="row">
+            <div class="col row-name">Font size: &nbsp;</div>
+            <div class="col minus control" ng-click="sketch.changeBaseFontSizeBy(-10)">-</div>
+            <div class="col number control">{{ sketch.baseFontSize }}</div>
+            <div class="col plus control" ng-click="sketch.changeBaseFontSizeBy(+10)">+</div>
+        </div>
+        <div class="row">
+            <div class="col row-name">Docking Points size: &nbsp;</div>
+            <div class="col minus control" ng-click="sketch.changeBaseDockingPointSizeBy(-10)">-</div>
+            <div class="col number control">{{ sketch.baseDockingPointSize*3 | number:0 }}</div>
+            <div class="col plus control" ng-click="sketch.changeBaseDockingPointSizeBy(+10)">+</div>
+        </div>
+    </div>
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>
