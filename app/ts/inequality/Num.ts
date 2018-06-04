@@ -187,7 +187,7 @@ export
      */
     boundingBox(): Rect {
         let box = this.s.font_up.textBounds(this.getFullText() || "x", 0, 0, this.scale * this.s.baseFontSize);
-        return new Rect(-box.w/2, box.y, box.w, box.h);
+        return new Rect(-box.w/2 - this.s.xBox.w/4, box.y, box.w, box.h);
     }
 
     /**

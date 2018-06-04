@@ -231,31 +231,33 @@ export
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Brackets
         this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
 
-        // FIXME Scale the hardcoded numbers
+        let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
+        let a = m * this.s.baseFontSize/5;
+        let b = m * (3+this.s.baseFontSize)/5;
+        let c = Math.sqrt(4 * m + 1);
+
         // LHS
         this.p.beginShape();
-        this.p.vertex(       box.x         + 21*this.scale,      box.y         +    this.scale );
-        this.p.bezierVertex( box.x         +  4*this.scale,      box.y         + 20*this.scale  ,
-                             box.x         +  4*this.scale,      box.y + box.h - 20*this.scale  ,
-                             box.x         + 21*this.scale,      box.y + box.h -    this.scale );
-        this.p.vertex(       box.x         + 20*this.scale,      box.y + box.h                 );
-        this.p.bezierVertex( box.x         -  4*this.scale,      box.y + box.h - 20*this.scale  ,
-                             box.x         -  4*this.scale,      box.y         + 20*this.scale  ,
-                             box.x         + 20*this.scale,      box.y                         );
+        this.p.vertex(       box.x + b, box.y         + m);
+        this.p.bezierVertex( box.x + c, box.y         + a ,
+                             box.x + c, box.y + box.h - a ,
+                             box.x + b, box.y + box.h - m);
+        this.p.vertex(       box.x + a, box.y + box.h    );
+        this.p.bezierVertex( box.x - c, box.y + box.h - a ,
+                             box.x - c, box.y         + a ,
+                             box.x + a, box.y            );
         this.p.endShape();
-
-        // box.w = 42;
 
         // RHS
         this.p.beginShape();
-        this.p.vertex(       box.x + box.w - 21*this.scale,      box.y         +    this.scale );
-        this.p.bezierVertex( box.x + box.w -  4*this.scale,      box.y         + 20*this.scale  ,
-                             box.x + box.w -  4*this.scale,      box.y + box.h - 20*this.scale  ,
-                             box.x + box.w - 21*this.scale,      box.y + box.h -    this.scale );
-        this.p.vertex(       box.x + box.w - 20*this.scale,      box.y + box.h                 );
-        this.p.bezierVertex( box.x + box.w +  4*this.scale,      box.y + box.h - 20*this.scale  ,
-                             box.x + box.w +  4*this.scale,      box.y         + 20*this.scale  ,
-                             box.x + box.w - 20*this.scale,      box.y                         );
+        this.p.vertex(       box.x + box.w - b, box.y         + m);
+        this.p.bezierVertex( box.x + box.w - c, box.y         + a ,
+                             box.x + box.w - c, box.y + box.h - a ,
+                             box.x + box.w - b, box.y + box.h - m);
+        this.p.vertex(       box.x + box.w - a, box.y + box.h    );
+        this.p.bezierVertex( box.x + box.w + c, box.y + box.h - a ,
+                             box.x + box.w + c, box.y         + a ,
+                             box.x + box.w - a, box.y            );
         this.p.endShape();
     }
 
