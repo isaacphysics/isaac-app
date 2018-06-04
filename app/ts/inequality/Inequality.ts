@@ -88,8 +88,6 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
-    private newExpressionCallback = null;
-
     constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
@@ -488,7 +486,7 @@ export
 
     touchEnded = () => {
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
-        if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.touchX, this.p.touchY)) < 2) {
+        if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click
             // Close the menu when touching the canvas
             this.scope.$broadcast("closeMenus");
@@ -631,14 +629,6 @@ export
                 symbols: [],
             })
         }
-    };
-
-    getExpressionObjects = () => {
-        let subtreeObjects = [];
-        _.each(this.symbols, symbol => {
-            subtreeObjects.push(symbol.subtreeObject());
-        });
-        return subtreeObjects;
     };
 
     centre = (init = false) => {

@@ -32,7 +32,7 @@ define([], function() {
                 var closing = false;
                 var closeMenus = function() {
                     if (el.hasClass("active-menu") && !closing) {
-                        console.debug("CLOSE ALL")
+                        console.debug("CLOSE ALL");
                         closing = true;
                         $(allMenus).stop(true).animate({
                             "bottom": scope.equationEditorElement.height()
