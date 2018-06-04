@@ -1,7 +1,5 @@
 "use strict";
 define(function(require) {
-    var b = require("lib/graph_sketcher/bezier.js");
-
     return {
         createPoint: function(x, y, c) {
             var obj = {};

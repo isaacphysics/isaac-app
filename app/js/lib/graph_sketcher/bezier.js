@@ -1,8 +1,6 @@
 define(function(require) {
   var m = require('lib/math.js');
-  var b = require('lib/graph_sketcher/bezier.js');
   var f = require('lib/graph_sketcher/func.js');
-  var d = require('lib/graph_sketcher/linear.js');
 
     return {
         numOfPts: 100,
