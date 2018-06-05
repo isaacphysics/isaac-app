@@ -24,7 +24,6 @@ define([], function() {
 			correct:true,
 			explanation: {
 				children:[{
-					contentChildIndex:"0000",
 					encoding:"markdown",
 					published:false,
 					tags:[],

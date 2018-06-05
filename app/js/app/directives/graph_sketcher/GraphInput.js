@@ -11,16 +11,20 @@ define(function(require) {
             restrict: "A",
             templateUrl: "/partials/graph_sketcher/graph_input.html",
             link: function(scope, element, attrs) {
-                console.log("prev test");
                 isTherePreviousAnswer = function() {
                     return (scope.dat.curves != undefined);
                 }
 
                 scope.edit = function() {
-                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.dat).then(function(finalState) {
-                        scope.state = finalState;
-                        scope.$apply();
-                    });
+                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.dat).then(
+                        function(finalState) {
+                            scope.state = finalState;
+                            scope.$apply();
+                        },
+                        function(exception) {
+                            console.error("Exception interrupted Graph Sketcher result", exception);
+                        }
+                    );
                 };
             }
         };

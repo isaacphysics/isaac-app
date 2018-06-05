@@ -33,12 +33,7 @@ define(function(require) {
 
                 scope.submit = function() {
                     $("#graphModal").foundation("reveal", "close");
-                    // console.log("graph submitted")
                 };
-
-                // scope.limit = function() {
-                //     scope.showToast(scope.toastTypes.Failure, "Only 3 curves accepted", "Please delete one to draw more");
-                // }
 
                 scope.logOnClose = function(event) {
                     // This ought to catch people who navigate away without closing the editor!
@@ -52,7 +47,6 @@ define(function(require) {
                 };
 
                 scope.newEditorState = function(s) {
-                    // console.log("new editor state")
                     scope.state = s;
 
                     var rp = $(".result-preview>span");
@@ -62,74 +56,73 @@ define(function(require) {
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
 
                     scope.$emit("historyCheckpoint");
-                    // console.log("graph emitted")
                 }
 
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    // console.log("sketch")
                     var canvasHeight = window.innerHeight;
                     var canvasWidth = window.innerWidth;
 
-                    var GRID_WIDTH = 60,
-                        CURVE_STRKWEIGHT = 2,
-                        PADDING = 0.025 * canvasWidth,
-                        DOT_LINE_STEP = 5,
-                        MOUSE_DETECT_RADIUS = 10;
+                    var CURVE_LIMIT = 3;
 
-                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
-                        KNOT_COLOR = [77,77,77],
-                        DOT_LINE_COLOR = [123],
-                        MOVE_LINE_COLOR = [135],
-                        MOVE_SYMBOL_COLOR = [151],
-                        KNOT_DETECT_COLOR = [0];
+                    var GRID_WIDTH = 60;
+                    var CURVE_STRKWEIGHT = 2;
+                    var PADDING = 0.025 * canvasWidth;
+                    var DOT_LINE_STEP = 5;
+                    var MOUSE_DETECT_RADIUS = 10;
+
+                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
+                    var KNOT_COLOR = [77,77,77];
+                    var DOT_LINE_COLOR = [123];
+                    var MOVE_LINE_COLOR = [135];
+                    var MOVE_SYMBOL_COLOR = [151];
+                    var KNOT_DETECT_COLOR = [0];
 
                     // action recorder
-                    var action = undefined,
-                        isMouseDragged,
-                        releasePt,
-                        drawMode,
-                        key = undefined;
+                    var action = undefined;
+                    var isMouseDragged;
+                    var releasePt;
+                    var drawMode;
+                    var key = undefined;
                         
-                    var freeSymbols = [],
-                        curves = [],
-                        dat;
+                    var freeSymbols = [];
+                    var curves = [];
+                    var dat;
 
 
                     // for drawing curve
-                    var drawnPts = [],
-                        drawnColorIdx,
-                        lineStart,
-                        lineEnd;
+                    var drawnPts = [];
+                    var drawnColorIdx;
+                    var lineStart;
+                    var lineEnd;
 
                     var prevMousePt;
 
                     // for moving and stretching curve
-                    var movedCurveIdx,
-                        stretchMode,
-                        minMax = 0;
+                    var movedCurveIdx;
+                    var stretchMode;
+                    var minMax = 0;
 
 
                     // for moving symbols
-                    var movedSymbol,
-                        bindedKnot,
-                        symbolType;
+                    var movedSymbol;
+                    var bindedKnot;
+                    var symbolType;
 
-                    var clickedKnot = null,
-                        clickedCurveIdx,
-                        clickedKnotId,
-                        tempCurve,
-                        tempPts = [],
-                        clickedCurve;
+                    var clickedKnot = null;
+                    var clickedCurveIdx;
+                    var clickedKnotId;
+                    var tempCurve;
+                    var tempPts = [];
+                    var clickedCurve;
 
                     // for redo and undo
-                    var checkPoint,
-                        checkPointsUndo = [],
-                        checkPointsRedo = [];
+                    var checkPoint;
+                    var checkPointsUndo = [];
+                    var checkPointsRedo = [];
 
                     function initiateFreeSymbols() {
-                        // console.log("initiating symbols")
                         freeSymbols = [];
                         freeSymbols.push(f.createSymbol('A'));
                         freeSymbols.push(f.createSymbol('B'));
@@ -153,7 +146,6 @@ define(function(require) {
 
                     // run in the beginning by p5 library
                     function setup() {
-                        // console.log("setup")
                         p.createCanvas(canvasWidth, canvasHeight);
                         p.noLoop();
                         p.cursor(p.ARROW);
@@ -266,7 +258,6 @@ define(function(require) {
                             p.pop();
                         }
 
-                        // p5.clear, p5.background
                         p.clear();
                         p.background(255);
 
@@ -276,17 +267,8 @@ define(function(require) {
                         drawLabel();
                     }
 
-                    // function findIntersection(curves) {
-                    //     for (var i = 1; i < curves.length; i++) {
-                    //         var pts = curves[i].pts;
-                    //     }
-                    // }
-
-                    // function drawIntersection()
-
                     // given a set of points, draw the corresponding curve.
                     function drawCurve(curve, color) {
-                        //console.log("drawcurve")
                         if (color == undefined) {
                             color = CURVE_COLORS[curve.colorIdx];
                         }
@@ -317,56 +299,6 @@ define(function(require) {
                     }
 
                     var mirrorClicked = 0;
-
-                    // function mirrorCurve(curve, color) {
-                    //     if (mirrorClicked == 0) {
-                    //         // console.log(mirrorClicked);
-                    //         if (color == undefined) {
-                    //             color = CURVE_COLORS[curve.colorIdx];
-                    //         }
-
-                    //         p.push();
-                    //         p.stroke(color);
-                    //         p.strokeWeight(CURVE_STRKWEIGHT);
-
-                    //         var mrdpts = [];
-                    //         var pts = curve.pts;
-                    //         for (var i = 1; i < pts.length; i++) {
-                    //             mrdpts.push(f.createPoint(canvasWidth - pts[i].x, pts[i].y));
-                    //         }   
-                            
-                    //         var allpts = pts.concat(mrdpts);
-                    //         curve.pts = allpts;
-                    //         for (var i = 1; i < allpts.length; i++) {
-                    //             if (allpts[i-1].x - allpts[i].x < 200 && allpts[i-1].y - allpts[i].y < 200) {
-                    //                 p.line(allpts[i-1].x, allpts[i-1].y,  allpts[i].x, allpts[i].y);
-                    //             }
-                    //         }
-
-                    //         p.pop();
-                    //         curve.endPt = findEndPts(curve.pts)
-                    //         curve.interX = findInterceptX(curve.pts);
-                    //         curve.maxima = findTurnPts(curve.pts, 'maxima');
-                    //         curve.minima = findTurnPts(curve.pts, 'minima');
-                    //         drawKnots(curve['interX']);
-                    //         drawKnots(curve['interY']);
-                    //         drawKnots2(curve['maxima']);
-                    //         drawKnots2(curve['minima']);
-                    //     }
-                    //     else {
-                    //         // console.log(mirrorClicked);
-                    //         reDraw();
-                    //     }
-                    // }
-
-                    // function mirrorCurves(curves, color) {
-                    //     // for (var i = 0; i < curves.length; i++) {
-                    //     //     mirrorCurve(curves[i], color);
-                    //     // }
-                    //     // // console.log(curves);
-                    //     // mirrorClicked = 1;
-                    //     console.log(scope.dat);
-                    // }
 
                     function findEndPts(pts) {
                         if (pts.length == 0) return [];
@@ -401,7 +333,6 @@ define(function(require) {
                         for (var i = 0; i < curves.length; i++) {
                             drawCurve(curves[i], color);
                         }
-                        // console.log(curves);
                     }
 
 
@@ -449,27 +380,6 @@ define(function(require) {
                             drawKnot2(knots[i]);
                         }
                     }
-
-                    // function drawKnot3(knot) {
-                    //     if (knot == null) {
-                    //         return;
-                    //     }
-
-                    //     drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
-                    //     drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
-
-                    //     if (knot.xSymbol != undefined) {
-                    //         drawSymbol(knot.xSymbol);
-                    //     } else {
-                    //         drawKnot(f.createPoint(knot.x, canvasHeight/2));
-                    //     }
-
-                    //     if (knot.ySymbol != undefined) {
-                    //         drawSymbol(knot.ySymbol);
-                    //     } else {
-                    //         drawKnot(f.createPoint(canvasWidth/2, knot.y));
-                    //     }
-                    // }
 
                     function drawKnotDetect(knot) {
                         p.push();
@@ -713,7 +623,6 @@ define(function(require) {
                         }
 
                         return turnPts;
-                        // console.log("turning points found")
                     }
 
 
@@ -1074,20 +983,6 @@ define(function(require) {
 
                         // stretch box
                         if (!found) {
-                            // for (var i = 0; i < curves.length; i++) {
-                            //     var pts = curves[i].pts;
-                            //     for (var j = 0; j < pts.length; j++) {
-                            //         if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
-                            //             found = true;
-                            //             p.cursor(p.MOVE);
-                            //             break;
-                            //         }
-                            //     }
-
-                            //     if (found) {
-                            //         break;
-                            //     }
-                            // }
 
                             if (clickedCurveIdx != undefined) {
 
@@ -1146,14 +1041,6 @@ define(function(require) {
 
                     window.onkeydown = function(event) {
                        if (event.keyCode == 46) {
-                            console.log("delete key pressed");
-                            // if (curves.length > 1) {
-                            //     console.log("limit");
-                            //     scope.limit();
-                            //     scope.$digest();
-                            //     reDraw();
-                            //     // scope.showToast(scope.toastTypes.Failure, "Assignment Saved", "This assignment has been saved successfully.");
-                            // }
                             checkPointsUndo.push(checkPoint);
                             checkPointsRedo = [];
                             if (clickedCurveIdx != undefined) {
@@ -1188,7 +1075,6 @@ define(function(require) {
 
                                 clickedCurveIdx = undefined;
                                 reDraw();
-                                console.log(curves);
                             }
                         }
                     }
@@ -1229,7 +1115,6 @@ define(function(require) {
                         checkPoint = {};
                         checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         checkPoint.curvesJSON = JSON.stringify(curves);
-                        // console.log("checkpoint recorded")
 
 
                         // check if it is to move a symbol
@@ -1318,23 +1203,6 @@ define(function(require) {
                             return;
                         }
 
-
-                        // // check if it is moving curve.
-                        // for (var i = 0; i < curves.length; i++) {
-                        //     var pts = curves[i].pts;
-                        //     for (var j = 0; j < pts.length; j++) {
-                        //         if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
-                        //             movedCurveIdx = i;
-                        //             action = "MOVE_CURVE";
-                        //             clickedKnot = null;
-                        //             prevMousePt = current;
-                        //             return;
-                        //         }
-                        //     }
-                        // }
-
-
-
                         // check if stretching curve 
                         if (clickedCurveIdx != undefined) {
                             var c = curves[clickedCurveIdx];
@@ -1416,59 +1284,13 @@ define(function(require) {
                                     action = "MOVE_CURVE";
                                     clickedKnot = null;
                                     prevMousePt = current;
-                                    // console.log("I'm walking over here");
                                     return;
                                 }
                             }
                         }
 
-
-
-
-
-
-                        // check if it is moving curve
-                        // if (clickedCurveIdx != undefined) {
-                        //     var c = curves[clickedCurveIdx];
-                        //     if (current.x >= c.minX && current.x <= c.maxX && current.y >= c.minY && current.y <= c.maxY) {
-                        //         movedCurveIdx = clickedCurveIdx;
-                        //         action = "MOVE_CURVE";
-                        //         clickedKnot = null;
-                        //         prevMousePt = current;
-                        //         return;   
-                        //     }
-                        // }
-
-
-                        // if it is drawing curve
-
-                        // var keyboardEvent = document.createEvent("KeyboardEvent");
-                        // var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-
-
-                        // keyboardEvent[initMethod](
-                        //                    "keydown", // event type : keydown, keyup, keypress
-                        //                     true, // bubbles
-                        //                     true, // cancelable
-                        //                     window, // viewArg: should be window
-                        //                     false, // ctrlKeyArg
-                        //                     false, // altKeyArg
-                        //                     false, // shiftKeyArg
-                        //                     false, // metaKeyArg
-                        //                     40, // keyCodeArg : unsigned long the virtual key code, else 0
-                        //                     0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-                        // );
-
-
-                        if (curves.length < 3){
+                        if (curves.length < CURVE_LIMIT){
                             action = "DRAW_CURVE";
-                        // } else if (curves.length > 1) {
-                        //     console.log("limit");
-                        //     scope.limit();
-                        //     document.dispatchEvent(keyboardEvent);
-                        //     reDraw();
-                        //     return;
-                        //     // scope.showToast(scope.toastTypes.Failure, "Assignment Saved", "This assignment has been saved successfully.");
                         }
 
 
@@ -1478,44 +1300,6 @@ define(function(require) {
                             reDraw();
                         }
 
-                        // if (key === "delete") {
-                        //     console.log('delete pressed');
-                        //     if (clickedCurveIdx != undefined) {
-                        //         var curve = (curves.splice(movedCurveIdx, 1))[0];
-
-                        //         function freeAllSymbols(knots) {
-                        //             for (var i = 0; i < knots.length; i++) {
-                        //                 var knot = knots[i];
-                        //                 if (knot.symbol != undefined) {
-                        //                     freeSymbols.push(knot.symbol);
-                        //                 }
-                        //                 if (knot.xSymbol != undefined) {
-                        //                     freeSymbols.push(knot.xSymbol);
-                        //                 }
-                        //                 if (knot.ySymbol != undefined) {
-                        //                     freeSymbols.push(knot.ySymbol);
-                        //                 }
-                        //             }
-                        //         }
-
-                        //         var interX = curve.interX;
-                        //         freeAllSymbols(interX);
-
-                        //         var interY = curve.interY;
-                        //         freeAllSymbols(interY);
-
-                        //         var maxima = curve.maxima;
-                        //         freeAllSymbols(maxima);
-
-                        //         var minima = curve.minima;
-                        //         freeAllSymbols(minima);
-
-                        //         clickedCurveIdx = undefined;
-                        //     }
-                        // }
-
-
-
                         if (key === "shift") {
                             lineStart = current;
                             drawMode = "line";
@@ -1523,10 +1307,8 @@ define(function(require) {
                             drawMode = "curve";
                         }
 
-                        
-
                         if (key === 46) {
-                            console.log('delete pressed');
+                            // delete key pressed
                             if (clickedCurveIdx != undefined) {
                                 var curve = (curves.splice(movedCurveIdx, 1))[0];
 
@@ -1561,17 +1343,6 @@ define(function(require) {
                             }
                         }
 
-                        // var alreadyUsedColors = [];
-                        // for (var i = 0; i < curves.length; i++) {
-                        //     alreadyUsedColors.push(curves[i].colorIdx);
-                        // }
-                        // for (var i = 0; i < CURVE_COLORS.length; i++) {
-                        //     if (alreadyUsedColors.indexOf(i) == -1) {
-                        //         drawnColorIdx = i;
-                        //         return;
-                        //     }
-                        // }
-
                         // get drawnColor
                         switch (colorSelect.value) {
                             case "Blue": {
@@ -1603,7 +1374,6 @@ define(function(require) {
                             var switcher = undefined;
                             var checka = undefined;     
                             if (m.pts[0].x > m.pts[m.pts.length - 1].x) {
-                                console.log('reversing');
                                 m.pts.reverse();
                                 for (i = 0; i < m.pts.length; i++) {
                                     m.pts[i].ind = i;
@@ -1618,7 +1388,6 @@ define(function(require) {
                             tempScale.push.apply(tempScale, m.maxima);
                             tempScale.push.apply(tempScale, m.minima);
                             tempScale.sort(function(a, b){return a.ind - b.ind});
-                            // console.log(tempScale);
                             var tempMin = undefined;
                             var tempMax = undefined;
                             if (minMax == 1) { 
@@ -1837,13 +1606,6 @@ define(function(require) {
                             }
                         }
         
-
-
-
-
-
-
-
                         if (action == "MOVE_CURVE") {
                             p.cursor(p.MOVE);
 
@@ -2073,7 +1835,7 @@ define(function(require) {
 
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
-                            if (curves.length < 3) {
+                            if (curves.length < CURVE_LIMIT) {
                                 if (drawMode == "curve") {
                                     p.push();
                                     p.stroke(CURVE_COLORS[drawnColorIdx]);
@@ -2101,7 +1863,6 @@ define(function(require) {
                     }
 
                     function mouseReleased(e) {
-                        // console.log("mouse released")
                         var current = releasePt;
 
                         // if it is just a click, handle click in the following if block
@@ -2131,8 +1892,6 @@ define(function(require) {
                                 var pts = curves[i].pts;
                                 for (var j = 0; j < pts.length; j++) {
                                     if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
-                                        // console.log(curves);
-                                        // console.log("sup");
                                         clickedCurveIdx = i;
                                         reDraw();
                                         return;
@@ -2267,13 +2026,13 @@ define(function(require) {
                             reDraw();
 
                         } else if (action == "DRAW_CURVE") {
-                            if (curves.length < 3){
+                            if (curves.length < CURVE_LIMIT){
 
                                 var curve;
 
                                 if (drawMode == "curve") {
-                                     // neglect if curve drawn is too short
-                                    if (s.sample(drawnPts).length < 2) {
+                                     // reject if curve drawn is too short
+                                    if (s.sample(drawnPts).length < 3) {
                                         return;
                                     }
 
@@ -2513,16 +2272,11 @@ define(function(require) {
                         data.freeSymbols = clonedFreeSymbols;
 
                         return data;
-                        // console.log(data);
-                        // console.log("data encoded")
                     }
 
                     decodeData = function(rawData) {
 
-                        // console.log("data decoded")
-                        // var data = clone(rawData);
                         var data = rawData;
-                        // console.log(data);
 
                         function denormalise(pt) {
                                 pt.x = pt.x * canvasWidth + canvasWidth/2;
@@ -2605,13 +2359,11 @@ define(function(require) {
                     function undo() {
                         if (checkPointsUndo.length == 0) {
                             mirrorClicked = 0;
-                            // console.log(mirrorClicked)
                             return;
                         }
 
                         if (checkPointsUndo === undefined) {
                             mirrorClicked = 0;
-                            // console.log(mirrorClicked)
                             return;
                         }
 
@@ -2624,22 +2376,14 @@ define(function(require) {
                         freeSymbols = JSON.parse(checkPointUndo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointUndo.curvesJSON);
                         
-                        // console.log(checkPointsUndo)
                         clickedKnot = null;
                         clickedCurveIdx = undefined;
 
                         reDraw();
-
-                        // console.log(curves)
-                        // console.log("undone")
                     }
 
                     function straight() {
-                        // console.log("straight")
                         b = require('lib/graph_sketcher/linear.js');
-
-                        // console.log(dat.curves);
-                        // console.log(scope.dat.curves);
                     }
 
 
@@ -2662,10 +2406,8 @@ define(function(require) {
                         freeSymbols = JSON.parse(checkPointRedo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointRedo.curvesJSON);
                         
-                        // console.log(checkPointsRedo)
                         clickedKnot = null;
                         clickedCurveIdx = undefined;
-                        // console.log("redone")
                         reDraw();
                     }
 
@@ -2678,11 +2420,6 @@ define(function(require) {
                     }
 
                     function clean() {
-                        // if the graph is clean originall, no change occur.
-                        // if (curves.length === 0) {
-                        //     return;
-                        // }
-
                         checkPoint = {};
                         checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         checkPoint.curvesJSON = JSON.stringify(curves);
@@ -2692,7 +2429,6 @@ define(function(require) {
                         curves = [];
                         clickedKnot = null;
                         clickedCurveIdx = undefined;
-                        // console.log("deleted")
                         initiateFreeSymbols();
                         reDraw();
                     }
@@ -2725,8 +2461,6 @@ define(function(require) {
                         decodeData(data);
                         reDraw();
                     }
-
-
 
 
                     // export the following functions to p5, so they can be assessed via the object produced.
@@ -2763,19 +2497,12 @@ define(function(require) {
 
                     scope.dat = dat;
 
-                    // function stateReturn() {
-                    //     state = encodeData();
-                    //     scope.state = state;
-                    //     return scope.state;
-                    // }
-
                     function dataReturn() {
                         dat = encodeData();
                         scope.dat = dat;
                         return scope.dat;
                     }
                     dataReturn();
-                    // stateReturn();
                 }
 
                 $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode, oldDat) {
@@ -2788,12 +2515,8 @@ define(function(require) {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
                         });
 
-                        console.log("opened");
-                        scope.p = new p5(function(p) {
-                                scope.state = scope.dat || initialState;
-                                $rootScope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
-                            }, element.find(".graph-sketcher")[0]);
-
+                        scope.state = scope.dat || initialState;
+                        scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         
                         eqnModal.foundation("reveal", "open");
                         scope.state = initialState || {freeSymbols: []}
@@ -2818,8 +2541,6 @@ define(function(require) {
                         // Log the editor being closed and submit log event to server:
                         eqnModal.one("close", function(e) {
                             scope.log.finalState = [];
-                            // console.log(scope.dat.curves);
-                            // scope.updateGraphPreview();
                             scope.dat.curves.forEach(function(e) {
                                 scope.log.finalState.push(e);
                             });
@@ -2827,14 +2548,10 @@ define(function(require) {
                                 event: "CLOSE",
                                 timestamp: Date.now()
                             });
-                            // if (scope.segueEnvironment == "DEV") {
-                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
-                            // }
+                            console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
                             scope.log = null;
-                            console.log(scope.dat);
-                            console.log(scope.state);
                             return(scope.state);
                         });
                         
@@ -2854,11 +2571,7 @@ define(function(require) {
                         // to here, figure out how to load it as a useable object, not an image //////////////////
 
                         eqnModal.one("closed.fndtn.reveal", function() {
-                            var gs = element.find(".graph-sketcher")[0];
-                            while (gs.firstChild) {
-                               gs.removeChild(gs.firstChild);
-                            }
-                            $rootScope.p.remove();
+                            scope.p.remove();
                             resolve(scope.dat);
                         });
                     });

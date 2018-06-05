@@ -11,7 +11,6 @@ define(function(require) {
             restrict: "A",
             templateUrl: "/partials/graph_sketcher/graph_preview.html",
             link: function(scope, element, attrs) {
-                console.log("graph previewed.js")
                 var graphPreviewDiv = element.find(".graph-preview");
 
                 var b = require('lib/graph_sketcher/bezier.js');
@@ -23,24 +22,24 @@ define(function(require) {
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    var canvasHeight = graphPreviewDiv.height();//document.getElementById(scope.canvasID).offsetHeight;
-                    var canvasWidth = graphPreviewDiv.width();//document.getElementById(scope.canvasID).offsetWidth;
+                    var canvasHeight = graphPreviewDiv.height();
+                    var canvasWidth = graphPreviewDiv.width();
 
-                    var GRID_WIDTH = 50,
-                        CURVE_STRKWEIGHT = 2,
-                        PADDING = 0.025 * canvasWidth,
-                        DOT_LINE_STEP = 5,
-                        MOUSE_DETECT_RADIUS = 5;
+                    var GRID_WIDTH = 50;
+                    var CURVE_STRKWEIGHT = 2;
+                    var PADDING = 0.025 * canvasWidth;
+                    var DOT_LINE_STEP = 5;
+                    var MOUSE_DETECT_RADIUS = 5;
                         
-                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]],
-                        KNOT_COLOR = [77,77,77],
-                        DOT_LINE_COLOR = [123],
-                        MOVE_LINE_COLOR = [135],
-                        MOVE_SYMBOL_COLOR = [151],
-                        KNOT_DETECT_COLOR = [151];
+                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
+                    var KNOT_COLOR = [77,77,77];
+                    var DOT_LINE_COLOR = [123];
+                    var MOVE_LINE_COLOR = [135];
+                    var MOVE_SYMBOL_COLOR = [151];
+                    var KNOT_DETECT_COLOR = [151];
 
-                    var freeSymbols = [],
-                        curves = [];
+                    var freeSymbols = [];
+                    var curves = [];
 
                     function initiateFreeSymbols() {
                         freeSymbols = [];
@@ -439,11 +438,6 @@ define(function(require) {
                             denormalise2(minima);
                         }
 
-                        // freeSymbols = data.freeSymbols;
-                        // for (var j = 0; j < freeSymbols.length; j++) {
-                        //     denormalise(freeSymbols[j]);
-                        // }
-
                         reDraw();
                     }
 
@@ -462,11 +456,6 @@ define(function(require) {
                     }
                 }
 
-
-                // delay updateGraphPreview until the DOM element is loaded.
-                // $timeout(function() {
-                //     scope.updateGraphPreview();
-                // });
 
                 scope.updateGraphPreview();
 

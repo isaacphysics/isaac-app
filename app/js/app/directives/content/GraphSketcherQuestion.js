@@ -16,7 +16,6 @@ define(["app/honest/responsive_video"], function(rv) {
 
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
-                    console.debug("Loading the previous answer.");
                     try {
                         ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.graphData);
                     } catch (e) {
@@ -24,7 +23,6 @@ define(["app/honest/responsive_video"], function(rv) {
                     }
                 } else {
                     // We have no answer and no seed
-                    console.debug("No previous answer.");
                     ctrl.selectedFormula = {};
                 }
 
@@ -32,7 +30,6 @@ define(["app/honest/responsive_video"], function(rv) {
                 ctrl.plainDoc.type = "content";
 
                 scope.$watch("ctrl.selectedFormula", function(f, oldF) {
-                    // console.debug("ctrl.selectedFormula", f);
                     
                     if (f === oldF) {
                         return; // Init
