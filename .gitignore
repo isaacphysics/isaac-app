@@ -6,6 +6,7 @@ tmp
 .idea
 *.localbackup
 app/npm-debug.log
+npm-debug.log
 /dist/
 app/js/isaac.js.map
 app/js/isaac.js

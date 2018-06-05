@@ -76,6 +76,8 @@ define(function(require) {
 
 	var equalityPageController = require("app/controllers/EqualityPageController");
 
+	var supportPageControllers = require("app/controllers/SupportControllers");
+
 	/* Controllers */
 
 	angular.module('isaac.controllers', [])
@@ -144,4 +146,6 @@ define(function(require) {
 
 	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
 	.controller('EqualityPageController', equalityPageController.PageController)
+
+	.controller('SupportPageController', supportPageControllers.PageController)
 });
