@@ -457,7 +457,9 @@ define(function(require) {
                     if (scope.preview == undefined) {
                         scope.preview = new p5(scope.sketch, graphPreviewDiv[0]);
                     }
-                    scope.preview.decodeData(scope.dat);
+                    if (scope.state != undefined && scope.state.curves != undefined) {
+                        scope.preview.decodeData(scope.state);
+                    }
                 }
 
 

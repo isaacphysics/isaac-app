@@ -20,6 +20,24 @@ define([], function() {
 			disabled: false
 		}
 
+		var TEMP_GRAPH_SKETCHER_RESULT = {
+			correct:true,
+			explanation: {
+				children:[{
+					contentChildIndex:"0000",
+					encoding:"markdown",
+					published:false,
+					tags:[],
+					type:"content",
+					value:"Thanks for participating! 🙂"
+				}],
+				encoding:"markdown",
+				published:true,
+				tags:[],
+				type:"content"
+			},
+		};
+
 		this.checkMyAnswer = function(scope, api) { // TODO refactor so that less is passed to this function
 			var checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
@@ -36,12 +54,8 @@ define([], function() {
 					}
 
 					if (scope.doc.type == "isaacGraphSketcherQuestion") {
-						$rootscope.setLoading = function(GraphSketcher) {
-							var data = scope.p.decodeData(scope.state);
-							if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
-								return;
-							}
-						}	
+						scope.question.validationResponse = TEMP_GRAPH_SKETCHER_RESULT;
+						return; // Do not submit Graph SKetecher question attemps
 					}
 
 					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);

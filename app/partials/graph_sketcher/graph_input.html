@@ -1,5 +1,5 @@
 <div>
-    <div href="javascript:void(0)" ng-click="edit()" class="eqn-preview" ng-style="{color: state.result ? 'black' : '#ddd'}" 
+  <div href="javascript:void(0)" ng-click="edit()" class="eqn-preview" ng-style="{color: state.result ? 'black' : '#ddd'}" 
   style="
   border-radius: 3px;
   box-shadow: none;
@@ -15,7 +15,7 @@
   background: white;
   ">
 
-  <div ng-if="isTherePreviousAnswer()" graph-preview state="dat" question-doc="questionDoc"> </div>
-  <div ng-if="!isTherePreviousAnswer()"> Click to enter your answer</div>
-  
+    <div graph-preview state="state" question-doc="questionDoc"></div>
+    <!-- <div ng-if="!isTherePreviousAnswer()"> Click to enter your answer</div> -->
+  </div>
 </div>

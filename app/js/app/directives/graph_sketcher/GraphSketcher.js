@@ -25,6 +25,10 @@ define(function(require) {
                 scope.equationEditorElement = element;
 
                 var colorSelect = element.find(".color-select")[0];
+                var encodeData;
+                var decodeData;
+                var reDraw;
+
 
                 scope.submit = function() {
                     $("#graphModal").foundation("reveal", "close");
@@ -151,14 +155,9 @@ define(function(require) {
 
                         initiateFreeSymbols();
                         reDraw();
-                        // console.log(checkPointsUndo);
-                        // console.log(checkPointsRedo);
-                        // console.log(curves);
-
-                        // drawButton();
                     }
 
-                    function reDraw() {
+                    reDraw = function reDraw() {
                         drawBackground();
                         drawCurves(curves);
                         // refreshFreeSymbols();
@@ -2348,7 +2347,7 @@ define(function(require) {
                         return JSON.parse(json);
                     }
 
-                    var encodeData = function(trunc) {
+                    encodeData = function(trunc) {
 
                         if (trunc == undefined) {
                             trunc = true;
@@ -2475,7 +2474,7 @@ define(function(require) {
                         // console.log("data encoded")
                     }
 
-                    function decodeData(rawData) {
+                    decodeData = function(rawData) {
 
                         // console.log("data decoded")
                         // var data = clone(rawData);
@@ -2733,46 +2732,28 @@ define(function(require) {
                     
 
                     return new Promise(function(resolve, reject) {
-
                         $(".result-preview>span").empty();
                         $(".result-preview").width(0);
 
                         var eqnModal = $('#graphModal');
                         eqnModal.one("opened.fndtn.reveal", function() {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
-                            // console.log("graph plopped in")
                         });
 
                         console.log("opened");
-                        var p = new p5(function(p) {
-                        if (scope.dat != undefined) {
-                            // console.log(scope.dat);
-                            scope.state = scope.dat
-                            // scope.p = instanceCounter;
-                        } else {
-                            // console.log("no old data");
-                            scope.state = initialState
-                            $rootScope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
-                            // instanceCounter = scope.p;
-                        }
-                        }, element.find(".graph-sketcher")[0]);
+                        scope.p = new p5(function(p) {
+                                scope.state = scope.dat || initialState;
+                                $rootScope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
+                            }, element.find(".graph-sketcher")[0]);
 
                         
-                        // console.log(scope.state);
                         eqnModal.foundation("reveal", "open");
-                        // console.log("opening graph sketch")
-
-                        // scope.state = initialState;
-
-                        //console.log(scope.state);
-                        scope.state = initialState || {
-                                freeSymbols: []
-                            }
+                        scope.state = initialState || {freeSymbols: []}
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode
                         
                         scope.log = {
-                            type: "GRAPH_SKETCHER_LOG",
+                            type: "TEST_GRAPH_SKETCHER_LOG",
                             // questionId: scope.questionDoc ? scope.questionDoc.id : null,
                             screenSize: {
                                 width: window.innerWidth,
@@ -2792,7 +2773,6 @@ define(function(require) {
                             console.log(scope.dat.curves);
                             scope.dat.curves.forEach(function(e) {
                                 scope.log.finalState.push(e);
-                                // console.log(e.curves);
                             });
                             scope.log.actions.push({
                                 event: "CLOSE",
@@ -2811,62 +2791,29 @@ define(function(require) {
                         //element.find("canvas").remove();
 
                         scope.future = [];
-                        console.log("gets to here");
-                        // var p = new p5(function (p) {
-                        //     // mysketch = new sketch(scope);
-                        //     if (scope.dat) {
-                        //         scope.state = scope.dat
-                        //     } else {
-                        //         scope.state = initialState;
-                        //         $rootScope.sketch = new p5(scope.sketch, document.getElementById("graphSketcher"));
-                        //         console.log("does it get to here?");
-                        //     }
-                        //     // $rootScope.sketch = mysketch;
-                        //     return scope.state;
-                        // }, element.find(".graph-sketcher")[0]);
-
-                        // generate p5 instance
-                        // scope.p / var p
-
-                        // scope.p = new p5(scope.sketch, document.getElementById("graphSketcher"));
-                        scope.p.reDraw();
-                        // console.log("p5 generated");
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
-                        console.debug("within graphSketcher scope.state: ", scope.state);
-                        // console.log(scope.state.curves);
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
-                            scope.p.decodeData(scope.state);
-                            scope.p.reDraw();
+                            decodeData(scope.state);
+                            reDraw();
                             scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                            // console.log(scope.history);
                             scope.historyPtr = 0;
-                            // console.log("prev inserted")
                         }
                         // to here, figure out how to load it as a useable object, not an image //////////////////
 
-                        eqnModal.one("close d.fndtn.reveal", function() {
-                            // update local state
-                            // console.log("new state logged")
-
-                            // scope.newEditorState(scope.p.state);
-                            // console.log("closed reveal")
-                            // remove p5 object
-                            sketch.p.remove();
-
-                            // update ctrl.selectedFormula (in scope of GraphSketcherQuestion.js)
-                            resolve(scope.state);
-                            scope.p.reDraw();
+                        eqnModal.one("closed.fndtn.reveal", function() {
+                            var gs = element.find(".graph-sketcher")[0];
+                            while (gs.firstChild) {
+                               gs.removeChild(gs.firstChild);
+                            }
+                            $rootScope.p.remove();
+                            resolve(scope.dat);
                         });
-
                     });
-                    // console.log("showing graph sketched")
                 };
-
 
                 scope.centre = function(p) {
                     sketch.centre();
-                    // console.log("done")
                 }
             }
         };
