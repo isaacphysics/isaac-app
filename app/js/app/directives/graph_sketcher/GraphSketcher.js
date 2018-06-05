@@ -2525,7 +2525,7 @@ define(function(require) {
                         
                         scope.log = {
                             type: "TEST_GRAPH_SKETCHER_LOG",
-                            // questionId: scope.questionDoc ? scope.questionDoc.id : null,
+                            questionId: scope.questionDoc ? scope.questionDoc.id : null,
                             screenSize: {
                                 width: window.innerWidth,
                                 height: window.innerHeight
