@@ -12,7 +12,7 @@
     <div top-menu="(aq)\, (g)\, (l)" ng-if="(editorMode == 'chemistry') && isLandscape">
         <div symbol-menu symbols="symbolLibrary.theStates"></div>
     </div>
-    <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && (editorMode == 'maths')">
+    <div top-menu="abc\,\, \alpha \beta \gamma" ng-if="isLandscape && (editorMode == 'maths') && symbolLibrary.allowVars">
         <div ng-if="symbolLibrary.customVars" symbol-menu symbols="symbolLibrary.customVars"></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu></div>
         <div ng-if="!symbolLibrary.customVars" sub-menu-item menu-title="latinLetterTitle" symbol-menu symbols="symbolLibrary.latinLetters"></div>
@@ -23,19 +23,9 @@
     <div top-menu="+\, -\, \sqrt{x}" ng-if="isLandscape && (editorMode == 'maths')">
         <div ng-if="symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.augmentedOps"></div>
         <div ng-if="!symbolLibrary.augmentedOps" symbol-menu symbols="symbolLibrary.reducedOps"></div>
-        <!--<div sub-menu></div>
-        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
-        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
-        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
-        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
     <div top-menu="\rightarrow\, \rightleftharpoons\, +" ng-if="isLandscape && (editorMode == 'chemistry')">
         <div symbol-menu symbols="symbolLibrary.chemOps"></div>
-        <!--<div sub-menu></div>
-        <div sub-menu-item menu-title="equalityTitle" symbol-menu symbols="symbolLibrary.equality"></div>
-        <div sub-menu-item menu-title="operatorMenuTitle" symbol-menu symbols="symbolLibrary.operators"></div>
-        <div sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.trig"></div>
-        <div sub-menu-item menu-title="calculusTitle" symbol-menu symbols="symbolLibrary.calculus"></div>-->
     </div>
     <div top-menu="\sin\,\, \int" ng-if="isLandscape && (editorMode == 'maths')" style="font-size: 23px !important;">
         <div ng-if="symbolLibrary.customFunctions" symbol-menu symbols="symbolLibrary.customFunctions"></div>
@@ -43,18 +33,24 @@
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="trigTitle" symbol-menu symbols="symbolLibrary.augmentedTrig"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="hypTrigTitle" symbol-menu symbols="symbolLibrary.hypTrigFunctions"></div>
         <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="otherFnTitle" symbol-menu symbols="symbolLibrary.otherFns"></div>
-        <div ng-if="!symbolLibrary.customFunctions" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
+        <div ng-if="!symbolLibrary.customFunctions && symbolLibrary.derivatives.length > 0" sub-menu-item menu-title="derivativesTitle" symbol-menu symbols="symbolLibrary.derivatives"></div>
     </div>
-        <!--
-        <div class="canvas-offsetter" ng-style="canvasOffset" ng-if="isLandscape">
-            <div ng-repeat="(sid, s) in state.symbols" canvas-symbol symbol="s" symbol-id="sid" id="{{sid}}"     selected="selectedSymbols.indexOf(sid) > -1" tabindex="0"></div>
-        </div>
-
-        <div ng-show="selectedSymbols.length" ng-if="isLandscape" selection-handle></div>
-
-        <div ng-show="dragMode=='selectionBox'" ng-if="isLandscape" class="selection-box"></div>
-    -->
     <!-- BUTTONS -->
+    <div class="hex-button resize" ng-click="alert()" ng-if="isLandscape && hashDebug"></div>
+    <div class="hex-button-panel resize" ng-if="isLandscape && hashDebug">
+        <div class="row">
+            <div class="col row-name">Font size: &nbsp;</div>
+            <div class="col minus control" ng-click="sketch.changeBaseFontSizeBy(-10)">-</div>
+            <div class="col number control">{{ sketch.baseFontSize }}</div>
+            <div class="col plus control" ng-click="sketch.changeBaseFontSizeBy(+10)">+</div>
+        </div>
+        <div class="row">
+            <div class="col row-name">Docking Points size: &nbsp;</div>
+            <div class="col minus control" ng-click="sketch.changeBaseDockingPointSizeBy(-10)">-</div>
+            <div class="col number control">{{ sketch.baseDockingPointSize*3 | number:0 }}</div>
+            <div class="col plus control" ng-click="sketch.changeBaseDockingPointSizeBy(+10)">+</div>
+        </div>
+    </div>
     <div class="hex-button centre" ng-click="centre()" ng-if="isLandscape"></div>
     <div class="hex-button undo" ng-click="undo()" ng-if="historyPtr > 1 && isLandscape"></div>
     <div class="hex-button redo" ng-click="redo()" ng-if="historyPtr < history.length-1 && isLandscape"></div>

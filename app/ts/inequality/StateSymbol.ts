@@ -48,8 +48,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let box = this.s.font_it.textBounds("x", 0, 1000, this.scale * this.s.baseFontSize);
-        return this.p.createVector(0, - box.h / 2);
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
     constructor(p: any, s: any, state: string) {
@@ -89,7 +88,6 @@ export
                 this.latexSymbol = "\\text{" + state + "}";
         }
 
-        // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
         this.docksTo = ['chemical_element', "operator_brackets"];
     }
 
@@ -103,7 +101,7 @@ export
         let box = this.boundingBox();
         let descent = this.position.y - (box.y + box.h);
 
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, ["state_symbol"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["state_symbol"], "right");
     }
 
     /**
@@ -115,30 +113,30 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex") {
             expression += this.latexSymbol;
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         // } else if (format == "python") {
         //     if (this.dockingPoints["right"].child != null) {
-        //         expression += this.dockingPoints["right"].child.getExpression(format);
+        //         expression += this.dockingPoints["right"].child.formatExpressionAs(format);
         //     }
         } else if (format == "subscript") {
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mhchem") {
             expression += this.mhchemSymbol;
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             expression += '<mo>' + this.state + "</mo>"
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -163,16 +161,6 @@ export
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.state, 0, 0);
         this.p.strokeWeight(1);
-
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
-
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
-        }
     }
 
     /**
@@ -181,8 +169,8 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_it.textBounds(this.state || "x", 0, 1000, this.s.baseFontSize);
-        return new Rect(-(box.w - 10) / 2, box.y - 1000, box.w - 10, box.h);
+        let box = this.s.font_up.textBounds(this.state || "x", 0, 0, this.s.baseFontSize);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
 
@@ -193,35 +181,20 @@ export
      * @private
      */
     _shakeIt() {
+        this._shakeItDown();
 
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        let thisBox = this.boundingBox();
+
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + dp.size;
+                dp.position.y = -this.scale * this.s.xBox_h/2;
             }
-        });
-
-        let box = this.boundingBox();
-
-        if ("right" in boxes) {
-            let p = this.dockingPoints["right"].child.position;
-            let child_width = this.dockingPoints["right"].child.boundingBox().w;
-            let parent_width = this.boundingBox().w;
-            // If either subscripts or superscripts or both exist
-            p.x = (parent_width == this.boundingBox().w) ? (parent_width / 2 + child_width / 2) : (parent_width - this.boundingBox().w / 2 + child_width / 2);
-            p.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            let docking_right = this.dockingPoints["right"];
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
-        } else {
-            let p = this.dockingPoints["right"].position;
-            p.x = box.w / 2 + this.scale * this.s.mBox.w / 4;
-            p.y = -this.s.xBox.h / 2;
         }
     }
 }
