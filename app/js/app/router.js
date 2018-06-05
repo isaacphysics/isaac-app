@@ -308,11 +308,6 @@ define(["angular-ui-router"], function() {
 
         $sp.state('equality', {
             url: "/equality?mode&symbols&testing",
-            resolve: {
-                // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
-                // we may want to revert this policy at some point.
-                // requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
-            },
             views: {
                 "body": {
                     templateUrl: "/partials/states/equation_editor.html",
@@ -320,6 +315,17 @@ define(["angular-ui-router"], function() {
                 },
             },
         });
+
+        // Temporarily disable until we have refactored
+        // $sp.state('sketcher', {
+        //     url: "/sketcher",
+        //     views: {
+        //         "body": {
+        //             templateUrl: "/partials/states/graph_sketcher.html",
+        //             controller: "SketcherPageController"
+        //         },
+        //     },
+        // })
 
         $sp.state('contact', {
             url: "/contact?preset&subject",

@@ -316,6 +316,9 @@ $menu-handle-width: 160px;
         &.centre,
         &.redo,
         &.undo,
+        &.poly,
+        &.straight,
+        &.mirro,
         &.clearAll {
             width: 68px;
             height: 80px;
@@ -351,6 +354,36 @@ $menu-handle-width: 160px;
 
             &.graph {
                 left: 18px;
+            }
+        }
+        &.poly {
+            top: 18px;
+            right: 250px;
+            background: url("/assets/equation_editor/hex-button-polynomial.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-polynomial-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.straight {
+            top: 18px;
+            right: 335px;
+            background: url("/assets/equation_editor/hex-button-straight.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-straight-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.mirro {
+            top: 18px;
+            right: 420px;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+                background-size: contain;
             }
         }
         &.redo {
