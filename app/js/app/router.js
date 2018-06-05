@@ -230,8 +230,18 @@ define(["angular-ui-router"], function() {
                     $rootScope.setLoading(false);
                 }],
             });
+            // Old book page URLs still need to work:
             $sp.state('physics_skills_14', {
                 url: "/physics_skills_14",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_physics_skills_14', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('book', {
+                url: "/book",
                 onEnter: ["$state","$rootScope", function($state, $rootScope) {
                     $state.go('book_physics_skills_14', {}, {
                         location: "replace"
@@ -275,17 +285,6 @@ define(["angular-ui-router"], function() {
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
         $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
         $sp.state('book_pre_uni_maths', bookState("pre_uni_maths"));
-
-        // Old book page URLs still need to work
-        $sp.state('book', {
-            url: "/book",
-            onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go('book_physics_skills_14', {}, {
-                    location: "replace"
-                });
-                $rootScope.setLoading(false);
-            }],
-        });
 
         $sp.state('answers', {
             // People try this URL for answers; point them to the FAQ:
@@ -678,20 +677,6 @@ define(["angular-ui-router"], function() {
                     controller: "AuthErrorPageController",
                 }
             }
-        });
-
-        $sp.state('teacherSupport', {
-            url: "/teacher_support",
-            resolve: {
-                requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER", "CONTENT_EDITOR", "TEACHER"]),
-                "page": ["api", function(api) {return api.pageFragments.get({id: 'teacher_support_online_page_frag'}).$promise;}]
-            },
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/generic_page.html",
-                    controller: "GenericPageController"
-                },
-            },
         });
 
         $sp.state('admin', {
