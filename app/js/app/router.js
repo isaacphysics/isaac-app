@@ -111,6 +111,59 @@ define(["angular-ui-router"], function() {
             }
         }
 
+        $sp.state('support', {
+            url: "/support/:type/:idSuffix",
+            resolve: {
+                categories: [function() {
+                    return {
+                        teacher: {
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" }, 
+                            assignments: { idSuffix: "assignments", title: "Assigning Work", icon: "faq" },
+                            progress: { idSuffix: "progress", title: "Viewing Student Progress", icon: "faq" },
+                            suggestions: { idSuffix: "suggestions", title: "Teaching Suggestions", icon: "teacher-hat" },
+                            direct: { idSuffix: "direct", title: "One-to-One Support", icon: "teacher-hat" },
+                        },
+                        student: {
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" },
+                            homework: { idSuffix: "homework", title: "Finding Homework", icon: "faq" },
+                            questions: { idSuffix: "questions", title: "Answering Questions", icon: "faq" },
+                        },
+                    };
+                }],
+                activeCategory: ["categories", "$stateParams", function(categories, $stateParams) {
+                    return categories[$stateParams.type] && categories[$stateParams.type][$stateParams.idSuffix] || Promise.reject({status: 404});
+                }],
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/support.html",
+                    controller: "SupportPageController",
+                },
+            },
+        });
+        // Add redirects for the URL subsections:
+        $sp.state('supportRoot', {
+            url: "/support",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportStudent', {
+            url: "/support/student",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportTeacher', {
+            url: "/support/teacher",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'teacher', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+
         // These routes apply to all of the sites
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
@@ -143,6 +196,9 @@ define(["angular-ui-router"], function() {
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
+            $sp.state('gcse', staticPageState("/gcse", "gcse"));
+            $sp.state('alevel', staticPageState("/alevel", "alevel"));
+
 
             // The events page shouldn't be accessible from the other sites to avoid confusion!
             $sp.state('events', {
