@@ -28,7 +28,7 @@ define([], function() {
 					published:false,
 					tags:[],
 					type:"content",
-					value:"Thank you for your help 🙂!<br />As we are not yet marking these test questions, they will not affect your progress statistics."
+					value:"Thank you for your help!<br />As we are not yet marking these test questions, they will not affect your progress statistics."
 				}],
 				encoding:"markdown",
 				published:true,
