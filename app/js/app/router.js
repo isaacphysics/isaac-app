@@ -260,26 +260,16 @@ define(["angular-ui-router"], function() {
             },
         });
 
-        $sp.state('sketcher', {
-            url: "/sketcher",
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/graph_sketcher.html",
-                    controller: "SketcherPageController"
-                },
-            },
-        })
-
-        $sp.state('sketcher_question', {
-            url: "/sketcher_question",
-            views: {
-                "body": {
-                    templateUrl: "/partials/content/GraphSketcherQuestion.html",
-                    controller: "SketcherPageController"
-                },
-            },
-        })
-
+        // Temporarily disable until we have refactored
+        // $sp.state('sketcher', {
+        //     url: "/sketcher",
+        //     views: {
+        //         "body": {
+        //             templateUrl: "/partials/states/graph_sketcher.html",
+        //             controller: "SketcherPageController"
+        //         },
+        //     },
+        // })
 
         $sp.state('contact', {
             url: "/contact?preset&subject",

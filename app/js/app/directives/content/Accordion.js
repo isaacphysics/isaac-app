@@ -50,7 +50,6 @@ define([], function() {
 				scope.titleSuffixes = {};
 
 				scope.toggleChild = function(i) {
-					console.debug("toggle child");
 					scope.openChildren[i] = !scope.openChildren[i];
 
 					if (scope.openChildren[i]) {
@@ -102,20 +101,16 @@ define([], function() {
 					//
 					//        FIXME : This function has been broken for a while and is now misbehaving!
 					//
-					console.debug("Stopped call to 'newQuestionAnswer':", index, ans);
 					return;
 					// TODO: Make sure we can go "back" to this question. This accordion stuff only works on refresh
-					console.debug("ANS from emit:", ans, "INDEX from emit:", index);
 					if (index in answersOnLoad) {
 
-						console.debug("ans && scope.accordionChildMetrics.questionCount <= 1", ans && scope.accordionChildMetrics.questionCount <= 1);
 						// This is a change - someone has submitted an answer.
 						if (ans) {
 							// They got the answer right. Display the answer and if the next question isn't open, open it.
 
 							scope.titleSuffixes[index] = ans;
 							scope.openChildren[index+1] = true;
-							console.debug("titleSuffixes[index]", scope.titleSuffixes[index]);
 						} else {
 							// They got the answer wrong. Don't change anything.
 							scope.titleSuffixes[index] = ans;
