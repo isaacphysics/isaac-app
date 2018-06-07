@@ -135,8 +135,8 @@ define([], function() {
 
 		// main
 		var mergeInProgress = false;
-		var suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
 		var queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
+		var suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
 		var initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
 
 		setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
