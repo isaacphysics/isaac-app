@@ -621,6 +621,14 @@
 		margin: 0;
 	}
 }
+.board-display-option {
+	clear: both;
+	padding-top: 0.4em;
+	@media #{$medium-up} {
+		float: right;
+	}
+}
+
 /* 
 	All media queries 
 */

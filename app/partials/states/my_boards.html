@@ -1,5 +1,5 @@
 <div class="row">
-   <div class="small-13 columns">
+   <div class="small-16 medium-10 columns">
       <div ng-switch="boards">
          <div ng-switch-when="undefined">
             <h1>&nbsp;</h1>
@@ -20,8 +20,13 @@
          </div>
       </div>
    </div>
-   <div class="medium-3 columns text-right hide-for-small-only">
-      <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+   <div class="small-16 medium-6 columns boards-filters" ng-show="boards != null">
+      <div class="right hide-for-small-only">
+         <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+      </div>
+      <div class="board-display-option">
+         <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
+      </div>
    </div>
 </div>
 
@@ -94,19 +99,23 @@
 
 <!-- Card View -->
 <div ng-show="selectedViewOption.value == 'card'">
-   <div class="boards-filters" ng-show="boards != null">
-      <ul class="small-block-grid-2">
-         <li>
-            <label>Show</label>
-            <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
-            <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
-         </li>
-         <li>
-            <label>Sort by</label>
-            <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
-         </li>
-      </ul>
+
+   <div class="row" ng-show="boards != null">
+      <div class="columns medium-11 boards-filters">
+         <ul class="small-block-grid-2 right">
+            <li>
+               <label>Show</label>
+               <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
+               <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
+            </li>
+            <li>
+               <label>Sort by</label>
+               <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
+            </li>
+         </ul>
+      </div>
    </div>
+
    <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
       <!-- Loop all boards and add a class if complete -->
       <li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
@@ -166,8 +175,4 @@
 
 <div class="row" ng-show="boards.results.length == 0">
    <p class="text-center">No Results</p>
-</div>
-
-<div class="boards-filters" ng-show="boards != null">
-   <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
 </div>
