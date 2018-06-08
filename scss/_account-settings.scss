@@ -316,6 +316,14 @@ input.account-settings-input {
     	padding: 11px 20px 13px;
     	margin: 0;
     }
+
+    .remove-link {
+    	text-align: center;
+    	a {
+    		font-weight: bold;
+    		color: $ru_red;
+    	}
+    }
 }
 .teachers-connected,
 .teachers-disconnected {

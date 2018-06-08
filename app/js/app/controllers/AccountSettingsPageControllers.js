@@ -428,13 +428,43 @@ define([], function() {
             }
         }
 
+        $scope.revokeAllAuthorisations = function(){
+            var revoke = $window.confirm('Are you sure you want to revoke all users\' access?');   
+
+            if (revoke) {
+                api.authorisations.revokeAll().$promise.then(function(){
+                    $scope.activeAuthorisations = api.authorisations.get();
+                    $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked all access to your data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
         $scope.releaseAuthorisation = function(userToRevoke){
-            var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+            var revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');   
 
             if (revoke) {
                 api.authorisations.release({id: userToRevoke.id}).$promise.then(function(){
                     $scope.activeStudentAuthorisations = api.authorisations.getOthers();
-                    $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
+                    $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to your student's data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
+        $scope.releaseAllAuthorisations = function(){
+            var revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');   
+
+            if (revoke) {
+                api.authorisations.releaseAll().$promise.then(function(){
+                    $scope.activeStudentAuthorisations = api.authorisations.getOthers();
+                    $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to all of your students' data.");
                 }).catch(function(e){
                     $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 })              
