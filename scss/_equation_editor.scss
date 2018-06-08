@@ -312,12 +312,22 @@ $menu-handle-width: 160px;
         position: absolute;
         bottom: 18px;
         cursor: pointer;
+        &.resize,
         &.centre,
         &.redo,
         &.undo,
+        &.poly,
+        &.straight,
+        &.mirro,
         &.clearAll {
             width: 68px;
             height: 80px;
+        }
+        &.resize {
+            left: 18px;
+            bottom: 116px;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
         }
         &.centre {
             left: 18px;
@@ -344,6 +354,36 @@ $menu-handle-width: 160px;
 
             &.graph {
                 left: 18px;
+            }
+        }
+        &.poly {
+            top: 18px;
+            right: 250px;
+            background: url("/assets/equation_editor/hex-button-polynomial.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-polynomial-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.straight {
+            top: 18px;
+            right: 335px;
+            background: url("/assets/equation_editor/hex-button-straight.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-straight-hover.png") no-repeat;
+                background-size: contain;
+            }
+        }
+        &.mirro {
+            top: 18px;
+            right: 420px;
+            background: url("/assets/equation_editor/hex-button-centre.png") no-repeat;
+            background-size: contain;
+            &:hover {
+                background: url("/assets/equation_editor/hex-button-centre-hover.png") no-repeat;
+                background-size: contain;
             }
         }
         &.redo {
@@ -384,6 +424,45 @@ $menu-handle-width: 160px;
         &.graph {
             z-index: 1000;
             top: calc(20% - 80px);
+        }
+    }
+    .hex-button-panel {
+        position: absolute;
+        bottom: 116px;
+        left: 104px;
+        background: black;
+        color: white;
+        padding: 0.5em 1em;
+        height: 80px;
+        width: 260px;
+        border: none;
+
+        display: flex;
+        flex-flow: column nowrap;
+        align-content: center;
+
+        .row {
+            flex: 1 100%;
+
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-end;
+
+            .col {
+                text-align: center;
+
+                &.control {
+                    flex: 1;
+
+                    background: darkgrey;
+                }
+
+                &.row-name {
+                    flex: 6;
+                    text-align: right;
+                    align-self: flex-start;
+                }
+            }
         }
     }
 

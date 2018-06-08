@@ -453,15 +453,15 @@ define([], function() {
             },
         });
 
-        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:email/:token", null, {
+        this.emailVerification = $resource(urlPrefix + "/users/verifyemail/:userid/:token", null, {
             verify: {
                 method: "GET"
             },
         });
 
-        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail/:email", null, {
+        this.verifyEmail = $resource(urlPrefix + "/users/verifyemail", null, {
             requestEmailVerification: {
-                method: "GET"
+                method: "POST"
             },
         });
 

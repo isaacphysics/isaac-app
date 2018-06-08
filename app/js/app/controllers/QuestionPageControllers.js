@@ -142,7 +142,9 @@ define([], function() {
 			$scope.gameBoardCompletedPerfect = data;
 		});
 		$scope.$on('pageCompleted', function(e) {
-			updateBoardProgressDetails();
+			if ($scope.gameboardId != undefined) {
+				updateBoardProgressDetails();
+			}
 		})
 		persistence.session.save("conceptPageSource", $location.url());
 

@@ -31,7 +31,7 @@ define([], function() {
 				scope.accordionChildMetrics = {
 					questionCount: 0,
 				}
-				
+
 				// Work out whether we're on a question page. If we are, open the first accordion section. Otherwise, only open it if it is the first item on the page.
 				var isOnQuestionPage = false;
 				var p = scope;
@@ -77,15 +77,19 @@ define([], function() {
 						var ans = answersOnLoad[i];
 
 						// If there is an answer, close the tab and display the answer.
-						if (ans && scope.accordionChildMetrics.questionCount <= 1) {
+						if (ans) {
+
 							scope.openChildren[i] = false;
+							scope.toggleChild(i);
 							scope.titleSuffixes[i] = ans;
 						} else {
 							if (!encounteredNotCorrect) {
 								// This is the first incorrect or not-answered question part. Open it.
+
 								scope.openChildren[i] = true;
 							} else {
 								// This is NOT the first incorrect or not-answered question part. Close it.
+							
 								scope.openChildren[i] = false;
 							}
 							encounteredNotCorrect = true;
@@ -97,19 +101,19 @@ define([], function() {
 					//
 					//        FIXME : This function has been broken for a while and is now misbehaving!
 					//
-					console.debug("Stopped call to 'newQuestionAnswer':", index, ans);
 					return;
 					// TODO: Make sure we can go "back" to this question. This accordion stuff only works on refresh
-
 					if (index in answersOnLoad) {
-						
+
 						// This is a change - someone has submitted an answer.
-						if (ans && scope.accordionChildMetrics.questionCount <= 1) {
+						if (ans) {
 							// They got the answer right. Display the answer and if the next question isn't open, open it.
+
 							scope.titleSuffixes[index] = ans;
 							scope.openChildren[index+1] = true;
 						} else {
 							// They got the answer wrong. Don't change anything.
+							scope.titleSuffixes[index] = ans;
 						}
 
 					} else {
