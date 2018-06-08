@@ -9,6 +9,7 @@
             
             <span class="accordion-section-title-suffix" ng-bind="titleSuffixes[$index]" math-jax></span>
             <div class="ru_accordion_name" style="float: left;">
+                <span class='ru_level' ng-if="c.level"></span>
                 {{c.level}}
                 <span ng-if="questionPage">Part {{$index | indexToPart}}</span>
                 <span ng-if="!questionPage && !c.level">&nbsp;</span>
