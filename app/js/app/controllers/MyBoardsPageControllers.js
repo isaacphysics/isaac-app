@@ -135,10 +135,10 @@ define([], function() {
 
 		// main
 		var mergeInProgress = false;
-		var initialViewValue = boardSearchOptions.view.values.card; 
-		if ($stateParams.view && boardSearchOptions.view.values[$stateParams.view]) {
-			initialViewValue = boardSearchOptions.view.values[$stateParams.view];
-		}
+		var queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
+		var suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
+		var initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
+
 		setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
 		updateBoards($scope.selectedNoBoardsOption.value);
 	}];
