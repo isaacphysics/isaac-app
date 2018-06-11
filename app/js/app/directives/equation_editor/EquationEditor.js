@@ -319,17 +319,21 @@ define(function (require) {
                         delete scope.symbolLibrary.augmentedOps;
                         delete scope.symbolLibrary.allowVars;
 
+                        // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
+                        scope.symbolLibrary.allowVars = true;
+
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
                         scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
 
-                        var userIsPrivileged = document.location.pathname === '/equality' || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+                        var onEqualityPage = document.location.pathname === '/equality';
+                        var userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
                         if (editorMode === "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             var parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
 
-                            scope.symbolLibrary.allowVars = parsedSymbols.allowVars;
+                            scope.symbolLibrary.allowVars = parsedSymbols.allowVars || onEqualityPage;
 
                             var customSymbolsParsed = false;
                             if (parsedSymbols.vars.length > 0) {
@@ -932,7 +936,7 @@ define(function (require) {
                         var properties = {};
                         var children = null;
                         var name = trigArray[trig_func];
-                        if (trigArray[trig_func].substring(0, 3) == 'arc') {
+                        if (trigArray[trig_func].substring(0, 3) === 'arc') {
                             name = trigArray[trig_func].substring(3);
                             children = {
                                 superscript: {
@@ -943,9 +947,9 @@ define(function (require) {
                                 }
                             };
                             // if inverse function and involves cosec (not supported by latex)
-                            if (trigArray[trig_func].substring(3, 7) == 'sech') {
+                            if (trigArray[trig_func].substring(3, 7) === 'sech') {
                                 label = "\\text{" + trigArray[trig_func].substring(3) + "}";
-                            } else if (trigArray[trig_func].substring(3, 8) == 'cosec') {
+                            } else if (trigArray[trig_func].substring(3, 8) === 'cosec') {
                                 label = "\\text{" + trigArray[trig_func].substring(3) + "}";
                             } else {
                                 label = "\\" + trigArray[trig_func].substring(3);
@@ -953,9 +957,9 @@ define(function (require) {
                             label += "^{-1}";
                         } else {
                             // if function isn't inverse but still involves cosec
-                            if (trigArray[trig_func].substring(0, 4) == 'sech') {
+                            if (trigArray[trig_func].substring(0, 4) === 'sech') {
                                 label = "\\text{" + trigArray[trig_func] + "}";
-                            } else if (trigArray[trig_func].substring(0, 5) == 'cosec') {
+                            } else if (trigArray[trig_func].substring(0, 5) === 'cosec') {
                                 label = "\\text{" + trigArray[trig_func] + "}";
                             } else {
                                 label = "\\" + trigArray[trig_func];
@@ -971,7 +975,7 @@ define(function (require) {
                             menu: {
                                 label: label,
                                 texLabel: true,
-                                fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) == 'arc') ? '15px' : '18px'
+                                fontSize: (name.length > 4 && trigArray[trig_func].substring(0, 3) === 'arc') ? '15px' : '18px'
                             }
                         };
                         if (children != null) {
