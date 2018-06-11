@@ -42,6 +42,8 @@ define(function(require) {
                     return sketch;
                 }, editorCanvas);
 
+                // Magic starts here
+
                 var timer = null;
                 scope.textEdit = function() {
                     // This is on a keyUp event so it should not fire when showEquationEditor returns (see below)
@@ -53,30 +55,40 @@ define(function(require) {
                         var pycode = element.find(".eqn-text-input")[0].value;
                         var parsedExpression = mathparser.parseExpression(pycode);
                         sketch.symbols.length = 0;
-                        if (parsedExpression.length > 0) {
-                            console.log(parsedExpression[0]);
-                            sketch.parseSubtreeObject(parsedExpression[0]);
-                        }
 
-                        var openBracketsCount = pycode.split('(').length - 1;
-                        var closeBracketsCount = pycode.split(')').length - 1;
+                        if (!parsedExpression.hasOwnProperty('error')) {
+                            if (parsedExpression.length === 0) {
+                                // TODO: Do something here
+                            } else if (parsedExpression.length === 1) {
+                                sketch.parseSubtreeObject(parsedExpression[0]);
+                            } else {
+                                // TODO: Find the largest object and use it
+                            }
 
-                        scope.state.textEntry = true;
-                        var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
-                        var badCharacters = RegExp(regexStr);
-                        var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
-                        scope.textEntryError = [];
-                        if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
-                            scope.textEntryError.push('LaTeX syntax is not supported.');
-                        }
-                        if (badCharacters.test(pycode)) {
-                            scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
-                        }
-                        if (openBracketsCount != closeBracketsCount) {
-                            scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
-                        }
-                        if (/\.[0-9]/.test(pycode)) {
-                            scope.textEntryError.push('Please convert decimal numbers to fractions.');
+                            var openBracketsCount = pycode.split('(').length - 1;
+                            var closeBracketsCount = pycode.split(')').length - 1;
+
+                            scope.state.textEntry = true;
+                            var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
+                            var badCharacters = new RegExp(regexStr);
+                            var goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
+                            scope.textEntryError = [];
+                            if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
+                                scope.textEntryError.push('LaTeX syntax is not supported.');
+                            }
+                            if (badCharacters.test(pycode)) {
+                                scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
+                            }
+                            if (openBracketsCount !== closeBracketsCount) {
+                                scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
+                            }
+                            if (/\.[0-9]/.test(pycode)) {
+                                scope.textEntryError.push('Please convert decimal numbers to fractions.');
+                            }
+                        } else {
+                            // TODO: Do something with the error here. It contains useful information.
+                            var error = parsedExpression.error;
+                            console.log(error.offset, error.token);
                         }
                     }, 250);
                 };
@@ -87,7 +99,7 @@ define(function(require) {
                         // If the special character is followed by a non-special character, add a space:
                         s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
                         // Otherwise just replace it.
-                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                        s = s.replace(new RegExp(k + '', "g"), inverseLetterMap[k]);
                     }
                     return s;
                 };
