@@ -1,4 +1,8 @@
-define([], function() {
+"use strict";
+define(function(require) {
+
+    var MySketch = require("inequality").MySketch;
+    var mathparser = require("lib/equation_editor/mathparser.js");
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -21,6 +25,22 @@ define([], function() {
                     }
                 }
 
+                scope.selectedSymbols = [];
+
+                var letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
+                var inverseLetterMap = {};
+                for (var k in letterMap) {
+                    inverseLetterMap[letterMap[k]] = k;
+                }
+                inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
+
+                var sketch = null;
+                var editorCanvas = element.find(".equation-editor-text-entry")[0];
+                var p = new p5(function (p) {
+                    sketch = new MySketch(p, scope, element.width(), element.height(), [], true);
+                    $rootScope.sketch = sketch;
+                    return sketch;
+                }, editorCanvas);
 
                 var timer = null;
                 scope.textEdit = function() {
@@ -31,10 +51,17 @@ define([], function() {
                     }
                     timer = $timeout(function() {
                         var pycode = element.find(".eqn-text-input")[0].value;
+                        var parsedExpression = mathparser.parseExpression(pycode);
+                        sketch.symbols.length = 0;
+                        if (parsedExpression.length > 0) {
+                            console.log(parsedExpression[0]);
+                            sketch.parseSubtreeObject(parsedExpression[0]);
+                        }
+
                         var openBracketsCount = pycode.split('(').length - 1;
                         var closeBracketsCount = pycode.split(')').length - 1;
 
-                        scope.state = {result: {python: pycode}, textEntry: true};
+                        scope.state.textEntry = true;
                         var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
                         var badCharacters = RegExp(regexStr);
                         var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
@@ -52,6 +79,35 @@ define([], function() {
                             scope.textEntryError.push('Please convert decimal numbers to fractions.');
                         }
                     }, 250);
+                };
+
+                var replaceSpecialChars = function (s) {
+                    for (var k in inverseLetterMap) {
+                        // Special characters have special needs (i.e., a space after them).
+                        // If the special character is followed by a non-special character, add a space:
+                        s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
+                        // Otherwise just replace it.
+                        s = s.replace(new RegExp(k, "g"), inverseLetterMap[k]);
+                    }
+                    return s;
+                };
+
+                scope.newEditorState = function (s) {
+                    scope.state = s;
+
+                    console.log("New state:", s);
+
+                    var rp = $(".eqn-preview");
+                    rp.empty();
+
+                    // this renders the result in the preview box in the bottom right corner of the eqn editor
+                    if (scope.state.result) {
+                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
+                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g, "").replace(/varepsilon/g, "epsilon");
+                        katex.render(scope.state.result["tex"], rp[0]);
+                    }
+
+                    // TODO: Set the initial state?
                 };
 
                 scope.edit = function() {

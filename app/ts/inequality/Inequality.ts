@@ -88,7 +88,7 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
-    constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
+    constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
@@ -117,12 +117,12 @@ export
 
         this.centre(true);
 
-        _this.scope.log.initialState = [];
-
-
-        this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+        if (!this.textEntry) {
+            _this.scope.log.initialState = [];
+            this.symbols.forEach(function (e) {
+                _this.scope.log.initialState.push(e.subtreeObject(true, true));
+            });
+        }
         this.updateCanvasDockingPoints();
     };
 
@@ -162,11 +162,12 @@ export
         }
         this.centre(true);
 
-        _this.scope.log.initialState = [];
-
-        this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+        if (!this.textEntry) {
+            _this.scope.log.initialState = [];
+            this.symbols.forEach(function (e) {
+                _this.scope.log.initialState.push(e.subtreeObject(true, true));
+            });
+        }
         this.updateCanvasDockingPoints();
 
     };
@@ -348,6 +349,8 @@ export
         }
         if (parseChildren) {
             _.each(node["children"] || [], (n, key) => {
+                console.log(key, node);
+                // if (node.type === 'Fn') debugger;
                 w.dockingPoints[key].child = this._parseSubtreeObject(n);
             });
         }
@@ -358,6 +361,8 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
+        if (this.textEntry) return;
+
         this.p.frameRate(60);
         // These are used to correctly detect clicks and taps.
 
@@ -434,6 +439,8 @@ export
     };
 
     touchMoved = () => {
+        if (this.textEntry) return;
+
         let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
         let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
@@ -485,6 +492,8 @@ export
     };
 
     touchEnded = () => {
+        if (this.textEntry) return;
+
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
         if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click

@@ -57,6 +57,7 @@ System.config({
         "reflect": 'bower_components/reflect-metadata/Reflect.js',
         "inequality": 'ts/inequality/Inequality.ts',
         "p5": "js/lib/p5.min.js",
+        "mathparser": "js/lib/equation_editor/mathparser.js",
     },
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.
@@ -85,5 +86,6 @@ System.config({
         "templates": { deps: ['angular'], format: 'global'},
         "lib/opentip-jquery": { deps: ['angular'], format: 'global'},
         "p5": { format: 'global' },
+        "mathparser": { format: 'global' },
     }
 });
