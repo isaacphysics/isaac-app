@@ -44,6 +44,20 @@ define(function(require) {
 
                 // Magic starts here
 
+                var countChildren = function(root) {
+                    var q = [root];
+                    var count = 1;
+                    while (q.length > 0) {
+                        var e = q.shift();
+                        var c = Object.keys(e.children).length;
+                        if (c > 0) {
+                            count = count + c;
+                            q = q.concat(Object.values(e.children));
+                        }
+                    }
+                    return count
+                };
+
                 var timer = null;
                 scope.textEdit = function() {
                     // This is on a keyUp event so it should not fire when showEquationEditor returns (see below)
@@ -62,7 +76,9 @@ define(function(require) {
                             } else if (parsedExpression.length === 1) {
                                 sketch.parseSubtreeObject(parsedExpression[0]);
                             } else {
-                                // TODO: Find the largest object and use it
+                                var sizes = _.map(parsedExpression, countChildren);
+                                var i = sizes.indexOf(Math.max.apply(null, sizes));
+                                sketch.parseSubtreeObject(parsedExpression[i]);
                             }
 
                             var openBracketsCount = pycode.split('(').length - 1;
