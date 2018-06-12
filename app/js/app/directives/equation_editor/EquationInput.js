@@ -68,11 +68,17 @@ define(function(require) {
                     timer = $timeout(function() {
                         var pycode = element.find(".eqn-text-input")[0].value;
                         var parsedExpression = mathparser.parseExpression(pycode);
-                        sketch.symbols.length = 0;
+                        sketch.symbols = [];
 
                         if (!parsedExpression.hasOwnProperty('error')) {
                             if (parsedExpression.length === 0) {
-                                // TODO: Do something here
+                                if (pycode === '') {
+                                    element.find(".eqn-preview").html("");
+                                    sketch.symbols = [];
+                                } else {
+                                    // TODO: Do something here
+                                    console.log("User entered maths, we could not parse it.")
+                                }
                             } else if (parsedExpression.length === 1) {
                                 sketch.parseSubtreeObject(parsedExpression[0]);
                             } else {
