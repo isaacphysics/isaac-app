@@ -349,8 +349,6 @@ export
         }
         if (parseChildren) {
             _.each(node["children"] || [], (n, key) => {
-                console.log(key, node);
-                // if (node.type === 'Fn') debugger;
                 w.dockingPoints[key].child = this._parseSubtreeObject(n);
             });
         }
