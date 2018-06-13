@@ -449,6 +449,16 @@
                         </div>
                       </td>
                     </tr>
+                    <tr ng-if="user.role != 'STUDENT'">
+                      <td><a href="https://labs.isaacphysics.org/teachers-sharing-groups.html" target="_blank">Sharing Groups</a></td>
+                      <td class="hide-for-small-only">Allow additional teachers to manage your groups; set assignments, view marks and add students.</td>
+                      <td class="feature-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="teachers-sharing-groups">&nbsp;</label>
+                          <input id="teachers-sharing-groups" type="checkbox" ng-model="betaFeatures.ADDITIONAL_GROUP_MANAGERS" input-animation>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
                 If you want to provide feedback or experience serious problems using these features, you can <a ui-sref="contact({subject: 'Beta Features'})">let us know here</a>.
