@@ -15,6 +15,9 @@ define(function(require) {
             restrict: "A",
             templateUrl: "/partials/equation_editor/equation_input.html",
             link: function(scope, element, attrs) {
+
+                scope.isEquality = window.location.pathname.startsWith("/equality");
+
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
@@ -69,11 +72,16 @@ define(function(require) {
                         var pycode = element.find(".eqn-text-input")[0].value;
                         var parsedExpression = mathparser.parseExpression(pycode);
                         sketch.symbols = [];
+                        scope.textEntryError = [];
 
                         if (!parsedExpression.hasOwnProperty('error')) {
                             if (parsedExpression.length === 0) {
                                 if (pycode === '') {
-                                    element.find(".eqn-preview").html("");
+                                   element.find(".eqn-preview").html("Click here to enter a formula!");
+                                    scope.symbols = [];
+                                    scope.state.result.tex = "";
+                                    scope.state.result.python = "";
+                                    scope.state.result.mathml = "";
                                     sketch.symbols = [];
                                 } else {
                                     // TODO: Do something here
@@ -94,7 +102,6 @@ define(function(require) {
                             var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
                             var badCharacters = new RegExp(regexStr);
                             var goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
-                            scope.textEntryError = [];
                             if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                                 scope.textEntryError.push('LaTeX syntax is not supported.');
                             }
