@@ -108,7 +108,7 @@ define([], function() {
 		return filterOptions;
 	}
 
-	return ['$filter', function PersistenceConstructor($filter) {
+	return ['$filter', 'gameBoardTitles', function PersistenceConstructor($filter, gameBoardTitles) {
 		this.boardTags = boardTags;
 		this.filterOptions = {};
 		this.augmentBoards = function(boards, userId) {
@@ -122,6 +122,7 @@ define([], function() {
 				board.createdBy = calculateBoardCreator(board, seenOptions.createdBy, userId);
 				board.formattedCreationDate = $filter('date')(board.creationDate, 'dd/MM/yyyy');
 				board.formattedLastVisitedDate = $filter('date')(board.lastVisited, 'dd/MM/yyyy');
+				board.title = board.title || gameBoardTitles.generate(board);
 			}
 
 			this.filterOptions = generateFilterOptions(seenOptions);

@@ -199,9 +199,11 @@
 }
 .table-wrap {
 	width: 100%;
-	overflow-x: auto;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	@media #{$small-only} {
+		overflow-x: auto;
+	}
 	.boards-table {
 		border-collapse: collapse;
 		width: 100%;
@@ -619,6 +621,14 @@
 		margin: 0;
 	}
 }
+.board-display-option {
+	clear: both;
+	padding-top: 0.4em;
+	@media #{$medium-up} {
+		float: right;
+	}
+}
+
 /* 
 	All media queries 
 */
