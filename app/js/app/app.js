@@ -19,7 +19,6 @@ define([
     "./honest/responsive_video",
     "../lib/rsvp",
     "require",
-    "foundation-sites",
     "./router",
     "angular",
     "angular-resource",
@@ -43,6 +42,12 @@ define([
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
+    // Load all of foundation
+    let req = require.context("foundation-sites/js/foundation", true);
+    for(let r of req.keys()) {
+        req(r);
+    }
+
 	//var rv = System.amdRequire("./honest/responsive_video.js");
 
 	// Declare app level module which depends on filters, and services
@@ -52,7 +57,6 @@ define([
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers',
-        //'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
