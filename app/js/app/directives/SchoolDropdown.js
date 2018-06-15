@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/school_dropdown.html"], function(templateUrl) {
 
 	return ["api", function(api) {
 
@@ -22,7 +22,7 @@ define([], function() {
 				selectedSchoolUrn: "=",
 			},
 
-			templateUrl: "/partials/school_dropdown.html",
+			templateUrl: templateUrl,
 
 			restrict: "A",
 

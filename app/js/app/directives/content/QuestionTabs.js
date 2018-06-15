@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv, scope) {
+define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"], function(rv, scope, templateUrl) {
 
 	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
 
@@ -23,7 +23,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 			scope: true,
 
-			templateUrl: "/partials/content/QuestionTabs.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs, ctrls, transclude) {
 				if (scope.accordionChildMetrics) {

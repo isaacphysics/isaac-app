@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["lib/iframe_api"], function() {
+define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(templateUrl) {
 
 	return ["api", "$sce", function(api, $sce) {
 
@@ -23,7 +23,7 @@ define(["lib/iframe_api"], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/Video.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- define([], function() {
+ define(["/partials/toast.html"], function(templateUrl) {
 
 	return function() {
 		return {
 
 			restrict: "A",
 
-			templateUrl: "/partials/toast.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs){
 				scope.toastNotificationVisible = false;

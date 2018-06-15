@@ -117,11 +117,11 @@ export
 
         this.centre(true);
 
-        _this.scope.log.initialState = [];
+        this.scope.log.initialState = [];
 
 
         this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
+            this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
         this.updateCanvasDockingPoints();
     };
@@ -134,7 +134,7 @@ export
     setup = () => {
         this.p.frameRate(7);
 
-        switch (_this.scope.editorMode) {
+        switch (this.scope.editorMode) {
             case 'maths':
                 this.baseFontSize = 50;
                 this.baseDockingPointSize = 50/3;
@@ -162,10 +162,10 @@ export
         }
         this.centre(true);
 
-        _this.scope.log.initialState = [];
+        this.scope.log.initialState = [];
 
         this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
+            this.scope.log.initialState.push(e.subtreeObject(true, true));
         });
         this.updateCanvasDockingPoints();
 

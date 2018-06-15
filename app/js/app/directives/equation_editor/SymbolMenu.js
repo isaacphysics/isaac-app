@@ -1,4 +1,4 @@
-define([], function() {
+define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 
 	return [function() {
 
@@ -8,7 +8,7 @@ define([], function() {
             	symbols: "=",
             },
 			restrict: "A",
-			templateUrl: "/partials/equation_editor/symbol_menu.html",
+			templateUrl: templateUrl,
 			link: function(scope, element, attrs) {
 				scope.name="SYMBOLMENU";
 

@@ -56,7 +56,7 @@ System.config({
         "typescript": 'js/lib/typescript.js',
         "reflect": 'bower_components/reflect-metadata/Reflect.js',
         "inequality": 'ts/inequality/Inequality.ts',
-        "p5": "js/lib/p5.min.js",
+        "p5": "js/lib/p5.min.js"
     },
 
     // Define any dependencies of legacy libraries, and make sure some are imported globally.

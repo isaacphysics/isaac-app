@@ -16,33 +16,34 @@
 'use strict';
 
 define([
-    "app/honest/responsive_video",
-    "lib/rsvp",
-    "foundation",
-    "app/router",
+    "./honest/responsive_video",
+    "../lib/rsvp",
+    "require",
+    "foundation-sites",
+    "./router",
     "angular",
     "angular-resource",
     "angular-cookies",
     "angular-ui-date",
-    "app/controllers",
-    "app/directives",
-    "app/services",
-    "app/filters",
+    "./controllers",
+    "./directives",
+    "./services",
+    "./filters",
     "d3",
-    "owl-carousel2",
-    "app/honest/dropdown",
+    "owl.carousel",
+    "./honest/dropdown",
     "angulartics",
     "angulartics-google-analytics",
-    "app/MathJaxConfig",
-    "lib/opentip-jquery.js",
-    "js/templates.js",
-    "angular-google-maps"
-    ], function(rv, ineq) {
+    "./MathJaxConfig",
+    "angular-simple-logger",
+    "angular-google-maps",
+    "../lib/opentip-jquery.js"
+    ], function(rv, ineq, require) {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-	//var rv = System.amdRequire("app/honest/responsive_video.js");
+	//var rv = System.amdRequire("./honest/responsive_video.js");
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
@@ -51,12 +52,12 @@ define([
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers',
-        'isaac.templates',
+        //'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date'
+        'ui.date',
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {

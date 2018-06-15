@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/hex_filter"], function(HexFilter) {
+define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter, templateUrl) {
 
 
 	return ["$state", "tags", function($state, tags) {
@@ -29,7 +29,7 @@ define(["app/honest/hex_filter"], function(HexFilter) {
 
 			restrict: "A",
 
-			templateUrl: "/partials/hex_filter.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 

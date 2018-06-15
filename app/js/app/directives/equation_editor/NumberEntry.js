@@ -1,4 +1,4 @@
-define([], function() {
+define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
 
     return ["$timeout", function($timeout) {
 
@@ -7,7 +7,7 @@ define([], function() {
                 symbols: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/number_entry.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 scope.name = "NUMBER ENTRY"
 

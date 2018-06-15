@@ -31,7 +31,7 @@ import { Brackets } from "./Brackets";
  */
 export
     class Relation extends Widget {
-    protected s: any;
+    public s: any;
     protected relationString: string;
     protected relation: string;
     protected pythonSymbol: string;

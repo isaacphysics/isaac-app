@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
+	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval) {
 
 		this.loginRedirect = function(provider, target) {
 			

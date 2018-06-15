@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/footer_pods.html"], function(templateUrl) {
 
 	return ["$filter", function($filter) {
 
@@ -22,7 +22,7 @@ define([], function() {
 
 			restrict: "A",
 
-			templateUrl: "/partials/footer_pods.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 

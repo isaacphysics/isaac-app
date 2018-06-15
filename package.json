@@ -5,9 +5,49 @@
   "description": "Physics. You work it out.",
   "repository": "http://isaacphysics.org",
   "license": "MIT",
+  "dependencies": {
+    "angular": "1.5.7",
+    "angular-cookies": "1.5.7",
+    "angular-google-maps": "2.4.0",
+    "angular-loader": "1.5.7",
+    "angular-mocks": "1.5.7",
+    "angular-recursion": "1.0.5",
+    "angular-resource": "1.5.7",
+    "angular-simple-logger": "^0.1.7",
+    "angular-tipped": "1.0.0-4",
+    "angular-ui-date": "1.0.1",
+    "angular-ui-router": "0.2.18",
+    "angulartics": "1.1.2",
+    "angulartics-google-analytics": "0.2.0",
+    "d3": "3.5.17",
+    "foundation-sites": "5.5.2",
+    "jquery": "2.1.1",
+    "jquery-placeholder": "2.3.1",
+    "jquery-ui": "1.12.1",
+    "jquery-waypoints": "2.0.5",
+    "jquery.cookie": "1.4.1",
+    "lodash": "4.13.1",
+    "modernizr": "3.6.0",
+    "owl.carousel": "2.3.4",
+    "showdown": "^1.8.6",
+    "showdown-github": "^1.0.0",
+    "showdown-prettify": "^1.3.0",
+    "showdown-table": "^1.0.1",
+    "showdown-twitter": "^1.1.0"
+  },
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
+    "@babel/polyfill": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-typescript": "^7.0.0-beta.51",
+    "@babel/runtime": "^7.0.0-beta.51",
+    "babel-loader": "^8.0.0-beta",
     "bower": "^1.3.1",
     "concurrently": "^2.2.0",
+    "expose-loader": "^0.7.5",
+    "file-loader": "^1.1.11",
     "grunt": "~0.4.1",
     "grunt-angular-templates": "0.5.7",
     "grunt-bell": "~0.1.2",
@@ -18,23 +58,45 @@
     "grunt-exec": "0.4.6",
     "grunt-sass": "1.1.0",
     "grunt-scp": "~0.1.7",
+    "html-loader": "^0.5.5",
     "karma": "0.13.15",
     "karma-junit-reporter": "^0.2.2",
+    "ngtemplate-loader": "^2.0.1",
     "node-sass": "4.5.3",
     "protractor": "~0.20.1",
     "shelljs": "^0.2.6",
     "single-page-server": "0.1.1",
-    "systemjs-builder": "0.15.15"
+    "systemjs-builder": "0.15.15",
+    "typescript": "^2.9.2",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.7"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-typescript"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-class-properties"
+      ],
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "polyfill": true,
+          "regenerator": true
+        }
+      ]
+    ],
+    "ignore": [
+      "app/js/lib/honest/video.js"
+    ]
   },
   "scripts": {
-    "postinstall": "bower install",
     "start": "single-page-server -p=8000 -b=app -f=app/index.physics.html | single-page-server -p=8001 -b=app -f=app/index.chemistry.html | single-page-server -p=8002 -b=app -f=app/index.biology.html",
-    "pretest": "npm install",
-    "test": "karma start test/karma.conf.js",
-    "test-single-run": "karma start test/karma.conf.js  --single-run",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-    "preprotractor": "npm run update-webdriver",
-    "protractor": "protractor test/protractor-conf.js"
+    "watch": "webpack --watch",
+    "build": "webpack"
   }
 }

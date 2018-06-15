@@ -1,4 +1,4 @@
-define([], function() {
+define(["/partials/equation_editor/equation_input.html"], function(templateUrl) {
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -9,7 +9,7 @@ define([], function() {
                 editorMode: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_input.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {

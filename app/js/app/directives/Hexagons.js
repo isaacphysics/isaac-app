@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/hexagon"],function(hexagon) {
+define(["../honest/hexagon"],function(hexagon) {
 
 	// TODO: This entire file is a horrible mess. But at least it's an isolated horrible mess.
 

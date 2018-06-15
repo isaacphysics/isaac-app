@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/event_booking_form.html"], function(templateUrl) {
 
 
 	return ["api", "$rootScope", function(api, $rootScope) {
@@ -23,7 +23,7 @@ define([], function() {
 
  			restrict: "A",
 			
-			templateUrl: "/partials/event_booking_form.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 				

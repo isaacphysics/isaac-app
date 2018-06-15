@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-
+define(["/partials/content/Accordion.html"], function(templateUrl) {
 
 	return ["$location", "$rootScope", function($location, $rootScope) {
-
 		return {
 
 			scope: true,
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/Accordion.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 

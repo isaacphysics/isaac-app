@@ -1,10 +1,11 @@
 "use strict";
 define(function(require) {
+    var templateUrl = require("/partials/graph_sketcher/graph_sketcher.html");
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
         // we require instances of bezier, func and sampler to enable access to external methods.
-        var b = require('lib/graph_sketcher/bezier.js');
-        var f = require('lib/graph_sketcher/func.js');
-        var s = require('lib/graph_sketcher/sampler.js');
+        var b = require('../../../lib/graph_sketcher/bezier.js');
+        var f = require('../../../lib/graph_sketcher/func.js');
+        var s = require('../../../lib/graph_sketcher/sampler.js');
         // var MySketch = require("inequality").MySketch;
 
         var instanceCounter = 0;
@@ -12,7 +13,7 @@ define(function(require) {
             // scope: true,
             // transclude: true,
             restrict: "A",
-            templateUrl: "/partials/graph_sketcher/graph_sketcher.html",
+            templateUrl: templateUrl,
 
             link: function(scope, element, attrs) {
 
@@ -2383,12 +2384,12 @@ define(function(require) {
                     }
 
                     function straight() {
-                        b = require('lib/graph_sketcher/linear.js');
+                        b = require('../../../lib/graph_sketcher/linear.js');
                     }
 
 
                     function poly() {
-                        b = require('lib/graph_sketcher/bezier.js');
+                        b = require('../../../lib/graph_sketcher/bezier.js');
                     }
 
                     function redo() {

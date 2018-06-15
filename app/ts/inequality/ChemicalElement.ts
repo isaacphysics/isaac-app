@@ -29,7 +29,7 @@ import { Relation } from "./Relation";
 export
     class ChemicalElement extends Widget {
 
-    protected s: any;
+    public s: any;
     protected element: string;
 
 

@@ -31,53 +31,53 @@ define(function(require) {
 
 	// General Directives
 
-	.directive('desktopPanel', require("app/directives/DesktopPanel"))
+	.directive('desktopPanel', require("./directives/DesktopPanel"))
 
-	.directive('mobilePanel', require("app/directives/MobilePanel"))
+	.directive('mobilePanel', require("./directives/MobilePanel"))
 
-    .directive('printButton', require("app/directives/PrintButton"))
+    .directive('printButton', require("./directives/PrintButton"))
 
-    .directive('shareButton', require("app/directives/ShareButton"))
+    .directive('shareButton', require("./directives/ShareButton"))
 
-	.directive('hexagons', require("app/directives/Hexagons"))
+	.directive('hexagons', require("./directives/Hexagons"))
 
-	.directive('hexFilter', require("app/directives/HexFilter"))
+	.directive('hexFilter', require("./directives/HexFilter"))
 
-	.directive('difficultyFilter', require("app/directives/DifficultyFilter"))
+	.directive('difficultyFilter', require("./directives/DifficultyFilter"))
 
-	.directive('footerPods', require("app/directives/FooterPods"))
+	.directive('footerPods', require("./directives/FooterPods"))
 
-	.directive('schoolDropdown', require("app/directives/SchoolDropdown"))
+	.directive('schoolDropdown', require("./directives/SchoolDropdown"))
 
-	.directive('questionPod', require("app/directives/QuestionPod"))
+	.directive('questionPod', require("./directives/QuestionPod"))
 
-	.directive('globalNavigation', require("app/directives/GlobalNavigation"))
+	.directive('globalNavigation', require("./directives/GlobalNavigation"))
 
-	.directive('podCarousel', require("app/directives/PodCarousel"))
+	.directive('podCarousel', require("./directives/PodCarousel"))
 
-	.directive('podCarouselItem', require("app/directives/PodCarouselItem"))
+	.directive('podCarouselItem', require("./directives/PodCarouselItem"))
 
-	.directive('hexCarousel', require("app/directives/HexCarousel"))
+	.directive('hexCarousel', require("./directives/HexCarousel"))
 
-	.directive('hexCarouselItem', require("app/directives/HexCarouselItem"))
+	.directive('hexCarouselItem', require("./directives/HexCarouselItem"))
 
-	.directive('d3Donut', require("app/directives/d3/Donut"))
+	.directive('d3Donut', require("./directives/d3/Donut"))
 
-	.directive('d3Plot', require("app/directives/d3/Plot"))
+	.directive('d3Plot', require("./directives/d3/Plot"))
 
-	.directive('d3Bar', require("app/directives/d3/Bar"))
+	.directive('d3Bar', require("./directives/d3/Bar"))
 
-	.directive('progressBar', require("app/directives/ProgressBar"))
+	.directive('progressBar', require("./directives/ProgressBar"))
 
-	.directive('fastTrackProgressBar', require("app/directives/FastTrackProgressBar"))
+	.directive('fastTrackProgressBar', require("./directives/FastTrackProgressBar"))
 
-	.directive('toast', require("app/directives/Toast"))
+	.directive('toast', require("./directives/Toast"))
 
-	.directive('loadingOverlay', require("app/directives/LoadingOverlay"))
+	.directive('loadingOverlay', require("./directives/LoadingOverlay"))
 
-	.directive('isaacModal', require("app/directives/IsaacModal"))
+	.directive('isaacModal', require("./directives/IsaacModal"))
 
-	.directive('jsonLdWriter', require("app/directives/JsonLdWriter"))
+	.directive('jsonLdWriter', require("./directives/JsonLdWriter"))
 
 	.directive('onRepeatRender', ['$timeout', function ($timeout) {
 		return {
@@ -94,87 +94,87 @@ define(function(require) {
 
 	// Equation Editor Directives
 
-	.directive('equationEditor', require("app/directives/equation_editor/EquationEditor"))
+	.directive('equationEditor', require("./directives/equation_editor/EquationEditor"))
 
-	.directive('elementsMenu', require("app/directives/equation_editor/ElementsMenu"))
+	.directive('elementsMenu', require("./directives/equation_editor/ElementsMenu"))
 
-	.directive('equationInput', require("app/directives/equation_editor/EquationInput"))
+	.directive('equationInput', require("./directives/equation_editor/EquationInput"))
 
-	.directive('topMenu', require("app/directives/equation_editor/TopMenu"))
+	.directive('topMenu', require("./directives/equation_editor/TopMenu"))
 
-	.directive('subMenu', require("app/directives/equation_editor/SubMenu"))
+	.directive('subMenu', require("./directives/equation_editor/SubMenu"))
 
-	.directive('menuSymbol', require("app/directives/equation_editor/MenuSymbol"))
+	.directive('menuSymbol', require("./directives/equation_editor/MenuSymbol"))
 
-	.directive('symbolMenu', require("app/directives/equation_editor/SymbolMenu"))
+	.directive('symbolMenu', require("./directives/equation_editor/SymbolMenu"))
 
-	.directive('numberEntry', require("app/directives/equation_editor/NumberEntry"))
+	.directive('numberEntry', require("./directives/equation_editor/NumberEntry"))
 
-	.directive('canvasSymbol', require("app/directives/equation_editor/CanvasSymbol"))
+	.directive('canvasSymbol', require("./directives/equation_editor/CanvasSymbol"))
 
-	.directive('selectionHandle', require("app/directives/equation_editor/SelectionHandle"))
+	.directive('selectionHandle', require("./directives/equation_editor/SelectionHandle"))
 
 	// Sketcher directives
-	.directive('graphInput', require("app/directives/graph_sketcher/GraphInput"))
+	.directive('graphInput', require("./directives/graph_sketcher/GraphInput"))
 	
-	.directive('graphSketcher', require("app/directives/graph_sketcher/GraphSketcher"))
+	.directive('graphSketcher', require("./directives/graph_sketcher/GraphSketcher"))
 
-	.directive('graphPreview', require("app/directives/graph_sketcher/GraphPreview"))
+	.directive('graphPreview', require("./directives/graph_sketcher/GraphPreview"))
 
 
 	// Content Directives
 
-	.directive('mathJax', require("app/directives/content/MathJax"))
+	.directive('mathJax', require("./directives/content/MathJax"))
 
-	.directive('bindMarkdown', require("app/directives/content/BindMarkdown"))
+	.directive('bindMarkdown', require("./directives/content/BindMarkdown"))
 
-	.directive('isaacContent', require("app/directives/content/Content"))
+	.directive('isaacContent', require("./directives/content/Content"))
 
-	.directive('isaacPageFragment', require("app/directives/content/PageFragment"))
+	.directive('isaacPageFragment', require("./directives/content/PageFragment"))
 
-	.directive('isaacContentValueOrChildren', require("app/directives/content/ValueOrChildren"))
+	.directive('isaacContentValueOrChildren', require("./directives/content/ValueOrChildren"))
 
-	.directive('isaacImage', require("app/directives/content/Image"))
+	.directive('isaacImage', require("./directives/content/Image"))
 
-	.directive('isaacFigure', require("app/directives/content/Figure"))
+	.directive('isaacFigure', require("./directives/content/Figure"))
 
-	.directive('isaacFigureRef', require("app/directives/content/FigureRef"))
+	.directive('isaacFigureRef', require("./directives/content/FigureRef"))
 
-	.directive('isaacVideo', require("app/directives/content/Video"))
+	.directive('isaacVideo', require("./directives/content/Video"))
 
-	.directive('isaacTabs', require("app/directives/content/Tabs"))
+	.directive('isaacTabs', require("./directives/content/Tabs"))
 
-	.directive('isaacAccordion', require("app/directives/content/Accordion"))
+	.directive('isaacAccordion', require("./directives/content/Accordion"))
 
-	.directive('isaacHorizontal', require("app/directives/content/Horizontal"))
+	.directive('isaacHorizontal', require("./directives/content/Horizontal"))
 
-	.directive('isaacFeaturedProfile', require("app/directives/content/FeaturedProfile"))
+	.directive('isaacFeaturedProfile', require("./directives/content/FeaturedProfile"))
 
-	.directive('isaacQuestionTabs', require("app/directives/content/QuestionTabs"))
+	.directive('isaacQuestionTabs', require("./directives/content/QuestionTabs"))
 
-	.directive('isaacMultiChoiceQuestion', require("app/directives/content/MultiChoiceQuestion"))
+	.directive('isaacMultiChoiceQuestion', require("./directives/content/MultiChoiceQuestion"))
 
-	.directive('isaacNumericQuestion', require("app/directives/content/NumericQuestion"))
+	.directive('isaacNumericQuestion', require("./directives/content/NumericQuestion"))
 
-	.directive('isaacSymbolicQuestion', require("app/directives/content/SymbolicQuestion"))
+	.directive('isaacSymbolicQuestion', require("./directives/content/SymbolicQuestion"))
 
-	.directive('isaacSymbolicChemistryQuestion', require("app/directives/content/SymbolicChemistryQuestion"))
+	.directive('isaacSymbolicChemistryQuestion', require("./directives/content/SymbolicChemistryQuestion"))
 
-	.directive('isaacGraphSketcherQuestion', require("app/directives/content/GraphSketcherQuestion"))
+	.directive('isaacGraphSketcherQuestion', require("./directives/content/GraphSketcherQuestion"))
 
-	.directive('isaacStringMatchQuestion', require("app/directives/content/StringMatchQuestion"))
+	.directive('isaacStringMatchQuestion', require("./directives/content/StringMatchQuestion"))
 
-	.directive('isaacQuickQuestion', require("app/directives/content/QuickQuestion"))
+	.directive('isaacQuickQuestion', require("./directives/content/QuickQuestion"))
 
-	.directive('isaacPod', require("app/directives/content/Pod"))
+	.directive('isaacPod', require("./directives/content/Pod"))
 
-	.directive('anvilApp', require("app/directives/content/AnvilApp"))
+	.directive('anvilApp', require("./directives/content/AnvilApp"))
 
-	.directive('isaacAnvilQuestion', require("app/directives/content/AnvilQuestion"))
+	.directive('isaacAnvilQuestion', require("./directives/content/AnvilQuestion"))
 
-	.directive('inputAnimation', require("app/directives/content/InputAnimation"))
+	.directive('inputAnimation', require("./directives/content/InputAnimation"))
 
-	.directive('eventBookingForm', require("app/directives/EventBookingForm"))
+	.directive('eventBookingForm', require("./directives/EventBookingForm"))
 
 	.directive('fadeOnSearch', [function() {
 		return {

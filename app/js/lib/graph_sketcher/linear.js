@@ -1,5 +1,5 @@
 define(function(require) {
-  var f = require('lib/graph_sketcher/func.js');
+  var f = require('./func.js');
 
     return {
 
