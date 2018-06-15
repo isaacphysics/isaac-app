@@ -57,11 +57,12 @@ define([
 		'isaac.services',
 		'isaac.directives',
 		'isaac.controllers',
+        'isaac.templates',
         'angulartics',
         'angulartics.google.analytics',
         'uiGmapgoogle-maps',
         'ngCookies',
-        'ui.date',
+        'ui.date'
 	])
 
 	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {

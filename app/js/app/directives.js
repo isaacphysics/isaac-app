@@ -19,6 +19,8 @@ define(function(require) {
 
 	require('angular-recursion');
 
+	angular.module('isaac.templates', []);
+
 	/* Directives */
 	angular.module('isaac.directives',
 		['RecursionHelper'])

@@ -23,7 +23,7 @@ module.exports = {
       {
         test: /\.html$/,
         use: [
-          { loader:'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials",/* module: "isaac.templates",*/ requireAngular: true } },
+          { loader:'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials", module: "isaac.templates" } },
           { loader: 'html-loader' }
         ]
       },
