@@ -29,7 +29,6 @@ define([
     "./services",
     "./filters",
     "d3",
-    "owl.carousel",
     "./honest/dropdown",
     "angulartics",
     "angulartics-google-analytics",
@@ -47,6 +46,18 @@ define([
     for(let r of req.keys()) {
         req(r);
     }
+
+    require("owl.carousel/src/js/owl.carousel.js");
+    require("owl.carousel/src/js/owl.autorefresh.js");
+    require("owl.carousel/src/js/owl.lazyload.js");
+    require("owl.carousel/src/js/owl.autoheight.js");
+    require("owl.carousel/src/js/owl.video.js");
+    require("owl.carousel/src/js/owl.animate.js");
+    require("owl.carousel/src/js/owl.autoplay.js");
+    require("owl.carousel/src/js/owl.navigation.js");
+    require("owl.carousel/src/js/owl.hash.js");
+    require("owl.carousel/src/js/owl.support.js");
+
 
 	//var rv = System.amdRequire("./honest/responsive_video.js");
 

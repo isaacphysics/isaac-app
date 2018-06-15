@@ -14,3 +14,4 @@ app/ts/**/*.js*
 app/bower_components/
 ngrok.yml
 app/isaac.js*
+app/isaac.css*
