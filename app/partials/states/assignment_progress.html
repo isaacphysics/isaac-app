@@ -141,7 +141,9 @@
                                                     ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], pageSettings.colourBlind)"
                                                     on-repeat-render="ngRepeatFinished">
                                                     <td class="student-name">
-                                                        <span class="icon-person"></span><a href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
+                                                        <span class="icon-person"></span>
+                                                        <a ng-if="studentProgress.user.authorisedFullAccess" href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
+                                                        <span ng-if="!studentProgress.user.authorisedFullAccess" class="progress-name">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></span>
                                                     </td>
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
                                                         ng-if="studentProgress.user.authorisedFullAccess"
@@ -159,7 +161,7 @@
                                                         ng-if="!studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot="Access Revoked">
+                                                        data-ot="Not Sharing">
                                                     </td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column left"
@@ -170,7 +172,7 @@
                                                         Total number of question parts: {{assignmentTotalQuestionParts[assignment._id]}}">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
                                                     </td>
-                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Access Revoked"></td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Not Sharing"></td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column right"
                                                         data-ot="
@@ -180,7 +182,7 @@
                                                         Total number of question pages: {{assignment.gameBoard.questions.length}}">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}
                                                     </td>
-                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Access Revoked"></td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Not Sharing"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>

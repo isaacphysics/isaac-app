@@ -35,20 +35,27 @@ define([], function() {
                             var r = $compile(rawClone)(scope);
                             
                             // Safely call $digest, even if we're already in the digest loop. Ew.
-                            $timeout();
+                            $timeout(function() {
+                                $timeout(function() {
+                                    // After outer timeout completes and safely calls digest(), use inner timeout
+                                    // to reposition the modal now the height can be correctly measured! "Ew" still applies!
+                                    var windowHeight = $(window).height();
+                                    var modalHeight = $("#isaacModal").height();
+                                    var modalPosition = (windowHeight / 2) - (modalHeight / 2);
+                                    var scrollPos = $(window).scrollTop();
+
+                                    $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : (scrollPos + 15)+'px');
+                                });
+                            });
 
                             $("#isaacModal").empty().append(r);
 
                             $("#isaacModal").foundation("reveal", "open");
 
-                            var windowHeight = $(window).height(),
-                                modalHeight = $("#isaacModal").height(),
-                                modalPosition = (33/100*windowHeight) - (modalHeight/2);
-
+                            // Initially position the modal at the top of the screen:
                             var scrollPos = $(window).scrollTop();
+                            $("#isaacModal").css((scrollPos + 15)+'px');
 
-                            $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : scrollPos);
-                            
                             // make sure the top of the modal is in view.
                             if (!('noHash' in attrs)) {
                                 $location.hash('isaacModal');

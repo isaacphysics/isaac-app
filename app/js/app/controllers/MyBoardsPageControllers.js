@@ -24,6 +24,7 @@ define([], function() {
 			api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
 				$scope.boards = boards;
 				boardProcessor.augmentBoards(boards.results, $scope.user._id);
+				$scope.filterOptions = boardProcessor.filterOptions;
 				$scope.setLoading(false);
 			})
 		};
@@ -208,15 +209,15 @@ define([], function() {
 					}
 				}
 				// Front-end filters
-				$scope.search = {
-					completion: '',
-					title: '',
-					subjects: '',
-					levels: '',
-					createdBy: '',
-					formattedCreationDate: '',
-					formattedLastVisitedDate: ''
-				}
+				$scope.exactMatch = {
+					completion: undefined,
+					createdBy: undefined
+				};
+				$scope.partialMatch = {
+					title: undefined,
+					subjects: undefined,
+					levels: undefined
+				};
 			}
 		};
 
@@ -227,10 +228,10 @@ define([], function() {
 
 		// main
 		var mergeInProgress = false;
-		var initialViewValue = boardSearchOptions.view.values.card; 
-		if ($stateParams.view && boardSearchOptions.view.values[$stateParams.view]) {
-			initialViewValue = boardSearchOptions.view.values[$stateParams.view];
-		}
+		var queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
+		var suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
+		var initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
+
 		setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
 		updateBoards($scope.selectedNoBoardsOption.value);
 	}];

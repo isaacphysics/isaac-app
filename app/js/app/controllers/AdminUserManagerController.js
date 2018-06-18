@@ -87,7 +87,7 @@ define([], function() {
 						}
 					}
 				}).catch(function(e){
-					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+					$scope.showToast($scope.toastTypes.Failure, "User Search Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 					$scope.userSearch.isLoading = false;
 				});
 				
@@ -157,7 +157,7 @@ define([], function() {
                     $scope.userSearch.isLoading = false;
                     $scope.findUsers();
                 }).catch(function(e){
-                    $scope.showToast($scope.toastTypes.Failure, "Role Change Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Role Change Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                     $scope.userSearch.isLoading = false;
                 });
             } else {
@@ -185,7 +185,7 @@ define([], function() {
 				$scope.userSearch.isLoading = false;
 				$scope.findUsers();
 			}).catch(function(e){
-				$scope.showToast($scope.toastTypes.Failure, "Modification Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+				$scope.showToast($scope.toastTypes.Failure, "Modification Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				$scope.userSearch.isLoading = false;
 			});
 		}
@@ -198,7 +198,7 @@ define([], function() {
 					$scope.showToast($scope.toastTypes.Success, "User Deleted", "You have successfully deleted the user with e-mail: " + email);
 					$scope.findUsers();
 				}).catch(function(e){
-					$scope.showToast($scope.toastTypes.Failure, "User Deletion Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+					$scope.showToast($scope.toastTypes.Failure, "User Deletion Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
 				});
 			} else {
 				return;

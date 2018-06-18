@@ -40,6 +40,15 @@ export
         this.h = h;
     }
 
+    static fromObject(box) {
+        if (box.hasOwnProperty("x") && box.hasOwnProperty("y") && box.hasOwnProperty("w") && box.hasOwnProperty("h")) {
+            return new Rect(box.x, box.y, box.w, box.h);
+        } else {
+            return null;
+        }
+    }
+
+
 	/**
 	 * Re-positions this Rect with the TL corner in the new position
 	 *
@@ -65,7 +74,7 @@ export
 	 * @returns {Vector} The centre of this Rect, in canvas coordinates.
      */
     get center() {
-        return new p5.Vector(this.x + this.w / 2, this.y + this.h / 2);
+        return new p5.Vector(this.x + this.w/2, this.y + this.h/2);
     }
 }
 
@@ -95,6 +104,9 @@ export
 
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
+    get dockingPointSize() {
+        return this.scale * this.s.baseDockingPointSize;
+    }
 
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
@@ -107,15 +119,43 @@ export
     parentWidget: Widget = null;
 
     isHighlighted = false;
+    mustExpand = false;
+
+    expandDockingPoints() {
+        this.mustExpand = true;
+    }
+
+    contractDockingPoints() {
+        this.mustExpand = false;
+        for (let w of this.children) {
+            w.contractDockingPoints();
+        }
+    }
+
     color = null;
     isMainExpression = false;
     currentPlacement = "";
 
+    /**
+     * @returns {boolean} True if this widget can be detached from its parent.
+     *
+     * @see Differential, Derivative
+     */
     get isDetachable() {
         return true;
     }
 
-    get dockingPoints() {
+    /**
+     * @returns {p5.Vector} A reference point that other widgets can use to dock this widget to themselves with the correct alignment.
+     */
+    get dockingPoint(): p5.Vector {
+        return this.p.createVector(0, 0);
+    }
+
+    /**
+     * @returns {{[p: string]: DockingPoint}} A list of this widget's docking points.
+     */
+    get dockingPoints(): { [key: string]: DockingPoint; } {
         return this._dockingPoints;
     }
 
@@ -123,6 +163,11 @@ export
         this._dockingPoints = a;
     }
 
+    /**
+     * This widget's type as a string. Must be overridden by subclasses.
+     *
+     * @returns {string}
+     */
     get typeAsString(): string {
         return "Widget";
     }
@@ -140,7 +185,9 @@ export
         this.generateDockingPoints();
     }
 
-    /** Generates all the docking points in one go and stores them in this.dockingPoints. */
+    /**
+     * Generates all the docking points in one go and stores them in this.dockingPoints.
+     */
     generateDockingPoints() { };
 
 	/**
@@ -150,7 +197,7 @@ export
 	 * @param format A string to specify the output format. Supports: latex, python.
 	 * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         return "";
     }
 
@@ -167,8 +214,8 @@ export
                 dockingPoint.child.draw();
             } else {
                 // There is no child to paint, let's paint an empty docking point
-                //if (this.depth() < 2) { // This stops docking points from being shown, but not from being used.
-                let drawThisOne = this.s.visibleDockingPointTypes.indexOf(dockingPoint.type) > -1;
+                //if (this.depth < 2) { // This stops docking points from being shown, but not from being used.
+                let drawThisOne = _.intersection(this.s.visibleDockingPointTypes, dockingPoint.type).length > 0;
                 let highlightThisOne = this.s.activeDockingPoint == dockingPoint;
 
                 if (drawThisOne || window.location.hash === "#debug") {
@@ -180,37 +227,60 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    let dpSize = this.s.baseFontSize/3;
-                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, this.scale * dpSize, this.scale * dpSize);
-                    // this.p.ellipse(this.scale * dockingPoint.position.x, this.scale * dockingPoint.position.y, this.scale * 20, this.scale * 20);
+                    let dps = this.s.scope.editorMode === 'chemistry' ? this.dockingPointSize*(50/30) : this.dockingPointSize;
+                    this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, dps, dps);
                 }
-                //}
             }
         });
 
+        this._draw();
+
         this.p.noFill();
         if (window.location.hash === "#debug") {
-            let box = this.boundingBox();
-            this.p.stroke(255, 0, 0, 64);
-            this.p.rect(box.x, box.y, box.w, box.h);
+            // +++ REFERENCE POINTS +++
+            this.p.stroke(0, 0, 255, 128).strokeWeight(2);
+            this.p.point(this.dockingPoint.x, this.dockingPoint.y);
+            this.p.strokeWeight(1).ellipse(this.dockingPoint.x, this.dockingPoint.y, this.dockingPointSize/2, this.dockingPointSize/2);
 
-            let subtreeBox = this.subtreeBoundingBox();
-            this.p.stroke(0, 0, 255, 64);
+            this.p.stroke(255, 0, 0, 128).strokeWeight(2);
+            this.p.point(0, 0);
+            this.p.strokeWeight(1).ellipse(0, 0, this.dockingPointSize/2, this.dockingPointSize/2);
+
+            // +++ LOCAL BOUNDING BOX +++
+            // let box = this.boundingBox();
+            // this.p.stroke(255, 0, 0, 128);
+            // this.p.rect(box.x, box.y, box.w, box.h);
+
+            // +++ SUBTREE BOUNDING BOX +++
+            // +++ Also draws local boxes because recursion.
+            let subtreeBox = this.subtreeBoundingBox;
+            this.p.stroke(0, 0, 255, 128);
             this.p.rect(subtreeBox.x, subtreeBox.y, subtreeBox.w, subtreeBox.h);
+
+            // +++ BOXES AROUND DOCKING POINTS +++
+            // let dpBs = this.dpBoxes();
+            // this.p.stroke(64,128,0,64).strokeWeight(2);
+            // for (let i in dpBs) {
+            //     let b = dpBs[i];
+            //     this.p.rect(b.x, b.y, b.w, b.h);
+            // }
+
+            // +++ LOCAL BOUNDING BOX INCLUDING DOCKING POINTS +++
+            // let dpB = this.dockingPointsBoundingBox;
+            // this.p.stroke(0,128,0,128).strokeWeight(2);
+            // this.p.rect(dpB.x, dpB.y, dpB.w, dpB.h);
+
+            // +++ SUBTREE BOUNDING BOX INCLUDING DOCKING POINTS +++
+            let sdpB = this.subtreeDockingPointsBoundingBox;
+            this.p.stroke(128,64,0,128).strokeWeight(2);
+            this.p.rect(sdpB.x, sdpB.y, sdpB.w, sdpB.h);
+
         }
 
-        this._draw();
         this.p.translate(-this.position.x, -this.position.y);
     }
 
     abstract _draw();
-
-	/**
-	 * This widget's tight bounding box. This is used for the cursor hit testing.
-	 *
-	 * @returns {Rect} The bounding box
-     */
-    abstract boundingBox(): Rect;
 
     abstract token(): string;
 
@@ -225,7 +295,7 @@ export
 	 * @returns {{type: string}}
 	 */
     subtreeObject(processChildren = true, includeIds = false, minimal = false): Object {
-        let p = this.getAbsolutePosition();
+        let p = this.absolutePosition;
         let o = {
             type: this.typeAsString
         };
@@ -235,8 +305,8 @@ export
         if (!this.parentWidget && !minimal) {
             o["position"] = { x: p.x, y: p.y };
             o["expression"] = {
-                latex: this.getExpression("latex"),
-                python: this.getExpression("python")
+                latex: this.formatExpressionAs("latex"),
+                python: this.formatExpressionAs("python")
             };
         }
         if (processChildren) {
@@ -263,41 +333,11 @@ export
         return this.properties();
     }
 
-	/**
-	 * The bounding box including this widget's whole subtree.
-	 *
-	 * @returns {Rect}
-     */
-    subtreeBoundingBox(): Rect {
-
-        let box = this.boundingBox();
-
-        let subtree = _.map(this.getChildren(), c => {
-            let b = c.subtreeBoundingBox();
-            b.x += c.position.x;
-            b.y += c.position.y;
-            return b;
-        });
-
-        let left = box.x;
-        let right = box.x + box.w;
-        let top = box.y;
-        let bottom = box.y + box.h;
-
-        _.each(subtree, c => {
-            if (left > c.x) { left = c.x; }
-            if (top > c.y) { top = c.y; }
-            if (right < c.x + c.w) { right = c.x + c.w; }
-            if (bottom < c.y + c.h) { bottom = c.y + c.h; }
-        });
-
-        return new Rect(left, top, this.getExpressionWidth(), bottom - top);
-    }
-
     /** Removes this widget from its parent. Also, shakes it. */
     removeFromParent() {
         let oldParent = this.parentWidget;
         this.currentPlacement = "";
+        this.dockedTo = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
                 this.s.scope.log.actions.push({
@@ -308,7 +348,6 @@ export
                     timestamp: Date.now()
                 });
                 dockingPoint.child = null;
-                // this.dockedTo = "";
                 this.parentWidget = null;
             }
         });
@@ -356,76 +395,45 @@ export
     }
 
 	/**
-	 * Overlapping test for this widget's docking points.
-	 *
-	 * @param w The overlapping Widget
-	 * @return {DockingPoint} The best overlapped candidate DockingPoint, or null if no docking point was selected.
-	 */
-    dockingPointsHit(w: Widget): DockingPoint {
-        let hitPoint: DockingPoint = null;
-
-        _.some(this.getChildren(), child => {
-            hitPoint = child.dockingPointsHit(w);
-            return hitPoint != null;
-        });
-
-        // FIXME hic sunt leones. This works, but the code could be a bit clearer (if not better/more efficient)
-        let wAP = w.getAbsolutePosition();
-        let wBox = w.subtreeBoundingBox();
-        let testRect = new Rect(wBox.x + wAP.x, wBox.y + wAP.y, wBox.w, wBox.h);
-        let thisAP = this.getAbsolutePosition();
-
-        let hitPoints: Array<DockingPoint> = [];
-        if (!hitPoint) {
-            _.each(this.dockingPoints, point => {
-                if (point.child == null) {
-                    let dp = p5.Vector.add(thisAP, p5.Vector.mult(point.position, this.scale));
-                    if (testRect.contains(dp)) {
-                        hitPoints.push(point);
-                    }
-                }
-            });
-        }
-        if (!_.isEmpty(hitPoints)) {
-            [hitPoint, ...hitPoints] = hitPoints;
-            _.each(hitPoints, hp => {
-                let hpAP = p5.Vector.add(thisAP, p5.Vector.mult(hp.position, this.scale));
-                let currentHpAP = p5.Vector.add(thisAP, p5.Vector.mult(hitPoint.position, this.scale));
-                if (p5.Vector.dist(testRect.center, hpAP) <= p5.Vector.dist(testRect.center, currentHpAP)) {
-                    hitPoint = hp;
-                }
-            });
-        }
-        return hitPoint;
-    }
-
-	/**
 	 * @returns {Widget[]} A flat array of the children of this widget, as widget objects
      */
-    getChildren(): Array<Widget> {
+    get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));
     }
 
-    getTotalSymbolCount(): number {
+    /**
+     * @returns {number} How many widgets this subtree is made of.
+     */
+    get totalSymbolCount(): number {
         let total = 1;
         for (let i in this.dockingPoints) {
             let c = this.dockingPoints[i].child;
             if (c != null) {
-                total += c.getTotalSymbolCount();
+                total += c.totalSymbolCount;
             }
         }
         return total;
     }
 
-	/**
-	 * @returns {Vector} The absolute position of this widget relative to the canvas.
+    /**
+     * Computes this widget's depth in the tree.
      */
-    getAbsolutePosition(): p5.Vector {
-        if (this.parentWidget) {
-            return p5.Vector.add(this.parentWidget.getAbsolutePosition(), this.position);
-        } else {
-            return this.position;
+    get depth(): number {
+        let depth = 0;
+        let n: Widget = this;
+        while (n.parentWidget) {
+
+            if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
+                depth += 1;
+                n = n.parentWidget;
+            }
+            else {
+
+                n = n.parentWidget;
+            }
+
         }
+        return depth;
     }
 
 	/**
@@ -448,79 +456,177 @@ export
      */
     abstract _shakeIt();
 
-	/**
-	 * Internal aid for placing stuff as children.
-	 */
-    offsetBox(): Rect {
-        return this.boundingBox();
-    }
-
-	/**
-	 * Computes this widget's depth in the tree.
-	 */
-    depth(): number {
-        let depth = 0;
-        let n: Widget = this;
-        while (n.parentWidget) {
-
-          if (this.currentPlacement == "subscript" || this.currentPlacement == "superscript") {
-            depth += 1;
-            n = n.parentWidget;
-          }
-          else {
-
-            n = n.parentWidget;
-          }
-
-        }
-        return depth;
-    }
-		/*
-		Finds the width of the bounding box around an entire expression.
-		*/
-    getExpressionWidth(): number {
-        let current_element: any = this;
-        let expressionWidth = this.boundingBox().w;
-
-        // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints.hasOwnProperty("right") && current_element.dockingPoints["right"].child != undefined && current_element.dockingPoints["right"].child != null) {
-            expressionWidth += current_element.dockingPoints["right"].child.getExpressionWidth();
-            if (this.typeAsString == "Differential") { // TODO This is HORRIBLE beyond belief and needs fixing, but derivatives are kind of an all-around hack, so...
-                expressionWidth += current_element.dockingPoints["right"].position.x;
+    /**
+     * Shake it down...
+     *
+     * @private
+     */
+    _shakeItDown() {
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                child.scale = this.scale * this.dockingPoints[name].scale;
+                child._shakeIt();
             }
         }
-        if (current_element.dockingPoints.hasOwnProperty("argument") && current_element != undefined && current_element.dockingPoints["argument"].child != null) {
-            expressionWidth += current_element.dockingPoints["argument"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("order") && current_element != undefined && current_element.dockingPoints["order"].child != null) {
-            expressionWidth += current_element.dockingPoints["order"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
-            expressionWidth += current_element.dockingPoints["subscript"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("superscript") && current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
-            expressionWidth += current_element.dockingPoints["superscript"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("mass_number") && current_element != undefined && current_element.dockingPoints["mass_number"].child != null) {
-            expressionWidth += current_element.dockingPoints["mass_number"].child.getExpressionWidth();
-        }
-        if (current_element.dockingPoints.hasOwnProperty("proton_number") && current_element != undefined && current_element.dockingPoints["proton_number"].child != null) {
-            expressionWidth += current_element.dockingPoints["proton_number"].child.getExpressionWidth();
-        }
-        return expressionWidth;
     }
-    getExpressionHeight(): number {
-        let current_element: any = this;
-        let expressionHeight = this.boundingBox().h;
-        let subscript_height;
-        let superscript_height;
-        // Find the bounding box width for an entire expression.
-        if (current_element.dockingPoints.hasOwnProperty("subscript") && current_element.dockingPoints["subscript"].child != undefined && current_element.dockingPoints["subscript"].child != null) {
-            subscript_height += current_element.dockingPoints["subscript"].child.getExpressionHeight();
+
+    // ********* SIZING AND PLACING AND STUFF *********//
+
+    /**
+     * This widget's tight bounding box. This is used for the cursor hit testing.
+     *
+     * @returns {Rect} The bounding box
+     */
+    // FIXME Upgrade TypeScript to get abstract getters and setters
+    abstract boundingBox(): Rect;
+
+    /**
+     * @returns {Vector} The absolute position of this widget relative to the canvas.
+     */
+    get absolutePosition(): p5.Vector {
+        if (null != this.parentWidget) {
+            return p5.Vector.add(this.parentWidget.absolutePosition, this.position);
+        } else {
+            return this.position;
         }
-        if (current_element.dockingPoints.hasOwnProperty("superscript") &&  current_element != undefined && current_element.dockingPoints["superscript"].child != null) {
-            subscript_height += current_element.dockingPoints["superscript"].child.getExpressionHeight();
+    }
+
+    /**
+     * @returns {Rect} The absolute bounding box of this widget relative to the canvas.
+     */
+    get absoluteBoundingBox(): Rect {
+        let box = this.boundingBox();
+        let pos = this.absolutePosition;
+        return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
+    }
+
+    /**
+     * The bounding box including this widget's whole subtree.
+     *
+     * @returns {Rect}
+     */
+    get subtreeBoundingBox(): Rect {
+        let thisAbsPosition = this.absolutePosition;
+        let thisAbsBox = this.absoluteBoundingBox;
+
+        let left = thisAbsBox.x;
+        let top = thisAbsBox.y;
+        let right = left + thisAbsBox.w;
+        let bottom = top + thisAbsBox.h;
+
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                let childAbsPosition = child.absolutePosition;
+                let childSubBox = child.subtreeBoundingBox;
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.absolutePosition.y, childSubBox.w, childSubBox.h);
+                let childLeft = childAbsBox.x;
+                let childTop = childAbsBox.y;
+                let childRight = childLeft + childAbsBox.w;
+                let childBottom = childTop + childAbsBox.h;
+
+                left = Math.min(left, childLeft);
+                top = Math.min(top, childTop);
+                right = Math.max(right, childRight);
+                bottom = Math.max(bottom, childBottom);
+            }
         }
-        return (subscript_height >= superscript_height) ? (expressionHeight + subscript_height) : (expressionHeight + superscript_height);
+
+        return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
+    }
+
+    /**
+     * @returns {Array<Rect>} The bounding boxes corresponding to this widget's docking points.
+     */
+    get dockingPointsBoxes(): Array<Rect> {
+        let dpBoxes: Array<Rect> = [];
+        for (let k in this.dockingPoints) {
+            let dp = this.dockingPoints[k];
+            if (null == dp.child || undefined == dp.child) {
+                dpBoxes.push(new Rect(dp.position.x-this.dockingPointSize/2, dp.position.y-this.dockingPointSize/2, this.dockingPointSize, this.dockingPointSize));
+            }
+        }
+        return dpBoxes;
+    }
+
+    /**
+     * @returns {Rect} The bounding box of this widget AND its empty docking points.
+     *
+     * @see dockingPointsBoxes()
+     */
+    get dockingPointsBoundingBox(): Rect {
+        let ax = this.position.x;
+        let ay = this.position.y;
+        let thisBox = Rect.fromObject(this.boundingBox());
+        let dpBoxes = [thisBox, ...this.dockingPointsBoxes];
+
+        let x = _.min(_.map(dpBoxes, b => { return b.x+ax }));
+        let y = _.min(_.map(dpBoxes, b => { return b.y+ay }));
+        let w = _.max(_.map(dpBoxes, b => { return b.x+ax+b.w }));
+        let h = _.max(_.map(dpBoxes, b => { return b.y+ay+b.h }));
+
+        return new Rect(x-ax,y-ay,w-x,h-y);
+    }
+
+    /**
+     * @returns {Rect} The absolute bounding box of this widget AND docking points, relative to the canvas.
+     *
+     * @see dockingPointsBoundingBox()
+     */
+    get absoluteDockingPointsBoundingBox(): Rect {
+        let box = this.dockingPointsBoundingBox;
+        let pos = this.absolutePosition;
+
+        return new Rect(box.x + pos.x, box.y + pos.y, box.w, box.h);
+    }
+
+    /**
+     * @returns {Rect} The (relative?) bounding box of the sub tree AND docking points.
+     */
+    get subtreeDockingPointsBoundingBox(): Rect {
+        let thisAbsPosition = this.absolutePosition;
+        let thisAbsBox = this.absoluteDockingPointsBoundingBox;
+
+        let left = thisAbsBox.x;
+        let top = thisAbsBox.y;
+        let right = left + thisAbsBox.w;
+        let bottom = top + thisAbsBox.h;
+
+        for (let name in this.dockingPoints) {
+            let child = this.dockingPoints[name].child;
+            if (child) {
+                let childAbsPosition = child.absolutePosition;
+                let childSubBox = child.subtreeDockingPointsBoundingBox;
+                let childAbsBox = new Rect(childSubBox.x + childAbsPosition.x, childSubBox.y + child.absolutePosition.y, childSubBox.w, childSubBox.h);
+                let childLeft = childAbsBox.x;
+                let childTop = childAbsBox.y;
+                let childRight = childLeft + childAbsBox.w;
+                let childBottom = childTop + childAbsBox.h;
+
+                left = Math.min(left, childLeft);
+                top = Math.min(top, childTop);
+                right = Math.max(right, childRight);
+                bottom = Math.max(bottom, childBottom);
+            }
+        }
+
+        return new Rect(left - thisAbsPosition.x, top - thisAbsPosition.y, right-left, bottom-top);
+    }
+
+    get leftBound(): number {
+        return this.dockingPoint.x - this.subtreeDockingPointsBoundingBox.x;
+    }
+
+    get rightBound(): number {
+        return this.dockingPoint.x - (this.subtreeDockingPointsBoundingBox.x + this.subtreeDockingPointsBoundingBox.w);
+    }
+
+    get topBound(): number {
+        return this.dockingPoint.y - this.subtreeDockingPointsBoundingBox.y;
+    }
+
+    get bottomBound(): number {
+        return this.dockingPoint.y - (this.subtreeDockingPointsBoundingBox.y + this.subtreeDockingPointsBoundingBox.h);
     }
 }

@@ -50,8 +50,9 @@
           <tr>
             <td>When:</td>
             <td>
-              <time datetime="{{event.date | date:'yyyy-MM-dd H:mm a'}}">{{event.date | date : 'EEEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date:'shortTime'}}</span></time> 
-              <span ng-if="event.endDate != event.date && event.all_day"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'dd/MM/yyyy'}}</time></span>
+              <time datetime="{{event.date | date:'yyyy-MM-dd H:mm a'}}">{{event.date | date : 'EEE d MMM yyyy'}} {{event.date | date:'shortTime'}}</time> 
+              <span ng-if="event.endDate != event.date && event.multiDay"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date : 'EEE d MMM yyyy'}} {{event.endDate | date:'shortTime'}}</time></span>
+              <span ng-if="event.endDate != event.date && !event.multiDay"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'shortTime'}}</time></span>
               <span ng-if="event.expired" class="error">This event is in the past.</span>
             </td>
           </tr>
@@ -59,7 +60,7 @@
             <td>Location:</td>
             <td>{{event.location.address.addressLine1}}, {{event.location.address.addressLine2}}, {{event.location.address.town}}, {{event.location.address.postalCode}}</td>
           </tr>
-          <tr ng-show="event.numberOfPlaces && event.eventStatus != 'CLOSED'">
+          <tr ng-show="event.numberOfPlaces && event.eventStatus != 'CLOSED' && !event.expired">
             <td>Availability</td>
             <td>
               <span ng-show="event.placesAvailable > 0">{{event.placesAvailable}} spaces</span>
@@ -71,7 +72,7 @@
           </tr>
           <tr ng-show="event.bookingDeadline">
             <td>Booking Deadline</td>
-            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEEE d MMM yyyy'}} <br><span ng-if="!event.all_day">{{event.bookingDeadline | date:'shortTime'}}</span></time></td>
+            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEE d MMM yyyy'}} <br><span ng-if="!event.multiDay">{{event.bookingDeadline | date:'shortTime'}}</span></time></td>
           </tr>        
         </tbody>
       </table>
@@ -80,7 +81,7 @@
       -->
       <div isaac-content doc="event"></div>
       
-      <div class="event-booking-form" ng-show="user.email && event.eventStatus != 'CLOSED' && bookingFormOpen && !(event.userBooked || event.userOnWaitList)">
+      <div class="event-booking-form" ng-show="user.email && event.eventStatus != 'CLOSED' && !event.expired && bookingFormOpen && !(event.userBooked || event.userOnWaitList)">
             <div event-booking-form ></div>
       
           <span ng-if="!event.expired">
@@ -94,16 +95,16 @@
 
       <!-- options for those not logged in -->
       <span ng-show="!user._id">
-        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to Book</a>
+        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && !event.expired && event.numberOfPlaces > 0 && !bookingDeadlinePast" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to Book</a>
         
-        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to join waiting list</a>    
+        <a ng-if="!user._id && event.eventStatus != 'CLOSED' && !event.expired && (event.numberOfPlaces <= 0 || bookingDeadlinePast)" href="javascript:void(0)" ui-sref="login({target: $root.relativeCanonicalUrl=='/' ? null : $root.relativeCanonicalUrl})" class="ru-button-big">Login to join waiting list</a>
       </span>
 
       <!-- options for those logged in -->
       <span ng-show="user._id">
         <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
         <a href="javascript:void(0)" ng-show="bookingFormOpen  && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=false" class="ru-button-big secondary">Close booking form</a>
-        <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>   
+        <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>
         <a ng-if="event.userOnWaitList && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
       </span>
 

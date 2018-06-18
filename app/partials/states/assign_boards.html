@@ -96,7 +96,7 @@
         <h6>Board currently assigned to:</h6>
         <table class="group-table">
           <tbody>
-            <tr ng-repeat="groupsAssigned in groupAssignmentInfo[board.id]">
+            <tr ng-repeat="groupsAssigned in groupAssignmentInfo[board.id] | orderBy:'groupName'">
               <td>{{groupsAssigned.groupName}}</td>
               <td class="group-table-cal"><a ng-if="false" class="icon-cal--small" href="javascript:void(0)"></a></td>
               <td class="group-table-delete"><a class="icon-delete" href="javascript:void(0)" title="Unassign this group" ng-click="unassignBoard(groupsAssigned, board)"></a></td>

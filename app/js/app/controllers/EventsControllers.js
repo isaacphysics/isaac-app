@@ -17,13 +17,13 @@ define([], function() {
 
     var augmentEvent = function(e, api) {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
-            e.all_day = e.endDate - e.date >= 24*3600*1000;  // If start and end times 24 hours apart; assume an all day event
+            e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
             e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
             e.inProgress =  false;
-            e.all_day = false;
+            e.multiDay = false;
         }
 
         e.teacher = e.tags.indexOf("teacher") > -1;
@@ -193,6 +193,7 @@ define([], function() {
 
         // validate pre-requisites for event booking
         var validUserProfile = function() {
+
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
                 $scope.showToast($scope.toastTypes.Failure, "School Information Required", "You must enter a school in order to book on to this event.");
                 return false;
@@ -204,11 +205,13 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group Required", "You must enter a year group to proceed.");
                     return false;   
                 }
-
-                if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
-                    $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
-                    return false;   
-                }    
+                
+                if (!event.virtual) {
+                    if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
+                        $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
+                        return false;   
+                    }                        
+                }
             }
             
             // validation for users that are teachers
@@ -258,7 +261,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Event Booking Confirmed", "You have been successfully booked on to this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 }); 
             })
         }
@@ -274,7 +277,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Waiting List Booking Confirmed", "You have been successfully added to the waiting list for this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             })
 
@@ -288,7 +291,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Your booking has been cancelled", "Your booking has successfully been cancelled.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });                
             }
         }
