@@ -91,7 +91,7 @@
                   <div>{{shareUrl}}</div>
                </div>
                <!--<div class="deletion-cross"><span ng-click="deleteBoard(board)">X</span></div>-->
-               <div class="deletion-cross"><span><input type="checkbox" ng-click="boardSelectToggle(board)"></span></div>
+               <div class="deletion-cross"><span><input type="checkbox" ng-click="boardSelectToggle(board.id)" ng-checked="selectedBoards.includes(board.id)"></span></div>
             </td>
          </tr>
       </tbody>

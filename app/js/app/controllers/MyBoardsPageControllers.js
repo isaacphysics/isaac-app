@@ -89,14 +89,13 @@ define([], function() {
 
 			var selectedBoardString = "";
 
-            $scope.selectedBoards.forEach(function(board) {
-            	selectedBoardString = selectedBoardString + "," + board.id.toString();
+            $scope.selectedBoards.forEach(function(boardId) {
+            	selectedBoardString = selectedBoardString + "," + boardId.toString();
             });
             selectedBoardString = selectedBoardString.substring(1);
 
             lookupAssignedGroups(selectedBoardString).$promise.then(function(groupsAssigned) {
 
-                var assignedBoardsList = "";
                 var assignedCount = 0;
 
                 var confirmationMessage = "Delete " + selectedBoardCount + " board";
@@ -108,13 +107,15 @@ define([], function() {
                 var confirmation = confirm(confirmationMessage);
                 if (confirmation) {
 
-                    $scope.selectedBoards.forEach(function(board) {
+                	var boardCount = 0;
+                	var numSelectedBoards = $scope.selectedBoards.length;
 
-                        var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
+                    $scope.selectedBoards.forEach(function(boardId) {
+
+                    	boardCount++;
                         var assigned = false;
 
-                        if (groupsAssigned[board.id] != null && groupsAssigned[board.id].length != 0) {
-                            assignedBoardsList = assignedBoardsList + ", " + boardTitle.toString();
+                        if (groupsAssigned[boardId] != null && groupsAssigned[boardId].length != 0) {
                             assignedCount = assignedCount + 1;
                             assigned = true;
                         }
@@ -124,49 +125,56 @@ define([], function() {
                         }
 
                         $scope.setLoading(true);
-                        api.deleteGameBoard(board.id).$promise.then(function(){
+                        api.deleteGameBoard(boardId).$promise.then(function(){
+                        	$scope.boardSelectToggle(boardId);
+                        	if (boardCount == numSelectedBoards) {
+                                // TODO: This needs to be reviewed
+                                // Currently reloading boards after delete
+                                updateBoards($scope.boards.results.length);
+                                $scope.setLoading(false);
+							}
                             $scope.setLoading(false);
                         }).catch(function(e){
                             $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", "With error message: (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
                         });
-
                     });
-
-                    // TODO: This needs to be reviewed
-                    // Currently reloading boards after delete
-                    updateBoards($scope.boards.results.length);
-                    $scope.selectedBoards = [];
-                    $scope.setLoading(false);
-
-                    assignedBoardsList = assignedBoardsList.substring(1);
 
                     var deletedBoardsCount = selectedBoardCount - assignedCount;
                     var deletionMessage = "";
+                    var deletionTitle = "";
                     var toastType = null;
 
                     if (deletedBoardsCount > 0) {
-                        deletionMessage = "You have successfully deleted " + deletedBoardsCount +" boards.";
+                        deletionMessage = "You have successfully deleted " + deletedBoardsCount +" board";
+                        deletionTitle = "Board";
+
+                        if (deletedBoardsCount > 1) {
+                        	deletionMessage = deletionMessage + "s";
+                        	deletionTitle = deletionTitle + "s";
+						}
+                        deletionMessage = deletionMessage +".";
                         toastType = $scope.toastTypes.Success;
+						deletionTitle = deletionTitle + " Deleted";
                     }
 
                     if (assignedCount > 0) {
-                        deletionMessage = deletionMessage + " You have groups assigned to some selected boards (" + assignedBoardsList + "). To delete the boards, you must unassign all groups.";
+                        deletionMessage = deletionMessage + " You have groups assigned to some selected boards. To delete the boards, you must unassign all groups.";
                         toastType = $scope.toastTypes.Failure;
                     }
 
-                    $scope.showToast(toastType, "Board Deleted", deletionMessage);
+                    $scope.showToast(toastType, deletionTitle, deletionMessage);
                 }
             });
         }
 
-        $scope.boardSelectToggle = function(board) {
+        $scope.boardSelectToggle = function(boardId) {
 
-            var idx = $scope.selectedBoards.indexOf(board);
+            var idx = $scope.selectedBoards.indexOf(boardId);
 
             if (idx > -1) {
                 $scope.selectedBoards.splice(idx, 1);
             } else {
-                $scope.selectedBoards.push(board);
+                $scope.selectedBoards.push(boardId);
 			}
         }
 
