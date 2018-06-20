@@ -81,7 +81,7 @@ define([], function() {
 
         $scope.deleteBoards = function() {
 
-			var selectedBoardCount = $scope.selectedBoards.length;
+		    var selectedBoardCount = $scope.selectedBoards.length;
 
 			if (selectedBoardCount == 0) {
 				return;
