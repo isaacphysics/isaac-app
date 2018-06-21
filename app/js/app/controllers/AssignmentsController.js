@@ -150,12 +150,13 @@ define([], function() {
                     if (groupsAssigned[board.id].length > 0) {
                         $scope.groupAssignmentInfo[board.id] = groupsAssigned[board.id];
                     }
+                    $timeout(Opentip.findElements, 0);
                 });
 			});
 		}
 
 		$scope.getListOfGroups = function(listOfGroups) {
-			if (listOfGroups && listOfGroups.length == 0) {
+			if (!listOfGroups || listOfGroups.length == 0) {
 				return "No groups have been assigned."
 			}
 
@@ -191,9 +192,6 @@ define([], function() {
 					updateGroupAssignmentMap([board]);
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
-					/*$scope.groupAssignmentInfo[board.id].$promise.then(function() {
-						$timeout(Opentip.findElements, 0);
-					});*/
 				}).catch(function(e){
 	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", e.data.errorMessage || ("Error " + e.status));
 				})
@@ -210,9 +208,6 @@ define([], function() {
 					updateGroupAssignmentMap([board]);
                     delete $scope.groupAssignmentInfo[board.id];
 					$scope.showToast($scope.toastTypes.Success, "Assignment Deleted", "This assignment has been unset successfully.");
-					/*$scope.groupAssignmentInfo[board.id].$promise.then(function() {
-						$timeout(Opentip.findElements, 0);
-					});*/
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", e.data.errorMessage || ("Error " + e.status));
 				});				
