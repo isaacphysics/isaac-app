@@ -94,30 +94,30 @@ define(function(require) {
                                 var i = sizes.indexOf(Math.max.apply(null, sizes));
                                 sketch.parseSubtreeObject(parsedExpression[i]);
                             }
-
-                            var openBracketsCount = pycode.split('(').length - 1;
-                            var closeBracketsCount = pycode.split(')').length - 1;
-
-                            scope.state.textEntry = true;
-                            var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
-                            var badCharacters = new RegExp(regexStr);
-                            var goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
-                            if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
-                                scope.textEntryError.push('LaTeX syntax is not supported.');
-                            }
-                            if (badCharacters.test(pycode)) {
-                                scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
-                            }
-                            if (openBracketsCount !== closeBracketsCount) {
-                                scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
-                            }
-                            if (/\.[0-9]/.test(pycode)) {
-                                scope.textEntryError.push('Please convert decimal numbers to fractions.');
-                            }
                         } else {
                             // TODO: Do something with the error here. It contains useful information.
                             var error = parsedExpression.error;
                             console.log(error.offset, error.token);
+                        }
+
+                        var openBracketsCount = pycode.split('(').length - 1;
+                        var closeBracketsCount = pycode.split(')').length - 1;
+
+                        scope.state.textEntry = true;
+                        var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
+                        var badCharacters = new RegExp(regexStr);
+                        var goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
+                        if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
+                            scope.textEntryError.push('LaTeX syntax is not supported.');
+                        }
+                        if (badCharacters.test(pycode)) {
+                            scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
+                        }
+                        if (openBracketsCount !== closeBracketsCount) {
+                            scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
+                        }
+                        if (/\.[0-9]/.test(pycode)) {
+                            scope.textEntryError.push('Please convert decimal numbers to fractions.');
                         }
                     }, 250);
                 };
