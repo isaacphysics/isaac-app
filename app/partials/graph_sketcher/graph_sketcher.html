@@ -1,0 +1,33 @@
+<div class="equation-editor" tabindex="0" style="border: 5px solid #000;"> 
+
+<!-- 	<div top-menu="123" ng-if="isLandscape">
+        <div symbols="symbolLibrary.theNumbers" number-entry></div>
+    </div>
+ -->
+    <div id="graphSketcher" class="graph-sketcher"></div>
+    <div class="hex-button undo graph" ng-click="p.undo()" ng-if="p.isUndoable()"></div>
+    <div class="hex-button redo graph" ng-click="p.redo()" ng-if="p.isRedoable()"></div>
+    <!--   <div class="hex-button clearAll" ng-click=""></div> -->
+    <div class="hex-button submit" ng-click="submit()"></div>
+    <div class="hex-button poly" ng-click="p.poly()"></div>
+    <div class="hex-button straight" ng-click="p.straight()"></div>
+    <!-- <div class="hex-button mirro" ng-click="p.mirro()"></div> -->
+    <!-- <div class="hex-button draw" ng-click=""></div> -->
+
+
+    <div class="trash-button graph" ng-click="p.clean()" ng-mousedown="" ng-class="{active: trashActive}"></div>
+    <div class="question-reminder show-for-large-up" ng-if="questionDoc && isLandscape && (questionDoc.value || questionDoc.children.length > 0)">
+        <div isaac-content doc="questionDoc"></div>
+        <div style="padding-bottom: 20px;">You are restricted to 3 curves at any one time.</div>
+    </div>
+
+    <select class="color-select" style="right: 100px; top: 20px; z-index: 9999; width: 140px; height: 40px; position: absolute;">
+        <option value="Blue" selected>Blue</option> 
+        <option value="Orange">Orange</option>
+        <option value="Green">Green</option>
+    </select>
+
+</div>
+
+
+

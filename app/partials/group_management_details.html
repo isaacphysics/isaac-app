@@ -1,9 +1,16 @@
 <!-- Start active group -->
-    <h6>{{selectedGroup == null ? "Create" : "Edit"}} group <span class="access-token" ng-show="selectedGroup"><a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a></span></h6>
+    <h6>
+        {{selectedGroup == null ? "Create" : "Edit"}} group 
+        <span class="access-token" ng-show="selectedGroup">
+            <a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a>&nbsp;
+            <span ng-if="selectedGroup && selectedGroup.ownerId == user._id && ($root.userPreferences.BETA_FEATURE.ADDITIONAL_GROUP_MANAGERS || selectedGroup.additionalManagers.length > 0)"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">Edit Group Managers</a></span>
+            <span ng-if="selectedGroup && selectedGroup.ownerId != user._id"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">View Group Managers</a></span>
+        </span>
+    </h6>
 
-    <input ng-show="selectedGroup" type="text" ng-model="selectedGroup.groupName" />
+    <input ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
     <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
-    <a class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
+    <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
     <div ng-if="emailInviteFeatureAvailable">
         <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
         <p>Email addresses MUST be seperated by a comma.</p>
@@ -20,8 +27,12 @@
                 <table class="group-table">
                     <tbody>
                         <tr ng-repeat="member in selectedGroupMembers" ng-class="{disabled: !member.authorisedFullAccess}">
-                            <td ng-if="member.authorisedFullAccess"><a href="javascript:void(0)" ui-sref="userProgress({userId: member.id})" data-ot="Click to view this student's data."><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}}</a></td>
-                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (access revoked)</span></td>
+                            <td ng-if="member.authorisedFullAccess">
+                                <a href="javascript:void(0)" ui-sref="userProgress({userId: member.id})" data-ot="Click to view this student's data."><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}}</a>
+                                <span ng-if="member.emailVerificationStatus =='DELIVERY_FAILED'" data-ot="This user's account email address is invalid or not accepting email.<br>They will not be able to reset their password or receive update emails. Ask them to login and update it, or contact us to help resolve the issue." class="has-tip" aria-haspopup="true"><span class="icon-email-status failed"></span></span>
+                                <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span></span>
+                            </td>
+                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>
                             <td class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteMember(selectedGroup, member)"></a></td>
                         </tr>
@@ -41,6 +52,7 @@
                 2 Invitations not yet accepted <span class="show-for-medium-up">in this group</span>
                 <span class="group-accordion-arrow"></span>
             </a>
+            
             <div class="group-accordion-content">
                 <table class="group-table">
                     <tbody>
@@ -60,7 +72,7 @@
         </dd>
     </dl>
     
-    <div class="row" ng-if="selectedGroup">
+    <div class="row" ng-if="selectedGroup && selectedGroup.ownerId == user._id">
         <div class="large-16 columns">
             <a ng-if="!archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(true)">Archive this group</a>
             <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   

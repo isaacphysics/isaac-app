@@ -25,7 +25,6 @@ import { Widget, Rect } from './Widget';
 import { BinaryOperation } from "./BinaryOperation";
 import { Relation } from "./Relation";
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
 
 export
     class Fraction extends Widget {
@@ -42,8 +41,7 @@ export
      * @returns {Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let p = this.p.createVector(-this.boundingBox().w / 2, 0);
-        return p;
+        return this.p.createVector(0, 0);
     }
 
     constructor(p: any, s: any) {
@@ -51,7 +49,7 @@ export
         this.s = s;
         this.width = 0;
 
-        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'symbol_subscript', 'differential_argument'];
+        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'differential_argument'];
     }
 
     /** Generates all the docking points in one go and stores them in this.dockingPoints.
@@ -64,9 +62,9 @@ export
     generateDockingPoints() {
         let box = this.boundingBox();
         // FIXME That 50 is hard-coded, need to investigate when this.width gets initialized.
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox.w / 4, -box.h / 2), 1, "operator", "right");
-        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, "symbol", "numerator");
-        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, "symbol", "denominator");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(50 + this.scale * this.s.mBox_w/4, -box.h/2), 1, ["operator"], "right");
+        this.dockingPoints["numerator"] = new DockingPoint(this, this.p.createVector(0, -(box.h + 25)), 1, ["symbol"], "numerator");
+        this.dockingPoints["denominator"] = new DockingPoint(this, this.p.createVector(0, 0 + 25), 1, ["symbol"], "denominator");
     }
 
     /**
@@ -78,23 +76,23 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = "";
         if (format == "latex" || format == 'mhchem') {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "\\frac{" + this.dockingPoints["numerator"].child.getExpression(format) + "}{" + this.dockingPoints["denominator"].child.getExpression(format) + "}";
+                expression += "\\frac{" + this.dockingPoints["numerator"].child.formatExpressionAs(format) + "}{" + this.dockingPoints["denominator"].child.formatExpressionAs(format) + "}";
                 if (this.dockingPoints["right"].child != null) {
-                    expression += this.dockingPoints["right"].child.getExpression(format);
+                    expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 }
             }
         } else if (format == "python") {
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += "(" + this.dockingPoints["numerator"].child.getExpression(format) + ")/(" + this.dockingPoints["denominator"].child.getExpression(format) + ")";
+                expression += "(" + this.dockingPoints["numerator"].child.formatExpressionAs(format) + ")/(" + this.dockingPoints["denominator"].child.formatExpressionAs(format) + ")";
                 if (this.dockingPoints["right"].child != null) {
                     if (this.dockingPoints["right"].child instanceof BinaryOperation || this.dockingPoints["right"].child instanceof Relation) {
-                        expression += this.dockingPoints["right"].child.getExpression(format);
+                        expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                     } else {
-                        expression += " * " + this.dockingPoints["right"].child.getExpression(format);
+                        expression += " * " + this.dockingPoints["right"].child.formatExpressionAs(format);
                     }
                 }
             }
@@ -105,10 +103,10 @@ export
         } else if (format == 'mathml') {
             expression = '';
             if (this.dockingPoints["numerator"].child != null && this.dockingPoints["denominator"].child != null) {
-                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.getExpression(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.getExpression(format) + '</mrow></mfrac>';
+                expression += '<mfrac><mrow>' + this.dockingPoints['numerator'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['denominator'].child.formatExpressionAs(format) + '</mrow></mfrac>';
             }
             if (this.dockingPoints['right'].child != null) {
-                expression += this.dockingPoints['right'].child.getExpression(format);
+                expression += this.dockingPoints['right'].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -124,22 +122,12 @@ export
 
     /** Paints the widget on the canvas. */
     _draw() {
-        this.p.noFill().strokeWeight(5 * this.scale).stroke(this.color);
+        this.p.noFill().strokeCap(this.p.SQUARE).strokeWeight(4 * this.scale).stroke(this.color);
 
         let box = this.boundingBox();
-        this.p.line(-box.w / 2, -box.h / 2, box.w / 2, -box.h / 2);
+        this.p.line(-box.w/2, 0, box.w/2, 0);
 
         this.p.strokeWeight(1);
-
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
-
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
-        }
     }
 
     /**
@@ -148,12 +136,27 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds("+", 0, 1000, this.scale * this.s.baseFontSize);
-        this.width = 50;
-        let numerator_width = (this.dockingPoints["numerator"] != undefined && this.dockingPoints["numerator"].child != null) ? this.dockingPoints["numerator"].child.getExpressionWidth() : this.width;
-        let denominator_width = (this.dockingPoints["denominator"] != undefined && this.dockingPoints["denominator"].child != null) ? this.dockingPoints["denominator"].child.getExpressionWidth() : this.width;
-        this.width = (this.width >= numerator_width && this.width >= denominator_width) ? this.width : ((numerator_width >= denominator_width) ? numerator_width : denominator_width);
-        return new Rect(-this.width * this.scale / 2, -box.h * this.scale, this.width * this.scale, box.h * this.scale);
+        let box = this.s.font_up.textBounds("+", 0, 0, this.scale * this.s.baseFontSize);
+
+        let width = Math.max(box.w, this._numeratorBox.w, this._denominatorBox.w);
+
+        return new Rect(-width/2, -box.h/2, width, box.h);
+    }
+
+    get _numeratorBox(): Rect {
+        if (this.dockingPoints["numerator"] && this.dockingPoints["numerator"].child) {
+            return this.dockingPoints["numerator"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
+        }
+    }
+
+    get _denominatorBox(): Rect {
+        if (this.dockingPoints["denominator"] && this.dockingPoints["denominator"].child) {
+            return this.dockingPoints["denominator"].child.subtreeDockingPointsBoundingBox;
+        } else {
+            return new Rect(0, 0, this.s.baseDockingPointSize, 0);
+        }
     }
 
     /**
@@ -163,62 +166,46 @@ export
      * @private
      */
     _shakeIt() {
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-        let subtreeBoxes: { [key: string]: Rect } = {};
+        this._shakeItDown();
 
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
-                subtreeBoxes[dockingPointName] = dockingPoint.child.subtreeBoundingBox();
-            }
-        });
+        let thisBox = this.boundingBox();
 
-        // Calculate our own geometry
-        this.width = Math.max(100, _.max(_.map(_.values(_.pick(subtreeBoxes, ["numerator", "denominator"])), "w")) || 0);
-
-        let bbox = this.boundingBox();
-        // Set position of all our children.
-
-        if ("numerator" in boxes) {
-            let p = this.dockingPoints["numerator"].child.position;
-            let fullNumeratorWidth = subtreeBoxes["numerator"].w;
-            let numeratorRootWidth = this.dockingPoints["numerator"].child.offsetBox().w;
-            let numeratorFullDescent = subtreeBoxes["numerator"].y + subtreeBoxes["numerator"].h;
-
-            p.x = numeratorRootWidth / 2 - fullNumeratorWidth / 2;
-            p.y = -bbox.h / 2 - this.scale * this.s.mBox.w / 4 - numeratorFullDescent;
-        }
-
-        if ("denominator" in boxes) {
-            let p = this.dockingPoints["denominator"].child.position;
-            let fullDenominatorWidth = subtreeBoxes["denominator"].w;
-            let denominatorRootWidth = this.dockingPoints["denominator"].child.offsetBox().w;
-            let denominatorFullAscent = subtreeBoxes["denominator"].y;
-
-            p.x = denominatorRootWidth / 2 - fullDenominatorWidth / 2;
-            p.y = -bbox.h / 2 + this.scale * this.s.mBox.w / 4 - denominatorFullAscent;
-        }
-
-        if ("right" in boxes) {
-            let p = this.dockingPoints["right"].child.position;
-            p.x = this.width / 2 + this.dockingPoints["right"].child.offsetBox().w / 2 + this.scale * this.s.mBox.w / 4; // TODO: Tweak this with kerning.
-            p.y = 0;
-            // FIXME HORRIBLE BRACKETS FIX
-            let docking_right = this.dockingPoints["right"];
-            if (docking_right.child instanceof Brackets) {
-                docking_right.child.position.y = docking_right.child.dockingPoints["argument"].child ? -docking_right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-            }
-        } else {
-            let p = this.dockingPoints["right"].position;
-            if ("denominator" in boxes) {
-                p.x = this.width / 2 + this.scale * this.s.mBox.w / 2;
+        if (this.dockingPoints["numerator"]) {
+            let dp = this.dockingPoints["numerator"];
+            if (dp.child) {
+                let child = dp.child;
+                // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
+                child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
+                child.position.y = -dp.size - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
             } else {
-                p.x = this.width / 2 + this.scale * this.s.mBox.w / 4;
+                dp.position.x = 0;
+                dp.position.y = -this.s.xBox_h/2 - dp.size;
             }
-            p.y = -this.boundingBox().h / 2;
+        }
+
+        if (this.dockingPoints["denominator"]) {
+            let dp = this.dockingPoints["denominator"];
+            if (dp.child) {
+                let child = dp.child;
+                // TODO Keep an eye on these, we might need the subtreeDockingPointsBoundingBox instead.
+                child.position.x = -child.subtreeBoundingBox.x - child.subtreeBoundingBox.w/2;
+                child.position.y = dp.size - child.subtreeDockingPointsBoundingBox.y;
+            } else {
+                dp.position.x = 0;
+                dp.position.y = this.s.xBox_h/2 + dp.size;
+            }
+        }
+
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
+                child.position.y = -child.dockingPoint.y;
+            } else {
+                dp.position.x = this.subtreeBoundingBox.w/2 + dp.size;
+                dp.position.y = 0;
+            }
         }
     }
 }

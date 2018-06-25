@@ -512,7 +512,7 @@ $failed-bg-size: 25%;
             td {
                 &:first-child, .icon-person {
                     color: gray;
-                    a {
+                    .progress-name {
                         text-decoration: line-through;
                     }
                 }

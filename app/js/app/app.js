@@ -118,7 +118,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.4.4/api");
+            apiProvider.urlPrefix("/api/v2.5.4/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -692,8 +692,9 @@ define([
         //var signOnTime = Number(new Date());
         $rootScope.notificationWebSocket = null;
         $rootScope.webSocketCheckTimeout = null;
+        var lastKnownServerTime = null;
 
-        $rootScope.openNotificationSocket = function() {
+        var openNotificationSocket = function() {
 
             if ($rootScope.notificationWebSocket != null) {
                 return;
@@ -711,7 +712,7 @@ define([
 
 
                 $rootScope.notificationWebSocket.onopen = function(event) {
-                    $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
+                    $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
                 }
 
 
@@ -719,28 +720,29 @@ define([
 
                     var websocketMessage = JSON.parse(event.data);
 
-                    // User snapshot update:
-                    if (websocketMessage.userSnapshot) {
+                    if (websocketMessage.heartbeat) {
+                        // Update the last known server time from the message heartbeat.
+                        var newServerTime = websocketMessage.heartbeat;
+                        if (null != lastKnownServerTime && new Date(lastKnownServerTime).getDate() != new Date(newServerTime).getDate()) {
+                            // If the server time has passed midnight, streaks reset, so request a snapshot update:
+                            $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+                        }
+                        lastKnownServerTime = newServerTime;
+                    }
 
+                    if (websocketMessage.userSnapshot) {
                         $rootScope.user.userSnapshot = websocketMessage.userSnapshot;
                         var currentActivity = websocketMessage.userSnapshot.streakRecord ? websocketMessage.userSnapshot.streakRecord.currentActivity : 0;
                         $rootScope.streakDialToggle(currentActivity);
 
                     } else if (websocketMessage.notifications) {
-
                         websocketMessage.notifications.forEach(function(entry) {
-
                             var notificationMessage = JSON.parse(entry.message);
-
                             // specific user streak update
-                            if (notificationMessage.streakData) {
-
-                                $rootScope.user.userSnapshot.streakRecord
-                                    = notificationMessage.streakData;
-
+                            if (notificationMessage.streakRecord) {
+                                $rootScope.user.userSnapshot.streakRecord = notificationMessage.streakRecord;
                                 $rootScope.streakDialToggle($rootScope.user.userSnapshot.streakRecord.currentActivity);
                             }
-
                         });
                     }
 
@@ -800,14 +802,14 @@ define([
                                 // The status code 1013 isn't yet supported properly, and IE/Edge don't support custom codes.
                                 // So use the event 'reason' to indicate too many connections, try again in 1 min.
                                 console.log("WebSocket endpoint overloaded. Trying again later!")
-                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 60000);
+                                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 60000);
                             } else {
                                 // This is likely a network interrupt or else a server restart.
                                 // For the latter, we really don't want all reconnections at once.
                                 // Wait a random time between 10s and 60s, and then attempt reconnection:
                                 var randomRetryIntervalSeconds = 10 + Math.floor(Math.random() * 50);
                                 console.log("WebSocket connection lost. Reconnect attempt in " + randomRetryIntervalSeconds + "s.");
-                                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, randomRetryIntervalSeconds * 1000);
+                                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, randomRetryIntervalSeconds * 1000);
                             }
                             break;
                         default: // Unexpected closure code: log and abort retrying!
@@ -822,17 +824,20 @@ define([
             });
         }
 
-        $timeout($rootScope.openNotificationSocket, 500);
-
-        var checkForWebSocket = function() {
-
+        $rootScope.checkForWebSocket = function() {
             if ($rootScope.notificationWebSocket != null) {
-                $rootScope.notificationWebSocket.send("user-snapshot-nudge");
-                $rootScope.webSocketCheckTimeout = $timeout(checkForWebSocket, 10000);
+                if (!$rootScope.user.userSnapshot) {
+                    // If we don't have a snapshot, request one.
+                    $rootScope.notificationWebSocket.send("user-snapshot-nudge");
+                } else {
+                    // Else just ping to keep connection alive.
+                    $rootScope.notificationWebSocket.send("heartbeat");
+                }
+                $timeout.cancel($rootScope.webSocketCheckTimeout);
+                $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 60000);
             } else {
-                $rootScope.openNotificationSocket();
+                openNotificationSocket();
             }
-
         }
 
         var checkForNotifications = function() {

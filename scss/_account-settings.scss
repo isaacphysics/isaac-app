@@ -49,6 +49,10 @@
 		left: 19px;
 		height: 48px;
 	}
+	.ac-custom.confirm-age svg {
+		left: 17px;
+		margin-top: -27px;
+	}
 	.delete-account-text {
 		display: block;
 		text-align: center;
@@ -311,6 +315,15 @@ input.account-settings-input {
     	background-color: #333;
     	padding: 11px 20px 13px;
     	margin: 0;
+    }
+
+    .remove-link {
+    	text-align: center;
+    	margin-top: 12px;
+    	a {
+    		font-weight: bold;
+    		color: $ru_red;
+    	}
     }
 }
 .teachers-connected,

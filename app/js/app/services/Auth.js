@@ -110,6 +110,7 @@ define([], function() {
 							resolve();
 						});
 					}).then(updateUserPreferences).then(function() {
+						$rootScope.checkForWebSocket(); // Setting $rootScope.user above removes the user snapshot, so ping WebSocket!
 						resolve(u);
 					});
 
@@ -127,7 +128,6 @@ define([], function() {
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
-					//$rootScope.openNotificationSocket(); // The page gets reloaded immediately anyway, unnecessary?
 		        	setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){

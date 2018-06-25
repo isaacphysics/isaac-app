@@ -167,9 +167,15 @@ define([], function() {
                 $scope.datePicker.months = possibleMonths;
             }
 
+            var thirteen_years_ago = Date.UTC(today.getFullYear() - 13, today.getMonth(), today.getDate());
+
             var dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
-            if (!isNaN(dob_unix)) {
+            if (!isNaN(dob_unix) && $scope.datePicker.months.indexOf($scope.dob.month) > -1) {
                 $scope.user.dateOfBirth = dob_unix;
+                $scope.confirmed_over_thirteen = dob_unix <= thirteen_years_ago;
+            } else {
+                $scope.confirmed_over_thirteen = false;
+                $scope.user.dateOfBirth = null;
             }
         });
 
@@ -250,7 +256,10 @@ define([], function() {
             }
 
             // Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-            if ($scope.account.$valid && $scope.account.email.$valid && (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)))) {
+            var formValid = $scope.account.$valid && $scope.account.email.$valid;
+            var passwordsValidated = (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)));
+            var confirmedThirteen = $scope.confirmed_over_thirteen || (!$scope.user.dateOfBirth && $scope.user._id); // If there is a user ID, they have already registered and confirmed their age!
+            if (formValid && passwordsValidated && confirmedThirteen) {
                 //TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
                 var userSettings = {
                     registeredUser : $scope.user,
@@ -279,6 +288,7 @@ define([], function() {
                     return auth.updateUser();
                 }).then(function(){
                     if (next) {
+                        $scope.cancelOnDestroyEvent(); // Don't need this handler to fire if we've saved and are redirecting!
                         $location.url(next)
                     } else {
                         $scope.updateSuccess = true;
@@ -303,17 +313,26 @@ define([], function() {
                 if (!$scope.passwordChangeState.passwordCurrent && !!$scope.password1 && $scope.editingSelf) {
                     $scope.errorMessage = "Current password not confirmed.";
                 // current password given/admin user, but new password not confirmed
-                } else if ($scope.password1 != $scope.password2) {
+                } else if (($scope.password1 && $scope.password1 != $scope.password2) || ($scope.user.password && $scope.user.password != $scope.password2)) {
                     $scope.errorMessage = "Passwords do not match.";
                 // password not long enough:
-                } else if ($scope.password1.length < 6) {
+                } else if ($scope.password1 && $scope.password1.length < 6) {
                     $scope.errorMessage = "Passwords must be at least 6 characters in length.";
                 // first name or last name missing
                 } else if (($scope.account.firstname.$invalid && $scope.account.firstname.$dirty) || ($scope.account.secondname.$invalid && $scope.account.secondname.$dirty)) {
                     $scope.errorMessage = "Name field missing or invalid.";
                 // bad email address given
                 } else if ($scope.account.email.$invalid && $scope.account.email.$dirty) {
-                    $scope.errorMessage = "Email address missing or invalid."
+                    $scope.errorMessage = "Email address missing or invalid.";
+                } else if ($scope.user.dateOfBirth && !$scope.confirmed_over_thirteen) {
+                    if ($scope.user._id) {
+                        // They already have an account, but are apparently too young. Ask them to get in touch!
+                        $scope.errorMessage = "You should be at least 13 years old to have an Isaac account. Please contact us!";
+                    } else {
+                        $scope.errorMessage = "You must be at least 13 years old to have an Isaac account!";
+                    }
+                } else if (!$scope.user._id && !$scope.confirmed_over_thirteen) {
+                    $scope.errorMessage = "You must confirm you are at least 13 years old to have an Isaac account.";
                 }
             }
         }
@@ -327,46 +346,61 @@ define([], function() {
             $scope.updateFail = false;
         })
 
-        $scope.$on("$destroy", function() {
+        $scope.cancelOnDestroyEvent = $scope.$on("$destroy", function() { // This returns an unsubscribe function to cancel the handler.
             auth.updateUser();
         })
 
         // authorisation (token) stuff
         $scope.authenticationToken = {value: null};
         $scope.activeAuthorisations = api.authorisations.get();
+        $scope.activeStudentAuthorisations = api.authorisations.getOthers();
         
         $scope.useToken = function() {
             if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
                 $scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
                 return;
             }
+            
             // Some users paste the URL in the token box, so remove the token from the end if they do.
             // Tokens so far are also always uppercase; this is hardcoded in the API, so safe to assume here:
             $scope.authenticationToken.value = $scope.authenticationToken.value.split("?authToken=").pop();
             $scope.authenticationToken.value = $scope.authenticationToken.value.toUpperCase().replace(/ /g,'');
 
-            api.authorisations.getTokenOwner({token:$scope.authenticationToken.value}).$promise.then(function(result) {
-                var confirm = $window.confirm("Are you sure you would like to grant access to your data to the user: " + (result.givenName ? result.givenName.charAt(0) + ". " : "") + result.familyName + " (" + result.email + ")? For more details about the data that is shared see our privacy policy.");
+            api.authorisations.getTokenOwner({token: $scope.authenticationToken.value}).$promise.then(function(result) {
+                $scope.usersToGrantAccess = result;
+                var userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
+                $scope.anyUsersAuthorisedAlready = false;
 
-                if (confirm) {
-                    api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
-                        $scope.activeAuthorisations = api.authorisations.get();
-                        $scope.authenticationToken = {value: null};
-                        $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
-                        // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
-                        if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
-                            // If we've just signed up and used a group code immediately, change back to the main settings page:
-                            $scope.activeTab = 0;
-                        }
-                    })                      
-                }
-            }).catch(function(e){
+                angular.forEach($scope.usersToGrantAccess, function(value, key) {
+                    value.givenName = value.givenName ? value.givenName.charAt(0) + ". " : "";
+                    value.authorisedAlready = userIdsAlreadyAuthorised.indexOf(value.id) > -1;
+                    $scope.anyUsersAuthorisedAlready = $scope.anyUsersAuthorisedAlready || value.authorisedAlready;
+                });
+                $scope.modals.tokenVerification.show();
+            }).catch(function(e) {
                 console.error(e);
                 if (e.status == 429) {
-                    $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have made too many attempts. Please check your code with your teacher and try again later!");
+                    $scope.showToast($scope.toastTypes.Failure, "Too Many Attempts", "You have entered too many tokens. Please check your code with your teacher and try again later!");
                 } else {
                     $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
                 }
+            });
+        }
+
+        $scope.applyToken = function() {
+            api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
+                $scope.activeAuthorisations = api.authorisations.get();
+                $scope.authenticationToken = {value: null};
+                $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
+                // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
+                if ($scope.user.firstLogin || persistence.session.load('firstLogin')) {
+                    // If we've just signed up and used a group code immediately, change back to the main settings page:
+                    $scope.activeTab = 0;
+                }
+                $scope.modals.tokenVerification.hide();
+            }).catch(function(e) {
+                console.error(e);
+                $scope.showToast($scope.toastTypes.Failure, "Teacher Connection Failed", "The code may be invalid or the group may no longer exist. Codes are usually uppercase and 6-8 characters in length.");
             });
         }
 
@@ -386,6 +420,51 @@ define([], function() {
                 api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
                     $scope.activeAuthorisations = api.authorisations.get();
                     $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
+        $scope.revokeAllAuthorisations = function(){
+            var revoke = $window.confirm('Are you sure you want to revoke all users\' access?');   
+
+            if (revoke) {
+                api.authorisations.revokeAll().$promise.then(function(){
+                    $scope.activeAuthorisations = api.authorisations.get();
+                    $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked all access to your data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
+        $scope.releaseAuthorisation = function(userToRevoke){
+            var revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');   
+
+            if (revoke) {
+                api.authorisations.release({id: userToRevoke.id}).$promise.then(function(){
+                    $scope.activeStudentAuthorisations = api.authorisations.getOthers();
+                    $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to your student's data.");
+                }).catch(function(e){
+                    $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                })              
+            } else {
+                return;
+            }
+        }
+
+        $scope.releaseAllAuthorisations = function(){
+            var revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');   
+
+            if (revoke) {
+                api.authorisations.releaseAll().$promise.then(function(){
+                    $scope.activeStudentAuthorisations = api.authorisations.getOthers();
+                    $scope.showToast($scope.toastTypes.Success, "Access Removed", "You have ended your access to all of your students' data.");
                 }).catch(function(e){
                     $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 })              
