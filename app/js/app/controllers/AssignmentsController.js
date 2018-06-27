@@ -171,6 +171,12 @@ define([], function() {
 			return listOfGroupsString;
 		}
 
+		$scope.$watchCollection("pendingAssignment", a => {
+			for (let k in a) {
+				a[k].dueDate = a[k].dueDate || null;
+			}
+		});
+
 		$scope.assignBoard = function(board) {
 			if ($scope.pendingAssignment[board.id]) {
 				var dueDate = $scope.pendingAssignment[board.id].dueDate;
@@ -190,7 +196,7 @@ define([], function() {
 
 				api.assignments.assignBoard(assignmentToPost).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
-					delete $scope.pendingAssignment[board.id]; // remove from pending list.
+					$scope.pendingAssignment[board.id] = { dueDate: null }; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
 				}).catch(function(e){
 	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", e.data.errorMessage || ("Error " + e.status));
