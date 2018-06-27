@@ -11,7 +11,6 @@ npm-debug.log
 app/js/isaac.js.map
 app/js/isaac.js
 app/ts/**/*.js*
-app/bower_components/
 ngrok.yml
 app/isaac.js*
 app/isaac.css*

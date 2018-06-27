@@ -70,7 +70,8 @@
     "systemjs-builder": "0.15.15",
     "typescript": "^2.9.2",
     "webpack": "^4.12.0",
-    "webpack-cli": "^3.0.7"
+    "webpack-cli": "^3.0.7",
+    "webpack-merge": "^4.1.0"
   },
   "babel": {
     "presets": [
@@ -97,9 +98,10 @@
     "start": "single-page-server -p=8000 -b=app -f=app/index.physics.html | single-page-server -p=8001 -b=app -f=app/index.chemistry.html | single-page-server -p=8002 -b=app -f=app/index.biology.html",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-    "build": "npm run build:js && npm run build:css",
     "build:js": "webpack",
     "build:css": "node-sass --output-style compressed --source-map true --source-map-contents --include-path node_modules scss/app.scss app/isaac.css",
+    "build:dev": "npm run build:js && npm run build:css",
+    "build:prod": "npm run build:js -- --env prod && npm run build:css",
     "watch": "npm run build:css && concurrently --kill-others --raw \"npm run watch:js\" \"npm run watch:css\"",
     "watch:js": "npm run build:js -- --watch",
     "watch:css": "npm run build:css -- --watch"
