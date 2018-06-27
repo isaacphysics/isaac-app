@@ -1,14 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
 
-class NoEmitPlugin {
-  apply(compiler) {
-    compiler.hooks.emit.tap('NoEmitPlugin', compilation => {
-      delete compilation.assets["DUMMY_OUTPUT"];
-    });
-  }
-}
-
 module.exports = {
   context: path.resolve(__dirname),
 
@@ -16,7 +8,6 @@ module.exports = {
 
   entry: {
     'isaac.js': ["./app/js/app/app.js"],
-    'DUMMY_OUTPUT': ["./scss/app.scss"],
   },
 
   output: {
@@ -26,18 +17,6 @@ module.exports = {
   
   module: {
     rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          "file-loader?name=isaac.css",
-          "extract-loader",
-          "css-loader?url=false&sourceMap=true",
-          {
-            loader: 'sass-loader', 
-            options: { includePaths: ["node_modules"], sourceMap: true }
-          }
-        ]
-      },
       {
         test: /\.js$/,
         exclude: [/node_modules/, /app\/js\/lib/],
@@ -96,10 +75,6 @@ module.exports = {
     },
 
   },
-
-  plugins: [
-    new NoEmitPlugin("isaac.css.NO")
-  ],
 
   // Generate source maps
   devtool: "source-map",
