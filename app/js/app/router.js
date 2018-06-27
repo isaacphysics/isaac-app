@@ -171,17 +171,12 @@ define(["angular-ui-router"], function() {
         $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
+        $sp.state('about', genericPageState("/about", "about_us_index"));
 
 
         if (subject.id == "physics") {
 
             // These are the routes that are specific to the physics site
-
-            $sp.state('about', genericPageState("/about", "about_us_index"));
-            $sp.state('teachers', genericPageState("/teachers", "mission_teachers"));
-            $sp.state('mission', genericPageState("/mission", "mission"));
-            $sp.state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"));
-            $sp.state('mission_students', genericPageState("/mission_students", "mission_students"));
             $sp.state('glossary', genericPageState("/glossary", "glossary"));
             $sp.state('apply_uni', genericPageState("/apply_uni", "apply_uni"));
             $sp.state('solving_problems', genericPageState("/solving_problems", "solving_problems"));
@@ -198,6 +193,22 @@ define(["angular-ui-router"], function() {
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
             $sp.state('gcse', staticPageState("/gcse", "gcse"));
             $sp.state('alevel', staticPageState("/alevel", "alevel"));
+
+            // Redirects for old URLs:
+            $sp.state('mission', {
+                url: "/mission",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('about', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('teachers', {
+                url: "/teachers",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('supportTeacher', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
 
 
             // The events page shouldn't be accessible from the other sites to avoid confusion!

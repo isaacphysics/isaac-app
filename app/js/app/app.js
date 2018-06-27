@@ -135,7 +135,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.5.3/api");
+            apiProvider.urlPrefix("/api/v2.5.4/api");
         }
 
         NProgress.configure({ showSpinner: false });

@@ -109,7 +109,7 @@ define([], function() {
 		};
 
 		$scope.deleteBoard = function(board){
-			lookupAssignedGroups(board).$promise.then(function(groupsAssigned) {
+			lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
 				if (groupsAssigned != null && groupsAssigned.length != 0){
 					if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
 						alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
@@ -137,19 +137,26 @@ define([], function() {
 			})
 		}
 
-		var lookupAssignedGroups = function(board) {
-			var groups = api.assignments.getAssignedGroups({gameId: board.id});
+		var lookupAssignedGroups = function(gameboardIds) {
+            var groups = api.assignments.getAssignedGroups({gameboard_ids: gameboardIds});
 			return groups;
 		}
 
 		var updateGroupAssignmentMap = function(boardsToChange) {
 			angular.forEach(boardsToChange, function(board, key){
-				$scope.groupAssignmentInfo[board.id] = lookupAssignedGroups(board);
+
+                lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
+
+                    if (groupsAssigned[board.id].length > 0) {
+                        $scope.groupAssignmentInfo[board.id] = groupsAssigned[board.id];
+                    }
+                    $timeout(Opentip.findElements, 0);
+                });
 			});
 		}
 
 		$scope.getListOfGroups = function(listOfGroups) {
-			if (listOfGroups && listOfGroups.length == 0) {
+			if (!listOfGroups || listOfGroups.length == 0) {
 				return "No groups have been assigned."
 			}
 
@@ -185,9 +192,6 @@ define([], function() {
 					updateGroupAssignmentMap([board]);
 					delete $scope.pendingAssignment[board.id]; // remove from pending list.
 					$scope.showToast($scope.toastTypes.Success, "Assignment Saved", "This assignment has been saved successfully.");
-					$scope.groupAssignmentInfo[board.id].$promise.then(function() {
-						$timeout(Opentip.findElements, 0);
-					});
 				}).catch(function(e){
 	        		$scope.showToast($scope.toastTypes.Failure, "Board Assignment Failed", e.data.errorMessage || ("Error " + e.status));
 				})
@@ -202,10 +206,8 @@ define([], function() {
 			if (unassignGroup){
 				api.assignments.unassignBoard({gameId: board.id, groupId: group._id}).$promise.then(function(){
 					updateGroupAssignmentMap([board]);
+                    delete $scope.groupAssignmentInfo[board.id];
 					$scope.showToast($scope.toastTypes.Success, "Assignment Deleted", "This assignment has been unset successfully.");
-					$scope.groupAssignmentInfo[board.id].$promise.then(function() {
-						$timeout(Opentip.findElements, 0);
-					});
 				}).catch(function(e){
         			$scope.showToast($scope.toastTypes.Failure, "Board Unassignment Failed", e.data.errorMessage || ("Error " + e.status));
 				});				
