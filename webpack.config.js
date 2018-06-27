@@ -49,6 +49,13 @@ module.exports = function(env) {
           ]
         },
         { 
+          test: /modernizr/,
+          use: [
+            {loader:"expose-loader", options: "Modernizr"},
+            {loader:"imports-loader?this=>window"},
+          ]
+        },
+        { 
           test: /opentip-jquery/,
           use: [
             {loader:"expose-loader", options: "Opentip"},

@@ -35,7 +35,8 @@ define([
     "./MathJaxConfig",
     "angular-simple-logger",
     "angular-google-maps",
-    "../lib/opentip-jquery.js"
+    "../lib/opentip-jquery.js",
+    "foundation-sites/js/vendor/modernizr",
     ], function(rv, ineq, require) {
 
     window.Promise = RSVP.Promise;
