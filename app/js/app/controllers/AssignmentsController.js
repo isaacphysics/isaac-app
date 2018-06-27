@@ -42,7 +42,7 @@ define([], function() {
 		}
 
 		var setDefaultBoardSearchOptions = function(deviceSpecificDefaultField) {
-			for (boardSearchParameter in $scope.boardSearchOptions) {
+			for (let boardSearchParameter in $scope.boardSearchOptions) {
 				var boardSearchOption = boardSearchOptions[boardSearchParameter];
 				var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
 				var defaultValueKey = boardSearchOption[deviceSpecificDefaultField];

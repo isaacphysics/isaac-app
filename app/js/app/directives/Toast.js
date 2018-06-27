@@ -43,7 +43,6 @@
 
 				scope.hideToast = function(){
 					scope.toastNotificationVisible = false;
-					toastNotificationText = "";
 					scope.$apply();
 					scope.toastTimeouts = setTimeout(function() {
 						element.children("div").css("visibility","hidden");
