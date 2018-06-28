@@ -41,6 +41,10 @@ module.exports = function(env) {
           test: /\.ts$/,
           use: ["babel-loader", "ts-loader"]
         },
+        {
+          test: /\.ne$/,
+          use: "nearley-es6-loader"
+        },
         { 
           test: path.resolve(__dirname, "node_modules", "jquery", "dist", "jquery.js"),
           use: [
@@ -88,6 +92,10 @@ module.exports = function(env) {
         '/partials': 'app/partials',
         'showdown': 'app/js/lib/showdown/showdown.js',
       },
+    },
+
+    resolveLoader: {
+      modules: ["node_modules", path.resolve(__dirname, "app/js/lib/webpack-loaders")]
     },
 
     // Generate source maps

@@ -3,8 +3,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
     MySketch = MySketch.MySketch;
 
-    var x = () => 42;
-
     return ["$timeout", "$rootScope", "api", "$stateParams", function ($timeout, $rootScope, api, $stateParams) {
 
         return {

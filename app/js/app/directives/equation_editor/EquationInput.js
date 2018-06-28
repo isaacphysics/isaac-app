@@ -1,8 +1,24 @@
 "use strict";
-define(["/partials/equation_editor/equation_input.html"], function(templateUrl) {
+define(["p5",
+        "nearley",
+        "app/js/lib/equation_editor/grammar.ne",
+        "app/ts/inequality/Inequality.ts",
+        "/partials/equation_editor/equation_input.html"],
+        function(p5, nearley, grammar, MySketch, templateUrl) {
 
-    // var MySketch = require("inequality").MySketch;
-    // var mathparser = require("lib/equation_editor/mathparser.js");
+    MySketch = MySketch.MySketch;
+    const compiledGrammar = nearley.Grammar.fromCompiled(grammar);
+
+    const parseExpression = (expression = '') => {
+        const parser = new nearley.Parser(compiledGrammar)
+        let output = null
+        try {
+            output = parser.feed(expression).results
+        } catch (error) {
+            output = { error }
+        }
+        return output
+    }
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -70,7 +86,7 @@ define(["/partials/equation_editor/equation_input.html"], function(templateUrl) 
                     }
                     timer = $timeout(function() {
                         var pycode = element.find(".eqn-text-input")[0].value;
-                        var parsedExpression = mathparser.parseExpression(pycode);
+                        var parsedExpression = parseExpression(pycode);
                         sketch.symbols = [];
                         scope.textEntryError = [];
 
