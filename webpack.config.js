@@ -39,7 +39,7 @@ module.exports = function(env) {
         },
         {
           test: /\.ts$/,
-          use: "babel-loader"
+          use: ["babel-loader", "ts-loader"]
         },
         { 
           test: path.resolve(__dirname, "node_modules", "jquery", "dist", "jquery.js"),

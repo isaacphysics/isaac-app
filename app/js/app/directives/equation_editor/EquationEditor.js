@@ -1,5 +1,5 @@
 "use strict";
-define(["app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (MySketch, tester, templateUrl) {
+define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, MySketch, tester, templateUrl) {
 
     MySketch = MySketch.MySketch;
 
@@ -428,7 +428,11 @@ define(["app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_ca
 
                         scope.future = [];
                         var p = new p5(function (p) {
-                            sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                            try {
+                                sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                            } catch (error) {
+                                console.log(error);
+                            }
                             $rootScope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
