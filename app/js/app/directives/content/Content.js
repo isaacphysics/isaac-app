@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(['/partials/content/Content.html'], function(templateUrl) {
 
 
 	return ["$compile", "RecursionHelper", "$location", "$timeout", function($compile, RecursionHelper, $location, $timeout) {
@@ -24,7 +24,7 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: '/partials/content/Content.html',
+			templateUrl: templateUrl,
 
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {

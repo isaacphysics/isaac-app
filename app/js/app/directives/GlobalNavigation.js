@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(['/partials/global_navigation.html'], function(templateUrl) {
 
     return ["$location", "$timeout", "api", "$state", function($location, $timeout, api, $state) {
 		return {
 			scope: true,
 			restrict: "A",
-            templateUrl: '/partials/global_navigation.html',
+            templateUrl: templateUrl,
 
             link: function(scope, element, attrs) {
             	

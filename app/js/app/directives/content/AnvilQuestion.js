@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/AnvilQuestion.html"], function(templateUrl) {
 
 
     return ["api", "$sce", function(api, $sce) {
@@ -23,7 +23,7 @@ define([], function() {
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/AnvilQuestion.html",
+            templateUrl: templateUrl,
 
             link: function(scope, element, attrs) {
 

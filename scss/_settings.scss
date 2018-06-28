@@ -40,7 +40,7 @@ $ft-lower-colour: #7fd0ff; // keep in sync with FastTrackProgressBar.js' scope.F
 // $rem-base: 16px;
 
 // Allows the use of rem-calc() or lower-bound() in your settings
-@import "foundation/functions";
+@import "foundation-sites/scss/foundation/functions";
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.

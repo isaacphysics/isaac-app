@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/NumericQuestion.html"], function(rv, templateUrl) {
 
     return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
@@ -22,7 +22,7 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/NumericQuestion.html",
+			templateUrl: templateUrl,
 
 			controller: ["$scope", "$element", function(scope, element) {
 				var ctrl = this;

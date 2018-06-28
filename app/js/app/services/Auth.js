@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
+	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -148,7 +148,7 @@ define([], function() {
 			// We also need to make sure that we can in fact write to Local Storage before setting the timeout!
 			if (persistence.save("currentUserId", $rootScope.user._id)) {
 
-				interval = $interval(function() {
+				interval = setInterval(function() {
 					var currentId = persistence.load("currentUserId")
 					if (currentId != $rootScope.user._id) {
 		            	cancelUserConsistencyCheck();
@@ -159,6 +159,7 @@ define([], function() {
 							userAgent: navigator.userAgent,
 						});
 		            	$rootScope.user = api.currentUser.get();
+		            	$rootScope.$apply();
 					}
 		        }, 1000)
 			} else {
@@ -173,7 +174,7 @@ define([], function() {
 		var cancelUserConsistencyCheck = function() {
 	       	persistence.save("currentUserId", null)
 	        if (interval) {
-	        	$interval.cancel(interval);
+	        	clearInterval(interval);
 	        	interval = null;
 	        }   
 		}

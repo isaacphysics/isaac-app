@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([],function() {
+define(["/partials/desktop_panel.html"], function(templateUrl) {
 
 	return [function() {
 
@@ -21,7 +21,7 @@ define([],function() {
 
 			restrict: "A",
 
-			templateUrl: "/partials/desktop_panel.html",
+			templateUrl: templateUrl,
 
 			transclude: true,
 

@@ -23,6 +23,8 @@ define([], function() {
 
 		$scope.login = function() {
 
+			$("input").trigger("change");
+
 			$scope.loginAttempted = true;
 			delete $scope.errorMessage;
 			// Only submit if form is valid

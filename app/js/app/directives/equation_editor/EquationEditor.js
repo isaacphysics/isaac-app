@@ -1,14 +1,16 @@
 "use strict";
-define(function (require) {
+define(["app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (MySketch, tester, templateUrl) {
 
-    var MySketch = require("inequality").MySketch;
-    var tester = require("lib/equation_editor/test_cases.js");
+    MySketch = MySketch.MySketch;
+
+    var x = () => 42;
+
     return ["$timeout", "$rootScope", "api", "$stateParams", function ($timeout, $rootScope, api, $stateParams) {
 
         return {
             scope: true,
             restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_editor.html",
+            templateUrl: templateUrl,
             link: function (scope, element, attrs) {
 
 

@@ -28,7 +28,7 @@ import { DockingPoint } from "./DockingPoint";
 
 export
     class Fraction extends Widget {
-    protected s: any;
+    public s: any;
     private width: number;
 
     get typeAsString(): string {
@@ -49,7 +49,7 @@ export
         this.s = s;
         this.width = 0;
 
-        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'symbol_subscript', 'differential_argument'];
+        this.docksTo = ['operator', 'symbol', 'exponent', 'operator_brackets', 'relation', 'differential_argument'];
     }
 
     /** Generates all the docking points in one go and stores them in this.dockingPoints.

@@ -1,8 +1,8 @@
 "use strict";
-define(function(require) {
+define(["/partials/equation_editor/equation_input.html"], function(templateUrl) {
 
-    var MySketch = require("inequality").MySketch;
-    var mathparser = require("lib/equation_editor/mathparser.js");
+    // var MySketch = require("inequality").MySketch;
+    // var mathparser = require("lib/equation_editor/mathparser.js");
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -13,7 +13,7 @@ define(function(require) {
                 editorMode: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_input.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
 
                 scope.isEquality = window.location.pathname.startsWith("/equality");

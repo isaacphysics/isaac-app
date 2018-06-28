@@ -30,7 +30,7 @@ import { Brackets } from "./Brackets";
  */
 export
     class StateSymbol extends Widget {
-    protected s: any;
+    public s: any;
     protected stateString: string;
     protected state: string;
     protected pythonSymbol: string;

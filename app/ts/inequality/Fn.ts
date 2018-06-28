@@ -29,7 +29,7 @@ import { DockingPoint } from "./DockingPoint";
 export
     class Fn extends Widget {
 
-    protected s: any;
+    public s: any;
     protected name: string;
     protected custom: boolean;
     protected innerSuperscript: boolean;

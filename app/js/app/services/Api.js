@@ -234,7 +234,19 @@ define([], function() {
             'revoke' : {
                 method: 'DELETE',
                 url: urlPrefix + "/authorisations/:id" 
-            },          
+            },
+            'revokeAll' : {
+                method: 'DELETE',
+                url: urlPrefix + "/authorisations/" 
+            },            
+            'release' : {
+                method: 'DELETE',
+                url: urlPrefix + "/authorisations/release/:id" 
+            },
+            'releaseAll' : {
+                method: 'DELETE',
+                url: urlPrefix + "/authorisations/release/" 
+            },           
             'getOthers' : {
                 method: 'GET',
                 url: urlPrefix + "/authorisations/other_users", 
@@ -260,9 +272,8 @@ define([], function() {
             },
             'getAssignedGroups' : {
                 method: 'GET', 
-                isArray: true,
-                url: urlPrefix + "/assignments/assign/:gameId", 
-                params: {gameId: '@gameId'}
+                //isArray: true,
+                url: urlPrefix + "/assignments/assign/groups?gameboard_ids=:gameboard_ids"
             },                  
             'assignBoard' : {
                 method: 'POST',

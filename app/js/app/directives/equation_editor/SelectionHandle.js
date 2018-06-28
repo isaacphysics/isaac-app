@@ -1,11 +1,11 @@
-define([], function() {
+define(["/partials/equation_editor/selection_handle.html"], function(templateUrl) {
 
     return ["$timeout", function($timeout) {
 
         return {
             scope: true,
             restrict: "A",
-            templateUrl: "/partials/equation_editor/selection_handle.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
 
                 element.on("mousedown", "polygon.handle-move", function(e) {
