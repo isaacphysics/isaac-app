@@ -1,8 +1,4 @@
-"use strict";
-define(function(require) {
-
-    var MySketch = require("inequality").MySketch;
-    var mathparser = require("lib/equation_editor/mathparser.js");
+define(["/partials/equation_editor/equation_input.html"], function(templateUrl) {
 
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -13,11 +9,8 @@ define(function(require) {
                 editorMode: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_input.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
-
-                scope.isEquality = window.location.pathname.startsWith("/equality");
-
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
@@ -28,38 +21,6 @@ define(function(require) {
                     }
                 }
 
-                scope.selectedSymbols = [];
-
-                var letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
-                var inverseLetterMap = {};
-                for (var k in letterMap) {
-                    inverseLetterMap[letterMap[k]] = k;
-                }
-                inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
-
-                var sketch = null;
-                var editorCanvas = element.find(".equation-editor-text-entry")[0];
-                var p = new p5(function (p) {
-                    sketch = new MySketch(p, scope, element.width(), element.height(), [], true);
-                    $rootScope.sketch = sketch;
-                    return sketch;
-                }, editorCanvas);
-
-                // Magic starts here
-
-                var countChildren = function(root) {
-                    var q = [root];
-                    var count = 1;
-                    while (q.length > 0) {
-                        var e = q.shift();
-                        var c = Object.keys(e.children).length;
-                        if (c > 0) {
-                            count = count + c;
-                            q = q.concat(Object.values(e.children));
-                        }
-                    }
-                    return count
-                };
 
                 var timer = null;
                 scope.textEdit = function() {
@@ -70,85 +31,27 @@ define(function(require) {
                     }
                     timer = $timeout(function() {
                         var pycode = element.find(".eqn-text-input")[0].value;
-                        var parsedExpression = mathparser.parseExpression(pycode);
-                        sketch.symbols = [];
-                        scope.textEntryError = [];
-
-                        if (!parsedExpression.hasOwnProperty('error')) {
-                            if (parsedExpression.length === 0) {
-                                if (pycode === '') {
-                                   element.find(".eqn-preview").html("Click here to enter a formula!");
-                                    scope.symbols = [];
-                                    scope.state.result.tex = "";
-                                    scope.state.result.python = "";
-                                    scope.state.result.mathml = "";
-                                    sketch.symbols = [];
-                                } else {
-                                    // TODO: Do something here
-                                    console.log("User entered maths, we could not parse it.")
-                                }
-                            } else if (parsedExpression.length === 1) {
-                                sketch.parseSubtreeObject(parsedExpression[0]);
-                            } else {
-                                var sizes = _.map(parsedExpression, countChildren);
-                                var i = sizes.indexOf(Math.max.apply(null, sizes));
-                                sketch.parseSubtreeObject(parsedExpression[i]);
-                            }
-                        } else {
-                            // TODO: Do something with the error here. It contains useful information.
-                            var error = parsedExpression.error;
-                            console.log(error.offset, error.token);
-                        }
-
                         var openBracketsCount = pycode.split('(').length - 1;
                         var closeBracketsCount = pycode.split(')').length - 1;
 
-                        scope.state.textEntry = true;
+                        scope.state = {result: {python: pycode}, textEntry: true};
                         var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
-                        var badCharacters = new RegExp(regexStr);
-                        var goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
+                        var badCharacters = RegExp(regexStr);
+                        var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
+                        scope.textEntryError = [];
                         if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                             scope.textEntryError.push('LaTeX syntax is not supported.');
                         }
                         if (badCharacters.test(pycode)) {
                             scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
                         }
-                        if (openBracketsCount !== closeBracketsCount) {
+                        if (openBracketsCount != closeBracketsCount) {
                             scope.textEntryError.push('You are missing some ' + (closeBracketsCount > openBracketsCount ? 'opening' : 'closing') + ' brackets.');
                         }
                         if (/\.[0-9]/.test(pycode)) {
                             scope.textEntryError.push('Please convert decimal numbers to fractions.');
                         }
                     }, 250);
-                };
-
-                var replaceSpecialChars = function (s) {
-                    for (var k in inverseLetterMap) {
-                        // Special characters have special needs (i.e., a space after them).
-                        // If the special character is followed by a non-special character, add a space:
-                        s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
-                        // Otherwise just replace it.
-                        s = s.replace(new RegExp(k + '', "g"), inverseLetterMap[k]);
-                    }
-                    return s;
-                };
-
-                scope.newEditorState = function (s) {
-                    scope.state = s;
-
-                    console.log("New state:", s);
-
-                    var rp = $(".eqn-preview");
-                    rp.empty();
-
-                    // this renders the result in the preview box in the bottom right corner of the eqn editor
-                    if (scope.state.result) {
-                        scope.state.result["tex"] = replaceSpecialChars(scope.state.result["tex"]);
-                        scope.state.result["python"] = replaceSpecialChars(scope.state.result["python"]).replace(/\\/g, "").replace(/varepsilon/g, "epsilon");
-                        katex.render(scope.state.result["tex"], rp[0]);
-                    }
-
-                    // TODO: Set the initial state?
                 };
 
                 scope.edit = function() {

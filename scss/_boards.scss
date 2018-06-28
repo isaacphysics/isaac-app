@@ -256,6 +256,22 @@
 					font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
 					font-size: .875rem;
 				}
+
+				button {
+					float: right;
+					padding: 3% 8%;
+					margin: 0;
+					border: 1px solid #999;
+					color: #666;
+					background-color: #dfdfdf;
+					font-weight: 600;
+
+					&:hover {
+						background-color: #efefef;
+					}
+
+					transition: none;
+				}
 			}
 		}
 		div.board-percentage {

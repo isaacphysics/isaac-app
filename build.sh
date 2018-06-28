@@ -36,7 +36,7 @@ else
 fi
 
 npm install &&
-grunt dist &&
+npm run build:prod &&
 docker build -t "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" --build-arg API_VERSION=$SEGUE_VERSION . &&
 docker push "docker.isaacscience.org/isaac-app:${VERSION_TO_DEPLOY,,}" ||
 exit 1

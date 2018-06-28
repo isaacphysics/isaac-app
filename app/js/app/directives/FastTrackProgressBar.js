@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', "/partials/fasttrack_progress_bar.html"], function($, templateUrl) {
     return ['$location', function($location) {
         return {
             restrict: 'A',
@@ -8,7 +8,7 @@ define(['jquery'], function($) {
                 currentPage: '=page',
             },
 
-            templateUrl: "/partials/fasttrack_progress_bar.html",
+            templateUrl: templateUrl,
 
             link: function(scope, element, attrs) {
                 var svgElement = function(tagName) {

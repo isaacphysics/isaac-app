@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], function() {
+define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/table.js"], function() {
 
 
 	return ["$parse", "$compile", "$location", "$rootScope", function($parse, $compile, $location, $rootScope) {

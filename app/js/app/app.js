@@ -16,33 +16,51 @@
 'use strict';
 
 define([
-    "app/honest/responsive_video",
-    "lib/rsvp",
-    "foundation",
-    "app/router",
+    "./honest/responsive_video",
+    "../lib/rsvp",
+    "require",
+    "./router",
     "angular",
     "angular-resource",
     "angular-cookies",
     "angular-ui-date",
-    "app/controllers",
-    "app/directives",
-    "app/services",
-    "app/filters",
+    "./controllers",
+    "./directives",
+    "./services",
+    "./filters",
     "d3",
-    "owl-carousel2",
-    "app/honest/dropdown",
+    "./honest/dropdown",
     "angulartics",
     "angulartics-google-analytics",
-    "app/MathJaxConfig",
-    "lib/opentip-jquery.js",
-    "js/templates.js",
-    "angular-google-maps"
-    ], function(rv, ineq) {
+    "./MathJaxConfig",
+    "angular-simple-logger",
+    "angular-google-maps",
+    "../lib/opentip-jquery.js",
+    "foundation-sites/js/vendor/modernizr",
+    ], function(rv, ineq, require) {
 
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
-	//var rv = System.amdRequire("app/honest/responsive_video.js");
+    // Load all of foundation
+    let req = require.context("foundation-sites/js/foundation", true);
+    for(let r of req.keys()) {
+        req(r);
+    }
+
+    require("owl.carousel/src/js/owl.carousel.js");
+    require("owl.carousel/src/js/owl.autorefresh.js");
+    require("owl.carousel/src/js/owl.lazyload.js");
+    require("owl.carousel/src/js/owl.autoheight.js");
+    require("owl.carousel/src/js/owl.video.js");
+    require("owl.carousel/src/js/owl.animate.js");
+    require("owl.carousel/src/js/owl.autoplay.js");
+    require("owl.carousel/src/js/owl.navigation.js");
+    require("owl.carousel/src/js/owl.hash.js");
+    require("owl.carousel/src/js/owl.support.js");
+
+
+	//var rv = System.amdRequire("./honest/responsive_video.js");
 
 	// Declare app level module which depends on filters, and services
 	angular.module('isaac', [
@@ -118,7 +136,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.5.3/api");
+            apiProvider.urlPrefix("/api/v2.5.4/api");
         }
 
         NProgress.configure({ showSpinner: false });

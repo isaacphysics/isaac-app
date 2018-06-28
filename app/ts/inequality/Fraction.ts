@@ -28,7 +28,7 @@ import { DockingPoint } from "./DockingPoint";
 
 export
     class Fraction extends Widget {
-    protected s: any;
+    public s: any;
     private width: number;
 
     get typeAsString(): string {

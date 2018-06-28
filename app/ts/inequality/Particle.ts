@@ -31,7 +31,7 @@ import { Brackets } from "./Brackets";
 export
     class Particle extends Widget {
 
-    protected s: any;
+    public s: any;
     protected type: string;
     protected pythonSymbol: string;
     protected latexSymbol: string;

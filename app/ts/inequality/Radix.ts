@@ -29,7 +29,7 @@ import { DockingPoint } from "./DockingPoint";
 export
     class Radix extends Widget {
 
-    protected s: any;
+    public s: any;
 
     private baseHeight: number;
 

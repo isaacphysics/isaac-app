@@ -28,7 +28,7 @@ import { Num } from "./Num";
 
 export
     class Derivative extends Widget {
-    protected s: any;
+    public s: any;
     private width: number;
 
     get typeAsString(): string {

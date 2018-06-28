@@ -30,7 +30,7 @@ import { DockingPoint } from "./DockingPoint";
 export
     class Brackets extends Widget {
 
-    protected s: any;
+    public s: any;
     private type: string;
     private latexSymbol: Object;
     private pythonSymbol: Object;

@@ -41,7 +41,7 @@ define([], function() {
 	}
 
 	var calculateBoardLevels = function(board, options) {
-		levels = [];
+		let levels = [];
 		for(var i = 0; i < board.questions.length; i++) {
 			var level = board.questions[i].level
 			if (levels.indexOf(level) == -1 && level != 0) {
@@ -56,8 +56,8 @@ define([], function() {
 	};
 
 	var calculateBoardSubjects = function(board, options) {
-		subjects = [];
-		for(i = 0; i < board.questions.length; i++) {
+		let subjects = [];
+		for(let i = 0; i < board.questions.length; i++) {
 			var q = board.questions[i];
 			if (q.tags && q.tags.indexOf("maths") > -1) {
 				pushIfNotPresent(subjects, "maths");
@@ -99,7 +99,7 @@ define([], function() {
 		angular.forEach(allOptions, function(seenOptions, selectorKey) {
 			// start with the no filter option
 			filterOptions[selectorKey] = [noFilterOption];
-			selectorOptions = filterOptions[selectorKey];
+			let selectorOptions = filterOptions[selectorKey];
 			for (var i = 0; i < seenOptions.length; i++) {
 				var seenOption = seenOptions[i];
 				selectorOptions.push({label: seenOption, value: seenOption});
@@ -115,7 +115,7 @@ define([], function() {
 			var seenOptions = {completion:[], levels:[], subjects:[], createdBy:[]};
 
 			for (var i = 0; i < boards.length; i++) {
-				board = boards[i];
+				let board = boards[i];
 				board.completion = calculateBoardCompletionStatus(board, seenOptions.completion);
 				board.subjects = calculateBoardSubjects(board, seenOptions.subjects);
 				board.levels = calculateBoardLevels(board, seenOptions.levels);

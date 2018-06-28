@@ -32,7 +32,7 @@ import { DockingPoint } from "./DockingPoint";
  */
 export
     class BinaryOperation extends Widget {
-    protected s: any;
+    public s: any;
     protected operation: string;
     protected mhchemSymbol: string;
     protected latexSymbol: string;

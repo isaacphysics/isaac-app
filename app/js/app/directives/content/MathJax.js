@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/MathJaxConfig"], function() {
+define(["../../MathJaxConfig"], function() {
 
 
 	return ["$compile", "$rootScope", function($compile, $rootScope) {

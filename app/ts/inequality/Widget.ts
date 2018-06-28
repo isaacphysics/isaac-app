@@ -172,7 +172,7 @@ export
         return "Widget";
     }
 
-    constructor(p: any, protected s: any, mode: string = 'maths') {
+    constructor(p: any, public s: any, mode: string = 'maths') {
         // Take a new unique id for this symbol
         this.id = ++wId;
         // This is weird but necessary: this.p will be the sketch function

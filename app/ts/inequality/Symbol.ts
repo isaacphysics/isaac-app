@@ -30,7 +30,7 @@ import { Num } from "./Num";
 export
     class Symbol extends Widget {
 
-    protected s: any;
+    public s: any;
     protected letter: string;
     protected modifier: string;
 

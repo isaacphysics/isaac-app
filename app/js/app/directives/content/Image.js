@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/Image.html"], function(templateUrl) {
 
 
 	return ["api", function(api) {
@@ -23,7 +23,7 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/Image.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 

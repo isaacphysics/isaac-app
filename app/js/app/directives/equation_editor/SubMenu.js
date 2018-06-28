@@ -1,11 +1,11 @@
-define([], function() {
+define(["/partials/equation_editor/sub_menu.html"], function(templateUrl) {
 
 	return ["$timeout", function($timeout) {
 
 		return {
             scope: true,
 			restrict: "A",
-			templateUrl: "/partials/equation_editor/sub_menu.html",
+			templateUrl: templateUrl,
 			link: function(scope, element, attrs) {
                 scope.name+="SUBMENU"
 

@@ -1,4 +1,4 @@
-define([], function() {
+define(["/partials/equation_editor/canvas_symbol.html"], function(templateUrl) {
 
 	return ["$timeout", function($timeout) {
 
@@ -9,7 +9,7 @@ define([], function() {
                 symbolId: "=",
             },
 			restrict: "A",
-			templateUrl: "/partials/equation_editor/canvas_symbol.html",
+			templateUrl: templateUrl,
 			link: function(scope, element, attrs) {
                 scope.name+="CANVAS SYMBOL"
 

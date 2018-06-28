@@ -1,4 +1,4 @@
-define([], function() {
+define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
 
     return ["$timeout", function($timeout) {
 
@@ -9,7 +9,7 @@ define([], function() {
             scope: true,
             restrict: "A",
             transclude: true,
-            templateUrl: "/partials/equation_editor/top_menu.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 scope.name = "TOPMENU"
 

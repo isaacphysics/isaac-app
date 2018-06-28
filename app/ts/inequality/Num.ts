@@ -32,7 +32,7 @@ import { Brackets } from "./Brackets";
 export
     class Num extends Widget {
 
-    protected s: any;
+    public s: any;
     private significand: string;
     private num_font_size;
     protected right = this.dockingPoints.hasOwnProperty("right");

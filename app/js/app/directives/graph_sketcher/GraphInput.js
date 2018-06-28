@@ -1,4 +1,5 @@
 define(function(require) {
+    var templateUrl = require("/partials/graph_sketcher/graph_input.html");
     
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
@@ -9,7 +10,7 @@ define(function(require) {
             },
 
             restrict: "A",
-            templateUrl: "/partials/graph_sketcher/graph_input.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 isTherePreviousAnswer = function() {
                     return (scope.dat.curves != undefined);

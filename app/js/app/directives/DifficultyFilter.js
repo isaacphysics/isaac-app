@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/difficulty"], function(Difficulty) {
+define(["../honest/difficulty", "/partials/difficulty_filter.html"], function(Difficulty, templateUrl) {
 
 
 	return ["$state", function($state) {
@@ -26,7 +26,7 @@ define(["app/honest/difficulty"], function(Difficulty) {
 
 			restrict: "A",
 
-			templateUrl: "/partials/difficulty_filter.html",
+			templateUrl: templateUrl,
 
 			link: function(scope, element, attrs) {
 			    var config = [

@@ -28,7 +28,7 @@ import { DockingPoint } from "./DockingPoint";
 export
 class Differential extends Widget {
 
-    protected s: any;
+    public s: any;
     protected letter: string;
 
     get typeAsString(): string {

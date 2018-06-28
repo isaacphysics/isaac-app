@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- define([], function() {
+ define(["/partials/hex_carousel.html"], function(templateUrl) {
 
  	return ["api", "$interval", function(api, $interval) {
 
@@ -25,7 +25,7 @@
 
  			restrict: "A",
 
- 			templateUrl: "/partials/hex_carousel.html",
+ 			templateUrl: templateUrl,
 
  			link: function(scope, element, attrs) {
 
