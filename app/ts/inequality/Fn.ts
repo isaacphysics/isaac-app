@@ -229,7 +229,7 @@ export
 
     _drawBracketsInBox(box: Rect) {
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Brackets
-        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+        this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
         let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
         let a = m * this.s.baseFontSize/5;
