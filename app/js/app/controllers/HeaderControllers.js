@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  *
  * You may obtain a copy of the License at
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,35 +15,35 @@
  */
 define([], function() {
 
-	var PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
-		
-		$scope.$root.segueEnvironment = "LIVE"; //Live by default
+    let PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
+        
+        $scope.$root.segueEnvironment = "LIVE"; //Live by default
 
-		//Find out which version we're on
-		api.environment.get().$promise.then(function(response){
-			$scope.$root.segueEnvironment = response.segueEnvironment;
-		});
+        //Find out which version we're on
+        api.environment.get().$promise.then(function(response){
+            $scope.$root.segueEnvironment = response.segueEnvironment;
+        });
 
 
 
-        var notificationsOpen = false;
+        let notificationsOpen = false;
 
-		$scope.notificationToggle = function() {
+        $scope.notificationToggle = function() {
 
-			notificationsOpen = !notificationsOpen;
+            notificationsOpen = !notificationsOpen;
 
-			if (notificationsOpen) {
+            if (notificationsOpen) {
 
-				var notificationSeenList = [];
+                let notificationSeenList = [];
 
-                for (var i = 0; i < $rootScope.notificationList.length; i++) {
+                for (let i = 0; i < $rootScope.notificationList.length; i++) {
 
                     notificationSeenList.push($rootScope.notificationList[i].id);
                 }
 
                 $rootScope.notificationWebSocket.send(JSON.stringify({
                     "feedbackType" : "NOTIFICATION_VIEW_LIST",
-					"notificationIds" : notificationSeenList
+                    "notificationIds" : notificationSeenList
                 }));
 
 
@@ -52,20 +52,20 @@ define([], function() {
 
                 $rootScope.notificationListLength = 0;
                 $rootScope.notificationPopups = [];
-			}
+            }
 
             $('.dl-notifications').slideToggle(200);
 
-		}
+        }
 
 
 
         $rootScope.streakDialToggle = function(questionPartsCorrectToday) {
 
-		    var progressValue = $('#progress-bar');
-            var radius = 20;
-            var circumference = 2 * Math.PI * radius;
-            var dashOffset = circumference;
+            let progressValue = $('#progress-bar');
+            let radius = 20;
+            let circumference = 2 * Math.PI * radius;
+            let dashOffset = circumference;
 
 
             if (questionPartsCorrectToday <= 3) {
@@ -80,9 +80,9 @@ define([], function() {
 
         }
 
-	}];
+    }];
 
-	return {
-		PageController: PageController
-	};
+    return {
+        PageController: PageController
+    };
 });

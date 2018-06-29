@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-    var PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($rootScope, $scope, auth, api, tags, $stateParams, $timeout) {
+    let PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($rootScope, $scope, auth, api, tags, $stateParams, $timeout) {
         // start and end dates for line graphs
-        var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 5)) // Set it to five years ago at most!
+        let dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 5)) // Set it to five years ago at most!
         dataStartDate = dataStartDate.getTime();
-        var dataEndDate = new Date().getTime();
+        let dataEndDate = new Date().getTime();
 
-        var userOfInterest = $scope.user._id;
+        let userOfInterest = $scope.user._id;
 
         $scope.questionsAnsweredOverTime = null;
 
@@ -40,9 +40,9 @@ define([], function() {
         api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result){
             $scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
             $scope.showQuestionsOverTime = false;
-            for (var property in $scope.questionsAnsweredOverTime) {
+            for (let property in $scope.questionsAnsweredOverTime) {
                 if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
-                    for (var i in $scope.questionsAnsweredOverTime[property]) {
+                    for (let i in $scope.questionsAnsweredOverTime[property]) {
                         $scope.showQuestionsOverTime = true; // There is data to show.
                         break;
                     }
@@ -84,10 +84,10 @@ define([], function() {
 
             // --- STREAK PROGRESS --- //
             if ($scope.progress.userSnapshot.streakRecord) {
-                var currentProgressValue = $('#current-streak-progress-bar');
-                var radius = 40;
-                var circumference = 2 * Math.PI * radius;
-                var currentDashOffset = circumference;
+                let currentProgressValue = $('#current-streak-progress-bar');
+                let radius = 40;
+                let circumference = 2 * Math.PI * radius;
+                let currentDashOffset = circumference;
 
                 if ($scope.progress.userSnapshot.streakRecord.currentActivity <= 3) {
                     currentDashOffset = circumference * (1 - ($scope.progress.userSnapshot.streakRecord.currentActivity/3));
@@ -113,7 +113,7 @@ define([], function() {
             $scope.correctQuestions.levelData = [];
             $scope.attemptedQuestions.levelData = [];
 
-            for (var i = 1; i <= 6; i++) {
+            for (let i = 1; i <= 6; i++) {
                 $scope.correctQuestions.levelData.push(
                     {label: 'Level ' + i.toString(), val: $scope.progress.correctByLevel[i.toString()] || 0}
                 );
@@ -124,9 +124,9 @@ define([], function() {
 
             $scope.correctQuestions.subjectData = [];
             $scope.attemptedQuestions.subjectData = [];
-            var subjects = ["physics","maths","chemistry"];
+            let subjects = ["physics","maths","chemistry"];
 
-            for (var i = 0; i < subjects.length; i++) {
+            for (let i = 0; i < subjects.length; i++) {
                 $scope.correctQuestions.subjectData.push(
                     {label: subjects[i].charAt(0).toUpperCase() + subjects[i].slice(1), val: $scope.progress.correctByTag[subjects[i]] || 0}
                 );
@@ -142,19 +142,19 @@ define([], function() {
             $scope.correctQuestions.fieldData = [];
             $scope.attemptedQuestions.fieldData = [];
 
-            var correctFields = [];
-            var attemptedFields = [];
+            let correctFields = [];
+            let attemptedFields = [];
 
-            for (var tid in $scope.progress.correctByTag) {
-                var t = tags.getById(tid);
+            for (let tid in $scope.progress.correctByTag) {
+                let t = tags.getById(tid);
                 if (t && t.level == 1) {
                     correctFields.push(t);
                     $scope.correctQuestions.fields.push(t);
                 }
             }
 
-            for (var tid in $scope.progress.attemptsByTag) {
-                var t = tags.getById(tid);
+            for (let tid in $scope.progress.attemptsByTag) {
+                let t = tags.getById(tid);
                 if (t && t.level == 1) {
                     attemptedFields.push(t);
                     $scope.attemptedQuestions.fields.push(t);
@@ -185,10 +185,10 @@ define([], function() {
                         return;
                     }
 
-                    var topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
-                    for(var i in topics) {
-                        var t = topics[i];
-                        var value;
+                    let topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
+                    for (let i in topics) {
+                        let t = topics[i];
+                        let value;
 
                         if ($scope.questionsVisible == $scope.correctQuestions) {
                             value = $scope.progress.correctByTag[t.id] || 0;

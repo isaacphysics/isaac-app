@@ -15,11 +15,11 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$timeout', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $timeout, $stateParams, $state) {
+    let PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$timeout', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $timeout, $stateParams, $state) {
         
         $rootScope.pageTitle = "My Boards";
 
-        var updateBoards = function(limit) {
+        let updateBoards = function(limit) {
             $scope.setLoading(true);
             api.userGameBoards($scope.selectedFilterOption.value, $scope.selectedSortOption.value, 0, limit).$promise.then(function(boards) {
                 $scope.boards = boards;
@@ -60,9 +60,9 @@ define([], function() {
                     }
                 }
 
-                var boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
+                let boardTitle = board.title ? board.title : $scope.generateGameBoardTitle(board);
                 // Warn user before deleting
-                var confirmation = confirm("You are about to delete "+ boardTitle + " board?");
+                let confirmation = confirm("You are about to delete "+ boardTitle + " board?");
                 if (confirmation) {
                     // TODO: This needs to be reviewed
                     // Currently reloading boards after delete
@@ -81,13 +81,13 @@ define([], function() {
 
         $scope.deleteBoards = function() {
 
-            var selectedBoardCount = $scope.selectedBoards.length;
+            let selectedBoardCount = $scope.selectedBoards.length;
 
             if (selectedBoardCount == 0) {
                 return;
             }
 
-            var selectedBoardString = "";
+            let selectedBoardString = "";
 
             $scope.selectedBoards.forEach(function(boardId) {
                 selectedBoardString = selectedBoardString + "," + boardId.toString();
@@ -96,24 +96,24 @@ define([], function() {
 
             lookupAssignedGroups(selectedBoardString).$promise.then(function(groupsAssigned) {
 
-                var assignedCount = 0;
+                let assignedCount = 0;
 
-                var confirmationMessage = "Delete " + selectedBoardCount + " board";
+                let confirmationMessage = "Delete " + selectedBoardCount + " board";
                 if (selectedBoardCount > 1) {
                     confirmationMessage += "s";
                 }
                 confirmationMessage += "?";
 
-                var confirmation = confirm(confirmationMessage);
+                let confirmation = confirm(confirmationMessage);
                 if (confirmation) {
 
-                    var boardCount = 0;
-                    var numSelectedBoards = $scope.selectedBoards.length;
+                    let boardCount = 0;
+                    let numSelectedBoards = $scope.selectedBoards.length;
 
                     $scope.selectedBoards.forEach(function(boardId) {
 
                         boardCount++;
-                        var assigned = false;
+                        let assigned = false;
 
                         if (groupsAssigned[boardId] != null && groupsAssigned[boardId].length != 0) {
                             assignedCount = assignedCount + 1;
@@ -139,10 +139,10 @@ define([], function() {
                         });
                     });
 
-                    var deletedBoardsCount = selectedBoardCount - assignedCount;
-                    var deletionMessage = "";
-                    var deletionTitle = "";
-                    var toastType = null;
+                    let deletedBoardsCount = selectedBoardCount - assignedCount;
+                    let deletionMessage = "";
+                    let deletionTitle = "";
+                    let toastType = null;
 
                     if (deletedBoardsCount > 0) {
                         deletionMessage = "You have successfully deleted " + deletedBoardsCount +" board";
@@ -169,7 +169,7 @@ define([], function() {
 
         $scope.boardSelectToggle = function(boardId) {
 
-            var idx = $scope.selectedBoards.indexOf(boardId);
+            let idx = $scope.selectedBoards.indexOf(boardId);
 
             if (idx > -1) {
                 $scope.selectedBoards.splice(idx, 1);
@@ -197,20 +197,20 @@ define([], function() {
 
         $scope.$watch("selectedViewOption", function(newVal, oldVal) {
             if (newVal !== oldVal) {
-                var allBoardsLoaded = $scope.selectedFilterOption == boardSearchOptions.filter.values.all && $scope.selectedNoBoardsOption == boardSearchOptions.noBoards.values.all; 
+                let allBoardsLoaded = $scope.selectedFilterOption == boardSearchOptions.filter.values.all && $scope.selectedNoBoardsOption == boardSearchOptions.noBoards.values.all; 
                 $state.go('boards', {view: $scope.selectedViewOption.value}, {notify: !allBoardsLoaded}); // only request boards if all boards are not already loaded
                 setDefaultBoardSearchOptions($scope.selectedViewOption.defaultFieldName, allBoardsLoaded);
                 window.scrollTo(0, 0);
             }
         });
 
-        var setDefaultBoardSearchOptions = function(viewDefaultField, allBoardsLoaded) {
+        let setDefaultBoardSearchOptions = function(viewDefaultField, allBoardsLoaded) {
             if (['cardDefault', 'tableDefault'].indexOf(viewDefaultField) >= 0) {
                 // API parameters
-                for (boardSearchParameter in $scope.boardSearchOptions) {
-                    var boardSearchOption = boardSearchOptions[boardSearchParameter];
-                    var selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
-                    var defaultValueKey = boardSearchOption[viewDefaultField];
+                for (let boardSearchParameter in $scope.boardSearchOptions) {
+                    let boardSearchOption = boardSearchOptions[boardSearchParameter];
+                    let selectedOptionVariableName = 'selected' + boardSearchParameter.charAt(0).toUpperCase() + boardSearchParameter.slice(1) + 'Option';
+                    let defaultValueKey = boardSearchOption[viewDefaultField];
                     // if all boards are loaded ignore default assignment for selectedNoBoardsOption
                     if (!(allBoardsLoaded && selectedOptionVariableName == 'selectedNoBoardsOption')) {
                         $scope[selectedOptionVariableName] = boardSearchOption.values[defaultValueKey];
@@ -229,16 +229,16 @@ define([], function() {
             }
         };
 
-        var lookupAssignedGroups = function(gameboardIds) {
-            var groups = api.assignments.getAssignedGroups({gameboard_ids: gameboardIds});
+        let lookupAssignedGroups = function(gameboardIds) {
+            let groups = api.assignments.getAssignedGroups({gameboard_ids: gameboardIds});
             return groups;
         };
 
         // main
-        var mergeInProgress = false;
-        var queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
-        var suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
-        var initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
+        let mergeInProgress = false;
+        let queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
+        let suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
+        let initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
 
         setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
         updateBoards($scope.selectedNoBoardsOption.value);

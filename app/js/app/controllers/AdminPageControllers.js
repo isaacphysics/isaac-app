@@ -376,7 +376,7 @@ define([], function() {
         }
 
         $scope.attendanceSymbol = function(bookingStatus) {
-            symbolMap = {
+            let symbolMap = {
                 ATTENDED: '✔️',
                 ABSENT: '❌'
             }

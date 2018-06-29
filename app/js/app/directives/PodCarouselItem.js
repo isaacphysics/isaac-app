@@ -15,13 +15,13 @@
  */
  define([], function() {
 
- 	return ["api", "$interval", function(api, $interval) {
+	return ["api", "$interval", function(api, $interval) {
 
- 		return {
+		return {
 			restrict: 'A',
 			transclude: false,
 			link: function(scope, element) {
-			    // wait for the last item in the ng-repeat then call init
+					// wait for the last item in the ng-repeat then call init
 				if(scope.$last) {
 					scope.initCarousel()
 				}

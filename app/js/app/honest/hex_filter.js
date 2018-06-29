@@ -10,14 +10,14 @@ define([ 'jquery', './hexagon', 'd3'],
          * @param {Object} options - get:get current options callback, change:change callback
          * @returns {HexFilter Object}
          */
-        var HexFilter = function(element, options)
+        let HexFilter = function(element, options)
         {
             this._element = element;
             // Parse options
             this.options =  {};
             this.options.get    = options.get    || function(callback) { callback([]);};
             this.change = options.change || function() {};
-            var us = this;
+            let us = this;
             // Filter
             this.filter = [];
             // Last filter level to show
@@ -62,7 +62,7 @@ define([ 'jquery', './hexagon', 'd3'],
         * @param {String} tagName
         * @returns {JQuery DOM Element}
         */ 
-        var svgEl = function(tagName)
+        let svgEl = function(tagName)
         {
             return $(document.createElementNS("http://www.w3.org/2000/svg", tagName));
         };
@@ -73,7 +73,7 @@ define([ 'jquery', './hexagon', 'd3'],
          */
         HexFilter.prototype._determineVisibility = function()
         {
-            var us = this;
+            let us = this;
             // Reset last level shown and visible items
             us.endLevel = 3;
             us.visible = [];
@@ -81,9 +81,9 @@ define([ 'jquery', './hexagon', 'd3'],
              * Find currenly selected items to determine what to show
              * and what the last visible level is
              */
-            var _findSelected = function(items)
+            let _findSelected = function(items)
             {
-                var selected = 0;
+                let selected = 0;
                 $.each(items, function(i, item)
                 {
                     // Push current item
@@ -112,12 +112,12 @@ define([ 'jquery', './hexagon', 'd3'],
          */
         HexFilter.prototype._plotFilter = function()
         {
-            var us = this;
+            let us = this;
             
             /**
              * Plot connecting circles for desktop or mobile
              */
-            var _circles = function(items, vertical)
+            let _circles = function(items, vertical)
             {
 
                 // If the current item has no children - return
@@ -127,22 +127,22 @@ define([ 'jquery', './hexagon', 'd3'],
                 }
                 // Determine the current child and parent levels and check
                 // they should be shown
-                var parentLevel = items[0].level;
-                var childLevel = parentLevel + 1;
+                let parentLevel = items[0].level;
+                let childLevel = parentLevel + 1;
                 if(us.endLevel <= parentLevel)
                 {
                     return;
                 }
                 // Determine selection extents (what circles to plot)
-                var firstSelectedChild = -1;
-                var lastSelectedChild = -1;
-                var selectedParent = -1;
-                var childCount = -1;
+                let firstSelectedChild = -1;
+                let lastSelectedChild = -1;
+                let selectedParent = -1;
+                let childCount = -1;
                 // Child object and subject
-                var child = null;
-                var subject = null;
+                let child = null;
+                let subject = null;
                 // Get the extents based on parent position and children count and selections
-                for(var i = 0; i < items.length; i++)
+                for(let i = 0; i < items.length; i++)
                 {
                     if(items[i].selected)
                     {
@@ -151,7 +151,7 @@ define([ 'jquery', './hexagon', 'd3'],
                         child = items[i].children;
                         childCount = child.length;
                         // Determine extent of selected children     
-                        for(var j = 0; j < child.length; j++)
+                        for(let j = 0; j < child.length; j++)
                         {
                             if(child[j].selected)
                             {
@@ -177,10 +177,10 @@ define([ 'jquery', './hexagon', 'd3'],
                     // Do top level items
                     if(parentLevel === 1)
                     {
-                        var circles = (selectedParent * 11);
-                        var startX = us._dotGap * 3;
-                        var startY = us._dotGap * 7.5;
-                        for(var i = 0; i <= circles; i++)
+                        let circles = (selectedParent * 11);
+                        let startX = us._dotGap * 3;
+                        let startY = us._dotGap * 7.5;
+                        for(let i = 0; i <= circles; i++)
                         {
                             us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':((startX + (us._dotGap * i)) + us._dotRadius - 1), 
                                                                              'cy':(startY + us._dotRadius - 1), 
@@ -190,53 +190,41 @@ define([ 'jquery', './hexagon', 'd3'],
                                                                              'cy':(startY + us._dotGap + us._dotRadius - 1), 
                                                                              'r':us._dotRadius}).attr('class',subject));
                     }
-                    var minCircle = (parentLevel === 1) ? 0 : 3;
-                    var maxCircle = (us._mobParentPos[selectedParent] > us._mobChildPos[childCount - 1]) ? us._mobParentPos[selectedParent] : us._mobChildPos[childCount - 1];
+                    let minCircle = (parentLevel === 1) ? 0 : 3;
+                    let maxCircle = (us._mobParentPos[selectedParent] > us._mobChildPos[childCount - 1]) ? us._mobParentPos[selectedParent] : us._mobChildPos[childCount - 1];
+
                     // Get max and min rendered 'coloured' circles joining selections
-                    if(lastSelectedChild !== -1)
-                    {
-                        if(parentLevel === 2)
-                        {
-                            var maxColourCircle =  (us._mobParentPos[selectedParent] > us._mobChildPos[lastSelectedChild]) ? us._mobParentPos[selectedParent] : us._mobChildPos[lastSelectedChild];
-                        }
-                        else
-                        {
+                    let maxColourCircle, minColourCircle;
+                    if(lastSelectedChild !== -1) {
+                        if(parentLevel === 2) {
+                            maxColourCircle =  (us._mobParentPos[selectedParent] > us._mobChildPos[lastSelectedChild]) ? us._mobParentPos[selectedParent] : us._mobChildPos[lastSelectedChild];
+                        } else {
                             maxColourCircle = us._mobChildPos[lastSelectedChild];
                         }
-                    }
-                    else
-                    {
+                    } else {
                         maxColourCircle = 0;
                     }
-                    if(firstSelectedChild !== -1)
-                    {
-                        if(parentLevel === 2)
-                        {
-                            var minColourCircle = (us._mobParentPos[selectedParent] < us._mobChildPos[firstSelectedChild]) ? us._mobParentPos[selectedParent] : us._mobChildPos[firstSelectedChild];
-                        }
-                        else
-                        {
+                    if(firstSelectedChild !== -1) {
+                        if(parentLevel === 2) {
+                            minColourCircle = (us._mobParentPos[selectedParent] < us._mobChildPos[firstSelectedChild]) ? us._mobParentPos[selectedParent] : us._mobChildPos[firstSelectedChild];
+                        } else {
                             minColourCircle = 0;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         minColourCircle = 999;
                     }
                      // Plot 'drop across' from parent
-                    if(parentLevel === 2)
-                    {
-                       
-                        var startX = 12 * us._dotGap;
-                        var startY = (us._dotGap * 12.5) + (selectedParent * us._dotGap * 8);
+                    if(parentLevel === 2) {
+                        let startX = 12 * us._dotGap;
+                        let startY = (us._dotGap * 12.5) + (selectedParent * us._dotGap * 8);
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
                     }
                     // Plot 'vertical' circles
-                    var startY = (9.5 + minCircle) * us._dotGap;
-                    var startX = (parentLevel === 1) ? (us._dotGap * 3) : (us._dotGap * 13); 
-                    for(var i = minCircle; i <= maxCircle; i++, startY = startY + us._dotGap)
+                    let startY = (9.5 + minCircle) * us._dotGap;
+                    let startX = (parentLevel === 1) ? (us._dotGap * 3) : (us._dotGap * 13); 
+                    for(let i = minCircle; i <= maxCircle; i++, startY = startY + us._dotGap)
                     {
-                        var klass = subject;
+                        let klass = subject;
                         if(i < minColourCircle || i > maxColourCircle)
                         {
                             klass = 'grey';
@@ -245,11 +233,11 @@ define([ 'jquery', './hexagon', 'd3'],
                     }
                     
                     // Plot drop across to children from vertical
-                    for(var i = 0; i < child.length; i++)
+                    for(let i = 0; i < child.length; i++)
                     {
-                        var klass = (child[i].selected) ? subject : 'grey';
-                        var startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
-                        var startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
+                        let klass = (child[i].selected) ? subject : 'grey';
+                        let startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
+                        let startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
 
                     }
@@ -260,37 +248,33 @@ define([ 'jquery', './hexagon', 'd3'],
                 {
                     // Extent of 'line' and coloured portion
                     // Get max and min rendered circles
-                    var minCircle = 0;
-                    var maxCircle = (us._deskParentPos[selectedParent] > us._deskChildPos[childCount - 1]) ? us._deskParentPos[selectedParent] : us._deskChildPos[childCount - 1];
+                    let minCircle = 0;
+                    let maxCircle = (us._deskParentPos[selectedParent] > us._deskChildPos[childCount - 1]) ? us._deskParentPos[selectedParent] : us._deskChildPos[childCount - 1];
+                    
                     // Get max and min rendered 'coloured' circles joining selections
-                    if(lastSelectedChild !== -1)
-                    {
-                        var maxColourCircle =  (us._deskParentPos[selectedParent] > us._deskChildPos[lastSelectedChild]) ? us._deskParentPos[selectedParent] : us._deskChildPos[lastSelectedChild];
-                    }
-                    else
-                    {
+                    let maxColourCircle;
+                    if(lastSelectedChild !== -1) {
+                        maxColourCircle =  (us._deskParentPos[selectedParent] > us._deskChildPos[lastSelectedChild]) ? us._deskParentPos[selectedParent] : us._deskChildPos[lastSelectedChild];
+                    } else {
                         maxColourCircle = 0;
                     }
-                    if(firstSelectedChild !== -1)
-                    {
-                        var minColourCircle = (us._deskParentPos[selectedParent] < us._deskChildPos[firstSelectedChild]) ? us._deskParentPos[selectedParent] : us._deskChildPos[firstSelectedChild];
-                    }
-                    else
-                    {
+
+                    let minColourCircle;
+                    if(firstSelectedChild !== -1) {
+                        minColourCircle = (us._deskParentPos[selectedParent] < us._deskChildPos[firstSelectedChild]) ? us._deskParentPos[selectedParent] : us._deskChildPos[firstSelectedChild];
+                    } else {
                         minColourCircle = 999;
                     }
                     // Plot 'drop down' from parent
-                    var startX = (3 + us._deskParentPos[selectedParent]) * us._dotGap;
-                    var startY = (parentLevel- 1) * (us._height + (us._dotGap * us._deskVertical)) + (us._dotGap * 3 / 4) + us._height;
-                    for(var i = 0; i < 2; i++, startY = startY + us._dotGap)
-                    {
+                    let startX = (3 + us._deskParentPos[selectedParent]) * us._dotGap;
+                    let startY = (parentLevel- 1) * (us._height + (us._dotGap * us._deskVertical)) + (us._dotGap * 3 / 4) + us._height;
+                    for(let i = 0; i < 2; i++, startY = startY + us._dotGap) {
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',subject));
                     }
                     // Plot 'horizontal' circles
-                    var startX = (3 + minCircle) * us._dotGap;
-                    for(var i = minCircle; i <= maxCircle; i++, startX = startX + us._dotGap)
-                    {
-                        var klass = subject;
+                    startX = (3 + minCircle) * us._dotGap;
+                    for(let i = minCircle; i <= maxCircle; i++, startX = startX + us._dotGap) {
+                        let klass = subject;
                         if(i < minColourCircle || i > maxColourCircle)
                         {
                             klass = 'grey';
@@ -300,24 +284,18 @@ define([ 'jquery', './hexagon', 'd3'],
                     startY += us._dotGap;
 
                     // Plot drop downs to children from horizotal
-                    for(var i = 0; i < child.length; i++)
-                    {
-                        var klass = (child[i].selected) ? subject : 'grey';
-                        if(i === 0)
-                        {
-                            var startX = (3 + minCircle) * us._dotGap;
-                            var dropY = startY;
-                            for(var j = 0; j < 2; j++, dropY = dropY + us._dotGap)
-                            {
+                    for(let i = 0; i < child.length; i++) {
+                        let klass = (child[i].selected) ? subject : 'grey';
+                        if(i === 0) {
+                            let startX = (3 + minCircle) * us._dotGap;
+                            let dropY = startY;
+                            for(let j = 0; j < 2; j++, dropY = dropY + us._dotGap) {
                                 us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                             }
-                        }
-                        else
-                        {
-                            var startX = ((3 + us._deskChildPos[i]) * us._dotGap) + (us._dotGap * 0.6);
-                            var dropY = startY - (us._dotGap * 0.1);
-                            for(var j = 0; j < 3; j++, dropY = dropY + (us._dotGap * 0.9), startX = startX + (us._dotGap * 0.6))
-                            {
+                        } else {
+                            let startX = ((3 + us._deskChildPos[i]) * us._dotGap) + (us._dotGap * 0.6);
+                            let dropY = startY - (us._dotGap * 0.1);
+                            for(let j = 0; j < 3; j++, dropY = dropY + (us._dotGap * 0.9), startX = startX + (us._dotGap * 0.6)) {
                                 us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                             }
                         }
@@ -334,12 +312,12 @@ define([ 'jquery', './hexagon', 'd3'],
             this._determineVisibility();
             
             // Text
-            var select = d3.select(us._element.find('#hexfilter-text')[0]).selectAll("path")
-            .data(this.visible).enter();
-            var divs = select.append("div");
+            let select = d3.select(us._element.find('#hexfilter-text')[0])
+                           .selectAll("path")
+                           .data(this.visible).enter();
+            let divs = select.append("div");
             // Inner content of divs
-            divs.each(function(d,i)
-            {
+            divs.each(function(d,i) {
                 // Set base size and classes
                 $(this).addClass('ru-hex-filter-back-'+d.symbol)
                         .css({'top':(d.position.y)+'px', left:(d.position.x)+'px', width:(us._width)+'px', height:(us._height)+'px'})
@@ -348,16 +326,12 @@ define([ 'jquery', './hexagon', 'd3'],
                         .addClass(d.selected ? 'enabled' : 'disabled')
                         .addClass(d.enabled ? '' : 'inactive')
                         .addClass(d.level > us.endLevel ? ' hide' : '');
-                if(d.enabled)
-                {
+                if(d.enabled) {
                     $(this).attr('tabindex', '0');
-                    $(this).bind('keydown', function(e)
-                    {
-                        if(e.which === 13)
-                        {
-                            var selectedItem = us.visible[parseInt($(this).attr('data-item'))];
-                            if(selectedItem.enabled)
-                            {
+                    $(this).bind('keydown', function(e) {
+                        if(e.which === 13) {
+                            let selectedItem = us.visible[parseInt($(this).attr('data-item'))];
+                            if(selectedItem.enabled) {
                                 selectedItem.selected = !selectedItem.selected;
                                 us.ReDraw();
                             }
@@ -365,26 +339,24 @@ define([ 'jquery', './hexagon', 'd3'],
                     });
                 }
                 // Name
-                var item = us._element.find('[data-item='+i+']');
+                let item = us._element.find('[data-item='+i+']');
 
                 // A name is small if any word > 10
-                var small = false;
-                var split = d.title.split(' ');
-                for(var i = 0; i < split.length; i++)
-                {
-                    if(split[i].length > 10)
-                    {
+                let small = false;
+                let split = d.title.split(' ');
+                for(let i = 0; i < split.length; i++) {
+                    if(split[i].length > 10) {
                         small = true;
                         break;
                     }
                 }
                 // Add title
                 $(item).append("<div width='100%' class='ru-hex-filter-name "
-                        +(d.enabled ? '' : ' inactive ')
-                        +(small ? 'ru-hex-filter-name-small' : '')
-                        +"'><p>"+d.title+"</p>"+
-                        (d.comingSoon ? '<p class="ru-hex-filter-inactive-text">Coming Soon</p>' : '')
-                        +"</div>");
+                                +(d.enabled ? '' : ' inactive ')
+                                +(small ? 'ru-hex-filter-name-small' : '')
+                                +"'><p>"+d.title+"</p>"+
+                                (d.comingSoon ? '<p class="ru-hex-filter-inactive-text">Coming Soon</p>' : '')
+                                +"</div>");
 
                 if (d.warning) {
                     $(item).append("<div tabindex='0' title='" + d.warning + "' class='hex-filter-warning'></div>");
@@ -399,18 +371,19 @@ define([ 'jquery', './hexagon', 'd3'],
             });
             
             // Hexagons
-            var _hexagons = d3.select(us._element.find('#hexfilter-svg')[0]).selectAll("path")
-                        .data(this.visible).enter();
+            let _hexagons = d3.select(us._element.find('#hexfilter-svg')[0])
+                              .selectAll("path")
+                              .data(this.visible).enter();
             // Basic D3 Line function
-            var lineFunction = d3.svg.line()
-                             .x(function(d) { return d.x; })
-                             .y(function(d) { return d.y; })
-                             .interpolate("linear");   
+            let lineFunction = d3.svg.line()
+                                     .x(function(d) { return d.x; })
+                                     .y(function(d) { return d.y; })
+                                     .interpolate("linear");   
             // PLot hexagons and plot click handler
             _hexagons.append("path")
                 .attr("d", function(d)
                 {
-                    var hex = hexagon.calculateHexagon(us._width, us._aspect, {x:d.position.x+1, y:d.position.y});
+                    let hex = hexagon.calculateHexagon(us._width, us._aspect, {x:d.position.x+1, y:d.position.y});
                     return lineFunction(hex.hexagon);
                 }).attr("class", function(d)
                 {
@@ -425,7 +398,7 @@ define([ 'jquery', './hexagon', 'd3'],
                 {
                     $(this).click(function()
                     {
-                        var selectedItem = us.visible[parseInt($(this).attr('data-item'))];
+                        let selectedItem = us.visible[parseInt($(this).attr('data-item'))];
                         if(selectedItem.enabled)
                         {
                             selectedItem.selected = !selectedItem.selected;
@@ -442,14 +415,14 @@ define([ 'jquery', './hexagon', 'd3'],
          */
         HexFilter.prototype._calculateHorizontalPositions = function()
         {
-            var us = this;
+            let us = this;
             // Position children recursively
-            var setPositions = function(items)
+            let setPositions = function(items)
             {
                 $.each(items, function(i, item)
                 {
-                    var y = (item.level - 1) * (us._height + (us._dotGap * us._deskVertical));
-                    var x = i * (us._dotGap * us._deskHoriz);
+                    let y = (item.level - 1) * (us._height + (us._dotGap * us._deskVertical));
+                    let x = i * (us._dotGap * us._deskHoriz);
                     item.position = {x:x,y:y};
                     if(item.hasOwnProperty('children'))
                     {
@@ -465,26 +438,21 @@ define([ 'jquery', './hexagon', 'd3'],
          */
         HexFilter.prototype._calculateVerticalPositions = function()
         {
-            var us = this;
+            let us = this;
             // Position children recursively
-            var setPositions = function(items)
-            {
-                $.each(items, function(i, item)
-                {
+            let setPositions = function(items) {
+                $.each(items, function(i, item) {
+                    let x, y;
                     // First level is different
-                    if(item.level === 1)
-                    {
-                        var y = 0;
-                        var x = i * (us._dotGap * 11);
-                    }
-                    else
-                    {
+                    if(item.level === 1) {
+                        y = 0;
+                        x = i * (us._dotGap * 11);
+                    } else {
                         y = ((i + 1) * (us._dotGap * 8)) + us._dotGap;
                         x = (item.level === 2) ? (us._dotGap * 5) : (us._dotGap * 15);
                     }
-                    item.position = {x:x,y:y};
-                    if(item.hasOwnProperty('children'))
-                    {
+                    item.position = {x: x, y: y};
+                    if(item.hasOwnProperty('children')) {
                         setPositions(item.children);
                     }
                 });
@@ -500,13 +468,11 @@ define([ 'jquery', './hexagon', 'd3'],
          */
         HexFilter.prototype._addLevelsAndParents = function(level, items, parent)
         {
-            var us = this;
-            $.each(items, function(i, item)
-            {
+            let us = this;
+            $.each(items, function(i, item) {
                 item.level = level;
                 item.parent = parent;
-                if(item.hasOwnProperty('children'))
-                {
+                if(item.hasOwnProperty('children')) {
                     us._addLevelsAndParents(level + 1, item.children, item);
                 }
             });
@@ -546,7 +512,7 @@ define([ 'jquery', './hexagon', 'd3'],
         HexFilter.prototype._setSelected = function()
         {
             // Clear currently selected
-            var us = this;
+            let us = this;
             us.selected = [];
             $.each(us.visible, function()
             {

@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
+	let PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
         scope.setLoading(true);
 
         scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -41,8 +41,8 @@ define([], function() {
         };
         scope.questionPageLabel = "questionPage";
 
-        var myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_only":false}).$promise;
-        var mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
+        let myGroupsPromise = api.groupManagementEndpoint.get({"archived_groups_only":false}).$promise;
+        let mySetAssignmentsPromise = api.assignments.getAssignmentsOwnedByMe().$promise;
 
         scope.groupSortOptions = [
             {label: "Alphabetical", value: "groupName", reverse: false},
@@ -51,15 +51,15 @@ define([], function() {
         scope.groupSortOption = scope.groupSortOptions[0];
 
         Promise.all([myGroupsPromise, mySetAssignmentsPromise]).then(function(r) {
-            var groups = r[0];
-            var allAssignments = r[1];
+            let groups = r[0];
+            let allAssignments = r[1];
 
             // Initialise master lists of groups and assignments.
             scope.groups = groups;
 
-            for (var i = 0; i < allAssignments.length; i++) {
-                var a = allAssignments[i];
-                var groupId = a.groupId;
+            for (let i = 0; i < allAssignments.length; i++) {
+                let a = allAssignments[i];
+                let groupId = a.groupId;
 
                 scope.groupAssignments[groupId] = scope.groupAssignments[groupId] || [];
                 scope.groupAssignments[groupId].push(a);
@@ -71,7 +71,7 @@ define([], function() {
 
         // this function moves the gameboard title resolution to happen as needed rather than for all assignments that could ever be displayed.
         scope.expandAssignments = function(groupId) {
-            var gameboardPromises = [];
+            let gameboardPromises = [];
 
             if (scope.groupExpanded[groupId]) {
                 // This group is already expanded. Collapse it and return.
@@ -85,8 +85,8 @@ define([], function() {
             
             scope.setLoading(true);
 
-            for (var i = 0; i < scope.groupAssignments[groupId].length; i++) {
-                var assignment = scope.groupAssignments[groupId][i];
+            for (let i = 0; i < scope.groupAssignments[groupId].length; i++) {
+                let assignment = scope.groupAssignments[groupId][i];
 
                 assignment.gameBoard = api.gameBoards.get({id: assignment.gameboardId});
                 gameboardPromises.push(assignment.gameBoard.$promise);
@@ -98,7 +98,7 @@ define([], function() {
                 };
                 assignment.pupilSortOption = assignment.pupilSortOptions.familyName;
                 assignment.sortPupilsBy = function (property) {
-                    var sortOptionToSet = this.pupilSortOptions[property];
+                    let sortOptionToSet = this.pupilSortOptions[property];
                     if (sortOptionToSet == this.pupilSortOption) {
                         this.pupilSortOption.reverse = !this.pupilSortOption.reverse;  
                     } else if (sortOptionToSet != undefined) {
@@ -124,7 +124,7 @@ define([], function() {
         };
 
         scope.$watchCollection("assignmentExpanded", function() {
-            for (var k in scope.assignmentExpanded) {
+            for (let k in scope.assignmentExpanded) {
                 if (scope.assignmentExpanded[k] && !scope.assignmentProgress[k]) {
                     scope.setLoading(true);
                     scope.assignmentProgress[k] = api.assignments.getProgress({assignmentId: k});
@@ -135,32 +135,32 @@ define([], function() {
                         scope.assignments[k].gameBoard.$promise.then(function(gameBoard) {
 
                             // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
-                            var questions = gameBoard.questions;
+                            let questions = gameBoard.questions;
                             scope.assignmentAverages[k] = [];
                             scope.assignmentTotalQuestionParts[k] = 0;
                             
-                            for (var i in questions) {
-                                var q = questions[i];
-                                var tickCount = 0;
+                            for (let i in questions) {
+                                let q = questions[i];
+                                let tickCount = 0;
 
-                                for (var j = 0; j < progress.length; j++) {
-                                    var studentResults = progress[j].results;
+                                for (let j = 0; j < progress.length; j++) {
+                                    let studentResults = progress[j].results;
 
                                     if (studentResults[i] == "PASSED" || studentResults[i] == "PERFECT") {
                                         tickCount++;
                                     }
                                 }
 
-                                var tickPercent = Math.round(100 * (tickCount / progress.length));
+                                let tickPercent = Math.round(100 * (tickCount / progress.length));
                                 scope.assignmentAverages[k].push(tickPercent);
                                 scope.assignmentTotalQuestionParts[k] += q.questionPartsTotal;
                             }
 
                             // Calculate student totals and gameboard totals
                             scope.assignmentProgress[k].studentsCorrect = 0;
-                            for (var j = 0; j < progress.length; j++) {
+                            for (let j = 0; j < progress.length; j++) {
 
-                                var studentProgress = progress[j];
+                                let studentProgress = progress[j];
 
                                 if (progress[j].user.authorisedFullAccess) {
 
@@ -169,7 +169,7 @@ define([], function() {
                                     studentProgress.incorrectQuestionPartsCount = 0;
                                     studentProgress.notAttemptedPartResults = [];
 
-                                    for (var i in studentProgress.results) {
+                                    for (let i in studentProgress.results) {
                                         if (studentProgress.results[i] == "PASSED" || studentProgress.results[i] == "PERFECT") {
                                             studentProgress.tickCount++;
                                         }
@@ -194,7 +194,7 @@ define([], function() {
         });
 
         scope.formatMark = function(numerator, denominator, formatAsPercentage) {
-            var result;
+            let result;
             if (formatAsPercentage) {
                 result = Math.round(100 * numerator / denominator) + "%";
             } else {
@@ -204,11 +204,11 @@ define([], function() {
         };
 
         scope.getStateClass = function(studentProgress, index, totalParts, colourBlind, selected) {
-            var correctParts = index != null ? studentProgress.correctPartResults[index] : studentProgress.correctQuestionPartsCount;
-            var incorrectParts = index != null ? studentProgress.incorrectPartResults[index] : studentProgress.incorrectQuestionPartsCount;
-            var status = studentProgress.results[index];
+            let correctParts = index != null ? studentProgress.correctPartResults[index] : studentProgress.correctQuestionPartsCount;
+            let incorrectParts = index != null ? studentProgress.incorrectPartResults[index] : studentProgress.incorrectQuestionPartsCount;
+            let status = studentProgress.results[index];
 
-            var result = selected ? "selected " : "";
+            let result = selected ? "selected " : "";
             result += colourBlind ? "colour-blind " : "";
             if (!studentProgress.user.authorisedFullAccess) {
                 result += "revoked";
@@ -235,21 +235,21 @@ define([], function() {
 
         scope.$watchCollection("assignmentSelectedQuestion", function(asq) {
             // For each assignment
-            for (var a in asq) {
+            for (let a in asq) {
                 // Find the table displaying it
 
-                var tbl = $("#assignment-" + a + "-progress");
+                let tbl = $("#assignment-" + a + "-progress");
 
                 if (tbl.length < 1)
                     continue;
 
                 // Find a cell for the selected question (first row will do)
 
-                var td = tbl.find("tr:first td:eq(" + (asq[a]+1) + ")")
+                let td = tbl.find("tr:first td:eq(" + (asq[a]+1) + ")")
 
                 // If that cell is off the screen, scroll to it.
 
-                var newScrollLeft;
+                let newScrollLeft;
                 if (td.offset().left < 0) {
                     newScrollLeft = tbl.scrollLeft() + td.offset().left;
                 } else if (td.offset().left + td.width() > tbl.parent().width()) {

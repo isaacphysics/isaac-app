@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, persistence, $stateParams, $window, $location, $rootScope) {
+    let PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, persistence, $stateParams, $window, $location, $rootScope) {
         /*
         *  This controller manages the User Account Settings page, but it also
         *  manages user Registration. Any changes to one will affect the other,
@@ -87,9 +87,9 @@ define([], function() {
         }
 
         // so we can check if they have changed their email address
-        var emailBeforeEditing = $scope.user.email;
+        let emailBeforeEditing = $scope.user.email;
 
-        var possibleMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        let possibleMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
         // Create date of birth select options
         $scope.datePicker = {
@@ -105,13 +105,13 @@ define([], function() {
             return new Date(year, month, 0).getDate();
         }
 
-        var populateDays = function(month, year) {
-            var today = new Date();
+        let populateDays = function(month, year) {
+            let today = new Date();
 
             $scope.datePicker.days = [];
 
             // Default to 31
-            var days = 31;
+            let days = 31;
 
             if (month !== undefined && month > -1 && year !== undefined && year > -1) {
                 // Month is 0 based, so add 1 to it
@@ -123,7 +123,7 @@ define([], function() {
                 days = today.getDate();
             }
 
-            for (var i = 1; i <= days; i++) {
+            for (let i = 1; i <= days; i++) {
                 $scope.datePicker.days.push(i);
             }
         };
@@ -132,8 +132,8 @@ define([], function() {
         populateDays();
 
         // Populate years
-        var currentYear = new Date().getFullYear();
-        for (var i = currentYear; i > 1900; i--) {
+        let currentYear = new Date().getFullYear();
+        for (let i = currentYear; i > 1900; i--) {
             $scope.datePicker.years.push(i);
         }
 
@@ -141,7 +141,7 @@ define([], function() {
 
         $scope.user.$promise.then(function() {
             if ($scope.user.dateOfBirth != null) {
-                var date = new Date($scope.user.dateOfBirth);
+                let date = new Date($scope.user.dateOfBirth);
                 $scope.dob.day = date.getDate();
                 $scope.dob.month = $scope.datePicker.months[date.getMonth()];
                 $scope.dob.year = date.getFullYear();
@@ -158,7 +158,7 @@ define([], function() {
             // Restrict the number of days depended on the selected month and year
             populateDays($scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.year);
 
-            var today = new Date();
+            let today = new Date();
             // Restrict the months depending on the year
             if ($scope.dob.year === today.getFullYear()){
                 $scope.datePicker.months = possibleMonths.slice(0,today.getMonth() + 1);
@@ -167,9 +167,9 @@ define([], function() {
                 $scope.datePicker.months = possibleMonths;
             }
 
-            var thirteen_years_ago = Date.UTC(today.getFullYear() - 13, today.getMonth(), today.getDate());
+            let thirteen_years_ago = Date.UTC(today.getFullYear() - 13, today.getMonth(), today.getDate());
 
-            var dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
+            let dob_unix = Date.UTC($scope.dob.year, $scope.datePicker.months.indexOf($scope.dob.month), $scope.dob.day);
             if (!isNaN(dob_unix) && $scope.datePicker.months.indexOf($scope.dob.month) > -1) {
                 $scope.user.dateOfBirth = dob_unix;
                 $scope.confirmed_over_thirteen = dob_unix <= thirteen_years_ago;
@@ -181,7 +181,7 @@ define([], function() {
 
         $scope.socialAccounts = function(){
             // object for linked account, nothing linked by default
-            var linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
+            let linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
 
             // loop through linked accounts
             angular.forEach($scope.user.linkedAccounts, function(account){
@@ -204,7 +204,7 @@ define([], function() {
         }
 
         $scope.atLeastOne = function(object) {
-            var oneOrMoreTrue = false;
+            let oneOrMoreTrue = false;
             // Avoid all the horrible angular properties:
             angular.forEach(JSON.parse(JSON.stringify(object)), function(key) {
                 if (key === true) {
@@ -221,14 +221,14 @@ define([], function() {
 
             // Some users apparently confuse the Save and Teacher Connect button; help make it clear that Connect must be clicked before Save:
             if ($scope.authenticationToken.value != null && $scope.authenticationToken.value != "") {
-                var confirm = $window.confirm("You have entered a teacher connection code but haven't yet clicked 'Connect'. Do you want to use the code before saving? You will need to click 'Save' again after using the code.");
+                let confirm = $window.confirm("You have entered a teacher connection code but haven't yet clicked 'Connect'. Do you want to use the code before saving? You will need to click 'Save' again after using the code.");
                 if (confirm) {
                     $scope.activeTab = 2;
                     return;
                 }
             }
 
-            var afterAuth = persistence.load('afterAuth');
+            let afterAuth = persistence.load('afterAuth');
             if (afterAuth) {
                 next = afterAuth;
                 persistence.save('afterAuth', "");
@@ -245,23 +245,20 @@ define([], function() {
 
             // if not a new user; confirm any email change, else undo it (but don't if invalid because it will just fail below anyway)
             if ($scope.user._id != null && $scope.user.email != emailBeforeEditing && $scope.editingSelf && $scope.account.email.$valid){
-                var promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
-                if (promptResponse){
-                    
-                }
-                else{
+                let promptResponse = $window.confirm("You have edited your email address. Your current address will continue to work until you verify your new address by following the verification link sent to it via email. Continue?");
+                if (!promptResponse) {
                     $scope.user.email = emailBeforeEditing;
                     return;
                 }
             }
 
             // Ensure all valid: email valid, not changing password or are changing password and confirmed passwords (and current password / admin user checked)
-            var formValid = $scope.account.$valid && $scope.account.email.$valid;
-            var passwordsValidated = (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)));
-            var confirmedThirteen = $scope.confirmed_over_thirteen || (!$scope.user.dateOfBirth && $scope.user._id); // If there is a user ID, they have already registered and confirmed their age!
+            let formValid = $scope.account.$valid && $scope.account.email.$valid;
+            let passwordsValidated = (!$scope.password1 || ($scope.password1.length >= 6 && ($scope.password1 == $scope.password2) && (!!$scope.passwordChangeState.passwordCurrent || !$scope.editingSelf)));
+            let confirmedThirteen = $scope.confirmed_over_thirteen || (!$scope.user.dateOfBirth && $scope.user._id); // If there is a user ID, they have already registered and confirmed their age!
             if (formValid && passwordsValidated && confirmedThirteen) {
                 //TODO the user object can probably just be augmented with emailPreferences, instead of sending both as seperate objects
-                var userSettings = {
+                let userSettings = {
                     registeredUser : $scope.user,
                     userPreferences : {
                         EMAIL_PREFERENCE : $scope.emailPreferences,
@@ -303,7 +300,7 @@ define([], function() {
                 })
             } else {
                 // The form is not valid, so display errors.
-                for(var i in $scope.account.$error.required) {
+                for(let i in $scope.account.$error.required) {
                     $scope.account.$error.required[i].$dirty = true;
                 }
 
@@ -368,7 +365,7 @@ define([], function() {
 
             api.authorisations.getTokenOwner({token: $scope.authenticationToken.value}).$promise.then(function(result) {
                 $scope.usersToGrantAccess = result;
-                var userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
+                let userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
                 $scope.anyUsersAuthorisedAlready = false;
 
                 angular.forEach($scope.usersToGrantAccess, function(value, key) {
@@ -414,7 +411,7 @@ define([], function() {
         }
 
         $scope.revokeAuthorisation = function(userToRevoke){
-            var revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+            let revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
 
             if (revoke) {
                 api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
@@ -429,7 +426,7 @@ define([], function() {
         }
 
         $scope.revokeAllAuthorisations = function(){
-            var revoke = $window.confirm('Are you sure you want to revoke all users\' access?');   
+            let revoke = $window.confirm('Are you sure you want to revoke all users\' access?');   
 
             if (revoke) {
                 api.authorisations.revokeAll().$promise.then(function(){
@@ -444,7 +441,7 @@ define([], function() {
         }
 
         $scope.releaseAuthorisation = function(userToRevoke){
-            var revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');   
+            let revoke = $window.confirm('Are you sure you want to end your access to this student\'s data? You will need to ask them to grant access again in the future if you change your mind.');   
 
             if (revoke) {
                 api.authorisations.release({id: userToRevoke.id}).$promise.then(function(){
@@ -459,7 +456,7 @@ define([], function() {
         }
 
         $scope.releaseAllAuthorisations = function(){
-            var revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');   
+            let revoke = $window.confirm('Are you sure you want to end your access to all students\' data? You will need to ask them to grant access again in the future if you change your mind.');   
 
             if (revoke) {
                 api.authorisations.releaseAll().$promise.then(function(){

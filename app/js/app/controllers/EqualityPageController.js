@@ -13,36 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-    var PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
-        $scope.eqnEditorSeed = null;
-        $scope.editorMode = "maths";
-        if ($stateParams.mode == 'chemistry') {
-            $scope.editorMode = "chemistry"
-        }
-        if ($stateParams.symbols) {
-            $scope.questionDoc = {
-                availableSymbols: $stateParams.symbols.split(",")
-            }
-        }
-        $scope.eqnState = {
-            symbols: {}
-        };
-        $scope.$watch("eqnEditorSeed", function(s) {
-            if (s == null) return;
-            try {
-                var seed = JSON.parse(s);
-                $scope.eqnState = {
-                    symbols: seed,
-                    result: { tex: seed[0].expression.latex, python: seed[0].expression.python }
-                }
-            } catch (e) {
-                console.error("Invalid seed.");
-            }
-        });
-    }];
 
-    return {
-  		PageController: PageController
-  	}
-  });
+ export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+    $scope.eqnEditorSeed = null;
+    $scope.editorMode = "maths";
+    if ($stateParams.mode == 'chemistry') {
+        $scope.editorMode = "chemistry"
+    }
+    if ($stateParams.symbols) {
+        $scope.questionDoc = {
+            availableSymbols: $stateParams.symbols.split(",")
+        }
+    }
+    $scope.eqnState = {
+        symbols: {}
+    };
+    $scope.$watch("eqnEditorSeed", function(s) {
+        if (s == null) return;
+        try {
+            let seed = JSON.parse(s);
+            $scope.eqnState = {
+                symbols: seed,
+                result: { tex: seed[0].expression.latex, python: seed[0].expression.python }
+            }
+        } catch (e) {
+            console.error("Invalid seed.");
+        }
+    });
+} ];

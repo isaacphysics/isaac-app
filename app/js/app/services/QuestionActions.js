@@ -15,12 +15,12 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		var MAX_LABEL_LENGTH = 17;
-		var defaultAction = {
+		const MAX_LABEL_LENGTH = 17;
+		let defaultAction = {
 			disabled: false
 		}
 
-		var TEMP_GRAPH_SKETCHER_RESULT = {
+		let TEMP_GRAPH_SKETCHER_RESULT = {
 			correct:true,
 			explanation: {
 				children:[{
@@ -38,12 +38,12 @@ define([], function() {
 		};
 
 		this.checkMyAnswer = function(scope, api) { // TODO refactor so that less is passed to this function
-			var checkAnswer = function() {
+			let checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
 
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
-						var selectedChoice = JSON.parse(scope.question.selectedChoice.value);
+						let selectedChoice = JSON.parse(scope.question.selectedChoice.value);
 						if (selectedChoice.hasOwnProperty("symbols")) {
 							// If we have symbols, this was definitely the graphical editor. Ensure an answer was provided:
 							if (Object.keys(selectedChoice.symbols).length == 0) {
@@ -57,13 +57,13 @@ define([], function() {
 						return; // Do not submit Graph SKetecher question attemps
 					}
 
-					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
+					let s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
 					s.$promise.then(function foo(validationResponse) {
 						scope.question.validationResponse = validationResponse;
 					}, function bar(e) {
 						console.error("Error validating answer:", e);
-						var eMessage = e.data.errorMessage;
-						var eTitle = "Can't Submit Answer";
+						let eMessage = e.data.errorMessage;
+						let eTitle = "Can't Submit Answer";
 						if (eMessage != null && eMessage.indexOf("ValidatorUnavailableException:") == 0) {
 							eTitle = "Error Checking Answer"
 							eMessage = eMessage.replace("ValidatorUnavailableException:", "");
@@ -101,11 +101,11 @@ define([], function() {
 		};
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
-			var fullLabel = "Try more questions of a similar difficulty on " + supportingQuestion.title.toLowerCase();
+			let fullLabel = "Try more questions of a similar difficulty on " + supportingQuestion.title.toLowerCase();
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
-			var commaSeparatedQuestionHistory = questionHistory.join(',');
+			let commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
@@ -129,8 +129,8 @@ define([], function() {
 		};
 
 		this.retryPreviousQuestion = function(questionHistory, gameboardId) {
-			var previousQuestionId = questionHistory.pop();
-			var commaSeparatedQuestionHistory = questionHistory.join(',')
+			let previousQuestionId = questionHistory.pop();
+			let commaSeparatedQuestionHistory = questionHistory.join(',')
 
 			return {
 				prototype: defaultAction,

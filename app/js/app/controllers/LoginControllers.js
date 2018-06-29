@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', 'persistence', '$stateParams', '$window', function($scope, auth, api, persistence, $stateParams, $window) {
+	let PageController = ['$scope', 'auth', 'api', 'persistence', '$stateParams', '$window', function($scope, auth, api, persistence, $stateParams, $window) {
 
 		$scope.auth = auth;
 		$scope.target = $stateParams.target;

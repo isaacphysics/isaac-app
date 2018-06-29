@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var augmentEvent = function(e, api) {
+    let augmentEvent = function(e, api) {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
             e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
@@ -45,20 +45,20 @@ define([], function() {
         }
     }
 
-    var toTitleCase = function toTitleCase(str) {
+    let toTitleCase = function toTitleCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
-    var ListController = ['$scope', 'api', '$timeout', '$stateParams', '$location', function($scope, api, $timeout, $stateParams, $location) {
+    let ListController = ['$scope', 'api', '$timeout', '$stateParams', '$location', function($scope, api, $timeout, $stateParams, $location) {
 
-        var startIndex = 0;
-        var eventsPerPage = 6;
-        var showActiveOnly = true;
-        var showInactiveOnly = false;
-        var filterEventsByType = null;
-        var showBookedOnly = false;
+        let startIndex = 0;
+        let eventsPerPage = 6;
+        let showActiveOnly = true;
+        let showInactiveOnly = false;
+        let filterEventsByType = null;
+        let showBookedOnly = false;
 
-        var showByTag = null; // show only events with set tag
+        let showByTag = null; // show only events with set tag
 
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
@@ -155,8 +155,8 @@ define([], function() {
             api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType, showBookedOnly).$promise.then(function(result) {
                 $scope.setLoading(false);
                 
-                for(var i in result.results) {
-                    var e = result.results[i];
+                for(let i in result.results) {
+                    let e = result.results[i];
                     augmentEvent(e, api);
                     $scope.events.push(e);
                 }
@@ -172,7 +172,7 @@ define([], function() {
         }
     }];
 
-    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, $timeout, $stateParams, $state, $filter, $window, $q) {
+    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, $timeout, $stateParams, $state, $filter, $window, $q) {
         $scope.setLoading(true);
 
         $scope.toTitleCase = toTitleCase;
@@ -192,7 +192,7 @@ define([], function() {
         $scope.targetUser = $scope.user;
 
         // validate pre-requisites for event booking
-        var validUserProfile = function() {
+        let validUserProfile = function() {
 
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
                 $scope.showToast($scope.toastTypes.Failure, "School Information Required", "You must enter a school in order to book on to this event.");
@@ -225,8 +225,8 @@ define([], function() {
             return true;
         }
 
-        var updateUserProfile = function() {
-            var promise = null;
+        let updateUserProfile = function() {
+            let promise = null;
 
             if($scope.school.schoolId != $scope.user.schoolId || $scope.school.schoolOther != $scope.user.schoolOther) {
                 
@@ -235,7 +235,7 @@ define([], function() {
                 $scope.user.schoolOther = $scope.school.schoolOther;            
 
                 // TODO: this is a nasty hack, but unfortunately the existing endpoint expects this random wrapped object now.
-                var userSettings = {
+                let userSettings = {
                     registeredUser : $scope.user,
                     emailPreferences : {}
                 }
@@ -284,7 +284,7 @@ define([], function() {
         }
 
         $scope.cancelEventBooking = function(){
-            var cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to re-book, especially if there is a waiting list.');   
+            let cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to re-book, especially if there is a waiting list.');   
             if(cancel) {
                 api.eventBookings.cancelMyBooking({"eventId": $stateParams.id}).$promise.then(function(){
                     getEventDetails();
@@ -298,11 +298,11 @@ define([], function() {
 
         $scope.googleCalendarTemplate =  function() {
             // https://calendar.google.com/calendar/event?action=TEMPLATE&text=[event_name]&dates=[start_date as YYYYMMDDTHHMMSS or YYYYMMDD]/[end_date as YYYYMMDDTHHMMSS or YYYYMMDD]&details=[extra_info]&location=[full_address_here]
-            var eventDetails = $scope.jsonLd;
-            var startDate = eventDetails.startDate.replace(/(\d{4})\-(\d{2})\-(\d{2})T(\d{1,2})\:(\d{2})/, '$1$2$3T$4$500');
-            var address = 'location' in eventDetails ? [eventDetails.location.name, eventDetails.location.address.streetAddress, eventDetails.location.address.addressLocality, eventDetails.location.address.postalCode] : [];
+            let eventDetails = $scope.jsonLd;
+            let startDate = eventDetails.startDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{1,2}):(\d{2})/, '$1$2$3T$4$500');
+            let address = 'location' in eventDetails ? [eventDetails.location.name, eventDetails.location.address.streetAddress, eventDetails.location.address.addressLocality, eventDetails.location.address.postalCode] : [];
 
-            var calendarTemplateUrl = [
+            let calendarTemplateUrl = [
                 "https://calendar.google.com/calendar/event?action=TEMPLATE",
                 "text=" + encodeURI(eventDetails.name),
                 "dates=" + encodeURI(startDate) + '/' + encodeURI(startDate),
@@ -313,7 +313,7 @@ define([], function() {
             window.open(calendarTemplateUrl.join('&'),'_blank');
         }
 
-        var getEventDetails = function() {
+        let getEventDetails = function() {
             api.events.get({id: $stateParams.id}).$promise.then(function(e) {
                 $scope.setLoading(false);
                 
