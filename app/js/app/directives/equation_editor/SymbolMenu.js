@@ -19,7 +19,7 @@ define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 					scope.$emit('absorbSymbolDrag');
 					bufferedLeft += deltaX;
 
-					newLeft = bufferedLeft;
+					let newLeft = bufferedLeft;
 
 					if (newLeft > 0) {
 						newLeft = 0;
