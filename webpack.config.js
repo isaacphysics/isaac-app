@@ -41,7 +41,7 @@ module.exports = function(env) {
           test: /(?!\.d)\.ts$/,
           use: [
             { loader: "babel-loader" },
-            { loader: "ts-loader" }
+            { loader: "ts-loader", options: { ignoreDiagnostics: [2306] } }
           ]
         },
         { 
