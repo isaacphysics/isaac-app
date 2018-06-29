@@ -1,5 +1,5 @@
 var path = require("path");
-var webpack = require("webpack");
+// var webpack = require("webpack");
 const merge = require('webpack-merge');
 
 var prodConfig = {
@@ -38,8 +38,11 @@ module.exports = function(env) {
           ]
         },
         {
-          test: /\.ts$/,
-          use: ["babel-loader", "ts-loader"]
+          test: /(?!\.d)\.ts$/,
+          use: [
+            { loader: "babel-loader" },
+            { loader: "ts-loader" }
+          ]
         },
         { 
           test: path.resolve(__dirname, "node_modules", "jquery", "dist", "jquery.js"),

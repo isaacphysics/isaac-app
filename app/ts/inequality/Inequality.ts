@@ -15,12 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-///// <reference path="../../typings/p5.d" />
-///// <reference path="../../typings/lodash.d" />
-
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
+
+import * as p5 from 'p5';
 
 import { Widget, Rect } from './Widget'
 import { Symbol } from './Symbol'

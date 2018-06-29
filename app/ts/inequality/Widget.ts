@@ -20,6 +20,9 @@ limitations under the License.
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
+
+import * as p5 from 'p5';
+
 import { DockingPoint } from './DockingPoint';
 
 // This is meant to be a static global thingie for uniquely identifying widgets/symbols
