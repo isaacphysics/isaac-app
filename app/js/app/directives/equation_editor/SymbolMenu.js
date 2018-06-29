@@ -1,3 +1,5 @@
+"use strict";
+
 define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 
 	return [function() {
@@ -5,7 +7,7 @@ define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 		return {
 			priority: 0,
             scope: {
-            	symbols: "=",
+				symbols: "=",
             },
 			restrict: "A",
 			templateUrl: templateUrl,
@@ -49,7 +51,7 @@ define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
                     if (pageY > element.offset().top + element.height() && !offCanvas) {
                         scope.$emit("spawnSymbol");
                     } else {
-                    	scope.$emit("newSymbolAbortDrag");
+						scope.$emit("newSymbolAbortDrag");
                     }
 				};
 
