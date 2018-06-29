@@ -18,7 +18,7 @@ define([], function() {
 	// TODO: Implement orbit (carousel) thing
 	// See problem.js and problem.html in final code drop.
 
-	var PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
+	let PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
 		$scope.page = page;
 		$scope.questionPage = page;
 
@@ -31,17 +31,17 @@ define([], function() {
 
 		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
-		var pageTags = page.tags || [];
+		let pageTags = page.tags || [];
 
-		var subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
+		let subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 		// Find subject tags on page.
-		var pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
+		let pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
+		let pageField = null;
+		let pageTopic = null;
 
 		if (pageSubject) {
-
-			var fields = tags.getAllFieldTags(pageTags);
-			var pageField = null;
+			let fields = tags.getAllFieldTags(pageTags);
 
 			if (fields.length == 1) {
 				pageField = fields[0].id;
@@ -50,9 +50,7 @@ define([], function() {
 			}
 
 			if (pageField) {
-
-				var topics = tags.getAllTopicTags(pageTags);
-				var pageTopic = null;
+				let topics = tags.getAllTopicTags(pageTags);
 
 				if (topics.length == 1) {
 					pageTopic = topics[0].id;
@@ -75,7 +73,7 @@ define([], function() {
 			}
 		}
 
-		var updateBoardProgressDetails = function() {
+		let updateBoardProgressDetails = function() {
 			$scope.gameboardId = $stateParams.board;
 			$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
 			if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
@@ -93,10 +91,10 @@ define([], function() {
 				api.saveGameBoard(board.id);
 				// Find the index of this question on the game board.
 
-				var thisIndex = null;
-				for(var i = 0; i < board.questions.length; i++) {
+				let thisIndex = null;
+				for(let i = 0; i < board.questions.length; i++) {
 
-					var q = board.questions[i];
+					let q = board.questions[i];
 
 					if(q.id == page.id) {
 						thisIndex = i;
@@ -124,7 +122,7 @@ define([], function() {
 					return $sce.trustAsHtml("Multiple Topics");
 			}
 
-			for (var i in tags.tagArray) {
+			for (let i in tags.tagArray) {
 				if (tags.tagArray[i].id == id)
 					return $sce.trustAsHtml(tags.tagArray[i].title);
 			}

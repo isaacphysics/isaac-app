@@ -14,7 +14,7 @@ if (document.createElement('svg').getAttributeNS) {
         fill: {speed: .8, easing: 'ease-in-out'}
     };
 
-    const createSVGEl = function(def) {
+    function createSVGEl(def) {
         let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         if (def) {
             svg.setAttributeNS(null, 'viewBox', def.viewBox);
@@ -27,7 +27,7 @@ if (document.createElement('svg').getAttributeNS) {
         return svg;
     }
 
-    const controlCheckbox = function(el, type, svgDef) {
+    function controlCheckbox(el, type, svgDef) {
         let svg = createSVGEl(svgDef);
         el.parentNode.appendChild(svg);
 
@@ -41,7 +41,7 @@ if (document.createElement('svg').getAttributeNS) {
         });
     }
 
-    const controlRadiobox = function(el, type) {
+    function controlRadiobox(el, type) {
         let svg = createSVGEl();
         el.parentNode.appendChild(svg);
         el.addEventListener('change', function() {
@@ -58,7 +58,7 @@ if (document.createElement('svg').getAttributeNS) {
         controlCheckbox(el, 'fill');
     });
 
-    const draw = function(el, type) {
+    function draw(el, type) {
         let paths = [], pathDef,
                 animDef,
                 svg = el.parentNode.querySelector('svg');
@@ -100,13 +100,13 @@ if (document.createElement('svg').getAttributeNS) {
         }
     }
 
-    const reset = function(el) {
+    function reset(el) {
         Array.prototype.slice.call(el.parentNode.querySelectorAll('svg > path')).forEach(function(el) {
             el.parentNode.removeChild(el);
         });
     }
 
-    const resetRadio = function(el) {
+    function resetRadio(el) {
         Array.prototype.slice.call(document.querySelectorAll('input[type="radio"][name="' + el.getAttribute('name') + '"]')).forEach(function(el) {
             let path = el.parentNode.querySelector('svg > path');
             if (path) {
