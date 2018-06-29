@@ -223,7 +223,7 @@ export
     _draw() {
         let box = this.boundingBox();
 
-        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+        this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
         let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
