@@ -14,4 +14,3 @@ app/ts/**/*.js*
 ngrok.yml
 app/isaac.js*
 app/isaac.css*
-package-lock.json
