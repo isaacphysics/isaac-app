@@ -12,9 +12,9 @@ define(function(require) {
             restrict: "A",
             templateUrl: templateUrl,
             link: function(scope, element, attrs) {
-                isTherePreviousAnswer = function() {
+                scope.isTherePreviousAnswer = function() {
                     return (scope.dat.curves != undefined);
-                }
+                };
 
                 scope.edit = function() {
                     $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.dat).then(

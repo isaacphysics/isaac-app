@@ -16,7 +16,7 @@ define(function(require) {
             var X = 0;
             var Y = 0;
 
-            for (i = 0; i < q; i += 1) {
+            for (var i = 0; i < q; i += 1) {
                 X = pts[i].x;
                 // console.log(X);
                 Y = pts[i].y;
@@ -35,10 +35,10 @@ define(function(require) {
 
             // console.log(pts);
 
-            for(i = 0; i < q; i += 1) {
-                sx = pts[i].x;
+            for (var i = 0; i < q; i += 1) {
+                var sx = pts[i].x;
                 // console.log(sx);
-                lin.push(f.createPoint(sx, m*sx + p));
+                lin.push(f.createPoint(sx, m * sx + p));
                 // console.log(i);
                 // console.log(pts[i].x);
             }

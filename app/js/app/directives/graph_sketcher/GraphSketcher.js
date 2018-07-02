@@ -1,13 +1,6 @@
 "use strict";
-define(function(require) {
-    var templateUrl = require("/partials/graph_sketcher/graph_sketcher.html");
+define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_sketcher.html"], function(p5, b, l, f, s, templateUrl) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
-        // we require instances of bezier, func and sampler to enable access to external methods.
-        var b = require('../../../lib/graph_sketcher/bezier.js');
-        var f = require('../../../lib/graph_sketcher/func.js');
-        var s = require('../../../lib/graph_sketcher/sampler.js');
-        // var MySketch = require("inequality").MySketch;
-
         var instanceCounter = 0;
         return {
             // scope: true,
@@ -25,6 +18,7 @@ define(function(require) {
                 scope.canvasOffset = {};
                 scope.draggingNewSymbol = false;
                 scope.equationEditorElement = element;
+                scope.selectedLineType = b;
 
                 var colorSelect = element.find(".color-select")[0];
                 var encodeData;
@@ -2056,7 +2050,7 @@ define(function(require) {
                                     }
 
                                     // sampler.sample, bezier.genericBezier
-                                    var pts = b.lineStyle(s.sample(drawnPts));
+                                    var pts = scope.selectedLineType.lineStyle(s.sample(drawnPts));
                                     curve = {};
                                     curve.pts = pts;
 
@@ -2384,12 +2378,11 @@ define(function(require) {
                     }
 
                     function straight() {
-                        b = require('../../../lib/graph_sketcher/linear.js');
+                        scope.selectedLineType = l;
                     }
 
-
                     function poly() {
-                        b = require('../../../lib/graph_sketcher/bezier.js');
+                        scope.selectedLineType = b;
                     }
 
                     function redo() {
