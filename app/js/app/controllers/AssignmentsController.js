@@ -110,7 +110,7 @@ define([], function() {
 
         $scope.deleteBoard = function(board){
             lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
-                if (groupsAssigned != null && groupsAssigned.length != 0){
+                if (groupsAssigned[board.id] != null && groupsAssigned[board.id].length != 0) {
                     if ($scope.user.role == "ADMIN" || $scope.user.role == "EVENT_MANAGER") {
                         alert("Warning: You currently have groups assigned to this board. If you delete this your groups will still be assigned but you won't be able to unassign them or see the board in your Assigned Boards or My boards page.");
                     } else {
