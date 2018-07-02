@@ -29,7 +29,7 @@ define(["/partials/content/Figure.html"], function(templateUrl) {
 			link: function(scope, element, attrs) {
 
 
-				var figId = scope.doc.id || ("auto-fig-id-" + Object.keys(scope.$root.figures).length + 1);
+				let figId = scope.doc.id || ("auto-fig-id-" + Object.keys(scope.$root.figures).length + 1);
 
 				figId = figId.replace(/.*?([^\|]*)$/g,'$1');
 

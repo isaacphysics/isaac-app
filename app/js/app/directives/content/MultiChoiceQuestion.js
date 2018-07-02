@@ -26,14 +26,14 @@ define(["../../honest/responsive_video", "/partials/content/MultiChoiceQuestion.
 			templateUrl: templateUrl,
 
 			controller: ["$scope", function(scope) {
-				var ctrl = this;
+				let ctrl = this;
 
 				ctrl.selectedAnswer = null;
 
 				// Pre-select a radio button if we've reloaded a previous answer
 				if (scope.question.selectedChoice) {
-					for (var i = 0; i < scope.doc.choices.length; i++) {
-						var choice = scope.doc.choices[i];
+					for (let i = 0; i < scope.doc.choices.length; i++) {
+						let choice = scope.doc.choices[i];
 						if (choice.value == scope.question.selectedChoice.value) {
 							ctrl.selectedAnswer = i;
 							scope.$emit("newQuestionAnswer", scope.accordionSection, scope.question.validationResponse.correct ? "✓" : undefined)

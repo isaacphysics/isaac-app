@@ -66,13 +66,13 @@ define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
                     scope.negate = false;
                 }
 
-                var updateInputPadding = function() {
+                let updateInputPadding = function() {
                     $timeout(function() {
                         $(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
                     });
                 };
 
-                var updateSymbol = function() {
+                let updateSymbol = function() {
 
                     if (scope.editSymbol) {
                         scope.currentSymbol = scope.editSymbol;
@@ -92,7 +92,7 @@ define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
                         }
                     }
 
-                    var expNum = parseFloat(scope.currentExponent);
+                    let expNum = parseFloat(scope.currentExponent);
 
                     if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.menu.label))) {
                         scope.negate = false;
@@ -100,7 +100,7 @@ define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
                         return;
                     }
 
-                    var currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
+                    let currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
 
                     scope.currentSymbol.editable = {
                         currentNumber: scope.currentNumber,

@@ -29,7 +29,7 @@ define(["../honest/difficulty", "/partials/difficulty_filter.html"], function(Di
             templateUrl: templateUrl,
 
             link: function(scope, element, attrs) {
-                var config = [
+                let config = [
                     { level:1, selected:false, enabled:true },
                     { level:2, selected:false, enabled:true },
                     { level:3, selected:false, enabled:true },
@@ -38,7 +38,7 @@ define(["../honest/difficulty", "/partials/difficulty_filter.html"], function(Di
                     { level:6, selected:false, enabled:true }
                 ];
 
-                var difficulty = new Difficulty(element,
+                let difficulty = new Difficulty(element,
                 {
                     // Replace with real function to get state
                     get:function(callback) {

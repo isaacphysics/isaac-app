@@ -15,7 +15,8 @@
  */
 define([], function() {
 
-    let PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', '$compile', function($scope, auth, $state, $location, $window, api, $timeout, $rootScope) {
+    let PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', '$compile',
+    function($scope, auth, $state, $location, $window, api, $timeout, $rootScope, $compile) {
         // these flags represent whether features have been enabled yet.
         $rootScope.pageTitle = "Group Management";
 

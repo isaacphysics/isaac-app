@@ -25,7 +25,7 @@ define([],function() {
                 scope.$watch('script', function (newValue, oldValue) {
                     if (newValue.name) {
                         element.empty();
-                        var scriptTag = angular.element(document.createElement("script"));
+                        let scriptTag = angular.element(document.createElement("script"));
                         scriptTag.attr("type", "application/ld+json")
                         scriptTag.text(JSON.stringify(newValue));
                         element.append(scriptTag);                                

@@ -277,7 +277,7 @@ define(function(require) {
 	}])
 
 	.directive("ngScopeElement", [function () {
-	  var directiveDefinitionObject = {
+	  let directiveDefinitionObject = {
 
 	    restrict: "A",
 

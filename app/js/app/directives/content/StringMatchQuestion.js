@@ -25,7 +25,7 @@ define(["../../honest/responsive_video", "/partials/content/StringMatchQuestion.
             templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
+                let ctrl = this;
 
                 ctrl.selectedValue = null;
 

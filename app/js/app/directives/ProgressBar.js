@@ -27,10 +27,10 @@ define([], function() {
 
             link: function(scope, element, attrs) {
 
-                var leftSpan = element.find("div span");
-                var rightSpan = element.children("span");
+                let leftSpan = element.find("div span");
+                let rightSpan = element.children("span");
 
-                var update = function() {
+                let update = function() {
                     element.children("div").remove(".text-center");
                     if (scope.max != null && scope.max > 0) {
                         if (scope.value == null) {

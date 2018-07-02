@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
+    let PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
         $rootScope.pageTitle = "Admin Page";
 
         $scope.contentVersion = api.contentVersion.get();
@@ -49,7 +49,7 @@ define([], function() {
 
     }]
 
-    var AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {
+    let AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {
             $rootScope.pageTitle = "Statistics Page";
 
             $scope.contentVersion = api.contentVersion.get();
@@ -68,7 +68,7 @@ define([], function() {
             })
         }]
 
-    var AnalyticsPageController = ['$scope', 'api',  '$rootScope', function($scope, api, $rootScope) {
+    let AnalyticsPageController = ['$scope', 'api',  '$rootScope', function($scope, api, $rootScope) {
             $rootScope.pageTitle = "Analytics Page";
 
             $scope.isAdminUser = $rootScope.user.role == 'ADMIN';
@@ -89,11 +89,11 @@ define([], function() {
                 $scope.customLocationDates = false; // hide the input boxes
                 $scope.setLoading(true);
                 // If start and end dates from inputs are correctly formatted; use them, else use defaults:
-                var startDate = new Date($scope.locationDates.start ? $scope.locationDates.start : $scope.locationDates.defaultStart).getTime();
-                var endDate = new Date($scope.locationDates.end ? $scope.locationDates.end : $scope.locationDates.defaultEnd).getTime();
+                let startDate = new Date($scope.locationDates.start ? $scope.locationDates.start : $scope.locationDates.defaultStart).getTime();
+                let endDate = new Date($scope.locationDates.end ? $scope.locationDates.end : $scope.locationDates.defaultEnd).getTime();
 
                 api.statisticsEndpoint.getUserLocations({from_date:startDate, to_date:endDate}).$promise.then(function(result){
-                    for(var i = 0; i < result.length; i++) {
+                    for(let i = 0; i < result.length; i++) {
                         result[i].id = i;
                     }
 
@@ -110,9 +110,9 @@ define([], function() {
             }
                 
             // start and end dates for line graphs
-            var dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)); //set it to a year ago
+            let dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 1)); //set it to a year ago
             dataStartDate = dataStartDate.getTime();
-            var dataEndDate = new Date().getTime();
+            let dataEndDate = new Date().getTime();
             $scope.editingGraph = true;
             $scope.eventsSelected = {}
             $scope.questionsAnsweredOverTime = null;
@@ -124,8 +124,8 @@ define([], function() {
             });
             
             $scope.updateGraph = function() {
-                var eventsForGraph = [];
-                for (var eventType in $scope.eventsSelected) {
+                let eventsForGraph = [];
+                for (let eventType in $scope.eventsSelected) {
                     if ($scope.eventsSelected[eventType]) {
                         eventsForGraph.push(eventType);
                     }
@@ -147,8 +147,8 @@ define([], function() {
             }
 
             $scope.getDownloadEventsOverTimeLink = function() {
-                var eventsForGraph = [];
-                for (var eventType in $scope.eventsSelected) {
+                let eventsForGraph = [];
+                for (let eventType in $scope.eventsSelected) {
                     if ($scope.eventsSelected[eventType]) {
                         eventsForGraph.push(eventType);
                     }
@@ -158,13 +158,13 @@ define([], function() {
                     return;
                 }
 
-                var url = api.makeDownloadEventsOverTimeLink(dataStartDate, dataEndDate, eventsForGraph, true);
+                let url = api.makeDownloadEventsOverTimeLink(dataStartDate, dataEndDate, eventsForGraph, true);
                 return url;
             }
         }]
 
     // TODO: This probably belongs in the events controller but for now as only staff can do it we will keep it here.
-    var AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope','$location', '$anchorScroll', function($scope, auth, api, $window, $rootScope, $location, $anchorScroll) {
+    let AdminEventBookingController = ['$scope', 'auth', 'api', '$window', '$rootScope','$location', '$anchorScroll', function($scope, auth, api, $window, $rootScope, $location, $anchorScroll) {
         $rootScope.pageTitle = "Admin Page";
 
         $scope.contentVersion = api.contentVersion.get();
@@ -193,7 +193,7 @@ define([], function() {
 
         $scope.filter = {}
 
-        var updateEventOverviewList = function(){
+        let updateEventOverviewList = function(){
             $rootScope.setLoading(true);
             api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly, "showInactiveOnly":$scope.showInactiveOnly}).$promise.then(function(result) {
                 $rootScope.setLoading(false);
@@ -220,7 +220,7 @@ define([], function() {
             $scope.eventIdForBooking = eventId;
         }
 
-        var updateBookingInfo = function(){
+        let updateBookingInfo = function(){
             api.eventBookings.getBookings({eventId: $scope.eventIdForBooking}).$promise.then(function(result){
                 $scope.bookings = result;
                 $scope.userBookings = [];
@@ -253,7 +253,7 @@ define([], function() {
         $scope.findUsers = function() {
             // This function is only used for event booking user searches:
             if ($scope.userSearch.searchTerms != "") {
-                var role = $scope.userSearch.searchTerms.role;
+                let role = $scope.userSearch.searchTerms.role;
 
                 if ($scope.userSearch.searchTerms.role == "" || $scope.userSearch.searchTerms.role == "NO_ROLE") {
                     role = null;
@@ -307,7 +307,7 @@ define([], function() {
         }
 
         $scope.promoteBooking = function(eventId, userId) {
-            var promote = $window.confirm('Are you sure you want to convert this to a confirmed booking?');   
+            let promote = $window.confirm('Are you sure you want to convert this to a confirmed booking?');   
 
             if (promote) {
                 api.eventBookings.promoteFromWaitList({"eventId": eventId, "userId" : userId}).$promise.then(function(){
@@ -321,7 +321,7 @@ define([], function() {
         }
         
         $scope.unbookUserFromEvent = function(eventId, userId) {
-            var deleteBooking = $window.confirm('Are you sure you want to delete this booking permanently?');   
+            let deleteBooking = $window.confirm('Are you sure you want to delete this booking permanently?');   
 
             if (deleteBooking) {
                 api.eventBookings.deleteBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
@@ -335,7 +335,7 @@ define([], function() {
         }
 
         $scope.cancelEventBooking = function(eventId, userId) {
-            var cancelBooking = $window.confirm('Are you sure you want to cancel this booking?');   
+            let cancelBooking = $window.confirm('Are you sure you want to cancel this booking?');   
             if (cancelBooking) {
                 api.eventBookings.cancelBooking({"eventId": eventId, "userId" : userId}).$promise.then(function(){
                     updateBookingInfo();
@@ -348,7 +348,7 @@ define([], function() {
         }
 
         $scope.resendConfirmationEmail = function(eventId, userId) {
-            var resendEmail = $window.confirm('Are you sure you want to resend the confirmation email for this booking?');   
+            let resendEmail = $window.confirm('Are you sure you want to resend the confirmation email for this booking?');   
             if (resendEmail) {
                 api.eventBookings.resendConfirmation({"eventId": eventId, "userId" : userId}).$promise.then(function(){
                     $scope.showToast($scope.toastTypes.Success, "Event Email Sent", "Email send to user " + userId);
@@ -371,7 +371,7 @@ define([], function() {
         }
 
         $scope.canTakeEventAttendance = function(eventDate) {
-            var endOfToday = new Date().setHours(23,59,59,999);
+            let endOfToday = new Date().setHours(23,59,59,999);
             return eventDate <= endOfToday;
         }
 

@@ -27,7 +27,7 @@ define([], function() {
         });	 
 	*/
 
-	var PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', '$rootScope', function($scope, $state, conceptList, persistence, $location, $rootScope) {
+	let PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', '$rootScope', function($scope, $state, conceptList, persistence, $location, $rootScope) {
 
 		$scope.allConcepts = conceptList.results;
 		$rootScope.pageTitle = "Concept Index";

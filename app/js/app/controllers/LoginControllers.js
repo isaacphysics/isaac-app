@@ -77,9 +77,9 @@ define([], function() {
 			// I don't know why this code is here; but it was this side of the return statement before!
 			// Hide mobile log in form if shown
 			// TODO: Find a better place for this, or just angularize the entire mobile log in form
-			if ($("#mobile-login-form").hasClass('ru-drop-show')) {
-				$("#mobile-login-form").ruDropDownToggle();
-			}
+			// if ($("#mobile-login-form").hasClass('ru-drop-show')) {
+			// 	$("#mobile-login-form").ruDropDownToggle();
+			// }
 		}
 	}]
 

@@ -22,7 +22,7 @@ define(["/partials/equation_editor/equation_input.html"], function(templateUrl) 
                 }
 
 
-                var timer = null;
+                let timer = null;
                 scope.textEdit = function() {
                     // This is on a keyUp event so it should not fire when showEquationEditor returns (see below)
                     if (timer) {
@@ -30,14 +30,14 @@ define(["/partials/equation_editor/equation_input.html"], function(templateUrl) 
                         timer = null;
                     }
                     timer = $timeout(function() {
-                        var pycode = element.find(".eqn-text-input")[0].value;
-                        var openBracketsCount = pycode.split('(').length - 1;
-                        var closeBracketsCount = pycode.split(')').length - 1;
+                        let pycode = element.find(".eqn-text-input")[0].value;
+                        let openBracketsCount = pycode.split('(').length - 1;
+                        let closeBracketsCount = pycode.split(')').length - 1;
 
                         scope.state = {result: {python: pycode}, textEntry: true};
-                        var regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
-                        var badCharacters = RegExp(regexStr);
-                        var goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
+                        let regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
+                        let badCharacters = RegExp(regexStr);
+                        let goodCharacters = RegExp(regexStr.replace("^", ""), 'g');
                         scope.textEntryError = [];
                         if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                             scope.textEntryError.push('LaTeX syntax is not supported.');

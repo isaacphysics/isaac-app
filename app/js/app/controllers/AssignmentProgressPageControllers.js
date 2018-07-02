@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	let PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
+    let PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
         scope.setLoading(true);
 
         scope.generateGameBoardTitle = gameBoardTitles.generate;

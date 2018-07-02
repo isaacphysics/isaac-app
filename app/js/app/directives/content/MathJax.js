@@ -25,7 +25,7 @@ define(["../../MathJaxConfig"], function() {
 			link: function(scope, element, attrs) {
 
 				// This must be done asynchronously. Content isn't actually in element yet. Don't really understand why...
-				var first = true;
+				let first = true;
 				scope.$watch(function() {
 					if (first) {
 						setTimeout(function() {

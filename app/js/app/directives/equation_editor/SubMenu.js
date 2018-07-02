@@ -11,7 +11,7 @@ define(["/partials/equation_editor/sub_menu.html"], function(templateUrl) {
 
                 setTimeout(function() {
                     // Do this init asynchronously so that the sub-menu-items are definitely in the DOM.
-                    var items = element.siblings("[sub-menu-item]");
+                    let items = element.siblings("[sub-menu-item]");
 
                     scope.selectMenu = function(e, idx) {
                         scope.activeIdx = idx;
@@ -30,13 +30,13 @@ define(["/partials/equation_editor/sub_menu.html"], function(templateUrl) {
                 });
 
 
-                var lst = element.find("ul");
-                var bufferedLeft = 0;
-                var absorbSymbolDrag = function($e, pageX, pageY, deltaX, deltaY) {
+                let lst = element.find("ul");
+                let bufferedLeft = 0;
+                let absorbSymbolDrag = function($e, pageX, pageY, deltaX, deltaY) {
 
                     bufferedLeft += deltaX;
 
-                    newLeft = bufferedLeft;
+                    let newLeft = bufferedLeft;
 
                     if (newLeft > 0) {
                         newLeft = 0;
@@ -52,7 +52,7 @@ define(["/partials/equation_editor/sub_menu.html"], function(templateUrl) {
                     lst.css("left", newLeft);
                 }
 
-                var abortSymbolDrag = function($e, symbol, pageX, pageY) {
+                let abortSymbolDrag = function($e, symbol, pageX, pageY) {
                     bufferedLeft = parseFloat(lst.css("left"));
                     scope.selectMenu($e, scope.menus.indexOf(symbol));
                 }

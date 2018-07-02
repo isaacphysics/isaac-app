@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(templateUrl) {
+define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(iframe_api, templateUrl) {
 
 	return ["api", "$sce", function(api, $sce) {
 
@@ -29,9 +29,9 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(tem
 
 				scope.videoSrc = undefined;
 
-				var onPlayerStateChange = function(e) {
+				let onPlayerStateChange = function(e) {
 
-					var logData = {
+					let logData = {
 						videoUrl: e.target.getVideoUrl(),
 						videoPosition: e.target.getCurrentTime(),
 					}

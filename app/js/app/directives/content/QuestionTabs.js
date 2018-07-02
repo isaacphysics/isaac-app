@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"], function(rv, scope, templateUrl) {
+define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"], function(rv, templateUrl) {
 	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
 		return {
 			restrict: 'A',

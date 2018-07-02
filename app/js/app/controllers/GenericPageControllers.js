@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', function($scope, page, tags, $rootScope, subject) {
+	let PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', function($scope, page, tags, $rootScope, subject) {
 		$scope.doc = page;
 		$scope.page = page;
 		$rootScope.pageTitle = page.title;

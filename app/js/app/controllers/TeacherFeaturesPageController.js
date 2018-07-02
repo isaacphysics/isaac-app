@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, auth, api, $state, $stateParams, $location) {
+	let PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, auth, api, $state, $stateParams, $location) {
 		$scope.isLoggedIn = false;
 		$scope.isTeacher = false;
 		$scope.redirectModal = $stateParams.redirectModal;

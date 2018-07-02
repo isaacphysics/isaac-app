@@ -42,6 +42,10 @@ define([
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 
+    RSVP.on('error', function(reason) {
+        console.assert(false, reason);
+    });
+
     // Load all of foundation
     let req = require.context("foundation-sites/js/foundation", true);
     for(let r of req.keys()) {

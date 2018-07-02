@@ -34,7 +34,7 @@ define(['/partials/content/Tabs.html'], function(templateUrl) {
 
 					if (scope.doc.children[i].type == "isaacQuestion") {
 
-						var logData = {
+						let logData = {
 							type: "QUICK_QUESTION_TAB_VIEW",
 							quickQuestionId: scope.doc.children[i].id,
 						};
@@ -54,7 +54,7 @@ define(['/partials/content/Tabs.html'], function(templateUrl) {
 
 					e.stopPropagation();
 
-					var i = e.targetScope.tabIndex;
+					let i = e.targetScope.tabIndex;
 
 					scope.activateTab(i);
 
