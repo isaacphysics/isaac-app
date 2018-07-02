@@ -13,337 +13,331 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    let PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', '$stateParams', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles, $stateParams) {
+ export const PageController = ['$scope', 'api', '$location', 'tags', '$sce', 'persistence', 'filterWarnings', 'auth', 'gameBoardTitles', '$stateParams', function($scope, api, $location, tags, $sce, persistence, filterWarnings, auth, gameBoardTitles, $stateParams) {
 
-        // TODO: Reset filterPanelOpen when resizing between mobile and desktop.
+    // TODO: Reset filterPanelOpen when resizing between mobile and desktop.
 
-        if ($stateParams.filter) {
-            $scope.filterPanelOpen = "desktop-filter";
-        } else {
+    if ($stateParams.filter) {
+        $scope.filterPanelOpen = "desktop-filter";
+    } else {
+        $scope.filterPanelOpen = null;
+    }
+
+    $scope.openFilterPanel = function(panelToOpen) {
+        if ($scope.filterPanelOpen === panelToOpen) {
             $scope.filterPanelOpen = null;
+
+        } else {
+            $scope.filterPanelOpen = panelToOpen;
         }
+    }
 
-        $scope.openFilterPanel = function(panelToOpen) {
-            if ($scope.filterPanelOpen === panelToOpen) {
-                $scope.filterPanelOpen = null;
+    let recordCurrentGameboard = function() {
+        if (!$scope.gameBoard)
+            return;
+        
+        persistence.save("lastGameBoardId", $scope.gameBoard.id);
 
-            } else {
-                $scope.filterPanelOpen = panelToOpen;
-            }
+        api.logger.log({
+            type: "VIEW_GAMEBOARD_BY_ID",
+            gameboardId: $scope.gameBoard.id, 
+        })
+    }
+
+    $scope.filterSubjects = ["physics"];
+    $scope.filterFields = ["mechanics", "waves", "circuits"];
+    $scope.filterTopics = [];
+    $scope.filterLevels = [1];
+    $scope.filterConcepts = [];
+
+    function setWarnings() {
+        $scope.warnings = filterWarnings($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels, $scope.filterConcepts);
+    }
+
+    let watchers = [];
+
+    function addFilterWatchers() {
+        watchers.push($scope.$watchCollection("filterSubjects", filterChanged));
+        watchers.push($scope.$watchCollection("filterFields", filterChanged));
+        watchers.push($scope.$watchCollection("filterTopics", filterChanged));
+        watchers.push($scope.$watchCollection("filterLevels", filterChanged));
+        watchers.push($scope.$watchCollection("filterConcepts", filterChanged));
+    }
+
+    function clearFilterWatchers() {
+        let w;
+        while(watchers.length > 0) {
+            w = watchers.pop();
+            w();
         }
+    }
 
-        let recordCurrentGameboard = function() {
-            if (!$scope.gameBoard)
-                return;
-            
-            persistence.save("lastGameBoardId", $scope.gameBoard.id);
+    function loadGameBoardById(id, preventWarning) {
 
-            api.logger.log({
-                type: "VIEW_GAMEBOARD_BY_ID",
-                gameboardId: $scope.gameBoard.id, 
-            })
-        }
+        console.log("Loading game board by id: ", id)
 
-        $scope.filterSubjects = ["physics"];
-        $scope.filterFields = ["mechanics", "waves", "circuits"];
-        $scope.filterTopics = [];
-        $scope.filterLevels = [1];
-        $scope.filterConcepts = [];
+        $scope.gameBoardLoading = true;
+        $scope.gameBoard = api.gameBoards.get({id: id})
 
-        function setWarnings() {
-            $scope.warnings = filterWarnings($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels, $scope.filterConcepts);
-        }
+        $scope.gameBoard.$promise.then(function(board) {
+            $scope.gameBoardLoading = false;
 
-        let watchers = [];
+            clearFilterWatchers();
 
-        function addFilterWatchers() {
-            watchers.push($scope.$watchCollection("filterSubjects", filterChanged));
-            watchers.push($scope.$watchCollection("filterFields", filterChanged));
-            watchers.push($scope.$watchCollection("filterTopics", filterChanged));
-            watchers.push($scope.$watchCollection("filterLevels", filterChanged));
-            watchers.push($scope.$watchCollection("filterConcepts", filterChanged));
-        }
+            $scope.filterSubjects = board.gameFilter.subjects || [];
+            $scope.filterFields = board.gameFilter.fields || [];
+            $scope.filterTopics = board.gameFilter.topics || [];
+            $scope.filterLevels = board.gameFilter.levels || [];
+            $scope.filterConcepts = board.gameFilter.concepts || [];
 
-        function clearFilterWatchers() {
-            let w;
-            while(watchers.length > 0) {
-                w = watchers.pop();
-                w();
-            }
-        }
+            // TODO: Do this somewhere else.
 
-        function loadGameBoardById(id, preventWarning) {
-
-            console.log("Loading game board by id: ", id)
-
-            $scope.gameBoardLoading = true;
-            $scope.gameBoard = api.gameBoards.get({id: id})
-
-            $scope.gameBoard.$promise.then(function(board) {
-                $scope.gameBoardLoading = false;
-
-                clearFilterWatchers();
-
-                $scope.filterSubjects = board.gameFilter.subjects || [];
-                $scope.filterFields = board.gameFilter.fields || [];
-                $scope.filterTopics = board.gameFilter.topics || [];
-                $scope.filterLevels = board.gameFilter.levels || [];
-                $scope.filterConcepts = board.gameFilter.concepts || [];
-
-                // TODO: Do this somewhere else.
-
-                addFilterWatchers();
-                setWarnings();
-
-                buildBreadCrumb();
-                recordCurrentGameboard();
-
-            }).catch(function(e) {
-                $scope.gameBoardLoading = false;
-                $scope.gameBoard = null;
-
-                if (!preventWarning) {
-                    if (e.statusText == "Not Found") {
-                        $scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
-                        // Something went wrong. This gameboard probably doesn't exist anymore.
-                        loadGameBoardFromFilter();
-                    } else {
-                        // The server is misbehaving, no point trying to load a new gameboard. Hope the user tries again later.
-                        $scope.showToast($scope.toastTypes.Failure, "Error Loading Board", "There was an error loading the gameboard.");
-                    }
-                }
-            });
-        }
-
-        function loadGameBoardFromFilter() {
-
-            console.log("Loading game board based on filter settings.")
-
-            let params = {};
-
-            if ($scope.filterSubjects.length > 0) {
-                params.subjects = $scope.filterSubjects.join(",");
-            } else {
-                params.subjects = "physics,maths";
-            }
-
-            if ($scope.filterFields.length > 0)
-                params.fields = $scope.filterFields.join(",");
-
-            if ($scope.filterTopics.length > 0)
-                params.topics = $scope.filterTopics.join(",");
-
-            if ($scope.filterLevels.length > 0) {
-                params.levels = $scope.filterLevels.join(",");
-            }
-            else {
-                params.levels = "1,2,3,4,5,6";
-            }
-
-
-            if ($scope.filterConcepts.length > 0)
-                params.concepts = $scope.filterConcepts.join(",");
-
-            params.title = gameBoardTitles.generateFromFilter($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels);
-
-            $scope.gameBoardLoading = true;
-            $scope.gameBoard = api.gameBoards.filter(params);
-
-            $scope.gameBoard.$promise.then(function(board) {
-                $scope.gameBoardLoading = false;
-
-                if (!board.id) {
-                    $scope.gameBoard = null;
-                    return;
-                }
-
-                recordCurrentGameboard();
-
-                if (!$location.hash()) {
-                    $location.replace();
-                }
-                $location.hash(board.id);
-
-                lastHash = board.id;
-
-            }).catch(function() {
-                $scope.gameBoardLoading = false;
-                $scope.gameBoard = null;
-            })
-        }
-
-        function filterChanged(newVal, oldVal) {
-            if (newVal !== undefined && newVal === oldVal)
-                return; // Initialisation
-
-            $scope.shuffleStack.length = 0;
-            buildBreadCrumb();
-
+            addFilterWatchers();
             setWarnings();
 
-            loadGameBoardFromFilter();
-        }
+            buildBreadCrumb();
+            recordCurrentGameboard();
 
-        let lastHash = null;
-        function hashChanged() {
-            let hash = $location.hash();
+        }).catch(function(e) {
+            $scope.gameBoardLoading = false;
+            $scope.gameBoard = null;
 
-            if (hash == lastHash)
-                return;
-
-            console.log("Hash changed:", hash);
-            lastHash = hash;
-
-            if (hash) {
-
-                // We have requested a specific game board in the URL. Load it.
-                loadGameBoardById(hash);
-
-            } else {
-
-                // We have not requested a specific game board in the URL.
-                // Load the last one we saw. This will adjust the filter
-                // settings to match.
-
-                let savedGameboardId = persistence.load("lastGameBoardId");
-
-                if (savedGameboardId) {
-
-                    $location.replace();
-                    $location.hash(savedGameboardId);
-                    lastHash = savedGameboardId;
-
-                    loadGameBoardById(savedGameboardId, true);
-
-                } else {
+            if (!preventWarning) {
+                if (e.statusText == "Not Found") {
+                    $scope.showToast($scope.toastTypes.Failure, "Board Does Not Exist", "The specified game board does not exist.");
+                    // Something went wrong. This gameboard probably doesn't exist anymore.
                     loadGameBoardFromFilter();
+                } else {
+                    // The server is misbehaving, no point trying to load a new gameboard. Hope the user tries again later.
+                    $scope.showToast($scope.toastTypes.Failure, "Error Loading Board", "There was an error loading the gameboard.");
                 }
             }
+        });
+    }
+
+    function loadGameBoardFromFilter() {
+
+        console.log("Loading game board based on filter settings.")
+
+        let params = {};
+
+        if ($scope.filterSubjects.length > 0) {
+            params.subjects = $scope.filterSubjects.join(",");
+        } else {
+            params.subjects = "physics,maths";
         }
 
-        function buildBreadCrumb() {
+        if ($scope.filterFields.length > 0)
+            params.fields = $scope.filterFields.join(",");
 
-            delete $scope.breadCrumbSubject;
-            delete $scope.breadCrumbField;
-            delete $scope.breadCrumbTopic;
+        if ($scope.filterTopics.length > 0)
+            params.topics = $scope.filterTopics.join(",");
 
-            if ($scope.filterSubjects.length == 1) {
-                $scope.breadCrumbSubject = $scope.filterSubjects[0];
-
-                if ($scope.filterFields.length == 1) {
-                    $scope.breadCrumbField = $scope.filterFields[0];
-
-                    if ($scope.filterTopics.length == 1) {
-                        $scope.breadCrumbTopic = $scope.filterTopics[0];
-                    } else if ($scope.filterTopics.length > 1) {
-                        $scope.breadCrumbTopic = "multiple_topics";
-                    }
-
-                } else if ($scope.filterFields.length > 1) {
-                    $scope.breadCrumbField = "multiple_fields";
-                }
-
-            } else if ($scope.filterSubjects.length > 1) {
-                $scope.breadCrumbSubject = "multiple_subjects";
-            }
-
+        if ($scope.filterLevels.length > 0) {
+            params.levels = $scope.filterLevels.join(",");
+        }
+        else {
+            params.levels = "1,2,3,4,5,6";
         }
 
-        $scope.shuffleStack = [];
 
-        $scope.shuffleBoard = function() {
-            $scope.shuffleStack.push($scope.gameBoard.id);
-            let logMsg = {
-                type: "SHUFFLE_BOARD",
-                questions: {}
-            };
+        if ($scope.filterConcepts.length > 0)
+            params.concepts = $scope.filterConcepts.join(",");
 
-            for (let i in $scope.gameBoard.questions) {
-                let q = $scope.gameBoard.questions[i];
-                logMsg.questions[q.id] = q.state;
+        params.title = gameBoardTitles.generateFromFilter($scope.filterSubjects, $scope.filterFields, $scope.filterTopics, $scope.filterLevels);
+
+        $scope.gameBoardLoading = true;
+        $scope.gameBoard = api.gameBoards.filter(params);
+
+        $scope.gameBoard.$promise.then(function(board) {
+            $scope.gameBoardLoading = false;
+
+            if (!board.id) {
+                $scope.gameBoard = null;
+                return;
             }
 
-            api.logger.log(logMsg);
-            
-            loadGameBoardFromFilter();
+            recordCurrentGameboard();
 
-        }
-
-        $scope.undoShuffle = function() {
-            let newId = $scope.shuffleStack.pop();
-            if (newId) {
-                $location.hash(newId);
-                loadGameBoardById(newId);
+            if (!$location.hash()) {
+                $location.replace();
             }
-        }
+            $location.hash(board.id);
 
-        $scope.getTagTitle = function(id) {
+            lastHash = board.id;
 
-            switch(id) {
-                case "multiple_subjects":
-                    return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
-                case "multiple_fields":
-                    return $sce.trustAsHtml("Multiple Fields");
-                case "multiple_topics":
-                    return $sce.trustAsHtml("Multiple Topics");
-            }
+        }).catch(function() {
+            $scope.gameBoardLoading = false;
+            $scope.gameBoard = null;
+        })
+    }
 
-            for (let i in tags.tagArray) {
-                if (tags.tagArray[i].id == id)
-                    return $sce.trustAsHtml(tags.tagArray[i].title);
-            }
-        }
+    function filterChanged(newVal, oldVal) {
+        if (newVal !== undefined && newVal === oldVal)
+            return; // Initialisation
 
-        hashChanged();
-
-        addFilterWatchers();
-
+        $scope.shuffleStack.length = 0;
         buildBreadCrumb();
 
-        $(window).on('hashchange', hashChanged);
-        $scope.$on('$stateChangeStart', function() {
-            $(window).off('hashchange', hashChanged);
-        });
+        setWarnings();
 
-        $scope.scrollToQuestions = function() {
-            $('html, body').animate({
-                scrollTop: $(".ru-board-title").offset().top
-            }, 1000);        }
-        $scope.scrollToWarnings = function() {
-            $('html, body').animate({
-                scrollTop: $(".warnings").offset().top
-            }, 1000);        }
+        loadGameBoardFromFilter();
+    }
 
-        $scope.generateGameBoardTitle = gameBoardTitles.generate;
+    let lastHash = null;
+    function hashChanged() {
+        let hash = $location.hash();
 
-        $scope.editedGameBoardTitle = null;
+        if (hash == lastHash)
+            return;
 
-        $scope.saveGameBoardTitle = function() {
-            if (!$scope.editedGameBoardTitle)
-                return;
+        console.log("Hash changed:", hash);
+        lastHash = hash;
 
-            let oldTitle = $scope.gameBoard.title;
-            $scope.gameBoard.title = $scope.editedGameBoardTitle;
-            $scope.editedGameBoardTitle = null;
+        if (hash) {
 
-            $scope.gameBoard.$save().then(function(gb) {
-                $scope.gameBoard.title = gb.title;
-            }).catch(function() {
-                $scope.gameBoard.title = oldTitle;
-            });
+            // We have requested a specific game board in the URL. Load it.
+            loadGameBoardById(hash);
+
+        } else {
+
+            // We have not requested a specific game board in the URL.
+            // Load the last one we saw. This will adjust the filter
+            // settings to match.
+
+            let savedGameboardId = persistence.load("lastGameBoardId");
+
+            if (savedGameboardId) {
+
+                $location.replace();
+                $location.hash(savedGameboardId);
+                lastHash = savedGameboardId;
+
+                loadGameBoardById(savedGameboardId, true);
+
+            } else {
+                loadGameBoardFromFilter();
+            }
+        }
+    }
+
+    function buildBreadCrumb() {
+
+        delete $scope.breadCrumbSubject;
+        delete $scope.breadCrumbField;
+        delete $scope.breadCrumbTopic;
+
+        if ($scope.filterSubjects.length == 1) {
+            $scope.breadCrumbSubject = $scope.filterSubjects[0];
+
+            if ($scope.filterFields.length == 1) {
+                $scope.breadCrumbField = $scope.filterFields[0];
+
+                if ($scope.filterTopics.length == 1) {
+                    $scope.breadCrumbTopic = $scope.filterTopics[0];
+                } else if ($scope.filterTopics.length > 1) {
+                    $scope.breadCrumbTopic = "multiple_topics";
+                }
+
+            } else if ($scope.filterFields.length > 1) {
+                $scope.breadCrumbField = "multiple_fields";
+            }
+
+        } else if ($scope.filterSubjects.length > 1) {
+            $scope.breadCrumbSubject = "multiple_subjects";
         }
 
+    }
+
+    $scope.shuffleStack = [];
+
+    $scope.shuffleBoard = function() {
+        $scope.shuffleStack.push($scope.gameBoard.id);
+        let logMsg = {
+            type: "SHUFFLE_BOARD",
+            questions: {}
+        };
+
+        for (let i in $scope.gameBoard.questions) {
+            let q = $scope.gameBoard.questions[i];
+            logMsg.questions[q.id] = q.state;
+        }
+
+        api.logger.log(logMsg);
+        
+        loadGameBoardFromFilter();
+
+    }
+
+    $scope.undoShuffle = function() {
+        let newId = $scope.shuffleStack.pop();
+        if (newId) {
+            $location.hash(newId);
+            loadGameBoardById(newId);
+        }
+    }
+
+    $scope.getTagTitle = function(id) {
+
+        switch(id) {
+            case "multiple_subjects":
+                return $sce.trustAsHtml("Physics&nbsp;&amp;&nbsp;Maths");
+            case "multiple_fields":
+                return $sce.trustAsHtml("Multiple Fields");
+            case "multiple_topics":
+                return $sce.trustAsHtml("Multiple Topics");
+        }
+
+        for (let i in tags.tagArray) {
+            if (tags.tagArray[i].id == id)
+                return $sce.trustAsHtml(tags.tagArray[i].title);
+        }
+    }
+
+    hashChanged();
+
+    addFilterWatchers();
+
+    buildBreadCrumb();
+
+    $(window).on('hashchange', hashChanged);
+    $scope.$on('$stateChangeStart', function() {
+        $(window).off('hashchange', hashChanged);
+    });
+
+    $scope.scrollToQuestions = function() {
+        $('html, body').animate({
+            scrollTop: $(".ru-board-title").offset().top
+        }, 1000);        }
+    $scope.scrollToWarnings = function() {
+        $('html, body').animate({
+            scrollTop: $(".warnings").offset().top
+        }, 1000);        }
+
+    $scope.generateGameBoardTitle = gameBoardTitles.generate;
+
+    $scope.editedGameBoardTitle = null;
+
+    $scope.saveGameBoardTitle = function() {
+        if (!$scope.editedGameBoardTitle)
+            return;
+
+        let oldTitle = $scope.gameBoard.title;
+        $scope.gameBoard.title = $scope.editedGameBoardTitle;
+        $scope.editedGameBoardTitle = null;
+
+        $scope.gameBoard.$save().then(function(gb) {
+            $scope.gameBoard.title = gb.title;
+        }).catch(function() {
+            $scope.gameBoard.title = oldTitle;
+        });
+    }
 
 
-        $("body").on("click", ".hex-filter-warning", $scope.scrollToWarnings);
-        $scope.$on("destroy", function() {
-            $("body").off("click", ".hex-filter-warning", $scope.scrollToWarnings);
-        })
-    }]
 
-    return {
-        PageController: PageController,
-    };
-})
+    $("body").on("click", ".hex-filter-warning", $scope.scrollToWarnings);
+    $scope.$on("destroy", function() {
+        $("body").off("click", ".hex-filter-warning", $scope.scrollToWarnings);
+    })
+}];

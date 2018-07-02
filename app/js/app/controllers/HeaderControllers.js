@@ -13,76 +13,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    let PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
-        
-        $scope.$root.segueEnvironment = "LIVE"; //Live by default
+export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
+    
+    $scope.$root.segueEnvironment = "LIVE"; //Live by default
 
-        //Find out which version we're on
-        api.environment.get().$promise.then(function(response){
-            $scope.$root.segueEnvironment = response.segueEnvironment;
-        });
-
-
-
-        let notificationsOpen = false;
-
-        $scope.notificationToggle = function() {
-
-            notificationsOpen = !notificationsOpen;
-
-            if (notificationsOpen) {
-
-                let notificationSeenList = [];
-
-                for (let i = 0; i < $rootScope.notificationList.length; i++) {
-
-                    notificationSeenList.push($rootScope.notificationList[i].id);
-                }
-
-                $rootScope.notificationWebSocket.send(JSON.stringify({
-                    "feedbackType" : "NOTIFICATION_VIEW_LIST",
-                    "notificationIds" : notificationSeenList
-                }));
+    //Find out which version we're on
+    api.environment.get().$promise.then(function(response){
+        $scope.$root.segueEnvironment = response.segueEnvironment;
+    });
 
 
 
+    let notificationsOpen = false;
 
+    $scope.notificationToggle = function() {
 
-                $rootScope.notificationListLength = 0;
-                $rootScope.notificationPopups = [];
+        notificationsOpen = !notificationsOpen;
+
+        if (notificationsOpen) {
+
+            let notificationSeenList = [];
+
+            for (let i = 0; i < $rootScope.notificationList.length; i++) {
+
+                notificationSeenList.push($rootScope.notificationList[i].id);
             }
 
-            $('.dl-notifications').slideToggle(200);
+            $rootScope.notificationWebSocket.send(JSON.stringify({
+                "feedbackType" : "NOTIFICATION_VIEW_LIST",
+                "notificationIds" : notificationSeenList
+            }));
 
+
+
+
+
+            $rootScope.notificationListLength = 0;
+            $rootScope.notificationPopups = [];
         }
 
+        $('.dl-notifications').slideToggle(200);
+
+    }
 
 
-        $rootScope.streakDialToggle = function(questionPartsCorrectToday) {
 
-            let progressValue = $('#progress-bar');
-            let radius = 20;
-            let circumference = 2 * Math.PI * radius;
-            let dashOffset = circumference;
+    $rootScope.streakDialToggle = function(questionPartsCorrectToday) {
+
+        let progressValue = $('#progress-bar');
+        let radius = 20;
+        let circumference = 2 * Math.PI * radius;
+        let dashOffset = circumference;
 
 
-            if (questionPartsCorrectToday <= 3) {
-                dashOffset = circumference * (1 - (questionPartsCorrectToday/3));
-            } else if (questionPartsCorrectToday > 3) {
-                dashOffset = 0;
-            }
-
-            progressValue.animate({'stroke-dashoffset' : dashOffset}, 500)
-
-            //progressValue.attr('stroke-dashoffset', String(dashOffset));
-
+        if (questionPartsCorrectToday <= 3) {
+            dashOffset = circumference * (1 - (questionPartsCorrectToday/3));
+        } else if (questionPartsCorrectToday > 3) {
+            dashOffset = 0;
         }
 
-    }];
+        progressValue.animate({'stroke-dashoffset' : dashOffset}, 500)
 
-    return {
-        PageController: PageController
-    };
-});
+        //progressValue.attr('stroke-dashoffset', String(dashOffset));
+
+    }
+
+}];

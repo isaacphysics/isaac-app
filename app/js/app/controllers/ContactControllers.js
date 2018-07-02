@@ -13,88 +13,82 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    let PageController = ['$scope', 'api', '$state', '$rootScope', '$stateParams', function($scope, api, $state, $rootScope, $stateParams) {
-        $rootScope.pageTitle = "Contact us";
-        $scope.contactForm = {};
-        if ($stateParams.subject != null && $stateParams.subject != '' && $stateParams.subject != 'true') {
-            $scope.contactForm.subject = $stateParams.subject;
+export const PageController = ['$scope', 'api', '$state', '$rootScope', '$stateParams', function($scope, api, $state, $rootScope, $stateParams) {
+    $rootScope.pageTitle = "Contact us";
+    $scope.contactForm = {};
+    if ($stateParams.subject != null && $stateParams.subject != '' && $stateParams.subject != 'true') {
+        $scope.contactForm.subject = $stateParams.subject;
+    }
+
+    $scope.user.$promise.then(function() {
+        $scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email, "subject": $scope.contactForm.subject};
+    
+        if ($stateParams.preset == 'teacherRequest') {
+            if ($scope.user.role != 'TEACHER') {
+                $scope.contactForm.subject = "Teacher Account Request",
+                $scope.contactForm.message = "Hello,\n\nPlease could you convert my Isaac account into a teacher account.\n\nMy school is: \nI have changed my account email address to be my school email: [Yes/No]\nA link to my school website with a staff list showing my name and email (or a phone number to contact the school) is: \n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+            } else {
+                alert("Your account has already been upgraded to a teacher account.")
+            }
+        } else if ($stateParams.preset == 'accountDeletion') {
+            $scope.contactForm.subject = "Account Deletion Request",
+            $scope.contactForm.message = "Hello,\n\nPlease could you delete my Isaac account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
+        }
+    }).catch(function(){
+        if (!$scope.user._id && $stateParams.preset == 'teacherRequest') {
+            $state.go('login', {target:"/contact?preset=teacherRequest"})
+        } else if (!$scope.user._id && $stateParams.preset == 'accountDeletion') {
+            $state.go('login', {target:"/contact?preset=accountDeletion"})
+        }
+    });
+
+    $scope.$watchCollection("contactForm", function() {
+        $scope.invalidForm = false;
+        $scope.formSubmitted = false;
+        $scope.errorDuringSubmit = false;
+        $scope.invalidEmail = false;
+    })
+
+    $scope.sendForm = function() {
+        if($scope.form.$invalid) {
+            $scope.invalidForm = true;
+            $scope.form.$pristine= false;
+
+            // This will mark all invalid fields as dirty to highlight errors in the view.
+            for(let i in $scope.form.$error.required){
+                $scope.form.$error.required[i].$setViewValue($scope.form.$error.required[i].$viewValue);
+            }
+
+            return;
         }
 
-        $scope.user.$promise.then(function() {
-            $scope.contactForm = {"firstName" : $scope.user.givenName, "lastName" : $scope.user.familyName, "emailAddress" : $scope.user.email, "subject": $scope.contactForm.subject};
-        
-            if ($stateParams.preset == 'teacherRequest') {
-                if ($scope.user.role != 'TEACHER') {
-                    $scope.contactForm.subject = "Teacher Account Request",
-                    $scope.contactForm.message = "Hello,\n\nPlease could you convert my Isaac account into a teacher account.\n\nMy school is: \nI have changed my account email address to be my school email: [Yes/No]\nA link to my school website with a staff list showing my name and email (or a phone number to contact the school) is: \n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
-                } else {
-                    alert("Your account has already been upgraded to a teacher account.")
-                }
-            } else if ($stateParams.preset == 'accountDeletion') {
-                $scope.contactForm.subject = "Account Deletion Request",
-                $scope.contactForm.message = "Hello,\n\nPlease could you delete my Isaac account.\n\nThanks, \n\n" + $scope.contactForm.firstName + " " + $scope.contactForm.lastName;
-            }
-        }).catch(function(){
-            if (!$scope.user._id && $stateParams.preset == 'teacherRequest') {
-                $state.go('login', {target:"/contact?preset=teacherRequest"})
-            } else if (!$scope.user._id && $stateParams.preset == 'accountDeletion') {
-                $state.go('login', {target:"/contact?preset=accountDeletion"})
-            }
-        });
+        if($scope.user.emailVerificationStatus == 'DELIVERY_FAILED' && $scope.contactForm.emailAddress == $scope.user.email) {
 
-        $scope.$watchCollection("contactForm", function() {
-            $scope.invalidForm = false;
-            $scope.formSubmitted = false;
-            $scope.errorDuringSubmit = false;
-            $scope.invalidEmail = false;
-        })
-
-        $scope.sendForm = function() {
-            if($scope.form.$invalid) {
-                $scope.invalidForm = true;
-                $scope.form.$pristine= false;
-
-                // This will mark all invalid fields as dirty to highlight errors in the view.
-                for(let i in $scope.form.$error.required){
-                    $scope.form.$error.required[i].$setViewValue($scope.form.$error.required[i].$viewValue);
-                }
-
-                return;
-            }
-
-            if($scope.user.emailVerificationStatus == 'DELIVERY_FAILED' && $scope.contactForm.emailAddress == $scope.user.email) {
-
-                $scope.invalidEmail = true;
-                $scope.modals.emailWarning.show();
-                return;
-            }
-
-            let message = {
-                "firstName": $scope.contactForm.firstName,
-                "lastName": $scope.contactForm.lastName,
-                "emailAddress": $scope.contactForm.emailAddress,
-                "subject": $scope.contactForm.subject,
-                "message": $scope.contactForm.message
-            };
-
-            api.contactForm.send({}, message).$promise.then(function(response) {
-                $scope.invalidForm = false;
-                $scope.formSubmitted = true;
-            }, function(e) {
-                console.error("Error submitting form", e);
-                $scope.errorDuringSubmit = true;
-            });
+            $scope.invalidEmail = true;
+            $scope.modals.emailWarning.show();
+            return;
         }
 
-        $scope.launchTutorial = function() {
-            document.cookie = encodeURIComponent('tutorialShown') + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            document.location.href = "/";
+        let message = {
+            "firstName": $scope.contactForm.firstName,
+            "lastName": $scope.contactForm.lastName,
+            "emailAddress": $scope.contactForm.emailAddress,
+            "subject": $scope.contactForm.subject,
+            "message": $scope.contactForm.message
         };
-    }];
 
-    return {
-        PageController: PageController
+        api.contactForm.send({}, message).$promise.then(function(response) {
+            $scope.invalidForm = false;
+            $scope.formSubmitted = true;
+        }, function(e) {
+            console.error("Error submitting form", e);
+            $scope.errorDuringSubmit = true;
+        });
+    }
+
+    $scope.launchTutorial = function() {
+        document.cookie = encodeURIComponent('tutorialShown') + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        document.location.href = "/";
     };
-});
+}];

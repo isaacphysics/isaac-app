@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	let PageController = ['$scope', 'auth', '$state', '$location', '$window', '$rootScope', function($scope, auth, $state, $location, $window, $rootScope) {
-		$rootScope.pageTitle = "Login";
-		// Hide search on Login page
-		$scope.globalFlags.noSearch = true;
-		
-		// Make sure the internal user object is up-to-date
-		auth.updateUser().then(function(user){			
-			// We will only do this bit if the user is already logged in.
-			let target = $location.search().target;
-			if (target) {
-				$window.location.href = target;
-			} else {
-				$state.go('home');
-			}
-		});
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+export const PageController = ['$scope', 'auth', '$state', '$location', '$window', '$rootScope', function($scope, auth, $state, $location, $window, $rootScope) {
+	$rootScope.pageTitle = "Login";
+	// Hide search on Login page
+	$scope.globalFlags.noSearch = true;
+	
+	// Make sure the internal user object is up-to-date
+	auth.updateUser().then(function(user){			
+		// We will only do this bit if the user is already logged in.
+		let target = $location.search().target;
+		if (target) {
+			$window.location.href = target;
+		} else {
+			$state.go('home');
+		}
+	});
+}];

@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	let PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
-		$rootScope.pageTitle = "Content Error Page";
-		$scope.errorMap = page;
+export const PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
+	$rootScope.pageTitle = "Content Error Page";
+	$scope.errorMap = page;
 
-		$scope.editorPath = "http://editor.isaacphysics.org/#!/edit/master/"
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+	$scope.editorPath = "http://editor.isaacphysics.org/#!/edit/master/"
+}];

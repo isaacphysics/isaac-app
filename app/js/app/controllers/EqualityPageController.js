@@ -40,4 +40,4 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
             console.error("Invalid seed.");
         }
     });
-} ];
+}];

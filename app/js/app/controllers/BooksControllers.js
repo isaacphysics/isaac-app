@@ -13,38 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    let PageController = ['$scope', 'auth', 'api', 'introTextId', function($scope, auth, api, introTextId) {
-        $scope.selectedChapterId = null;
+ 
+export const PageController = ['$scope', 'auth', 'api', 'introTextId', function($scope, auth, api, introTextId) {
+    $scope.selectedChapterId = null;
+    $scope.setLoading(true);
+
+    $scope.introText = null;
+
+    api.pageFragments.get({id: introTextId}).$promise.then(function(result){
+            $scope.introText = result;
+            $scope.setLoading(false);
+        }).catch(function(e){
+            $scope.setLoading(false);
+            console.log("Error unable to load intro text " + e)
+        })
+
+    $scope.selectChapter = function(chapterId) {
         $scope.setLoading(true);
-
-        $scope.introText = null;
-
-        api.pageFragments.get({id: introTextId}).$promise.then(function(result){
-                $scope.introText = result;
-                $scope.setLoading(false);
-            }).catch(function(e){
-                $scope.setLoading(false);
-                console.log("Error unable to load intro text " + e)
-            })
-
-        $scope.selectChapter = function(chapterId) {
-            $scope.setLoading(true);
-            api.pageFragments.get({id: chapterId}).$promise.then(function(result){
-                $scope.modalContent = result;
-                $scope.selectedChapterId = chapterId;
-                $scope.modals.bookChapterOptions.show();
-                $scope.setLoading(false);
-            }).catch(function(e){
-                $scope.setLoading(false);
-                console.log("Error loading chapter content: " + e)
-                $scope.showToast($scope.toastTypes.Failure, "Unable to load the chapter you requested!", "You may want to try refreshing the page.");
-            })
-        }
-    }];
-
-    return {
-        PageController: PageController
-    };
-});
+        api.pageFragments.get({id: chapterId}).$promise.then(function(result){
+            $scope.modalContent = result;
+            $scope.selectedChapterId = chapterId;
+            $scope.modals.bookChapterOptions.show();
+            $scope.setLoading(false);
+        }).catch(function(e){
+            $scope.setLoading(false);
+            console.log("Error loading chapter content: " + e)
+            $scope.showToast($scope.toastTypes.Failure, "Unable to load the chapter you requested!", "You may want to try refreshing the page.");
+        })
+    }
+}];

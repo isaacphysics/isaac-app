@@ -20,7 +20,6 @@
     "angulartics": "1.1.2",
     "angulartics-google-analytics": "0.2.0",
     "d3": "3.5.17",
-    "eslint": "^5.0.1",
     "foundation-sites": "5.5.2",
     "jquery": "2.1.1",
     "jquery-placeholder": "2.3.1",
@@ -46,8 +45,10 @@
     "@babel/preset-env": "^7.0.0-beta.51",
     "@babel/preset-typescript": "^7.0.0-beta.51",
     "@babel/runtime": "^7.0.0-beta.51",
+    "babel-eslint": "^8.2.5",
     "babel-loader": "^8.0.0-beta",
     "concurrently": "^3.6.0",
+    "eslint": "^4.19.1",
     "expose-loader": "^0.7.5",
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
@@ -85,27 +86,6 @@
     "ignore": [
       "app/js/lib/honest/video.js"
     ]
-  },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-    },
-    "env": {
-      "browser": true,
-      "jquery": true,
-      "amd": true,
-      "node": true
-    },
-    "root": true,
-    "extends": [
-      "eslint:recommended"
-    ],
-    "rules": {
-      "no-mixed-spaces-and-tabs": "off",
-      "no-console": "off",
-      "no-unused-vars": "off"
-    }
   },
   "scripts": {
     "start": "single-page-server -p=8000 -b=app -f=app/index.physics.html | single-page-server -p=8001 -b=app -f=app/index.chemistry.html | single-page-server -p=8002 -b=app -f=app/index.biology.html",
