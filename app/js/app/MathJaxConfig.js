@@ -19,7 +19,7 @@ define([], function() {
 	// https://groups.google.com/forum/#!msg/mathjax-users/kzOOFw1qtxw/YdAEPJfCEXUJ
 
 	MathJax.resetLabels = function() {
-		//var AMS = MathJax.Extension["TeX/AMSmath"];
+		//let AMS = MathJax.Extension["TeX/AMSmath"];
 		//AMS.startNumber = 0;
 		//AMS.labels = {};
 	}

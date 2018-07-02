@@ -26,7 +26,7 @@
 				scope.intervalValue = 10000; //ms
 
 				// Owl options - see owl.carousel.js
-				var defaultOptions = {
+				let defaultOptions = {
                     "nav": false,
 					"navText": ['<', '>'],
 					"autoplay": true,
@@ -48,10 +48,10 @@
 					},
 				};
 
-				var customOptions = scope.$eval($(element).attr('data-options'));
+				let customOptions = scope.$eval($(element).attr('data-options'));
 
 				// Combine the two options objects
-				for(var key in customOptions) {
+				for(let key in customOptions) {
 					defaultOptions[key] = customOptions[key];
 				}
 				
@@ -62,7 +62,7 @@
 
 				// Function to determine the order of pods to be displayed.
 				scope.comparitor = function(pod) {
-					var pos = scope.visiblePods.indexOf(pod);
+					let pos = scope.visiblePods.indexOf(pod);
 					if(pos != -1) {
 						return pos;
 					} 

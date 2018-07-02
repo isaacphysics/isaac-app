@@ -30,7 +30,7 @@
              link: function(scope, element, attrs) {
 
                  // Owl options - see owl.carousel.js
-                 var defaultOptions = {
+                 let defaultOptions = {
                     "nav": true, // Comment this to remove arrows
                      "navText": ['', ''],
                      "autoplay": false,
@@ -42,10 +42,10 @@
                     "items": 1
                 };
 
-                var customOptions = scope.$eval($(element).attr('data-options'));
+                let customOptions = scope.$eval($(element).attr('data-options'));
 
                 // Combine the two options objects
-                for(var key in customOptions) {
+                for(let key in customOptions) {
                     defaultOptions[key] = customOptions[key];
                 }
 

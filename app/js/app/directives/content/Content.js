@@ -29,7 +29,7 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 			compile: function(element) {
 	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
 	            	// Post-link actions go here.
-	            	
+            	
 	            	scope.$root.getIndexPath = function() { return ""; };
 	            	scope.getIndexPath = function() {
 	            		return scope.$parent.getIndexPath() + "" + scope.contentChildIndex;// + ":" + scope.doc.type + (scope.doc.layout ? "(" + scope.doc.layout + ")" : "");
@@ -37,7 +37,11 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
-	            		scope.doc = newDoc;
+						if (undefined === newDoc) {
+							return;
+						}
+						scope.doc = newDoc;
+						console.log(scope.doc.type);
 	            		if (newDoc)
 	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || "0000";
 

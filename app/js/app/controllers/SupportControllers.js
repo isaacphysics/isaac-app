@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var PageController = ['$scope', '$rootScope', '$state', '$stateParams', 'activeCategory', 'categories', function($scope, $rootScope, $state, $stateParams, activeCategory, categories) {
+    let PageController = ['$scope', '$rootScope', '$state', '$stateParams', 'activeCategory', 'categories', function($scope, $rootScope, $state, $stateParams, activeCategory, categories) {
 
         $scope.categories = categories
         $scope.activeCategory = activeCategory

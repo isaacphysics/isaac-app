@@ -26,11 +26,11 @@ define(["d3"], function(d3) {
                     
                 scope.$watch('data', function(){
 
-                    var w = 500,
+                    let w = 500,
                         h = 500
 
                     // create canvas
-                    var svg = d3.select(element[0])
+                    let svg = d3.select(element[0])
                         .append("svg")
                         .attr("class", "d3-bar")
                         .attr("width", '100%')
@@ -40,31 +40,31 @@ define(["d3"], function(d3) {
                         .append("svg:g")
                         .attr("transform", "translate(50, 460)");
 
-                    x = d3.scale.ordinal().rangeRoundBands([0, w-50])
-                    y = d3.scale.linear().range([0, h-50])
-                    z = d3.scale.ordinal().range(['#4fa446', '#7dc571', '#bbdda9']);
+                    let x = d3.scale.ordinal().rangeRoundBands([0, w-50])
+                    let y = d3.scale.linear().range([0, h-50])
+                    let z = d3.scale.ordinal().range(['#4fa446', '#7dc571', '#bbdda9']);
 
-                    var matrix = [
+                    let matrix = [
                         [ 1, 2, 4, 2.5],
                         [ 2, 8, 1, 0],
                         [ 3, 3, 6, 8],
-                        [ 4, 1,  3, 1]
+                        [ 4, 1, 3, 1]
                     ];
 
-                    var remapped =["c1","c2","c3"].map(function(dat,i){
+                    let remapped =["c1","c2","c3"].map(function(dat,i){
                         return matrix.map(function(d,ii){
                             return {x: ii, y: d[i+1] };
                         })
                     });
 
-                    var stacked = d3.layout.stack()(remapped)
+                    let stacked = d3.layout.stack()(remapped)
 
                     x.domain(stacked[0].map(function(d) { return d.x; }));
                     y.domain([0, d3.max(stacked[stacked.length - 1], function(d) { return d.y0 + d.y; })]);
 
 
                     // Add a group for each column.
-                    var valgroup = svg.selectAll("g.valgroup")
+                    let valgroup = svg.selectAll("g.valgroup")
                         .data(stacked)
                         .enter().append("g")
                         .attr("class", "valgroup")
@@ -72,7 +72,7 @@ define(["d3"], function(d3) {
                         .style("stroke", function(d, i) { return d3.rgb(z(i)).darker(); });
 
                     // Add a rect for each date.
-                    var rect = valgroup.selectAll("rect")
+                    let rect = valgroup.selectAll("rect")
                         .data(function(d){return d;})
                         .enter().append("svg:rect")
                         .attr("x", function(d) { return x(d.x); })
@@ -81,11 +81,11 @@ define(["d3"], function(d3) {
                         .attr("width", x.rangeBand());
 
 
-                    var xAxis = d3.svg.axis()
+                    let xAxis = d3.svg.axis()
                         .scale(x)
                         .orient("bottom");
 
-                    var yAxis = d3.svg.axis()
+                    let yAxis = d3.svg.axis()
                         .scale(y)
                         .orient("left");
        
@@ -105,12 +105,12 @@ define(["d3"], function(d3) {
                     d3.select(element[0]).append("div").attr("class", "d3-bar-next");
 
                     // Add total count
-                    var total = d3.select(element[0]).append("p")
+                    let total = d3.select(element[0]).append("p")
                         .attr("class", "d3-bar-total")
                         .html('6 month total: <strong>45 hours</strong>');
 
                     // Add key
-                    var key = d3.select(element[0]).append("ul")
+                    let key = d3.select(element[0]).append("ul")
                         .attr("class", "d3-bar-key");
 
                     key.selectAll("li")

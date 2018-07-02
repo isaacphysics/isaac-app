@@ -24,9 +24,9 @@ define([], function() {
 
             link: function(scope, element, attrs) {
 
-                var logPrintView = function() {
+                let logPrintView = function() {
                     if (scope.page) {
-                        var logMessage = {
+                        let logMessage = {
                                 type: "PRINT_PAGE",
                                 pageType: scope.page.type,
                                 pageId: scope.page.id,

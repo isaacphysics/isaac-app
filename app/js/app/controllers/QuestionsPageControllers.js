@@ -15,13 +15,13 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
+	let PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
 		
 		api.questionsPage.get().$promise.then(function (page) {
 
-			var randomFeaturedQuestions = [];
+			let randomFeaturedQuestions = [];
 			while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
-				var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
+				let q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
 				randomFeaturedQuestions.push(q);
 			}
 
@@ -29,7 +29,7 @@ define([], function() {
 			page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
 
 			$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
-				var fieldTag = tags.getFieldTag(q.tags) || {};
+				let fieldTag = tags.getFieldTag(q.tags) || {};
 				return {
 					title: q.title,
 					subtitle: fieldTag.title || "",
@@ -41,7 +41,7 @@ define([], function() {
 			$scope.featuredQuestions.sort(function(a,b) {return a.level - b.level});
 
 			$scope.topBoards = page.topBoards.map(function(b) {
-				var item = {};
+				let item = {};
 				item.title = b.title;
 				item.url = "/gameboards#" + b.id;
 				return item;

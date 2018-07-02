@@ -99,28 +99,28 @@ define(["/partials/content/Accordion.html"], function(templateUrl) {
 					//
 					return;
 					// TODO: Make sure we can go "back" to this question. This accordion stuff only works on refresh
-					if (index in answersOnLoad) {
+					// if (index in answersOnLoad) {
 
-						// This is a change - someone has submitted an answer.
-						if (ans) {
-							// They got the answer right. Display the answer and if the next question isn't open, open it.
+					// 	// This is a change - someone has submitted an answer.
+					// 	if (ans) {
+					// 		// They got the answer right. Display the answer and if the next question isn't open, open it.
 
-							scope.titleSuffixes[index] = ans;
-							scope.openChildren[index+1] = true;
-						} else {
-							// They got the answer wrong. Don't change anything.
-							scope.titleSuffixes[index] = ans;
-						}
+					// 		scope.titleSuffixes[index] = ans;
+					// 		scope.openChildren[index+1] = true;
+					// 	} else {
+					// 		// They got the answer wrong. Don't change anything.
+					// 		scope.titleSuffixes[index] = ans;
+					// 	}
 
-					} else {
-						// We have not had any communication from this section before. This must be a page load.
-						answersOnLoad[index] = ans;
+					// } else {
+					// 	// We have not had any communication from this section before. This must be a page load.
+					// 	answersOnLoad[index] = ans;
 
-						updateLoadedQuestions();
-					}
-					setTimeout(function() {
-						$rootScope.requestMathjaxRender();
-					}, 0);
+					// 	updateLoadedQuestions();
+					// }
+					// setTimeout(function() {
+					// 	$rootScope.requestMathjaxRender();
+					// }, 0);
 				});
 
 				scope.$on("ensureVisible", function(e) {

@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', 'auth', '$state', '$location', '$window', '$rootScope', function($scope, auth, $state, $location, $window, $rootScope) {
+	let PageController = ['$scope', 'auth', '$state', '$location', '$window', '$rootScope', function($scope, auth, $state, $location, $window, $rootScope) {
 		$rootScope.pageTitle = "Login";
 		// Hide search on Login page
 		$scope.globalFlags.noSearch = true;
@@ -23,7 +23,7 @@ define([], function() {
 		// Make sure the internal user object is up-to-date
 		auth.updateUser().then(function(user){			
 			// We will only do this bit if the user is already logged in.
-			var target = $location.search().target;
+			let target = $location.search().target;
 			if (target) {
 				$window.location.href = target;
 			} else {

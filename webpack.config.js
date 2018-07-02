@@ -33,7 +33,7 @@ module.exports = function(env) {
         {
           test: /\.html$/,
           use: [
-            { loader:'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials", module: "isaac.templates" } },
+            { loader: 'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials", module: "isaac.templates" } },
             { loader: 'html-loader' }
           ]
         },

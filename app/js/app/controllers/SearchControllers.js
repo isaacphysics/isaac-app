@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 define([], function() {
-    var defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
+    let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
 
-    var doSearch = function(api, query, typesToInclude, $location) {
+    let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
-            var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
+            let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
             $location.replace();
             $location.search({query: query, types: typesToInclude.join(",")})
             return response;            
         }
     }
 
-    var changeTypeState = function(modelName, typeName, api, query, typesToInclude, $location) {
-        var index = typesToInclude.indexOf(typeName);
+    let changeTypeState = function(modelName, typeName, api, query, typesToInclude, $location) {
+        let index = typesToInclude.indexOf(typeName);
         if(modelName && index == -1){
             typesToInclude.push(typeName);
         } else if(!modelName && index != -1){
@@ -34,13 +34,13 @@ define([], function() {
         }
     }
 
-    var PageController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', 'query', 'types', 'pageIndex', function($scope, $state, $timeout, $location, $rootScope, api, query, types, pageIndex) {
-        var conceptPage = "isaacConceptPage";
-        var questionPage = "isaacQuestionPage";
+    let PageController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', 'query', 'types', 'pageIndex', function($scope, $state, $timeout, $location, $rootScope, api, query, types, pageIndex) {
+        let conceptPage = "isaacConceptPage";
+        let questionPage = "isaacQuestionPage";
         $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));
 
-        var filterResult = function(r) {
-            var keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
+        let filterResult = function(r) {
+            let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
             return keepElement || $scope.isStaffUser;
         }
 
@@ -64,7 +64,7 @@ define([], function() {
             }
         }
 
-        var timer = null;
+        let timer = null;
         $scope.$watch('models.query', function() { 
             if (timer) {
                 $timeout.cancel(timer);
@@ -104,9 +104,9 @@ define([], function() {
         }    
     }]
 
-    var GlobalSearchController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', function($scope, $state, $timeout, $location, $rootScope, api) {
-        var conceptPage = "isaacConceptPage";
-        var questionPage = "isaacQuestionPage";
+    let GlobalSearchController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', function($scope, $state, $timeout, $location, $rootScope, api) {
+        let conceptPage = "isaacConceptPage";
+        let questionPage = "isaacQuestionPage";
 
         // initialise scope
         $scope.models = defaultSearchOptions;

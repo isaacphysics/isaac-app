@@ -34,17 +34,17 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
             link: function(scope, element, attrs) {
 
                 // We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
-                var buildHexFilterState = function(tags) {
+                let buildHexFilterState = function(tags) {
                     tags = JSON.parse(JSON.stringify(tags)); // deep copy tags so as not to alter the original array
 
                     // TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
 
                     // For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
                     // FIXME - temporary hack to remove chemistry from the filter!
-                    var subjects = tags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
+                    let subjects = tags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
 
-                    for (var i in subjects) {
-                        var s = subjects[i];
+                    for (let i in subjects) {
+                        let s = subjects[i];
 
                         s.enabled = !s.comingSoon && s.enabled !== false;
                         s.selected = false;
@@ -52,8 +52,8 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                         s.children = tags.filter(function(t) { return t && t.parent == s.id; });
 
-                        for (var j in s.children) {
-                            var f = s.children[j];
+                        for (let j in s.children) {
+                            let f = s.children[j];
 
                             f.enabled = !f.comingSoon && f.enabled !== false;
                             f.selected = false;
@@ -61,8 +61,8 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                             f.children = tags.filter(function(t) { return t && t.parent == f.id; });
 
-                            for (var k in f.children) {
-                                var t = f.children[k];
+                            for (let k in f.children) {
+                                let t = f.children[k];
 
                                 t.enabled = !t.comingSoon && t.enabled !== false;
                                 t.selected = false;
@@ -75,9 +75,9 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                 }
 
-                var config = buildHexFilterState(tags.tagArray);
+                let config = buildHexFilterState(tags.tagArray);
 
-                var hexFilter = new HexFilter(element, {
+                let hexFilter = new HexFilter(element, {
                     // Replace with real function to get state
                     get: function(callback) {
                         callback(config);
@@ -89,7 +89,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                 // Set this after the hexFilter is constructed so that it doesn't try to change the attributes on initialisation.
                 hexFilter.change = function(items) {
-                    var selectedItems = [[],[],[]];
+                    let selectedItems = [[],[],[]];
 
                     function walk(depth, obj) {
                         if (obj.selected) {
@@ -104,7 +104,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                     }
 
                     function walkAll(arr) {
-                        for(var i in arr) {
+                        for(let i in arr) {
                             walk(0, arr[i]);
                         }
                     }
@@ -112,9 +112,9 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                     console.debug("Selected Items", selectedItems);
 
-                    var subjects = selectedItems[0];
-                    var fields = selectedItems[1];
-                    var topics = selectedItems[2];
+                    let subjects = selectedItems[0];
+                    let fields = selectedItems[1];
+                    let topics = selectedItems[2];
 
                     scope.subjects.length = 0;
                     scope.fields.length = 0;
@@ -129,7 +129,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                       scope.$apply();
                 }
 
-                var hexFilterResize = function()
+                let hexFilterResize = function()
                 {
                     hexFilter.EnableVertical(element.find('#hexfilter-large').css('display') === 'none');
                     hexFilter.ReDraw(true);
@@ -142,28 +142,28 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                 $(window).bind("resize", hexFilterResize);
 
                 // Deal with external changes to the selected subjects, fields and topics.
-                var configChanged = function() {
+                let configChanged = function() {
 
-                    var visit = function(obj, callback, level) {
+                    let visit = function(obj, callback, level) {
                         if (!level)
                             level = 0;
 
                         callback(obj, level);
 
                         if (obj.children) {
-                            for(var i in obj.children) {
+                            for(let i in obj.children) {
                                 visit(obj.children[i], callback, level + 1);
                             }
                         }
                     }
 
-                    var visitAll = function(arr, callback) {
-                        for (var i in arr) {
+                    let visitAll = function(arr, callback) {
+                        for (let i in arr) {
                             visit(arr[i], callback);
                         }
                     }
 
-                    var deselector = function(minLevel) {
+                    let deselector = function(minLevel) {
                         return function(obj, level) {
                             if (level >= minLevel) {
                                 obj.selected = false;
@@ -181,7 +181,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                     if (scope.subjects.length > 1) {
 
                         // We have selected multiple subjects. Deselect all fields and topics.
-                        var deselectTopics = deselector(1);
+                        let deselectTopics = deselector(1);
 
                         visitAll(config, deselectTopics)
 
@@ -198,7 +198,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
                             // We have selected more than one field. Deselect all topics.
 
-                            var deselectFields = deselector(2);
+                            let deselectFields = deselector(2);
                             visitAll(config, deselectFields);
 
                         } else {
@@ -215,8 +215,8 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                     }
 
                     // Add warnings where necessary
-                    var warnings = {};
-                    for (var i in scope.warnings) {
+                    let warnings = {};
+                    for (let i in scope.warnings) {
                         warnings[scope.warnings[i][0]] = scope.warnings[i][1];
                     }
 

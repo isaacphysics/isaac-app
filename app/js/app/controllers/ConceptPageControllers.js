@@ -26,7 +26,7 @@ define([], function() {
             });
 	*/
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, subject, editorURL) {
+	let PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, subject, editorURL) {
 		$scope.page = page;
 
 		$rootScope.pageTitle = page.title;
@@ -42,7 +42,7 @@ define([], function() {
 			$scope.backText = "Back to your question";
 			$scope.backButtonVisible = true;
 			// If we show this, it's *probably* the case that the user clicked a related concept:
-			var qId = $scope.sourceUrl.split("?")[0].replace("/questions/","");
+			let qId = $scope.sourceUrl.split("?")[0].replace("/questions/","");
 			api.logger.log({
 				type: "VIEW_RELATED_CONCEPT",
 				questionId: qId,
@@ -55,7 +55,7 @@ define([], function() {
 			$scope.backButtonVisible = true;
 		} else if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/concepts/") == 0) {
 			// Explicitly log viewing of concept page related concepts, to be consistent with VIEW_RELATED_QUESTIONS events.
-			var cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
+			let cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
 			if (cId != page.id) {
 				api.logger.log({
 					type: "VIEW_RELATED_CONCEPT",

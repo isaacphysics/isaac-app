@@ -2,7 +2,7 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
 
     return ["$timeout", function($timeout) {
 
-        var allMenus = [];
+        let allMenus = [];
 
         return {
             priority: 10,
@@ -23,14 +23,14 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                     katex.render(attrs.topMenu, element.find(".handle")[0]);
                 });
 
-                var el = element.find(".top-menu");
+                let el = element.find(".top-menu");
 
                 allMenus.push(el[0]);
 
                 scope.menuPos = "m" + allMenus.length;
 
-                var closing = false;
-                var closeMenus = function() {
+                let closing = false;
+                let closeMenus = function() {
                     if (el.hasClass("active-menu") && !closing) {
                         console.debug("CLOSE ALL");
                         closing = true;
@@ -49,7 +49,7 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                     }
                 };
 
-                var toggleThisMenu = function() {
+                let toggleThisMenu = function() {
                     if (el.hasClass("active-menu")) {
                         closeMenus();
                     } else {
@@ -57,7 +57,7 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                         $(allMenus).removeClass("active-menu");
                         el.addClass("foreground");
                         el.addClass("active-menu");
-                        var activeMenuHeight = el.height();
+                        let activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({
                             "bottom": scope.equationEditorElement.height() - activeMenuHeight
                         }, 200);
@@ -66,9 +66,9 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                     }
                 };
 
-                var resizeMenu = function() {
+                let resizeMenu = function() {
                     if (el.hasClass("active-menu")) {
-                        var activeMenuHeight = el.height();
+                        let activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({
                             "bottom": scope.equationEditorElement.height() - activeMenuHeight
                         }, 200);

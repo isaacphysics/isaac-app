@@ -31,7 +31,7 @@ define(["/partials/question_pod.html"], function(templateUrl) {
 			link: function(scope, element, attrs) {
 
 				scope.questionComparer = function(a) {
-					var n = parseInt(a.title);
+					let n = parseInt(a.title);
 
 					if (!isNaN(n))
 						return n;

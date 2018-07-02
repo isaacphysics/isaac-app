@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 define([], function() {
-    var PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+    let PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
         $scope.mode = "sketcher";
     }];
 

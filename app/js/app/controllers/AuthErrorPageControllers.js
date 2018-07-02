@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var PageController = ['$scope', '$stateParams', '$rootScope', function($scope, $stateParams, $rootScope) {
+	let PageController = ['$scope', '$stateParams', '$rootScope', function($scope, $stateParams, $rootScope) {
 		$scope.errorMessage = $stateParams.errorMessage;
 		$scope.statusText = $stateParams.statusText;
 
