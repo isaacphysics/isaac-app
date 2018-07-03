@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import Opentip from "../../lib/opentip-jquery.js";
+
 define(['/partials/global_navigation.html'], function(templateUrl) {
 
     return ["$location", "$timeout", "api", "$state", function($location, $timeout, api, $state) {

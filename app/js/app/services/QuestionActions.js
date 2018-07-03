@@ -88,7 +88,7 @@ define([], function() {
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
-			commaSeparatedQuestionHistory = questionHistory.join(',');
+			let commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
