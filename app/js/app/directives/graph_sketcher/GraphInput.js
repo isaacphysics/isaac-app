@@ -17,7 +17,7 @@ define(function(require) {
                 };
 
                 scope.edit = function() {
-                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.dat).then(
+                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(
                         function(finalState) {
                             scope.state = finalState;
                             scope.$apply();

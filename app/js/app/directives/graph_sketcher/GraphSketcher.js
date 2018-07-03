@@ -1,7 +1,8 @@
 "use strict";
-define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_sketcher.html"], function(p5, b, l, f, s, templateUrl) {
+define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_sketcher.html"],
+    function(p5, bezierLineType, linearLineType, graphFunctions, lineSampler, templateUrl) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
-        var instanceCounter = 0;
+        let instanceCounter = 0;
         return {
             // scope: true,
             // transclude: true,
@@ -18,17 +19,14 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                 scope.canvasOffset = {};
                 scope.draggingNewSymbol = false;
                 scope.equationEditorElement = element;
-                scope.selectedLineType = b;
+                scope.selectedLineType = bezierLineType;
 
-                var colorSelect = element.find(".color-select")[0];
-                var encodeData;
-                var decodeData;
-                var reDraw;
+                let colorSelect = element.find(".color-select")[0];
+                let encodeData;
+                let decodeData;
+                let reDraw;
 
 
-                scope.submit = function() {
-                    $("#graphModal").foundation("reveal", "close");
-                };
 
                 scope.logOnClose = function(event) {
                     // This ought to catch people who navigate away without closing the editor!
@@ -41,106 +39,94 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
                 };
 
-                scope.newEditorState = function(s) {
-                    scope.state = s;
-
-                    var rp = $(".result-preview>span");
-
-                    rp.empty();
-
-                    // this renders the result in the preview box in the bottom right corner of the eqn editor
-
-                    scope.$emit("historyCheckpoint");
-                }
-
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    var canvasHeight = window.innerHeight;
-                    var canvasWidth = window.innerWidth;
+                    let canvasHeight = window.innerHeight;
+                    let canvasWidth = window.innerWidth;
 
-                    var CURVE_LIMIT = 3;
+                    let CURVE_LIMIT = 3;
 
-                    var GRID_WIDTH = 60;
-                    var CURVE_STRKWEIGHT = 2;
-                    var PADDING = 0.025 * canvasWidth;
-                    var DOT_LINE_STEP = 5;
-                    var MOUSE_DETECT_RADIUS = 10;
+                    let GRID_WIDTH = 60;
+                    let CURVE_STRKWEIGHT = 2;
+                    let PADDING = 0.025 * canvasWidth;
+                    let DOT_LINE_STEP = 5;
+                    let MOUSE_DETECT_RADIUS = 10;
 
-                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
-                    var KNOT_COLOR = [77,77,77];
-                    var DOT_LINE_COLOR = [123];
-                    var MOVE_LINE_COLOR = [135];
-                    var MOVE_SYMBOL_COLOR = [151];
-                    var KNOT_DETECT_COLOR = [0];
+                    let CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
+                    let KNOT_COLOR = [77,77,77];
+                    let DOT_LINE_COLOR = [123];
+                    let MOVE_LINE_COLOR = [135];
+                    let MOVE_SYMBOL_COLOR = [151];
+                    let KNOT_DETECT_COLOR = [0];
 
                     // action recorder
-                    var action = undefined;
-                    var isMouseDragged;
-                    var releasePt;
-                    var drawMode;
-                    var key = undefined;
+                    let action = undefined;
+                    let isMouseDragged;
+                    let releasePt;
+                    let drawMode;
+                    let key = undefined;
                         
-                    var freeSymbols = [];
-                    var curves = [];
-                    var dat;
+                    let freeSymbols = [];
+                    let curves = [];
+                    let dat;
 
 
                     // for drawing curve
-                    var drawnPts = [];
-                    var drawnColorIdx;
-                    var lineStart;
-                    var lineEnd;
+                    let drawnPts = [];
+                    let drawnColorIdx;
+                    let lineStart;
+                    let lineEnd;
 
-                    var prevMousePt;
+                    let prevMousePt;
 
                     // for moving and stretching curve
-                    var movedCurveIdx;
-                    var stretchMode;
-                    var minMax = 0;
+                    let movedCurveIdx;
+                    let stretchMode;
+                    let minMax = 0;
 
 
                     // for moving symbols
-                    var movedSymbol;
-                    var bindedKnot;
-                    var symbolType;
+                    let movedSymbol;
+                    let bindedKnot;
+                    let symbolType;
 
-                    var clickedKnot = null;
-                    var clickedCurveIdx;
-                    var clickedKnotId;
-                    var tempCurve;
-                    var tempPts = [];
-                    var clickedCurve;
+                    let clickedKnot = null;
+                    let clickedCurveIdx;
+                    let clickedKnotId;
+                    let tempCurve;
+                    let tempPts = [];
+                    let clickedCurve;
 
                     // for redo and undo
-                    var checkPoint;
-                    var checkPointsUndo = [];
-                    var checkPointsRedo = [];
+                    p.checkPoint;
+                    p.checkPointsUndo = [];
+                    p.checkPointsRedo = [];
 
                     function initiateFreeSymbols() {
                         freeSymbols = [];
-                        freeSymbols.push(f.createSymbol('A'));
-                        freeSymbols.push(f.createSymbol('B'));
-                        freeSymbols.push(f.createSymbol('C'));
-                        freeSymbols.push(f.createSymbol('D'));
-                        freeSymbols.push(f.createSymbol('E'));
+
+                        const symbolList = ['A', 'B', 'C', 'D', 'E'];
+                        symbolList.forEach(function(symbol) {
+                            freeSymbols.push(graphFunctions.createSymbol(symbol));
+                        });
                         
                         refreshFreeSymbols();
                     }
 
                     function refreshFreeSymbols() {
-                        var start = 15,
+                        let start = 15,
                             separation = 30;
 
-                        for (var i = 0; i < freeSymbols.length; i++) {
-                            var symbol = freeSymbols[i];
+                        for (let i = 0; i < freeSymbols.length; i++) {
+                            let symbol = freeSymbols[i];
                             symbol.x = start + i * separation;
                             symbol.y = start;
                         }
                     }
 
                     // run in the beginning by p5 library
-                    function setup() {
+                    p.setup = function() {
                         p.createCanvas(canvasWidth, canvasHeight);
                         p.noLoop();
                         p.cursor(p.ARROW);
@@ -149,709 +135,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         reDraw();
                     }
 
-                    reDraw = function() {
-                        if (curves.length < 4) {
-                            drawBackground();
-                            drawCurves(curves);
-                            dat = encodeData();
-                            scope.dat = dat;
-                            drawSymbols(freeSymbols);
-                            drawStretchBox(clickedCurveIdx);
-                            if (isUndoable() == false) {
-                                mirrorClicked = 0;
-                            }
-                        }
-                    }
-
-                    function drawBackground() {
-
-                        function drawHorizontalAxis() {
-                            p.push();
-
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(0);
-                            p.noFill();
-
-                            var leftMargin = PADDING;
-                            var rightMargin = canvasWidth - PADDING;
-
-                            p.beginShape();
-                            p.vertex(leftMargin, canvasHeight/2);
-                            p.vertex(rightMargin, canvasHeight / 2);
-                            p.vertex(rightMargin - 10, canvasHeight / 2 - 5);
-                            p.vertex(rightMargin, canvasHeight / 2);
-                            p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
-                            p.endShape();
-
-                            p.pop();
-                        }
-
-                        function drawVerticalAxis() {
-                            p.push();
-
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(0);
-                            p.noFill();
-
-                            var upMargin = PADDING;
-                            var bottomMargin = canvasHeight - PADDING;
-
-                            p.beginShape();
-                            p.vertex(canvasWidth/2, bottomMargin);
-                            p.vertex(canvasWidth/2, upMargin);
-                            p.vertex(canvasWidth/2 - 5, upMargin + 10);
-                            p.vertex(canvasWidth/2, upMargin);
-                            p.vertex(canvasWidth/2 + 5, upMargin + 10);
-                            p.endShape();
-
-                            p.pop();
-                        }
-
-                        function drawGrid() {
-                            p.push();
-
-                            p.noFill();
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(240);
-
-                            p.push();
-                            p.translate(0, canvasHeight / 2);
-                            var num = canvasHeight / (GRID_WIDTH * 2);
-                            for (var i = 0; i < num; i++) {
-                                p.line(0, -i*GRID_WIDTH, canvasWidth, -i*GRID_WIDTH);
-                                p.line(0, i*GRID_WIDTH, canvasWidth, i*GRID_WIDTH);
-                            }
-                            p.pop();
-
-                            p.push();
-                            p.translate(canvasWidth / 2, 0);
-                            var num = canvasWidth / (GRID_WIDTH * 2);
-                            for (var i = 0; i < num; i++) {
-                                p.line(-i*GRID_WIDTH, 0, -i*GRID_WIDTH, canvasHeight);
-                                p.line(i*GRID_WIDTH, 0, i*GRID_WIDTH, canvasHeight);
-                            }
-                            p.pop();
-
-                            p.pop();
-                        }
-
-                        function drawLabel() {
-                            p.push();
-
-                            p.textSize(16);
-                            p.stroke(0);
-                            p.strokeWeight(0.5);
-                            p.fill(0);
-
-                            p.text("O", canvasWidth/2 - 15, canvasHeight/2 + 15);
-                            p.text("x", canvasWidth - PADDING, canvasHeight/2 + 15);
-                            p.text("y", canvasWidth/2 + 5, PADDING);
-
-                            p.pop();
-                        }
-
-                        p.clear();
-                        p.background(255);
-
-                        drawGrid();
-                        drawHorizontalAxis();
-                        drawVerticalAxis();
-                        drawLabel();
-                    }
-
-                    // given a set of points, draw the corresponding curve.
-                    function drawCurve(curve, color) {
-                        if (color == undefined) {
-                            color = CURVE_COLORS[curve.colorIdx];
-                        }
-
-                        p.push();
-                        p.stroke(color);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-
-                        // want to connect closest points x,y wise, not just x wise
-                        var pts = curve.pts;
-                        for (var i = 1; i < pts.length; i++) {
-                            if (pts[i].x - pts[i-1].x < 100 && pts[i].y - pts[i-1].y < 100) {
-                                p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
-                            }
-                        }
-
-                        // to here for point connection
-
-                        p.pop();
-
-                        curve.endPt = findEndPts(curve.pts);
-                        // draw x intercepts, y intercepts and turning points
-                        drawKnots(curve['interX']);
-                        drawKnots(curve['interY']);
-                        drawKnots2(curve['maxima']);
-                        drawKnots2(curve['minima']);
-                    }
-
-                    var mirrorClicked = 0;
-
-                    function findEndPts(pts) {
-                        if (pts.length == 0) return [];
-
-                        var ends = [];
-
-                        ends.push(f.createPoint(pts[0].x, pts[0].y, pts[0].ind));
-                        ends.push(f.createPoint(pts[pts.length - 2].x, pts[pts.length - 2].y, pts[pts.length - 2].ind));
-
-                        for (var i = 1; i < pts.length; i++) {
-                            if (pts[i-1].x - pts[i].x > 200) {
-                                ends.push(f.createPoint(pts[i-1].x, pts[i-1].y, pts[i-1].ind));
-                                ends.push(f.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                                continue;
-                            }
-                        }
-
-                        if (ends.length == 2) {
-                            for (var i = pts.length - 2; i > 1; i--) {
-                                if (pts[i+1].x - pts[i].x > 200) {
-                                    ends.push(f.createPoint(pts[i+1].x, pts[i+1].y, pts[i+1].ind));
-                                    ends.push(f.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                                    continue;
-                                }
-                            }
-                        }
-
-                        return ends;
-                    }
-
-                    function drawCurves(curves, color) {
-                        for (var i = 0; i < curves.length; i++) {
-                            drawCurve(curves[i], color);
-                        }
-                    }
-
-
-                    // given a set of points, draw the corresponding points (knots).
-                    function drawKnot(knot, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-
-                        if (knot.symbol != undefined) {
-                            drawSymbol(knot.symbol);
-                        } else {
-                            p.push();
-                            p.noFill();
-                            p.stroke(color);
-                            p.strokeWeight(1.5);
-                            p.line(knot.x - 3, knot.y - 3, knot.x + 3, knot.y + 3);
-                            p.line(knot.x + 3, knot.y - 3, knot.x - 3, knot.y + 3);
-                            p.pop();
-                        }
-                    }
-
-                    function drawKnots(knots, color) {
-                        for (var i = 0; i < knots.length; i++) {
-                            drawKnot(knots[i], color);
-                        }
-                    }
-
-                    function drawKnot2(knot) {
-                        drawKnot(knot);
-
-                        if (knot.xSymbol != undefined) {
-                            drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
-                            drawSymbol(knot.xSymbol);
-                        }
-
-                        if (knot.ySymbol != undefined) {
-                            drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
-                            drawSymbol(knot.ySymbol);
-                        }
-                    }
-
-                    function drawKnots2(knots) {
-                        for (var i = 0; i < knots.length; i++) {
-                            drawKnot2(knots[i]);
-                        }
-                    }
-
-                    function drawKnotDetect(knot) {
-                        p.push();
-                        p.noFill();
-                        p.stroke(KNOT_DETECT_COLOR);
-                        p.strokeWeight(2);
-                        p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
-                        p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
-                        p.pop();
-                    }
-
-                    // draw symbols, e.g. "A", "B".
-                    function drawSymbol(symbol, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-
-                        p.push();
-
-                        p.stroke(color);
-                        p.strokeWeight(1.5);
-                        p.noFill();
-                        p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-                        p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
-
-                        p.stroke(0);
-                        p.strokeWeight(0.5);
-                        p.fill(0);
-                        p.textSize(16);
-                        p.text(symbol.text, symbol.x - 5, symbol.y + 20);
-
-                        p.pop();
-                    }
-
-                    function drawSymbols(symbols, color) {
-                        for (var i = 0; i < symbols.length; i++) {
-                            drawSymbol(symbols[i], color);
-                        }
-                    }
-
-                    function drawVerticalDotLine(x, begin, end) {
-                        if (x < 0 || x > canvasWidth) {
-                            return;
-                        }
-
-                        if (begin > end) {
-                            var tmp = begin;
-                            begin = end;
-                            end = tmp;
-                        }
-
-                        p.push();
-                        p.stroke(DOT_LINE_COLOR);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-                        var step = DOT_LINE_STEP;
-                        var toDraw = true;
-                        var y = begin;
-                        while (y + step < end) {
-                            if (toDraw) {
-                                p.line(x, y, x, y+step);
-                            }
-                            y += step;
-                            toDraw = !toDraw;
-                        }
-                        if (toDraw) {
-                            p.line(x, y, x, end);
-                        }
-
-                        p.pop();
-                    }
-
-                    function drawHorizontalDotLine(y, begin, end) {
-                        if (y < 0 || y > canvasHeight) {
-                            return;
-                        }
-
-                        if (begin > end) {
-                            var tmp = begin;
-                            begin = end;
-                            end = tmp;
-                        }
-
-                        p.push();
-                        p.stroke(DOT_LINE_COLOR);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-                        var step = DOT_LINE_STEP;
-                        var toDraw = true;
-                        var x = begin;
-                        while (x + step < end) {
-                            if (toDraw) {
-                                p.line(x, y, x+step, y);
-                            }
-                            x += step;
-                            toDraw = !toDraw;
-                        }
-                        if (toDraw) {
-                            p.line(x, y, end, y);
-                        }
-
-                        p.pop();
-                    }
-
-
-                    function drawStretchBox(idx) {
-                        if (idx == undefined) {
-                            return;
-                        }
-
-                        var curve = curves[idx];
-
-                        var pts = curve.pts;
-
-                        var minX = curve.minX;
-                        var maxX = curve.maxX;
-                        var minY = curve.minY;
-                        var maxY = curve.maxY;
-
-                        p.push();
-                        p.stroke(DOT_LINE_COLOR);
-                        p.strokeWeight(0.5);
-                        p.line(minX, minY, maxX, minY);
-                        p.line(maxX, minY, maxX, maxY);
-                        p.line(maxX, maxY, minX, maxY);
-                        p.line(minX, maxY, minX, minY);
-
-                        p.fill(255);
-                        p.rect(minX - 4, minY - 4, 8, 8);
-                        p.rect(maxX - 4, minY - 4, 8, 8);
-                        p.rect(minX - 4, maxY - 4, 8, 8);
-                        p.rect(maxX - 4, maxY - 4, 8, 8);
-                        p.triangle((minX + maxX)/2 - 5, minY - 2, (minX + maxX)/2 + 5, minY - 2, (minX + maxX)/2, minY - 7);
-                        p.triangle((minX + maxX)/2 - 5, maxY + 2, (minX + maxX)/2 + 5, maxY + 2, (minX + maxX)/2, maxY + 7);
-                        p.triangle(minX - 2, (minY + maxY) / 2 - 5, minX - 2, (minY + maxY) / 2 + 5, minX - 7, (minY + maxY) / 2);
-                        p.triangle(maxX + 2, (minY + maxY) / 2 - 5, maxX + 2, (minY + maxY) / 2 + 5, maxX + 7, (minY + maxY) / 2); 
-                        p.pop();
-                    }
-
-
-                    function findInterceptX(pts) {
-                        if (pts.length == 0) return [];
-
-                        var intercepts = [];
-
-                        if (pts[0].y == canvasHeight/2) intercepts.push(pts[0]);
-                        for (var i = 1; i < pts.length; i++) {
-                            if (pts[i].y == canvasHeight/2) {
-                                intercepts.push(f.createPoint(pts[i].x, pts[i].y));
-                                continue;
-                            }
-
-                            if ((pts[i-1].y - canvasHeight/2) * (pts[i].y - canvasHeight/2) < 0 && (pts[i-1].y - pts[i].y < Math.abs(200))) {
-                                var dx = pts[i].x - pts[i-1].x;
-                                var dy = pts[i].y - pts[i-1].y;
-                                var grad = dy/dx;
-                                var esti = pts[i-1].x + (1 / grad) * (canvasHeight/2 - pts[i-1].y);
-                                intercepts.push(f.createPoint(esti, canvasHeight/2));
-                            }
-                        }
-
-                        return intercepts;
-                    }
-
-                    function findInterceptY(pts) {
-                        if (pts.length == 0) return [];
-
-                        var intercepts = [];
-
-                        if (pts[0].x == canvasWidth/2) intercepts.push(pts[0]);
-                        for (var i = 1; i < pts.length; i++) {
-                            if (pts[i].x == canvasWidth/2) {
-                                intercepts.push(f.createPoint(pts[i].x, pts[i].y));
-                                continue;
-                            }
-
-                            if ((pts[i-1].x - canvasWidth/2) * (pts[i].x - canvasWidth/2) < 0 && (pts[i-1].x - pts[i].x < Math.abs(200))) {
-                                var dx = pts[i].x - pts[i-1].x;
-                                var dy = pts[i].y - pts[i-1].y;
-                                var grad = dy/dx;
-                                var esti = pts[i-1].y + grad * (canvasWidth/2 - pts[i-1].x);
-                                intercepts.push(f.createPoint(canvasWidth/2, esti));
-                            }
-                        }
-
-                        return intercepts;
-                    }
-
-                    function findTurnPts(pts, mode) {
-                        if (pts.length == 0) {
-                          return [];
-                        }
-
-                        var grad = [];
-                        for (var i = 0; i < pts.length - 1; i++) {
-                            var dx = pts[i+1].x - pts[i].x;
-                            var dy = pts[i+1].y - pts[i].y;
-                            grad.push(dy/dx);
-                        }
-
-                        var turnPts = [];
-
-                        for (var i = 1; i < grad.length; i++) {
-                            if (grad[i-1] != NaN && grad[i] != NaN) {
-                                if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
-
-                                    var limit = 0.01;
-
-                                    var l = i - 2;
-                                    while (l >= 0 && Math.abs(grad[l]) < limit && Math.abs(grad[l]) > Math.abs(grad[l+1]) && grad[l] * grad[l+1] >= 0) {
-                                        l--;
-                                    }
-                                    if (!(Math.abs(grad[l]) >= limit)) {
-                                        continue;
-                                    }
-
-                                    var r = i + 1;
-                                    while (r < grad.length && Math.abs(grad[r]) < limit && Math.abs(grad[r]) > Math.abs(grad[r-1]) && grad[r] * grad[r-1] >= 0) {
-                                        r++;
-                                    }
-                                    if (!(Math.abs(grad[r]) >= limit)) {
-                                        continue;
-                                    }
-
-                                    var acc1 = grad[l];
-                                    var acc2 = grad[r];
-
-                                    if (mode == 'maxima') {
-                                        if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
-                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                                        } 
-                                    } else {
-                                        if ((pts[i].x > pts[i-1].x && acc1 > 0 && acc2 < 0) || (pts[i].x < pts[i-1].x && acc1 < 0 && acc2 > 0)) {
-                                            turnPts.push(f.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                                        } 
-                                    }
-
-
-                                }
-                            }
-                        }
-
-                        return turnPts;
-                    }
-
-
-                    function getMousePt(e) {
-                        var x = (e.clientX - 5);
-                        var y = (e.clientY - 5);
-                        return (f.createPoint(x, y));
-                    }
-
-                    function isOverSymbol(pt, symbol) {
-                        if (symbol == undefined) {
-                            return false;
-                        }
-                        var left = symbol.x - 5;
-                        var right = symbol.x + 5;
-                        var top = symbol.y - 5;
-                        var bottom = symbol.y + 20 + 5;
-                        return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
-                    }
-
-                    function isOverButton(pt, button) {
-                        if (button.position() == undefined) {
-                            return false;
-                        }
-
-                        var left = button.position().left;
-                        var top = button.position().top;
-                        var width = button.width();
-                        var height = button.height();
-                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
-                    }
-
-
-                    function isActive(pt) {
-
-                        if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
-                            return false;
-                        }
-
-                        var buttons = [];
-                        buttons.push(element.find(".redo"));
-                        buttons.push(element.find(".undo"));
-                        buttons.push(element.find(".poly"));
-                        buttons.push(element.find(".straight"));
-                        buttons.push(element.find(".mirro"));
-                        buttons.push(element.find(".trash-button"));
-                        buttons.push(element.find(".submit"));
-                        for (var i = 0; i < buttons.length; i++) {
-                            if (isOverButton(pt, buttons[i])) {
-                                return false;
-                            }
-                        }
-
-                        return true;
-                    }
-
-                    // given a curve, translate the curve
-                    function transCurve(curve, dx, dy) {
-                        var pts = curve.pts;
-
-                        curve.minX += dx;
-                        curve.maxX += dx;
-                        curve.minY += dy;
-                        curve.maxY += dy;
-
-                        for (var i = 0; i < pts.length; i++) {
-                            pts[i].x += dx;
-                            pts[i].y += dy;
-                        }
-
-                        function moveTurnPts(knots) {
-                            for (var i = 0; i < knots.length; i++) {
-                                var knot = knots[i];
-
-                                knot.x += dx;
-                                knot.y += dy;
-
-                                if (knot.symbol != undefined) {
-                                    knot.symbol.x += dx;
-                                    knot.symbol.y += dy;
-                                }
-
-                                if (knot.xSymbol != undefined) {
-                                    knot.xSymbol.x = knot.x;
-                                }
-
-                                if (knot.ySymbol != undefined) {
-                                    knot.ySymbol.y = knot.y;
-                                }
-                            }
-                        }
-
-                        var maxima = curve.maxima;
-                        moveTurnPts(maxima);
-
-                        var minima = curve.minima;
-                        moveTurnPts(minima);
-
-
-                        function moveInter(inter, newInter) {
-                            for (var i = 0; i < inter.length; i++) {
-                                if (inter[i].symbol != undefined) {
-                                    var symbol = inter[i].symbol;
-
-                                    var found = false,
-                                        min = 50,
-                                        knot;
-                                    for (var j = 0; j < newInter.length; j++) {
-                                        if (f.getDist(inter[i], newInter[j]) < min) {
-                                            min = f.getDist(inter[i], newInter[j]);
-                                            knot = newInter[j];
-                                            found = true;
-                                        }
-                                    }
-
-                                    if (found) {
-                                        symbol.x = knot.x;
-                                        symbol.y = knot.y;
-                                        knot.symbol = symbol;
-                                    } else {
-                                        freeSymbols.push(symbol);
-                                    }
-                                }
-                            }
-                            return newInter;
-                        }
-
-                        var interX = curve.interX,
-                            newInterX = findInterceptX(pts);
-                        curve.interX = moveInter(interX, newInterX);
-
-                        var endPt = curve.endPt,
-                            newEndPt = findEndPts(pts);
-                        curve.endPt = newEndPt;
-
-
-                        var interY = curve.interY,
-                            newInterY = findInterceptY(pts);
-                        curve.interY = moveInter(interY, newInterY);
-
-                        return;
-                    }
-
-                    
-
-                    function stretchCurve(c, orx, ory, nrx, nry, baseX, baseY) {
-
-                        function stretch(pt) {
-                            var nx = (pt.x - baseX) / orx;
-                            var ny = (pt.y - baseY) / ory;
-                            pt.x = nx * nrx + baseX;
-                            pt.y = ny * nry + baseY;
-                        }
-
-                        var pts = c.pts;
-                        for (var j = 0; j < pts.length; j++) {
-                            stretch(pts[j]);
-                            c.pts[j] = pts[j];
-                        }
-
-
-                        function loop1(knots) {
-                            if (knots != undefined) {
-                                for (var j = 0; j < knots.length; j++) {
-                                    var knot = knots[j];
-
-                                    stretch(knot);
-
-                                    if (knot.symbol != undefined) {
-                                        stretch(knot.symbol);
-                                    }
-
-                                    if (knot.xSymbol != undefined) {
-                                        stretch(knot.xSymbol);
-                                    }
-
-                                    if (knot.ySymbol != undefined) {
-                                        stretch(knot.ySymbol);
-                                    }
-                                }
-                            }
-                        }
-
-                        c.endPt = findEndPts(pts)
-
-                        var maxima = c.maxima;
-                        loop1(maxima);
-
-                        var minima = c.minima;
-                        loop1(minima);
-
-                        function loop2(inter, newInter) {
-                            if (inter != undefined) {
-                                for (var i = 0; i < inter.length; i++) {
-                                    if (inter[i].symbol != undefined) {
-                                        var symbol = inter[i].symbol;
-
-                                        var found = false,
-                                            min = 50,
-                                            knot;
-                                        for (var j = 0; j < newInter.length; j++) {
-                                            if (f.getDist(inter[i], newInter[j]) < min) {
-                                                min = f.getDist(inter[i], newInter[j]);
-                                                knot = newInter[j];
-                                                found = true;
-                                            }
-                                        }
-
-                                        if (found) {
-                                            symbol.x = knot.x;
-                                            symbol.y = knot.y;
-                                            knot.symbol = symbol;
-                                        } else {
-                                            freeSymbols.push(symbol);
-                                        }
-                                    }
-                                }
-                                return newInter;
-                            }
-                        }
-
-                        var interX = c.interX,
-                            newInterX = findInterceptX(pts);
-                        c.interX = loop2(interX, newInterX);
-
-
-                        var interY = c.interY,
-                            newInterY = findInterceptY(pts);
-                        c.interY = loop2(interY, newInterY);
-                    }
-
-
-                    function mouseMoved(e) {
-                        var current = getMousePt(e);
+                    p.mouseMoved = function(e) {
+                        let current = getMousePt(e);
 
 
                         // this funciton does not react if the mouse is over buttons or outside the canvas.
@@ -859,7 +144,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             return;
                         }
 
-                        var found = false;
+                        let found = false;
 
 
                         // maxima and minima
@@ -869,8 +154,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     return;
                                 }
 
-                                for (var i = 0; i < knots.length; i++) {
-                                    if (f.getDist(current, knots[i]) < MOUSE_DETECT_RADIUS) {
+                                for (let i = 0; i < knots.length; i++) {
+                                    if (graphFunctions.getDist(current, knots[i]) < MOUSE_DETECT_RADIUS) {
                                         p.cursor(p.HAND);
                                         drawKnotDetect(knots[i]);
                                         found = true;
@@ -879,11 +164,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 }
                             }
 
-                            for (var i = 0; i < curves.length; i++) {
-                                var maxima = curves[i]['maxima'];
+                            for (let i = 0; i < curves.length; i++) {
+                                let maxima = curves[i]['maxima'];
                                 loop(maxima);
 
-                                var minima = curves[i]['minima'];
+                                let minima = curves[i]['minima'];
                                 loop(minima);
 
                                 if (found) {
@@ -894,7 +179,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         // freeSymbols
                         if (!found) {
-                            for (var i = 0; i < freeSymbols.length; i++) {
+                            for (let i = 0; i < freeSymbols.length; i++) {
                                 if (isOverSymbol(current, freeSymbols[i])) {
                                     p.cursor(p.MOVE);
                                     found = true;
@@ -904,9 +189,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
 
                         if (!found) {
-                            for (var i = 0; i < curves.length; i++) {
-                                for (var j = 0; j < curves[i].pts.length; j++) {
-                                    if (f.getDist(current, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
+                            for (let i = 0; i < curves.length; i++) {
+                                for (let j = 0; j < curves[i].pts.length; j++) {
+                                    if (graphFunctions.getDist(current, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
                                         p.cursor(p.MOVE);
                                         found = true;
                                         break;
@@ -922,8 +207,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     return;
                                 }
 
-                                for (var j = 0; j < knots.length; j++) {
-                                    var knot = knots[j];
+                                for (let j = 0; j < knots.length; j++) {
+                                    let knot = knots[j];
                                     if (knot.symbol != undefined && isOverSymbol(current, knot.symbol)) {
                                         p.cursor(p.MOVE);
                                         found = true;
@@ -939,8 +224,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                                 loop1(knots);
 
-                                for (var j = 0; j < knots.length; j++) {
-                                    var knot = knots[j];
+                                for (let j = 0; j < knots.length; j++) {
+                                    let knot = knots[j];
                                     if (knot.xSymbol != undefined && isOverSymbol(current, knot.xSymbol)) {
                                         p.cursor(p.MOVE);
                                         found = true;
@@ -956,17 +241,17 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
 
 
-                            for (var i = 0; i < curves.length; i++) {
-                                var interX = curves[i]['interX'];
+                            for (let i = 0; i < curves.length; i++) {
+                                let interX = curves[i]['interX'];
                                 loop1(interX);
 
-                                var interY = curves[i]['interY'];
+                                let interY = curves[i]['interY'];
                                 loop1(interY);
 
-                                var maxima = curves[i]['maxima'];
+                                let maxima = curves[i]['maxima'];
                                 loop2(maxima);
 
-                                var minima = curves[i]['minima'];
+                                let minima = curves[i]['minima'];
                                 loop2(minima);
 
                                 if (found) {
@@ -985,7 +270,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     return (Math.abs(current.x - x) < 5 && Math.abs(current.y - y) < 5);
                                 }
 
-                                var c = curves[clickedCurveIdx];
+                                let c = curves[clickedCurveIdx];
                                 if (current.x >= c.minX && current.x <= c.maxX && current.y >= c.minY && current.y <= c.maxY) {
                                     found = true;
                                     p.cursor(p.MOVE);
@@ -1033,49 +318,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
                     }
 
-
-                    window.onkeydown = function(event) {
-                       if (event.keyCode == 46) {
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
-                            if (clickedCurveIdx != undefined) {
-                                var curve = (curves.splice(clickedCurveIdx, 1))[0];
-
-                                function freeAllSymbols(knots) {
-                                    for (var i = 0; i < knots.length; i++) {
-                                        var knot = knots[i];
-                                        if (knot.symbol != undefined) {
-                                            freeSymbols.push(knot.symbol);
-                                        }
-                                        if (knot.xSymbol != undefined) {
-                                            freeSymbols.push(knot.xSymbol);
-                                        }
-                                        if (knot.ySymbol != undefined) {
-                                            freeSymbols.push(knot.ySymbol);
-                                        }
-                                    }
-                                }
-
-                                var interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                var interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                var maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                var minima = curve.minima;
-                                freeAllSymbols(minima);
-
-                                clickedCurveIdx = undefined;
-                                reDraw();
-                            }
-                        }
-                    }
-
-
-                    function mousePressed(e) {
+                    p.mousePressed = function(e) {
 
                         isMouseDragged = false;
                         action = undefined;
@@ -1093,7 +336,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         releasePt = undefined;
 
 
-                        var current = getMousePt(e);
+                        let current = getMousePt(e);
                         releasePt = current;
 
                         // this funciton does not react if the mouse is over buttons or outside the canvas.
@@ -1107,13 +350,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
 
                         // record down current status, may be used later for undo.
-                        checkPoint = {};
-                        checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
-                        checkPoint.curvesJSON = JSON.stringify(curves);
+                        p.checkPoint = {};
+                        p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
+                        p.checkPoint.curvesJSON = JSON.stringify(curves);
 
 
                         // check if it is to move a symbol
-                        for (var i = 0; i < freeSymbols.length; i++) {
+                        for (let i = 0; i < freeSymbols.length; i++) {
                             if (isOverSymbol(current, freeSymbols[i])) {
                                 movedSymbol = freeSymbols[i];
                                 freeSymbols.splice(i, 1);
@@ -1126,13 +369,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
                         }
 
-                        var found = false;
+                        let found = false;
                         function detach1(knots) {
                             if (found) {
                                 return;
                             }
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 if (knot.symbol != undefined && isOverSymbol(current, knot.symbol)) {
                                     movedSymbol = knot.symbol;
                                     knot.symbol = undefined;
@@ -1149,8 +392,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 return;
                             }
                             detach1(knots);
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 if (knot.xSymbol != undefined && isOverSymbol(current, knot.xSymbol)) {
                                     movedSymbol = knot.xSymbol;
                                     knot.xSymbol = undefined;
@@ -1171,17 +414,17 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
                         }
 
-                        for (var i = 0; i < curves.length; i++) {
-                            var interX = curves[i]['interX'];
+                        for (let i = 0; i < curves.length; i++) {
+                            let interX = curves[i]['interX'];
                             detach1(interX);
 
-                            var interY = curves[i]['interY'];
+                            let interY = curves[i]['interY'];
                             detach1(interY);
 
-                            var maxima = curves[i]['maxima'];
+                            let maxima = curves[i]['maxima'];
                             detach2(maxima);
 
-                            var minima = curves[i]['minima'];
+                            let minima = curves[i]['minima'];
                             detach2(minima);
 
                             if (found) {
@@ -1200,7 +443,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         // check if stretching curve 
                         if (clickedCurveIdx != undefined) {
-                            var c = curves[clickedCurveIdx];
+                            let c = curves[clickedCurveIdx];
 
                             if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)
                                     || detect((c.minX + c.maxX)/2, c.minY - 3) || detect((c.minX + c.maxX)/2, c.maxY + 3) 
@@ -1234,12 +477,12 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
 
                         if (curves != []) {
-                            for (var i = 0; i < curves.length; i++) { 
-                                var maxima = curves[i].maxima;
-                                var minima = curves[i].minima;
-                                for (var j = 0; j < maxima.length; j++) {
-                                    var knot = maxima[j];
-                                    if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS + 10){
+                            for (let i = 0; i < curves.length; i++) { 
+                                let maxima = curves[i].maxima;
+                                let minima = curves[i].minima;
+                                for (let j = 0; j < maxima.length; j++) {
+                                    let knot = maxima[j];
+                                    if (graphFunctions.getDist(current, knot) < MOUSE_DETECT_RADIUS + 10){
                                         clickedCurve = i;
                                         action = "STRETCH_POINT";
                                         clickedKnotId = j;
@@ -1249,9 +492,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                         return;
                                     } 
                                 }
-                                for (var j = 0; j < minima.length; j++) {
-                                    var knot = minima[j];
-                                    if (f.getDist(current, knot) < MOUSE_DETECT_RADIUS + 10){
+                                for (let j = 0; j < minima.length; j++) {
+                                    let knot = minima[j];
+                                    if (graphFunctions.getDist(current, knot) < MOUSE_DETECT_RADIUS + 10){
                                         clickedCurve = i;
                                         action = "STRETCH_POINT";
                                         clickedKnotId = j;
@@ -1262,10 +505,10 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     } 
                                 }
                             }
-                            var tc = [];
-                            for (var i = 0; i < curves.length; i++) {
-                                for (var j = 0; j < curves[i].pts.length; j++) {
-                                    if (f.getDist(current, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
+                            let tc = [];
+                            for (let i = 0; i < curves.length; i++) {
+                                for (let j = 0; j < curves[i].pts.length; j++) {
+                                    if (graphFunctions.getDist(current, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
                                         clickedCurveIdx = i;
                                         tc = curves[clickedCurveIdx];
                                         break;
@@ -1273,7 +516,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 }
                             } 
                             if (tc != undefined) {   
-                                  // && f.getDist(current, knot) > MOUSE_DETECT_RADIUS + 10
+                                  // && graphFunctions.getDist(current, knot) > MOUSE_DETECT_RADIUS + 10
                                 if (current.x >= tc.minX && current.x <= tc.maxX && current.y >= tc.minY && current.y <= tc.maxY) {
                                     movedCurveIdx = clickedCurveIdx;
                                     action = "MOVE_CURVE";
@@ -1305,11 +548,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         if (key === 46) {
                             // delete key pressed
                             if (clickedCurveIdx != undefined) {
-                                var curve = (curves.splice(movedCurveIdx, 1))[0];
+                                let curve = (curves.splice(movedCurveIdx, 1))[0];
 
                                 function freeAllSymbols(knots) {
-                                    for (var i = 0; i < knots.length; i++) {
-                                        var knot = knots[i];
+                                    for (let i = 0; i < knots.length; i++) {
+                                        let knot = knots[i];
                                         if (knot.symbol != undefined) {
                                             freeSymbols.push(knot.symbol);
                                         }
@@ -1322,16 +565,16 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     }
                                 }
 
-                                var interX = curve.interX;
+                                let interX = curve.interX;
                                 freeAllSymbols(interX);
 
-                                var interY = curve.interY;
+                                let interY = curve.interY;
                                 freeAllSymbols(interY);
 
-                                var maxima = curve.maxima;
+                                let maxima = curve.maxima;
                                 freeAllSymbols(maxima);
 
-                                var minima = curve.minima;
+                                let minima = curve.minima;
                                 freeAllSymbols(minima);
 
                                 clickedCurveIdx = undefined;
@@ -1354,20 +597,18 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
                         }
                         return;
-
                     }
 
-
-                    function mouseDragged(e) {
+                    p.mouseDragged = function(e) {
                         isMouseDragged = true;
-                        var current = getMousePt(e);
+                        let current = getMousePt(e);
                         releasePt = current;
 
                         if (action == "STRETCH_POINT") {
-                            var m = curves[clickedCurve];
-                            var tempScale = [];
-                            var switcher = undefined;
-                            var checka = undefined;     
+                            let m = curves[clickedCurve];
+                            let tempScale = [];
+                            let switcher = undefined;
+                            let checka = undefined;     
                             if (m.pts[0].x > m.pts[m.pts.length - 1].x) {
                                 m.pts.reverse();
                                 for (i = 0; i < m.pts.length; i++) {
@@ -1383,10 +624,10 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             tempScale.push.apply(tempScale, m.maxima);
                             tempScale.push.apply(tempScale, m.minima);
                             tempScale.sort(function(a, b){return a.ind - b.ind});
-                            var tempMin = undefined;
-                            var tempMax = undefined;
+                            let tempMin = undefined;
+                            let tempMax = undefined;
                             if (minMax == 1) { 
-                                for (var q = 0; q < tempScale.length; q++) {
+                                for (let q = 0; q < tempScale.length; q++) {
                                     if (tempScale[q].ind < (m.maxima[clickedKnotId].ind + 4) && tempScale[q].ind < (m.maxima[clickedKnotId].ind - 4)) {
                                         tempMin = tempScale[q];
                                     } else if (tempScale[q].ind > (m.maxima[clickedKnotId].ind + 4)) {
@@ -1401,15 +642,15 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 } else {
                                     // to this point we get the clicked know and the turning/end points either side, no we will split the curve into the two
                                     // origional max/min sides and the 2 new curves to be stretched, then combine them all after.
-                                    var lowerRng = [];
-                                    var upperRng = [];
-                                    var tempCurveLower = [];
-                                    var tempCurveHigher = [];
-                                    var tempCurveL = [];
-                                    var tempCurveH = [];
-                                    var initialSearch = [];
-                                    var intpts = m.pts
-                                    for (var t = intpts.length - 1; t > -1; t--) {
+                                    let lowerRng = [];
+                                    let upperRng = [];
+                                    let tempCurveLower = [];
+                                    let tempCurveHigher = [];
+                                    let tempCurveL = [];
+                                    let tempCurveH = [];
+                                    let initialSearch = [];
+                                    let intpts = m.pts
+                                    for (let t = intpts.length - 1; t > -1; t--) {
                                         if (intpts[t].ind > tempMax.ind) {
                                             upperRng.push(intpts[t]); 
                                             intpts.pop(intpts[t]);
@@ -1433,20 +674,20 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     tempCurveH.pts = tempCurveHigher;
 
                                     // we have now split the curve into lowerRng and upperRng, plus tempCurveLower and tempCurveHigher
-                                    var lorx = m.maxima[clickedKnotId].x - tempMin.x;
-                                    var lory = m.maxima[clickedKnotId].y - tempMin.y;
-                                    var rorx = tempMax.x - m.maxima[clickedKnotId].x;
-                                    var rory = m.maxima[clickedKnotId].y - tempMax.y;
-                                    var dx = current.x - prevMousePt.x;
-                                    var dy = current.y - prevMousePt.y;
+                                    let lorx = m.maxima[clickedKnotId].x - tempMin.x;
+                                    let lory = m.maxima[clickedKnotId].y - tempMin.y;
+                                    let rorx = tempMax.x - m.maxima[clickedKnotId].x;
+                                    let rory = m.maxima[clickedKnotId].y - tempMax.y;
+                                    let dx = current.x - prevMousePt.x;
+                                    let dy = current.y - prevMousePt.y;
                                     prevMousePt = current;
                                     m.maxima[clickedKnotId].x += dx;
                                     m.maxima[clickedKnotId].y += dy;
 
-                                    var lnrx = m.maxima[clickedKnotId].x - tempMin.x;
-                                    var lnry = m.maxima[clickedKnotId].y - tempMin.y;
-                                    var rnrx = tempMax.x - m.maxima[clickedKnotId].x;
-                                    var rnry = m.maxima[clickedKnotId].y - tempMax.y;
+                                    let lnrx = m.maxima[clickedKnotId].x - tempMin.x;
+                                    let lnry = m.maxima[clickedKnotId].y - tempMin.y;
+                                    let rnrx = tempMax.x - m.maxima[clickedKnotId].x;
+                                    let rnry = m.maxima[clickedKnotId].y - tempMax.y;
                                     stretchMode = 2;
                                     switch (stretchMode) {
                                         case 2: {
@@ -1477,11 +718,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     m.interY = findInterceptY(m.pts);     
                                     m.maxima = findTurnPts(m.pts, 'maxima');   
                                     m.minima = findTurnPts(m.pts, 'minima');  
-                                    var minX = m.pts[0].x;
-                                    var maxX = m.pts[0].x;
-                                    var minY = m.pts[0].y;
-                                    var maxY = m.pts[0].y;      
-                                    for (var k = 1; k < m.pts.length; k++) {
+                                    let minX = m.pts[0].x;
+                                    let maxX = m.pts[0].x;
+                                    let minY = m.pts[0].y;
+                                    let maxY = m.pts[0].y;      
+                                    for (let k = 1; k < m.pts.length; k++) {
                                         minX = Math.min(m.pts[k].x, minX);
                                         maxX = Math.max(m.pts[k].x, maxX);
                                         minY = Math.min(m.pts[k].y, minY);
@@ -1494,7 +735,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     reDraw();
                                 }
                             } else if (minMax ==0) {
-                                for (var q = 0; q < tempScale.length; q++) {
+                                for (let q = 0; q < tempScale.length; q++) {
                                     if (tempScale[q].ind < (m.minima[clickedKnotId].ind + 4) && tempScale[q].ind < (m.minima[clickedKnotId].ind - 4)) {
                                         tempMin = tempScale[q];
                                     } else if (tempScale[q].ind > (m.minima[clickedKnotId].ind + 4)) {
@@ -1509,14 +750,14 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 } else {
                                     // to this point we get the clicked know and the turning/end points either side, no we will split the curve into the two
                                     // origional max/min sides and the 2 new curves to be stretched, then combine them all after.
-                                    var lowerRng = [];
-                                    var upperRng = [];
-                                    var tempCurveLower = [];
-                                    var tempCurveHigher = [];
-                                    var tempCurveL = [];
-                                    var tempCurveH = [];
-                                    var intpts = m.pts
-                                    for (var t = intpts.length - 1; t > -1; t--) {
+                                    let lowerRng = [];
+                                    let upperRng = [];
+                                    let tempCurveLower = [];
+                                    let tempCurveHigher = [];
+                                    let tempCurveL = [];
+                                    let tempCurveH = [];
+                                    let intpts = m.pts
+                                    for (let t = intpts.length - 1; t > -1; t--) {
                                         if (intpts[t].ind > tempMax.ind) {
                                             upperRng.push(intpts[t]); 
                                             intpts.pop(intpts[t]);
@@ -1540,20 +781,20 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     tempCurveH.pts = tempCurveHigher;
 
                                     // we have now split the curve into lowerRng and upperRng, plus tempCurveLower and tempCurveHigher
-                                    var lorx = m.minima[clickedKnotId].x - tempMin.x;
-                                    var lory = m.minima[clickedKnotId].y - tempMin.y;
-                                    var rorx = tempMax.x - m.minima[clickedKnotId].x;
-                                    var rory = m.minima[clickedKnotId].y - tempMax.y;
-                                    var dx = current.x - prevMousePt.x;
-                                    var dy = current.y - prevMousePt.y;
+                                    let lorx = m.minima[clickedKnotId].x - tempMin.x;
+                                    let lory = m.minima[clickedKnotId].y - tempMin.y;
+                                    let rorx = tempMax.x - m.minima[clickedKnotId].x;
+                                    let rory = m.minima[clickedKnotId].y - tempMax.y;
+                                    let dx = current.x - prevMousePt.x;
+                                    let dy = current.y - prevMousePt.y;
                                     prevMousePt = current;
                                     m.minima[clickedKnotId].x += dx;
                                     m.minima[clickedKnotId].y += dy;
 
-                                    var lnrx = m.minima[clickedKnotId].x - tempMin.x;
-                                    var lnry = m.minima[clickedKnotId].y - tempMin.y;
-                                    var rnrx = tempMax.x - m.minima[clickedKnotId].x;
-                                    var rnry = m.minima[clickedKnotId].y - tempMax.y;
+                                    let lnrx = m.minima[clickedKnotId].x - tempMin.x;
+                                    let lnry = m.minima[clickedKnotId].y - tempMin.y;
+                                    let rnrx = tempMax.x - m.minima[clickedKnotId].x;
+                                    let rnry = m.minima[clickedKnotId].y - tempMax.y;
                                     stretchMode = 1;
                                     switch (stretchMode) {
                                         case 1: {
@@ -1582,11 +823,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     m.interY = findInterceptY(m.pts);     
                                     m.maxima = findTurnPts(m.pts, 'maxima');   
                                     m.minima = findTurnPts(m.pts, 'minima');
-                                    var minX = m.pts[0].x;
-                                    var maxX = m.pts[0].x;
-                                    var minY = m.pts[0].y;
-                                    var maxY = m.pts[0].y;
-                                    for (var k = 1; k < m.pts.length; k++) {
+                                    let minX = m.pts[0].x;
+                                    let maxX = m.pts[0].x;
+                                    let minY = m.pts[0].y;
+                                    let maxY = m.pts[0].y;
+                                    for (let k = 1; k < m.pts.length; k++) {
                                         minX = Math.min(m.pts[k].x, minX);
                                         maxX = Math.max(m.pts[k].x, maxX);
                                         minY = Math.min(m.pts[k].y, minY);
@@ -1607,8 +848,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             scope.trashActive = isOverButton(current, element.find(".trash-button"));
                             scope.$apply();
 
-                            var dx = current.x - prevMousePt.x;
-                            var dy = current.y - prevMousePt.y;
+                            let dx = current.x - prevMousePt.x;
+                            let dy = current.y - prevMousePt.y;
                             prevMousePt = current;
                             transCurve(curves[movedCurveIdx], dx, dy);
 
@@ -1659,15 +900,15 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                             p.cursor(p.MOVE);
 
-                            var dx = current.x - prevMousePt.x;
-                            var dy = current.y - prevMousePt.y;
+                            let dx = current.x - prevMousePt.x;
+                            let dy = current.y - prevMousePt.y;
                             prevMousePt = current;
 
-                            var c = curves[clickedCurveIdx];
+                            let c = curves[clickedCurveIdx];
 
                             // calculate old x,y range
-                            var orx = c.maxX - c.minX;
-                            var ory = c.maxY - c.minY;
+                            let orx = c.maxX - c.minX;
+                            let ory = c.maxY - c.minY;
 
                             drawCorner();
 
@@ -1736,8 +977,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
 
                             // calculate the new range
-                            var nrx = c.maxX - c.minX;
-                            var nry = c.maxY - c.minY;
+                            let nrx = c.maxX - c.minX;
+                            let nry = c.maxY - c.minY;
 
                             // stretch the curve
                             switch (stretchMode) {
@@ -1781,8 +1022,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
 
-                            var dx = current.x - prevMousePt.x;
-                            var dy = current.y - prevMousePt.y;
+                            let dx = current.x - prevMousePt.x;
+                            let dy = current.y - prevMousePt.y;
                             prevMousePt = current;
 
                             movedSymbol.x += dx;
@@ -1792,37 +1033,37 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
 
                             function detect(knots) {
-                                for (var j = 0; j < knots.length; j++) {
-                                    if (knots[j].symbol == undefined && f.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
+                                for (let j = 0; j < knots.length; j++) {
+                                    if (knots[j].symbol == undefined && graphFunctions.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
                                         drawKnotDetect(knots[j], KNOT_DETECT_COLOR);
                                         return;
                                     }
                                 }
                             }
 
-                            for (var i = 0; i < curves.length; i++) {
-                                var interX = curves[i]['interX'];
+                            for (let i = 0; i < curves.length; i++) {
+                                let interX = curves[i]['interX'];
                                 detect(interX);
 
-                                var interY = curves[i]['interY'];
+                                let interY = curves[i]['interY'];
                                 detect(interY);
 
-                                var maxima = curves[i]['maxima'];
+                                let maxima = curves[i]['maxima'];
                                 detect(maxima);
 
-                                var minima = curves[i]['minima'];
+                                let minima = curves[i]['minima'];
                                 detect(minima);
                             }
 
 
                             if (clickedKnot != null) {
-                                var knot = clickedKnot;
-                                if (knot.xSymbol == undefined && f.getDist(movedSymbol, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
-                                    drawKnotDetect(f.createPoint(knot.x, canvasHeight/2), KNOT_DETECT_COLOR);
+                                let knot = clickedKnot;
+                                if (knot.xSymbol == undefined && graphFunctions.getDist(movedSymbol, graphFunctions.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
+                                    drawKnotDetect(graphFunctions.createPoint(knot.x, canvasHeight/2), KNOT_DETECT_COLOR);
                                     return;
                                 }
-                                if (knot.ySymbol == undefined && f.getDist(movedSymbol, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    drawKnotDetect(f.createPoint(canvasWidth/2, knot.y), KNOT_DETECT_COLOR);
+                                if (knot.ySymbol == undefined && graphFunctions.getDist(movedSymbol, graphFunctions.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                    drawKnotDetect(graphFunctions.createPoint(canvasWidth/2, knot.y), KNOT_DETECT_COLOR);
                                     return;
                                 }
                             }
@@ -1836,7 +1077,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     p.stroke(CURVE_COLORS[drawnColorIdx]);
                                     p.strokeWeight(CURVE_STRKWEIGHT);
                                     if (drawnPts.length > 0) {
-                                        var prev = drawnPts[drawnPts.length - 1];
+                                        let prev = drawnPts[drawnPts.length - 1];
                                         p.line(prev.x, prev.y, current.x, current.y);
                                     }
                                     p.pop();
@@ -1857,8 +1098,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
                     }
 
-                    function mouseReleased(e) {
-                        var current = releasePt;
+                    p.mouseReleased = function(e) {
+                        let current = releasePt;
 
                         // if it is just a click, handle click in the following if block
                         if (!isMouseDragged) {
@@ -1883,10 +1124,10 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
 
                             // check if show stretch box
-                            for (var i = 0; i < curves.length; i++) {
-                                var pts = curves[i].pts;
-                                for (var j = 0; j < pts.length; j++) {
-                                    if (f.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
+                            for (let i = 0; i < curves.length; i++) {
+                                let pts = curves[i].pts;
+                                for (let j = 0; j < pts.length; j++) {
+                                    if (graphFunctions.getDist(pts[j], current) < MOUSE_DETECT_RADIUS) {
                                         clickedCurveIdx = i;
                                         reDraw();
                                         return;
@@ -1906,16 +1147,16 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         if (action == "MOVE_CURVE") {
 
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
+                            p.checkPointsUndo.push(p.checkPoint);
+                            p.checkPointsRedo = [];
 
                             // for deletion
                             if (scope.trashActive) {
-                                var curve = (curves.splice(movedCurveIdx, 1))[0];
+                                let curve = (curves.splice(movedCurveIdx, 1))[0];
 
                                 function freeAllSymbols(knots) {
-                                    for (var i = 0; i < knots.length; i++) {
-                                        var knot = knots[i];
+                                    for (let i = 0; i < knots.length; i++) {
+                                        let knot = knots[i];
                                         if (knot.symbol != undefined) {
                                             freeSymbols.push(knot.symbol);
                                         }
@@ -1928,16 +1169,16 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     }
                                 }
 
-                                var interX = curve.interX;
+                                let interX = curve.interX;
                                 freeAllSymbols(interX);
 
-                                var interY = curve.interY;
+                                let interY = curve.interY;
                                 freeAllSymbols(interY);
 
-                                var maxima = curve.maxima;
+                                let maxima = curve.maxima;
                                 freeAllSymbols(maxima);
 
-                                var minima = curve.minima;
+                                let minima = curve.minima;
                                 freeAllSymbols(minima);
 
                                 clickedCurveIdx = undefined;
@@ -1948,31 +1189,31 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             reDraw();
 
                         } else if (action == "STRETCH_CURVE") {
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
+                            p.checkPointsUndo.push(p.checkPoint);
+                            p.checkPointsRedo = [];
 
-                            var c = curves[clickedCurveIdx];
+                            let c = curves[clickedCurveIdx];
 
                         } else if (action == "STRETCH_POINT") {
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
+                            p.checkPointsUndo.push(p.checkPoint);
+                            p.checkPointsRedo = [];
 
-                            var c = curves[clickedCurveIdx];
+                            let c = curves[clickedCurveIdx];
 
                         } else if (action == "MOVE_SYMBOL") {
-                            checkPointsUndo.push(checkPoint);
-                            checkPointsRedo = [];
+                            p.checkPointsUndo.push(p.checkPoint);
+                            p.checkPointsRedo = [];
                             scope.$apply();
 
-                            var found = false;
+                            let found = false;
 
                             function attach(knots) {
                                 if (found) {
                                     return;
                                 }
-                                for (var j = 0; j < knots.length; j++) {
-                                    var knot = knots[j];
-                                    if (knot.symbol == undefined && f.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
+                                for (let j = 0; j < knots.length; j++) {
+                                    let knot = knots[j];
+                                    if (knot.symbol == undefined && graphFunctions.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
                                         movedSymbol.x = knot.x;
                                         movedSymbol.y = knot.y;
                                         knot.symbol = movedSymbol;
@@ -1981,17 +1222,17 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                 }
                             }
 
-                            for (var i = 0; i < curves.length; i++) {
-                                var interX = curves[i]['interX'];
+                            for (let i = 0; i < curves.length; i++) {
+                                let interX = curves[i]['interX'];
                                 attach(interX);
 
-                                var interY = curves[i]['interY'];
+                                let interY = curves[i]['interY'];
                                 attach(interY);
 
-                                var maxima = curves[i]['maxima'];
+                                let maxima = curves[i]['maxima'];
                                 attach(maxima);
 
-                                var minima = curves[i]['minima'];
+                                let minima = curves[i]['minima'];
                                 attach(minima);
 
                                 if (found) {
@@ -2000,13 +1241,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
 
                             if (!found && clickedKnot != null) {
-                                var knot = clickedKnot;
-                                if (knot.xSymbol == undefined && f.getDist(movedSymbol, f.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
+                                let knot = clickedKnot;
+                                if (knot.xSymbol == undefined && graphFunctions.getDist(movedSymbol, graphFunctions.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = knot.x;
                                     movedSymbol.y = canvasHeight/2;
                                     knot.xSymbol = movedSymbol;
                                     found = true;
-                                } else if (knot.ySymbol == undefined && f.getDist(movedSymbol, f.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                } else if (knot.ySymbol == undefined && graphFunctions.getDist(movedSymbol, graphFunctions.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = canvasWidth/2;
                                     movedSymbol.y = knot.y;
                                     knot.ySymbol = movedSymbol;
@@ -2023,16 +1264,16 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         } else if (action == "DRAW_CURVE") {
                             if (curves.length < CURVE_LIMIT){
 
-                                var curve;
+                                let curve;
 
                                 if (drawMode == "curve") {
                                      // reject if curve drawn is too short
-                                    if (s.sample(drawnPts).length < 3) {
+                                    if (lineSampler.sample(drawnPts).length < 3) {
                                         return;
                                     }
 
-                                    checkPointsUndo.push(checkPoint);
-                                    checkPointsRedo = [];
+                                    p.checkPointsUndo.push(p.checkPoint);
+                                    p.checkPointsRedo = [];
                                     scope.$apply();
 
                                     // adjustment of start and end to attach to the axis automatically.
@@ -2050,15 +1291,15 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     }
 
                                     // sampler.sample, bezier.genericBezier
-                                    var pts = scope.selectedLineType.lineStyle(s.sample(drawnPts));
+                                    let pts = scope.selectedLineType.lineStyle(lineSampler.sample(drawnPts));
                                     curve = {};
                                     curve.pts = pts;
 
-                                    var minX = pts[0].x;
-                                    var maxX = pts[0].x;
-                                    var minY = pts[0].y;
-                                    var maxY = pts[0].y;
-                                    for (var i = 1; i < pts.length; i++) {
+                                    let minX = pts[0].x;
+                                    let maxX = pts[0].x;
+                                    let minY = pts[0].y;
+                                    let maxY = pts[0].y;
+                                    for (let i = 1; i < pts.length; i++) {
                                         minX = Math.min(pts[i].x, minX);
                                         maxX = Math.max(pts[i].x, maxX);
                                         minY = Math.min(pts[i].y, minY);
@@ -2077,21 +1318,21 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                                     curve.colorIdx = drawnColorIdx;
 
                                 } else {
-                                    checkPointsUndo.push(checkPoint);
-                                    checkPointsRedo = [];
+                                    p.checkPointsUndo.push(p.checkPoint);
+                                    p.checkPointsRedo = [];
                                     scope.$apply();
 
 
-                                    var n = 100;
-                                    var rx = lineEnd.x - lineStart.x;
-                                    var ry = lineEnd.y - lineStart.y;
-                                    var sx = rx / n;
-                                    var sy = ry / n;
-                                    var pts = [];
-                                    for (var i = 0; i <= n; i++) {
-                                        var x = lineStart.x + i * sx;
-                                        var y = lineStart.y + i * sy;
-                                        pts.push(f.createPoint(x, y, i));
+                                    let n = 100;
+                                    let rx = lineEnd.x - lineStart.x;
+                                    let ry = lineEnd.y - lineStart.y;
+                                    let sx = rx / n;
+                                    let sy = ry / n;
+                                    let pts = [];
+                                    for (let i = 0; i <= n; i++) {
+                                        let x = lineStart.x + i * sx;
+                                        let y = lineStart.y + i * sy;
+                                        pts.push(graphFunctions.createPoint(x, y, i));
                                     }
 
                                     curve = {};
@@ -2112,11 +1353,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             
 
                                 function loop(knots) {
-                                    for (var i = 0; i < knots.length; i++) {
-                                        var knot = knots[i];
-                                        for (var j = 0; j < freeSymbols.length; j++) {
-                                            var sym = freeSymbols[j];
-                                            if (f.getDist(knot, sym) < 20) {
+                                    for (let i = 0; i < knots.length; i++) {
+                                        let knot = knots[i];
+                                        for (let j = 0; j < freeSymbols.length; j++) {
+                                            let sym = freeSymbols[j];
+                                            if (graphFunctions.getDist(knot, sym) < 20) {
                                                 sym.x = knot.x;
                                                 sym.y = knot.y;
                                                 knot.symbol = sym;
@@ -2139,12 +1380,759 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
                     }
 
+                    p.touchStarted = function(e) {
+                        p.mousePressed(e.touches[0]);
+                    }
+
+                    p.touchMoved = function(e) {
+                        p.mouseDragged(e.touches[0]);
+                    }
+
+                    p.touchEnded = function(e) {
+                        p.mouseReleased(e);
+                    }
+
+                    p.windowResized = function() {
+                        let data = encodeData(false);
+                        canvasWidth = window.innerWidth;
+                        canvasHeight = window.innerHeight;
+                        p.resizeCanvas(window.innerWidth, window.innerHeight);
+                        decodeData(data);
+                        reDraw();
+                    }
+
+                    window.onkeydown = function(event) {
+                       if (event.keyCode == 46) { // delete key
+                            p.checkPointsUndo.push(p.checkPoint);
+                            p.checkPointsRedo = [];
+                            if (clickedCurveIdx != undefined) {
+                                let curve = (curves.splice(clickedCurveIdx, 1))[0];
+
+                                function freeAllSymbols(knots) {
+                                    for (let i = 0; i < knots.length; i++) {
+                                        let knot = knots[i];
+                                        if (knot.symbol != undefined) {
+                                            freeSymbols.push(knot.symbol);
+                                        }
+                                        if (knot.xSymbol != undefined) {
+                                            freeSymbols.push(knot.xSymbol);
+                                        }
+                                        if (knot.ySymbol != undefined) {
+                                            freeSymbols.push(knot.ySymbol);
+                                        }
+                                    }
+                                }
+
+                                let interX = curve.interX;
+                                freeAllSymbols(interX);
+
+                                let interY = curve.interY;
+                                freeAllSymbols(interY);
+
+                                let maxima = curve.maxima;
+                                freeAllSymbols(maxima);
+
+                                let minima = curve.minima;
+                                freeAllSymbols(minima);
+
+                                clickedCurveIdx = undefined;
+                                reDraw();
+                            }
+                        }
+                    }
+
+                    function getMousePt(e) {
+                        let x = (e.clientX - 5);
+                        let y = (e.clientY - 5);
+                        return (graphFunctions.createPoint(x, y));
+                    }
+
+                    function isOverSymbol(pt, symbol) {
+                        if (symbol == undefined) {
+                            return false;
+                        }
+                        let left = symbol.x - 5;
+                        let right = symbol.x + 5;
+                        let top = symbol.y - 5;
+                        let bottom = symbol.y + 20 + 5;
+                        return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
+                    }
+
+                    function isOverButton(pt, button) {
+                        if (button.position() == undefined) {
+                            return false;
+                        }
+
+                        let left = button.position().left;
+                        let top = button.position().top;
+                        let width = button.width();
+                        let height = button.height();
+                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
+                    }
+
+                    function isActive(pt) {
+
+                        if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
+                            return false;
+                        }
+
+                        let buttons = [];
+                        buttons.push(element.find(".redo"));
+                        buttons.push(element.find(".undo"));
+                        buttons.push(element.find(".poly"));
+                        buttons.push(element.find(".straight"));
+                        buttons.push(element.find(".trash-button"));
+                        buttons.push(element.find(".submit"));
+                        for (let i = 0; i < buttons.length; i++) {
+                            if (isOverButton(pt, buttons[i])) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    reDraw = function() {
+                        if (curves.length < 4) {
+                            drawBackground();
+                            drawCurves(curves);
+                            scope.dat = encodeData();
+                            drawSymbols(freeSymbols);
+                            drawStretchBox(clickedCurveIdx);
+                        }
+                    }
+
+                    function drawBackground() {
+
+                        function drawHorizontalAxis() {
+                            p.push();
+
+                            p.strokeWeight(CURVE_STRKWEIGHT);
+                            p.strokeJoin(p.ROUND);
+                            p.stroke(0);
+                            p.noFill();
+
+                            let leftMargin = PADDING;
+                            let rightMargin = canvasWidth - PADDING;
+
+                            p.beginShape();
+                            p.vertex(leftMargin, canvasHeight/2);
+                            p.vertex(rightMargin, canvasHeight / 2);
+                            p.vertex(rightMargin - 10, canvasHeight / 2 - 5);
+                            p.vertex(rightMargin, canvasHeight / 2);
+                            p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
+                            p.endShape();
+
+                            p.pop();
+                        }
+
+                        function drawVerticalAxis() {
+                            p.push();
+
+                            p.strokeWeight(CURVE_STRKWEIGHT);
+                            p.strokeJoin(p.ROUND);
+                            p.stroke(0);
+                            p.noFill();
+
+                            let upMargin = PADDING;
+                            let bottomMargin = canvasHeight - PADDING;
+
+                            p.beginShape();
+                            p.vertex(canvasWidth/2, bottomMargin);
+                            p.vertex(canvasWidth/2, upMargin);
+                            p.vertex(canvasWidth/2 - 5, upMargin + 10);
+                            p.vertex(canvasWidth/2, upMargin);
+                            p.vertex(canvasWidth/2 + 5, upMargin + 10);
+                            p.endShape();
+
+                            p.pop();
+                        }
+
+                        function drawGrid() {
+                            p.push();
+
+                            p.noFill();
+                            p.strokeWeight(CURVE_STRKWEIGHT);
+                            p.strokeJoin(p.ROUND);
+                            p.stroke(240);
+
+                            p.push();
+                            p.translate(0, canvasHeight / 2);
+                            let num = canvasHeight / (GRID_WIDTH * 2);
+                            for (let i = 0; i < num; i++) {
+                                p.line(0, -i*GRID_WIDTH, canvasWidth, -i*GRID_WIDTH);
+                                p.line(0, i*GRID_WIDTH, canvasWidth, i*GRID_WIDTH);
+                            }
+                            p.pop();
+
+                            p.push();
+                            p.translate(canvasWidth / 2, 0);
+                            num = canvasWidth / (GRID_WIDTH * 2);
+                            for (let i = 0; i < num; i++) {
+                                p.line(-i*GRID_WIDTH, 0, -i*GRID_WIDTH, canvasHeight);
+                                p.line(i*GRID_WIDTH, 0, i*GRID_WIDTH, canvasHeight);
+                            }
+                            p.pop();
+
+                            p.pop();
+                        }
+
+                        function drawLabel() {
+                            p.push();
+
+                            p.textSize(16);
+                            p.stroke(0);
+                            p.strokeWeight(0.5);
+                            p.fill(0);
+
+                            p.text("O", canvasWidth/2 - 15, canvasHeight/2 + 15);
+                            p.text("x", canvasWidth - PADDING, canvasHeight/2 + 15);
+                            p.text("y", canvasWidth/2 + 5, PADDING);
+
+                            p.pop();
+                        }
+
+                        p.clear();
+                        p.background(255);
+
+                        drawGrid();
+                        drawHorizontalAxis();
+                        drawVerticalAxis();
+                        drawLabel();
+                    }
+
+                    // given a set of points, draw the corresponding curve.
+                    function drawCurve(curve, color) {
+                        if (color == undefined) {
+                            color = CURVE_COLORS[curve.colorIdx];
+                        }
+
+                        p.push();
+                        p.stroke(color);
+                        p.strokeWeight(CURVE_STRKWEIGHT);
+
+
+                        // want to connect closest points x,y wise, not just x wise
+                        let pts = curve.pts;
+                        for (let i = 1; i < pts.length; i++) {
+                            if (pts[i].x - pts[i-1].x < 100 && pts[i].y - pts[i-1].y < 100) {
+                                p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
+                            }
+                        }
+
+                        // to here for point connection
+
+                        p.pop();
+
+                        curve.endPt = findEndPts(curve.pts);
+                        // draw x intercepts, y intercepts and turning points
+                        drawKnots(curve['interX']);
+                        drawKnots(curve['interY']);
+                        drawKnots2(curve['maxima']);
+                        drawKnots2(curve['minima']);
+                    }
+
+                    function findEndPts(pts) {
+                        if (pts.length == 0) return [];
+
+                        let ends = [];
+
+                        ends.push(graphFunctions.createPoint(pts[0].x, pts[0].y, pts[0].ind));
+                        ends.push(graphFunctions.createPoint(pts[pts.length - 2].x, pts[pts.length - 2].y, pts[pts.length - 2].ind));
+
+                        for (let i = 1; i < pts.length; i++) {
+                            if (pts[i-1].x - pts[i].x > 200) {
+                                ends.push(graphFunctions.createPoint(pts[i-1].x, pts[i-1].y, pts[i-1].ind));
+                                ends.push(graphFunctions.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                                continue;
+                            }
+                        }
+
+                        if (ends.length == 2) {
+                            for (let i = pts.length - 2; i > 1; i--) {
+                                if (pts[i+1].x - pts[i].x > 200) {
+                                    ends.push(graphFunctions.createPoint(pts[i+1].x, pts[i+1].y, pts[i+1].ind));
+                                    ends.push(graphFunctions.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                                    continue;
+                                }
+                            }
+                        }
+
+                        return ends;
+                    }
+
+                    function drawCurves(curves, color) {
+                        for (let i = 0; i < curves.length; i++) {
+                            drawCurve(curves[i], color);
+                        }
+                    }
+
+                    // given a set of points, draw the corresponding points (knots).
+                    function drawKnot(knot, color) {
+                        if (color == undefined) {
+                            color = KNOT_COLOR;
+                        }
+
+                        if (knot.symbol != undefined) {
+                            drawSymbol(knot.symbol);
+                        } else {
+                            p.push();
+                            p.noFill();
+                            p.stroke(color);
+                            p.strokeWeight(1.5);
+                            p.line(knot.x - 3, knot.y - 3, knot.x + 3, knot.y + 3);
+                            p.line(knot.x + 3, knot.y - 3, knot.x - 3, knot.y + 3);
+                            p.pop();
+                        }
+                    }
+
+                    function drawKnots(knots, color) {
+                        for (let i = 0; i < knots.length; i++) {
+                            drawKnot(knots[i], color);
+                        }
+                    }
+
+                    function drawKnot2(knot) {
+                        drawKnot(knot);
+
+                        if (knot.xSymbol != undefined) {
+                            drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
+                            drawSymbol(knot.xSymbol);
+                        }
+
+                        if (knot.ySymbol != undefined) {
+                            drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
+                            drawSymbol(knot.ySymbol);
+                        }
+                    }
+
+                    function drawKnots2(knots) {
+                        for (let i = 0; i < knots.length; i++) {
+                            drawKnot2(knots[i]);
+                        }
+                    }
+
+                    function drawKnotDetect(knot) {
+                        p.push();
+                        p.noFill();
+                        p.stroke(KNOT_DETECT_COLOR);
+                        p.strokeWeight(2);
+                        p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
+                        p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
+                        p.pop();
+                    }
+
+                    // draw symbols, e.g. "A", "B".
+                    function drawSymbol(symbol, color) {
+                        if (color == undefined) {
+                            color = KNOT_COLOR;
+                        }
+
+                        p.push();
+
+                        p.stroke(color);
+                        p.strokeWeight(1.5);
+                        p.noFill();
+                        p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
+                        p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
+
+                        p.stroke(0);
+                        p.strokeWeight(0.5);
+                        p.fill(0);
+                        p.textSize(16);
+                        p.text(symbol.text, symbol.x - 5, symbol.y + 20);
+
+                        p.pop();
+                    }
+
+                    function drawSymbols(symbols, color) {
+                        for (let i = 0; i < symbols.length; i++) {
+                            drawSymbol(symbols[i], color);
+                        }
+                    }
+
+                    function drawVerticalDotLine(x, begin, end) {
+                        if (x < 0 || x > canvasWidth) {
+                            return;
+                        }
+
+                        if (begin > end) {
+                            let tmp = begin;
+                            begin = end;
+                            end = tmp;
+                        }
+
+                        p.push();
+                        p.stroke(DOT_LINE_COLOR);
+                        p.strokeWeight(CURVE_STRKWEIGHT);
+
+                        let step = DOT_LINE_STEP;
+                        let toDraw = true;
+                        let y = begin;
+                        while (y + step < end) {
+                            if (toDraw) {
+                                p.line(x, y, x, y+step);
+                            }
+                            y += step;
+                            toDraw = !toDraw;
+                        }
+                        if (toDraw) {
+                            p.line(x, y, x, end);
+                        }
+
+                        p.pop();
+                    }
+
+                    function drawHorizontalDotLine(y, begin, end) {
+                        if (y < 0 || y > canvasHeight) {
+                            return;
+                        }
+
+                        if (begin > end) {
+                            let tmp = begin;
+                            begin = end;
+                            end = tmp;
+                        }
+
+                        p.push();
+                        p.stroke(DOT_LINE_COLOR);
+                        p.strokeWeight(CURVE_STRKWEIGHT);
+
+                        let step = DOT_LINE_STEP;
+                        let toDraw = true;
+                        let x = begin;
+                        while (x + step < end) {
+                            if (toDraw) {
+                                p.line(x, y, x+step, y);
+                            }
+                            x += step;
+                            toDraw = !toDraw;
+                        }
+                        if (toDraw) {
+                            p.line(x, y, end, y);
+                        }
+
+                        p.pop();
+                    }
+
+                    function drawStretchBox(idx) {
+                        if (idx == undefined) {
+                            return;
+                        }
+
+                        let curve = curves[idx];
+
+                        let pts = curve.pts;
+
+                        let minX = curve.minX;
+                        let maxX = curve.maxX;
+                        let minY = curve.minY;
+                        let maxY = curve.maxY;
+
+                        p.push();
+                        p.stroke(DOT_LINE_COLOR);
+                        p.strokeWeight(0.5);
+                        p.line(minX, minY, maxX, minY);
+                        p.line(maxX, minY, maxX, maxY);
+                        p.line(maxX, maxY, minX, maxY);
+                        p.line(minX, maxY, minX, minY);
+
+                        p.fill(255);
+                        p.rect(minX - 4, minY - 4, 8, 8);
+                        p.rect(maxX - 4, minY - 4, 8, 8);
+                        p.rect(minX - 4, maxY - 4, 8, 8);
+                        p.rect(maxX - 4, maxY - 4, 8, 8);
+                        p.triangle((minX + maxX)/2 - 5, minY - 2, (minX + maxX)/2 + 5, minY - 2, (minX + maxX)/2, minY - 7);
+                        p.triangle((minX + maxX)/2 - 5, maxY + 2, (minX + maxX)/2 + 5, maxY + 2, (minX + maxX)/2, maxY + 7);
+                        p.triangle(minX - 2, (minY + maxY) / 2 - 5, minX - 2, (minY + maxY) / 2 + 5, minX - 7, (minY + maxY) / 2);
+                        p.triangle(maxX + 2, (minY + maxY) / 2 - 5, maxX + 2, (minY + maxY) / 2 + 5, maxX + 7, (minY + maxY) / 2); 
+                        p.pop();
+                    }
+
+                    function findInterceptX(pts) {
+                        if (pts.length == 0) return [];
+
+                        let intercepts = [];
+
+                        if (pts[0].y == canvasHeight/2) intercepts.push(pts[0]);
+                        for (let i = 1; i < pts.length; i++) {
+                            if (pts[i].y == canvasHeight/2) {
+                                intercepts.push(graphFunctions.createPoint(pts[i].x, pts[i].y));
+                                continue;
+                            }
+
+                            if ((pts[i-1].y - canvasHeight/2) * (pts[i].y - canvasHeight/2) < 0 && (pts[i-1].y - pts[i].y < Math.abs(200))) {
+                                let dx = pts[i].x - pts[i-1].x;
+                                let dy = pts[i].y - pts[i-1].y;
+                                let grad = dy/dx;
+                                let esti = pts[i-1].x + (1 / grad) * (canvasHeight/2 - pts[i-1].y);
+                                intercepts.push(graphFunctions.createPoint(esti, canvasHeight/2));
+                            }
+                        }
+
+                        return intercepts;
+                    }
+
+                    function findInterceptY(pts) {
+                        if (pts.length == 0) return [];
+
+                        let intercepts = [];
+
+                        if (pts[0].x == canvasWidth/2) intercepts.push(pts[0]);
+                        for (let i = 1; i < pts.length; i++) {
+                            if (pts[i].x == canvasWidth/2) {
+                                intercepts.push(graphFunctions.createPoint(pts[i].x, pts[i].y));
+                                continue;
+                            }
+
+                            if ((pts[i-1].x - canvasWidth/2) * (pts[i].x - canvasWidth/2) < 0 && (pts[i-1].x - pts[i].x < Math.abs(200))) {
+                                let dx = pts[i].x - pts[i-1].x;
+                                let dy = pts[i].y - pts[i-1].y;
+                                let grad = dy/dx;
+                                let esti = pts[i-1].y + grad * (canvasWidth/2 - pts[i-1].x);
+                                intercepts.push(graphFunctions.createPoint(canvasWidth/2, esti));
+                            }
+                        }
+
+                        return intercepts;
+                    }
+
+                    function findTurnPts(pts, mode) {
+                        if (pts.length == 0) {
+                          return [];
+                        }
+
+                        let grad = [];
+                        for (let i = 0; i < pts.length - 1; i++) {
+                            let dx = pts[i+1].x - pts[i].x;
+                            let dy = pts[i+1].y - pts[i].y;
+                            grad.push(dy/dx);
+                        }
+
+                        let turnPts = [];
+
+                        for (let i = 1; i < grad.length; i++) {
+                            if (grad[i-1] != NaN && grad[i] != NaN) {
+                                if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
+
+                                    let limit = 0.01;
+
+                                    let l = i - 2;
+                                    while (l >= 0 && Math.abs(grad[l]) < limit && Math.abs(grad[l]) > Math.abs(grad[l+1]) && grad[l] * grad[l+1] >= 0) {
+                                        l--;
+                                    }
+                                    if (!(Math.abs(grad[l]) >= limit)) {
+                                        continue;
+                                    }
+
+                                    let r = i + 1;
+                                    while (r < grad.length && Math.abs(grad[r]) < limit && Math.abs(grad[r]) > Math.abs(grad[r-1]) && grad[r] * grad[r-1] >= 0) {
+                                        r++;
+                                    }
+                                    if (!(Math.abs(grad[r]) >= limit)) {
+                                        continue;
+                                    }
+
+                                    let acc1 = grad[l];
+                                    let acc2 = grad[r];
+
+                                    if (mode == 'maxima') {
+                                        if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
+                                            turnPts.push(graphFunctions.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                                        } 
+                                    } else {
+                                        if ((pts[i].x > pts[i-1].x && acc1 > 0 && acc2 < 0) || (pts[i].x < pts[i-1].x && acc1 < 0 && acc2 > 0)) {
+                                            turnPts.push(graphFunctions.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                                        } 
+                                    }
+
+
+                                }
+                            }
+                        }
+
+                        return turnPts;
+                    }
+
+                    // given a curve, translate the curve
+                    function transCurve(curve, dx, dy) {
+                        let pts = curve.pts;
+
+                        curve.minX += dx;
+                        curve.maxX += dx;
+                        curve.minY += dy;
+                        curve.maxY += dy;
+
+                        for (let i = 0; i < pts.length; i++) {
+                            pts[i].x += dx;
+                            pts[i].y += dy;
+                        }
+
+                        function moveTurnPts(knots) {
+                            for (let i = 0; i < knots.length; i++) {
+                                let knot = knots[i];
+
+                                knot.x += dx;
+                                knot.y += dy;
+
+                                if (knot.symbol != undefined) {
+                                    knot.symbol.x += dx;
+                                    knot.symbol.y += dy;
+                                }
+
+                                if (knot.xSymbol != undefined) {
+                                    knot.xSymbol.x = knot.x;
+                                }
+
+                                if (knot.ySymbol != undefined) {
+                                    knot.ySymbol.y = knot.y;
+                                }
+                            }
+                        }
+
+                        let maxima = curve.maxima;
+                        moveTurnPts(maxima);
+
+                        let minima = curve.minima;
+                        moveTurnPts(minima);
+
+
+                        function moveInter(inter, newInter) {
+                            for (let i = 0; i < inter.length; i++) {
+                                if (inter[i].symbol != undefined) {
+                                    let symbol = inter[i].symbol;
+
+                                    let found = false,
+                                        min = 50,
+                                        knot;
+                                    for (let j = 0; j < newInter.length; j++) {
+                                        if (graphFunctions.getDist(inter[i], newInter[j]) < min) {
+                                            min = graphFunctions.getDist(inter[i], newInter[j]);
+                                            knot = newInter[j];
+                                            found = true;
+                                        }
+                                    }
+
+                                    if (found) {
+                                        symbol.x = knot.x;
+                                        symbol.y = knot.y;
+                                        knot.symbol = symbol;
+                                    } else {
+                                        freeSymbols.push(symbol);
+                                    }
+                                }
+                            }
+                            return newInter;
+                        }
+
+                        let interX = curve.interX,
+                            newInterX = findInterceptX(pts);
+                        curve.interX = moveInter(interX, newInterX);
+
+                        let endPt = curve.endPt,
+                            newEndPt = findEndPts(pts);
+                        curve.endPt = newEndPt;
+
+
+                        let interY = curve.interY,
+                            newInterY = findInterceptY(pts);
+                        curve.interY = moveInter(interY, newInterY);
+
+                        return;
+                    }
+
+                    function stretchCurve(c, orx, ory, nrx, nry, baseX, baseY) {
+
+                        function stretch(pt) {
+                            let nx = (pt.x - baseX) / orx;
+                            let ny = (pt.y - baseY) / ory;
+                            pt.x = nx * nrx + baseX;
+                            pt.y = ny * nry + baseY;
+                        }
+
+                        let pts = c.pts;
+                        for (let j = 0; j < pts.length; j++) {
+                            stretch(pts[j]);
+                            c.pts[j] = pts[j];
+                        }
+
+
+                        function loop1(knots) {
+                            if (knots != undefined) {
+                                for (let j = 0; j < knots.length; j++) {
+                                    let knot = knots[j];
+
+                                    stretch(knot);
+
+                                    if (knot.symbol != undefined) {
+                                        stretch(knot.symbol);
+                                    }
+
+                                    if (knot.xSymbol != undefined) {
+                                        stretch(knot.xSymbol);
+                                    }
+
+                                    if (knot.ySymbol != undefined) {
+                                        stretch(knot.ySymbol);
+                                    }
+                                }
+                            }
+                        }
+
+                        c.endPt = findEndPts(pts)
+
+                        let maxima = c.maxima;
+                        loop1(maxima);
+
+                        let minima = c.minima;
+                        loop1(minima);
+
+                        function loop2(inter, newInter) {
+                            if (inter != undefined) {
+                                for (let i = 0; i < inter.length; i++) {
+                                    if (inter[i].symbol != undefined) {
+                                        let symbol = inter[i].symbol;
+
+                                        let found = false,
+                                            min = 50,
+                                            knot;
+                                        for (let j = 0; j < newInter.length; j++) {
+                                            if (graphFunctions.getDist(inter[i], newInter[j]) < min) {
+                                                min = graphFunctions.getDist(inter[i], newInter[j]);
+                                                knot = newInter[j];
+                                                found = true;
+                                            }
+                                        }
+
+                                        if (found) {
+                                            symbol.x = knot.x;
+                                            symbol.y = knot.y;
+                                            knot.symbol = symbol;
+                                        } else {
+                                            freeSymbols.push(symbol);
+                                        }
+                                    }
+                                }
+                                return newInter;
+                            }
+                        }
+
+                        let interX = c.interX,
+                            newInterX = findInterceptX(pts);
+                        c.interX = loop2(interX, newInterX);
+
+
+                        let interY = c.interY,
+                            newInterY = findInterceptY(pts);
+                        c.interY = loop2(interY, newInterY);
+                    }
+
                     function clone(obj) {
-                        var json = JSON.stringify(obj);
+                        let json = JSON.stringify(obj);
                         return JSON.parse(json);
                     }
 
-                    encodeData = function(trunc) {
+                    function encodeData(trunc) {
 
                         if (trunc == undefined) {
                             trunc = true;
@@ -2160,24 +2148,24 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             return;
                         }
 
-                        var data = {};
+                        let data = {};
                         data.canvasWidth = canvasWidth;
                         data.canvasHeight = canvasHeight;
 
-                        var clonedCurves = clone(curves);
+                        let clonedCurves = clone(curves);
 
                         // sort segments according to their left most points.
                         function compare(curve1, curve2) {
                             function findMinX(pts) {
                                 if (pts.length == 0) return 0;
-                                var min = canvasWidth;
-                                for (var i = 0; i < pts.length; i++)
+                                let min = canvasWidth;
+                                for (let i = 0; i < pts.length; i++)
                                     min = Math.min(min, pts[i].x);
                                 return min;
                             }
 
-                            var min1 = findMinX(curve1.pts);
-                            var min2 = findMinX(curve2.pts);
+                            let min1 = findMinX(curve1.pts);
+                            let min2 = findMinX(curve2.pts);
                             if (min1 < min2) return -1
                             else if (min1 == min2) return 0
                             else return 1;
@@ -2185,8 +2173,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         clonedCurves.sort(compare);
 
                         function normalise(pt) {
-                            var x = (pt.x - canvasWidth/2) / canvasWidth;
-                            var y = (canvasHeight/2 - pt.y) / canvasHeight;
+                            let x = (pt.x - canvasWidth/2) / canvasWidth;
+                            let y = (canvasHeight/2 - pt.y) / canvasHeight;
                             if (trunc) {
                                 pt.x = Math.trunc(x * 1000) / 1000;
                                 pt.y = Math.trunc(y * 1000) / 1000;
@@ -2198,8 +2186,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
 
                         function normalise1(knots) {
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 normalise(knot);
                                 if (knot.symbol != undefined) {
                                     normalise(knot.symbol);
@@ -2209,8 +2197,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         function normalise2(knots) {
                             normalise1(knots);
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 if (knot.xSymbol != undefined) {
                                     normalise(knot.xSymbol);
                                 }
@@ -2221,13 +2209,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
 
 
-                        for (var i = 0; i < clonedCurves.length; i++) {
-                            var pts = clonedCurves[i].pts;
-                            for (var j = 0; j < pts.length; j++) {
+                        for (let i = 0; i < clonedCurves.length; i++) {
+                            let pts = clonedCurves[i].pts;
+                            for (let j = 0; j < pts.length; j++) {
                                 normalise(pts[j]);
                             }
 
-                            var tmp;
+                            let tmp;
 
                             tmp = (clonedCurves[i].minX - canvasWidth/2) / canvasWidth;
                             clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
@@ -2242,16 +2230,16 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
 
 
-                            var interX = clonedCurves[i].interX;
+                            let interX = clonedCurves[i].interX;
                             normalise1(interX);
 
-                            var interY = clonedCurves[i].interY;
+                            let interY = clonedCurves[i].interY;
                             normalise1(interY);
 
-                            var maxima = clonedCurves[i].maxima;
+                            let maxima = clonedCurves[i].maxima;
                             normalise2(maxima);
 
-                            var minima = clonedCurves[i].minima;
+                            let minima = clonedCurves[i].minima;
                             normalise2(minima);
                         }
 
@@ -2259,9 +2247,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         data.curves = clonedCurves;
 
-                        var clonedFreeSymbols = clone(freeSymbols);
-                        for (var i = 0; i < clonedFreeSymbols.length; i++) {
-                            var symbol = clonedFreeSymbols[i];
+                        let clonedFreeSymbols = clone(freeSymbols);
+                        for (let i = 0; i < clonedFreeSymbols.length; i++) {
+                            let symbol = clonedFreeSymbols[i];
                             normalise(symbol);
                         }
                         data.freeSymbols = clonedFreeSymbols;
@@ -2269,9 +2257,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         return data;
                     }
 
-                    decodeData = function(rawData) {
+                    function decodeData(rawData) {
 
-                        var data = rawData;
+                        let data = rawData;
 
                         function denormalise(pt) {
                                 pt.x = pt.x * canvasWidth + canvasWidth/2;
@@ -2279,8 +2267,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
 
                         function denormalise1(knots) {
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 denormalise(knot);
                                 if (knot.symbol != undefined) {
                                     denormalise(knot.symbol);
@@ -2290,8 +2278,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         function denormalise2(knots) {
                             denormalise1(knots);
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 if (knot.xSymbol != undefined) {
                                     denormalise(knot.xSymbol);
                                 }
@@ -2304,10 +2292,10 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         curves = data.curves;
 
-                        for (var i = 0; i < curves.length; i++) {
+                        for (let i = 0; i < curves.length; i++) {
 
-                            var pts = curves[i].pts;
-                            for (var j = 0; j < pts.length; j++) {
+                            let pts = curves[i].pts;
+                            for (let j = 0; j < pts.length; j++) {
                                 denormalise(pts[j]);
                             }
 
@@ -2316,21 +2304,21 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             curves[i].minY = canvasHeight/2 - curves[i].minY * canvasHeight;
                             curves[i].maxY = canvasHeight/2 - curves[i].maxY * canvasHeight;
 
-                            var interX = curves[i].interX;
+                            let interX = curves[i].interX;
                             denormalise1(interX);
 
-                            var interY = curves[i].interY;
+                            let interY = curves[i].interY;
                             denormalise1(interY);
 
-                            var maxima = curves[i].maxima;
+                            let maxima = curves[i].maxima;
                             denormalise2(maxima);
 
-                            var minima = curves[i].minima;
+                            let minima = curves[i].minima;
                             denormalise2(minima);
                         }
 
                         freeSymbols = data.freeSymbols;
-                        for (var j = 0; j < freeSymbols.length; j++) {
+                        for (let j = 0; j < freeSymbols.length; j++) {
                             denormalise(freeSymbols[j]);
                         }
 
@@ -2338,36 +2326,17 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         return;
                     }
 
-                    function mirro() {
-                        mirror();
-                    }
-
-                    function mirror() {
-                        drawBackground();
-                        mirrorCurves(curves);
-                        // refreshFreeSymbols();
-                        drawSymbols(freeSymbols);
-                        //drawKnot3(clickedKnot);
-                        drawStretchBox(clickedCurveIdx);
-                    }
-
-                    function undo() {
-                        if (checkPointsUndo.length == 0) {
-                            mirrorClicked = 0;
+                    scope.undo = function() {
+                        if (p.checkPointsUndo.length == 0 || p.checkPointsUndo === undefined) {
                             return;
                         }
 
-                        if (checkPointsUndo === undefined) {
-                            mirrorClicked = 0;
-                            return;
-                        }
-
-                        var checkPointRedo = {};
+                        let checkPointRedo = {};
                         checkPointRedo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         checkPointRedo.curvesJSON = JSON.stringify(curves);
-                        checkPointsRedo.push(checkPointRedo);
+                        p.checkPointsRedo.push(checkPointRedo);
 
-                        var checkPointUndo = checkPointsUndo.pop();
+                        let checkPointUndo = p.checkPointsUndo.pop();
                         freeSymbols = JSON.parse(checkPointUndo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointUndo.curvesJSON);
                         
@@ -2377,26 +2346,18 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         reDraw();
                     }
 
-                    function straight() {
-                        scope.selectedLineType = l;
-                    }
-
-                    function poly() {
-                        scope.selectedLineType = b;
-                    }
-
-                    function redo() {
+                    scope.redo = function() {
                         event.stopPropagation();
-                        if (checkPointsRedo.length == 0) {
+                        if (p.checkPointsRedo.length == 0) {
                             return;
                         }
 
-                        var checkPointUndo = {};
+                        let checkPointUndo = {};
                         checkPointUndo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         checkPointUndo.curvesJSON = JSON.stringify(curves);
-                        checkPointsUndo.push(checkPointUndo);
+                        p.checkPointsUndo.push(checkPointUndo);
 
-                        var checkPointRedo = checkPointsRedo.pop();
+                        let checkPointRedo = p.checkPointsRedo.pop();
                         freeSymbols = JSON.parse(checkPointRedo.freeSymbolsJSON);
                         curves = JSON.parse(checkPointRedo.curvesJSON);
                         
@@ -2405,20 +2366,28 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         reDraw();
                     }
 
-                    function isUndoable() {
-                        return (checkPointsUndo.length > 0);
+                    scope.isUndoable = function() {
+                        return (p.checkPointsUndo.length > 0);
                     }
 
-                    function isRedoable() {
-                        return (checkPointsRedo.length > 0);
+                    scope.isRedoable = function() {
+                        return (p.checkPointsRedo.length > 0);
                     }
 
-                    function clean() {
-                        checkPoint = {};
-                        checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
-                        checkPoint.curvesJSON = JSON.stringify(curves);
-                        checkPointsUndo.push(checkPoint);
-                        checkPointsRedo = [];
+                    scope.straight = function() {
+                        scope.selectedLineType = linearLineType;
+                    }
+
+                    scope.poly = function() {
+                        scope.selectedLineType = bezierLineType;
+                    }
+
+                    scope.clean = function() {
+                        p.checkPoint = {};
+                        p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
+                        p.checkPoint.curvesJSON = JSON.stringify(curves);
+                        p.checkPointsUndo.push(p.checkPoint);
+                        p.checkPointsRedo = [];
 
                         curves = [];
                         clickedKnot = null;
@@ -2427,92 +2396,17 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         reDraw();
                     }
 
-                    function keyPressed(e) {
-                        key = e.key;
-                    }
-
-                    function keyReleased(e) {
-                        key = undefined;
-                    }
-
-                    function touchStarted(e) {
-                        mousePressed(e.touches[0]);
-                    }
-
-                    function touchMoved(e) {
-                        mouseDragged(e.touches[0]);
-                    }
-
-                    function touchEnded(e) {
-                        mouseReleased(e);
-                    }
-
-                    function windowResized() {
-                        var data = encodeData(false);
-                        canvasWidth = window.innerWidth;
-                        canvasHeight = window.innerHeight;
-                        p.resizeCanvas(window.innerWidth, window.innerHeight);
-                        decodeData(data);
-                        reDraw();
-                    }
-
-
-                    // export the following functions to p5, so they can be assessed via the object produced.
-                    p.setup = setup;
-                    p.mousePressed = mousePressed;
-                    p.mouseDragged = mouseDragged;
-                    p.mouseReleased = mouseReleased;
-                    p.mouseMoved = mouseMoved;
-                    p.curves = curves;
-                    p.freeSymbols = freeSymbols;
-
-                    p.touchStarted = touchStarted;
-                    p.touchMoved = touchMoved;
-                    p.touchEnded = touchEnded;
-                    p.checkPointsRedo = checkPointsRedo;
-                    p.checkPointsUndo = checkPointsUndo;
-
-                    p.keyPressed = keyPressed;
-                    p.keyReleased = keyReleased;
-
-                    p.windowResized = windowResized;
-
-                    p.encodeData = encodeData;
-                    p.decodeData = decodeData;
-                    p.undo = undo;
-                    p.redo = redo;
-                    p.straight = straight;
-                    p.mirro = mirro;
-                    p.poly = poly;
-                    p.isUndoable = isUndoable;
-                    p.isRedoable = isRedoable;
-                    p.clean = clean;
-                    p.dat = dat;
-
-                    scope.dat = dat;
-
-                    function dataReturn() {
-                        dat = encodeData();
-                        scope.dat = dat;
-                        return scope.dat;
-                    }
-                    dataReturn();
+                    scope.submit = function() {
+                        $("#graphModal").foundation("reveal", "close");
+                    };
                 }
 
-                $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode, oldDat) {
+                $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode) {
                     return new Promise(function(resolve, reject) {
-                        $(".result-preview>span").empty();
-                        $(".result-preview").width(0);
-
-                        var eqnModal = $('#graphModal');
-                        eqnModal.one("opened.fndtn.reveal", function() {
-                            element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
-                        });
-
-                        scope.state = scope.dat || initialState;
+                        let graphSketcherModal = $('#graphModal');
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         
-                        eqnModal.foundation("reveal", "open");
+                        graphSketcherModal.foundation("reveal", "open");
                         scope.state = initialState || {freeSymbols: []}
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode
@@ -2533,7 +2427,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
                         // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function(e) {
+                        graphSketcherModal.one("close", function(e) {
                             scope.log.finalState = [];
                             scope.dat.curves.forEach(function(e) {
                                 scope.log.finalState.push(e);
@@ -2548,32 +2442,19 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             scope.log = null;
                             return(scope.state);
                         });
-                        
-                        scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                        scope.historyPtr = 0;
-                        //element.find("canvas").remove();
 
-                        scope.future = [];
+                        graphSketcherModal.one("closed.fndtn.reveal", function() {
+                            scope.p.remove();
+                            resolve(scope.dat);
+                        });
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             decodeData(scope.state);
                             reDraw();
-                            scope.history = [JSON.parse(JSON.stringify(scope.state))];
-                            scope.historyPtr = 0;
                         }
-                        // to here, figure out how to load it as a useable object, not an image //////////////////
-
-                        eqnModal.one("closed.fndtn.reveal", function() {
-                            scope.p.remove();
-                            resolve(scope.dat);
-                        });
                     });
                 };
-
-                scope.centre = function(p) {
-                    sketch.centre();
-                }
             }
         };
     }];
