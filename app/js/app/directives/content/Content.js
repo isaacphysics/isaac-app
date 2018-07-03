@@ -41,7 +41,7 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 							return;
 						}
 						scope.doc = newDoc;
-						console.log(scope.doc.type);
+						
 	            		if (newDoc)
 	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || "0000";
 
