@@ -19,7 +19,8 @@ define([], function() {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
             e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
-            e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
+            e.withinBookingDeadline = Date.now() <= new Date(e.bookingDeadline);
+            e.inProgress = (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
             e.inProgress =  false;

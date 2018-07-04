@@ -72,7 +72,10 @@
           </tr>
           <tr ng-show="event.bookingDeadline">
             <td>Booking Deadline</td>
-            <td><time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEE d MMM yyyy'}} <br><span ng-if="!event.multiDay">{{event.bookingDeadline | date:'shortTime'}}</span></time></td>
+            <td>
+              <time datetime="{{event.bookingDeadline | date:'yyyy-MM-dd H:mm a'}}">{{event.bookingDeadline | date:'EEE d MMM yyyy'}} <br><span ng-if="!event.multiDay">{{event.bookingDeadline | date:'shortTime'}}</span></time>
+              <span ng-if="!event.withinBookingDeadline" class="error">The booking deadline for this event has passed.</span>
+            </td>
           </tr>        
         </tbody>
       </table>
@@ -102,7 +105,7 @@
 
       <!-- options for those logged in -->
       <span ng-show="user._id">
-        <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
+        <a href="javascript:void(0)" ng-show="event.eventStatus != 'CLOSED' && !event.expired && !bookingFormOpen && !(event.userBooked || event.userOnWaitList) && event.withinBookingDeadline" ng-click="bookingFormOpen=true" class="ru-button-big">Open booking form</a>
         <a href="javascript:void(0)" ng-show="bookingFormOpen  && !(event.userBooked || event.userOnWaitList)" ng-click="bookingFormOpen=false" class="ru-button-big secondary">Close booking form</a>
         <a ng-if="event.userBooked && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Cancel your booking</a>
         <a ng-if="event.userOnWaitList && !event.expired" href="javascript:void(0)" ng-click="cancelEventBooking()" class="ru-button-big secondary disabled">Remove from waiting list</a>
