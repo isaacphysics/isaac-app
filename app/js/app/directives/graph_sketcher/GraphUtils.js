@@ -224,7 +224,7 @@ define(function(require) {
             moveTurnPts(minima);
 
 
-            function moveInter(inter, newInter) {
+            let moveInter = function(inter, newInter) {
                 for (let i = 0; i < inter.length; i++) {
                     if (inter[i].symbol != undefined) {
                         let symbol = inter[i].symbol;
@@ -245,12 +245,12 @@ define(function(require) {
                             symbol.y = knot.y;
                             knot.symbol = symbol;
                         } else {
-                            freeSymbols.push(symbol);
+                            freeSymbols.push(symbol); //TODO MT free symbols doesn't exist
                         }
                     }
                 }
                 return newInter;
-            }
+            }.bind(this);
 
             let interX = curve.interX,
                 newInterX = this.findInterceptX(canvasProperties.height, pts);
@@ -314,7 +314,7 @@ define(function(require) {
             let minima = c.minima;
             loop1(minima);
 
-            function loop2(inter, newInter) {
+            let loop2 = function(inter, newInter) {
                 if (inter != undefined) {
                     for (let i = 0; i < inter.length; i++) {
                         if (inter[i].symbol != undefined) {
@@ -336,13 +336,13 @@ define(function(require) {
                                 symbol.y = knot.y;
                                 knot.symbol = symbol;
                             } else {
-                                freeSymbols.push(symbol);
+                                freeSymbols.push(symbol);// TODO MT Free Symbols doesn't exist
                             }
                         }
                     }
                     return newInter;
                 }
-            }
+            }.bind(this);
 
             let interX = c.interX,
                 newInterX = this.findInterceptX(canvasProperties.height, pts);
