@@ -7,7 +7,6 @@ define(function(require) {
     let canvasWidth = window.innerWidth;
 
     const DOT_LINE_COLOR = [123];
-    const MOVE_LINE_COLOR = [135];
     const DEFAULT_KNOT_COLOR = [77,77,77];
 
     const GRID_WIDTH = 60;
@@ -153,8 +152,8 @@ define(function(require) {
             // draw x intercepts, y intercepts and turning points
             this.drawKnots(p, curve['interX']);
             this.drawKnots(p, curve['interY']);
-            this.drawKnots2(p, curve['maxima']);
-            this.drawKnots2(p, curve['minima']);
+            this.drawKnots(p, curve['maxima']);
+            this.drawKnots(p, curve['minima']);
         },
 
         // given a set of points, draw the corresponding points (knots).
@@ -179,26 +178,6 @@ define(function(require) {
         drawKnots: function(p, knots, color) {
             for (let i = 0; i < knots.length; i++) {
                 this.drawKnot(p, knots[i], color);
-            }
-        },
-
-        drawKnot2: function(p, knot) {
-            this.drawKnot(p, knot);
-
-            if (knot.xSymbol != undefined) {
-                this.drawVerticalDotLine(p, knot.x, knot.y, canvasHeight/2);
-                this.drawSymbol(p, knot.xSymbol);
-            }
-
-            if (knot.ySymbol != undefined) {
-                this.drawHorizontalDotLine(p, knot.y, knot.x, canvasWidth/2);
-                this.drawSymbol(p, knot.ySymbol);
-            }
-        },
-
-        drawKnots2: function(p, knots) {
-            for (let i = 0; i < knots.length; i++) {
-                this.drawKnot2(p, knots[i]);
             }
         },
 
@@ -305,7 +284,7 @@ define(function(require) {
             p.pop();
         },
 
-        drawStretchBox: function(p, idx) {
+        drawStretchBox: function(p, idx, curves) {
             if (idx == undefined) {
                 return;
             }
@@ -335,7 +314,7 @@ define(function(require) {
             p.triangle((minX + maxX)/2 - 5, minY - 2, (minX + maxX)/2 + 5, minY - 2, (minX + maxX)/2, minY - 7);
             p.triangle((minX + maxX)/2 - 5, maxY + 2, (minX + maxX)/2 + 5, maxY + 2, (minX + maxX)/2, maxY + 7);
             p.triangle(minX - 2, (minY + maxY) / 2 - 5, minX - 2, (minY + maxY) / 2 + 5, minX - 7, (minY + maxY) / 2);
-            p.triangle(maxX + 2, (minY + maxY) / 2 - 5, maxX + 2, (minY + maxY) / 2 + 5, maxX + 7, (minY + maxY) / 2); 
+            p.triangle(maxX + 2, (minY + maxY) / 2 - 5, maxX + 2, (minY + maxY) / 2 + 5, maxX + 7, (minY + maxY) / 2);
             p.pop();
         },
     };

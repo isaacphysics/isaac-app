@@ -182,7 +182,7 @@ define(function(require) {
         },
 
         // given a curve, translate the curve
-        transCurve: function(curve, dx, dy) {
+        translateCurve: function(curve, dx, dy, canvasProperties) {
             let pts = curve.pts;
 
             curve.minX += dx;
@@ -253,22 +253,22 @@ define(function(require) {
             }
 
             let interX = curve.interX,
-                newInterX = this.findInterceptX(pts);
+                newInterX = this.findInterceptX(canvasProperties.height, pts);
             curve.interX = moveInter(interX, newInterX);
 
             let endPt = curve.endPt,
-                newEndPt = findEndPts(pts);
+                newEndPt = this.findEndPts(pts);
             curve.endPt = newEndPt;
 
 
             let interY = curve.interY,
-                newInterY = this.findInterceptY(pts);
+                newInterY = this.findInterceptY(canvasProperties.width, pts);
             curve.interY = moveInter(interY, newInterY);
 
             return;
         },
 
-        stretchCurve: function(c, orx, ory, nrx, nry, baseX, baseY) {
+        stretchCurve: function(c, orx, ory, nrx, nry, baseX, baseY, canvasProperties) {
 
             function stretch(pt) {
                 let nx = (pt.x - baseX) / orx;
@@ -345,12 +345,12 @@ define(function(require) {
             }
 
             let interX = c.interX,
-                newInterX = this.findInterceptX(pts);
+                newInterX = this.findInterceptX(canvasProperties.height, pts);
             c.interX = loop2(interX, newInterX);
 
 
             let interY = c.interY,
-                newInterY = this.findInterceptY(pts);
+                newInterY = this.findInterceptY(canvasProperties.width, pts);
             c.interY = loop2(interY, newInterY);
         },
 

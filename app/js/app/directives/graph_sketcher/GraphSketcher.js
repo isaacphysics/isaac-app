@@ -126,10 +126,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    let canvasHeight = window.innerHeight;
-                    let canvasWidth = window.innerWidth;
+                    let canvasProperties = {width: window.innerWidth, height: window.innerHeight};
 
                     const MOVE_SYMBOL_COLOR = [151];
+                    const MOVE_LINE_COLOR = [135];
                     const CURVE_LIMIT = 3;
                     const MOUSE_DETECT_RADIUS = 10;
 
@@ -175,7 +175,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     // run in the beginning by p5 library
                     p.setup = function() {
-                        p.createCanvas(canvasWidth, canvasHeight);
+                        p.createCanvas(canvasProperties.width, canvasProperties.height);
                         p.noLoop();
                         p.cursor(p.ARROW);
 
@@ -739,14 +739,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     stretchMode = 2;
                                     switch (stretchMode) {
                                         case 2: {
-                                            graphUtils.stretchCurve(tempCurveL, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y);
+                                            graphUtils.stretchCurve(tempCurveL, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y, canvasProperties);
                                             break;
                                         }
                                     }
                                     stretchMode = 3;
                                     switch (stretchMode) {
                                         case 3: {
-                                            graphUtils.stretchCurve(tempCurveH, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y);
+                                            graphUtils.stretchCurve(tempCurveH, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y, canvasProperties);
                                             break;
                                         }
                                     }
@@ -762,14 +762,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     m.pts = intpts;
                                     // m.pts = uniqueNames;
 
-                                    m.interX = graphUtils.findInterceptX(canvasHeight, m.pts);
-                                    m.interY = graphUtils.findInterceptY(canvasWidth, m.pts);     
-                                    m.maxima = graphUtils.findTurnPts(m.pts, 'maxima');   
-                                    m.minima = graphUtils.findTurnPts(m.pts, 'minima');  
+                                    m.interX = graphUtils.findInterceptX(canvasProperties.height, m.pts);
+                                    m.interY = graphUtils.findInterceptY(canvasProperties.width, m.pts);
+                                    m.maxima = graphUtils.findTurnPts(m.pts, 'maxima');
+                                    m.minima = graphUtils.findTurnPts(m.pts, 'minima');
                                     let minX = m.pts[0].x;
                                     let maxX = m.pts[0].x;
                                     let minY = m.pts[0].y;
-                                    let maxY = m.pts[0].y;      
+                                    let maxY = m.pts[0].y;
                                     for (let k = 1; k < m.pts.length; k++) {
                                         minX = Math.min(m.pts[k].x, minX);
                                         maxX = Math.max(m.pts[k].x, maxX);
@@ -846,14 +846,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     stretchMode = 1;
                                     switch (stretchMode) {
                                         case 1: {
-                                            graphUtils.stretchCurve(tempCurveL, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y);
+                                            graphUtils.stretchCurve(tempCurveL, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y, canvasProperties);
                                             break;
                                         }
                                     }
                                     stretchMode = 0;
                                     switch (stretchMode) {
                                         case 0: {
-                                            graphUtils.stretchCurve(tempCurveH, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y);
+                                            graphUtils.stretchCurve(tempCurveH, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y, canvasProperties);
                                             break;
                                         }
                                     }
@@ -867,8 +867,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     intpts.push.apply(intpts, upperRng);
                                     m.pts = intpts;
                                     
-                                    m.interX = graphUtils.findInterceptX(canvasHeight, m.pts);
-                                    m.interY = graphUtils.findInterceptY(canvasWidth, m.pts);     
+                                    m.interX = graphUtils.findInterceptX(canvasProperties.height, m.pts);
+                                    m.interY = graphUtils.findInterceptY(canvasProperties.width, m.pts);
                                     m.maxima = graphUtils.findTurnPts(m.pts, 'maxima');   
                                     m.minima = graphUtils.findTurnPts(m.pts, 'minima');
                                     let minX = m.pts[0].x;
@@ -899,7 +899,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             let dx = current.x - prevMousePt.x;
                             let dy = current.y - prevMousePt.y;
                             prevMousePt = current;
-                            graphUtils.transCurve(curves[movedCurveIdx], dx, dy);
+                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
 
                             reDraw();
                             graphView.drawCurve(p, curves[movedCurveIdx], MOVE_LINE_COLOR);
@@ -1031,35 +1031,35 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             // stretch the curve
                             switch (stretchMode) {
                                 case 0: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.maxY);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.maxY, canvasProperties);
                                     break;
                                 }
                                 case 1: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.maxY);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.maxY, canvasProperties);
                                     break;
                                 }
                                 case 2: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.minY);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.minY, canvasProperties);
                                     break;
                                 }
                                 case 3: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.minY);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.minY, canvasProperties);
                                     break;
                                 }
                                 case 4: {
-                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.maxY);
+                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.maxY, canvasProperties);
                                     break;
                                 }
                                 case 5: {
-                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.minY);
+                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.minY, canvasProperties);
                                     break;
                                 }
                                 case 6: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.maxX, (c.minY + c.maxY)/2);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.maxX, (c.minY + c.maxY)/2, canvasProperties);
                                     break;
                                 }
                                 case 7: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.minX, (c.minY + c.maxY)/2);
+                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.minX, (c.minY + c.maxY)/2, canvasProperties);
                                     break;
                                 }
                             }
@@ -1106,12 +1106,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             if (clickedKnot != null) {
                                 let knot = clickedKnot;
-                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
-                                    graphView.drawKnotDetect(p, graphUtils.createPoint(knot.x, canvasHeight/2), graphView.KNOT_DETECT_COLOR);
+                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
+                                    graphView.drawKnotDetect(p, graphUtils.createPoint(knot.x, canvasProperties.height/2), graphView.KNOT_DETECT_COLOR);
                                     return;
                                 }
-                                if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    graphView.drawKnotDetect(p, graphUtils.createPoint(canvasWidth/2, knot.y), graphView.KNOT_DETECT_COLOR);
+                                if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                    graphView.drawKnotDetect(p, graphUtils.createPoint(canvasProperties.width/2, knot.y), graphView.KNOT_DETECT_COLOR);
                                     return;
                                 }
                             }
@@ -1290,13 +1290,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             if (!found && clickedKnot != null) {
                                 let knot = clickedKnot;
-                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasHeight/2)) < MOUSE_DETECT_RADIUS) {
+                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = knot.x;
-                                    movedSymbol.y = canvasHeight/2;
+                                    movedSymbol.y = canvasProperties.height/2;
                                     knot.xSymbol = movedSymbol;
                                     found = true;
-                                } else if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasWidth/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = canvasWidth/2;
+                                } else if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                    movedSymbol.x = canvasProperties.width/2;
                                     movedSymbol.y = knot.y;
                                     knot.ySymbol = movedSymbol;
                                     found = true;
@@ -1325,17 +1325,17 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     scope.$apply();
 
                                     // adjustment of start and end to attach to the axis automatically.
-                                    if (Math.abs(drawnPts[0].y - canvasHeight/2) < 3) {
-                                        drawnPts[0].y = canvasHeight/2;
+                                    if (Math.abs(drawnPts[0].y - canvasProperties.height/2) < 3) {
+                                        drawnPts[0].y = canvasProperties.height/2;
                                     }
-                                    if (Math.abs(drawnPts[0].x - canvasWidth/2) < 3) {
-                                        drawnPts[0].x = canvasWidth/2;
+                                    if (Math.abs(drawnPts[0].x - canvasProperties.width/2) < 3) {
+                                        drawnPts[0].x = canvasProperties.width/2;
                                     }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasHeight/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].y = canvasHeight/2;
+                                    if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasProperties.height/2) < 3) {
+                                        drawnPts[drawnPts.length - 1].y = canvasProperties.height/2;
                                     }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasWidth/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].x = canvasWidth/2;
+                                    if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasProperties.width/2) < 3) {
+                                        drawnPts[drawnPts.length - 1].x = canvasProperties.width/2;
                                     }
 
                                     // sampler.sample, bezier.genericBezier
@@ -1359,8 +1359,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     curve.maxY = maxY;
 
                                     curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasHeight, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasWidth, pts);
+                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
+                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
                                     curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
                                     curve.minima = graphUtils.findTurnPts(pts, 'minima');
                                     curve.colorIdx = drawnColorIdx;
@@ -1392,8 +1392,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     curve.maxY = Math.max(lineStart.y, lineEnd.y);
 
                                     curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasHeight, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasWidth, pts);
+                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
+                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
                                     curve.maxima = [];
                                     curve.minima = [];
                                     curve.colorIdx = drawnColorIdx;
@@ -1442,8 +1442,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     p.windowResized = function() {
                         let data = encodeData(false);
-                        canvasWidth = window.innerWidth;
-                        canvasHeight = window.innerHeight;
+                        canvasProperties.width = window.innerWidth;
+                        canvasProperties.height = window.innerHeight;
                         p.resizeCanvas(window.innerWidth, window.innerHeight);
                         decodeData(data);
                         reDraw();
@@ -1520,7 +1520,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     function isActive(pt) {
 
-                        if (!(pt.x > 0 && pt.x < canvasWidth && pt.y > 0 && pt.y < canvasHeight)) {
+                        if (!(pt.x > 0 && pt.x < canvasProperties.width && pt.y > 0 && pt.y < canvasProperties.height)) {
                             return false;
                         }
 
@@ -1545,7 +1545,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             graphView.drawBackground(p);
                             graphView.drawCurves(p, curves);
                             graphView.drawSymbols(p, freeSymbols);
-                            graphView.drawStretchBox(p, clickedCurveIdx);
+                            graphView.drawStretchBox(p, clickedCurveIdx, curves);
                             scope.dat = encodeData();
                         }
                     };
@@ -1556,19 +1556,19 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             trunc = true;
                         }
 
-                        if (canvasWidth > 5000 || canvasWidth <= 0) {
-                            alert("Invalid canvasWidth.");
+                        if (canvasProperties.width > 5000 || canvasProperties.width <= 0) {
+                            alert("Invalid canvasProperties.width.");
                             return;
                         }
 
-                        if (canvasHeight > 5000 || canvasHeight <= 0) {
-                            alert("Invalid canvasHeight.");
+                        if (canvasProperties.height > 5000 || canvasProperties.height <= 0) {
+                            alert("Invalid canvasProperties.height.");
                             return;
                         }
 
                         let data = {};
-                        data.canvasWidth = canvasWidth;
-                        data.canvasHeight = canvasHeight;
+                        data.canvasWidth = canvasProperties.width;
+                        data.canvasHeight = canvasProperties.height;
 
                         let clonedCurves = graphUtils.clone(curves);
 
@@ -1576,7 +1576,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         function compare(curve1, curve2) {
                             function findMinX(pts) {
                                 if (pts.length == 0) return 0;
-                                let min = canvasWidth;
+                                let min = canvasProperties.width;
                                 for (let i = 0; i < pts.length; i++)
                                     min = Math.min(min, pts[i].x);
                                 return min;
@@ -1592,8 +1592,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         clonedCurves.sort(compare);
 
                         function normalise(pt) {
-                            let x = (pt.x - canvasWidth/2) / canvasWidth;
-                            let y = (canvasHeight/2 - pt.y) / canvasHeight;
+                            let x = (pt.x - canvasProperties.width/2) / canvasProperties.width;
+                            let y = (canvasProperties.height/2 - pt.y) / canvasProperties.height;
                             if (trunc) {
                                 pt.x = Math.trunc(x * 1000) / 1000;
                                 pt.y = Math.trunc(y * 1000) / 1000;
@@ -1635,16 +1635,16 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             let tmp;
 
-                            tmp = (clonedCurves[i].minX - canvasWidth/2) / canvasWidth;
+                            tmp = (clonedCurves[i].minX - canvasProperties.width/2) / canvasProperties.width;
                             clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
 
-                            tmp = (clonedCurves[i].maxX - canvasWidth/2) / canvasWidth;
+                            tmp = (clonedCurves[i].maxX - canvasProperties.width/2) / canvasProperties.width;
                             clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
 
-                            tmp = (canvasHeight/2 - clonedCurves[i].minY) / canvasHeight;
+                            tmp = (canvasProperties.height/2 - clonedCurves[i].minY) / canvasProperties.height;
                             clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
 
-                            tmp = (canvasHeight/2 - clonedCurves[i].maxY) / canvasHeight;
+                            tmp = (canvasProperties.height/2 - clonedCurves[i].maxY) / canvasProperties.height;
                             clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
 
 
@@ -1678,8 +1678,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let data = rawData;
 
                         function denormalise(pt) {
-                                pt.x = pt.x * canvasWidth + canvasWidth/2;
-                                pt.y = canvasHeight/2 - pt.y * canvasHeight;
+                                pt.x = pt.x * canvasProperties.width + canvasProperties.width/2;
+                                pt.y = canvasProperties.height/2 - pt.y * canvasProperties.height;
                             }
 
                         function denormalise1(knots) {
@@ -1715,10 +1715,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 denormalise(pts[j]);
                             }
 
-                            curves[i].minX = curves[i].minX * canvasWidth + canvasWidth/2;
-                            curves[i].maxX = curves[i].maxX * canvasWidth + canvasWidth/2;
-                            curves[i].minY = canvasHeight/2 - curves[i].minY * canvasHeight;
-                            curves[i].maxY = canvasHeight/2 - curves[i].maxY * canvasHeight;
+                            curves[i].minX = curves[i].minX * canvasProperties.width + canvasProperties.width/2;
+                            curves[i].maxX = curves[i].maxX * canvasProperties.width + canvasProperties.width/2;
+                            curves[i].minY = canvasProperties.height/2 - curves[i].minY * canvasProperties.height;
+                            curves[i].maxY = canvasProperties.height/2 - curves[i].maxY * canvasProperties.height;
 
                             let interX = curves[i].interX;
                             denormalise1(interX);
