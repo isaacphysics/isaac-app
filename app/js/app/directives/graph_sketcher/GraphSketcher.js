@@ -1,6 +1,6 @@
 "use strict";
 define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
-    function(p5, graphView, graphUtils, bezierLineType, linearLineType, templateUrl) {
+    function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
         let instanceCounter = 0;
         return {
@@ -132,7 +132,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     const MOVE_LINE_COLOR = [135];
                     const CURVE_LIMIT = 3;
                     const MOUSE_DETECT_RADIUS = 10;
-
+                    const DEFAULT_KNOT_COLOR = [77,77,77];
+                    
                     // action recorder
                     let action = undefined;
                     let isMouseDragged;
@@ -172,6 +173,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     p.checkPointsUndo = [];
                     p.checkPointsRedo = [];
 
+                    scope.graphView = new graphViewBuilder.graphView(p);
 
                     // run in the beginning by p5 library
                     p.setup = function() {
@@ -205,7 +207,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 for (let i = 0; i < knots.length; i++) {
                                     if (graphUtils.getDist(current, knots[i]) < MOUSE_DETECT_RADIUS) {
                                         p.cursor(p.HAND);
-                                        graphView.drawKnotDetect(p, knots[i]);
+                                        scope.graphView.drawDetectedKnot(knots[i]);
                                         found = true;
                                         return;
                                     }
@@ -324,7 +326,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     p.cursor(p.MOVE);
                                 } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
                                     p.push();
-                                    p.fill(graphView.KNOT_DETECT_COLOR);
+                                    p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                     if (detect(c.minX, c.minY)) {
                                          p.rect(c.minX - 4, c.minY - 4, 8, 8);
                                     } else if (detect(c.maxX, c.minY)) {
@@ -342,7 +344,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
 
                                     p.push();
-                                    p.fill(graphView.KNOT_DETECT_COLOR);
+                                    p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                     if (detect((c.minX + c.maxX)/2, c.minY - 3)) {
                                         p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
                                     } else if (detect((c.minX + c.maxX)/2, c.maxY + 3)) {
@@ -902,13 +904,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
 
                             reDraw();
-                            graphView.drawCurve(p, curves[movedCurveIdx], MOVE_LINE_COLOR);
+                            scope.graphView.drawCurve(p, curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "STRETCH_CURVE") {
 
                             function drawCorner() {
                                 p.push();
-                                p.fill(graphView.KNOT_DETECT_COLOR);
+                                p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                 switch (stretchMode) {
                                     case 0: {
                                         p.rect(c.minX - 4, c.minY - 4, 8, 8);
@@ -1078,12 +1080,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             movedSymbol.y += dy;
 
                             reDraw();
-                            graphView.drawSymbol(p, movedSymbol, MOVE_SYMBOL_COLOR);
+                            scope.graphView.drawSymbol(p, movedSymbol, MOVE_SYMBOL_COLOR);
 
                             function detect(knots) {
                                 for (let j = 0; j < knots.length; j++) {
                                     if (knots[j].symbol == undefined && graphUtils.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
-                                        graphView.drawKnotDetect(p, knots[j], graphView.KNOT_DETECT_COLOR);
+                                        scope.graphView.drawDetectedKnot(p, knots[j], graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                         return;
                                     }
                                 }
@@ -1106,12 +1108,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             if (clickedKnot != null) {
                                 let knot = clickedKnot;
+
                                 if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    graphView.drawKnotDetect(p, graphUtils.createPoint(knot.x, canvasProperties.height/2), graphView.KNOT_DETECT_COLOR);
+                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(knot.x, canvasHeight/2), graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                     return;
                                 }
                                 if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    graphView.drawKnotDetect(p, graphUtils.createPoint(canvasProperties.width/2, knot.y), graphView.KNOT_DETECT_COLOR);
+                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(canvasWidth/2, knot.y), graphViewBuilder.graphView.KNOT_DETECT_COLOR);
                                     return;
                                 }
                             }
@@ -1122,8 +1125,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             if (curves.length < CURVE_LIMIT) {
                                 if (drawMode == "curve") {
                                     p.push();
-                                    p.stroke(graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphView.CURVE_STRKWEIGHT);
+                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
+                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
                                     if (drawnPts.length > 0) {
                                         let prev = drawnPts[drawnPts.length - 1];
                                         p.line(prev.x, prev.y, current.x, current.y);
@@ -1135,8 +1138,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     reDraw();
 
                                     p.push();
-                                    p.stroke(graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphView.CURVE_STRKWEIGHT);
+                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
+                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
                                     p.line(lineStart.x, lineStart.y, current.x, current.y);
                                     p.pop();
 
@@ -1542,10 +1545,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     reDraw = function() {
                         if (curves.length < 4) {
-                            graphView.drawBackground(p);
-                            graphView.drawCurves(p, curves);
-                            graphView.drawSymbols(p, freeSymbols);
-                            graphView.drawStretchBox(p, clickedCurveIdx, curves);
+                            scope.graphView.drawBackground();
+                            scope.graphView.drawCurves(curves);
+                            scope.graphView.drawSymbols(freeSymbols, DEFAULT_KNOT_COLOR);
+                            scope.graphView.drawStretchBox(clickedCurveIdx, curves);
                             scope.dat = encodeData();
                         }
                     };
