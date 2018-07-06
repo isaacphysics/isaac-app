@@ -904,7 +904,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
 
                             reDraw();
-                            scope.graphView.drawCurve(p, curves[movedCurveIdx], MOVE_LINE_COLOR);
+                            scope.graphView.drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "STRETCH_CURVE") {
 
@@ -1080,12 +1080,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             movedSymbol.y += dy;
 
                             reDraw();
-                            scope.graphView.drawSymbol(p, movedSymbol, MOVE_SYMBOL_COLOR);
+                            scope.graphView.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
 
                             function detect(knots) {
                                 for (let j = 0; j < knots.length; j++) {
                                     if (knots[j].symbol == undefined && graphUtils.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
-                                        scope.graphView.drawDetectedKnot(p, knots[j], graphViewBuilder.graphView.KNOT_DETECT_COLOR);
+                                        scope.graphView.drawDetectedKnot(knots[j]);
                                         return;
                                     }
                                 }
@@ -1110,11 +1110,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 let knot = clickedKnot;
 
                                 if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(knot.x, canvasHeight/2), graphViewBuilder.graphView.KNOT_DETECT_COLOR);
+                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(knot.x, canvasHeight/2));
                                     return;
                                 }
                                 if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(canvasWidth/2, knot.y), graphViewBuilder.graphView.KNOT_DETECT_COLOR);
+                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(canvasWidth/2, knot.y));
                                     return;
                                 }
                             }

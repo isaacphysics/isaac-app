@@ -9,7 +9,6 @@ define(function(require) {
     const DOT_LINE_COLOR = [123];
     const DEFAULT_KNOT_COLOR = [77,77,77];
 
-
     const GRID_WIDTH = 60;
     const PADDING = 0.025 * canvasWidth;
     const DOT_LINE_STEP = 5;
@@ -26,6 +25,10 @@ define(function(require) {
         }
 
         drawCurve(curve, color) {
+            if (color == undefined) {
+                color = GraphView.CURVE_COLORS[curve.colorIdx];
+            }
+
             this.p.push();
             this.p.stroke(color);
             this.p.strokeWeight(GraphView.CURVE_STRKWEIGHT);
@@ -42,10 +45,10 @@ define(function(require) {
 
             curve.endPt = graphUtils.findEndPts(curve.pts);
             // draw x intercepts, y intercepts and turning points
-            this.drawKnots(p, curve['interX']);
-            this.drawKnots(p, curve['interY']);
-            this.drawKnots(p, curve['maxima']);
-            this.drawKnots(p, curve['minima']);
+            this.drawKnots(curve['interX']);
+            this.drawKnots(curve['interY']);
+            this.drawKnots(curve['maxima']);
+            this.drawKnots(curve['minima']);
         }
 
         drawKnots(knots, color) {
@@ -59,7 +62,7 @@ define(function(require) {
                 color = DEFAULT_KNOT_COLOR;
             }
             if (knot.symbol != undefined) {
-                this.drawSymbol(p, knot.symbol);
+                this.drawSymbol(knot.symbol);
             } else {
                 this.p.push();
                 this.p.noFill();
@@ -74,7 +77,7 @@ define(function(require) {
         drawDetectedKnot(knot) {
             this.p.push();
             this.p.noFill();
-            this.p.stroke(this.KNOT_DETECT_COLOR);
+            this.p.stroke(GraphView.KNOT_DETECT_COLOR);
             this.p.strokeWeight(2);
             this.p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
             this.p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
@@ -308,6 +311,8 @@ define(function(require) {
     GraphView.CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
     GraphView.CURVE_STRKWEIGHT = 2;
     GraphView.KNOT_DETECT_COLOR = [0];
+
+
     // TODO MT pass these in as arguments
 
     return {graphView: GraphView}
