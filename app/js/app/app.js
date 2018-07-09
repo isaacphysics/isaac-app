@@ -482,8 +482,8 @@ define([
                 // delete old cookies
                 cookie.remove("cookiesAccepted");
 
-                // Set cookie on click without overriding Foundations close function
-                $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
+                // Set cookie on click without overriding Foundation's close function
+                $(document).on('close.cookies-accepted.fndtn.alert', function(event) {
                     if (!cookie.read('isaacCookiesAccepted'))
                     {
                         api.logger.log({

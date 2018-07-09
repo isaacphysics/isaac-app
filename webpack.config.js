@@ -54,7 +54,6 @@ module.exports = function(env) {
         { 
           test: /modernizr/,
           use: [
-            {loader:"expose-loader", options: "Modernizr"},
             {loader:"imports-loader?this=>window"},
           ]
         },
