@@ -268,6 +268,97 @@ define(function(require) {
             return;
         },
 
+        stretchTurningPoint: function(importantPoints, mousePosition, selectedCurve, isMaxima, selectedPointIndex, prevMousePt, canvasProperties){
+            let tempMin = undefined;
+            let tempMax = undefined;
+            let turningPoints = isMaxima ? selectedCurve.maxima : selectedCurve.minima;
+
+            for (let i = 0; i < importantPoints.length; i++) {
+                if (importantPoints[i].ind == turningPoints[selectedPointIndex].ind) {
+                    tempMin = importantPoints[i - 1]; 
+                    tempMax = importantPoints[i + 1];
+                }
+            }
+
+            let xBuffer = 30;
+            let yBuffer = 15;
+            let withinXBoundary = (mousePosition.x - tempMax.x) < -xBuffer && (mousePosition.x - tempMin.x) > xBuffer;
+            let withinYBoundary = (isMaxima && ((mousePosition.y - tempMax.y) < -yBuffer && (mousePosition.y - tempMin.y) < -yBuffer)) || (!isMaxima && ((mousePosition.y - tempMax.y) > yBuffer && (mousePosition.y - tempMin.y) > yBuffer));
+            let movementWithinBoundary = withinXBoundary && withinYBoundary;
+            if (movementWithinBoundary) {
+                // to this point we get the clicked knot and the turning/end points either side, now we will split the curve into the two
+                // origional max/min sides and the 2 new curves to be stretched, then combine them all after.
+                let leftStaticPoints = [];
+                let rightStaticPoints = [];
+                let leftStretchedCurve = {pts: []};
+                let rightStretchedCurve = {pts: []};
+                for (let t = selectedCurve.pts.length - 1; t > -1; t--) {
+                    if (selectedCurve.pts[t].ind > tempMax.ind) {
+                        rightStaticPoints.push(selectedCurve.pts[t]);
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
+                    } else if (selectedCurve.pts[t].ind <= tempMax.ind && selectedCurve.pts[t].ind >= turningPoints[selectedPointIndex].ind) {
+                        rightStretchedCurve.pts.push(selectedCurve.pts[t]);
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
+                    } else if (selectedCurve.pts[t].ind <= turningPoints[selectedPointIndex].ind && selectedCurve.pts[t].ind >= tempMin.ind) {
+                        leftStretchedCurve.pts.push(selectedCurve.pts[t]);
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
+                    } else if (selectedCurve.pts[t].ind < tempMin.ind) {
+                        leftStaticPoints.push(selectedCurve.pts[t]);
+                        selectedCurve.pts.pop(selectedCurve.pts[t]);
+                    }
+                }
+
+                leftStaticPoints.sort(function(a, b){return a.ind - b.ind});
+                rightStaticPoints.sort(function(a, b){return a.ind - b.ind});
+                leftStretchedCurve.pts.sort(function(a, b){return a.ind - b.ind});
+                rightStretchedCurve.pts.sort(function(a, b){return a.ind - b.ind});
+
+                // we have now split the curve into leftStaticPoints and rightStaticPoints, plus leftStretchedCurve and rightStretchedCurve
+                let lorx = turningPoints[selectedPointIndex].x - tempMin.x;
+                let lory = turningPoints[selectedPointIndex].y - tempMin.y;
+                let rorx = tempMax.x - turningPoints[selectedPointIndex].x;
+                let rory = turningPoints[selectedPointIndex].y - tempMax.y;
+                let dx = mousePosition.x - prevMousePt.x;
+                let dy = mousePosition.y - prevMousePt.y;
+                turningPoints[selectedPointIndex].x += dx;
+                turningPoints[selectedPointIndex].y += dy;
+
+                let lnrx = turningPoints[selectedPointIndex].x - tempMin.x;
+                let lnry = turningPoints[selectedPointIndex].y - tempMin.y;
+                let rnrx = tempMax.x - turningPoints[selectedPointIndex].x;
+                let rnry = turningPoints[selectedPointIndex].y - tempMax.y;
+
+                this.stretchCurve(leftStretchedCurve, lorx, lory, lnrx, lnry, tempMin.x, tempMin.y, canvasProperties);    
+                this.stretchCurve(rightStretchedCurve, rorx, rory, rnrx, rnry, tempMax.x, tempMax.y, canvasProperties);
+                        
+                turningPoints[selectedPointIndex] = mousePosition;
+
+                selectedCurve.pts.push.apply(selectedCurve.pts, leftStaticPoints);
+                selectedCurve.pts.push.apply(selectedCurve.pts, leftStretchedCurve.pts);
+                selectedCurve.pts.push.apply(selectedCurve.pts, rightStretchedCurve.pts);
+                selectedCurve.pts.push.apply(selectedCurve.pts, rightStaticPoints);
+
+                selectedCurve.interX = this.findInterceptX(canvasProperties.height, selectedCurve.pts);
+                selectedCurve.interY = this.findInterceptY(canvasProperties.width, selectedCurve.pts);
+                selectedCurve.maxima = this.findTurnPts(selectedCurve.pts, 'maxima');
+                selectedCurve.minima = this.findTurnPts(selectedCurve.pts, 'minima');
+                let minX = selectedCurve.pts[0].x;
+                let maxX = selectedCurve.pts[0].x;
+                let minY = selectedCurve.pts[0].y;
+                let maxY = selectedCurve.pts[0].y;
+                for (let k = 1; k < selectedCurve.pts.length; k++) { // TODO BH search through 'important' points instead
+                    minX = Math.min(selectedCurve.pts[k].x, minX);
+                    maxX = Math.max(selectedCurve.pts[k].x, maxX);
+                    minY = Math.min(selectedCurve.pts[k].y, minY);
+                    maxY = Math.max(selectedCurve.pts[k].y, maxY);
+                }
+                selectedCurve.minX = minX;
+                selectedCurve.maxX = maxX;
+                selectedCurve.minY = minY;
+                selectedCurve.maxY = maxY;
+            }
+        },
+
         stretchCurve: function(c, orx, ory, nrx, nry, baseX, baseY, canvasProperties) {
 
             function stretch(pt) {
