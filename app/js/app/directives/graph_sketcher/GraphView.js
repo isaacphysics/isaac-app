@@ -307,6 +307,47 @@ define(function(require) {
             this.drawLabel();
         }
 
+        drawCorner(stretchMode, c) {
+            this.p.push();
+            this.p.fill(GraphView.KNOT_DETECT_COLOR);
+            switch (stretchMode) {
+                case 0: {
+                    this.p.rect(c.minX - 4, c.minY - 4, 8, 8);
+                    break;
+                }
+                case 1: {
+                    this.p.rect(c.maxX - 4, c.minY - 4, 8, 8);
+                    break;
+                }
+                case 2: {
+                    this.p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
+                    break;
+                }
+                case 3: {
+                    this.p.rect(c.minX - 4, c.maxY - 4, 8, 8);
+                    break;
+                }
+                case 4: {
+                    this.p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
+                    break;
+                }
+                case 5: {
+                    this.p.triangle((c.minX + c.maxX)/2 - 5, c.maxY + 2, (c.minX + c.maxX)/2 + 5, c.maxY + 2, (c.minX + c.maxX)/2, c.maxY + 7);
+                    break;
+                }
+                case 6: {
+                    this.p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
+                    break;
+                }
+                case 7: {
+                    this.p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2);
+                    break;
+                }
+            }
+            this.p.pop();
+        }
+
+
     }
     GraphView.CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
     GraphView.CURVE_STRKWEIGHT = 2;

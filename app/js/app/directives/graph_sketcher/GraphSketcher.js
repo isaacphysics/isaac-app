@@ -697,47 +697,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             scope.graphView.drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "STRETCH_CURVE") {
-
-                            function drawCorner() {
-                                p.push();
-                                p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
-                                switch (stretchMode) {
-                                    case 0: {
-                                        p.rect(c.minX - 4, c.minY - 4, 8, 8);
-                                        break;
-                                    }
-                                    case 1: {
-                                        p.rect(c.maxX - 4, c.minY - 4, 8, 8);
-                                        break;
-                                    }
-                                    case 2: {
-                                        p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
-                                        break;
-                                    }
-                                    case 3: {
-                                        p.rect(c.minX - 4, c.maxY - 4, 8, 8);
-                                        break;
-                                    }
-                                    case 4: {
-                                        p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
-                                        break;
-                                    }
-                                    case 5: {
-                                        p.triangle((c.minX + c.maxX)/2 - 5, c.maxY + 2, (c.minX + c.maxX)/2 + 5, c.maxY + 2, (c.minX + c.maxX)/2, c.maxY + 7);
-                                        break;
-                                    }
-                                    case 6: {
-                                        p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
-                                        break;
-                                    }
-                                    case 7: {
-                                        p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2);
-                                        break;
-                                    }
-                                }
-                                p.pop();
-                            }
-
                             p.cursor(p.MOVE);
 
                             let dx = mousePosition.x - prevMousePt.x;
@@ -750,7 +709,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             let orx = c.maxX - c.minX;
                             let ory = c.maxY - c.minY;
 
-                            drawCorner();
+                            scope.graphView.drawCorner(stretchMode, c);
 
                             // update the position of stretched vertex
                             switch (stretchMode) {
@@ -856,7 +815,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 }
                             }
                             reDraw();
-                            drawCorner();
+                            scope.graphView.drawCorner(stretchMode, c);
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
