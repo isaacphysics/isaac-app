@@ -500,21 +500,21 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
 
                                 if (detect(c.minX, c.minY)) {
-                                    stretchMode = 0;
+                                    stretchMode = "bottomLeft";
                                 } else if (detect(c.maxX, c.minY)) {
-                                    stretchMode = 1;
+                                    stretchMode = "bottomRight";
                                 } else if (detect(c.maxX, c.maxY)) {
-                                    stretchMode = 2;
+                                    stretchMode = "topRight";
                                 } else if (detect(c.minX, c.maxY)) {
-                                    stretchMode = 3;
+                                    stretchMode = "topLeft";
                                 } else if (detect((c.minX + c.maxX)/2, c.minY - 3)) {
-                                    stretchMode = 4;
+                                    stretchMode = "bottomMiddle";
                                 } else if (detect((c.minX + c.maxX)/2, c.maxY + 3)) {
-                                    stretchMode = 5;
+                                    stretchMode = "topMiddle";
                                 } else if (detect(c.minX - 3, (c.minY + c.maxY)/2)) {
-                                    stretchMode = 6;
+                                    stretchMode = "leftMiddle";
                                 } else {
-                                    stretchMode = 7;
+                                    stretchMode = "rightMiddle";
                                 }
 
 
@@ -665,13 +665,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
                                 selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
                                 selectedCurve.minima = graphUtils.findTurnPts(selectedCurve.pts, 'minima');
-
-                                reDraw();
                             }
                             importantPoints.push.apply(importantPoints, selectedCurve.endPt);
                             importantPoints.push.apply(importantPoints, selectedCurve.maxima);
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
                             importantPoints.sort(function(a, b){return a.ind - b.ind});
+                            console.log(importantPoints);
 
                             if (isMaxima) {
                                 graphUtils.stretchTurningPoint(importantPoints, mousePosition, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
@@ -680,9 +679,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             }
                             reDraw();
                             prevMousePt = mousePosition;
-                        }
 
-                        if (action == "MOVE_CURVE") {
+                        } else if (action == "MOVE_CURVE") {
                             p.cursor(p.MOVE);
 
                             scope.trashActive = isOverButton(mousePosition, element.find(".trash-button"));
@@ -691,10 +689,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             let dx = mousePosition.x - prevMousePt.x;
                             let dy = mousePosition.y - prevMousePt.y;
                             prevMousePt = mousePosition;
-                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
-
+                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties, freeSymbols);
                             reDraw();
-                            scope.graphView.drawCurve(curves[movedCurveIdx], MOVE_LINE_COLOR);
 
                         } else if (action == "STRETCH_CURVE") {
                             p.cursor(p.MOVE);
@@ -703,119 +699,119 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             let dy = mousePosition.y - prevMousePt.y;
                             prevMousePt = mousePosition;
 
-                            let c = curves[clickedCurveIdx];
+                            let currentCurve = curves[clickedCurveIdx];
 
                             // calculate old x,y range
-                            let orx = c.maxX - c.minX;
-                            let ory = c.maxY - c.minY;
+                            let orx = currentCurve.maxX - currentCurve.minX;
+                            let ory = currentCurve.maxY - currentCurve.minY;
 
-                            scope.graphView.drawCorner(stretchMode, c);
+                            scope.graphView.drawCorner(stretchMode, currentCurve);
 
                             // update the position of stretched vertex
                             switch (stretchMode) {
-                                case 0: {
+                                case "bottomLeft": {
                                     if (orx < 30 && dx > 0  || ory < 30 && dy > 0) {
                                         return;
                                     }
-                                    c.minX += dx;
-                                    c.minY += dy;
+                                    currentCurve.minX += dx;
+                                    currentCurve.minY += dy;
                                     break;
                                 }
-                                case 1: {
+                                case "bottomRight": {
                                     if (orx < 30 && dx < 0 || ory < 30 && dy > 0) {
                                         return;
                                     }
-                                    c.maxX += dx;
-                                    c.minY += dy;
+                                    currentCurve.maxX += dx;
+                                    currentCurve.minY += dy;
                                     break;
                                 }
-                                case 2: {
+                                case "topRight": {
                                     if (orx < 30 && dx < 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
-                                    c.maxX += dx;
-                                    c.maxY += dy;
+                                    currentCurve.maxX += dx;
+                                    currentCurve.maxY += dy;
                                     break;
                                 }
-                                case 3: {
+                                case "topLeft": {
                                     if (orx < 30 && dy > 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
-                                    c.minX += dx;
-                                    c.maxY += dy;
+                                    currentCurve.minX += dx;
+                                    currentCurve.maxY += dy;
                                     break;
                                 }
-                                case 4: {
+                                case "bottomMiddle": {
                                     if ( ory < 30 && dy > 0) {
                                         return;
                                     }
-                                    c.minY += dy;
+                                    currentCurve.minY += dy;
                                     break;
                                 }
-                                case 5: {
+                                case "topMiddle": {
                                     if (ory < 30 && dy < 0) {
                                         return;
                                     }
-                                    c.maxY += dy;
+                                    currentCurve.maxY += dy;
                                     break;
                                 }
-                                case 6: {
+                                case "leftMiddle": {
                                     if (orx < 30 && dx > 0) {
                                         return;
                                     }
-                                    c.minX += dx;
+                                    currentCurve.minX += dx;
                                     break;
                                 }
-                                case 7: {
+                                case "rightMiddle": {
                                     if (orx < 30 && dx < 0) {
                                         return;
                                     }
-                                    c.maxX += dx;
+                                    currentCurve.maxX += dx;
                                     break;
                                 }
                             }
 
                             // calculate the new range
-                            let nrx = c.maxX - c.minX;
-                            let nry = c.maxY - c.minY;
+                            let nrx = currentCurve.maxX - currentCurve.minX;
+                            let nry = currentCurve.maxY - currentCurve.minY;
 
                             // stretch the curve
                             switch (stretchMode) {
-                                case 0: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.maxY, canvasProperties);
+                                case "bottomLeft": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, nry, currentCurve.maxX, currentCurve.maxY, canvasProperties);
                                     break;
                                 }
-                                case 1: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.maxY, canvasProperties);
+                                case "bottomRight": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, nry, currentCurve.minX, currentCurve.maxY, canvasProperties);
                                     break;
                                 }
-                                case 2: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.minX, c.minY, canvasProperties);
+                                case "topRight": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, nry, currentCurve.minX, currentCurve.minY, canvasProperties);
                                     break;
                                 }
-                                case 3: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, nry, c.maxX, c.minY, canvasProperties);
+                                case "topLeft": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, nry, currentCurve.maxX, currentCurve.minY, canvasProperties);
                                     break;
                                 }
-                                case 4: {
-                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.maxY, canvasProperties);
+                                case "bottomMiddle": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, orx, nry, (currentCurve.minX + currentCurve.maxX)/2, currentCurve.maxY, canvasProperties);
                                     break;
                                 }
-                                case 5: {
-                                    graphUtils.stretchCurve(c, orx, ory, orx, nry, (c.minX + c.maxX)/2, c.minY, canvasProperties);
+                                case "topMiddle": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, orx, nry, (currentCurve.minX + currentCurve.maxX)/2, currentCurve.minY, canvasProperties);
                                     break;
                                 }
-                                case 6: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.maxX, (c.minY + c.maxY)/2, canvasProperties);
+                                case "leftMiddle": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, ory, currentCurve.maxX, (currentCurve.minY + currentCurve.maxY)/2, canvasProperties);
                                     break;
                                 }
-                                case 7: {
-                                    graphUtils.stretchCurve(c, orx, ory, nrx, ory, c.minX, (c.minY + c.maxY)/2, canvasProperties);
+                                case "rightMiddle": {
+                                    graphUtils.stretchCurve(currentCurve, orx, ory, nrx, ory, currentCurve.minX, (currentCurve.minY + currentCurve.maxY)/2, canvasProperties);
                                     break;
                                 }
                             }
                             reDraw();
-                            scope.graphView.drawCorner(stretchMode, c);
+                            scope.graphView.drawCorner(stretchMode, currentCurve);
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
@@ -830,43 +826,19 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             reDraw();
                             scope.graphView.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
 
-                            function detect(knots) {
-                                for (let j = 0; j < knots.length; j++) {
-                                    if (knots[j].symbol == undefined && graphUtils.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
-                                        scope.graphView.drawDetectedKnot(knots[j]);
-                                        return;
-                                    }
-                                }
-                            }
-
                             for (let i = 0; i < curves.length; i++) {
                                 let interX = curves[i]['interX'];
-                                detect(interX);
+                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interX, movedSymbol, MOUSE_DETECT_RADIUS));
 
                                 let interY = curves[i]['interY'];
-                                detect(interY);
+                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interY, movedSymbol, MOUSE_DETECT_RADIUS));
 
                                 let maxima = curves[i]['maxima'];
-                                detect(maxima);
+                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(maxima, movedSymbol, MOUSE_DETECT_RADIUS));
 
                                 let minima = curves[i]['minima'];
-                                detect(minima);
+                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(minima, movedSymbol, MOUSE_DETECT_RADIUS));
                             }
-
-
-                            if (clickedKnot != null) {
-                                let knot = clickedKnot;
-
-                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(knot.x, canvasHeight/2));
-                                    return;
-                                }
-                                if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
-                                    scope.graphView.drawDetectedKnot(graphUtils.createPoint(canvasWidth/2, knot.y));
-                                    return;
-                                }
-                            }
-
 
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
@@ -876,11 +848,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
                                     p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
                                     if (drawnPts.length > 0) {
-                                        let prev = drawnPts[drawnPts.length - 1];
-                                        p.line(prev.x, prev.y, mousePosition.x, mousePosition.y);
+                                        let precedingPoint = drawnPts[drawnPts.length - 1];
+                                        p.line(precedingPoint.x, precedingPoint.y, mousePosition.x, mousePosition.y);
                                     }
                                     p.pop();
-
                                     drawnPts.push(mousePosition);
                                 } else {
                                     reDraw();
@@ -1128,7 +1099,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     let sx = rx / n;
                                     let sy = ry / n;
                                     let pts = [];
-                                    for (let i = 0; i <= n; i++) {
+                                    for (let i = 0; i < n-1; i++) {
                                         let x = lineStart.x + i * sx;
                                         let y = lineStart.y + i * sy;
                                         pts.push(graphUtils.createPoint(x, y, i));
