@@ -58,7 +58,7 @@
             $timeout(queueSizeChecker, 5000);
         }).catch(function(e){
             $scope.showToast($scope.toastTypes.Failure, "Email Queue Size", "Could not get email queue size (" + e.status + ") " + e.statusText);
-            clearInterval(timerId); // FIXME What is this timerId thing that is not defined?
+            clearInterval(void 0); // There used to be a timerId variable here, but was never defined.
         });
     }
 

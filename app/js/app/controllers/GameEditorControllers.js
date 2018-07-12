@@ -276,7 +276,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
         }).catch(function(e) {
             $scope.showToast($scope.toastTypes.Failure, "Save Operation Failed", "With error message: (" + e.status + ") " + e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
-            gameBoardToSave.wildCard = wildCard
+            gameBoardToSave.wildCard = void 0;
         });
     }
 
