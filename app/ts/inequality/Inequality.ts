@@ -117,10 +117,10 @@ export
 
         this.scope.log.initialState = [];
 
+        for (let symbol of this.symbols) {
+            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+        }
 
-        this.symbols.forEach(function(e) {
-            this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
         this.updateCanvasDockingPoints();
     };
 
@@ -162,9 +162,10 @@ export
 
         this.scope.log.initialState = [];
 
-        this.symbols.forEach(function(e) {
-            this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+        for (let symbol of this.symbols) {
+            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+        }
+
         this.updateCanvasDockingPoints();
 
     };
