@@ -120,18 +120,19 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     e.preventDefault();
                 }
 
+                let clicked = false;
+
                 let mouseup = function(e) {
-                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
-                    let clicked = true;
+                    if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                        clicked = true;
+                        scope.$emit("clicked", clicked);
+                        let num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+                    drop(e.pageX, e.pageY, e);
                     scope.$emit("clicked", clicked);
-                    let num = attrs.value;
-                    scope.$emit("numberClicked", num);
-                  }
-                      drop(e.pageX, e.pageY, e);
-                      clicked = false;
-                      scope.$emit("clicked", clicked);
-                      e.stopPropagation();
-                      e.preventDefault();
+                    e.stopPropagation();
+                    e.preventDefault();
                 }
 
                 let mousemove = function(e) {
@@ -158,9 +159,10 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     console.log(ts, e.originalEvent);
 
+                    let clicked = false;
 
                     if (scope.mobileX == ts[0].pageX && scope.mobileY == ts[0].pageY) {
-                        let clicked = true;
+                        clicked = true;
                         scope.$emit("clicked", clicked);
                         console.debug("Registered as click");
                         let num = attrs.value;
@@ -168,7 +170,6 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     }
 
                     drop(ts[0].pageX, ts[0].pageY, e);
-                    clicked = false;
                     scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
