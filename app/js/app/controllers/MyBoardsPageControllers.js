@@ -238,7 +238,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boar
     // main
     let mergeInProgress = false;
     let queryParamDefinedViewValue = $stateParams.view && boardSearchOptions.view.values[$stateParams.view];
-    let suggestedViewValueForScreenSize = Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
+    let suggestedViewValueForScreenSize = window.Foundation.utils.is_medium_up() ? boardSearchOptions.view.values.table : boardSearchOptions.view.values.card;
     let initialViewValue = queryParamDefinedViewValue || suggestedViewValueForScreenSize;
 
     setDefaultBoardSearchOptions(initialViewValue.defaultFieldName, false);
