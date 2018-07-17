@@ -29,8 +29,8 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 
 				scope.videoSrc = undefined;
 
-				let onPlayerStateChange = function(e) {
-
+				var onPlayerStateChange = function(e) {
+				console.log('VIDEO LOGGING IS WORKING!');
 					let logData = {
 						videoUrl: e.target.getVideoUrl(),
 						videoPosition: e.target.getCurrentTime(),
