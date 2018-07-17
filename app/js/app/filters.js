@@ -15,7 +15,7 @@
  */
 'use strict';
 
-define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], function() {
+define(["angular", "lodash", "../lib/showdown/showdown.js", "../lib/showdown/extensions/table.js"], function(angular, _, Showdown) {
 
 	/* Filters */
 
@@ -76,4 +76,9 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 			}
 		};
 	})
+	.filter('escapeHtml', [function() {
+		return function(input) {
+			return (!!input) ? _.escape(input) : "";
+		}
+	}])
 });
