@@ -80,7 +80,7 @@
                         <!-- Warning message for non-students that this question has been replaced -->
                         <div class="small-12 small-offset-1 columns">
                             <h5 class="superseded-warning"><span ng-show="user._id">Teacher Note: </span>This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})"
-                                ng-click="logClickSupersededBy()">this question</a>.<span ng-if="user._id && user.role != 'STUDENT'" aria-haspopup="true" class="icon-help has-tip" data-ot="We periodically update questions into new formats. If this question appears on one of your gameboards, you may want to update the board. You can find help for this at Teacher Support -> Assigning Work. <br><br>Students will not see this message, but will see a smaller note at the bottom of the page."></span></h5>
+                                ng-click="logClickSupersededBy()">this question</a>.<span ng-if="user._id && user.role != 'STUDENT'" aria-haspopup="true" class="icon-help has-tip" data-ot-escape-content="false" data-ot="We periodically update questions into new formats. If this question appears on one of your gameboards, you may want to update the board. You can find help for this at Teacher Support -> Assigning Work. <br><br>Students will not see this message, but will see a smaller note at the bottom of the page."></span></h5>
                             <br class="no-print">
                         </div>
                     </div>

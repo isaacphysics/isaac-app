@@ -159,6 +159,7 @@ define([
         */
         Opentip.lastZIndex = 9999;
         Opentip.styles.globalStyle = {
+            escapeContent: true, // Explicitly override with data-ot-escape-content="false" after user input is escaped
             target: true,
             background: '#333333',
             borderColor: '#333333',
@@ -166,6 +167,7 @@ define([
             removeElementsOnHide: true,
         };
         Opentip.styles.ru_boards = {
+            escapeContent: true, // Explicitly override with data-ot-escape-content="false" after user input is escaped
             className: 'boards',
             fixed: true,
             stem: false,

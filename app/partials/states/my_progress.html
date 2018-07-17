@@ -5,7 +5,11 @@
         <p ng-if="viewingOwnData" class="hide-for-small-only">Keep track of your progress.</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="View your progress on Isaac. <br><br>A <i>question</i> (or question page) is usually a single hexagon from a board, which can contain several <i>question parts</i>. <br><br>Symbolic questions are those which require an equation as an answer." data-html="true" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot-escape-content="false"
+              data-ot="View your progress on Isaac.<br /><br />A <i>question</i> (or question page) is usually a single hexagon from a board, which can contain several <i>question parts</i>.<br /><br />Symbolic questions are those which require an equation as an answer."
+              data-html="true"
+              class="has-tip"
+              aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="row">
@@ -45,8 +49,8 @@
                 <div style="text-align: center;">
                     Longest streak: {{ progress.userSnapshot.streakRecord.largestStreak || 0 }}
                     day<span ng-if="progress.userSnapshot.streakRecord.largestStreak != 1">s</span>
-                    <span style="cursor: pointer;" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
-                    <br><br>Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                    <span style="cursor: pointer;" data-ot-escape-content="false" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                    <br /><br />Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
                           class="dl-alert warning hide-for-small-only" aria-haspopup="true">?</span>
                 </div>
                 <!--<ul class="medium-block-grid-2 small-block-grid-1 progress-space" style="margin-bottom: 0;">
