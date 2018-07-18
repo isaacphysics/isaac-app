@@ -192,15 +192,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                         let found = false;
 
-                        // detect nearby knot, change cursor and highlight
-
-                        // detect nearby symbol, change cursor
-
-                        // detect know as dragging symbol
-
-                        // maxima and minima
                         if (!found) {
-                            function loop(knots) {
+                            function loop(knots) { // if the mouse is over a knot, highlight it to show dragability
                                 if (found) {
                                     return;
                                 }
@@ -215,45 +208,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 }
                             }
 
-                            for (let i = 0; i < curves.length; i++) {
-                                let maxima = curves[i]['maxima'];
-                                loop(maxima);
-
-                                let minima = curves[i]['minima'];
-                                loop(minima);
-
-                                if (found) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        // freeSymbols
-                        if (!found) {
-                            for (let i = 0; i < freeSymbols.length; i++) {
-                                if (isOverSymbol(mousePosition, freeSymbols[i])) {
-                                    p.cursor(p.MOVE);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (!found) {
-                            for (let i = 0; i < curves.length; i++) {
-                                for (let j = 0; j < curves[i].pts.length; j++) {
-                                    if (graphUtils.getDist(mousePosition, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
-                                        p.cursor(p.MOVE);
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        // attached symbols
-                        if (!found) {
-                            function loop1(knots) {
+                            function loop1(knots) { // is the mouse over a symbol attached to a knot?
                                 if (found) {
                                     return;
                                 }
@@ -268,31 +223,37 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 }
                             }
 
-                            function loop2(knots) {
+                            for (let i = 0; i < curves.length; i++) { // highlights max/min if mouse over to drag
+                                let maxima = curves[i]['maxima'];
+                                loop(maxima);
+
+                                let minima = curves[i]['minima'];
+                                loop(minima);
+
                                 if (found) {
-                                    return;
-                                }
-
-                                loop1(knots);
-
-                                for (let j = 0; j < knots.length; j++) {
-                                    let knot = knots[j];
-                                    if (knot.xSymbol != undefined && isOverSymbol(mousePosition, knot.xSymbol)) {
-                                        p.cursor(p.MOVE);
-                                        found = true;
-                                        return;
-                                    }
-                                    if (knot.ySymbol != undefined && isOverSymbol(mousePosition, knot.ySymbol)) {
-                                        p.cursor(p.MOVE);
-                                        found = true;
-                                        return;
-                                    }
-
+                                    break;
                                 }
                             }
 
+                            for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
+                                if (isOverSymbol(mousePosition, freeSymbols[i])) {
+                                    p.cursor(p.MOVE);
+                                    found = true;
+                                    break;
+                                }
+                            }
 
-                            for (let i = 0; i < curves.length; i++) {
+                            for (let j = 0; j < curves.length; j++) { // detects if mouse is over curve
+                                for (let k = 0; k < curves[j].pts.length; k++) {
+                                    if (graphUtils.getDist(mousePosition, curves[j].pts[k]) < MOUSE_DETECT_RADIUS) {
+                                        p.cursor(p.MOVE);
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            for (let i = 0; i < curves.length; i++) { // is the mouse over a symbol docked to any of these knots?
                                 let interX = curves[i]['interX'];
                                 loop1(interX);
 
@@ -300,17 +261,16 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 loop1(interY);
 
                                 let maxima = curves[i]['maxima'];
-                                loop1(maxima); // 2
+                                loop1(maxima);
 
                                 let minima = curves[i]['minima'];
-                                loop1(minima); // 2
+                                loop1(minima);
 
                                 if (found) {
                                     break;
                                 }
                             }
                         }
-
 
                         // stretch box
                         if (!found) {
