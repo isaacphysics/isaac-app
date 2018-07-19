@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'auth', 'api', '$stateParams', function($scope, auth, api, $stateParams) {
+export const PageController = ['$scope', 'auth', 'api', '$stateParams', function($scope, _auth, api, $stateParams) {
 	$scope.user = {
 		password: '',
 		confirmPassword: ''
@@ -26,7 +26,7 @@ export const PageController = ['$scope', 'auth', 'api', '$stateParams', function
 			console.log(response);
 			$scope.submitted = true;
 			$scope.message = "Your password has been reset successfully, you may now log in with your new password.";
-		}, function(error) {
+		}, function(_error) {
 			$scope.submitted = true;
 			$scope.message = "An error occurred whilst attempting to reset your password, please try again.";
 		});

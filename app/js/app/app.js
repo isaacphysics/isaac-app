@@ -253,7 +253,7 @@ define([
         }
 
         $rootScope.requestEmailVerification = function(){
-            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
+            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(_response){
                 $rootScope.showToast($rootScope.toastTypes.Success, "Email verification request succeeded.", "Please follow the verification link given in the email sent to your address. ");
             }, function(e){
                 $rootScope.showToast($rootScope.toastTypes.Failure, "Email verification request failed.", "Sending an email to your address failed with error message: " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
@@ -431,15 +431,15 @@ define([
                 var cookie = {
                     create: function(name, value, days) {
                         // Only do time calculation if a day has been passed in
+                        let expires = "";
                         if (days) {
                             var date = new Date();
                             var maxCookiesExpiry = days*24*60*60*1000;
                             // convert day to a Unix timestamp
                                 date.setTime(date.getTime()+maxCookiesExpiry);
                             // formate date ready to be passed to the DOM
-                            var expires = "; expires="+date.toGMTString();
+                            expires = "; expires="+date.toGMTString();
                         }
-                        else var expires = "";
                         // Build cookie and send to DOM
                         document.cookie = name+"="+value+expires+"; path=/";
                     },
@@ -485,7 +485,7 @@ define([
                 cookie.remove("cookiesAccepted");
 
                 // Set cookie on click without overriding Foundation's close function
-                $(document).on('close.cookies-accepted.fndtn.alert', function(event) {
+                $(document).on('close.cookies-accepted.fndtn.alert', function(_event) {
                     if (!cookie.read('isaacCookiesAccepted'))
                     {
                         api.logger.log({
@@ -499,8 +499,8 @@ define([
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
                 {
-                    tab:{
-                        callback : function (tab)
+                    tab: {
+                        callback: function(_tab)
                         {
                             rv.forceResize();
                             sliderResize();
@@ -585,7 +585,7 @@ define([
                 });
                 // var tutorialShown = cookie.read('tutorialShown');
 
-                var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
+                // var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
 
                 // we don't want the google bot or out of date browsers to see the tutorial.
                 // stop tutorial from loading for new users as no one reads it anyway.
@@ -735,7 +735,7 @@ define([
                 $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
 
 
-                $rootScope.notificationWebSocket.onopen = function(event) {
+                $rootScope.notificationWebSocket.onopen = function(_event) {
                     $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
                 }
 
@@ -934,7 +934,7 @@ define([
             return window.innerWidth > window.innerHeight || window.innerWidth > 640;
         };
 
-        $(window).on("resize", function(e) {
+        $(window).on("resize", function(_event) {
             var newLandscape = isLandscape();
             if (newLandscape != $rootScope.isLandscape) {
                 $rootScope.isLandscape = newLandscape

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, $timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
+export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', 'persistence', '$location', '$stateParams', 'api', '$timeout', 'subject', 'EditorURL', 'questionActions', 'fastTrackProgressEnabledBoards', function($scope, page, tags, $sce, $rootScope, persistence, $location, $stateParams, api, _$timeout, subject, editorURL, questionActions, fastTrackProgressEnabledBoards) {
 	$scope.page = page;
 	$scope.questionPage = page;
 
@@ -28,8 +28,6 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 	$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
 	let pageTags = page.tags || [];
-
-	let subjects = tags.tagArray.filter(function(t) { return t && !t.parent; });
 
 	// Find subject tags on page.
 	let pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
@@ -135,7 +133,7 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 	$scope.$on('gameBoardCompletedPerfect', function(e, data) {
 		$scope.gameBoardCompletedPerfect = data;
 	});
-	$scope.$on('pageCompleted', function(e) {
+	$scope.$on('pageCompleted', function(_event) {
 		if ($scope.gameboardId != undefined) {
 			updateBoardProgressDetails();
 		}
@@ -163,7 +161,7 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 		});
 	};
 
-	$scope.$on("accordionsectionopen", function(e, idx, doc) {
+	$scope.$on("accordionsectionopen", function(_event, idx, _doc) {
 		api.logger.log({
 			type: "QUESTION_PART_OPEN",
 			questionPageId: page.id,

@@ -81,6 +81,7 @@ define([], function() {
         }
     }
 
+    // FIXME no-shadow
     function reset(el) {
         Array.prototype.slice.call(el.parentNode.querySelectorAll('svg > path')).forEach(function(el) {
             el.parentNode.removeChild(el);

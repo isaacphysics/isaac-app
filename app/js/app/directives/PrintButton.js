@@ -22,7 +22,7 @@ define([], function() {
 
             template: '<div class="ru_print" ng-click="togglePrintingOptions()"></div>',
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
 
                 let logPrintView = function() {
                     if (scope.page) {

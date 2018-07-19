@@ -26,7 +26,7 @@ define(function(require) {
 		['RecursionHelper'])
 
 	.directive('appVersion', ['version', function(version) {
-	    return function(scope, elm, attrs) {
+	    return function(_scope, elm, _attrs) {
 	    	elm.text(version);
 	    };
 	}])
@@ -180,7 +180,7 @@ define(function(require) {
 
 	.directive('fadeOnSearch', [function() {
 		return {
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 				element.addClass("search-fade")
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
 	            if (searchOpen) {
@@ -196,7 +196,7 @@ define(function(require) {
 
 	.directive('syncSearchFocus', [function() {
 		return {
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 				element.addClass("search-fade")
 				scope.$watch("globalFlags.siteSearchOpen", function(searchOpen) {
 
@@ -268,7 +268,7 @@ define(function(require) {
 			scope: {
 				ngContent: "=",
 			},
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 				scope.$watch("ngContent", function(newContent) {
 					element.attr("content", newContent);
 				})
@@ -281,9 +281,9 @@ define(function(require) {
 
 	    restrict: "A",
 
-	    compile: function compile(tElement, tAttrs, transclude) {
+	    compile: function compile(_tElement, _tAttrs, _transclude) {
 	      return {
-	          pre: function preLink(scope, iElement, iAttrs, controller) {
+	          pre: function preLink(scope, iElement, iAttrs, _controller) {
 	            scope[iAttrs.ngScopeElement] = iElement;
 	          }
 	        };

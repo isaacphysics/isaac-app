@@ -23,7 +23,7 @@ define(["d3"], function(d3) {
                 type: "@",
             },
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
                 let dateFormat = d3.time.format("%b %Y");
 
@@ -108,7 +108,7 @@ define(["d3"], function(d3) {
 
                     // Define lines
                     let line = d3.svg.line();
-    
+                    void line;
 
                     let pathContainers = svg.selectAll('g.line').data(data);
                     
@@ -132,7 +132,7 @@ define(["d3"], function(d3) {
                             );
 
                     // add circles for line graph
-                    if(scope.type != 'area'){
+                    if (scope.type != 'area') {
 
                         let d3tooltip = d3.select("body").append("div")  
                             .attr("class", "d3-tooltip")               
@@ -156,7 +156,7 @@ define(["d3"], function(d3) {
                                     .style("left", (d3.event.pageX) + "px")     
                                     .style("top", (d3.event.pageY - 28) + "px");    
                             })                  
-                            .on("mouseout", function(d) {       
+                            .on("mouseout", function(_d) {       
                                 d3tooltip.transition()        
                                     .duration(500)      
                                     .style("opacity", 0);   

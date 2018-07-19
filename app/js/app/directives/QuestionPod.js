@@ -28,7 +28,7 @@ define(["/partials/question_pod.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.questionComparer = function(a) {
 					let n = parseInt(a.title);

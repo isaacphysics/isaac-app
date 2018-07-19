@@ -25,7 +25,7 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 
 				scope.videoSrc = undefined;
 
@@ -58,8 +58,8 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 					api.logger.log(logData);
 				}
 
-				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com") + "?enablejsapi=1&theme=light&rel=0&fs=1&modestbranding=1");
-
+				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com") + "?enablejsapi=1&theme=light&rel=0&fs=1&modestbranding=1&http://localhost:8000");
+				console.log(videoSrc);
 				YT.ready(function() {
 					new YT.Player(element.find("iframe")[0], {
 						events: {

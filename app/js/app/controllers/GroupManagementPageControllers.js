@@ -16,7 +16,7 @@
 
 import Opentip from "../../lib/opentip-jquery.js";
 
-export const PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', '$compile', function($scope, auth, $state, $location, $window, api, $timeout, $rootScope, $compile) {
+export const PageController = ['$scope', 'auth', '$state', '$location', '$window', 'api', '$timeout', '$rootScope', '$compile', function($scope, _auth, $state, _$location, $window, api, $timeout, $rootScope, _$compile) {
     // these flags represent whether features have been enabled yet.
     $rootScope.pageTitle = "Group Management";
 
@@ -102,7 +102,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 
             let deleteGroup = $window.confirm("Are you sure you want to permanently delete the group '" + group.groupName + "' and remove all associated assignments?\n\nTHIS ACTION CANNOT BE UNDONE!"); 
             if(deleteGroup){
-                api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(result){
+                api.groupManagementEndpoint.delete({id: group._id}).$promise.then(function(_result){
                     $scope.myGroups = api.groupManagementEndpoint.get();
                 }).catch(function(e) {
                     $scope.showToast($scope.toastTypes.Failure, "Group Delete Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
@@ -130,7 +130,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 
         groupToSave.archived = archiveState;
 
-        let savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
+        groupToSave.$save({id: groupToSave._id}).then(function(_grp) {
             $scope.myGroups = api.groupManagementEndpoint.get({"archived_groups_only":$scope.archivedView});
             $scope.setSelectedGroup(null);
             $scope.newGroup = {};
@@ -151,7 +151,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
             groupToSave = new Group($scope.newGroup);
         }
 
-        let savedItem = groupToSave.$save({id: groupToSave._id}).then(function(grp) {
+        groupToSave.$save({id: groupToSave._id}).then(function(grp) {
             $scope.myGroups = api.groupManagementEndpoint.get();
             $scope.setSelectedGroup(grp);
             $scope.newGroup = {};

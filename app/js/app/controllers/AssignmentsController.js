@@ -18,7 +18,7 @@ import angular from "angular";
 import Opentip from "../../lib/opentip-jquery.js";
 import _ from "lodash";
 
-export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location) {
+export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', function($scope, _auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location) {
     $rootScope.pageTitle = "Assign Boards";
 
     $scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -81,7 +81,7 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
     });
 
     // update tooltips when this changes.
-    $scope.$watch("boards.results", function(newVal, oldVal){
+    $scope.$watch("boards.results", function(_newVal, _oldVal){
         $timeout(function(){
             Opentip.findElements();
         }, 0);
@@ -146,7 +146,7 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
     }
 
     let updateGroupAssignmentMap = function(boardsToChange) {
-        angular.forEach(boardsToChange, function(board, key){
+        angular.forEach(boardsToChange, function(board, _key){
 
             lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
 
@@ -165,7 +165,7 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
 
         let listOfGroupsString = "Board assigned to: ";
 
-        angular.forEach(listOfGroups, function(group, key){
+        angular.forEach(listOfGroups, function(group, _key){
             listOfGroupsString = listOfGroupsString + group.groupName + ", ";
         });
 
@@ -258,7 +258,7 @@ export const MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardT
     api.assignments.getMyAssignments().$promise.then(function(assignments) {
         let boardsForProcessing = extractBoardsFrom(assignments);
         boardProcessor.augmentBoards(boardsForProcessing, $scope.user._id);
-        angular.forEach(assignments, function(assignment, index) {
+        angular.forEach(assignments, function(assignment, _index) {
             if (assignment.gameboard.percentageCompleted < 100) {
                 let noDueDateButRecent = !assignment.dueDate && (assignment.creationDate > fourWeeksAgo);
                 let dueDateAndCurrent = assignment.dueDate && (assignment.dueDate >= fiveDaysAgo);

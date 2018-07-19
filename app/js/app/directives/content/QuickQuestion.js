@@ -25,7 +25,7 @@ define(["/partials/content/QuickQuestion.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.$watch("isVisible", function(visible) {
 					if (visible) {

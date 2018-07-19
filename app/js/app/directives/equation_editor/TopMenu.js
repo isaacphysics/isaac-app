@@ -1,6 +1,6 @@
 define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
 
         let allMenus = [];
 
@@ -75,15 +75,15 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                     }
                 };
 
-                scope.clickHandle = function(e) {
+                scope.clickHandle = function(event) {
                     toggleThisMenu();
-                    e.stopPropagation();
-                    e.preventDefault();
+                    event.stopPropagation();
+                    event.preventDefault();
                 };
 
-                scope.clickContent = function(e) {
-                    e.stopPropagation();
-                    e.preventDefault();
+                scope.clickContent = function(event) {
+                    event.stopPropagation();
+                    event.preventDefault();
                 };
 
                 element.on("touchstarted mousedown", ".handle-menu-touch-content", scope.clickContent);
@@ -96,13 +96,13 @@ define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
                 //    $timeout(toggleThisMenu, 200);
                 //}
 
-                element.on("keydown", function(e) {
-                    e.stopPropagation();
+                element.on("keydown", function(event) {
+                    event.stopPropagation();
                 });
 
                 if (attrs.topMenu == "123") {
                     // Only do this for number entry menu.
-                    scope.$on("editNumber", function(_, s) {
+                    scope.$on("editNumber", function(_event, _next) {
                         toggleThisMenu();
                     })
                 }

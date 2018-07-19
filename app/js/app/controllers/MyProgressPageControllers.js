@@ -16,7 +16,7 @@
 
 import angular from "angular";
 
-export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function($rootScope, $scope, auth, api, tags, $stateParams, $timeout) {
+export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$stateParams', '$timeout', function(_$rootScope, $scope, _auth, api, tags, $stateParams, $timeout) {
     // start and end dates for line graphs
     let dataStartDate = new Date(new Date().setYear(new Date().getFullYear() - 5)) // Set it to five years ago at most!
     dataStartDate = dataStartDate.getTime();

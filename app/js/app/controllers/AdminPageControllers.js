@@ -16,7 +16,7 @@
 
 import angular from "angular";
 
-export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
+export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, _auth, api, _$window, $rootScope, _$interval) {
     $rootScope.pageTitle = "Admin Page";
 
     $scope.contentVersion = api.contentVersion.get();
@@ -200,7 +200,7 @@ export const AdminEventBookingController = ['$scope', 'auth', 'api', '$window', 
         });         
     }
 
-    $scope.$watch('filterEventsByStatus', function(newValue, oldValue){
+    $scope.$watch('filterEventsByStatus', function(newValue, _oldValue){
         if (newValue) {
             $scope.showActiveOnly = false;
             $scope.showInactiveOnly = false;
@@ -224,7 +224,7 @@ export const AdminEventBookingController = ['$scope', 'auth', 'api', '$window', 
             $scope.bookings = result;
             $scope.userBookings = [];
 
-            angular.forEach($scope.bookings, function(booking, key){
+            angular.forEach($scope.bookings, function(booking, _key){
                 $scope.userBookings.push(booking.userBooked.id);
             });
 

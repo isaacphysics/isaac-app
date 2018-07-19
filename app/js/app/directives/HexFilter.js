@@ -31,17 +31,17 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
 
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
                 // We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
-                let buildHexFilterState = function(tags) {
-                    tags = JSON.parse(JSON.stringify(tags)); // deep copy tags so as not to alter the original array
+                let buildHexFilterState = function(fromFilterTags) {
+                    let filterTags = _.cloneDeep(fromFilterTags); // deep copy tags so as not to alter the original array
 
                     // TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
 
                     // For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
                     // FIXME - temporary hack to remove chemistry from the filter!
-                    let subjects = tags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
+                    let subjects = filterTags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
 
                     for (let i in subjects) {
                         let s = subjects[i];
@@ -50,7 +50,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                         s.selected = false;
                         s.subject = s.id;
 
-                        s.children = tags.filter(function(t) { return t && t.parent == s.id; });
+                        s.children = filterTags.filter(function(t) { return t && t.parent == s.id; });
 
                         for (let j in s.children) {
                             let f = s.children[j];
@@ -59,7 +59,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                             f.selected = false;
                             f.subject = s.id;
 
-                            f.children = tags.filter(function(t) { return t && t.parent == f.id; });
+                            f.children = filterTags.filter(function(t) { return t && t.parent == f.id; });
 
                             for (let k in f.children) {
                                 let t = f.children[k];
@@ -88,7 +88,7 @@ define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter
                 });
 
                 // Set this after the hexFilter is constructed so that it doesn't try to change the attributes on initialisation.
-                hexFilter.change = function(items) {
+                hexFilter.change = function(_items) {
                     let selectedItems = [[],[],[]];
 
                     function walk(depth, obj) {

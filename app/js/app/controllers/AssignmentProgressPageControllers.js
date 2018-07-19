@@ -279,7 +279,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
         // return api.getCSVDownloadLink(assignmentId);
     };
 
-    scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+    scope.$on('ngRepeatFinished', function(_ngRepeatFinishedEvent) {
         $timeout(function(){
             Opentip.findElements();
         });

@@ -22,7 +22,7 @@
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs){
+			link: function(scope, element, _attrs){
 				scope.toastNotificationVisible = false;
 				scope.toastTitle = "Title";
 				scope.toastDescription = "Description";

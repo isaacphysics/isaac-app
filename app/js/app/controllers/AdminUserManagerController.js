@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, auth, api, $window, $rootScope, $interval) {
+export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope', '$interval', function($scope, _auth, api, $window, $rootScope, _$interval) {
     $rootScope.pageTitle = "Role Manager";
 
     $scope.contentVersion = api.contentVersion.get();
@@ -152,7 +152,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
         // Do not require confirmation for demotion to student role:
         let confirmed = (role == "STUDENT") || confirmUnverifiedUserPromotions();
         if (confirmed) {
-            api.adminUserManagerChange.change_role({'role': role}, userIds).$promise.then(function(result){
+            api.adminUserManagerChange.change_role({'role': role}, userIds).$promise.then(function(_result){
                 $scope.userSearch.isLoading = false;
                 $scope.findUsers();
             }).catch(function(e){
@@ -180,7 +180,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
         let emailSet = $scope.getSelectedUserEmails();
         let emails = Array.from(emailSet);
 
-        api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus, "checkEmailsExistBeforeApplying" : true}, emails).$promise.then(function(result) {
+        api.adminUserManagerChange.changeEmailVerificationStatus({'emailVerificationStatus': emailVerificationStatus, "checkEmailsExistBeforeApplying" : true}, emails).$promise.then(function(_result) {
             $scope.userSearch.isLoading = false;
             $scope.findUsers();
         }).catch(function(e){

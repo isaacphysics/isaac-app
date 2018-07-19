@@ -22,7 +22,7 @@ define(["d3"], function(d3) {
                 data: "="
             },
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
                     
                 scope.$watch('data', function(){
 
@@ -79,7 +79,7 @@ define(["d3"], function(d3) {
                         .attr("y", function(d) { return -y(d.y0) - y(d.y); })
                         .attr("height", function(d) { return y(d.y); })
                         .attr("width", x.rangeBand());
-
+                    void rect;
 
                     let xAxis = d3.svg.axis()
                         .scale(x)
@@ -108,6 +108,7 @@ define(["d3"], function(d3) {
                     let total = d3.select(element[0]).append("p")
                         .attr("class", "d3-bar-total")
                         .html('6 month total: <strong>45 hours</strong>');
+                    void total;
 
                     // Add key
                     let key = d3.select(element[0]).append("ul")

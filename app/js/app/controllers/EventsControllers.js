@@ -59,8 +59,6 @@ define([], function() {
         let filterEventsByType = null;
         let showBookedOnly = false;
 
-        let showByTag = null; // show only events with set tag
-
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
         $scope.toTitleCase = toTitleCase;
@@ -79,7 +77,7 @@ define([], function() {
             $scope.filterEventsByType = $stateParams.types
         }
 
-        $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
+        $scope.$watch('filterEventsByStatus + filterEventsByType', function(_newValue, _oldValue){
             if ($scope.filterEventsByStatus == "showBookedOnly") {
                 showActiveOnly = false;
                 showInactiveOnly = false;
@@ -137,11 +135,11 @@ define([], function() {
         };
         $scope.locations = [];
         $scope.typeEvents = {
-                click: function(cluster, clusterModel) {
-                    $scope.map.window.model = cluster.model;
-                    $scope.eventPopup = cluster.model;
-                    $scope.map.window.show = true;
-                },
+            click: function(cluster, _clusterModel) {
+                $scope.map.window.model = cluster.model;
+                $scope.eventPopup = cluster.model;
+                $scope.map.window.show = true;
+            },
         };
 
         $scope.loadMap = function() {
@@ -173,7 +171,7 @@ define([], function() {
         }
     }];
 
-    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, $timeout, $stateParams, $state, $filter, $window, $q) {
+    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, _$timeout, $stateParams, $state, $filter, $window, $q) {
         $scope.setLoading(true);
 
         $scope.toTitleCase = toTitleCase;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, auth, api, $timeout) {
+export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, _auth, api, _$timeout) {
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
 

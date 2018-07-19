@@ -33,7 +33,7 @@ export const PageController = ['$scope', 'auth', 'api', '$stateParams', function
 	
 	$scope.verifyWithToken = function(userid, token) {
 		$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
-		api.emailVerification.verify({'userid' : userid, 'token': token}).$promise.then(function(response) {
+		api.emailVerification.verify({'userid' : userid, 'token': token}).$promise.then(function(_response) {
 			$scope.verificationState = $scope.verificationStates.SUCCESS;
 			$scope.message = "E-mail address verified";
 			$scope.user.emailVerificationStatus = "VERIFIED";
@@ -54,7 +54,7 @@ export const PageController = ['$scope', 'auth', 'api', '$stateParams', function
 
 	//If the user requests a further verification email, request one from the endpoint
 	$scope.requestFurtherVerification = function() {
-		api.verifyEmail.requestEmailVerification({'email': $scope.user.email}).$promise.then(function(response) {
+		api.verifyEmail.requestEmailVerification({'email': $scope.user.email}).$promise.then(function(_response) {
 			$scope.verificationState = $scope.verificationStates.IN_PROGRESS;
 		}, function(error) {
 			$scope.verificationState = $scope.verificationStates.FAILED;

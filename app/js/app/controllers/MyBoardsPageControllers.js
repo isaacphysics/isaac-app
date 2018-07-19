@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import Foundation from "foundation-sites";
-
-export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$timeout', '$stateParams', '$state', function($scope, auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $timeout, $stateParams, $state) {
+export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$timeout', '$stateParams', '$state', function($scope, _auth, api, _gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, _$timeout, $stateParams, $state) {
     
     $rootScope.pageTitle = "My Boards";
 

@@ -18,7 +18,10 @@ module.exports = {
     rules: {
         "no-mixed-spaces-and-tabs": "off",
         "no-console": "off",
-        "no-unused-vars": "off",
-        "strict": 0
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "strict": 0,
+        "no-shadow": "error",
+        "no-redeclare": "error",
+        "no-undef": "off"
     }
 }

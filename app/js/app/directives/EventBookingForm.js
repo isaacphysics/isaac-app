@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 define(["/partials/event_booking_form.html"], function(templateUrl) {
-	return ["api", "$rootScope", function(api, $rootScope) {
+	return ["api", "$rootScope", function(_api, _$rootScope) {
 		return {
 			scope: true,
 			restrict: "A",
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				
 				scope.editingSelf = scope.targetUser != null && scope.user._id == scope.targetUser._id
 			}

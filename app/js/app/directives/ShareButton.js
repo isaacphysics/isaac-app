@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$http", "$location", "api", "$timeout", function($http, $location, api, $timeout) {
+    return ["$http", "$location", "api", "$timeout", function($http, _$location, api, _$timeout) {
         return {
 
             restrict: "A",

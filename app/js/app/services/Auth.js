@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	let service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval) {
+	let service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, persistence, $window, $location, $state, $rootScope, $timeout, _$cookies, _$interval) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -38,24 +38,24 @@ define([], function() {
 
             params.provider = provider;
 
-            api.authentication.getAuthResult(params).$promise.then(function(u) {
-                console.debug("Logged in user:", u);
+            api.authentication.getAuthResult(params).$promise.then(function(user) {
+                console.debug("Logged in user:", user);
                 console.debug("Redirecting to", next);
 
-                $rootScope.user = u;
-                $rootScope.user.$promise.then(function(u){
+                $rootScope.user = user;
+                $rootScope.user.$promise.then(() => {
 					setupUserConsistencyCheck();			
                 });
 
-                if (u.firstLogin && '/' == next) {
+                if (user.firstLogin && '/' == next) {
 					$state.go("accountSettings", {location: "replace"});
                 } else {
 					$location.replace();
 					$location.url(next);
                 }
 
-            }).catch(function(e) {
-				$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
+            }).catch(function(error) {
+				$state.go("authError", {errorMessage: error.data.errorMessage, statusText: error.data.responseCodeType}, {location: "replace"});
 				cancelUserConsistencyCheck()
             });
 
@@ -100,18 +100,17 @@ define([], function() {
 					$rootScope.user = userResource;
 				}
 				
-				userResource.$promise.then(function(u) {
-
-					return new Promise(function(resolve, reject) {
+				userResource.$promise.then(function(user) {
+					return new Promise(function(_resolve) {
 						$timeout(function() {
-							$rootScope.user = u;
+							$rootScope.user = user;
 							setupUserConsistencyCheck();
 							$rootScope.$apply();
-							resolve();
+							_resolve();
 						});
 					}).then(updateUserPreferences).then(function() {
 						$rootScope.checkForWebSocket(); // Setting $rootScope.user above removes the user snapshot, so ping WebSocket!
-						resolve(u);
+						resolve(user);
 					});
 
 				}).catch(function(){

@@ -15,7 +15,7 @@
  */
  define(["/partials/hex_carousel.html"], function(templateUrl) {
 
-     return ["api", "$interval", function(api, $interval) {
+     return ["api", "$interval", function(_api, _$interval) {
 
          return {
              scope: {
@@ -27,7 +27,7 @@
 
              templateUrl: templateUrl,
 
-             link: function(scope, element, attrs) {
+             link: function(scope, element, _attrs) {
 
                  // Owl options - see owl.carousel.js
                  let defaultOptions = {

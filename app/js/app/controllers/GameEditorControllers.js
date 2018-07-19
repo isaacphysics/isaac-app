@@ -162,7 +162,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     });
     
     let updateWildCard = function(){
-        angular.forEach($scope.wildCardList, function(wildCard, key){
+        angular.forEach($scope.wildCardList, function(wildCard, _key){
             
             if(wildCard.id == $scope.userSelectedBoardWildCardId) {
                 $scope.currentGameBoard.wildCard = wildCard;
@@ -225,7 +225,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         
         gameBoardToSave.gameFilter = {subjects:[]} 
         // calculate subjects used in this gameboard
-        angular.forEach($scope.currentGameBoard.questions, function(question, key){
+        angular.forEach($scope.currentGameBoard.questions, function(question, _key){
             if (question.tags.indexOf("physics") != -1 && gameBoardToSave.gameFilter.subjects.indexOf("physics") == -1) {
                 gameBoardToSave.gameFilter.subjects.push("physics");
             }
@@ -260,7 +260,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
             gameBoardToSave.tags = [];
         }
 
-        let savedItem = gameBoardToSave.$save().then(function(gb) {
+        gameBoardToSave.$save().then(function(gb) {
             $scope.currentGameBoard = gb;
 
             if ($scope.baseBoardId != null) {
