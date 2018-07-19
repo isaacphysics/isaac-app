@@ -52,11 +52,16 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "imports-loader": "^0.8.0",
-    "karma": "0.13.15",
-    "karma-junit-reporter": "^0.2.2",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.8",
+    "karma-junit-reporter": "^0.4.1",
+    "karma-webpack": "*",
     "ngtemplate-loader": "^2.0.1",
     "node-sass": "4.9.0",
-    "protractor": "~0.20.1",
+    "protractor": "^4.0.9",
     "shelljs": "^0.2.6",
     "single-page-server": "0.1.1",
     "systemjs-builder": "0.15.15",
@@ -117,6 +122,9 @@
     "build:prod": "npm run build:js -- --env prod && npm run build:css",
     "watch": "npm run build:css && concurrently --kill-others --raw \"npm run watch:js\" \"npm run watch:css\"",
     "watch:js": "npm run build:js -- --watch",
-    "watch:css": "npm run build:css -- --watch"
+    "watch:css": "npm run build:css -- --watch",
+    "pretest": "npm install",
+    "test": "karma start test/karma.conf.js",
+    "test-single-run": "karma start test/karma.conf.js --single-run"
   }
 }
