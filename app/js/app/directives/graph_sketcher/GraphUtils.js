@@ -55,6 +55,67 @@ define(function(require) {
             return sampled;
         },
 
+        isOverSymbol: function(pt, symbol) {
+            if (symbol == undefined) {
+                return false;
+            }
+            let left = symbol.x - 5;
+            let right = symbol.x + 5;
+            let top = symbol.y - 5;
+            let bottom = symbol.y + 20 + 5;
+            return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
+        },
+
+        overItem: function(curves, mousePosition, freeSymbols, MOUSE_DETECT_RADIUS, found) {
+            let loop = function(knots) {
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    if (this.getDist(mousePosition, knot) < MOUSE_DETECT_RADIUS) {
+                        found = "overKnot";
+                        break;
+                    } else if (knot.symbol != undefined && this.isOverSymbol(mousePosition, knot.symbol)) {
+                        found = "overAttachedSymbol";
+                        break;
+                    }
+                }
+            }.bind(this);
+
+            for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
+                if (this.isOverSymbol(mousePosition, freeSymbols[i])) {
+                    found = "overFreeSymbol";
+                    break;
+                }
+            }
+
+            for (let j = 0; j < curves.length; j++) { // detects if mouse is over curve
+                for (let k = 0; k < curves[j].pts.length; k++) {
+                    if (this.getDist(mousePosition, curves[j].pts[k]) < MOUSE_DETECT_RADIUS) {
+                        found = "overCurve";
+                        break;
+                    }
+                }
+            }
+
+            for (let i = 0; i < curves.length; i++) { // is the mouse over a symbol docked to any of these knots?
+                let interX = curves[i]['interX'];
+                loop(interX);
+            
+                let interY = curves[i]['interY'];
+                loop(interY);
+       
+                let maxima = curves[i]['maxima'];
+                loop(maxima);
+            
+                let minima = curves[i]['minima'];
+                loop(minima);
+                
+                if (found != "notFound") {
+                    break;
+                }
+            } 
+            return found;
+        },
+
         findEndPts: function(pts) {
             if (pts.length == 0) return [];
 

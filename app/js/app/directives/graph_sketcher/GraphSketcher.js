@@ -190,85 +190,20 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             return;
                         }
 
-                        let found = false;
+                        let found = "notFound";
 
-                        if (!found) {
-                            function loop(knots) { // if the mouse is over a knot, highlight it to show dragability
-                                if (found) {
-                                    return;
-                                }
-
-                                for (let i = 0; i < knots.length; i++) {
-                                    if (graphUtils.getDist(mousePosition, knots[i]) < MOUSE_DETECT_RADIUS) {
-                                        p.cursor(p.HAND);
-                                        scope.graphView.drawDetectedKnot(knots[i]);
-                                        found = true;
-                                        return;
-                                    }
-                                }
-                            }
-
-                            function loop1(knots) { // is the mouse over a symbol attached to a knot?
-                                if (found) {
-                                    return;
-                                }
-
-                                for (let j = 0; j < knots.length; j++) {
-                                    let knot = knots[j];
-                                    if (knot.symbol != undefined && isOverSymbol(mousePosition, knot.symbol)) {
-                                        p.cursor(p.MOVE);
-                                        found = true;
-                                        return;
-                                    }
-                                }
-                            }
-
-                            for (let i = 0; i < curves.length; i++) { // highlights max/min if mouse over to drag
-                                let maxima = curves[i]['maxima'];
-                                loop(maxima);
-
-                                let minima = curves[i]['minima'];
-                                loop(minima);
-
-                                if (found) {
-                                    break;
-                                }
-                            }
-
-                            for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
-                                if (isOverSymbol(mousePosition, freeSymbols[i])) {
-                                    p.cursor(p.MOVE);
-                                    found = true;
-                                    break;
-                                }
-                            }
-
-                            for (let j = 0; j < curves.length; j++) { // detects if mouse is over curve
-                                for (let k = 0; k < curves[j].pts.length; k++) {
-                                    if (graphUtils.getDist(mousePosition, curves[j].pts[k]) < MOUSE_DETECT_RADIUS) {
-                                        p.cursor(p.MOVE);
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            for (let i = 0; i < curves.length; i++) { // is the mouse over a symbol docked to any of these knots?
-                                let interX = curves[i]['interX'];
-                                loop1(interX);
-
-                                let interY = curves[i]['interY'];
-                                loop1(interY);
-
-                                let maxima = curves[i]['maxima'];
-                                loop1(maxima);
-
-                                let minima = curves[i]['minima'];
-                                loop1(minima);
-
-                                if (found) {
-                                    break;
-                                }
+                        if (found == "notFound") {
+                            found = graphUtils.overItem(curves, mousePosition, freeSymbols, MOUSE_DETECT_RADIUS, found);
+                            console.log(found);
+                            if (found == "overKnot") {
+                                p.cursor(p.HAND);
+                                return;
+                            } else if ((found == "overAttachedSymbol") || (found == "overFreeSymbol") || (found == "overCurve")) {
+                                p.cursor(p.MOVE);
+                                return;
+                            } else if (found == "notFound") {
+                                p.cursor(p.CROSS);
+                                reDraw();
                             }
                         }
 
@@ -322,11 +257,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 }
                             }
                         }
-
-                        if (!found) {
-                            p.cursor(p.CROSS);
-                            reDraw();
-                        }
                     }
 
                     p.mousePressed = function(e) {
@@ -368,7 +298,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                         // check if it is to move a symbol
                         for (let i = 0; i < freeSymbols.length; i++) {
-                            if (isOverSymbol(mousePosition, freeSymbols[i])) {
+                            if (graphUtils.isOverSymbol(mousePosition, freeSymbols[i])) {
                                 movedSymbol = freeSymbols[i];
                                 freeSymbols.splice(i, 1);
                                 prevMousePt = mousePosition;
@@ -387,7 +317,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             }
                             for (let j = 0; j < knots.length; j++) {
                                 let knot = knots[j];
-                                if (knot.symbol != undefined && isOverSymbol(mousePosition, knot.symbol)) {
+                                if (knot.symbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.symbol)) {
                                     movedSymbol = knot.symbol;
                                     knot.symbol = undefined;
                                     bindedKnot = knot;
@@ -405,14 +335,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             detach1(knots);
                             for (let j = 0; j < knots.length; j++) {
                                 let knot = knots[j];
-                                if (knot.xSymbol != undefined && isOverSymbol(mousePosition, knot.xSymbol)) {
+                                if (knot.xSymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.xSymbol)) {
                                     movedSymbol = knot.xSymbol;
                                     knot.xSymbol = undefined;
                                     bindedKnot = knot;
                                     symbolType = 'xSymbol';
                                     found = true;
                                 }
-                                if (knot.ySymbol != undefined && isOverSymbol(mousePosition, knot.ySymbol)) {
+                                if (knot.ySymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.ySymbol)) {
                                     movedSymbol = knot.ySymbol;
                                     knot.ySymbol = undefined;
                                     bindedKnot = knot;
@@ -1174,17 +1104,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let x = (e.clientX - 5);
                         let y = (e.clientY - 5);
                         return (graphUtils.createPoint(x, y));
-                    }
-
-                    function isOverSymbol(pt, symbol) {
-                        if (symbol == undefined) {
-                            return false;
-                        }
-                        let left = symbol.x - 5;
-                        let right = symbol.x + 5;
-                        let top = symbol.y - 5;
-                        let bottom = symbol.y + 20 + 5;
-                        return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
                     }
 
                     function isOverButton(pt, button) {
