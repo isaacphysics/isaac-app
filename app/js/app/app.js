@@ -81,7 +81,12 @@ define([
         'ui.date'
 	])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', '$analyticsProvider',
+        function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider, $analyticsProvider) {
+
+        // Support multiple Google Analytics accounts
+        // TODO REMOVE ANALYTICS - Remove 'Isaac' once old account is closed
+        $analyticsProvider.settings.ga.additionalAccountNames = ['Isaac', 'IsaacAnalytics'];
 
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
