@@ -142,7 +142,7 @@ define(["../honest/hexagon"],function(hexagon) {
                     c = d.colour;
                 } else {
                     let rand = Math.floor((Math.random() * 5) + 1);
-                    let c = 'hex-'+d.subject+rand;
+                    c = 'hex-'+d.subject+rand;
 
                     if(d.type === 'isaacWildcard') {
                         c = 'hex-orange';   
