@@ -9,6 +9,14 @@ define(function(require) {
             return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
         },
 
+        symbolOverKnot: function(knots, movedSymbol, MOUSE_DETECT_RADIUS) {
+            for (let j = 0; j < knots.length; j++) {
+                if (knots[j].symbol == undefined && this.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
+                    return knots[j];
+                }
+            }
+        },
+
         createPoint: function(x, y, c) {
             var obj = {};
             obj.ind = c;
@@ -84,7 +92,7 @@ define(function(require) {
             if (pts[0].y == canvasHeight/2) intercepts.push(pts[0]);
             for (let i = 1; i < pts.length; i++) {
                 if (pts[i].y == canvasHeight/2) {
-                    intercepts.push(this.createPoint(pts[i].x, pts[i].y));
+                    intercepts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
                     continue;
                 }
 
@@ -108,7 +116,7 @@ define(function(require) {
             if (pts[0].x == canvasWidth/2) intercepts.push(pts[0]);
             for (let i = 1; i < pts.length; i++) {
                 if (pts[i].x == canvasWidth/2) {
-                    intercepts.push(this.createPoint(pts[i].x, pts[i].y));
+                    intercepts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
                     continue;
                 }
 
@@ -182,7 +190,7 @@ define(function(require) {
         },
 
         // given a curve, translate the curve
-        translateCurve: function(curve, dx, dy, canvasProperties) {
+        translateCurve: function(curve, dx, dy, canvasProperties, freeSymbols) {
             let pts = curve.pts;
 
             curve.minX += dx;
@@ -245,7 +253,7 @@ define(function(require) {
                             symbol.y = knot.y;
                             knot.symbol = symbol;
                         } else {
-                            freeSymbols.push(symbol);// TODO MT Not defined
+                            freeSymbols.push(symbol);
                         }
                     }
                 }
@@ -292,7 +300,7 @@ define(function(require) {
                 let rightStaticPoints = [];
                 let leftStretchedCurve = {pts: []};
                 let rightStretchedCurve = {pts: []};
-                for (let t = selectedCurve.pts.length - 1; t > -1; t--) {
+                for (let t = selectedCurve.pts.length-1; t > -1; t--) {
                     if (selectedCurve.pts[t].ind > tempMax.ind) {
                         rightStaticPoints.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
@@ -305,6 +313,8 @@ define(function(require) {
                     } else if (selectedCurve.pts[t].ind < tempMin.ind) {
                         leftStaticPoints.push(selectedCurve.pts[t]);
                         selectedCurve.pts.pop(selectedCurve.pts[t]);
+                    } else {
+                        selectedCurve.pts.pop(selectedCurve.pts[t]); // TODO why does one point have an undefined index?
                     }
                 }
 

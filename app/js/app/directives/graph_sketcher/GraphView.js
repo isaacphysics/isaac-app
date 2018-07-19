@@ -75,13 +75,15 @@ define(function(require) {
         }
 
         drawDetectedKnot(knot) {
-            this.p.push();
-            this.p.noFill();
-            this.p.stroke(GraphView.KNOT_DETECT_COLOR);
-            this.p.strokeWeight(2);
-            this.p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
-            this.p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
-            this.p.pop();
+            if (typeof knot !==  "undefined") {
+                this.p.push();
+                this.p.noFill();
+                this.p.stroke(GraphView.KNOT_DETECT_COLOR);
+                this.p.strokeWeight(2);
+                this.p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
+                this.p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
+                this.p.pop();
+            }
         }
 
         drawSymbols(symbols, color) {
@@ -311,35 +313,35 @@ define(function(require) {
             this.p.push();
             this.p.fill(GraphView.KNOT_DETECT_COLOR);
             switch (stretchMode) {
-                case 0: {
+                case "bottomLeft": {
                     this.p.rect(c.minX - 4, c.minY - 4, 8, 8);
                     break;
                 }
-                case 1: {
+                case "bottomRight": {
                     this.p.rect(c.maxX - 4, c.minY - 4, 8, 8);
                     break;
                 }
-                case 2: {
+                case "topRight": {
                     this.p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
                     break;
                 }
-                case 3: {
+                case "topLeft": {
                     this.p.rect(c.minX - 4, c.maxY - 4, 8, 8);
                     break;
                 }
-                case 4: {
+                case "bottomMiddle": {
                     this.p.triangle((c.minX + c.maxX)/2 - 5, c.minY - 2, (c.minX + c.maxX)/2 + 5, c.minY - 2, (c.minX + c.maxX)/2, c.minY - 7);
                     break;
                 }
-                case 5: {
+                case "topMiddle": {
                     this.p.triangle((c.minX + c.maxX)/2 - 5, c.maxY + 2, (c.minX + c.maxX)/2 + 5, c.maxY + 2, (c.minX + c.maxX)/2, c.maxY + 7);
                     break;
                 }
-                case 6: {
+                case "leftMiddle": {
                     this.p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
                     break;
                 }
-                case 7: {
+                case "rightMiddle": {
                     this.p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2);
                     break;
                 }
