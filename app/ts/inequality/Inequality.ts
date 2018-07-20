@@ -171,7 +171,7 @@ export
     };
 
     windowResized = () => {
-        this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+        this.p.resizeCanvas(this.p.windowWidth * window.devicePixelRatio, this.p.windowHeight * window.devicePixelRatio);
     };
 
     draw = () => {
