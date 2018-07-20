@@ -190,7 +190,6 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                     });
                 }.bind(this, k));
                 scope.assignmentSelectedQuestion[k] = 0;
-                scope.$apply();
             }
         }
     });
