@@ -119,8 +119,8 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                 });
             });
             scope.setLoading(false);
-            scope.$apply();
             scope.groupExpanded[groupId] = true;
+            scope.$apply();
         });
     };
 
@@ -190,6 +190,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                     });
                 }.bind(this, k));
                 scope.assignmentSelectedQuestion[k] = 0;
+                scope.$apply();
             }
         }
     });
