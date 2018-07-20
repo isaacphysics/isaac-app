@@ -30,7 +30,6 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 				scope.videoSrc = undefined;
 
 				var onPlayerStateChange = function(e) {
-				console.log('VIDEO LOGGING IS WORKING!');
 					let logData = {
 						videoUrl: e.target.getVideoUrl(),
 						videoPosition: e.target.getCurrentTime(),
@@ -59,13 +58,14 @@ define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(ifr
 				}
 
 				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com") + "?enablejsapi=1&theme=light&rel=0&fs=1&modestbranding=1&http://localhost:8000");
-				console.log(videoSrc);
 				YT.ready(function() {
-					new YT.Player(element.find("iframe")[0], {
-						events: {
-							'onStateChange': onPlayerStateChange,
-						}
-					});				
+					setTimeout(function() {
+						new YT.Player(element.find("iframe")[0], {
+							events: {
+								'onStateChange': onPlayerStateChange,
+							}
+						});
+					}, 3000);
 				});
 
 			}
