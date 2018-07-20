@@ -1,6 +1,6 @@
 define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
 
         return {
             scope: {
@@ -105,7 +105,7 @@ define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
                 scope.$on("clicked", function(_event, clicked) {
                     scope.clicked = clicked;
                 });
-                scope.$on("symbolDrag", function($e, symbol, pageX, pageY, _deltaX, _deltaY, mousePageX, mousePageY) {
+                scope.$on("symbolDrag", function(_$e, symbol, pageX, pageY, _deltaX, _deltaY, mousePageX, mousePageY) {
                     // This overcomes issues with deciding if number button is clicked or dragged.
                     // If the number is moved below the top green menu bar, then we associate this with a drag movement and
                     // draw the number on the canvas.
@@ -120,7 +120,7 @@ define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
                     }
                 })
 
-                scope.$on("symbolDrop", function($e, symbolSpec, _mousePageX, _mousePageY, _pageY) {
+                scope.$on("symbolDrop", function(_$e, symbolSpec, _mousePageX, _mousePageY, _pageY) {
                     if (!scope.clicked) {
                         scope.$emit("spawnSymbol");
                         // If property "editable" of current object isn't null, we must have generated it using the editor

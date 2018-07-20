@@ -92,6 +92,7 @@ define(["/partials/content/Accordion.html"], function(templateUrl) {
 						}
 					}
 				};
+				void updateLoadedQuestions;
 				// FIXME ^ This looks too complicated for something we can just delete. Better check before nuking it.
 
 				scope.$on("newQuestionAnswer", function(_event, _index, _ans) {

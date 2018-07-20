@@ -43,9 +43,8 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
         $scope.showQuestionsOverTime = false;
         for (let property in $scope.questionsAnsweredOverTime) {
             if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
-                for (let i in $scope.questionsAnsweredOverTime[property]) {
+                if ($scope.questionsAnsweredOverTime[property]) {
                     $scope.showQuestionsOverTime = true; // There is data to show.
-                    break;
                 }
                 // remove underscores in series label.
                 $scope.questionsAnsweredOverTime[property.replace("_", " ").toLowerCase()] = $scope.questionsAnsweredOverTime[property];

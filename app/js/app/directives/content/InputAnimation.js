@@ -46,8 +46,8 @@ define([], function() {
         el.parentNode.appendChild(svg);
     }
 
-    function draw(el, type) {
-        let svg = el.parentNode.querySelector('svg');
+    function draw(inputElement, type) {
+        let svg = inputElement.parentNode.querySelector('svg');
         let pathDef = pathDefs[type];
         let animDef = animDefs[type];
 
@@ -82,9 +82,9 @@ define([], function() {
     }
 
     // FIXME no-shadow
-    function reset(el) {
-        Array.prototype.slice.call(el.parentNode.querySelectorAll('svg > path')).forEach(function(el) {
-            el.parentNode.removeChild(el);
+    function reset(inputElement) {
+        Array.prototype.slice.call(inputElement.parentNode.querySelectorAll('svg > path')).forEach(function(path) {
+            path.parentNode.removeChild(path);
         });
     }
 
