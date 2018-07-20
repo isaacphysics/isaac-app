@@ -94,17 +94,18 @@ define([], function() {
             restrict: 'A',
 
             link: function(scope, element, attrs) {
-                initInput(element[0]);
+                let inputElement = element[0];
+                initInput(inputElement);
 
                 if (attrs.ngModel != null && attrs.ngModel.length > 0) {
-                    let elementType = element[0].type;
+                    let elementType = inputElement.type;
 
                     if (elementType === "checkbox") {
                         scope.$watch(attrs.ngModel, function() {
                             if (scope.$eval(attrs.ngModel)) {
-                                draw(element[0], 'checkmark');
+                                draw(inputElement, 'checkmark');
                             } else {
-                                reset(element[0]);
+                                reset(inputElement);
                             }
                         });
                     } else if (elementType === "radio") {
@@ -123,9 +124,9 @@ define([], function() {
                             
                             // Use == to compare values as they may be different types
                             if (selectedVal != null && selectedVal == buttonValue) {
-                                draw(element[0], 'fill');
+                                draw(inputElement, 'fill');
                             } else {
-                                reset(element[0]);
+                                reset(inputElement);
                             }
                         });
                     } else {
