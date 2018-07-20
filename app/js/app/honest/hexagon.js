@@ -199,8 +199,8 @@ define([ 'jquery','d3'],
                                   .style('width', hex.width + 'px')
                                   .style('height', hex.height + 'px');
 
-               // Basic D3 Line function
-               let lineFunction = d3.svg.line()
+                // Basic D3 Line function
+                let lineFunction = d3.svg.line()
                                         .x(function(d) { return d.x; })
                                         .y(function(d) { return d.y; })
                                         .interpolate("linear");   
@@ -216,17 +216,18 @@ define([ 'jquery','d3'],
 
                 let hexpath = hexplot.append("path")
                                      .attr("d", lineFunction(hex.hexagon));
-               
-               // Call user supplied function to add specific items to SVG 
-               hexplot = svgItems(hexplot);
-               hexplot.attr("viewBox", "0 0 " + hex.width + " " + (Math.ceil(hex.height)));
+                void hexpath;
+                
+                // Call user supplied function to add specific items to SVG 
+                hexplot = svgItems(hexplot);
+                hexplot.attr("viewBox", "0 0 " + hex.width + " " + (Math.ceil(hex.height)));
 
-               // Call user supplied function to add specific attributes to the Hexagon
-               hexpath = pathAttrs(hexpath);         
+                // Call user supplied function to add specific attributes to the Hexagon
+                hexpath = pathAttrs(hexpath);         
 
 
-               // Call user supplied function to add other items
-               plotdiv = divItems(plotdiv);
+                // Call user supplied function to add other items
+                plotdiv = divItems(plotdiv);
                
 
 /*                         

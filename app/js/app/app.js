@@ -311,7 +311,7 @@ define([
                 // IE console debug - bug fix
                 if(!(window.console)) {
                     var noop = function(){};
-                    console = {
+                    window.console = {
                         log: noop,
                         debug: noop,
                         info: noop,
@@ -428,7 +428,7 @@ define([
     //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
     //                }
                 };
-                var cookie = {
+                var cookiesUtils = {
                     create: function(name, value, days) {
                         // Only do time calculation if a day has been passed in
                         let expires = "";
@@ -450,7 +450,7 @@ define([
 
                         // Loop through array of cookies checking each one
                         for(var i=0; i < cookieArray.length; i++) {
-                            var cookie = cookieArray[i];
+                            let cookie = cookieArray[i];
 
                             // Check to see first character is a space
                             while (cookie.charAt(0) == ' ') {
@@ -471,7 +471,7 @@ define([
                     }
                 }
 
-                var cookiesAccepted = cookie.read('isaacCookiesAccepted');
+                var cookiesAccepted = cookiesUtils.read('isaacCookiesAccepted');
 
                 if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
@@ -482,16 +482,16 @@ define([
                 }
 
                 // delete old cookies
-                cookie.remove("cookiesAccepted");
+                cookiesUtils.remove("cookiesAccepted");
 
                 // Set cookie on click without overriding Foundation's close function
                 $(document).on('close.cookies-accepted.fndtn.alert', function(_event) {
-                    if (!cookie.read('isaacCookiesAccepted'))
+                    if (!cookiesUtils.read('isaacCookiesAccepted'))
                     {
                         api.logger.log({
                             type: "ACCEPT_COOKIES"
                         })
-                        cookie.create('isaacCookiesAccepted',1,720);
+                        cookiesUtils.create('isaacCookiesAccepted',1,720);
                     }
                 });
 
