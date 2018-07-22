@@ -9,11 +9,54 @@ define(function(require) {
             return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
         },
 
+        detect: function(e, x, y) {
+            let mousePosition = this.getMousePt(e);
+            return (this.getDist(mousePosition, this.createPoint(x, y)) < 5);
+        },
+
+        getMousePt: function(e) {
+            let x = (e.clientX - 5);
+            let y = (e.clientY - 5);
+            return (this.createPoint(x, y));
+        },
+
         symbolOverKnot: function(knots, movedSymbol, MOUSE_DETECT_RADIUS) {
             for (let j = 0; j < knots.length; j++) {
                 if (knots[j].symbol == undefined && this.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
                     return knots[j];
                 }
+            }
+        },
+
+        readyToStretch: function(e, curveToStretch, stretchMode) {
+            let mousePosition = this.getMousePt(e);
+            if (this.detect(e, curveToStretch.minX, curveToStretch.minY) || this.detect(e, curveToStretch.maxX, curveToStretch.minY) || this.detect(e, curveToStretch.minX, curveToStretch.maxY) || this.detect(e, curveToStretch.maxX, curveToStretch.maxY)
+                    || this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.minY - 3) || this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.maxY + 3)
+                    || this.detect(e, curveToStretch.minX - 3, (curveToStretch.minY + curveToStretch.maxY)/2) || this.detect(e, curveToStretch.maxX + 3, (curveToStretch.minY + curveToStretch.maxY)/2)) {
+
+                if (this.detect(e, curveToStretch.minX, curveToStretch.minY)) {
+                    stretchMode = "topLeft";
+                } else if (this.detect(e, curveToStretch.maxX, curveToStretch.minY)) {
+                    stretchMode = "topRight";
+                } else if (this.detect(e, curveToStretch.maxX, curveToStretch.maxY)) {
+                    stretchMode = "bottomRight";
+                } else if (this.detect(e, curveToStretch.minX, curveToStretch.maxY)) {
+                    stretchMode = "bottomLeft";
+                } else if (this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.minY - 3)) {
+                    stretchMode = "bottomMiddle";
+                } else if (this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.maxY + 3)) {
+                    stretchMode = "topMiddle";
+                } else if (this.detect(e, curveToStretch.minX - 3, (curveToStretch.minY + curveToStretch.maxY)/2)) {
+                    stretchMode = "leftMiddle";
+                } else {
+                    stretchMode = "rightMiddle";
+                }
+
+
+                let action = "STRETCH_CURVE";
+                let clickedKnot = null;
+                let prevMousePt = mousePosition;
+                return[stretchMode, action, clickedKnot, prevMousePt];
             }
         },
 
@@ -66,16 +109,15 @@ define(function(require) {
             return (pt.x > left && pt.x < right && pt.y > top && pt.y < bottom);
         },
 
-        overItem: function(curves, mousePosition, freeSymbols, MOUSE_DETECT_RADIUS, found) {
+        overItem: function(curves, e, freeSymbols, MOUSE_DETECT_RADIUS, found) {
+            let mousePosition = this.getMousePt(e);
             let loop = function(knots) {
                 for (let j = 0; j < knots.length; j++) {
                     let knot = knots[j];
                     if (this.getDist(mousePosition, knot) < MOUSE_DETECT_RADIUS) {
                         found = "overKnot";
-                        break;
                     } else if (knot.symbol != undefined && this.isOverSymbol(mousePosition, knot.symbol)) {
                         found = "overAttachedSymbol";
-                        break;
                     }
                 }
             }.bind(this);
@@ -83,7 +125,6 @@ define(function(require) {
             for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
                 if (this.isOverSymbol(mousePosition, freeSymbols[i])) {
                     found = "overFreeSymbol";
-                    break;
                 }
             }
 
@@ -91,7 +132,6 @@ define(function(require) {
                 for (let k = 0; k < curves[j].pts.length; k++) {
                     if (this.getDist(mousePosition, curves[j].pts[k]) < MOUSE_DETECT_RADIUS) {
                         found = "overCurve";
-                        break;
                     }
                 }
             }
@@ -108,10 +148,6 @@ define(function(require) {
             
                 let minima = curves[i]['minima'];
                 loop(minima);
-                
-                if (found != "notFound") {
-                    break;
-                }
             } 
             return found;
         },
@@ -337,7 +373,8 @@ define(function(require) {
             return;
         },
 
-        stretchTurningPoint: function(importantPoints, mousePosition, selectedCurve, isMaxima, selectedPointIndex, prevMousePt, canvasProperties){
+        stretchTurningPoint: function(importantPoints, e, selectedCurve, isMaxima, selectedPointIndex, prevMousePt, canvasProperties){
+            let mousePosition = this.getMousePt(e);
             let tempMin = undefined;
             let tempMax = undefined;
             let turningPoints = isMaxima ? selectedCurve.maxima : selectedCurve.minima;
