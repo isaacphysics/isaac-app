@@ -202,17 +202,17 @@ define([], function() {
             if ($scope.user.role == 'STUDENT' && !($scope.additionalInformation.yearGroup == 'TEACHER' || $scope.additionalInformation.yearGroup == 'OTHER')) {
                 if (!$scope.additionalInformation.yearGroup) {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group Required", "You must enter a year group to proceed.");
-                    return false;   
+                    return false;
                 }
-                
-                if (!event.virtual) {
+
+                if (!$scope.event.virtual) {
                     if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
                         $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
-                        return false;   
-                    }                        
+                        return false;
+                    }
                 }
             }
-            
+
             // validation for users that are teachers
             if ($scope.user.role != 'STUDENT') {
                 if (!$scope.additionalInformation.jobTitle) {
