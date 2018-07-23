@@ -641,7 +641,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     return [diffSymbol];
                 };
 
-                // FIXME This function definitely needs refactoring to improve the flexibility of menu creation.
                 let parseCustomSymbols = function (symbols) {
                     let r = {
                         vars: [],
@@ -808,8 +807,11 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                     r.vars.push(root);
                                     break;
                                 case "Fn":
+                                    r.fns.push(root);
+                                    break;
                                 case "Differential":
                                     r.fns.push(root);
+                                    r.vars.push(root);
                                     break;
                                 case "Relation":
                                     r.operators.push(root);
