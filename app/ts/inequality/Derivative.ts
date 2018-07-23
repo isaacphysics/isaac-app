@@ -23,7 +23,6 @@ limitations under the License.
 
 import { Widget, Rect } from './Widget';
 import { DockingPoint } from "./DockingPoint";
-import { Differential } from "./Differential";
 import { Num } from "./Num";
 
 export

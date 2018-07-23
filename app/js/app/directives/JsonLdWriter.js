@@ -24,8 +24,8 @@ define([],function() {
             scope: {
                 script: '='
             },
-            link: function(scope, element, attrs) {
-                scope.$watch('script', function (newValue, oldValue) {
+            link: function(scope, element, _attrs) {
+                scope.$watch('script', function (newValue, _oldValue) {
                     if (newValue.name) {
                         element.empty();
                         let scriptTag = angular.element(document.createElement("script"));

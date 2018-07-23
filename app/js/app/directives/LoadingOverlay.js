@@ -15,12 +15,12 @@
  */
  define([], function() {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
         return {
 
             restrict: "A",
 
-            link: function(scope, element, attrs){
+            link: function(scope, element, _attrs){
 
                 scope.$watch("globalFlags.loading", function(loading, old) {
 

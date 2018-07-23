@@ -16,7 +16,7 @@
 
 import angular from "angular";
 
-export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, subject, persistence, $stateParams, $window, $location, $rootScope) {
+export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subject', 'persistence', '$stateParams', '$window', '$location', '$rootScope', function($scope, auth, api, userOfInterest, _subject, persistence, $stateParams, $window, $location, $rootScope) {
     /*
     *  This controller manages the User Account Settings page, but it also
     *  manages user Registration. Any changes to one will affect the other,
@@ -369,7 +369,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             let userIdsAlreadyAuthorised = $scope.activeAuthorisations.map(function(a) {return a.id}) || [];
             $scope.anyUsersAuthorisedAlready = false;
 
-            angular.forEach($scope.usersToGrantAccess, function(value, key) {
+            angular.forEach($scope.usersToGrantAccess, function(value, _key) {
                 value.givenName = value.givenName ? value.givenName.charAt(0) + ". " : "";
                 value.authorisedAlready = userIdsAlreadyAuthorised.indexOf(value.id) > -1;
                 $scope.anyUsersAuthorisedAlready = $scope.anyUsersAuthorisedAlready || value.authorisedAlready;

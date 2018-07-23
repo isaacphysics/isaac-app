@@ -26,7 +26,7 @@ define(["/partials/content/FeaturedProfile.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				if(scope.doc.image){
 					scope.doc.image.src = api.getImageUrl(scope.doc.image.src);	

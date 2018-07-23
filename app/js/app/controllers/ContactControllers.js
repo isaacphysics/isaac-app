@@ -78,7 +78,7 @@ export const PageController = ['$scope', 'api', '$state', '$rootScope', '$stateP
             "message": $scope.contactForm.message
         };
 
-        api.contactForm.send({}, message).$promise.then(function(response) {
+        api.contactForm.send({}, message).$promise.then(function(_response) {
             $scope.invalidForm = false;
             $scope.formSubmitted = true;
         }, function(e) {

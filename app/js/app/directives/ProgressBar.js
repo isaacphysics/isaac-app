@@ -25,10 +25,9 @@ define([], function() {
 
             template: "<div class='bar'><span></span></div><span></span>",
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
                 let leftSpan = element.find("div span");
-                let rightSpan = element.children("span");
 
                 let update = function() {
                     element.children("div").remove(".text-center");

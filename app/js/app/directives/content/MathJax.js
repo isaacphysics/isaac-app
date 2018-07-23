@@ -16,13 +16,13 @@
 define(["../../MathJaxConfig"], function() {
 
 
-	return ["$compile", "$rootScope", function($compile, $rootScope) {
+	return ["$compile", "$rootScope", function(_$compile, $rootScope) {
 
 		return {
 
 			restrict: 'A',
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				// This must be done asynchronously. Content isn't actually in element yet. Don't really understand why...
 				let first = true;

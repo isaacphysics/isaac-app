@@ -22,7 +22,6 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Brackets } from './Brackets';
 import { DockingPoint } from "./DockingPoint";
 
 /**

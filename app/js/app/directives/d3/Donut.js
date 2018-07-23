@@ -108,6 +108,11 @@ define(["d3"], function(d3) {
                         .append('g')
                         .attr('transform', 'translate(' + Math.min(width,height) / 2 + ',' + Math.min(width,height) / 2 + ')');
 
+                    function tweenPie(b) {
+                        let i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
+                        return function(t) { return arc(i(t)); };
+                    }
+
                     let path = svg.selectAll('path')
                         .data(pie(scope.data))
                         .enter().append('g')
@@ -118,11 +123,7 @@ define(["d3"], function(d3) {
                         .ease('exp')
                         .duration(700)
                         .attrTween('d', tweenPie);
-
-                    function tweenPie(b) {
-                        let i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
-                        return function(t) { return arc(i(t)); };
-                    }
+                    void path;
 
                     let arcs = svg.selectAll("g.arc");
                     arcs.append("text")
@@ -154,10 +155,10 @@ define(["d3"], function(d3) {
                         .append('g')
                         .attr('class', 'key')
                         .attr('transform', function(d, i) {
-                            let height = keyRectSize + keySpacing;
-                            let offset =  height * color.domain().length / 2;
+                            let legendHeight = keyRectSize + keySpacing;
+                            let offset =  legendHeight * color.domain().length / 2;
                             let horz = -2 * keyRectSize;
-                            let vert = i * height - offset;
+                            let vert = i * legendHeight - offset;
                             return 'translate(' + horz + ',' + vert + ')';
                         });
 
@@ -175,12 +176,11 @@ define(["d3"], function(d3) {
                             .text(function(d, i) { return scope.data[i].label; });
                 }
 
-                scope.$watch("data", function(newData, oldData) {
-                    if (newData)
+                scope.$watch("data", function(newData, _oldData) {
+                    if (newData) {
                         updateDonut();
+                    }
                 });
-
-
             }
         }
     }

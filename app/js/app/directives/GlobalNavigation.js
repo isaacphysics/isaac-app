@@ -18,13 +18,13 @@ import Opentip from "../../lib/opentip-jquery.js";
 
 define(['/partials/global_navigation.html'], function(templateUrl) {
 
-    return ["$location", "$timeout", "api", "$state", function($location, $timeout, api, $state) {
+    return ["$location", "$timeout", "api", "$state", function(_$location, $timeout, api, $state) {
         return {
             scope: true,
             restrict: "A",
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
                 
                 scope.$state = $state;
 
@@ -39,7 +39,7 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                 let applyDisabledToolTips = function() {
                     
                     // is the user logged in?
-                    scope.user.$promise.then(function(result){
+                    scope.user.$promise.then(function(_result){
                         // if we are logged in we can remove the tooltips
                         element.find(".login-required a[data-ot]").removeAttr("data-ot");
 
@@ -52,7 +52,7 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                     })
                 }
 
-                scope.menuToggle = function(e) {
+                scope.menuToggle = function(_e) {
                     scope.isVisible = !scope.isVisible;
 
                     if (scope.isVisible) {

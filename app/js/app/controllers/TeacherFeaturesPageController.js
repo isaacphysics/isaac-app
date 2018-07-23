@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, auth, api, $state, $stateParams, $location) {
+export const PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, _auth, _api, $state, $stateParams, _$location) {
 	$scope.isLoggedIn = false;
 	$scope.isTeacher = false;
 	$scope.redirectModal = $stateParams.redirectModal;

@@ -179,7 +179,7 @@ define(["../honest/hexagon"],function(hexagon) {
 
             templateUrl: "/partials/hexagons.html",
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
 
                 // Get a Hexagon width (differs for mobile)
                 let hexWidth = function()

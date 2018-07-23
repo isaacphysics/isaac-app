@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- export const PageController = ['$scope', 'auth', '$stateParams', 'api', '$window', '$rootScope', '$sce', '$timeout', function($scope, auth, $stateParams, api, $window, $rootScope, $sce, $timeout) {
+ export const PageController = ['$scope', 'auth', '$stateParams', 'api', '$window', '$rootScope', '$sce', '$timeout', function($scope, _auth, $stateParams, api, $window, $rootScope, $sce, $timeout) {
     $scope.isAdminUser = $rootScope.user.role == 'ADMIN';
     $scope.statistics = null;
     $scope.setLoading(true);
@@ -119,7 +119,7 @@
         $scope.showToast($scope.toastTypes.Failure, "Preferences load failed", "With error message (" + e.status + ") " + e.statusText);
     });
 
-    $scope.loadContentTemplate = function(contentId){
+    $scope.loadContentTemplate = function(_contentId){
         $scope.setLoading(true);
         api.email.get({"id" : $scope.emailToSend.contentObjectId}).$promise.then(function(content){
             $scope.subjectPreview = content.subject;

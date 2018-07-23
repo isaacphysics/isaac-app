@@ -28,7 +28,7 @@ define(["angular", "lodash", "../lib/showdown/showdown.js", "../lib/showdown/ext
 	}])
 	.filter('capitalize', [function() {
 		return function(input) {
-			return (!!input) ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
+			return input ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
 		}
 	}])
 	.filter('showdown', [function() {
@@ -77,7 +77,7 @@ define(["angular", "lodash", "../lib/showdown/showdown.js", "../lib/showdown/ext
 	})
 	.filter('escapeHtml', [function() {
 		return function(input) {
-			return (!!input) ? _.escape(input) : "";
+			return input ? _.escape(input) : "";
 		}
 	}])
 });

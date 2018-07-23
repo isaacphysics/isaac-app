@@ -46,8 +46,8 @@ define([], function() {
         el.parentNode.appendChild(svg);
     }
 
-    function draw(el, type) {
-        let svg = el.parentNode.querySelector('svg');
+    function draw(inputElement, type) {
+        let svg = inputElement.parentNode.querySelector('svg');
         let pathDef = pathDefs[type];
         let animDef = animDefs[type];
 
@@ -81,9 +81,10 @@ define([], function() {
         }
     }
 
-    function reset(el) {
-        Array.prototype.slice.call(el.parentNode.querySelectorAll('svg > path')).forEach(function(el) {
-            el.parentNode.removeChild(el);
+    // FIXME no-shadow
+    function reset(inputElement) {
+        Array.prototype.slice.call(inputElement.parentNode.querySelectorAll('svg > path')).forEach(function(path) {
+            path.parentNode.removeChild(path);
         });
     }
 
@@ -93,17 +94,18 @@ define([], function() {
             restrict: 'A',
 
             link: function(scope, element, attrs) {
-                initInput(element[0]);
+                let inputElement = element[0];
+                initInput(inputElement);
 
                 if (attrs.ngModel != null && attrs.ngModel.length > 0) {
-                    let elementType = element[0].type;
+                    let elementType = inputElement.type;
 
                     if (elementType === "checkbox") {
                         scope.$watch(attrs.ngModel, function() {
                             if (scope.$eval(attrs.ngModel)) {
-                                draw(element[0], 'checkmark');
+                                draw(inputElement, 'checkmark');
                             } else {
-                                reset(element[0]);
+                                reset(inputElement);
                             }
                         });
                     } else if (elementType === "radio") {
@@ -122,9 +124,9 @@ define([], function() {
                             
                             // Use == to compare values as they may be different types
                             if (selectedVal != null && selectedVal == buttonValue) {
-                                draw(element[0], 'fill');
+                                draw(inputElement, 'fill');
                             } else {
-                                reset(element[0]);
+                                reset(inputElement);
                             }
                         });
                     } else {

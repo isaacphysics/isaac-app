@@ -16,7 +16,7 @@
 define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 
 
-	return ["$compile", "RecursionHelper", "$sce", function($compile, RecursionHelper, $sce) {
+	return ["$compile", "RecursionHelper", "$sce", function(_$compile, RecursionHelper, $sce) {
 
 
 		return {
@@ -28,7 +28,7 @@ define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 			templateUrl: templateUrl,
 
 			compile: function(element) {
-	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+	            return RecursionHelper.compile(element, function(scope, _iElement, iAttrs, _controller, _transcludeFn){
 
 	            	scope.value = undefined;
 	            	scope.children = undefined;

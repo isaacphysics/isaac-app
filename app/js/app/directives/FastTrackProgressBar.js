@@ -1,5 +1,5 @@
 define(['jquery', "/partials/fasttrack_progress_bar.html"], function($, templateUrl) {
-    return ['$location', function($location) {
+    return ['$location', function(_$location) {
         return {
             restrict: 'A',
 
@@ -10,7 +10,7 @@ define(['jquery', "/partials/fasttrack_progress_bar.html"], function($, template
 
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
                 let svgElement = function(tagName) {
                     return $(document.createElementNS("http://www.w3.org/2000/svg", tagName));
                 };
@@ -97,7 +97,6 @@ define(['jquery', "/partials/fasttrack_progress_bar.html"], function($, template
                             questionCompleted &= questionPartState == scope.FT_STATES.ft_top_ten.tagName;
                         }
                         let topTenQuestion = progressValues[i];
-                        let title = topTenQuestion.title;
                         let questionSeparatorAnchor = svgElement('a').attr({'href':"/questions/" + topTenQuestion.id + '?board=' + scope.boardState.id});
                         questionSeparatorAnchor
                             .append(svgElement('title')

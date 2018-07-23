@@ -27,7 +27,7 @@ define(["/partials/content/Pod.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				
 				scope.getImageSrc = function() {
 					return api.getImageUrl(scope.isaacPod.image.src);

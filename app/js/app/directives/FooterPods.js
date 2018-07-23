@@ -24,7 +24,7 @@ define(["/partials/footer_pods.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.questionId = scope.page.id;
 				scope.relatedConcepts = $filter('filter')(scope.page.relatedContent, {type: "isaacConceptPage"});

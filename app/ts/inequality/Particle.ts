@@ -24,10 +24,8 @@ import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
-import { Num } from "./Num";
-import {ChemicalElement} from "./ChemicalElement";
-import { Brackets } from "./Brackets";
-/** A class for representing variables and constants (aka, particles). */
+
+/** A class for representing particles. */
 export
     class Particle extends Widget {
 

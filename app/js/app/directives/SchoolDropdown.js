@@ -26,12 +26,12 @@ define(["/partials/school_dropdown.html"], function(templateUrl) {
 
             restrict: "A",
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
                 scope.searchText = "";
                 scope.selection = {};
                 // Load the initially selected school, if there is one.
 
-                scope.$watch("selectedSchoolUrn", function(newUrn, oldUrn) {
+                scope.$watch("selectedSchoolUrn", function(newUrn, _oldUrn) {
                     if (newUrn) {
                         api.schools.query({urn: newUrn}).$promise.then(function(s) {
                             if (s.length >= 1) {

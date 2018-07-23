@@ -25,7 +25,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                 let lastPageX = 0;
                 let lastPageY = 0;
-                let grab = function(pageX, pageY, e) {
+                let grab = function(pageX, pageY, _e) {
                     scope.dragging = true;
                     element.addClass("dragging");
                     scope.$apply();
@@ -41,7 +41,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
-                }
+                };
 
                 let drag = function(pageX, pageY) {
                     let pageScroll = editor.offset().top;
@@ -55,11 +55,6 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     let requiredPageLeft = pageX - grabLocalX;
                     let requiredPageTop = pageY - grabLocalY;
 
-                    let offset = element.offset();
-
-                    let pX = pageX - offset.top;
-                    let pY = pageY - offset.left;
-
                     // Tell our parents that we've moved.
                     scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop - pageScroll, pageX - lastPageX, pageY - pageScroll - lastPageY, pageX, pageY - pageScroll);
                     lastPageX = pageX;
@@ -72,14 +67,9 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     element.css("left", requiredPageLeft - originOffset.left);
                     element.css("top", requiredPageTop - originOffset.top);
+                };
 
-                }
-
-                let drop = function(pageX, pageY, e) {
-
-                    let token = element.find(".symbol-token");
-                    let tokenOffset = token.offset();
-
+                let drop = function(pageX, pageY, _e) {
                     element.css("left", 0);
                     element.css("top", 0);
                     
@@ -92,28 +82,28 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     scope.dragging = false;
                     element.removeClass("dragging");
                     scope.$apply();
-                }
+                };
 
                 let mousedown = function(e) {
                     grab(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 let mouseup = function(e) {
                     drop(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 let mousemove = function(e) {
                     drag(e.pageX, e.pageY);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 let touchstart = function(e) {
                     let ts = e.originalEvent.touches;
@@ -121,7 +111,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 let touchend = function(e) {
                     let ts = e.originalEvent.changedTouches;
@@ -129,7 +119,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 let touchmove = function(e) {
                     let ts = e.originalEvent.touches;
@@ -137,15 +127,16 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 element.on("mousedown", mousedown);
                 element.on("touchstart", touchstart);
 
                 scope.$on("menuMoved", function() {
-                    if (scope.dragging)
+                    if (scope.dragging) {
                         drag();
-                })
+                    }
+                });
             },
         };
     }];

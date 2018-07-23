@@ -1,6 +1,6 @@
 define(["/partials/equation_editor/equation_input.html"], function(templateUrl) {
 
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, _api) {
 
         return {
             scope: {
@@ -10,7 +10,7 @@ define(["/partials/equation_editor/equation_input.html"], function(templateUrl) 
             },
             restrict: "A",
             templateUrl: templateUrl,
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {

@@ -119,8 +119,8 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                 });
             });
             scope.setLoading(false);
-            scope.$apply();
             scope.groupExpanded[groupId] = true;
+            scope.$apply();
         });
     };
 
@@ -130,15 +130,15 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                 scope.setLoading(true);
                 scope.assignmentProgress[k] = api.assignments.getProgress({assignmentId: k});
 
-                scope.assignmentProgress[k].$promise.then(function(k, progress) {
+                scope.assignmentProgress[k].$promise.then(function(progressIdx, progress) {
                     scope.setLoading(false);
 
-                    scope.assignments[k].gameBoard.$promise.then(function(gameBoard) {
+                    scope.assignments[progressIdx].gameBoard.$promise.then(function(gameBoard) {
 
                         // Calculate 'class average', which isn't an average at all, it's the percentage of ticks per question.
                         let questions = gameBoard.questions;
-                        scope.assignmentAverages[k] = [];
-                        scope.assignmentTotalQuestionParts[k] = 0;
+                        scope.assignmentAverages[progressIdx] = [];
+                        scope.assignmentTotalQuestionParts[progressIdx] = 0;
                         
                         for (let i in questions) {
                             let q = questions[i];
@@ -153,12 +153,12 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                             }
 
                             let tickPercent = Math.round(100 * (tickCount / progress.length));
-                            scope.assignmentAverages[k].push(tickPercent);
-                            scope.assignmentTotalQuestionParts[k] += q.questionPartsTotal;
+                            scope.assignmentAverages[progressIdx].push(tickPercent);
+                            scope.assignmentTotalQuestionParts[progressIdx] += q.questionPartsTotal;
                         }
 
                         // Calculate student totals and gameboard totals
-                        scope.assignmentProgress[k].studentsCorrect = 0;
+                        scope.assignmentProgress[progressIdx].studentsCorrect = 0;
                         for (let j = 0; j < progress.length; j++) {
 
                             let studentProgress = progress[j];
@@ -182,7 +182,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
                                 }
 
                                 if (studentProgress.tickCount == gameBoard.questions.length) {
-                                    scope.assignmentProgress[k].studentsCorrect++;
+                                    scope.assignmentProgress[progressIdx].studentsCorrect++;
                                 }
 
                             }
@@ -279,7 +279,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
         // return api.getCSVDownloadLink(assignmentId);
     };
 
-    scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent) {
+    scope.$on('ngRepeatFinished', function(_ngRepeatFinishedEvent) {
         $timeout(function(){
             Opentip.findElements();
         });
