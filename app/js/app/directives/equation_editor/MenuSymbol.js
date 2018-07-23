@@ -113,10 +113,12 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                         let num = attrs.value;
                         scope.$emit("numberClicked", num);
                     }
+                    clicked = false;
                     drop(e.pageX, e.pageY, e);
                     scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
+
                 }
 
                 let mousemove = function(e) {
@@ -146,10 +148,12 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                         scope.$emit("numberClicked", num);
                     }
 
+                    clicked = false;
                     drop(ts[0].pageX, ts[0].pageY, e);
                     scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
+
                 }
 
                 let touchmove = function(e) {
