@@ -21,9 +21,7 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Symbol } from './Symbol';
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
 
 /**
  * A class for state symbols.
