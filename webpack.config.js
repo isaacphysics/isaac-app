@@ -76,6 +76,10 @@ module.exports = function(env) {
         {
           test: /angular-google-maps\.js/,
           use: "imports-loader?_=lodash",
+        },
+        {
+          test: /script\/.*\.js$/,
+          use: [{loader: 'script-loader'}]
         }
       ]
     },
