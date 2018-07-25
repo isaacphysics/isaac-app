@@ -39,6 +39,9 @@ define([
     "foundation-sites/js/vendor/modernizr",
     ], function(rv, ineq, require) {
 
+    // Require polyfill script to enable packages which are dependent on older versions of jQuery
+    require('../script/polyfill.js')
+
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
 

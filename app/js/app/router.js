@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["angular", "angular-ui-router"], function(angular, _angularUiRouter) {
+define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
     // Declare app level module which depends on filters, and services
     angular.module('isaac.router', [

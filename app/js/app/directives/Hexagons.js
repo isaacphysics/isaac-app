@@ -204,7 +204,7 @@ define(["../honest/hexagon"],function(hexagon) {
                     let hexs = $(".hexagon_wrap").find("a");
 
                     $(".bg-wrap").css("background-position", "");                        
-                    if (hexs.size() > 0 && $("footer.hide-for-small-only").is(":visible")) {
+                    if (hexs.length > 0 && $("footer.hide-for-small-only").is(":visible")) {
                         let maxTop = 0;
                         let minLeft = 9999;
                         hexs.each(function() {
