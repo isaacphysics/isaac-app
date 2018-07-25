@@ -283,11 +283,11 @@ body
 }*/
 
 .hexagon-offset-even {
-    @media only screen and (min-width: 64.063em) {
+    @media #{$large-up} {
         margin-top: -72px !important;
         left: 4px;
     } 
-    @media only screen {
+    @media #{$medium-only} {
         margin-top: -15px;
     }
 }   
