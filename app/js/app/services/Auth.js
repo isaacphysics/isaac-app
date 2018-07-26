@@ -117,6 +117,9 @@ define([], function() {
 					cancelUserConsistencyCheck();
 					reject();
 				});
+			}).catch(function(error) {
+				console.log('You are not logged in.');
+				console.log(error);
 			});
 		}
 		
