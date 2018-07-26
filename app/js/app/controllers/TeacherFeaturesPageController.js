@@ -44,9 +44,4 @@ export const PageController = ['$scope', 'auth', 'api', '$state', '$stateParams'
 		}
 	}
 
-	$scope.$on('$destroy', function(){
-		console.log("Destroy");
-	});
-
-
 }];
