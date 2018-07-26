@@ -54,7 +54,7 @@
     "karma": "0.13.15",
     "karma-junit-reporter": "^0.2.2",
     "ngtemplate-loader": "^2.0.1",
-    "node-sass": "4.9.0",
+    "node-sass": "^4.9.2",
     "protractor": "~0.20.1",
     "shelljs": "^0.2.6",
     "single-page-server": "0.1.1",
