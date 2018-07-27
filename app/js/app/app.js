@@ -39,8 +39,15 @@ define([
     "foundation-sites/js/vendor/modernizr",
     ], function(rv, ineq, require) {
 
+    // Require polyfill script to enable packages which are dependent on older versions of jQuery
+    require('../script/polyfill.js')
+
     window.Promise = RSVP.Promise;
     window.Promise.defer = RSVP.defer;
+
+    RSVP.on('error', function(reason) {
+        console.assert(false, reason);
+    });
 
     // Load all of foundation
     let req = require.context("foundation-sites/js/foundation", true);
@@ -77,7 +84,12 @@ define([
         'ui.date'
 	])
 
-	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider) {
+	.config(['$locationProvider', 'apiProvider', '$httpProvider', '$rootScopeProvider', 'uiGmapGoogleMapApiProvider', '$analyticsProvider',
+        function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider, $analyticsProvider) {
+
+        // Support multiple Google Analytics accounts
+        // TODO REMOVE ANALYTICS - Remove 'Isaac' once old account is closed
+        $analyticsProvider.settings.ga.additionalAccountNames = ['Isaac', 'IsaacAnalytics'];
 
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
@@ -155,6 +167,7 @@ define([
         */
         Opentip.lastZIndex = 9999;
         Opentip.styles.globalStyle = {
+            escapeContent: true, // Explicitly override with data-ot-escape-content="false" after user input is escaped
             target: true,
             background: '#333333',
             borderColor: '#333333',
@@ -162,6 +175,7 @@ define([
             removeElementsOnHide: true,
         };
         Opentip.styles.ru_boards = {
+            escapeContent: true, // Explicitly override with data-ot-escape-content="false" after user input is escaped
             className: 'boards',
             fixed: true,
             stem: false,
@@ -247,7 +261,7 @@ define([
         }
 
         $rootScope.requestEmailVerification = function(){
-            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(response){
+            api.verifyEmail.requestEmailVerification({'email': $rootScope.user.email}).$promise.then(function(_response){
                 $rootScope.showToast($rootScope.toastTypes.Success, "Email verification request succeeded.", "Please follow the verification link given in the email sent to your address. ");
             }, function(e){
                 $rootScope.showToast($rootScope.toastTypes.Failure, "Email verification request failed.", "Sending an email to your address failed with error message: " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
@@ -305,7 +319,7 @@ define([
                 // IE console debug - bug fix
                 if(!(window.console)) {
                     var noop = function(){};
-                    console = {
+                    window.console = {
                         log: noop,
                         debug: noop,
                         info: noop,
@@ -422,18 +436,18 @@ define([
     //                    $('.ru-answer-orbit .ru-answer-orbit-content p').removeClass('iphone');
     //                }
                 };
-                var cookie = {
+                var cookiesUtils = {
                     create: function(name, value, days) {
                         // Only do time calculation if a day has been passed in
+                        let expires = "";
                         if (days) {
                             var date = new Date();
                             var maxCookiesExpiry = days*24*60*60*1000;
                             // convert day to a Unix timestamp
                                 date.setTime(date.getTime()+maxCookiesExpiry);
                             // formate date ready to be passed to the DOM
-                            var expires = "; expires="+date.toGMTString();
+                            expires = "; expires="+date.toGMTString();
                         }
-                        else var expires = "";
                         // Build cookie and send to DOM
                         document.cookie = name+"="+value+expires+"; path=/";
                     },
@@ -444,7 +458,7 @@ define([
 
                         // Loop through array of cookies checking each one
                         for(var i=0; i < cookieArray.length; i++) {
-                            var cookie = cookieArray[i];
+                            let cookie = cookieArray[i];
 
                             // Check to see first character is a space
                             while (cookie.charAt(0) == ' ') {
@@ -465,7 +479,7 @@ define([
                     }
                 }
 
-                var cookiesAccepted = cookie.read('isaacCookiesAccepted');
+                var cookiesAccepted = cookiesUtils.read('isaacCookiesAccepted');
 
                 if (!cookiesAccepted) {
                     // If cookies haven't been accepted show cookie message
@@ -476,16 +490,16 @@ define([
                 }
 
                 // delete old cookies
-                cookie.remove("cookiesAccepted");
+                cookiesUtils.remove("cookiesAccepted");
 
-                // Set cookie on click without overriding Foundations close function
-                $(document).on('close.cookies-accepted.fndtn.alert-box', function(event) {
-                    if (!cookie.read('isaacCookiesAccepted'))
+                // Set cookie on click without overriding Foundation's close function
+                $(document).on('close.cookies-accepted.fndtn.alert', function(_event) {
+                    if (!cookiesUtils.read('isaacCookiesAccepted'))
                     {
                         api.logger.log({
                             type: "ACCEPT_COOKIES"
                         })
-                        cookie.create('isaacCookiesAccepted',1,720);
+                        cookiesUtils.create('isaacCookiesAccepted',1,720);
                     }
                 });
 
@@ -493,8 +507,8 @@ define([
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
                 {
-                    tab:{
-                        callback : function (tab)
+                    tab: {
+                        callback: function(_tab)
                         {
                             rv.forceResize();
                             sliderResize();
@@ -579,7 +593,7 @@ define([
                 });
                 // var tutorialShown = cookie.read('tutorialShown');
 
-                var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
+                // var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
 
                 // we don't want the google bot or out of date browsers to see the tutorial.
                 // stop tutorial from loading for new users as no one reads it anyway.
@@ -729,7 +743,7 @@ define([
                 $rootScope.notificationWebSocket = api.getWebsocket("user-alerts");
 
 
-                $rootScope.notificationWebSocket.onopen = function(event) {
+                $rootScope.notificationWebSocket.onopen = function(_event) {
                     $rootScope.webSocketCheckTimeout = $timeout($rootScope.checkForWebSocket, 10000);
                 }
 
@@ -928,7 +942,7 @@ define([
             return window.innerWidth > window.innerHeight || window.innerWidth > 640;
         };
 
-        $(window).on("resize", function(e) {
+        $(window).on("resize", function(_event) {
             var newLandscape = isLandscape();
             if (newLandscape != $rootScope.isLandscape) {
                 $rootScope.isLandscape = newLandscape

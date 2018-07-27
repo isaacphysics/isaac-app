@@ -19,7 +19,7 @@
 
  	/* Services */
 
- 	var auth = require("./services/Auth");
+ 	let auth = require("./services/Auth");
 
 	// Demonstrate how to register services
 	// In this case it is a simple value service.
@@ -42,7 +42,7 @@
 
 	.provider('api', function ApiProvider() {
 
-		var urlPrefix = "";
+		let urlPrefix = "";
 
 		this.urlPrefix = function(value) {
 			urlPrefix = value;
@@ -50,7 +50,7 @@
 
 		this.$get = ["$resource", "$http", "subject", function ApiFactory($resource, $http, subject) {
 
-			var Api = require("./services/Api");
+			let Api = require("./services/Api");
 
 			return new Api($resource, urlPrefix, $http, subject);
 		}];
@@ -58,9 +58,9 @@
 
 	.provider('subject', function SubjectProvider() {
 
-		var subject = require("./services/Subject")();
+		let subject = require("./services/Subject")();
 
-		for(var k in subject) {
+		for(let k in subject) {
 			this[k] = subject[k];
 		}
 		

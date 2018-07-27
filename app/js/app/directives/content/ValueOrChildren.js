@@ -16,7 +16,7 @@
 define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 
 
-	return ["$compile", "RecursionHelper", "$sce", function($compile, RecursionHelper, $sce) {
+	return ["$compile", "RecursionHelper", "$sce", function(_$compile, RecursionHelper, $sce) {
 
 
 		return {
@@ -28,7 +28,7 @@ define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 			templateUrl: templateUrl,
 
 			compile: function(element) {
-	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+	            return RecursionHelper.compile(element, function(scope, _iElement, iAttrs, _controller, _transcludeFn){
 
 	            	scope.value = undefined;
 	            	scope.children = undefined;
@@ -60,7 +60,7 @@ define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 					// 	update();
 					// });
 
-	            	var update = function updateFn() {
+	            	let update = function updateFn() {
 
 	            		scope.safeValue = $sce.trustAsHtml(scope.value);
 
@@ -69,11 +69,11 @@ define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 						}
 
 						scope.contentChunks = []; // One of these for each chunk of content, where accordions may only appear on their own in a chunk.
-			            var breakOnTypeChange = false;
-			            var lastType = "";
-						var currentChunk = [];
-						for (var i in scope.children) {
-							var c = scope.children[i];
+			            let breakOnTypeChange = false;
+			            let lastType = "";
+						let currentChunk = [];
+						for (let i in scope.children) {
+							let c = scope.children[i];
 							c.contentChildIndex = scope.$root.padIndex(i);
 
 							if ((breakOnTypeChange && c.type != lastType) || (!breakOnTypeChange && c.type == "isaacFeaturedProfile")) {
@@ -90,7 +90,7 @@ define(['/partials/content/ValueOrChildren.html'], function(templateUrl) {
 							} else if (c.layout == "accordion" || c.layout == "tabs") {
 								if (currentChunk.length > 0)
 									scope.contentChunks.push(currentChunk);
-								var accordionChunk = [c];
+								let accordionChunk = [c];
 								accordionChunk.isAccordion = true;
 								accordionChunk.isFirstChunk = scope.contentChunks.length == 0;
 								scope.contentChunks.push(accordionChunk);

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["../../honest/responsive_video", "/partials/content/SymbolicQuestion.html"], function(rv, templateUrl) {
+define(["../../honest/responsive_video", "/partials/content/SymbolicQuestion.html"], function(_rv, templateUrl) {
 
-    return ["api", function(api) {
+    return ["api", function(_api) {
 
         return {
             scope: true,
@@ -25,7 +25,7 @@ define(["../../honest/responsive_video", "/partials/content/SymbolicQuestion.htm
             templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
+                let ctrl = this;
 
                 scope.editorMode = 'maths';
 

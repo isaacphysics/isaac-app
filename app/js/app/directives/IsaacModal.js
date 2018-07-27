@@ -19,9 +19,9 @@ define([], function() {
             restrict: 'A',
             compile: function(element) {
                 // Take a copy of the element before Angular has done any compilation.
-                var rawClone = element.clone();
+                let rawClone = element.clone();
 
-                return function(scope, element, attrs) {
+                return function(scope, _element, attrs) {
 
                     scope.modals = scope.modals || {};
 
@@ -32,17 +32,17 @@ define([], function() {
                     scope.modals[attrs.isaacModal] = {
                         show: function() {
 
-                            var r = $compile(rawClone)(scope);
+                            let r = $compile(rawClone)(scope);
                             
                             // Safely call $digest, even if we're already in the digest loop. Ew.
                             $timeout(function() {
                                 $timeout(function() {
                                     // After outer timeout completes and safely calls digest(), use inner timeout
                                     // to reposition the modal now the height can be correctly measured! "Ew" still applies!
-                                    var windowHeight = $(window).height();
-                                    var modalHeight = $("#isaacModal").height();
-                                    var modalPosition = (windowHeight / 2) - (modalHeight / 2);
-                                    var scrollPos = $(window).scrollTop();
+                                    let windowHeight = $(window).height();
+                                    let modalHeight = $("#isaacModal").height();
+                                    let modalPosition = (windowHeight / 2) - (modalHeight / 2);
+                                    let scrollPos = $(window).scrollTop();
 
                                     $("#isaacModal").css("top", modalPosition > 0 ? (scrollPos + modalPosition)+'px' : (scrollPos + 15)+'px');
                                 });
@@ -53,7 +53,7 @@ define([], function() {
                             $("#isaacModal").foundation("reveal", "open");
 
                             // Initially position the modal at the top of the screen:
-                            var scrollPos = $(window).scrollTop();
+                            let scrollPos = $(window).scrollTop();
                             $("#isaacModal").css((scrollPos + 15)+'px');
 
                             // make sure the top of the modal is in view.

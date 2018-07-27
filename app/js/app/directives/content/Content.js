@@ -16,7 +16,7 @@
 define(['/partials/content/Content.html'], function(templateUrl) {
 
 
-	return ["$compile", "RecursionHelper", "$location", "$timeout", function($compile, RecursionHelper, $location, $timeout) {
+	return ["$compile", "RecursionHelper", "$location", "$timeout", function(_$compile, RecursionHelper, $location, $timeout) {
 
 		return {
 
@@ -27,9 +27,9 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 			templateUrl: templateUrl,
 
 			compile: function(element) {
-	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn) {
+	            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, _controller, _transcludeFn) {
 	            	// Post-link actions go here.
-	            	
+            	
 	            	scope.$root.getIndexPath = function() { return ""; };
 	            	scope.getIndexPath = function() {
 	            		return scope.$parent.getIndexPath() + "" + scope.contentChildIndex;// + ":" + scope.doc.type + (scope.doc.layout ? "(" + scope.doc.layout + ")" : "");
@@ -37,7 +37,11 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
-	            		scope.doc = newDoc;
+						if (undefined === newDoc) {
+							return;
+						}
+						scope.doc = newDoc;
+						
 	            		if (newDoc)
 	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || "0000";
 

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  *
  * You may obtain a copy of the License at
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,226 +16,226 @@
 define(["../honest/hex_filter", "/partials/hex_filter.html"], function(HexFilter, templateUrl) {
 
 
-	return ["$state", "tags", function($state, tags) {
+    return ["$state", "tags", function($state, tags) {
 
-		return {
+        return {
 
-			scope: {
-				subjects: "=",
-				fields: "=",
-				topics: "=",
-				warnings: "=",
-			},
+            scope: {
+                subjects: "=",
+                fields: "=",
+                topics: "=",
+                warnings: "=",
+            },
 
-			restrict: "A",
+            restrict: "A",
 
-			templateUrl: templateUrl,
+            templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
-				// We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
-				var buildHexFilterState = function(tags) {
-					tags = JSON.parse(JSON.stringify(tags)); // deep copy tags so as not to alter the original array
+                // We have a flat list of tags, but the HexFilter requires a hierarchical structure. Build it here.
+                let buildHexFilterState = function(fromFilterTags) {
+                    let filterTags = _.cloneDeep(fromFilterTags); // deep copy tags so as not to alter the original array
 
-					// TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
+                    // TODO: Be sure to check whether Array.prototype.filter polyfill is necessary.
 
-					// For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
-					// FIXME - temporary hack to remove chemistry from the filter!
-					var subjects = tags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
+                    // For some reason the filter predicate sometimes gets called with a null argument. Weird. Hence the "t && ..."
+                    // FIXME - temporary hack to remove chemistry from the filter!
+                    let subjects = filterTags.filter(function(t) { return t && !t.parent && t.id != "chemistry"; });
 
-					for (var i in subjects) {
-						var s = subjects[i];
+                    for (let i in subjects) {
+                        let s = subjects[i];
 
-						s.enabled = !s.comingSoon && s.enabled !== false;
-						s.selected = false;
-						s.subject = s.id;
+                        s.enabled = !s.comingSoon && s.enabled !== false;
+                        s.selected = false;
+                        s.subject = s.id;
 
-						s.children = tags.filter(function(t) { return t && t.parent == s.id; });
+                        s.children = filterTags.filter(function(t) { return t && t.parent == s.id; });
 
-						for (var j in s.children) {
-							var f = s.children[j];
+                        for (let j in s.children) {
+                            let f = s.children[j];
 
-							f.enabled = !f.comingSoon && f.enabled !== false;
-							f.selected = false;
-							f.subject = s.id;
+                            f.enabled = !f.comingSoon && f.enabled !== false;
+                            f.selected = false;
+                            f.subject = s.id;
 
-							f.children = tags.filter(function(t) { return t && t.parent == f.id; });
+                            f.children = filterTags.filter(function(t) { return t && t.parent == f.id; });
 
-							for (var k in f.children) {
-								var t = f.children[k];
+                            for (let k in f.children) {
+                                let t = f.children[k];
 
-								t.enabled = !t.comingSoon && t.enabled !== false;
-								t.selected = false;
-								t.subject = s.id;
-							}
-						}
-					}
+                                t.enabled = !t.comingSoon && t.enabled !== false;
+                                t.selected = false;
+                                t.subject = s.id;
+                            }
+                        }
+                    }
 
-					return subjects;
+                    return subjects;
 
-				}
+                }
 
-				var config = buildHexFilterState(tags.tagArray);
+                let config = buildHexFilterState(tags.tagArray);
 
-			    var hexFilter = new HexFilter(element, {
-			        // Replace with real function to get state
-			        get: function(callback) {
-			        	callback(config);
-			        },
+                let hexFilter = new HexFilter(element, {
+                    // Replace with real function to get state
+                    get: function(callback) {
+                        callback(config);
+                    },
 
-			        // Does nothing - replace as required
-			        change: function() { }
-			    });
+                    // Does nothing - replace as required
+                    change: function() { }
+                });
 
-	        	// Set this after the hexFilter is constructed so that it doesn't try to change the attributes on initialisation.
-			    hexFilter.change = function(items) {
-		        	var selectedItems = [[],[],[]];
+                // Set this after the hexFilter is constructed so that it doesn't try to change the attributes on initialisation.
+                hexFilter.change = function(_items) {
+                    let selectedItems = [[],[],[]];
 
-		        	function walk(depth, obj) {
-		        		if (obj.selected) {
-		        			selectedItems[depth].push(obj.id);
-		        		}
+                    function walk(depth, obj) {
+                        if (obj.selected) {
+                            selectedItems[depth].push(obj.id);
+                        }
 
-		        		if (obj.children) {
-			        		$.each(obj.children, function(i, child) {
-			        			walk(depth + 1, child);
-			        		});
-			        	}
-		        	}
+                        if (obj.children) {
+                            $.each(obj.children, function(i, child) {
+                                walk(depth + 1, child);
+                            });
+                        }
+                    }
 
-		        	function walkAll(arr) {
-		        		for(var i in arr) {
-		        			walk(0, arr[i]);
-		        		}
-		        	}
-		        	walkAll(config);
+                    function walkAll(arr) {
+                        for(let i in arr) {
+                            walk(0, arr[i]);
+                        }
+                    }
+                    walkAll(config);
 
-		        	console.debug("Selected Items", selectedItems);
+                    console.debug("Selected Items", selectedItems);
 
-		        	var subjects = selectedItems[0];
-		        	var fields = selectedItems[1];
-		        	var topics = selectedItems[2];
+                    let subjects = selectedItems[0];
+                    let fields = selectedItems[1];
+                    let topics = selectedItems[2];
 
-		        	scope.subjects.length = 0;
-		        	scope.fields.length = 0;
-		        	scope.topics.length = 0;
+                    scope.subjects.length = 0;
+                    scope.fields.length = 0;
+                    scope.topics.length = 0;
 
-		        	Array.prototype.push.apply(scope.subjects,subjects);
-		        	if (subjects.length == 1)
-		        		Array.prototype.push.apply(scope.fields,fields);
-		        	if (subjects.length == 1 && fields.length == 1)
-		        		Array.prototype.push.apply(scope.topics,topics);
+                    Array.prototype.push.apply(scope.subjects,subjects);
+                    if (subjects.length == 1)
+                        Array.prototype.push.apply(scope.fields,fields);
+                    if (subjects.length == 1 && fields.length == 1)
+                        Array.prototype.push.apply(scope.topics,topics);
 
-			  		scope.$apply();
-		        }
+                      scope.$apply();
+                }
 
-			    var hexFilterResize = function()
-			    {
-			        hexFilter.EnableVertical(element.find('#hexfilter-large').css('display') === 'none');
-			        hexFilter.ReDraw(true);
-			        element.height(element.find('#hexfilter-large').css('display') === 'none' ? 740 : 460);
-			    };
+                let hexFilterResize = function()
+                {
+                    hexFilter.EnableVertical(element.find('#hexfilter-large').css('display') === 'none');
+                    hexFilter.ReDraw(true);
+                    element.height(element.find('#hexfilter-large').css('display') === 'none' ? 740 : 460);
+                };
 
-				hexFilterResize(element);
+                hexFilterResize(element);
 
-			    // Resize handling for Hex Filter
-			    $(window).bind("resize", hexFilterResize);
+                // Resize handling for Hex Filter
+                $(window).bind("resize", hexFilterResize);
 
-			    // Deal with external changes to the selected subjects, fields and topics.
-			    var configChanged = function() {
+                // Deal with external changes to the selected subjects, fields and topics.
+                let configChanged = function() {
 
-	    			var visit = function(obj, callback, level) {
-	    				if (!level)
-	    					level = 0;
+                    let visit = function(obj, callback, level) {
+                        if (!level)
+                            level = 0;
 
-	    				callback(obj, level);
+                        callback(obj, level);
 
-		    			if (obj.children) {
-		    				for(var i in obj.children) {
-		    					visit(obj.children[i], callback, level + 1);
-		    				}
-		    			}
-	    			}
+                        if (obj.children) {
+                            for(let i in obj.children) {
+                                visit(obj.children[i], callback, level + 1);
+                            }
+                        }
+                    }
 
-	    			var visitAll = function(arr, callback) {
-	    				for (var i in arr) {
-	    					visit(arr[i], callback);
-	    				}
-	    			}
+                    let visitAll = function(arr, callback) {
+                        for (let i in arr) {
+                            visit(arr[i], callback);
+                        }
+                    }
 
-	    			var deselector = function(minLevel) {
-	    				return function(obj, level) {
-		    				if (level >= minLevel) {
-		    					obj.selected = false;
-		    				}
-		    			};
-	    			}
+                    let deselector = function(minLevel) {
+                        return function(obj, level) {
+                            if (level >= minLevel) {
+                                obj.selected = false;
+                            }
+                        };
+                    }
 
-	    			// Select/deselect subjects in config object to reflect subjects attribute.
-	    			visitAll(config, function(obj, level) {
-	    				if (level == 0) {
-	    					obj.selected = scope.subjects.indexOf(obj.id) > -1;
-	    				}
-	    			})
+                    // Select/deselect subjects in config object to reflect subjects attribute.
+                    visitAll(config, function(obj, level) {
+                        if (level == 0) {
+                            obj.selected = scope.subjects.indexOf(obj.id) > -1;
+                        }
+                    })
 
-			    	if (scope.subjects.length > 1) {
+                    if (scope.subjects.length > 1) {
 
-			    		// We have selected multiple subjects. Deselect all fields and topics.
-			    		var deselectTopics = deselector(1);
+                        // We have selected multiple subjects. Deselect all fields and topics.
+                        let deselectTopics = deselector(1);
 
-		    			visitAll(config, deselectTopics)
+                        visitAll(config, deselectTopics)
 
-			    	} else {
+                    } else {
 
-			    		// Select/deselect fields in config object to reflect fields attribute
-		    			visitAll(config, function(obj, level) {
-		    				if (level == 1) {
-		    					obj.selected = scope.fields.indexOf(obj.id) > -1;
-		    				}
-		    			})
+                        // Select/deselect fields in config object to reflect fields attribute
+                        visitAll(config, function(obj, level) {
+                            if (level == 1) {
+                                obj.selected = scope.fields.indexOf(obj.id) > -1;
+                            }
+                        })
 
-			    		if (scope.fields.length > 1) {
+                        if (scope.fields.length > 1) {
 
-			    			// We have selected more than one field. Deselect all topics.
+                            // We have selected more than one field. Deselect all topics.
 
-			    			var deselectFields = deselector(2);
-			    			visitAll(config, deselectFields);
+                            let deselectFields = deselector(2);
+                            visitAll(config, deselectFields);
 
-			    		} else {
+                        } else {
 
-			    			// Select/deselect topics in config object to reflect topics attribute
-			    			visitAll(config, function(obj, level) {
-			    				if (level == 2) {
-			    					obj.selected = scope.topics.indexOf(obj.id) > -1;
-			    				}
-			    			})
+                            // Select/deselect topics in config object to reflect topics attribute
+                            visitAll(config, function(obj, level) {
+                                if (level == 2) {
+                                    obj.selected = scope.topics.indexOf(obj.id) > -1;
+                                }
+                            })
 
-			    		}
+                        }
 
-			    	}
+                    }
 
-			    	// Add warnings where necessary
-			    	var warnings = {};
-			    	for (var i in scope.warnings) {
-			    		warnings[scope.warnings[i][0]] = scope.warnings[i][1];
-			    	}
+                    // Add warnings where necessary
+                    let warnings = {};
+                    for (let i in scope.warnings) {
+                        warnings[scope.warnings[i][0]] = scope.warnings[i][1];
+                    }
 
-			    	visitAll(config, function(obj) {
-			    		obj.warning = warnings[obj.id];
-			    	})
+                    visitAll(config, function(obj) {
+                        obj.warning = warnings[obj.id];
+                    })
 
-			    	hexFilterResize();
+                    hexFilterResize();
 
-			    }
+                }
 
-			    scope.$watchCollection("subjects", configChanged);
-			    scope.$watchCollection("fields", configChanged);
-			    scope.$watchCollection("topics", configChanged);
-			    scope.$watchCollection("warnings", configChanged);
+                scope.$watchCollection("subjects", configChanged);
+                scope.$watchCollection("fields", configChanged);
+                scope.$watchCollection("topics", configChanged);
+                scope.$watchCollection("warnings", configChanged);
 
-			    configChanged();
-			}
-		};
-	}]
+                configChanged();
+            }
+        };
+    }]
 
 });

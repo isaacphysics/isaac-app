@@ -15,7 +15,7 @@ module.exports = function(env) {
     mode: "development",
 
     entry: {
-      'isaac.js': ["./app/js/app/app.js"],
+      'isaac.js': ["@babel/polyfill", "./app/js/app/app.js"],
     },
 
     output: {
@@ -33,7 +33,7 @@ module.exports = function(env) {
         {
           test: /\.html$/,
           use: [
-            { loader:'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials", module: "isaac.templates" } },
+            { loader: 'ngtemplate-loader', options: { relativeTo: "/partials", prefix: "/partials", module: "isaac.templates" } },
             { loader: 'html-loader' }
           ]
         },
@@ -41,7 +41,7 @@ module.exports = function(env) {
           test: /(?!\.d)\.ts$/,
           use: [
             { loader: "babel-loader" },
-            { loader: "ts-loader" }
+            { loader: "ts-loader", options: { ignoreDiagnostics: [2306] } }
           ]
         },
         {
@@ -58,7 +58,6 @@ module.exports = function(env) {
         { 
           test: /modernizr/,
           use: [
-            {loader:"expose-loader", options: "Modernizr"},
             {loader:"imports-loader?this=>window"},
           ]
         },
@@ -81,6 +80,10 @@ module.exports = function(env) {
         {
           test: /angular-google-maps\.js/,
           use: "imports-loader?_=lodash",
+        },
+        {
+          test: /script\/.*\.js$/,
+          use: [{loader: 'script-loader'}]
         }
       ]
     },

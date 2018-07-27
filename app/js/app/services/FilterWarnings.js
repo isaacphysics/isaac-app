@@ -17,15 +17,15 @@ define([], function() {
 
     return [function() {
 
-        var contains = function(arr, val) {
+        let contains = function(arr, val) {
             return arr.indexOf(val) > -1;
         }
 
-        var joinList = function(arr) {
+        let joinList = function(arr) {
             arr.sort();
-            var s = "";
+            let s = "";
 
-            for (var i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
                 if (i > 0 && i < arr.length - 1)
                     s += ", ";
 
@@ -37,9 +37,9 @@ define([], function() {
             return s;
         }
 
-        function getWarnings(subjects, fields, topics, levels, concepts) {
+        function getWarnings(_subjects, fields, topics, levels, _concepts) {
 
-            var warnings = [];
+            let warnings = [];
 
         // Mechanics topics:
             if (contains(topics, "circular_motion") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))

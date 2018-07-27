@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import angular from "angular";
+
 define([], function() {
 
-	var boardTags = {
+	let boardTags = {
 		isaac: {identifier: 'ISAAC_BOARD', createdByLabel: 'Isaac'}
 	}
-	var priorityOrderedBoardTags = ['isaac']
+	let priorityOrderedBoardTags = ['isaac']
 
 	// helper function for old javascript until we sort out transpiler
-	var pushIfNotPresent = function(elements, element) {
+	let pushIfNotPresent = function(elements, element) {
 		if (elements.indexOf(element) == -1) {
 			elements.push(element);
 		}
 	}
 
-	var calculateBoardCompletionStatus = function(board, options) {
-		var completionStatus;
+	let calculateBoardCompletionStatus = function(board, options) {
+		let completionStatus;
 		if (board.percentageCompleted == 100) {
 			completionStatus = 'Completed';
 		} else if (board.percentageCompleted > 0) {
@@ -40,10 +43,10 @@ define([], function() {
 		return completionStatus
 	}
 
-	var calculateBoardLevels = function(board, options) {
+	let calculateBoardLevels = function(board, options) {
 		let levels = [];
-		for(var i = 0; i < board.questions.length; i++) {
-			var level = board.questions[i].level
+		for(let i = 0; i < board.questions.length; i++) {
+			let level = board.questions[i].level
 			if (levels.indexOf(level) == -1 && level != 0) {
 				levels.push(level);
 				pushIfNotPresent(options, level);
@@ -55,10 +58,10 @@ define([], function() {
 		return levels;
 	};
 
-	var calculateBoardSubjects = function(board, options) {
+	let calculateBoardSubjects = function(board, options) {
 		let subjects = [];
 		for(let i = 0; i < board.questions.length; i++) {
-			var q = board.questions[i];
+			let q = board.questions[i];
 			if (q.tags && q.tags.indexOf("maths") > -1) {
 				pushIfNotPresent(subjects, "maths");
 				pushIfNotPresent(options, "Maths");
@@ -73,12 +76,12 @@ define([], function() {
 		return subjects;
 	};
 
-	var calculateBoardCreator = function(board, options, userId) {
-		var creator = board.ownerUserId == userId ? "Me" : "Someone else";
+	let calculateBoardCreator = function(board, options, userId) {
+		let creator = board.ownerUserId == userId ? "Me" : "Someone else";
 		// A tagged gameboard overrides creator
 		if (board.tags) {
-			for (var i = 0; i < priorityOrderedBoardTags.length; i++) {
-				var boardTag = boardTags[priorityOrderedBoardTags[i]];
+			for (let i = 0; i < priorityOrderedBoardTags.length; i++) {
+				let boardTag = boardTags[priorityOrderedBoardTags[i]];
 				if (board.tags.indexOf(boardTag.identifier) >= 0) {
 					creator = boardTag.createdByLabel;
 					break;
@@ -89,19 +92,19 @@ define([], function() {
 		return creator;
 	}
 
-	var noFilterOption = {
+	let noFilterOption = {
 		label: 'All',
 		value: undefined
 	};
 
-	var generateFilterOptions = function(allOptions) {
-		var filterOptions = {};
+	let generateFilterOptions = function(allOptions) {
+		let filterOptions = {};
 		angular.forEach(allOptions, function(seenOptions, selectorKey) {
 			// start with the no filter option
 			filterOptions[selectorKey] = [noFilterOption];
 			let selectorOptions = filterOptions[selectorKey];
-			for (var i = 0; i < seenOptions.length; i++) {
-				var seenOption = seenOptions[i];
+			for (let i = 0; i < seenOptions.length; i++) {
+				let seenOption = seenOptions[i];
 				selectorOptions.push({label: seenOption, value: seenOption});
 			}
 		});
@@ -112,9 +115,9 @@ define([], function() {
 		this.boardTags = boardTags;
 		this.filterOptions = {};
 		this.augmentBoards = function(boards, userId) {
-			var seenOptions = {completion:[], levels:[], subjects:[], createdBy:[]};
+			let seenOptions = {completion:[], levels:[], subjects:[], createdBy:[]};
 
-			for (var i = 0; i < boards.length; i++) {
+			for (let i = 0; i < boards.length; i++) {
 				let board = boards[i];
 				board.completion = calculateBoardCompletionStatus(board, seenOptions.completion);
 				board.subjects = calculateBoardSubjects(board, seenOptions.subjects);

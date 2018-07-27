@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  *
  * You may obtain a copy of the License at
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *         http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,30 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import Opentip from "../../lib/opentip-jquery.js";
+
 define(['/partials/global_navigation.html'], function(templateUrl) {
 
-    return ["$location", "$timeout", "api", "$state", function($location, $timeout, api, $state) {
-		return {
-			scope: true,
-			restrict: "A",
+    return ["$location", "$timeout", "api", "$state", function(_$location, $timeout, api, $state) {
+        return {
+            scope: true,
+            restrict: "A",
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
-            	
+            link: function(scope, element, _attrs) {
+                
                 scope.$state = $state;
 
                 // Global var
-            	var flyin;
+                let flyin;
                 scope.contentProblems = 0;
                 
                 scope.myIncompleteAssignments = 0;
 
 
                 // determine whether we should disable any global nav links
-                var applyDisabledToolTips = function() {
+                let applyDisabledToolTips = function() {
                     
                     // is the user logged in?
-                    scope.user.$promise.then(function(result){
+                    scope.user.$promise.then(function(_result){
                         // if we are logged in we can remove the tooltips
                         element.find(".login-required a[data-ot]").removeAttr("data-ot");
 
@@ -49,8 +52,8 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                     })
                 }
 
-            	scope.menuToggle = function(e) {
-            		scope.isVisible = !scope.isVisible;
+                scope.menuToggle = function(_e) {
+                    scope.isVisible = !scope.isVisible;
 
                     if (scope.isVisible) {
                         // NOTE: in reality the api considers IN_PROGRESS as including NOT_STARTED for assignments
@@ -75,40 +78,40 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                         });
                     }
 
-            		$('.dl-nav').slideToggle(200);
-            	}
+                    $('.dl-nav').slideToggle(200);
+                }
 
-            	scope.menuForward = function(e) {
-            		if($.ru_IsMobile()){
-            			var item = e.currentTarget.parentNode,
-                    		submenu = $(item).children('.dl-level2');
-                    	
-                		if(submenu.length) {
-                    		flyin = submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
+                scope.menuForward = function(e) {
+                    if($.ru_IsMobile()){
+                        let item = e.currentTarget.parentNode,
+                            submenu = $(item).children('.dl-level2');
+                        
+                        if(submenu.length) {
+                            flyin = submenu.clone().addClass('dl-clone').insertAfter('.dl-level1');
 
-                    		$('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
-                        		$(this).stop().hide(300, function(){
-                            		$(this).addClass('dl-hide').removeAttr('style');
-                        		});
-                    		});
+                            $('.dl-level1').animate({marginLeft: '-100%', opacity: 0}, 500, function(){
+                                $(this).stop().hide(300, function(){
+                                    $(this).addClass('dl-hide').removeAttr('style');
+                                });
+                            });
 
-                    		flyin.animate({marginLeft: '0', opacity: 1}, 500);
-                		}
+                            flyin.animate({marginLeft: '0', opacity: 1}, 500);
+                        }
 
                         applyDisabledToolTips();
-            		}
-            	}
+                    }
+                }
 
-            	scope.menuBack = function() {
-            		$('.dl-level1').show(300, function(){
-                		$(this).animate({marginLeft: '0', opacity: 1}, 500);
-                		flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
-                    		flyin.hide(300, function(){
-                        		flyin.remove();
-                    		});
-                		});
-            		});
-            	}
+                scope.menuBack = function() {
+                    $('.dl-level1').show(300, function(){
+                        $(this).animate({marginLeft: '0', opacity: 1}, 500);
+                        flyin.animate({marginRight: '-100%', opacity: 0}, 500, function(){
+                            flyin.hide(300, function(){
+                                flyin.remove();
+                            });
+                        });
+                    });
+                }
 
                 element.on("click", ".dl-back", scope.menuBack);
 
@@ -126,9 +129,9 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                 // scope.answerCountTicker = 0;
 
                 // api.questionsAnswered.get().$promise.then(function(stat) {
-                //     var count = stat.answeredQuestionCount;
-                //     var f = function() {
-                //         var increment = Math.max(Math.floor(count/100),1);
+                //     let count = stat.answeredQuestionCount;
+                //     let f = function() {
+                //         let increment = Math.max(Math.floor(count/100),1);
                 //         if (scope.answerCountTicker + increment <= count) {
                 //             scope.answerCountTicker += increment;
                 //             $timeout(f, 20);
@@ -141,6 +144,6 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                 // });
 
             }
-		};
-	}]
+        };
+    }]
 });

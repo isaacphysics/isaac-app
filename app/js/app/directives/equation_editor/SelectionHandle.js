@@ -1,12 +1,12 @@
 define(["/partials/equation_editor/selection_handle.html"], function(templateUrl) {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
 
         return {
             scope: true,
             restrict: "A",
             templateUrl: templateUrl,
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
                 element.on("mousedown", "polygon.handle-move", function(e) {
                     scope.$emit("selection_grab", null, "move", e);
@@ -38,7 +38,7 @@ define(["/partials/equation_editor/selection_handle.html"], function(templateUrl
                     scope.$emit("selection_mod", "prime", e);
                 });
 
-                var touchStart = function(mode, e) {
+                let touchStart = function(mode, e) {
                     e = e.originalEvent;
                     if(e.touches.length == 1) {
                         scope.$emit("selection_grab", scope.symbolId, mode, e);
@@ -47,7 +47,7 @@ define(["/partials/equation_editor/selection_handle.html"], function(templateUrl
                     }
                 };
 
-                var touchMove = function(e) {
+                let touchMove = function(e) {
                     e = e.originalEvent;
                     if (e.touches.length == 1) {
                         scope.$emit("selection_drag", e.touches[0].pageX, e.touches[0].pageY, e);
@@ -56,7 +56,7 @@ define(["/partials/equation_editor/selection_handle.html"], function(templateUrl
                     }
                 }
 
-                var touchEnd = function(e) {
+                let touchEnd = function(e) {
                     e = e.originalEvent;
                     if (e.changedTouches.length == 1) {
                         scope.$emit("selection_drop", e.changedTouches[0].pageX, e.changedTouches[0].pageY, e);

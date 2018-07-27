@@ -117,9 +117,10 @@ export
 
         if (!this.textEntry) {
             this.scope.log.initialState = [];
-            this.symbols.forEach(function (e) {
-                this.scope.log.initialState.push(e.subtreeObject(true, true));
-            });
+            
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
         }
         this.updateCanvasDockingPoints();
     };
@@ -162,16 +163,17 @@ export
 
         if (!this.textEntry) {
             this.scope.log.initialState = [];
-            this.symbols.forEach(function (e) {
-                this.scope.log.initialState.push(e.subtreeObject(true, true));
-            });
+
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
         }
         this.updateCanvasDockingPoints();
 
     };
 
     windowResized = () => {
-        this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+        this.p.resizeCanvas(this.p.windowWidth * window.devicePixelRatio, this.p.windowHeight * window.devicePixelRatio);
     };
 
     draw = () => {
@@ -287,8 +289,11 @@ export
         this.p.frameRate(7);
     };
 
-    parseSubtreeObject = (root: Object) => {
+    parseSubtreeObject = (root: Object, clearExistingSymbols = false) => {
         if (root) {
+            if (clearExistingSymbols) {
+                this.symbols.length = 0;
+            }
             let w: Widget = this._parseSubtreeObject(root);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];

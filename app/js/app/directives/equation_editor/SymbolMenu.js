@@ -11,13 +11,13 @@ define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
             },
 			restrict: "A",
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 				scope.name="SYMBOLMENU";
 
-				var lst = element.find("ul");
-				var bufferedLeft = 0;
+				let lst = element.find("ul");
+				let bufferedLeft = 0;
 
-				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
+				let absorbSymbolDrag = function(_$e, symbol, pageX, pageY, deltaX, _deltaY, mousePageX, mousePageY) {
 					scope.$emit('absorbSymbolDrag');
 					bufferedLeft += deltaX;
 
@@ -43,7 +43,7 @@ define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				};
 
-				var abortSymbolDrag = function(_, symbol, pageX, pageY, mousePageX, mousePageY, offCanvas) {
+				let abortSymbolDrag = function(_event, _symbol, _pageX, pageY, _mousePageX, _mousePageY, offCanvas) {
 					bufferedLeft = parseFloat(lst.css("left"));
 					
 						scope.$emit('abortSymbolDrag');

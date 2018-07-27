@@ -34,7 +34,7 @@ define([ 'jquery'],
                 * Hide (with animation) the first element provided
                 * @returns chained JQuery objects
                 */
-               ruDropDownHide: function(control)
+               ruDropDownHide: function(_control)
                {
                    return this.each(function()
                    {

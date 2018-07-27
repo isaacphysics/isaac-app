@@ -25,7 +25,7 @@ define(["/partials/content/Image.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.path = api.getImageUrl(scope.doc.src);
 

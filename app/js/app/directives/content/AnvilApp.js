@@ -29,11 +29,11 @@ define(["/partials/content/AnvilApp.html"], function(templateUrl) {
 
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
-                var url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app?s=new" + Math.random();
+                let url = "https://anvil.works/apps/" + scope.app.appId + "/" + scope.app.appAccessKey + "/app?s=new" + Math.random();
 
-                var ps = {};
+                let ps = {};
 
                 ps.hostname = location.hostname;
 
@@ -73,12 +73,12 @@ define(["/partials/content/AnvilApp.html"], function(templateUrl) {
 
                 scope.src = $sce.trustAsResourceUrl(url);
 
-                var iframe = element.find("iframe")[0];
+                let iframe = element.find("iframe")[0];
 
-                var onMessage = function(e) {
+                let onMessage = function(e) {
                     if (e.originalEvent.source !== iframe.contentWindow) { return; }
 
-                    var data = e.originalEvent.data;
+                    let data = e.originalEvent.data;
                     console.debug("Anvil app message:", data);
 
                     if (data.fn == "newAppHeight") {

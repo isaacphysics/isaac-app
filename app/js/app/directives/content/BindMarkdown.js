@@ -26,11 +26,9 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 			restrict: 'A',
 			priority: 0,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 
-				var pageId = scope.$parent.page ? scope.$parent.page.id : "";
-
-				Showdown.extensions.refs = function(converter) {
+				Showdown.extensions.refs = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '(~D)?\\\\ref{([^}]*)}(~D)?',
@@ -38,7 +36,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}];
 				};
 
-				Showdown.extensions.links = function(converter) {
+				Showdown.extensions.links = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
@@ -46,7 +44,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}]
 				};				
 
-				Showdown.extensions.glossary = function(converter) {
+				Showdown.extensions.glossary = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\*\\*Glossary\\*\\*',
@@ -54,7 +52,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}];
 				};
 
-				Showdown.extensions.concepts = function(converter) {
+				Showdown.extensions.concepts = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\*\\*Concepts\\*\\*',
@@ -62,21 +60,21 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}];
 				};
 
-				var converter = new Showdown.converter({
+				let converter = new Showdown.converter({
 					extensions: ["table", "refs", "links", "glossary", "concepts"],
 				});
 
 				scope.$watch("md", function(markdown) {
 
-					var converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
+					let converted = converter.makeHtml(markdown).replace('<a href="', '<a rel="nofollow" href="');
 					
-					var findAllLbs = /<lbr>/g;
-					var findAllRbs = /<rbr>/g;
-					var findAllDoubleLeftBraces = /{{/g;
-					var findAllDoubleRightBraces= /}}/g;
+					let findAllLbs = /<lbr>/g;
+					let findAllRbs = /<rbr>/g;
+					let findAllDoubleLeftBraces = /{{/g;
+					let findAllDoubleRightBraces= /}}/g;
 
 					// we have to replace <lbr><lbr> and <rbr><rbr> with {{ }} before angular compiles. The need to add spaces to {{ }} is to cope with MathJax
-					var replaced = converted.replace(findAllDoubleLeftBraces, "{ {").replace(findAllDoubleRightBraces, "} }").replace(findAllLbs, "{").replace(findAllRbs, "}")
+					let replaced = converted.replace(findAllDoubleLeftBraces, "{ {").replace(findAllDoubleRightBraces, "} }").replace(findAllLbs, "{").replace(findAllRbs, "}")
 					element.html($compile(replaced)(scope));
 
 					$rootScope.requestMathjaxRender();

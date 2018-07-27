@@ -22,11 +22,9 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget'
-import {BinaryOperation} from "./BinaryOperation";
+import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
-import { ChemicalElement } from "./ChemicalElement";
 import { Relation } from "./Relation";
-import { Brackets } from "./Brackets";
 
 /** A class for representing numbers */
 export

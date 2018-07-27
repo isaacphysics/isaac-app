@@ -20,20 +20,19 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                 scope.dragging = false;
 
-                var editor = $(".equation-editor");
+                let editor = $(".equation-editor");
 
-                var grabLocalX, grabLocalY;
+                let grabLocalX, grabLocalY;
 
-                var lastPageX = 0;
-                var lastPageY = 0;
-                var grab = function(pageX, pageY, e) {
-
+                let lastPageX = 0;
+                let lastPageY = 0;
+                let grab = function(pageX, pageY, _e) {
                     scope.dragging = true;
 
                     element.addClass("dragging");
                     scope.$apply();
 
-                    var offset = element.offset();
+                    let offset = element.offset();
                     grabLocalX = pageX - offset.left;
                     grabLocalY = pageY - offset.top;
 
@@ -47,15 +46,10 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
-
-
-
                 }
 
-
-
-                var drag = function(pageX, pageY) {
-                    var pageScroll = editor.offset().top;
+                let drag = function(pageX, pageY) {
+                    let pageScroll = editor.offset().top;
 
                     pageX = pageX || lastPageX;
                     pageY = pageY || lastPageY;
@@ -63,13 +57,8 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     if ("lockVertical" in attrs)
                         pageY = lastPageY;
 
-                    var requiredPageLeft = pageX - grabLocalX;
-                    var requiredPageTop = pageY - grabLocalY;
-
-                    var offset = element.offset();
-
-                    var pX = pageX - offset.top;
-                    var pY = pageY - offset.left;
+                    let requiredPageLeft = pageX - grabLocalX;
+                    let requiredPageTop = pageY - grabLocalY;
 
                     // Tell our parents that we've moved.
 
@@ -80,25 +69,20 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     // Parent may have moved. Recompute our position based on (potentially) new origin.
                     element.css("left", 0);
                     element.css("top", 0);
-                    var originOffset = element.offset();
+                    let originOffset = element.offset();
 
                     element.css("left", requiredPageLeft - originOffset.left);
                     element.css("top", requiredPageTop - originOffset.top);
-
                 }
 
-                var drop = function(pageX, pageY, e) {
-
-                    var token = element.find(".symbol-token");
-                    var tokenOffset = token.offset();
-
+                let drop = function(pageX, pageY, e) {
                     element.css("left", 0);
                     element.css("top", 0);
 
                     // fixes bug involving being able to drag symbols outside of the visible canvas,
-                    var width = $(window).width();
-                    var height = $(window).height();
-                    var offCanvas = (e.clientX*100/width < 5 || e.clientY*100/height < 10) ? true : false;
+                    let width = $(window).width();
+                    let height = $(window).height();
+                    let offCanvas = (e.clientX*100/width < 5 || e.clientY*100/height < 10) ? true : false;
 
                     // This ensures new symbols can be selected.
                     scope.$emit("symbolDrop", scope.symbol, pageX, pageY, pageX, pageY, offCanvas);
@@ -114,36 +98,38 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     scope.$apply();
                 }
 
-                var mousedown = function(e) {
+                let mousedown = function(e) {
                     grab(e.pageX, e.pageY, e);
                     e.stopPropagation();
                     e.preventDefault();
                 }
 
-                var mouseup = function(e) {
-                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
-                    var clicked = true;
+                let clicked = false;
+
+                let mouseup = function(e) {
+                    if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                        clicked = true;
+                        scope.$emit("clicked", clicked);
+                        let num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+                    clicked = false;
+                    drop(e.pageX, e.pageY, e);
                     scope.$emit("clicked", clicked);
-                    var num = attrs.value;
-                    scope.$emit("numberClicked", num);
-                  }
-                      drop(e.pageX, e.pageY, e);
-                      clicked = false;
-                      scope.$emit("clicked", clicked);
-                      e.stopPropagation();
-                      e.preventDefault();
+                    e.stopPropagation();
+                    e.preventDefault();
+
                 }
 
-                var mousemove = function(e) {
+                let mousemove = function(e) {
                     drag(e.pageX, e.pageY);
 
                     e.stopPropagation();
                     e.preventDefault();
                 }
 
-                var touchstart = function(e) {
-                    var ts = e.originalEvent.touches;
-                    console.log(ts);
+                let touchstart = function(e) {
+                    let ts = e.originalEvent.touches;
                     scope.mobileX = ts[0].pageX;
                     scope.mobileY = ts[0].pageY;
                     grab(ts[0].pageX, ts[0].pageY, e);
@@ -152,30 +138,26 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     e.preventDefault();
                 }
 
-                var touchend = function(e) {
-                  var ts = e.originalEvent.changedTouches;
-                    console.debug(scope.mobileX + " " + ts[0].pageX);
-
-                    console.log(ts, e.originalEvent);
-
+                let touchend = function(e) {
+                    let ts = e.originalEvent.changedTouches;
 
                     if (scope.mobileX == ts[0].pageX && scope.mobileY == ts[0].pageY) {
-                        var clicked = true;
+                        clicked = true;
                         scope.$emit("clicked", clicked);
-                        console.debug("Registered as click");
-                        var num = attrs.value;
+                        let num = attrs.value;
                         scope.$emit("numberClicked", num);
                     }
 
-                    drop(ts[0].pageX, ts[0].pageY, e);
                     clicked = false;
+                    drop(ts[0].pageX, ts[0].pageY, e);
                     scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
+
                 }
 
-                var touchmove = function(e) {
-                    var ts = e.originalEvent.touches;
+                let touchmove = function(e) {
+                    let ts = e.originalEvent.touches;
                     drag(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
