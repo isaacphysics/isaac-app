@@ -240,6 +240,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 				scope.$watch("question.validationResponse", function(newVal, oldVal) {
 					if (newVal !== oldVal) {
 						if (scope.question.validationResponse) {
+							scope.question.validationResponse.explanation = scope.question.validationResponse.explanation || null;
 							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
 							scope.question.pageCompleted = isPageCompleted(scope.page);
 							if (scope.question.pageCompleted) {
