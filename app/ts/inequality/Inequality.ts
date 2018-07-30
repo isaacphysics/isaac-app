@@ -634,7 +634,7 @@ export
         let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
-            symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
+            symbol.position = this.p.createVector(this.width/(window.devicePixelRatio*2) - sbox.center.x, top + sbox.center.y);
             top += sbox.h*1.5;
             symbol.shakeIt();
         });
