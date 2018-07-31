@@ -59,21 +59,30 @@ class Differential extends Widget {
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 
+    /**
+     * Climbs up the ancestors to see if this widget is docked to a Derivative.
+     */
     get sonOfADerivative() {
         let p = this.parentWidget;
-        while (p != null) {
+        while (null !== p) {
             if (p.typeAsString === 'Derivative') {
-                return true
+                return true;
             }
+            p = this.parentWidget;
         }
         return false;
     }
 
-    get orderNeedsMoving() {
+    /**
+     * Climbs up the parents to see if this widget is docked to the denominator of a Derivative.
+     * 
+     * @returns {boolean}
+     */
+    get orderNeedsMoving(): boolean {
         let w: Widget = this;
-        while (w != null) {
-            if (this.dockedTo === "denominator") {
-                return this.sonOfADerivative;
+        while (null !== w.parentWidget) {
+            if (w.parentWidget.typeAsString === 'Derivative' && w.dockedTo === 'denominator') {
+                return true;
             }
             w = w.parentWidget;
         }
