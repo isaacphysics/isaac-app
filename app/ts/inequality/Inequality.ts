@@ -581,7 +581,9 @@ export
             symbol.highlight(false);
             let hitSymbol = symbol.hit(p);
             if (hitSymbol) {
-                hitSymbol.highlight(true);
+                // Hey, we hit a symbol! :)
+                // Don't highlight it, though, as this leads to possible confusion with bounding boxes.
+                // hitSymbol.highlight(true);
             }
         });
     };
