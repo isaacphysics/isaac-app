@@ -592,6 +592,7 @@ export
             symbol.highlight(false);
             let hitSymbol = symbol.hit(p);
             if (hitSymbol) {
+                // Hey, we hit a symbol! :)
                 hitSymbol.highlight(true);
             }
         });

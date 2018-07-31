@@ -222,10 +222,10 @@ export
 
                 if (drawThisOne || window.location.hash === "#debug") {
                     let ptAlpha = window.location.hash === "#debug" && !drawThisOne ? alpha * 0.5 : alpha;// * 0.5;
-                    this.p.stroke(0, 127, 255, ptAlpha);
+                    this.p.stroke(51, 153, 255, ptAlpha);
                     this.p.strokeWeight(1);
                     if (highlightThisOne && drawThisOne) {
-                        this.p.fill(127, 192, 255);
+                        this.p.fill(51, 153, 255);
                     } else {
                         this.p.noFill();
                     }
@@ -387,9 +387,9 @@ export
     highlight(on = true) {
         let mainColor = this.isMainExpression ? this.p.color(0) : this.p.color(0, 0, 0, 127);
         this.isHighlighted = on;
-        this.color = on ? this.p.color(72, 123, 174) : mainColor;
+        this.color = on ? this.p.color(51, 153, 255) : mainColor;
         _.each(this.dockingPoints, dockingPoint => {
-            if (dockingPoint.child != null) {
+            if (dockingPoint.child != null && !on) {
                 dockingPoint.child.highlight(on);
                 dockingPoint.child.isMainExpression = this.isMainExpression;
             }
