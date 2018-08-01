@@ -47,19 +47,24 @@ export
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
-    get dockingPoints(): { [key: string]: DockingPoint; } {
-        // BIG FAT FIXME: This needs to climb up the family tree to see if any ancestor is a Differential, otherwise
-        // stuff like d(xy^2) are allowed, where y is squared, not d nor x.
-        if (this.sonOfADifferential) {
-            let predicate = ["superscript"];
-            if (this.dockedTo != "right") {
-                predicate.push("right");
-            }
-            return _.omit(this._dockingPoints, predicate);
-        } else {
-            return this._dockingPoints;
-        }
-    }
+    // FIXME Executive decision: this goes for now because otherwise derivative
+    //       text entry breaks royally. We may want to revisit this later, but
+    //       I think it's not necessary with the new usability improvements to
+    //       the editor. (af599)
+    //
+    // get dockingPoints(): { [key: string]: DockingPoint; } {
+    //     // BIG FAT FIXME: This needs to climb up the family tree to see if any ancestor is a Differential, otherwise
+    //     // stuff like d(xy^2) are allowed, where y is squared, not d nor x.
+    //     if (this.sonOfADifferential) {
+    //         let predicate = ["superscript"];
+    //         if (this.dockedTo != "right") {
+    //             predicate.push("right");
+    //         }
+    //         return _.omit(this._dockingPoints, predicate);
+    //     } else {
+    //         return this._dockingPoints;
+    //     }
+    // }
 
     public constructor(p: any, s: any, letter: string, modifier = "") {
         super(p, s);
