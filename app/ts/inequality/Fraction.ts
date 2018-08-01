@@ -38,7 +38,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, 0);
@@ -116,7 +116,7 @@ export
         return null;
     }
 
-    token() {
+    token(): string {
         return '';
     }
 

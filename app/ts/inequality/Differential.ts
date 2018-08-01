@@ -38,7 +38,7 @@ class Differential extends Widget {
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Differential is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -196,7 +196,7 @@ class Differential extends Widget {
         };
     }
 
-    token() {
+    token(): string {
         // DRY this out.
         let expression;
         if (this.letter == "δ") {
@@ -318,7 +318,7 @@ class Differential extends Widget {
     }
 
     /**
-     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     * @returns {Array<Widget>} A flat array of the children of this widget, as widget objects
      */
     get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));

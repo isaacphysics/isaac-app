@@ -43,7 +43,13 @@ export
         this.h = h;
     }
 
-    static fromObject(box) {
+    /**
+     * Factory to produce a Rect from an object with the appropriate keys.
+     * 
+     * @param box An object with keys `x`, `y`, `w`, and `h`.
+     * @returns {Rect} A Rect corresponding to the `box` parameter.
+     */
+    static fromObject(box): Rect {
         if (box.hasOwnProperty("x") && box.hasOwnProperty("y") && box.hasOwnProperty("w") && box.hasOwnProperty("h")) {
             return new Rect(box.x, box.y, box.w, box.h);
         } else {
@@ -58,7 +64,7 @@ export
 	 * @param newOrigin The new TL corner's position
 	 * @returns {Rect} This Rect post hoc.
      */
-    setOrigin(newOrigin: p5.Vector) {
+    setOrigin(newOrigin: p5.Vector): Rect {
         this.x = this.x - newOrigin.x;
         this.y = this.y - newOrigin.y;
         return this;
@@ -74,9 +80,9 @@ export
     }
 
 	/**
-	 * @returns {Vector} The centre of this Rect, in canvas coordinates.
+	 * @returns {p5.Vector} The centre of this Rect, in canvas coordinates.
      */
-    get center() {
+    get center(): p5.Vector {
         return new p5.Vector(this.x + this.w/2, this.y + this.h/2);
     }
 }
@@ -107,13 +113,14 @@ export
 
     /** Points to which other widgets can dock */
     _dockingPoints: { [key: string]: DockingPoint; } = {};
-    get dockingPointSize() {
+    get dockingPointSize(): number {
         return this.scale * this.s.baseDockingPointSize;
     }
 
     /** An array of the types of docking points that this widget can dock to */
     docksTo: Array<string> = [];
 
+    /** A string holding the name of the docking point this widget is docked to, if it is. */
     dockedTo: string = "";
 
     mode: string;
@@ -135,6 +142,7 @@ export
         }
     }
 
+    /** The color used to draw this Widget */
     color = null;
     isMainExpression = false;
     currentPlacement = "";
@@ -144,7 +152,7 @@ export
      *
      * @see Differential, Derivative
      */
-    get isDetachable() {
+    get isDetachable(): boolean {
         return true;
     }
 
@@ -283,8 +291,10 @@ export
         this.p.translate(-this.position.x, -this.position.y);
     }
 
+    /** Widgets must draw themselves. Overriding this is how they do it. */
     abstract _draw();
 
+    /** @returns {string} A string for content editors to specify initial available symbols. */
     abstract token(): string;
 
     // ************ //
@@ -330,6 +340,8 @@ export
         return o;
     }
 
+    /** Specific widgets have their own properties */
+    // FIXME Could turn this into a `properties` getter maybe?
     abstract properties();
 
     _properties(): Object {
@@ -390,6 +402,7 @@ export
         this.isHighlighted = on;
         this.color = on ? this.p.color(51, 153, 255) : mainColor;
         _.each(this.dockingPoints, dockingPoint => {
+            // Only recurse for turning off. This seems to improve usability.
             if (dockingPoint.child != null && !on) {
                 dockingPoint.child.highlight(on);
                 dockingPoint.child.isMainExpression = this.isMainExpression;
@@ -485,7 +498,7 @@ export
     abstract boundingBox(): Rect;
 
     /**
-     * @returns {Vector} The absolute position of this widget relative to the canvas.
+     * @returns {p5.Vector} The absolute position of this widget relative to the canvas.
      */
     get absolutePosition(): p5.Vector {
         if (null != this.parentWidget) {
