@@ -47,7 +47,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         // TODO Handle greek elements
         let e = this.particle;
         // if (this.dockingPoints['subscript'].child) {
@@ -55,10 +55,11 @@ export
         // }
         return e;
     }
+
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
+     * @returns {p5.Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);

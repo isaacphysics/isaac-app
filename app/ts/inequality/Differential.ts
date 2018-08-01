@@ -38,7 +38,7 @@ class Differential extends Widget {
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Differential is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -59,21 +59,30 @@ class Differential extends Widget {
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 
+    /**
+     * Climbs up the ancestors to see if this widget is docked to a Derivative.
+     */
     get sonOfADerivative() {
         let p = this.parentWidget;
-        while (p != null) {
+        while (null !== p) {
             if (p.typeAsString === 'Derivative') {
-                return true
+                return true;
             }
+            p = this.parentWidget;
         }
         return false;
     }
 
-    get orderNeedsMoving() {
+    /**
+     * Climbs up the parents to see if this widget is docked to the denominator of a Derivative.
+     * 
+     * @returns {boolean}
+     */
+    get orderNeedsMoving(): boolean {
         let w: Widget = this;
-        while (w != null) {
-            if (this.dockedTo === "denominator") {
-                return this.sonOfADerivative;
+        while (null !== w.parentWidget) {
+            if (w.parentWidget.typeAsString === 'Derivative' && w.dockedTo === 'denominator') {
+                return true;
             }
             w = w.parentWidget;
         }
@@ -187,7 +196,7 @@ class Differential extends Widget {
         };
     }
 
-    token() {
+    token(): string {
         // DRY this out.
         let expression;
         if (this.letter == "δ") {
@@ -309,7 +318,7 @@ class Differential extends Widget {
     }
 
     /**
-     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     * @returns {Array<Widget>} A flat array of the children of this widget, as widget objects
      */
     get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));

@@ -173,7 +173,7 @@ export
     };
 
     windowResized = () => {
-        this.p.resizeCanvas(this.p.windowWidth * window.devicePixelRatio, this.p.windowHeight * window.devicePixelRatio);
+        this.p.resizeCanvas(this.p.windowWidth * Math.ceil(window.devicePixelRatio), this.p.windowHeight * Math.ceil(window.devicePixelRatio));
     };
 
     draw = () => {
@@ -646,7 +646,7 @@ export
         let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
-            symbol.position = this.p.createVector(this.width/(window.devicePixelRatio*2) - sbox.center.x, top + sbox.center.y);
+            symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
             top += sbox.h*1.5;
             symbol.shakeIt();
         });

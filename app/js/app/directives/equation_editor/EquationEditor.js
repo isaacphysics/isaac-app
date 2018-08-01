@@ -427,7 +427,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         scope.future = [];
                         let p = new p5(function (p5instance) {
                             try {
-                                sketch = new MySketch(p5instance, scope, element.width() * window.devicePixelRatio, element.height() * window.devicePixelRatio, scope.state.symbols);
+                                sketch = new MySketch(p5instance, scope, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
                             } catch (error) {
                                 console.log(error);
                             }

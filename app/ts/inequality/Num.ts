@@ -36,7 +36,6 @@ export
     protected right = this.dockingPoints.hasOwnProperty("right");
     protected superscript = this.dockingPoints.hasOwnProperty("superscript");
 
-
     get typeAsString(): string {
         return "Num";
     }
@@ -44,7 +43,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -163,7 +162,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         return '';
     }
 

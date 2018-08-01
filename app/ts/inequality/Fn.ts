@@ -44,7 +44,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -88,7 +88,7 @@ export
         // Override docking points created in super constructor
         this.dockingPoints = {};
         this.generateDockingPoints();
-        this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets", 'differential_argument'];
+        this.docksTo = ['relation', 'symbol', 'operator', 'exponent', "operator_brackets", 'differential_argument'];
     }
 
     /**
@@ -208,7 +208,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.formatExpressionAs("python")) == -1 && this.innerSuperscript) {
             return "arc" + this.name + "()";
         } else {

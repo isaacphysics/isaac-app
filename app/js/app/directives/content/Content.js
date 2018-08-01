@@ -37,46 +37,44 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 
 	            	scope.doc = undefined;
 	            	scope.$parent.$watch(iAttrs.doc, function(newDoc) {
-						if (undefined === newDoc) {
-							return;
-						}
 						scope.doc = newDoc;
-						
-	            		if (newDoc)
+
+						if (scope.doc) {
 	            			scope.contentChildIndex = newDoc.contentChildIndex || scope.contentChildIndex || "0000";
 
-	            		//TODO: we should probably make this a scss rule.
-		            	if(scope.doc && scope.doc.layout=="right") {
-		            		iElement.css("float", "right").width(300);
-		            		iElement.css("margin-left", "30px");
-		            	} else if(scope.doc && scope.doc.layout=="righthalf") {
-		            		iElement.css("float", "right").width("50%");
-		            		iElement.css("margin-left", "30px");
-		            	} else if(scope.doc && scope.doc.layout=="left") {
-		            		iElement.css("float", "left").width(300);
-		            		iElement.css("margin-right", "30px");
-		            	}
+		            		//TODO: we should probably make this a scss rule.
+			            	if(scope.doc.layout=="right") {
+			            		iElement.css("float", "right").width(300);
+			            		iElement.css("margin-left", "30px");
+			            	} else if(scope.doc.layout=="righthalf") {
+			            		iElement.css("float", "right").width("50%");
+			            		iElement.css("margin-left", "30px");
+			            	} else if(scope.doc.layout=="left") {
+			            		iElement.css("float", "left").width(300);
+			            		iElement.css("margin-right", "30px");
+			            	}
 
-		            	if (scope.doc && scope.doc.id) {
+			            	if (scope.doc.id) {
 
-		            		// Ensure that there is actually a hash at all first, then see if we match it
-		            		if ($location.hash() && (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1)) {
+			            		// Ensure that there is actually a hash at all first, then see if we match it
+			            		if ($location.hash() && (scope.doc.id.indexOf("|" + $location.hash()) == scope.doc.id.length - $location.hash().length - 1)) {
 
-		            			scope.$emit("ensureVisible");
+			            			scope.$emit("ensureVisible");
 
-		            			var element = iElement.closest("dd");
-		            			if (null == element) {
-		            				element = iElement;
-		            			}
+			            			var element = iElement.closest("dd");
+			            			if (null == element) {
+			            				element = iElement;
+			            			}
 
-								$timeout(function() {
-									$("html,body").animate({
-										// Use accordion section containing object, the 'dd' element:
-						                scrollTop: element.offset().top
-						            });        
-								});
-		            		}
-		            	}
+									$timeout(function() {
+										$("html,body").animate({
+											// Use accordion section containing object, the 'dd' element:
+							                scrollTop: element.offset().top
+							            });        
+									});
+			            		}
+			            	}
+						}
 	            	});
 	            });
 	        }
