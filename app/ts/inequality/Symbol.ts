@@ -65,6 +65,16 @@ export
     //         return this._dockingPoints;
     //     }
     // }
+    //
+    // /**
+    //  *  Checks if this symbol is the direct child of a differential.
+    //  * 
+    //  * @returns {boolean} True if this symbol is the direct child of a differential but not multiplied to it.
+    //  */
+    // get sonOfADifferential(): boolean {
+    //     let p = this.parentWidget;
+    //     return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
+    // }
 
     public constructor(p: any, s: any, letter: string, modifier = "") {
         super(p, s);
@@ -82,16 +92,6 @@ export
     get isDetachable(): boolean {
         const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADifferential;
-    }
-
-    /**
-     *  Checks if this symbol is the direct child of a differential.
-     * 
-     * @returns {boolean} True if this symbol is the direct child of a differential but not multiplied to it.
-     */
-    get sonOfADifferential(): boolean {
-        let p = this.parentWidget;
-        return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
     }
 
 	/**
@@ -127,7 +127,8 @@ export
             if(this.modifier == "prime") {
                 expression += "'"
             }
-            if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["subscript"].child != null) {
@@ -149,7 +150,8 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += "_" + this.dockingPoints["subscript"].child.formatExpressionAs("subscript");
             }
-            if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + ")";
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
@@ -171,7 +173,8 @@ export
             if (this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.formatExpressionAs(format);
             }
-            if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
+            if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.formatExpressionAs(format);
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
@@ -183,14 +186,14 @@ export
             if(this.modifier == "prime") {
                 l += "_prime"
             }
-            if (this.sonOfADifferential) {
-                if (this.dockingPoints['subscript'].child == null) {
-                    expression += '<mi>' + l + '</mi>';
+            // if (this.sonOfADifferential) {
+            //     if (this.dockingPoints['subscript'].child == null) {
+            //         expression += '<mi>' + l + '</mi>';
 
-                } else if (this.dockingPoints['subscript'].child != null) {
-                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
-                }
-            } else {
+            //     } else if (this.dockingPoints['subscript'].child != null) {
+            //         expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
+            //     }
+            // } else {
                 if (this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
                     expression += '<mi>' + l + '</mi>';
 
@@ -203,7 +206,7 @@ export
                 } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
                     expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
                 }
-            }
+            // }
 
             if (this.dockingPoints["right"] && this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.formatExpressionAs('mathml');
