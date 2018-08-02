@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/MathJaxConfig"], function() {
+define(["../../MathJaxConfig"], function() {
 
 
-	return ["$compile", "$rootScope", function($compile, $rootScope) {
+	return ["$compile", "$rootScope", function(_$compile, $rootScope) {
 
 		return {
 
 			restrict: 'A',
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				// This must be done asynchronously. Content isn't actually in element yet. Don't really understand why...
-				var first = true;
+				let first = true;
 				scope.$watch(function() {
 					if (first) {
 						setTimeout(function() {

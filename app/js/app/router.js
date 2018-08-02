@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["angular-ui-router"], function() {
+define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
     // Declare app level module which depends on filters, and services
     angular.module('isaac.router', [
@@ -23,7 +23,7 @@ define(["angular-ui-router"], function() {
 
     .config(['$stateProvider', '$urlRouterProvider', 'subjectProvider', function($sp, $urlRouterProvider, subject) {
 
-        var getLoggedInPromise = function($rootScope) {
+        let getLoggedInPromise = function($rootScope) {
             return $rootScope.user.$promise.catch(function(r) {
                 if (r.status == 401)
                     return Promise.reject("require_login");
@@ -38,8 +38,8 @@ define(["angular-ui-router"], function() {
          * If the current user does not belong to a supplied role the promise will be rejected.
          *
          */
-        var getRolePromiseInjectableFunction = function(roles) {
-            var result = function($rootScope) {
+        let getRolePromiseInjectableFunction = function(roles) {
+            let result = function($rootScope) {
                 return getLoggedInPromise($rootScope).then(function(u) {
                     if (roles.indexOf(u.role) > -1) {
                         return Promise.resolve(u);
@@ -55,13 +55,13 @@ define(["angular-ui-router"], function() {
 
         $urlRouterProvider.when("", "/");
         $urlRouterProvider.otherwise(function($injector, $location) {
-            var $state = $injector.get("$state");
+            let $state = $injector.get("$state");
             $state.go("404", {
                 target: $location.url()
             });
         });
 
-        var genericPageState = function(url, id) {
+        let genericPageState = function(url, id) {
                 return {
                     url: url,
                     resolve: {
@@ -84,7 +84,7 @@ define(["angular-ui-router"], function() {
              * @param state is the template name to load
              * @param controller is the controller to use
              */
-        var staticPageState = function(url, state, controller) {
+        let staticPageState = function(url, state, controller) {
             return {
                 url: url,
                 views: {
@@ -96,7 +96,7 @@ define(["angular-ui-router"], function() {
             }
         }
 
-        var bookState = function(bookId) {
+        let bookState = function(bookId) {
             return {
                 url: "/books/" + bookId,
                 resolve: {
@@ -111,6 +111,59 @@ define(["angular-ui-router"], function() {
             }
         }
 
+        $sp.state('support', {
+            url: "/support/:type/:idSuffix",
+            resolve: {
+                categories: [function() {
+                    return {
+                        teacher: {
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" }, 
+                            assignments: { idSuffix: "assignments", title: "Assigning Work", icon: "faq" },
+                            progress: { idSuffix: "progress", title: "Viewing Student Progress", icon: "faq" },
+                            suggestions: { idSuffix: "suggestions", title: "Teaching Suggestions", icon: "teacher-hat" },
+                            direct: { idSuffix: "direct", title: "One-to-One Support", icon: "teacher-hat" },
+                        },
+                        student: {
+                            general: { idSuffix: "general", title: "General Questions", icon: "faq" },
+                            homework: { idSuffix: "homework", title: "Finding Homework", icon: "faq" },
+                            questions: { idSuffix: "questions", title: "Answering Questions", icon: "faq" },
+                        },
+                    };
+                }],
+                activeCategory: ["categories", "$stateParams", function(categories, $stateParams) {
+                    return categories[$stateParams.type] && categories[$stateParams.type][$stateParams.idSuffix] || Promise.reject({status: 404});
+                }],
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/support.html",
+                    controller: "SupportPageController",
+                },
+            },
+        });
+        // Add redirects for the URL subsections:
+        $sp.state('supportRoot', {
+            url: "/support",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportStudent', {
+            url: "/support/student",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'student', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+        $sp.state('supportTeacher', {
+            url: "/support/teacher",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("support", {type:'teacher', idSuffix: 'general'});
+                $rootScope.setLoading(false);
+            }],
+        });
+
         // These routes apply to all of the sites
         $sp.state('home', staticPageState("/", "home", "HomePageController"));
         $sp.state('cookies', genericPageState("/cookies", "cookie_policy"));
@@ -118,17 +171,12 @@ define(["angular-ui-router"], function() {
         $sp.state('terms', genericPageState("/terms", "terms_of_use"));
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
+        $sp.state('about', genericPageState("/about", "about_us_index"));
 
 
         if (subject.id == "physics") {
 
             // These are the routes that are specific to the physics site
-
-            $sp.state('about', genericPageState("/about", "about_us_index"));
-            $sp.state('teachers', genericPageState("/teachers", "mission_teachers"));
-            $sp.state('mission', genericPageState("/mission", "mission"));
-            $sp.state('mission_teachers', genericPageState("/mission_teachers", "mission_teachers"));
-            $sp.state('mission_students', genericPageState("/mission_students", "mission_students"));
             $sp.state('glossary', genericPageState("/glossary", "glossary"));
             $sp.state('apply_uni', genericPageState("/apply_uni", "apply_uni"));
             $sp.state('solving_problems', genericPageState("/solving_problems", "solving_problems"));
@@ -143,6 +191,25 @@ define(["angular-ui-router"], function() {
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
+            $sp.state('gcse', staticPageState("/gcse", "gcse"));
+            $sp.state('alevel', staticPageState("/alevel", "alevel"));
+
+            // Redirects for old URLs:
+            $sp.state('mission', {
+                url: "/mission",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('about', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('teachers', {
+                url: "/teachers",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('supportTeacher', {}, {location: "replace"});
+                    $rootScope.setLoading(false);
+                }],
+            });
+
 
             // The events page shouldn't be accessible from the other sites to avoid confusion!
             $sp.state('events', {
@@ -174,8 +241,18 @@ define(["angular-ui-router"], function() {
                     $rootScope.setLoading(false);
                 }],
             });
+            // Old book page URLs still need to work:
             $sp.state('physics_skills_14', {
                 url: "/physics_skills_14",
+                onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                    $state.go('book_physics_skills_14', {}, {
+                        location: "replace"
+                    });
+                    $rootScope.setLoading(false);
+                }],
+            });
+            $sp.state('book', {
+                url: "/book",
                 onEnter: ["$state","$rootScope", function($state, $rootScope) {
                     $state.go('book_physics_skills_14', {}, {
                         location: "replace"
@@ -218,17 +295,7 @@ define(["angular-ui-router"], function() {
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
         $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
-
-        // Old book page URLs still need to work
-        $sp.state('book', {
-            url: "/book",
-            onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go('book_physics_skills_14', {}, {
-                    location: "replace"
-                });
-                $rootScope.setLoading(false);
-            }],
-        });
+        $sp.state('book_pre_uni_maths', bookState("pre_uni_maths"));
 
         $sp.state('answers', {
             // People try this URL for answers; point them to the FAQ:
@@ -252,11 +319,6 @@ define(["angular-ui-router"], function() {
 
         $sp.state('equality', {
             url: "/equality?mode&symbols&testing",
-            resolve: {
-                // BIG RED AND YELLOW WARNING WITH SPARKLES AND A FEW CRACKERS JUST IN CASE:
-                // we may want to revert this policy at some point.
-                // requireRole: getRolePromiseInjectableFunction(["ADMIN", "CONTENT_EDITOR", "EVENT_MANAGER"]),
-            },
             views: {
                 "body": {
                     templateUrl: "/partials/states/equation_editor.html",
@@ -264,6 +326,17 @@ define(["angular-ui-router"], function() {
                 },
             },
         });
+
+        // Temporarily disable until we have refactored
+        // $sp.state('sketcher', {
+        //     url: "/sketcher",
+        //     views: {
+        //         "body": {
+        //             templateUrl: "/partials/states/graph_sketcher.html",
+        //             controller: "SketcherPageController"
+        //         },
+        //     },
+        // })
 
         $sp.state('contact', {
             url: "/contact?preset&subject",
@@ -374,7 +447,7 @@ define(["angular-ui-router"], function() {
         $sp.state('contentErrors', {
             url: "/admin/content_errors",
             resolve: {
-                "page": ["api", "$stateParams", function(api, $stateParams) {
+                "page": ["api", "$stateParams", function(api, _$stateParams) {
                     return api.contentProblems.get().$promise;
                 }]
             },
@@ -407,7 +480,7 @@ define(["angular-ui-router"], function() {
         });
 
         $sp.state('verifyEmail', {
-            url: "/verifyemail?userid&token&email&requested",
+            url: "/verifyemail?userid&token&requested",
             views: {
                 "body": {
                     templateUrl: "/partials/states/verify_email.html",
@@ -482,15 +555,15 @@ define(["angular-ui-router"], function() {
                     return window.foo;
                 }],
             },
-            onEnter: ["$state", function($state) {
+            onEnter: ["$state", function(_$state) {
                 document.location.href = "/";
             }]
         });
 
         $sp.state('shareLink', {
             url: "/s/:shortCode",
-            onEnter: ["$stateParams", "api", "$http", function($stateParams, api, $http) {
-                var redirectURL = "https://goo.gl/" + $stateParams.shortCode;
+            onEnter: ["$state", "$stateParams", "api", "$http", function($state, $stateParams, api, $http) {
+                let redirectURL = "https://goo.gl/" + $stateParams.shortCode;
 
                 api.logger.log({
                     type: "USE_SHARE_LINK",
@@ -499,21 +572,36 @@ define(["angular-ui-router"], function() {
                     return $http.get("https://www.googleapis.com/urlshortener/v1/url", {params: {shortUrl: redirectURL, key: 'AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y'}});
                 }).then(function(response) {
                     if (response.data.status == "OK") {
-                        var longUrl = response.data.longUrl;
+                        let longUrl = response.data.longUrl;
                         if (longUrl.indexOf(window.location.origin) == 0) {
                             document.location.href = longUrl;
                         } else {
-                            console.error("This is an external URL: " + longUrl);
-                            // FIXME - do something smarter here!
-                            document.location.href = longUrl;
+                            $state.go("externalLink", {link: longUrl}, {location: false});
                         }
                     } else {
-                        // FIXME - don't fail silently! Not 'OK' means malware or deleted.
+                        // Not 'OK' means malware or deleted.
+                        $state.go("404", {target: "/s/" + $stateParams.shortCode});
                     }
                 }).catch(function() {
-                    // FIXME - don't fail silently!
+                    // Google are deprecating this API, try sending the user directly to the Google URL:
+                    document.location.href = redirectURL;
                 });
             }]
+        });
+
+        $sp.state('externalLink', {
+            url: "/redirect",
+            params: {
+                "link": null
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/external_link.html",
+                    controller: ["$scope", "$stateParams", function($scope, $stateParams) {
+                        $scope.link = $stateParams.link;
+                    }],
+                },
+            },
         });
 
         $sp.state('404', {
@@ -649,35 +737,6 @@ define(["angular-ui-router"], function() {
                     }
                 }
             });
-
-        $sp.state('adminStatsNew', {
-            url: "/admin/stats/v2",
-            resolve: {
-                requireRole: getRolePromiseInjectableFunction(["ADMIN", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
-            },
-            views: {
-                "body": {
-                    templateUrl: "/partials/states/admin_stats_new.html",
-                    controller: ["$scope", "api", function($scope, api) {
-
-                        $scope.state = 'adminStatsNew';
-
-                        // general stats
-                        $scope.statistics = null;
-                        $scope.setLoading(true)
-                        api.statisticsEndpoint.getNewStats().$promise.then(function(result) {
-                            $scope.statistics = result;
-                            $scope.setLoading(false)
-                        });
-                        api.eventBookings.getAllBookings({
-                            "count_only": true
-                        }).$promise.then(function(result) {
-                            $scope.eventBookingsCount = result.count;
-                        })
-                    }]
-                }
-            }
-        });
 
             $sp.state('adminStats.schoolUserSummaryList', {
                 url: "/schools",
@@ -924,7 +983,7 @@ define(["angular-ui-router"], function() {
 
                 api.saveGameBoard($stateParams.boardId).$promise.then(function() {
                     if (requireLogin.role == "TEACHER" || requireLogin.role == "CONTENT_EDITOR" || requireLogin.role == "EVENT_MANAGER" || requireLogin.role == "ADMIN") {
-                        $state.go("setAssignments", {}, {
+                        $state.go("setAssignments", {'#': $stateParams.boardId}, {
                             location: "replace"
                         });
                     } else {
@@ -932,7 +991,7 @@ define(["angular-ui-router"], function() {
                             location: "replace"
                         });
                     }
-                }).catch(function(e) {
+                }).catch(function(_e) {
                     console.error("Error saving board.");
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });
@@ -956,7 +1015,7 @@ define(["angular-ui-router"], function() {
             console.warn("State change error:", error);
 
             // The UI Router doesn't preserve the hash for us, so do it manually.
-            var toHash = $location.hash();
+            let toHash = $location.hash();
             toHash = toHash ? "#" + toHash : "";
 
             if (error == "require_login")

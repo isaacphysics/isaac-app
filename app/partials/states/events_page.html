@@ -69,10 +69,14 @@
 
                  <tr>
                     <td>When:</td>
-<!--
-                    <td><time datetime="2014-12-19">Friday 19th Dec 2014 <span>7.50pm - 9.15pm</span></time></td>
--->
-                    <td><time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}} <span ng-if="!event.all_day">{{event.date | date : 'shortTime'}}</span></time></td>
+                    <td ng-if="!event.multiDay">
+                      <time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}}<br />{{event.date | date : 'shortTime'}}</time>
+                      <span ng-if="event.endDate != event.date"> &#8212; <time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date:'shortTime'}}</time></span>
+                    </td>
+                    <td ng-if="event.multiDay">
+                      <time datetime="{{event.date | date:'yyyy-MM-dd H:mm'}}">{{event.date | date : 'EEE d MMM yyyy'}}</time>
+                      <span ng-if="event.endDate != event.date"> &#8212;<br/><time datetime="{{event.endDate | date:'yyyy-MM-dd H:mm'}}">{{event.endDate | date : 'EEE d MMM yyyy'}}</time></span>
+                    </td>
                  </tr>
                  <tr ng-show="event.location.address.addressLine1">
                     <td>Location:</td>

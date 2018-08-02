@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', function($scope, page, tags, $rootScope, subject) {
-		$scope.doc = page;
-		$scope.page = page;
-		$rootScope.pageTitle = page.title;
-        $rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+export const PageController = ['$scope', 'page', 'tags', '$rootScope', 'subject', function($scope, page, tags, $rootScope, subject) {
+	$scope.doc = page;
+	$scope.page = page;
+	$rootScope.pageTitle = page.title;
+	$rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
+}];

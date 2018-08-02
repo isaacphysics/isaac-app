@@ -13,24 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/SymbolicQuestion.html"], function(_rv, templateUrl) {
 
-    return ["api", function(api) {
+    return ["api", function(_api) {
 
         return {
             scope: true,
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/SymbolicQuestion.html",
+            templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
+                let ctrl = this;
 
                 scope.editorMode = 'maths';
 
                 ctrl.selectedFormula = {
-                    symbols: {}
+                    symbols: {},
+                    formula: '',
                 };
 
                 if (scope.question.selectedChoice) {
@@ -41,7 +42,6 @@ define(["app/honest/responsive_video"], function(rv) {
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
-
                 } else if (scope.doc.formulaSeed) {
                     // We have seed to load and no previous answer
                     console.debug("Loading the formula seed.", scope.doc.formulaSeed);
@@ -58,7 +58,8 @@ define(["app/honest/responsive_video"], function(rv) {
                     // We have no answer and no seed
                     console.debug("No previous answer or seed.");
                     ctrl.selectedFormula = {
-                        symbols: {}
+                        symbols: {},
+                        formula: '',
                     };
                 }
 
@@ -70,12 +71,11 @@ define(["app/honest/responsive_video"], function(rv) {
                     if (f === oldF) {
                         return; // Init
                     }
-
                     if (f) {
                         scope.question.selectedChoice = {
                             type: "formula",
                             value: JSON.stringify(f),
-                            pythonExpression: f.result ? f.result.python : "",
+                            pythonExpression: f.result ? f.result.python.trim() : "",
                         };
                     } else {
                         scope.question.selectedChoice = null;

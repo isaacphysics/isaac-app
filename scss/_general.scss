@@ -224,11 +224,13 @@ $footer_height : 250px;
     text-align: center;
 }
 
-.ru_maths, .panel.maths * {
+.ru_maths, .panel.maths * 
+{
     color: $ru_maths !important;
 }
 
-.ru_chemistry, .panel.chemistry * {
+.ru_chemistry, .panel.chemistry * 
+{
     color: $ru_chemistry !important;
 }
 
@@ -279,6 +281,17 @@ body
 {
     overflow-x: hidden;
 }*/
+
+.hexagon-offset-even {
+    @media #{$large-up} {
+        margin-top: -72px !important;
+        left: 4px;
+    } 
+    @media #{$medium-only} {
+        margin-top: -15px;
+    }
+}   
+
     
 @media #{$small-only}
 {
@@ -498,11 +511,8 @@ h6~.subheader { position: relative; bottom:  8px;}
 }
 
 .superseded-warning {
-    text-align: center;
     color: #bb2828;
     width: 100%;
-    border: 1px solid;
-    padding: 10px;
     a:link {
         text-decoration: underline;
     }

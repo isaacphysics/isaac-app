@@ -1,0 +1,84 @@
+<div class="medium-16 columns maths">
+  <div class="book-intro">
+    <h1 class="book-heading">{{introText.title}}</h1>
+    <strong ng-show="introText.subtitle">{{introText.subtitle}}</strong>
+    <img class="book-cover" src="assets/books/pre_uni_maths.jpg" alt="Cover image of the book.">
+    <div isaac-content doc="introText" />
+  </div>
+
+  <h4>Chapters:</h4>
+  <ul class="medium-block-grid-2 small-block-grid-1 book-levels">
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl1_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">1</span>
+        </span>
+        Level 1
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl2_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">2</span>
+        </span>
+        Level 2
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl3_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">3</span>
+        </span>
+        Level 3
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl4_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">4</span>
+        </span>
+        Level 4
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl5_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">5</span>
+        </span>
+        Level 5
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl6_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">6</span>
+        </span>
+        Level 6
+      </a>
+    </li>
+    <li>
+      <a href="javascript:void(0)" ng-click="selectChapter('pre_uni_maths_lvl7_boards')">
+        <span class="icon-stack">
+          <span class="icon-hexagon"></span>
+          <span class="count">7</span>
+        </span>
+        Level 7
+      </a>
+    </li>
+  </ul>
+</div>
+<div isaac-modal="bookChapterOptions" class="maths">
+  <div class="reveal-modal-head">
+    <h2>{{modalContent.title}}</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body book-chapter-options">
+    <div isaac-content doc="modalContent" />
+  </div>
+</div>

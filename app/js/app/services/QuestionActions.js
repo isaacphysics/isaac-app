@@ -15,30 +15,57 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		var MAX_LABEL_LENGTH = 17;
-		var defaultAction = {
+		const MAX_LABEL_LENGTH = 17;
+		void MAX_LABEL_LENGTH;
+		
+		let defaultAction = {
 			disabled: false
 		}
 
+		let TEMP_GRAPH_SKETCHER_RESULT = {
+			correct:true,
+			explanation: {
+				children:[{
+					encoding:"markdown",
+					published:false,
+					tags:[],
+					type:"content",
+					value:"Thank you for your help!<br />As we are not yet marking these test questions, they will not affect your progress statistics."
+				}],
+				encoding:"markdown",
+				published:true,
+				tags:[],
+				type:"content"
+			},
+		};
+
 		this.checkMyAnswer = function(scope, api) { // TODO refactor so that less is passed to this function
-			var checkAnswer = function() {
+			let checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
 
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
-						var symbols = JSON.parse(scope.question.selectedChoice.value).symbols;
-						if (Object.keys(symbols).length == 0) {
-							return;
+						let selectedChoice = JSON.parse(scope.question.selectedChoice.value);
+						if (selectedChoice.hasOwnProperty("symbols")) {
+							// If we have symbols, this was definitely the graphical editor. Ensure an answer was provided:
+							if (Object.keys(selectedChoice.symbols).length == 0) {
+								return;
+							}
 						}
 					}
 
-					var s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
+					if (scope.doc.type == "isaacGraphSketcherQuestion") {
+						scope.question.validationResponse = TEMP_GRAPH_SKETCHER_RESULT;
+						return; // Do not submit Graph SKetecher question attemps
+					}
+
+					let s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
 					s.$promise.then(function foo(validationResponse) {
 						scope.question.validationResponse = validationResponse;
 					}, function bar(e) {
 						console.error("Error validating answer:", e);
-						var eMessage = e.data.errorMessage;
-						var eTitle = "Can't Submit Answer";
+						let eMessage = e.data.errorMessage;
+						let eTitle = "Can't Submit Answer";
 						if (eMessage != null && eMessage.indexOf("ValidatorUnavailableException:") == 0) {
 							eTitle = "Error Checking Answer"
 							eMessage = eMessage.replace("ValidatorUnavailableException:", "");
@@ -63,7 +90,7 @@ define([], function() {
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
-			commaSeparatedQuestionHistory = questionHistory.join(',');
+			let commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
@@ -76,11 +103,11 @@ define([], function() {
 		};
 
 		this.trySupportingQuestion = function(supportingQuestion, currentQuestionId, pageCompleted, questionHistory, gameboardId) {
-			var fullLabel = "Try more questions of a similar difficulty on " + supportingQuestion.title.toLowerCase();
+			let fullLabel = "Try more questions of a similar difficulty on " + supportingQuestion.title.toLowerCase();
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
-			var commaSeparatedQuestionHistory = questionHistory.join(',');
+			let commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,
@@ -104,8 +131,8 @@ define([], function() {
 		};
 
 		this.retryPreviousQuestion = function(questionHistory, gameboardId) {
-			var previousQuestionId = questionHistory.pop();
-			var commaSeparatedQuestionHistory = questionHistory.join(',')
+			let previousQuestionId = questionHistory.pop();
+			let commaSeparatedQuestionHistory = questionHistory.join(',')
 
 			return {
 				prototype: defaultAction,

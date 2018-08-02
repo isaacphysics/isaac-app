@@ -28,10 +28,19 @@
 				                <span>
 				                    <label><strong>Choose your URL (must be unique and not contain spaces)</strong></label>
 				                    <input type="text" ng-model="currentGameBoard.id" placeholder="Id (optional - leave blank if auto generated is ok)">
-				                </span>								
-							</li>								
+				                </span>
+							</li>
+							<li ng-show="isStaffUser">
+								<span>
+									<label><strong>Tag your board as</strong></label>
+									<select ng-model="currentGameBoard.tags">
+										<option value="">None</option>
+										<option value="{{boardTags.isaac.identifier}}">Created by Isaac</option>
+									</select>
+								</span>
+							</li>
 							<li>
-								<strong>Find Questions by...</strong>									
+								<strong>Find Questions by...</strong>
 								<div class="row">
 									<div class="small-16 medium-8 columns">
 										<label><strong>Subject <span class="right show-for-medium-up">and</span></strong></label>
@@ -52,7 +61,7 @@
 				                            <option value="5">5</option>
 				                            <option value="6">6 (Post A-Level)</option>
 				                        </select>
-									</div>									
+									</div>
 									<div class="small-16 columns">
 						                <label><strong>and by Question Title or Topic</strong></label>
 						                <input type='text' ng-model="questionSearchText" placeholder="Enter question title or topic here e.g. dynamics">														
@@ -63,7 +72,7 @@
 								<label>Tick to choose your questions <span class="show-for-small-only">below</span></label>
 							</li>
 							<li ng-show="isStaffUser">
-								<label><strong>Choose your Wildcard</strong></label>									
+								<label><strong>Choose your Wildcard</strong></label>
 								<div class="row">
 									<div class="small-16 columns">
 						                <select ng-model="userSelectedBoardWildCardId">

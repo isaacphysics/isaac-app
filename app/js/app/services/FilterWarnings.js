@@ -17,15 +17,15 @@ define([], function() {
 
     return [function() {
 
-        var contains = function(arr, val) {
+        let contains = function(arr, val) {
             return arr.indexOf(val) > -1;
         }
 
-        var joinList = function(arr) {
+        let joinList = function(arr) {
             arr.sort();
-            var s = "";
+            let s = "";
 
-            for (var i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
                 if (i > 0 && i < arr.length - 1)
                     s += ", ";
 
@@ -37,9 +37,9 @@ define([], function() {
             return s;
         }
 
-        function getWarnings(subjects, fields, topics, levels, concepts) {
+        function getWarnings(_subjects, fields, topics, levels, _concepts) {
 
-            var warnings = [];
+            let warnings = [];
 
         // Mechanics topics:
             if (contains(topics, "circular_motion") && !(contains(levels, 4) || contains(levels, 5) || levels.length == 0))
@@ -115,10 +115,10 @@ define([], function() {
             if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 6) || levels.length == 0))
                 warnings.push(["series", "There are no Series questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-            if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || levels.length == 0))
+            if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
                 warnings.push(["differentiation", "There are no Differentiation questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-            if (contains(topics, "integration") && !(contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
+            if (contains(topics, "integration") && !(contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))
                 warnings.push(["integration", "There are no Integration questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
             if (contains(topics, "differential_eq") && !(contains(levels, 5) || contains(levels, 6) || levels.length == 0))

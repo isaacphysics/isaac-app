@@ -20,6 +20,8 @@ limitations under the License.
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
+import * as p5 from 'p5';
+
 import { Widget } from './Widget';
 
 /** A class to encapsulate all the info on docking points */
@@ -27,7 +29,9 @@ export class DockingPoint {
 
     private _child: Widget = null;
 
-    public constructor(public widget: Widget, public position: p5.Vector, public scale: number, public type: string, public name: string) {
+    isVisible = false;
+
+    public constructor(public widget: Widget, public position: p5.Vector, public scale: number, public type: Array<string>, public name: string) {
 
     }
 
@@ -44,5 +48,15 @@ export class DockingPoint {
     /** Gets this docking points' Widget. */
     get child() {
         return this._child;
+    }
+
+    get absolutePosition(): p5.Vector {
+        return p5.Vector.add(this.widget.absolutePosition, this.position);
+    }
+
+    get size(): number {
+        // TODO Work on the variable docking points size thing. It looks cool, but needs some care when space is 0.
+        // return (this.widget.mustExpand) ? this.widget.scale * this.s.baseDockingPointSize : this.widget.scale * this.s.baseDockingPointSize/2;
+        return this.widget.scale * this.widget.s.baseDockingPointSize;
     }
 }

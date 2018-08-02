@@ -1,5 +1,5 @@
 
-define([], function() {
+define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
     return [function() {
 
@@ -8,7 +8,7 @@ define([], function() {
                 symbol: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/menu_symbol.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 scope.name="MENUSYMBOL"
 
@@ -19,18 +19,18 @@ define([], function() {
 
                 scope.dragging = false;
 
-                var editor = $(".equation-editor");
+                let editor = $(".equation-editor");
 
-                var grabLocalX, grabLocalY;
+                let grabLocalX, grabLocalY;
 
-                var lastPageX = 0;
-                var lastPageY = 0;
-                var grab = function(pageX, pageY, e) {
+                let lastPageX = 0;
+                let lastPageY = 0;
+                let grab = function(pageX, pageY, _e) {
                     scope.dragging = true;
                     element.addClass("dragging");
                     scope.$apply();
 
-                    var offset = element.offset();
+                    let offset = element.offset();
                     grabLocalX = pageX - offset.left;
                     grabLocalY = pageY - offset.top;
 
@@ -41,10 +41,10 @@ define([], function() {
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
-                }
+                };
 
-                var drag = function(pageX, pageY) {
-                    var pageScroll = editor.offset().top;
+                let drag = function(pageX, pageY) {
+                    let pageScroll = editor.offset().top;
 
                     pageX = pageX || lastPageX;
                     pageY = pageY || lastPageY;
@@ -52,13 +52,8 @@ define([], function() {
                     if ("lockVertical" in attrs)
                         pageY = lastPageY;
 
-                    var requiredPageLeft = pageX - grabLocalX;
-                    var requiredPageTop = pageY - grabLocalY;
-
-                    var offset = element.offset();
-
-                    var pX = pageX - offset.top;
-                    var pY = pageY - offset.left;
+                    let requiredPageLeft = pageX - grabLocalX;
+                    let requiredPageTop = pageY - grabLocalY;
 
                     // Tell our parents that we've moved.
                     scope.$emit("symbolDrag", scope.symbol, requiredPageLeft, requiredPageTop - pageScroll, pageX - lastPageX, pageY - pageScroll - lastPageY, pageX, pageY - pageScroll);
@@ -68,18 +63,13 @@ define([], function() {
                     // Parent may have moved. Recompute our position based on (potentially) new origin.
                     element.css("left", 0);
                     element.css("top", 0);
-                    var originOffset = element.offset();
+                    let originOffset = element.offset();
 
                     element.css("left", requiredPageLeft - originOffset.left);
                     element.css("top", requiredPageTop - originOffset.top);
+                };
 
-                }
-
-                var drop = function(pageX, pageY, e) {
-
-                    var token = element.find(".symbol-token");
-                    var tokenOffset = token.offset();
-
+                let drop = function(pageX, pageY, _e) {
                     element.css("left", 0);
                     element.css("top", 0);
                     
@@ -92,60 +82,61 @@ define([], function() {
                     scope.dragging = false;
                     element.removeClass("dragging");
                     scope.$apply();
-                }
+                };
 
-                var mousedown = function(e) {
+                let mousedown = function(e) {
                     grab(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
-                var mouseup = function(e) {
+                let mouseup = function(e) {
                     drop(e.pageX, e.pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
-                var mousemove = function(e) {
+                let mousemove = function(e) {
                     drag(e.pageX, e.pageY);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
-                var touchstart = function(e) {
-                    var ts = e.originalEvent.touches;
+                let touchstart = function(e) {
+                    let ts = e.originalEvent.touches;
                     grab(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
-                var touchend = function(e) {
-                    var ts = e.originalEvent.changedTouches;
+                let touchend = function(e) {
+                    let ts = e.originalEvent.changedTouches;
                     drop(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
-                var touchmove = function(e) {
-                    var ts = e.originalEvent.touches;
+                let touchmove = function(e) {
+                    let ts = e.originalEvent.touches;
                     drag(ts[0].pageX, ts[0].pageY, e);
 
                     e.stopPropagation();
                     e.preventDefault();
-                }
+                };
 
                 element.on("mousedown", mousedown);
                 element.on("touchstart", touchstart);
 
                 scope.$on("menuMoved", function() {
-                    if (scope.dragging)
+                    if (scope.dragging) {
                         drag();
-                })
+                    }
+                });
             },
         };
     }];

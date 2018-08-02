@@ -20,10 +20,11 @@ $ru_green: #509e2e;
 $ru_purple: #944cbe;
 $ru_blue: #009acd;
 $ru_darkpurple: #793d9c;
+$ru_orangered: #ef3e36;
 
 $ru_physics: $ru_purple;
 $ru_maths: $ru_blue;
-$ru_chemistry: #ef3e36;
+$ru_chemistry: $ru_orangered;
 
 $ru_darkgrey: #333333;
 $ru_lightgrey: #cccccc;
@@ -39,7 +40,7 @@ $ft-lower-colour: #7fd0ff; // keep in sync with FastTrackProgressBar.js' scope.F
 // $rem-base: 16px;
 
 // Allows the use of rem-calc() or lower-bound() in your settings
-@import "foundation/functions";
+@import "foundation-sites/scss/foundation/functions";
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.

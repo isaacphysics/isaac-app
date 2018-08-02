@@ -51,6 +51,9 @@ table {
     transition: opacity 300ms ease-out;
     background-color: #333;
     color: #fff;
+    margin-bottom: 0;
+    border: none;
+    
     .ru-button {
         float: right;
         font-size: 16px;
@@ -58,6 +61,27 @@ table {
         font-style: normal;
         font-weight: normal;
         margin-bottom: 0;
+    }
+
+    .close {
+        float: right;
+        font-size: 16px;
+        font-family: Arial;
+        font-style: normal;
+        font-weight: normal;
+        margin-bottom: 0;
+        background: #509e2e;
+        opacity: 1;
+        padding: 1rem 2rem 1.0625rem 2rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+        position: relative;
+        margin: 0 0 1.25rem;
+        color: #fff;
+
+        &:hover {
+            opacity: 1;
+        }
     }
 }
 .underline {

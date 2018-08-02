@@ -17,64 +17,67 @@
 
 define(function(require) {
 
-	var genericPageControllers = require("app/controllers/GenericPageControllers");
+	const genericPageControllers = require("./controllers/GenericPageControllers");
 
-	var homePageControllers = require("app/controllers/HomePageControllers");
+	const homePageControllers = require("./controllers/HomePageControllers");
 
-	var conceptPageControllers = require("app/controllers/ConceptPageControllers");
-	var conceptIndexControllers = require("app/controllers/ConceptIndexControllers");
+	const conceptPageControllers = require("./controllers/ConceptPageControllers");
+	const conceptIndexControllers = require("./controllers/ConceptIndexControllers");
 
-	var questionPageControllers = require("app/controllers/QuestionPageControllers");
+	const questionPageControllers = require("./controllers/QuestionPageControllers");
 
-	var gameBoardsControllers = require("app/controllers/GameBoardsControllers");
+	const gameBoardsControllers = require("./controllers/GameBoardsControllers");
 
-	var myBoardsPageControllers = require("app/controllers/MyBoardsPageControllers");
+	const myBoardsPageControllers = require("./controllers/MyBoardsPageControllers");
 
-	var contentErrorController = require("app/controllers/ContentErrorControllers");
+	const contentErrorController = require("./controllers/ContentErrorControllers");
 
-	var loginControllers = require("app/controllers/LoginControllers");
+	const loginControllers = require("./controllers/LoginControllers");
 
-	var loginPageControllers = require("app/controllers/LoginPageControllers");
+	const loginPageControllers = require("./controllers/LoginPageControllers");
 
-	var searchControllers = require("app/controllers/SearchControllers");
+	const searchControllers = require("./controllers/SearchControllers");
 
-	var accountSettingsPageControllers = require("app/controllers/AccountSettingsPageControllers");
+	const accountSettingsPageControllers = require("./controllers/AccountSettingsPageControllers");
 
-	var contactPageControllers = require("app/controllers/ContactControllers");
+	const contactPageControllers = require("./controllers/ContactControllers");
 
-	var resetPasswordControllers = require("app/controllers/ResetPasswordControllers");
+	const resetPasswordControllers = require("./controllers/ResetPasswordControllers");
 
-	var verifyEmailPageControllers = require("app/controllers/VerifyEmailPageControllers");
+	const verifyEmailPageControllers = require("./controllers/VerifyEmailPageControllers");
 
-	var headerControllers = require("app/controllers/HeaderControllers");
+	const headerControllers = require("./controllers/HeaderControllers");
 
-	var authErrorPageControllers = require("app/controllers/AuthErrorPageControllers");
+	const authErrorPageControllers = require("./controllers/AuthErrorPageControllers");
 
-	var adminPageControllers = require("app/controllers/AdminPageControllers");
+	const adminPageControllers = require("./controllers/AdminPageControllers");
 
-	var adminEmailController = require("app/controllers/AdminEmailController");
+	const adminEmailController = require("./controllers/AdminEmailController");
 
-	var adminUserManagerController = require("app/controllers/AdminUserManagerController");
+	const adminUserManagerController = require("./controllers/AdminUserManagerController");
 
-	var gameEditorControllers = require("app/controllers/GameEditorControllers");
+	const gameEditorControllers = require("./controllers/GameEditorControllers");
 
-	var groupManagementPageControllers = require("app/controllers/GroupManagementPageControllers");
+	const groupManagementPageControllers = require("./controllers/GroupManagementPageControllers");
 
-	var myProgressPageControllers = require("app/controllers/MyProgressPageControllers");
+	const myProgressPageControllers = require("./controllers/MyProgressPageControllers");
 
-	var assignmentsController = require("app/controllers/AssignmentsController")
+	const assignmentsController = require("./controllers/AssignmentsController")
 
-	var assignmentProgressPageControllers = require("app/controllers/AssignmentProgressPageControllers");
+	const assignmentProgressPageControllers = require("./controllers/AssignmentProgressPageControllers");
 
-	var eventsControllers = require("app/controllers/EventsControllers");
+	const eventsControllers = require("./controllers/EventsControllers");
 
-	var booksControllers = require("app/controllers/BooksControllers");
+	const booksControllers = require("./controllers/BooksControllers");
 
-	var teacherFeaturesPageController = require("app/controllers/TeacherFeaturesPageController");
+	const teacherFeaturesPageController = require("./controllers/TeacherFeaturesPageController");
 
-	var questionsPageControllers = require("app/controllers/QuestionsPageControllers");
+	const questionsPageControllers = require("./controllers/QuestionsPageControllers");
 
-	var equalityPageController = require("app/controllers/EqualityPageController");
+	const equalityPageController = require("./controllers/EqualityPageController");
+	const sketcherPageController = require("./controllers/SketcherPageController");
+
+	const supportPageControllers = require("./controllers/SupportControllers");
 
 	/* Controllers */
 
@@ -144,4 +147,7 @@ define(function(require) {
 
 	.controller('QuestionsPageControllers', questionsPageControllers.PageController)
 	.controller('EqualityPageController', equalityPageController.PageController)
+	.controller('SketcherPageController', sketcherPageController.PageController)
+
+	.controller('SupportPageController', supportPageControllers.PageController)
 });

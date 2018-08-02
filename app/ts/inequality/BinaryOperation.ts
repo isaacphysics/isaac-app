@@ -22,7 +22,6 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Brackets } from './Brackets';
 import { DockingPoint } from "./DockingPoint";
 
 /**
@@ -32,7 +31,7 @@ import { DockingPoint } from "./DockingPoint";
  */
 export
     class BinaryOperation extends Widget {
-    protected s: any;
+    public s: any;
     protected operation: string;
     protected mhchemSymbol: string;
     protected latexSymbol: string;
@@ -46,11 +45,10 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
-        let p = this.p.createVector(0, -this.s.xBox.h / 2);
-        return p;
+        return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
     }
 
     constructor(p: any, s: any, operation: string) {
@@ -76,7 +74,7 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation', 'differential'];
     }
 
     /**
@@ -87,9 +85,7 @@ export
      */
     generateDockingPoints() {
         let box = this.boundingBox();
-        let descent = this.position.y - (box.y + box.h);
-
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w / 2 + this.s.mBox.w / 4, -this.s.xBox.h / 2), 1, "symbol", "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["symbol", "differential"], "right");
     }
 
     /**
@@ -101,22 +97,22 @@ export
      * @param format A string to specify the output format. Supports: latex, python, subscript.
      * @returns {string} The expression in the specified format.
      */
-    getExpression(format: string): string {
+    formatExpressionAs(format: string): string {
         let expression = " ";
         if (format == "latex") {
             expression += this.latexSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "python") {
             expression += this.pythonSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += "" + this.dockingPoints["right"].child.getExpression(format);
+                expression += "" + this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mhchem") {
           expression += this.mhchemSymbol + " ";
             if (this.dockingPoints["right"].child != null) {
-                expression += " " + this.dockingPoints["right"].child.getExpression(format);
+                expression += " " + this.dockingPoints["right"].child.formatExpressionAs(format);
             } else {
                 // This is a charge, most likely:
                 expression = this.operation.replace(/−/g, "-");
@@ -124,12 +120,12 @@ export
         } else if (format == "subscript") {
             expression = "";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         } else if (format == "mathml") {
             expression = '<mo>' + this.mathmlSymbol + "</mo>";
             if (this.dockingPoints["right"].child != null) {
-                expression += this.dockingPoints["right"].child.getExpression(format);
+                expression += this.dockingPoints["right"].child.formatExpressionAs(format);
             }
         }
         return expression;
@@ -141,7 +137,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         return '';
     }
 
@@ -154,16 +150,6 @@ export
             .textAlign(this.p.CENTER, this.p.BASELINE)
             .text(this.operation, 0, 0);
         this.p.strokeWeight(1);
-
-        if (window.location.hash === "#debug") {
-            this.p.stroke(255, 0, 0).noFill();
-            this.p.ellipse(0, 0, 10, 10);
-            this.p.ellipse(0, 0, 5, 5);
-
-            this.p.stroke(0, 0, 255).noFill();
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 10, 10);
-            this.p.ellipse(this.dockingPoint.x, this.dockingPoint.y, 5, 5);
-        }
     }
 
     /**
@@ -172,13 +158,9 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = this.operation || "+";
-        s = "+";
-
-
-        let box = this.s.font_up.textBounds(s, 0, 1000, this.scale * this.s.baseFontSize * 0.8);
-
-        return new Rect(-box.w, box.y - 1000, box.w * 2, box.h); // TODO: Assymetrical BBox
+        let s = "+";
+        let box = this.s.font_up.textBounds(s, 0, 0, this.scale*this.s.baseFontSize*0.8);
+        return new Rect(-box.w/2, box.y, box.w, box.h);
     }
 
     /**
@@ -188,49 +170,19 @@ export
      * @private
      */
     _shakeIt() {
+        this._shakeItDown();
+        let thisBox = this.boundingBox();
 
-        // Work out the size of all our children
-        let boxes: { [key: string]: Rect } = {};
-
-        _.each(this.dockingPoints, (dockingPoint, dockingPointName) => {
-            if (dockingPoint.child != null) {
-                dockingPoint.child.scale = this.scale * dockingPoint.scale;
-                dockingPoint.child._shakeIt();
-                boxes[dockingPointName] = dockingPoint.child.boundingBox(); // NB: This only looks at the direct child!
+        if (this.dockingPoints["right"]) {
+            let dp = this.dockingPoints["right"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + dp.size;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
             }
-        });
-
-        // Calculate our own geometry
-
-        // Nothing to do for BinaryOperation
-
-        // Set position of all our children.
-
-        let box = this.boundingBox();
-
-        let parent_w = this.boundingBox().w;
-        let right;
-        if ("right" in boxes) {
-            right = this.dockingPoints["right"].child;
-            let isChemicalElement = right.dockingPoints["mass_number"] && right.dockingPoints["proton_number"];
-            let child_w = right.boundingBox().w;
-            let child_mass_w = (isChemicalElement && right.dockingPoints["mass_number"].child) ? right.dockingPoints["mass_number"].child.boundingBox().w : 0;
-            let child_proton_w = (isChemicalElement && right.dockingPoints["proton_number"].child) ? right.dockingPoints["proton_number"].child.boundingBox().w : 0;
-            if (isChemicalElement && child_mass_w != 0 && child_proton_w != 0) {
-                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-                right.position.x = 1.2 * (parent_w / 2 + child_w / 2);
-                right.position.y = 0;
-            }
-            else {
-                child_w += (child_mass_w >= child_proton_w) ? child_mass_w : child_proton_w;
-                right.position.x = parent_w / 2 + child_w / 2;
-                right.position.y = 0;
-                // FIXME HORRIBLE BRACKETS FIX
-                if (right.child instanceof Brackets) {
-                    right.child.position.y = right.child.dockingPoints["argument"].child ? -right.child.dockingPoints["argument"].child.boundingBox().h/2 : 0;
-                }
-            }
-
         }
     }
 }

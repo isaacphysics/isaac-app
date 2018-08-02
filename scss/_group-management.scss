@@ -327,6 +327,10 @@
 		height: 18px;
 		background: url(../assets/ru.png) -357px -320px no-repeat;
 		margin: 8px 10px 0 0;
+
+		.ru_green & {
+			background: url(../assets/ru.png) -357px -302px no-repeat;
+		}
 	}
 	a .group-table-person {
 		background-position: -357px -302px;
@@ -362,5 +366,28 @@
 	}
 	.profile-tabs-content {
 		padding: 0 20px;
+	}
+}
+
+.icon-email-status {
+	display: inline-block;
+	width: 25px;
+	height: 19px;
+	margin-left: 15px;
+	margin-bottom: -7px;
+
+	&.failed {
+		background: url(../assets/email-status.png) -50px 0px no-repeat;
+		background-size: 75px;
+	}
+
+	&.unverified {
+		background: url(../assets/email-status.png) -25px 0px no-repeat;
+		background-size: 75px;
+	}
+
+	&.verified {
+		background: url(../assets/email-status.png) 0px 0px no-repeat;
+		background-size: 75px;
 	}
 }

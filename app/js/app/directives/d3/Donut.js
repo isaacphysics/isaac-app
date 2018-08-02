@@ -24,13 +24,13 @@ define(["d3"], function(d3) {
 
             link: function(scope, element, attrs) {
 
-                var updateDonut = function() {
+                let updateDonut = function() {
 
                     element.empty();
 
-                    var allZero = true;
+                    let allZero = true;
 
-                    for (var i = 0; i < scope.data.length; i++) {
+                    for (let i = 0; i < scope.data.length; i++) {
                         if (scope.data[i].val != 0) {
                             allZero = false;
                             break;
@@ -43,19 +43,19 @@ define(["d3"], function(d3) {
                     }
 
 
-                    var range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
-                    var label_range = ['#000000', '#000000', '#000000', '#000000', '#ffffff', '#ffffff']
+                    let range = ['#4d9e34', '#66b045', '#87c064', '#a6ce87', '#c6deaa', '#d8e8c2']; // default colours
+                    let label_range = ['#000000', '#000000', '#000000', '#000000', '#ffffff', '#ffffff']
 
                     // switch colours
                     switch(scope.$parent.$eval(attrs.colorPalette)) {
                         case 'subjects':
-                            range = ['#6c388c', '#189ace', '#ef3e36'];
+                            range = ['#944cbe', '#009acd', '#ef3e36'];
                             label_range = ['#ffffff', '#ffffff', '#ffffff']
                             break;
                         case 'physics':
                             range = [];
                             label_range = [];
-                            for (var i = 0; i < scope.data.length; i++) {
+                            for (let i = 0; i < scope.data.length; i++) {
                                 range.push("hsl(276, 31%, " + (90 - 80*i/scope.data.length) + "%)");
                                 label_range.push("hsl(0, 0%, " + (100*Math.round(i/scope.data.length + 0.3)) + "%)");
                             }
@@ -63,42 +63,42 @@ define(["d3"], function(d3) {
                         case 'maths':
                             range = [];
                             label_range = [];
-                            for (var i = 0; i < scope.data.length; i++) {
+                            for (let i = 0; i < scope.data.length; i++) {
                                 range.push("hsl(197, 79%, " + (90 - 80*i/scope.data.length) + "%)");
                                 label_range.push("hsl(0, 0%, " + (100*Math.round(i/scope.data.length  + 0.3)) + "%)");
                             }
                             break;
                         case 'levels':
                             range = [];
-                            for (var i = 0; i < scope.data.length; i++) {
+                            for (let i = 0; i < scope.data.length; i++) {
                                 range.push("hsl(106, 50%, " + (90-80*i/scope.data.length) + "%)");
                             }
                             break;
                     }
 
-                    var width = 360,
+                    let width = 360,
                         height = 360,
                         radius = Math.min(width, height) / 2,
                         donutWidth = 70;
 
-                    var color = d3.scale.ordinal()
+                    let color = d3.scale.ordinal()
                         .range(range);
 
-                    var label_colour =  d3.scale.ordinal()
+                    let label_colour =  d3.scale.ordinal()
                         .range(label_range);
 
-                    var pie = d3.layout.pie()
+                    let pie = d3.layout.pie()
                         .sort(null)
                         .value(function (d) {
                             return d.val;
                         });
 
-                    var arc = d3.svg.arc()
+                    let arc = d3.svg.arc()
                         .innerRadius(radius - donutWidth)
                         .outerRadius(radius);
 
                     // Add svg
-                    var svg = d3.select(element[0])
+                    let svg = d3.select(element[0])
                         .append("svg")
                         .attr('class', 'd3-donut')
                         .attr('width', '100%')
@@ -108,7 +108,12 @@ define(["d3"], function(d3) {
                         .append('g')
                         .attr('transform', 'translate(' + Math.min(width,height) / 2 + ',' + Math.min(width,height) / 2 + ')');
 
-                    var path = svg.selectAll('path')
+                    function tweenPie(b) {
+                        let i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
+                        return function(t) { return arc(i(t)); };
+                    }
+
+                    let path = svg.selectAll('path')
                         .data(pie(scope.data))
                         .enter().append('g')
                         .attr("class", "arc")
@@ -118,13 +123,9 @@ define(["d3"], function(d3) {
                         .ease('exp')
                         .duration(700)
                         .attrTween('d', tweenPie);
+                    void path;
 
-                    function tweenPie(b) {
-                        var i = d3.interpolate({startAngle: 1.1*Math.PI, endAngle: 1.1*Math.PI}, b);
-                        return function(t) { return arc(i(t)); };
-                    }
-
-                    var arcs = svg.selectAll("g.arc");
+                    let arcs = svg.selectAll("g.arc");
                     arcs.append("text")
                         .attr("class", "arc-label")
                         .attr("fill", function(d, i) { return label_colour(i); })
@@ -138,26 +139,26 @@ define(["d3"], function(d3) {
                             }
                         });
                     arcs.append("title").text(function(d, i) {
-                        var title = scope.data[i].label + ": ";
+                        let title = scope.data[i].label + ": ";
                         title = title + Math.round(100*(d.endAngle-d.startAngle)/(2*Math.PI)) + "%";
                         return title;
                     });
 
 
                     // Settings for Key 
-                    var keySpacing = 7,
+                    let keySpacing = 7,
                         keyRectSize = 22;
 
-                    var key = svg.selectAll('.legend')
+                    let key = svg.selectAll('.legend')
                         .data(color.domain())
                         .enter()
                         .append('g')
                         .attr('class', 'key')
                         .attr('transform', function(d, i) {
-                            var height = keyRectSize + keySpacing;
-                            var offset =  height * color.domain().length / 2;
-                            var horz = -2 * keyRectSize;
-                            var vert = i * height - offset;
+                            let legendHeight = keyRectSize + keySpacing;
+                            let offset =  legendHeight * color.domain().length / 2;
+                            let horz = -2 * keyRectSize;
+                            let vert = i * legendHeight - offset;
                             return 'translate(' + horz + ',' + vert + ')';
                         });
 
@@ -175,12 +176,11 @@ define(["d3"], function(d3) {
                             .text(function(d, i) { return scope.data[i].label; });
                 }
 
-                scope.$watch("data", function(newData, oldData) {
-                    if (newData)
+                scope.$watch("data", function(newData, _oldData) {
+                    if (newData) {
                         updateDonut();
+                    }
                 });
-
-
             }
         }
     }

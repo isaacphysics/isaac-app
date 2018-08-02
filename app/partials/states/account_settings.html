@@ -34,9 +34,12 @@
             </dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 2}" ng-click="activateTab(2)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Teacher <span>Connections</span></a></dd>
             <dd class="tabs-account-settings" ng-class="{active: activeTab == 3}" ng-click="activateTab(3)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Email <span>Preferences</span></a></dd>
+            <dd class="tabs-account-settings" ng-class="{active: activeTab == 4}" ng-click="activateTab(4)" class="ng-scope"><a href="javascript:void(0);" class="ng-binding" ng-if="editingSelf">Beta <span>Features</span></a></dd>
         </dl>
 
         <form class="panel" ng-submit="save()" name="account" novalidate>
+
+        <!-- TAB 0 -->
         <div class="tabs-content tabs-account-settings-content">
             <div class="account-settings-personal-information" ng-class="{content: true, active: 0 == activeTab}">
                     <!-- Had to use a bolck-grid here as the 16 col grid is not divisible by 3 -->
@@ -276,6 +279,7 @@
                 </div>
             </div>
 
+            <!-- TAB 1 -->
             <div class="account-settings-password-reset"  ng-class="{content: true, active: 1 == activeTab}">
                 <ul class="large-block-grid-3 medium-block-grid-1 small-block-grid-1 ru-pad">
                     <div ng-show="user.hasSegueAccount || !editingSelf">
@@ -321,10 +325,13 @@
                 </ul>
             </div>
 
+            <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
+                <div ng-if="editingSelf" class="large-16 medium-16 columns">
+                    <h3>Teachers and Assignments Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <h3>Connect <span class="subheader">with</span> teachers <span class="subheader">and</span> assignments<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
                         <p>Enter the code given to connect with a teacher.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
@@ -341,14 +348,36 @@
                                 <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
                             </ul>
                             <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
-                            <ul ng-if="false" class="teachers-disconnected">
-                                <li><span class="person-icon"></span> Teacher Name 1 <a class="reconnect-teacher" href="#">Reconnect</a></li>
-                            </ul>
                         </div>
                     </div>
                 </div>
+                <div ng-if="editingSelf && (user.role != 'STUDENT' || activeStudentAuthorisations.length>0)">
+                    <div class="large-16 medium-16 columns">
+                        <hr>
+                    </div>
+                    <div class="large-10 medium-16 columns">
+                        <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their Isaac data with you. These students are also able to view your name and email address in their teacher connections page."></span></h3>
+                        <p>You can invite students to share their Isaac data with you through the <a ui-sref="groups">group management page</a>.</p>
+                    </div>
+                    <div class="large-6 medium-16 columns">
+                        <div class="connect-list">
+                            <h3><span class="person-icon-active"></span> Student connections </h3>
+
+                            <div class="connect-list-inner">
+                                <ul class="teachers-connected">
+                                    <li ng-repeat="studentUser in activeStudentAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="You have access to this user's data and they can see your name and email address. To remove this access, click 'Revoke'.">{{studentUser.givenName}} {{studentUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="releaseAuthorisation(studentUser)">Remove</a></li>
+                                </ul>
+                                <p ng-if="activeStudentAuthorisations.length==0" class="teachers-connected">You have no active student connections</p>
+                            </div>
+                            <div ng-if="activeStudentAuthorisations.length>0" class="remove-link">
+                                <p><a href="javascript:void(0)" ng-click="releaseAllAuthorisations()">Remove all</a></p>
+                            </div>                        
+                        </div>
+                    </div>                    
+                </div>
             </div>
 
+            <!-- TAB 3 -->
             <div class="account-settings-email-preferences"  ng-class="{content: true, active: 3 == activeTab}"  ng-if="editingSelf" >
                 Tell us which emails you would like to receive. These settings can be changed at any time.<br><br>
 
@@ -395,6 +424,47 @@
                 </table>
                 For more information about privacy and Isaac, please refer to our <a href='/privacy'>privacy policy</a>. 
             </div>
+        
+            <!-- TAB 4 -->
+            <div class="account-settings-beta-features"  ng-class="{content: true, active: 4 == activeTab}"  ng-if="editingSelf" >
+                <p class="beta-warning"><span class="beta-warning"><img src="/assets/warning.png" alt="!" class="beta-warning" /> Experimental Features <img src="/assets/warning.png" alt="!" class="beta-warning" /><span><p>
+                <p>These features are new and experimental. They may not work correctly on all browsers and we can't offer much support if you decide to use them. You'll find more information about them on our <a href="https://labs.isaacphysics.org" target="_blank">technical blog</a>!</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th width="150">Feature</th>
+                      <th class="hide-for-small-only">Description</th>
+                      <th width="50">Enable?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><a href="https://labs.isaacphysics.org/equation-editor-text-entry.html" target="_blank">Equation Text Entry</a></td>
+                      <td class="hide-for-small-only">Type answers to symbolic questions using a basic maths syntax. You will see an additional box which allows you to enter answers using the keyboard.
+                                                      The equation editor <a ui-sref='equality' target='_blank'>can be used to generate examples</a>.</td>
+                      <td class="feature-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="eqn-editor-text-entry">&nbsp;</label>
+                          <input id="eqn-editor-text-entry" type="checkbox" ng-model="betaFeatures.EQN_TEXT_ENTRY" input-animation>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr ng-if="user.role != 'STUDENT'">
+                      <td><a href="https://labs.isaacphysics.org/teachers-sharing-groups.html" target="_blank">Sharing Groups</a></td>
+                      <td class="hide-for-small-only">Allow additional teachers to manage your groups; set assignments, view marks and add students.</td>
+                      <td class="feature-checkbox">
+                        <div class="ac-custom ac-checkbox ac-checkmark">
+                          <label for="teachers-sharing-groups">&nbsp;</label>
+                          <input id="teachers-sharing-groups" type="checkbox" ng-model="betaFeatures.ADDITIONAL_GROUP_MANAGERS" input-animation>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                If you want to provide feedback or experience serious problems using these features, you can <a ui-sref="contact({subject: 'Beta Features'})">let us know here</a>.
+            </div>
+
+            <!-- END TABS -->
         </div>
     </form>
 </div>
@@ -419,4 +489,34 @@
 <div id="account-updated" class="reveal-modal" data-reveal>
     <h2>Your account has been successfully updated.</h2>
     <a class="close-reveal-modal"><img src="/assets/Close-button.jpg" alt="Close" /></a>
+</div>
+
+<div isaac-modal="tokenVerification">
+  <div class="reveal-modal-head">
+    <h2>Sharing your data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <p>Are you sure you would like to give the following Isaac users access to your data?</p> 
+    
+    <div class="group-accordion-content">
+        <table class="group-table">
+            <tbody>
+                <tr ng-repeat="member in usersToGrantAccess | orderBy:'familyName'">
+                    <td ng-class="{'ru_green': member.authorisedAlready}">
+                        <span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} - ({{member.email}})</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <p ng-show="anyUsersAuthorisedAlready"><small>Teachers you are already sharing some data with are highlighted in green. If you have been asked to re-enter this group code; the teachers not highlighted have been added since you joined the group. If this is a group code you've not used before, you need to confirm joining this group with all of these teachers.<small></p>
+        <p>
+            <small><strong>Remember</strong>: you can always revoke access to your data from the Teacher Connections tab on this page.</small><br>
+            <small>For more details about what information is shared, see our <a ui-sref="privacy" target="_blank">Privacy Policy</a>.</small>
+        </p>
+        <a class="ru-button-big" ng-click="applyToken()">Confirm</a>
+        <a class="ru-button-big secondary" ng-click="modals.tokenVerification.hide()">Cancel</a>
+    </div>     
+  </div>
 </div>

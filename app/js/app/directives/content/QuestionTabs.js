@@ -13,25 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv, scope) {
-
+define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"], function(rv, templateUrl) {
 	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
-
 		return {
-
 			restrict: 'A',
-
 			scope: true,
-
-			templateUrl: "/partials/content/QuestionTabs.html",
-
-			link: function(scope, element, attrs, ctrls, transclude) {
+			templateUrl: templateUrl,
+			link: function(scope, _element, _attrs, _ctrls, _transclude) {
 				if (scope.accordionChildMetrics) {
 					scope.accordionChildMetrics.questionCount++;
 				}
 
-				var emptyListIfUndefined = function(originalResult) {
-					var result = originalResult ? originalResult : [];
+				let emptyListIfUndefined = function(originalResult) {
+					let result = originalResult ? originalResult : [];
 					return result;
 				};
 
@@ -47,15 +41,15 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					type: scope.doc.type,
 					relatedConcepts: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, {type: "isaacConceptPage"})),
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
-						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >= 0;
-						var isEasier = relatedContent.level < scope.page.level;
-						var isUnanswered = !relatedContent.correct;
+						let isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >= 0;
+						let isEasier = relatedContent.level < scope.page.level;
+						let isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEasier && isUnanswered;
 					})),
 					relatedUnansweredSupportingQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
-						var isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >=0;
-						var isEqualOrHarder = relatedContent.level >= scope.page.level;
-						var isUnanswered = !relatedContent.correct;
+						let isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >=0;
+						let isEqualOrHarder = relatedContent.level >= scope.page.level;
+						let isUnanswered = !relatedContent.correct;
 						return isQuestionPage && isEqualOrHarder && isUnanswered;
 					}))
 				};
@@ -77,17 +71,17 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
-				var checkGamebaordProgress = function() {
-					var initialGameBoardPercent = scope.gameBoard.percentageCompleted;
-					var gameBoardCompletedPassed =  true;
-					var gameBoardCompletedPerfect =  true;
+				let checkGamebaordProgress = function() {
+					let initialGameBoardPercent = scope.gameBoard.percentageCompleted;
+					let gameBoardCompletedPassed =  true;
+					let gameBoardCompletedPerfect =  true;
 
 					// Re-load the game board to check for updated progress
 					api.gameBoards.get({id: scope.gameBoard.id}).$promise.then(function(board) {
 						scope.question.gameBoardPercentComplete = board.percentageCompleted;
 
 						//We want to know if they have (a) completed the gameboard, (b) passed the gameboard
-						for(var i = 0; i < board.questions.length; i++){
+						for(let i = 0; i < board.questions.length; i++){
 							// page progress
 							if (board.questions[i].state != "PERFECT"){
 								gameBoardCompletedPerfect = false;
@@ -117,48 +111,50 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 						}
 
 						// if(board.percentageCompleted == '100' && !scope.modalDisplayed && validationResponse.correct) {
-						// 		scope.modals["congrats"].show();
-						// 		scope.$emit("modalCompleteDisplayed", true);
+						//     scope.modals["congrats"].show();
+						//     scope.$emit("modalCompleteDisplayed", true);
 						// }
 						// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 						// question for a gameboard and the question has been passed, not completed. See issue #419
 					});
-				}
+				};
+				void checkGamebaordProgress;
+				// FIXME ^ This looks too complicated for something we can just delete. Better check before nuking it.
 
-				var applyValidationResponseToQuestionPart = function(content, validationResponse) {
+				let applyValidationResponseToQuestionPart = function(content, validationResponse) {
 					if (QUESTION_TYPES.indexOf(content.type) >= 0 && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
 						content.bestAttempt = validationResponse;
 					}
 					if (content.children) {
-						for (var i=0; i < content.children.length; i++) {
-							var child = content.children[i];
+						for (let i=0; i < content.children.length; i++) {
+							let child = content.children[i];
 							applyValidationResponseToQuestionPart(child, validationResponse);
 						}
 					}
-				}
+				};
 
-				var isPageCompleted = function(questionPage) {
-					var hasIncorrectOrUnansweredQuestion = function(content) {
-						var foundIncorrectQuestionPart = false;
+				let isPageCompleted = function(questionPage) {
+					let hasIncorrectOrUnansweredQuestion = function(content) {
+						let foundIncorrectQuestionPart = false;
 						if (QUESTION_TYPES.indexOf(content.type) >= 0) {
 							if (!content.bestAttempt || !content.bestAttempt.correct) {
 								foundIncorrectQuestionPart = true;
 							}
 						}
 						if (content.children) {
-							for (var i=0; i < content.children.length; i++) {
-								var child = content.children[i];
+							for (let i=0; i < content.children.length; i++) {
+								let child = content.children[i];
 								foundIncorrectQuestionPart |= hasIncorrectOrUnansweredQuestion(child);
 							}
 						}
 						return foundIncorrectQuestionPart
 					}
-					var pageCompleted = !hasIncorrectOrUnansweredQuestion(questionPage);
+					let pageCompleted = !hasIncorrectOrUnansweredQuestion(questionPage);
 					return pageCompleted;
 				}
 
-				var determineFastTrackPrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
-					var questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
+				let determineFastTrackPrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+					let questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
 					if (questionPartAnsweredCorrectly) {
 						if (questionPart.pageCompleted) {
 							if (questionHistory.length) {
@@ -178,31 +174,31 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 					}
 				}
 
-				var determineFastTrackSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
-					var questionPartNotAnsweredCorrectly = !(questionPart.validationResponse && questionPart.validationResponse.correct);
+				let determineFastTrackSecondaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
+					let questionPartNotAnsweredCorrectly = !(questionPart.validationResponse && questionPart.validationResponse.correct);
 					if (questionPartNotAnsweredCorrectly && questionPart.relatedUnansweredEasierQuestions.length) {
-						var easierQuestion = questionPart.relatedUnansweredEasierQuestions[0];
+						let easierQuestion = questionPart.relatedUnansweredEasierQuestions[0];
 						return questionActions.tryEasierQuestion(easierQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
 					} else if (questionPart.relatedUnansweredSupportingQuestions.length) {
-						var supportingQuestion = questionPart.relatedUnansweredSupportingQuestions[0];
+						let supportingQuestion = questionPart.relatedUnansweredSupportingQuestions[0];
 						return questionActions.trySupportingQuestion(supportingQuestion, questionPage.id, questionPart.pageCompleted, questionHistory, gameboardId);
 					} else if (questionPart.relatedConcepts.length) {
-						var relatedConcept = questionPart.relatedConcepts[0];
+						let relatedConcept = questionPart.relatedConcepts[0];
 						return questionActions.showRelatedConceptPage(relatedConcept);
 					} else {
 						return null;
 					}
 				}
 
-				var determinePrimaryAction = function(validationResponse) {
-					var action = null;
+				let determinePrimaryAction = function(validationResponse) {
+					let action = null;
 					if (!validationResponse || !validationResponse.correct) {
 						action = questionActions.checkMyAnswer(scope, api);
 					}
 					return action;
 				}
 
-				var determineActions = function() {
+				let determineActions = function() {
 					if (scope.page.type != 'isaacFastTrackQuestionPage') {
 						scope.primaryAction = determinePrimaryAction(scope.question.validationResponse);
 					} else {
@@ -213,7 +209,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 				scope.$watch("question.selectedChoice", function(newVal, oldVal) {
 					// (Show some help text. Quietly though!)
-					scope.hlp = newVal && newVal.value && newVal.value.toLowerCase().match('(^h[ae]lp|\"help\").*');
+					scope.hlp = newVal && newVal.value && newVal.value.toLowerCase().match('(^h[ae]lp|"help").*');
 
 					if (newVal === oldVal)
 						return; // Init
@@ -228,7 +224,7 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 					e.stopPropagation();
 
-					var i = e.targetScope.questionTabIndex;
+					let i = e.targetScope.questionTabIndex;
 
 					scope.activateTab(i);
 
@@ -256,9 +252,14 @@ define(["app/honest/responsive_video"], function(rv, scope) {
 
 				scope.$watch("question.pageCompleted", function(newVal, oldVal) {
 					if (scope.gameboard && newVal !== oldVal) {
-						checkGameboardProgress();
+						// checkGameboardProgress();
 					}
-				})
+				});
+
+				scope.incorrectSigFigs = function(validationResponse) {
+					let explanationPresent = validationResponse && validationResponse.explanation;
+					return explanationPresent && validationResponse.explanation.tags && validationResponse.explanation.tags.indexOf('sig_figs') >= 0;
+				}
 
 				scope.question.pageCompleted = isPageCompleted(scope.page);
 				scope.canSubmit = false; // A flag to prevent someone clicking submit multiple times without changing their answer.

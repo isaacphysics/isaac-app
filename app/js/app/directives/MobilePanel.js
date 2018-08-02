@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([],function() {
+define(["/partials/mobile_panel.html"],function(templateUrl) {
 
 	return [function() {
 
@@ -21,7 +21,7 @@ define([],function() {
 
 			restrict: "A",
 
-			templateUrl: "/partials/mobile_panel.html",
+			templateUrl: templateUrl,
 
 			transclude: true,
 			link: function(scope, element, attrs) {

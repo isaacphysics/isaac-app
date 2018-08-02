@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-'use strict';
+ 'use strict';
 
-define(function(require) {
+ define(function(require) {
 
-	/* Services */
+ 	/* Services */
 
-	var auth = require("app/services/Auth");
+ 	let auth = require("./services/Auth");
 
 	// Demonstrate how to register services
 	// In this case it is a simple value service.
@@ -28,21 +28,21 @@ define(function(require) {
 	.value('version', '0.1')
 
 	// TODO: This should probably be a service rather than a factory
-	.service('tags', require("app/services/Tags"))
+	.service('tags', require("./services/Tags"))
 
-	.factory('units', require("app/services/Units"))
+	.factory('units', require("./services/Units"))
 
-	.factory('filterWarnings', require("app/services/FilterWarnings"))
+	.factory('filterWarnings', require("./services/FilterWarnings"))
 
-	.factory('gameBoardTitles', require("app/services/GameBoardTitles"))
+	.factory('gameBoardTitles', require("./services/GameBoardTitles"))
 
-	.factory('boardSearchOptions', require("app/services/BoardSearchOptions"))
+	.factory('boardSearchOptions', require("./services/BoardSearchOptions"))
 
-	.factory('questionActions', require("app/services/QuestionActions"))
+	.factory('questionActions', require("./services/QuestionActions"))
 
 	.provider('api', function ApiProvider() {
 
-		var urlPrefix = "";
+		let urlPrefix = "";
 
 		this.urlPrefix = function(value) {
 			urlPrefix = value;
@@ -50,25 +50,26 @@ define(function(require) {
 
 		this.$get = ["$resource", "$http", "subject", function ApiFactory($resource, $http, subject) {
 
-			var Api = require("app/services/Api");
+			let Api = require("./services/Api");
 
 			return new Api($resource, urlPrefix, $http, subject);
-				
 		}];
 	})
 
 	.provider('subject', function SubjectProvider() {
 
-		var subject = require("app/services/Subject")();
+		let subject = require("./services/Subject")();
 
-		for(var k in subject) {
+		for(let k in subject) {
 			this[k] = subject[k];
 		}
 		
 		this.$get = function() { return subject; };
 	})
 
-	.service('persistence', require("app/services/Persistence"))
+	.service('boardProcessor', require("./services/BoardProcessor"))
+
+	.service('persistence', require("./services/Persistence"))
 
 	.service('auth', auth.service)
 

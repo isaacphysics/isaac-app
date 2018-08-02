@@ -14,10 +14,10 @@
 		<meta name="msapplication-TileColor" content="#FFFFFF">
     <meta name="Description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE level through to university.">
 
-    <meta property="og:url" content="https://isaacphysics.org{{relativeCanonicalUrl}}" /> 
+    <meta property="og:url" content="https://isaacphysics.org{{relativeCanonicalUrl}}" />
     <meta property="og:site_name" content="Isaac Physics" />
     <meta property="og:title" ng-content="(pageTitle ? pageTitle : 'Isaac Physics' )" />
-    <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." /> 
+    <meta property="og:description" content="Isaac Physics a project designed to offer support and activities in physics problem solving to teachers and students from GCSE (Y11), through to university." />
     <meta property="og:image" content="https://isaacphysics.org/assets/isaac-logo@2xWider.png" />
     <meta property="fb:app_id" content="760382960667256" />
 
@@ -31,18 +31,15 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon-precomposed.png">
 
     <link href='https://fonts.googleapis.com/css?family=Exo:400,300,700' rel='stylesheet' type='text/css'>
-    
+
     <link rel="stylesheet" href="/js/lib/katex/katex.min.css">
     <script src="/js/lib/katex/katex.min.js"></script>
 
     <script src="/js/lib/nprogress.js"></script>
     
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?delayStartupUntil=configured"> </script>
+    <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.7.4/MathJax.js?delayStartupUntil=configured"> </script>
 
-    <link rel="stylesheet" href="/css/app.css" />
-
-    <script src="/bower_components/system.js/dist/system.js"></script>
-    <script src="/js/system.config.js"></script>
+    <link rel="stylesheet" href="/isaac.css" />
 
   </head>
   <body>
@@ -86,7 +83,7 @@
                     <h2>Your browser is out of date</h2>
                     <p>
                       Your browser is out of date. Isaac Physics supports the latest version of Chrome, Firefox, Safari and Internet Explorer 10 and above. Please <a href="https://browser-update.org/update.html" target="_blank" rel="nofollow">update your browser</a>.
-                    </p>                    
+                    </p>
                   </div>
                 </div>
               </div>
@@ -107,7 +104,7 @@
               <div class="text-right">
                 <button ng-click="notificationResponse(notificationDoc, 'ACKNOWLEDGED')">Yes, view questionnaire</button>
                 <button ng-click="notificationResponse(notificationDoc, 'DISABLED')">No thanks</button>  
-                <button ng-click="notificationResponse(notificationDoc, 'POSTPONED')">Ask me later</button>  
+                <button ng-click="notificationResponse(notificationDoc, 'POSTPONED')">Ask me later</button>
               </div>
           </div>
         </div>
@@ -123,10 +120,10 @@
                 <p><strong>Note:</strong> If you would like to be logged in with two accounts at one time you will need to use your browser's <a href="https://en.wikipedia.org/wiki/Privacy_mode" target="_blank" rel="nofollow">private browsing</a> feature.</p>
               </div>
               <div class="text-right">
-                <button ui-sref="login">Continue</button>                   
+                <button ui-sref="login">Continue</button>
               </div>
           </div>
-        </div>        
+        </div>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -134,23 +131,31 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-51129534-1', { 'cookieDomain': 'none' });
+          ga('create', {name: 'IsaacAnalytics', trackingId: 'UA-122616705-1', cookieDomain: 'none'});
+          ga('IsaacAnalytics.set', 'anonymizeIp', true);
 
+          // TODO REMOVE ANALYTICS - Old analytics account, remove once closed
+          ga('create', {name: 'Isaac', trackingId: 'UA-51129534-1', cookieDomain: 'none'});
+          ga('Isaac.set', 'anonymizeIp', true);          
         </script>
-
+        
         <div id="equationModal" class="reveal-modal" data-reveal>
           <div class="reveal-modal-body">
             <div style="position:fixed;left:0;top:0;right:0;bottom:0;">
-                <div equation-editor style="height:100%"></div>
+              <div equation-editor style="height:100%"></div>
             </div>
           </div>
         </div>
 
-    <script src="/js/isaac.js"></script>
+        <div id="graphModal" class="reveal-modal" data-reveal>
+          <div class="reveal-modal-body">
+            <div style="position:fixed;left:0;top:0;right:0;bottom:0;">
+              <div graph-sketcher style="height:100%"></div>
+            </div>
+          </div>
+        </div>
 
-    <script lang="javascript">
-        System.import('app/app').catch(console.error.bind(console));
-    </script>
+    <script src="/isaac.js"></script>
 
   </body>
 </html>

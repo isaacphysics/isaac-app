@@ -13,24 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    var PageController = ['$scope', '$state', '$location', function($scope, $state, $location) {
+export const PageController = ['$scope', '$state', '$location', function ($scope, $state, $location) {
+    // Check whether someone has arrived at the homepage trying to load a game board. If so, 
+    // redirect them to the new /questions route.
+    const hash = $location.hash();
 
-        // Check whether someone has arrived at the homepage trying to load a game board. If so, 
-        // redirect them to the new /questions route.
-        var hash = $location.hash();
-
-        if (hash) {
-            console.debug("HASH", hash);
-            $location.replace();
-            $location.url("/gameboards#" + hash);
-        }
-
-        $scope.$root.isHomePage = true;
-    }]
-
-    return {
-        PageController: PageController,
-    };
-})
+    if (hash && "" !== hash) {
+        console.debug("HASH", hash);
+        $location.replace();
+        $location.url(`/gameboards#${hash}`);
+    }
+    
+    $scope.$root.isHomePage = true;
+} ];

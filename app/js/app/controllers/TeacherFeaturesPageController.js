@@ -13,46 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	var PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, auth, api, $state, $stateParams, $location) {
+export const PageController = ['$scope', 'auth', 'api', '$state', '$stateParams', '$location', function($scope, _auth, _api, $state, $stateParams, _$location) {
+	$scope.isLoggedIn = false;
+	$scope.isTeacher = false;
+	$scope.redirectModal = $stateParams.redirectModal;
+
+	$scope.user.$promise.then(function(){
+		$scope.isLoggedIn = $scope.user != null;
+		$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
+
+	}).catch(function(){
 		$scope.isLoggedIn = false;
 		$scope.isTeacher = false;
-		$scope.redirectModal = $stateParams.redirectModal;
+	});
 
-		$scope.user.$promise.then(function(){
-			$scope.isLoggedIn = $scope.user != null;
-			$scope.isTeacher = $scope.isLoggedIn && ($scope.user.role == 'TEACHER' || $scope.user.role == 'ADMIN' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'EVENT_MANAGER');
-
-		}).catch(function(){
-			$scope.isLoggedIn = false;
-			$scope.isTeacher = false;
-		});
-
-		$scope.setAssignmentModal = function() {
-			if ($scope.isTeacher) {
-				$state.go("setAssignments");
-			} else {
-				alert("You must first be registered as a teacher to use this function.");
-			}
+	$scope.setAssignmentModal = function() {
+		if ($scope.isTeacher) {
+			$state.go("setAssignments");
+		} else {
+			alert("You must first be registered as a teacher to use this function.");
 		}
+	}
 
-		$scope.navigateToStateIfTeacher = function(stateName) {
-			if ($scope.isTeacher) {
-				$state.go(stateName);
-			} else {
-				alert("You must first be registered as a teacher to use this function.");
-			}
+	$scope.navigateToStateIfTeacher = function(stateName) {
+		if ($scope.isTeacher) {
+			$state.go(stateName);
+		} else {
+			alert("You must first be registered as a teacher to use this function.");
 		}
+	}
 
-		$scope.$on('$destroy', function(){
-			console.log("Destroy");
-		});
-
-
-	}];
-
-	return {
-		PageController: PageController
-	};
-});
+}];

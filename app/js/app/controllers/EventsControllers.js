@@ -15,15 +15,16 @@
  */
 define([], function() {
 
-    var augmentEvent = function(e, api) {
+    let augmentEvent = function(e, api) {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
-            e.all_day = e.endDate - e.date >= 24*3600*1000;  // If start and end times 24 hours apart; assume an all day event
+            e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
-            e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
+            e.withinBookingDeadline = Date.now() <= new Date(e.bookingDeadline);
+            e.inProgress = (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
             e.inProgress =  false;
-            e.all_day = false;
+            e.multiDay = false;
         }
 
         e.teacher = e.tags.indexOf("teacher") > -1;
@@ -45,20 +46,18 @@ define([], function() {
         }
     }
 
-    var toTitleCase = function toTitleCase(str) {
+    let toTitleCase = function toTitleCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
-    var ListController = ['$scope', 'api', '$timeout', '$stateParams', '$location', function($scope, api, $timeout, $stateParams, $location) {
+    let ListController = ['$scope', 'api', '$timeout', '$stateParams', '$location', function($scope, api, $timeout, $stateParams, $location) {
 
-        var startIndex = 0;
-        var eventsPerPage = 6;
-        var showActiveOnly = true;
-        var showInactiveOnly = false;
-        var filterEventsByType = null;
-        var showBookedOnly = false;
-
-        var showByTag = null; // show only events with set tag
+        let startIndex = 0;
+        let eventsPerPage = 6;
+        let showActiveOnly = true;
+        let showInactiveOnly = false;
+        let filterEventsByType = null;
+        let showBookedOnly = false;
 
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
@@ -78,7 +77,7 @@ define([], function() {
             $scope.filterEventsByType = $stateParams.types
         }
 
-        $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
+        $scope.$watch('filterEventsByStatus + filterEventsByType', function(_newValue, _oldValue){
             if ($scope.filterEventsByStatus == "showBookedOnly") {
                 showActiveOnly = false;
                 showInactiveOnly = false;
@@ -136,11 +135,11 @@ define([], function() {
         };
         $scope.locations = [];
         $scope.typeEvents = {
-                click: function(cluster, clusterModel) {
-                    $scope.map.window.model = cluster.model;
-                    $scope.eventPopup = cluster.model;
-                    $scope.map.window.show = true;
-                },
+            click: function(cluster, _clusterModel) {
+                $scope.map.window.model = cluster.model;
+                $scope.eventPopup = cluster.model;
+                $scope.map.window.show = true;
+            },
         };
 
         $scope.loadMap = function() {
@@ -155,8 +154,8 @@ define([], function() {
             api.getEventsList(startIndex, eventsPerPage, showActiveOnly, showInactiveOnly, filterEventsByType, showBookedOnly).$promise.then(function(result) {
                 $scope.setLoading(false);
                 
-                for(var i in result.results) {
-                    var e = result.results[i];
+                for(let i in result.results) {
+                    let e = result.results[i];
                     augmentEvent(e, api);
                     $scope.events.push(e);
                 }
@@ -172,7 +171,7 @@ define([], function() {
         }
     }];
 
-    var DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, $timeout, $stateParams, $state, $filter, $window, $q) {
+    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, _$timeout, $stateParams, $state, $filter, $window, $q) {
         $scope.setLoading(true);
 
         $scope.toTitleCase = toTitleCase;
@@ -189,8 +188,11 @@ define([], function() {
 
         $scope.verifyEmailRequestSent = false;
 
+        $scope.targetUser = $scope.user;
+
         // validate pre-requisites for event booking
-        var validUserProfile = function() {
+        let validUserProfile = function() {
+
             if (($scope.school.schoolOther == null || $scope.school.schoolOther == "") && $scope.school.schoolId == null) {
                 $scope.showToast($scope.toastTypes.Failure, "School Information Required", "You must enter a school in order to book on to this event.");
                 return false;
@@ -200,15 +202,17 @@ define([], function() {
             if ($scope.user.role == 'STUDENT' && !($scope.additionalInformation.yearGroup == 'TEACHER' || $scope.additionalInformation.yearGroup == 'OTHER')) {
                 if (!$scope.additionalInformation.yearGroup) {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group Required", "You must enter a year group to proceed.");
-                    return false;   
+                    return false;
                 }
 
-                if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
-                    $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
-                    return false;   
-                }    
+                if (!$scope.event.virtual) {
+                    if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
+                        $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
+                        return false;
+                    }
+                }
             }
-            
+
             // validation for users that are teachers
             if ($scope.user.role != 'STUDENT') {
                 if (!$scope.additionalInformation.jobTitle) {
@@ -220,8 +224,8 @@ define([], function() {
             return true;
         }
 
-        var updateUserProfile = function() {
-            var promise = null;
+        let updateUserProfile = function() {
+            let promise = null;
 
             if($scope.school.schoolId != $scope.user.schoolId || $scope.school.schoolOther != $scope.user.schoolOther) {
                 
@@ -230,7 +234,7 @@ define([], function() {
                 $scope.user.schoolOther = $scope.school.schoolOther;            
 
                 // TODO: this is a nasty hack, but unfortunately the existing endpoint expects this random wrapped object now.
-                var userSettings = {
+                let userSettings = {
                     registeredUser : $scope.user,
                     emailPreferences : {}
                 }
@@ -256,7 +260,7 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Event Booking Confirmed", "You have been successfully booked on to this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 }); 
             })
         }
@@ -272,32 +276,32 @@ define([], function() {
                     $scope.showToast($scope.toastTypes.Success, "Waiting List Booking Confirmed", "You have been successfully added to the waiting list for this event.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });
             })
 
         }
 
         $scope.cancelEventBooking = function(){
-            var cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to re-book, especially if there is a waiting list.');   
+            let cancel = $window.confirm('Are you sure you want to cancel your booking on this event. You may not be able to re-book, especially if there is a waiting list.');   
             if(cancel) {
                 api.eventBookings.cancelMyBooking({"eventId": $stateParams.id}).$promise.then(function(){
                     getEventDetails();
                     $scope.showToast($scope.toastTypes.Success, "Your booking has been cancelled", "Your booking has successfully been cancelled.");
                 }).catch(function(e){
                     console.log("error:" + e)
-                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", "With error message: (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                    $scope.showToast($scope.toastTypes.Failure, "Event Booking Cancellation Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
                 });                
             }
         }
 
         $scope.googleCalendarTemplate =  function() {
             // https://calendar.google.com/calendar/event?action=TEMPLATE&text=[event_name]&dates=[start_date as YYYYMMDDTHHMMSS or YYYYMMDD]/[end_date as YYYYMMDDTHHMMSS or YYYYMMDD]&details=[extra_info]&location=[full_address_here]
-            var eventDetails = $scope.jsonLd;
-            var startDate = eventDetails.startDate.replace(/(\d{4})\-(\d{2})\-(\d{2})T(\d{1,2})\:(\d{2})/, '$1$2$3T$4$500');
-            var address = 'location' in eventDetails ? [eventDetails.location.name, eventDetails.location.address.streetAddress, eventDetails.location.address.addressLocality, eventDetails.location.address.postalCode] : [];
+            let eventDetails = $scope.jsonLd;
+            let startDate = eventDetails.startDate.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{1,2}):(\d{2})/, '$1$2$3T$4$500');
+            let address = 'location' in eventDetails ? [eventDetails.location.name, eventDetails.location.address.streetAddress, eventDetails.location.address.addressLocality, eventDetails.location.address.postalCode] : [];
 
-            var calendarTemplateUrl = [
+            let calendarTemplateUrl = [
                 "https://calendar.google.com/calendar/event?action=TEMPLATE",
                 "text=" + encodeURI(eventDetails.name),
                 "dates=" + encodeURI(startDate) + '/' + encodeURI(startDate),
@@ -308,7 +312,7 @@ define([], function() {
             window.open(calendarTemplateUrl.join('&'),'_blank');
         }
 
-        var getEventDetails = function() {
+        let getEventDetails = function() {
             api.events.get({id: $stateParams.id}).$promise.then(function(e) {
                 $scope.setLoading(false);
                 

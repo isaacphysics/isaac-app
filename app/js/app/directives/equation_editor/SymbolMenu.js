@@ -1,25 +1,27 @@
-define([], function() {
+"use strict";
+
+define(["/partials/equation_editor/symbol_menu.html"], function(templateUrl) {
 
 	return [function() {
 
 		return {
 			priority: 0,
             scope: {
-            	symbols: "=",
+				symbols: "=",
             },
 			restrict: "A",
-			templateUrl: "/partials/equation_editor/symbol_menu.html",
-			link: function(scope, element, attrs) {
+			templateUrl: templateUrl,
+			link: function(scope, element, _attrs) {
 				scope.name="SYMBOLMENU";
 
-				var lst = element.find("ul");
-				var bufferedLeft = 0;
+				let lst = element.find("ul");
+				let bufferedLeft = 0;
 
-				var absorbSymbolDrag = function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
+				let absorbSymbolDrag = function(_$e, symbol, pageX, pageY, deltaX, _deltaY, mousePageX, mousePageY) {
 					scope.$emit('absorbSymbolDrag');
 					bufferedLeft += deltaX;
 
-					newLeft = bufferedLeft;
+					let newLeft = bufferedLeft;
 
 					if (newLeft > 0) {
 						newLeft = 0;
@@ -41,7 +43,7 @@ define([], function() {
 					scope.$emit("newSymbolDrag", symbol, pageX, pageY, mousePageX, mousePageY);
 				};
 
-				var abortSymbolDrag = function(_, symbol, pageX, pageY, mousePageX, mousePageY, offCanvas) {
+				let abortSymbolDrag = function(_event, _symbol, _pageX, pageY, _mousePageX, _mousePageY, offCanvas) {
 					bufferedLeft = parseFloat(lst.css("left"));
 					
 						scope.$emit('abortSymbolDrag');
@@ -49,7 +51,7 @@ define([], function() {
                     if (pageY > element.offset().top + element.height() && !offCanvas) {
                         scope.$emit("spawnSymbol");
                     } else {
-                    	scope.$emit("newSymbolAbortDrag");
+						scope.$emit("newSymbolAbortDrag");
                     }
 				};
 

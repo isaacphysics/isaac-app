@@ -1,129 +1,131 @@
-<div class="small-16 columns">
+<div class="admin-event-manager small-16 columns">
     <h1>Isaac Event Booking Administration</h1>
-</div>
-<div class="row">
-    <div class="small-16 columns">
-        <div class="panel white clearfix">
-            <div class="row">
-                <div class="small-16 columns">
-                    <h2>Event overview</h2>
-                    <div class="events-filters">
-                      <label class="show-for-large-up">Show </label>
-                      <select ng-model="filterEventsByStatus">
-                        <option value="all">All Events</option>
-                        <option value="active">Upcoming Events</option>
-                      </select>
+    <div class="row">
+        <div class="small-16 columns">
+            <div class="panel white clearfix accordion-group">
+                <div class="row">
+                    <div class="small-16 columns">
+                        <div ng-click="overviewPanelVisible = !overviewPanelVisible" ng-class="{'active': overviewPanelVisible}">
+                            <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
+                            <h2>Event Overview</h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="small-16 columns">
-                    <table>
-                            <tr>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'title'; reverse=!reverse">Title</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Date</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Booking Deadline</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'location.address.town'; reverse=!reverse">Location</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'eventStatus'; reverse=!reverse">Status</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfConfirmedBookings'; reverse=!reverse">Number Confirmed</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfWaitingListBookings'; reverse=!reverse">Number Waiting</a></th>
-                                <th>Actions</th>
-                            </tr>
-                            <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
-                                <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} - {{event.subtitle}}</a></td>
-                                <td>{{event.date | date:'dd/MM/yyyy'}}</td>
-                                <td>{{event.bookingDeadline | date:'dd/MM/yyyy h:ma'}}</td>
-                                <td>{{event.location.address.town}}</td>
-                                <td>{{event.eventStatus}}</td>
-                                <td>{{event.numberOfConfirmedBookings}} / {{event.numberOfPlaces}}</td>
-                                <td>{{event.numberOfWaitingListBookings}}</td>
-                                <td><a href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage</a></td>
-                            </tr>
-                        </table>
+                <div class="row" ng-show="overviewPanelVisible">
+                    <div class="small-16 columns">
+                        <div class="events-filters">
+                            <label class="show-for-large-up">Show </label>
+                            <select ng-model="filterEventsByStatus">
+                                <option value="all">All Events</option>
+                                <option value="active">Upcoming Events</option>
+                                <option value="inactive">Past Events</option>
+                            </select>
+                        </div>
+                        <div class="x-scroll">
+                            <table>
+                                <tr>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'title'; reverse=!reverse">Title</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'date'; reverse=!reverse">Date</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingDeadline'; reverse=!reverse">Booking Deadline</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'location.address.town'; reverse=!reverse">Location</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'eventStatus'; reverse=!reverse">Status</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfConfirmedBookings'; reverse=!reverse">Number Confirmed</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'numberOfWaitingListBookings'; reverse=!reverse">Number Waiting</a></th>
+                                    <th>Actions</th>
+                                </tr>
+                                <tr ng-repeat="event in events | orderBy:sortPredicate:reverse">
+                                    <td><a ui-sref="event({id: event.id})" target="_blank">{{event.title}} - {{event.subtitle}}</a></td>
+                                    <td>{{event.date | date:'dd/MM/yyyy'}}</td>
+                                    <td>{{event.bookingDeadline | date:'dd/MM/yyyy hh:mma'}}</td>
+                                    <td>{{event.location.address.town}}</td>
+                                    <td>{{event.eventStatus}}</td>
+                                    <td>{{event.numberOfConfirmedBookings}} / {{event.numberOfPlaces}}</td>
+                                    <td>{{event.numberOfWaitingListBookings}}</td>
+                                    <td><a class="button small" href="javascript:void(0);" ng-click="updateBookingInfo(event.id)">Manage</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div ng-show="isAdminUser">
-    <div class="row">
-        <div class="small-16 columns">
-            <div class="panel white clearfix">
-                <div class="row">
-                    <!--div class="small-16 columns">
-                        <h2>Step 1: Choose your event</h2>
-                        <label for="eventToBook">
-                            <strong>Select your event:</strong>
-                        </label>
-                        <select id="eventToBook" ng-model="eventIdForBooking">
-                            <option ng-repeat="event in events" value="{{event.id}}">{{event.title}} - {{event.subtitle}} @ {{event.location.addressLine1}} on {{event.date | date:'dd/MM/yyyy'}}</option>
-                        </select>
-                    </div-->
+        <div ng-show="isAdminUser && eventIdForBooking" class="small-16 columns">
+            <div class="panel white clearfix accordion-group">
+                <h2 id='event-booking-details'>Selected Event Details</h2>
+                <p>
+                    <strong>Event:</strong> <a href="" ui-sref="event({id: eventSelected.id})" target="_blank">{{eventSelected.title}} {{eventSelected.subtitle}}</a><br>
+                    <strong>Location:</strong> {{eventSelected.location.address.addressLine1}}, {{eventSelected.location.address.town}},{{eventSelected.location.address.postalCode}}<br>
+                    <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
+                    <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy hh:mma'}} - {{eventSelected.endDate | date:'dd/MM/yyyy hh:mma'}}<br>
+                    <strong>Booking Deadline:</strong> {{eventSelected.bookingDeadline | date:'dd/MM/yyyy hh:mma'}}<br>
+                    <strong>Prepwork Deadline:</strong> {{eventSelected.prepWorkDeadline | date:'dd/MM/yyyy hh:mma'}}<br>
+                    <strong>Group Auth Code:</strong> {{eventSelected.isaacGroupToken}} <br>
+                    <span ng-show="eventSelected.placesAvailable < 0"><strong style="color:red">Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
+                    <span ng-show="eventSelected.placesAvailable >= 0"><strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
+                </p>
+            </div>
+            <div class="panel white clearfix accordion-group ">
+                <div ng-click="bookingPanelVisible = !bookingPanelVisible" ng-class="{'active': bookingPanelVisible}">
+                    <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
+                    <h2>Manage Event Bookings</h2>
+                </div>
+                <div class="row" ng-show="bookingPanelVisible">
                     <div ng-if="eventIdForBooking" class="small-16 columns">
-                        <h3 id='event-booking-details'>Selected Event Details</h3>
-                        <p>
-                            <strong>Event:</strong> <a href="" ui-sref="event({id: eventSelected.id})" target="_blank">{{eventSelected.title}} {{eventSelected.subtitle}}</a><br>
-                            <strong>Location:</strong> {{eventSelected.location.address.addressLine1}}, {{eventSelected.location.address.town}},{{eventSelected.location.address.postalCode}}<br>
-                            <strong>Event Status:</strong> {{eventSelected.eventStatus}}<br>
-                            <strong>Event Start:</strong> {{eventSelected.date | date:'dd/MM/yyyy h:ma'}} - {{eventSelected.endDate | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Booking Deadline:</strong> {{eventSelected.bookingDeadline | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Prepwork Deadline:</strong> {{eventSelected.prepWorkDeadline | date:'dd/MM/yyyy h:ma'}}<br>
-                            <strong>Group Auth Code:</strong> {{eventSelected.isaacGroupToken}} <br>
-                            <span ng-show="eventSelected.placesAvailable < 0"><strong style="color:red">Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
-                            <span ng-show="eventSelected.placesAvailable >= 0"><strong>Number of Places Available:</strong> {{eventSelected.placesAvailable}} / {{eventSelected.numberOfPlaces}}</span>
-                        </p>
-                    </div>
-                    <div ng-if="eventIdForBooking" class="small-16 columns" style="overflow-x:scroll;">
                         <h3>Step 2: Review bookings</h3>
-                        <table ng-show="bookings.length > 0">
-                            <tr>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
-                                <th>Account Type</th>
-                                <th>School</th>
-                                <th>Job / Year Group</th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Booking Status</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
-                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
-                                <th>Accessibility Requirements</th>
-                                <th>Medical Requirements</th>
-                                <th>Emergency Name</th>
-                                <th>Emergency Telephone</th>
-                                <th>Actions</th>
-                            </tr>
-                            <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
-                                <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
-                                <td>{{booking.userBooked.email}}</td>
-                                <td>{{booking.userBooked.role}}</td>
-                                <td ng-show="!userIdToSchoolMapping[booking.userBooked.id]['urn']">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</td>
-                                <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
-                                <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
-                                <td>{{booking.bookingStatus}}</td>
-                                <td>{{booking.bookingDate | date:'dd/MM/yyyy h:m:s a'}}</td>
-                                <td>{{booking.updated | date:'dd/MM/yyyy h:m:s a'}}</td>
-                                <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
-                                <td>{{booking.additionalInformation.medicalRequirements}}</td>
-                                <td>{{booking.additionalInformation.emergencyName}}</td>
-                                <td>{{booking.additionalInformation.emergencyNumber}}</td>
-                                <td><a href="javascript:void(0);" ng-show="booking.bookingStatus == 'WAITING_LIST'" ng-click="promoteFromWaitList(eventIdForBooking, booking.userBooked.id)">Promote</a> &nbsp; <a href="javascript:void(0);" ng-show="booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a> &nbsp; <a ng-show="user.role='ADMIN'" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
-                                &nbsp; <a href="javascript:void(0);" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a></td>
-                            </tr>
-                        </table>
-                        <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
+                        <div class="x-scroll">
+                            <table ng-show="bookings.length > 0">
+                                <tr>
+                                    <th>Actions</th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.familyName'; reverse=!reverse">Name</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'userBooked.email'; reverse=!reverse">Email</a></th>
+                                    <th>Account Type</th>
+                                    <th>School</th>
+                                    <th>Job / Year Group</th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingStatus'; reverse=!reverse">Booking Status</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'bookingDate'; reverse=!reverse">Booking Created</a></th>
+                                    <th><a href="javascript:void(0);" ng-click="sortPredicate = 'updated'; reverse=!reverse">Booking Updated</a></th>
+                                    <th>Accessibility Requirements</th>
+                                    <th>Medical Requirements</th>
+                                    <th>Emergency Name</th>
+                                    <th>Emergency Telephone</th>
+                                </tr>
+                                <tr ng-repeat="booking in bookings | orderBy:sortPredicate:reverse">
+                                    <td>
+                                        <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CANCELLED'" ng-click="promoteBooking(eventIdForBooking, booking.userBooked.id)">Promote</a>
+                                        <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus == 'WAITING_LIST' || booking.bookingStatus == 'CONFIRMED'" ng-click="cancelEventBooking(eventIdForBooking, booking.userBooked.id)">Cancel</a>
+                                        <a ng-show="user.role == 'ADMIN'" class="button small" href="javascript:void(0);" ng-click="unbookUserFromEvent(eventIdForBooking, booking.userBooked.id)">Delete</a>
+                                        <a href="javascript:void(0);" class="button small" ng-click="resendConfirmationEmail(eventIdForBooking, booking.userBooked.id)">Resend Email</a>
+                                    </td>
+                                    <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
+                                    <td>{{booking.userBooked.email}}</td>
+                                    <td>{{booking.userBooked.role}}</td>
+                                    <td ng-show="!userIdToSchoolMapping[booking.userBooked.id]['urn']">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</td>
+                                    <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
+                                    <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
+                                    <td>{{booking.bookingStatus}}</td>
+                                    <td>{{booking.bookingDate | date:'dd/MM/yyyy h:mm:ss a'}}</td>
+                                    <td>{{booking.updated | date:'dd/MM/yyyy h:mm:ss a'}}</td>
+                                    <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
+                                    <td>{{booking.additionalInformation.medicalRequirements}}</td>
+                                    <td>{{booking.additionalInformation.emergencyName}}</td>
+                                    <td>{{booking.additionalInformation.emergencyNumber}}</td>
+                                </tr>
+                            </table>
+                            <p ng-show="bookings.length == 0">There are no bookings for this event.</p>
+                        </div>
                     </div>
-                    
                     <div ng-if="eventIdForBooking" class="small-16 columns">
-                       <h3>Step 3: Find user account(s) for manual booking</h3>
+                        <h3>Step 3: Find user account(s) for manual booking</h3>
 
                         <form ng-submit="findUsers()">
                             <div class="medium-12 medium-centered columns end">
                                 <label for="user-search-familyName">
                                     <strong>Find a user by family name</strong>
-                                </label>                            
+                                </label>
                                 <input id="user-search-familyName" type="text" ng-model="userSearch.searchTerms.familyName" placeholder="Enter user family name" >
                                 <label for="user-search-email">
                                     <strong>Find a user by email</strong>
-                                </label>                            
+                                </label>
                                 <input id="user-search-email" type="text" ng-model="userSearch.searchTerms.email" placeholder="Enter user email" >
                                 <label for="user-search-role">
                                     <strong>Find by user role:</strong>
@@ -133,53 +135,130 @@
                                     <option value="TEACHER">Teacher</option>
                                     <option value="CONTENT_EDITOR">Content Editor</option>
                                     <option value="ADMIN">Admin</option>
-                                </select>                            
+                                </select>
                             </div>
                             <div class="medium-12 medium-centered columns end">
                                 <button ng-click="findUsers()">Find user</button>
-                            </div>        
+                            </div>
                         </form>
                     </div>
-                </div>
-            
-                <!-- Results TODO: stolen from search page this needs tidying up -->
-                <section ng-if="userSearch.hasSearched">
-                    <div class="small-16 columns" ng-if="userSearch.isLoading">
-                            <h4>User search results</h4>                        
-                        <div class="text-center" >
-                            <img src="/assets/loading.gif">
-                        </div>    
-                    </div>
 
-                    <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
-                        <div class="small-16 columns">
-                            <h4>User search results ({{userSearch.results.length}})</h4>
-                            <table>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>User Role</th>
-                                    <th>School Set</th>
-                                    <th>Member Since</th>
-                                    <th>Last Seen</th>
-                                    <th>Actions</th>
-                                </tr>
-                                <tr ng-repeat="result in userSearch.results">
-                                    <td>{{result.familyName}}, {{result.givenName}}</td>
-                                    <td>{{result.email}}</td>                                    
-                                    <td>{{result.role || "NOT_SET"}}</td>
-                                    <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
-                                    <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
-                                    <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>                                      
-                                    <td><a ng-show="userBookings.indexOf(result._id) == -1" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventIdForBooking, result._id)">Book on event</a>
-                                    <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists already</span></td>
-                                </tr>
-                            </table>
+                    <!-- Results TODO: stolen from search page this needs tidying up -->
+                    <section ng-if="userSearch.hasSearched">
+                        <div class="small-16 columns" ng-if="userSearch.isLoading">
+                            <h4>User search results</h4>
+                            <div class="text-center">
+                                <img src="/assets/loading.gif">
+                            </div>
                         </div>
+
+                        <div class="row" ng-if="userSearch.results && !userSearch.isLoading">
+                            <div class="small-16 columns">
+                                <h4>User search results ({{userSearch.results.length}})</h4>
+                                <table>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>User Role</th>
+                                        <th>School Set</th>
+                                        <th>Member Since</th>
+                                        <th>Last Seen</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    <tr ng-repeat="result in userSearch.results">
+                                        <td>{{result.familyName}}, {{result.givenName}}</td>
+                                        <td>{{result.email}}</td>
+                                        <td>{{result.role || "NOT_SET"}}</td>
+                                        <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
+                                        <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
+                                        <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Book</a>
+                                            <a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Add to WL</a>
+                                            <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="panel white clearfix accordion-group" ng-show="canTakeEventAttendance(eventSelected.date)">
+                <div ng-click="attendancePanelVisible = !attendancePanelVisible" ng-class="{'active': attendancePanelVisible}">
+                    <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" />
+                    <h2>Record Event Attendance</h2>
+                </div>
+                <div ng-if="attendancePanelVisible">
+                    <h3>Event Attendees</h3>
+                    <div class="x-scroll">
+                        <table ng-show="bookings.length > 0">
+                            <tr>
+                                <th>Actions</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingStatus'; reverse=!reverse">Attendance</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.familyName'; reverse=!reverse">Name</a><p><input ng-model="filter.userBooked.familyName" placeholder="Surname filter" /></p></th>
+                                <th>Job / Year Group</th>
+                                <th>School</th>
+                                <th>Account Type</th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.userBooked.email'; reverse=!reverse">Email</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.bookingDate'; reverse=!reverse">Booking Created</a></th>
+                                <th><a href="javascript:void(0);" ng-click="sortPredicate = 'booking.updated'; reverse=!reverse">Booking Updated</a></th>
+                                <th>Accessibility Requirements</th>
+                                <th>Medical Requirements</th>
+                                <th>Emergency Name</th>
+                                <th>Emergency Telephone</th>
+                            </tr>
+                            <tr ng-repeat="booking in bookings | filter:filter | orderBy:sortPredicate:reverse">
+                                <td>
+                                    <a href="javascript:void(0);" class="button small" ng-show=" booking.bookingStatus != 'ATTENDED'" ng-click="recordEventAttendance(eventIdForBooking, booking.userBooked.id, attended)">Mark&nbsp;as Attended</a>
+                                    <a href="javascript:void(0);" class="button small" ng-show="booking.bookingStatus != 'ABSENT'" ng-click="recordEventAttendance(eventIdForBooking, booking.userBooked.id, absent)">Mark&nbsp;as Absent</a>
+                                </td>
+                                <td class="center text-center">{{attendanceSymbol(booking.bookingStatus)}}</td>
+                                <td>{{booking.userBooked.familyName}}, {{booking.userBooked.givenName}}</td>
+                                <td>{{booking.additionalInformation.jobTitle ? booking.additionalInformation.jobTitle :  booking.additionalInformation.yearGroup}}</td>
+                                <td ng-show="!userIdToSchoolMapping[booking.userBooked.id]['urn']">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</td>
+                                <td ng-show="userIdToSchoolMapping[booking.userBooked.id]['urn']"><a ui-sref="adminStats.schoolUsersDetail({'schoolId':userIdToSchoolMapping[booking.userBooked.id]['urn']})">{{userIdToSchoolMapping[booking.userBooked.id] ? userIdToSchoolMapping[booking.userBooked.id]["name"]: ""}}</a></td>
+                                <td>{{booking.userBooked.role}}</td>
+                                <td>{{booking.userBooked.email}}</td>
+                                <td>{{booking.bookingDate | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                <td>{{booking.updated | date:'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                <td>{{booking.additionalInformation.accessibilityRequirements}}</td>
+                                <td>{{booking.additionalInformation.medicalRequirements}}</td>
+                                <td>{{booking.additionalInformation.emergencyName}}</td>
+                                <td>{{booking.additionalInformation.emergencyNumber}}</td>
+                            </tr>
+                        </table>
+                        <p ng-show="bookings.length == 0">No attendees have been booked onto this event.</p>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <div isaac-modal="eventBookingModal">
+        <div class="reveal-modal-head">
+            <h2>Admin - Create a <span ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0">waiting list</span> booking</h2>
+            <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+        </div>
+        <div class="reveal-modal-body">
+            <div event-booking-form></div>
+            <span>
+                <p><small>Warning, by booking a user on this event, it may eventually lead to their personal information being shared with a third party. You must therefore confirm how this booking has been authorised. The data owner is always the Isaac user being booked on to the event.</small></p>
+
+                <label for="authorisation">
+                    <strong>Booking / Personal Data Sharing Authorised By</strong>
+                    <span class="ru-form-required"></span>
+                </label>
+                <select id="authorisation" name="authorisation" ng-model="additionalInformation.authorisation" required>
+                    <option value="Telephone-Owner">Telephone - Data Owner</option>
+                    <option value="Email-Owner">Verified Email - Data Owner</option>
+                    <option value="OTHER">Other - Please specify</option>
+                </select>
+
+                <input ng-show="additionalInformation.authorisation == 'OTHER'" type="text" name="authorisation", ng-model="additionalInformation.authorisationOther"/>
+
+                <a class="button" ng-show="eventSelected.eventStatus != 'WAITING_LIST_ONLY' && userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Book on event</a>
+                <a class="button" ng-show="eventSelected.eventStatus == 'WAITING_LIST_ONLY' || (userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Add to waiting list</a>
+            </span>
+        </div>
+    </div>
+</div>
