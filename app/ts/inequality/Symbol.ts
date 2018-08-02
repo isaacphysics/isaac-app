@@ -65,16 +65,16 @@ export
     //         return this._dockingPoints;
     //     }
     // }
-    //
-    // /**
-    //  *  Checks if this symbol is the direct child of a differential.
-    //  * 
-    //  * @returns {boolean} True if this symbol is the direct child of a differential but not multiplied to it.
-    //  */
-    // get sonOfADifferential(): boolean {
-    //     let p = this.parentWidget;
-    //     return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
-    // }
+    
+    /**
+     *  Checks if this symbol is the direct child of a differential.
+     * 
+     * @returns {boolean} True if this symbol is the direct child of a differential but not multiplied to it.
+     */
+    get sonOfADifferential(): boolean {
+        let p = this.parentWidget;
+        return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
+    }
 
     public constructor(p: any, s: any, letter: string, modifier = "") {
         super(p, s);
