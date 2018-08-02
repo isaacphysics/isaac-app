@@ -195,7 +195,7 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
                 $scope.correctQuestions.topicsSubject = correctFields[0].parent;
             }
 
-            $scope.$watch("questionsVisible.field.selection", function(_newField) {
+            $scope.$watch("questionsVisible.field.selection", function(newField) {
 
                 $scope.questionsVisible.fieldData = [];
 
@@ -203,26 +203,24 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
                     return;
                 }
 
-                $scope.$watchGroup(["questionsVisible.field.selection", "questionsVisible"], function(newField) {
-                    let topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
-                    for (let i in topics) {
-                        let t = topics[i];
-                        let value;
+                let topics = tags.getDescendents($scope.questionsVisible.field.selection.id);
+                for (let i in topics) {
+                    let t = topics[i];
+                    let value;
 
-                        if ($scope.questionsVisible == $scope.correctQuestions) {
-                            value = $scope.progress.correctByTag[t.id] || 0;
-                        } else {
-                            value = $scope.progress.attemptsByTag[t.id] || 0;
-                        }
-
-                        $scope.questionsVisible.fieldData.push({
-                            label: t.title,
-                            val: value
-                        })
+                    if ($scope.questionsVisible == $scope.correctQuestions) {
+                        value = $scope.progress.correctByTag[t.id] || 0;
+                    } else {
+                        value = $scope.progress.attemptsByTag[t.id] || 0;
                     }
 
-                    $scope.questionsVisible.topicsSubject = newField.parent;
-                });
+                    $scope.questionsVisible.fieldData.push({
+                        label: t.title,
+                        val: value
+                    })
+                }
+
+                $scope.questionsVisible.topicsSubject = newField.parent;                
             });
         }
     }).catch(function(e) {
