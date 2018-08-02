@@ -14,15 +14,16 @@ class SemanticVersion(Enum):
 	patch=2
 
 class RoboOp(object):
-	current_app_tag = json.loads(requests.get('https://api.github.com/repos/ucam-cl-dtg/isaac-app/tags').content)[0]['name']
-	current_api_tag = json.loads(requests.get('https://api.github.com/repos/ucam-cl-dtg/isaac-api/tags').content)[0]['name']
+	"""RoboOp is an automated DevOp to handle releases. It has a number of 'abilities' whcih can be called (from the command line), internally they are 'do_' methods."""
+	reverse_chron_app_tags = [tag.get('name') for tag in json.loads(requests.get('https://api.github.com/repos/ucam-cl-dtg/isaac-app/tags').content)]
+	reverse_chron_api_tags = [tag.get('name') for tag in json.loads(requests.get('https://api.github.com/repos/ucam-cl-dtg/isaac-api/tags').content)]
 	tag_regex = re.compile(r'^v(?P<{}>\d+)\.(?P<{}>\d+)\.(?P<{}>\d+)$'.format(SemanticVersion.major.name, SemanticVersion.minor.name, SemanticVersion.patch.name))
 	ability_indicator_prefix = 'do_'
 	default_task_order = [
-		'take_backup',
 		'release_test',
-		'regression_test'
+		'regression_test',
 		'create_release_tags',
+		'take_backup',
 		'build_app',
 		'bring_old_staging_down',
 		'bring_new_staging_up',
@@ -33,54 +34,25 @@ class RoboOp(object):
 		'stop_old_app',
 		'reload_router',
 		'monitor_new_services',
-		'set_reminder_to_bring_down_old_site'
+		'set_reminder_to_bring_down_old_site',
 		'write_changelog',
 	]
 
 	@classmethod
 	def get_abilities(cls):
-		# TODO MT explain what I'm doing hwew
 		return [attribute[len(cls.ability_indicator_prefix):] for attribute in dir(cls) if attribute.startswith(cls.ability_indicator_prefix)]
-
-	@classmethod
-	def generate_settings_schema(cls):
-		release_types = ['app-only', 'full']
-		return OrderedDict(
-			actions= {
-				'nargs': '+',
-				'choices': cls.get_abilities(),
-				'default': cls.default_task_order,
-				'help': 'list of actions to perform',
-			},
-			target_app_version= {
-				'nargs': '?',
-				'help': 'target app version tag',
-				'regex': RoboOp.tag_regex,
-				'prompt': 'What is the target app version (latest app tag: {})'.format(RoboOp.current_app_tag)
-			},
-			target_api_version= {
-				'nargs': '?',
-				'help': 'target api tag version',
-				'regex': RoboOp.tag_regex,
-				'prompt': 'What is the target api version (latest api tag: {})'.format(RoboOp.current_api_tag)
-			}
-		)
-
-	@classmethod
-	def get_project_info(cls):
-		return {
-			'Latest isaac app tag:': RoboOp.current_app_tag,
-			'Latest isaac api tag:': RoboOp.current_api_tag
-		}
 
 	@classmethod
 	def next_version(cls, initial_version, type_of_release):
 		match = cls.tag_regex.match(initial_version)
-
 		next_version_description = []
+		version_bumped = False
 		for version_type in list(SemanticVersion):
 			if type_of_release is version_type:
-				next_version_description.append(str(int(match.group(version_type.name)) + 1)) 
+				next_version_description.append(str(int(match.group(version_type.name)) + 1))
+				version_bumped = True
+			elif version_bumped: # if version bumped the remaining versions sections will be 0
+				next_version_description.append('0')
 			else:
 				next_version_description.append(match.group(version_type.name))
 
@@ -88,36 +60,167 @@ class RoboOp(object):
 
 	def __init__(self, interface):
 		# TODO MT a possible improvement would be to pull app and api from the internet into a temporary directory to work with
-		self.interface = interface
-		settings_schema = RoboOp.generate_settings_schema()
+		# TODO MT a more correct way of getting the current releases would be to use docker compose
+		self.current_app_tag = RoboOp.reverse_chron_app_tags[0]
+		self.current_api_tag = RoboOp.reverse_chron_api_tags[0]
 
-		self.interface.report_useful_info(RoboOp.get_project_info())
+		self.interface = interface
+		settings_schema = self.generate_settings_schema()
+
+		self.interface.report_useful_info(self.get_project_info())
 		
 		settings = self.interface.get_required_settings(settings_schema)
 		self.__dict__.update(settings) # make settings "dot accessible" on self
 
-		self.app_only_release = self.target_api_version == RoboOp.current_api_tag
+		self.app_only_release = self.target_api_version == self.current_api_tag
+		if self.app_only_release:
+			self.interface.notify('This will be an app only release')
 
 	def __getattr__(self, name):
 		# if I don't have the attribute you're asking for check if it is an ability of mine
 		if name in RoboOp.get_abilities():
 			return getattr(self, RoboOp.ability_indicator_prefix + name)
 
-	def do_take_backup(self):
-		self.interface.user_instruction('Now would be a good time to take backups')
+	def generate_settings_schema(self):
+		release_types = ['app-only', 'full']
+		return OrderedDict(
+			actions= {
+				'nargs': '+',
+				'choices': RoboOp.get_abilities(),
+				'default': RoboOp.default_task_order,
+				'help': 'list of actions to perform',
+			},
+			target_app_version= {
+				'nargs': '?',
+				'help': 'target app version tag',
+				'regex': RoboOp.tag_regex,
+				'prompt': 'What is the target app version (format: vX.X.X, latest app tag: {})'.format(self.current_app_tag)
+			},
+			target_api_version= {
+				'nargs': '?',
+				'help': 'target api tag version',
+				'regex': RoboOp.tag_regex,
+				'prompt': 'What is the target api version (format: vX.X.X, latest api tag: {})'.format(self.current_api_tag)
+			}
+		)
+
+	def get_project_info(self):
+		return {
+			'Latest isaac app tag:': self.current_app_tag,
+			'Latest isaac api tag:': self.current_api_tag
+		}
 
 	def do_release_test(self):
-		self.interface.user_instruction('Deploy test for master on isaac-3 using the commands:\ncd /local/src/isaac-app/\n./compose test master up -d')
+		self.interface.user_instruction(
+			'Deploy test for master on isaac-3 using the commands:\n\n'
+			'cd /local/src/isaac-app/\n'
+			'./compose test master up -d'
+		)
+
+	def do_regression_test(self):
+		self.interface.user_instruction(
+			'Regression Test\n\n'
+			'- Do the manual tests from sheets.google.com\n'
+			'- Run the Automated Regression tests (https://github.com/jsharkey13/isaac-selenium-testing)'
+		)
 
 	def do_create_release_tags(self):
-		# TODO MT improve by checking all existing tags to accomodate rollback
-		tags_already_exist = self.target_app_version == RoboOp.current_app_tag and self.target_api_version == RoboOp.current_api_tag
+		tags_already_exist = self.target_app_version in RoboOp.reverse_chron_app_tags and self.target_api_version in RoboOp.reverse_chron_api_tags
 		if tags_already_exist:
 			self.interface.warn('Skipping tagging because target versions already exist')
 		else:
 			self.tag_isaac_app()
 			if not self.app_only_release:
 				self.tag_isaac_api()
+
+	def do_take_backup(self):
+		self.interface.user_instruction('Now would be a good time to take backups')
+
+	def do_build_app(self):
+		self.interface.user_instruction(
+			'Wait until Jenkins has finished building, then, build the app in Docker by calling these commands on isaac-3\n\n'
+			'cd /local/src/isaac-app/\n'
+			'./build-in-docker.sh {}'.format(self.target_app_version)
+		)
+
+	def do_bring_old_staging_down(self):
+		self.interface.user_instruction(
+			'Bring the old version of staging down (You might want to warn the content team)\n'
+			'On isaac-3, run "docker ps" to check the version of staging but you should be able to:\n\n'
+			'./compose staging {} down -v\n\n'
+			'("./compose staging master down -v" is another common option)'.format(self.current_app_tag)
+		)
+
+	def do_bring_new_staging_up(self):
+		self.interface.user_instruction(
+			'Bring the new version of staging up by running the following commands on isaac-3\n\n'
+			'./compose staging {} up -d'.format(self.target_app_version)
+		)
+
+	def do_bring_test_down(self):
+		self.interface.user_instruction(
+			'Bring test down on isaac-3\n\n'
+			'./compose test master down -v'
+		)
+
+	def do_bring_down_old_etl(self):
+		self.interface.user_instruction(
+			'Bring down the old ETL on isaac-3\n\n'
+			'./compose-etl {} down -v'.format(self.current_app_tag)
+		)
+
+	def do_bring_up_new_etl(self):
+		self.interface.user_instruction(
+			'Bring up the new ETL on isaac-3\n\n'
+			'./compose-etl {} up -d'.format(self.target_app_version)
+		)
+
+	def do_bring_up_live(self):
+		if self.app_only_release:
+			self.interface.user_instruction(
+				'Bring up the new live app (this is an app only release)\n\n'
+				'./compose-live {new_version} up -d app-live-{new_version}\n'.format(new_version=self.target_app_version)
+			)
+		else:
+			self.interface.user_instruction(
+				'Bring up the new version of isaac-app and isaac-api\n\n'
+				'./compose-live {new_version} up -d'.format(new_version=self.target_app_version)
+			)
+
+	def do_stop_old_app(self):
+		self.interface.user_instruction(
+			'Stop the old version of the app\n\n'
+			'docker stop app-live-{}'.format(self.current_app_tag)
+		)
+
+	def do_reload_router(self):
+		self.interface.user_instruction(
+			'Reload the router\n\n'
+			'../isaac-router/reload-router-config'
+		)
+		self.interface.notify('You should now test that the site serves up the new version')
+
+	def do_monitor_new_services(self):
+		self.interface.user_instruction(
+			'Update the monitoring targets\n\n'
+			'cd ../isaac-monitor\n'
+			'python monitor_services.py'
+		)
+
+	def do_set_reminder_to_bring_down_old_site(self):
+		if self.app_only_release:
+			self.interface.user_instruction(
+				'In slack write a reminder to bring down the old version of the site (rather than just stopping the container)\n\n'
+				'/remind me in 5 days to bring down the old version of Isaac on isaac-3 using  "docker rm -v app-live-{}"'.format(self.current_app_tag)
+			)
+		else:
+			self.interface.user_instruction(
+				'In slack write a reminder to bring down the old version of the site (rather than just stopping the container)\n\n'
+				'/remind me in 5 days to bring down the old version of Isaac on isaac-3 using  "./compose-live {} down -v"'.format(self.current_app_tag)
+			)
+
+	def do_write_changelog(self):
+		self.interface.user_instruction('Write the release changelog in GitHub - https://github.com/ucam-cl-dtg/isaac-app/releases')
 
 	def tag_isaac_app(self):
 		self.interface.notify('Tagging isaac-app')
@@ -134,6 +237,7 @@ class RoboOp(object):
 		self.git_add_and_commit('Increment version', 'package.json')
 
 		self.git_push(self.target_app_version)
+		self.interface.notify('Tagging successful')
 
 	def tag_isaac_api(self):
 		self.interface.notify('Tagging isaac-api')
@@ -150,6 +254,7 @@ class RoboOp(object):
 
 		self.git_push(self.target_api_version)
 		os.chdir('../isaac-app') # return to previous directory
+		self.interface.notify('Tagging successful')
 
 	def check_current_branch_status(self):
 		git_status = subprocess.check_output(r'git fetch && git status', shell=True)
@@ -199,12 +304,23 @@ class RoboOp(object):
 			json.dump(package_json, file, indent=2, separators=(',', ': '))
 
 	def update_pom_xml_version(self, version):
-		xml_namespace = {'ns': 'http://maven.apache.org/POM/4.0.0'}
-		filename = 'pom.xml'
-		tree = ElementTree.parse(filename)
-		segue_version = tree.find('ns:properties', xml_namespace).find('ns:segue.version', xml_namespace)
-		segue_version.text = version
-		tree.write(filename)
+		# TODO an XML parsed solution exists in git but would need to sort out namespaces to get ElementTree to format correctly
+		api_provider_regex = re.compile(r'<segue\.version>\d+\.\d+\.\d+(\-SNAPSHOT)?</segue\.version>')
+		new_api_provider_string = '<segue.version>{}</segue.version>'.format(version[1:]) # [1:] is used as pom.xml does not want the 'v' in vX.X.X
+
+		with open('pom.xml', 'r+') as file:
+			new_file_content = []
+			line_found = False
+			for line in file:
+				new_line, no_of_substitutions = api_provider_regex.subn(new_api_provider_string, line)
+				line_found |= bool(no_of_substitutions)
+				new_file_content.append(new_line)
+			if not line_found:
+				raise Exception('Error: Could not find the segue.version element in pom.xml')
+
+			file.seek(0)
+			file.truncate()
+			file.write(''.join(new_file_content))
 
 	def git_add_and_commit(self, message, *files):
 		# subprocess.check_output('git add ' + ' '.join(files), shell=True)
@@ -221,9 +337,10 @@ class RoboOp(object):
 		pass		
 
 	def release(self):
-		for action in self.actions:
-			self.interface.notify('Starting {}'.format(action))
+		for i, action in enumerate(self.actions):
+			self.interface.notify_of_next_stage(action)
 			getattr(self, action)()
+		self.interface.notify('Release procedure completed!')
 
 
 class RoboOpCommandLineInterface(object):
@@ -252,7 +369,7 @@ class RoboOpCommandLineInterface(object):
 		result = dict(arg_populated_settings)
 		for name, properties in settings_schema.items():
 			while result[name] is None:
-				user_input = self.ask(properties['prompt'])
+				user_input = self.ask_to_acknowledge(properties['prompt'])
 				input_in_choices = 'choices' in properties and user_input in properties['choices']
 				input_matches_regex = 'regex' in properties and properties['regex'].match(user_input)  
 				if input_in_choices or input_matches_regex:
@@ -265,6 +382,9 @@ class RoboOpCommandLineInterface(object):
 	def notify(self, message):
 		print('Note: ' + message)
 
+	def notify_of_next_stage(self, stage):
+		print('\n| STAGE: {} |'.format(stage.upper()))
+
 	def warn(self, message):
 		print('Warning: ' + message)
 
@@ -272,7 +392,7 @@ class RoboOpCommandLineInterface(object):
 		return raw_input(message + '\n' + RoboOpCommandLineInterface.prompt)
 
 	def user_instruction(self, message):
-		return self.ask_to_acknowledge('\nInstruction: ' + message)
+		return self.ask_to_acknowledge('Instruction: ' + message)
 
 	def confirm(self, message, options={'y':True, 'n':False}):
 		response = ''
