@@ -142,18 +142,15 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
     }
 
     $scope.calculateBoardLevels = function(board) {
-        let levels = [];
-        for (let i in board.questions) {
-            if (levels.indexOf(board.questions[i].level) == -1 && board.questions[i].level != 0) {
-                levels.push(board.questions[i].level);
+        return board.questions.reduce((a, q) => {
+            if (a.indexOf(q.level) == -1 && q.level != 0) {
+                return [...a, q];
+            } else {
+                return a;
             }
-        }
-
-        levels.sort(function (a, b) {
-               return a > b ? 1 : a < b ? -1 : 0;
+        }).sort((a, b) => {
+               a > b ? 1 : (a < b ? -1 : 0);
         });
-
-        return levels;
     }
 
     let lookupAssignedGroups = function(gameboardIds) {

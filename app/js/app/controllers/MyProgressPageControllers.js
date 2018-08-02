@@ -195,7 +195,7 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
                 $scope.correctQuestions.topicsSubject = correctFields[0].parent;
             }
 
-            $scope.$watch("questionsVisible.field.selection", function(newField) {
+            $scope.$watch("questionsVisible.field.selection", function(_newField) {
 
                 $scope.questionsVisible.fieldData = [];
 
