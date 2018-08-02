@@ -59,8 +59,8 @@ class RoboOp(object):
 		return 'v' + '.'.join(next_version_description)
 
 	def __init__(self, interface):
-		# TODO MT a possible improvement would be to pull app and api from the internet into a temporary directory to work with
-		# TODO MT a more correct way of getting the current releases would be to use docker compose
+		# TODO MT a possible improvement would be to run the script on isaac-3 and then pull app and api from the internet into a temporary directory to work with a clean copy
+		# TODO MT if this was being run on isaac-3 a more correct way of getting the current releases would be to use docker ps
 		self.current_app_tag = RoboOp.reverse_chron_app_tags[0]
 		self.current_api_tag = RoboOp.reverse_chron_api_tags[0]
 
@@ -134,7 +134,7 @@ class RoboOp(object):
 				self.tag_isaac_api()
 
 	def do_take_backup(self):
-		self.interface.user_instruction('Now would be a good time to take backups')
+		self.interface.user_instruction('Now would be a good time to make backups')
 
 	def do_build_app(self):
 		self.interface.user_instruction(
@@ -323,18 +323,15 @@ class RoboOp(object):
 			file.write(''.join(new_file_content))
 
 	def git_add_and_commit(self, message, *files):
-		# subprocess.check_output('git add ' + ' '.join(files), shell=True)
-		# subprocess.check_output('git commit -m "{}"'.format(commit_message), shell=True)
-		pass
+		subprocess.check_output('git add ' + ' '.join(files), shell=True)
+		subprocess.check_output('git commit -m "{}"'.format(commit_message), shell=True)
 
 	def git_tag(self, tag_version):
-		# subprocess.check_output('git tag -a {target_version} -m "Release {target_version}"'.format(target_version=tag_version), shell=True)
-		pass
+		subprocess.check_output('git tag -a {target_version} -m "Release {target_version}"'.format(target_version=tag_version), shell=True)
 
 	def git_push(self, tag_name):
-		# subprocess.check_output('git push origin master', shell=True)
-		# subprocess.check_output('git push origin {}'.format(tag_name), shell=True)
-		pass		
+		subprocess.check_output('git push origin master', shell=True)
+		subprocess.check_output('git push origin {}'.format(tag_name), shell=True)
 
 	def release(self):
 		for i, action in enumerate(self.actions):
