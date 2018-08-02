@@ -696,6 +696,33 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             }
         });
 
+        $sp.state('teacherMentoringGcse', {
+            url: "/teachermentoring_gcse",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER", "CONTENT_EDITOR", "TEACHER"]),
+                "page": ["api", function(api) {return api.pageFragments.get({id: 'teacher_mentoring_gcse_page_frag'}).$promise;}]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/generic_page.html",
+                    controller: "GenericPageController"
+                },
+            },
+        });
+        $sp.state('teacherMentoringAlevel', {
+            url: "/teachermentoring_alevel",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER", "CONTENT_EDITOR", "TEACHER"]),
+                "page": ["api", function(api) {return api.pageFragments.get({id: 'teacher_mentoring_alevel_page_frag'}).$promise;}]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/generic_page.html",
+                    controller: "GenericPageController"
+                },
+            },
+        });
+
         $sp.state('admin', {
             url: "/admin",
             resolve: {
