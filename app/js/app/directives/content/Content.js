@@ -61,9 +61,9 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 
 			            			scope.$emit("ensureVisible");
 
-			            			var element = iElement.closest("dd");
-			            			if (null == element) {
-			            				element = iElement;
+			            			let dd = iElement.closest("dd");
+			            			if (null == dd) {
+			            				dd = iElement;
 			            			}
 
 									$timeout(function() {
