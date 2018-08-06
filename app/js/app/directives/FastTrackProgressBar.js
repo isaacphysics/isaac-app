@@ -1,5 +1,5 @@
-define(['jquery'], function($) {
-    return ['$location', function($location) {
+define(['jquery', "/partials/fasttrack_progress_bar.html"], function($, templateUrl) {
+    return ['$location', function(_$location) {
         return {
             restrict: 'A',
 
@@ -8,38 +8,38 @@ define(['jquery'], function($) {
                 currentPage: '=page',
             },
 
-            templateUrl: "/partials/fasttrack_progress_bar.html",
+            templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
-                var svgElement = function(tagName) {
+            link: function(scope, element, _attrs) {
+                let svgElement = function(tagName) {
                     return $(document.createElementNS("http://www.w3.org/2000/svg", tagName));
                 };
 
-                var questionPartStatesGroup = element.find("div.ft-progress-bar > svg g#question-part-states");
-                var questionSeparatorsGroup = element.find("div.ft-progress-bar > svg g#question-separators");
+                let questionPartStatesGroup = element.find("div.ft-progress-bar > svg g#question-part-states");
+                let questionSeparatorsGroup = element.find("div.ft-progress-bar > svg g#question-separators");
                 scope.progressBarHeight = 45;
-                var inProgressMask = 'url(#inProgressMask)';
-                var highlightMask = 'url(#highlightMask)';
-                var highlightColour = 'white';
+                let inProgressMask = 'url(#inProgressMask)';
+                let highlightMask = 'url(#highlightMask)';
+                let highlightColour = 'white';
                 scope.FT_STATES = {
                     ft_top_ten: {tagName:'ft_top_ten', colour:'#009acd'}, // keep in sync with _settings.scss $ft-top-ten-colour or import the value
                     ft_upper: {tagName:'ft_upper', colour:'#fea100'}, // keep in sync with _settings.scss $ft-upper-colour or import the value
                     ft_lower: {tagName:'ft_lower', colour:'#7fd0ff'}, // keep in sync with _settings.scss $ft-lower-colour or import the value
                 };
 
-                var evaluateProgress = function(boardState, currentlyWorkingOn) {
-                    var progressValues = [];
-                    for (var i = 0; i < boardState.questions.length; i++) {
-                        var question = boardState.questions[i];
-                        var questionPartStates = [];
-                        var workingOnThisPage = (question.id == currentlyWorkingOn.title) ? currentlyWorkingOn.level : null;
+                let evaluateProgress = function(boardState, currentlyWorkingOn) {
+                    let progressValues = [];
+                    for (let i = 0; i < boardState.questions.length; i++) {
+                        let question = boardState.questions[i];
+                        let questionPartStates = [];
+                        let workingOnThisPage = (question.id == currentlyWorkingOn.title) ? currentlyWorkingOn.level : null;
                         if (question.state == 'PERFECT') {
                             questionPartStates.push({
                                 state: scope.FT_STATES.ft_top_ten.tagName,
                                 currentlyWorkingOn: null,
                             });
                         } else {
-                            for (var j = 0; j < question.questionPartConcepts.length; j++) {
+                            for (let j = 0; j < question.questionPartConcepts.length; j++) {
                                 questionPartStates.push({
                                     state: question.questionPartConcepts[j].bestLevel,
                                     currentlyWorkingOn: (question.questionPartConcepts[j].title == currentlyWorkingOn.title) ? currentlyWorkingOn.level : null,
@@ -51,18 +51,18 @@ define(['jquery'], function($) {
                     return progressValues;
                 }
 
-                var renderProgress = function(progressValues) {
-                    var questionWidth = 100 / progressValues.length;
-                    for (var i = 0; i < progressValues.length; i++) {
-                        var questionOffset = i * questionWidth;
-                        var questionParts = progressValues[i].states;
-                        var questionPartWidth = questionWidth / questionParts.length;
-                        var questionCompleted = true;
-                        for (var j = 0; j < questionParts.length; j++) {
-                            var questionPartOffset = questionOffset + j * questionPartWidth;
-                            var questionPartState = questionParts[j].state;
-                            var currentlyWorkingOnThisConcept = questionParts[j].currentlyWorkingOn;
-                            var questionPartColour = questionPartState ? scope.FT_STATES[questionPartState].colour : 'none';
+                let renderProgress = function(progressValues) {
+                    let questionWidth = 100 / progressValues.length;
+                    for (let i = 0; i < progressValues.length; i++) {
+                        let questionOffset = i * questionWidth;
+                        let questionParts = progressValues[i].states;
+                        let questionPartWidth = questionWidth / questionParts.length;
+                        let questionCompleted = true;
+                        for (let j = 0; j < questionParts.length; j++) {
+                            let questionPartOffset = questionOffset + j * questionPartWidth;
+                            let questionPartState = questionParts[j].state;
+                            let currentlyWorkingOnThisConcept = questionParts[j].currentlyWorkingOn;
+                            let questionPartColour = questionPartState ? scope.FT_STATES[questionPartState].colour : 'none';
                             questionPartStatesGroup.append(
                                 svgElement('rect').attr({
                                     id: 'question-part' + i + '_' + j,
@@ -75,9 +75,9 @@ define(['jquery'], function($) {
                                 })
                             );
                             if (currentlyWorkingOnThisConcept) {
-                                var currentPartColour = scope.FT_STATES[currentlyWorkingOnThisConcept].colour;
-                                var selectedColour = currentPartColour;
-                                var selectedMask = inProgressMask;
+                                let currentPartColour = scope.FT_STATES[currentlyWorkingOnThisConcept].colour;
+                                let selectedColour = currentPartColour;
+                                let selectedMask = inProgressMask;
                                 if (currentPartColour == questionPartColour) {
                                     selectedColour = highlightColour;
                                     selectedMask = highlightMask;
@@ -96,9 +96,8 @@ define(['jquery'], function($) {
                             }
                             questionCompleted &= questionPartState == scope.FT_STATES.ft_top_ten.tagName;
                         }
-                        var topTenQuestion = progressValues[i];
-                        var title = topTenQuestion.title;
-                        var questionSeparatorAnchor = svgElement('a').attr({'href':"/questions/" + topTenQuestion.id + '?board=' + scope.boardState.id});
+                        let topTenQuestion = progressValues[i];
+                        let questionSeparatorAnchor = svgElement('a').attr({'href':"/questions/" + topTenQuestion.id + '?board=' + scope.boardState.id});
                         questionSeparatorAnchor
                             .append(svgElement('title')
                                 .text(topTenQuestion.title + (topTenQuestion.currentlyWorkingOn ? ' (Current)' : ''))
@@ -114,8 +113,8 @@ define(['jquery'], function($) {
                                 'stroke-width': 2
                             }))
                         if (topTenQuestion.currentlyWorkingOn) {
-                            var selectedColour = scope.FT_STATES[topTenQuestion.currentlyWorkingOn].colour;
-                            var selectedMask = inProgressMask;
+                            let selectedColour = scope.FT_STATES[topTenQuestion.currentlyWorkingOn].colour;
+                            let selectedMask = inProgressMask;
                             if (questionCompleted) {
                                 selectedColour = highlightColour;
                                 selectedMask = highlightMask;
@@ -136,8 +135,8 @@ define(['jquery'], function($) {
                                 })
                             )
                         }
-                        var doubleDigitNumber =  (i + 1 > 9);
-                        var numberOffset = (questionOffset + (questionWidth / 2)) - (doubleDigitNumber ? 1.6 : 0.8);
+                        let doubleDigitNumber =  (i + 1 > 9);
+                        let numberOffset = (questionOffset + (questionWidth / 2)) - (doubleDigitNumber ? 1.6 : 0.8);
                         questionSeparatorAnchor
                             .append(svgElement('text').attr({
                                 'font-family': 'Exo 2',
@@ -157,14 +156,13 @@ define(['jquery'], function($) {
                     }
                 }
 
-                var update = function() {
+                let update = function() {
                     if (scope.boardState.$resolved) {
-                        scope.boardState = scope.boardState;
-                        var workingOn = {
+                        let workingOn = {
                             title: scope.currentPage.tags.indexOf(scope.FT_STATES.ft_top_ten.tagName) >= 0 ? scope.currentPage.id : scope.currentPage.title,
                             level: scope.currentPage.tags.indexOf(scope.FT_STATES.ft_top_ten.tagName) >= 0 ? scope.FT_STATES.ft_top_ten.tagName : (scope.currentPage.tags.indexOf(scope.FT_STATES.ft_upper.tagName) >= 0) ? scope.FT_STATES.ft_upper.tagName : scope.FT_STATES.ft_lower.tagName,
                         }
-                        var progressValues = evaluateProgress(scope.boardState, workingOn);
+                        let progressValues = evaluateProgress(scope.boardState, workingOn);
                         renderProgress(progressValues);
                     }
                 }

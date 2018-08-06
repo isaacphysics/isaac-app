@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$http", "$location", "api", "$timeout", function($http, $location, api, $timeout) {
+    return ["$http", "api", function($http, api) {
         return {
 
             restrict: "A",
@@ -30,15 +30,13 @@ define([], function() {
                     scope.showShareUrl = !scope.showShareUrl;
                     if (scope.showShareUrl) {
 
+                        let data;
                         if (attrs.sharelink) {
-                            var data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
+                            data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
                         }
                         else {
-                            var data = {"longUrl": window.location.origin + window.location.pathname};
+                            data = {"longUrl": window.location.origin + window.location.pathname};
                         }
-                        console.log(window.location.pathname);
-                        console.log(attrs.sharelink);
-                        console.log(window.location.href);
 
                         scope.shareUrl = data.longUrl;
 
@@ -47,10 +45,10 @@ define([], function() {
                             longUrl: data.longUrl,
                         });
                         // Attempt to select the share URL for users with a modern browser:
-                        var shareUrlDiv = element.parent().find(".share-url-div")[0];
+                        let shareUrlDiv = element.parent().find(".share-url-div")[0];
                         if (window.getSelection && shareUrlDiv) {
-                            selection = window.getSelection();        
-                            range = document.createRange();
+                            let selection = window.getSelection();        
+                            let range = document.createRange();
                             range.selectNodeContents(shareUrlDiv);
                             selection.removeAllRanges();
                             selection.addRange(range);

@@ -1,5 +1,6 @@
 define(function(require) {
-
+    
+    var templateUrl = require("/partials/graph_sketcher/graph_preview.html");
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
 
         return {
@@ -9,13 +10,13 @@ define(function(require) {
             },
 
             restrict: "A",
-            templateUrl: "/partials/graph_sketcher/graph_preview.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 var graphPreviewDiv = element.find(".graph-preview");
 
-                var b = require('lib/graph_sketcher/bezier.js');
-                var f = require('lib/graph_sketcher/func.js');
-                var s = require('lib/graph_sketcher/sampler.js');
+                var b = require('../../../lib/graph_sketcher/bezier.js');
+                var f = require('../../../lib/graph_sketcher/func.js');
+                var s = require('../../../lib/graph_sketcher/sampler.js');
 
                 scope.canvasID = scope.questionDoc.id;
 

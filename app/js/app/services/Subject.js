@@ -15,19 +15,20 @@
  */
 define([], function() {
 
-	var SubjectConstructor = function() {
+	let SubjectConstructor = function() {
+		let id;
 
 		if (document.location.host == "localhost:8000" || document.location.host.indexOf("isaacphysics") > -1) {
-			var id = "physics";
+			id = "physics";
 		} else if (document.location.host == "localhost:8001" || document.location.host.indexOf("isaacchemistry") > -1) {
-			var id = "chemistry";
+			id = "chemistry";
 		} else if (document.location.host == "localhost:8002" || document.location.host.indexOf("isaacbiology") > -1) {
-			var id = "biology";
+			id = "biology";
 		} else {
-			var id = "unknown";
+			id = "unknown";
 		}
 
-		var title = id[0].toUpperCase() + id.substring(1);
+		let title = id[0].toUpperCase() + id.substring(1);
 
 		return {
 			id: id,

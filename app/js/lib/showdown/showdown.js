@@ -118,7 +118,7 @@ var g_output_modifiers = [];
 //
 
 if (typeof module !== 'undefind' && typeof exports !== 'undefined' && typeof require !== 'undefind') {
-	var fs = require('fs');
+	var fs = null;//require('fs');
 
 	if (fs) {
 		// Search extensions folder

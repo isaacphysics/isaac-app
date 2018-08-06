@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["lib/iframe_api"], function() {
+define(["../../../lib/iframe_api", "/partials/content/Video.html"], function(iframe_api, templateUrl) {
 
 	return ["api", "$sce", function(api, $sce) {
 
@@ -23,15 +23,14 @@ define(["lib/iframe_api"], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/Video.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 
 				scope.videoSrc = undefined;
 
 				var onPlayerStateChange = function(e) {
-
-					var logData = {
+					let logData = {
 						videoUrl: e.target.getVideoUrl(),
 						videoPosition: e.target.getCurrentTime(),
 					}
@@ -58,14 +57,15 @@ define(["lib/iframe_api"], function() {
 					api.logger.log(logData);
 				}
 
-				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/') + "?enablejsapi=1&theme=light&rel=0&fs=1");
-
+				scope.videoSrc = $sce.trustAsResourceUrl(scope.doc.src.replace('watch?v=','embed/').replace("youtube.com", "youtube-nocookie.com") + "?enablejsapi=1&theme=light&rel=0&fs=1&modestbranding=1&http://localhost:8000");
 				YT.ready(function() {
-					new YT.Player(element.find("iframe")[0], {
-						events: {
-							'onStateChange': onPlayerStateChange,
-						}
-					});				
+					setTimeout(function() {
+						new YT.Player(element.find("iframe")[0], {
+							events: {
+								'onStateChange': onPlayerStateChange,
+							}
+						});
+					}, 3000);
 				});
 
 			}

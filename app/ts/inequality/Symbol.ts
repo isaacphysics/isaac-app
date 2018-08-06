@@ -30,7 +30,7 @@ import { Num } from "./Num";
 export
     class Symbol extends Widget {
 
-    protected s: any;
+    public s: any;
     protected letter: string;
     protected modifier: string;
 
@@ -41,7 +41,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -71,16 +71,20 @@ export
 
     /**
      * Prevents Symbols from being detached from Differentials when the user is not an admin/editor.
+     * 
+     * @returns {boolean} True if this symbol is detachable from its parent, false otherwise.
      */
-    get isDetachable() {
+    get isDetachable(): boolean {
         const userIsPrivileged = _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], this.s.scope.user.role);
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADifferential;
     }
 
     /**
      *  Checks if this symbol is the direct child of a differential.
+     * 
+     * @returns {boolean} True if this symbol is the direct child of a differential but not multiplied to it.
      */
-    get sonOfADifferential() {
+    get sonOfADifferential(): boolean {
         let p = this.parentWidget;
         return p && p.typeAsString == 'Differential' && this != p.dockingPoints["right"].child;
     }
@@ -210,7 +214,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         let e = this.letter;
         if(this.modifier == "prime") {
             e += "_prime"

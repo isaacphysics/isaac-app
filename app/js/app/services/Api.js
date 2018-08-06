@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
+    let Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
 
         this.pages = $resource(urlPrefix + "/pages/:id");
 
@@ -272,9 +272,8 @@ define([], function() {
             },
             'getAssignedGroups' : {
                 method: 'GET', 
-                isArray: true,
-                url: urlPrefix + "/assignments/assign/:gameId", 
-                params: {gameId: '@gameId'}
+                //isArray: true,
+                url: urlPrefix + "/assignments/assign/groups?gameboard_ids=:gameboard_ids"
             },                  
             'assignBoard' : {
                 method: 'POST',
@@ -358,13 +357,13 @@ define([], function() {
 
         this.getUnits = function() { return $http.get(urlPrefix + "/content/units").then(function (r) { return r.data; }); };
 
-        var questionsPerPage = 10;
-        var questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-        var conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
-        var gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
-        var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
-        var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
-        var eventsList = $resource(urlPrefix + "/events");
+        let questionsPerPage = 10;
+        let questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+        let conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
+        let gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
+        let deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+        let saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
+        let eventsList = $resource(urlPrefix + "/events");
 
         this.getQuestionList = function(page){
             return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});

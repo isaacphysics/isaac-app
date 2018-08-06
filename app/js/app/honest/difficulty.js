@@ -2,8 +2,8 @@
  * Library to handle difficulty filter
  * Requires jQuery 
  */
-define([ 'jquery', 'app/honest/hexagon', 'd3'],
-    function($, hexagon, d3) 
+define([ 'jquery', './hexagon', 'd3'],
+    function($, hexagon, _d3) 
     { 
         /**
          * Initialise a new difficulty filter
@@ -28,7 +28,7 @@ define([ 'jquery', 'app/honest/hexagon', 'd3'],
                 // Plot
                 hexagon.drawHexagons(element.find("#difficulty-hexagons"), hex, state, "ru-diff-hex", function(plotdiv)
                 {
-                    plotdiv.each(function(d){
+                    plotdiv.each(function(_d){
                         $(this).attr("href", "javascript:void(0)");
 
                         $(this).click(function(e) {

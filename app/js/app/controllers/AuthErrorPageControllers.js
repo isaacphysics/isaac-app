@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	var PageController = ['$scope', '$stateParams', '$rootScope', function($scope, $stateParams, $rootScope) {
-		$scope.errorMessage = $stateParams.errorMessage;
-		$scope.statusText = $stateParams.statusText;
 
-		$rootScope.setLoading(false);
-	}]
+export const PageController = ['$scope', '$stateParams', '$rootScope', function($scope, $stateParams, $rootScope) {
+	$scope.errorMessage = $stateParams.errorMessage;
+	$scope.statusText = $stateParams.statusText;
 
-	return {
-		PageController: PageController,
-	};
-})
+	$rootScope.setLoading(false);
+}];

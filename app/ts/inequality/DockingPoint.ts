@@ -20,6 +20,8 @@ limitations under the License.
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
 
+import * as p5 from 'p5';
+
 import { Widget } from './Widget';
 
 /** A class to encapsulate all the info on docking points */

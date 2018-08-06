@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/MultiChoiceQuestion.html"], function(_rv, templateUrl) {
 
 
-	return ["api", function(api) {
+	return ["api", function(_api) {
 
 		return {
 			scope: true,
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/MultiChoiceQuestion.html",
+			templateUrl: templateUrl,
 
 			controller: ["$scope", function(scope) {
-				var ctrl = this;
+				let ctrl = this;
 
 				ctrl.selectedAnswer = null;
 
 				// Pre-select a radio button if we've reloaded a previous answer
 				if (scope.question.selectedChoice) {
-					for (var i = 0; i < scope.doc.choices.length; i++) {
-						var choice = scope.doc.choices[i];
+					for (let i = 0; i < scope.doc.choices.length; i++) {
+						let choice = scope.doc.choices[i];
 						if (choice.value == scope.question.selectedChoice.value) {
 							ctrl.selectedAnswer = i;
 							scope.$emit("newQuestionAnswer", scope.accordionSection, scope.question.validationResponse.correct ? "✓" : undefined)

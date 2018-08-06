@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/Pod.html"], function(templateUrl) {
 
 
 	return ["api", function(api) {
@@ -25,9 +25,9 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/Pod.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				
 				scope.getImageSrc = function() {
 					return api.getImageUrl(scope.isaacPod.image.src);

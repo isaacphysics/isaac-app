@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/question_pod.html"], function(templateUrl) {
 
 	return ["$filter", "api", function($filter, api) {
 
@@ -26,12 +26,12 @@ define([], function() {
 
 			restrict: "A",
 
-			templateUrl: "/partials/question_pod.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.questionComparer = function(a) {
-					var n = parseInt(a.title);
+					let n = parseInt(a.title);
 
 					if (!isNaN(n))
 						return n;

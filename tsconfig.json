@@ -6,13 +6,12 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
     "target": "ES5"
   },
   "exclude": [
-    "node_modules",
-    "app/bower_components"
+    "node_modules"
   ],
   "packages": {
     "app": {
