@@ -10,26 +10,26 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
             restrict: "A",
             templateUrl: templateUrl,
             link: function(scope, element, _attrs) {
-                var graphPreviewDiv = element.find(".graph-preview");
+                let graphPreviewDiv = element.find(".graph-preview");
 
                 scope.canvasID = scope.questionDoc.id;
 
                 scope.sketch = function(p) {
 
                     // canvas coefficients
-                    var canvasHeight = graphPreviewDiv.height();
-                    var canvasWidth = graphPreviewDiv.width();
+                    let canvasHeight = graphPreviewDiv.height();
+                    let canvasWidth = graphPreviewDiv.width();
 
-                    var CURVE_STRKWEIGHT = 2;
-                    var PADDING = 0.025 * canvasWidth;
-                    var DOT_LINE_STEP = 5;
+                    let CURVE_STRKWEIGHT = 2;
+                    let PADDING = 0.025 * canvasWidth;
+                    let DOT_LINE_STEP = 5;
                         
-                    var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
-                    var KNOT_COLOR = [77,77,77];
-                    var DOT_LINE_COLOR = [123];
+                    let CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
+                    let KNOT_COLOR = [77,77,77];
+                    let DOT_LINE_COLOR = [123];
 
-                    var freeSymbols = [];
-                    var curves = [];
+                    let freeSymbols = [];
+                    let curves = [];
 
                     function initiateFreeSymbols() {
                         freeSymbols = [];
@@ -64,8 +64,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             p.stroke(0);
                             p.noFill();
 
-                            var leftMargin = PADDING;
-                            var rightMargin = canvasWidth - PADDING;
+                            let leftMargin = PADDING;
+                            let rightMargin = canvasWidth - PADDING;
 
                             p.beginShape();
                             p.vertex(leftMargin, canvasHeight/2);
@@ -86,8 +86,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             p.stroke(0);
                             p.noFill();
 
-                            var upMargin = PADDING;
-                            var bottomMargin = canvasHeight - PADDING;
+                            let upMargin = PADDING;
+                            let bottomMargin = canvasHeight - PADDING;
 
                             p.beginShape();
                             p.vertex(canvasWidth/2, bottomMargin);
@@ -135,8 +135,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         p.stroke(color);
                         p.strokeWeight(CURVE_STRKWEIGHT);
 
-                        var pts = curve.pts;
-                        for (var i = 1; i < pts.length; i++) {
+                        let pts = curve.pts;
+                        for (let i = 1; i < pts.length; i++) {
                             p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
                         }
                         
@@ -151,7 +151,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
 
                     function drawCurves(theCurves, color) {
-                        for (var i = 0; i < theCurves.length; i++) {
+                        for (let i = 0; i < theCurves.length; i++) {
                             drawCurve(theCurves[i], color);    
                         }
                     }
@@ -177,7 +177,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
 
                     function drawKnots(knots, color) {
-                        for (var i = 0; i < knots.length; i++) {
+                        for (let i = 0; i < knots.length; i++) {
                             drawKnot(knots[i], color);
                         }   
                     }
@@ -197,7 +197,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
 
                     function drawKnots2(knots) {
-                        for (var i = 0; i < knots.length; i++) {
+                        for (let i = 0; i < knots.length; i++) {
                             drawKnot2(knots[i]);
                         }   
                     }
@@ -231,7 +231,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
 
                         if (begin > end) {
-                            var tmp = begin;
+                            let tmp = begin;
                             begin = end;
                             end = tmp;
                         }
@@ -240,9 +240,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         p.stroke(DOT_LINE_COLOR);
                         p.strokeWeight(CURVE_STRKWEIGHT);
 
-                        var step = DOT_LINE_STEP;
-                        var toDraw = true;
-                        var y = begin;
+                        let step = DOT_LINE_STEP;
+                        let toDraw = true;
+                        let y = begin;
                         while (y + step < end) {
                             if (toDraw) {
                                 p.line(x, y, x, y+step);
@@ -263,7 +263,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }
 
                         if (begin > end) {
-                            var tmp = begin;
+                            let tmp = begin;
                             begin = end;
                             end = tmp;
                         }
@@ -272,9 +272,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         p.stroke(DOT_LINE_COLOR);
                         p.strokeWeight(CURVE_STRKWEIGHT);
 
-                        var step = DOT_LINE_STEP;
-                        var toDraw = true;
-                        var x = begin;
+                        let step = DOT_LINE_STEP;
+                        let toDraw = true;
+                        let x = begin;
                         while (x + step < end) {
                             if (toDraw) {
                                 p.line(x, y, x+step, y);
@@ -290,12 +290,12 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
 
                     function clone(obj) {
-                        var json = JSON.stringify(obj);
+                        let json = JSON.stringify(obj);
                         return JSON.parse(json);
                     }
                   
                     function decodeData(rawData) {
-                        var data = clone(rawData);
+                        let data = clone(rawData);
 
                         function denormalise(pt) {
                                 pt.x = pt.x * canvasWidth + canvasWidth/2;
@@ -303,8 +303,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
 
                         function denormalise1(knots) {
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 denormalise(knot);
                                 if (knot.symbol != undefined) {
                                     denormalise(knot.symbol);
@@ -314,8 +314,8 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         function denormalise2(knots) {
                             denormalise1(knots);
-                            for (var j = 0; j < knots.length; j++) {
-                                var knot = knots[j];
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
                                 if (knot.xSymbol != undefined) {
                                     denormalise(knot.xSymbol);
                                 }
@@ -327,23 +327,23 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                         
                         curves = data.curves;
-                        for (var i = 0; i < curves.length; i++) {
+                        for (let i = 0; i < curves.length; i++) {
 
-                            var pts = curves[i].pts;
-                            for (var j = 0; j < pts.length; j++) {
+                            let pts = curves[i].pts;
+                            for (let j = 0; j < pts.length; j++) {
                                 denormalise(pts[j]);
                             }
 
-                            var interX = curves[i].interX;
+                            let interX = curves[i].interX;
                             denormalise1(interX);
 
-                            var interY = curves[i].interY;
+                            let interY = curves[i].interY;
                             denormalise1(interY);
 
-                            var maxima = curves[i].maxima;
+                            let maxima = curves[i].maxima;
                             denormalise2(maxima);
 
-                            var minima = curves[i].minima;
+                            let minima = curves[i].minima;
                             denormalise2(minima);
                         }
 

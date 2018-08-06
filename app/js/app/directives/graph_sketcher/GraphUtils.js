@@ -61,7 +61,7 @@ define(function(_require) {
         },
 
         createPoint: function(x, y, c) {
-            var obj = {};
+            let obj = {};
             obj.ind = c;
             obj.x = x;
             obj.y = y;
@@ -69,7 +69,7 @@ define(function(_require) {
         },
 
         createSymbol: function(text, x, y) {
-            var obj = {};
+            let obj = {};
             obj.text = text;
             obj.x = x;
             obj.y = y;
@@ -77,10 +77,10 @@ define(function(_require) {
         },
 
         sample: function(pts) {
-            var sampled = [];
+            let sampled = [];
             sampled.push(pts[0]);
-            var i = 0;
-            var j = 0;
+            let i = 0;
+            let j = 0;
             while (i < pts.length) {
                 // func.getDist
                 
