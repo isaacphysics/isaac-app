@@ -1,5 +1,5 @@
 define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, b, f, s, templateUrl) {
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+    return ["$timeout", "$rootScope", "api", function(_$timeout, _$rootScope, _api) {
 
         return {
             scope: {
@@ -9,7 +9,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
             restrict: "A",
             templateUrl: templateUrl,
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
                 var graphPreviewDiv = element.find(".graph-preview");
 
                 scope.canvasID = scope.questionDoc.id;
@@ -20,18 +20,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     var canvasHeight = graphPreviewDiv.height();
                     var canvasWidth = graphPreviewDiv.width();
 
-                    var GRID_WIDTH = 50;
                     var CURVE_STRKWEIGHT = 2;
                     var PADDING = 0.025 * canvasWidth;
                     var DOT_LINE_STEP = 5;
-                    var MOUSE_DETECT_RADIUS = 5;
                         
                     var CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
                     var KNOT_COLOR = [77,77,77];
                     var DOT_LINE_COLOR = [123];
-                    var MOVE_LINE_COLOR = [135];
-                    var MOVE_SYMBOL_COLOR = [151];
-                    var KNOT_DETECT_COLOR = [151];
 
                     var freeSymbols = [];
                     var curves = [];
@@ -41,17 +36,6 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         freeSymbols.push(f.createSymbol('A'));
                         freeSymbols.push(f.createSymbol('B'));
                         freeSymbols.push(f.createSymbol('C'));
-                    }
-
-                    function refreshFreeSymbols() {
-                        var start = 15, 
-                            separation = 30;
-
-                        for (var i = 0; i < freeSymbols.length; i++) {
-                            var symbol = freeSymbols[i];
-                            symbol.x = start + i * separation;
-                            symbol.y = start;
-                        }
                     }
 
                     // run in the beginning by p5 library
@@ -116,35 +100,6 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             p.pop();
                         }
 
-                        function drawGrid() {
-                            p.push();
-
-                            p.noFill();
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(215);
-
-                            p.push();
-                            p.translate(0, canvasHeight / 2);
-                            var num = canvasHeight / (GRID_WIDTH * 2);
-                            for (var i = 0; i < num; i++) {
-                                p.line(0, -i*GRID_WIDTH, canvasWidth, -i*GRID_WIDTH);
-                                p.line(0, i*GRID_WIDTH, canvasWidth, i*GRID_WIDTH);
-                            }
-                            p.pop();
-
-                            p.push();
-                            p.translate(canvasWidth / 2, 0);
-                            var num = canvasWidth / (GRID_WIDTH * 2);
-                            for (var i = 0; i < num; i++) {
-                                p.line(-i*GRID_WIDTH, 0, -i*GRID_WIDTH, canvasHeight);
-                                p.line(i*GRID_WIDTH, 0, i*GRID_WIDTH, canvasHeight);
-                            }
-                            p.pop();
-
-                            p.pop();
-                        }
-
                         function drawLabel() {
                             p.push();
 
@@ -195,9 +150,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                     }
 
-                    function drawCurves(curves, color) {
-                        for (var i = 0; i < curves.length; i++) {
-                            drawCurve(curves[i], color);    
+                    function drawCurves(theCurves, color) {
+                        for (var i = 0; i < theCurves.length; i++) {
+                            drawCurve(theCurves[i], color);    
                         }
                     }
 
@@ -247,41 +202,6 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         }   
                     }
 
-                    function drawKnot3(knot) {
-                        if (knot == null) {
-                            return;
-                        }
-
-                        drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
-                        drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
-
-                        if (knot.xSymbol != undefined) {
-                            drawSymbol(knot.xSymbol);
-                        } else {
-                            drawKnot(f.createPoint(knot.x, canvasHeight/2));
-                        }
-
-                        if (knot.ySymbol != undefined) {
-                            drawSymbol(knot.ySymbol);
-                        } else {
-                            drawKnot(f.createPoint(canvasWidth/2, knot.y)); 
-                        }
-                    }
-
-                    function drawKnot4(knot, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-
-                        p.push();
-                        p.noFill();
-                        p.stroke(color);
-                        p.strokeWeight(2);
-                        p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
-                        p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
-                        p.pop();
-                    }
-
                     // draw symbols, e.g. "A", "B".
                     function drawSymbol(symbol, color) {
                         if (color == undefined) {
@@ -303,12 +223,6 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         p.text(symbol.text, symbol.x - 4, symbol.y + 20);
                         
                         p.pop();
-                    }
-
-                    function drawSymbols(symbols, color) {  
-                        for (var i = 0; i < symbols.length; i++) {
-                            drawSymbol(symbols[i], color);
-                        }
                     }
 
                     function drawVerticalDotLine(x, begin, end) {
@@ -454,7 +368,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                 scope.updateGraphPreview();
 
-                scope.$watch("state", function(newState, oldState) {
+                scope.$watch("state", function(_newState, _oldState) {
                     scope.updateGraphPreview();
                 })
             }

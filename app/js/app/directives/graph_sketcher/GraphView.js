@@ -184,8 +184,6 @@ define(function(require) {
 
             let curve = curves[idx];
 
-            let pts = curve.pts;
-
             let minX = curve.minX;
             let maxX = curve.maxX;
             let minY = curve.minY;

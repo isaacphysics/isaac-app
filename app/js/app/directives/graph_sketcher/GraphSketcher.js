@@ -2,12 +2,11 @@
 define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
     function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
     return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
-        let instanceCounter = 0;
         return {
             restrict: "A",
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
                 scope.title = "Sketcher";
                 scope.selectedLineType = bezierLineType;
@@ -126,7 +125,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     let canvasProperties = {width: window.innerWidth, height: window.innerHeight};
 
                     const MOVE_SYMBOL_COLOR = [151];
-                    const MOVE_LINE_COLOR = [135];
                     const CURVE_LIMIT = 3;
                     const MOUSE_DETECT_RADIUS = 10;
                     const DEFAULT_KNOT_COLOR = [77,77,77];
@@ -137,9 +135,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     let releasePt;
                     let drawMode;
                     let key = undefined;
-
-                    let dat;
-
 
                     // for drawing curve
                     let drawnPts = [];
@@ -160,9 +155,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     let bindedKnot;
                     let symbolType;
 
-                    let tempCurve;
                     let clickedKnotId;
-                    let tempPts = [];
                     let clickedCurve;
 
                     // for redo and undo
@@ -246,6 +239,21 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                                 found = true;
                                 p.cursor(p.MOVE);
+                            }
+                        }
+                    }
+
+                    function freeAllSymbols(knots) {
+                        for (let i = 0; i < knots.length; i++) {
+                            let knot = knots[i];
+                            if (knot.symbol != undefined) {
+                                freeSymbols.push(knot.symbol);
+                            }
+                            if (knot.xSymbol != undefined) {
+                                freeSymbols.push(knot.xSymbol);
+                            }
+                            if (knot.ySymbol != undefined) {
+                                freeSymbols.push(knot.ySymbol);
                             }
                         }
                     }
@@ -423,21 +431,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             // delete key pressed
                             if (clickedCurveIdx != undefined) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
-
-                                function freeAllSymbols(knots) {
-                                    for (let i = 0; i < knots.length; i++) {
-                                        let knot = knots[i];
-                                        if (knot.symbol != undefined) {
-                                            freeSymbols.push(knot.symbol);
-                                        }
-                                        if (knot.xSymbol != undefined) {
-                                            freeSymbols.push(knot.xSymbol);
-                                        }
-                                        if (knot.ySymbol != undefined) {
-                                            freeSymbols.push(knot.ySymbol);
-                                        }
-                                    }
-                                }
 
                                 let interX = curve.interX;
                                 freeAllSymbols(interX);
@@ -692,7 +685,37 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
-                    p.mouseReleased = function(e) {
+                    function loop(knots) {
+                        for (let i = 0; i < knots.length; i++) {
+                            let knot = knots[i];
+                            for (let j = 0; j < freeSymbols.length; j++) {
+                                let sym = freeSymbols[j];
+                                if (graphUtils.getDist(knot, sym) < 20) {
+                                    sym.x = knot.x;
+                                    sym.y = knot.y;
+                                    knot.symbol = sym;
+                                    freeSymbols.splice(j, 1);
+                                }
+                            }
+                        }
+                    }
+
+                    function attach(knots, found) {
+                        if (found) {
+                            return;
+                        }
+                        for (let j = 0; j < knots.length; j++) {
+                            let knot = knots[j];
+                            if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
+                                movedSymbol.x = knot.x;
+                                movedSymbol.y = knot.y;
+                                knot.symbol = movedSymbol;
+                                found = true;
+                            }
+                        }
+                    }
+
+                    p.mouseReleased = function(_e) {
                         let mousePosition = releasePt;
 
                         // if it is just a click, handle click in the following if block
@@ -748,20 +771,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             if (scope.trashActive) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
 
-                                function freeAllSymbols(knots) {
-                                    for (let i = 0; i < knots.length; i++) {
-                                        let knot = knots[i];
-                                        if (knot.symbol != undefined) {
-                                            freeSymbols.push(knot.symbol);
-                                        }
-                                        if (knot.xSymbol != undefined) {
-                                            freeSymbols.push(knot.xSymbol);
-                                        }
-                                        if (knot.ySymbol != undefined) {
-                                            freeSymbols.push(knot.ySymbol);
-                                        }
-                                    }
-                                }
+
 
                                 let interX = curve.interX;
                                 freeAllSymbols(interX);
@@ -786,13 +796,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             p.checkPointsUndo.push(p.checkPoint);
                             p.checkPointsRedo = [];
 
-                            let c = curves[clickedCurveIdx];
-
                         } else if (action == "STRETCH_POINT") {
                             p.checkPointsUndo.push(p.checkPoint);
                             p.checkPointsRedo = [];
-
-                            let c = curves[clickedCurveIdx];
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.checkPointsUndo.push(p.checkPoint);
@@ -801,33 +807,18 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             let found = false;
 
-                            function attach(knots) {
-                                if (found) {
-                                    return;
-                                }
-                                for (let j = 0; j < knots.length; j++) {
-                                    let knot = knots[j];
-                                    if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
-                                        movedSymbol.x = knot.x;
-                                        movedSymbol.y = knot.y;
-                                        knot.symbol = movedSymbol;
-                                        found = true;
-                                    }
-                                }
-                            }
-
                             for (let i = 0; i < curves.length; i++) {
                                 let interX = curves[i]['interX'];
-                                attach(interX);
+                                attach(interX, found);
 
                                 let interY = curves[i]['interY'];
-                                attach(interY);
+                                attach(interY, found);
 
                                 let maxima = curves[i]['maxima'];
-                                attach(maxima);
+                                attach(maxima, found);
 
                                 let minima = curves[i]['minima'];
-                                attach(minima);
+                                attach(minima, found);
 
                                 if (found) {
                                     break;
@@ -945,21 +936,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     curve.colorIdx = drawnColorIdx;
                                 }
 
-                                function loop(knots) {
-                                    for (let i = 0; i < knots.length; i++) {
-                                        let knot = knots[i];
-                                        for (let j = 0; j < freeSymbols.length; j++) {
-                                            let sym = freeSymbols[j];
-                                            if (graphUtils.getDist(knot, sym) < 20) {
-                                                sym.x = knot.x;
-                                                sym.y = knot.y;
-                                                knot.symbol = sym;
-                                                freeSymbols.splice(j, 1);
-                                            }
-                                        }
-                                    }
-                                }
-
                                 loop(curve.maxima);
                                 loop(curve.minima);
                                 loop(curve.interX);
@@ -1000,21 +976,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             p.checkPointsRedo = [];
                             if (clickedCurveIdx != undefined) {
                                 let curve = (curves.splice(clickedCurveIdx, 1))[0];
-
-                                function freeAllSymbols(knots) {
-                                    for (let i = 0; i < knots.length; i++) {
-                                        let knot = knots[i];
-                                        if (knot.symbol != undefined) {
-                                            freeSymbols.push(knot.symbol);
-                                        }
-                                        if (knot.xSymbol != undefined) {
-                                            freeSymbols.push(knot.xSymbol);
-                                        }
-                                        if (knot.ySymbol != undefined) {
-                                            freeSymbols.push(knot.ySymbol);
-                                        }
-                                    }
-                                }
 
                                 let interX = curve.interX;
                                 freeAllSymbols(interX);
@@ -1279,7 +1240,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     };
                 }
 
-                scope.logOnClose = function(event) {
+                scope.logOnClose = function(_event) {
                     // This ought to catch people who navigate away without closing the editor!
                     if (scope.log != null) {
                         scope.log.actions.push({
@@ -1291,7 +1252,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                 };
 
                 $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode) {
-                    return new Promise(function(resolve, reject) {
+                    return new Promise(function(resolve, _reject) {
                         let graphSketcherModal = $('#graphModal');
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         graphSketcherModal.foundation("reveal", "open");
@@ -1314,9 +1275,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
                         // Log the editor being closed and submit log event to server:
-                        graphSketcherModal.one("close", function(e) {
+                        graphSketcherModal.one("close", function(_e) {
                             scope.log.finalState = [];
-                            scope.dat.curves.forEach(function(e) {
+                            scope.dat.curves.forEach(function(_p) {
                                 scope.log.finalState.push(e);
                             });
                             scope.log.actions.push({

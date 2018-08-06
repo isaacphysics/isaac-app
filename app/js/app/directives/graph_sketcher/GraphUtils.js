@@ -1,5 +1,5 @@
 "use strict";
-define(function(require) {
+define(function(_require) {
 
     const SAMPLE_INTERVAL = 10;
 
@@ -244,7 +244,7 @@ define(function(require) {
             let turnPts = [];
 
             for (let i = 1; i < grad.length; i++) {
-                if (grad[i-1] != NaN && grad[i] != NaN) {
+                if (!isNaN(grad[i-1]) && !isNaN(grad[i])) {
                     if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
 
                         let limit = 0.01;
@@ -364,7 +364,7 @@ define(function(require) {
             let endPt = curve.endPt,
                 newEndPt = this.findEndPts(pts);
             curve.endPt = newEndPt;
-
+            void endPt;
 
             let interY = curve.interY,
                 newInterY = this.findInterceptY(canvasProperties.width, pts);

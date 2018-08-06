@@ -1,6 +1,6 @@
 define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestion.html"], function(rv, templateUrl) {
 
-    return ["api", function(api) {
+    return ["api", function(_api) {
         
         return {
             scope: true,
