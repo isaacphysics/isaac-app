@@ -199,9 +199,11 @@
 }
 .table-wrap {
 	width: 100%;
-	overflow-x: auto;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	@media #{$small-only} {
+		overflow-x: auto;
+	}
 	.boards-table {
 		border-collapse: collapse;
 		width: 100%;
@@ -253,6 +255,22 @@
 					border: 1px solid #999;
 					font-family: "Exo 2","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
 					font-size: .875rem;
+				}
+
+				button {
+					float: right;
+					padding: 3% 8%;
+					margin: 0;
+					border: 1px solid #999;
+					color: #666;
+					background-color: #dfdfdf;
+					font-weight: 600;
+
+					&:hover {
+						background-color: #efefef;
+					}
+
+					transition: none;
 				}
 			}
 		}
@@ -619,6 +637,14 @@
 		margin: 0;
 	}
 }
+.board-display-option {
+	clear: both;
+	padding-top: 0.4em;
+	@media #{$medium-up} {
+		float: right;
+	}
+}
+
 /* 
 	All media queries 
 */

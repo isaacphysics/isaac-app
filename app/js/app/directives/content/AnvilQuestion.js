@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/AnvilQuestion.html"], function(templateUrl) {
 
 
-    return ["api", "$sce", function(api, $sce) {
+    return ["api", "$sce", function(_api, _$sce) {
 
         return {
             scope: true,
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/AnvilQuestion.html",
+            templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
 
                 scope.appParams = {
                     username: scope.$root.user.email, 
@@ -33,7 +33,7 @@ define([], function() {
                     problem_id: scope.doc.id
                 };
 
-                scope.$on("anvilAppMessage", function(_, data) {
+                scope.$on("anvilAppMessage", function(_event, data) {
                     if (data.msg == "answer") {
                         if (!scope.question.selectedChoice) {
                             scope.question.selectedChoice = {

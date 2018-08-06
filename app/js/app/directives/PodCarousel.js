@@ -13,59 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- define([], function() {
+ define(["/partials/pod_carousel.html"], function(templateUrl) {
 
- 	return ["api", "$interval", function(api, $interval) {
+	return ["api", "$interval", function(api, _$interval) {
 
- 		return {
- 			scope: true,
+		return {
+			scope: true,
+			restrict: "A",
+			templateUrl: templateUrl,
+			link: function(scope, element, _attrs) {
 
- 			restrict: "A",
+				scope.intervalValue = 10000; //ms
 
- 			templateUrl: "/partials/pod_carousel.html",
-
- 			link: function(scope, element, attrs) {
-
- 				scope.intervalValue = 10000; //ms
-
- 				// Owl options - see owl.carousel.js
- 				var defaultOptions = {
+				// Owl options - see owl.carousel.js
+				let defaultOptions = {
                     "nav": false,
- 					"navText": ['<', '>'],
- 					"autoplay": true,
+					"navText": ['<', '>'],
+					"autoplay": true,
                     //"loop": true, // DO NOT SET THIS - CAUSES EMPTY PODS TO APPEAR ON THE RIGHT!
                     "margin": 15,
- 					"rewind": true,
-                    "autoPlayTimeout": 500,
-                    "autoplayHoverPause": true,
-                    "responsive": {
- 						0:{
- 							"items":1,
- 						},
- 						600:{
- 							"items":2,
- 						},
- 						900:{
- 							"items":3,
- 						}
- 					},
-                };
+					"rewind": true,
+					"autoPlayTimeout": 500,
+					"autoplayHoverPause": true,
+					"responsive": {
+						0:{
+							"items":1,
+						},
+						600:{
+							"items":2,
+						},
+						900:{
+							"items":3,
+						}
+					},
+				};
 
-                var customOptions = scope.$eval($(element).attr('data-options'));
+				let customOptions = scope.$eval($(element).attr('data-options'));
 
-                // Combine the two options objects
-                for(var key in customOptions) {
-                    defaultOptions[key] = customOptions[key];
-                }
-
- 				// Function to initialise the Carousel
+				// Combine the two options objects
+				for(let key in customOptions) {
+					defaultOptions[key] = customOptions[key];
+				}
+				
+				// Function to initialise the Carousel
 				scope.initCarousel = function() {
 					$(element).owlCarousel(defaultOptions);
 				};
 
 				// Function to determine the order of pods to be displayed.
 				scope.comparitor = function(pod) {
-					var pos = scope.visiblePods.indexOf(pod);
+					let pos = scope.visiblePods.indexOf(pod);
 					if(pos != -1) {
 						return pos;
 					} 
@@ -73,7 +70,7 @@
 					return scope.pods.results.length;
 				}
 
- 				scope.pods = api.pods.get();
+				scope.pods = api.pods.get();
 
 				scope.pods.$promise.then(function(){
 					Array.prototype.sort.call(scope.pods.results,function(a,b) { return a.id > b.id; });

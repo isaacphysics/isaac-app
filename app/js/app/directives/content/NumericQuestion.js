@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/NumericQuestion.html"], function(rv, templateUrl) {
 
     return ["api", "units", "$rootScope", function(api, units, $rootScope) {
 
@@ -22,10 +22,10 @@ define(["app/honest/responsive_video"], function(rv) {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/NumericQuestion.html",
+			templateUrl: templateUrl,
 
 			controller: ["$scope", "$element", function(scope, element) {
-				var ctrl = this;
+				let ctrl = this;
 
 				ctrl.selectedValue = null;
 				ctrl.selectedUnits = null;
@@ -36,8 +36,8 @@ define(["app/honest/responsive_video"], function(rv) {
 						ctrl.unitsDropdownStyle = null;
 					}
 					else {
-						var btnPos = element.find("button").offset();
-						var parent = element.find("button").parent().offset();
+						let btnPos = element.find("button").offset();
+						let parent = element.find("button").parent().offset();
 
 						ctrl.unitsDropdownStyle = {
 							top: btnPos.top + btnPos.height - parent.top,
@@ -54,10 +54,10 @@ define(["app/honest/responsive_video"], function(rv) {
 					* the question, and choose all known incorrect choices.
 					*/
 					if (typeof scope.doc.knownUnits !== "undefined") {
-						for (var i = 0; i < scope.doc.knownUnits.length; i++) {
+						for (let i = 0; i < scope.doc.knownUnits.length; i++) {
 
 						    // Get a knwn unit from choice.
-						    var unitFromQuestion = scope.doc.knownUnits[i];
+						    let unitFromQuestion = scope.doc.knownUnits[i];
 
 						    // Only add to options when it is not null and not duplicated.
 						    if (unitFromQuestion && ctrl.unitOptions.indexOf(unitFromQuestion) == -1) {
@@ -71,11 +71,11 @@ define(["app/honest/responsive_video"], function(rv) {
 	                 */
 	                if (typeof scope.doc.availableUnits !== "undefined") {
 
-	                	var availableUnits = scope.doc.availableUnits.slice(0);
+	                	let availableUnits = scope.doc.availableUnits.slice(0);
 
 	                  	while (ctrl.unitOptions.length < 6 && availableUnits.length > 0) {
                             // Pick a random availableUnit, trim spaces and remove redundant backslashes.
-                            var availableUnit = availableUnits.splice(Math.floor(Math.random() * availableUnits.length), 1)[0].trim().replace("\\\\", "\\");
+                            let availableUnit = availableUnits.splice(Math.floor(Math.random() * availableUnits.length), 1)[0].trim().replace("\\\\", "\\");
 
                             // Only add to options when it is not null and not duplicated.
                             if (availableUnit && ctrl.unitOptions.indexOf(availableUnit) == -1) {
@@ -84,14 +84,14 @@ define(["app/honest/responsive_video"], function(rv) {
 	                  	}
 	                }
                     // Get the pool of all available units.
-                    var unitsPool = JSON.parse(JSON.stringify(allUnits));
+                    let unitsPool = JSON.parse(JSON.stringify(allUnits));
                     /*
                      * STEP 2: If we still don't have 6 units, add them from the global pool,
                      * until we have the required number of units or the pool is empty.
                      */
                     while (ctrl.unitOptions.length < 6 && unitsPool.length > 0) {
                         // Gets a random unit from pool, and removes it from pool.
-                        var u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
+                        let u = unitsPool.splice(Math.floor(Math.random() * unitsPool.length), 1)[0].replace("\\\\", "\\");
 
                         // If the selected unit does not appear in option list
                         if (ctrl.unitOptions.indexOf(u) == -1) {

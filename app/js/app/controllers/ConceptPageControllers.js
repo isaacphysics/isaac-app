@@ -13,85 +13,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	// TODO: Make the "Back to question" button work properly
+export const PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, subject, editorURL) {
+	$scope.page = page;
 
-	// Snippet from honest that might help:
-	/*
-            // Panel arrow
-            $(".ru-panel-arrow").click(function()
-            {
-                window.location.href = $(this).attr('data-url');
-            });
-	*/
+	$rootScope.pageTitle = page.title;
 
-	var PageController = ['$scope', 'page', 'tags', '$rootScope', 'persistence', '$location', '$window', 'api', 'subject', 'EditorURL', function($scope, page, tags, $rootScope, persistence, $location, $window, api, subject, editorURL) {
-		$scope.page = page;
+	$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
 
-		$rootScope.pageTitle = page.title;
+	$scope.backButtonVisible = false;
 
-		$scope.contentEditorURL = editorURL + page.canonicalSourceFile;
+	$rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
 
-		$scope.backButtonVisible = false;
-
-		$rootScope.pageSubject = (tags.getPageSubjectTag(page.tags) || subject).id;
-
-		$scope.sourceUrl = persistence.session.load("conceptPageSource");
-		if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions/") == 0) {
-			$scope.backText = "Back to your question";
-			$scope.backButtonVisible = true;
-			// If we show this, it's *probably* the case that the user clicked a related concept:
-			var qId = $scope.sourceUrl.split("?")[0].replace("/questions/","");
+	$scope.sourceUrl = persistence.session.load("conceptPageSource");
+	if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/questions/") == 0) {
+		$scope.backText = "Back to your question";
+		$scope.backButtonVisible = true;
+		// If we show this, it's *probably* the case that the user clicked a related concept:
+		let qId = $scope.sourceUrl.split("?")[0].replace("/questions/","");
+		api.logger.log({
+			type: "VIEW_RELATED_CONCEPT",
+			questionId: qId,
+			conceptId: page.id,
+		});
+		// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
+		persistence.session.save("conceptPageSource", $location.url());
+	} else if ($scope.sourceUrl == "/concepts") {
+		$scope.backText = "Back to concepts";
+		$scope.backButtonVisible = true;
+	} else if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/concepts/") == 0) {
+		// Explicitly log viewing of concept page related concepts, to be consistent with VIEW_RELATED_QUESTIONS events.
+		let cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
+		if (cId != page.id) {
 			api.logger.log({
 				type: "VIEW_RELATED_CONCEPT",
-				questionId: qId,
+				questionId: cId,
 				conceptId: page.id,
 			});
-			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
-			persistence.session.save("conceptPageSource", $location.url());
-		} else if ($scope.sourceUrl == "/concepts") {
-			$scope.backText = "Back to concepts";
-			$scope.backButtonVisible = true;
-		} else if ($scope.sourceUrl && $scope.sourceUrl.indexOf("/concepts/") == 0) {
-			// Explicitly log viewing of concept page related concepts, to be consistent with VIEW_RELATED_QUESTIONS events.
-			var cId = $scope.sourceUrl.split("?")[0].replace("/concepts/","");
-			if (cId != page.id) {
-				api.logger.log({
-					type: "VIEW_RELATED_CONCEPT",
-					questionId: cId,
-					conceptId: page.id,
-				});
-			}
-			// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
-			persistence.session.save("conceptPageSource", $location.url());
 		}
+		// Reset the source, so no unwanted counting. Will stop "Back to Question" showing on reload, but probably no bad thing!
+		persistence.session.save("conceptPageSource", $location.url());
+	}
 
-		$scope.go = function(url) {
-			if (url == "BACK") {
-				$window.history.back();
-			} else {
-				$location.url(url);
-			}
+	$scope.go = function(url) {
+		if (url == "BACK") {
+			$window.history.back();
+		} else {
+			$location.url(url);
 		}
+	}
 
+	$scope.$on("accordionsectionopen", function(e, idx, doc) {
+		api.logger.log({
+			type: "CONCEPT_SECTION_OPEN",
+			conceptPageId: page.id,
+			conceptSectionIndex: idx,
+			conceptSectionLevel: doc.level,
+		})
+	});
 
-		$scope.$on("accordionsectionopen", function(e, idx, doc) {
-			api.logger.log({
-				type: "CONCEPT_SECTION_OPEN",
-				conceptPageId: page.id,
-				conceptSectionIndex: idx,
-				conceptSectionLevel: doc.level,
-			})
-		});
+	$scope.$on("$destroy", function(){
+		$rootScope.pageSubject = "";
+	});
 
-		$scope.$on("$destroy", function(){
-			$rootScope.pageSubject = "";
-		});
-
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+}];

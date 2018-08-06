@@ -50,7 +50,7 @@ define([], function() {
 				}
 			},
 
-			load: function sessionLoad(key, value) {
+			load: function sessionLoad(key, _value) {
 				try {
 					return $window.sessionStorage[key];
 				} catch (e) {

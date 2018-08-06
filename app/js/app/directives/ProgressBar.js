@@ -25,12 +25,11 @@ define([], function() {
 
             template: "<div class='bar'><span></span></div><span></span>",
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
-                var leftSpan = element.find("div span");
-                var rightSpan = element.children("span");
+                let leftSpan = element.find("div span");
 
-                var update = function() {
+                let update = function() {
                     element.children("div").remove(".text-center");
                     if (scope.max != null && scope.max > 0) {
                         if (scope.value == null) {

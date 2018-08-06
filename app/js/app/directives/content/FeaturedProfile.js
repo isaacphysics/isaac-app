@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/FeaturedProfile.html"], function(templateUrl) {
 
 
 	return ["api", function(api) {
@@ -24,9 +24,9 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/FeaturedProfile.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				if(scope.doc.image){
 					scope.doc.image.src = api.getImageUrl(scope.doc.image.src);	

@@ -29,7 +29,7 @@ import { DockingPoint } from "./DockingPoint";
 export
     class Fn extends Widget {
 
-    protected s: any;
+    public s: any;
     protected name: string;
     protected custom: boolean;
     protected innerSuperscript: boolean;
@@ -44,7 +44,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -88,7 +88,7 @@ export
         // Override docking points created in super constructor
         this.dockingPoints = {};
         this.generateDockingPoints();
-        this.docksTo = ['symbol', 'operator', 'exponent', "operator_brackets", 'differential_argument'];
+        this.docksTo = ['relation', 'symbol', 'operator', 'exponent', "operator_brackets", 'differential_argument'];
     }
 
     /**
@@ -208,7 +208,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         if ("superscript" in this.dockingPoints && this.dockingPoints["superscript"].child && Number(this.dockingPoints["superscript"].child.formatExpressionAs("python")) == -1 && this.innerSuperscript) {
             return "arc" + this.name + "()";
         } else {
@@ -229,7 +229,7 @@ export
 
     _drawBracketsInBox(box: Rect) {
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Brackets
-        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+        this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
         let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
         let a = m * this.s.baseFontSize/5;

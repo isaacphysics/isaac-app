@@ -4,7 +4,7 @@
         <p class="hide-for-small-only">Keep track of your groups</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Use this page to manage groups. You can add users to a group by giving them the group token and asking them paste it into their account settings page.<br>You can find the token for an existing group by selecting the group and clicking <i>Invite Users</i>." data-html="true" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span data-ot-escape-content="false" data-ot="Use this page to manage groups. You can add users to a group by giving them the group token and asking them paste it into their account settings page.<br>You can find the token for an existing group by selecting the group and clicking <i>Invite Users</i>." data-html="true" class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
 </div>
 <div class="group-management-wrap row">
@@ -117,19 +117,21 @@
         <div ng-show="selectedGroup.ownerId != user._id">
             <h4>Group owner:</h4>
             <table class="group-table">
-            <tbody>
-                <tr>
-                    <td><span class="group-table-person"></span>{{selectedGroup.ownerSummary.givenName}} {{selectedGroup.ownerSummary.familyName}} ({{selectedGroup.ownerSummary.email}})</td>
-                </tr>
-            </tbody>
-        </table>
+                <tbody>
+                    <tr>
+                        <td><span class="group-table-person"></span>{{selectedGroup.ownerSummary.givenName}} {{selectedGroup.ownerSummary.familyName}} ({{selectedGroup.ownerSummary.email}})</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p></p>
         </div>
         <h4>Current group managers</h4>
-        <p ng-if="selectedGroup.additionalManagers.length != 0">The users below have permission to manage this group.</p>
         <p ng-if="selectedGroup.additionalManagers.length == 0">There are no additional group managers for this group.</p>
+        <p ng-if="selectedGroup.additionalManagers.length == 1 && selectedGroup.additionalManagers[0].id == user._id">You are the only additional manager for this group.</p>
+        <p ng-if="selectedGroup.additionalManagers.length != 0 && selectedGroup.additionalManagers[0].id != user._id">The users below have permission to manage this group.</p>
         <table class="group-table">
             <tbody>
-                <tr ng-repeat="member in selectedGroup.additionalManagers | orderBy:'familyName'">
+                <tr ng-repeat="member in selectedGroup.additionalManagers | orderBy:'familyName'" ng-if="member.id != user._id">
                     <td><span class="group-table-person"></span>{{member.givenName}} {{member.familyName}} ({{member.email}})</td>
                     <td ng-if="selectedGroup.ownerId == user._id" class="group-table-delete"><a class="delete-icon" href="javascript:void(0)" ng-click="deleteManager(selectedGroup, member)"></a></td>
                 </tr>

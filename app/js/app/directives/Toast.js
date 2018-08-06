@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- define([], function() {
+ define(["/partials/toast.html"], function(templateUrl) {
 
 	return function() {
 		return {
 
 			restrict: "A",
 
-			templateUrl: "/partials/toast.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs){
+			link: function(scope, element, _attrs){
 				scope.toastNotificationVisible = false;
 				scope.toastTitle = "Title";
 				scope.toastDescription = "Description";
@@ -43,7 +43,6 @@
 
 				scope.hideToast = function(){
 					scope.toastNotificationVisible = false;
-					toastNotificationText = "";
 					scope.$apply();
 					scope.toastTimeouts = setTimeout(function() {
 						element.children("div").css("visibility","hidden");
