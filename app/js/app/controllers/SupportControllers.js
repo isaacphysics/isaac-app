@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-    let PageController = ['$scope', '$rootScope', '$state', '$stateParams', 'activeCategory', 'categories', function($scope, $rootScope, $state, $stateParams, activeCategory, categories) {
+export const PageController = ['$scope', '$rootScope', '$state', '$stateParams', 'activeCategory', 'categories', function($scope, $rootScope, $state, $stateParams, activeCategory, categories) {
 
-        $scope.categories = categories
-        $scope.activeCategory = activeCategory
-        $scope.type = $stateParams.type;
-        $scope.fragmentId = "support_" + $stateParams.type + "_" + $stateParams.idSuffix;
-        $scope.title = $stateParams.type[0].toUpperCase() + $stateParams.type.substring(1);
+    $scope.categories = categories
+    $scope.activeCategory = activeCategory
+    $scope.type = $stateParams.type;
+    $scope.fragmentId = "support_" + $stateParams.type + "_" + $stateParams.idSuffix;
+    $scope.title = $stateParams.type[0].toUpperCase() + $stateParams.type.substring(1);
 
-        $rootScope.pageTitle = $scope.title + " Support: " + activeCategory.title;
+    $rootScope.pageTitle = $scope.title + " Support: " + activeCategory.title;
 
-    }]
-
-    return {
-        PageController: PageController,
-    };
-})
+}];

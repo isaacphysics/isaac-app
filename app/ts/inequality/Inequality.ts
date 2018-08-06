@@ -117,10 +117,10 @@ export
 
         this.scope.log.initialState = [];
 
+        for (let symbol of this.symbols) {
+            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+        }
 
-        this.symbols.forEach(function(e) {
-            this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
         this.updateCanvasDockingPoints();
     };
 
@@ -162,15 +162,16 @@ export
 
         this.scope.log.initialState = [];
 
-        this.symbols.forEach(function(e) {
-            this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+        for (let symbol of this.symbols) {
+            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+        }
+
         this.updateCanvasDockingPoints();
 
     };
 
     windowResized = () => {
-        this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+        this.p.resizeCanvas(this.p.windowWidth * Math.ceil(window.devicePixelRatio), this.p.windowHeight * Math.ceil(window.devicePixelRatio));
     };
 
     draw = () => {
@@ -580,6 +581,7 @@ export
             symbol.highlight(false);
             let hitSymbol = symbol.hit(p);
             if (hitSymbol) {
+                // Hey, we hit a symbol! :)
                 hitSymbol.highlight(true);
             }
         });
@@ -633,7 +635,7 @@ export
         let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
-            symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
+            symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
             top += sbox.h*1.5;
             symbol.shakeIt();
         });

@@ -13,12 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-    let PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
-        $scope.mode = "sketcher";
-    }];
 
-    return {
-        PageController: PageController
-    }
-  });
+export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, _$stateParams) {
+    $scope.mode = "sketcher";
+}];

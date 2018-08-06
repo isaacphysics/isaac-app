@@ -16,7 +16,7 @@
 define(["/partials/content/AnvilQuestion.html"], function(templateUrl) {
 
 
-    return ["api", "$sce", function(api, $sce) {
+    return ["api", "$sce", function(_api, _$sce) {
 
         return {
             scope: true,
@@ -25,7 +25,7 @@ define(["/partials/content/AnvilQuestion.html"], function(templateUrl) {
 
             templateUrl: templateUrl,
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
 
                 scope.appParams = {
                     username: scope.$root.user.email, 
@@ -33,7 +33,7 @@ define(["/partials/content/AnvilQuestion.html"], function(templateUrl) {
                     problem_id: scope.doc.id
                 };
 
-                scope.$on("anvilAppMessage", function(_, data) {
+                scope.$on("anvilAppMessage", function(_event, data) {
                     if (data.msg == "answer") {
                         if (!scope.question.selectedChoice) {
                             scope.question.selectedChoice = {

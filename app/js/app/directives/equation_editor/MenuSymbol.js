@@ -26,8 +26,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                 let lastPageX = 0;
                 let lastPageY = 0;
-                let grab = function(pageX, pageY, e) {
-
+                let grab = function(pageX, pageY, _e) {
                     scope.dragging = true;
 
                     element.addClass("dragging");
@@ -47,12 +46,7 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     $("body").on("mousemove", mousemove);
                     $("body").on("touchend", touchend);
                     $("body").on("touchmove", touchmove);
-
-
-
                 }
-
-
 
                 let drag = function(pageX, pageY) {
                     let pageScroll = editor.offset().top;
@@ -65,11 +59,6 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     let requiredPageLeft = pageX - grabLocalX;
                     let requiredPageTop = pageY - grabLocalY;
-
-                    let offset = element.offset();
-
-                    let pX = pageX - offset.top;
-                    let pY = pageY - offset.left;
 
                     // Tell our parents that we've moved.
 
@@ -84,14 +73,9 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                     element.css("left", requiredPageLeft - originOffset.left);
                     element.css("top", requiredPageTop - originOffset.top);
-
                 }
 
                 let drop = function(pageX, pageY, e) {
-
-                    let token = element.find(".symbol-token");
-                    let tokenOffset = token.offset();
-
                     element.css("left", 0);
                     element.css("top", 0);
 
@@ -120,18 +104,21 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                     e.preventDefault();
                 }
 
+                let clicked = false;
+
                 let mouseup = function(e) {
-                  if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
-                    let clicked = true;
+                    if(scope.firstX == e.pageX && scope.firstY == e.pageY) {
+                        clicked = true;
+                        scope.$emit("clicked", clicked);
+                        let num = attrs.value;
+                        scope.$emit("numberClicked", num);
+                    }
+                    clicked = false;
+                    drop(e.pageX, e.pageY, e);
                     scope.$emit("clicked", clicked);
-                    let num = attrs.value;
-                    scope.$emit("numberClicked", num);
-                  }
-                      drop(e.pageX, e.pageY, e);
-                      clicked = false;
-                      scope.$emit("clicked", clicked);
-                      e.stopPropagation();
-                      e.preventDefault();
+                    e.stopPropagation();
+                    e.preventDefault();
+
                 }
 
                 let mousemove = function(e) {
@@ -143,7 +130,6 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
                 let touchstart = function(e) {
                     let ts = e.originalEvent.touches;
-                    console.log(ts);
                     scope.mobileX = ts[0].pageX;
                     scope.mobileY = ts[0].pageY;
                     grab(ts[0].pageX, ts[0].pageY, e);
@@ -153,25 +139,21 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                 }
 
                 let touchend = function(e) {
-                  let ts = e.originalEvent.changedTouches;
-                    console.debug(scope.mobileX + " " + ts[0].pageX);
-
-                    console.log(ts, e.originalEvent);
-
+                    let ts = e.originalEvent.changedTouches;
 
                     if (scope.mobileX == ts[0].pageX && scope.mobileY == ts[0].pageY) {
-                        let clicked = true;
+                        clicked = true;
                         scope.$emit("clicked", clicked);
-                        console.debug("Registered as click");
                         let num = attrs.value;
                         scope.$emit("numberClicked", num);
                     }
 
-                    drop(ts[0].pageX, ts[0].pageY, e);
                     clicked = false;
+                    drop(ts[0].pageX, ts[0].pageY, e);
                     scope.$emit("clicked", clicked);
                     e.stopPropagation();
                     e.preventDefault();
+
                 }
 
                 let touchmove = function(e) {

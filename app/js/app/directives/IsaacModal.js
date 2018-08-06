@@ -21,7 +21,7 @@ define([], function() {
                 // Take a copy of the element before Angular has done any compilation.
                 let rawClone = element.clone();
 
-                return function(scope, element, attrs) {
+                return function(scope, _element, attrs) {
 
                     scope.modals = scope.modals || {};
 

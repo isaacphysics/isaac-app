@@ -128,7 +128,7 @@ define([ 'jquery', './hexagon', 'd3'],
                 // Determine the current child and parent levels and check
                 // they should be shown
                 let parentLevel = items[0].level;
-                let childLevel = parentLevel + 1;
+                // UNUSED let childLevel = parentLevel + 1;
                 if(us.endLevel <= parentLevel)
                 {
                     return;
@@ -236,8 +236,8 @@ define([ 'jquery', './hexagon', 'd3'],
                     for(let i = 0; i < child.length; i++)
                     {
                         let klass = (child[i].selected) ? subject : 'grey';
-                        let startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
-                        let startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
+                        startX = (parentLevel === 1) ? (us._dotGap * 4) : (us._dotGap * 14);
+                        startY =  (us._dotGap * 12.5) + (i * us._dotGap * 8);
                         us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(startY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
 
                     }
@@ -287,13 +287,13 @@ define([ 'jquery', './hexagon', 'd3'],
                     for(let i = 0; i < child.length; i++) {
                         let klass = (child[i].selected) ? subject : 'grey';
                         if(i === 0) {
-                            let startX = (3 + minCircle) * us._dotGap;
+                            startX = (3 + minCircle) * us._dotGap;
                             let dropY = startY;
                             for(let j = 0; j < 2; j++, dropY = dropY + us._dotGap) {
                                 us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
                             }
                         } else {
-                            let startX = ((3 + us._deskChildPos[i]) * us._dotGap) + (us._dotGap * 0.6);
+                            startX = ((3 + us._deskChildPos[i]) * us._dotGap) + (us._dotGap * 0.6);
                             let dropY = startY - (us._dotGap * 0.1);
                             for(let j = 0; j < 3; j++, dropY = dropY + (us._dotGap * 0.9), startX = startX + (us._dotGap * 0.6)) {
                                 us._element.find("#hexfilter-svg").append(svgEl("circle").attr({'cx':(startX + us._dotRadius - 1), 'cy':(dropY + us._dotRadius - 1), 'r':us._dotRadius}).attr('class',klass));
@@ -344,8 +344,8 @@ define([ 'jquery', './hexagon', 'd3'],
                 // A name is small if any word > 10
                 let small = false;
                 let split = d.title.split(' ');
-                for(let i = 0; i < split.length; i++) {
-                    if(split[i].length > 10) {
+                for(let j = 0; j < split.length; j++) {
+                    if(split[j].length > 10) {
                         small = true;
                         break;
                     }
@@ -394,7 +394,7 @@ define([ 'jquery', './hexagon', 'd3'],
                 }).attr('data-item', function(d, i)
                 {
                     return i;
-                }).each(function(d)
+                }).each(function(_d)
                 {
                     $(this).click(function()
                     {

@@ -19,7 +19,8 @@ define([], function() {
         if (e.endDate != null) {  // Non-breaking change; if endDate not specified, behaviour as before
             e.multiDay = new Date(e.date).toDateString() != new Date(e.endDate).toDateString();
             e.expired = Date.now() > e.endDate;
-            e.inProgress =  (e.date <= Date.now()) && (Date.now() <= e.endDate);
+            e.withinBookingDeadline = Date.now() <= new Date(e.bookingDeadline);
+            e.inProgress = (e.date <= Date.now()) && (Date.now() <= e.endDate);
         } else {
             e.expired = Date.now() > e.date;
             e.inProgress =  false;
@@ -58,8 +59,6 @@ define([], function() {
         let filterEventsByType = null;
         let showBookedOnly = false;
 
-        let showByTag = null; // show only events with set tag
-
         $scope.filterEventsByType = "all";
         $scope.moreResults = false;
         $scope.toTitleCase = toTitleCase;
@@ -78,7 +77,7 @@ define([], function() {
             $scope.filterEventsByType = $stateParams.types
         }
 
-        $scope.$watch('filterEventsByStatus + filterEventsByType', function(newValue, oldValue){
+        $scope.$watch('filterEventsByStatus + filterEventsByType', function(_newValue, _oldValue){
             if ($scope.filterEventsByStatus == "showBookedOnly") {
                 showActiveOnly = false;
                 showInactiveOnly = false;
@@ -136,11 +135,11 @@ define([], function() {
         };
         $scope.locations = [];
         $scope.typeEvents = {
-                click: function(cluster, clusterModel) {
-                    $scope.map.window.model = cluster.model;
-                    $scope.eventPopup = cluster.model;
-                    $scope.map.window.show = true;
-                },
+            click: function(cluster, _clusterModel) {
+                $scope.map.window.model = cluster.model;
+                $scope.eventPopup = cluster.model;
+                $scope.map.window.show = true;
+            },
         };
 
         $scope.loadMap = function() {
@@ -172,7 +171,7 @@ define([], function() {
         }
     }];
 
-    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, $timeout, $stateParams, $state, $filter, $window, $q) {
+    let DetailController = ['$scope', 'api', '$timeout', '$stateParams', '$state', '$filter', '$window', '$q', function($scope, api, _$timeout, $stateParams, $state, $filter, $window, $q) {
         $scope.setLoading(true);
 
         $scope.toTitleCase = toTitleCase;
@@ -203,17 +202,17 @@ define([], function() {
             if ($scope.user.role == 'STUDENT' && !($scope.additionalInformation.yearGroup == 'TEACHER' || $scope.additionalInformation.yearGroup == 'OTHER')) {
                 if (!$scope.additionalInformation.yearGroup) {
                     $scope.showToast($scope.toastTypes.Failure, "Year Group Required", "You must enter a year group to proceed.");
-                    return false;   
+                    return false;
                 }
-                
-                if (!event.virtual) {
+
+                if (!$scope.event.virtual) {
                     if (!$scope.additionalInformation.emergencyName || !$scope.additionalInformation.emergencyNumber){
                         $scope.showToast($scope.toastTypes.Failure, "Emergency Contact Details Required", "You must enter a emergency contact details in order to book on to this event.");
-                        return false;   
-                    }                        
+                        return false;
+                    }
                 }
             }
-            
+
             // validation for users that are teachers
             if ($scope.user.role != 'STUDENT') {
                 if (!$scope.additionalInformation.jobTitle) {

@@ -26,11 +26,9 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 			restrict: 'A',
 			priority: 0,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 
-				let pageId = scope.$parent.page ? scope.$parent.page.id : "";
-
-				Showdown.extensions.refs = function(converter) {
+				Showdown.extensions.refs = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '(~D)?\\\\ref{([^}]*)}(~D)?',
@@ -38,7 +36,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}];
 				};
 
-				Showdown.extensions.links = function(converter) {
+				Showdown.extensions.links = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\\\link{([^}]*)}{([^}]*)}',
@@ -46,7 +44,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}]
 				};				
 
-				Showdown.extensions.glossary = function(converter) {
+				Showdown.extensions.glossary = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\*\\*Glossary\\*\\*',
@@ -54,7 +52,7 @@ define(["../../../lib/showdown/showdown.js", "../../../lib/showdown/extensions/t
 					}];
 				};
 
-				Showdown.extensions.concepts = function(converter) {
+				Showdown.extensions.concepts = function(_converter) {
 					return [{
 						type: "lang",
 						regex: '\\*\\*Concepts\\*\\*',

@@ -24,10 +24,8 @@ import { Widget, Rect } from './Widget'
 import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
-import { Num } from "./Num";
-import {ChemicalElement} from "./ChemicalElement";
-import { Brackets } from "./Brackets";
-/** A class for representing variables and constants (aka, particles). */
+
+/** A class for representing particles. */
 export
     class Particle extends Widget {
 
@@ -49,7 +47,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         // TODO Handle greek elements
         let e = this.particle;
         // if (this.dockingPoints['subscript'].child) {
@@ -57,10 +55,11 @@ export
         // }
         return e;
     }
+
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
+     * @returns {p5.Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);

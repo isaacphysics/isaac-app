@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install -y ca-certificates curl openssl git
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -yy nodejs
+RUN apt-get install -yy bzip2
 RUN npm install -g grunt-cli
 
 ENV DOCKER_BUCKET get.docker.com

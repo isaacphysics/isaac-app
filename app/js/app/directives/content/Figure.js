@@ -26,12 +26,12 @@ define(["/partials/content/Figure.html"], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 
 				let figId = scope.doc.id || ("auto-fig-id-" + Object.keys(scope.$root.figures).length + 1);
 
-				figId = figId.replace(/.*?([^\|]*)$/g,'$1');
+				figId = figId.replace(/.*?([^|]*)$/g,'$1');
 
 				scope.$root.figurePaths[figId] = scope.getIndexPath();
 

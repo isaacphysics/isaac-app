@@ -16,6 +16,8 @@
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
 		const MAX_LABEL_LENGTH = 17;
+		void MAX_LABEL_LENGTH;
+		
 		let defaultAction = {
 			disabled: false
 		}
@@ -88,7 +90,7 @@ define([], function() {
 			if (!pageCompleted) {
 				questionHistory.push(currentQuestionId);
 			}
-			commaSeparatedQuestionHistory = questionHistory.join(',');
+			let commaSeparatedQuestionHistory = questionHistory.join(',');
 
 			return {
 				prototype: defaultAction,

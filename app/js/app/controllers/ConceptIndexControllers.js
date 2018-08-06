@@ -13,39 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	// TODO: Implement keyboard-only navigation of concept index page.
-	// Use, e.g.
-	/*
-		.bind('click keyup', function(e) {
-            if(e.type === 'click' || (e.type === 'keyup' && e.which === 13))
-            {
-                e.preventDefault();
-                window.location.href = ...;
-            }
-        });	 
-	*/
 
-	let PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', '$rootScope', function($scope, $state, conceptList, persistence, $location, $rootScope) {
+export const PageController = ['$scope', '$state', 'conceptList', 'persistence', '$location', '$rootScope', function($scope, $state, conceptList, persistence, $location, $rootScope) {
 
-		$scope.allConcepts = conceptList.results;
-		$rootScope.pageTitle = "Concept Index";
-		
-		$scope.includePhysics = true;
-		$scope.includeMaths = true;
+	$scope.allConcepts = conceptList.results;
+	$rootScope.pageTitle = "Concept Index";
+	
+	$scope.includePhysics = true;
+	$scope.includeMaths = true;
 
-		$scope.subjectFilter = function(input) {
-			if (!input.tags)
-				return false;
-			return (input.tags.indexOf("physics") > -1 && $scope.includePhysics) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
-		}
+	$scope.subjectFilter = function(input) {
+		if (!input.tags)
+			return false;
+		return (input.tags.indexOf("physics") > -1 && $scope.includePhysics) || (input.tags.indexOf("maths") > -1 && $scope.includeMaths);
+	}
 
-		persistence.session.save("conceptPageSource", $location.url());
+	persistence.session.save("conceptPageSource", $location.url());
 
-	}]
-
-	return {
-		PageController: PageController,
-	};
-})
+}];

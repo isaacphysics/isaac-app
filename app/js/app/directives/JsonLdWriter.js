@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import angular from "angular";
+
 define([],function() {
 
     return [function() {
@@ -21,8 +24,8 @@ define([],function() {
             scope: {
                 script: '='
             },
-            link: function(scope, element, attrs) {
-                scope.$watch('script', function (newValue, oldValue) {
+            link: function(scope, element, _attrs) {
+                scope.$watch('script', function (newValue, _oldValue) {
                     if (newValue.name) {
                         element.empty();
                         let scriptTag = angular.element(document.createElement("script"));

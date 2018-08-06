@@ -9,7 +9,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
             scope: true,
             restrict: "A",
             templateUrl: templateUrl,
-            link: function (scope, element, attrs) {
+            link: function (scope, element, _attrs) {
 
 
                 /*** Lifecycle and buttons ***/
@@ -296,7 +296,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                 });
 
                 // Logs when people navigate away without closing the editor.
-                scope.logOnClose = function (event) {
+                scope.logOnClose = function (_event) {
                     if (scope.log != null) {
                         scope.log.actions.push({
                             event: "NAVIGATE_AWAY",
@@ -310,7 +310,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                 // FIXME This function may or may not need refactoring to improve the flexibility of menu creation.
                 $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
 
-                    return new Promise(function (resolve, reject) {
+                    return new Promise(function (resolve, _reject) {
 
                         scope.hashDebug = window.location.hash === '#debug';
 
@@ -404,17 +404,17 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
                         // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function (e) {
+                        eqnModal.one("close", function (_e) {
                             scope.log.finalState = [];
-                            sketch.symbols.forEach(function (e) {
-                                scope.log.finalState.push(e.subtreeObject(true, true));
+                            sketch.symbols.forEach(function (symbol) {
+                                scope.log.finalState.push(symbol.subtreeObject(true, true));
                             });
                             scope.log.actions.push({
                                 event: "CLOSE",
                                 timestamp: Date.now()
                             });
                             if (scope.segueEnvironment === "DEV") {
-                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1024).toFixed(2) + "kB\n\n", JSON.stringify(scope.log));
                             }
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
@@ -423,18 +423,18 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
-                        //element.find("canvas").remove();
 
                         scope.future = [];
-                        let p = new p5(function (p) {
+                        let p = new p5(function (p5instance) {
                             try {
-                                sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                                sketch = new MySketch(p5instance, scope, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
                             } catch (error) {
                                 console.log(error);
                             }
                             $rootScope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
+                        void p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {
                             sketch.p.remove();
@@ -641,7 +641,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     return [diffSymbol];
                 };
 
-                // FIXME This function definitely needs refactoring to improve the flexibility of menu creation.
                 let parseCustomSymbols = function (symbols) {
                     let r = {
                         vars: [],
@@ -808,8 +807,11 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                     r.vars.push(root);
                                     break;
                                 case "Fn":
+                                    r.fns.push(root);
+                                    break;
                                 case "Differential":
                                     r.fns.push(root);
+                                    r.vars.push(root);
                                     break;
                                 case "Relation":
                                     r.operators.push(root);
@@ -894,12 +896,12 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                 };
 
                 let chemicalElements = function (elementArray) {
-                    let elements = [];
+                    let theseElements = [];
 
                     for (let i in elementArray) {
 
                         let currentElement = elementArray[i];
-                        elements.push({
+                        theseElements.push({
                             type: "ChemicalElement",
                             properties: {
                                 element: currentElement
@@ -911,15 +913,15 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             }
                         });
                     }
-                    return elements;
+                    return theseElements;
                 };
 
                 let theNumbers = function (numberStrings) {
-                    let elements = {};
+                    let theseElements = {};
                     for (let i = 0; i < 10; i++) {
                         let numString = i.toString();
 
-                        elements[numberStrings[i]] = {
+                        theseElements[numberStrings[i]] = {
                             type: "Num",
                             properties: {
                                 significand: numString
@@ -930,15 +932,14 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             }
                         }
                     }
-                    return elements;
+                    return theseElements;
                 };
 
                 let trigFunction = function (trigArray) {
-                    let count = 0;
+                    let trigCounter = 0;
                     let result = [];
                     for (let trig_func in trigArray) {
                         let label = "";
-                        let properties = {};
                         let children = null;
                         let name = trigArray[trig_func];
                         if (trigArray[trig_func].substring(0, 3) === 'arc') {
@@ -970,7 +971,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 label = "\\" + trigArray[trig_func];
                             }
                         }
-                        result[count] = {
+                        result[trigCounter] = {
                             type: "Fn",
                             properties: {
                                 name: name,
@@ -984,9 +985,9 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             }
                         };
                         if (children != null) {
-                            result[count].children = children;
+                            result[trigCounter].children = children;
                         }
-                        count++;
+                        trigCounter++;
                     }
                     return result;
                 };

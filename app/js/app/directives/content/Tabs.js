@@ -26,7 +26,7 @@ define(['/partials/content/Tabs.html'], function(templateUrl) {
 
 			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				scope.activeTab = 0;
 
 				scope.activateTab = function(i) {

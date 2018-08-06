@@ -15,13 +15,13 @@
  */
  define(["/partials/pod_carousel.html"], function(templateUrl) {
 
-	return ["api", "$interval", function(api, $interval) {
+	return ["api", "$interval", function(api, _$interval) {
 
 		return {
 			scope: true,
 			restrict: "A",
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
 
 				scope.intervalValue = 10000; //ms
 

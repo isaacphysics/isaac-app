@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 define(["/partials/content/Accordion.html"], function(templateUrl) {
-	return ["$location", "$rootScope", function($location, $rootScope) {
+	return ["$location", "$rootScope", function($location, _$rootScope) {
 		return {
 			scope: true,
 			restrict: 'A',
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				scope.accordionChildMetrics = {
 					questionCount: 0,
 				}
@@ -92,8 +92,10 @@ define(["/partials/content/Accordion.html"], function(templateUrl) {
 						}
 					}
 				};
+				void updateLoadedQuestions;
+				// FIXME ^ This looks too complicated for something we can just delete. Better check before nuking it.
 
-				scope.$on("newQuestionAnswer", function(e, index, ans) {
+				scope.$on("newQuestionAnswer", function(_event, _index, _ans) {
 					//
 					//        FIXME : This function has been broken for a while and is now misbehaving!
 					//
@@ -124,9 +126,7 @@ define(["/partials/content/Accordion.html"], function(templateUrl) {
 				});
 
 				scope.$on("ensureVisible", function(e) {
-
-					if (e.targetScope == scope)
-						return;
+					if (e.targetScope == scope) return;
 
 					e.stopPropagation();
 					let section = e.targetScope.accordionSection;

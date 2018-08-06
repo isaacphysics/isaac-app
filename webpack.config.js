@@ -15,7 +15,7 @@ module.exports = function(env) {
     mode: "development",
 
     entry: {
-      'isaac.js': ["./app/js/app/app.js"],
+      'isaac.js': ["@babel/polyfill", "./app/js/app/app.js"],
     },
 
     output: {
@@ -54,7 +54,6 @@ module.exports = function(env) {
         { 
           test: /modernizr/,
           use: [
-            {loader:"expose-loader", options: "Modernizr"},
             {loader:"imports-loader?this=>window"},
           ]
         },
@@ -77,6 +76,10 @@ module.exports = function(env) {
         {
           test: /angular-google-maps\.js/,
           use: "imports-loader?_=lodash",
+        },
+        {
+          test: /script\/.*\.js$/,
+          use: [{loader: 'script-loader'}]
         }
       ]
     },

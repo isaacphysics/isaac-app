@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, $rootScope, $stateParams) {
+export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, $stateParams) {
     $scope.eqnEditorSeed = null;
     $scope.editorMode = "maths";
     if ($stateParams.mode == 'chemistry') {
@@ -40,4 +40,4 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
             console.error("Invalid seed.");
         }
     });
-} ];
+}];

@@ -32,8 +32,6 @@ export
     public s: any;
     protected element: string;
 
-
-
     get typeAsString(): string {
         return "ChemicalElement";
     }
@@ -41,7 +39,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a ChemicalElement is meant to be docked from.
+     * @returns {p5.Vector} The position to which a ChemicalElement is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -194,12 +192,8 @@ export
         };
     }
 
-    token() {
-        // TODO Handle greek elements
+    token(): string {
         let e = this.element;
-        // if (this.dockingPoints['subscript'].child) {
-        //     e += '_' + this.dockingPoints['subscript'].child.formatExpressionAs('subscript');
-        // }
         return e;
     }
 
@@ -318,7 +312,7 @@ export
     }
 
     /**
-     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     * @returns {Array<Widget>} A flat array of the children of this widget, as widget objects
      */
     get children(): Array<Widget> {
         return _.compact(_.map(_.values(_.omit(this.dockingPoints, "subscript")), "child"));

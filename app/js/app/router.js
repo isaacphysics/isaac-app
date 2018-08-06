@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["angular", "angular-ui-router"], function(angular, angularUiRouter) {
+define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
 
     // Declare app level module which depends on filters, and services
     angular.module('isaac.router', [
@@ -447,7 +447,7 @@ define(["angular", "angular-ui-router"], function(angular, angularUiRouter) {
         $sp.state('contentErrors', {
             url: "/admin/content_errors",
             resolve: {
-                "page": ["api", "$stateParams", function(api, $stateParams) {
+                "page": ["api", "$stateParams", function(api, _$stateParams) {
                     return api.contentProblems.get().$promise;
                 }]
             },
@@ -555,7 +555,7 @@ define(["angular", "angular-ui-router"], function(angular, angularUiRouter) {
                     return window.foo;
                 }],
             },
-            onEnter: ["$state", function($state) {
+            onEnter: ["$state", function(_$state) {
                 document.location.href = "/";
             }]
         });
@@ -694,6 +694,33 @@ define(["angular", "angular-ui-router"], function(angular, angularUiRouter) {
                     controller: "AuthErrorPageController",
                 }
             }
+        });
+
+        $sp.state('teacherMentoringGcse', {
+            url: "/teachermentoring_gcse",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER", "CONTENT_EDITOR", "TEACHER"]),
+                "page": ["api", function(api) {return api.pageFragments.get({id: 'teacher_mentoring_gcse_page_frag'}).$promise;}]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/generic_page.html",
+                    controller: "GenericPageController"
+                },
+            },
+        });
+        $sp.state('teacherMentoringAlevel', {
+            url: "/teachermentoring_alevel",
+            resolve: {
+                requireRole: getRolePromiseInjectableFunction(["ADMIN", "EVENT_MANAGER", "CONTENT_EDITOR", "TEACHER"]),
+                "page": ["api", function(api) {return api.pageFragments.get({id: 'teacher_mentoring_alevel_page_frag'}).$promise;}]
+            },
+            views: {
+                "body": {
+                    templateUrl: "/partials/states/generic_page.html",
+                    controller: "GenericPageController"
+                },
+            },
         });
 
         $sp.state('admin', {
@@ -991,7 +1018,7 @@ define(["angular", "angular-ui-router"], function(angular, angularUiRouter) {
                             location: "replace"
                         });
                     }
-                }).catch(function(e) {
+                }).catch(function(_e) {
                     console.error("Error saving board.");
                     $rootScope.showToast($rootScope.toastTypes.Failure, "Error saving board", "Sorry, something went wrong.");
                 });

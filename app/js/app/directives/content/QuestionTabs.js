@@ -19,7 +19,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 			restrict: 'A',
 			scope: true,
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs, ctrls, transclude) {
+			link: function(scope, _element, _attrs, _ctrls, _transclude) {
 				if (scope.accordionChildMetrics) {
 					scope.accordionChildMetrics.questionCount++;
 				}
@@ -117,7 +117,9 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 						// NOTE: We can't just rely on percentageCompleted as it gives us 100% when there is one
 						// question for a gameboard and the question has been passed, not completed. See issue #419
 					});
-				}
+				};
+				void checkGamebaordProgress;
+				// FIXME ^ This looks too complicated for something we can just delete. Better check before nuking it.
 
 				let applyValidationResponseToQuestionPart = function(content, validationResponse) {
 					if (QUESTION_TYPES.indexOf(content.type) >= 0 && content.id == validationResponse.questionId &&	content.bestAttempt != true) {
@@ -129,7 +131,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 							applyValidationResponseToQuestionPart(child, validationResponse);
 						}
 					}
-				}
+				};
 
 				let isPageCompleted = function(questionPage) {
 					let hasIncorrectOrUnansweredQuestion = function(content) {

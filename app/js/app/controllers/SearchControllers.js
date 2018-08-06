@@ -25,7 +25,7 @@ define([], function() {
         }
     }
 
-    let changeTypeState = function(modelName, typeName, api, query, typesToInclude, $location) {
+    let changeTypeState = function(modelName, typeName, _api, _query, typesToInclude, _$location) {
         let index = typesToInclude.indexOf(typeName);
         if(modelName && index == -1){
             typesToInclude.push(typeName);
@@ -34,7 +34,7 @@ define([], function() {
         }
     }
 
-    let PageController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', 'query', 'types', 'pageIndex', function($scope, $state, $timeout, $location, $rootScope, api, query, types, pageIndex) {
+    let PageController = ['$scope', '$state', '$timeout', '$location', '$rootScope', 'api', 'query', 'types', 'pageIndex', function($scope, $state, $timeout, $location, $rootScope, api, query, types, _pageIndex) {
         let conceptPage = "isaacConceptPage";
         let questionPage = "isaacQuestionPage";
         $scope.isStaffUser = ($scope.user._id && ($scope.user.role == 'ADMIN' || $scope.user.role == 'EVENT_MANAGER' || $scope.user.role == 'CONTENT_EDITOR' || $scope.user.role == 'STAFF'));

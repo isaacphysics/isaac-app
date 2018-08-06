@@ -1,6 +1,6 @@
 define(["/partials/equation_editor/canvas_symbol.html"], function(templateUrl) {
 
-	return ["$timeout", function($timeout) {
+	return ["$timeout", function(_$timeout) {
 
 		return {
             scope: {
@@ -10,7 +10,7 @@ define(["/partials/equation_editor/canvas_symbol.html"], function(templateUrl) {
             },
 			restrict: "A",
 			templateUrl: templateUrl,
-			link: function(scope, element, attrs) {
+			link: function(scope, element, _attrs) {
                 scope.name+="CANVAS SYMBOL"
 
                 let renderToken = function() {
@@ -37,12 +37,6 @@ define(["/partials/equation_editor/canvas_symbol.html"], function(templateUrl) {
 
                 scope.$watch("symbol.token", renderToken);
                 scope.$watch("symbol.fontSize", renderToken);
-
-                let dbf = function() {
-                	let caller = arguments.callee.caller;
-                	console.debug(caller.name, caller.arguments);
-                }
-
 
                 let mousedown = function(e) {
                     scope.$emit("selection_grab", scope.symbolId, "move", e);
