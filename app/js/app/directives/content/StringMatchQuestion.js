@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/StringMatchQuestion.html"], function(_rv, templateUrl) {
 
-    return ["api", function(api) {
+    return ["api", function(_api) {
 
         return {
             scope: true,
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/StringMatchQuestion.html",
+            templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
+                let ctrl = this;
 
                 ctrl.selectedValue = null;
 

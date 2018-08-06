@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(['/partials/content/Tabs.html'], function(templateUrl) {
 
 
 	return ["api", function(api) {
@@ -24,9 +24,9 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: '/partials/content/Tabs.html',
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 				scope.activeTab = 0;
 
 				scope.activateTab = function(i) {
@@ -34,7 +34,7 @@ define([], function() {
 
 					if (scope.doc.children[i].type == "isaacQuestion") {
 
-						var logData = {
+						let logData = {
 							type: "QUICK_QUESTION_TAB_VIEW",
 							quickQuestionId: scope.doc.children[i].id,
 						};
@@ -54,7 +54,7 @@ define([], function() {
 
 					e.stopPropagation();
 
-					var i = e.targetScope.tabIndex;
+					let i = e.targetScope.tabIndex;
 
 					scope.activateTab(i);
 

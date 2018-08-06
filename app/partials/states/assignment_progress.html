@@ -149,9 +149,10 @@
                                                         ng-if="studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
+                                                        data-ot-escape-content="false"
                                                         data-ot="
-                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
-                                                        Question: {{assignment.gameBoard.questions[$index].title}}<br/>
+                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
+                                                        Question: {{assignment.gameBoard.questions[$index].title | escapeHtml}}<br/>
                                                         Parts correct: {{studentProgress.correctPartResults[$index]}} ({{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
                                                         Parts not attempted: {{studentProgress.notAttemptedPartResults[$index]}} ({{formatMark(studentProgress.notAttemptedPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
                                                         Parts incorrect: {{studentProgress.incorrectPartResults[$index]}} ({{formatMark(studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})">
@@ -165,9 +166,10 @@
                                                     </td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column left"
+                                                        data-ot-escape-content="false"
                                                         data-ot="
-                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
-                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title | escapeHtml}}<br/>
                                                         Question parts correct: {{studentProgress.correctQuestionPartsCount}} ({{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], true)}})<br/>
                                                         Total number of question parts: {{assignmentTotalQuestionParts[assignment._id]}}">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
@@ -175,9 +177,10 @@
                                                     <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Not Sharing"></td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column right"
+                                                        data-ot-escape-content="false"
                                                         data-ot="
-                                                        Student: {{studentProgress.user.givenName}} {{studentProgress.user.familyName}}<br/>
-                                                        Assignment: {{assignment.gameBoard.title}}<br/>
+                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
+                                                        Assignment: {{assignment.gameBoard.title | escapeHtml}}<br/>
                                                         Question pages correct: {{studentProgress.tickCount}} ({{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, true)}})<br/>
                                                         Total number of question pages: {{assignment.gameBoard.questions.length}}">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}

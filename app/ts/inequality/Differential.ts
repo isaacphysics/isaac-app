@@ -28,7 +28,7 @@ import { DockingPoint } from "./DockingPoint";
 export
 class Differential extends Widget {
 
-    protected s: any;
+    public s: any;
     protected letter: string;
 
     get typeAsString(): string {
@@ -38,7 +38,7 @@ class Differential extends Widget {
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Differential is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Differential is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -59,26 +59,34 @@ class Differential extends Widget {
         return document.location.pathname == '/equality' || userIsPrivileged || !this.sonOfADerivative;
     }
 
+    /**
+     * Climbs up the ancestors to see if this widget is docked to a Derivative.
+     */
     get sonOfADerivative() {
-        let s = false;
         let p = this.parentWidget;
-        while (p != null) {
-            s = s || p.typeAsString == 'Derivative';
-            p = p.parentWidget;
+        while (null !== p) {
+            if (p.typeAsString === 'Derivative') {
+                return true;
+            }
+            p = this.parentWidget;
         }
-        return s;
+        return false;
     }
 
-    get orderNeedsMoving() {
-        let a = false;
-        let n = this.dockedTo;
+    /**
+     * Climbs up the parents to see if this widget is docked to the denominator of a Derivative.
+     * 
+     * @returns {boolean}
+     */
+    get orderNeedsMoving(): boolean {
         let w: Widget = this;
-        while (w != null) {
-            a = a || n == "denominator";
+        while (null !== w.parentWidget) {
+            if (w.parentWidget.typeAsString === 'Derivative' && w.dockedTo === 'denominator') {
+                return true;
+            }
             w = w.parentWidget;
-            n = null == w ? "" : w.dockedTo;
         }
-        return a && this.sonOfADerivative;
+        return false;
     }
 
     /**
@@ -188,7 +196,7 @@ class Differential extends Widget {
         };
     }
 
-    token() {
+    token(): string {
         // DRY this out.
         let expression;
         if (this.letter == "δ") {
@@ -229,6 +237,54 @@ class Differential extends Widget {
     }
 
     /**
+     * Helper to shake the argument.
+     * 
+     * @private
+     * @returns {number} The width of the argument, if one is present, 0 otherwise.
+     */
+    _shakeArgument(displacement = 0, thisBox = this.boundingBox()): number {
+        if (this.dockingPoints["argument"]) {
+            let dp = this.dockingPoints["argument"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + displacement + dp.size/2;
+                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
+                return Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + displacement + dp.size;
+                dp.position.y = -this.scale*this.s.xBox_h/2;
+                return 2*dp.size;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Helper to shake the order.
+     * 
+     * @private
+     * @returns {number} The width of the order, if one is present, 0 otherwise.
+     */
+    _shakeOrder(displacement = 0, thisBox = this.boundingBox()): number {
+        if (this.dockingPoints["order"]) {
+            let dp = this.dockingPoints["order"];
+            if (dp.child) {
+                let child = dp.child;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + displacement + dp.size*child.scale/2;
+                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
+                return Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
+            } else {
+                dp.position.x = thisBox.x + thisBox.w + displacement + dp.size/2;
+                dp.position.y = -this.scale*this.s.mBox_h;
+                return dp.size;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Internal companion method to shakeIt(). This is the one that actually does the work, and the one that should be
      * overridden by children of this class.
      *
@@ -239,34 +295,13 @@ class Differential extends Widget {
 
         let thisBox = this.boundingBox();
 
-        let orderWidth = 0;
-        if (this.dockingPoints["order"]) {
-            let dp = this.dockingPoints["order"];
-            if (dp.child) {
-                let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size*child.scale/2;
-                child.position.y = -this.scale*this.s.xBox_h - (child.subtreeDockingPointsBoundingBox.y + child.subtreeDockingPointsBoundingBox.h);
-                orderWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
-            } else {
-                dp.position.x = thisBox.x + thisBox.w + dp.size/2;
-                dp.position.y = -this.scale*this.s.mBox_h;
-                orderWidth = dp.size;
-            }
-        }
-
-        let argumentWidth = 0;
-        if (this.dockingPoints["argument"]) {
-            let dp = this.dockingPoints["argument"];
-            if (dp.child) {
-                let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + orderWidth + dp.size/2;
-                child.position.y = this.dockingPoint.y - child.dockingPoint.y;
-                argumentWidth = Math.max(dp.size, child.subtreeDockingPointsBoundingBox.w);
-            } else {
-                dp.position.x = thisBox.x + thisBox.w + orderWidth + dp.size;
-                dp.position.y = -this.scale*this.s.xBox_h/2;
-                argumentWidth = 2*dp.size;
-            }
+        let orderWidth = 0, argumentWidth = 0;
+        if (this.orderNeedsMoving) {
+            argumentWidth = this._shakeArgument(0, thisBox);
+            orderWidth = this._shakeOrder(argumentWidth, thisBox);
+        } else {
+            orderWidth = this._shakeOrder(0, thisBox);
+            argumentWidth = this._shakeArgument(orderWidth, thisBox);
         }
 
         if (this.dockingPoints["right"]) {
@@ -283,7 +318,7 @@ class Differential extends Widget {
     }
 
     /**
-     * @returns {Widget[]} A flat array of the children of this widget, as widget objects
+     * @returns {Array<Widget>} A flat array of the children of this widget, as widget objects
      */
     get children(): Array<Widget> {
         return _.compact(_.map(_.values(this.dockingPoints), "child"));

@@ -13,19 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-
-
-	return ["api", "$rootScope", function(api, $rootScope) {
-
+define(["/partials/event_booking_form.html"], function(templateUrl) {
+	return ["api", "$rootScope", function(_api, _$rootScope) {
 		return {
 			scope: true,
-
- 			restrict: "A",
-			
-			templateUrl: "/partials/event_booking_form.html",
-
-			link: function(scope, element, attrs) {
+			restrict: "A",
+			templateUrl: templateUrl,
+			link: function(scope, _element, _attrs) {
 				
 				scope.editingSelf = scope.targetUser != null && scope.user._id == scope.targetUser._id
 			}

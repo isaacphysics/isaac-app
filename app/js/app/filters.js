@@ -15,7 +15,7 @@
  */
 'use strict';
 
-define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js"], function() {
+define(["angular", "lodash", "../lib/showdown/showdown.js", "../lib/showdown/extensions/table.js"], function(angular, _, Showdown) {
 
 	/* Filters */
 
@@ -23,17 +23,16 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 
 	.filter('interpolate', ['version', function(version) {
 		return function(text) {
-			return String(text).replace(/\%VERSION\%/mg, version);
+			return String(text).replace(/%VERSION%/mg, version);
 		};
 	}])
 	.filter('capitalize', [function() {
 		return function(input) {
-			return (!!input) ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
+			return input ? input.charAt(0).toUpperCase() + input.substring(1).toLowerCase() : "";
 		}
 	}])
 	.filter('showdown', [function() {
-		var Showdown = require("lib/showdown/showdown.js");
-		var converter = new Showdown.converter({
+		let converter = new Showdown.converter({
 			extensions: ["table"],
 		});
 
@@ -48,10 +47,10 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 	}])
 	.filter('splitCapitalize', [function() {
 		return function(input) {
-			var splitInput = input.split(' ');
-			var out = [];
-			for (var i = 0; i < splitInput.length; i++) {
-				var segment = splitInput[i];
+			let splitInput = input.split(' ');
+			let out = [];
+			for (let i = 0; i < splitInput.length; i++) {
+				let segment = splitInput[i];
 				out.push(segment.charAt(0).toUpperCase() + segment.substring(1).toLowerCase())
 			}
 			return out.join(' ');
@@ -59,21 +58,26 @@ define(["angular", "lib/showdown/showdown.js", "lib/showdown/extensions/table.js
 	}])
 	.filter('splitCommaList', [function() {
 		return function(input) {
-			var splitInput = input.split(' ');
+			let splitInput = input.split(' ');
 			return (splitInput.length > 1) ? [splitInput.slice(0,-1).join(', '), splitInput.slice(-1)].join(' & ') : input;
 		};
 	}])
 	.filter("showUndefinedLast", function () {
 		return function (array, key) {
 			if (angular.isArray(array)) {
-				var definedValues = array.filter(function (item) {
+				let definedValues = array.filter(function (item) {
 					return item[key] !== undefined;
 				});
-				var undefinedValues = array.filter(function (item) {
+				let undefinedValues = array.filter(function (item) {
 					return item[key] === undefined;
 				});
 				return definedValues.concat(undefinedValues);
 			}
 		};
 	})
+	.filter('escapeHtml', [function() {
+		return function(input) {
+			return input ? _.escape(input) : "";
+		}
+	}])
 });

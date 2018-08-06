@@ -1545,7 +1545,7 @@ Opentip.styles = {
     "extends": null,
     title: void 0,
     escapeTitle: true,
-    escapeContent: false,
+    escapeContent: true,
     className: "standard",
     stem: true,
     delay: null,

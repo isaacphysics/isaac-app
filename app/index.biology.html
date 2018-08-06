@@ -39,10 +39,7 @@
     
     <script type="text/javascript" src="https://cdn.isaacphysics.org/vendor/mathjax/2.7.4/MathJax.js?delayStartupUntil=configured"> </script>
 
-    <link rel="stylesheet" href="/css/app.css" />
-
-    <script src="/bower_components/system.js/dist/system.js"></script>
-    <script src="/js/system.config.js"></script>
+    <link rel="stylesheet" href="/isaac.css" />
 
   </head>
   <body>
@@ -134,8 +131,12 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-51129534-1', { 'cookieDomain': 'none' });
-          ga('set', 'anonymizeIp', true);
+          ga('create', {name: 'IsaacAnalytics', trackingId: 'UA-122616705-1', cookieDomain: 'none'});
+          ga('IsaacAnalytics.set', 'anonymizeIp', true);
+
+          // TODO REMOVE ANALYTICS - Old analytics account, remove once closed
+          ga('create', {name: 'Isaac', trackingId: 'UA-51129534-1', cookieDomain: 'none'});
+          ga('Isaac.set', 'anonymizeIp', true);
         </script>
 
         <div id="equationModal" class="reveal-modal" data-reveal>
@@ -146,11 +147,7 @@
           </div>
         </div>
 
-    <script src="/js/isaac.js"></script>
-
-    <script lang="javascript">
-        System.import('app/app').catch(console.error.bind(console));
-    </script>
+    <script src="/isaac.js"></script>
 
   </body>
 </html>

@@ -1,4 +1,4 @@
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestion.html"], function(rv, templateUrl) {
 
     return ["api", function(api) {
         
@@ -7,10 +7,10 @@ define(["app/honest/responsive_video"], function(rv) {
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/GraphSketcherQuestion.html",
+            templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
+                let ctrl = this;
 
                 ctrl.selectedFormula = {};
 

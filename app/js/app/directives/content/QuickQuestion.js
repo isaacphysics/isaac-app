@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["/partials/content/QuickQuestion.html"], function(templateUrl) {
 
 
 	return ["api", function(api) {
@@ -23,9 +23,9 @@ define([], function() {
 
 			restrict: 'A',
 
-			templateUrl: "/partials/content/QuickQuestion.html",
+			templateUrl: templateUrl,
 
-			link: function(scope, element, attrs) {
+			link: function(scope, _element, _attrs) {
 
 				scope.$watch("isVisible", function(visible) {
 					if (visible) {

@@ -1,6 +1,6 @@
 define(function(require) {
-  var m = require('lib/math.js');
-  var f = require('lib/graph_sketcher/func.js');
+  var m = require('../math.js');
+  var f = require('./func.js');
 
     return {
         numOfPts: 100,

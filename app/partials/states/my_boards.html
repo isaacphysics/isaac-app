@@ -1,5 +1,5 @@
 <div class="row">
-   <div class="small-13 columns">
+   <div class="small-16 medium-10 columns">
       <div ng-switch="boards">
          <div ng-switch-when="undefined">
             <h1>&nbsp;</h1>
@@ -16,12 +16,18 @@
                on the go and
                <span class="ru_green filter-link" ng-click="search.completion = 'Not started'">{{boards.totalNotStarted}}</span>
                not started.
-            </strong></p>
+            </strong>
+            </p>
          </div>
       </div>
    </div>
-   <div class="medium-3 columns text-right hide-for-small-only">
-      <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+   <div class="small-16 medium-6 columns boards-filters" ng-show="boards != null">
+      <div class="right hide-for-small-only">
+         <span data-ot="A summary of your game boards and your personal progress on each of them." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+      </div>
+      <div class="board-display-option">
+         <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
+      </div>
    </div>
 </div>
 
@@ -46,8 +52,7 @@
             <th><select ng-model="partialMatch.levels" ng-options="option.value as option.label for option in filterOptions.levels"/></th>
             <th><select ng-model="exactMatch.createdBy" ng-options="option.value as option.label for option in filterOptions.createdBy"/></th>
             <th></th>
-            <th></th>
-            <th></th>
+            <th colspan="2"><button ng-show="selectedViewOption.value == 'table' && selectedBoards.length > 0" ng-click="deleteBoards()">Delete {{ selectedBoards.length }} board<span ng-show="selectedBoards.length > 1">s</span></button></th>
          </tr>
       </thead>
       <tbody>
@@ -85,7 +90,8 @@
                <div ng-if="!isTeacher" class='ru_share_link slide-animate' ng-show="showShareUrl">
                   <div>{{shareUrl}}</div>
                </div>
-               <div class="deletion-cross"><span ng-click="deleteBoard(board)">X</span></div>
+               <!--<div class="deletion-cross"><span ng-click="deleteBoard(board)">X</span></div>-->
+               <div class="deletion-cross"><span><input type="checkbox" ng-click="boardSelectToggle(board.id)" ng-checked="selectedBoards.includes(board.id)"></span></div>
             </td>
          </tr>
       </tbody>
@@ -94,19 +100,23 @@
 
 <!-- Card View -->
 <div ng-show="selectedViewOption.value == 'card'">
-   <div class="boards-filters" ng-show="boards != null">
-      <ul class="small-block-grid-2">
-         <li>
-            <label>Show</label>
-            <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
-            <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
-         </li>
-         <li>
-            <label>Sort by</label>
-            <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
-         </li>
-      </ul>
+
+   <div class="row" ng-show="boards != null">
+      <div class="columns medium-11 boards-filters">
+         <ul class="small-block-grid-2 right">
+            <li>
+               <label>Show</label>
+               <select ng-model="selectedNoBoardsOption" ng-options="option.label for option in boardSearchOptions.noBoards.values" />
+               <select ng-model="selectedFilterOption" ng-options="option.label for option in boardSearchOptions.filter.values"></select>
+            </li>
+            <li>
+               <label>Sort by</label>
+               <select ng-model="selectedSortOption" ng-options="option.label for option in boardSearchOptions.sort.values"></select>
+            </li>
+         </ul>
+      </div>
    </div>
+
    <ul class="large-block-grid-3 medium-block-grid-2 small-block-grid-1 boards-wrap">
       <!-- Loop all boards and add a class if complete -->
       <li ng-model="boards" ng-repeat="board in boards.results" ng-class="{'board-complete': board.percentageCompleted == '100'}">
@@ -139,7 +149,7 @@
                </div>
             </a>
             <div class="row">
-               <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title || generateGameBoardTitle(board)}}</a></h3>
+               <h3><a class="board-title-link" tabindex="0" ui-sref="board({id: board.id})" ng-attr-title="{{board.title.length > 18 ? board.title : null}}">{{board.title}}</a></h3>
                <div class="board-creator">
                   Created by: <span>{{board.createdBy}}</span>
                </div>
@@ -166,8 +176,4 @@
 
 <div class="row" ng-show="boards.results.length == 0">
    <p class="text-center">No Results</p>
-</div>
-
-<div class="boards-filters" ng-show="boards != null">
-   <label>Display in</label><select ng-model="selectedViewOption" ng-options="option.label for option in boardSearchOptions.view.values" />
 </div>

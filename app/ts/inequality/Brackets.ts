@@ -30,7 +30,7 @@ import { DockingPoint } from "./DockingPoint";
 export
     class Brackets extends Widget {
 
-    protected s: any;
+    public s: any;
     private type: string;
     private latexSymbol: Object;
     private pythonSymbol: Object;
@@ -45,7 +45,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, 0);
@@ -215,7 +215,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         return '';
     }
 
@@ -223,7 +223,7 @@ export
     _draw() {
         let box = this.boundingBox();
 
-        this.p.fill(this.color).noStroke().strokeJoin(this.s.ROUND);
+        this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
         // FIXME Consolidate this with the _drawBracketsInBox(Rect) function in Fn
         let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));

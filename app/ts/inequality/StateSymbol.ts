@@ -21,16 +21,14 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Symbol } from './Symbol';
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
 
 /**
  * A class for state symbols.
  */
 export
     class StateSymbol extends Widget {
-    protected s: any;
+    public s: any;
     protected stateString: string;
     protected state: string;
     protected pythonSymbol: string;
@@ -45,7 +43,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -148,7 +146,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         return "";
     }
 
