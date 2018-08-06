@@ -42,13 +42,8 @@
             <a tabindex="0" class="login-forgot-password" ng-click="resetPassword()">Forgotten your password?</a>
         </div>
         <div ng-show="passwordResetFlag" class='large-6 medium-6 columns login-form left'>
-            <p><strong>Your password request is being processed, please check your email.
-                <br>If you don't recieve an email you may not have an associated <a href="/support/student/general#login_issues">email address</a>.<br>
-                If you have recieved an email and reset your password <a href="javascript:history.go(0)">click here</a>.
-            </strong></p> 
-            <p ng-show="errorMessage">
-                <strong class="ru_red">{{errorMessage}}</strong>
-            </p>
+            <p><strong>Your password reset request is being processed. Please check your inbox.</strong></p>
+            <p class="space"><a href="/support/student/general#login_issues">Haven't received an email?</a></p>
         </div>
     </div>
 </form>
