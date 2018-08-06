@@ -69,7 +69,7 @@ define(['/partials/content/Content.html'], function(templateUrl) {
 									$timeout(function() {
 										$("html,body").animate({
 											// Use accordion section containing object, the 'dd' element:
-							                scrollTop: element.offset().top
+							                scrollTop: dd.offset().top
 							            });        
 									});
 			            		}
