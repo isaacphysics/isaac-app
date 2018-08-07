@@ -1,7 +1,7 @@
-define(function(require) {
-    var templateUrl = require("/partials/graph_sketcher/graph_input.html");
-    
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, _api) {
+"use strict";
+
+define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
+    return ["$timeout", "$rootScope", "api", function(_$timeout, $rootScope, _api) {
 
         return {
             scope: {

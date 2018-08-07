@@ -1,8 +1,8 @@
 "use strict";
-define(function(require) {
+define(function(_require) {
     return {
         createPoint: function(x, y, c) {
-            var obj = {};
+            let obj = {};
             obj.ind = c;
             obj.x = x;
             obj.y = y;
@@ -10,7 +10,7 @@ define(function(require) {
         },
 
         createSymbol: function(text, x, y) {
-            var obj = {};
+            let obj = {};
             obj.text = text;
             obj.x = x;
             obj.y = y;

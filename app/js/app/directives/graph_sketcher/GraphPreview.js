@@ -1,4 +1,6 @@
-define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, b, f, s, templateUrl) {
+"use strict";
+
+define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, _b, f, _s, templateUrl) {
     return ["$timeout", "$rootScope", "api", function(_$timeout, _$rootScope, _api) {
 
         return {
