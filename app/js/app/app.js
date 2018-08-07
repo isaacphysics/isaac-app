@@ -514,59 +514,6 @@ define([
                             sliderResize();
                         }
                     },
-                    joyride: {
-                        expose: true,
-                        next_button: false,
-                        prev_button: false,
-                        template : {
-                            link: ''
-                        },
-                        abort_on_close: false,
-                        pre_ride_callback: function() {
-                            // add custom controls
-                            $('body').append('<div class="joyride-custom-controls"><div class="row"><div class="custom-controls-wrap"><a class="joyride-prev-tip"></a><a class="joyride-next-tip"></a></div><a class="closeJoyride joyride-close-tip"></a><div class="joyride-page-indicator"></div></div></div>')
-                            totalJoyridePageCount = $("#" + $rootScope.joyrideTutorial + " .joyride-list").children().length;
-                        },
-                        pre_step_callback: function(index) {
-                            $(".joyride-page-indicator").empty();
-
-                            for (var i = 0; i < totalJoyridePageCount; i++) {
-                                if (i <= index) {
-                                    $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-viewed.png">');
-                                } else {
-                                    $(".joyride-page-indicator").append('<img src="/assets/tutorial-page-future.png">');
-                                }
-                            }
-
-                            if (index == 0) {
-                                $(".joyride-prev-tip").css("visibility","hidden");
-                            } else {
-                                $(".joyride-prev-tip").css("visibility","visible");
-                            }
-
-                            if (index == totalJoyridePageCount-1) {
-                                $(".joyride-next-tip").css("visibility","hidden");
-                            } else {
-                                $(".joyride-next-tip").css("visibility","visible");
-                            }
-                        },
-                        post_expose_callback: function (index){
-                            // Work out what to wrap the exposed element with e.g. square, circle or rectangle
-                            	var tutorial = document.getElementById($rootScope.joyrideTutorial)
-                                                   .getElementsByClassName("joyrideTutorialItem")[index]
-                                                   .getAttribute('data-shape');
-                            if(tutorial != null) {
-                                $('.joyride-expose-wrapper').addClass(tutorial);
-                            }
-
-                            // Triggering a resize fixes inital positioning issue on chrome
-                            $(window).resize();
-                        },
-                        post_ride_callback: function() {
-                            // remove controls when tutorial has finished
-                            $('.joyride-custom-controls').detach();
-                        }
-                    },
                     reveal: {
                         animation: 'none', // Can change back to 'fadeAndPop', but it's horribly jumpy.
                           animation_speed: 500,
@@ -591,28 +538,9 @@ define([
                           }
                     }
                 });
-                // var tutorialShown = cookie.read('tutorialShown');
 
                 // var isOutOfDateBrowser = $('.lt-ie7, .lt-ie8, .lt-ie9, .lt-ie10').size() > 0;
 
-                // we don't want the google bot or out of date browsers to see the tutorial.
-                // stop tutorial from loading for new users as no one reads it anyway.
-                // if (!tutorialShown && navigator.userAgent.search("Googlebot") < 0 && !isOutOfDateBrowser) {
-                //     if ($.ru_IsMobile()) {
-                //         if ($('#mobile-tutorial').length > 0) {
-                //             setTimeout(function() {
-                //                 // Launch the tutorial asynchronously. No idea why this is required.
-                //                 $('#mobile-tutorial').foundation('joyride', 'start');
-                //                 cookie.create('tutorialShown',1,720);
-                //             }, 1000)
-                //         }
-                //     } else {
-                //         if ($('#desktop-tutorial').length > 0) {
-                //             $('#desktop-tutorial').foundation('joyride', 'start');
-                //             cookie.create('tutorialShown',1,720);
-                //         }
-                //     }
-                // }
 
                 // Toggle hide / show of share links
                 $(".ru_share").click(function()
@@ -677,41 +605,6 @@ define([
                 });
             });
 
-        });
-		$('body').on('click', '.joyride-close-tip', function() {
-            // remove controls if tutorial is closed part way through
-            $('.joyride-custom-controls').detach();
-            api.logger.log({
-                type: "CLOSE_TUTORIAL",
-                tutorialId: $rootScope.joyrideTutorial,
-            });
-        });
-        $('body').on('click', '.desktop-tutorial-trigger', function() {
-            if ($rootScope.relativeCanonicalUrl == "/") {
-                $rootScope.joyrideTutorial = "home-page-tutorial";
-                $('#home-page-tutorial').foundation('joyride', 'start');
-            } else if ($rootScope.relativeCanonicalUrl == "/gameboards") {
-                $rootScope.joyrideTutorial = "filter-tutorial";
-                $('#filter-tutorial').foundation('joyride', 'start');
-            } else {
-                $rootScope.joyrideTutorial = "desktop-tutorial";
-                $('#desktop-tutorial').foundation('joyride', 'start');
-            }
-            api.logger.log({
-                type: "VIEW_TUTORIAL",
-                tutorialId: $rootScope.joyrideTutorial,
-            });
-        });
-        $('body').on('click', '.mobile-tutorial-trigger', function() {
-            $rootScope.joyrideTutorial = "mobile-tutorial";
-            $('#mobile-tutorial').foundation('joyride', 'start');
-            api.logger.log({
-                type: "VIEW_TUTORIAL",
-                tutorialId: $rootScope.joyrideTutorial,
-            });
-        });
-        $('body').on('click', '.joyride-expose-cover', function(){
-            $('.joyride-modal-bg').trigger('click');
         });
 
 
