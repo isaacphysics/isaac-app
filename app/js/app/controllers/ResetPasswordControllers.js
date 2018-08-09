@@ -23,7 +23,7 @@ export const PageController = ['$scope', 'auth', 'api', '$stateParams', function
 	$scope.success = false;
 
 	$scope.resetPassword = function() {
-		api.password.reset({'token': $stateParams.token}, { 'password': $scope.user.password }).$promise.then(function(response) {
+		api.password.reset({'token': $stateParams.token}, { 'password': $scope.user.password }).$promise.then(function(_response) {
 			$scope.submitted = true;
 			$scope.success = true;
 		}, function(_error) {
