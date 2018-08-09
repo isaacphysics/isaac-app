@@ -163,6 +163,21 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     p.checkPointsUndo = [];
                     p.checkPointsRedo = [];
 
+                    function freeAllSymbols(knots) {
+                        for (let i = 0; i < knots.length; i++) {
+                            let knot = knots[i];
+                            if (knot.symbol != undefined) {
+                                freeSymbols.push(knot.symbol);
+                            }
+                            if (knot.xSymbol != undefined) {
+                                freeSymbols.push(knot.xSymbol);
+                            }
+                            if (knot.ySymbol != undefined) {
+                                freeSymbols.push(knot.ySymbol);
+                            }
+                        }
+                    }
+
                     scope.graphView = new graphViewBuilder.graphView(p);
 
                     // run in the beginning by p5 library
@@ -176,7 +191,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     }
 
                     p.mouseMoved = function(e) {
-                        let mousePosition = graphUtils.getMousePt(e);
+                        let mousePosition = getMousePt(e);
+
+                        function detect(x, y) {
+                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                        }
 
                         // this function does not react if the mouse is over buttons or outside the canvas.
                         if (!isActive(mousePosition)) {
@@ -199,61 +218,49 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             }
                         }
 
+                        // stretch box
+
+
                         if (clickedCurveIdx != undefined) {
-
-                            let boxedCurve = curves[clickedCurveIdx];
-                            if (mousePosition.x >= boxedCurve.minX && mousePosition.x <= boxedCurve.maxX && mousePosition.y >= boxedCurve.minY && mousePosition.y <= boxedCurve.maxY) {
+                            let c = curves[clickedCurveIdx];
+                            if (mousePosition.x >= c.minX && mousePosition.x <= c.maxX && mousePosition.y >= c.minY && mousePosition.y <= c.maxY) {
                                 found = true;
                                 p.cursor(p.MOVE);
-                            } else if (graphUtils.detect(e, boxedCurve.minX, boxedCurve.minY) || graphUtils.detect(e, boxedCurve.maxX, boxedCurve.minY) || graphUtils.detect(e, boxedCurve.minX, boxedCurve.maxY) || graphUtils.detect(e, boxedCurve.maxX, boxedCurve.maxY)) {
+                            } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
                                 p.push();
                                 p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
-                                if (graphUtils.detect(e, boxedCurve.minX, boxedCurve.minY)) {
-                                     p.rect(boxedCurve.minX - 4, boxedCurve.minY - 4, 8, 8);
-                                } else if (graphUtils.detect(e, boxedCurve.maxX, boxedCurve.minY)) {
-                                    p.rect(boxedCurve.maxX - 4, boxedCurve.minY - 4, 8, 8);
-                                } else if (graphUtils.detect(e, boxedCurve.minX, boxedCurve.maxY)) {
-                                    p.rect(boxedCurve.minX - 4, boxedCurve.maxY - 4, 8, 8);
+                                if (detect(c.minX, c.minY)) {
+                                    p.rect(c.minX - 4, c.minY - 4, 8, 8);
+                                } else if (detect(c.maxX, c.minY)) {
+                                    p.rect(c.maxX - 4, c.minY - 4, 8, 8);
+                                } else if (detect(c.minX, c.maxY)) {
+                                    p.rect(c.minX - 4, c.maxY - 4, 8, 8);
                                 } else {
-                                    p.rect(boxedCurve.maxX - 4, boxedCurve.maxY - 4, 8, 8);
+                                    p.rect(c.maxX - 4, c.maxY - 4, 8, 8);
+                                }
+
+                                p.pop;
+
+                                found = true;
+                                p.cursor(p.MOVE);
+                            } else if (detect((c.minX + c.maxX) / 2, c.minY - 3) || detect((c.minX + c.maxX) / 2, c.maxY + 3)
+                                || detect(c.minX - 3, (c.minY + c.maxY) / 2) || detect(c.maxX + 3, (c.minY + c.maxY) / 2)) {
+
+                                p.push();
+                                p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
+                                if (detect((c.minX + c.maxX) / 2, c.minY - 3)) {
+                                    p.triangle((c.minX + c.maxX) / 2 - 5, c.minY - 2, (c.minX + c.maxX) / 2 + 5, c.minY - 2, (c.minX + c.maxX) / 2, c.minY - 7);
+                                } else if (detect((c.minX + c.maxX) / 2, c.maxY + 3)) {
+                                    p.triangle((c.minX + c.maxX) / 2 - 5, c.maxY + 2, (c.minX + c.maxX) / 2 + 5, c.maxY + 2, (c.minX + c.maxX) / 2, c.maxY + 7);
+                                } else if (detect(c.minX - 3, (c.minY + c.maxY) / 2)) {
+                                    p.triangle(c.minX - 2, (c.minY + c.maxY) / 2 - 5, c.minX - 2, (c.minY + c.maxY) / 2 + 5, c.minX - 7, (c.minY + c.maxY) / 2);
+                                } else {
+                                    p.triangle(c.maxX + 2, (c.minY + c.maxY) / 2 - 5, c.maxX + 2, (c.minY + c.maxY) / 2 + 5, c.maxX + 7, (c.minY + c.maxY) / 2);
                                 }
                                 p.pop();
 
                                 found = true;
                                 p.cursor(p.MOVE);
-                            } else if (graphUtils.detect(e, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.minY - 3) || graphUtils.detect(e, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.maxY + 3)
-                                || graphUtils.detect(e, boxedCurve.minX - 3, (boxedCurve.minY + boxedCurve.maxY)/2) || graphUtils.detect(e, boxedCurve.maxX + 3, (boxedCurve.minY + boxedCurve.maxY)/2)) {
-
-                                p.push();
-                                p.fill(graphViewBuilder.graphView.KNOT_DETECT_COLOR);
-                                if (graphUtils.detect(e, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.minY - 3)) {
-                                    p.triangle((boxedCurve.minX + boxedCurve.maxX)/2 - 5, boxedCurve.minY - 2, (boxedCurve.minX + boxedCurve.maxX)/2 + 5, boxedCurve.minY - 2, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.minY - 7);
-                                } else if (graphUtils.detect(e, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.maxY + 3)) {
-                                    p.triangle((boxedCurve.minX + boxedCurve.maxX)/2 - 5, boxedCurve.maxY + 2, (boxedCurve.minX + boxedCurve.maxX)/2 + 5, boxedCurve.maxY + 2, (boxedCurve.minX + boxedCurve.maxX)/2, boxedCurve.maxY + 7);
-                                } else if (graphUtils.detect(e, boxedCurve.minX - 3, (boxedCurve.minY + boxedCurve.maxY)/2)) {
-                                    p.triangle(boxedCurve.minX - 2, (boxedCurve.minY + boxedCurve.maxY) / 2 - 5, boxedCurve.minX - 2, (boxedCurve.minY + boxedCurve.maxY) / 2 + 5, boxedCurve.minX - 7, (boxedCurve.minY + boxedCurve.maxY) / 2);
-                                } else {
-                                    p.triangle(boxedCurve.maxX + 2, (boxedCurve.minY + boxedCurve.maxY) / 2 - 5, boxedCurve.maxX + 2, (boxedCurve.minY + boxedCurve.maxY) / 2 + 5, boxedCurve.maxX + 7, (boxedCurve.minY + boxedCurve.maxY) / 2);
-                                }
-                                p.pop();
-
-                                found = true;
-                                p.cursor(p.MOVE);
-                            }
-                        }
-                    }
-
-                    function freeAllSymbols(knots) {
-                        for (let i = 0; i < knots.length; i++) {
-                            let knot = knots[i];
-                            if (knot.symbol != undefined) {
-                                freeSymbols.push(knot.symbol);
-                            }
-                            if (knot.xSymbol != undefined) {
-                                freeSymbols.push(knot.xSymbol);
-                            }
-                            if (knot.ySymbol != undefined) {
-                                freeSymbols.push(knot.ySymbol);
                             }
                         }
                     }
@@ -276,13 +283,20 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         releasePt = undefined;
 
 
-                        let mousePosition = graphUtils.getMousePt(e);
+                        let mousePosition = getMousePt(e);
                         releasePt = mousePosition;
 
                         // this function does not react if the mouse is over buttons or outside the canvas.
                         if (!isActive(mousePosition)) {
                             return;
                         }
+
+
+
+                        function detect(x, y) {
+                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                        }
+
 
                         // record down mousePosition status, may be used later for undo.
                         p.checkPoint = {};
@@ -305,7 +319,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
 
                         let found = false;
-                        function detach(knots) {
+                        function detach1(knots) {
                             if (found) {
                                 return;
                             }
@@ -322,18 +336,45 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             }
                         }
 
+                        function detach2(knots) {
+                            if (found) {
+                                return;
+                            }
+                            detach1(knots);
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
+                                if (knot.xSymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.xSymbol)) {
+                                    movedSymbol = knot.xSymbol;
+                                    knot.xSymbol = undefined;
+                                    bindedKnot = knot;
+                                    symbolType = 'xSymbol';
+                                    found = true;
+                                }
+                                if (knot.ySymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.ySymbol)) {
+                                    movedSymbol = knot.ySymbol;
+                                    knot.ySymbol = undefined;
+                                    bindedKnot = knot;
+                                    symbolType = 'ySymbol';
+                                    found = true;
+                                }
+                                if (found) {
+                                    break;
+                                }
+                            }
+                        }
+
                         for (let i = 0; i < curves.length; i++) {
                             let interX = curves[i]['interX'];
-                            detach(interX);
+                            detach1(interX);
 
                             let interY = curves[i]['interY'];
-                            detach(interY);
+                            detach1(interY);
 
                             let maxima = curves[i]['maxima'];
-                            detach(maxima);
+                            detach2(maxima);
 
                             let minima = curves[i]['minima'];
-                            detach(minima);
+                            detach2(minima);
 
                             if (found) {
                                 break;
@@ -343,21 +384,43 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         if (found) {
                             action = "MOVE_SYMBOL";
                             prevMousePt = mousePosition;
+                            // clickedCurveIdx = undefined;
+
                             return;
                         }
 
                         // check if stretching curve
                         if (clickedCurveIdx != undefined) {
-                            let curveToStretch = curves[clickedCurveIdx];
-                            let stretchPosition = graphUtils.readyToStretch(e, curveToStretch, stretchMode);
-                            stretchMode = stretchPosition[0];
-                            action = stretchPosition[1];
-                            clickedKnot = stretchPosition[2];
-                            prevMousePt = stretchPosition[3];
-                            console.log(stretchMode);
-                            console.log(action);
-                            console.log(clickedKnot);
-                            console.log(prevMousePt);
+                            let c = curves[clickedCurveIdx];
+
+                            if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)
+                                || detect((c.minX + c.maxX)/2, c.minY - 3) || detect((c.minX + c.maxX)/2, c.maxY + 3)
+                                || detect(c.minX - 3, (c.minY + c.maxY)/2) || detect(c.maxX + 3, (c.minY + c.maxY)/2)) {
+
+                                if (detect(c.minX, c.minY)) {
+                                    stretchMode = "bottomLeft";
+                                } else if (detect(c.maxX, c.minY)) {
+                                    stretchMode = "bottomRight";
+                                } else if (detect(c.maxX, c.maxY)) {
+                                    stretchMode = "topRight";
+                                } else if (detect(c.minX, c.maxY)) {
+                                    stretchMode = "topLeft";
+                                } else if (detect((c.minX + c.maxX)/2, c.minY - 3)) {
+                                    stretchMode = "bottomMiddle";
+                                } else if (detect((c.minX + c.maxX)/2, c.maxY + 3)) {
+                                    stretchMode = "topMiddle";
+                                } else if (detect(c.minX - 3, (c.minY + c.maxY)/2)) {
+                                    stretchMode = "leftMiddle";
+                                } else {
+                                    stretchMode = "rightMiddle";
+                                }
+
+
+                                action = "STRETCH_CURVE";
+                                clickedKnot = null;
+                                prevMousePt = mousePosition;
+                                return;
+                            }
                         }
 
 
@@ -388,18 +451,19 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     }
                                 }
                             }
-                            let curveToMove = [];
+                            let tc = [];
                             for (let i = 0; i < curves.length; i++) {
                                 for (let j = 0; j < curves[i].pts.length; j++) {
                                     if (graphUtils.getDist(mousePosition, curves[i].pts[j]) < MOUSE_DETECT_RADIUS) {
                                         clickedCurveIdx = i;
-                                        curveToMove = curves[clickedCurveIdx];
+                                        tc = curves[clickedCurveIdx];
                                         break;
                                     }
                                 }
                             }
-                            if (curveToMove != undefined) {
-                                if (mousePosition.x >= curveToMove.minX && mousePosition.x <= curveToMove.maxX && mousePosition.y >= curveToMove.minY && mousePosition.y <= curveToMove.maxY) {
+                            if (tc != undefined) {
+                                // && graphUtils.getDist(mousePosition, knot) > MOUSE_DETECT_RADIUS + 10
+                                if (mousePosition.x >= tc.minX && mousePosition.x <= tc.maxX && mousePosition.y >= tc.minY && mousePosition.y <= tc.maxY) {
                                     movedCurveIdx = clickedCurveIdx;
                                     action = "MOVE_CURVE";
                                     clickedKnot = null;
@@ -468,7 +532,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     p.mouseDragged = function(e) {
                         isMouseDragged = true;
-                        let mousePosition = graphUtils.getMousePt(e);
+                        let mousePosition = getMousePt(e);
                         releasePt = mousePosition;
 
                         if (action == "STRETCH_POINT") {
@@ -487,7 +551,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             importantPoints.push.apply(importantPoints, selectedCurve.maxima);
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
                             importantPoints.sort(function(a, b){return a.ind - b.ind});
-                            console.log(importantPoints);
 
                             if (isMaxima) {
                                 graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
@@ -526,7 +589,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                             // update the position of stretched vertex
                             switch (stretchMode) {
-                                case "topLeft": {
+                                case "bottomLeft": {
                                     if (orx < 30 && dx > 0  || ory < 30 && dy > 0) {
                                         return;
                                     }
@@ -534,7 +597,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     currentCurve.minY += dy;
                                     break;
                                 }
-                                case "topRight": {
+                                case "bottomRight": {
                                     if (orx < 30 && dx < 0 || ory < 30 && dy > 0) {
                                         return;
                                     }
@@ -542,7 +605,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     currentCurve.minY += dy;
                                     break;
                                 }
-                                case "bottomRight": {
+                                case "topRight": {
                                     if (orx < 30 && dx < 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
@@ -550,7 +613,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     currentCurve.maxY += dy;
                                     break;
                                 }
-                                case "bottomLeft": {
+                                case "topLeft": {
                                     if (orx < 30 && dy > 0 || ory < 30 && dy < 0) {
                                         return;
                                     }
@@ -685,38 +748,39 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
-                    function loop(knots) {
-                        for (let i = 0; i < knots.length; i++) {
-                            let knot = knots[i];
-                            for (let j = 0; j < freeSymbols.length; j++) {
-                                let sym = freeSymbols[j];
-                                if (graphUtils.getDist(knot, sym) < 20) {
-                                    sym.x = knot.x;
-                                    sym.y = knot.y;
-                                    knot.symbol = sym;
-                                    freeSymbols.splice(j, 1);
+                    p.mouseReleased = function(_e) {
+                        let mousePosition = releasePt;
+
+                        function loop(knots) {
+                            for (let i = 0; i < knots.length; i++) {
+                                let knot = knots[i];
+                                for (let j = 0; j < freeSymbols.length; j++) {
+                                    let sym = freeSymbols[j];
+                                    if (graphUtils.getDist(knot, sym) < 20) {
+                                        sym.x = knot.x;
+                                        sym.y = knot.y;
+                                        knot.symbol = sym;
+                                        freeSymbols.splice(j, 1);
+                                    }
+                                }
+
+                            }
+                        }
+
+                        function attach(knots, found) {
+                            if (found) {
+                                return;
+                            }
+                            for (let j = 0; j < knots.length; j++) {
+                                let knot = knots[j];
+                                if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
+                                    movedSymbol.x = knot.x;
+                                    movedSymbol.y = knot.y;
+                                    knot.symbol = movedSymbol;
+                                    found = true;
                                 }
                             }
                         }
-                    }
-
-                    function attach(knots, found) {
-                        if (found) {
-                            return;
-                        }
-                        for (let j = 0; j < knots.length; j++) {
-                            let knot = knots[j];
-                            if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
-                                movedSymbol.x = knot.x;
-                                movedSymbol.y = knot.y;
-                                knot.symbol = movedSymbol;
-                                found = true;
-                            }
-                        }
-                    }
-
-                    p.mouseReleased = function(_e) {
-                        let mousePosition = releasePt;
 
                         // if it is just a click, handle click in the following if block
                         if (!isMouseDragged) {
@@ -771,8 +835,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             if (scope.trashActive) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
 
-
-
                                 let interX = curve.interX;
                                 freeAllSymbols(interX);
 
@@ -796,9 +858,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             p.checkPointsUndo.push(p.checkPoint);
                             p.checkPointsRedo = [];
 
+                            // let c = curves[clickedCurveIdx];
+
                         } else if (action == "STRETCH_POINT") {
                             p.checkPointsUndo.push(p.checkPoint);
                             p.checkPointsRedo = [];
+
+                            // let c = curves[clickedCurveIdx];
 
                         } else if (action == "MOVE_SYMBOL") {
                             p.checkPointsUndo.push(p.checkPoint);
@@ -847,12 +913,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             reDraw();
 
                         } else if (action == "DRAW_CURVE") {
+
                             if (curves.length < CURVE_LIMIT){
 
                                 let curve;
 
                                 if (drawMode == "curve") {
-                                     // reject if curve drawn is too short
+                                    // reject if curve drawn is too short
                                     if (graphUtils.sample(drawnPts).length < 3) {
                                         return;
                                     }
@@ -936,6 +1003,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     curve.colorIdx = drawnColorIdx;
                                 }
 
+
+
                                 loop(curve.maxima);
                                 loop(curve.minima);
                                 loop(curve.interX);
@@ -971,7 +1040,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     }
 
                     window.onkeydown = function(event) {
-                       if (event.keyCode == 46) { // delete key
+                        if (event.keyCode == 46) { // delete key
                             p.checkPointsUndo.push(p.checkPoint);
                             p.checkPointsRedo = [];
                             if (clickedCurveIdx != undefined) {
@@ -995,11 +1064,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
-                    // function getMousePt(e) {
-                    //     let x = (e.clientX - 5);
-                    //     let y = (e.clientY - 5);
-                    //     return (graphUtils.createPoint(x, y));
-                    // }
+                    function getMousePt(e) {
+                        let x = (e.clientX - 5);
+                        let y = (e.clientY - 5);
+                        return (graphUtils.createPoint(x, y));
+                    }
 
                     function isOverButton(pt, button) {
                         if (button.position() == undefined) {
@@ -1175,9 +1244,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         let data = rawData;
 
                         function denormalise(pt) {
-                                pt.x = pt.x * canvasProperties.width + canvasProperties.width/2;
-                                pt.y = canvasProperties.height/2 - pt.y * canvasProperties.height;
-                            }
+                            pt.x = pt.x * canvasProperties.width + canvasProperties.width/2;
+                            pt.y = canvasProperties.height/2 - pt.y * canvasProperties.height;
+                        }
 
                         function denormalise1(knots) {
                             for (let j = 0; j < knots.length; j++) {
@@ -1277,8 +1346,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         // Log the editor being closed and submit log event to server:
                         graphSketcherModal.one("close", function(_e) {
                             scope.log.finalState = [];
-                            scope.dat.curves.forEach(function(_p) {
-                                scope.log.finalState.push(e);
+                            scope.dat.curves.forEach(function(g) {
+                                scope.log.finalState.push(g);
                             });
                             scope.log.actions.push({
                                 event: "CLOSE",
