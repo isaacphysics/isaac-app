@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(_require) {
     return {
         testCasesMaths:{
           "1":{"description":"Einstein's Equation","testCase":[{"type":"Symbol","position":{"x":367.81,"y":304},"expression":{"latex":"E = mc^{2}","python":"E == m*c**(2)"},"children":{"right":{"type":"Relation","children":{"right":{"type":"Symbol","children":{"right":{"type":"Symbol","children":{"superscript":{"type":"Num","properties":{"significand":"2"}}},"properties":{"letter":"c"}}},"properties":{"letter":"m"}}},"properties":{"relation":"="}}},"properties":{"letter":"E"}}]},

@@ -15,16 +15,15 @@
  */
 
 // Given a set of data points, sample a subset of points such that there is about constant space interval between two adjacent points.
-define(function(require) {
-    var f = require("./func.js");
+define(['./func.js'], function(f) {
     return {
         sampleInterval: 10,
 
         sample: function(pts) {
-            var sampled = [];
+            let sampled = [];
             sampled.push(pts[0]);
-            var i = 0;
-            var j = 0;
+            let i = 0;
+            let j = 0;
             while (i < pts.length) {
                 // func.getDist
                 

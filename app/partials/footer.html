@@ -15,12 +15,11 @@
             <a ui-sref='terms'>Terms of Use</a>
             <a ui-sref='why_physics'>Why Physics?</a>
             <!-- <a ui-sref='bios'>Biographies</a> -->
-            <a id="tutorial-button" href="javascript:void(0)" class="desktop-tutorial-trigger">Tutorial</a>            
+            <a ui-sref='publications'>Publications</a>            
         </div>
         <div class='large-3 medium-3 columns footer_links'>
             <a ui-sref='extraordinary_problems'>Extraordinary Problems</a>
             <a ui-sref='challenge_problems'>Challenge of the Month</a>
-            <a ui-sref='publications'>Publications</a>
         </div>
         <div class='large-7 medium-7 columns footer_links'>
             <div class='right'>
@@ -107,10 +106,10 @@
         <hr>
         <hr>
         <div class='row'>
-            <div id="tutorial-button-mobile" class='small-16 columns'>
-                <a class="mobile-tutorial-trigger" href="javascript:void(0)"><span>Tutorial</span><img src='/assets/icon-index-arrow.png'></a>
+            <div class='small-16 columns'>
+                <a ui-sref='publications'><span>Publications</span><img src='/assets/icon-index-arrow.png'></a>
             </div>
-        </div>
+        </div>   
         <hr>
         <div class='row'>
             <div class='small-16 columns'>
@@ -123,12 +122,7 @@
                 <a ui-sref='challenge_problems'><span>Challenge of the Month</span><img src='/assets/icon-index-arrow.png'></a>
             </div>
         </div>
-        <hr>
-        <div class='row'>
-            <div class='small-16 columns'>
-                <a ui-sref='publications'><span>Publications</span><img src='/assets/icon-index-arrow.png'></a>
-            </div>
-        </div>              
+        <hr>           
     </div>
     <div class='row'>
         <div class='small-16 columns'>
@@ -138,189 +132,3 @@
         </div>
     </div>
 </footer>
-
-<!-- This is all standard joyride apart from the 'data-shape' attr, this is the shape you want the exposed element to be wrapped with and can be circle, square or rectangle. If nothing or an invalide input is passed in it will default to circule -->
-<div id="desktop-tutorial">
-    <ul class="joyride-list" data-joyride>
-        <li class="joyrideTutorialItem">
-            <h4 class="tutorial-welcome">Welcome to Isaac Physics. Check out out <a ui-sref="about" target="_blank">About Us</a> page for our aims.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="questions-tab-desktop" data-options="tip_location: bottom;">
-            <h4>Get to our question filter to find questions.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="concepts-tab-desktop" data-options="tip_location: bottom;">
-            <h4>You can find our concept pages here.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-search" data-options="tip_location: left;" data-shape="circle">
-            <h4>Search for concepts and problems.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="login-tab" data-options="tip_location: bottom;">
-            <h4>Register with Isaac to save your progress and access more features.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="menu-button-desktop" data-options="tip_location: bottom;" data-shape="rectangle">
-            <h4>You'll find your account page, assignments, progress and more in the menu.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-button" data-options="tip_location: top;" data-shape="rectangle">
-            <h4>You can find the tutorial here on all pages!</h4>
-        </li>      
-    </ul>
-</div>
-<div id="mobile-tutorial">
-    <ul class="joyride-list" data-joyride>
-        <li class="joyrideTutorialItem">
-            <h4 class="tutorial-welcome">Welcome to Isaac Physics. Check out out <a ui-sref="about" target="_blank">About Us</a> page for our aims.</h4>
-        </li>        
-        <li class="joyrideTutorialItem" data-id="button-hex" data-options="tip_location: bottom;" data-shape="square">
-            <h4>Set your question board.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="button-difficulty" data-options="tip_location: bottom;" data-shape="circle">
-            <h4>Reveals difficulty filter.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="button-concept" data-options="tip_location: bottom;" data-shape="square">
-            <h4>Reveals concepts filter.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="game-board-panel" data-options="tip_location: top;">
-            <h4>Select a physics problem to solve here.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-button-mobile" data-options="tip_location: top;" data-shape="rectangle">
-            <h4>Click here to see this tutorial again!</h4>
-        </li>
-    </ul>
-</div>
-<div id="home-page-tutorial">
-    <ul class="joyride-list" data-joyride>
-        <li class="joyrideTutorialItem">
-            <h4 class="tutorial-welcome">Welcome to <a ui-sref="about" target="_blank">Isaac Physics</a>! This tutorial explains key parts of our homepage.</h4>
-        </li> 
-        <li class="joyrideTutorialItem" data-id="login-tab" data-options="tip_location: bottom;">
-            <h4>Register with Isaac to save your progress and access more features.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-learn" data-options="tip_location: right;">
-            <h4>Find out what Isaac has on offer for students!</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-learn-1" data-options="tip_location: right;">
-            <h4>Different ways to find questions:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Featured Questions</li>
-                <li>Top Boards</li>
-                <li>Build a Board</li>
-                <li>Extraordinary Questions</li>
-            </ul>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-learn-2" data-options="tip_location: right;">
-            <h4>School and Uni Preparation:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Skills Mastery Books (A-Level &amp; GCSE)</li>
-                <li>Admissions Preparation Questions</li>
-                <li>Preparing for a Physics Course at Uni</li>
-            </ul>
-        </li>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-learn-3" data-options="tip_location: right;">
-            <h4>Free Student Events:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Virtual and Face-to-Face Events</li>
-                <li>For Yr 12 and Yr 13</li>
-                <li>All over England</li>
-                <li>Run by Local Teachers</li>
-            </ul>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-teach" data-options="tip_location: left;">
-            <h4>Discover what Isaac has for teachers!</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-teach-1" data-options="tip_location: left;">
-            <h4>Teacher Features:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Create Groups of Students</li>
-                <li>Set Assignments</li>
-                <li>Automated Assignment Marking</li>
-                <li>Track Student Progress</li>
-            </ul>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-teach-2" data-options="tip_location: left;">
-            <h4>For Teachers, By Teachers:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Pedagogy</li>
-                <li>Guidance</li>
-                <li>Table of all our Questions!</li>
-            </ul>
-        </li>
-        <li class="joyrideTutorialItem" data-id="home-page-menu-teach-3" data-options="tip_location: left;">
-            <h4>Teacher CPD Events:</h4>
-            <ul style="list-style:disc;list-style-position:inside;">
-                <li>Full Day (Fully Funded)</li>
-                <li>Introductions to Isaac (SPN, ASE etc)</li>
-                <li>Online Events &amp; Tutorials</li>
-            </ul>
-        </li>
-        <li class="joyrideTutorialItem" data-id="menu-button-desktop" data-options="tip_location: bottom;" data-shape="rectangle">
-            <h4>You'll find your account settings, email preferences, assignments, progress and more in the menu.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="concepts-tab-desktop" data-options="tip_location: bottom;">
-            <h4>You can find our concept pages here.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-search" data-options="tip_location: left;" data-shape="circle">
-            <h4>Use the search for specific concepts and problems.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-button" data-options="tip_location: top;" data-shape="rectangle">
-            <h4>You can find the tutorial here on all pages, and it'll show page-specific help!</h4>
-        </li>  
-    </ul>
-</div>
-<div id="filter-tutorial">
-    <ul class="joyride-list" data-joyride>
-        <li class="joyrideTutorialItem" data-id="game-board-panel" data-options="tip_location: top;">
-            <h5>This is your current gameboard. Click on questions to have a go; orange hexagons are not questions but wildcards with links to useful pages.</h5>
-        </li>
-        <li class="joyrideTutorialItem" data-id="desktop-reveal" data-options="tip_location: bottom;" data-shape="circle">
-            <h4>Click to reveal subject &amp; difficulty filters to create your own question gameboards.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-shuffle" data-options="tip_location: bottom;" data-shape="rectangle">
-            <h4>Refreshes the current board to display another set of questions based on your filters.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="questions-tab-desktop" data-options="tip_location: bottom;">
-            <h4>Get back to this page to try more questions.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="concepts-tab-desktop" data-options="tip_location: bottom;">
-            <h4>You can find our concept pages here.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="tutorial-search" data-options="tip_location: left;" data-shape="circle">
-            <h4>Search for specific concepts and problems.</h4>
-        </li>
-        <li class="joyrideTutorialItem" data-id="menu-button-desktop" data-options="tip_location: bottom;" data-shape="rectangle">
-            <h4>You can always find your account page, assignments, progress and more useful links in the menu.</h4>
-        </li>
-    </ul>
-</div>
-
-<!-- Isaac Books Modal, so only needed in one place: -->
-<div isaac-modal="isaacBooks">
-  <div class="reveal-modal-head">
-    <h2>Isaac Skills Books</h2>
-    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
-  </div>
-  <div class="reveal-modal-body ru-page-heading set-boards-books-preview">
-    <div class="row">
-      <h4>Mastering Essential...</h4>
-    </div>
-    <div class="row text-center">
-      <div class="small-offset-1 small-4 columns">
-        <a ui-sref="book_phys_book_gcse"><img src="assets/books/phys_book_gcse.jpg"><span>GCSE Physics</span></a>
-      </div> 
-      <div class="small-offset-1 small-4 columns">
-        <a ui-sref="book_physics_skills_14"><img src="assets/books/physics_skills_14.jpg"><span>Pre-University Physics</span></a>
-      </div> 
-      <div class="small-offset-1 small-4 columns end">
-        <a ui-sref="book_chemistry_16"><img src="assets/books/chemistry_16.jpg"><span>Pre-University Physical Chemistry</span></a>
-      </div>
-    </div>
-    <div class="row">
-      <h4>or</h4>
-    </div>
-    <div class="row text-center">
-      <div class="small-offset-1 small-4 columns">
-        <a ui-sref="book_pre_uni_maths"><img src="assets/books/pre_uni_maths.jpg"><span>Mathematics for Sciences</span></a>
-      </div> 
-    </div>
-  </div>
-</div>

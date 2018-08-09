@@ -1,7 +1,7 @@
 'use strict';
 define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
     function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+    return ["$timeout", "$rootScope", "api", function(_$timeout, $rootScope, api) {
         return {
             restrict: "A",
             templateUrl: templateUrl,

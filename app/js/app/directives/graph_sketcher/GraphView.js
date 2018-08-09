@@ -1,7 +1,5 @@
 "use strict";
-define(function(require) {
-    const graphUtils = require("./GraphUtils.js");// TODO MT use injection
-
+define(['./GraphUtils.js'], function(graphUtils) {
     // TODO MT pass in canvas properties and update on resize
     let canvasHeight = window.innerHeight;
     let canvasWidth = window.innerWidth;

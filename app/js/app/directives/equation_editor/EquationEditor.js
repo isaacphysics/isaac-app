@@ -650,7 +650,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         allowVars: true
                     };
 
-                    let theseSymbols = symbols.slice(0);
+                    let theseSymbols = symbols.slice(0).map(s => s.trim());
                     let i = 0;
                     while (i < theseSymbols.length) {
                         if (theseSymbols[i] === '_trigs') {
