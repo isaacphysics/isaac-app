@@ -24,11 +24,9 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
 
                     let CURVE_STRKWEIGHT = 2;
                     let PADDING = 0.025 * canvasWidth;
-                    let DOT_LINE_STEP = 5;
                         
                     let CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
                     let KNOT_COLOR = [77,77,77];
-                    let DOT_LINE_COLOR = [123];
 
                     let freeSymbols = [];
                     let curves = [];
@@ -224,70 +222,6 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                         p.textSize(14);
                         p.text(symbol.text, symbol.x - 4, symbol.y + 20);
                         
-                        p.pop();
-                    }
-
-                    function drawVerticalDotLine(x, begin, end) {
-                        if (x < 0 || x > canvasWidth) {
-                            return;
-                        }
-
-                        if (begin > end) {
-                            let tmp = begin;
-                            begin = end;
-                            end = tmp;
-                        }
-
-                        p.push();
-                        p.stroke(DOT_LINE_COLOR);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-                        let step = DOT_LINE_STEP;
-                        let toDraw = true;
-                        let y = begin;
-                        while (y + step < end) {
-                            if (toDraw) {
-                                p.line(x, y, x, y+step);
-                            }
-                            y += step;
-                            toDraw = !toDraw;
-                        }
-                        if (toDraw) {
-                            p.line(x, y, x, end);
-                        }
-
-                        p.pop();
-                    }
-
-                    function drawHorizontalDotLine(y, begin, end) {
-                        if (y < 0 || y > canvasHeight) {
-                            return;
-                        }
-
-                        if (begin > end) {
-                            let tmp = begin;
-                            begin = end;
-                            end = tmp;
-                        }
-
-                        p.push();
-                        p.stroke(DOT_LINE_COLOR);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-                        let step = DOT_LINE_STEP;
-                        let toDraw = true;
-                        let x = begin;
-                        while (x + step < end) {
-                            if (toDraw) {
-                                p.line(x, y, x+step, y);
-                            }
-                            x += step;
-                            toDraw = !toDraw;
-                        }
-                        if (toDraw) {
-                            p.line(x, y, end, y);
-                        }
-
                         p.pop();
                     }
 

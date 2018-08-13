@@ -10,6 +10,7 @@ define(['./GraphUtils.js'], function(graphUtils) {
     const PADDING = 0.025 * canvasWidth;
     const DOT_LINE_STEP = 5;
 
+    // self explanatory drawing methods
     class GraphView {
         constructor(p) {
             this.p = p

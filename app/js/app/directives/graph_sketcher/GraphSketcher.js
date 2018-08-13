@@ -46,6 +46,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     e.preventDefault();
                 });
 
+                // undo-ing, record history
                 scope.undo = function() {
                     if (scope.p.checkPointsUndo.length == 0 || scope.p.checkPointsUndo === undefined) {
                         return;
@@ -65,6 +66,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     reDraw();
                 }
 
+                //redo-ing, record history
                 scope.redo = function() {
                     event.stopPropagation();
                     if (scope.p.checkPointsRedo.length == 0) {
@@ -85,6 +87,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     reDraw();
                 }
 
+                // Check if undo/redo should be made available, if so the respective option will be shown
                 scope.isUndoable = function() {
                     return scope.p && scope.p.checkPointsUndo.length > 0;
                 }
@@ -93,6 +96,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     return scope.p && scope.p.checkPointsRedo.length > 0;
                 }
 
+                // Want to distinguish straight vs curved (poly) lines
                 scope.straight = function() {
                     scope.selectedLineType = linearLineType;
                 }
@@ -101,6 +105,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     scope.selectedLineType = bezierLineType;
                 }
 
+                // The ability to wipe the canvas, deletion for example
                 scope.clean = function() {
                     scope.p.checkPoint = {};
                     scope.p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
@@ -115,10 +120,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     reDraw();
                 }
 
+                // Want to get out of the sketcher/ send answer
                 scope.submit = function() {
                     $("#graphModal").foundation("reveal", "close");
                 };
 
+                // Keep mouse methods together
                 scope.sketch = function(p) {
 
                     // canvas coefficients
@@ -163,6 +170,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     p.checkPointsUndo = [];
                     p.checkPointsRedo = [];
 
+                    // Allows symbol retention upon curve deletion
                     function freeAllSymbols(knots) {
                         for (let i = 0; i < knots.length; i++) {
                             let knot = knots[i];
@@ -178,6 +186,44 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
+                    function isOverButton(pt, button) {
+                        if (button.position() == undefined) {
+                            return false;
+                        }
+
+                        let left = button.position().left;
+                        let top = button.position().top;
+                        let width = button.width();
+                        let height = button.height();
+                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
+                    }
+
+                    // Mouse is inactive if over buttons - stops curves being drawn where they can't be seen
+                    function isActive(pt) {
+
+                        if (!(pt.x > 0 && pt.x < canvasProperties.width && pt.y > 0 && pt.y < canvasProperties.height)) {
+                            return false;
+                        }
+
+                        let elements = [];
+                        elements.push(element.find(".redo"));
+                        elements.push(element.find(".undo"));
+                        elements.push(element.find(".poly"));
+                        elements.push(element.find(".straight"));
+                        elements.push(element.find(".trash-button"));
+                        elements.push(element.find(".submit"));
+                        elements.push(element.find(".color-select"));
+
+                        for (let i = 0; i < elements.length; i++) {
+                            if (isOverButton(pt, elements[i])) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    // For visualisation using GraphView.js methods
                     scope.graphView = new graphViewBuilder.graphView(p);
 
                     // run in the beginning by p5 library
@@ -190,8 +236,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         reDraw();
                     }
 
+                    // Check if movement to new position is over an actionable object, so can render appropriately
                     p.mouseMoved = function(e) {
-                        let mousePosition = getMousePt(e);
+                        let mousePosition = graphUtils.getMousePt(e);
 
                         function detect(x, y) {
                             return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
@@ -219,8 +266,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
 
                         // stretch box
-
-
                         if (clickedCurveIdx != undefined) {
                             let c = curves[clickedCurveIdx];
                             if (mousePosition.x >= c.minX && mousePosition.x <= c.maxX && mousePosition.y >= c.minY && mousePosition.y <= c.maxY) {
@@ -265,6 +310,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
+                    // Determines type of action when clicking on something within the canvas
                     p.mousePressed = function(e) {
 
                         isMouseDragged = false;
@@ -283,7 +329,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         releasePt = undefined;
 
 
-                        let mousePosition = getMousePt(e);
+                        let mousePosition = graphUtils.getMousePt(e);
                         releasePt = mousePosition;
 
                         // this function does not react if the mouse is over buttons or outside the canvas.
@@ -291,18 +337,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             return;
                         }
 
-
-
                         function detect(x, y) {
                             return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
                         }
-
-
                         // record down mousePosition status, may be used later for undo.
                         p.checkPoint = {};
                         p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         p.checkPoint.curvesJSON = JSON.stringify(curves);
-
 
                         // check if it is to move a symbol
                         for (let i = 0; i < freeSymbols.length; i++) {
@@ -311,9 +352,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                 freeSymbols.splice(i, 1);
                                 prevMousePt = mousePosition;
                                 action = "MOVE_SYMBOL";
-
-                                // clickedCurveIdx = undefined;
-
                                 return;
                             }
                         }
@@ -423,7 +461,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             }
                         }
 
-
                         if (curves != []) {
                             for (let i = 0; i < curves.length; i++) {
                                 let maxima = curves[i].maxima;
@@ -530,13 +567,15 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         return;
                     }
 
+                    // Keep actions for curve manipulation together
                     p.mouseDragged = function(e) {
                         isMouseDragged = true;
-                        let mousePosition = getMousePt(e);
+                        let mousePosition = graphUtils.getMousePt(e);
                         releasePt = mousePosition;
 
                         if (action == "STRETCH_POINT") {
                             let selectedCurve = curves[clickedCurve];
+                            // we need to know the (important) ordered end and turning points
                             let importantPoints = [];
                             if (selectedCurve.pts[0].x > selectedCurve.pts[selectedCurve.pts.length - 1].x) {
                                 selectedCurve.pts.reverse();
@@ -552,6 +591,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
                             importantPoints.sort(function(a, b){return a.ind - b.ind});
 
+                            // maxima and minima are treated in slightly different ways
                             if (isMaxima) {
                                 graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
                             } else if (!isMaxima) {
@@ -748,6 +788,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
+                    // Need to know where to update points to - gives final position
                     p.mouseReleased = function(_e) {
                         let mousePosition = releasePt;
 
@@ -1018,6 +1059,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
+                    // Would like to be used on touch screen devices, this simply facilitates it
                     p.touchStarted = function(e) {
                         p.mousePressed(e.touches[0]);
                     }
@@ -1030,6 +1072,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         p.mouseReleased(e);
                     }
 
+                    // need to be able to resize the background on screen resize
+                    // TODO BH remember to properly resize curves for continuous resizing - i.e. undo/redo correctly
                     p.windowResized = function() {
                         let data = encodeData(false);
                         canvasProperties.width = window.innerWidth;
@@ -1064,48 +1108,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     }
 
-                    function getMousePt(e) {
-                        let x = (e.clientX - 5);
-                        let y = (e.clientY - 5);
-                        return (graphUtils.createPoint(x, y));
-                    }
-
-                    function isOverButton(pt, button) {
-                        if (button.position() == undefined) {
-                            return false;
-                        }
-
-                        let left = button.position().left;
-                        let top = button.position().top;
-                        let width = button.width();
-                        let height = button.height();
-                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
-                    }
-
-                    function isActive(pt) {
-
-                        if (!(pt.x > 0 && pt.x < canvasProperties.width && pt.y > 0 && pt.y < canvasProperties.height)) {
-                            return false;
-                        }
-
-                        let elements = [];
-                        elements.push(element.find(".redo"));
-                        elements.push(element.find(".undo"));
-                        elements.push(element.find(".poly"));
-                        elements.push(element.find(".straight"));
-                        elements.push(element.find(".trash-button"));
-                        elements.push(element.find(".submit"));
-                        elements.push(element.find(".color-select"));
-
-                        for (let i = 0; i < elements.length; i++) {
-                            if (isOverButton(pt, elements[i])) {
-                                return false;
-                            }
-                        }
-
-                        return true;
-                    }
-
+                    // equivalent to 'locally' refreshing the canvas
                     reDraw = function() {
                         if (curves.length < 4) {
                             scope.graphView.drawBackground(canvasProperties.width, canvasProperties.height);
@@ -1116,6 +1119,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         }
                     };
 
+                    // enables data to be encoded/decoded to input on reload (2nd attempt at a question etc)
                     encodeData = function(trunc) {
 
                         if (trunc == undefined) {
@@ -1309,6 +1313,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                     };
                 }
 
+                // Log event for people leaving abbruptly
                 scope.logOnClose = function(_event) {
                     // This ought to catch people who navigate away without closing the editor!
                     if (scope.log != null) {
@@ -1323,11 +1328,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                 $rootScope.showGraphSketcher = function(initialState, questionDoc, editorMode) {
                     return new Promise(function(resolve, _reject) {
                         let graphSketcherModal = $('#graphModal');
+                        // initialise our canvas
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         graphSketcherModal.foundation("reveal", "open");
                         scope.state = initialState || {freeSymbols: []}
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode;
+                        // when answered submit a log with the curve details
                         scope.log = {
                             type: "TEST_GRAPH_SKETCHER_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,

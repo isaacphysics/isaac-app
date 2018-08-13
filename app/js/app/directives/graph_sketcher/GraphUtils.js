@@ -5,6 +5,7 @@ define(function(_require) {
 
     return {
 
+        // methods used in manipulating the graphs
         getDist: function(pt1, pt2) {
             return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
         },
@@ -27,38 +28,6 @@ define(function(_require) {
                 }
             }
         },
-
-        // readyToStretch: function(e, curveToStretch, stretchMode) {
-        //     let mousePosition = this.getMousePt(e);
-        //     if (this.detect(e, curveToStretch.minX, curveToStretch.minY) || this.detect(e, curveToStretch.maxX, curveToStretch.minY) || this.detect(e, curveToStretch.minX, curveToStretch.maxY) || this.detect(e, curveToStretch.maxX, curveToStretch.maxY)
-        //             || this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.minY - 3) || this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.maxY + 3)
-        //             || this.detect(e, curveToStretch.minX - 3, (curveToStretch.minY + curveToStretch.maxY)/2) || this.detect(e, curveToStretch.maxX + 3, (curveToStretch.minY + curveToStretch.maxY)/2)) {
-        //
-        //         if (this.detect(e, curveToStretch.minX, curveToStretch.minY)) {
-        //             stretchMode = "topLeft";
-        //         } else if (this.detect(e, curveToStretch.maxX, curveToStretch.minY)) {
-        //             stretchMode = "topRight";
-        //         } else if (this.detect(e, curveToStretch.maxX, curveToStretch.maxY)) {
-        //             stretchMode = "bottomRight";
-        //         } else if (this.detect(e, curveToStretch.minX, curveToStretch.maxY)) {
-        //             stretchMode = "bottomLeft";
-        //         } else if (this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.minY - 3)) {
-        //             stretchMode = "bottomMiddle";
-        //         } else if (this.detect(e, (curveToStretch.minX + curveToStretch.maxX)/2, curveToStretch.maxY + 3)) {
-        //             stretchMode = "topMiddle";
-        //         } else if (this.detect(e, curveToStretch.minX - 3, (curveToStretch.minY + curveToStretch.maxY)/2)) {
-        //             stretchMode = "leftMiddle";
-        //         } else {
-        //             stretchMode = "rightMiddle";
-        //         }
-        //
-        //
-        //         let action = "STRETCH_CURVE";
-        //         let clickedKnot = null;
-        //         let prevMousePt = mousePosition;
-        //         return[stretchMode, action, clickedKnot, prevMousePt];
-        //     }
-        // },
 
         createPoint: function(x, y, c) {
             let obj = {};
