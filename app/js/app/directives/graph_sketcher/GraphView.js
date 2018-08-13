@@ -1,6 +1,5 @@
 "use strict";
 define(['./GraphUtils.js'], function(graphUtils) {
-    // TODO MT pass in canvas properties and update on resize
     let canvasHeight = window.innerHeight;
     let canvasWidth = window.innerWidth;
 
@@ -207,7 +206,11 @@ define(['./GraphUtils.js'], function(graphUtils) {
             this.p.pop();
         }
 
-        drawHorizontalAxis(curveStrokeWeight) {
+        drawHorizontalAxis(curveStrokeWeight, passed_width, passed_height) {
+            if (passed_width && passed_height) {
+                canvasHeight = passed_height;
+                canvasWidth = passed_width;
+            }
             this.p.push();
 
             this.p.strokeWeight(curveStrokeWeight);
@@ -229,7 +232,11 @@ define(['./GraphUtils.js'], function(graphUtils) {
             this.p.pop();
         }
 
-        drawVerticalAxis(curveStrokeWeight) {
+        drawVerticalAxis(curveStrokeWeight, passed_width, passed_height) {
+            if (passed_width && passed_height) {
+                canvasHeight = passed_height;
+                canvasWidth = passed_width;
+            }
             this.p.push();
 
             this.p.strokeWeight(curveStrokeWeight);
@@ -251,7 +258,11 @@ define(['./GraphUtils.js'], function(graphUtils) {
             this.p.pop();
         }
 
-        drawGrid(curveStrokeWeight) {
+        drawGrid(curveStrokeWeight, passed_width, passed_height) {
+            if (passed_width && passed_height) {
+                canvasHeight = passed_height;
+                canvasWidth = passed_width;
+            }
             this.p.push();
 
             this.p.noFill();
@@ -295,13 +306,13 @@ define(['./GraphUtils.js'], function(graphUtils) {
             this.p.pop();
         }
 
-        drawBackground() {
+        drawBackground(passed_width, passed_height) {
             this.p.clear();
             this.p.background(255);
 
-            this.drawGrid(GraphView.CURVE_STRKWEIGHT);
-            this.drawHorizontalAxis(GraphView.CURVE_STRKWEIGHT);
-            this.drawVerticalAxis(GraphView.CURVE_STRKWEIGHT);
+            this.drawGrid(GraphView.CURVE_STRKWEIGHT, passed_width, passed_height);
+            this.drawHorizontalAxis(GraphView.CURVE_STRKWEIGHT, passed_width, passed_height);
+            this.drawVerticalAxis(GraphView.CURVE_STRKWEIGHT, passed_width, passed_height);
             this.drawLabel();
         }
 

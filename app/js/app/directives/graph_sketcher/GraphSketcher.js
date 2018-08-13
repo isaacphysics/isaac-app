@@ -1108,7 +1108,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                     reDraw = function() {
                         if (curves.length < 4) {
-                            scope.graphView.drawBackground();
+                            scope.graphView.drawBackground(canvasProperties.width, canvasProperties.height);
                             scope.graphView.drawCurves(curves);
                             scope.graphView.drawSymbols(freeSymbols, DEFAULT_KNOT_COLOR);
                             scope.graphView.drawStretchBox(clickedCurveIdx, curves);
