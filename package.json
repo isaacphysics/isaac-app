@@ -6,6 +6,7 @@
   "repository": "http://isaacphysics.org",
   "license": "MIT",
   "dependencies": {
+    "@uirouter/angularjs": "0.2.18",
     "angular": "1.5.7",
     "angular-cookies": "1.5.7",
     "angular-google-maps": "2.4.0",
@@ -16,7 +17,6 @@
     "angular-simple-logger": "^0.1.7",
     "angular-tipped": "1.0.0-4",
     "angular-ui-date": "1.0.1",
-    "@uirouter/angularjs": "0.2.18",
     "angulartics": "1.1.2",
     "angulartics-google-analytics": "0.2.0",
     "d3": "3.5.17",
@@ -36,13 +36,13 @@
     "ts-loader": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.51",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.51",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
-    "@babel/polyfill": "^7.0.0-beta.51",
-    "@babel/preset-env": "^7.0.0-beta.51",
-    "@babel/preset-typescript": "^7.0.0-beta.51",
-    "@babel/runtime": "^7.0.0-beta.51",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
+    "@babel/plugin-transform-runtime": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
+    "@babel/preset-typescript": "^7.0.0-rc.1",
+    "@babel/runtime": "^7.0.0-rc.1",
+    "@babel/runtime-corejs2": "^7.0.0-rc.1",
     "babel-eslint": "^8.2.5",
     "babel-loader": "^8.0.0-beta",
     "concurrently": "^3.6.0",
@@ -74,10 +74,10 @@
         "@babel/plugin-proposal-class-properties"
       ],
       [
-        "@babel/plugin-transform-runtime",
+        "@babel/transform-runtime",
         {
-          "polyfill": true,
-          "regenerator": true
+          "regenerator": true,
+          "corejs": 2
         }
       ]
     ],
