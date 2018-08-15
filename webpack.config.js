@@ -15,7 +15,7 @@ module.exports = function(env) {
     mode: "development",
 
     entry: {
-      'isaac.js': ["@babel/polyfill", "./app/js/app/app.js"],
+      'isaac.js': ["./app/js/app/app.js"],
     },
 
     output: {
