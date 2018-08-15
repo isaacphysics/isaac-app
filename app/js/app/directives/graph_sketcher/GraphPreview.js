@@ -1,6 +1,6 @@
 "use strict";
 
-define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/func.js", "../../../lib/graph_sketcher/sampler.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, _b, f, _s, templateUrl) {
+define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, graphViewBuilder, graphUtils, templateUrl) {
     return ["$timeout", "$rootScope", "api", function(_$timeout, _$rootScope, _api) {
 
         return {
@@ -15,6 +15,11 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                 let graphPreviewDiv = element.find(".graph-preview");
 
                 scope.canvasID = scope.questionDoc.id;
+
+                function reDraw() {
+                    scope.graphView.drawBackground(canvasWidth, canvasHeight);
+                    scope.graphView.drawCurves(curves);
+                }
 
                 scope.sketch = function(p) {
 
@@ -31,11 +36,13 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     let freeSymbols = [];
                     let curves = [];
 
+                    scope.graphView = new graphViewBuilder.graphView(p);
+
                     function initiateFreeSymbols() {
                         freeSymbols = [];
-                        freeSymbols.push(f.createSymbol('A'));
-                        freeSymbols.push(f.createSymbol('B'));
-                        freeSymbols.push(f.createSymbol('C'));
+                        freeSymbols.push(graphUtils.createSymbol('A'));
+                        freeSymbols.push(graphUtils.createSymbol('B'));
+                        freeSymbols.push(graphUtils.createSymbol('C'));
                     }
 
                     // run in the beginning by p5 library
@@ -50,188 +57,12 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                     }
 
                     function reDraw() {
-                        drawBackground();
-                        drawCurves(curves);
+                        scope.graphView.drawBackground(canvasWidth, canvasHeight);
+                        scope.graphView.drawCurves(curves);
                     }
 
-                    function drawBackground() {
-
-                        function drawHorizontalAxis() {
-                            p.push();
-                            
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(0);
-                            p.noFill();
-
-                            let leftMargin = PADDING;
-                            let rightMargin = canvasWidth - PADDING;
-
-                            p.beginShape();
-                            p.vertex(leftMargin, canvasHeight/2);
-                            p.vertex(rightMargin, canvasHeight / 2);
-                            p.vertex(rightMargin - 10, canvasHeight / 2 - 5);
-                            p.vertex(rightMargin, canvasHeight / 2);
-                            p.vertex(rightMargin - 10, canvasHeight / 2 + 5);
-                            p.endShape();
-                            
-                            p.pop();
-                        }
-
-                        function drawVerticalAxis() {
-                            p.push();
-                            
-                            p.strokeWeight(CURVE_STRKWEIGHT);
-                            p.strokeJoin(p.ROUND);
-                            p.stroke(0);
-                            p.noFill();
-
-                            let upMargin = PADDING;
-                            let bottomMargin = canvasHeight - PADDING;
-
-                            p.beginShape();
-                            p.vertex(canvasWidth/2, bottomMargin);
-                            p.vertex(canvasWidth/2, upMargin);
-                            p.vertex(canvasWidth/2 - 5, upMargin + 10);
-                            p.vertex(canvasWidth/2, upMargin);
-                            p.vertex(canvasWidth/2 + 5, upMargin + 10);
-                            p.endShape();
-                            
-                            p.pop();
-                        }
-
-                        function drawLabel() {
-                            p.push();
-
-                            p.textSize(16);
-                            p.stroke(0);
-                            p.strokeWeight(0.5);
-                            p.fill(0);
-
-                            p.text("O", canvasWidth/2 - 15, canvasHeight/2 + 15);
-                            p.text("x", canvasWidth - PADDING, canvasHeight/2 + 15);
-                            p.text("y", canvasWidth/2 + 5, PADDING);
-
-                            p.pop();
-                        }
-
-                        // p5.clear, p5.background
-                        p.clear();
-                        p.background(255);
-
-                        // drawGrid();
-                        drawHorizontalAxis();
-                        drawVerticalAxis();
-                        drawLabel();
-                    }
-
-                    // given a set of points, draw the corresponding curve.
-                    function drawCurve(curve, color) {
-                        if (color == undefined) {
-                            color = CURVE_COLORS[curve.colorIdx];
-                        } 
-
-                        p.push();
-                        p.stroke(color);
-                        p.strokeWeight(CURVE_STRKWEIGHT);
-
-                        let pts = curve.pts;
-                        for (let i = 1; i < pts.length; i++) {
-                            p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
-                        }
-                        
-                        p.pop();
-
-                        // draw x intercepts, y intercepts and turning points
-                        drawKnots(curve['interX']);
-                        drawKnots(curve['interY']);
-                        drawKnots2(curve['maxima']);
-                        drawKnots2(curve['minima']);
-
-                    }
-
-                    function drawCurves(theCurves, color) {
-                        for (let i = 0; i < theCurves.length; i++) {
-                            drawCurve(theCurves[i], color);    
-                        }
-                    }
-
-
-                    // given a set of points, draw the corresponding points (knots).
-                    function drawKnot(knot, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-
-                        if (knot.symbol != undefined) {
-                            drawSymbol(knot.symbol);
-                        } else {
-                            p.push();
-                            p.noFill();
-                            p.stroke(color);
-                            p.strokeWeight(1.5);
-                            p.line(knot.x - 3, knot.y - 3, knot.x + 3, knot.y + 3);
-                            p.line(knot.x + 3, knot.y - 3, knot.x - 3, knot.y + 3);
-                            p.pop();
-                        }
-                    }
-
-                    function drawKnots(knots, color) {
-                        for (let i = 0; i < knots.length; i++) {
-                            drawKnot(knots[i], color);
-                        }   
-                    }
-
-                    function drawKnot2(knot) {
-                        drawKnot(knot);
-
-                        if (knot.xSymbol != undefined) {
-                            drawVerticalDotLine(knot.x, knot.y, canvasHeight/2);
-                            drawSymbol(knot.xSymbol);
-                        }
-
-                        if (knot.ySymbol != undefined) {
-                            drawHorizontalDotLine(knot.y, knot.x, canvasWidth/2);
-                            drawSymbol(knot.ySymbol);
-                        }
-                    }
-
-                    function drawKnots2(knots) {
-                        for (let i = 0; i < knots.length; i++) {
-                            drawKnot2(knots[i]);
-                        }   
-                    }
-
-                    // draw symbols, e.g. "A", "B".
-                    function drawSymbol(symbol, color) {
-                        if (color == undefined) {
-                            color = KNOT_COLOR;
-                        }
-                        
-                        p.push();
-                        
-                        p.stroke(color);
-                        p.strokeWeight(1.5);
-                        p.noFill();
-                        p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-                        p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3); 
-                        
-                        p.stroke(0);
-                        p.strokeWeight(0.5);
-                        p.fill(0);
-                        p.textSize(14);
-                        p.text(symbol.text, symbol.x - 4, symbol.y + 20);
-                        
-                        p.pop();
-                    }
-
-                    function clone(obj) {
-                        let json = JSON.stringify(obj);
-                        return JSON.parse(json);
-                    }
-                  
                     function decodeData(rawData) {
-                        let data = clone(rawData);
+                        let data = graphUtils.clone(rawData);
 
                         function denormalise(pt) {
                                 pt.x = pt.x * canvasWidth + canvasWidth/2;
@@ -261,7 +92,7 @@ define(["p5", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketc
                             }
                         }
 
-                        
+
                         curves = data.curves;
                         for (let i = 0; i < curves.length; i++) {
 

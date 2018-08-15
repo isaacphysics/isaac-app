@@ -1079,7 +1079,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         canvasProperties.width = window.innerWidth;
                         canvasProperties.height = window.innerHeight;
                         p.resizeCanvas(window.innerWidth, window.innerHeight);
-                        decodeData(data);
+                        graphUtils.decodeData(data, canvasProperties.width, canvasProperties.height);
                         reDraw();
                     }
 
@@ -1242,75 +1242,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                         return data;
                     };
-
-                    decodeData = function(rawData) {
-
-                        let data = rawData;
-
-                        function denormalise(pt) {
-                            pt.x = pt.x * canvasProperties.width + canvasProperties.width/2;
-                            pt.y = canvasProperties.height/2 - pt.y * canvasProperties.height;
-                        }
-
-                        function denormalise1(knots) {
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                denormalise(knot);
-                                if (knot.symbol != undefined) {
-                                    denormalise(knot.symbol);
-                                }
-                            }
-                        }
-
-                        function denormalise2(knots) {
-                            denormalise1(knots);
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.xSymbol != undefined) {
-                                    denormalise(knot.xSymbol);
-                                }
-                                if (knot.ySymbol != undefined) {
-                                    denormalise(knot.ySymbol);
-                                }
-                            }
-                        }
-
-
-                        curves = data.curves;
-
-                        for (let i = 0; i < curves.length; i++) {
-
-                            let pts = curves[i].pts;
-                            for (let j = 0; j < pts.length; j++) {
-                                denormalise(pts[j]);
-                            }
-
-                            curves[i].minX = curves[i].minX * canvasProperties.width + canvasProperties.width/2;
-                            curves[i].maxX = curves[i].maxX * canvasProperties.width + canvasProperties.width/2;
-                            curves[i].minY = canvasProperties.height/2 - curves[i].minY * canvasProperties.height;
-                            curves[i].maxY = canvasProperties.height/2 - curves[i].maxY * canvasProperties.height;
-
-                            let interX = curves[i].interX;
-                            denormalise1(interX);
-
-                            let interY = curves[i].interY;
-                            denormalise1(interY);
-
-                            let maxima = curves[i].maxima;
-                            denormalise2(maxima);
-
-                            let minima = curves[i].minima;
-                            denormalise2(minima);
-                        }
-
-                        freeSymbols = data.freeSymbols;
-                        for (let j = 0; j < freeSymbols.length; j++) {
-                            denormalise(freeSymbols[j]);
-                        }
-
-                        reDraw();
-                        return;
-                    };
                 }
 
                 // Log event for people leaving abbruptly
@@ -1374,7 +1305,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
-                            decodeData(scope.state);
+                            graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
                             reDraw();
                         }
                     });

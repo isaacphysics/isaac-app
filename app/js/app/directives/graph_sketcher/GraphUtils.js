@@ -10,6 +10,74 @@ define(function(_require) {
             return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
         },
 
+        decodeData: function(rawData, width, height) {
+
+            let data = this.clone(rawData);
+
+            function denormalise(pt) {
+                pt.x = pt.x * width + width/2;
+                pt.y = height/2 - pt.y * height;
+            }
+
+            function denormalise1(knots) {
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    denormalise(knot);
+                    if (knot.symbol != undefined) {
+                        denormalise(knot.symbol);
+                    }
+                }
+            }
+
+            function denormalise2(knots) {
+                denormalise1(knots);
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    if (knot.xSymbol != undefined) {
+                        denormalise(knot.xSymbol);
+                    }
+                    if (knot.ySymbol != undefined) {
+                        denormalise(knot.ySymbol);
+                    }
+                }
+            }
+
+
+            let curves = data.curves;
+
+            for (let i = 0; i < curves.length; i++) {
+
+                let pts = curves[i].pts;
+                for (let j = 0; j < pts.length; j++) {
+                    denormalise(pts[j]);
+                }
+
+                curves[i].minX = curves[i].minX * width + width/2;
+                curves[i].maxX = curves[i].maxX * width + width/2;
+                curves[i].minY = height/2 - curves[i].minY * height;
+                curves[i].maxY = height/2 - curves[i].maxY * height;
+
+                let interX = curves[i].interX;
+                denormalise1(interX);
+
+                let interY = curves[i].interY;
+                denormalise1(interY);
+
+                let maxima = curves[i].maxima;
+                denormalise2(maxima);
+
+                let minima = curves[i].minima;
+                denormalise2(minima);
+            }
+
+            let freeSymbols = data.freeSymbols;
+            for (let j = 0; j < freeSymbols.length; j++) {
+                denormalise(freeSymbols[j]);
+            }
+
+            // return;
+        },
+
         detect: function(e, x, y) {
             let mousePosition = this.getMousePt(e);
             return (this.getDist(mousePosition, this.createPoint(x, y)) < 5);

@@ -1,10 +1,9 @@
-define(['./func.js'], function(f) {
+define(['../../app/directives/graph_sketcher/GraphUtils.js'], function(graphUtils) {
     return {
 
         lineStyle: function(pts) {
 
             let q = pts.length - 1;
-            // console.log(q);
             let lin = [];
             let sum_x = 0;
             let sum_y = 0;
@@ -16,9 +15,7 @@ define(['./func.js'], function(f) {
 
             for (let i = 0; i < q; i += 1) {
                 X = pts[i].x;
-                // console.log(X);
                 Y = pts[i].y;
-                // console.log(Y);
                 sum_x += X;
                 sum_y += Y;
                 sum_xx += X*X;
@@ -27,20 +24,13 @@ define(['./func.js'], function(f) {
             }
 
             let m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-            // console.log(m);
-            let p = (sum_y/count) - (m*sum_x)/count;
-            // console.log(b);
 
-            // console.log(pts);
+            let p = (sum_y/count) - (m*sum_x)/count;
 
             for (let i = 0; i < q; i += 1) {
                 let sx = pts[i].x;
-                // console.log(sx);
-                lin.push(f.createPoint(sx, m * sx + p));
-                // console.log(i);
-                // console.log(pts[i].x);
+                lin.push(graphUtils.createPoint(sx, m * sx + p));
             }
-            // lin.push(pts[pts.length - 1]);
             return lin;
         }
     }

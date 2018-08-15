@@ -1,4 +1,4 @@
-define(['../math.js', './func.js'], function(m, f) {
+define(['../math.js', '../../app/directives/graph_sketcher/GraphUtils.js'], function(m, graphUtils) {
     return {
         numOfPts: 100,
 
@@ -32,8 +32,7 @@ define(['../math.js', './func.js'], function(m, f) {
                     sx += tmp3 * pts[r].x;
                     sy += tmp3 * pts[r].y;
                 }
-                // createPoint from point.js
-                bezier.push(f.createPoint(sx, sy, i));
+                bezier.push(graphUtils.createPoint(sx, sy, i));
             }
             bezier.push(pts[pts.length - 1]);
             return bezier;
