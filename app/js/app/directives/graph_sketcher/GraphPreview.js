@@ -27,32 +27,16 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     let canvasHeight = graphPreviewDiv.height();
                     let canvasWidth = graphPreviewDiv.width();
 
-                    let CURVE_STRKWEIGHT = 2;
-                    let PADDING = 0.025 * canvasWidth;
-                        
-                    let CURVE_COLORS = [[93,165,218], [250,164,58], [96,189,104], [241,124,176], [241,88,84], [178,118,178]];
-                    let KNOT_COLOR = [77,77,77];
-
                     let freeSymbols = [];
                     let curves = [];
 
                     scope.graphView = new graphViewBuilder.graphView(p);
-
-                    function initiateFreeSymbols() {
-                        freeSymbols = [];
-                        freeSymbols.push(graphUtils.createSymbol('A'));
-                        freeSymbols.push(graphUtils.createSymbol('B'));
-                        freeSymbols.push(graphUtils.createSymbol('C'));
-                    }
 
                     // run in the beginning by p5 library
                     function setup() {
                         p.createCanvas(canvasWidth, canvasHeight);
                         p.noLoop();
                         p.cursor(p.HAND);
-
-
-                        initiateFreeSymbols();
                         reDraw();
                     }
 
