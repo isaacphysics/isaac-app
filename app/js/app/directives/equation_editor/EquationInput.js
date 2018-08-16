@@ -193,11 +193,11 @@ define(["p5",
                 scope.$watch("state", function(s) {
                     if (s && s.result) {
                         // We have an existing answer to the question.
-                        // If we have the LaTeX form, render it; else answer was typed:
+                        // If we have the LaTeX form, render it; else answer was typed and we failed to parse it:
                         if (s.result.tex) {
                             katex.render(s.result.tex, element.find(".eqn-preview")[0]);
                         } else {
-                            // WARNING: This branch appears to never be called now that we have text parsing.
+                            // This branch is only triggered when we can't parse a typed answer.
                             element.find(".eqn-preview").html("Click to replace your typed answer");
                         }
                         // If we have the python form, add it to the text entry box (unless we're currently typing in the box; Safari bug!):
