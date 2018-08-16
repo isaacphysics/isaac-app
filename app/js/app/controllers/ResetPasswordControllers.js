@@ -20,15 +20,15 @@ export const PageController = ['$scope', 'auth', 'api', '$stateParams', function
 		confirmPassword: ''
 	};
 	$scope.submitted = false;
+	$scope.success = false;
 
 	$scope.resetPassword = function() {
 		api.password.reset({'token': $stateParams.token}, { 'password': $scope.user.password }).$promise.then(function(response) {
-			console.log(response);
 			$scope.submitted = true;
-			$scope.message = "Your password has been reset successfully, you may now log in with your new password.";
+			$scope.success = true;
 		}, function(_error) {
 			$scope.submitted = true;
-			$scope.message = "An error occurred whilst attempting to reset your password, please try again.";
+			$scope.success = false;
 		});
 	}
 }];
