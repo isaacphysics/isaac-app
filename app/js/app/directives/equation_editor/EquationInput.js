@@ -93,33 +93,19 @@ define(["p5",
                         scope.textEntryError = [];
 
                         let parsedExpression = parseExpression(pycode);
-                        console.log(parsedExpression);
+                        //console.log(parsedExpression);
 
-                        if (!parsedExpression.hasOwnProperty('error')) {
-                            if (parsedExpression.length === 0) {
-                                if (pycode === '') {
-                                   element.find(".eqn-preview").html("Click here to enter a formula!");
-                                    scope.symbols = [];
-                                    scope.state.result.tex = "";
-                                    scope.state.result.python = "";
-                                    scope.state.result.mathml = "";
-                                    sketch.symbols = [];
-                                } else {
-                                    // TODO: Do something here
-                                    console.log("User entered maths, we could not parse it.")
-                                }
-                            } else if (parsedExpression.length === 1) {
-                                sketch.parseSubtreeObject(parsedExpression[0], true, true);
-                            } else {
-                                let sizes = _.map(parsedExpression, countChildren);
-                                let i = sizes.indexOf(Math.max.apply(null, sizes));
-                                sketch.parseSubtreeObject(parsedExpression[i], true, true);
-                            }
+                        if (parsedExpression.hasOwnProperty('error') || (parsedExpression.length === 0 && pycode != '')) {
+                            // A parse error of some description!
+                            // TODO: If there is an 'error' key, do something with it here. It contains useful information.
+                            // if (parsedExpression.hasOwnProperty('error') {
+                            //     let error = parsedExpression.error;
+                            //     console.log(error.offset, error.token);
+                            // }
+                            console.warn("Failed to parse user input '" + pycode + "'!");
+
                             let openBracketsCount = pycode.split('(').length - 1;
                             let closeBracketsCount = pycode.split(')').length - 1;
-
-                            scope.state.textEntry = true;
-                            scope.state.userInput = pycode;
                             let regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
                             let badCharacters = new RegExp(regexStr);
                             let goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
@@ -135,11 +121,27 @@ define(["p5",
                             if (/\.[0-9]/.test(pycode)) {
                                 scope.textEntryError.push('Please convert decimal numbers to fractions.');
                             }
+
                         } else {
-                            // TODO: Do something with the error here. It contains useful information.
-                            let error = parsedExpression.error;
-                            console.log(error.offset, error.token);
+                            // Successfully parsed something:
+                            if (pycode === '') {
+                               element.find(".eqn-preview").html("Click here to enter a formula!");
+                                scope.symbols = [];
+                                scope.state.result.tex = "";
+                                scope.state.result.python = "";
+                                scope.state.result.mathml = "";
+                                sketch.symbols = [];
+                            } else if (parsedExpression.length === 1) {
+                                sketch.parseSubtreeObject(parsedExpression[0], true, true);
+                            } else {
+                                let sizes = _.map(parsedExpression, countChildren);
+                                let i = sizes.indexOf(Math.max.apply(null, sizes));
+                                sketch.parseSubtreeObject(parsedExpression[i], true, true);
+                            }
+                            scope.state.textEntry = true;
+                            scope.state.userInput = pycode;
                         }
+
                     }, 750);
                 };
 
