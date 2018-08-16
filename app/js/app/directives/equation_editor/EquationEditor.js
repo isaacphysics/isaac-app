@@ -52,7 +52,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         scope.historyPtr++;
                         scope.history.splice(scope.historyPtr, scope.history.length - scope.historyPtr, JSON.parse(newEntry));
 
-                        console.log("historyCheckpoint:", scope.history);
+                        // console.log("historyCheckpoint:", scope.history);
                     }
                 });
 
@@ -108,6 +108,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
+                    scope.state.fromTextEntry = false;
 
                     console.log("New state:", s);
 
@@ -395,6 +396,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 width: window.innerWidth,
                                 height: window.innerHeight
                             },
+                            fromTextEntry: scope.state.fromTextEntry || false,
                             actions: [{
                                 event: "OPEN",
                                 timestamp: Date.now()
@@ -404,7 +406,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
                         // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function (_e) {
+                        eqnModal.one("close.fndtn.reveal", function (_e) {
                             scope.log.finalState = [];
                             sketch.symbols.forEach(function (symbol) {
                                 scope.log.finalState.push(symbol.subtreeObject(true, true));

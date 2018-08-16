@@ -109,17 +109,17 @@ define(["p5",
                                     console.log("User entered maths, we could not parse it.")
                                 }
                             } else if (parsedExpression.length === 1) {
-                                sketch.parseSubtreeObject(parsedExpression[0], true);
+                                sketch.parseSubtreeObject(parsedExpression[0], true, true);
                             } else {
                                 let sizes = _.map(parsedExpression, countChildren);
                                 let i = sizes.indexOf(Math.max.apply(null, sizes));
-                                sketch.parseSubtreeObject(parsedExpression[i], true);
+                                sketch.parseSubtreeObject(parsedExpression[i], true, true);
                             }
-
                             let openBracketsCount = pycode.split('(').length - 1;
                             let closeBracketsCount = pycode.split(')').length - 1;
 
                             scope.state.textEntry = true;
+                            scope.state.userInput = pycode;
                             let regexStr = "[^ (-)*-/0-9<->A-Z^-_a-z±²-³¼-¾×÷]+";
                             let badCharacters = new RegExp(regexStr);
                             let goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
@@ -156,6 +156,7 @@ define(["p5",
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
+                    scope.state.fromTextEntry = true;
 
                     console.log("New state:", s);
 
@@ -196,6 +197,7 @@ define(["p5",
                         if (s.result.tex) {
                             katex.render(s.result.tex, element.find(".eqn-preview")[0]);
                         } else {
+                            // WARNING: This branch appears to never be called now that we have text parsing.
                             element.find(".eqn-preview").html("Click to replace your typed answer");
                         }
                         // If we have the python form, add it to the text entry box (unless we're currently typing in the box; Safari bug!):
