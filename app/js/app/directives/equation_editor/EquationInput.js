@@ -140,7 +140,7 @@ define(["p5",
                             let error = parsedExpression.error;
                             console.log(error.offset, error.token);
                         }
-                    }, 250);
+                    }, 750);
                 };
 
                 let replaceSpecialChars = function (s) {
