@@ -1,7 +1,7 @@
 "use strict";
 
 define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
-    return ["$timeout", "$rootScope", "api", function(_$timeout, $rootScope, _api) {
+    return ["$rootScope", function($rootScope) {
 
         return {
             scope: {

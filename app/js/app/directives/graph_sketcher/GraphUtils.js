@@ -1,5 +1,5 @@
 "use strict";
-define(function(_require) {
+define(function() {
 
     const SAMPLE_INTERVAL = 10;
 

@@ -1,7 +1,7 @@
 "use strict";
 
 define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/graph_preview.html"], function(p5, graphViewBuilder, graphUtils, templateUrl) {
-    return ["$timeout", "$rootScope", "api", function(_$timeout, _$rootScope, _api) {
+    return function() {
 
         return {
             scope: {
@@ -125,5 +125,5 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
             }
 
         };
-    }];
+    };
 });

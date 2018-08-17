@@ -1,7 +1,7 @@
 'use strict';
 define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
     function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
-    return ["$timeout", "$rootScope", "api", function(_$timeout, $rootScope, api) {
+    return ["$rootScope", "api", function($rootScope, api) {
         return {
             restrict: "A",
             templateUrl: templateUrl,
@@ -1281,8 +1281,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
+
                         // Log the editor being closed and submit log event to server:
-                        graphSketcherModal.one("close", function(_e) {
+                        graphSketcherModal.one("close.fndtn.reveal", function(_e) {
                             scope.log.finalState = [];
                             scope.dat.curves.forEach(function(g) {
                                 scope.log.finalState.push(g);
@@ -1295,10 +1296,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
                             scope.log = null;
-                            return(scope.state);
-                        });
 
-                        graphSketcherModal.one("closed.fndtn.reveal", function() {
                             scope.p.remove();
                             resolve(scope.dat);
                         });

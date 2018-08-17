@@ -1,6 +1,6 @@
 define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestion.html"], function(rv, templateUrl) {
 
-    return ["api", function(_api) {
+    return function() {
         
         return {
             scope: true,
@@ -52,5 +52,5 @@ define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestio
 
             controllerAs: "ctrl",
         };
-    }];
+    };
 });
