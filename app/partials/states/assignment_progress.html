@@ -24,16 +24,18 @@
             -->
             <dl class="accordion-group">
                 <dd ng-repeat="group in groups | orderBy:groupSortOption.value:groupSortOption.reverse" ng-class="{active: groupExpanded[group._id]}" class="group-panel">
-                    <a class="accordion-group-header" href="javascript:void(0)" ng-click="expandAssignments(group._id)">
+                    <span class="accordion-group-header" ng-click="expandAssignments(group._id)">
                         <div class="accordion-group-title">
                             <span class="icon-group"></span>
                             {{group.groupName}} <span class="hide-for-medium-up">({{groupAssignments[group._id].length || 0}})</span>
                         </div>
                         <img class="accordion-arrow" src="/assets/icon-expand-arrow.png" ng-style="{visibility: groupAssignments[group._id].length ? 'visible':'hidden'}"/>
                         <div class="accordion-group-summary">
-                            <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignments set</span>
+                            <span><strong>{{groupAssignments[group._id].length || 0}}</strong> Assignment<span ng-if="!(groupAssignments[group._id].length == 1)">s</span> set</span>
+                            &nbsp;
+                            <span class="show-for-medium-up" ng-click="getGroupProgressDownloadLink(group._id, $event)" style="color:#509e2e">(Download Group CSV)</span><span class="icon-link invisible"></span>
                         </div>
-                    </a>
+                    </span>
                     <div ng-if="groupExpanded[group._id]" class="accordion-group-content">
                         <!--
                             SECOND LEVEL - boards accordion
@@ -63,13 +65,13 @@
                                 </div>
                             </div>
                             <dd ng-repeat="assignment in groupAssignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
-                                <div href="javascript:void(0)" class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
+                                <div class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
                                         {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}<span class="accordion-board-due-date" ng-show="assignment.dueDate">(Due: {{assignment.dueDate | date:'dd/MM/yyyy'}})</span>
                                     </div>
-                                    <a href="javascript:void(0)" class="accordion-board-link">
+                                    <span class="accordion-board-link" style="color:#509e2e">
                                         <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
-                                    </a> <span class="accordion-board-link">&nbsp; or &nbsp; </span>
+                                    </span><span class="accordion-board-link">&nbsp; or &nbsp; </span>
                                     <a class="accordion-board-link" ng-click="getAssignmentDownloadLink(assignment._id, $event)" target="_blank">Download CSV</a>                        
                                 </div>
 
@@ -218,12 +220,6 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                </div>
-                            </dd>
-                            <dd class="accordion-board-footer" ng-class="{active: assignmentExpanded[assignment._id]}">
-                                <div class="accordion-board-header accordion-board-header-last">
-                                    <div class="accordion-board-title accordion-board-title-no-counter">&nbsp;</div>
-                                    <a ng-click="getGroupProgressDownloadLink(group._id, $event)" class="accordion-board-link" target="_blank"><span>Download Group CSV</span><span class="icon-link invisible"></span></a>
                                 </div>
                             </dd>
                         </dl>
