@@ -160,7 +160,6 @@ export
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
         this.centre(true);
-
         if (!this.textEntry) {
             this.scope.log.initialState = [];
 
@@ -289,7 +288,7 @@ export
         this.p.frameRate(7);
     };
 
-    parseSubtreeObject = (root: Object, clearExistingSymbols = false) => {
+    parseSubtreeObject = (root: Object, clearExistingSymbols = false, fromTextEntry = false) => {
         if (root) {
             if (clearExistingSymbols) {
                 this.symbols.length = 0;
@@ -301,7 +300,7 @@ export
             this.updateCanvasDockingPoints();
             w.shakeIt();
         }
-        this.updateState();
+        this.updateState(fromTextEntry);
     };
 
     _parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
@@ -610,7 +609,7 @@ export
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
-    updateState = () => {
+    updateState = (fromTextEntry = false) => {
         let symbolWithMostChildren = null;
         let mostChildren = 0;
         _.each(this.symbols, symbol => {
@@ -630,14 +629,16 @@ export
                     "python": symbolWithMostChildren.formatExpressionAs("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.formatExpressionAs("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
-                    "uniqueSymbols": flattenedExpression.join(', ')
+                    "uniqueSymbols": flattenedExpression.join(', '),
                 },
-                symbols: _.map(this.symbols, s => s.subtreeObject())
+                symbols: _.map(this.symbols, s => s.subtreeObject()),
+                fromTextEntry: fromTextEntry
             });
         } else {
             this.scope.newEditorState({
                 result: null,
                 symbols: [],
+                fromTextEntry: fromTextEntry
             })
         }
     };
