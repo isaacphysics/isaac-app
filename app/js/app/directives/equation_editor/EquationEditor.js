@@ -108,7 +108,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
-                    scope.state.fromTextEntry = false;
+                    scope.state.textEntry = false;
 
                     console.log("New state:", s);
 
@@ -396,7 +396,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 width: window.innerWidth,
                                 height: window.innerHeight
                             },
-                            fromTextEntry: scope.state.fromTextEntry || false,
+                            textEntry: scope.state.textEntry || false,
                             actions: [{
                                 event: "OPEN",
                                 timestamp: Date.now()

@@ -632,13 +632,13 @@ export
                     "uniqueSymbols": flattenedExpression.join(', '),
                 },
                 symbols: _.map(this.symbols, s => s.subtreeObject()),
-                fromTextEntry: fromTextEntry
+                textEntry: fromTextEntry
             });
         } else {
             this.scope.newEditorState({
                 result: null,
                 symbols: [],
-                fromTextEntry: fromTextEntry
+                textEntry: fromTextEntry
             })
         }
     };

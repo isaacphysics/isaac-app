@@ -89,7 +89,7 @@ define(["p5",
                     timer = $timeout(function() {
                         let pycode = element.find(".eqn-text-input")[0].value;
 
-                        scope.state = {result: {python: pycode}, textEntry: true};
+                        scope.state = {result: {python: pycode}};
                         scope.textEntryError = [];
 
                         let parsedExpression = parseExpression(pycode);
@@ -138,7 +138,6 @@ define(["p5",
                                 let i = sizes.indexOf(Math.max.apply(null, sizes));
                                 sketch.parseSubtreeObject(parsedExpression[i], true, true);
                             }
-                            scope.state.textEntry = true;
                             scope.state.userInput = pycode;
                         }
 
@@ -158,7 +157,7 @@ define(["p5",
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
-                    scope.state.fromTextEntry = true;
+                    scope.state.textEntry = true;
 
                     console.log("New state:", s);
 
