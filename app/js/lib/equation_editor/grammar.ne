@@ -5,14 +5,14 @@ const lexer = moo.compile({
     Int: /[0-9]+/,
     IdMod: /[a-zA-Z]+_(?:prime)/,
     Id: { match: /[a-zA-Z]+(?:_[a-zA-Z0-9]+)?/, keywords: {
-	Fn: ['cos', 'sin', 'tan',
-         'cosec', 'sec', 'cot',
-         'arccos', 'arcsin', 'arctan',
-         'arccosec', 'arcsec', 'arccot',
-         'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
-         'arccosh', 'arcsinh', 'arctanh', 'arccosech', 'arcsech', 'arccoth',
-         'ln',
-         ],
+	TrigFn: ['cos', 'sin', 'tan',
+             'cosec', 'sec', 'cot',
+             'arccos', 'arcsin', 'arctan',
+             'arccosec', 'arcsec', 'arccot',
+             'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
+             'arccosh', 'arcsinh', 'arctanh', 'arccosech', 'arcsech', 'arccoth',
+            ],
+    Fn: ['ln'],
     Log: ['log'],
     Radix: ['sqrt'],
     Derivative: ['diff', 'Derivative'],
@@ -71,10 +71,14 @@ const processFunction = (d) => {
     return { type: 'Fn', properties: { name: d[0].text, allowSubscript: d[0].text !== 'ln', innerSuperscript: false }, children: { argument: arg } }
 }
 
-const processSpecialTrigFunction = (d) => {
-    let arg = _.cloneDeep(d[5])
-    let exp = _.cloneDeep(d[2])
-    return { type: 'Fn', properties: { name: d[0].text, allowSubscript: false, innerSuperscript: true }, children: { superscript: exp, argument: arg } }
+const processSpecialTrigFunction = (d_name, d_arg, d_exp = null) => {
+    let arg = _.cloneDeep(d_arg)
+    let exp = _.cloneDeep(d_exp)
+    if (null === exp) {
+        return { type: 'Fn', properties: { name: d_name.text, allowSubscript: false, innerSuperscript: true }, children: { argument: arg } }
+    } else {
+        return { type: 'Fn', properties: { name: d_name.text, allowSubscript: false, innerSuperscript: true }, children: { superscript: exp, argument: arg } }
+    }
 }
 
 const processLog = (arg, base = null) => {
@@ -251,15 +255,17 @@ const processDerivative = (d) => {
 main -> _ AS _                                            {% processMain %}
       | _ AS _ %Rel _ AS _                                {% processRelation %}
 
-P ->               %Lparen _ AS _                 %Rparen {% processBrackets %}
-   | %Fn           %Lparen _ AS _                 %Rparen {% processFunction %}
-   | %Fn %Pow NUM  %Lparen _ AS _                 %Rparen {% processSpecialTrigFunction %}
-   | %Derivative   %Lparen _ AS _ %Comma _ ARGS _ %Rparen {% processDerivative %}
-   | %Log          %Lparen _ AS _                 %Rparen {% (d) => { return processLog(d[3]) } %}
-   | %Log          %Lparen _ AS _ %Comma _ NUM _  %Rparen {% (d) => { return processLog(d[3], d[7]) } %}
-   | %Radix        %Lparen _ AS _                 %Rparen {% processRadix %}
-   | VAR                                                  {% id %}
-   | NUM                                                  {% id %}
+P ->                   %Lparen _ AS _                 %Rparen          {% processBrackets %}
+   | %TrigFn           %Lparen _ AS _                 %Rparen          {% d => processSpecialTrigFunction(d[0], d[3], null) %}
+   | %TrigFn %Pow NUM  %Lparen _ AS _                 %Rparen          {% d => processSpecialTrigFunction(d[0], d[5], d[2]) %}
+   | %TrigFn           %Lparen _ AS _                 %Rparen %Pow NUM {% d => processSpecialTrigFunction(d[0], d[3], d[7]) %}
+   | %Derivative       %Lparen _ AS _ %Comma _ ARGS _ %Rparen          {% processDerivative %}
+   | %Log              %Lparen _ AS _                 %Rparen          {% (d) => { return processLog(d[3]) } %}
+   | %Log              %Lparen _ AS _ %Comma _ NUM _  %Rparen          {% (d) => { return processLog(d[3], d[7]) } %}
+   | %Radix            %Lparen _ AS _                 %Rparen          {% processRadix %}
+   | %Fn               %Lparen _ AS _                 %Rparen          {% processFunction %}
+   | VAR                                                               {% id %}
+   | NUM                                                               {% id %}
 
 ARGS -> AS                                                {% (d) => [d[0]] %}
       | ARGS _ %Comma _ AS                                {% (d) => d[0].concat(d[4]) %}
