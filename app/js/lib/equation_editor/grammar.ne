@@ -114,7 +114,7 @@ const processExponent = (d) => {
 
 const processMultiplication = (d) => {
     let lhs = _.cloneDeep(d[0])
-    let rhs = _.cloneDeep(d[4])
+    let rhs = _.cloneDeep(d[d.length-1])
     let r = _findRightmost(lhs)
     r.children['right'] = rhs
     return lhs
@@ -265,6 +265,7 @@ ARGS -> AS                                                {% (d) => [d[0]] %}
       | ARGS _ %Comma _ AS                                {% (d) => d[0].concat(d[4]) %}
 
 E -> P _ %Pow _ E                                         {% processExponent %}
+   | NUM VAR                                              {% processMultiplication %}
    | P                                                    {% id %}
 
 # Multiplication and division
