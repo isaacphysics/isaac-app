@@ -92,7 +92,7 @@ define(["p5",
                         scope.state = {result: {python: pycode}};
                         scope.textEntryError = [];
 
-                        let parsedExpression = parseExpression(pycode);
+                        let parsedExpression = _.uniqWith(parseExpression(pycode), _.isEqual);
                         //console.log(parsedExpression);
 
                         if (parsedExpression.hasOwnProperty('error') || (parsedExpression.length === 0 && pycode != '')) {
