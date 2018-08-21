@@ -14,7 +14,7 @@
 </div>
 <div class="space"></div>
 <div class="row">
-    <dl id="progressTypeTabs" ng-show="user.role != 'STUDENT'" class="tabs profile-tabs no-print" style="margin:0; position: relative; z-index: 99;">
+    <dl id="progressTypeTabs" ng-if="showTeacherProgressTab" class="tabs profile-tabs no-print" style="margin:0; position: relative; z-index: 99;">
         <dd ng-class="progressType == 'teacherProgress' ? 'active' : ''">
             <a href="javascript:void(0)" ng-click="toggleProgressType()">
                 <span><span class="show-for-medium-up">Isaac</span> Teacher Activity</span>

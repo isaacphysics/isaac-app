@@ -81,7 +81,8 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
 
         $scope.questionsVisible = $scope.correctQuestions;
 
-        if ($scope.user.role != 'STUDENT') {
+        $scope.showTeacherProgressTab = $scope.progress.userDetails.role != 'STUDENT';
+        if ($scope.showTeacherProgressTab) {
             $scope.progressType = 'teacherProgress';
         } else {
             $scope.progressType = 'studentProgress';
@@ -89,9 +90,9 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
 
         $scope.toggleProgressType = function() {
             if ($scope.progressType == 'teacherProgress') {
-                $scope.progressType = 'studentProgress'
+                $scope.progressType = 'studentProgress';
             } else {
-                $scope.progressType = 'teacherProgress'
+                $scope.progressType = 'teacherProgress';
             }
         }
 
