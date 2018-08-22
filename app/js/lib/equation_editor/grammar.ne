@@ -99,19 +99,20 @@ const processRadix = (d) => {
 const processExponent = (d) => {
     let f = _.cloneDeep(d[0])
     let e = _.cloneDeep(d[4])
+    let r = _findRightmost(f)
 
-    if (f.type === 'Fn') {
+    if (['Fn', 'Log', 'TrigFn'].includes(f.type)) {
         switch (f.properties.name) {
             case 'ln':
                 return { type: 'Brackets', properties: { type: 'round' }, children: { argument: f, superscript: e } }
             case 'log':
                 return { type: 'Brackets', properties: { type: 'round' }, children: { argument: f, superscript: e } }
             default:
-                f.children['superscript'] = e
+                r.children['superscript'] = e
                 return f
         }
     } else {
-        f.children['superscript'] = e
+        r.children['superscript'] = e
         return f
     }
 }
@@ -252,8 +253,8 @@ const processDerivative = (d) => {
 
 ### Behold, the Grammar!
 
-main -> _ AS _                                            {% processMain %}
-      | _ AS _ %Rel _ AS _                                {% processRelation %}
+main -> _ AS _                                                         {% processMain %}
+      | _ AS _ %Rel _ AS _                                             {% processRelation %}
 
 P ->                   %Lparen _ AS _                 %Rparen          {% processBrackets %}
    | %TrigFn           %Lparen _ AS _                 %Rparen          {% d => processSpecialTrigFunction(d[0], d[3], null) %}
@@ -267,27 +268,27 @@ P ->                   %Lparen _ AS _                 %Rparen          {% proces
    | VAR                                                               {% id %}
    | NUM                                                               {% id %}
 
-ARGS -> AS                                                {% (d) => [d[0]] %}
-      | ARGS _ %Comma _ AS                                {% (d) => d[0].concat(d[4]) %}
+ARGS -> AS                                                             {% (d) => [d[0]] %}
+      | ARGS _ %Comma _ AS                                             {% (d) => d[0].concat(d[4]) %}
 
-E -> P _ %Pow _ E                                         {% processExponent %}
-   | NUM VAR                                              {% processMultiplication %}
-   | P                                                    {% id %}
+E -> P _ %Pow _ E                                                      {% processExponent %}
+   | NUM VAR                                                           {% processMultiplication %}
+   | P                                                                 {% id %}
 
 # Multiplication and division
-MD -> MD _ %Mul _ E                                       {% processMultiplication %}
+MD -> MD _ %Mul _ E                                                    {% processMultiplication %}
     # Do we really need to equate ' ' to '*'? Consider that sin^2 (x) -> sin**2*x vs syntax error.
-    | MD _ " " _ E                                        {% processMultiplication %}
-    | MD _ %Div _ E                                       {% processFraction %}
-    | E                                                   {% id %}
+    | MD _ " " _ E                                                     {% processMultiplication %}
+    | MD _ %Div _ E                                                    {% processFraction %}
+    | E                                                                {% id %}
 
-AS -> AS _ %PlusMinus _ MD                                {% processPlusMinus %}
-    | %PlusMinus _ MD                                     {% processUnaryPlusMinus %}
-    | MD                                                  {% id %}
+AS -> AS _ %PlusMinus _ MD                                             {% processPlusMinus %}
+    | %PlusMinus _ MD                                                  {% processUnaryPlusMinus %}
+    | MD                                                               {% id %}
 
-VAR -> %Id                                                {% processIdentifier %}
-     | %IdMod                                             {% processIdentifierModified %}
+VAR -> %Id                                                             {% processIdentifier %}
+     | %IdMod                                                          {% processIdentifierModified %}
 
-NUM -> %Int                                               {% processNumber %}
+NUM -> %Int                                                            {% processNumber %}
 
 _ -> [\s]:*
