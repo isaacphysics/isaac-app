@@ -1,10 +1,13 @@
 'use strict';
 
+window.angular || require("angular")
+require("angular-mocks")
+module = window.module
+
 /* jasmine specs for services go here */
 
 describe('service', function() {
-  beforeEach(module('myApp.services'));
-
+  beforeEach(module('isaac.services'));
 
   describe('version', function() {
     it('should return current version', inject(function(version) {

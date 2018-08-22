@@ -1,7 +1,7 @@
-define(function(require) {
-    var templateUrl = require("/partials/graph_sketcher/graph_input.html");
-    
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, api) {
+"use strict";
+
+define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
+    return ["$rootScope", function($rootScope) {
 
         return {
             scope: {
@@ -11,13 +11,9 @@ define(function(require) {
 
             restrict: "A",
             templateUrl: templateUrl,
-            link: function(scope, element, attrs) {
-                isTherePreviousAnswer = function() {
-                    return (scope.dat.curves != undefined);
-                }
-
+            link: function(scope, _element, _attrs) {
                 scope.edit = function() {
-                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode, scope.dat).then(
+                    $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(
                         function(finalState) {
                             scope.state = finalState;
                             scope.$apply();
