@@ -277,9 +277,8 @@ E -> P _ %Pow _ E                                                      {% proces
 
 # Multiplication and division
 MD -> MD _ %Mul _ E                                                    {% processMultiplication %}
-    # Do we really need to equate ' ' to '*'? Consider that sin^2 (x) -> sin**2*x vs syntax error.
-    | MD _ " " _ E                                                     {% processMultiplication %}
     | MD _ %Div _ E                                                    {% processFraction %}
+    | MD _ E                                                           {% processMultiplication %}
     | E                                                                {% id %}
 
 AS -> AS _ %PlusMinus _ MD                                             {% processPlusMinus %}
