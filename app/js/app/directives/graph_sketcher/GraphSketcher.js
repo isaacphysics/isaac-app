@@ -1286,7 +1286,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         window.addEventListener("beforeunload", scope.logOnClose);
 
                         // Log the editor being closed and submit log event to server:
-                        graphSketcherModal.one("close", function() {
+                        graphSketcherModal.one("closed.fndtn.reveal", function() {
                             scope.log.finalState = [];
                             scope.state.curves.forEach(function(e) {
                                 scope.log.finalState.push(e);
@@ -1299,13 +1299,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
                             scope.log = null;
-                            return(scope.state);
-                        });
-
-                        graphSketcherModal.one("closed.fndtn.reveal", function() {
                             scope.p.remove();
                             curves = [];
                             resolve(scope.state);
+                            return(scope.state);
                         });
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
