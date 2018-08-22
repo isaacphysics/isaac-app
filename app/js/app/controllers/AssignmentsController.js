@@ -18,7 +18,8 @@ import angular from "angular";
 import Opentip from "../../lib/opentip-jquery.js";
 import _ from "lodash";
 
-export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', function($scope, _auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location) {
+export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardSearchOptions', 'boardProcessor', '$rootScope', '$window', '$timeout', '$location', '$stateParams', function($scope, _auth, api, gameBoardTitles, boardSearchOptions, boardProcessor, $rootScope, $window, $timeout, $location, $stateParams) {
+
     $rootScope.pageTitle = "Assign Boards";
 
     $scope.generateGameBoardTitle = gameBoardTitles.generate;
@@ -129,15 +130,27 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
                     // TODO: This needs to be reviewed
                     // Currently reloading boards after delete
                 $scope.setLoading(true);
-                    api.deleteGameBoard(board.id).$promise.then(function(){
+                api.deleteGameBoard(board.id).$promise.then(function() {
                     updateBoards($scope.boards.results.length);
                     $scope.setLoading(false);
                     $scope.showToast($scope.toastTypes.Success, "Board Deleted", "You have successfully deleted the board: " + boardTitle);
-                    }).catch(function(e){
+                }).catch(function(e) {
                     $scope.showToast($scope.toastTypes.Failure, "Board Deletion Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
-                    });
+                });
             }
         })
+    }
+
+    $scope.calculateBoardLevels = function(board) {
+        return board.questions.reduce((a, q) => {
+            if (a.indexOf(q.level) == -1 && q.level != 0) {
+                return [...a, q];
+            } else {
+                return a;
+            }
+        }).sort((a, b) => {
+               a > b ? 1 : (a < b ? -1 : 0);
+        });
     }
 
     let lookupAssignedGroups = function(gameboardIds) {
@@ -146,10 +159,8 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
     }
 
     let updateGroupAssignmentMap = function(boardsToChange) {
-        angular.forEach(boardsToChange, function(board, _key){
-
+        angular.forEach(boardsToChange, function(board, _key) {
             lookupAssignedGroups(board.id).$promise.then(function(groupsAssigned) {
-
                 if (groupsAssigned[board.id].length > 0) {
                     $scope.groupAssignmentInfo[board.id] = groupsAssigned[board.id];
                 }
@@ -222,9 +233,24 @@ export const SetAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoard
             });                
         }
     }
+
+    // If we want to load the page with the Isaac Book modal displayed
+    // Can't display modal until it exists on the scope, so use a watcher for later.
+    let stopWatchingForBookPopup;
+    if ($stateParams.books) {
+        if ($stateParams.books == 'show') {
+            stopWatchingForBookPopup = $scope.$watch("modals", function(newModals) {
+                if (newModals.isaacBooks) {
+                    $scope.modals.isaacBooks.show();
+                    stopWatchingForBookPopup();
+                }
+            });
+        }
+    }
+
 }];
 
-export const MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardProcessor', '$rootScope', '$timeout', '$location', function($scope, auth, api, gameBoardTitles, boardProcessor, $rootScope, $timeout, $location) {
+export const MyAssignmentsPageController = ['$scope', 'auth', 'api', 'gameBoardTitles', 'boardProcessor', '$rootScope', '$timeout', '$location', function($scope, _auth, api, gameBoardTitles, boardProcessor, $rootScope, _$timeout, $location) {
 
     $scope.setLoading(true);
     
