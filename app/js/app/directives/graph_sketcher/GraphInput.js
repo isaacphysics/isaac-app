@@ -12,10 +12,6 @@ define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
             restrict: "A",
             templateUrl: templateUrl,
             link: function(scope, _element, _attrs) {
-                scope.isTherePreviousAnswer = function() {
-                    return (scope.dat.curves != undefined);
-                };
-
                 scope.edit = function() {
                     $rootScope.showGraphSketcher(scope.state, scope.questionDoc, scope.editorMode).then(
                         function(finalState) {

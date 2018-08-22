@@ -16,18 +16,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
 
                 scope.canvasID = scope.questionDoc.id;
 
-                function reDraw() {
-                    scope.graphView.drawBackground(canvasWidth, canvasHeight);
-                    scope.graphView.drawCurves(curves);
-                }
-
                 scope.sketch = function(p) {
 
                     // canvas coefficients
                     let canvasHeight = graphPreviewDiv.height();
                     let canvasWidth = graphPreviewDiv.width();
 
-                    let freeSymbols = [];
                     let curves = [];
 
                     scope.graphView = new graphViewBuilder.graphView(p);

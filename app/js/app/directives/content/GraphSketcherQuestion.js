@@ -12,24 +12,22 @@ define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestio
             controller: ["$scope", function(scope) {
                 let ctrl = this;
 
-                ctrl.selectedFormula = {};
-
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
                     try {
-                        ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.graphData);
+                        ctrl.formulaChoice = JSON.parse(scope.question.selectedChoice.graphData);
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
                 } else {
                     // We have no answer and no seed
-                    ctrl.selectedFormula = {};
+                    ctrl.formulaChoice = {};
                 }
 
                 ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
                 ctrl.plainDoc.type = "content";
 
-                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                scope.$watch("ctrl.formulaChoice", function(f, oldF) {
                     
                     if (f === oldF) {
                         return; // Init

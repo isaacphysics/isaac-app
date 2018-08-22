@@ -10,9 +10,9 @@ define(function() {
             return Math.sqrt(Math.pow(pt1.x - pt2.x, 2) + Math.pow(pt1.y - pt2.y, 2));
         },
 
-        decodeData: function(rawData, width, height) {
+        decodeData: function(data, width, height) {
 
-            let data = this.clone(rawData);
+            // let data = this.clone(rawData);
 
             function denormalise(pt) {
                 pt.x = pt.x * width + width/2;
@@ -75,7 +75,7 @@ define(function() {
                 denormalise(freeSymbols[j]);
             }
 
-            // return;
+            return;
         },
 
         detect: function(e, x, y) {

@@ -14,7 +14,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                 // objects which are shared between sketch and the ui buttons
                 let colorSelect = element.find(".color-select")[0];
                 let encodeData;
-                let decodeData;
                 let reDraw;
                 let freeSymbols = [];
                 let curves = [];
@@ -1072,7 +1071,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         p.mouseReleased(e);
                     }
 
-                    // need to be able to resize the background on screen resize
                     // TODO BH remember to properly resize curves for continuous resizing - i.e. undo/redo correctly
                     p.windowResized = function() {
                         let data = encodeData(false);
@@ -1115,7 +1113,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             scope.graphView.drawCurves(curves);
                             scope.graphView.drawSymbols(freeSymbols, DEFAULT_KNOT_COLOR);
                             scope.graphView.drawStretchBox(clickedCurveIdx, curves);
-                            scope.dat = encodeData();
+                            scope.state = encodeData();
                         }
                     };
 
@@ -1262,7 +1260,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         // initialise our canvas
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         graphSketcherModal.foundation("reveal", "open");
-                        scope.state = initialState || {freeSymbols: []}
+                        if (initialState.curves == undefined) {
+                            scope.state = {freeSymbols: [], curves: []};
+                        } else {
+                            scope.state = initialState;
+                        }
+                        curves = scope.state.curves;
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode;
                         // when answered submit a log with the curve details
@@ -1283,10 +1286,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                         window.addEventListener("beforeunload", scope.logOnClose);
 
                         // Log the editor being closed and submit log event to server:
-                        graphSketcherModal.one("close.fndtn.reveal", function(_e) {
+                        graphSketcherModal.one("close", function() {
                             scope.log.finalState = [];
-                            scope.dat.curves.forEach(function(g) {
-                                scope.log.finalState.push(g);
+                            scope.state.curves.forEach(function(e) {
+                                scope.log.finalState.push(e);
                             });
                             scope.log.actions.push({
                                 event: "CLOSE",
@@ -1296,9 +1299,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
                             scope.log = null;
+                            return(scope.state);
+                        });
 
+                        graphSketcherModal.one("closed.fndtn.reveal", function() {
                             scope.p.remove();
-                            resolve(scope.dat);
+                            curves = [];
+                            resolve(scope.state);
                         });
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
