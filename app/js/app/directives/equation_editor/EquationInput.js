@@ -125,7 +125,7 @@ define(["p5",
                         } else {
                             // Successfully parsed something:
                             if (pycode === '') {
-                               element.find(".eqn-preview").html("Click here to enter a formula!");
+                                element.find(".eqn-preview").html("Click here to enter a formula!");
                                 scope.symbols = [];
                                 scope.state.result.tex = "";
                                 scope.state.result.python = "";
@@ -161,7 +161,7 @@ define(["p5",
 
                     console.log("New state:", s);
 
-                    let rp = $(".eqn-preview");
+                    let rp = element.find(".eqn-preview");
                     rp.empty();
 
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
