@@ -229,6 +229,17 @@ define([], function() {
                 url: urlPrefix + "/groups/:id/manager/:userId", 
                 isArray: false 
             },
+            'getMyMembership' : {
+                method: 'GET',
+                url: urlPrefix + "/groups/membership", 
+                isArray: true 
+            },
+            'changeMyMembershipStatus' : {
+                method: 'POST',
+                url: urlPrefix + "/groups/membership/:groupId/:newStatus", 
+                isArray: false, 
+                params: {groupId: '@groupId', newStatus: '@newStatus'},
+            },
         });
 
         this.authorisations = $resource(urlPrefix + "/authorisations/", {}, {

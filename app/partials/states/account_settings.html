@@ -328,16 +328,16 @@
             <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-16 medium-16 columns">
-                    <h3>Teachers and Assignments Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                    <h3>Teacher Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
                 </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <p>Enter the code given to connect with a teacher.</p>
+                        <p>Enter the code given by your teacher to connect.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
                             <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Connect</a>
                         </form>
-                    </div>
+                    </div>             
                 </div>
                 <div ng-if="editingSelf" class="large-6 medium-16 columns">
                     <div class="connect-list">
@@ -345,7 +345,7 @@
 
                         <div class="connect-list-inner">
                             <ul class="teachers-connected">
-                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
+                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{convertToTeacherName(teacherUser)}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revocationConfirmation(teacherUser)">Revoke</a></li>
                             </ul>
                             <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
                         </div>
@@ -374,7 +374,49 @@
                             </div>                        
                         </div>
                     </div>                    
+                </div>                
+                <div ng-if="editingSelf">
+                    <div class="large-16 medium-16 columns">
+                        <hr>
+                    </div>
+                    <div class="large-16 medium-16 columns">
+                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of."></span></h3>
+                        <p>From here you can manage who is able to set you assignments. This is separate to the users who can see your personal isaac data. Just because a teacher can set you assignments doesn't mean they can see any of your assignment data.</p> 
+                        <div class="my-groups-table-section">
+                            <table>
+                                    <tr>
+                                        <th>Group Name</th>
+                                        <th>Teachers</th>
+                                        <th>Current Status</th>
+                                        <th>Actions</th>
+                                    </tr>                                               
+                                    <tr ng-repeat="entry in myGroupMembership | orderBy:'groupName'">
+                                        <td>{{entry.group.groupName}}</td>
+                                        <td>
+                                            <ul>
+                                                <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
+                                                <li ng-repeat="manager in entry.group.additionalManagers">
+                                                {{convertToTeacherName(manager)}}</li>
+                                            </ul>    
+                                        </td>
+                                        <td class="centered-table-column">{{entry.membershipStatus}}</td>
+
+                                        <td class="centered-table-column">
+                                            <a ng-click="changeMyMembershipStatus(entry.group.id, 'INACTIVE')" ng-if="entry.membershipStatus == 'ACTIVE'" href="javascript:void(0)">Leave Group</a>
+                                            <span ng-if="entry.membershipStatus == 'ACTIVE'" aria-haspopup="true" class="icon-help has-tip" data-ot="If you leave a group you will no longer receive notifications of new assignments."></span>
+
+                                            <a ng-click="changeMyMembershipStatus(entry.group.id, 'ACTIVE')" ng-if="entry.membershipStatus == 'INACTIVE'" href="javascript:void(0)">Rejoin Group</a>
+                                            <span ng-if="entry.membershipStatus == 'INACTIVE'" aria-haspopup="true" class="icon-help has-tip" data-ot="If you rejoin a group you will see all the assignments set since the group was created."></span>
+                                        </td>
+                                    </tr>
+                                                                       
+
+                            </table>
+                        </div>                                
+                        <!--a class="ru-button" ng-click="manageGroupMembership()" href="javascript:void(0)">Manage Group Membership</a-->    
+                    </div>                    
                 </div>
+                
             </div>
 
             <!-- TAB 3 -->
@@ -528,5 +570,20 @@
         <a class="ru-button-big" ng-click="applyToken()">Confirm</a>
         <a class="ru-button-big secondary" ng-click="modals.tokenVerification.hide()">Cancel</a>
     </div>     
+  </div>
+</div>
+
+<div isaac-modal="revocationConfirmation">
+  <div class="reveal-modal-head">
+    <h2>Revoke access to your data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <p>The user <strong>{{convertToTeacherName(userToRevoke)}}</strong> will no longer be able to access your data.</p>
+
+    <p>Are you sure you want to revoke access for this user?</p>
+    <a class="ru-button-big" ng-click="revokeAuthorisation(userToRevoke)">Confirm</a>
+    <a class="ru-button-big secondary" ng-click="modals.revocationConfirmation.hide()">Cancel</a>
+
   </div>
 </div>

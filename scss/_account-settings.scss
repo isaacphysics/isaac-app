@@ -154,6 +154,33 @@
 		background:white;
 	}
 
+	.my-groups-table-section {
+		max-height:300px; 
+		overflow-y: auto;
+		table {
+			width:100%;
+			border-collapse:collapse;
+			th{
+				background-color: $ru_darkgrey;
+				color:#fff;
+				text-align:center;
+				font-size:1rem;
+			}
+			td li {
+				color: #858585;
+			    font-size: .875rem;
+			    text-align: left;
+			}
+			.centered-table-column {
+				text-align:center;
+				a {
+					font-weight:bold;
+					font-size: 1rem;
+				}
+			}
+		}
+	}
+
 	dd.ru-error-message {
 		border-color: #dc5757;
 
