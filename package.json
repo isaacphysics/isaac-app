@@ -1,7 +1,7 @@
 {
   "name": "isaac-app",
   "private": true,
-  "version": "2.6.1-SNAPSHOT",
+  "version": "2.6.1",
   "description": "Physics. You work it out.",
   "repository": "http://isaacphysics.org",
   "license": "MIT",
