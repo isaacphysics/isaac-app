@@ -41,9 +41,11 @@
                                       data-ot="This user's account email address is invalid or not accepting email.<br />They will not be able to reset their password or receive update emails. Ask them to login and update it, or contact us to help resolve the issue."
                                       class="has-tip"
                                       aria-haspopup="true"><span class="icon-email-status failed"></span></span>
-                                <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span></span>
+                                <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span>
+                                </span>
+                                <span data-ot="This user has set their status to inactive for this group. This means they will no longer receive assignment emails." class="has-tip" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span>
                             </td>
-                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span></td>
+                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span><span data-ot="This user has set their status to inactive for this group. This means they will no longer receive assignment emails." class="" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>
                             <td>
                                 <a ng-if="member.authorisedFullAccess" href="javascript:void(0)" ng-click="resetMemberPassword(member)" class="right" ng-class="{disabled: !canSendPasswordResetRequest(member)}"
