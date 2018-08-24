@@ -332,7 +332,7 @@
                 </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <p>Enter the code given by your teacher to connect.</p>
+                        <p>Enter the code given by your teacher to create a teacher connection and join a group.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
                             <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Connect</a>
@@ -381,13 +381,13 @@
                     </div>
                     <div class="large-16 medium-16 columns">
                         <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of."></span></h3>
-                        <p>From here you can manage who is able to set you assignments. This is separate to the users who can see your personal isaac data. Just because a teacher can set you assignments doesn't mean they can see any of your assignment data.</p> 
+                        <p>You can manage who is able to set you assignments by leaving a group. While you are inactive in a group you won't receive any assignments for that group. </p> 
                         <div class="my-groups-table-section">
                             <table>
                                     <tr>
                                         <th>Group Name</th>
                                         <th>Teachers</th>
-                                        <th>Current Status</th>
+                                        <th>Membership Status</th>
                                         <th>Actions</th>
                                     </tr>                                               
                                     <tr ng-repeat="entry in myGroupMembership | orderBy:'groupName'">
