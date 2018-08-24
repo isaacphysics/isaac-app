@@ -391,6 +391,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.applyToken = function() {
         api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
             $scope.activeAuthorisations = api.authorisations.get();
+            $scope.myGroupMembership = api.groupManagementEndpoint.getMyMembership();
             $scope.authenticationToken = {value: null};
             $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
             // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
