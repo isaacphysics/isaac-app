@@ -7,7 +7,7 @@ define(['../math.js', '../../app/directives/graph_sketcher/GraphUtils.js'], func
             let n = pts.length - 1;
             let comb = [];
             let r;
-            for (r = 0; r <= n; r += 1) {
+            for (let r = 0; r <= n; r += 1) {
                 // from the other math library!!!! not the same as Math!!!!
                 comb.push(m.combinations(n, r));
             }
@@ -21,7 +21,7 @@ define(['../math.js', '../../app/directives/graph_sketcher/GraphUtils.js'], func
             let tmp2;
             let tmp3;
 
-            for (i = 0; i < this.numOfPts; i += 1) {
+            for (let i = 0; i < this.numOfPts; i += 1) {
                 u = i * step;
                 let sx = 0;
                 let sy = 0;
