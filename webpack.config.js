@@ -46,7 +46,10 @@ module.exports = function(env) {
         },
         {
           test: /\.ne$/,
-          use: "nearley-es6-loader"
+          use: [
+            { loader: "babel-loader" },
+            { loader: "nearley-es6-loader" }
+          ]
         },
         { 
           test: path.resolve(__dirname, "node_modules", "jquery", "dist", "jquery.js"),
