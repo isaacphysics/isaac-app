@@ -27,7 +27,7 @@ module.exports = function(env) {
       rules: [
         {
           test: /\.js$/,
-          exclude: [/node_modules/, /app\/js\/lib/],
+          exclude: [/node_modules/, /^app\/js\/lib\/((!?graph_sketcher).)*$/],
           use: 'babel-loader?cacheDirectory=true',
         },
         {
