@@ -1,19 +1,21 @@
 'use strict';
 
+window.angular || require("angular")
+require("angular-mocks")
+module = window.module
+
 /* jasmine specs for filters go here */
 
 describe('filter', function() {
-  beforeEach(module('myApp.filters'));
+  beforeEach(module('isaac.filters'));
 
+  // describe('capitalize', function() {
+  //   beforeEach(module(function($provide) {
+  //     $provide.value('version', 'TEST_VER');
+  //   }));
 
-  describe('interpolate', function() {
-    beforeEach(module(function($provide) {
-      $provide.value('version', 'TEST_VER');
-    }));
-
-
-    it('should replace VERSION', inject(function(interpolateFilter) {
-      expect(interpolateFilter('before %VERSION% after')).toEqual('before TEST_VER after');
-    }));
-  });
+  //   it('should capitalize abc', inject(function(capitalizeFilter) {
+  //     expect(capitalizeFilter('abc')).toEqual('Abc');
+  //   }));
+  // });
 });

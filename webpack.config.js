@@ -27,7 +27,7 @@ module.exports = function(env) {
       rules: [
         {
           test: /\.js$/,
-          exclude: [/node_modules/, /app\/js\/lib/],
+          exclude: [/node_modules/, /^app\/js\/lib\/((!?graph_sketcher).)*$/],
           use: 'babel-loader?cacheDirectory=true',
         },
         {
@@ -42,6 +42,13 @@ module.exports = function(env) {
           use: [
             { loader: "babel-loader" },
             { loader: "ts-loader", options: { ignoreDiagnostics: [2306] } }
+          ]
+        },
+        {
+          test: /\.ne$/,
+          use: [
+            { loader: "babel-loader" },
+            { loader: "nearley-es6-loader" }
           ]
         },
         { 
@@ -94,6 +101,10 @@ module.exports = function(env) {
         '/partials': 'app/partials',
         'showdown': 'app/js/lib/showdown/showdown.js',
       },
+    },
+
+    resolveLoader: {
+      modules: ["node_modules", path.resolve(__dirname, "app/js/lib/webpack-loaders")]
     },
 
     // Generate source maps

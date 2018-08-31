@@ -1,26 +1,21 @@
-define(function(require) {
-  var f = require('./func.js');
-
+define(['../../app/directives/graph_sketcher/GraphUtils.js'], function(graphUtils) {
     return {
 
         lineStyle: function(pts) {
 
-            var q = pts.length - 1;
-            // console.log(q);
-            var lin = [];
-            var sum_x = 0;
-            var sum_y = 0;
-            var sum_xy = 0;
-            var sum_xx = 0;
-            var count = 0;
-            var X = 0;
-            var Y = 0;
+            let q = pts.length - 1;
+            let lin = [];
+            let sum_x = 0;
+            let sum_y = 0;
+            let sum_xy = 0;
+            let sum_xx = 0;
+            let count = 0;
+            let X = 0;
+            let Y = 0;
 
-            for (i = 0; i < q; i += 1) {
+            for (let i = 0; i < q; i += 1) {
                 X = pts[i].x;
-                // console.log(X);
                 Y = pts[i].y;
-                // console.log(Y);
                 sum_x += X;
                 sum_y += Y;
                 sum_xx += X*X;
@@ -28,21 +23,14 @@ define(function(require) {
                 count++;
             }
 
-            var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-            // console.log(m);
-            var p = (sum_y/count) - (m*sum_x)/count;
-            // console.log(b);
+            let m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
 
-            // console.log(pts);
+            let p = (sum_y/count) - (m*sum_x)/count;
 
-            for(i = 0; i < q; i += 1) {
-                sx = pts[i].x;
-                // console.log(sx);
-                lin.push(f.createPoint(sx, m*sx + p));
-                // console.log(i);
-                // console.log(pts[i].x);
+            for (let i = 0; i < q; i += 1) {
+                let sx = pts[i].x;
+                lin.push(graphUtils.createPoint(sx, m * sx + p));
             }
-            // lin.push(pts[pts.length - 1]);
             return lin;
         }
     }

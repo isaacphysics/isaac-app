@@ -1,7 +1,7 @@
 {
   "name": "isaac-app",
   "private": true,
-  "version": "2.5.2-SNAPSHOT",
+  "version": "2.6.7-SNAPSHOT",
   "description": "Physics. You work it out.",
   "repository": "http://isaacphysics.org",
   "license": "MIT",
@@ -25,6 +25,8 @@
     "jquery-ui": "1.12.1",
     "lodash": "^4.17.10",
     "modernizr": "3.6.0",
+    "moo": "^0.4.3",
+    "nearley": "^2.13.0",
     "owl.carousel": "git://github.com/OwlCarousel2/OwlCarousel2.git#2.0.0-beta.3",
     "p5": "^0.6.1",
     "script-loader": "^0.7.2",

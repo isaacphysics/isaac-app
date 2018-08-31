@@ -86,7 +86,7 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
-    constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
+    constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
@@ -115,12 +115,13 @@ export
 
         this.centre(true);
 
-        this.scope.log.initialState = [];
-
-        for (let symbol of this.symbols) {
-            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+        if (!this.textEntry) {
+            this.scope.log.initialState = [];
+            
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
         }
-
         this.updateCanvasDockingPoints();
     };
 
@@ -159,13 +160,13 @@ export
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
         this.centre(true);
+        if (!this.textEntry) {
+            this.scope.log.initialState = [];
 
-        this.scope.log.initialState = [];
-
-        for (let symbol of this.symbols) {
-            this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
         }
-
         this.updateCanvasDockingPoints();
 
     };
@@ -287,8 +288,11 @@ export
         this.p.frameRate(7);
     };
 
-    parseSubtreeObject = (root: Object) => {
+    parseSubtreeObject = (root: Object, clearExistingSymbols = false, fromTextEntry = false) => {
         if (root) {
+            if (clearExistingSymbols) {
+                this.symbols.length = 0;
+            }
             let w: Widget = this._parseSubtreeObject(root);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
@@ -296,7 +300,7 @@ export
             this.updateCanvasDockingPoints();
             w.shakeIt();
         }
-        this.updateState();
+        this.updateState(fromTextEntry);
     };
 
     _parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
@@ -357,6 +361,8 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
+        if (this.textEntry) return;
+
         this.p.frameRate(60);
         // These are used to correctly detect clicks and taps.
 
@@ -433,6 +439,8 @@ export
     };
 
     touchMoved = () => {
+        if (this.textEntry) return;
+
         let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
         let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
@@ -484,6 +492,8 @@ export
     };
 
     touchEnded = () => {
+        if (this.textEntry) return;
+
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
         if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click
@@ -599,7 +609,7 @@ export
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
-    updateState = () => {
+    updateState = (fromTextEntry = false) => {
         let symbolWithMostChildren = null;
         let mostChildren = 0;
         _.each(this.symbols, symbol => {
@@ -619,14 +629,16 @@ export
                     "python": symbolWithMostChildren.formatExpressionAs("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.formatExpressionAs("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
-                    "uniqueSymbols": flattenedExpression.join(', ')
+                    "uniqueSymbols": flattenedExpression.join(', '),
                 },
-                symbols: _.map(this.symbols, s => s.subtreeObject())
+                symbols: _.map(this.symbols, s => s.subtreeObject()),
+                textEntry: fromTextEntry
             });
         } else {
             this.scope.newEditorState({
                 result: null,
                 symbols: [],
+                textEntry: fromTextEntry
             })
         }
     };

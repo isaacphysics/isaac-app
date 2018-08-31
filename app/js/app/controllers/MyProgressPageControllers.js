@@ -38,7 +38,7 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
         userOfInterest = $scope.user._id;
     }
 
-    api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result){
+    api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result) {
         $scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
         $scope.showQuestionsOverTime = false;
         for (let property in $scope.questionsAnsweredOverTime) {
@@ -81,6 +81,20 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
 
         $scope.questionsVisible = $scope.correctQuestions;
 
+        $scope.showTeacherProgressTab = $scope.progress.userDetails.role != 'STUDENT';
+        if ($scope.showTeacherProgressTab) {
+            $scope.progressType = 'teacherProgress';
+        } else {
+            $scope.progressType = 'studentProgress';
+        }
+
+        $scope.toggleProgressType = function() {
+            if ($scope.progressType == 'teacherProgress') {
+                $scope.progressType = 'studentProgress';
+            } else {
+                $scope.progressType = 'teacherProgress';
+            }
+        }
 
         // --- STREAK PROGRESS --- //
         if ($scope.progress.userSnapshot.streakRecord) {
@@ -100,14 +114,19 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
             //currentProgressValue.attr('stroke-dashoffset', String(currentDashOffset));
         }
 
-
-
-        $scope.toggleVisibleBoards = function(){
+        $scope.toggleVisibleBoards = function() {
             if ($scope.questionsVisible == $scope.correctQuestions) {
                 $scope.questionsVisible = $scope.attemptedQuestions;
             } else {
                 $scope.questionsVisible = $scope.correctQuestions;
             }
+        }
+
+        $scope.achievementsGetStarted = function(achievementType) {
+            api.logger.log({
+                type: "ACHIEVEMENT_GET_STARTED",
+                achievementType: achievementType ,
+            });
         }
 
         $scope.correctQuestions.levelData = [];
@@ -202,17 +221,15 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
                     })
                 }
 
-                $scope.questionsVisible.topicsSubject = newField.parent;
+                $scope.questionsVisible.topicsSubject = newField.parent;                
             });
-
         }
-
-
     }).catch(function(e) {
-        console.error("Unable to load user progress:", e);
-        $timeout(function() {
-            // Call this asynchronously, so that it happens later than the previous asynchronous call (!)
-            $scope.setLoading(false);
+            console.error("Unable to load user progress:", e);
+            $timeout(function() {
+                // Call this asynchronously, so that it happens later than the previous asynchronous call (!)
+                $scope.setLoading(false);
+            });
         });
-    });
-}];
+    }
+];

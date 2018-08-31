@@ -292,6 +292,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         // * Add a bookState below
         // * Update /book (below) if you wish
         $sp.state('book_physics_skills_14', bookState("physics_skills_14"));
+        $sp.state('book_physics_skills_19', bookState("physics_skills_19"));
         $sp.state('book_chemistry_16', bookState("chemistry_16"));
         $sp.state('book_phys_book_gcse', bookState("phys_book_gcse"));
         $sp.state('book_quantum_mechanics_primer', bookState("quantum_mechanics_primer"));
@@ -927,7 +928,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('setAssignments', {
-            url: "/set_assignments",
+            url: "/set_assignments?books",
             resolve: {
                 requireRole: getRolePromiseInjectableFunction(["ADMIN", "TEACHER", "STAFF", "CONTENT_EDITOR", "EVENT_MANAGER"]),
             },
