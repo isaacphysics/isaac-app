@@ -503,7 +503,6 @@ define([
                     }
                 });
 
-                var totalJoyridePageCount = 0;
                 // Force resize of vidoes on tab change and accordion change
                 $(document).foundation(
                 {
