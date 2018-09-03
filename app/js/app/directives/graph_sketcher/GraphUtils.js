@@ -1,7 +1,8 @@
-"use strict";
-define(function() {
+'use strict';
+define(["../../../lib/math.js"], function(m) {
 
     const SAMPLE_INTERVAL = 10;
+    const numOfPts = 100;
 
     return {
 
@@ -111,6 +112,73 @@ define(function() {
             obj.x = x;
             obj.y = y;
             return obj;
+        },
+
+        linearLineStyle: function(pts) {
+
+            let numberOfPoints = pts.length - 1;
+            let linearPoints = [];
+            let sum_x = 0;
+            let sum_y = 0;
+            let sum_xy = 0;
+            let sum_xx = 0;
+            let count = 0;
+            let X = 0;
+            let Y = 0;
+
+            for (let currentIndex = 0; currentIndex < numberOfPoints; currentIndex += 1) {
+                X = pts[currentIndex].x;
+                Y = pts[currentIndex].y;
+                sum_x += X;
+                sum_y += Y;
+                sum_xx += X*X;
+                sum_xy += X*Y;
+                count++;
+            }
+
+            let gradient = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+
+            let offset = (sum_y/count) - (m*sum_x)/count;
+
+            for (let currentIndex = 0; currentIndex < numberOfPoints; currentIndex += 1) {
+                let sx = pts[currentIndex].x;
+                linearPoints.push(this.createPoint(sx, gradient * sx + offset));
+            }
+            return linearPoints;
+        },
+
+        bezierLineStyle: function(pts) {
+
+            let drawnNumberOfPoints = pts.length - 1;
+            let comb = [];
+            for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
+                // from the other math library!!!! not the same as Math!!!!
+                comb.push(m.combinations(drawnNumberOfPoints, currentIndex));
+            }
+
+            let step = 1 / numOfPts;
+            let bezier = [];
+            let u;
+
+            let tmp1;
+            let tmp2;
+            let tmp3;
+
+            for (let i = 0; i < numOfPts; i += 1) {
+                u = i * step;
+                let sx = 0;
+                let sy = 0;
+                for (let currentIndex = 0; currentIndex <= drawnNumberOfPoints; currentIndex += 1) {
+                    tmp1 = Math.pow(u, currentIndex);
+                    tmp2 = Math.pow(1 - u, drawnNumberOfPoints - currentIndex);
+                    tmp3 = comb[currentIndex] * tmp1 * tmp2;
+                    sx += tmp3 * pts[currentIndex].x;
+                    sy += tmp3 * pts[currentIndex].y;
+                }
+                bezier.push(this.createPoint(sx, sy, i));
+            }
+            bezier.push(pts[pts.length - 1]);
+            return bezier;
         },
 
         sample: function(pts) {

@@ -1,6 +1,6 @@
 'use strict';
-define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/bezier.js", "../../../lib/graph_sketcher/linear.js", "/partials/graph_sketcher/graph_sketcher.html"],
-    function(p5, graphViewBuilder, graphUtils, bezierLineType, linearLineType, templateUrl) {
+define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/graph_sketcher.html"],
+    function(p5, graphViewBuilder, graphUtils, templateUrl) {
     return ["$rootScope", "api", function($rootScope, api) {
         return {
             restrict: "A",
@@ -9,7 +9,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
             link: function(scope, element, _attrs) {
 
                 scope.title = "Sketcher";
-                scope.selectedLineType = bezierLineType;
+                scope.selectedLineType = "bezier";
 
                 // objects which are shared between sketch and the ui buttons
                 let colorSelect = element.find(".color-select")[0];
@@ -97,11 +97,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
 
                 // Want to distinguish straight vs curved (poly) lines
                 scope.straight = function() {
-                    scope.selectedLineType = linearLineType;
+                    scope.selectedLineType = "linear";
                 }
 
                 scope.poly = function() {
-                    scope.selectedLineType = bezierLineType;
+                    scope.selectedLineType = "bezier";
                 }
 
                 // The ability to wipe the canvas, deletion for example
@@ -983,7 +983,12 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "../../../lib/graph_sketcher/
                                     }
 
                                     // sampler.sample, bezier.genericBezier
-                                    let pts = scope.selectedLineType.lineStyle(graphUtils.sample(drawnPts));
+                                    let pts = [];
+                                    if (scope.selectedLineType == "bezier") {
+                                        pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
+                                    } else if (scope.selectedLineType == "linear") {
+                                        pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
+                                    }
                                     curve = {};
                                     curve.pts = pts;
 
