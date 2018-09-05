@@ -12,7 +12,7 @@ const lexer = moo.compile({
              'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
              'arccosh', 'arcsinh', 'arctanh', 'arccosech', 'arcsech', 'arccoth',
             ],
-    Fn: ['ln'],
+    Fn: ['ln', 'abs'],
     Log: ['log'],
     Radix: ['sqrt'],
     Derivative: ['diff', 'Derivative'],
