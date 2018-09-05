@@ -68,7 +68,12 @@ const processBrackets = (d) => {
 
 const processFunction = (d) => {
     let arg = _.cloneDeep(d[3])
-    return { type: 'Fn', properties: { name: d[0].text, allowSubscript: d[0].text !== 'ln', innerSuperscript: false }, children: { argument: arg } }
+    // FIXME Split this into two functions and separate parsing rules.
+    if (d[0].text === 'abs') {
+        return { type: 'AbsoluteValue', children: { argument: arg } }
+    } else {
+        return { type: 'Fn', properties: { name: d[0].text, allowSubscript: d[0].text !== 'ln', innerSuperscript: false }, children: { argument: arg } }
+    }
 }
 
 const processSpecialTrigFunction = (d_name, d_arg, d_exp = null) => {
