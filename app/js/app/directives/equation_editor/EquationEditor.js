@@ -1452,6 +1452,14 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             texLabel: true
                         }
                     }, {
+                        type: "AbsoluteValue",
+                        properties: {
+                        },
+                        menu: {
+                            label: "|x|",
+                            texLabel: true
+                        }
+                    }, {
                         type: "Radix",
                         menu: {
                             label: "\\sqrt{x}",

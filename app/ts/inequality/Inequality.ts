@@ -25,6 +25,7 @@ import { Symbol } from './Symbol'
 import { BinaryOperation } from './BinaryOperation';
 import { Fraction } from './Fraction';
 import { Brackets } from './Brackets';
+import { AbsoluteValue } from './AbsoluteValue';
 import { Radix } from './Radix';
 import { Num } from './Num';
 import { Fn } from './Fn';
@@ -317,6 +318,9 @@ export
                 break;
             case "Brackets":
                 w = new Brackets(this.p, this, node["properties"]["type"], node["properties"]["mode"]);
+                break;
+            case "AbsoluteValue":
+                w = new AbsoluteValue(this.p, this);
                 break;
             case "Radix":
                 w = new Radix(this.p, this);
