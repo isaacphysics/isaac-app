@@ -112,6 +112,9 @@ define(["p5",
                             if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                                 scope.textEntryError.push('LaTeX syntax is not supported.');
                             }
+                            if (/\|.+?\|/.test(pycode)) {
+                                scope.textEntryError.push('Vertical bar syntax for absolute value is not supported; use abs() instead.');
+                            }
                             if (badCharacters.test(pycode)) {
                                 scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
                             }
