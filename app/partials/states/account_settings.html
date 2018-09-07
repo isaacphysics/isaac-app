@@ -328,7 +328,7 @@
             <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-16 medium-16 columns">
-                    <h3>Teacher Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                    <h3>Teacher Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="The teachers that you are connected to can view your Isaac assignment progress."></span></h3>
                 </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
@@ -380,8 +380,8 @@
                         <hr>
                     </div>
                     <div class="large-16 medium-16 columns">
-                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of."></span></h3>
-                        <p>You can manage who is able to set you assignments by leaving a group. While you are inactive in a group you won't receive any assignments for that group. </p> 
+                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of. Groups in Isaac let teachers set assignments to multiple students in one go."></span></h3>
+                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. </p> 
                         <div class="my-groups-table-section">
                             <table>
                                     <tr>
@@ -390,7 +390,7 @@
                                         <th>Membership Status</th>
                                         <th>Actions</th>
                                     </tr>                                               
-                                    <tr ng-repeat="entry in myGroupMembership | orderBy:'groupName'">
+                                    <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
                                         <td>{{entry.group.groupName}}</td>
                                         <td>
                                             <ul>
@@ -399,7 +399,7 @@
                                                 {{convertToTeacherName(manager)}}</li>
                                             </ul>    
                                         </td>
-                                        <td class="centered-table-column">{{entry.membershipStatus}}</td>
+                                        <td ng-class="{ru_red:entry.membershipStatus == 'INACTIVE'}" class="centered-table-column">{{entry.membershipStatus}}</td>
 
                                         <td class="centered-table-column">
                                             <a ng-click="changeMyMembershipStatus(entry.group.id, 'INACTIVE')" ng-if="entry.membershipStatus == 'ACTIVE'" href="javascript:void(0)">Leave Group</a>
