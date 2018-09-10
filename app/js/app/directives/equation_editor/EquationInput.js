@@ -33,7 +33,7 @@ define(["p5",
             templateUrl: templateUrl,
             link: function(scope, element, _attrs) {
 
-                scope.isEquality = window.location.pathname.startsWith("/equality");
+                scope.isEquality = _.startsWith(window.location.pathname, "/equality");
 
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
