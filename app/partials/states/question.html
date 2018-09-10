@@ -70,28 +70,12 @@
                             <h2 class="question-title">
                                 <span class='ru_{{pageSubject}}' math-jax>
                                     {{questionPage.title}}
+                                    <span ng-if="questionPage.tags.indexOf('ft_upper') != -1 || questionPage.tags.indexOf('ft_lower') != -1">
+                                        {{fastTrackConceptEnumerator(questionPage.id)}}
+                                        <span ng-if="questionPage.tags.indexOf('ft_lower') != -1">(Easier)</span>
+                                    </span>
                                 </span>
                             </h2>
-                            <h3>
-                                <span ng-if="questionPage.tags.indexOf('ft_top_ten') >= 0">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22">
-                                        <path fill="#009acd" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path>
-                                    </svg>
-                                    (Top Ten)
-                                </span>
-                                <span ng-if="questionPage.tags.indexOf('ft_upper') >= 0">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22">
-                                        <path fill="#fea100" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path>
-                                    </svg>
-                                    (Easier)
-                                </span>
-                                <span ng-if="questionPage.tags.indexOf('ft_lower') >= 0">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22">
-                                        <path fill="#7fd0ff" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path>
-                                    </svg>
-                                    (Easiest)
-                                </span>
-                            </h3>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>

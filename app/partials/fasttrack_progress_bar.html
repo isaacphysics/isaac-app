@@ -1,55 +1,22 @@
 <div class="row">
-    <div class="ft-board-title small-10 columns">
-        <h4>{{boardState.title}}</h4>
+    <div class="ft-board-title medium-4 small-16 columns">
+        <h4>{{cachedTitle || boardState.title}}</h4>
+        <span ng-show="currentlyWorkingOn.isConcept">
+            <br class="hide-for-small-only"/>
+            <br class="hide-for-medium-down"/>
+            <h4 class="hide-for-small-only" ng-if="currentlyWorkingOn.isConcept">{{cachedConceptTitle || currentlyWorkingOn.title}} Practice</h4>
+        </span>
     </div>
-    <div class="progress-bar-key small-2 columns">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22"><path fill="{{FT_STATES.ft_top_ten.colour}}" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path></svg>
-        <span class="visible-for-medium-up">Top&nbsp;Ten</span>
-    </div>
-    <div class="progress-bar-key small-2 columns">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22"><path fill="{{FT_STATES.ft_upper.colour}}" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path></svg>
-        <span class="visible-for-medium-up">Easier</span>
-    </div>
-    <div class="progress-bar-key small-2 columns">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="22"><path fill="{{FT_STATES.ft_lower.colour}}" stroke="#333" d="M9.660254037844386 1L18.32050807568877 6L18.32050807568877 16L9.660254037844386 21L1 16L1 6Z"></path></svg>
-        <span class="visible-for-medium-up">Easiest</span>
-    </div>  
-</div>
-<div class="row">
-    <div class='ft-progress-bar small-16 columns'>
-        <svg version="1.1" baseprofile="full" width="100%" height="{{progressBarHeight}}" shape-rendering="geometricPrecision" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-                <pattern id="stripe" patternUnits="userSpaceOnUse" width="16" height="16">
-                    <path stroke="#fff" stroke-width="6" d="M-4,4 l8,-8  M0,16 l16,-16  M12,20 l8,-8" />
-                </pattern>
-
-                <mask id="inProgressMask">
-                    <rect height="100%" width="100%" fill="url(#stripe)" />
-                </mask>
-
-                <linearGradient id="highlightGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stop-color="white"/>
-                    <stop offset="20%" stop-color="white" stop-opacity="0"/>
-                    <stop offset="80%" stop-color="white" stop-opacity="0"/>
-                    <stop offset="100%" stop-color="white"/>
-                </linearGradient>
-
-                <mask id="highlightMask">
-                    <rect height="100%" width="100%" fill="url(#highlightGradient)" mask="url(#inProgressMask)" />
-                </mask>
-
-                <rect id="progress-bar-shape" x="0" y="0" width="100%" height="{{progressBarHeight}}" rx="8" ry="8"></rect>
-            </defs>
-
-            <clipPath id="progress-bar-clip"><use href="#progress-bar-shape"></use></clipPath>
-
-            <use href="#progress-bar-shape" id="progress-bar-base-fill" fill="#eee"></use>
-
-            <g id="question-part-states" clip-path="url(#progress-bar-clip)"></g>
-
-            <g id="question-separators" pointer-events="visible" clip-path="url(#progress-bar-clip)"></g>
-
-            <use href="#progress-bar-shape" id="progress-bar-border-stroke" stroke="black" stroke-width="1" fill="none" shape-rendering="geometricPrecision"></use>
+    <div class='ft-progress-bar medium-12 small-16 columns'>
+        <svg id="ft-progress" version="1.1" baseprofile="full" width="100%" height="{{progressBarHeight}}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="progress-bar-padding" transform="translate({{progressBarPadding}}, {{progressBarPadding}})">
+                <g id="concept-connections"></g>
+                <g id="question-hexagons"></g>
+            </g>
         </svg>
+    </div>
+    <div ng-show="currentlyWorkingOn.isConcept" class="show-for-small-only small-16 columns">
+        <h4>{{cachedConceptTitle || currentlyWorkingOn.title}} Practice</h4>
+        <br />
     </div>
 </div>

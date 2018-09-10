@@ -53,7 +53,13 @@ define([], function() {
             },
         });
 
-        this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+        this.fastTrack = $resource("", {}, {
+            concepts: {
+                method: 'GET',
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
+                isArray: true,
+            },
+        });
 
         this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
@@ -108,7 +114,7 @@ define([], function() {
         
         this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
             'search': {
-                method: 'GET', 
+                method: 'GET',
                 isArray: false 
             },
         });
