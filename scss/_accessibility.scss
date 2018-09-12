@@ -1,0 +1,80 @@
+// Mostly black-on-white non-italic question and concept view for visually impaired users.
+.high-contrast {
+
+    .ru-concept {
+        font-style: normal;
+    }
+    .caption {
+        font-style: normal;
+    }
+    .tabs-content.ru_tabs.ru-answer .content {
+        font-style: normal;
+    }
+
+    .tabs-content.ru_tabs.ru-answer .content.ru-answer {
+        h1,h2,h3,h4,h5,h6 {
+            color: #333;
+            font-style: normal;
+        }
+    }
+
+    .tabs-content.ru_tabs.ru-answer .content.ru-answer {
+        .ru-answer-correct.physics h1 {
+            color: $ru_physics;
+        }
+        .ru-answer-correct.chemistry h1 {
+            color: $ru_chemistry;
+        }
+        .ru-answer-correct.maths h1 {
+            color: $ru_maths;
+        }
+    }
+
+    .tabs-content.ru_tabs.ru-answer .content.ru-answer {
+        background-color: white !important;
+        color: #333;
+    }
+
+    .ru-answer-check {
+        background-color: white;
+    }
+
+    .ru-answer-wrong {
+        background-color: #ccc;
+    }
+    .ru-answer-correct {
+        background-color: white;
+    }
+    .ru-answer-correct-summary {
+        background-color: white !important;
+    }
+
+    .ru-answer-block-panel button {
+        background-color: white;
+        color: #333;
+        border: 1px solid #666;
+    }
+
+    .ru-answer-check button.fasttrack-secondary {
+        color: #009acd;
+        border: 2px solid #009acd;
+    }
+    .ru-answer-check button[disabled] {
+        background-color: #aaa;
+    }
+
+    .ac-custom input[type="checkbox"]:checked + label,
+    .ac-custom input[type="radio"]:checked + label {
+        color: #333;
+    }
+    .ac-custom input[type="checkbox"]:checked + label::before,
+    .ac-custom input[type="radio"]:checked + label::before {
+        opacity: 1;
+    }
+    .ac-custom label {
+        color: #333;
+    }
+    .ac-custom label::before {
+        border: 2px solid #666;
+    }
+}
