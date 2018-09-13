@@ -56,8 +56,8 @@ define(["../../honest/responsive_video", "/partials/content/NumericQuestion.html
 					if (typeof scope.doc.knownUnits !== "undefined") {
 						for (let i = 0; i < scope.doc.knownUnits.length; i++) {
 
-						    // Get a knwn unit from choice.
-						    let unitFromQuestion = scope.doc.knownUnits[i];
+						    // Get a known unit from choice.
+						    let unitFromQuestion = scope.doc.knownUnits[i].trim();
 
 						    // Only add to options when it is not null and not duplicated.
 						    if (unitFromQuestion && ctrl.unitOptions.indexOf(unitFromQuestion) == -1) {
