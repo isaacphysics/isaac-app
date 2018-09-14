@@ -81,7 +81,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
                 //Add selections in, so we can select all
                 for (let resultItem in $scope.userSearch.results) {
                     if(result.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$")) {
-                        let key = result[resultItem]._id;
+                        let key = result[resultItem].id;
                         $scope.userManagerSelection[key] = false;
                     }
                 }
@@ -116,7 +116,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
         let emails = new Set();
         let ids = $scope.getSelectedUserIds();
         for (let resultItem in $scope.userSearch.results) {
-            let id = $scope.userSearch.results[resultItem]._id;
+            let id = $scope.userSearch.results[resultItem].id;
             if($scope.userSearch.results.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$") && ids.has("" + id)) {
                 emails.add($scope.userSearch.results[resultItem].email)
             }
@@ -127,7 +127,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     let confirmUnverifiedUserPromotions = function(){
         let ids = $scope.getSelectedUserIds();
         for (let resultItem in $scope.userSearch.results) {
-            let id = $scope.userSearch.results[resultItem]._id;
+            let id = $scope.userSearch.results[resultItem].id;
             if ($scope.userSearch.results.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$") && ids.has("" + id)) {
                 // This user is to be promoted
                 if ($scope.userSearch.results[resultItem].emailVerificationStatus != "VERIFIED") {
