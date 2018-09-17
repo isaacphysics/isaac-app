@@ -12,7 +12,7 @@ const lexer = moo.compile({
              'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
              'arccosh', 'arcsinh', 'arctanh', 'arccosech', 'arcsech', 'arccoth',
             ],
-    Fn: ['ln', 'abs'],
+    Fn: ['ln'],
     Log: ['log'],
     Radix: ['sqrt'],
     Derivative: ['diff', 'Derivative'],
@@ -68,12 +68,7 @@ const processBrackets = (d) => {
 
 const processFunction = (d) => {
     let arg = _.cloneDeep(d[3])
-    // FIXME Split this into two functions and separate parsing rules.
-    if (d[0].text === 'abs') {
-        return { type: 'AbsoluteValue', children: { argument: arg } }
-    } else {
-        return { type: 'Fn', properties: { name: d[0].text, allowSubscript: d[0].text !== 'ln', innerSuperscript: false }, children: { argument: arg } }
-    }
+    return { type: 'Fn', properties: { name: d[0].text, allowSubscript: d[0].text !== 'ln', innerSuperscript: false }, children: { argument: arg } }
 }
 
 const processSpecialTrigFunction = (d_name, d_arg, d_exp = null) => {
@@ -105,6 +100,11 @@ const processExponent = (d) => {
     let f = _.cloneDeep(d[0])
     let e = _.cloneDeep(d[4])
     let r = _findRightmost(f)
+    let eRight = _.cloneDeep(e.children.right)
+    if (eRight) {
+        f.children.right = _.cloneDeep(e.children.right)
+        e.children = _.omit(e.children, 'right')
+    }
 
     if (['Fn', 'Log', 'TrigFn'].includes(f.type)) {
         switch (f.properties.name) {
@@ -131,13 +131,19 @@ const processMultiplication = (d) => {
 }
 
 const processFraction = (d) => {
-    return {
+    const denominatorRight = _.cloneDeep(d[4].children.right)
+    d[4].children = _.omit(d[4].children, 'right')
+    let fraction = {
         type: 'Fraction',
         children: {
             numerator: _.cloneDeep(d[0]),
-            denominator: _.cloneDeep(d[4])
+            denominator: _.cloneDeep(d[4]),
         }
     }
+    if (denominatorRight) {
+        fraction.children.right = denominatorRight
+    }
+    return fraction
 }
 
 const processPlusMinus = (d) => {
@@ -168,10 +174,16 @@ const _processChainOfLetters = (s) => {
 }
 
 const processIdentifier = (d) => {
-    let rx = new RegExp(_.keys(greekLetterMap).join('|'), 'g')
-    let parts = d[0].text.replace(rx, (v) => greekLetterMap[v] || v).split('_')
+    const greekLetterKeys = Object.keys(greekLetterMap);
+    let parts = d[0].text.split('_');
+    if (greekLetterKeys.includes(parts[0])) {
+        parts[0] = greekLetterMap[parts[0]]
+    }
     let topChain = _processChainOfLetters(parts[0])
     if (parts.length > 1) {
+        if (greekLetterKeys.includes(parts[1])) {
+            parts[1] = greekLetterMap[parts[1]]
+        }
         let chain = _processChainOfLetters(parts[1])
         let r = _findRightmost(topChain)
         r.children['subscript'] = chain
@@ -180,9 +192,12 @@ const processIdentifier = (d) => {
 }
 
 const processIdentifierModified = (d) => {
-    let rx = new RegExp(_.keys(greekLetterMap).join('|'), 'g')
-    let parts = d[0].text.split('_')
-    let topChain = _processChainOfLetters(parts[0].replace(rx, (v) => greekLetterMap[v] || v))
+    const greekLetterKeys = Object.keys(greekLetterMap);
+    let parts = d[0].text.split('_');
+    if (greekLetterKeys.includes(parts[0])) {
+        parts[0] = greekLetterMap[parts[0]]
+    }
+    let topChain = _processChainOfLetters(parts[0])
     let r = _findRightmost(topChain)
     r.properties['modifier'] = parts[1]
     return topChain
@@ -277,7 +292,6 @@ ARGS -> AS                                                             {% (d) =>
       | ARGS _ %Comma _ AS                                             {% (d) => d[0].concat(d[4]) %}
 
 E -> P _ %Pow _ E                                                      {% processExponent %}
-   | NUM VAR                                                           {% processMultiplication %}
    | P                                                                 {% id %}
 
 # Multiplication and division

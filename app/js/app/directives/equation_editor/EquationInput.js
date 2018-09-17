@@ -144,7 +144,7 @@ define(["p5",
                             scope.state.userInput = pycode;
                         }
 
-                    }, 750);
+                    }, 10);
                 };
 
                 let replaceSpecialChars = function (s) {
