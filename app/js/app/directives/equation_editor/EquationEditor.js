@@ -1056,7 +1056,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                     for (let j = 0; j < availableDerivatives.length; ++j) {
                         let derivative = availableDerivatives[j];
-                        if (derivative.startsWith("Derivative")) {
+                        if (_.startsWith(derivative, "Derivative")) {
                             // FIXME This ; is a backward-compatible, certified horrible hack
                             let pieces = derivative.split(";").map(function(s) { return s.replace(/[()\s]/g, "") }).slice(1);
                             let orders = {};
@@ -1449,6 +1449,14 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         },
                         menu: {
                             label: "(x)",
+                            texLabel: true
+                        }
+                    }, {
+                        type: "AbsoluteValue",
+                        properties: {
+                        },
+                        menu: {
+                            label: "|x|",
                             texLabel: true
                         }
                     }, {

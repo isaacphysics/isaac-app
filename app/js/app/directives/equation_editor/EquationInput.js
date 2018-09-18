@@ -33,7 +33,7 @@ define(["p5",
             templateUrl: templateUrl,
             link: function(scope, element, _attrs) {
 
-                scope.isEquality = window.location.pathname.startsWith("/equality");
+                scope.isEquality = _.startsWith(window.location.pathname, "/equality");
 
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
@@ -111,6 +111,9 @@ define(["p5",
                             let goodCharacters = new RegExp(regexStr.replace("^", ""), 'g');
                             if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                                 scope.textEntryError.push('LaTeX syntax is not supported.');
+                            }
+                            if (/\|.+?\|/.test(pycode)) {
+                                scope.textEntryError.push('Vertical bar syntax for absolute value is not supported; use abs() instead.');
                             }
                             if (badCharacters.test(pycode)) {
                                 scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
