@@ -10,7 +10,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
 
             templateUrl: templateUrl,
 
-            link: function(scope, element, _attrs) {
+            link: function(scope, htmlElement, _attrs) {
                 let fastTrackStates = ['ft_top_ten', 'ft_upper', 'ft_lower'];
 
                 let getFastTrackLevel = function(tags) {
@@ -102,7 +102,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                     scope.conceptQuestions =  {$promise: Promise.resolve(null)};
                 }
 
-                scope.rootElement = element.find('div.ft-progress-bar > svg');
+                scope.rootElement = htmlElement.find('div.ft-progress-bar > svg');
                 scope.cachedTitle = '';
                 scope.cachedConceptTitle = '';
                 scope.progressBarPadding = deviceSize !== 'small' ? 5 : 1;
@@ -349,7 +349,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                     $(baseElement).append(questionAnchor);
                 }
 
-                let createConnection = function(sourceIndex, targetIndex, isMostRecent, message) {
+                let createConnection = function(sourceIndex, targetIndex) {
                     let connectionAttributes = {
                         d: calculateConnectionLine(sourceIndex, targetIndex),
                         fill: scope.conceptConnection.fill,
@@ -387,7 +387,7 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                     });
                     for (let conceptConnection of conceptConnections) {
                         connectionGroup.append(svgElement('title').text(conceptConnection.message));
-                        connectionGroup.append(createConnection(conceptConnection.sourceIndex, conceptConnection.targetIndex, conceptConnection.isMostRecent, conceptConnection.message));
+                        connectionGroup.append(createConnection(conceptConnection.sourceIndex, conceptConnection.targetIndex));
                     }
                     return connectionGroup;
                 }
