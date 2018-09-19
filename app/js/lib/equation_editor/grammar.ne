@@ -142,7 +142,7 @@ const processMultiplication = (d) => {
 }
 
 const processFraction = (d) => {
-    let denominatorRight = null;
+    let denominatorRight = null
     if (d[4].type === 'BinaryOperation') {
         denominatorRight = _.cloneDeep(d[4].children.right.children.right)
         d[4].children.right.children = _.omit(d[4].children.right.children, 'right')
@@ -185,26 +185,41 @@ const _processChainOfLetters = (s) => {
 }
 
 const processIdentifier = (d) => {
-    const greekLetterKeys = Object.keys(greekLetterMap);
-    let parts = d[0].text.split('_');
-    if (greekLetterKeys.includes(parts[0])) {
-        parts[0] = greekLetterMap[parts[0]]
-    }
-    let topChain = _processChainOfLetters(parts[0])
-    if (parts.length > 1) {
-        if (greekLetterKeys.includes(parts[1])) {
-            parts[1] = greekLetterMap[parts[1]]
+    const greekLetterKeys = Object.keys(greekLetterMap)
+    let parts = d[0].text.split('_')
+
+    // Perhaps we have a differential
+    let patterns = ['[a-zA-Z]', ...greekLetterKeys].join('|')
+    const diffMatcher = new RegExp(`^((?:d|D)elta)(${patterns})$`)
+    const diffMaybe = parts[0].match(diffMatcher)
+    if (diffMaybe) {
+        // We do have a differential
+        return {
+            type: 'Differential',
+            properties: { letter: greekLetterMap[diffMaybe[1]] || diffMaybe[1] },
+            children: { argument: processIdentifier([{ text: d[0].text.substring(5) }]) }
         }
-        let chain = _processChainOfLetters(parts[1])
-        let r = _findRightmost(topChain)
-        r.children['subscript'] = chain
+    } else {
+        // We don't have a differential, business as usual
+        if (greekLetterKeys.includes(parts[0])) {
+            parts[0] = greekLetterMap[parts[0]]
+        }
+        let topChain = _processChainOfLetters(parts[0])
+        if (parts.length > 1) {
+            if (greekLetterKeys.includes(parts[1])) {
+                parts[1] = greekLetterMap[parts[1]]
+            }
+            let chain = _processChainOfLetters(parts[1])
+            let r = _findRightmost(topChain)
+            r.children['subscript'] = chain
+        }
+        return topChain
     }
-    return topChain
 }
 
 const processIdentifierModified = (d) => {
-    const greekLetterKeys = Object.keys(greekLetterMap);
-    let parts = d[0].text.split('_');
+    const greekLetterKeys = Object.keys(greekLetterMap)
+    let parts = d[0].text.split('_')
     if (greekLetterKeys.includes(parts[0])) {
         parts[0] = greekLetterMap[parts[0]]
     }
