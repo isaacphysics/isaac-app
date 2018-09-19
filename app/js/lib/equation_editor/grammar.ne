@@ -102,10 +102,19 @@ const processExponent = (d) => {
     let f = _.cloneDeep(d[0])
     let e = _.cloneDeep(d[4])
     let r = _findRightmost(f)
-    let eRight = _.cloneDeep(e.children.right)
-    if (eRight) {
-        f.children.right = _.cloneDeep(e.children.right)
-        e.children = _.omit(e.children, 'right')
+
+    if (e.type === 'BinaryOperation') {
+        const exponentRight = _.cloneDeep(e.children.right.children.right)
+        if (exponentRight) {
+            f.children.right = exponentRight
+            e.children.right.children = _.omit(e.children.right.children, 'right')
+        }
+    } else {
+        const exponentRight = _.cloneDeep(e.children.right)
+        if (exponentRight) {
+            f.children.right = exponentRight
+            e.children = _.omit(e.children, 'right')
+        }
     }
 
     if (['Fn', 'Log', 'TrigFn'].includes(f.type)) {
@@ -133,15 +142,15 @@ const processMultiplication = (d) => {
 }
 
 const processFraction = (d) => {
-    const denominatorRight = _.cloneDeep(d[4].children.right)
-    d[4].children = _.omit(d[4].children, 'right')
-    let fraction = {
-        type: 'Fraction',
-        children: {
-            numerator: _.cloneDeep(d[0]),
-            denominator: _.cloneDeep(d[4]),
-        }
+    let denominatorRight = null;
+    if (d[4].type === 'BinaryOperation') {
+        denominatorRight = _.cloneDeep(d[4].children.right.children.right)
+        d[4].children.right.children = _.omit(d[4].children.right.children, 'right')
+    } else {
+        denominatorRight = _.cloneDeep(d[4].children.right)
+        d[4].children = _.omit(d[4].children, 'right')
     }
+    let fraction = { type: 'Fraction', children: { numerator: _.cloneDeep(d[0]), denominator: _.cloneDeep(d[4]) } }
     if (denominatorRight) {
         fraction.children.right = denominatorRight
     }
@@ -290,6 +299,7 @@ P ->                   %Lparen _ AS _                 %Rparen          {% proces
    | %Fn               %Lparen _ AS _                 %Rparen          {% processFunction %}
    | VAR                                                               {% id %}
    | NUM                                                               {% id %}
+   | %PlusMinus _ P                                                    {% processUnaryPlusMinus %}
 
 ARGS -> AS                                                             {% (d) => [d[0]] %}
       | ARGS _ %Comma _ AS                                             {% (d) => d[0].concat(d[4]) %}
@@ -304,7 +314,6 @@ MD -> MD _ %Mul _ E                                                    {% proces
     | E                                                                {% id %}
 
 AS -> AS _ %PlusMinus _ MD                                             {% processPlusMinus %}
-    | %PlusMinus _ MD                                                  {% processUnaryPlusMinus %}
     | MD                                                               {% id %}
 
 VAR -> %Id                                                             {% processIdentifier %}
