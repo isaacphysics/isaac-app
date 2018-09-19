@@ -1,6 +1,6 @@
 @{%
 const greekLetterMap = { "alpha": "α", "beta": "β", "gamma": "γ", "delta": "δ", "epsilon": "ε", "varepsilon": "ε", "zeta": "ζ", "eta": "η", "theta": "θ", "iota": "ι", "kappa": "κ", "lambda": "λ", "mu": "μ", "nu": "ν", "xi": "ξ", "omicron": "ο", "pi": "π", "rho": "ρ", "sigma": "σ", "tau": "τ", "upsilon": "υ", "phi": "ϕ", "chi": "χ", "psi": "ψ", "omega": "ω", "Gamma": "Γ", "Delta": "Δ", "Theta": "Θ", "Lambda": "Λ", "Xi": "Ξ", "Pi": "Π", "Sigma": "Σ", "Upsilon": "Υ", "Phi": "Φ", "Psi": "Ψ", "Omega": "Ω" }
-const moo = require("moo");
+const moo = require("moo")
 const lexer = moo.compile({
     Int: /[0-9]+/,
     IdMod: /[a-zA-Z]+_(?:prime)/,
@@ -85,6 +85,8 @@ const processLog = (arg, base = null) => {
     let log = { type: 'Fn', properties: { name: 'log', allowSubscript: true, innerSuperscript: false }, children: { argument: arg } }
     if (null !== base) {
         if (base.type === 'Num' && base.properties.significand !== '10') {
+            log.children['subscript'] = _.cloneDeep(base)
+        } else if (base.type === 'Symbol') {
             log.children['subscript'] = _.cloneDeep(base)
         }
     }
@@ -282,6 +284,7 @@ P ->                   %Lparen _ AS _                 %Rparen          {% proces
    | %TrigFn           %Lparen _ AS _                 %Rparen %Pow NUM {% d => processSpecialTrigFunction(d[0], d[3], d[7]) %}
    | %Derivative       %Lparen _ AS _ %Comma _ ARGS _ %Rparen          {% processDerivative %}
    | %Log              %Lparen _ AS _                 %Rparen          {% (d) => { return processLog(d[3]) } %}
+   | %Log              %Lparen _ AS _ %Comma _ VAR _  %Rparen          {% (d) => { return processLog(d[3], d[7]) } %}
    | %Log              %Lparen _ AS _ %Comma _ NUM _  %Rparen          {% (d) => { return processLog(d[3], d[7]) } %}
    | %Radix            %Lparen _ AS _                 %Rparen          {% processRadix %}
    | %Fn               %Lparen _ AS _                 %Rparen          {% processFunction %}
