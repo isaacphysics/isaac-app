@@ -36,6 +36,16 @@ try {
     _window = { innerWidth: 800, innerHeight: 600 }
 }
 
+const _rightChainToArray = (node) => {
+    let n = node
+    let a = [n]
+    while (n.children.right) {
+        n = n.children.right
+        a = [...a, n]
+    }
+    return a
+}
+
 const _findRightmost = (node) => {
     let n = node
     while (n.children.right) {
@@ -150,11 +160,21 @@ const processFraction = (d) => {
         denominatorRight = _.cloneDeep(d[4].children.right)
         d[4].children = _.omit(d[4].children, 'right')
     }
-    let fraction = { type: 'Fraction', children: { numerator: _.cloneDeep(d[0]), denominator: _.cloneDeep(d[4]) } }
+    let numerator = _.cloneDeep(d[0])
+    let numeratorChain = _rightChainToArray(numerator).map(e => { e.children = _.omit(e.children, 'right'); return e })
+    let numeratorRight = numeratorChain.pop()
+
+    let fraction = { type: 'Fraction', children: { numerator: numeratorRight, denominator: _.cloneDeep(d[4]) } }
     if (denominatorRight) {
         fraction.children.right = denominatorRight
     }
-    return fraction
+    
+    if (numeratorChain.length > 0) {
+        numeratorChain[numeratorChain.length-1].children.right = fraction
+        return numeratorChain.reduceRight((a, e) => { e.children.right = a; return e })
+    } else {
+        return fraction
+    }
 }
 
 const processPlusMinus = (d) => {
