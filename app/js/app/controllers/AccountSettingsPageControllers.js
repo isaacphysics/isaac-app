@@ -232,7 +232,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         let afterAuth = persistence.load('afterAuth');
         if (afterAuth) {
             next = afterAuth;
-            persistence.save('afterAuth', "");
+            persistence.remove('afterAuth');
         }
         $scope.errorMessage = null;  // clear any old error message
 
