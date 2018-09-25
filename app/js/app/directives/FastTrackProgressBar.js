@@ -122,7 +122,10 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                         bottom: 7 * hexagonQuarterHeight / 2,
                     },
                     base: {
-                        stroke: {width: 2, colour: '#ddd'},
+                        stroke: {
+                            width: {large: 3, medium: 3, small: 2}[deviceSize],
+                            colour: '#ddd'
+                        },
                         fill: {
                             selectedColour: 'none',
                             deselectedColour: '#f0f0f0',
@@ -131,14 +134,21 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                         },
                     },
                     questionPartProgress: {
-                        stroke: {width: 2, colour: '#009acd'},
+                        stroke: {
+                            width: {large: 3, medium: 3, small: 2}[deviceSize],
+                            colour: '#009acd'
+                        },
                         fill: {colour: 'none'},
                     },
                 };
 
                 scope.conceptConnection = {
                     fill: 'none',
-                    stroke: {colour: '#fea100', width: 2, dashArray: 4},
+                    stroke: {
+                        colour: '#fea100',
+                        width: {large: 3, medium: 3, small: 2}[deviceSize],
+                        dashArray: 4
+                    },
                 }
 
                 let augmentQuestion = function(question, gameboardId, currentlyWorkingOn, questionHistory, index) {
