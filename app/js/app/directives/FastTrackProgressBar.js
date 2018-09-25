@@ -149,8 +149,10 @@ define(['jquery', '/partials/fasttrack_progress_bar.html'], function($, template
                     question.href = "/questions/" + question.id + '?board=' + gameboardId;
                     if (questionHistory) {
                         let newQuestionHistory = null
-                        if (question.fastTrackLevel === currentlyWorkingOn.fastTrackLevel && question.fastTrackLevel != 'ft_top_ten') {
-                            // Maintain history if moving to another question on the same level (apart from if on top ten)
+                        if (question.fastTrackLevel == 'ft_top_ten') {
+                            newQuestionHistory = "";
+                        } else if (question.fastTrackLevel === currentlyWorkingOn.fastTrackLevel) {
+                            // Maintain history if moving to another question on the same level
                             newQuestionHistory = questionHistory;    
                         } else {
                             // Step back in question history if possible
