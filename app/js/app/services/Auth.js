@@ -85,6 +85,8 @@ define([], function() {
 
 			})
 			cancelUserConsistencyCheck();
+			persistence.clear();
+			persistence.session.clear();
 			return p;
 		}
 
