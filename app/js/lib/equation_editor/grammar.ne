@@ -94,6 +94,7 @@ const processRelation = (d) => {
     let relation = { type: 'Relation', properties: { relation: relText }, children: { right: rhs } }
     let r = _findRightmost(lhs)
     r.children['right'] = relation
+    lhs = _simplify(lhs)
     return { ...lhs, position: { x: _window.innerWidth/4, y: _window.innerHeight/3 }, expression: { latex: "", python: "" } }
 }
 
