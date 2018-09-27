@@ -121,11 +121,12 @@ const processSpecialTrigFunction = (d_name, d_arg, d_exp = null) => {
 const processLog = (arg, base = null) => {
     let log = { type: 'Fn', properties: { name: 'log', allowSubscript: true, innerSuperscript: false }, children: { argument: arg } }
     if (null !== base) {
-        if (base.type === 'Num' && base.properties.significand !== '10') {
-            log.children['subscript'] = _.cloneDeep(base)
-        } else if (base.type === 'Symbol') {
+        if (base.type === 'Num' || base.type === 'Symbol') {
             log.children['subscript'] = _.cloneDeep(base)
         }
+    } else {
+        // Treat log(x) as base 10 and make this very clear to the user.
+        log.children['subscript'] = { type: 'Num', properties: { significand: '10' }, children: {} }
     }
     return log
 }
