@@ -54,11 +54,37 @@ const _findRightmost = (node) => {
     return n
 }
 
+const _safeToRemove = (node) => {
+    return node && node.type === 'Brackets' && _.isEmpty(_.omit(node.children, 'argument'))
+}
+
+const _simplify = (node) => {
+    node.children = _.mapValues(node.children, (v, k, c) => _simplify(v))
+
+    if (node.type === 'Brackets') {
+        let argument = node.children.argument
+        if (_safeToRemove(argument)) {
+            node.children.argument = argument.children.argument
+        }
+    }
+    if (node.type === 'Fraction') {
+        let numerator = node.children.numerator
+        if (_safeToRemove(numerator)) {
+            node.children.numerator = numerator.children.argument
+        }
+        let denominator = node.children.denominator
+        if (_safeToRemove(denominator)) {
+            node.children.denominator = denominator.children.argument
+        }
+    }
+    return node
+}
+
 const processMain = (d) => {
     let main = _.cloneDeep(d[1])
     main.position = { x: _window.innerWidth/4, y: _window.innerHeight/3 }
     main.expression = { latex: "", python: "" }
-    return main
+    return _simplify(main)
 }
 
 const processRelation = (d) => {
