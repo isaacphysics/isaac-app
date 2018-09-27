@@ -61,7 +61,7 @@ const _safeToRemove = (node) => {
 const _simplify = (node) => {
     node.children = _.mapValues(node.children, (v, k, c) => _simplify(v))
 
-    if (node.type === 'Brackets') {
+    if (node.type === 'Brackets' || node.type === 'Fn') {
         let argument = node.children.argument
         if (_safeToRemove(argument)) {
             node.children.argument = argument.children.argument
@@ -76,6 +76,10 @@ const _simplify = (node) => {
         if (_safeToRemove(denominator)) {
             node.children.denominator = denominator.children.argument
         }
+    }
+    let superscript = node.children.superscript
+    if (_safeToRemove(superscript)) {
+        node.children.superscript = superscript.children.argument
     }
     return node
 }
