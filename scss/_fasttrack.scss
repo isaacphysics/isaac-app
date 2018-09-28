@@ -1,23 +1,15 @@
-
-.ft-upper-colour {
-    color: $ft-upper-colour !important;
-}
-.ft-lower-colour {
-    color: $ft-lower-colour !important;
-}
-
 div.ft-progress-bar-panel {
     @media #{$medium-up} {
         margin: 0 10px !important;
+        div.ft-progress-bar {
+            margin-bottom: 20px;
+        }
     }
     @media #{$small-only} {
         margin: 0 1px !important;
     }
     div.board-title {
         margin-bottom: 0.5rem;
-    }
-    div.ft-progress-bar {
-        margin-bottom: 30px;
     }
 }
 .ft-board-title {

@@ -70,13 +70,7 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 	let updateBoardProgressDetails = function() {
 		$scope.gameboardId = $stateParams.board;
 		$scope.backToTopTen = questionActions.backToBoard($scope.gameboardId);
-		if ($scope.questionPage.type != 'isaacFastTrackQuestionPage' || 
-			$scope.fastTrackProgressEnabledBoards.indexOf($scope.gameboardId) == -1) {
-			$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
-		} else {
-			$scope.gameBoard = api.fastTrackGameboards.get({id: $scope.gameboardId});
-		}
-
+		$scope.gameBoard = api.gameBoards.get({id: $stateParams.board});
 		$scope.gameBoard.$promise.then(function(board) {
 
 			console.debug("Question is from board:", board);
@@ -160,6 +154,11 @@ export const PageController = ['$scope', 'page', 'tags', '$sce', '$rootScope', '
 			supersededBy: page.supersededBy,
 		});
 	};
+
+	$scope.fastTrackConceptEnumerator = function(questionId) {
+		// Magic, unfortunately
+		return "_abcdefghijk".indexOf(questionId.split('_')[2].slice(-1));
+	}
 
 	$scope.$on("accordionsectionopen", function(_event, idx, _doc) {
 		api.logger.log({

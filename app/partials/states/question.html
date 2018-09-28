@@ -68,8 +68,12 @@
                             </div>
                             <h2 class="print-question question-prefix">Q:</h2>
                             <h2 class="question-title">
-                                <span class='ru_{{pageSubject}}' ng-class="{'ft-upper-colour': questionPage.tags.indexOf('ft_upper') >= 0, 'ft-lower-colour': questionPage.tags.indexOf('ft_lower') >= 0}" math-jax>
+                                <span class='ru_{{pageSubject}}' math-jax>
                                     {{questionPage.title}}
+                                    <span ng-if="questionPage.tags.indexOf('ft_upper') != -1 || questionPage.tags.indexOf('ft_lower') != -1">
+                                        {{fastTrackConceptEnumerator(questionPage.id)}}
+                                        <span ng-if="questionPage.tags.indexOf('ft_lower') != -1">(Easier)</span>
+                                    </span>
                                 </span>
                             </h2>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
