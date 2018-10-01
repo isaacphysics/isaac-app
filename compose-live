@@ -46,8 +46,7 @@ services:
     image: docker.isaacscience.org/isaac-api:$API_VERSION
     restart: always
     extra_hosts:
-      - elasticsearch:$LOCAL_ELASTICSEARCH
-      - local-smtp:$LOCAL_SMTP
+      - local-smtp:$LOCAL_RED_NETWORK_IP
     external_links:
       - pg-live:postgres
     volumes:

@@ -32,8 +32,6 @@ services:
   etl:
     container_name: $ETL_NAME
     image: docker.isaacscience.org/isaac-api:$API_VERSION
-    extra_hosts:
-      - elasticsearch:$LOCAL_ELASTICSEARCH
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
