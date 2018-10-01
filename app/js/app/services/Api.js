@@ -177,7 +177,11 @@ define([], function() {
             'getLogEventTypes' : {
                 method: 'GET',
                 url: urlPrefix + "/info/log_event_types",
-            },          
+            },
+            'countUsersByRole' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/users",
+            },            
         });
 
         this.makeDownloadEventsOverTimeLink = function(startDate, endDate, events, binData) {
