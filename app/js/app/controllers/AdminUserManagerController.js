@@ -48,8 +48,6 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     //     }
     // });
 
-    $scope.schoolOtherEntries = api.schools.getSchoolOther();
-
     $scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER' || $rootScope.user.role == 'CONTENT_EDITOR';
     
     $scope.userSearchSortPredicate = "familyName";

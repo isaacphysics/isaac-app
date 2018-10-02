@@ -17,10 +17,7 @@
                         <label for="user-school-other">
                             <strong>Find by manually entered school:</strong>
                         </label>
-                        <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
-                            <option value="">Any School</option>
-                            <option ng-repeat="school in schoolOtherEntries | orderBy:'name'" ng-value="school.name">{{school.name}}</option>
-                        </select>
+                        <input id="user-school-other" name="schoolOther" type="text" ng-model="userSearch.searchTerms.schoolOther" placeholder="Enter a possible school name" >
 
                         <label>
                             <strong>Find users by subject interest:</strong>

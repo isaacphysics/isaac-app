@@ -23,7 +23,6 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
 
     $scope.segueVersion = api.segueInfo.segueVersion();
 
-    $scope.schoolOtherEntries = api.schools.getSchoolOther();
     $scope.tagsUrl = api.getTagsUrl();
     $scope.unitsUrl = api.getUnitsUrl();
 
