@@ -167,12 +167,17 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
     }
 
     $scope.canSendPasswordResetRequest = function(user) {
-        return $rootScope.user.role == 'ADMIN' || (user.authorisedFullAccess && user.emailVerificationStatus != 'DELIVERY_FAILED');
+        return $rootScope.user.role == 'ADMIN' || (!user.passwordRequestSent && user.authorisedFullAccess && user.emailVerificationStatus != 'DELIVERY_FAILED');
     }
 
     $scope.resetMemberPassword = function(user) {
         if ($scope.canSendPasswordResetRequest(user)) {
             api.password.resetForUser({userId: user.id}).$promise.then(function(result) {
+                // record that we have sent a request once and update tooltip text
+                user.passwordRequestSent = true;
+                $timeout(function() {
+                    $window.Opentip.findElements();
+                }, 0);
                 $scope.showToast(
                     $scope.toastTypes.Success, "Password Reset Request Sent",
                     "A password reset request has been sent to your student's registered email address.");
