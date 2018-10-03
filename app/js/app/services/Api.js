@@ -464,9 +464,14 @@ define([], function() {
             },
         });
 
-        this.password = $resource(urlPrefix + "/users/resetpassword/:token", null, {
+        this.password = $resource(urlPrefix + "", {userId: '@userId'}, {
             reset: {
                 method: "POST",
+                url: urlPrefix + "/users/resetpassword/:token"
+            },
+            resetForUser: {
+                method: 'POST',
+                url: urlPrefix + "/users/:userId/resetpassword"
             },
         });
 

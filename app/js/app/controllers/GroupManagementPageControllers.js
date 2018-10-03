@@ -166,6 +166,24 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         });
     }
 
+    $scope.canSendPasswordResetRequest = function(user) {
+        return $rootScope.user.role == 'ADMIN' || (user.authorisedFullAccess && user.emailVerificationStatus != 'DELIVERY_FAILED');
+    }
+
+    $scope.resetMemberPassword = function(user) {
+        if ($scope.canSendPasswordResetRequest(user)) {
+            api.password.resetForUser({userId: user.id}).$promise.then(function(result) {
+                $scope.showToast(
+                    $scope.toastTypes.Success, "Password Reset Request Sent",
+                    "A password reset request has been sent to your student's registered email address.");
+            }).catch(function(e) {
+                $scope.showToast(
+                    $scope.toastTypes.Failure, "Password Reset Request Failed",
+                    e.data.errorMessage != undefined ? e.data.errorMessage : "Please try again, or if errors continue please contact us.");
+            });
+        }
+    }
+
     $scope.deleteMember = function(group, user) {
         let deleteMember = $window.confirm('Are you sure you want to remove this user from the group?');   
         if (deleteMember) {
