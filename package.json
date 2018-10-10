@@ -88,7 +88,6 @@
     ]
   },
   "scripts": {
-    "start": "single-page-server -p=8000 -b=app -f=app/index.physics.html | single-page-server -p=8001 -b=app -f=app/index.chemistry.html | single-page-server -p=8002 -b=app -f=app/index.biology.html",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "build:js": "webpack",
