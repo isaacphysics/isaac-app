@@ -27,7 +27,7 @@ fi
 API_NAME=api-$ENV-$API_VERSION
 APP_NAME=app-$ENV-$APP_VERSION
 
-read -r -d '' PG_AND_KAFKA_SERVICE << EOM
+read -r -d '' PG_SERVICE << EOM
 pg-$ENV:
     container_name: pg-$ENV
     image: isaac-pg
@@ -46,7 +46,7 @@ elif [ "$ENV" == "live" ]; then
   echo "Cannot manage live deployment with this script any more. Please use compose-live."
   exit 1
 elif [ "$ENV" == "test" ]; then
-  read -r -d '' PG_AND_KAFKA_SERVICE << EOM
+  read -r -d '' PG_SERVICE << EOM
 pg-test:
     container_name: pg-test
     image: isaac-pg
@@ -74,9 +74,10 @@ services:
     image: docker.isaacscience.org/isaac-api:$API_VERSION
     restart: always
     extra_hosts:
-      - local-smtp:$LOCAL_RED_NETWORK_IP
+      - local-smtp:$LOCAL_SMTP
     links:
       - pg-$ENV:postgres
+      - elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
@@ -92,7 +93,7 @@ services:
       driver: journald
       options:
         tag: isaac-api-$ENV
-  $PG_AND_KAFKA_SERVICE
+  $PG_SERVICE
 networks:
   default:
     external:
