@@ -46,10 +46,10 @@ services:
     image: docker.isaacscience.org/isaac-api:$API_VERSION
     restart: always
     extra_hosts:
-      - elasticsearch:$LOCAL_ELASTICSEARCH
       - local-smtp:$LOCAL_SMTP
     external_links:
       - pg-live:postgres
+      - elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
