@@ -688,7 +688,11 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('authError', {
-            url: "/auth_error?errorMessage&statusText",
+            url: "/auth_error",
+            params: {
+                errorMessage: null,
+                statusText: null,
+            },
             views: {
                 "body": {
                     templateUrl: "/partials/states/auth_error.html",
