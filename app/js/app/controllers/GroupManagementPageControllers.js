@@ -170,6 +170,18 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         return $rootScope.user.role == 'ADMIN' || (!user.passwordRequestSent && user.authorisedFullAccess && user.emailVerificationStatus != 'DELIVERY_FAILED');
     }
 
+    $scope.passwordResetInformation = function(member) {
+        let message = 'Cannot send password reset request email.';
+        if ($scope.canSendPasswordResetRequest(member)) {
+            message = 'Send a password reset request to your group member\'s email address.';
+        } else if (member.passwordRequestSent) {
+            message = 'Password reset request sent.';
+        } else if (member.emailVerificationStatus == 'DELIVERY_FAILED') {
+            message = 'Password reset request cannot be sent because this user\'s account email address is either invalid or not accepting email.';
+        }
+        return message;
+    }
+
     $scope.resetMemberPassword = function(user) {
         if ($scope.canSendPasswordResetRequest(user)) {
             api.password.resetForUser({userId: user.id}).$promise.then(function(result) {
