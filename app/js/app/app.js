@@ -872,6 +872,31 @@ define([
             }
         }
 
+        // We have to have *some* Easter Egg for dedicated users. For now, just a popup message:
+        var konamiCodeUsed = false;
+        var onKonamiCode = function(cb) {
+          var input = '';
+          var konamiCode = '38384040373937396665';
+          document.addEventListener('keyup', function (e) {
+            if (!e.keyCode) return;
+            input += ("" + e.keyCode);
+            if (input === konamiCode) {
+              return cb();
+            }
+            if (!konamiCode.indexOf(input)) return;
+            input = ("" + e.keyCode);
+          });
+        }
+        onKonamiCode(function () {
+            $rootScope.showToast($rootScope.toastTypes.Failure, "Cheat Mode Denied", "Sorry, but we don't believe in cheating on your homework! \u{1F607}");
+            $rootScope.$apply();
+            if (!konamiCodeUsed) {
+                api.logger.log({type: "USE_KONAMI_CODE"});
+                konamiCodeUsed = true;
+            }
+        });
+        // End easter egg madness.
+
 	}]);
 
 	/////////////////////////////////////
