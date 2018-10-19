@@ -471,4 +471,15 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         }
     }
     // end authorisation stuff
+
+    $scope.requestPassword = function() {
+        // Don#t submit request if email is invalid:
+        if ($scope.user.emailVerifcationStatus != "DELIVERY_FAILED") {
+            api.password.reset({'email': $scope.user.email}).$promise.then(function(){
+                $scope.showToast($scope.toastTypes.Success, "Password Request Processed", "Please check your email.");
+            }).catch(function(e){
+                $scope.showToast($scope.toastTypes.Failure, "Password Request Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+        }
+    }
 }];
