@@ -173,7 +173,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
     $scope.passwordResetInformation = function(member) {
         let message = 'Cannot send password reset request email.';
         if ($scope.canSendPasswordResetRequest(member)) {
-            message = 'Send a password reset request to your group member\'s email address.';
+            message = 'Send a password reset request to this user\'s email address.';
         } else if (member.passwordRequestSent) {
             message = 'Password reset request sent.';
         } else if (member.emailVerificationStatus == 'DELIVERY_FAILED') {
