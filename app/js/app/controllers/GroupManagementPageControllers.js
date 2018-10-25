@@ -166,6 +166,41 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         });
     }
 
+    $scope.canSendPasswordResetRequest = function(user) {
+        return $rootScope.user.role == 'ADMIN' || (!user.passwordRequestSent && user.authorisedFullAccess && user.emailVerificationStatus != 'DELIVERY_FAILED');
+    }
+
+    $scope.passwordResetInformation = function(member) {
+        let message = 'Cannot send password reset request email.';
+        if ($scope.canSendPasswordResetRequest(member)) {
+            message = 'Send a password reset request to this user\'s email address.';
+        } else if (member.passwordRequestSent) {
+            message = 'Password reset request sent.';
+        } else if (member.emailVerificationStatus == 'DELIVERY_FAILED') {
+            message = 'Password reset request cannot be sent because this user\'s account email address is either invalid or not accepting email.';
+        }
+        return message;
+    }
+
+    $scope.resetMemberPassword = function(user) {
+        if ($scope.canSendPasswordResetRequest(user)) {
+            api.password.resetForUser({userId: user.id}).$promise.then(function(result) {
+                // record that we have sent a request once and update tooltip text
+                user.passwordRequestSent = true;
+                $timeout(function() {
+                    $window.Opentip.findElements();
+                }, 0);
+                $scope.showToast(
+                    $scope.toastTypes.Success, "Password Reset Request Sent",
+                    "A password reset request has been sent to your student's registered email address.");
+            }).catch(function(e) {
+                $scope.showToast(
+                    $scope.toastTypes.Failure, "Password Reset Request Failed",
+                    e.data.errorMessage != undefined ? e.data.errorMessage : "Please try again, or if errors continue please contact us.");
+            });
+        }
+    }
+
     $scope.deleteMember = function(group, user) {
         let deleteMember = $window.confirm('Are you sure you want to remove this user from the group?');   
         if (deleteMember) {
