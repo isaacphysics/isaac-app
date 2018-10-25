@@ -1,22 +1,26 @@
 <!-- Start active group -->
+<div class="active-group-panel">
     <h6>
-        {{selectedGroup == null ? "Create" : "Edit"}} group 
+        {{selectedGroup == null ? "Create" : "Edit"}} group
         <span class="access-token" ng-show="selectedGroup">
             <a href="javascript:void(0)" ng-click="modals.shareCode.show()">Invite Users</a>&nbsp;
             <span ng-if="selectedGroup && selectedGroup.ownerId == user._id && ($root.userPreferences.BETA_FEATURE.ADDITIONAL_GROUP_MANAGERS || selectedGroup.additionalManagers.length > 0)"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">Edit Group Managers</a></span>
             <span ng-if="selectedGroup && selectedGroup.ownerId != user._id"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">View Group Managers</a></span>
         </span>
     </h6>
-
-    <input ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
-    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
-    <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
-    <div ng-if="emailInviteFeatureAvailable">
-        <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
-        <p>Email addresses MUST be seperated by a comma.</p>
-        <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
-    </div>
-
+    <form name="group">
+        <div class="input-group">
+            <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
+            <input name="newGroupName" ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
+            <span class="input-notification" ng-show="(selectedGroup && group.selectedGroupName.$dirty) || (!selectedGroup && newGroup.groupName && group.newGroupName.$dirty)">*Group name {{selectedGroup ? "changes" : ""}} will be visible to members</span>
+        </div>
+        <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
+        <div ng-if="emailInviteFeatureAvailable">
+            <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
+            <p>Email addresses MUST be seperated by a comma.</p>
+            <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
+        </div>
+    </form>
     <dl class="accordion group-accordion" ng-show="selectedGroup">
         <dd class="active">
             <a class="group-accordion-header" ng-class="{'remove-border-bottom': selectedGroupMembers != null && selectedGroupMembers.length != 0}">
@@ -87,4 +91,5 @@
             <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   
         </div>
     </div>
-    <!-- End active group -->
+</div>
+<!-- End active group -->
