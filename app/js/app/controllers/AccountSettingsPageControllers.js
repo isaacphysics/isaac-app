@@ -486,6 +486,9 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     // helper function to show First initial and last name for teachers
     $scope.convertToTeacherName = function(userObject) {
+        if (null == userObject)
+            return null;
+        
         return (userObject.givenName ? userObject.givenName.charAt(0) + ". " : "") + userObject.familyName;
     }
     // end authorisation stuff
