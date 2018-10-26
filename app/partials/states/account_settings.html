@@ -391,7 +391,7 @@
                                         <th>Actions</th>
                                     </tr>                                               
                                     <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
-                                        <td>{{entry.group.groupName}}</td>
+                                        <td>{{entry.group.groupName == null ? "Group #" + entry.group.id : entry.group.groupName}}</td>
                                         <td>
                                             <ul>
                                                 <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
