@@ -15,7 +15,7 @@
  */
 define(["../../honest/responsive_video", "/partials/content/NumericQuestion.html"], function(rv, templateUrl) {
 
-    return ["api", "units", "$rootScope", function(api, units, $rootScope) {
+    return ["api", "units", "$rootScope", "questionActions", function(api, units, $rootScope, questionActions) {
 
 		return {
 			scope: true,
@@ -100,7 +100,6 @@ define(["../../honest/responsive_video", "/partials/content/NumericQuestion.html
                         }
                     }
                 });
-
 
 				scope.$watch("ctrl.selectedValue", function(v, oldV) {
 					if (v === oldV) {
