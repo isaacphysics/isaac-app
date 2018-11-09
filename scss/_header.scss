@@ -8,6 +8,26 @@
     }
 }
 
+.important-announcement {
+    background: #bb2828c0;
+    color: white;
+    padding-top: 8px;
+
+    h1 small {
+        color: white;
+    }
+
+    .dismiss {
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        height: 24px;
+        width: 23px;
+        padding: 0;
+        background: url(../assets/ru.png) no-repeat -332px -373px;
+    }
+}
+
 .home-bg {
     position: absolute;
     left: calc(50% + 300px);

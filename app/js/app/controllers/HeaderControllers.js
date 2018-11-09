@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', function($rootScope, $scope, _auth, api, _$timeout) {
+export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout', 'persistence', function($rootScope, $scope, _auth, api, _$timeout, persistence) {
     
     $scope.$root.segueEnvironment = "LIVE"; //Live by default
+    $scope.showImportantAnnouncement = !persistence.load('importantAnnouncementDismissed');
 
     //Find out which version we're on
     api.environment.get().$promise.then(function(response){
@@ -57,6 +58,23 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout'
 
     }
 
+    // DANGER WILL ROBINSON
+    // The following two methods are to become useless after the hard-coded
+    // endDate below, and should be removed.
+    // I highly sympathise with anyone experiencing distress at the mere
+    // thought of the following. Hold tight.
+    $scope.shouldShowImportantAnnouncement = function() {
+        const startDate = new Date('2018-12-14T07:00:00Z');
+        const endDate = new Date('2018-12-18T10:00:00Z');
+        return !persistence.load('importantAnnouncementDismissed') && (startDate <= Date.now() && Date.now() <= endDate);
+    }
+
+    $scope.dismissImportantAnnouncement = function() {
+        persistence.save('importantAnnouncementDismissed', true);
+        $scope.showImportantAnnouncement = false;
+    }
+    // Madness ends here. More or less. Have a look at header.html, elements
+    // .important-announcement will need to be removed as well.
 
 
     $rootScope.streakDialToggle = function(questionPartsCorrectToday) {
