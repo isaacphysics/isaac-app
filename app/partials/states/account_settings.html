@@ -347,7 +347,7 @@
                             <ul class="teachers-connected">
                                 <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{convertToTeacherName(teacherUser)}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revocationConfirmation(teacherUser)">Revoke</a></li>
                             </ul>
-                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
+                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections.</p>
                         </div>
                     </div>
                 </div>
@@ -367,7 +367,7 @@
                                 <ul class="teachers-connected">
                                     <li ng-repeat="studentUser in activeStudentAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="You have access to this user's data and they can see your name and email address. To remove this access, click 'Revoke'.">{{studentUser.givenName}} {{studentUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="releaseAuthorisation(studentUser)">Remove</a></li>
                                 </ul>
-                                <p ng-if="activeStudentAuthorisations.length==0" class="teachers-connected">You have no active student connections</p>
+                                <p ng-if="activeStudentAuthorisations.length==0" class="teachers-connected">You have no active student connections.</p>
                             </div>
                             <div ng-if="activeStudentAuthorisations.length>0" class="remove-link">
                                 <p><a href="javascript:void(0)" ng-click="releaseAllAuthorisations()">Remove all</a></p>
@@ -381,15 +381,18 @@
                     </div>
                     <div class="large-16 medium-16 columns">
                         <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of. Groups in Isaac let teachers set assignments to multiple students in one go."></span></h3>
-                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. </p> 
-                        <div class="my-groups-table-section">
-                            <table>
-                                    <tr>
-                                        <th>Group Name</th>
-                                        <th>Teachers</th>
-                                        <th>Membership Status</th>
-                                        <th>Actions</th>
-                                    </tr>                                               
+                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. </p>
+                        <div ng-show="myGroupMembership.length > 0" class="my-groups-table-section">
+                            <table class="">
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Teachers</th>
+                                    <th>Membership Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </table>
+                            <div class="my-groups-table-row-container">
+                                <table>
                                     <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
                                         <td>{{entry.group.groupName == null ? "Group #" + entry.group.id : entry.group.groupName}}</td>
                                         <td>
@@ -397,7 +400,7 @@
                                                 <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
                                                 <li ng-repeat="manager in entry.group.additionalManagers">
                                                 {{convertToTeacherName(manager)}}</li>
-                                            </ul>    
+                                            </ul>
                                         </td>
                                         <td ng-class="{ru_red:entry.membershipStatus == 'INACTIVE'}" class="centered-table-column">{{entry.membershipStatus}}</td>
 
@@ -409,12 +412,11 @@
                                             <span ng-if="entry.membershipStatus == 'INACTIVE'" aria-haspopup="true" class="icon-help has-tip" data-ot="If you rejoin a group you will see all the assignments set since the group was created."></span>
                                         </td>
                                     </tr>
-                                                                       
-
-                            </table>
-                        </div>                                
-                        <!--a class="ru-button" ng-click="manageGroupMembership()" href="javascript:void(0)">Manage Group Membership</a-->    
-                    </div>                    
+                                </table>
+                            </div>
+                        </div>
+                        <p ng-hide="myGroupMembership.length > 0" class="teachers-connected text-center">You are not a member of any groups.</p>
+                    </div>
                 </div>
                 
             </div>

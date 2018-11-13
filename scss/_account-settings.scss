@@ -155,11 +155,10 @@
 	}
 
 	.my-groups-table-section {
-		max-height:300px; 
-		overflow-y: auto;
 		table {
-			width:100%;
-			border-collapse:collapse;
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 0px;
 			th{
 				background-color: $ru_darkgrey;
 				color:#fff;
@@ -177,6 +176,16 @@
 					font-weight:bold;
 					font-size: 1rem;
 				}
+			}
+		}
+		.my-groups-table-row-container {
+			max-height: 300px; 
+			overflow-y: auto;
+			margin-bottom: 1.25rem;
+		    border: #e3e3e3 1px solid;
+		    border-top: 0;
+			table {
+				border: none;
 			}
 		}
 	}
