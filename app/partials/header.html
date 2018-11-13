@@ -86,6 +86,23 @@
                 </div>
             </nav>
         </div>
+
+        <div class="header-strip">
+            <div class="important-announcement" ng-show="shouldShowImportantAnnouncement()">
+                <div class="row no-print">
+                    <div class="small-16 columns">
+                        <h1><small>Important announcement</small></h1>
+                        <p><big>Please note that Isaac Physics will be unavailable between 8 and 10 AM GMT on 18 December 2018, due to planned maintenance.</big></p>
+                        <button class="dismiss" ng-click="dismissImportantAnnouncement()"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-16 columns inner-strip">
+                    <div global-navigation></div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Mobile Header -->
     <div class='ru-mobile-header' ng-controller="HeaderController">
@@ -142,73 +159,17 @@
                   </a>
                 </div>
             </nav>
-        </div>
-    </div>
-    <!-- Search button -->
-    <!--
-    <div class="row" ng-controller="GlobalSearchController" ng-if="!globalFlags.noSearch">
-        <div class="small-16 columns">
-
-            <div class='row hide-for-small-only site-search-row'>
-                <div class='large-16 medium-16 columns'>
-                    <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen"></div>
-
-                    <a id="tutorial-search" href="javascript:void(0)" class="ru-desktop-search-icon" tabindex="0" ng-click="globalFlags.siteSearchOpen = true" ng-hide="globalFlags.siteSearchOpen">
-                        <img src='/assets/desktop-search-icon.png' alt="Search">
-                    </a>
-                    <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
-                        <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
+            <div class="important-announcement" ng-show="shouldShowImportantAnnouncement()">
+                <div class="row no-print">
+                    <div class="small-16 columns">
+                        <h1><small>Important announcement</small></h1>
+                        <p><big>Please note that Isaac Physics will be unavailable between 8 and 10 AM GMT on 18 December 2018, due to planned maintenance.</big></p>
+                        <button class="dismiss" ng-click="dismissImportantAnnouncement()"></button>
                     </div>
-                    <div class="ru-search-bg hide-animate" ng-show="globalFlags.siteSearchOpen" ng-click="globalFlags.siteSearchOpen = false"></div>
-                    <div class="ru-desktop-panel search hide-animate" ng-show="globalFlags.siteSearchOpen">
-                        <div class='ru-desktop-search'>
-                            <form ng-submit="triggerSearch()">
-                            <div class="row">
-                                <div class="large-2 medium-2 columns">
-                                    <label for="ru-search-box" class=" text-center inline">Search</label>
-                                </div>
-                                <div class="large-3 medium-13 columns">
-                                    <input id="ru-search-box" ng-model="models.query" type="text" sync-search-focus/>
-                                </div>
-                                <div class="clearfix show-for-medium-only"></div>
-                                <div class="large-4 medium-5 medium-offset-2 large-offset-0 columns">
-                                    <div class="ru-desktop-search-check">
-                                        <span class="ru-drop-check">
-                                            <input id="search-check1" ng-model="models.includeQuestions" name="checkbox2" type="checkbox">
-                                            <label for='search-check1'></label>
-                                        </span>
-                                        <label for="search-check1" class=''> Search problems</label>
-                                    </div>
-                                </div>
-                                <div class="large-4 medium-5  columns">
-                                    <div class="ru-desktop-search-check">
-                                        <span class="ru-drop-check">
-                                            <input id="search-check2" ng-model="models.includeConcepts" name="checkbox2" type="checkbox">
-                                            <label for='search-check2'></label>
-                                        </span>
-                                        <label for="search-check2" class=''> Search concepts</label>
-                                    </div>
-                                </div>
-                                <div class="large-2 medium-3 medium-offset-0 columns end">
-                                    <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now" ng-click="triggerSearch()">
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
     </div>
--->
-    <div class="header-strip">
-        <div class="row">
-            <div class="small-16 columns inner-strip">
-                <div global-navigation></div>
-            </div>
-        </div>
-    </div>
+
 
 </header>

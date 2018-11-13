@@ -31,7 +31,14 @@ define(["/partials/content/Pod.html"], function(templateUrl) {
 				
 				scope.getImageSrc = function() {
 					return api.getImageUrl(scope.isaacPod.image.src);
-				}
+				};
+
+				scope.onClick = function() {
+					api.logger.log({
+						type : "POD_CLICK",
+						podId : scope.isaacPod.id,
+					});
+				};
 			}
 		};
 	}];

@@ -172,6 +172,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
         $sp.state('about', genericPageState("/about", "about_us_index"));
+        $sp.state('cyberessentials', genericPageState("/cyberessentials", "cyberessentials"));
 
 
         if (subject.id == "physics") {

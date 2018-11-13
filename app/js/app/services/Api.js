@@ -176,7 +176,7 @@ define([], function() {
             },
             'getLogEventTypes' : {
                 method: 'GET',
-                url: urlPrefix + "/info/log_event_types",
+                url: urlPrefix + "/log/event_types",
             },
             'countUsersByRole' : {
                 method: 'GET',
