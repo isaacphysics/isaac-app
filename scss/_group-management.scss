@@ -176,14 +176,15 @@
 
 .active-group-panel {
 	margin-top:	5px !important;
+
 	input {
-		margin: 15px 0px 0px 0px !important;
+		margin: 0px 0px 0px 0px !important;
+		font-size: 1.05rem;
+		padding-top: 1.3rem;
+		padding-bottom: 1.3rem;
 	}
 	.input-group {
-		margin-bottom: 15px;
-	}
-	.input-notification {
-		float: right;
+		margin-top: 15px;
 		margin-bottom: 15px;
 	}
 	.ru-button-big {

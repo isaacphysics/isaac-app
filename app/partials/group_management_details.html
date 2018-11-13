@@ -8,19 +8,29 @@
             <span ng-if="selectedGroup && selectedGroup.ownerId != user._id"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">View Group Managers</a></span>
         </span>
     </h6>
+
     <form name="group">
-	   	<input ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
-	    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
-	    <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
-	    
+        <div class="input-group">
+            <div class="row">
+                <div class="columns small-12">
+                    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
+                    <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
+                </div>
+                <div class="columns small-4">
+                   <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-right">
+                    <span ng-if="selectedGroup.lastUpdated">*Group name is shared with members</span>
+                    <span ng-if="!selectedGroup">*Group name will be shared with members</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && group.selectedGroupName.$dirty">*Group name changes will be shared with members</span>
+                </div>
+            </div>
+        </div>
 	    <div ng-if="selectedGroup && selectedGroup.ownerId == user._id">
 	        <a ng-if="!archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(true)">Archive this group</a>
 	        <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   
-	    </div>
-	    <div ng-if="emailInviteFeatureAvailable">
-	        <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
-	        <p>Email addresses MUST be seperated by a comma.</p>
-	        <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
 	    </div>
     </form>
 
@@ -89,4 +99,4 @@
             </div>
         </dd>
     </dl>
-    <!-- End active group -->
+</div><!-- End active group -->
