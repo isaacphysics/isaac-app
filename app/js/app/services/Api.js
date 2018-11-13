@@ -429,14 +429,6 @@ define([], function() {
             return urlPrefix + "-docs/";
         }
 
-        // this.admin = {
-        //  synchroniseDatastores: function() {
-        //      return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-        //          console.warn("Synchronising Datastores. The next page load will take a while.");
-        //      });
-        //  }
-        // };
-
         this.account = $resource(urlPrefix + "/users", {}, {
             saveSettings: {
                 method: "POST",
