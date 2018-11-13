@@ -425,6 +425,10 @@ define([], function() {
             return urlPrefix + "/content/units";
         }
 
+        this.getSwaggerUrl = function() {
+            return urlPrefix + "-docs/";
+        }
+
         // this.admin = {
         //  synchroniseDatastores: function() {
         //      return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
