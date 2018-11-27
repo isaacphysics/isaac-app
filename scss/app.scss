@@ -96,3 +96,7 @@
 @import "nprogress.scss";
 
 @import "support.scss";
+
+// KaTeX
+// BIG FAT WARNING: Apparently this is non-standard behaviour so we may want to research this, but it works for now.
+@import "katex/dist/katex.min";

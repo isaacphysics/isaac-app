@@ -1,4 +1,4 @@
-define(["/partials/equation_editor/canvas_symbol.html"], function(templateUrl) {
+define(["katex", "/partials/equation_editor/canvas_symbol.html"], function(katex, templateUrl) {
 
 	return ["$timeout", function(_$timeout) {
 

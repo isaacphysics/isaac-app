@@ -2,9 +2,10 @@
 define(["p5",
         "nearley",
         "app/js/lib/equation_editor/grammar.ne",
+        "katex",
         "app/ts/inequality/Inequality.ts",
         "/partials/equation_editor/equation_input.html"],
-        function(p5, nearley, grammar, MySketch, templateUrl) {
+        function(p5, nearley, grammar, katex, MySketch, templateUrl) {
 
     MySketch = MySketch.MySketch;
     const compiledGrammar = nearley.Grammar.fromCompiled(grammar);

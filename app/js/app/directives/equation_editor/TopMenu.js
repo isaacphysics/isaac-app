@@ -1,4 +1,4 @@
-define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
+define(["katex", "/partials/equation_editor/top_menu.html"], function(katex, templateUrl) {
 
     return ["$timeout", function(_$timeout) {
 

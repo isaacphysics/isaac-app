@@ -1,5 +1,5 @@
 
-define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
+define(["katex", "/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
 
     return [function() {
 

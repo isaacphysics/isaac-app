@@ -1,5 +1,5 @@
 
-define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
+define(["katex", "/partials/equation_editor/menu_symbol.html"], function(katex, templateUrl) {
 
     return [function() {
 
@@ -14,8 +14,10 @@ define(["/partials/equation_editor/menu_symbol.html"], function(templateUrl) {
                 scope.name = "MENUSYMBOL"
 
                 scope.$watch("symbol.menu.label", function(newLabel) {
-                    if (newLabel && scope.symbol.menu.texLabel)
-                        katex.render(scope.symbol.menu.label, element.find(".symbol-label")[0]);
+                    if (newLabel && scope.symbol.menu.texLabel) {
+                        const el = element.find(".symbol-label")[0];
+                        katex.render(scope.symbol.menu.label, el);
+                    }
                 });
 
                 scope.dragging = false;

@@ -1,5 +1,5 @@
 "use strict";
-define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, MySketch, tester, templateUrl) {
+define(["p5", "katex", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, katex, MySketch, tester, templateUrl) {
 
     MySketch = MySketch.MySketch;
 
