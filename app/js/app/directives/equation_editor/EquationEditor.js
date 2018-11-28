@@ -112,7 +112,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                     console.log("New state:", s);
 
-                    let rp = $(".result-preview>span");
+                    let rp = $(".result-preview > span");
 
                     rp.empty();
 
@@ -128,11 +128,15 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    let w = scope.state.result ? rp.outerWidth() : 0;
+                    let w = 0;
+                    if (scope.state.result) {
+                        let spans = rp.find(".katex > span.katex-html > span");
+                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c);
+                    }
                     let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
                     resultPreview.animate({
-                        width: w
+                        width: w + $(".equation-editor > .hex-button.submit").width()
                     }, 200);
 
                     scope.$emit("historyCheckpoint");
