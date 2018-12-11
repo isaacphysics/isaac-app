@@ -648,7 +648,7 @@ export
     };
 
     centre = (init = false) => {
-        let top = this.height/2;
+        let top = this.height/Math.ceil(window.devicePixelRatio*2);
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
             symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
