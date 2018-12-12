@@ -118,8 +118,9 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
         // create a new promise so we can cancel it later.
         let questionSearchResource = api.getQuestionsResource();
-        httpCanceller = questionSearchResource.$cancelRequest;
-        return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults, fasttrack:fasttrack});
+        let queryResponse = questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults, fasttrack:fasttrack})
+        httpCanceller = queryResponse.$cancelRequest;
+        return queryResponse;
     };
 
     // timer for the search box to minimise number of requests sent to api
