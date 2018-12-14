@@ -604,6 +604,10 @@
     }
     .ru-answer a.eqn-preview {
         font-size: 1.5rem !important;
+
+        .edit-eqn-icon {
+            left: 5px !important;
+        }
     }
     .ru-answer .katex span, .ru-answer .text-center span {
         // display: initial;
