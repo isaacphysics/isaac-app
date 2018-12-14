@@ -40,7 +40,7 @@
             </div>
             <div class="ru-concept-results">
                 <div ng-repeat="result in response.filteredResults" class='row ru-mobile-answer-wrap' ng-init="hidden = result.tags.indexOf('nofilter') > -1; maths = result.tags.indexOf('maths') > -1; physics = result.tags.indexOf('physics') > -1; chemistry = result.tags.indexOf('chemistry') > -1;" ng-class="{maths: maths && !physics, physics: physics && !maths, both: !physics && !maths}">
-                    <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id})}}">
+                    <a class='small-16 columns' ng-href="{{$state.href(mapTypeToState(result), {id: result.id}) || result.url}}">
                         <div ng-class="{'ru-search-result': true, odd: $odd, even: $even, concept: (result.type == 'isaacConceptPage'), maths: maths && !physics, physics: physics}">
                             <div class="ru-search-result-content">
                                 <img class="right show-for-small-only" src="/assets/isaac-index-arrow.png">

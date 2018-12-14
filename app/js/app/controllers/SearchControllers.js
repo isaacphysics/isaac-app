@@ -13,15 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
-    let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
+define(["../services/SearchResults.js"], function(SearchResults) {
+    let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true, includeGenerals: true};
+    let actualResponse = []
+
+    // let searcher = searchResults.SearchConstructor();
 
     let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
-            let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-            $location.replace();
-            $location.search({query: query, types: typesToInclude.join(",")})
-            return response;            
+            let lquery = query.toLowerCase();
+            if (SearchResults.getSearchTerms(lquery)){
+                actualResponse = SearchResults.getSearchTerms(lquery);
+                let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
+                $location.replace();
+                $location.search({query: query, types: typesToInclude.join(",")});
+                console.log(response);
+                return response;
+            }
+            else {
+                let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
+                actualResponse = [];
+                $location.replace();
+                $location.search({query: query, types: typesToInclude.join(",")});
+                console.log(response);
+                return response;  
+            }          
         }
     }
 
@@ -73,6 +89,8 @@ define([], function() {
 
             timer = $timeout(function() {
                 $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
+                $scope.response.filteredResults.unshift(actualResponse);
+                $scope.response.results.unshift(actualResponse);
             }, 500);
         });
 
@@ -80,17 +98,23 @@ define([], function() {
             if (newVal === oldVal) return;
              changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
              $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
+             $scope.response.filteredResults.unshift(actualResponse);
+             $scope.response.results.unshift(actualResponse);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
             $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
+            $scope.response.filteredResults.unshift(actualResponse);
+            $scope.response.results.unshift(actualResponse);
         });
 
         $scope.$watch('response.results', function(results) {
             if ($scope.response) {
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
+                $scope.response.filteredResults.unshift(actualResponse);
+                $scope.response.results.unshift(actualResponse);
             }
         });
         
@@ -114,11 +138,15 @@ define([], function() {
         $scope.$watch('models.includeConcepts', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             $scope.response = changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+            $scope.response.filteredResults.unshift(actualResponse);
+            $scope.response.results.unshift(actualResponse);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             $scope.response = changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+            $scope.response.filteredResults.unshift(actualResponse);
+            $scope.response.results.unshift(actualResponse);
         });
 
         $scope.triggerSearch = function() {

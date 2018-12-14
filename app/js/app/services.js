@@ -30,6 +30,8 @@
 	// TODO: This should probably be a service rather than a factory
 	.service('tags', require("./services/Tags"))
 
+	.service('searchResults', require("./services/SearchResults"))
+
 	.factory('units', require("./services/Units"))
 
 	.factory('filterWarnings', require("./services/FilterWarnings"))
