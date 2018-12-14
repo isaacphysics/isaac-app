@@ -68,10 +68,11 @@ export const PageController = ['$rootScope', '$scope', 'auth', 'api', '$timeout'
         const endDate = new Date('2018-12-18T12:00:00Z');
         return !persistence.load('importantAnnouncementDismissed') && (startDate <= Date.now() && Date.now() <= endDate);
     }
+    $rootScope.showImportantAnnouncement = $scope.shouldShowImportantAnnouncement();
 
-    $scope.dismissImportantAnnouncement = function() {
+    $rootScope.dismissImportantAnnouncement = function() {
         persistence.save('importantAnnouncementDismissed', true);
-        $scope.showImportantAnnouncement = false;
+        $rootScope.showImportantAnnouncement = false;
     }
     // Madness ends here. More or less. Have a look at header.html, elements
     // .important-announcement will need to be removed as well.
