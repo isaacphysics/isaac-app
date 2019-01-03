@@ -107,23 +107,10 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         return -1;
     }
 
-    // question finder code.
-    let httpCanceller = null;
-    let doQuestionSearch = function(searchQuery, searchLevel, searchTags, fasttrack){
-        // if we have a current promise outstanding cancel it.
-        if (httpCanceller != null) {
-            httpCanceller();
-            httpCanceller = null;
-        }
-
-        // create a new promise so we can cancel it later.
-        let questionSearchResource = api.getQuestionsResource();
-        httpCanceller = questionSearchResource.$cancelRequest;
-        return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults, fasttrack:fasttrack});
-    };
-
     // timer for the search box to minimise number of requests sent to api
     let timer = null;
+    // track arguments so that we only show results of most recent query
+    let mostRecentQueryArguments = null;
     $scope.$watch('questionSearchText + questionSearchLevel + questionSearchSubject', function() { 
         if (timer) {
             $timeout.cancel(timer);
@@ -132,31 +119,30 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
         timer = $timeout(function() {
             $scope.loading = true;
-
-            let searchText, fasttrack;
-            if ($scope.questionSearchText == "fasttrack") {
-                searchText = "";
-                fasttrack = true;
-            } else {
-                searchText = $scope.questionSearchText;
-                fasttrack = false;
-            }
-
-            doQuestionSearch(searchText, $scope.questionSearchLevel, $scope.questionSearchSubject, fasttrack)
-            .$promise.then(function(questionsFromServer){
-                httpCanceller = null;
-                // update the view
-                $scope.searchResults = questionsFromServer.results.filter(function(r) {
+            let isFastTrackQuery = $scope.questionSearchText == "fasttrack";
+            let myQueryArguments = {
+                searchString: isFastTrackQuery ? "" : $scope.questionSearchText,
+                tags: $scope.questionSearchSubject,
+                levels: $scope.questionSearchLevel,
+                limit: largeNumberOfResults,
+                fasttrack: isFastTrackQuery
+            };
+            mostRecentQueryArguments = myQueryArguments;
+            api.getQuestionsResource().query(myQueryArguments)
+            .$promise.then(function(questionsFromServer) {
+                // only display results for most recent query request (i.e. not most recent asynchronous repsonse)
+                if (JSON.stringify(myQueryArguments) == JSON.stringify(mostRecentQueryArguments)) {
+                    // update the view
+                    $scope.searchResults = questionsFromServer.results.filter(function(r) {
                         let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
                         return keepElement || $scope.isStaffUser;
-                });
-                // try to sort the results if requested.
-                if (sortField) {
-                    $scope.searchResults.sort(function(a,b) {
-                        return a[sortField] > b[sortField] ? 1 : -1;
                     });
+                    // try to sort the results if requested.
+                    if (sortField) {
+                        $scope.searchResults.sort((a, b) => { a[sortField] > b[sortField] ? 1 : -1; });
+                    }
+                    $scope.loading = false;
                 }
-                $scope.loading = false;
             });
         }, 500);
     });
