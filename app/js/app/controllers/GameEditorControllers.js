@@ -107,10 +107,21 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
         return -1;
     }
 
+    // question finder code.
+    let mostRecentQueryID = 0;
+    let doQuestionSearch = function(searchQuery, searchLevel, searchTags) {
+        let isFastTrackQuery = searchQuery == "fasttrack";
+        return api.getQuestionsResource().query({
+            searchString: isFastTrackQuery ? '' : searchQuery,
+            tags: searchTags,
+            levels: searchLevel,
+            limit: largeNumberOfResults,
+            fasttrack: isFastTrackQuery
+        });
+    };
+
     // timer for the search box to minimise number of requests sent to api
     let timer = null;
-    // track arguments so that we only show results of most recent query
-    let mostRecentQueryArguments = null;
     $scope.$watch('questionSearchText + questionSearchLevel + questionSearchSubject', function() { 
         if (timer) {
             $timeout.cancel(timer);
@@ -119,19 +130,11 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
         timer = $timeout(function() {
             $scope.loading = true;
-            let isFastTrackQuery = $scope.questionSearchText == "fasttrack";
-            let myQueryArguments = {
-                searchString: isFastTrackQuery ? "" : $scope.questionSearchText,
-                tags: $scope.questionSearchSubject,
-                levels: $scope.questionSearchLevel,
-                limit: largeNumberOfResults,
-                fasttrack: isFastTrackQuery
-            };
-            mostRecentQueryArguments = myQueryArguments;
-            api.getQuestionsResource().query(myQueryArguments)
+            let myQueryID = ++mostRecentQueryID; // increment then assign query id
+            doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
             .$promise.then(function(questionsFromServer) {
                 // only display results for most recent query request (i.e. not most recent asynchronous repsonse)
-                if (JSON.stringify(myQueryArguments) == JSON.stringify(mostRecentQueryArguments)) {
+                if (myQueryID == mostRecentQueryID) {
                     // update the view
                     $scope.searchResults = questionsFromServer.results.filter(function(r) {
                         let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
