@@ -1,0 +1,24 @@
+<div class="isaac-free-text-question">
+    <div class="row">
+        <div class="small-14 small-offset-1 columns end">
+            <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-14 medium-offset-1 columns end no-print">
+            <form class="" autocomplete="off">
+                <ul class="small-block-grid-1">
+                    <li ng-class="{'ru-answer-block': true, 'ru-error': question.validationResponse.correct === false}">
+                        <div class="ru-answer-block-panel">
+                            <textarea ng-model="ctrl.selectedValue" placeholder="Type your answer here." rows="2" ng-class="{'invalid-value': !validValue}" />
+                            <div class="input-warning">
+                                <div class="text-right" ng-show="charLimitExceeded">Character limit exceeded ({{currentNumebrOfChars}}/{{charLimit}})</div>
+                                <div class="text-right" ng-show="wordLimitExceeded">Word limit exceeded ({{currentNumebrOfWords}}/{{wordLimit}})</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>

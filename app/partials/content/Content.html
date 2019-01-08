@@ -16,12 +16,13 @@
 	<div ng-switch-when="isaacGraphSketcherQuestion" isaac-question-tabs></div>
 	<div ng-switch-when="isaacAnvilQuestion" isaac-question-tabs></div>
 	<div ng-switch-when="isaacStringMatchQuestion" isaac-question-tabs></div>
+	<div ng-switch-when="isaacFreeTextQuestion" isaac-question-tabs></div>
 
 	<!-- Other things -->
 	<div ng-switch-default ng-switch="doc.layout">
-			<div ng-switch-when="tabs" isaac-tabs></div>
-			<div ng-switch-when="accordion" isaac-accordion></div>
-			<div ng-switch-when="horizontal" isaac-horizontal></div>
-			<div ng-switch-default isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div>
+		<div ng-switch-when="tabs" isaac-tabs></div>
+		<div ng-switch-when="accordion" isaac-accordion></div>
+		<div ng-switch-when="horizontal" isaac-horizontal></div>
+		<div ng-switch-default isaac-content-value-or-children encoding="doc.encoding" value="doc.value" children="doc.children"></div>
 	</div>
 </div>
