@@ -22,16 +22,14 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Symbol } from './Symbol';
 import { DockingPoint } from "./DockingPoint";
-import { Brackets } from "./Brackets";
 
 /**
  * Relations, such as equalities, inequalities, and unexpected friends.
  */
 export
     class Relation extends Widget {
-    protected s: any;
+    public s: any;
     protected relationString: string;
     protected relation: string;
     protected pythonSymbol: string;
@@ -46,7 +44,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -172,7 +170,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         // Equals sign always appears in menu, others require loading
         if (this.relation == "=") {
             return '';

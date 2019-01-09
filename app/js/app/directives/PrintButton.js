@@ -22,11 +22,11 @@ define([], function() {
 
             template: '<div class="ru_print" ng-click="togglePrintingOptions()"></div>',
 
-            link: function(scope, element, attrs) {
+            link: function(scope, _element, _attrs) {
 
-                var logPrintView = function() {
+                let logPrintView = function() {
                     if (scope.page) {
-                        var logMessage = {
+                        let logMessage = {
                                 type: "PRINT_PAGE",
                                 pageType: scope.page.type,
                                 pageId: scope.page.id,

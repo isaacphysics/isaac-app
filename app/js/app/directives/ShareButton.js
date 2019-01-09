@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    return ["$http", "$location", "api", "$timeout", function($http, $location, api, $timeout) {
+    return ["$http", "api", function($http, api) {
         return {
 
             restrict: "A",
@@ -30,33 +30,29 @@ define([], function() {
                     scope.showShareUrl = !scope.showShareUrl;
                     if (scope.showShareUrl) {
 
+                        let data;
                         if (attrs.sharelink) {
-                            var data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
+                            data = {"longUrl": window.location.origin + '/' + attrs.sharelink};
                         }
                         else {
-                            var data = {"longUrl": window.location.href};
+                            data = {"longUrl": window.location.origin + window.location.pathname};
                         }
 
-                        $http.post('https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBcVr1HZ_JUR92xfQZSnODvvlSpNHYbi4Y', data, {withCredentials: false}).then(function(response) {
-                            scope.shareUrl = response.data.id.replace("https://goo.gl/", window.location.host + "/s/");
-                            var shortCode = response.data.id.replace("https://goo.gl/", "");
-                            api.logger.log({
-                                type: "SHOW_SHARE_URL",
-                                shortCode: shortCode,
-                                longUrl: data.longUrl,
-                            });
-                            // Attempt to select the share URL for users with a modern browser:
-                            var shareUrlDiv = element.parent().find(".share-url-div")[0];
-                            if (window.getSelection && shareUrlDiv) {
-                                selection = window.getSelection();        
-                                range = document.createRange();
-                                range.selectNodeContents(shareUrlDiv);
-                                selection.removeAllRanges();
-                                selection.addRange(range);
-                            }
-                        }).catch(function() {
-                            // Fail silently
+                        scope.shareUrl = data.longUrl;
+
+                        api.logger.log({
+                            type: "SHOW_SHARE_URL",
+                            longUrl: data.longUrl,
                         });
+                        // Attempt to select the share URL for users with a modern browser:
+                        let shareUrlDiv = element.parent().find(".share-url-div")[0];
+                        if (window.getSelection && shareUrlDiv) {
+                            let selection = window.getSelection();        
+                            let range = document.createRange();
+                            range.selectNodeContents(shareUrlDiv);
+                            selection.removeAllRanges();
+                            selection.addRange(range);
+                        }
                     }
                 };
             }

@@ -22,7 +22,7 @@ define([], function() {
 
 		this.save = function save(key, value) {
 			try {
-				$window.localStorage[key] = value;
+				$window.localStorage.setItem(key, value);
 				return true;
 			} catch (e) {
 				console.error("Failed to save to local storage. This might be a browser restriction.", e);
@@ -32,17 +32,37 @@ define([], function() {
 
 		this.load = function load(key) {
 			try {
-				return $window.localStorage[key];
+				return $window.localStorage.getItem(key);
 			} catch (e) {
 				console.error("Failed to read from local storage. This might be a browser restriction.", e);
 				return null;
 			}
 		}
 
+		this.remove = function remove(key) {
+			try {
+				return $window.localStorage.removeItem(key);
+				return true;
+			} catch (e) {
+				console.error("Failed to remove from local storage. This might be a browser restriction.", e);
+				return false;
+			}
+		}
+
+		this.clear = function clear() {
+			try {
+				return $window.localStorage.clear();
+				return true;
+			} catch (e) {
+				console.error("Failed to clear local storage. This might be a browser restriction.", e);
+				return false;
+			}
+		}
+
 		this.session = {
 			save: function sessionSave(key, value) {
 				try {
-					$window.sessionStorage[key] = value;
+					$window.sessionStorage.setItem(key, value);
 					return true;
 				} catch (e) {
 					console.error("Failed to save to session storage. This might be a browser restriction.", e);
@@ -50,12 +70,32 @@ define([], function() {
 				}
 			},
 
-			load: function sessionLoad(key, value) {
+			load: function sessionLoad(key, _value) {
 				try {
-					return $window.sessionStorage[key];
+					return $window.sessionStorage.getItem(key);
 				} catch (e) {
 					console.error("Failed to read from session storage. This might be a browser restriction.", e);
 					return null;
+				}
+			},
+
+			remove: function sessionRemove(key) {
+				try {
+					return $window.sessionStorage.removeItem(key);
+					return true;
+				} catch (e) {
+					console.error("Failed to remove from session storage. This might be a browser restriction.", e);
+					return false;
+				}
+			},
+
+			clear: function clear() {
+				try {
+					return $window.sessionStorage.clear();
+					return true;
+				} catch (e) {
+					console.error("Failed to clear session storage. This might be a browser restriction.", e);
+					return false;
 				}
 			},
 		};

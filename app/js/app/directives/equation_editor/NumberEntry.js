@@ -1,14 +1,14 @@
-define([], function() {
+define(["/partials/equation_editor/number_entry.html"], function(templateUrl) {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
 
         return {
             scope: {
                 symbols: "=",
             },
             restrict: "A",
-            templateUrl: "/partials/equation_editor/number_entry.html",
-            link: function(scope, element, attrs) {
+            templateUrl: templateUrl,
+            link: function(scope, element, _attrs) {
                 scope.name = "NUMBER ENTRY"
 
                 scope.currentNumber = "";
@@ -39,7 +39,7 @@ define([], function() {
                     }
                 }
 
-                scope.$on("numberClicked", function(_, num) {
+                scope.$on("numberClicked", function(_event, num) {
                     if(num == undefined) {
                         return;
                     }
@@ -66,13 +66,7 @@ define([], function() {
                     scope.negate = false;
                 }
 
-                var updateInputPadding = function() {
-                    $timeout(function() {
-                        $(element).find("input").css("padding-right", $(element).find(".input-exponent").width() + 20);
-                    });
-                };
-
-                var updateSymbol = function() {
+                let updateSymbol = function() {
 
                     if (scope.editSymbol) {
                         scope.currentSymbol = scope.editSymbol;
@@ -92,15 +86,11 @@ define([], function() {
                         }
                     }
 
-                    var expNum = parseFloat(scope.currentExponent);
-
                     if (scope.currentNumber == "" || isNaN(parseFloat(scope.currentSymbol.menu.label))) {
                         scope.negate = false;
                         scope.currentSymbol = null;
                         return;
                     }
-
-                    var currentNumberAlreadyNegated = scope.currentNumber.indexOf("-") == 0;
 
                     scope.currentSymbol.editable = {
                         currentNumber: scope.currentNumber,
@@ -112,10 +102,10 @@ define([], function() {
                 scope.$watch("currentNumber", updateSymbol);
                 scope.$watch("one", updateSymbol);
                 scope.$watch("negate", updateSymbol);
-                scope.$on("clicked", function(_, clicked) {
+                scope.$on("clicked", function(_event, clicked) {
                     scope.clicked = clicked;
                 });
-                scope.$on("symbolDrag", function($e, symbol, pageX, pageY, deltaX, deltaY, mousePageX, mousePageY) {
+                scope.$on("symbolDrag", function(_$e, symbol, pageX, pageY, _deltaX, _deltaY, mousePageX, mousePageY) {
                     // This overcomes issues with deciding if number button is clicked or dragged.
                     // If the number is moved below the top green menu bar, then we associate this with a drag movement and
                     // draw the number on the canvas.
@@ -130,7 +120,7 @@ define([], function() {
                     }
                 })
 
-                scope.$on("symbolDrop", function($e, symbolSpec, mousePageX, mousePageY, pageY) {
+                scope.$on("symbolDrop", function(_$e, symbolSpec, _mousePageX, _mousePageY, _pageY) {
                     if (!scope.clicked) {
                         scope.$emit("spawnSymbol");
                         // If property "editable" of current object isn't null, we must have generated it using the editor
@@ -141,7 +131,7 @@ define([], function() {
                     }
                 });
 
-                scope.$on("editNumber", function(_, s) {
+                scope.$on("editNumber", function(_event, s) {
                     scope.editSymbol = s;
                     scope.currentNumber = s.editable.currentNumber;
                     scope.currentExponent = s.editable.currentExponent;
@@ -159,7 +149,7 @@ define([], function() {
                     }
                 })
 
-                element.find("[katex]").each(function(i, e) {
+                element.find("[katex]").each(function(_i, e) {
                     katex.render($(e).html(), e);
                 })
             },

@@ -61,11 +61,11 @@
                 <span class="ru-form-required"></span>
               </label>
               <select id="year-group" name="year-group" ng-model="additionalInformation.yearGroup" required>
-                                        <option value="9">Year 9</option>
-                                        <option value="10">Year 10</option>
-                                        <option value="11">Year 11</option>
-                                        <option value="12">Year 12</option>
-                                        <option value="13">Year 13</option>
+                                        <option ng-if="event.student" value="9">Year 9</option>
+                                        <option ng-if="event.student" value="10">Year 10</option>
+                                        <option ng-if="event.student" value="11">Year 11</option>
+                                        <option ng-if="event.student" value="12">Year 12</option>
+                                        <option ng-if="event.student" value="13">Year 13</option>
                                         <option value="TEACHER">N/A - Teacher</option>
                                         <option value="OTHER">N/A - Other</option>
               </select>

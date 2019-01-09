@@ -23,16 +23,16 @@ define(["d3"], function(d3) {
                 type: "@",
             },
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, _attrs) {
 
-                var dateFormat = d3.time.format("%b %Y");
+                let dateFormat = d3.time.format("%b %Y");
 
                 scope.$watch('data', function(newData){
                     if (!newData) {
                         return;
                     }
                     
-                    var data = [],
+                    let data = [],
                         w = 500,
                         h = 225,
                         padding = 55,
@@ -43,18 +43,18 @@ define(["d3"], function(d3) {
                             "#0e212f"
                         ]; 
 
-                    var minX = Number.MAX_VALUE,
+                    let minX = Number.MAX_VALUE,
                         maxX = -Number.MAX_VALUE,
                         minY = Number.MAX_VALUE,
                         maxY = -Number.MAX_VALUE;
 
-                    for(series in scope.data) {
-                        var ds = [];
+                    for(let series in scope.data) {
+                        let ds = [];
                         ds.color = color_hash[data.length];
                         ds.title = series;
 
                         for(key in scope.data[series]){
-                            var x = Date.parse(key),
+                            let x = Date.parse(key),
                                 y = scope.data[series][key];
 
                             minX = Math.min(minX, x);
@@ -88,17 +88,17 @@ define(["d3"], function(d3) {
                     }
 
                     // Define axis ranges & scales        
-                    var xScale = d3.time.scale()
+                    let xScale = d3.time.scale()
                         .domain([minX, maxX]).nice(d3.time.year)
                         .range([padding, w - 30]);
 
-                    var yScale = d3.scale.linear()
+                    let yScale = d3.scale.linear()
                         .domain([0, maxY])
                         .range([h - padding, 5]);
 
                     element.empty();
                     // Create SVG element
-                    var svg = d3.select(element[0])
+                    let svg = d3.select(element[0])
                         .append("svg")
                         .attr('class', 'd3-line')
                         .attr("width", '100%')
@@ -107,10 +107,10 @@ define(["d3"], function(d3) {
                         .attr('preserveAspectRatio','xMinYMin');
 
                     // Define lines
-                    var line = d3.svg.line();
-    
+                    let line = d3.svg.line();
+                    void line;
 
-                    var pathContainers = svg.selectAll('g.line').data(data);
+                    let pathContainers = svg.selectAll('g.line').data(data);
                     
                     pathContainers.enter().append('g')
                         .attr('class', 'd3-line-data')
@@ -132,9 +132,9 @@ define(["d3"], function(d3) {
                             );
 
                     // add circles for line graph
-                    if(scope.type != 'area'){
+                    if (scope.type != 'area') {
 
-                        var d3tooltip = d3.select("body").append("div")  
+                        let d3tooltip = d3.select("body").append("div")  
                             .attr("class", "d3-tooltip")               
                             .style("opacity", 0);
 
@@ -156,7 +156,7 @@ define(["d3"], function(d3) {
                                     .style("left", (d3.event.pageX) + "px")     
                                     .style("top", (d3.event.pageY - 28) + "px");    
                             })                  
-                            .on("mouseout", function(d) {       
+                            .on("mouseout", function(_d) {       
                                 d3tooltip.transition()        
                                     .duration(500)      
                                     .style("opacity", 0);   
@@ -164,7 +164,7 @@ define(["d3"], function(d3) {
                     }
       
                     //Define X axis
-                    var xAxis = d3.svg.axis()
+                    let xAxis = d3.svg.axis()
                         .scale(xScale)
                         .orient("bottom")
                         .ticks(6)
@@ -172,7 +172,7 @@ define(["d3"], function(d3) {
                         .tickFormat(dateFormat);
 
                     //Define Y axis
-                    var yAxis = d3.svg.axis()
+                    let yAxis = d3.svg.axis()
                         .scale(yScale)
                         .orient("left")
                         .ticks(5);
@@ -192,7 +192,7 @@ define(["d3"], function(d3) {
 
 
                     // Add key
-                    var key = d3.select(element[0]).append("ul")
+                    let key = d3.select(element[0]).append("ul")
                         .attr("class", "d3-plot-key");
 
                     key.selectAll("li")

@@ -1,35 +1,33 @@
-define(["app/honest/responsive_video"], function(rv) {
+define(["../../honest/responsive_video", "/partials/content/GraphSketcherQuestion.html"], function(rv, templateUrl) {
 
-    return ["api", function(api) {
+    return function() {
         
         return {
             scope: true,
 
             restrict: 'A',
 
-            templateUrl: "/partials/content/GraphSketcherQuestion.html",
+            templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
-                var ctrl = this;
-
-                ctrl.selectedFormula = {};
+                let ctrl = this;
 
                 if (scope.question.selectedChoice) {
                     // We have a previous answer. Load it.
                     try {
-                        ctrl.selectedFormula = JSON.parse(scope.question.selectedChoice.graphData);
+                        ctrl.formulaChoice = JSON.parse(scope.question.selectedChoice.graphData);
                     } catch (e) {
                         console.warn("Error loading previous answer: ", e.message);
                     }
                 } else {
                     // We have no answer and no seed
-                    ctrl.selectedFormula = {};
+                    ctrl.formulaChoice = {};
                 }
 
                 ctrl.plainDoc = JSON.parse(JSON.stringify(scope.doc));
                 ctrl.plainDoc.type = "content";
 
-                scope.$watch("ctrl.selectedFormula", function(f, oldF) {
+                scope.$watch("ctrl.formulaChoice", function(f, oldF) {
                     
                     if (f === oldF) {
                         return; // Init
@@ -52,5 +50,5 @@ define(["app/honest/responsive_video"], function(rv) {
 
             controllerAs: "ctrl",
         };
-    }];
+    };
 });

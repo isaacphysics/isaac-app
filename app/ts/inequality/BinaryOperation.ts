@@ -22,7 +22,6 @@ limitations under the License.
 /* tslint:disable: comment-format */
 
 import { Widget, Rect } from './Widget';
-import { Brackets } from './Brackets';
 import { DockingPoint } from "./DockingPoint";
 
 /**
@@ -32,7 +31,7 @@ import { DockingPoint } from "./DockingPoint";
  */
 export
     class BinaryOperation extends Widget {
-    protected s: any;
+    public s: any;
     protected operation: string;
     protected mhchemSymbol: string;
     protected latexSymbol: string;
@@ -46,7 +45,7 @@ export
     /**
      * There's a thing with the baseline and all that... this sort-of fixes it.
      *
-     * @returns {Vector} The position to which a Symbol is meant to be docked from.
+     * @returns {p5.Vector} The position to which a Symbol is meant to be docked from.
      */
     get dockingPoint(): p5.Vector {
         return this.p.createVector(0, -this.scale*this.s.xBox_h/2);
@@ -75,7 +74,7 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation', 'differential'];
+        this.docksTo = ['exponent', 'operator', 'chemical_element', 'state_symbol', 'particle', 'operator_brackets', 'symbol', 'relation', 'differential', 'top-left', 'bottom-left'];
     }
 
     /**
@@ -138,7 +137,7 @@ export
         };
     }
 
-    token() {
+    token(): string {
         return '';
     }
 

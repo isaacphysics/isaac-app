@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" ng-class="{'high-contrast': $root.userPreferences.BETA_FEATURE.HIGH_CONTRAST}">
     <div class='large-16 medium-16 columns print-no-side-padding'>
 
 
@@ -68,24 +68,36 @@
                             </div>
                             <h2 class="print-question question-prefix">Q:</h2>
                             <h2 class="question-title">
-                                <span class='ru_{{pageSubject}}' ng-class="{'ft-upper-colour': questionPage.tags.indexOf('ft_upper') >= 0, 'ft-lower-colour': questionPage.tags.indexOf('ft_lower') >= 0}" math-jax>
+                                <span class='ru_{{pageSubject}}' math-jax>
                                     {{questionPage.title}}
+                                    <span ng-if="questionPage.tags.indexOf('ft_upper') != -1 || questionPage.tags.indexOf('ft_lower') != -1">
+                                        {{fastTrackConceptEnumerator(questionPage.id)}}
+                                        <span ng-if="questionPage.tags.indexOf('ft_lower') != -1">(Easier)</span>
+                                    </span>
                                 </span>
                             </h2>
                             <h3 api-environment="dev">{{questionPage.published ? "Published" : "Unpublished"}}<a href="{{contentEditorURL}}" target="_blank">&#9998;</a></h3>
                             <br class="no-print"><br ng-if="!questionPage.supersededBy" class="no-print">
                         </div>
                     </div>
-                    <div class="row" ng-if="!!questionPage.supersededBy">
-                        <div class="small-12 small-offset-2 columns">
-                            <h4 class="superseded-warning">This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})"
-                                ng-click="logClickSupersededBy()">this question</a>.</h4>
-                            <br class="no-print"><br class="no-print">
+                    <div class="row" ng-if="!!questionPage.supersededBy && user.role != 'STUDENT'">
+                        <!-- Warning message for non-students that this question has been replaced -->
+                        <div class="small-12 small-offset-1 columns">
+                            <h5 class="superseded-warning"><span ng-show="user._id">Teacher Note: </span>This question has been replaced by <a ui-sref="question({id: questionPage.supersededBy})"
+                                ng-click="logClickSupersededBy()">this question</a>.<span ng-if="user._id && user.role != 'STUDENT'" aria-haspopup="true" class="icon-help has-tip" data-ot-escape-content="false" data-ot="We periodically update questions into new formats. If this question appears on one of your gameboards, you may want to update the board. You can find help for this at Teacher Support -> Assigning Work. <br><br>Students will not see this message, but will see a smaller note at the bottom of the page."></span></h5>
+                            <br class="no-print">
                         </div>
                     </div>
                     <div class="clearfix"></div>
 
                     <div isaac-content doc="questionPage"></div>
+                    <div class="row" ng-if="!!questionPage.supersededBy && user.role == 'STUDENT'">
+                        <!-- Smaller notice for students that this question has been replaced -->
+                        <div class="small-12 small-offset-1 columns">
+                            <span class="superseded-warning">This question <a ui-sref="question({id: questionPage.supersededBy})"
+                                ng-click="logClickSupersededBy()">has been replaced</a>. However if you were assigned this version, you should complete it.</span>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="small-15 small-offset-1 columns">
                             <p class="ru-attribution">{{questionPage.attribution}}</p>

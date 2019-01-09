@@ -172,9 +172,9 @@
                                         <td>{{result.schoolId != null ? 'Yes' : result.schoolOther != null ? 'Yes (Other)' : 'None Set' }}</td>
                                         <td>{{result.registrationDate | date:'dd/MM/yyyy'}}</td>
                                         <td>{{result.lastSeen | date:'dd/MM/yyyy'}}</td>
-                                        <td><a ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Book</a>
-                                            <a ng-show="userBookings.indexOf(result._id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Add to WL</a>
-                                            <span ng-show="userBookings.indexOf(result._id) != -1">Booking exists</span>
+                                        <td><a ng-show="userBookings.indexOf(result.id) == -1 && eventSelected.eventStatus != 'WAITING_LIST_ONLY' && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Book</a>
+                                            <a ng-show="userBookings.indexOf(result.id) == -1 && (eventSelected.eventStatus == 'WAITING_LIST_ONLY' || eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="button small right" ng-click="chooseUserForEvent(result)">Add to WL</a>
+                                            <span ng-show="userBookings.indexOf(result.id) != -1">Booking exists</span>
                                         </td>
                                     </tr>
                                 </table>
@@ -236,7 +236,7 @@
 
     <div isaac-modal="eventBookingModal">
         <div class="reveal-modal-head">
-            <h2>Admin - Create a <span ng-show="userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0">waiting list</span> booking</h2>
+            <h2>Admin - Create a <span ng-show="userBookings.indexOf(result.id) == -1 && eventSelected.placesAvailable <= 0">waiting list</span> booking</h2>
             <a class="close-reveal-modal" href="javascript:void(0)"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
         </div>
         <div class="reveal-modal-body">
@@ -256,8 +256,8 @@
 
                 <input ng-show="additionalInformation.authorisation == 'OTHER'" type="text" name="authorisation", ng-model="additionalInformation.authorisationOther"/>
 
-                <a class="button" ng-show="eventSelected.eventStatus != 'WAITING_LIST_ONLY' && userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Book on event</a>
-                <a class="button" ng-show="eventSelected.eventStatus == 'WAITING_LIST_ONLY' || (userBookings.indexOf(result._id) == -1 && eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser._id, additionalInformation)">Add to waiting list</a>
+                <a class="button" ng-show="eventSelected.eventStatus != 'WAITING_LIST_ONLY' && userBookings.indexOf(result.id) == -1 && eventSelected.placesAvailable > 0" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser.id, additionalInformation)">Book on event</a>
+                <a class="button" ng-show="eventSelected.eventStatus == 'WAITING_LIST_ONLY' || (userBookings.indexOf(result.id) == -1 && eventSelected.placesAvailable <= 0)" href="javascript:void(0);" class="right" ng-click="bookUserOnEvent(eventSelected.id, targetUser.id, additionalInformation)">Add to waiting list</a>
             </span>
         </div>
     </div>

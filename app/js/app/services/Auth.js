@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-	var service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', 'persistence', function(api, persistence, $window, $location, $state, $rootScope, $timeout, $cookies, $interval, persistence) {
+	let service = ['api', 'persistence', '$window', '$location', '$state', '$rootScope', '$timeout', '$cookies', '$interval', function(api, persistence, $window, $location, $state, $rootScope, $timeout, _$cookies, _$interval) {
 
 		this.loginRedirect = function(provider, target) {
 			
@@ -26,37 +26,37 @@ define([], function() {
 
 				$window.location.href = data.redirectUrl;
 			}).catch(function(e) {
-            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
+				$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType});
 			})
 		}
 
 		this.providerCallback = function(provider, params) {
-			var next = persistence.load('afterAuth');
-			persistence.save('afterAuth', '');
+			let next = persistence.load('afterAuth');
+			persistence.remove('afterAuth');
             next = next || "/";
             next = next.replace("#!", "");
 
             params.provider = provider;
 
-            api.authentication.getAuthResult(params).$promise.then(function(u) {
-                console.debug("Logged in user:", u);
+            api.authentication.getAuthResult(params).$promise.then(function(user) {
+                console.debug("Logged in user:", user);
                 console.debug("Redirecting to", next);
 
-                $rootScope.user = u;
-                $rootScope.user.$promise.then(function(u){
-                	setupUserConsistencyCheck();			
+                $rootScope.user = user;
+                $rootScope.user.$promise.then(() => {
+					setupUserConsistencyCheck();			
                 });
 
-                if (u.firstLogin && '/' == next) {
-                	$state.go("accountSettings", {location: "replace"});
+                if (user.firstLogin && '/' == next) {
+					$state.go("accountSettings", {location: "replace"});
                 } else {
-	                $location.replace();
-	                $location.url(next);
+					$location.replace();
+					$location.url(next);
                 }
 
-            }).catch(function(e) {
-            	$state.go("authError", {errorMessage: e.data.errorMessage, statusText: e.data.responseCodeType}, {location: "replace"});
-            	cancelUserConsistencyCheck()
+            }).catch(function(error) {
+				$state.go("authError", {errorMessage: error.data.errorMessage, statusText: error.data.responseCodeType}, {location: "replace"});
+				cancelUserConsistencyCheck()
             });
 
 		}
@@ -72,10 +72,10 @@ define([], function() {
 
 		}
 
-		var interval = null;
+		let interval = null;
 
 		this.logout = function() {
-			var p = api.authentication.logout({}).$promise;
+			let p = api.authentication.logout({}).$promise;
 			
 			p.then(function() {
 				$rootScope.user = null;
@@ -85,33 +85,34 @@ define([], function() {
 
 			})
 			cancelUserConsistencyCheck();
+			persistence.clear();
+			persistence.session.clear();
 			return p;
 		}
 
-		var updateUserPreferences = function() {
+		let updateUserPreferences = function() {
 			$rootScope.userPreferences = api.user.getUserPreferences();
 			return $rootScope.userPreferences.$promise;
 		}
 
 		this.updateUser = function() {
 			return new Promise(function(resolve, reject) {
-				var userResource = api.currentUser.get();
+				let userResource = api.currentUser.get();
 				if (!$rootScope.user) {
 					$rootScope.user = userResource;
 				}
 				
-				userResource.$promise.then(function(u) {
-
-					return new Promise(function(resolve, reject) {
+				userResource.$promise.then(function(user) {
+					return new Promise(function(_resolve) {
 						$timeout(function() {
-							$rootScope.user = u;
+							$rootScope.user = user;
 							setupUserConsistencyCheck();
 							$rootScope.$apply();
-							resolve();
+							_resolve();
 						});
 					}).then(updateUserPreferences).then(function() {
 						$rootScope.checkForWebSocket(); // Setting $rootScope.user above removes the user snapshot, so ping WebSocket!
-						resolve(u);
+						resolve(user);
 					});
 
 				}).catch(function(){
@@ -128,39 +129,40 @@ define([], function() {
 			return new Promise(function(resolve, reject){
 				api.authentication.login(userPrototype).$promise.then(function(u){
 					$rootScope.user = u;
-		        	setupUserConsistencyCheck();
+					setupUserConsistencyCheck();
 					resolve();
 				}).catch(function(e){
 					$rootScope.user = {
 						resolved: true,
 						$promise: Promise.resolve({}),
 					};
-			        cancelUserConsistencyCheck();
+					cancelUserConsistencyCheck();
 					reject(e);
 				});
 			});
 		}
 
-		var setupUserConsistencyCheck = function() {
+		let setupUserConsistencyCheck = function() {
 			cancelUserConsistencyCheck();
 			// Note: Had to use local storage rather than cookies for this because cookies sometimes did not update across browser tabs in chrome.
 			// This is especially so when using third party authenticators for some reason.
 			// We also need to make sure that we can in fact write to Local Storage before setting the timeout!
 			if (persistence.save("currentUserId", $rootScope.user._id)) {
 
-				interval = $interval(function() {
-					var currentId = persistence.load("currentUserId")
+				interval = setInterval(function() {
+					let currentId = persistence.load("currentUserId");
 					if (currentId != $rootScope.user._id) {
-		            	cancelUserConsistencyCheck();
-		            	$rootScope.modals.userConsistencyError.show();
+						cancelUserConsistencyCheck();
+						$rootScope.modals.userConsistencyError.show();
 						// we want to know how often this happens.
 						api.logger.log({
 							type: "USER_CONSISTENCY_WARNING_SHOWN",
 							userAgent: navigator.userAgent,
 						});
-		            	$rootScope.user = api.currentUser.get();
+						$rootScope.user = api.currentUser.get();
+						$rootScope.$apply();
 					}
-		        }, 1000)
+				}, 1000)
 			} else {
 				console.error("Cannot perform user consistency checking!");
 				api.logger.log({
@@ -170,18 +172,18 @@ define([], function() {
 			}
 		}
 
-		var cancelUserConsistencyCheck = function() {
-	       	persistence.save("currentUserId", null)
-	        if (interval) {
-	        	$interval.cancel(interval);
-	        	interval = null;
-	        }   
+		let cancelUserConsistencyCheck = function() {
+			persistence.remove("currentUserId");
+			if (interval) {
+				clearInterval(interval);
+				interval = null;
+			}   
 		}
 	}];
 
 	// this should not be used in the router resolver property as it will only return once.
 	// TODO should this be deprecated?
-	var promiseLoggedIn = ['auth', '$rootScope', function(auth, $rootScope) {
+	let promiseLoggedIn = ['auth', '$rootScope', function(auth, $rootScope) {
 		return $rootScope.user.$promise.catch(function(r) {
 			if (r.status == 401)
 				return Promise.reject("require_login");

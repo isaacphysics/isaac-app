@@ -13,50 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
 
-	var PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
-		
-		api.questionsPage.get().$promise.then(function (page) {
+export const PageController = ['$scope', 'api', 'tags', function($scope, api, tags) {
+	
+	api.questionsPage.get().$promise.then(function (page) {
 
-			var randomFeaturedQuestions = [];
-			while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
-				var q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
-				randomFeaturedQuestions.push(q);
-			}
+		let randomFeaturedQuestions = [];
+		while ((page.featuredQuestions.length > 0) && (randomFeaturedQuestions.length < 5)) {
+			let q = page.featuredQuestions.splice(Math.floor(Math.random() * page.featuredQuestions.length), 1)[0];
+			randomFeaturedQuestions.push(q);
+		}
 
-			page.topBoards.length = Math.min(page.topBoards.length, 5);
-			page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
+		page.topBoards.length = Math.min(page.topBoards.length, 5);
+		page.extraordinaryQuestions.length = Math.min(page.extraordinaryQuestions.length, 5);
 
-			$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
-				var fieldTag = tags.getFieldTag(q.tags) || {};
-				return {
-					title: q.title,
-					subtitle: fieldTag.title || "",
-					level: q.level,
-					url: "/questions/" + q.id + "?board=" + q.boardId,
-				};
-			});
-
-			$scope.featuredQuestions.sort(function(a,b) {return a.level - b.level});
-
-			$scope.topBoards = page.topBoards.map(function(b) {
-				var item = {};
-				item.title = b.title;
-				item.url = "/gameboards#" + b.id;
-				return item;
-			});
-
-			$scope.extraordinaryQuestions = page.extraordinaryQuestions;
-		}).catch(function(e){
-			console.warn("Couldn't load top boards page: ", e);
-			$scope.topBoards = false;
-			$scope.featuredQuestions = false;
-			$scope.extraordinaryQuestions = false;
+		$scope.featuredQuestions = randomFeaturedQuestions.map(function(q) {
+			let fieldTag = tags.getFieldTag(q.tags) || {};
+			return {
+				title: q.title,
+				subtitle: fieldTag.title || "",
+				level: q.level,
+				url: "/questions/" + q.id + "?board=" + q.boardId,
+			};
 		});
-	}];
 
-	return {
-		PageController: PageController
-	};
-});
+		$scope.featuredQuestions.sort(function(a,b) {return a.level - b.level});
+
+		$scope.topBoards = page.topBoards.map(function(b) {
+			let item = {};
+			item.title = b.title;
+			item.url = "/gameboards#" + b.id;
+			return item;
+		});
+
+		$scope.extraordinaryQuestions = page.extraordinaryQuestions;
+	}).catch(function(e){
+		console.warn("Couldn't load top boards page: ", e);
+		$scope.topBoards = false;
+		$scope.featuredQuestions = false;
+		$scope.extraordinaryQuestions = false;
+	});
+}];

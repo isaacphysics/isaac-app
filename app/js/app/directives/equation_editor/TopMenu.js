@@ -1,15 +1,15 @@
-define([], function() {
+define(["/partials/equation_editor/top_menu.html"], function(templateUrl) {
 
-    return ["$timeout", function($timeout) {
+    return ["$timeout", function(_$timeout) {
 
-        var allMenus = [];
+        let allMenus = [];
 
         return {
             priority: 10,
             scope: true,
             restrict: "A",
             transclude: true,
-            templateUrl: "/partials/equation_editor/top_menu.html",
+            templateUrl: templateUrl,
             link: function(scope, element, attrs) {
                 scope.name = "TOPMENU"
 
@@ -23,14 +23,14 @@ define([], function() {
                     katex.render(attrs.topMenu, element.find(".handle")[0]);
                 });
 
-                var el = element.find(".top-menu");
+                let el = element.find(".top-menu");
 
                 allMenus.push(el[0]);
 
                 scope.menuPos = "m" + allMenus.length;
 
-                var closing = false;
-                var closeMenus = function() {
+                let closing = false;
+                let closeMenus = function() {
                     if (el.hasClass("active-menu") && !closing) {
                         console.debug("CLOSE ALL");
                         closing = true;
@@ -49,7 +49,7 @@ define([], function() {
                     }
                 };
 
-                var toggleThisMenu = function() {
+                let toggleThisMenu = function() {
                     if (el.hasClass("active-menu")) {
                         closeMenus();
                     } else {
@@ -57,7 +57,7 @@ define([], function() {
                         $(allMenus).removeClass("active-menu");
                         el.addClass("foreground");
                         el.addClass("active-menu");
-                        var activeMenuHeight = el.height();
+                        let activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({
                             "bottom": scope.equationEditorElement.height() - activeMenuHeight
                         }, 200);
@@ -66,24 +66,24 @@ define([], function() {
                     }
                 };
 
-                var resizeMenu = function() {
+                let resizeMenu = function() {
                     if (el.hasClass("active-menu")) {
-                        var activeMenuHeight = el.height();
+                        let activeMenuHeight = el.height();
                         $(allMenus).stop(true).animate({
                             "bottom": scope.equationEditorElement.height() - activeMenuHeight
                         }, 200);
                     }
                 };
 
-                scope.clickHandle = function(e) {
+                scope.clickHandle = function(event) {
                     toggleThisMenu();
-                    e.stopPropagation();
-                    e.preventDefault();
+                    event.stopPropagation();
+                    event.preventDefault();
                 };
 
-                scope.clickContent = function(e) {
-                    e.stopPropagation();
-                    e.preventDefault();
+                scope.clickContent = function(event) {
+                    event.stopPropagation();
+                    event.preventDefault();
                 };
 
                 element.on("touchstarted mousedown", ".handle-menu-touch-content", scope.clickContent);
@@ -96,13 +96,13 @@ define([], function() {
                 //    $timeout(toggleThisMenu, 200);
                 //}
 
-                element.on("keydown", function(e) {
-                    e.stopPropagation();
+                element.on("keydown", function(event) {
+                    event.stopPropagation();
                 });
 
                 if (attrs.topMenu == "123") {
                     // Only do this for number entry menu.
-                    scope.$on("editNumber", function(_, s) {
+                    scope.$on("editNumber", function(_event, _next) {
                         toggleThisMenu();
                     })
                 }

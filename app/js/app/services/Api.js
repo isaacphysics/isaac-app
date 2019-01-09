@@ -15,7 +15,7 @@
  */
 define([], function() {
 
-    var Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
+    let Api = function ApiConstructor($resource, urlPrefix, $http, subject) {
 
         this.pages = $resource(urlPrefix + "/pages/:id");
 
@@ -53,7 +53,13 @@ define([], function() {
             },
         });
 
-        this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+        this.fastTrack = $resource("", {}, {
+            concepts: {
+                method: 'GET',
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
+                isArray: true,
+            },
+        });
 
         this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
@@ -108,7 +114,7 @@ define([], function() {
         
         this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
             'search': {
-                method: 'GET', 
+                method: 'GET',
                 isArray: false 
             },
         });
@@ -170,8 +176,12 @@ define([], function() {
             },
             'getLogEventTypes' : {
                 method: 'GET',
-                url: urlPrefix + "/info/log_event_types",
-            },          
+                url: urlPrefix + "/log/event_types",
+            },
+            'countUsersByRole' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/users",
+            },            
         });
 
         this.makeDownloadEventsOverTimeLink = function(startDate, endDate, events, binData) {
@@ -357,13 +367,13 @@ define([], function() {
 
         this.getUnits = function() { return $http.get(urlPrefix + "/content/units").then(function (r) { return r.data; }); };
 
-        var questionsPerPage = 10;
-        var questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
-        var conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
-        var gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
-        var deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
-        var saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
-        var eventsList = $resource(urlPrefix + "/events");
+        let questionsPerPage = 10;
+        let questionList = $resource(urlPrefix + "/pages/questions?searchString=:searchString&tags=:tags&start_index=:startIndex&limit=:limit", {}, {'query': {method: 'GET', isArray: false }});
+        let conceptList = $resource(urlPrefix + "/pages/concepts?start_index=:startIndex&limit=:limit", {startIndex: 0, limit: 999}, {'query': {method: 'GET', isArray: false }});
+        let gameBoardsList = $resource(urlPrefix + "/users/current_user/gameboards?start_index=:startIndex&sort=:sort:filter:limit", {}, {'query': {method: 'GET', isArray: false }});
+        let deleteBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'DELETE'}});
+        let saveBoard = $resource(urlPrefix + "/users/current_user/gameboards/:id", {}, {'query': {method: 'POST'}});
+        let eventsList = $resource(urlPrefix + "/events");
 
         this.getQuestionList = function(page){
             return questionList.query({"startIndex" : page*questionsPerPage, "limit" : questionsPerPage});
@@ -415,13 +425,9 @@ define([], function() {
             return urlPrefix + "/content/units";
         }
 
-        // this.admin = {
-        //  synchroniseDatastores: function() {
-        //      return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-        //          console.warn("Synchronising Datastores. The next page load will take a while.");
-        //      });
-        //  }
-        // };
+        this.getSwaggerUrl = function() {
+            return urlPrefix + "-docs/";
+        }
 
         this.account = $resource(urlPrefix + "/users", {}, {
             saveSettings: {
@@ -454,9 +460,14 @@ define([], function() {
             },
         });
 
-        this.password = $resource(urlPrefix + "/users/resetpassword/:token", null, {
+        this.password = $resource(urlPrefix + "", {userId: '@userId'}, {
             reset: {
                 method: "POST",
+                url: urlPrefix + "/users/resetpassword/:token"
+            },
+            resetForUser: {
+                method: 'POST',
+                url: urlPrefix + "/users/:userId/resetpassword"
             },
         });
 

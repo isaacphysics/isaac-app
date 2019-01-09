@@ -20,11 +20,11 @@ define([ 'jquery'],
                {
                    return this.each(function()
                    {
-                       _this = this;
+                       let _this = this;
                        var width = 9999999;
                        var set = function(target, $control, _options)
                        {
-                           $target = $(target);
+                           let $target = $(target);
                            var css = {};
                            $.each(_options, function(i, option)
                            {
@@ -52,8 +52,7 @@ define([ 'jquery'],
                 * @param {Object} options
                 * @returns {Array}
                 */
-               ruFollow: function(control, options)
-               {
+               ruFollow: function(control, options) {
                    options.top    = options.top    || 0;
                    options.bottom = options.bottom || 0;
                    options.left   = options.left   || 0;

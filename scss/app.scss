@@ -8,7 +8,7 @@
 
 // Foundation
 @import "settings";
-@import "foundation";
+@import "foundation-sites/scss/foundation";
 @import "responsive-tables";
 
 // Other 3rd party css
@@ -17,13 +17,13 @@
 @import "bxslider";
 
 //Owl CSS
-@import "../app/bower_components/owl.carousel/src/scss/owl.animate.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.autoheight.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.carousel.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.lazyload.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.theme.default.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.theme.green.scss";
-@import "../app/bower_components/owl.carousel/src/scss/owl.video.scss";
+@import "owl.carousel/src/scss/owl.animate.scss";
+@import "owl.carousel/src/scss/owl.autoheight.scss";
+@import "owl.carousel/src/scss/owl.carousel.scss";
+@import "owl.carousel/src/scss/owl.lazyload.scss";
+@import "owl.carousel/src/scss/owl.theme.default.scss";
+@import "owl.carousel/src/scss/owl.theme.green.scss";
+@import "owl.carousel/src/scss/owl.video.scss";
 @import "owl-carousel.scss";
 
 // Rutherford Base SCSS
@@ -61,7 +61,6 @@
 @import "login.scss";
 @import "boards.scss";
 @import "account-settings.scss";
-@import "tutorial.scss";
 @import "equation_editor.scss";
 @import "anvil.scss";
 @import "group-management.scss";
@@ -72,6 +71,8 @@
 @import "admin_pages.scss";
 @import "questions.scss";
 @import "fasttrack.scss";
+
+@import "accessibility.scss";
 
 // Code Pretification (v small)
 @import "code.scss";

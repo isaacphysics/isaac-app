@@ -19,13 +19,10 @@ define([], function() {
 	// https://groups.google.com/forum/#!msg/mathjax-users/kzOOFw1qtxw/YdAEPJfCEXUJ
 
 	MathJax.resetLabels = function() {
-		//var AMS = MathJax.Extension["TeX/AMSmath"];
+		//let AMS = MathJax.Extension["TeX/AMSmath"];
 		//AMS.startNumber = 0;
 		//AMS.labels = {};
 	}
-
-	// Specify where to find the official Accessibility extension:
-	// MathJax.Ajax.config.path["a11y"] = "https://cdn.isaacphysics.org/vendor/mathjax/mathjax-a11y-v1.1.0";
 
 	// Allow inline maths with single $s, define Isaac macros:
 	MathJax.Hub.Config({
@@ -55,7 +52,7 @@ define([], function() {
 				"units": ["\\rm{#1}",1],
 				"standardstate": ["\\mathbin{\u29B5}",0],
 			},
-			extensions: ["mhchem.js"],//, "[a11y]/accessibility-menu.js"],
+			extensions: ["mhchem.js"],
 		},
 	  "HTML-CSS": {
 	    availableFonts: [], 

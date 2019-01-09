@@ -15,18 +15,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-///// <reference path="../../typings/p5.d" />
-///// <reference path="../../typings/lodash.d" />
-
 /* tslint:disable: no-unused-variable */
 /* tslint:disable: comment-format */
+
+import * as p5 from 'p5';
 
 import { Widget, Rect } from './Widget'
 import { Symbol } from './Symbol'
 import { BinaryOperation } from './BinaryOperation';
 import { Fraction } from './Fraction';
 import { Brackets } from './Brackets';
+import { AbsoluteValue } from './AbsoluteValue';
 import { Radix } from './Radix';
 import { Num } from './Num';
 import { Fn } from './Fn';
@@ -88,7 +87,7 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
-    constructor(private p, public scope, private width, private height, private initialSymbolsToParse) {
+    constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
@@ -117,12 +116,13 @@ export
 
         this.centre(true);
 
-        _this.scope.log.initialState = [];
-
-
-        this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+        if (!this.textEntry) {
+            this.scope.log.initialState = [];
+            
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
+        }
         this.updateCanvasDockingPoints();
     };
 
@@ -134,7 +134,7 @@ export
     setup = () => {
         this.p.frameRate(7);
 
-        switch (_this.scope.editorMode) {
+        switch (this.scope.editorMode) {
             case 'maths':
                 this.baseFontSize = 50;
                 this.baseDockingPointSize = 50/3;
@@ -161,18 +161,19 @@ export
             console.warn("Failed to load previous answer. Perhaps it was built with the old equation editor?", e);
         }
         this.centre(true);
+        if (!this.textEntry) {
+            this.scope.log.initialState = [];
 
-        _this.scope.log.initialState = [];
-
-        this.symbols.forEach(function(e) {
-            _this.scope.log.initialState.push(e.subtreeObject(true, true));
-        });
+            for (let symbol of this.symbols) {
+                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+            };
+        }
         this.updateCanvasDockingPoints();
 
     };
 
     windowResized = () => {
-        this.p.resizeCanvas(this.p.windowWidth, this.p.windowHeight);
+        this.p.resizeCanvas(this.p.windowWidth * Math.ceil(window.devicePixelRatio), this.p.windowHeight * Math.ceil(window.devicePixelRatio));
     };
 
     draw = () => {
@@ -288,8 +289,11 @@ export
         this.p.frameRate(7);
     };
 
-    parseSubtreeObject = (root: Object) => {
+    parseSubtreeObject = (root: Object, clearExistingSymbols = false, fromTextEntry = false) => {
         if (root) {
+            if (clearExistingSymbols) {
+                this.symbols.length = 0;
+            }
             let w: Widget = this._parseSubtreeObject(root);
             w.position.x = root["position"]["x"];
             w.position.y = root["position"]["y"];
@@ -297,7 +301,7 @@ export
             this.updateCanvasDockingPoints();
             w.shakeIt();
         }
-        this.updateState();
+        this.updateState(fromTextEntry);
     };
 
     _parseSubtreeObject = (node: Object, parseChildren = true): Widget => {
@@ -314,6 +318,9 @@ export
                 break;
             case "Brackets":
                 w = new Brackets(this.p, this, node["properties"]["type"], node["properties"]["mode"]);
+                break;
+            case "AbsoluteValue":
+                w = new AbsoluteValue(this.p, this);
                 break;
             case "Radix":
                 w = new Radix(this.p, this);
@@ -358,6 +365,8 @@ export
     // Executive (and possibly temporary) decision: we are moving one symbol at a time (meaning: no multi-touch)
     // Native ptouchX and ptouchY are not accurate because they are based on the "previous frame".
     touchStarted = () => {
+        if (this.textEntry) return;
+
         this.p.frameRate(60);
         // These are used to correctly detect clicks and taps.
 
@@ -434,6 +443,8 @@ export
     };
 
     touchMoved = () => {
+        if (this.textEntry) return;
+
         let tx = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).x : this.p.mouseX;
         let ty = this.p.touches.length > 0 ? (<p5.Vector>this.p.touches[0]).y : this.p.mouseY;
 
@@ -485,6 +496,8 @@ export
     };
 
     touchEnded = () => {
+        if (this.textEntry) return;
+
         // TODO Maybe integrate something like the number of events or the timestamp? Timestamp would be neat.
         if (null != this.initialTouch && p5.Vector.dist(this.initialTouch, this.p.createVector(this.p.mouseX, this.p.mouseY)) < 2) {
             // Click
@@ -582,6 +595,7 @@ export
             symbol.highlight(false);
             let hitSymbol = symbol.hit(p);
             if (hitSymbol) {
+                // Hey, we hit a symbol! :)
                 hitSymbol.highlight(true);
             }
         });
@@ -599,7 +613,7 @@ export
         return _.reject(_.uniq(list), i => { return i == ''; });
     };
 
-    updateState = () => {
+    updateState = (fromTextEntry = false) => {
         let symbolWithMostChildren = null;
         let mostChildren = 0;
         _.each(this.symbols, symbol => {
@@ -619,24 +633,26 @@ export
                     "python": symbolWithMostChildren.formatExpressionAs("python").trim(),
                     "mathml": '<math xmlns="http://www.w3.org/1998/Math/MathML">' + symbolWithMostChildren.formatExpressionAs("mathml").trim() + '</math>',
                     // removes everything that is not truthy, so this should avoid empty strings.
-                    "uniqueSymbols": flattenedExpression.join(', ')
+                    "uniqueSymbols": flattenedExpression.join(', '),
                 },
-                symbols: _.map(this.symbols, s => s.subtreeObject())
+                symbols: _.map(this.symbols, s => s.subtreeObject()),
+                textEntry: fromTextEntry
             });
         } else {
             this.scope.newEditorState({
                 result: null,
                 symbols: [],
+                textEntry: fromTextEntry
             })
         }
     };
 
     centre = (init = false) => {
-        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
+        let top = this.height/Math.ceil(window.devicePixelRatio*2);
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
-            symbol.position = this.p.createVector(this.width/2 - sbox.center.x, top + sbox.center.y);
-            top += sbox.h*1.5;
+            symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
+            top += sbox.h;
             symbol.shakeIt();
         });
         if (!init) {

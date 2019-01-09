@@ -32,15 +32,11 @@ $ru_footer: $ru_darkgrey;
 $ru_red: #be4c4c;
 $ru_burgundy: #991846;
 
-$ft-top-ten-colour: $ru_maths; // keep in sync with FastTrackProgressBar.js' scope.FT_STATES colours
-$ft-upper-colour: $ru_orange; // keep in sync with FastTrackProgressBar.js' scope.FT_STATES colours
-$ft-lower-colour: #7fd0ff; // keep in sync with FastTrackProgressBar.js' scope.FT_STATES colours
-
 // This is the default html and body font-size for the base rem value.
 // $rem-base: 16px;
 
 // Allows the use of rem-calc() or lower-bound() in your settings
-@import "foundation/functions";
+@import "foundation-sites/scss/foundation/functions";
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.
@@ -609,39 +605,6 @@ $input-include-glowing-effect: false;
 
 // We use this to control any elments within list items
 // $inline-list-children-display: block;
-
-// Joyride
-
-// $include-html-joyride-classes: $include-html-classes;
-
-// Controlling default Joyride styles
-// $joyride-tip-bg: #333;
-// $joyride-tip-default-width: 300px;
-// $joyride-tip-padding: rem-calc(18 20 24);
-// $joyride-tip-border: solid 1px #555;
-// $joyride-tip-radius: 4px;
-// $joyride-tip-position-offset: 22px;
-
-// Here, we're setting the tip dont styles
-// $joyride-tip-font-color: #fff;
-// $joyride-tip-font-size: rem-calc(14);
-// $joyride-tip-header-weight: bold;
-
-// This changes the nub size
-// $joyride-tip-nub-size: 10px;
-
-// This adjusts the styles for the timer when its enabled
-// $joyride-tip-timer-width: 50px;
-// $joyride-tip-timer-height: 3px;
-// $joyride-tip-timer-color: #666;
-
-// This changes up the styles for the close button
-// $joyride-tip-close-color: #777;
-// $joyride-tip-close-size: 24px;
-// $joyride-tip-close-weight: normal;
-
-// When Joyride is filling the screen, we use this style for the bg
-// $joyride-screenfill: rgba(0,0,0,0.5);
 
 // Keystrokes
 

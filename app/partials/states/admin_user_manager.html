@@ -17,10 +17,7 @@
                         <label for="user-school-other">
                             <strong>Find by manually entered school:</strong>
                         </label>
-                        <select id="user-school-other" ng-model="userSearch.searchTerms.schoolOther">
-                            <option value="">Any School</option>
-                            <option ng-repeat="school in schoolOtherEntries | orderBy:'name'" ng-value="school.name">{{school.name}}</option>
-                        </select>
+                        <input id="user-school-other" name="schoolOther" type="text" ng-model="userSearch.searchTerms.schoolOther" placeholder="Enter a possible school name" >
 
                         <label>
                             <strong>Find users by subject interest:</strong>
@@ -131,12 +128,12 @@
                                 </tr>
                                 <tr ng-repeat="result in userSearch.results | orderBy:userSearchSortPredicate:reverse">
                                     <td>
-                                        <input type="checkbox" ng-model="userManagerSelection[result._id]"></input>
+                                        <input type="checkbox" ng-model="userManagerSelection[result.id]"></input>
                                     </td>
                                     <td ng-if="user.role == 'ADMIN'">
-                                        <a target="_blank" ui-sref="userProgress({'userId' : result._id })">View</a>
-                                        <a target="_blank" ui-sref="accountSettings({'userId' : result._id })">Edit</a>
-                                        <a href="javascript:void(0);" ng-click="deleteUser(result._id, result.email)">Delete</a>
+                                        <a target="_blank" ui-sref="userProgress({'userId' : result.id })">View</a>
+                                        <a target="_blank" ui-sref="accountSettings({'userId' : result.id })">Edit</a>
+                                        <a href="javascript:void(0);" ng-click="deleteUser(result.id, result.email)">Delete</a>
                                     </td>
                                     <td>{{result.familyName}}<span ng-show="result.familyName && result.givenName">,</span> {{result.givenName}}</td>
                                     <td>{{result.email}}</td>

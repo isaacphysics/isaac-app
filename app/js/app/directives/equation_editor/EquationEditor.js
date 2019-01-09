@@ -1,15 +1,15 @@
 "use strict";
-define(function (require) {
+define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/test_cases.js", "/partials/equation_editor/equation_editor.html"], function (p5, MySketch, tester, templateUrl) {
 
-    var MySketch = require("inequality").MySketch;
-    var tester = require("lib/equation_editor/test_cases.js");
-    return ["$timeout", "$rootScope", "api", "$stateParams", function ($timeout, $rootScope, api, $stateParams) {
+    MySketch = MySketch.MySketch;
+
+    return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
         return {
             scope: true,
             restrict: "A",
-            templateUrl: "/partials/equation_editor/equation_editor.html",
-            link: function (scope, element, attrs) {
+            templateUrl: templateUrl,
+            link: function (scope, element, _attrs) {
 
 
                 /*** Lifecycle and buttons ***/
@@ -24,7 +24,7 @@ define(function (require) {
                 });
 
                 // This holds the p5 sketch, the actual equation editor.
-                var sketch = null;
+                let sketch = null;
 
                 // Are we dragging a new symbol from the menu?
                 scope.draggingNewSymbol = false;
@@ -45,14 +45,14 @@ define(function (require) {
 
                 // Adds a checkpoint to the history, so we can undo and redo.
                 scope.$on("historyCheckpoint", function () {
-                    var newEntry = JSON.stringify(scope.state);
-                    var currentEntry = JSON.stringify(scope.history[scope.historyPtr]);
+                    let newEntry = JSON.stringify(scope.state);
+                    let currentEntry = JSON.stringify(scope.history[scope.historyPtr]);
 
                     if (newEntry !== currentEntry) {
                         scope.historyPtr++;
                         scope.history.splice(scope.historyPtr, scope.history.length - scope.historyPtr, JSON.parse(newEntry));
 
-                        console.log("historyCheckpoint:", scope.history);
+                        // console.log("historyCheckpoint:", scope.history);
                     }
                 });
 
@@ -60,10 +60,10 @@ define(function (require) {
                     if (scope.historyPtr > 0) {
                         scope.historyPtr--;
 
-                        var e = scope.history[scope.historyPtr];
+                        let e = scope.history[scope.historyPtr];
                         scope.state = JSON.parse(JSON.stringify(e));
                         sketch.symbols = [];
-                        for (var i in scope.state.symbols) {
+                        for (let i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
@@ -78,10 +78,10 @@ define(function (require) {
                     if (scope.historyPtr < scope.history.length - 1) {
                         scope.historyPtr++;
 
-                        var e = scope.history[scope.historyPtr];
+                        let e = scope.history[scope.historyPtr];
                         scope.state = JSON.parse(JSON.stringify(e));
                         sketch.symbols = [];
-                        for (var i in scope.state.symbols) {
+                        for (let i in scope.state.symbols) {
                             sketch.parseSubtreeObject(scope.state.symbols[i]);
                         }
                         scope.log.actions.push({
@@ -108,10 +108,11 @@ define(function (require) {
 
                 scope.newEditorState = function (s) {
                     scope.state = s;
+                    scope.state.textEntry = false;
 
                     console.log("New state:", s);
 
-                    var rp = $(".result-preview>span");
+                    let rp = $(".result-preview>span");
 
                     rp.empty();
 
@@ -127,8 +128,8 @@ define(function (require) {
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    var w = scope.state.result ? rp.outerWidth() : 0;
-                    var resultPreview = $(".result-preview");
+                    let w = scope.state.result ? rp.outerWidth() : 0;
+                    let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
                     resultPreview.animate({
                         width: w
@@ -140,7 +141,7 @@ define(function (require) {
                 // Handles key commands.
                 // Some of these may be removed (like the trash one). Some are still useful, like the test cases.
                 element.on("keydown", function (e) {
-                    var test_cases_lib = ($stateParams.mode === 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
+                    let test_cases_lib = ($stateParams.mode === 'chemistry') ? tester.testCasesChemistry : tester.testCasesMaths;
                     if ($stateParams.testing) {
                         console.log("KeyDown", e.which || e.keyCode);
                         switch (e.which || e.keyCode) {
@@ -151,8 +152,8 @@ define(function (require) {
                                 scope.trash();
                                 scope.$apply();
                                 break;
-                            default:
-                                var key = String.fromCharCode(e.which || e.keyCode);
+                            default: {
+                                let key = String.fromCharCode(e.which || e.keyCode);
                                 if (test_cases_lib.hasOwnProperty(key)) {
                                     $rootScope.sketch.loadTestCase(test_cases_lib[key].testCase);
                                     scope.log.actions.push({
@@ -165,6 +166,7 @@ define(function (require) {
                                     console.debug("Test case " + key + " does not exist.");
                                 }
                                 break;
+                            }
                         }
                     } else {
                         switch (e.which || e.keyCode) {
@@ -208,17 +210,17 @@ define(function (require) {
                     scope.draggingNewSymbol = true;
                     scope.mousePageX = pageX;
                     scope.mousePageY = pageY;
-                    var tOff = element.find(".trash-button").position();
-                    var tHeight = element.find(".trash-button").height();
+                    let tOff = element.find(".trash-button").position();
+                    let tHeight = element.find(".trash-button").height();
 
                     if (null != sketch.potentialSymbol) {
-                        var sym = sketch.potentialSymbol;
-                        var box = sym.subtreeBoundingBox;
-                        var pos = sym.absolutePosition;
-                        var bLeft = box.x + pos.x;
-                        var bRight = bLeft + box.w;
-                        var bTop = box.y + pos.y;
-                        var bBottom = bTop + box.h;
+                        let sym = sketch.potentialSymbol;
+                        let box = sym.subtreeBoundingBox;
+                        let pos = sym.absolutePosition;
+                        let bLeft = box.x + pos.x;
+                        let bRight = bLeft + box.w;
+                        let bTop = box.y + pos.y;
+                        let bBottom = bTop + box.h;
                         // No need to check if we go past the right side of the button, as the button is stuck to
                         // the right side of the screen anyway (and doing it right gave me headaches, so...)
                         scope.trashActive =
@@ -235,17 +237,17 @@ define(function (require) {
 
                 // TODO This does not seem to make any difference, whether it's being called or not.
                 scope.notifySymbolDrag = function (x, y) {
-                    var tOff = element.find(".trash-button").position();
-                    var tHeight = element.find(".trash-button").height();
+                    let tOff = element.find(".trash-button").position();
+                    let tHeight = element.find(".trash-button").height();
 
                     if (null != sketch.movingSymbol) {
-                        var sym = sketch.movingSymbol;
-                        var box = sym.subtreeBoundingBox;
-                        var pos = sym.absolutePosition;
-                        var bLeft = box.x + pos.x;
-                        var bRight = bLeft + box.w;
-                        var bTop = box.y + pos.y;
-                        var bBottom = bTop + box.h;
+                        let sym = sketch.movingSymbol;
+                        let box = sym.subtreeBoundingBox;
+                        let pos = sym.absolutePosition;
+                        let bLeft = box.x + pos.x;
+                        let bRight = bLeft + box.w;
+                        let bTop = box.y + pos.y;
+                        let bBottom = bTop + box.h;
                         // See above for right-side-stuff.
                         scope.trashActive =
                             (bRight > tOff.left &&
@@ -295,7 +297,7 @@ define(function (require) {
                 });
 
                 // Logs when people navigate away without closing the editor.
-                scope.logOnClose = function (event) {
+                scope.logOnClose = function (_event) {
                     if (scope.log != null) {
                         scope.log.actions.push({
                             event: "NAVIGATE_AWAY",
@@ -309,7 +311,7 @@ define(function (require) {
                 // FIXME This function may or may not need refactoring to improve the flexibility of menu creation.
                 $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
 
-                    return new Promise(function (resolve, reject) {
+                    return new Promise(function (resolve, _reject) {
 
                         scope.hashDebug = window.location.hash === '#debug';
 
@@ -325,17 +327,17 @@ define(function (require) {
                         scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps.concat(scope.symbolLibrary.hiddenOps);
                         scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.trigFunctionsStandard;
 
-                        var onEqualityPage = document.location.pathname === '/equality';
-                        var userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+                        let onEqualityPage = document.location.pathname === '/equality';
+                        let userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
                         if (editorMode === "maths" && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
-                            var parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
+                            let parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
 
                             scope.symbolLibrary.allowVars = parsedSymbols.allowVars || onEqualityPage;
 
-                            var customSymbolsParsed = false;
+                            let customSymbolsParsed = false;
                             if (parsedSymbols.vars.length > 0) {
                                 scope.symbolLibrary.customVars = parsedSymbols.vars;
                                 customSymbolsParsed = true;
@@ -350,7 +352,7 @@ define(function (require) {
                                 customSymbolsParsed = true;
                             }
                             if (parsedSymbols.derivatives.length > 0) {
-                                var theseDerivatives = userIsPrivileged ? parsedSymbols.derivatives.slice(2) : parsedSymbols.derivatives;
+                                let theseDerivatives = userIsPrivileged ? parsedSymbols.derivatives.slice(2) : parsedSymbols.derivatives;
                                 if (scope.symbolLibrary.customFunctions) {
                                     scope.symbolLibrary.customFunctions = scope.symbolLibrary.customFunctions.concat(theseDerivatives);
                                 } else {
@@ -363,7 +365,7 @@ define(function (require) {
                                 console.debug("No custom symbols.");
                             }
                         } else if (editorMode === "chemistry" && questionDoc && questionDoc.availableSymbols) {
-                            var parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
+                            let parsed = parseCustomChemicalSymbols(questionDoc.availableSymbols);
                             if (parsed.length > 0) {
                                 scope.symbolLibrary.customChemicalSymbols = parsed;
                             } else {
@@ -374,7 +376,7 @@ define(function (require) {
                         $(".result-preview>span").empty();
                         $(".result-preview").width(0);
 
-                        var eqnModal = $('#equationModal');
+                        let eqnModal = $('#equationModal');
                         eqnModal.one("opened.fndtn.reveal", function () {
                             element.find(".top-menu").css("bottom", scope.equationEditorElement.height());
                         });
@@ -394,6 +396,7 @@ define(function (require) {
                                 width: window.innerWidth,
                                 height: window.innerHeight
                             },
+                            textEntry: scope.state.textEntry || false,
                             actions: [{
                                 event: "OPEN",
                                 timestamp: Date.now()
@@ -403,17 +406,17 @@ define(function (require) {
                         // Log just before the page closes if tab/browser closed:
                         window.addEventListener("beforeunload", scope.logOnClose);
                         // Log the editor being closed and submit log event to server:
-                        eqnModal.one("close", function (e) {
+                        eqnModal.one("close.fndtn.reveal", function (_e) {
                             scope.log.finalState = [];
-                            sketch.symbols.forEach(function (e) {
-                                scope.log.finalState.push(e.subtreeObject(true, true));
+                            sketch.symbols.forEach(function (symbol) {
+                                scope.log.finalState.push(symbol.subtreeObject(true, true));
                             });
                             scope.log.actions.push({
                                 event: "CLOSE",
                                 timestamp: Date.now()
                             });
                             if (scope.segueEnvironment === "DEV") {
-                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1000).toFixed(2) + "kb\n\n", JSON.stringify(scope.log));
+                                console.log("\nLOG: ~" + (JSON.stringify(scope.log).length / 1024).toFixed(2) + "kB\n\n", JSON.stringify(scope.log));
                             }
                             window.removeEventListener("beforeunload", scope.logOnClose);
                             api.logger.log(scope.log);
@@ -422,14 +425,18 @@ define(function (require) {
 
                         scope.history = [JSON.parse(JSON.stringify(scope.state))];
                         scope.historyPtr = 0;
-                        //element.find("canvas").remove();
 
                         scope.future = [];
-                        var p = new p5(function (p) {
-                            sketch = new MySketch(p, scope, element.width(), element.height(), scope.state.symbols);
+                        let p = new p5(function (p5instance) {
+                            try {
+                                sketch = new MySketch(p5instance, scope, element.width() * Math.ceil(window.devicePixelRatio), element.height() * Math.ceil(window.devicePixelRatio), scope.state.symbols);
+                            } catch (error) {
+                                console.log(error);
+                            }
                             $rootScope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);
+                        void p;
 
                         eqnModal.one("closed.fndtn.reveal", function () {
                             sketch.p.remove();
@@ -443,54 +450,54 @@ define(function (require) {
                 /*** Symbol parsing and menu building ***/
                 /***  --==[ Madness lies ahead ]==--  ***/
 
-                var latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-                var latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-                var greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
-                var greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
+                let latinLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+                let latinLettersUpper = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+                let greekLetters = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\varepsilon", "\\zeta", "\\eta", "\\theta", "\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi", "\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
+                let greekLettersUpper = ["\\Gamma", "\\Delta", "\\Theta", "\\Lambda", "\\Xi", "\\Pi", "\\Sigma", "\\Upsilon", "\\Phi", "\\Psi", "\\Omega"];
                 // Make a single dict for lookup to impose an order.
-                var uniqueSymbolsTotalOrder = {};
-                var uniqueSymbols = latinLetters.concat(latinLettersUpper, greekLetters, greekLettersUpper);
-                for (var i in uniqueSymbols) {
+                let uniqueSymbolsTotalOrder = {};
+                let uniqueSymbols = latinLetters.concat(latinLettersUpper, greekLetters, greekLettersUpper);
+                for (let i in uniqueSymbols) {
                     uniqueSymbolsTotalOrder[uniqueSymbols[i]] = i;
                 }
 
-                var elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
+                let elements = ["H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"];
 
-                var opsMap = {"<": "<", ">": ">", "<=": "\\leq", ">=": "\\geq"};
+                let opsMap = {"<": "<", ">": ">", "<=": "\\leq", ">=": "\\geq"};
                 // Make a single dict for lookup to impose an order.
-                var uniqueOperatorsTotalOrder = {};
-                var count = 0;
-                for (var operator in opsMap) {
+                let uniqueOperatorsTotalOrder = {};
+                let count = 0;
+                for (let operator in opsMap) {
                     uniqueOperatorsTotalOrder[operator] = count++;
                 }
 
-                var trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
-                var trigFunctionsStandard = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot"];
-                var trigFunctionsHyp = ["sinh", "cosh", "tanh", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
-                var trigReduced = ["sin", "cos", "tan"];
-                var trigMap = {};
-                for (var i in trigFunctions) {
+                let trigFunctions = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                let trigFunctionsStandard = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot"];
+                let trigFunctionsHyp = ["sinh", "cosh", "tanh", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"];
+                let trigReduced = ["sin", "cos", "tan"];
+                let trigMap = {};
+                for (let i in trigFunctions) {
                     trigMap[trigFunctions[i]] = i;
                 }
 
-                var particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
+                let particles = ["alpha", "beta", "gamma", "neutrino", "antineutrino", "proton", "neutron", "electron"];
 
-                var letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
-                var inverseLetterMap = {};
-                for (var k in letterMap) {
+                let letterMap = {"\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ", "\\epsilon": "ε", "\\varepsilon": "ε", "\\zeta": "ζ", "\\eta": "η", "\\theta": "θ", "\\iota": "ι", "\\kappa": "κ", "\\lambda": "λ", "\\mu": "μ", "\\nu": "ν", "\\xi": "ξ", "\\omicron": "ο", "\\pi": "π", "\\rho": "ρ", "\\sigma": "σ", "\\tau": "τ", "\\upsilon": "υ", "\\phi": "ϕ", "\\chi": "χ", "\\psi": "ψ", "\\omega": "ω", "\\Gamma": "Γ", "\\Delta": "Δ", "\\Theta": "Θ", "\\Lambda": "Λ", "\\Xi": "Ξ", "\\Pi": "Π", "\\Sigma": "Σ", "\\Upsilon": "Υ", "\\Phi": "Φ", "\\Psi": "Ψ", "\\Omega": "Ω"};
+                let inverseLetterMap = {};
+                for (let k in letterMap) {
                     inverseLetterMap[letterMap[k]] = k;
                 }
                 inverseLetterMap["ε"] = "\\varepsilon"; // Make sure that this one wins.
 
-                var chemicalSymbols = {};
-                var chemicalSymbolsArray = elements.concat(particles);
-                for (var i in chemicalSymbolsArray) {
+                let chemicalSymbols = {};
+                let chemicalSymbolsArray = elements.concat(particles);
+                for (let i in chemicalSymbolsArray) {
                     chemicalSymbols[chemicalSymbolsArray[i]] = i;
                 }
 
-                var derivativesStandard = [];
+                let derivativesStandard = [];
 
-                var convertToLatexIfGreek = function (s) {
+                let convertToLatexIfGreek = function (s) {
                     if (s == "epsilon") {
                         return "\\varepsilon";
                     }
@@ -505,20 +512,20 @@ define(function (require) {
 
                 // Parses an array of chemical symbols as strings, like
                 // ["H", "He", "Li", "electron", "proton", "antineutrino"]
-                var parseCustomChemicalSymbols = function (symbols) {
-                    var parsedChemicalSymbols = [];
-                    for (var i in symbols) {
-                        var s = symbols[i].trim();
+                let parseCustomChemicalSymbols = function (symbols) {
+                    let parsedChemicalSymbols = [];
+                    for (let i in symbols) {
+                        let s = symbols[i].trim();
                         if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", symbols);
                             continue;
                         }
                         console.debug("Parsing:", s);
                         if (chemicalSymbols.hasOwnProperty(s)) {
-                            var type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
+                            let type = (chemicalSymbols[s] <= (elements.length - 1)) ? 'ChemicalElement' : 'Particle';
                             if (type === 'Particle') {
-                                var index_of_particle = chemicalSymbols[s] - elements.length;
-                                var particle_label = scope.symbolLibrary.particles[index_of_particle].menu.label;
+                                let index_of_particle = chemicalSymbols[s] - elements.length;
+                                let particle_label = scope.symbolLibrary.particles[index_of_particle].menu.label;
                                 parsedChemicalSymbols.push({
                                     type: type,
                                     menu: {
@@ -551,10 +558,10 @@ define(function (require) {
                 };
 
                 // Parses a single letter.
-                var parseCustomSymbol_Letter = function (p) {
-                    var parts = p.split("_");
-                    var letter = convertToLatexIfGreek(parts[0]);
-                    var parsedSymbol = {
+                let parseCustomSymbol_Letter = function (p) {
+                    let parts = p.split("_");
+                    let letter = convertToLatexIfGreek(parts[0]);
+                    let parsedSymbol = {
                         type: "Symbol",
                         properties: {
                             letter: letterMap[letter] || letter
@@ -564,15 +571,15 @@ define(function (require) {
                             texLabel: true
                         }
                     };
-                    var modifiers = ["prime"];
+                    let modifiers = ["prime"];
                     if (parts.length > 1) {
                         if (_.indexOf(modifiers, parts[1]) > -1) {
                             parsedSymbol.properties.modifier = parts[1];
                             parsedSymbol.menu.label = letter + "'";
                         }
                         if (_.indexOf(modifiers, parts[parts.length-1]) === -1) {
-                            var subscriptLetter = parts[parts.length-1];
-                            var subscriptSymbol;
+                            let subscriptLetter = parts[parts.length-1];
+                            let subscriptSymbol;
                             if (isNaN(subscriptLetter)) {
                                 subscriptSymbol = {
                                     type: "Symbol",
@@ -599,14 +606,14 @@ define(function (require) {
                 };
 
                 // Parses a single differential as split by the differential regex (see caller).
-                var parseCustomSymbol_Differential = function (parsedDiff) {
-                    var diffType = parsedDiff[1];
-                    var diffOrder = parsedDiff[2] || 0;
-                    var diffArgument = parsedDiff[3] || null;
-                    var diffLetter = {"delta":"δ","Delta":"∆","d":"d"}[diffType] || "?";
-                    var diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","d":"d"}[diffType] || "?" ) + "}";
+                let parseCustomSymbol_Differential = function (parsedDiff) {
+                    let diffType = parsedDiff[1];
+                    let diffOrder = parsedDiff[2] || 0;
+                    let diffArgument = parsedDiff[3] || null;
+                    let diffLetter = {"delta":"δ","Delta":"∆","d":"d"}[diffType] || "?";
+                    let diffLatex = "\\mathrm{" + ( {"delta":"\\delta","Delta":"\\Delta","d":"d"}[diffType] || "?" ) + "}";
 
-                    var diffSymbol = {
+                    let diffSymbol = {
                         type: "Differential",
                         properties: {
                             letter: diffLetter
@@ -636,9 +643,8 @@ define(function (require) {
                     return [diffSymbol];
                 };
 
-                // FIXME This function definitely needs refactoring to improve the flexibility of menu creation.
-                var parseCustomSymbols = function (symbols) {
-                    var r = {
+                let parseCustomSymbols = function (symbols) {
+                    let r = {
                         vars: [],
                         fns: [],
                         operators: [],
@@ -646,37 +652,14 @@ define(function (require) {
                         allowVars: true
                     };
 
-                    var theseSymbols = symbols.slice(0);
-                    var i = 0;
-                    while (i < theseSymbols.length) {
-                        if (theseSymbols[i] === '_trigs') {
-                            theseSymbols.splice(i, 1, 'cos()', 'sin()', 'tan()');
-                        } else if (theseSymbols[i] === '_1/trigs') {
-                            theseSymbols.splice(i, 1, 'cosec()', 'sec()', 'cot()');
-                        } else if (theseSymbols[i] === '_inv_trigs') {
-                            theseSymbols.splice(i, 1, 'arccos()', 'arcsin()', 'arctan()');
-                        } else if (theseSymbols[i] === '_inv_1/trigs') {
-                            theseSymbols.splice(i, 1, 'arccosec()', 'arcsec()', 'arccot()');
-                        } else if (theseSymbols[i] === '_hyp_trigs') {
-                            theseSymbols.splice(i, 1, 'cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
-                        } else if (theseSymbols[i] === '_inv_hyp_trigs') {
-                            theseSymbols.splice(i, 1, 'arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
-                        } else if (theseSymbols[i] === '_logs') {
-                            theseSymbols.splice(i, 1, 'log()', 'ln()');
-                        } else if (theseSymbols[i] === '_no_alphabet') {
-                            theseSymbols.splice(i, 1);
-                            r.allowVars = false;
-                        }
-                        i += 1;
-                    }
-                    theseSymbols = _.uniq(theseSymbols);
+                    let theseSymbols = equationEditor.parsePseudoSymbols(symbols, r);
 
                     while (theseSymbols.length > 0) {
-                        var s = theseSymbols.shift().trim();
+                        let s = theseSymbols.shift().trim();
 
-                        var partResults = [];
+                        let partResults = [];
 
-                        var diffRegex = /^(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
+                        let diffRegex = /^(Delta|delta|d)\s*(?:\^([0-9]+))?\s*([a-zA-Z]+(?:(?:_|\^).+)?)?/;
 
                         if (s.length === 0) {
                             console.warn("Tried to parse zero-length symbol in list:", theseSymbols);
@@ -697,10 +680,10 @@ define(function (require) {
                             console.debug("Parsing derivative:", s);
                             r.derivatives = derivativeFunctions([s]);
                         } else if (diffRegex.test(s)) {
-                            var parsedDiff = diffRegex.exec(s);
-                            var diffType = parsedDiff[1];
-                            var diffOrder = parsedDiff[2] || 0;
-                            var diffArgument = parsedDiff[3] || null;
+                            let parsedDiff = diffRegex.exec(s);
+                            let diffType = parsedDiff[1];
+                            let diffOrder = parsedDiff[2] || 0;
+                            let diffArgument = parsedDiff[3] || null;
 
                             if (diffType === "d" && diffOrder === 0 && diffArgument == null) {
                                 // We parse this as a letter d, plus optional subscript, ignoring order.
@@ -713,16 +696,16 @@ define(function (require) {
                             console.debug("Parsing symbol:", s);
                             // Allow compound (multiplied) symbols separated by a space.
                             // ? Is this being used?
-                            var parts = s.split(" ");
-                            for (var j in parts) {
-                                var p = parts[j];
-                                var name = p.replace(/\(\)/g, "");
-                                var index = trigMap[name + ""];
+                            let parts = s.split(" ");
+                            for (let j in parts) {
+                                let p = parts[j];
+                                let name = p.replace(/\(\)/g, "");
+                                let index = trigMap[name + ""];
                                 // If we have a function
                                 // (Using lodash because IE 11 does not support endsWith)
                                 if (_.endsWith(p, "()")) {
-                                    var innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
-                                    var allowSubscript = name === "log";
+                                    let innerSuperscript = ["sin", "cos", "tan", "arcsin", "arccos", "arctan", "sinh", "cosh", "tanh", "cosec", "sec", "cot", "arccosec", "arcsec", "arccot", "cosech", "sech", "coth", "arccosech", "arcsech", "arccoth", "arcsinh", "arccosh", "arctanh"].indexOf(name) > -1;
+                                    let allowSubscript = name === "log";
                                     // which is an inverse trig function
                                     if (name.substring(0, 3) === "arc") {
                                         // finds the index of the function in the symbol library to retrieve the label.
@@ -784,15 +767,15 @@ define(function (require) {
                                     }
                                 } else {
                                     // otherwise we must have a letter symbol
-                                    var newSymbol = parseCustomSymbol_Letter(p);
+                                    let newSymbol = parseCustomSymbol_Letter(p);
                                     partResults.push(newSymbol);
                                 }
                             }
                         }
                         // if input is malicious partResults[0] may not exist!
                         if (partResults[0]) {
-                            var root = partResults[0];
-                            for (var k = 0; k < partResults.length - 1; k++) {
+                            let root = partResults[0];
+                            for (let k = 0; k < partResults.length - 1; k++) {
                                 partResults[k].children = {
                                     right: partResults[k + 1]
                                 };
@@ -803,8 +786,11 @@ define(function (require) {
                                     r.vars.push(root);
                                     break;
                                 case "Fn":
+                                    r.fns.push(root);
+                                    break;
                                 case "Differential":
                                     r.fns.push(root);
+                                    r.vars.push(root);
                                     break;
                                 case "Relation":
                                     r.operators.push(root);
@@ -816,8 +802,8 @@ define(function (require) {
                     return r;
                 };
 
-                var replaceSpecialChars = function (s) {
-                    for (var k in inverseLetterMap) {
+                let replaceSpecialChars = function (s) {
+                    for (let k in inverseLetterMap) {
                         // Special characters have special needs (i.e., a space after them).
                         // If the special character is followed by a non-special character, add a space:
                         s = s.replace(new RegExp(k + "(?=[A-Za-z0-9])", "g"), inverseLetterMap[k] + ' ');
@@ -827,7 +813,7 @@ define(function (require) {
                     return s;
                 };
 
-                var uniqueSymbolsSortFn = function (a, b) {
+                let uniqueSymbolsSortFn = function (a, b) {
                     // Sort operators:
                     if (a in uniqueOperatorsTotalOrder || b in uniqueOperatorsTotalOrder) {
                         // both a and b are operators
@@ -853,8 +839,8 @@ define(function (require) {
                         return -1;
                     }
                     // For compound symbols, position using base symbol:
-                    var baseA = convertToLatexIfGreek(a.split("_")[0].trim());
-                    var baseB = convertToLatexIfGreek(b.split("_")[0].trim());
+                    let baseA = convertToLatexIfGreek(a.split("_")[0].trim());
+                    let baseB = convertToLatexIfGreek(b.split("_")[0].trim());
                     // We have a dict with the symbols and an integer order:
                     if (baseA in uniqueSymbolsTotalOrder && baseB in uniqueSymbolsTotalOrder) {
                         return uniqueSymbolsTotalOrder[baseA] - uniqueSymbolsTotalOrder[baseB];
@@ -869,10 +855,10 @@ define(function (require) {
                     return 0;
                 };
 
-                var stringSymbols = function (ss) {
-                    var symbols = [];
-                    for (var i in ss) {
-                        var s = ss[i];
+                let stringSymbols = function (ss) {
+                    let symbols = [];
+                    for (let i in ss) {
+                        let s = ss[i];
                         symbols.push({
                             type: "Symbol",
                             properties: {
@@ -888,13 +874,13 @@ define(function (require) {
                     return symbols;
                 };
 
-                var chemicalElements = function (elementArray) {
-                    var elements = [];
+                let chemicalElements = function (elementArray) {
+                    let theseElements = [];
 
-                    for (var i in elementArray) {
+                    for (let i in elementArray) {
 
-                        var currentElement = elementArray[i];
-                        elements.push({
+                        let currentElement = elementArray[i];
+                        theseElements.push({
                             type: "ChemicalElement",
                             properties: {
                                 element: currentElement
@@ -906,15 +892,15 @@ define(function (require) {
                             }
                         });
                     }
-                    return elements;
+                    return theseElements;
                 };
 
-                var theNumbers = function (numberStrings) {
-                    var elements = {};
-                    for (var i = 0; i < 10; i++) {
-                        var numString = i.toString();
+                let theNumbers = function (numberStrings) {
+                    let theseElements = {};
+                    for (let i = 0; i < 10; i++) {
+                        let numString = i.toString();
 
-                        elements[numberStrings[i]] = {
+                        theseElements[numberStrings[i]] = {
                             type: "Num",
                             properties: {
                                 significand: numString
@@ -925,17 +911,16 @@ define(function (require) {
                             }
                         }
                     }
-                    return elements;
+                    return theseElements;
                 };
 
-                var trigFunction = function (trigArray) {
-                    var count = 0;
-                    var result = [];
-                    for (var trig_func in trigArray) {
-                        var label = "";
-                        var properties = {};
-                        var children = null;
-                        var name = trigArray[trig_func];
+                let trigFunction = function (trigArray) {
+                    let trigCounter = 0;
+                    let result = [];
+                    for (let trig_func in trigArray) {
+                        let label = "";
+                        let children = null;
+                        let name = trigArray[trig_func];
                         if (trigArray[trig_func].substring(0, 3) === 'arc') {
                             name = trigArray[trig_func].substring(3);
                             children = {
@@ -965,7 +950,7 @@ define(function (require) {
                                 label = "\\" + trigArray[trig_func];
                             }
                         }
-                        result[count] = {
+                        result[trigCounter] = {
                             type: "Fn",
                             properties: {
                                 name: name,
@@ -979,17 +964,17 @@ define(function (require) {
                             }
                         };
                         if (children != null) {
-                            result[count].children = children;
+                            result[trigCounter].children = children;
                         }
-                        count++;
+                        trigCounter++;
                     }
                     return result;
                 };
 
-                var derivativeFunctions = function(availableDerivatives) {
+                let derivativeFunctions = function(availableDerivatives) {
                     // TODO Possibly remove the menu if no derivatives are available
-                    var result = [];
-                    var userIsPrivileged = document.location.pathname == '/equality' || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
+                    let result = [];
+                    let userIsPrivileged = document.location.pathname == '/equality' || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
                     if (userIsPrivileged) {
                         result.push({
@@ -1046,24 +1031,24 @@ define(function (require) {
                         });
                     }
 
-                    for (var j = 0; j < availableDerivatives.length; ++j) {
-                        var derivative = availableDerivatives[j];
-                        if (derivative.startsWith("Derivative")) {
+                    for (let j = 0; j < availableDerivatives.length; ++j) {
+                        let derivative = availableDerivatives[j];
+                        if (_.startsWith(derivative, "Derivative")) {
                             // FIXME This ; is a backward-compatible, certified horrible hack
-                            var pieces = derivative.split(";").map(function(s) { return s.replace(/[()\s]/g, "") }).slice(1);
-                            var orders = {};
+                            let pieces = derivative.split(";").map(function(s) { return s.replace(/[()\s]/g, "") }).slice(1);
+                            let orders = {};
                             // Count how many times one should derive each variable
-                            for (var i = 0; i < pieces.length; ++i) {
-                                var piece = pieces[i];
+                            for (let i = 0; i < pieces.length; ++i) {
+                                let piece = pieces[i];
                                 if (orders.hasOwnProperty(piece)) {
                                     orders[piece] += 1;
                                 } else {
                                     orders[piece] = 1;
                                 }
                             }
-                            var derivative_order = _.sum(_.values(orders));
+                            let derivative_order = _.sum(_.values(orders));
                             // Build up the object
-                            var derivative_obj = {
+                            let derivative_obj = {
                                 type: "Derivative",
                                 children: {
                                     numerator: {
@@ -1078,12 +1063,12 @@ define(function (require) {
                             if (derivative_order > 1) {
                                 derivative_obj.children.numerator.children.order = { type: "Num", properties: { significand: ""+derivative_order } };
                             }
-                            var den_objects = [];
-                            var texBottom = "";
+                            let den_objects = [];
+                            let texBottom = "";
                             _.each(_.entries(orders), function(p) {
-                                var letter = p[0];
-                                var order = p[1];
-                                var o = {
+                                let letter = p[0];
+                                let order = p[1];
+                                let o = {
                                     type: "Differential",
                                     properties: { letter: "d" }, // TODO Support other types of differentials
                                     children: {
@@ -1104,15 +1089,15 @@ define(function (require) {
                                 den_objects.push(o);
                             });
 
-                            var tail = den_objects.pop();
+                            let tail = den_objects.pop();
                             while (den_objects.length > 0) {
-                                var acc = den_objects.pop();
+                                let acc = den_objects.pop();
                                 acc.children.right = tail;
                                 tail = acc;
                             }
 
                             derivative_obj.children.denominator = tail;
-                            var texLabel = "\\frac{\\mathrm{d}" + (derivative_order > 1 ? "^{" + derivative_order+"}" : "") + "}{" + texBottom + "}";
+                            let texLabel = "\\frac{\\mathrm{d}" + (derivative_order > 1 ? "^{" + derivative_order+"}" : "") + "}{" + texBottom + "}";
                             derivative_obj.menu = { label: texLabel, texLabel: true, fontSize: "1.5em" };
                             result.push(derivative_obj);
                         } else {
@@ -1441,6 +1426,14 @@ define(function (require) {
                         },
                         menu: {
                             label: "(x)",
+                            texLabel: true
+                        }
+                    }, {
+                        type: "AbsoluteValue",
+                        properties: {
+                        },
+                        menu: {
+                            label: "|x|",
                             texLabel: true
                         }
                     }, {
