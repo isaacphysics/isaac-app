@@ -28,6 +28,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     let sortField = $stateParams.sort ? $stateParams.sort : null;
 
     let largeNumberOfResults = -1; // assumes -1 limit will return all possible results.
+    let bookIds = ["physics_skills_14", "physics_skills_19", "phys_book_gcse", "pre_uni_maths", "chemistry_16"];
 
     $scope.hasGroups = false;
     $scope.boardCreatedSuccessfully = false;
@@ -40,7 +41,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     });
 
     $scope.findBookQuestions = function(book_id) {
-        $scope.questionSearchText = "\"" + book_id + "\"";
+        $scope.questionSearchText = book_id;
         $scope.questionSearchSubject = "";
         $scope.questionSearchLevel = null;
         sortField = "title"    ;
@@ -111,9 +112,10 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     let mostRecentQueryID = 0;
     let doQuestionSearch = function(searchQuery, searchLevel, searchTags) {
         let isFastTrackQuery = searchQuery == "fasttrack";
+        let isBookQuery = bookIds.indexOf(searchQuery) >= 0;
         return api.getQuestionsResource().query({
             searchString: isFastTrackQuery ? '' : searchQuery,
-            tags: searchTags,
+            tags: isBookQuery ? searchQuery : searchTags, //  If it's a book, just the book tags; ignore others!
             levels: searchLevel,
             limit: largeNumberOfResults,
             fasttrack: isFastTrackQuery
