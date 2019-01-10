@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 define(["../services/SearchResults.js"], function(SearchResults) {
-    let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true, includeGenerals: true};
-    let actualResponse = []
-
-    // let searcher = searchResults.SearchConstructor();
+    let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
 
     let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
+            let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
             let lquery = query.toLowerCase();
+            $location.replace();
+            $location.search({query: query, types: typesToInclude.join(",")});
             if (SearchResults.getSearchTerms(lquery)){
-                actualResponse = SearchResults.getSearchTerms(lquery);
-                let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-                $location.replace();
-                $location.search({query: query, types: typesToInclude.join(",")});
-                console.log(response);
-                return response;
+                let actualResponse = SearchResults.getSearchTerms(lquery);
+                console.log(lquery);
+                // response.filteredResults.push(actualResponse);
+                // response.results.push(actualResponse);
             }
-            else {
-                let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-                actualResponse = [];
-                $location.replace();
-                $location.search({query: query, types: typesToInclude.join(",")});
-                console.log(response);
-                return response;  
-            }          
+            return response;  
+                    
         }
-    }
+    };
 
     let changeTypeState = function(modelName, typeName, _api, _query, typesToInclude, _$location) {
         let index = typesToInclude.indexOf(typeName);
@@ -89,8 +81,6 @@ define(["../services/SearchResults.js"], function(SearchResults) {
 
             timer = $timeout(function() {
                 $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-                $scope.response.filteredResults.unshift(actualResponse);
-                $scope.response.results.unshift(actualResponse);
             }, 500);
         });
 
@@ -98,23 +88,20 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             if (newVal === oldVal) return;
              changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
              $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-             $scope.response.filteredResults.unshift(actualResponse);
-             $scope.response.results.unshift(actualResponse);
+             console.log($scope.response);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
             $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-            $scope.response.filteredResults.unshift(actualResponse);
-            $scope.response.results.unshift(actualResponse);
+            console.log($scope.response);
         });
 
         $scope.$watch('response.results', function(results) {
             if ($scope.response) {
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
-                $scope.response.filteredResults.unshift(actualResponse);
-                $scope.response.results.unshift(actualResponse);
+                console.log($scope.response);
             }
         });
         
@@ -138,15 +125,11 @@ define(["../services/SearchResults.js"], function(SearchResults) {
         $scope.$watch('models.includeConcepts', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             $scope.response = changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
-            $scope.response.filteredResults.unshift(actualResponse);
-            $scope.response.results.unshift(actualResponse);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             $scope.response = changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
-            $scope.response.filteredResults.unshift(actualResponse);
-            $scope.response.results.unshift(actualResponse);
         });
 
         $scope.triggerSearch = function() {
@@ -154,7 +137,7 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             if(!$state.includes('searchResults')) {
                 $state.go('searchResults', {query: $scope.models.query, types: $scope.models.typesToInclude});
             }
-        }
+        };
 
         $scope.hideMobileSearchForm = function() {
             // Hide mobile search form if shown
@@ -162,11 +145,11 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             if ($("#mobile-search-form").hasClass('ru-drop-show')) {
                 $("#mobile-search-form").ruDropDownToggle();
             }
-        }
+        };
     }];
 
     return {
         PageController: PageController,
         GlobalSearchController: GlobalSearchController,
     };
-})
+});
