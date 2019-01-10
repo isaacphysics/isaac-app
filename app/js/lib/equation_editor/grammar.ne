@@ -7,10 +7,13 @@ const lexer = moo.compile({
     Id: { match: /[a-zA-Z]+(?:_[a-zA-Z0-9]+)?/, keywords: {
 	TrigFn: ['cos', 'sin', 'tan',
              'cosec', 'sec', 'cot',
+             'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
              'arccos', 'arcsin', 'arctan',
              'arccosec', 'arcsec', 'arccot',
-             'cosh', 'sinh', 'tanh', 'cosech', 'sech', 'coth',
              'arccosh', 'arcsinh', 'arctanh', 'arccosech', 'arcsech', 'arccoth',
+             'acos', 'asin', 'atan',
+             'acosec', 'asec', 'acot',
+             'acosh', 'asinh', 'atanh', 'acosech', 'asech', 'acoth',
             ],
     Fn: ['ln', 'abs'],
     Log: ['log'],
@@ -118,12 +121,19 @@ const processFunction = (d) => {
 }
 
 const processSpecialTrigFunction = (d_name, d_arg, d_exp = null) => {
+    // First, deal with the shortened a- form of arc- functions.
+    let r = new RegExp('^a([^r].+)$')
+    let name = d_name.text
+    if (r.test(name)) {
+        name = `arc${r.exec(name)[1]}`
+    }
+    // Then do everything else as normal.
     let arg = _.cloneDeep(d_arg)
     let exp = _.cloneDeep(d_exp)
     if (null === exp) {
-        return { type: 'Fn', properties: { name: d_name.text, allowSubscript: false, innerSuperscript: true }, children: { argument: arg } }
+        return { type: 'Fn', properties: { name: name, allowSubscript: false, innerSuperscript: true }, children: { argument: arg } }
     } else {
-        return { type: 'Fn', properties: { name: d_name.text, allowSubscript: false, innerSuperscript: true }, children: { superscript: exp, argument: arg } }
+        return { type: 'Fn', properties: { name: name, allowSubscript: false, innerSuperscript: true }, children: { superscript: exp, argument: arg } }
     }
 }
 

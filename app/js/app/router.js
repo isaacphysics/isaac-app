@@ -172,6 +172,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
         $sp.state('about', genericPageState("/about", "about_us_index"));
+        $sp.state('cyberessentials', genericPageState("/cyberessentials", "cyberessentials"));
 
 
         if (subject.id == "physics") {
@@ -688,7 +689,11 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('authError', {
-            url: "/auth_error?errorMessage&statusText",
+            url: "/auth_error",
+            params: {
+                errorMessage: null,
+                statusText: null,
+            },
             views: {
                 "body": {
                     templateUrl: "/partials/states/auth_error.html",

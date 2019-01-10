@@ -1,7 +1,7 @@
 {
   "name": "isaac-app",
   "private": true,
-  "version": "2.6.12-SNAPSHOT",
+  "version": "2.7.7-SNAPSHOT",
   "description": "Physics. You work it out.",
   "repository": "http://isaacphysics.org",
   "license": "MIT",
@@ -88,7 +88,6 @@
     ]
   },
   "scripts": {
-    "start": "single-page-server -p=8000 -b=app -f=app/index.physics.html | single-page-server -p=8001 -b=app -f=app/index.chemistry.html | single-page-server -p=8002 -b=app -f=app/index.biology.html",
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
     "build:js": "webpack",

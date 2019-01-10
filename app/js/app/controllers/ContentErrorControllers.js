@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-export const PageController = ['$scope', 'page', '$rootScope', function($scope, page, $rootScope) {
+export const PageController = ['$scope', 'page', '$rootScope', 'EditorURL', function($scope, page, $rootScope, EditorURL) {
 	$rootScope.pageTitle = "Content Error Page";
 	$scope.errorMap = page;
 
-	$scope.editorPath = "http://editor.isaacphysics.org/#!/edit/master/"
+	$scope.editorPath = EditorURL;
 }];

@@ -99,7 +99,7 @@ define([], function() {
                 warnings.push(["calculus", "There are no Calculus questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Algebra field:
-            if (topics.length == 0 && contains(fields, "algebra") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 6) || levels.length == 0))
+            if (topics.length == 0 && contains(fields, "algebra") && !(contains(levels, 1) || contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 6) || levels.length == 0))
                 warnings.push(["algebra", "There are no Algebra questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
         // Maths topics:
@@ -112,7 +112,7 @@ define([], function() {
             if (contains(topics, "quadratics") && !(contains(levels, 1) || levels.length == 0))
                 warnings.push(["quadratics", "There are no Quadratics questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
-            if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 6) || levels.length == 0))
+            if (contains(topics, "series") && !(contains(levels, 3) || contains(levels, 4) || contains(levels, 6) || levels.length == 0))
                 warnings.push(["series", "There are no Series questions in " + (levels.length > 1 ? "levels" : "level") + " " + joinList(levels)]);
 
             if (contains(topics, "differentiation") && !(contains(levels, 2) || contains(levels, 3) || contains(levels, 4) || contains(levels, 5) || contains(levels, 6) || levels.length == 0))

@@ -1,214 +1,165 @@
 <header class="no-print">
-    <!-- Desktop Header -->
-    <div class='ru-desktop-header' ng-controller="HeaderController">
-        <div class='ru-desktop-nav'>
-            <!-- Desktop Nav -->
-            <nav class='row'>
-                <div class='padded-left-float'>
-                    <a id="isaac-logo" ui-sref='home'>
-                        <img ng-if="$subject.id == 'physics'" alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
-                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
-                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]" />
-                        <img ng-if="$subject.id == 'chemistry'" alt="isaac logo" title='Isaac Chemistry. You work it out.' class='ru-desktop-menu-img' src=''
-                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-chemistry-strap.png, (medium_large)],
-                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-chemistry-strap@2x.png, (large_retina)]" />
-                        <img ng-if="$subject.id == 'biology'" alt="isaac logo" title='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src=''
-                            data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-biology-strap.png, (medium_large)],
-                            [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-biology-strap@2x.png, (large_retina)]" />
-                    </a>
-                    <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
-                        <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
-                    </div>
-                </div>
-                <div class='padded-right-float text-right'>
-                    <a class='ru-desktop-nav-item' ui-sref='chemistry'>
-                        <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
-                            <span class="multiline">Isaac Chemistry</span>
+        <!-- Desktop Header -->
+        <div class='ru-desktop-header' ng-controller="HeaderController">
+            <div class='ru-desktop-nav'>
+                <!-- Desktop Nav -->
+                <nav class='row'>
+                    <div class='padded-left-float'>
+                        <a id="isaac-logo" ui-sref='home'>
+                            <img ng-if="$subject.id == 'physics'" alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-desktop-menu-img' src=''
+                                data-interchange="[/assets/isaac-logo.png, (default)], [/assets/isaac-logo-strap.png, (medium_large)],
+                                [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/isaac-logo-strap@2x.png, (large_retina)]" />
+                            <img ng-if="$subject.id == 'chemistry'" alt="isaac logo" title='Isaac Chemistry. You work it out.' class='ru-desktop-menu-img' src=''
+                                data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-chemistry-strap.png, (medium_large)],
+                                [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-chemistry-strap@2x.png, (large_retina)]" />
+                            <img ng-if="$subject.id == 'biology'" alt="isaac logo" title='Isaac Biology. You work it out.' class='ru-desktop-menu-img' src=''
+                                data-interchange="[/assets/isaac-logo.png, (default)], [/assets/logo-biology-strap.png, (medium_large)],
+                                [/assets/isaac-logo@2x.png, (medium_retina)], [/assets/logo-biology-strap@2x.png, (large_retina)]" />
+                        </a>
+                        <div ng-if="segueEnvironment=='DEV'" class="ru-desktop-logo-dev" >Non-Prod
+                            <span ng-if="user._id" ng-class="{admin : user.role=='ADMIN'}">   ({{user.givenName}} {{user.familyName}})</span>
                         </div>
-                    </a>
-                    <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>
-                        <div id="questions-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
-                            <span>Questions</span>
-                        </div>
-                    </a>
-                    <a class='ru-desktop-nav-item' ui-sref='conceptIndex'>
-                        <div id="concepts-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
-                            <span>Concepts</span>
-                        </div>
-                    </a>
-                    <a id="login-tab" ng-if='!user._id' class='ru-desktop-nav-item' ui-sref='login'>
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
-                            <span>Log in</span>
-                        </div>
-                    </a>
-                    <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress' ng-init="streakDialToggle(todayActivityLength)">
-                        <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
-                            <span style="top: 0.5em; vertical-align: text-top;" data-ot-escape-content="false" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
-                    <br /><br />Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
-                                  aria-haspopup="true">
-
-                                    <svg id="svg-progress" width="100%" height="60" version="1.1"
-                                         xmlns="http://www.w3.org/2000/svg" style="display:block;">
-
-                                        <circle id="empty-bar" r="20" cx="56" cy="30"
-                                                stroke-width="5"></circle>
-
-                                        <circle id="progress-bar" r="20" cx="56" cy="30"
-                                                stroke-width="6"
-                                                stroke-dasharray="125.664" stroke-dashoffset="125.664"
-                                        transform="rotate(270, 56, 30)"></circle>
-
-                                        <!--<text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
-                                              class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
-                                            {{ user.userSnapshot.streakRecord.currentStreak }}
-                                        </text>
-                                        <text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
-                                              class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">0</text>-->
-
-
-                                    </svg>
-
-                                <div class="streak-value" ng-if="user.userSnapshot != null">
-                                    {{ user.userSnapshot.streakRecord.currentStreak || 0 }}
-                                </div>
-                                Progress
-
-                            </span>
-                        </div>
-
-                        <!--<div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
-                            <!--<span>
-
-                            </span>
-
-                        </div>-->
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <!-- Mobile Header -->
-    <div class='ru-mobile-header' ng-controller="HeaderController">
-        <!-- Mobile Fixed Header -->
-        <div class='ru-fixed-header fixed'>
-            <div class='row'>
-                <div class='small-8 columns'>
-                    <div ng-if='!user._id' id='mobile-login' class='pointer'>
-                        <div class='ru-mobile-login'></div>
-                        <span>
-                            Log in
-                        </span>
-                        <div class='ru-mobile-down'></div>
                     </div>
-                    <a ng-if='user._id' ui-sref='accountSettings'>
-                        <div class='ru-mobile-login'></div>
-                        <span>
-                            My Account
-                        </span>
-                    </a>
-                </div>
-                <div class='small-8 columns'>
-                    <div class='right pointer' id='mobile-search'>
-                        <div class='ru-mobile-search'></div>
-                        <span>
-                            Search
-                        </span>
-                        <div class='ru-mobile-down'></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile Nav -->
-        <div class='ru-mobile-nav'>
-            <nav class='row'>
-                <a ui-sref='home'><img alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-mobile-menu-img'
-                                data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
-                <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
-                <div class="ru-mobile-nav-container">
-                  <a class='ru-mobile-nav-item' ui-sref='chemistry'>
-                    <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('chemistry')}">
-                      <span class="multiline">Isaac Chemistry</span>
-                    </div>
-                  </a>
-                  <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
-                      <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
-                          <span>Questions</span>
-                      </div>
-                  </a>
-                  <a class='ru-mobile-nav-item' ui-sref='conceptIndex'>
-                      <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
-                          <span>Concepts</span>
-                      </div>
-                  </a>
-                </div>
-            </nav>
-        </div>
-    </div>
-    <!-- Search button -->
-    <!--
-    <div class="row" ng-controller="GlobalSearchController" ng-if="!globalFlags.noSearch">
-        <div class="small-16 columns">
-
-            <div class='row hide-for-small-only site-search-row'>
-                <div class='large-16 medium-16 columns'>
-                    <div class='ru-desktop-panel-search' ng-hide="globalFlags.siteSearchOpen"></div>
-
-                    <a id="tutorial-search" href="javascript:void(0)" class="ru-desktop-search-icon" tabindex="0" ng-click="globalFlags.siteSearchOpen = true" ng-hide="globalFlags.siteSearchOpen">
-                        <img src='/assets/desktop-search-icon.png' alt="Search">
-                    </a>
-                    <div class="ru-desktop-panel-search-close"  tabindex="0" ng-show="globalFlags.siteSearchOpen">
-                        <img src='/assets/Close-button.jpg' alt="Close Search" ng-click="globalFlags.siteSearchOpen = false">
-                    </div>
-                    <div class="ru-search-bg hide-animate" ng-show="globalFlags.siteSearchOpen" ng-click="globalFlags.siteSearchOpen = false"></div>
-                    <div class="ru-desktop-panel search hide-animate" ng-show="globalFlags.siteSearchOpen">
-                        <div class='ru-desktop-search'>
-                            <form ng-submit="triggerSearch()">
-                            <div class="row">
-                                <div class="large-2 medium-2 columns">
-                                    <label for="ru-search-box" class=" text-center inline">Search</label>
-                                </div>
-                                <div class="large-3 medium-13 columns">
-                                    <input id="ru-search-box" ng-model="models.query" type="text" sync-search-focus/>
-                                </div>
-                                <div class="clearfix show-for-medium-only"></div>
-                                <div class="large-4 medium-5 medium-offset-2 large-offset-0 columns">
-                                    <div class="ru-desktop-search-check">
-                                        <span class="ru-drop-check">
-                                            <input id="search-check1" ng-model="models.includeQuestions" name="checkbox2" type="checkbox">
-                                            <label for='search-check1'></label>
-                                        </span>
-                                        <label for="search-check1" class=''> Search problems</label>
-                                    </div>
-                                </div>
-                                <div class="large-4 medium-5  columns">
-                                    <div class="ru-desktop-search-check">
-                                        <span class="ru-drop-check">
-                                            <input id="search-check2" ng-model="models.includeConcepts" name="checkbox2" type="checkbox">
-                                            <label for='search-check2'></label>
-                                        </span>
-                                        <label for="search-check2" class=''> Search concepts</label>
-                                    </div>
-                                </div>
-                                <div class="large-2 medium-3 medium-offset-0 columns end">
-                                    <input class="button ru-search-button expand" type="button" value="Search" id="desktop-search-now" ng-click="triggerSearch()">
-                                </div>
+                    <div class='padded-right-float text-right'>
+                        <a class='ru-desktop-nav-item' ui-sref='chemistry'>
+                            <div id="chemistry-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('chemistry')}">
+                                <span class="multiline">Isaac Chemistry</span>
                             </div>
-                            </form>
+                        </a>
+                        <a class='ru-desktop-nav-item' ui-sref='gameBoards({filter: true})'>
+                            <div id="questions-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('gameBoards') || $state.includes('question')}">
+                                <span>Questions</span>
+                            </div>
+                        </a>
+                        <a class='ru-desktop-nav-item' ui-sref='conceptIndex'>
+                            <div id="concepts-tab-desktop" class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
+                                <span>Concepts</span>
+                            </div>
+                        </a>
+                        <a id="login-tab" ng-if='!user._id' class='ru-desktop-nav-item' ui-sref='login'>
+                            <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('login')}">
+                                <span>Log in</span>
+                            </div>
+                        </a>
+                        <a ng-if='user._id' class='ru-desktop-nav-item' ui-sref='progress' ng-init="streakDialToggle(todayActivityLength)">
+                            <div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                                <span style="top: 0.5em; vertical-align: text-top;" data-ot-escape-content="false" data-ot="The daily streak indicates the number of consecutive days you have been active on Isaac.
+                        <br /><br />Answer at least <b>three question parts</b> correctly per day to fill up your daily progress bar and increase your streak!"
+                                      aria-haspopup="true">
+    
+                                        <svg id="svg-progress" width="100%" height="60" version="1.1"
+                                             xmlns="http://www.w3.org/2000/svg" style="display:block;">
+    
+                                            <circle id="empty-bar" r="20" cx="56" cy="30"
+                                                    stroke-width="5"></circle>
+    
+                                            <circle id="progress-bar" r="20" cx="56" cy="30"
+                                                    stroke-width="6"
+                                                    stroke-dasharray="125.664" stroke-dashoffset="125.664"
+                                            transform="rotate(270, 56, 30)"></circle>
+    
+                                            <!--<text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
+                                                  class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak != null">
+                                                {{ user.userSnapshot.streakRecord.currentStreak }}
+                                            </text>
+                                            <text x="38%" y="60%" text-anchor="56" alignment-baseline="20"
+                                                  class="streak-value" ng-if="user.userSnapshot.streakRecord.currentStreak == null">0</text>-->
+    
+    
+                                        </svg>
+    
+                                    <div class="streak-value" ng-if="user.userSnapshot != null">
+                                        {{ user.userSnapshot.streakRecord.currentStreak || 0 }}
+                                    </div>
+                                    Progress
+    
+                                </span>
+                            </div>
+    
+                            <!--<div class='ru-desktop-nav-item-inner' ng-class="{active: $state.includes('progress')}">
+                                <!--<span>
+    
+                                </span>
+    
+                            </div>-->
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Mobile Header -->
+        <div class='ru-mobile-header' ng-controller="HeaderController">
+            <!-- Mobile Fixed Header -->
+            <div class='ru-fixed-header fixed'>
+                <div class='row'>
+                    <div class='small-8 columns'>
+                        <div ng-if='!user._id' id='mobile-login' class='pointer'>
+                            <div class='ru-mobile-login'></div>
+                            <span>
+                                Log in
+                            </span>
+                            <div class='ru-mobile-down'></div>
+                        </div>
+                        <a ng-if='user._id' ui-sref='accountSettings'>
+                            <div class='ru-mobile-login'></div>
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+                    <div class='small-8 columns'>
+                        <div class='right pointer' id='mobile-search'>
+                            <div class='ru-mobile-search'></div>
+                            <span>
+                                Search
+                            </span>
+                            <div class='ru-mobile-down'></div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Mobile Nav -->
+            <div class='ru-mobile-nav'>
+                <nav class='row'>
+                    <a ui-sref='home'><img alt="isaac logo" title='Isaac Physics. You work it out.' class='ru-mobile-menu-img'
+                                    data-interchange="[/assets/isaac-logo.png, (small)], [/assets/isaac-logo@2x.png, (small_retina)]" src='/assets/isaac-logo.png'></a>
+                    <div ng-if="segueEnvironment=='DEV'" class="ru-mobile-logo-dev">Non-Prod x({{user.givenName}} {{user.familyName}})</div>
+                    <div class="ru-mobile-nav-container">
+                      <a class='ru-mobile-nav-item' ui-sref='chemistry'>
+                        <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('chemistry')}">
+                          <span class="multiline">Isaac Chemistry</span>
+                        </div>
+                      </a>
+                      <a class='ru-mobile-nav-item' ui-sref='gameBoards'>
+                          <div ng-class="{'ru-mobile-nav-item-inner': true, active: $state.includes('gameBoards') || $state.includes('question')}">
+                              <span>Questions</span>
+                          </div>
+                      </a>
+                      <a class='ru-mobile-nav-item' ui-sref='conceptIndex'>
+                          <div class='ru-mobile-nav-item-inner' ng-class="{active: $state.includes('conceptIndex') || $state.includes('concept')}">
+                              <span>Concepts</span>
+                          </div>
+                      </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
 
-
+        <div class="header-strip">
+            <div class="important-announcement" ng-show="showImportantAnnouncement">
+                <div class="row no-print">
+                    <div class="small-16 columns">
+                        <h1><small>Important announcement</small></h1>
+                        <p><big>Please note that on the 18<sup>th</sup> of December 2018, Isaac Physics may be unavailable due to planned maintenance. Check our <a href="https://twitter.com/isaacphysics" target="_blank">Twitter feed</a> for more information.</big></p>
+                        <button class="dismiss" ng-click="dismissImportantAnnouncement()"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-16 columns inner-strip">
+                    <div global-navigation></div>
                 </div>
             </div>
         </div>
-    </div>
--->
-    <div class="header-strip">
-        <div class="row">
-            <div class="small-16 columns inner-strip">
-                <div global-navigation></div>
-            </div>
-        </div>
-    </div>
-
-</header>
+    
+    </header>

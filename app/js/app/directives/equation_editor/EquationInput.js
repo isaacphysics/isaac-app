@@ -21,7 +21,7 @@ define(["p5",
     }
     void parseExpression;
 
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, _api) {
+    return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
         return {
             scope: {
@@ -38,7 +38,7 @@ define(["p5",
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
-                        scope.symbolList = scope.questionDoc.availableSymbols.map(function (str) {return str.trim().replace(';', ',')}).join(", ");
+                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).join(", ");
                     } catch (err) {
                         // Do not let invalid availableSymbols prevent anyone from answering the question!
                         scope.symbolList = null;

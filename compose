@@ -27,14 +27,19 @@ fi
 API_NAME=api-$ENV-$API_VERSION
 APP_NAME=app-$ENV-$APP_VERSION
 
-read -r -d '' PG_AND_KAFKA_SERVICE << EOM
+# Define the Postgres YML. Note that when ENV is "test" an additional volume line is appended to the end!
+read -r -d '' PG_SERVICE << EOM
 pg-$ENV:
     container_name: pg-$ENV
-    image: isaac-pg
     restart: always
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: rutherford
+      POSTGRES_PASSWORD: rutherf0rd
     volumes:
       - pg-$ENV:/pgdata
-
+      - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-create-script.sql:/docker-entrypoint-initdb.d/00-isaac-create.sql:ro
+      - ../isaac-api/src/main/resources/db_scripts/postgres-rutherford-functions.sql:/docker-entrypoint-initdb.d/01-isaac-functions.sql:ro
 EOM
 
 
@@ -46,13 +51,9 @@ elif [ "$ENV" == "live" ]; then
   echo "Cannot manage live deployment with this script any more. Please use compose-live."
   exit 1
 elif [ "$ENV" == "test" ]; then
-  read -r -d '' PG_AND_KAFKA_SERVICE << EOM
-pg-test:
-    container_name: pg-test
-    image: isaac-pg
-    volumes:
-      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql
-EOM
+  # Need to add the SQL script that loads the test data to pg-test:
+  TEST_INIT_DATA="      - /local/data/test-db-schema.sql:/docker-entrypoint-initdb.d/test-db-schema.sql"
+  PG_SERVICE="$PG_SERVICE"$'\n'"$TEST_INIT_DATA"
 else
   echo "Must set environment to dev or staging."
   exit 1
@@ -74,10 +75,11 @@ services:
     image: docker.isaacscience.org/isaac-api:$API_VERSION
     restart: always
     extra_hosts:
-      - elasticsearch:$LOCAL_ELASTICSEARCH
       - local-smtp:$LOCAL_SMTP
     links:
       - pg-$ENV:postgres
+    external_links:
+      - elasticsearch-live:elasticsearch
     volumes:
       - /local/data/m2:/root/.m2:rw
       - /local/data/isaac-config/segue-config.$ENV.properties:/local/data/rutherford/conf/segue-config.properties:ro
@@ -93,7 +95,7 @@ services:
       driver: journald
       options:
         tag: isaac-api-$ENV
-  $PG_AND_KAFKA_SERVICE
+  $PG_SERVICE
 networks:
   default:
     external:
