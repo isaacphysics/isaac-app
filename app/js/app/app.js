@@ -800,8 +800,8 @@ define([
                 }
             })
 
-            // Check again in five minutes
-            $timeout(checkForNotifications, 300000);
+            // Check again in half an hour. This style of notification isn't really used much now.
+            $timeout(checkForNotifications, 30*60*1000);
         }
 
         $timeout(checkForNotifications, 5000);
