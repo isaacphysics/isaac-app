@@ -11,7 +11,7 @@
                     <li><a href="javascript:void(0)" ui-sref="adminStats.schoolUserSummaryList">Show School Data</a></li>
                     <li><a href="javascript:void(0)" ui-sref="adminStats.popularGameboards">Show Gameboard Data</a></li>
                     <li><a href="javascript:void(0)" ui-sref="adminStats.isaacAnalytics">Show Analytics</a></li>                
-                </ul>            
+                </ul>
             </div>
         </div>
     </div>
@@ -26,14 +26,17 @@
                     <div class="medium-8 small-16 columns">
                         <ul>
                             <li>
-                                <strong>Users:</strong> Active (six months) <strong>{{statistics.activeUsersOverPrevious.sixMonths.TOTAL}}</strong> | Registered <strong>{{statistics.userGenders.TOTAL}}</strong>
+                                <strong>Users:</strong>
+                                Active (six months) <strong>{{statistics.activeUsersOverPrevious.sixMonths.TOTAL}}</strong> |
+                                Registered <strong>{{statistics.userGenders.TOTAL}}</strong>
                                 <ul>
                                     <li>
                                         <strong>Gender</strong>
                                         <ul>
                                             <li>Male: {{statistics.userGenders.MALE || 0}} ({{asPercentage(statistics.userGenders.MALE, statistics.userGenders.TOTAL)}}%)</li>
                                             <li>Female: {{statistics.userGenders.FEMALE || 0}} ({{asPercentage(statistics.userGenders.FEMALE, statistics.userGenders.TOTAL)}}%)</li>
-                                            <li>Unknown: {{statistics.userGenders.OTHER + statistics.userGenders.UNKNOWN || 0}} ({{asPercentage(statistics.userGenders.OTHER  + statistics.userGenders.UNKNOWN, statistics.userGenders.TOTAL)}}%)</li>
+                                            <li>Unknown: {{statistics.userGenders.OTHER + statistics.userGenders.UNKNOWN || 0}}
+                                                ({{asPercentage(statistics.userGenders.OTHER  + statistics.userGenders.UNKNOWN, statistics.userGenders.TOTAL)}}%)</li>
                                         </ul>
                                     </li>
                                     <li>
@@ -55,15 +58,7 @@
                                             <li>Other School provided: {{statistics.userSchoolInfo.OTHER_PROVIDED || 0}}</li>
                                             <li>No School provided: {{statistics.userSchoolInfo.NOT_PROVIDED || 0}}</li>
                                         </ul>
-                                    </li> 
-                                    <li>
-                                        <strong>Last Seen Data (non-staff)</strong>
-                                        <ul>
-                                            <li>Last 07 days: {{statistics.activeUsersOverPrevious.sevenDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.sevenDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.sevenDays.STUDENT || 0}})</li>
-                                            <li>Last 30 days: {{statistics.activeUsersOverPrevious.thirtyDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.thirtyDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.thirtyDays.STUDENT || 0}})</li>
-                                            <li>Last 90 days: {{statistics.activeUsersOverPrevious.ninetyDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.ninetyDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.ninetyDays.STUDENT || 0}})</li>
-                                        </ul>
-                                    </li>                                                            
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -71,15 +66,47 @@
                     <div class="medium-8 small-16 columns">
                         <ul>
                             <li>
+                                <strong>Last Seen Data</strong>
+                                <ul>
+                                    <li>Previous 7 days:
+                                        (All: {{statistics.activeUsersOverPrevious.sevenDays.TOTAL || 0}},
+                                        Teachers: {{statistics.activeUsersOverPrevious.sevenDays.TEACHER || 0}},
+                                        Students: {{statistics.activeUsersOverPrevious.sevenDays.STUDENT || 0}})
+                                    </li>
+                                    <li>Previous 30 days:
+                                        (All: {{statistics.activeUsersOverPrevious.thirtyDays.TOTAL || 0}},
+                                        Teachers: {{statistics.activeUsersOverPrevious.thirtyDays.TEACHER || 0}},
+                                        Students: {{statistics.activeUsersOverPrevious.thirtyDays.STUDENT || 0}})
+                                    </li>
+                                    <li>Previous 90 days:
+                                        (All: {{statistics.activeUsersOverPrevious.ninetyDays.TOTAL || 0}},
+                                        Teachers: {{statistics.activeUsersOverPrevious.ninetyDays.TEACHER || 0}},
+                                        Students: {{statistics.activeUsersOverPrevious.ninetyDays.STUDENT || 0}})
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
                                 <strong>Events</strong>
                                 <ul>
                                     <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
                                     <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}})</li>
-                                    <li># of Users Answering Questions<ul>
-                                        <li>Last 07 days: Teachers: {{statistics.answeringUsersOverPrevious.sevenDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.sevenDays.STUDENT || 0}}</li>
-                                        <li>Last 30 days: Teachers: {{statistics.answeringUsersOverPrevious.thirtyDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.thirtyDays.STUDENT || 0}}</li>
-                                        <li>Last 90 days: Teachers: {{statistics.answeringUsersOverPrevious.ninetyDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.ninetyDays.STUDENT || 0}}</li>
-                                    </ul></li>
+                                    <li># of Users Answering Questions
+                                        <div>Previous 7 days:
+                                            (All: {{statistics.answeringUsersOverPrevious.sevenDays.TOTAL || 0}},
+                                            Teachers: {{statistics.answeringUsersOverPrevious.sevenDays.TEACHER || 0}},
+                                            Students: {{statistics.answeringUsersOverPrevious.sevenDays.STUDENT || 0}})
+                                        </div>
+                                        <div>Previous 30 days:
+                                            (All: {{statistics.answeringUsersOverPrevious.thirtyDays.TOTAL || 0}},
+                                            Teachers: {{statistics.answeringUsersOverPrevious.thirtyDays.TEACHER || 0}},
+                                            Students: {{statistics.answeringUsersOverPrevious.thirtyDays.STUDENT || 0}})
+                                        </div>
+                                        <div>Previous 90 days:
+                                            (All: {{statistics.answeringUsersOverPrevious.ninetyDays.TOTAL || 0}},
+                                            Teachers: {{statistics.answeringUsersOverPrevious.ninetyDays.TEACHER || 0}},
+                                            Students: {{statistics.answeringUsersOverPrevious.ninetyDays.STUDENT || 0}})
+                                        </div>
+                                    </li>
                                 </ul>
                             </li> 
                             <li>
@@ -89,10 +116,10 @@
                                     <li>Total Event Bookings: {{eventBookingsCount}}</li>
                                 </ul>
                             </li>
-                        </ul>      
-                    </div>                
+                        </ul>
+                    </div>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
     <div class="row" ng-hide="globalFlags.loading">
