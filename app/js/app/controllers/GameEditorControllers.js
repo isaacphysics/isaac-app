@@ -144,7 +144,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
                     });
                     // try to sort the results if requested.
                     if (sortField) {
-                        $scope.searchResults.sort((a, b) => { a[sortField] > b[sortField] ? 1 : -1; });
+                        $scope.searchResults.sort((a, b) => { return a[sortField] > b[sortField] ? 1 : -1; });
                     }
                     $scope.loading = false;
                 }
