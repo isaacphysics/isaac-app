@@ -26,41 +26,42 @@
                     <div class="medium-8 small-16 columns">
                         <ul>
                             <li>
-                                <strong>Users: Active (6 months): {{statistics.activeInLastSixMonths}} / Registered: {{statistics.totalUsers}}</strong>
+                                <strong>Users:</strong> Active (six months) <strong>{{statistics.activeUsersOverPrevious.sixMonths.TOTAL}}</strong> | Registered <strong>{{statistics.userGenders.TOTAL}}</strong>
                                 <ul>
                                     <li>
                                         <strong>Gender</strong>
                                         <ul>
-                                            <li>Male: {{statistics.gender.MALE}}</li>
-                                            <li>Female: {{statistics.gender.FEMALE}}</li>
-                                            <li>Unknown: {{statistics.gender.OTHER}}</li>
+                                            <li>Male: {{statistics.userGenders.MALE || 0}} ({{asPercentage(statistics.userGenders.MALE, statistics.userGenders.TOTAL)}}%)</li>
+                                            <li>Female: {{statistics.userGenders.FEMALE || 0}} ({{asPercentage(statistics.userGenders.FEMALE, statistics.userGenders.TOTAL)}}%)</li>
+                                            <li>Unknown: {{statistics.userGenders.OTHER + statistics.userGenders.UNKNOWN || 0}} ({{asPercentage(statistics.userGenders.OTHER  + statistics.userGenders.UNKNOWN, statistics.userGenders.TOTAL)}}%)</li>
                                         </ul>
                                     </li>
                                     <li>
                                         <strong>Role</strong>
                                         <ul>
-                                            <li>Student (unknown role): {{statistics.role.STUDENT || 0 }}</li>
-                                            <li>Teacher: {{statistics.role.TEACHER || 0 }}</li>
-                                            <li>Event Manager: {{statistics.role.EVENT_MANAGER || 0 }}</li>
-                                            <li>Content Editor: {{statistics.role.CONTENT_EDITOR || 0 }}</li>
-                                            <li>Admin: {{statistics.role.ADMIN || 0 }}</li>
-                                            <li>Tester: {{statistics.role.TESTER || 0 }}</li>
-                                            <li>Staff: {{statistics.role.STAFF || 0 }}</li>
+                                            <li>Student (or Unknown): {{statistics.userRoles.STUDENT || 0 }}</li>
+                                            <li>Teacher: {{statistics.userRoles.TEACHER || 0 }}</li>
+                                            <li>Event Manager: {{statistics.userRoles.EVENT_MANAGER || 0 }}</li>
+                                            <li>Content Editor: {{statistics.userRoles.CONTENT_EDITOR || 0 }}</li>
+                                            <li>Admin: {{statistics.userRoles.ADMIN || 0 }}</li>
+                                            <li>Tester: {{statistics.userRoles.TESTER || 0 }}</li>
+                                            <li>Staff: {{statistics.userRoles.STAFF || 0 }}</li>
                                         </ul>
                                     </li>
                                     <li>
                                         <strong>Profile Completion</strong>
                                         <ul>
-                                            <li>School provided: {{statistics.hasSchool}} ({{statistics.hasSchoolOther}} - from 'school other')</li>
-                                            <li>No School Information: {{statistics.hasNoSchool}}</li>
+                                            <li>Known School provided: {{statistics.userSchoolInfo.PROVIDED || 0}}</li>
+                                            <li>Other School provided: {{statistics.userSchoolInfo.OTHER_PROVIDED || 0}}</li>
+                                            <li>No School provided: {{statistics.userSchoolInfo.NOT_PROVIDED || 0}}</li>
                                         </ul>
                                     </li> 
                                     <li>
                                         <strong>Last Seen Data (non-staff)</strong>
                                         <ul>
-                                            <li>Last 7 days: {{statistics.activeUsers.sevenDays.total || 0}} (Teachers: {{statistics.activeUsers.sevenDays.TEACHER || 0}}, Students: {{statistics.activeUsers.sevenDays.STUDENT || 0}})</li>
-                                            <li>Last 30 days: {{statistics.activeUsers.thirtyDays.total || 0}} (Teachers: {{statistics.activeUsers.thirtyDays.TEACHER || 0}}, Students: {{statistics.activeUsers.thirtyDays.STUDENT || 0}})</li>
-                                            <li>Last 90 days: {{statistics.activeUsers.ninetyDays.total || 0}} (Teachers: {{statistics.activeUsers.ninetyDays.TEACHER || 0}}, Students: {{statistics.activeUsers.ninetyDays.STUDENT || 0}})</li>
+                                            <li>Last 07 days: {{statistics.activeUsersOverPrevious.sevenDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.sevenDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.sevenDays.STUDENT || 0}})</li>
+                                            <li>Last 30 days: {{statistics.activeUsersOverPrevious.thirtyDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.thirtyDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.thirtyDays.STUDENT || 0}})</li>
+                                            <li>Last 90 days: {{statistics.activeUsersOverPrevious.ninetyDays.TOTAL || 0}} (Teachers: {{statistics.activeUsersOverPrevious.ninetyDays.TEACHER || 0}}, Students: {{statistics.activeUsersOverPrevious.ninetyDays.STUDENT || 0}})</li>
                                         </ul>
                                     </li>                                                            
                                 </ul>
@@ -75,9 +76,9 @@
                                     <li>Viewed Questions Events: {{statistics.viewQuestionEvents}}</li>
                                     <li># of Questions Answered Events ({{statistics.answeredQuestionEvents}})</li>
                                     <li># of Users Answering Questions<ul>
-                                        <li>Last 7 days: Teachers: {{statistics.answeringUsers.sevenDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.sevenDays.STUDENT || 0}}</li>
-                                        <li>Last 30 days: Teachers: {{statistics.answeringUsers.thirtyDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.thirtyDays.STUDENT || 0}}</li>
-                                        <li>Last 90 days: Teachers: {{statistics.answeringUsers.ninetyDays.TEACHER || 0}}, Students: {{statistics.answeringUsers.ninetyDays.STUDENT || 0}}</li>                    
+                                        <li>Last 07 days: Teachers: {{statistics.answeringUsersOverPrevious.sevenDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.sevenDays.STUDENT || 0}}</li>
+                                        <li>Last 30 days: Teachers: {{statistics.answeringUsersOverPrevious.thirtyDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.thirtyDays.STUDENT || 0}}</li>
+                                        <li>Last 90 days: Teachers: {{statistics.answeringUsersOverPrevious.ninetyDays.TEACHER || 0}}, Students: {{statistics.answeringUsersOverPrevious.ninetyDays.STUDENT || 0}}</li>
                                     </ul></li>
                                 </ul>
                             </li> 
