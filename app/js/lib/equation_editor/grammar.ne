@@ -257,14 +257,14 @@ const processIdentifier = (d) => {
 
     // Perhaps we have a differential
     let patterns = ['[a-zA-Z]', ...greekLetterKeys].join('|')
-    const diffMatcher = new RegExp(`^((?:d|D)elta)(${patterns})$`)
+    const diffMatcher = new RegExp(`^((?:d|D)(?:elta)?)(${patterns})$`)
     const diffMaybe = parts[0].match(diffMatcher)
     if (diffMaybe) {
         // We do have a differential
         return {
             type: 'Differential',
             properties: { letter: greekLetterMap[diffMaybe[1]] || diffMaybe[1] },
-            children: { argument: processIdentifier([{ text: d[0].text.substring(5) }]) }
+            children: { argument: processIdentifier([{ text: d[0].text.substring(diffMaybe[1].length) }]) }
         }
     } else {
         // We don't have a differential, business as usual
