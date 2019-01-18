@@ -177,13 +177,14 @@ const processExponent = (d) => {
     if (['Fn', 'Log', 'TrigFn'].includes(f.type)) {
         switch (f.properties.name) {
             case 'ln':
-                return { type: 'Brackets', properties: { type: 'round' }, children: { argument: f, superscript: e } }
             case 'log':
                 return { type: 'Brackets', properties: { type: 'round' }, children: { argument: f, superscript: e } }
             default:
                 r.children['superscript'] = e
                 return f
         }
+    } else if (f.type === 'Differential') {
+        return { type: 'Brackets', properties: { type: 'round' }, children: { argument: f, superscript: e } }
     } else {
         r.children['superscript'] = e
         return f
