@@ -15,11 +15,11 @@
  */
 define(["../services/SearchResults.js"], function(SearchResults) {
     let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
-    let actualResponse = [];
+    let shortcutResponse = [];
 
     let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
-            actualResponse = SearchResults.shortcuts(query);
+            shortcutResponse = SearchResults.shortcuts(query);
             let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
             $location.search({query: query, types: typesToInclude.join(",")});
             return response;
@@ -91,11 +91,11 @@ define(["../services/SearchResults.js"], function(SearchResults) {
 
         $scope.$watch('response.results', function(results) {
             if ($scope.response && results) {
-                if (!(actualResponse === undefined || actualResponse.length == 0)) {
-                    let shortcutResults = actualResponse;
+                if (!(shortcutResponse === undefined || shortcutResponse.length == 0)) {
+                    let shortcutResults = shortcutResponse;
                     let allResults = shortcutResults.concat(results);
                     results = allResults;
-                    actualResponse = [];
+                    shortcutResponse = [];
                 }
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
             }
