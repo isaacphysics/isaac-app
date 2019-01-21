@@ -22,7 +22,7 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             actualResponse = SearchResults.shortcuts(query);
             var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
             $location.search({query: query, types: typesToInclude.join(",")});
-            return response;        
+            return response;
         }
     }
 
@@ -92,13 +92,13 @@ define(["../services/SearchResults.js"], function(SearchResults) {
         $scope.$watch('response.results', function(results) {
             if ($scope.response && results) {
                 if (!(actualResponse === undefined || actualResponse.length == 0)) {
-                    var new_res = actualResponse; 
+                    var new_res = actualResponse;
                     var con_arr = new_res.concat(results);
                     results = con_arr;
                     actualResponse = [];
                 }
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
-            }   
+            }
         });
         
         // this converts a summary object type to a known state.

@@ -86,11 +86,11 @@ define([], function() {
 		let response = [];
 		if (group.test(term)) {
 			response.push({
-				id: "teacher_connections", 
-				title: "Teacher Connections", 
-				terms: ["connect", "teacher connection"], 
-				summary: "Click here to connect to a teacher using the code you entered.", 
-				url: ("/account?authToken=" + term), 
+				id: "teacher_connections",
+				title: "Teacher Connections",
+				terms: ["connect", "teacher connection"],
+				summary: "Click here to connect to a teacher using the code you entered.",
+				url: ("/account?authToken=" + term),
 				type: "shortcut"
 			});
 		}
