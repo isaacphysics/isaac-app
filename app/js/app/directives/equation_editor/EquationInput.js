@@ -21,7 +21,7 @@ define(["p5",
     }
     void parseExpression;
 
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, _api) {
+    return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
         return {
             scope: {
@@ -38,7 +38,7 @@ define(["p5",
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
-                        scope.symbolList = scope.questionDoc.availableSymbols.map(function (str) {return str.trim().replace(';', ',')}).join(", ");
+                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).join(", ");
                     } catch (err) {
                         // Do not let invalid availableSymbols prevent anyone from answering the question!
                         scope.symbolList = null;
@@ -128,7 +128,7 @@ define(["p5",
                         } else {
                             // Successfully parsed something:
                             if (pycode === '') {
-                                element.find(".eqn-preview").html("Click here to enter a formula!");
+                                element.find(".eqn-preview > .inner-eqn-preview").html("Click here to enter a formula!");
                                 scope.symbols = [];
                                 scope.state.result.tex = "";
                                 scope.state.result.python = "";
@@ -164,7 +164,7 @@ define(["p5",
 
                     console.log("New state:", s);
 
-                    let rp = element.find(".eqn-preview");
+                    let rp = element.find(".eqn-preview > .inner-eqn-preview");
                     rp.empty();
 
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
@@ -199,10 +199,10 @@ define(["p5",
                         // We have an existing answer to the question.
                         // If we have the LaTeX form, render it; else answer was typed and we failed to parse it:
                         if (s.result.tex) {
-                            katex.render(s.result.tex, element.find(".eqn-preview")[0]);
+                            katex.render(s.result.tex, element.find(".eqn-preview > .inner-eqn-preview")[0]);
                         } else {
                             // This branch is only triggered when we can't parse a typed answer.
-                            element.find(".eqn-preview").html("Click to replace your typed answer");
+                            element.find(".eqn-preview > .inner-eqn-preview").html("Click to replace your typed answer");
                         }
                         // If we have the python form, add it to the text entry box (unless we're currently typing in the box; Safari bug!):
                         if (s.result.python && !(element.find(".eqn-text-input")[0] === document.activeElement)) {
@@ -210,10 +210,10 @@ define(["p5",
                         }
                     } else if (scope.questionDoc) {
                         // This is a question part not yet attempted:
-                        element.find(".eqn-preview").html("Click to enter your answer");
+                        element.find(".eqn-preview > .inner-eqn-preview").html("Click to enter your answer");
                     } else {
                         // This is probably the /equality page:
-                        element.find(".eqn-preview").html("Click to enter a formula!");
+                        element.find(".eqn-preview > .inner-eqn-preview").html("Click to enter a formula!");
                     }
                 })
             }

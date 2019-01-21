@@ -3,7 +3,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
     MySketch = MySketch.MySketch;
 
-    return ["$timeout", "$rootScope", "api", "$stateParams", function ($timeout, $rootScope, api, $stateParams) {
+    return ["$timeout", "$rootScope", "api", "$stateParams", "equationEditor", function ($timeout, $rootScope, api, $stateParams, equationEditor) {
 
         return {
             scope: true,
@@ -112,7 +112,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                     console.log("New state:", s);
 
-                    let rp = $(".result-preview>span");
+                    let rp = $(".result-preview > span");
 
                     rp.empty();
 
@@ -128,11 +128,15 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         katex.render(scope.state.result["tex"], rp[0]);
                     }
 
-                    let w = scope.state.result ? rp.outerWidth() : 0;
+                    let w = 0;
+                    if (scope.state.result) {
+                        let spans = rp.find(".katex > span.katex-html > span");
+                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c);
+                    }
                     let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
                     resultPreview.animate({
-                        width: w
+                        width: w + $(".equation-editor > .hex-button.submit").width()
                     }, 200);
 
                     scope.$emit("historyCheckpoint");
@@ -652,30 +656,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         allowVars: true
                     };
 
-                    let theseSymbols = symbols.slice(0).map(s => s.trim());
-                    let i = 0;
-                    while (i < theseSymbols.length) {
-                        if (theseSymbols[i] === '_trigs') {
-                            theseSymbols.splice(i, 1, 'cos()', 'sin()', 'tan()');
-                        } else if (theseSymbols[i] === '_1/trigs') {
-                            theseSymbols.splice(i, 1, 'cosec()', 'sec()', 'cot()');
-                        } else if (theseSymbols[i] === '_inv_trigs') {
-                            theseSymbols.splice(i, 1, 'arccos()', 'arcsin()', 'arctan()');
-                        } else if (theseSymbols[i] === '_inv_1/trigs') {
-                            theseSymbols.splice(i, 1, 'arccosec()', 'arcsec()', 'arccot()');
-                        } else if (theseSymbols[i] === '_hyp_trigs') {
-                            theseSymbols.splice(i, 1, 'cosh()', 'sinh()', 'tanh()', 'cosech()', 'sech()', 'coth()');
-                        } else if (theseSymbols[i] === '_inv_hyp_trigs') {
-                            theseSymbols.splice(i, 1, 'arccosh()', 'arcsinh()', 'arctanh()', 'arccosech()', 'arcsech()', 'arccoth()');
-                        } else if (theseSymbols[i] === '_logs') {
-                            theseSymbols.splice(i, 1, 'log()', 'ln()');
-                        } else if (theseSymbols[i] === '_no_alphabet') {
-                            theseSymbols.splice(i, 1);
-                            r.allowVars = false;
-                        }
-                        i += 1;
-                    }
-                    theseSymbols = _.uniq(theseSymbols);
+                    let theseSymbols = equationEditor.parsePseudoSymbols(symbols, r);
 
                     while (theseSymbols.length > 0) {
                         let s = theseSymbols.shift().trim();

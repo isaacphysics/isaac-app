@@ -75,6 +75,8 @@
 
 	.service('auth', auth.service)
 
+	.service('equationEditor', require("./services/EquationEditor"))
+
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
 	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
