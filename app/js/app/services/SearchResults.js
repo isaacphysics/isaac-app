@@ -59,6 +59,12 @@ define([], function() {
 			url: "/login",
 			type: "shortcut"
 		}, {
+			id: "register",
+			title: "Create an Account",
+			terms: ["register"],
+			url: "/register",
+			type: "shortcut"
+		}, {
 			id: "chemistry",
 			title: "Isaac Chemistry",
 			terms: ["chemistry", "isaac chemistry", "chem"],
@@ -73,10 +79,23 @@ define([], function() {
 		}, {
 			id: "teacher_support",
 			title: "Teacher Support",
-			terms: ["teacher", "teacher support", "teaching"],
+			terms: ["teacher", "teacher support", "teaching", "teachers"],
 			url: "/support/teacher/assignments",
 			type: "shortcut"
+		}, {
+			id: "answers",
+			title: "Where can I find answers?",
+			terms: ["answers", "solutions", "worked answers", "working"],
+			url: "/answers",
+			type: "shortcut"
+		}, {
+			id: "my_account",
+			title: "My Account",
+			terms: ["my account", "account", "settings", "account settings", "password"],
+			url: "/account",
+			type: "shortcut"
 		}
+
 	];
 
 	var group = /^[0-9A-Z]{6}$/;

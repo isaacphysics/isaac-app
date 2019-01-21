@@ -303,7 +303,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             // People try this URL for answers; point them to the FAQ:
             url: "/answers",
             onEnter: ["$state", "$rootScope", function($state, $rootScope) {
-                $state.go('faq', {'#': 'answers'}, {location: "replace"});
+                $state.go('support', {'type': 'student', 'idSuffix': 'questions', '#': 'answers'}, {location: "replace"});
                 $rootScope.setLoading(false);
             }],
         });
