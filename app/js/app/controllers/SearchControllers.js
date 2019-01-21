@@ -15,23 +15,16 @@
  */
 define(["../services/SearchResults.js"], function(SearchResults) {
     let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
+    let actualResponse = [];
 
-    let doSearch = function(api, query, typesToInclude, $location) {
+    let doSearch = function(api, query, typesToInclude, $location, $scope) {
         if (query) {
-            let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-            let lquery = query.toLowerCase();
-            $location.replace();
+            actualResponse = SearchResults.shortcuts(query);
+            var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
             $location.search({query: query, types: typesToInclude.join(",")});
-            if (SearchResults.getSearchTerms(lquery)){
-                let actualResponse = SearchResults.getSearchTerms(lquery);
-                console.log(lquery);
-                // response.filteredResults.push(actualResponse);
-                // response.results.push(actualResponse);
-            }
-            return response;  
-                    
+            return response;        
         }
-    };
+    }
 
     let changeTypeState = function(modelName, typeName, _api, _query, typesToInclude, _$location) {
         let index = typesToInclude.indexOf(typeName);
@@ -80,29 +73,32 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             }
 
             timer = $timeout(function() {
-                $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-            }, 500);
+                $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location, $scope);
+            }, 800);
         });
 
         $scope.$watch('models.includeConcepts', function(newVal, oldVal) {
             if (newVal === oldVal) return;
-             changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
-             $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-             console.log($scope.response);
+            changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+            $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location, $scope);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
             if (newVal === oldVal) return;
             changeTypeState($scope.models.includeQuestions, questionPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
-            $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-            console.log($scope.response);
+            $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location, $scope);
         });
 
         $scope.$watch('response.results', function(results) {
-            if ($scope.response) {
+            if ($scope.response && results) {
+                if (!(actualResponse === undefined || actualResponse.length == 0)) {
+                    var new_res = actualResponse; 
+                    var con_arr = new_res.concat(results);
+                    results = con_arr;
+                    actualResponse = [];
+                }
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
-                console.log($scope.response);
-            }
+            }   
         });
         
         // this converts a summary object type to a known state.
@@ -137,7 +133,7 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             if(!$state.includes('searchResults')) {
                 $state.go('searchResults', {query: $scope.models.query, types: $scope.models.typesToInclude});
             }
-        };
+        }
 
         $scope.hideMobileSearchForm = function() {
             // Hide mobile search form if shown
@@ -145,11 +141,11 @@ define(["../services/SearchResults.js"], function(SearchResults) {
             if ($("#mobile-search-form").hasClass('ru-drop-show')) {
                 $("#mobile-search-form").ruDropDownToggle();
             }
-        };
+        }
     }];
 
     return {
         PageController: PageController,
         GlobalSearchController: GlobalSearchController,
     };
-});
+})
