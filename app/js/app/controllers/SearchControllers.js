@@ -17,7 +17,7 @@ define(["../services/SearchResults.js"], function(SearchResults) {
     let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
     let actualResponse = [];
 
-    let doSearch = function(api, query, typesToInclude, $location, $scope) {
+    let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
             actualResponse = SearchResults.shortcuts(query);
             var response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
