@@ -92,8 +92,7 @@ define(["../services/SearchResults.js"], function(SearchResults) {
         $scope.$watch('response.results', function(results) {
             if ($scope.response && results) {
                 if (!(shortcutResponse === undefined || shortcutResponse.length == 0)) {
-                    let shortcutResults = shortcutResponse;
-                    let allResults = shortcutResults.concat(results);
+                    let allResults = shortcutResponse.concat(results);
                     results = allResults;
                     shortcutResponse = [];
                 }

@@ -20,85 +20,91 @@ define([], function() {
 			id: "assignments",
 			title: "My Assignments",
 			terms: ["my assignments", "assignments", "homework", "assignemts"],
+			summary: "View your assigned work.",
 			url: "/assignments",
 			type: "shortcut"
 		}, {
 			id: "join_group",
-			title: "Joining Groups",
+			title: "Teacher Connections",
 			terms: ["join group", "join class", "teacher connections", "class code", "join a class", "classes", "share token", "groups", "group"],
+			summary: "Join groups and manage your teacher connections.",
 			url: "/account#teacherconnections",
 			type: "shortcut"
 		}, {
 			id: "logout",
 			title: "Logout",
 			terms: ["logout"],
+			summary: "You can logout using the link in the menu, or by clicking here.",
 			url: "/logout",
 			type: "shortcut"
 		}, {
 			id: "spc",
 			title: "Senior Physics Challenge",
 			terms: ["senior physics challenge", "spc", "masterclass", "bootcamp"],
+			summary: "Learn more about the Senior Physics Challenge.",
 			url: "/spc",
 			type: "shortcut"
 		}, {
 			id: "books",
 			title: "Physics Skills Book",
 			terms: ["books", "book", "pre uni physics", "essential pre uni physics", "alevel", "a-level", "a level"],
+			summary: "View the Isaac Essential Pre University Physics book.",
 			url: "/books/physics_skills_14",
 			type: "shortcut"
 		}, {
 			id: "help",
 			title: "Student Support",
 			terms: ["help", "support"],
+			summary: "View student FAQs for using Isaac Physics.",
 			url: "/support/student/general",
 			type: "shortcut"
 		}, {
 			id: "login",
 			title: "Login",
 			terms: ["login", "sign up", "register"],
+			summary: "You can login using the link in the menu, or by clicking here.",
 			url: "/login",
 			type: "shortcut"
 		}, {
 			id: "register",
 			title: "Create an Account",
 			terms: ["register"],
+			summary: "Click here to register for an Isaac Physics account.",
 			url: "/register",
 			type: "shortcut"
 		}, {
 			id: "chemistry",
 			title: "Isaac Chemistry",
 			terms: ["chemistry", "isaac chemistry", "chem"],
+			summary: "View our Chemistry material.",
 			url: "/chemistry",
-			type: "shortcut"
-		}, {
-			id: "teacher_connections",
-			title: "Teacher Connections",
-			terms: ["teachers", "my teacher", "connections", "teacher"],
-			url: "/account#teacherconnections",
 			type: "shortcut"
 		}, {
 			id: "teacher_support",
 			title: "Teacher Support",
-			terms: ["teacher", "teacher support", "teaching", "teachers"],
+			terms: ["teacher", "teacher support", "teaching", "teachers", "help", "support"],
+			summary: "View teacher FAQs for using Isaac Physics.",
 			url: "/support/teacher/assignments",
 			type: "shortcut"
 		}, {
 			id: "answers",
 			title: "Where can I find answers?",
 			terms: ["answers", "solutions", "worked answers", "working"],
+			summary: "Information about obtaining Isaac Physics answers",
 			url: "/answers",
 			type: "shortcut"
 		}, {
 			id: "my_account",
 			title: "My Account",
 			terms: ["my account", "account", "settings", "account settings", "password"],
+			summary: "Click here to view and/or edit your account details.",
 			url: "/account",
 			type: "shortcut"
 		}
 
 	];
 
-	var group = /^[0-9A-Z]{6}$/;
+	var group = /^[ABCDEFGHJKLMNPQRTUVWXYZ2346789]{6}$/;
 
 	this.shortcuts = function(term) {
 		let lterm = term.toLowerCase();
