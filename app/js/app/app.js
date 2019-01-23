@@ -148,7 +148,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.7.5/api");
+            apiProvider.urlPrefix("/api/v2.7.6/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -800,8 +800,8 @@ define([
                 }
             })
 
-            // Check again in five minutes
-            $timeout(checkForNotifications, 300000);
+            // Check again in half an hour. This style of notification isn't really used much now.
+            $timeout(checkForNotifications, 30*60*1000);
         }
 
         $timeout(checkForNotifications, 5000);

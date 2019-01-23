@@ -148,7 +148,7 @@
         <a ui-sref="book_phys_book_gcse"><img src="assets/books/phys_book_gcse.jpg"><span>GCSE Physics</span></a>
       </div> 
       <div class="small-offset-1 small-4 columns">
-        <a ui-sref="book_physics_skills_14"><img src="assets/books/physics_skills_14.jpg"><span>Pre-University Physics</span></a>
+        <a ng-click="modals.preUniversityPhysics.show();" href="javascript:void(0)"><img src="assets/books/physics_skills_14.jpg"><span>Pre-University Physics</span></a>
       </div> 
       <div class="small-offset-1 small-4 columns end">
         <a ui-sref="book_chemistry_16"><img src="assets/books/chemistry_16.jpg"><span>Pre-University Physical Chemistry</span></a>
@@ -161,6 +161,24 @@
       <div class="small-offset-1 small-4 columns">
         <a ui-sref="book_pre_uni_maths"><img src="assets/books/pre_uni_maths.jpg"><span>Mathematics for Sciences</span></a>
       </div> 
+    </div>
+  </div>
+</div>
+
+<!-- Pre University Physics Modal, so only needed in one place: -->
+<div isaac-modal="preUniversityPhysics">
+  <div class="reveal-modal-head">
+    <h2>Mastering Essential Pre-University Physics</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading set-boards-books-preview">
+    <div class="row text-center">
+      <div class="small-offset-1 large-6 medium-6 small-4 columns">
+        <a ui-sref="book_physics_skills_14"><img src="assets/books/physics_skills_14.jpg"><span>2nd Edition (2014-2018)</span></a>
+      </div>
+      <div class="small-offset-1 large-6 medium-6 small-4 columns">
+        <a ui-sref="book_physics_skills_19"><img src="assets/books/physics_skills_19.jpg"><span>3rd Edition (2019-)</span></a>
+      </div>
     </div>
   </div>
 </div>

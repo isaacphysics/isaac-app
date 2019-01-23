@@ -1,18 +1,22 @@
 <div>
-    <a href="javascript:void(0)" ng-click="edit()" class="eqn-preview" editor-mode="editorMode" ng-style="{color: state.result.tex ? 'black' : '#ddd'}" style="border-radius: 3px;
-  box-shadow: none;
-  font-size: 2rem;
-  padding: 0.5rem;
-  margin: 20px 0px;
-  border: 1px solid #999;
-  width:100%;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  cursor: pointer;
-  background: white;">
-        &nbsp;
-    </a>
+    <div style="position: relative">
+        <a href="javascript:void(0)" ng-click="edit()" class="eqn-preview" editor-mode="editorMode" ng-style="{color: state.result.tex ? 'black' : '#ddd'}" style="border-radius: 3px;
+            box-shadow: none;
+            font-size: 2rem;
+            padding: 0.5rem;
+            margin: 20px 0px;
+            border: 1px solid #999;
+            width:100%;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            cursor: pointer;
+            background: white;"
+            >
+            <div class="edit-eqn-icon" ng-show="state.result" style="position: absolute; left: 10px; color: #999; bottom: 0; top: 0; display: flex; align-items: center;">&#9998;</div>
+            <div class="inner-eqn-preview">&nbsp;</div>
+        </a>
+    </div>
 </div>
 <div ng-show="editorMode == 'maths' && (isEquality || $root.userPreferences.BETA_FEATURE.EQN_TEXT_ENTRY)">
     <div class="equation-editor-text-entry" style="height: 0; overflow: hidden"></div>

@@ -51,6 +51,9 @@ define([], function() {
 				"e": ["\\textrm{e}",0],
 				"units": ["\\rm{#1}",1],
 				"standardstate": ["\\mathbin{\u29B5}",0],
+				"and": ["{#1} \\wedge {#2}", 2],
+				"or": ["{#1} \\lor {#2}", 2],
+				"not": ["\\lnot{#1}", 1]
 			},
 			extensions: ["mhchem.js"],
 		},
@@ -75,6 +78,13 @@ define([], function() {
 
 	// Signal that we're done configuring MathJax.
 	MathJax.Hub.Configured();
+
+	// FIXME: We could easily use the user's preferences to change the definitions:
+	if (false) {
+    	MathJax.Hub.config.TeX.Macros.and = ["{#1} \\cdot {#2}", 2];
+    	MathJax.Hub.config.TeX.Macros.or = ["{#1} + {#2}", 2];
+    	MathJax.Hub.config.TeX.Macros.not = ["\\overline{#1}", 1];
+    }
 
 });
 
