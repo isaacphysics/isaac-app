@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define([], function() {
+define(["../services/SearchResults.js"], function(SearchResults) {
     let defaultSearchOptions = {query: "", typesToInclude: [], includeConcepts: true, includeQuestions: true};
+    let shortcutResponse = [];
 
     let doSearch = function(api, query, typesToInclude, $location) {
         if (query) {
+            shortcutResponse = SearchResults.shortcuts(query);
             let response = api.searchEndpoint.search({searchTerms: query, types: typesToInclude});
-            $location.replace();
-            $location.search({query: query, types: typesToInclude.join(",")})
-            return response;            
+            $location.search({query: query, types: typesToInclude.join(",")});
+            return response;
         }
     }
 
@@ -73,13 +74,13 @@ define([], function() {
 
             timer = $timeout(function() {
                 $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
-            }, 500);
+            }, 800);
         });
 
         $scope.$watch('models.includeConcepts', function(newVal, oldVal) {
             if (newVal === oldVal) return;
-             changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
-             $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
+            changeTypeState($scope.models.includeConcepts, conceptPage, api, $scope.models.query, $scope.models.typesToInclude, $location);
+            $scope.response = doSearch(api, $scope.models.query, $scope.models.typesToInclude, $location);
         });
 
         $scope.$watch('models.includeQuestions', function(newVal, oldVal) {
@@ -89,7 +90,12 @@ define([], function() {
         });
 
         $scope.$watch('response.results', function(results) {
-            if ($scope.response) {
+            if ($scope.response && results) {
+                if (!(shortcutResponse === undefined || shortcutResponse.length == 0)) {
+                    let allResults = shortcutResponse.concat(results);
+                    results = allResults;
+                    shortcutResponse = [];
+                }
                 $scope.response.filteredResults = results ? results.filter(filterResult) : [];
             }
         });
