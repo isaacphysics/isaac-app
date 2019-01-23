@@ -20,7 +20,7 @@ define([], function() {
 			id: "assignments",
 			title: "My Assignments",
 			terms: ["my assignments", "assignments", "homework", "assignemts"],
-			summary: "View your assigned work.",
+			summary: "View your assignments.",
 			url: "/assignments",
 			type: "shortcut"
 		}, {
@@ -45,13 +45,6 @@ define([], function() {
 			url: "/spc",
 			type: "shortcut"
 		}, {
-			id: "books",
-			title: "Physics Skills Book",
-			terms: ["books", "book", "pre uni physics", "essential pre uni physics", "alevel", "a-level", "a level"],
-			summary: "View the Isaac Essential Pre University Physics book.",
-			url: "/books/physics_skills_14",
-			type: "shortcut"
-		}, {
 			id: "help",
 			title: "Student Support",
 			terms: ["help", "support"],
@@ -69,7 +62,7 @@ define([], function() {
 			id: "register",
 			title: "Create an Account",
 			terms: ["register"],
-			summary: "Click here to register for an Isaac Physics account.",
+			summary: "Click here to register for an Isaac account.",
 			url: "/register",
 			type: "shortcut"
 		}, {
@@ -90,14 +83,14 @@ define([], function() {
 			id: "answers",
 			title: "Where can I find answers?",
 			terms: ["answers", "solutions", "worked answers", "working"],
-			summary: "Information about obtaining Isaac Physics answers",
+			summary: "We don't provide answers to Isaac questions. Learn more here.",
 			url: "/answers",
 			type: "shortcut"
 		}, {
 			id: "my_account",
 			title: "My Account",
 			terms: ["my account", "account", "settings", "account settings", "password"],
-			summary: "Click here to view and/or edit your account details.",
+			summary: "Click here to view and edit your account details.",
 			url: "/account",
 			type: "shortcut"
 		}
