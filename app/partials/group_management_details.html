@@ -22,9 +22,10 @@
             </div>
             <div class="row">
                 <div class="columns small-12 text-right">
-                    <span ng-if="selectedGroup.lastUpdated">*Group name is shared with members</span>
-                    <span ng-if="!selectedGroup">*Group name will be shared with members</span>
-                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && group.selectedGroupName.$dirty">*Group name changes will be shared with members</span>
+                    <span ng-if="!selectedGroup">New group names will be shared with students</span>
+                    <span ng-if="selectedGroup.lastUpdated">[Group name is shared with students]</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && !group.selectedGroupName.$dirty">[Students will see this as 'Group {{selectedGroup.id}}']</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && group.selectedGroupName.$dirty">Group name changes will be shared with students</span>
                 </div>
             </div>
         </div>
@@ -53,7 +54,7 @@
                                       aria-haspopup="true"><span class="icon-email-status failed"></span></span>
                                 <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span>
                                 </span>
-                                <span data-ot="This user has set their status to inactive for this group. This means they will no longer receive assignment emails." class="has-tip" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span>
+                                <span data-ot="This user has set their status to inactive for this group. This means they will no longer see new assignments." class="has-tip" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span>
                             </td>
                             <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span><span data-ot="This user has set their status to inactive for this group. This means they will no longer receive assignment emails." class="" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>

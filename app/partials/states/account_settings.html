@@ -356,7 +356,7 @@
                         <hr>
                     </div>
                     <div class="large-10 medium-16 columns">
-                        <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their Isaac data with you. These students are also able to view your name and email address in their teacher connections page."></span></h3>
+                        <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their Isaac data with you. These students are also able to view your name and email address on their Teacher Connections page."></span></h3>
                         <p>You can invite students to share their Isaac data with you through the <a ui-sref="groups">group management page</a>.</p>
                     </div>
                     <div class="large-6 medium-16 columns">
@@ -380,8 +380,8 @@
                         <hr>
                     </div>
                     <div class="large-16 medium-16 columns">
-                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of. Groups in Isaac let teachers set assignments to multiple students in one go."></span></h3>
-                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. </p>
+                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of. Groups on Isaac let teachers set assignments to multiple students in one go."></span></h3>
+                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. If you want to permanently leave a group, ask your teacher to remove you.</p>
                         <div ng-show="myGroupMembership.length > 0" class="my-groups-table-section">
                             <table class="">
                                 <tr>
@@ -394,7 +394,7 @@
                             <div class="my-groups-table-row-container">
                                 <table>
                                     <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
-                                        <td>{{entry.group.groupName == null ? "Group #" + entry.group.id : entry.group.groupName}}</td>
+                                        <td>{{entry.group.groupName == null ? ("Group " + entry.group.id) : entry.group.groupName}}</td>
                                         <td>
                                             <ul>
                                                 <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
