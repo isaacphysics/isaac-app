@@ -145,6 +145,11 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         let Group = api.groupManagementEndpoint;
         let groupToSave = null;
 
+        if (!$scope.selectedGroup.groupName || !$scope.selectedGroup.groupName.length >= 50) {
+            $scope.showToast($scope.toastTypes.Failure, "Group Save Failed", "Group name is missing or too long!");
+            return;
+        }
+
         if($scope.selectedGroup && isUpdate) {
             groupToSave = new Group($scope.selectedGroup);
         } else {
@@ -162,7 +167,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
                 $scope.showToast($scope.toastTypes.Success, "Group Saved", groupToSave.groupName + " group has been saved successfully.");
             }
         }).catch(function(e) {
-                $scope.showToast($scope.toastTypes.Failure, "Group Save failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
+                $scope.showToast($scope.toastTypes.Failure, "Group Save Failed", e.data.errorMessage != undefined ? e.data.errorMessage : "");
         });
     }
 

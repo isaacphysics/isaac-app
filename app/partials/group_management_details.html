@@ -13,8 +13,8 @@
         <div class="input-group">
             <div class="row">
                 <div class="columns small-12">
-                    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
-                    <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
+                    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" maxlength="50"/>
+                    <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" maxlength="50" />
                 </div>
                 <div class="columns small-4">
                    <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
