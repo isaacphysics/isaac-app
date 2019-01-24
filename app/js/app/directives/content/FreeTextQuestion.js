@@ -44,17 +44,10 @@ define(["../../honest/responsive_video", "/partials/content/FreeTextQuestion.htm
                     scope.charLimitExceeded = scope.currentNumebrOfChars > scope.charLimit;
 
                     scope.validValue = !scope.wordLimitExceeded && !scope.charLimitExceeded;
+                    scope.question.passedFrontEndValidation = scope.validValue;
 
-                    // update submission button
-                    let primaryAction = scope.__proto__.__proto__.primaryAction;
-                    if (primaryAction) {
-                        primaryAction.disabled = !scope.validValue;
-                    }
-
-                    if (scope.validValue) {
-                        scope.question.selectedChoice = scope.question.selectedChoice || { type: "stringChoice" };
-                        scope.question.selectedChoice.value = value;
-                    }
+                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "stringChoice" };
+                    scope.question.selectedChoice.value = value;
                 });
 
                 if (scope.question.selectedChoice) {
