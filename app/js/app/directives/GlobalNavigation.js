@@ -123,7 +123,9 @@ define(['/partials/global_navigation.html'], function(templateUrl) {
                 scope.$on("$stateChangeStart", scope.menuClose);
 
                 scope.$watch('isVisible', function(){
-                    applyDisabledToolTips();                    
+                    if (scope.isVisible) {
+                        applyDisabledToolTips();  
+                    }                
                 });
 
                 // scope.answerCountTicker = 0;
