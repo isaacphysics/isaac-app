@@ -8,19 +8,33 @@
             <span ng-if="selectedGroup && selectedGroup.ownerId != user._id"> or &nbsp;<a href="javascript:void(0)" ng-click="modals.groupManagers.show()">View Group Managers</a></span>
         </span>
     </h6>
+
     <form name="groupForm">
         <div class="input-group">
-            <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" />
-            <input name="newGroupName" ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" />
-            <span class="input-notification" ng-show="(selectedGroup && groupForm.selectedGroupName.$dirty) || (!selectedGroup && newGroup.groupName && groupForm.newGroupName.$dirty)">*Group name {{selectedGroup ? "changes" : ""}} will be visible to members</span>
+            <div class="row">
+                <div class="columns small-12">
+                    <input ng-show="!selectedGroup" type="text" ng-model="newGroup.groupName" placeholder="Enter the name of your group here" maxlength="50"/>
+                    <input name="selectedGroupName" ng-show="selectedGroup" ng-disabled="selectedGroup.ownerId != user._id" type="text" ng-model="selectedGroup.groupName" maxlength="50" />
+                </div>
+                <div class="columns small-4">
+                   <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="columns small-12 text-right">
+                    <span ng-if="!selectedGroup">New group names will be shared with students</span>
+                    <span ng-if="selectedGroup.lastUpdated">[Group name is shared with students]</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && !groupForm.selectedGroupName.$dirty">[Students will see this as 'Group {{selectedGroup.id}}']</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && groupForm.selectedGroupName.$dirty">Group name changes will be shared with students</span>
+                </div>
+            </div>
         </div>
-        <a ng-if="(selectedGroup && selectedGroup.ownerId == user._id) || selectedGroup == null" class="ru-button-big expand" href="javascript:void(0)" ng-click="saveGroup(selectedGroup != null)">{{selectedGroup == null ? "Create" : "Update"}}</a>
-        <div ng-if="emailInviteFeatureAvailable">
-            <h6>Invite students<span class="show-for-medium-up"> to group</span> via email</h6>
-            <p>Email addresses MUST be seperated by a comma.</p>
-            <textarea>DaveyBoy@hotmail.com,  Jane123@googlemail.com, JReece@gmail.com</textarea>
-        </div>
+	    <div ng-if="selectedGroup && selectedGroup.ownerId == user._id">
+	        <a ng-if="!archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(true)">Archive this group</a>
+	        <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   
+	    </div>
     </form>
+
     <dl class="accordion group-accordion" ng-show="selectedGroup">
         <dd class="active">
             <a class="group-accordion-header" ng-class="{'remove-border-bottom': selectedGroupMembers != null && selectedGroupMembers.length != 0}">
@@ -38,9 +52,11 @@
                                       data-ot="This user's account email address is invalid or not accepting email.<br />They will not be able to reset their password or receive update emails. Ask them to login and update it, or contact us to help resolve the issue."
                                       class="has-tip"
                                       aria-haspopup="true"><span class="icon-email-status failed"></span></span>
-                                <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span></span>
+                                <span ng-if="member.emailVerificationStatus =='NOT_VERIFIED'" data-ot="This user has not yet verified their email." class="has-tip" aria-haspopup="true"><span class="icon-email-status unverified"></span>
+                                </span>
+                                <span data-ot="This user has set their status to inactive for this group. This means they will no longer see new assignments." class="has-tip" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span>
                             </td>
-                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span></td>
+                            <td ng-if="!member.authorisedFullAccess"><span class="group-table-person"></span><span class="revoked">{{member.givenName}} {{member.familyName}}</span> (not sharing)</span><span data-ot="This user has set their status to inactive for this group. This means they will no longer receive assignment emails." class="" aria-haspopup="true" ng-if="member.groupMembershipInformation.status == 'INACTIVE'"> (inactive in group)</span></td>
                             <td ng-if="false" class="group-table-edit"><a class="edit-icon show-for-small-only" href="javascript:void(0)"></a></td>
                             <td>
                                 <a ng-if="member.authorisedFullAccess" href="javascript:void(0)" ng-click="resetMemberPassword(member)" class="right" ng-class="{disabled: !canSendPasswordResetRequest(member)}"
@@ -84,12 +100,4 @@
             </div>
         </dd>
     </dl>
-    
-    <div class="row" ng-if="selectedGroup && selectedGroup.ownerId == user._id">
-        <div class="large-16 columns">
-            <a ng-if="!archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(true)">Archive this group</a>
-            <a ng-if="archivedView" class="ru-button-big secondary expand" ng-click="changeGroupArchiveState(false)">Unarchive this group</a>   
-        </div>
-    </div>
-</div>
-<!-- End active group -->
+</div><!-- End active group -->

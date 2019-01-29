@@ -328,16 +328,16 @@
             <!-- TAB 2 -->
             <div class="account-settings-teacher-connections"  ng-class="{content: true, active: 2 == activeTab}">
                 <div ng-if="editingSelf" class="large-16 medium-16 columns">
-                    <h3>Teachers and Assignments Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="Enter a code to grant access to your data; your teacher can provide this. This code is case sensitive and is typically 6 to 8 characters in length."></span></h3>
+                    <h3>Teacher Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="The teachers that you are connected to can view your Isaac assignment progress."></span></h3>
                 </div>
                 <div ng-if="editingSelf" class="large-10 medium-16 columns">
                     <div class="panel connect-form">
-                        <p>Enter the code given to connect with a teacher.</p>
+                        <p>Enter the code given by your teacher to create a teacher connection and join a group.</p>
                         <form class="clearfix" ng-submit="useToken()">
                             <input ng-model="authenticationToken.value" placeholder="Enter your code in here" class="connect-form-input" type="text" />
                             <a class="ru-button" ng-click="useToken()" href="javascript:void(0)">Connect</a>
                         </form>
-                    </div>
+                    </div>             
                 </div>
                 <div ng-if="editingSelf" class="large-6 medium-16 columns">
                     <div class="connect-list">
@@ -345,9 +345,9 @@
 
                         <div class="connect-list-inner">
                             <ul class="teachers-connected">
-                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{teacherUser.givenName ? teacherUser.givenName.charAt(0) + ". " : ""}} {{teacherUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revokeAuthorisation(teacherUser)">Revoke</a></li>
+                                <li ng-repeat="teacherUser in activeAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="This user ({{teacherUser.email}}) has access to your data. To remove this access, click 'Revoke'.">{{convertToTeacherName(teacherUser)}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="revocationConfirmation(teacherUser)">Revoke</a></li>
                             </ul>
-                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections</p>
+                            <p ng-if="activeAuthorisations.length==0" class="teachers-connected">You have no active teacher connections.</p>
                         </div>
                     </div>
                 </div>
@@ -356,7 +356,7 @@
                         <hr>
                     </div>
                     <div class="large-10 medium-16 columns">
-                        <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their Isaac data with you. These students are also able to view your name and email address in their teacher connections page."></span></h3>
+                        <h3>Your Student Connections<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the students who have shared their Isaac data with you. These students are also able to view your name and email address on their Teacher Connections page."></span></h3>
                         <p>You can invite students to share their Isaac data with you through the <a ui-sref="groups">group management page</a>.</p>
                     </div>
                     <div class="large-6 medium-16 columns">
@@ -367,14 +367,58 @@
                                 <ul class="teachers-connected">
                                     <li ng-repeat="studentUser in activeStudentAuthorisations"><span class="person-icon-active"></span><span aria-haspopup="true" class="has-tip" data-ot="You have access to this user's data and they can see your name and email address. To remove this access, click 'Revoke'.">{{studentUser.givenName}} {{studentUser.familyName}}</span><a class="revoke-teacher" href="javascript:void(0)" ng-click="releaseAuthorisation(studentUser)">Remove</a></li>
                                 </ul>
-                                <p ng-if="activeStudentAuthorisations.length==0" class="teachers-connected">You have no active student connections</p>
+                                <p ng-if="activeStudentAuthorisations.length==0" class="teachers-connected">You have no active student connections.</p>
                             </div>
                             <div ng-if="activeStudentAuthorisations.length>0" class="remove-link">
                                 <p><a href="javascript:void(0)" ng-click="releaseAllAuthorisations()">Remove all</a></p>
                             </div>                        
                         </div>
                     </div>                    
+                </div>                
+                <div ng-if="editingSelf">
+                    <div class="large-16 medium-16 columns">
+                        <hr>
+                    </div>
+                    <div class="large-16 medium-16 columns">
+                        <h3>Your Group Memberships<span aria-haspopup="true" class="icon-help has-tip" data-ot="These are the groups you are currently a member of. Groups on Isaac let teachers set assignments to multiple students in one go."></span></h3>
+                        <p>You can manage who is able to set you assignments by temporarily leaving a group. While you are inactive in a group you won't receive any assignments from that group. If you want to permanently leave a group, ask your teacher to remove you.</p>
+                        <div ng-show="myGroupMembership.length > 0" class="my-groups-table-section">
+                            <table class="">
+                                <tr>
+                                    <th>Group Name</th>
+                                    <th>Teachers</th>
+                                    <th>Membership Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </table>
+                            <div class="my-groups-table-row-container">
+                                <table>
+                                    <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
+                                        <td>{{entry.group.groupName == null ? ("Group " + entry.group.id) : entry.group.groupName}}</td>
+                                        <td>
+                                            <ul>
+                                                <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
+                                                <li ng-repeat="manager in entry.group.additionalManagers">
+                                                {{convertToTeacherName(manager)}}</li>
+                                            </ul>
+                                        </td>
+                                        <td ng-class="{ru_red:entry.membershipStatus == 'INACTIVE'}" class="centered-table-column">{{entry.membershipStatus}}</td>
+
+                                        <td class="centered-table-column">
+                                            <a ng-click="changeMyMembershipStatus(entry.group.id, 'INACTIVE')" ng-if="entry.membershipStatus == 'ACTIVE'" href="javascript:void(0)">Leave Group</a>
+                                            <span ng-if="entry.membershipStatus == 'ACTIVE'" aria-haspopup="true" class="icon-help has-tip" data-ot="If you leave a group you will no longer receive notifications of new assignments."></span>
+
+                                            <a ng-click="changeMyMembershipStatus(entry.group.id, 'ACTIVE')" ng-if="entry.membershipStatus == 'INACTIVE'" href="javascript:void(0)">Rejoin Group</a>
+                                            <span ng-if="entry.membershipStatus == 'INACTIVE'" aria-haspopup="true" class="icon-help has-tip" data-ot="If you rejoin a group you will see all the assignments set since the group was created."></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <p ng-hide="myGroupMembership.length > 0" class="teachers-connected text-center">You are not a member of any groups.</p>
+                    </div>
                 </div>
+                
             </div>
 
             <!-- TAB 3 -->
@@ -529,5 +573,20 @@
         <a class="ru-button-big" ng-click="applyToken()">Confirm</a>
         <a class="ru-button-big secondary" ng-click="modals.tokenVerification.hide()">Cancel</a>
     </div>     
+  </div>
+</div>
+
+<div isaac-modal="revocationConfirmation">
+  <div class="reveal-modal-head">
+    <h2>Revoke access to your data</h2>
+    <a class="close-reveal-modal"><span class="hide-for-small-only">Close</span> <span class="icon-close"></span></a>
+  </div>
+  <div class="reveal-modal-body ru-page-heading">
+    <p>The user <strong>{{convertToTeacherName(userToRevoke)}}</strong> will no longer be able to access your data.</p>
+
+    <p>Are you sure you want to revoke access for this user?</p>
+    <a class="ru-button-big" ng-click="revokeAuthorisation(userToRevoke)">Confirm</a>
+    <a class="ru-button-big secondary" ng-click="modals.revocationConfirmation.hide()">Cancel</a>
+
   </div>
 </div>
