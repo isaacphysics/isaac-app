@@ -145,7 +145,8 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         let Group = api.groupManagementEndpoint;
         let groupToSave = null;
 
-        if (!$scope.selectedGroup.groupName || !$scope.selectedGroup.groupName.length >= 50) {
+        let groupName = isUpdate ? $scope.selectedGroup.groupName : $scope.newGroup.groupName;
+        if (!groupName || groupName.length >= 50) {
             $scope.showToast($scope.toastTypes.Failure, "Group Save Failed", "Group name is missing or too long!");
             return;
         }
