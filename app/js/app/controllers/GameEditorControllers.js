@@ -28,6 +28,7 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     let sortField = $stateParams.sort ? $stateParams.sort : null;
 
     let largeNumberOfResults = -1; // assumes -1 limit will return all possible results.
+    let bookIds = ["physics_skills_14", "physics_skills_19", "phys_book_gcse", "pre_uni_maths", "chemistry_16"];
 
     $scope.hasGroups = false;
     $scope.boardCreatedSuccessfully = false;
@@ -40,10 +41,10 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     });
 
     $scope.findBookQuestions = function(book_id) {
-        $scope.questionSearchText = "\"" + book_id + "\"";
+        $scope.questionSearchText = book_id;
         $scope.questionSearchSubject = "";
         $scope.questionSearchLevel = null;
-        sortField = "title"    ;
+        sortField = "title";
     }
 
     $scope.wildCardList = api.gameBoards.wildcards();
@@ -108,18 +109,17 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
     }
 
     // question finder code.
-    let httpCanceller = null;
-    let doQuestionSearch = function(searchQuery, searchLevel, searchTags, fasttrack){
-        // if we have a current promise outstanding cancel it.
-        if (httpCanceller != null) {
-            httpCanceller();
-            httpCanceller = null;
-        }
-
-        // create a new promise so we can cancel it later.
-        let questionSearchResource = api.getQuestionsResource();
-        httpCanceller = questionSearchResource.$cancelRequest;
-        return questionSearchResource.query({searchString:searchQuery, tags:searchTags, levels:searchLevel, limit:largeNumberOfResults, fasttrack:fasttrack});
+    let mostRecentQueryID = 0;
+    let doQuestionSearch = function(searchQuery, searchLevel, searchTags) {
+        let isFastTrackQuery = searchQuery == "fasttrack";
+        let isBookQuery = bookIds.indexOf(searchQuery) >= 0;
+        return api.getQuestionsResource().query({
+            searchString: isFastTrackQuery ? '' : searchQuery,
+            tags: isBookQuery ? searchQuery : searchTags, //  If it's a book, just the book tags; ignore others!
+            levels: searchLevel,
+            limit: largeNumberOfResults,
+            fasttrack: isFastTrackQuery
+        });
     };
 
     // timer for the search box to minimise number of requests sent to api
@@ -132,31 +132,23 @@ export const PageController = ['$scope', '$state', 'api', '$timeout', '$q', '$st
 
         timer = $timeout(function() {
             $scope.loading = true;
-
-            let searchText, fasttrack;
-            if ($scope.questionSearchText == "fasttrack") {
-                searchText = "";
-                fasttrack = true;
-            } else {
-                searchText = $scope.questionSearchText;
-                fasttrack = false;
-            }
-
-            doQuestionSearch(searchText, $scope.questionSearchLevel, $scope.questionSearchSubject, fasttrack)
-            .$promise.then(function(questionsFromServer){
-                httpCanceller = null;
-                // update the view
-                $scope.searchResults = questionsFromServer.results.filter(function(r) {
+            let myQueryID = ++mostRecentQueryID; // increment then assign query id
+            doQuestionSearch($scope.questionSearchText, $scope.questionSearchLevel, $scope.questionSearchSubject)
+            .$promise.then(function(questionsFromServer) {
+                // only display results for most recent query request (i.e. not most recent asynchronous repsonse)
+                if (myQueryID == mostRecentQueryID) {
+                    // update the view
+                    $scope.searchResults = questionsFromServer.results.filter(function(r) {
                         let keepElement = (r.id != "_regression_test_" && (!r.tags || r.tags.indexOf("nofilter") < 0));
                         return keepElement || $scope.isStaffUser;
-                });
-                // try to sort the results if requested.
-                if (sortField) {
-                    $scope.searchResults.sort(function(a,b) {
-                        return a[sortField] > b[sortField] ? 1 : -1;
                     });
+                    // try to sort the results if requested.
+                    if (sortField) {
+                        $scope.searchResults.sort((a, b) => { return a[sortField] > b[sortField] ? 1 : -1; });
+                        sortField = null;
+                    }
+                    $scope.loading = false;
                 }
-                $scope.loading = false;
             });
         }, 500);
     });

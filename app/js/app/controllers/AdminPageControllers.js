@@ -25,6 +25,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
 
     $scope.tagsUrl = api.getTagsUrl();
     $scope.unitsUrl = api.getUnitsUrl();
+    $scope.swaggerUrl = api.getSwaggerUrl();
 
     $scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
     $scope.isAdminUser = $rootScope.user.role == 'ADMIN';

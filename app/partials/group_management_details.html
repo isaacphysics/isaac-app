@@ -9,7 +9,7 @@
         </span>
     </h6>
 
-    <form name="group">
+    <form name="groupForm">
         <div class="input-group">
             <div class="row">
                 <div class="columns small-12">
@@ -24,8 +24,8 @@
                 <div class="columns small-12 text-right">
                     <span ng-if="!selectedGroup">New group names will be shared with students</span>
                     <span ng-if="selectedGroup.lastUpdated">[Group name is shared with students]</span>
-                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && !group.selectedGroupName.$dirty">[Students will see this as 'Group {{selectedGroup.id}}']</span>
-                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && group.selectedGroupName.$dirty">Group name changes will be shared with students</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && !groupForm.selectedGroupName.$dirty">[Students will see this as 'Group {{selectedGroup.id}}']</span>
+                    <span ng-if="selectedGroup && !selectedGroup.lastUpdated && groupForm.selectedGroupName.$dirty">Group name changes will be shared with students</span>
                 </div>
             </div>
         </div>

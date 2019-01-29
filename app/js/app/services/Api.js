@@ -436,13 +436,9 @@ define([], function() {
             return urlPrefix + "/content/units";
         }
 
-        // this.admin = {
-        //  synchroniseDatastores: function() {
-        //      return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-        //          console.warn("Synchronising Datastores. The next page load will take a while.");
-        //      });
-        //  }
-        // };
+        this.getSwaggerUrl = function() {
+            return urlPrefix + "-docs/";
+        }
 
         this.account = $resource(urlPrefix + "/users", {}, {
             saveSettings: {

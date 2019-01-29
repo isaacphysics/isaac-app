@@ -648,11 +648,11 @@ export
     };
 
     centre = (init = false) => {
-        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
+        let top = this.height/Math.ceil(window.devicePixelRatio*2);
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
             symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
-            top += sbox.h*1.5;
+            top += sbox.h;
             symbol.shakeIt();
         });
         if (!init) {
