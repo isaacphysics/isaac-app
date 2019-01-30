@@ -183,35 +183,28 @@ export const AdminEventBookingController = ['$scope', 'auth', 'api', '$window', 
 
     $scope.userIdToSchoolMapping = {}
 
-    $scope.showActiveOnly = true;
-    $scope.showInactiveOnly = false;
-    $scope.filterEventsByStatus = "active";
+    $scope.filterEventsByStatus = "FUTURE";
     $scope.overviewPanelVisible = true;
     $scope.attended = true;
     $scope.absent = false;
 
     $scope.filter = {}
 
-    let updateEventOverviewList = function(){
+    let updateEventOverviewList = function(queryParams){
         $rootScope.setLoading(true);
-        api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly, "showInactiveOnly":$scope.showInactiveOnly}).$promise.then(function(result) {
+        api.eventOverview.get(queryParams).$promise.then(function(result) {
             $rootScope.setLoading(false);
             $scope.events = result.results;
         });         
     }
 
-    $scope.$watch('filterEventsByStatus', function(newValue, _oldValue){
+    $scope.$watch('filterEventsByStatus', function(newValue, _oldValue) {
         if (newValue) {
-            $scope.showActiveOnly = false;
-            $scope.showInactiveOnly = false;
-
-            if (newValue == 'active') {
-                $scope.showActiveOnly = true;
-            } else if (newValue == 'inactive') {
-                $scope.showInactiveOnly = true;
+            let queryParams = {limit: -1, startIndex: 0}
+            if (newValue !== 'ALL') {
+                queryParams['filter'] = newValue;
             }
-
-            updateEventOverviewList();
+            updateEventOverviewList(queryParams);
         }
     });
 
