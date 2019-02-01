@@ -396,7 +396,7 @@
                                     <tr ng-repeat="entry in myGroupMembership | orderBy:'group.groupName'">
                                         <td>{{entry.group.groupName == null ? ("Group " + entry.group.id) : entry.group.groupName}}</td>
                                         <td>
-                                            <ul>
+                                            <ul ng-show="entry.group.ownerSummary">
                                                 <li><span>{{convertToTeacherName(entry.group.ownerSummary)}}</span></li>
                                                 <li ng-repeat="manager in entry.group.additionalManagers">
                                                 {{convertToTeacherName(manager)}}</li>
