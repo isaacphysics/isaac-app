@@ -287,7 +287,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             }).then(function(){
                 if (next) {
                     $scope.cancelOnDestroyEvent(); // Don't need this handler to fire if we've saved and are redirecting!
-                    $location.url(next)
+                    $window.location.href = next;
                 } else {
                     $scope.updateSuccess = true;
                 }
