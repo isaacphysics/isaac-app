@@ -20,7 +20,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     $scope.contentVersion = api.contentVersion.get();
     $scope.userSearch = {};
     $scope.userSearch.isLoading = false;
-    $scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES", subjectOfInterest: ""};
+    $scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIVE_MILES", subjectOfInterest: ""};
     $scope.userManagerSelection = {};
 
     // FIXME - reimplement this, but in a more sensible location!
