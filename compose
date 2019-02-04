@@ -31,7 +31,7 @@ APP_NAME=app-$ENV-$APP_VERSION
 read -r -d '' PG_SERVICE << EOM
 pg-$ENV:
     container_name: pg-$ENV
-    restart: always
+    restart: unless-stopped
     image: postgres:9.6
     environment:
       POSTGRES_USER: rutherford
@@ -65,7 +65,7 @@ services:
   $APP_NAME:
     container_name: $APP_NAME
     image: docker.isaacscience.org/isaac-app:$APP_VERSION
-    restart: always
+    restart: unless-stopped
     networks:
       default:
         aliases:
@@ -73,7 +73,7 @@ services:
   $API_NAME:
     container_name: $API_NAME
     image: docker.isaacscience.org/isaac-api:$API_VERSION
-    restart: always
+    restart: unless-stopped
     extra_hosts:
       - local-smtp:$LOCAL_SMTP
     links:
