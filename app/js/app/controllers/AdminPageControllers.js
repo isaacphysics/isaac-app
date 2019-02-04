@@ -55,7 +55,7 @@ export const AdminStatsSummaryController = ["$scope", "api", function($scope, ap
         return value !== undefined ? Math.round(100 * value / total) : 0;
     };
     let addTotalToMapOfCounts = function(counts) {
-        counts['TOTAL'] = Object.values(counts).reduce((a, b) => a + b);
+        counts['TOTAL'] = Object.values(counts).reduce((a, b) => a + b, 0);
     };
 
     // general stats
