@@ -197,7 +197,7 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
     scope.formatMark = function(numerator, denominator, formatAsPercentage) {
         let result;
         if (formatAsPercentage) {
-            result = Math.round(100 * numerator / denominator) + "%";
+            result = denominator !== 0 ? Math.round(100 * numerator / denominator) + "%" : "100%";
         } else {
             result = numerator + "/" + denominator;
         }
