@@ -120,6 +120,8 @@ define(function(require) {
 
 	.controller('AdminPageController', adminPageControllers.PageController)
 
+	.controller('AdminStatsSummaryController', adminPageControllers.AdminStatsSummaryController)
+
 	.controller('AdminUserManagerController', adminUserManagerController.PageController)
 
 	.controller('AdminEmailController', adminEmailController.PageController)

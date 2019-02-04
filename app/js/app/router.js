@@ -750,23 +750,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
-                        controller: ["$scope", "api", function($scope, api) {
-
-                            $scope.state = 'adminStats';
-
-                            // general stats
-                            $scope.statistics = null;
-                            $scope.setLoading(true)
-                            api.statisticsEndpoint.get().$promise.then(function(result) {
-                                $scope.statistics = result;
-                                $scope.setLoading(false)
-                            });
-                            api.eventBookings.getAllBookings({
-                                "count_only": true
-                            }).$promise.then(function(result) {
-                                $scope.eventBookingsCount = result.count;
-                            })
-                        }]
+                        controller: "AdminStatsSummaryController",
                     }
                 }
             });

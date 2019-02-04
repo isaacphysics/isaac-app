@@ -48,6 +48,42 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     }
 }];
 
+export const AdminStatsSummaryController = ["$scope", "api", function($scope, api) {
+    $scope.state = 'adminStats';
+
+    $scope.asPercentage = function(value, total) {
+        return value !== undefined ? Math.round(100 * value / total) : 0;
+    };
+    let addTotalToMapOfCounts = function(counts) {
+        counts['TOTAL'] = Object.values(counts).reduce((a, b) => a + b, 0);
+    };
+
+    // general stats
+    $scope.statistics = null;
+    $scope.setLoading(true)
+    api.statisticsEndpoint.get().$promise.then(function(result) {
+        $scope.statistics = result;
+
+        // Add total value to each of the active user ranges
+        for (let timeRange in result.activeUsersOverPrevious) {
+            addTotalToMapOfCounts(result.activeUsersOverPrevious[timeRange]);
+        }
+        // Add total value to each of the answered user ranges
+        for (let timeRange in result.answeringUsersOverPrevious) {
+            addTotalToMapOfCounts(result.answeringUsersOverPrevious[timeRange]);
+        }
+        addTotalToMapOfCounts(result.userGenders);
+        addTotalToMapOfCounts(result.userSchoolInfo)
+
+        $scope.setLoading(false)
+    });
+    api.eventBookings.getAllBookings({
+        "count_only": true
+    }).$promise.then(function(result) {
+        $scope.eventBookingsCount = result.count;
+    })
+}];
+
 export const AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {
     $rootScope.pageTitle = "Statistics Page";
 
