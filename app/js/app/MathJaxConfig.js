@@ -50,10 +50,16 @@ define([], function() {
 				"eighth": ["\\frac{1}{8}",0],
 				"e": ["\\textrm{e}",0],
 				"units": ["\\rm{#1}",1],
+				// Chemistry:
 				"standardstate": ["\\mathbin{\u29B5}",0],
+				// Boolean Algebra:
+				"true": "\\boldsymbol{\\rm{T}}",
+				"false": "\\boldsymbol{\\rm{F}}",
 				"and": ["{#1} \\wedge {#2}", 2],
 				"or": ["{#1} \\lor {#2}", 2],
-				"not": ["\\lnot{#1}", 1]
+				"not": ["\\lnot{#1}", 1],
+				"xor": ["{#1} \\veebar {#2}", 2],
+				"equivalent": "\\equiv"
 			},
 			extensions: ["mhchem.js"],
 		},
@@ -84,6 +90,10 @@ define([], function() {
     	MathJax.Hub.config.TeX.Macros.and = ["{#1} \\cdot {#2}", 2];
     	MathJax.Hub.config.TeX.Macros.or = ["{#1} + {#2}", 2];
     	MathJax.Hub.config.TeX.Macros.not = ["\\overline{#1}", 1];
+    	MathJax.Hub.config.TeX.Macros.xor = ["{#1} \\oplus {#2}", 2];
+    	MathJax.Hub.config.TeX.Macros.true = "1";
+    	MathJax.Hub.config.TeX.Macros.false = "0";
+    	MathJax.Hub.config.TeX.Macros.equivalent = "=";
     }
 
 });
