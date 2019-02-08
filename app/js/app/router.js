@@ -286,6 +286,13 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         
         $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
 
+        $sp.state('survey', {
+            url: "/survey",
+            onEnter: ["$state","$rootScope", function($state, $rootScope) {
+                $state.go("externalLink", {link: 'https://cambridge.eu.qualtrics.com/jfe/form/SV_00UiPy6lWtN9WrH'}, {location: false});
+                $rootScope.setLoading(false);
+            }],
+        });
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
