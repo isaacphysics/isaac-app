@@ -1,0 +1,23 @@
+<div class="isaac-parsons-question">
+    <div class="row">
+        <div class="small-14 small-offset-1 columns end">
+            <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
+        </div>
+    </div>
+    <div class="row ru-answer-block-panel">
+        <div class="medium-7 medium-offset-1 columns end no-print">
+            <div as-sortable="parsonQuestionItems" ng-model="parsonQuestionItems" style="background-color: GRAY; min-height:20px; padding:10px; color: black;">
+                <div ng-repeat="item in parsonQuestionItems" as-sortable-item style="background-color: YELLOW; border: solid 1px black;">
+                    <div as-sortable-item-handle>{{item.value}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="medium-7 columns end no-print">
+            <div as-sortable="parsonAnswerItems" ng-model="parsonAnswerItems" style="background-color: GRAY; min-height:20px; padding:10px; color: black;">
+                <div ng-repeat="item in parsonAnswerItems" as-sortable-item style="background-color: YELLOW; border: solid 1px black;">
+                    <div as-sortable-item-handle>{{item.value}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
