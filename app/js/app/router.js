@@ -189,6 +189,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             $sp.state('prize_draws', genericPageState("/prize_draws", "prize_draws"));
             $sp.state('spc', genericPageState("/spc", "spc"));
             $sp.state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"));
+            $sp.state('survey', genericPageState("/survey", "survey"));
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
@@ -285,14 +286,6 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         }
         
         $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
-
-        $sp.state('survey', {
-            url: "/survey",
-            onEnter: ["$state","$rootScope", function($state, $rootScope) {
-                $state.go("externalLink", {link: 'https://cambridge.eu.qualtrics.com/jfe/form/SV_00UiPy6lWtN9WrH'}, {location: false});
-                $rootScope.setLoading(false);
-            }],
-        });
 
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
