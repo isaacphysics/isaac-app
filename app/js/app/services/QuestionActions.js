@@ -43,7 +43,6 @@ define([], function() {
 			let checkAnswer = function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
-
 					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
 						let selectedChoice = JSON.parse(scope.question.selectedChoice.value);
 						if (selectedChoice.hasOwnProperty("symbols")) {
@@ -52,11 +51,6 @@ define([], function() {
 								return;
 							}
 						}
-					}
-
-					if (scope.doc.type == "isaacGraphSketcherQuestion") {
-						scope.question.validationResponse = TEMP_GRAPH_SKETCHER_RESULT;
-						return; // Do not submit Graph SKetecher question attemps
 					}
 
 					let s = api.questionValidator.validate({id: scope.doc.id}, scope.question.selectedChoice);
