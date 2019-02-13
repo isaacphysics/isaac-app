@@ -17,8 +17,9 @@
 export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, $stateParams) {
     $scope.eqnEditorSeed = null;
     $scope.editorMode = "maths";
-    if ($stateParams.mode == 'chemistry') {
-        $scope.editorMode = "chemistry"
+    if ($stateParams.mode) {
+        console.log($stateParams);
+        $scope.editorMode = $stateParams.mode;
     }
     if ($stateParams.symbols) {
         $scope.questionDoc = {
