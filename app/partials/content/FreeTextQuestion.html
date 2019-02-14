@@ -10,7 +10,7 @@
                 <ul class="small-block-grid-1">
                     <li ng-class="{'ru-answer-block': true, 'ru-error': question.validationResponse.correct === false}">
                         <div class="ru-answer-block-panel">
-                            <textarea ng-model="ctrl.selectedValue" placeholder="Type your answer here." rows="3" ng-class="{'invalid-value': !validValue}" />
+                            <textarea spellcheck="true" ng-model="ctrl.selectedValue" placeholder="Type your answer here." rows="3" ng-class="{'invalid-value': !validValue}" />
                             <div ng-hide="validValue" class="input-warning">
                                 <strong>Warning:</strong>
                                 <ul>
