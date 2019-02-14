@@ -38,6 +38,7 @@ import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
 import { LogicBinaryOperation } from './LogicBinaryOperation';
+import { LogicLiteral } from './LogicLiteral';
 
 // This is where the fun starts
 
@@ -158,7 +159,7 @@ export
         this.initialSymbolsToParse = [
             { type: 'Symbol', properties: { letter: 'A', }, position: { x: 0, y: 0},
               children: { right: { type: 'LogicBinaryOperation', properties: { operation: 'or' },
-                                   children: { right: { type: 'Symbol', properties: { letter: 'B' } } } }
+                                   children: { right: { type: 'LogicLiteral', properties: { value: true } } } }
                         }
             }
         ];
@@ -361,6 +362,9 @@ export
                 break;
             case "LogicBinaryOperation":
                 w = new LogicBinaryOperation(this.p, this, node["properties"]["operation"]);
+                break;
+            case "LogicLiteral":
+                w = new LogicLiteral(this.p, this, node["properties"]["value"]);
                 break;
             default: // this would be a Widget...
                 break;
