@@ -162,6 +162,8 @@ define(function(require) {
 
 	.directive('isaacSymbolicChemistryQuestion', require("./directives/content/SymbolicChemistryQuestion"))
 
+	.directive('isaacSymbolicLogicQuestion', require("./directives/content/SymbolicLogicQuestion"))
+
 	.directive('isaacGraphSketcherQuestion', require("./directives/content/GraphSketcherQuestion"))
 
 	.directive('isaacStringMatchQuestion', require("./directives/content/StringMatchQuestion"))
