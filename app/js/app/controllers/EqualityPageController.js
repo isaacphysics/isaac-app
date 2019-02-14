@@ -18,7 +18,6 @@ export const PageController = ['$scope', '$rootScope', '$stateParams', function(
     $scope.eqnEditorSeed = null;
     $scope.editorMode = "maths";
     if ($stateParams.mode) {
-        console.log($stateParams);
         $scope.editorMode = $stateParams.mode;
     }
     if ($stateParams.symbols) {
