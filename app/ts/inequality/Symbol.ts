@@ -25,6 +25,7 @@ import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
 import { Num } from "./Num";
+import { LogicBinaryOperation } from "./LogicBinaryOperation";
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -156,7 +157,8 @@ export
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation ||
-                    this.dockingPoints["right"].child instanceof Relation) {
+                    this.dockingPoints["right"].child instanceof Relation ||
+                    this.dockingPoints["right"].child instanceof LogicBinaryOperation) {
                     expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else if (this.dockingPoints["right"] && this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
                     expression += this.dockingPoints["right"].child.formatExpressionAs(format);

@@ -37,6 +37,8 @@ import { ChemicalElement } from './ChemicalElement';
 import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
+import { LogicBinaryOperation } from './LogicBinaryOperation';
+
 // This is where the fun starts
 
 // This is the "main" app with the update/render loop and all that jazz.
@@ -152,6 +154,14 @@ export
         this.p.createCanvas(this.width, this.height);
 
         this.prevTouch = this.p.createVector(0, 0);
+
+        this.initialSymbolsToParse = [
+            { type: 'Symbol', properties: { letter: 'A', }, position: { x: 0, y: 0},
+              children: { right: { type: 'LogicBinaryOperation', properties: { operation: 'or' },
+                                   children: { right: { type: 'Symbol', properties: { letter: 'B' } } } }
+                        }
+            }
+        ];
 
         try {
             _.each(this.initialSymbolsToParse || [], s => {
@@ -348,6 +358,9 @@ export
                 break;
             case "Particle":
                 w = new Particle(this.p, this, node["properties"]["particle"], node["properties"]["type"]);
+                break;
+            case "LogicBinaryOperation":
+                w = new LogicBinaryOperation(this.p, this, node["properties"]["operation"]);
                 break;
             default: // this would be a Widget...
                 break;
