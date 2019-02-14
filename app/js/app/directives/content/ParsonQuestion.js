@@ -25,16 +25,34 @@ define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"
             templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
+                scope.tabWidth = 40;
+                scope.maxIndent = 3;
+
                 scope.parsonQuestionItems = [
-                    {id:1, value:'A'},
-                    {id:2, value:'B'},
+                    {id: 123, value:'print("C")', indentation: 0},
+                    {id: 232, value:'print("A")', indentation: 0},
+                    {id: 333, value:'print("B")', indentation: 0},
                 ]
                 scope.parsonAnswerItems = [
                 ]
 
-
-
-
+                scope.parsonDragOptions = {
+                    additionalPlaceholderClass: 'parson-item',
+                    accept: function(source, target) {
+                        //if (target.getAttribute(tab-depth))
+                        let targetOffset = source.element[0].getBoundingClientRect().left - target.element[0].getBoundingClientRect().left;
+                        if (targetOffset > scope.tabWidth) {
+                            let indentation = Math.max(Math.min(Math.floor(targetOffset / scope.tabWidth), scope.maxIndent), 0)
+                            // placeholder margin y = targetOffset/tabWidth
+                            $(".as-sortable-placeholder").css("margin-left", (scope.tabWidth * indentation) + "px");
+                            source.parsonItem.indentation = indentation;
+                        } else {
+                            $(".as-sortable-placeholder").css("margin-left", "0px");
+                            source.parsonItem.indentation = 0;
+                        }
+                        return true;
+                    }
+                };
 
 
                 let ctrl = this;

@@ -1,0 +1,74 @@
+.isaac-parson-question {
+    .parson-panel {
+        min-height: 60px;
+        padding: 0.5rem;
+        background-color: GRAY;
+        color: black;
+    }
+    .parson-item {
+        background-color: YELLOW;
+        border: solid 1px black;
+        padding: 0.2rem 0.5rem;
+        font-family: "Courier New", Courier, monospace;
+        font-style: normal;
+    }
+    .ru-answer-block-panel {
+        padding-bottom: 1em;
+    }
+    .as-sortable-placeholder {
+        opacity: 0.8;
+        box-sizing: border-box;
+        width: 100% !important;
+    }
+}
+
+.as-sortable-item, .as-sortable-placeholder {
+    display: block
+}
+
+.as-sortable-item {
+    -ms-touch-action: none;
+    touch-action: none;
+    -webkit-touch-callout: none
+}
+
+.as-sortable-item-handle {
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab
+}
+
+.as-sortable-drag {
+    position: absolute;
+    pointer-events: none;
+    z-index: 9999
+}
+
+.as-sortable-hidden {
+    display: none!important
+}
+
+.as-sortable-un-selectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.as-sortable-item, .as-sortable-placeholder {
+    min-height: 20px;
+    margin: 5px 2px;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+}
+
+.as-sortable-item {
+    border: solid 1px darkgrey;
+    background-color: #fff;
+}
+
+.as-sortable-drag {
+    opacity: 0.8
+}
