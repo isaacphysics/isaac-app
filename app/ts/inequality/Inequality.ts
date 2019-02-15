@@ -39,6 +39,7 @@ import { Particle } from './Particle';
 
 import { LogicBinaryOperation } from './LogicBinaryOperation';
 import { LogicLiteral } from './LogicLiteral';
+import { LogicNot } from './LogicNot';
 
 // This is where the fun starts
 
@@ -139,6 +140,7 @@ export
 
         switch (this.scope.editorMode) {
             case 'maths':
+            case 'logic':
                 this.baseFontSize = 50;
                 this.baseDockingPointSize = 50/3;
                 break;
@@ -359,6 +361,9 @@ export
                 break;
             case "LogicLiteral":
                 w = new LogicLiteral(this.p, this, node["properties"]["value"]);
+                break;
+            case "LogicNot":
+                w = new LogicNot(this.p, this);
                 break;
             default: // this would be a Widget...
                 break;
