@@ -132,19 +132,19 @@ export
     // IMPORTANT: 𝖳 and 𝖥 are special unicode characters: U+1D5B3 and U+1D5A5
     _draw() {
         let box = this.boundingBox();
-        let sw = this.s.baseFontSize/10;
+        let sw = this.s.baseFontSize/12;
         
         this.p.stroke(this.color).strokeCap(this.p.PROJECT).strokeWeight(sw);
 
         if (this.value) {
             // Draw T
-            this.p.line(box.x + box.w/10,     box.y,             box.x + 9*box.w/10, box.y);
-            this.p.line(box.x + box.w/2,      box.y + sw,        box.x +   box.w/2,  0);
+            this.p.line(box.w/5 + box.x + box.w/10,     box.y + sw,             box.w/5 + box.x + 9*box.w/10, box.y + sw);
+            this.p.line(box.w/5 + box.x + box.w/2,      box.y + 2*sw,           box.w/5 + box.x +   box.w/2,  0);
         } else {
             // Draw F
-            this.p.line(box.x + box.w/5,      box.y,             box.x +   box.w/5,  0);
-            this.p.line(box.x + box.w/5 + sw, box.y,             box.x + 4*box.w/5,  box.y);
-            this.p.line(box.x + box.w/5 + sw, box.y + 2*box.h/5, box.x + 4*box.w/5,  box.y + 2*box.h/5);
+            this.p.line(box.w/5 + box.x + box.w/5,      box.y + sw,             box.w/5 + box.x +   box.w/5,  0);
+            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw,             box.w/5 + box.x + 4*box.w/5,  box.y + sw);
+            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.w/5 + box.x + 4*box.w/5,  box.y + sw + 2*box.h/5);
         }
         this.p.strokeWeight(1);
     }
