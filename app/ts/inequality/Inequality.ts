@@ -156,13 +156,7 @@ export
 
         this.prevTouch = this.p.createVector(0, 0);
 
-        this.initialSymbolsToParse = [
-            { type: 'Symbol', properties: { letter: 'A', }, position: { x: 0, y: 0},
-              children: { right: { type: 'LogicBinaryOperation', properties: { operation: 'or' },
-                                   children: { right: { type: 'LogicLiteral', properties: { value: true } } } }
-                        }
-            }
-        ];
+        this.initialSymbolsToParse = [];
 
         try {
             _.each(this.initialSymbolsToParse || [], s => {

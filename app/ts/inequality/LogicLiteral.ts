@@ -131,13 +131,22 @@ export
     /** Paints the widget on the canvas. */
     // IMPORTANT: 𝖳 and 𝖥 are special unicode characters: U+1D5B3 and U+1D5A5
     _draw() {
-        this.p.fill(this.color).strokeWeight(0).noStroke();
+        let box = this.boundingBox();
+        let sw = this.s.baseFontSize/10;
+        
+        this.p.stroke(this.color).strokeCap(this.p.PROJECT).strokeWeight(sw);
 
-        this.p.textFont(this.s.font_up)
-            .textSize(this.s.baseFontSize * this.scale)
-            .textAlign(this.p.CENTER, this.p.BASELINE)
-            .text(this.value ? "T" : 'F', 0, 0); // FIXME: These are not ideal as the correct characters are sans-serif.
-        this.p.strokeWeight(2);
+        if (this.value) {
+            // Draw T
+            this.p.line(box.x + box.w/10,     box.y,             box.x + 9*box.w/10, box.y);
+            this.p.line(box.x + box.w/2,      box.y + sw,        box.x +   box.w/2,  0);
+        } else {
+            // Draw F
+            this.p.line(box.x + box.w/5,      box.y,             box.x +   box.w/5,  0);
+            this.p.line(box.x + box.w/5 + sw, box.y,             box.x + 4*box.w/5,  box.y);
+            this.p.line(box.x + box.w/5 + sw, box.y + 2*box.h/5, box.x + 4*box.w/5,  box.y + 2*box.h/5);
+        }
+        this.p.strokeWeight(1);
     }
 
     /**
