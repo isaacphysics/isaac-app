@@ -138,13 +138,13 @@ export
 
         if (this.value) {
             // Draw T
-            this.p.line(box.w/5 + box.x + box.w/10,     box.y + sw,             box.w/5 + box.x + 9*box.w/10, box.y + sw);
-            this.p.line(box.w/5 + box.x + box.w/2,      box.y + 2*sw,           box.w/5 + box.x +   box.w/2,  0);
+            this.p.line(box.w/5 + box.x + box.w/10,     box.y + sw,             box.w/5 + box.x + 9*box.w/10,  box.y + sw);
+            this.p.line(box.w/5 + box.x + box.w/2,      box.y + 2*sw,           box.w/5 + box.x +   box.w/2,   0);
         } else {
             // Draw F
-            this.p.line(box.w/5 + box.x + box.w/5,      box.y + sw,             box.w/5 + box.x +   box.w/5,  0);
-            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw,             box.w/5 + box.x + 4*box.w/5,  box.y + sw);
-            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.w/5 + box.x + 4*box.w/5,  box.y + sw + 2*box.h/5);
+            this.p.line(box.w/5 + box.x + box.w/5,      box.y + sw,             box.w/5 + box.x +   box.w/5,   0);
+            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw,             box.w/5 + box.x + 4*box.w/5,   box.y + sw);
+            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.w/5 + box.x + 7*box.w/10,  box.y + sw + 2*box.h/5);
         }
         this.p.strokeWeight(1);
     }
