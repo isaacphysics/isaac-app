@@ -138,13 +138,13 @@ export
 
         if (this.value) {
             // Draw T
-            this.p.line(box.w/5 + box.x + box.w/10,     box.y + sw,             box.w/5 + box.x + 9*box.w/10,  box.y + sw);
-            this.p.line(box.w/5 + box.x + box.w/2,      box.y + 2*sw,           box.w/5 + box.x +   box.w/2,   0);
+            this.p.line(box.x + box.w/10,     box.y + sw,             box.x + 9*box.w/10,  box.y + sw);
+            this.p.line(box.x + box.w/2,      box.y + 2*sw,           box.x +   box.w/2,   0);
         } else {
             // Draw F
-            this.p.line(box.w/5 + box.x + box.w/5,      box.y + sw,             box.w/5 + box.x +   box.w/5,   0);
-            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw,             box.w/5 + box.x + 4*box.w/5,   box.y + sw);
-            this.p.line(box.w/5 + box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.w/5 + box.x + 7*box.w/10,  box.y + sw + 2*box.h/5);
+            this.p.line(box.x + box.w/5,      box.y + sw,             box.x +   box.w/5,   0);
+            this.p.line(box.x + box.w/5 + sw, box.y + sw,             box.x + 4*box.w/5,   box.y + sw);
+            this.p.line(box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.x + 7*box.w/10,  box.y + sw + 2*box.h/5);
         }
         this.p.strokeWeight(1);
     }
@@ -155,7 +155,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds(this.getFullText() || "T", 0, 0, this.scale * this.s.baseFontSize);
+        let box = this.s.font_up.textBounds(this.value ? 'T' : 'F', 0, 0, this.scale * this.s.baseFontSize);
         return new Rect(-box.w/2 - this.s.xBox.w/4, box.y, box.w, box.h);
     }
 

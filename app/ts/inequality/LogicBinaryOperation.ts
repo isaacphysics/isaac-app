@@ -146,7 +146,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = "+";
+        let s = "∨";
         let box = this.s.font_up.textBounds(s, 0, 0, this.scale*this.s.baseFontSize*0.8);
         return new Rect(-box.w/2, box.y, box.w, box.h);
     }
@@ -165,7 +165,7 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/2;
+                child.position.x = thisBox.x + thisBox.w + child.leftBound + dp.size/4;
                 child.position.y = this.dockingPoint.y - child.dockingPoint.y;
             } else {
                 dp.position.x = thisBox.x + thisBox.w + dp.size;
