@@ -45,6 +45,8 @@ define([], function() {
                 $rootScope.user = user;
                 $rootScope.user.$promise.then(() => {
 					setupUserConsistencyCheck();			
+                }).catch(function() {
+                    // The user probably isn't logged in. We don't care.
                 });
 
                 if (user.firstLogin && '/' == next) {
@@ -117,7 +119,7 @@ define([], function() {
 
 				}).catch(function(){
 					cancelUserConsistencyCheck();
-					reject();
+					reject("not_logged_in");
 				});
 			});
 		}
