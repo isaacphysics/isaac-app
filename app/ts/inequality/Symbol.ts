@@ -82,7 +82,10 @@ export
         this.letter = letter;
         this.s = s;
         this.modifier = modifier;
-        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets', 'differential_argument'];
+        this.docksTo = ['relation', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets', 'differential_argument'];
+        if (this.s.scope.editorMode != 'logic') {
+            this.docksTo.push('operator');
+        }
     }
 
     /**
