@@ -34,7 +34,6 @@ export
     private type: string;
     private latexSymbol: Object;
     private pythonSymbol: Object;
-    private mhchemSymbol: Object;
     private mathmlSymbol: Object;
 
     get typeAsString(): string {
@@ -57,22 +56,21 @@ export
         this.latexSymbol = '\\lnot';
         this.pythonSymbol = '~';
         this.mathmlSymbol = '¬'
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation', 'differential_argument'];
+        this.docksTo = ['symbol', 'relation'];
     }
 
     /**
      * Generates all the docking points in one go and stores them in this.dockingPoints.
      * A Symbol has three docking points:
      *
-     * - _right_: Binary operation (addition, subtraction), Symbol (multiplication)
-     * - _superscript_: Exponent
-     * - _subscript_: Subscript (duh?)
+     * - _argument_: The expression to negate
+     * - _right_: Binary operation (addition, subtraction)
      */
     generateDockingPoints() {
         let box = this.boundingBox();
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox_h/2), 1, ["symbol", "differential"], "argument");
-        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox_w/4 + this.scale * 20, -this.s.xBox_h/2), 1, ["operator_brackets"], "right");
+        this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox_w/4 + this.scale * 20, -this.s.xBox_h/2), 1, ["operator"], "right");
     }
 
     /**
@@ -137,6 +135,9 @@ export
     /** Paints the widget on the canvas. */
     _draw() {
         let box = this.boundingBox();
+        let notBox = this.s.font_up.textBounds("¬", 0, 0, this.scale * this.s.baseFontSize);
+        box.x = box.x + notBox.w;
+        let sw = this.s.baseFontSize/15;
 
         this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
@@ -168,6 +169,14 @@ export
                             box.w/2 - a, -box.h/2);
         this.p.endShape();
 
+        this.p.stroke(this.color).strokeCap(this.p.SQUARE).strokeWeight(sw);
+        this.p.noFill();
+        this.p.beginShape();
+        let h = 0.8 * notBox.h;
+        this.p.vertex(box.x - notBox.w, -h/2);
+        this.p.vertex(box.x - notBox.w/4, -h/2);
+        this.p.vertex(box.x - notBox.w/4, h/2);
+        this.p.endShape();
 
         this.p.strokeWeight(1);
     }
@@ -178,7 +187,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds("()", 0, 0, this.scale * this.s.baseFontSize);
+        let box = this.s.font_up.textBounds("¬()", 0, 0, this.scale * this.s.baseFontSize);
 
         let width = box.w + this._argumentBox.w;
         let height = Math.max(box.h, this._argumentBox.h);
@@ -204,46 +213,18 @@ export
         this._shakeItDown();
 
         let thisBox = this.boundingBox();
+        let notBox = this.s.font_up.textBounds("¬", 0, 0, this.scale * this.s.baseFontSize);
+        thisBox.x += notBox.w;
 
         if (this.dockingPoints["argument"]) {
             let dp = this.dockingPoints["argument"];
             if (dp.child) {
                 let child = dp.child;
-                child.position.x = this.boundingBox().x + child.leftBound + dp.size;
+                child.position.x = thisBox.x + child.leftBound + dp.size;
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = 0;
+                dp.position.x = notBox.w/2;
                 dp.position.y = 0;
-            }
-        }
-
-        let superscriptWidth = 0;
-        if (this.dockingPoints["superscript"]) {
-            let dp = this.dockingPoints["superscript"];
-            if (dp.child) {
-                let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound;
-                child.position.y = -(thisBox.h + child.subtreeBoundingBox.h)/2 + dp.size;
-                superscriptWidth = child.subtreeDockingPointsBoundingBox.w;
-            } else {
-                dp.position.x = (thisBox.w + dp.size)/2;
-                dp.position.y = -thisBox.h/2;
-                superscriptWidth = dp.size;
-            }
-        }
-
-        let subscriptWidth = 0;
-        if (this.dockingPoints["subscript"]) {
-            let dp = this.dockingPoints["subscript"];
-            if (dp.child) {
-                let child = dp.child;
-                child.position.x = thisBox.x + thisBox.w + child.leftBound;
-                child.position.y = (thisBox.h + child.subtreeBoundingBox.h)/2;
-                subscriptWidth = child.subtreeDockingPointsBoundingBox.w;
-            } else {
-                dp.position.x = (thisBox.w + dp.size)/2;
-                dp.position.y = thisBox.h/2;
-                subscriptWidth = dp.size;
             }
         }
 
@@ -251,11 +232,10 @@ export
             let dp = this.dockingPoints["right"];
             if (dp.child) {
                 let child = dp.child;
-                let sBoxWidth = Math.max(superscriptWidth, subscriptWidth);
-                child.position.x = thisBox.x + thisBox.w + sBoxWidth + child.leftBound + (sBoxWidth > 0 ? 0 : dp.size);
+                child.position.x = thisBox.x - notBox.w + thisBox.w + child.leftBound + dp.size;
                 child.position.y = -child.dockingPoint.y;
             } else {
-                dp.position.x = Math.max(superscriptWidth, subscriptWidth) + thisBox.x + thisBox.w + dp.size;
+                dp.position.x = thisBox.x - notBox.w + thisBox.w + dp.size;
                 dp.position.y = 0;
             }
         }
