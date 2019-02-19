@@ -53,7 +53,7 @@ export
         this.s = s;
 
 
-        this.docksTo = ['symbol'];
+        this.docksTo = ['symbol', 'relation'];
     }
 
     getFullText(type?: string): string {
