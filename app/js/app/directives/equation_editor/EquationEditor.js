@@ -1458,6 +1458,58 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     }
                     ],
 
+                    logicOps: [
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: {
+                                operation: "and"
+                            },
+                            menu: {
+                                label: "\\land",
+                                texLabel: true
+                            }
+                        },
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: {
+                                operation: "or"
+                            },
+                            menu: {
+                                label: "\\lor",
+                                texLabel: true
+                            }
+                        },
+                        {
+                            type: "LogicNot",
+                            properties: {},
+                            menu: {
+                                label: "\\lnot",
+                                texLabel: true
+                            }
+                        },
+                        {
+                            type: "Relation",
+                            properties: {
+                                relation: "equiv"
+                            },
+                            menu: {
+                                label: "\\equiv",
+                                texLabel: true,
+                            }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: true },
+                            menu: { label: "\\mathsf{T}", texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: false },
+                            menu: { label: "\\mathsf{F}", texLabel: true }
+                        }
+
+                    ],
+
                     trig: [{
                         type: "Fn",
                         properties: {
