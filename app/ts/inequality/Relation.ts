@@ -107,6 +107,10 @@ export
                 this.mhchemSymbol = ".";
                 this.latexSymbol = '\\cdot';
                 break;
+            case 'equiv':
+                this.relation = '≡';
+                this.pythonSymbol = '==';
+                this.latexSymbol = '\\equiv';
             default:
                 this.relation = relation;
                 this.pythonSymbol = relation;
