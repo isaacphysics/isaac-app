@@ -111,6 +111,7 @@ export
                 this.relation = '≡';
                 this.pythonSymbol = '==';
                 this.latexSymbol = '\\equiv';
+                break;
             default:
                 this.relation = relation;
                 this.pythonSymbol = relation;
