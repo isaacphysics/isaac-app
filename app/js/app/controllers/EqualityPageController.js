@@ -17,8 +17,12 @@
 export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, $stateParams) {
     $scope.eqnEditorSeed = null;
     $scope.editorMode = "maths";
+    $scope.logicSyntax = "logic";
     if ($stateParams.mode) {
         $scope.editorMode = $stateParams.mode;
+    }
+    if ($scope.editorMode == "logic") {
+        $scope.logicSyntax = $stateParams.logicsyntax || "logic";
     }
     if ($stateParams.symbols) {
         $scope.questionDoc = {

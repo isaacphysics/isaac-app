@@ -320,7 +320,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('equality', {
-            url: "/equality?mode&symbols&testing",
+            url: "/equality?mode&symbols&testing&logicsyntax",
             views: {
                 "body": {
                     templateUrl: "/partials/states/equation_editor.html",

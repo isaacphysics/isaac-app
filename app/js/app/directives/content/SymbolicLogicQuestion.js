@@ -28,6 +28,7 @@ define(["/partials/content/SymbolicLogicQuestion.html"], function(templateUrl) {
                 let ctrl = this;
 
                 scope.editorMode = 'logic';
+                scope.logicSyntax = 'logic'; // FIXME Unless it's binary: figure out how to switch this.
 
                 ctrl.selectedFormula = {
                     symbols: {},
