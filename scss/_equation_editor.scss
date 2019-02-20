@@ -71,7 +71,14 @@ $menu-handle-width: 160px;
     }
     &.logic {
         .top-menu {
-            margin-left: $menu-handle-width * 2;
+            .handle {
+                &.m1 {
+                    margin-left: -$menu-handle-width;
+                }
+                &.m2 {
+                    margin-left: 0;
+                }
+            }
         }
     }
     .top-menu {
