@@ -52,18 +52,28 @@ export
         this.value = value;
         this.s = s;
 
-
         this.docksTo = ['symbol', 'relation'];
     }
 
     getFullText(type?: string): string {
-        switch(type) {
-            case 'latex':
-                return this.value ? '\\mathsf{T}' : '\\mathsf{F}';
-            case 'python':
-                return this.value ? 'True' : 'False';
-            default:
-                return this.value ? 'T' : 'F';
+        if (this.s.logicSyntax == 'logic') {
+            switch(type) {
+                case 'latex':
+                    return this.value ? '\\mathsf{T}' : '\\mathsf{F}';
+                case 'python':
+                    return this.value ? 'True' : 'False';
+                default:
+                    return this.value ? 'T' : 'F';
+            }
+        } else if (this.s.logicSyntax == 'binary') {
+            switch(type) {
+                case 'latex':
+                    return this.value ? '1' : '0';
+                case 'python':
+                    return this.value ? 'True' : 'False';
+                default:
+                    return this.value ? '1' : '1';
+            }
         }
     }
 
@@ -131,19 +141,28 @@ export
     // IMPORTANT: 𝖳 and 𝖥 are special unicode characters: U+1D5B3 and U+1D5A5
     _draw() {
         let box = this.boundingBox();
-        let sw = this.s.baseFontSize/12;
-        
-        this.p.stroke(this.color).strokeCap(this.p.PROJECT).strokeWeight(sw);
 
-        if (this.value) {
-            // Draw T
-            this.p.line(box.x + box.w/10,     box.y + sw,             box.x + 9*box.w/10,  box.y + sw);
-            this.p.line(box.x + box.w/2,      box.y + 2*sw,           box.x +   box.w/2,   0);
-        } else {
-            // Draw F
-            this.p.line(box.x + box.w/5,      box.y + sw,             box.x +   box.w/5,   0);
-            this.p.line(box.x + box.w/5 + sw, box.y + sw,             box.x + 4*box.w/5,   box.y + sw);
-            this.p.line(box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.x + 7*box.w/10,  box.y + sw + 2*box.h/5);
+        if (this.s.logicSyntax == 'logic') {
+            let sw = this.s.baseFontSize/12;
+            this.p.stroke(this.color).strokeCap(this.p.PROJECT).strokeWeight(sw);
+            if (this.value) {
+                // Draw T
+                this.p.line(box.x + box.w/10,     box.y + sw,             box.x + 9*box.w/10,  box.y + sw);
+                this.p.line(box.x + box.w/2,      box.y + 2*sw,           box.x +   box.w/2,   0);
+            } else {
+                // Draw F
+                this.p.line(box.x + box.w/5,      box.y + sw,             box.x +   box.w/5,   0);
+                this.p.line(box.x + box.w/5 + sw, box.y + sw,             box.x + 4*box.w/5,   box.y + sw);
+                this.p.line(box.x + box.w/5 + sw, box.y + sw + 2*box.h/5, box.x + 7*box.w/10,  box.y + sw + 2*box.h/5);
+            }
+        } else if (this.s.logicSyntax == 'binary') {
+            this.p.fill(this.color).strokeWeight(0).noStroke();
+
+            this.p.textFont(this.s.font_up)
+                .textSize(this.s.baseFontSize * this.scale)
+                .textAlign(this.p.CENTER, this.p.BASELINE)
+                .text(this.value ? '1' : '0', 0, 0);
+            this.p.strokeWeight(1);
         }
         this.p.strokeWeight(1);
     }
@@ -154,7 +173,12 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds(this.value ? 'T' : 'F', 0, 0, this.scale * this.s.baseFontSize);
+        let box = null;
+        if (this.s.logicSyntax == 'logic') {
+            box = this.s.font_up.textBounds(this.value ? 'T' : 'F', 0, 0, this.scale * this.s.baseFontSize);
+        } else if (this.s.logicSyntax == 'binary') {
+            box = this.s.font_up.textBounds(this.value ? '1' : '0', 0, 0, this.scale * this.s.baseFontSize);
+        }
         return new Rect(-box.w/2 - this.s.xBox.w/4, box.y, box.w, box.h);
     }
 
