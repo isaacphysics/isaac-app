@@ -54,6 +54,11 @@ export
         this.s = s;
 
         this.latexSymbol = '\\lnot';
+        if (this.s.logicSyntax == 'logic') {
+            this.latexSymbol = '\\lnot';
+        } else if (this.s.logicSyntax == 'binary') {
+            this.latexSymbol = '\\overline';
+        }
         this.pythonSymbol = '~';
         this.mathmlSymbol = '¬'
         this.docksTo = ['symbol', 'relation'];
@@ -86,10 +91,16 @@ export
         // TODO Triple check
         let expression = "";
         if (format == "latex") {
+            let lhs: string, rhs: string;
+            if (this.s.logicSyntax == 'logic') {
+                lhs = '('; rhs = ')';
+            } else if (this.s.logicSyntax == 'binary') {
+                lhs = '{'; rhs = '}';
+            }
             if (this.dockingPoints['argument'] && this.dockingPoints['argument'].child) {
-                expression += this.latexSymbol + '(' + this.dockingPoints['argument'].child.formatExpressionAs(format) + ')';
+                expression += this.latexSymbol + lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
             } else {
-                expression += this.latexSymbol + '()';
+                expression += this.latexSymbol + lhs + rhs;
             }
             if (this.dockingPoints['right'] && this.dockingPoints['right'].child) {
                 expression += this.dockingPoints['right'].child.formatExpressionAs(format);
@@ -113,7 +124,7 @@ export
             expression += "{NOT}";
         } else if (format == 'mathml') {
             if (this.dockingPoints['argument'] && this.dockingPoints['argument'].child) {
-                expression = '<mo>' + this.mathmlSymbol + '</mo><mfenced open="(" close=")"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>';
+                expression = '<mover accent="true"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mover>';
             }
             if (this.dockingPoints['right'].child) {
                 expression += this.dockingPoints['right'].child.formatExpressionAs(format);
@@ -135,48 +146,55 @@ export
     /** Paints the widget on the canvas. */
     _draw() {
         let box = this.boundingBox();
-        let notBox = this.s.font_up.textBounds("¬", 0, 0, this.scale * this.s.baseFontSize);
-        box.x = box.x + notBox.w;
         let sw = this.s.baseFontSize/15;
 
-        this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
+        if (this.s.logicSyntax == 'logic') {
+            let notBox = this.s.font_up.textBounds("¬", 0, 0, this.scale * this.s.baseFontSize);
+            box.x = box.x + notBox.w;
 
-        let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
-        let a = m * this.s.baseFontSize/5;
-        let b = m * (3+this.s.baseFontSize)/5;
-        let c = Math.sqrt(4 * m + 1);
-        // LHS
-        this.p.beginShape();
-        this.p.vertex(      box.x + b, -box.h/2 + m);
-        this.p.bezierVertex(box.x + c, -box.h/2 + a,
-                            box.x + c,  box.h/2 - a,
-                            box.x + b,  box.h/2 - m);
-        this.p.vertex(      box.x + a,  box.h/2);
-        this.p.bezierVertex(box.x - c,  box.h/2 - a,
-                            box.x - c, -box.h/2 + a,
-                            box.x + a, -box.h/2);
-        this.p.endShape();
+            this.p.fill(this.color).noStroke().strokeJoin(this.p.ROUND);
 
-        // RHS
-        this.p.beginShape();
-        this.p.vertex(      box.w/2 - b, -box.h/2 + m);
-        this.p.bezierVertex(box.w/2 - c, -box.h/2 + a,
-                            box.w/2 - c,  box.h/2 - a,
-                            box.w/2 - b,  box.h/2 - m);
-        this.p.vertex(      box.w/2 - a,  box.h/2);
-        this.p.bezierVertex(box.w/2 + c,  box.h/2 - a,
-                            box.w/2 + c, -box.h/2 + a,
-                            box.w/2 - a, -box.h/2);
-        this.p.endShape();
+            let m = Math.sqrt(Math.max(1, box.h / this.s.mBox_h));
+            let a = m * this.s.baseFontSize/5;
+            let b = m * (3+this.s.baseFontSize)/5;
+            let c = Math.sqrt(4 * m + 1);
+            // LHS
+            this.p.beginShape();
+            this.p.vertex(      box.x + b, -box.h/2 + m);
+            this.p.bezierVertex(box.x + c, -box.h/2 + a,
+                                box.x + c,  box.h/2 - a,
+                                box.x + b,  box.h/2 - m);
+            this.p.vertex(      box.x + a,  box.h/2);
+            this.p.bezierVertex(box.x - c,  box.h/2 - a,
+                                box.x - c, -box.h/2 + a,
+                                box.x + a, -box.h/2);
+            this.p.endShape();
 
-        this.p.stroke(this.color).strokeCap(this.p.SQUARE).strokeWeight(sw);
-        this.p.noFill();
-        this.p.beginShape();
-        let h = 0.8 * notBox.h;
-        this.p.vertex(box.x - notBox.w, -h/2);
-        this.p.vertex(box.x - notBox.w/4, -h/2);
-        this.p.vertex(box.x - notBox.w/4, h/2);
-        this.p.endShape();
+            // RHS
+            this.p.beginShape();
+            this.p.vertex(      box.w/2 - b, -box.h/2 + m);
+            this.p.bezierVertex(box.w/2 - c, -box.h/2 + a,
+                                box.w/2 - c,  box.h/2 - a,
+                                box.w/2 - b,  box.h/2 - m);
+            this.p.vertex(      box.w/2 - a,  box.h/2);
+            this.p.bezierVertex(box.w/2 + c,  box.h/2 - a,
+                                box.w/2 + c, -box.h/2 + a,
+                                box.w/2 - a, -box.h/2);
+            this.p.endShape();
+
+            this.p.stroke(this.color).strokeCap(this.p.SQUARE).strokeWeight(sw);
+            this.p.noFill();
+            this.p.beginShape();
+            let h = 0.8 * notBox.h;
+            this.p.vertex(box.x - notBox.w, -h/2);
+            this.p.vertex(box.x - notBox.w/4, -h/2);
+            this.p.vertex(box.x - notBox.w/4, h/2);
+            this.p.endShape();
+        } else if (this.s.logicSyntax == 'binary') {
+            this.p.stroke(this.color).strokeCap(this.p.ROUND).strokeWeight(sw);
+            let yShift = this.s.baseFontSize/2 * this.scale/3;
+            this.p.line(box.x, box.y + yShift, box.x + box.w, box.y + yShift);
+        }
 
         this.p.strokeWeight(1);
     }
@@ -187,12 +205,20 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let box = this.s.font_up.textBounds("¬()", 0, 0, this.scale * this.s.baseFontSize);
+        let box: Rect = null;
+        let yShift: number = 0;
+        if (this.s.logicSyntax == 'logic') {
+            box = this.s.font_up.textBounds("¬()", 0, 0, this.scale * this.s.baseFontSize);
+            yShift = 0;
+        } else if (this.s.logicSyntax == 'binary') {
+            box = this.s.font_up.textBounds("X", 0, 0, this.scale * this.s.baseFontSize);
+            yShift = this.s.baseFontSize/2 * this.scale;
+        }
 
         let width = box.w + this._argumentBox.w;
         let height = Math.max(box.h, this._argumentBox.h);
 
-        return new Rect(-width/2, -height/2, width, height);
+        return new Rect(-width/2, -height/2 - yShift, width, height + yShift/4);
     }
 
     get _argumentBox(): Rect {
@@ -214,6 +240,9 @@ export
 
         let thisBox = this.boundingBox();
         let notBox = this.s.font_up.textBounds("¬", 0, 0, this.scale * this.s.baseFontSize);
+        if (this.s.logicSyntax == 'binary') {
+            notBox.w = 0;
+        }
         thisBox.x += notBox.w;
 
         if (this.dockingPoints["argument"]) {
