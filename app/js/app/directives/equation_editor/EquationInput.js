@@ -28,6 +28,7 @@ define(["p5",
                 state: "=",
                 questionDoc: "=",
                 editorMode: "=",
+                logicSyntax: "=",
             },
             restrict: "A",
             templateUrl: templateUrl,
@@ -185,7 +186,7 @@ define(["p5",
                         $("#equationModal").foundation("reveal", "close");
                     };
 
-                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
+                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode, scope.logicSyntax).then(function(finalState) {
                         scope.state = finalState;
                         if (finalState.hasOwnProperty("result") && finalState.result.hasOwnProperty("python")) {
                             element.find(".eqn-text-input")[0].value = finalState.result.python;

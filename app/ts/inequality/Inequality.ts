@@ -91,6 +91,8 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
+    logicSyntax: string = null;
+
     constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
@@ -137,6 +139,8 @@ export
 
     setup = () => {
         this.p.frameRate(7);
+
+        this.logicSyntax = this.scope.logicSyntax || 'logic';
 
         switch (this.scope.editorMode) {
             case 'maths':

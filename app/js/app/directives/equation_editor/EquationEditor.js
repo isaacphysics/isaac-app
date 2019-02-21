@@ -313,7 +313,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 // Parses available symbols and generates the menu bar. Then opens the editor.
                 // FIXME This function may or may not need refactoring to improve the flexibility of menu creation.
-                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
+                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode = 'maths', logicSyntax = 'logic') {
 
                     return new Promise(function (resolve, _reject) {
 
@@ -391,7 +391,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             };
                         scope.questionDoc = questionDoc;
                         scope.editorMode = editorMode;
-
+                        scope.logicSyntax = logicSyntax;
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
