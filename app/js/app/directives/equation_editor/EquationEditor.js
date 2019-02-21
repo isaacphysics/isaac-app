@@ -325,6 +325,9 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         delete scope.symbolLibrary.augmentedOps;
                         delete scope.symbolLibrary.allowVars;
 
+                        scope.editorMode = editorMode;
+                        scope.logicSyntax = logicSyntax;
+
                         // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
                         scope.symbolLibrary.allowVars = true;
 
@@ -334,7 +337,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         let onEqualityPage = document.location.pathname === '/equality';
                         let userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
-                        if (editorMode === "maths" && questionDoc && questionDoc.availableSymbols) {
+                        if ((editorMode === "maths" || editorMode === "logic") && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             let parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
@@ -390,8 +393,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 symbols: []
                             };
                         scope.questionDoc = questionDoc;
-                        scope.editorMode = editorMode;
-                        scope.logicSyntax = logicSyntax;
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
@@ -1111,6 +1112,61 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     return result;
                 };
 
+                let logicFunctions = function(syntax = 'logic') {
+                    console.log(scope);
+                    debugger;
+                    let labels = {
+                        logic: {
+                            and: "\\land",
+                            or: "\\lor",
+                            not: "\\lnot",
+                            equiv: "\\equiv",
+                            True: "\\mathsf{T}",
+                            False: "\\mathsf{F}"
+                        },
+                        binary: {
+                            and: "\\cdot",
+                            or: "+",
+                            not: "\\overline{x}",
+                            equiv: "\\equiv",
+                            True: "1",
+                            False: "0"
+                        }
+                    };
+                    return [
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "and" },
+                            menu: { label: labels[syntax]['and'], texLabel: true }
+                        },
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "or" },
+                            menu: { label: labels[syntax]['or'], texLabel: true }
+                        },
+                        {
+                            type: "LogicNot",
+                            properties: {},
+                            menu: { label: labels[syntax]['not'], texLabel: true }
+                        },
+                        {
+                            type: "Relation",
+                            properties: { relation: "equiv" },
+                            menu: { label: labels[syntax]['equiv'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: true },
+                            menu: { label: labels[syntax]['True'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: false },
+                            menu: { label: labels[syntax]['False'], texLabel: true }
+                        }
+                    ];
+                };
+
                 scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
@@ -1458,57 +1514,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     }
                     ],
 
-                    logicOps: [
-                        {
-                            type: "LogicBinaryOperation",
-                            properties: {
-                                operation: "and"
-                            },
-                            menu: {
-                                label: "\\land",
-                                texLabel: true
-                            }
-                        },
-                        {
-                            type: "LogicBinaryOperation",
-                            properties: {
-                                operation: "or"
-                            },
-                            menu: {
-                                label: "\\lor",
-                                texLabel: true
-                            }
-                        },
-                        {
-                            type: "LogicNot",
-                            properties: {},
-                            menu: {
-                                label: "\\lnot",
-                                texLabel: true
-                            }
-                        },
-                        {
-                            type: "Relation",
-                            properties: {
-                                relation: "equiv"
-                            },
-                            menu: {
-                                label: "\\equiv",
-                                texLabel: true,
-                            }
-                        },
-                        {
-                            type: "LogicLiteral",
-                            properties: { value: true },
-                            menu: { label: "\\mathsf{T}", texLabel: true }
-                        },
-                        {
-                            type: "LogicLiteral",
-                            properties: { value: false },
-                            menu: { label: "\\mathsf{F}", texLabel: true }
-                        }
-
-                    ],
+                    logicOps: logicFunctions(scope.logicSyntax),
 
                     trig: [{
                         type: "Fn",
