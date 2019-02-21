@@ -54,20 +54,38 @@ export
         super(p, s);
         this.s = s;
         this.operation = operation;
-        switch(this.operation) {
-          case 'and':
-            this.latexSymbol = '\\land';
-            this.pythonSymbol = '&';
-            this.mathmlSymbol = '∧';
-            break;
-          case 'or':
-            this.latexSymbol = '\\lor';
-            this.pythonSymbol = '|';
-            this.mathmlSymbol = '∨';
-            break;
-          default:
-            this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.operation;
-            break;
+        if (this.s.logicSyntax == 'logic') {
+            switch(this.operation) {
+            case 'and':
+                this.latexSymbol = '\\land';
+                this.pythonSymbol = '&';
+                this.mathmlSymbol = '∧';
+                break;
+            case 'or':
+                this.latexSymbol = '\\lor';
+                this.pythonSymbol = '|';
+                this.mathmlSymbol = '∨';
+                break;
+            default:
+                this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.operation;
+                break;
+            }
+        } else if (this.s.logicSyntax == 'binary') {
+            switch(this.operation) {
+            case 'and':
+                this.latexSymbol = '\\cdot';
+                this.pythonSymbol = '&';
+                this.mathmlSymbol = '·';
+                break;
+            case 'or':
+                this.latexSymbol = '+';
+                this.pythonSymbol = '|';
+                this.mathmlSymbol = '+';
+                break;
+            default:
+                this.latexSymbol = this.pythonSymbol = this.mathmlSymbol = this.operation;
+                break;
+            }
         }
 
         this.docksTo = ['operator'];
@@ -146,7 +164,7 @@ export
      * @returns {Rect} The bounding box
      */
     boundingBox(): Rect {
-        let s = "∨";
+        let s = 'm';
         let box = this.s.font_up.textBounds(s, 0, 0, this.scale*this.s.baseFontSize*0.8);
         return new Rect(-box.w/2, box.y, box.w, box.h);
     }
