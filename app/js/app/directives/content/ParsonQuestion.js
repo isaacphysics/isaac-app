@@ -25,25 +25,23 @@ define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"
             templateUrl: templateUrl,
 
             controller: ["$scope", function(scope) {
+                let ctrl = this;
+
                 scope.tabWidth = 40;
-                scope.maxIndent = 3;
+                scope.maxIndent = 2; // TODO initialise this value fromthe question
 
                 scope.parsonQuestionItems = [
-                    {id: 123, value:'print("C")', indentation: 0},
-                    {id: 232, value:'print("A")', indentation: 0},
-                    {id: 333, value:'print("B")', indentation: 0},
-                ]
-                scope.parsonAnswerItems = [
+                    {id: 123, value:'print("C")', indentation: 0, code: true},
+                    {id: 232, value:'print("A")', indentation: 0, code: true},
+                    {id: 333, value:'print("B")', indentation: 0, code: true},
                 ]
 
                 scope.parsonDragOptions = {
                     additionalPlaceholderClass: 'parson-item',
                     accept: function(source, target) {
-                        //if (target.getAttribute(tab-depth))
                         let targetOffset = source.element[0].getBoundingClientRect().left - target.element[0].getBoundingClientRect().left;
                         if (targetOffset > scope.tabWidth) {
                             let indentation = Math.max(Math.min(Math.floor(targetOffset / scope.tabWidth), scope.maxIndent), 0)
-                            // placeholder margin y = targetOffset/tabWidth
                             $(".as-sortable-placeholder").css("margin-left", (scope.tabWidth * indentation) + "px");
                             source.parsonItem.indentation = indentation;
                         } else {
@@ -54,24 +52,22 @@ define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"
                     }
                 };
 
+                scope.initaliseState = function() {
+                    scope.parsonAnswerItems = []; // TODO swap with scope.doc.seed or something if it exists
+                    scope.parsonItemOptions = angular.copy(scope.parsonQuestionItems);
+                };
+                scope.initaliseState();
 
-                let ctrl = this;
-
+                // manage selected value
                 ctrl.selectedValue = null;
-
-                scope.$watch("ctrl.selectedValue", function(v, oldV) {
-                    if (v === oldV) {
-                        return; // Init
-                    }
-
+                scope.$watch("ctrl.selectedValue", function(value, oldValue) {
+                    if (value === oldValue) { return; /* Init */ }
                     scope.question.selectedChoice = scope.question.selectedChoice || { type: "stringChoice" };
-                    scope.question.selectedChoice.value = v;
+                    scope.question.selectedChoice.value = value;
                 });
-
                 if (scope.question.selectedChoice) {
                     ctrl.selectedValue = scope.question.selectedChoice.value;
                 }
-
             }],
 
             controllerAs: "ctrl",

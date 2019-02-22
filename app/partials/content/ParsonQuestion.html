@@ -5,27 +5,31 @@
         </div>
     </div>
     <div class="row ru-answer-block-panel">
-        <div class="medium-7 medium-offset-1 columns end no-print">
-            <div as-sortable="parsonDragOptions" ng-model="parsonQuestionItems" class="parson-panel">
-                <div ng-repeat="parsonItem in parsonQuestionItems" as-sortable-item class="parson-item">
-                    <div as-sortable-item-handle>{{parsonItem.value}}</div>
+        <div class="small-8 medium-7 medium-offset-1 columns end no-print">
+            <div class="parson-panel">
+                <div as-sortable="parsonDragOptions" ng-model="parsonItemOptions">
+                    <div ng-repeat="parsonItem in parsonItemOptions" as-sortable-item class="parson-item">
+                        <div as-sortable-item-handle>
+                            <code ng-show="{{parsonItem.code}}">{{parsonItem.value}}</code>
+                            <span ng-hide="{{parsonItem.code}}">{{parsonItem.value}}</span>
+                        </div>
+                    </div>
                 </div>
+                <button ng-show="{{parsonItemOptions != parsonQuestionItems}}" ng-click="initaliseState()">Reset</button>
             </div>
         </div>
-        <div class="medium-7 columns end no-print">
+        <div class="small-8 medium-7 columns end no-print">
             <div as-sortable="parsonDragOptions" ng-model="parsonAnswerItems" class="parson-panel">
+                <div ng-hide="parsonAnswerItems.length" class="parson-item parson-item-instruction">
+                    <code>Your answer</code>
+                </div>
                 <div ng-repeat="parsonItem in parsonAnswerItems" as-sortable-item class="parson-item" style="margin-left: {{tabWidth * parsonItem.indentation}}px">
-                    <div as-sortable-item-handle>{{parsonItem.value}}</div>
+                    <div as-sortable-item-handle>
+                        <code ng-show="{{parsonItem.code}}">{{parsonItem.value}}</code>
+                        <span ng-hide="{{parsonItem.code}}">{{parsonItem.value}}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <hr />
-    <div class="row ru-answer-block-panel">
-        <div class="small-13 small-offset-1 columns">{{parsonQuestionItems}}</div>
-    </div>
-    <hr />
-    <div class="row ru-answer-block-panel">
-        <div class="small-13 small-offset-1 columns">{{parsonAnswerItems}}</div>
     </div>
 </div>
