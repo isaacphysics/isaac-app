@@ -324,9 +324,11 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         delete scope.symbolLibrary.customChemicalSymbols;
                         delete scope.symbolLibrary.augmentedOps;
                         delete scope.symbolLibrary.allowVars;
+                        delete scope.symbolLibrary.logicOps;
 
                         scope.editorMode = editorMode;
                         scope.logicSyntax = logicSyntax;
+                        scope.symbolLibrary.logicOps = logicFunctions(logicSyntax);
 
                         // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
                         scope.symbolLibrary.allowVars = true;
@@ -1113,8 +1115,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                 };
 
                 let logicFunctions = function(syntax = 'logic') {
-                    console.log(scope);
-                    debugger;
                     let labels = {
                         logic: {
                             and: "\\land",
