@@ -90,7 +90,10 @@ export
                 this.latexSymbol = {};
                 this.mhchemSymbol = this.pythonSymbol = this.mathmlSymbol = this.glyph = {};
         }
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation', 'differential_argument'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation', 'differential_argument'];
+        if (this.s.scope.editorMode != 'logic') {
+            this.docksTo.push('operator');
+        }
     }
 
 
