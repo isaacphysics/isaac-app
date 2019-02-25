@@ -88,7 +88,7 @@ export
             }
         }
 
-        this.docksTo = ['operator'];
+        this.docksTo = ['operator', 'operator_brackets'];
     }
 
     /**
