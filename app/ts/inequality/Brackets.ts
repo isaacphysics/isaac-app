@@ -139,10 +139,10 @@ export
             rhs = this.latexSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child) {
                     expression += '_{' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
@@ -157,10 +157,10 @@ export
             rhs = this.mhchemSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['subscript'].child) {
                     expression += this.dockingPoints['subscript'].child.formatExpressionAs(format);
                 }
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
@@ -174,10 +174,10 @@ export
             rhs = this.pythonSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child) {
                     expression += '**(' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + ')';
                 }
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + ')';
                 }
             } else {
@@ -192,7 +192,7 @@ export
             }
         } else if (format == "subscript") {
             expression += "{BRACKETS}";
-        } else if (format == 'mathml') {
+        } else if (format == 'mathml') { // FIXME Check for sub/superscript to exist before accessing them.
             lhs = this.mathmlSymbol['lhs'];
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
