@@ -262,7 +262,7 @@ export
         let thisBox = this.boundingBox();
 
         let superscriptWidth = 0;
-        if (this.dockingPoints['superscript'] && this.dockingPoints["superscript"]) {
+        if (this.dockingPoints["superscript"]) {
             let dp = this.dockingPoints["superscript"];
             if (dp.child) {
                 let child = dp.child;
@@ -277,7 +277,7 @@ export
         }
 
         let subscriptWidth = 0;
-        if (this.dockingPoints['subscript'] && this.dockingPoints["subscript"]) {
+        if (this.dockingPoints["subscript"]) {
             let dp = this.dockingPoints["subscript"];
             if (dp.child) {
                 let child = dp.child;
