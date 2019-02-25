@@ -1163,6 +1163,16 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             type: "LogicLiteral",
                             properties: { value: false },
                             menu: { label: labels[syntax]['False'], texLabel: true }
+                        },
+                        {
+                            type: "Brackets",
+                            properties: {
+                                type: "round",
+                            },
+                            menu: {
+                                label: "(x)",
+                                texLabel: true
+                            }
                         }
                     ];
                 };
