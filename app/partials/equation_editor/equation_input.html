@@ -13,14 +13,14 @@
             cursor: pointer;
             background: white;"
             >
-            <div class="edit-eqn-icon" ng-show="state.result" style="position: absolute; left: 10px; color: #999; bottom: 0; top: 0; display: flex; align-items: center;">&#9998;</div>
+            <div class="edit-eqn-icon" ng-show="state.result.tex" style="position: absolute; left: 10px; color: #999; bottom: 0; top: 0; display: flex; align-items: center;">&#9998;</div>
             <div class="inner-eqn-preview">&nbsp;</div>
         </a>
     </div>
 </div>
-<div ng-show="editorMode == 'maths' && (isEquality || $root.userPreferences.BETA_FEATURE.EQN_TEXT_ENTRY)">
+<div ng-show="editorMode == 'maths'">
     <div class="equation-editor-text-entry" style="height: 0; overflow: hidden"></div>
-    <input ng-keyup="textEdit()" ng-paste="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="Or type your answer (beta!)" style="font-family: monospace; font-size: 1.4rem;" autocorrect="off" autocapitalize="off" spellcheck="false"></input>
+    <input ng-keyup="textEdit()" ng-paste="textEdit()" type="text" class="eqn-text-input" maxlength="200" placeholder="Or type your answer here" style="font-family: monospace; font-size: 1.4rem;" autocorrect="off" autocapitalize="off" spellcheck="false"></input>
     <div ng-show="textEntryError.length > 0" style='margin-bottom:10px'><strong>Careful!</strong>
         <ul>
             <li ng-repeat="e in textEntryError">{{e}}</li>
