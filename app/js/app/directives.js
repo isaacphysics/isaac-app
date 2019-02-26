@@ -166,6 +166,8 @@ define(function(require) {
 
 	.directive('isaacStringMatchQuestion', require("./directives/content/StringMatchQuestion"))
 
+	.directive('isaacFreeTextQuestion', require("./directives/content/FreeTextQuestion"))
+
 	.directive('isaacQuickQuestion', require("./directives/content/QuickQuestion"))
 
 	.directive('isaacPod', require("./directives/content/Pod"))

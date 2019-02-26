@@ -15,9 +15,6 @@
  */
 define([], function() {
 	return ["$state", "$location", function($state, $location) {
-		const MAX_LABEL_LENGTH = 17;
-		void MAX_LABEL_LENGTH;
-		
 		let defaultAction = {
 			disabled: false
 		}

@@ -39,6 +39,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 					pageCompleted: false,
 					id: scope.doc.id,
 					type: scope.doc.type,
+					passedFrontEndValidation: true,
 					relatedConcepts: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, {type: "isaacConceptPage"})),
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						let isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >= 0;
@@ -231,8 +232,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 
 					if (newVal === oldVal)
 						return; // Init
-
-					scope.canSubmit = true;
+					scope.canSubmit = scope.question.passedFrontEndValidation;
 					scope.question.validationResponse = null;
 				}, true);
 
