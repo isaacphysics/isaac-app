@@ -119,7 +119,10 @@ export
         }
 
         // FIXME Not sure this is entirely right. Maybe make the "type" in DockingPoint an array? Works for now.
-        this.docksTo = ['differential', 'operator', 'chemical_element', 'state_symbol', 'particle', "operator_brackets"];
+        this.docksTo = ['operator', 'chemical_element', 'state_symbol', 'particle', "operator_brackets"];
+        // WARNING ^^^ There used to be 'differential in there. Removing it, prevents relations from docking as brackets arguments.
+        // THIS MAY BREAK THINGS BUT I CAN'T SEE HOW RIGHT NOW.
+        // TODO Check that this doesn't break stuff by accident. If it does, the solution is to exclude it only for logic mode.
     }
 
     /**
