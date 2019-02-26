@@ -131,7 +131,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     let w = 0;
                     if (scope.state.result) {
                         let spans = rp.find(".katex > span.katex-html > span");
-                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c);
+                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c, 0);
                     }
                     let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
