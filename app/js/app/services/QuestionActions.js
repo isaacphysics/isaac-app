@@ -41,7 +41,7 @@ define([], function() {
 				if (scope.question.selectedChoice != null && scope.canSubmit) {
 					scope.canSubmit = false;
 
-					if (scope.doc.type == "isaacSymbolicQuestion" || scope.doc.type == "isaacSymbolicChemistryQuestion") {
+					if (["isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacSymbolicLogicQuestion"].indexOf(scope.doc.type) >= 0) {
 						let selectedChoice = JSON.parse(scope.question.selectedChoice.value);
 						if (selectedChoice.hasOwnProperty("symbols")) {
 							// If we have symbols, this was definitely the graphical editor. Ensure an answer was provided:

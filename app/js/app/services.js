@@ -81,7 +81,7 @@
 
 	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
-	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
+	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacSymbolicLogicQuestion", "isaacAnvilQuestion"])
 
 	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017', 'ft_core_2018'])
 });

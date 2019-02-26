@@ -90,7 +90,10 @@ export
                 this.latexSymbol = {};
                 this.mhchemSymbol = this.pythonSymbol = this.mathmlSymbol = this.glyph = {};
         }
-        this.docksTo = ['symbol', 'operator', 'exponent', 'subscript', 'chemical_element', 'operator_brackets', 'relation', 'differential_argument'];
+        this.docksTo = ['symbol', 'exponent', 'subscript', 'chemical_element', 'relation', 'differential_argument'];
+        if (this.s.scope.editorMode != 'logic') {
+            this.docksTo.push('operator', 'operator_brackets');
+        }
     }
 
 
@@ -108,11 +111,13 @@ export
 
         this.dockingPoints["argument"] = new DockingPoint(this, this.p.createVector(0, -this.s.xBox_h/2), 1, ["symbol", "differential"], "argument");
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * this.s.mBox_w/4 + this.scale * 20, -this.s.xBox_h/2), 1, ["operator_brackets"], "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["exponent"], "superscript");
-        if (this.mode == 'chemistry') {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["subscript"], "subscript");
-        } else {
-            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["symbol_subscript", "subscript_maths"], "subscript");
+        if (this.s.scope.editorMode != 'logic') {
+            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["exponent"], "superscript");
+            if (this.mode == 'chemistry') {
+                this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["subscript"], "subscript");
+            } else {
+                this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -(box.h + descent + this.scale * 20)), 2/3, ["symbol_subscript", "subscript_maths"], "subscript");
+            }
         }
     }
 
@@ -134,10 +139,10 @@ export
             rhs = this.latexSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child) {
                     expression += '_{' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
@@ -152,10 +157,10 @@ export
             rhs = this.mhchemSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['subscript'].child) {
                     expression += this.dockingPoints['subscript'].child.formatExpressionAs(format);
                 }
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['superscript'].child) {
                     expression += '^{' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '}';
                 }
             } else {
@@ -169,10 +174,10 @@ export
             rhs = this.pythonSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 expression += lhs + this.dockingPoints['argument'].child.formatExpressionAs(format) + rhs;
-                if (this.dockingPoints['superscript'].child) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child) {
                     expression += '**(' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + ')';
                 }
-                if (this.dockingPoints['subscript'].child) {
+                if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child) {
                     expression += '_(' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + ')';
                 }
             } else {
@@ -192,11 +197,11 @@ export
             rhs = this.mathmlSymbol['rhs'];
             if (this.dockingPoints['argument'].child) {
                 let brackets = '<mfenced open="' + lhs + '" close="' + rhs + '"><mrow>' + this.dockingPoints['argument'].child.formatExpressionAs(format) + '</mrow></mfenced>';
-                if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child != null) {
+                if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child != null) {
                     expression += '<msubsup>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
-                } else if (this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"].child == null) {
+                } else if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child != null && this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child == null) {
                     expression = '<msup>' + brackets + '<mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
-                } else if (this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"].child != null) {
+                } else if (this.dockingPoints['superscript'] && this.dockingPoints['superscript'].child == null && this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child != null) {
                     expression = '<msub>' + brackets + '<mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
                 } else {
                     expression = brackets;

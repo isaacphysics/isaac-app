@@ -37,6 +37,10 @@ import { ChemicalElement } from './ChemicalElement';
 import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
 
+import { LogicBinaryOperation } from './LogicBinaryOperation';
+import { LogicLiteral } from './LogicLiteral';
+import { LogicNot } from './LogicNot';
+
 // This is where the fun starts
 
 // This is the "main" app with the update/render loop and all that jazz.
@@ -87,6 +91,8 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
+    logicSyntax: string = null;
+
     constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
@@ -134,8 +140,11 @@ export
     setup = () => {
         this.p.frameRate(7);
 
+        this.logicSyntax = this.scope.logicSyntax || 'logic';
+
         switch (this.scope.editorMode) {
             case 'maths':
+            case 'logic':
                 this.baseFontSize = 50;
                 this.baseDockingPointSize = 50/3;
                 break;
@@ -152,6 +161,8 @@ export
         this.p.createCanvas(this.width, this.height);
 
         this.prevTouch = this.p.createVector(0, 0);
+
+        this.initialSymbolsToParse = [];
 
         try {
             _.each(this.initialSymbolsToParse || [], s => {
@@ -348,6 +359,15 @@ export
                 break;
             case "Particle":
                 w = new Particle(this.p, this, node["properties"]["particle"], node["properties"]["type"]);
+                break;
+            case "LogicBinaryOperation":
+                w = new LogicBinaryOperation(this.p, this, node["properties"]["operation"]);
+                break;
+            case "LogicLiteral":
+                w = new LogicLiteral(this.p, this, node["properties"]["value"]);
+                break;
+            case "LogicNot":
+                w = new LogicNot(this.p, this);
                 break;
             default: // this would be a Widget...
                 break;

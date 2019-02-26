@@ -131,7 +131,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     let w = 0;
                     if (scope.state.result) {
                         let spans = rp.find(".katex > span.katex-html > span");
-                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c);
+                        w = spans.map((i, e) => $(e).width()).toArray().reduce((a, c) => a + c, 0);
                     }
                     let resultPreview = $(".result-preview");
                     resultPreview.stop(true);
@@ -313,7 +313,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
 
                 // Parses available symbols and generates the menu bar. Then opens the editor.
                 // FIXME This function may or may not need refactoring to improve the flexibility of menu creation.
-                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode) {
+                $rootScope.showEquationEditor = function (initialState, questionDoc, editorMode = 'maths', logicSyntax = 'logic') {
 
                     return new Promise(function (resolve, _reject) {
 
@@ -324,6 +324,11 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         delete scope.symbolLibrary.customChemicalSymbols;
                         delete scope.symbolLibrary.augmentedOps;
                         delete scope.symbolLibrary.allowVars;
+                        delete scope.symbolLibrary.logicOps;
+
+                        scope.editorMode = editorMode;
+                        scope.logicSyntax = logicSyntax;
+                        scope.symbolLibrary.logicOps = logicFunctions(logicSyntax);
 
                         // FIXME: This fixes /equality, but we need to check what happens if a question has no available symbols/letters.
                         scope.symbolLibrary.allowVars = true;
@@ -334,7 +339,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         let onEqualityPage = document.location.pathname === '/equality';
                         let userIsPrivileged = onEqualityPage || _.includes(['ADMIN', 'CONTENT_EDITOR', 'EVENT_MANAGER'], scope.user.role);
 
-                        if (editorMode === "maths" && questionDoc && questionDoc.availableSymbols) {
+                        if ((editorMode === "maths" || editorMode === "logic") && questionDoc && questionDoc.availableSymbols) {
                             scope.symbolLibrary.augmentedOps = scope.symbolLibrary.reducedOps;
                             scope.symbolLibrary.augmentedTrig = scope.symbolLibrary.reducedTrigFunctions;
                             let parsedSymbols = parseCustomSymbols(questionDoc.availableSymbols);
@@ -390,8 +395,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                                 symbols: []
                             };
                         scope.questionDoc = questionDoc;
-                        scope.editorMode = editorMode;
-
                         scope.log = {
                             type: "EQN_EDITOR_LOG",
                             questionId: scope.questionDoc ? scope.questionDoc.id : null,
@@ -1111,6 +1114,69 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                     return result;
                 };
 
+                let logicFunctions = function(syntax = 'logic') {
+                    let labels = {
+                        logic: {
+                            and: "\\land",
+                            or: "\\lor",
+                            not: "\\lnot",
+                            equiv: "\\equiv",
+                            True: "\\mathsf{T}",
+                            False: "\\mathsf{F}"
+                        },
+                        binary: {
+                            and: "\\cdot",
+                            or: "+",
+                            not: "\\overline{x}",
+                            equiv: "\\equiv",
+                            True: "1",
+                            False: "0"
+                        }
+                    };
+                    return [
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "and" },
+                            menu: { label: labels[syntax]['and'], texLabel: true }
+                        },
+                        {
+                            type: "LogicBinaryOperation",
+                            properties: { operation: "or" },
+                            menu: { label: labels[syntax]['or'], texLabel: true }
+                        },
+                        {
+                            type: "LogicNot",
+                            properties: {},
+                            menu: { label: labels[syntax]['not'], texLabel: true }
+                        },
+                        {
+                            type: "Relation",
+                            properties: { relation: "equiv" },
+                            menu: { label: labels[syntax]['equiv'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: true },
+                            menu: { label: labels[syntax]['True'], texLabel: true }
+                        },
+                        {
+                            type: "LogicLiteral",
+                            properties: { value: false },
+                            menu: { label: labels[syntax]['False'], texLabel: true }
+                        },
+                        {
+                            type: "Brackets",
+                            properties: {
+                                type: "round",
+                            },
+                            menu: {
+                                label: "(x)",
+                                texLabel: true
+                            }
+                        }
+                    ];
+                };
+
                 scope.symbolLibrary = {
 
                     latinLetters: stringSymbols(latinLetters),
@@ -1457,6 +1523,8 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                         }
                     }
                     ],
+
+                    logicOps: logicFunctions(scope.logicSyntax),
 
                     trig: [{
                         type: "Fn",
