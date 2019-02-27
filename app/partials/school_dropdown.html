@@ -1,7 +1,8 @@
 <div>
-	<input ng-hide="selection.school" type="text" ng-model="searchText" placeholder="Search by school name or postcode">
-	<div ng-show="selection.school" class="account-school">
+	<input ng-hide="selection.school.name" type="text" ng-model="searchText" placeholder="Search by school name or postcode">
+	<div ng-show="selection.school.name" class="account-school">
 		<span>{{selection.school.name}},</span> <span>{{selection.school.postcode}}</span> <a href="javascript:void(0);" class="account-school-remove" ng-click="selection.school = null">x</a>
+		<span ng-show="selection.school.closed">(CLOSED)</span>
 	</div>
 	<ul ng-show="searchResults.length > 0" class="account-school-options">
 		<li ng-repeat="school in searchResults" ng-click="selection.school=school">
