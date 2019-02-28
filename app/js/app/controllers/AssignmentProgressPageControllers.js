@@ -227,6 +227,28 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
         return result;
     };
 
+    scope.studentQuestionInfo = function(studentProgress, questions, index) {
+        return "Student: " + studentProgress.user.givenName + " " + studentProgress.user.familyName + "\n" +
+        "Question: " + questions[index].title + "\n" +
+        "Parts correct: " + studentProgress.correctPartResults[index] + " (" + scope.formatMark(studentProgress.correctPartResults[index], questions[index].questionPartsTotal, true) + ")\n" +
+        "Parts not attempted: " + studentProgress.notAttemptedPartResults[index] + " (" + scope.formatMark(studentProgress.notAttemptedPartResults[index], questions[index].questionPartsTotal, true) + ")\n" +
+        "Parts incorrect: " + studentProgress.incorrectPartResults[index] + " (" + scope.formatMark(studentProgress.incorrectPartResults[index], questions[index].questionPartsTotal, true) + ")";
+    }
+
+    scope.studentQuestionPartSummaryInfo = function(studentProgress, gameboardTitle, totalQuestionParts) {
+        return "Student: " + studentProgress.user.givenName + " " + studentProgress.user.familyName + "\n" +
+        "Assignment: " + gameboardTitle + "\n" +
+        "Question parts correct: " + studentProgress.correctQuestionPartsCount + " (" + scope.formatMark(studentProgress.correctQuestionPartsCount, totalQuestionParts, true) + ")\n" +
+        "Total number of question parts: " + totalQuestionParts;
+    }
+
+    scope.studentQuestionSummaryInfo = function(studentProgress, gameboardTitle, totalQuestions) {
+        return "Student: " + studentProgress.user.givenName + " " + studentProgress.user.familyName + "\n" +
+        "Assignment: " + gameboardTitle + "\n" +
+        "Question pages correct: " + studentProgress.tickCount + " (" + scope.formatMark(studentProgress.tickCount, totalQuestions, true) + ")\n" +
+        "Total number of question pages: " + totalQuestions;
+    } 
+
     scope.enabledLeftArrow = function(id) {
         return scope.assignmentSelectedQuestion[id] > 0;
     };

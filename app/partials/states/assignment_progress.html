@@ -4,19 +4,19 @@
         <p class="hide-for-small-only">Track your class performance</p>
     </div>
     <div class="medium-3 columns text-right hide-for-small-only">
-        <span data-ot="Click on your groups to see the assignments you have set. View your students' progress by question." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
+        <span title="Click on your groups to see the assignments you have set. View your students' progress by question." class="has-tip" aria-haspopup="true"><span class="icon-help"></span>Help</span>
     </div>
     <div class="columns medium-5 medium-offset-13 hide-for-small-only" style="margin-top:-45px;">
          <label class="hide-for-small-only">Sort groups: </label>
          <select ng-model="groupSortOption" ng-options="option.label for option in groupSortOptions"></select>
     </div>
 </div>
-<div class="row" ng-show="groups.length == 0">
+<div class="row" ng-if="groups.length == 0">
     <div class="large-6 medium-6 small-centered columns text-center">
       <h3>You'll need to create a group using <a ui-sref="groups">Manage Groups</a> to set an assignment.</h3>
     </div>
 </div>
-<div class="row" ng-show="groups.length > 0">
+<div class="row" ng-if="groups.length > 0">
     <div class="large-16 columns">
         <div class="tabs-content progress-tabs-content">
             <!--
@@ -67,10 +67,10 @@
                             <dd ng-repeat="assignment in groupAssignments[group._id]" ng-class="{active: assignmentExpanded[assignment._id]}">
                                 <div class="accordion-board-header" ng-click="assignmentExpanded[assignment._id] = !assignmentExpanded[assignment._id]">
                                     <div class="accordion-board-title">
-                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}<span class="accordion-board-due-date" ng-show="assignment.dueDate">(Due: {{assignment.dueDate | date:'dd/MM/yyyy'}})</span>
+                                        {{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}}<span class="accordion-board-due-date" ng-if="assignment.dueDate">(Due: {{assignment.dueDate | date:'dd/MM/yyyy'}})</span>
                                     </div>
                                     <span class="accordion-board-link" style="color:#509e2e">
-                                        <span ng-show="!assignmentExpanded[assignment._id]">View </span><span ng-show="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
+                                        <span ng-if="!assignmentExpanded[assignment._id]">View </span><span ng-if="assignmentExpanded[assignment._id]">Hide </span><span class="show-for-medium-up">mark sheet</span><span class="icon-link invisible"></span>
                                     </span><span class="accordion-board-link">&nbsp; or &nbsp; </span>
                                     <a class="accordion-board-link" ng-click="getAssignmentDownloadLink(assignment._id, $event)" target="_blank">Download CSV</a>                        
                                 </div>
@@ -83,14 +83,14 @@
                                     <!--
                                         Board progress overview
                                     -->
-                                    <div class="board-progress" ng-show="assignmentProgress[assignment._id].studentsCorrect != null">
+                                    <div class="board-progress" ng-if="assignmentProgress[assignment._id].studentsCorrect != null">
                                         <strong>{{assignmentProgress[assignment._id].studentsCorrect}}</strong> out of <strong>{{assignmentProgress[assignment._id].length}}</strong> students have completed the board <a target="_blank" ui-sref="board({'id':assignment.gameBoard.id})"><strong class="show-for-medium-up">{{assignment.gameBoard.title || generateGameBoardTitle(assignment.gameBoard)}} </strong></a><strong class="strong-mobile">correctly</strong>.
                                     </div>
 
                                     <!--
                                         Question and control arrows
                                     -->
-                                    <div class="board-question-wrap" ng-show="assignmentProgress[assignment._id].length > 0">
+                                    <div class="board-question-wrap" ng-if="assignmentProgress[assignment._id].length > 0">
                                         <a href="javascript:void(0)" class="icon-arrow-left"
                                         ng-class="{'enabled': enabledLeftArrow(assignment._id)}"
                                         ng-click="assignmentSelectedQuestion[assignment._id] = enabledLeftArrow(assignment._id) ? assignmentSelectedQuestion[assignment._id] - 1 : assignmentSelectedQuestion[assignment._id]"></a>
@@ -108,7 +108,7 @@
                                     <!--
                                         Progress table 
                                     -->
-                                    <div class="table-responsive" id="assignment-{{assignment._id}}-progress" ng-show="assignmentProgress[assignment._id].length > 0">
+                                    <div class="table-responsive" id="assignment-{{assignment._id}}-progress" ng-if="assignmentProgress[assignment._id].length > 0">
                                         <table class="table-progress">
                                             <thead>
                                                 <tr>
@@ -118,7 +118,7 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        title='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
@@ -126,12 +126,12 @@
                                                             {{average}}%
                                                         </div>
                                                     </td>
-                                                    <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" data-ot="Number of correct question parts from the total number of question parts in this assignment">
+                                                    <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" title="Number of correct question parts from the total number of question parts in this assignment">
                                                         <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPartPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Parts
                                                         </div>
                                                     </td>
-                                                    <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" data-ot="Number of completed questions from the total number of questions in this assignment">
+                                                    <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" title="Number of completed questions from the total number of questions in this assignment">
                                                         <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Qs
                                                         </div>
@@ -151,43 +151,27 @@
                                                         ng-if="studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot-escape-content="false"
-                                                        data-ot="
-                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
-                                                        Question: {{assignment.gameBoard.questions[$index].title | escapeHtml}}<br/>
-                                                        Parts correct: {{studentProgress.correctPartResults[$index]}} ({{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
-                                                        Parts not attempted: {{studentProgress.notAttemptedPartResults[$index]}} ({{formatMark(studentProgress.notAttemptedPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})<br/>
-                                                        Parts incorrect: {{studentProgress.incorrectPartResults[$index]}} ({{formatMark(studentProgress.incorrectPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, true)}})">
+                                                        title="{{studentQuestionInfo(studentProgress, assignment.gameBoard.questions, $index)}}">
                                                         {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
                                                         ng-if="!studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        data-ot="Not Sharing">
+                                                        title="Not Sharing">
                                                     </td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column left"
-                                                        data-ot-escape-content="false"
-                                                        data-ot="
-                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
-                                                        Assignment: {{assignment.gameBoard.title | escapeHtml}}<br/>
-                                                        Question parts correct: {{studentProgress.correctQuestionPartsCount}} ({{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], true)}})<br/>
-                                                        Total number of question parts: {{assignmentTotalQuestionParts[assignment._id]}}">
+                                                        title="{{studentQuestionPartSummaryInfo(studentProgress, assignment.gameBoard.title, assignmentTotalQuestionParts[assignment._id])}}">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
                                                     </td>
-                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" data-ot="Not Sharing"></td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" title="Not Sharing"></td>
                                                     <td ng-if="studentProgress.user.authorisedFullAccess"
                                                         class="total-column right"
-                                                        data-ot-escape-content="false"
-                                                        data-ot="
-                                                        Student: {{studentProgress.user.givenName | escapeHtml}} {{studentProgress.user.familyName | escapeHtml}}<br/>
-                                                        Assignment: {{assignment.gameBoard.title | escapeHtml}}<br/>
-                                                        Question pages correct: {{studentProgress.tickCount}} ({{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, true)}})<br/>
-                                                        Total number of question pages: {{assignment.gameBoard.questions.length}}">
+                                                        title="{{studentQuestionSummaryInfo(studentProgress, assignment.gameBoard.title, assignment.gameBoard.questions.length)}}">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}
                                                     </td>
-                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" data-ot="Not Sharing"></td>
+                                                    <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" title="Not Sharing"></td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
@@ -198,7 +182,7 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        data-ot='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        title='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
@@ -206,12 +190,12 @@
                                                             {{average}}%
                                                         </div>
                                                     </td>
-                                                    <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" data-ot="Number of correct question parts from the total number of question parts in this assignment">
+                                                    <td class="total-column left" ng-click="assignment.sortPupilsBy('totalQuestionPartPercentage')" title="Number of correct question parts from the total number of question parts in this assignment">
                                                         <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPartPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Parts
                                                         </div>
                                                     </td>
-                                                    <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" data-ot="Number of completed questions from the total number of questions in this assignment">
+                                                    <td class="total-column right" ng-click="assignment.sortPupilsBy('totalQuestionPercentage')" title="Number of completed questions from the total number of questions in this assignment">
                                                         <div class="sortable" ng-class="assignment.pupilSortOption == assignment.pupilSortOptions.totalQuestionPercentage ? assignment.pupilSortOption.reverse ? 'ascending' : 'descending' : ''">
                                                             Total Qs
                                                         </div>
