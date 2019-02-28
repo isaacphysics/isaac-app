@@ -25,6 +25,8 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 
     $scope.emailInviteFeatureAvailable = false;
 
+    $scope.largeNumberOfUsers = 100;
+
     $scope.selectedGroup = null;
     $scope.selectedGroupMembers = null;
     $scope.selectedGroupAdditionalManagers = null;

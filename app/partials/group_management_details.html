@@ -37,11 +37,11 @@
 
     <dl class="accordion group-accordion" ng-show="selectedGroup">
         <dd class="active">
-            <a class="group-accordion-header" ng-class="{'remove-border-bottom': selectedGroupMembers != null && selectedGroupMembers.length != 0}">
+            <a ng-click="showGroup = true;" class="group-accordion-header" ng-class="{'remove-border-bottom': selectedGroupMembers != null && selectedGroupMembers.length != 0 && (selectedGroupMembers.length < largeNumberOfUsers || showGroup)}">
                 {{selectedGroupMembers == null ? 0 : selectedGroupMembers.length}} users <span class="show-for-medium-up">in this group</span>
-                <!--span class="group-accordion-arrow"></span-->
+                <span class="right" ng-if="selectedGroupMembers.length > largeNumberOfUsers && !showGroup">Show&nbsp;<span class="group-accordion-arrow"></span></span>
             </a>
-            <div class="group-accordion-content">
+            <div ng-if="selectedGroupMembers.length < largeNumberOfUsers || showGroup" class="group-accordion-content">
                 <table class="group-table">
                     <tbody>
                         <tr ng-repeat="member in selectedGroupMembers" ng-class="{disabled: !member.authorisedFullAccess}">
