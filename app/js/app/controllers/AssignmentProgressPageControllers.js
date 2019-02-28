@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import Opentip from "../../lib/opentip-jquery.js";
-
 export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$timeout', function(scope, auth, api, gameBoardTitles, $timeout) {
     scope.setLoading(true);
 
@@ -306,11 +304,4 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
 
         // return api.getCSVDownloadLink(assignmentId);
     };
-
-    scope.$on('ngRepeatFinished', function(_ngRepeatFinishedEvent) {
-        $timeout(function(){
-            Opentip.findElements();
-        });
-    });
-
 }];

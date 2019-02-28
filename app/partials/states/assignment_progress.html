@@ -140,8 +140,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="studentProgress in assignmentProgress[assignment._id] | orderBy:assignment.pupilSortOption.value:assignment.pupilSortOption.reverse | showUndefinedLast:assignment.pupilSortOption.value"
-                                                    ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], pageSettings.colourBlind)"
-                                                    on-repeat-render="ngRepeatFinished">
+                                                    ng-class="getStateClass(studentProgress, null, assignmentTotalQuestionParts[assignment._id], pageSettings.colourBlind)">
                                                     <td class="student-name">
                                                         <span class="icon-person"></span>
                                                         <a ng-if="studentProgress.user.authorisedFullAccess" href="javascript:void(0)" target="_blank" ui-sref="userProgress({userId: studentProgress.user.id})">{{studentProgress.user.givenName}}<span class="show-for-large-up"> {{studentProgress.user.familyName}}</span></a>
