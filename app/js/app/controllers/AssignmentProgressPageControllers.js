@@ -240,14 +240,20 @@ export const PageController = ['$scope', 'auth', 'api', 'gameBoardTitles', '$tim
         "Assignment: " + gameboardTitle + "\n" +
         "Question parts correct: " + studentProgress.correctQuestionPartsCount + " (" + scope.formatMark(studentProgress.correctQuestionPartsCount, totalQuestionParts, true) + ")\n" +
         "Total number of question parts: " + totalQuestionParts;
-    }
+    };
 
     scope.studentQuestionSummaryInfo = function(studentProgress, gameboardTitle, totalQuestions) {
         return "Student: " + studentProgress.user.givenName + " " + studentProgress.user.familyName + "\n" +
         "Assignment: " + gameboardTitle + "\n" +
         "Question pages correct: " + studentProgress.tickCount + " (" + scope.formatMark(studentProgress.tickCount, totalQuestions, true) + ")\n" +
         "Total number of question pages: " + totalQuestions;
-    } 
+    };
+
+    scope.questionHeaderOverview = function(groupName, questionTitle, average) {
+        return average + "% of students in " + groupName + "\n" +
+        "have correctly completed or achieved mastery on the\n" +
+        questionTitle + " question page";
+    };
 
     scope.enabledLeftArrow = function(id) {
         return scope.assignmentSelectedQuestion[id] > 0;

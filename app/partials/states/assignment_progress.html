@@ -118,7 +118,7 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        title='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        title='{{questionHeaderOverview(group.groupName, assignment.gameBoard.questions[$index].title, average)}}'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
@@ -182,7 +182,7 @@
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
                                                         ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        title='{{average}}% of students in {{group.groupName}} have correctly completed or achieved mastery on the {{assignment.gameBoard.questions[$index].title}} question page'>
+                                                        title='{{questionHeaderOverview(group.groupName, assignment.gameBoard.questions[$index].title, average)}}'>
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
