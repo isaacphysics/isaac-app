@@ -293,26 +293,43 @@
 
 }
 
-.ru-answer-block input {
-    @include radius(3px);
-    box-shadow: none;
-    height: 2.7rem;
-    font-size: 1.6rem;
-    padding: 0 0.5rem 0 0.5rem;
-    font-style: italic;
+.ru-answer-block {
+    input, textarea {
+        @include radius(3px);
+        box-shadow: none;
+        font-size: 1.6rem;
+        font-style: italic;
 
-    .isaac-string-match-question & {
-        font-size: 1.4rem;
+        .isaac-string-match-question &, .isaac-free-text-question & {
+            font-size: 1.4rem;
 
-        &::-webkit-input-placeholder { /* Chrome */
-            color: #cccccc;
+            &::-webkit-input-placeholder { /* Chrome */
+                color: #cccccc;
+            }
+            &:-ms-input-placeholder { /* IE 10+ */
+                color: #cccccc;
+            }
+            &::-moz-placeholder { /* Firefox 19+ */
+                  color: #cccccc;
+                  opacity: 1;
+            }
         }
-        &:-ms-input-placeholder { /* IE 10+ */
-            color: #cccccc;
-        }
-        &::-moz-placeholder { /* Firefox 19+ */
-              color: #cccccc;
-              opacity: 1;
+    }
+
+    input {
+        height: 2.7rem;
+        padding: 0 0.5rem 0 0.5rem;
+    }
+
+    .input-warning li {
+        font-size: 1.1rem;
+        height: 1.5rem;
+    }
+
+    textarea {
+        padding: 1 0.5rem 1 0.5rem;
+        &.invalid-value {
+            color: $ru_red;
         }
     }
 
@@ -602,8 +619,15 @@
     .ru-answer span {
         // display: block;
     }
+    .ru-answer a.eqn-preview {
+        font-size: 1.5rem !important;
+
+        .edit-eqn-icon {
+            left: 5px !important;
+        }
+    }
     .ru-answer .katex span, .ru-answer .text-center span {
-        display: initial;
+        // display: initial;
     }
     .ru-answer a,
     .tabs.ru_tabs dd a {

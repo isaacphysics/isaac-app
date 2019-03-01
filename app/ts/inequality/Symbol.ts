@@ -25,6 +25,7 @@ import { BinaryOperation } from "./BinaryOperation";
 import { DockingPoint } from "./DockingPoint";
 import { Relation } from "./Relation";
 import { Num } from "./Num";
+import { LogicBinaryOperation } from "./LogicBinaryOperation";
 
 /** A class for representing variables and constants (aka, letters). */
 export
@@ -81,7 +82,11 @@ export
         this.letter = letter;
         this.s = s;
         this.modifier = modifier;
-        this.docksTo = ['relation', 'operator', 'exponent', 'symbol_subscript', 'symbol', 'operator_brackets', 'differential_argument'];
+        this.docksTo = ['relation', 'exponent', 'symbol_subscript', 'symbol', 'differential_argument'];
+        if (this.s.scope.editorMode != 'logic') {
+            this.docksTo.push('operator');
+            this.docksTo.push('operator_brackets');
+        }
     }
 
     /**
@@ -107,8 +112,10 @@ export
         let descent = this.position.y - (box.y + box.h); // TODO Check that `descent` is necessary...
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["operator"], "right");
-        this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
-        this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, descent), 2/3, ["symbol_subscript"], "subscript");
+        if (this.s.scope.editorMode != 'logic') {
+            this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
+            this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, descent), 2/3, ["symbol_subscript"], "subscript");
+        }
     }
 
     /**
@@ -127,11 +134,10 @@ export
             if(this.modifier == "prime") {
                 expression += "'"
             }
-            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
             if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += "^{" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + "}";
             }
-            if (this.dockingPoints["subscript"].child != null) {
+            if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child != null) {
                 expression += "_{" + this.dockingPoints["subscript"].child.formatExpressionAs(format) + "}";
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
@@ -147,16 +153,16 @@ export
             if(this.modifier == "prime") {
                 expression += "_prime"
             }
-            if (this.dockingPoints["subscript"].child != null) {
+            if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child != null) {
                 expression += "_" + this.dockingPoints["subscript"].child.formatExpressionAs("subscript");
             }
-            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
             if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += "**(" + this.dockingPoints["superscript"].child.formatExpressionAs(format) + ")";
             }
             if (this.dockingPoints["right"] && this.dockingPoints["right"].child != null) {
                 if (this.dockingPoints["right"].child instanceof BinaryOperation ||
-                    this.dockingPoints["right"].child instanceof Relation) {
+                    this.dockingPoints["right"].child instanceof Relation ||
+                    this.dockingPoints["right"].child instanceof LogicBinaryOperation) {
                     expression += this.dockingPoints["right"].child.formatExpressionAs(format);
                 } else if (this.dockingPoints["right"] && this.dockingPoints["right"].child instanceof Num && (<Num>this.dockingPoints["right"].child).isNegative()) {
                     expression += this.dockingPoints["right"].child.formatExpressionAs(format);
@@ -170,10 +176,9 @@ export
             if(this.modifier == "prime") {
                 expression += "_prime"
             }
-            if (this.dockingPoints["subscript"].child != null) {
+            if (this.dockingPoints["subscript"] && this.dockingPoints["subscript"].child != null) {
                 expression += this.dockingPoints["subscript"].child.formatExpressionAs(format);
             }
-            // if (!this.sonOfADifferential && this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
             if (this.dockingPoints["superscript"] && this.dockingPoints["superscript"].child != null) {
                 expression += this.dockingPoints["superscript"].child.formatExpressionAs(format);
             }
@@ -186,27 +191,18 @@ export
             if(this.modifier == "prime") {
                 l += "_prime"
             }
-            // if (this.sonOfADifferential) {
-            //     if (this.dockingPoints['subscript'].child == null) {
-            //         expression += '<mi>' + l + '</mi>';
+            if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
+                expression += '<mi>' + l + '</mi>';
 
-            //     } else if (this.dockingPoints['subscript'].child != null) {
-            //         expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
-            //     }
-            // } else {
-                if (this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
-                    expression += '<mi>' + l + '</mi>';
+            } else if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
+                expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
 
-                } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child == null) {
-                    expression += '<msub><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow></msub>';
+            } else if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
+                expression += '<msup><mi>' + l + '</mi><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
 
-                } else if (this.dockingPoints['subscript'].child == null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msup><mi>' + l + '</mi><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msup>';
-
-                } else if (this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
-                    expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
-                }
-            // }
+            } else if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child != null && this.dockingPoints["superscript"] && this.dockingPoints['superscript'].child != null) {
+                expression += '<msubsup><mi>' + l + '</mi><mrow>' + this.dockingPoints['subscript'].child.formatExpressionAs(format) + '</mrow><mrow>' + this.dockingPoints['superscript'].child.formatExpressionAs(format) + '</mrow></msubsup>';
+            }
 
             if (this.dockingPoints["right"] && this.dockingPoints['right'].child != null) {
                 expression += this.dockingPoints['right'].child.formatExpressionAs('mathml');
@@ -227,7 +223,7 @@ export
         if(this.modifier == "prime") {
             e += "_prime"
         }
-        if (this.dockingPoints['subscript'].child) {
+        if (this.dockingPoints['subscript'] && this.dockingPoints['subscript'].child) {
             e += '_' + this.dockingPoints['subscript'].child.formatExpressionAs('subscript');
         }
         return e;

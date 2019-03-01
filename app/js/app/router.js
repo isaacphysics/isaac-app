@@ -172,6 +172,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         $sp.state('publications', genericPageState("/publications", "publications"));
         $sp.state('faq', genericPageState("/faq", "faq"));
         $sp.state('about', genericPageState("/about", "about_us_index"));
+        $sp.state('cyberessentials', genericPageState("/cyberessentials", "cyberessentials"));
 
 
         if (subject.id == "physics") {
@@ -188,6 +189,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             $sp.state('prize_draws', genericPageState("/prize_draws", "prize_draws"));
             $sp.state('spc', genericPageState("/spc", "spc"));
             $sp.state('chemistry', genericPageState("/chemistry", "chemistry_landing_page"));
+            $sp.state('survey', genericPageState("/survey", "survey"));
 
             $sp.state('bookQuestion', staticPageState("/book/question", "book_question"));
             $sp.state('examUniHelp', staticPageState("/exam_uni_help", "exam_uni_help"));
@@ -285,7 +287,6 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         
         $sp.state('questions', staticPageState('/questions', 'questions', 'QuestionsPageControllers'));
 
-
         // To create a book page:
         // * Create /partials/states/books/<BOOK_ID>.html (copy an existing one and modify)
         // * Create intro text content with ID <BOOK_ID>_intro
@@ -302,7 +303,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
             // People try this URL for answers; point them to the FAQ:
             url: "/answers",
             onEnter: ["$state", "$rootScope", function($state, $rootScope) {
-                $state.go('faq', {'#': 'answers'}, {location: "replace"});
+                $state.go('support', {'type': 'student', 'idSuffix': 'questions', '#': 'answers'}, {location: "replace"});
                 $rootScope.setLoading(false);
             }],
         });
@@ -319,7 +320,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('equality', {
-            url: "/equality?mode&symbols&testing",
+            url: "/equality?mode&symbols&testing&logicsyntax",
             views: {
                 "body": {
                     templateUrl: "/partials/states/equation_editor.html",
@@ -688,7 +689,11 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
         });
 
         $sp.state('authError', {
-            url: "/auth_error?errorMessage&statusText",
+            url: "/auth_error",
+            params: {
+                errorMessage: null,
+                statusText: null,
+            },
             views: {
                 "body": {
                     templateUrl: "/partials/states/auth_error.html",
@@ -745,23 +750,7 @@ define(["angular", "@uirouter/angularjs"], function(angular, _angularUiRouter) {
                 views: {
                     "body": {
                         templateUrl: "/partials/states/admin_stats.html",
-                        controller: ["$scope", "api", function($scope, api) {
-
-                            $scope.state = 'adminStats';
-
-                            // general stats
-                            $scope.statistics = null;
-                            $scope.setLoading(true)
-                            api.statisticsEndpoint.get().$promise.then(function(result) {
-                                $scope.statistics = result;
-                                $scope.setLoading(false)
-                            });
-                            api.eventBookings.getAllBookings({
-                                "count_only": true
-                            }).$promise.then(function(result) {
-                                $scope.eventBookingsCount = result.count;
-                            })
-                        }]
+                        controller: "AdminStatsSummaryController",
                     }
                 }
             });

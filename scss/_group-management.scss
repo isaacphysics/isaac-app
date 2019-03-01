@@ -174,11 +174,30 @@
 }
 
 
+.active-group-panel {
+	margin-top:	5px !important;
+
+	input {
+		margin: 0px 0px 0px 0px !important;
+		font-size: 1.05rem;
+		padding-top: 1.3rem;
+		padding-bottom: 1.3rem;
+	}
+	.input-group {
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+	.ru-button-big {
+		margin: 0px;
+	}
+}
+
 /*
 	Group management accordion styles 
 */
 .group-accordion {
 	margin: 0 0 1rem;
+	padding-top: 20px;
 
 	dd .group-accordion-header {
 		/* This is needed due to inherit being set on "show-for-medium-up" class */
@@ -246,6 +265,11 @@
 		.revoked {
 			text-decoration: line-through;
 		}
+	}
+
+	a.disabled {
+		color: gray;
+		cursor: default;
 	}
 }
 

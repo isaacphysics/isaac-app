@@ -32,7 +32,7 @@ define([], function() {
 
 		this.providerCallback = function(provider, params) {
 			let next = persistence.load('afterAuth');
-			persistence.save('afterAuth', '');
+			persistence.remove('afterAuth');
             next = next || "/";
             next = next.replace("#!", "");
 
@@ -85,6 +85,8 @@ define([], function() {
 
 			})
 			cancelUserConsistencyCheck();
+			persistence.clear();
+			persistence.session.clear();
 			return p;
 		}
 
@@ -148,7 +150,7 @@ define([], function() {
 			if (persistence.save("currentUserId", $rootScope.user._id)) {
 
 				interval = setInterval(function() {
-					let currentId = persistence.load("currentUserId")
+					let currentId = persistence.load("currentUserId");
 					if (currentId != $rootScope.user._id) {
 						cancelUserConsistencyCheck();
 						$rootScope.modals.userConsistencyError.show();
@@ -171,7 +173,7 @@ define([], function() {
 		}
 
 		let cancelUserConsistencyCheck = function() {
-			persistence.save("currentUserId", null)
+			persistence.remove("currentUserId");
 			if (interval) {
 				clearInterval(interval);
 				interval = null;

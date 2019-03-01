@@ -23,9 +23,9 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
 
     $scope.segueVersion = api.segueInfo.segueVersion();
 
-    $scope.schoolOtherEntries = api.schools.getSchoolOther();
     $scope.tagsUrl = api.getTagsUrl();
     $scope.unitsUrl = api.getUnitsUrl();
+    $scope.swaggerUrl = api.getSwaggerUrl();
 
     $scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER';
     $scope.isAdminUser = $rootScope.user.role == 'ADMIN';
@@ -46,6 +46,42 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
             $scope.versionChange = "ERROR"
         });
     }
+}];
+
+export const AdminStatsSummaryController = ["$scope", "api", function($scope, api) {
+    $scope.state = 'adminStats';
+
+    $scope.asPercentage = function(value, total) {
+        return value !== undefined ? Math.round(100 * value / total) : 0;
+    };
+    let addTotalToMapOfCounts = function(counts) {
+        counts['TOTAL'] = Object.values(counts).reduce((a, b) => a + b, 0);
+    };
+
+    // general stats
+    $scope.statistics = null;
+    $scope.setLoading(true)
+    api.statisticsEndpoint.get().$promise.then(function(result) {
+        $scope.statistics = result;
+
+        // Add total value to each of the active user ranges
+        for (let timeRange in result.activeUsersOverPrevious) {
+            addTotalToMapOfCounts(result.activeUsersOverPrevious[timeRange]);
+        }
+        // Add total value to each of the answered user ranges
+        for (let timeRange in result.answeringUsersOverPrevious) {
+            addTotalToMapOfCounts(result.answeringUsersOverPrevious[timeRange]);
+        }
+        addTotalToMapOfCounts(result.userGenders);
+        addTotalToMapOfCounts(result.userSchoolInfo)
+
+        $scope.setLoading(false)
+    });
+    api.eventBookings.getAllBookings({
+        "count_only": true
+    }).$promise.then(function(result) {
+        $scope.eventBookingsCount = result.count;
+    })
 }];
 
 export const AdminStatsPageController = ['$scope', 'auth', 'api', '$window', '$rootScope', 'gameBoardTitles', '$timeout', 'dataToShow', function($scope, auth, api, $window, $rootScope, gameBoardTitles, $timeout, dataToShow) {
@@ -183,35 +219,28 @@ export const AdminEventBookingController = ['$scope', 'auth', 'api', '$window', 
 
     $scope.userIdToSchoolMapping = {}
 
-    $scope.showActiveOnly = true;
-    $scope.showInactiveOnly = false;
-    $scope.filterEventsByStatus = "active";
+    $scope.filterEventsByStatus = "FUTURE";
     $scope.overviewPanelVisible = true;
     $scope.attended = true;
     $scope.absent = false;
 
     $scope.filter = {}
 
-    let updateEventOverviewList = function(){
+    let updateEventOverviewList = function(queryParams){
         $rootScope.setLoading(true);
-        api.eventOverview.get({"limit":-1, "startIndex": 0, "showActiveOnly":$scope.showActiveOnly, "showInactiveOnly":$scope.showInactiveOnly}).$promise.then(function(result) {
+        api.eventOverview.get(queryParams).$promise.then(function(result) {
             $rootScope.setLoading(false);
             $scope.events = result.results;
         });         
     }
 
-    $scope.$watch('filterEventsByStatus', function(newValue, _oldValue){
+    $scope.$watch('filterEventsByStatus', function(newValue, _oldValue) {
         if (newValue) {
-            $scope.showActiveOnly = false;
-            $scope.showInactiveOnly = false;
-
-            if (newValue == 'active') {
-                $scope.showActiveOnly = true;
-            } else if (newValue == 'inactive') {
-                $scope.showInactiveOnly = true;
+            let queryParams = {limit: -1, startIndex: 0}
+            if (newValue !== 'ALL') {
+                queryParams['filter'] = newValue;
             }
-
-            updateEventOverviewList();
+            updateEventOverviewList(queryParams);
         }
     });
 

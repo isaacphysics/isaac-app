@@ -21,24 +21,25 @@ define(["p5",
     }
     void parseExpression;
 
-    return ["$timeout", "$rootScope", "api", function($timeout, $rootScope, _api) {
+    return ["$timeout", "$rootScope", "equationEditor", "api",  function($timeout, $rootScope, equationEditor, _api) {
 
         return {
             scope: {
                 state: "=",
                 questionDoc: "=",
                 editorMode: "=",
+                logicSyntax: "=",
             },
             restrict: "A",
             templateUrl: templateUrl,
             link: function(scope, element, _attrs) {
 
-                scope.isEquality = window.location.pathname.startsWith("/equality");
+                scope.isEquality = _.startsWith(window.location.pathname, "/equality");
 
                 scope.textEntryError = [];
                 if (scope.questionDoc && scope.questionDoc.availableSymbols) {
                     try {
-                        scope.symbolList = scope.questionDoc.availableSymbols.map(function (str) {return str.trim().replace(';', ',')}).join(", ");
+                        scope.symbolList = equationEditor.parsePseudoSymbols(scope.questionDoc.availableSymbols).map(function (str) {return str.trim().replace(';', ',')}).join(", ");
                     } catch (err) {
                         // Do not let invalid availableSymbols prevent anyone from answering the question!
                         scope.symbolList = null;
@@ -112,6 +113,9 @@ define(["p5",
                             if (/\\[a-zA-Z()]|[{}]/.test(pycode)) {
                                 scope.textEntryError.push('LaTeX syntax is not supported.');
                             }
+                            if (/\|.+?\|/.test(pycode)) {
+                                scope.textEntryError.push('Vertical bar syntax for absolute value is not supported; use abs() instead.');
+                            }
                             if (badCharacters.test(pycode)) {
                                 scope.textEntryError.push('Some of the characters you are using are not allowed: ' + _.uniq(pycode.replace(goodCharacters, '')).join(' '));
                             }
@@ -125,7 +129,7 @@ define(["p5",
                         } else {
                             // Successfully parsed something:
                             if (pycode === '') {
-                                element.find(".eqn-preview").html("Click here to enter a formula!");
+                                element.find(".eqn-preview > .inner-eqn-preview").html("Click here to enter a formula!");
                                 scope.symbols = [];
                                 scope.state.result.tex = "";
                                 scope.state.result.python = "";
@@ -141,7 +145,7 @@ define(["p5",
                             scope.state.userInput = pycode;
                         }
 
-                    }, 750);
+                    }, 250);
                 };
 
                 let replaceSpecialChars = function (s) {
@@ -161,7 +165,7 @@ define(["p5",
 
                     console.log("New state:", s);
 
-                    let rp = element.find(".eqn-preview");
+                    let rp = element.find(".eqn-preview > .inner-eqn-preview");
                     rp.empty();
 
                     // this renders the result in the preview box in the bottom right corner of the eqn editor
@@ -182,7 +186,7 @@ define(["p5",
                         $("#equationModal").foundation("reveal", "close");
                     };
 
-                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode).then(function(finalState) {
+                    $rootScope.showEquationEditor(scope.state, scope.questionDoc, scope.editorMode, scope.logicSyntax).then(function(finalState) {
                         scope.state = finalState;
                         if (finalState.hasOwnProperty("result") && finalState.result.hasOwnProperty("python")) {
                             element.find(".eqn-text-input")[0].value = finalState.result.python;
@@ -196,10 +200,10 @@ define(["p5",
                         // We have an existing answer to the question.
                         // If we have the LaTeX form, render it; else answer was typed and we failed to parse it:
                         if (s.result.tex) {
-                            katex.render(s.result.tex, element.find(".eqn-preview")[0]);
+                            katex.render(s.result.tex, element.find(".eqn-preview > .inner-eqn-preview")[0]);
                         } else {
                             // This branch is only triggered when we can't parse a typed answer.
-                            element.find(".eqn-preview").html("Click to replace your typed answer");
+                            element.find(".eqn-preview > .inner-eqn-preview").html("Click to replace your typed answer");
                         }
                         // If we have the python form, add it to the text entry box (unless we're currently typing in the box; Safari bug!):
                         if (s.result.python && !(element.find(".eqn-text-input")[0] === document.activeElement)) {
@@ -207,10 +211,10 @@ define(["p5",
                         }
                     } else if (scope.questionDoc) {
                         // This is a question part not yet attempted:
-                        element.find(".eqn-preview").html("Click to enter your answer");
+                        element.find(".eqn-preview > .inner-eqn-preview").html("Click to enter your answer");
                     } else {
                         // This is probably the /equality page:
-                        element.find(".eqn-preview").html("Click to enter a formula!");
+                        element.find(".eqn-preview > .inner-eqn-preview").html("Click to enter a formula!");
                     }
                 })
             }

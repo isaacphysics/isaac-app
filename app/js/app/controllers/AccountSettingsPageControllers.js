@@ -232,7 +232,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         let afterAuth = persistence.load('afterAuth');
         if (afterAuth) {
             next = afterAuth;
-            persistence.save('afterAuth', "");
+            persistence.remove('afterAuth');
         }
         $scope.errorMessage = null;  // clear any old error message
 
@@ -287,7 +287,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             }).then(function(){
                 if (next) {
                     $scope.cancelOnDestroyEvent(); // Don't need this handler to fire if we've saved and are redirecting!
-                    $location.url(next)
+                    $window.location.href = next;
                 } else {
                     $scope.updateSuccess = true;
                 }
@@ -352,7 +352,10 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.authenticationToken = {value: null};
     $scope.activeAuthorisations = api.authorisations.get();
     $scope.activeStudentAuthorisations = api.authorisations.getOthers();
-    
+
+    // group membership stuff
+    $scope.myGroupMembership = api.groupManagementEndpoint.getMyMembership();
+
     $scope.useToken = function() {
         if ($scope.authenticationToken.value == null || $scope.authenticationToken.value == "") {
             $scope.showToast($scope.toastTypes.Failure, "No Token Provided", "You have to enter a token!");
@@ -388,6 +391,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
     $scope.applyToken = function() {
         api.authorisations.useToken({token: $scope.authenticationToken.value}).$promise.then(function(){
             $scope.activeAuthorisations = api.authorisations.get();
+            $scope.myGroupMembership = api.groupManagementEndpoint.getMyMembership();
             $scope.authenticationToken = {value: null};
             $scope.showToast($scope.toastTypes.Success, "Granted Access", "You have granted access to your data.");
             // user.firstLogin is set correctly using SSO, but not with Segue: check session storage too:
@@ -411,19 +415,28 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         $scope.showToast($scope.toastTypes.Failure, "Access Denied", "You are not allowed to grant permissions (using a token) on behalf of another user.");
     }
 
-    $scope.revokeAuthorisation = function(userToRevoke){
-        let revoke = $window.confirm('Are you sure you want to revoke this user\'s access?');   
+    $scope.revocationConfirmation = function(userToRevoke) {
+        $scope.userToRevoke = userToRevoke;
+        $scope.modals.revocationConfirmation.show();
+    }
 
-        if (revoke) {
-            api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
-                $scope.activeAuthorisations = api.authorisations.get();
-                $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
-            }).catch(function(e){
-                $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
-            })              
-        } else {
-            return;
-        }
+    $scope.changeMyMembershipStatus = function(groupId, newStatus) {
+        api.groupManagementEndpoint.changeMyMembershipStatus({groupId: groupId, newStatus: newStatus}).$promise.then(function(){
+            $scope.myGroupMembership = api.groupManagementEndpoint.getMyMembership();
+            $scope.showToast($scope.toastTypes.Success, "Status Updated", "You have updated your membership status.");
+        }).catch(function(e){
+            $scope.showToast($scope.toastTypes.Failure, "Status Update Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        })  
+    }
+
+    $scope.revokeAuthorisation = function(userToRevoke){
+        api.authorisations.revoke({id: userToRevoke.id}).$promise.then(function(){
+            $scope.activeAuthorisations = api.authorisations.get();
+            $scope.showToast($scope.toastTypes.Success, "Access Revoked", "You have revoked access to your data.");
+            $scope.modals.revocationConfirmation.hide();
+        }).catch(function(e){
+            $scope.showToast($scope.toastTypes.Failure, "Revoke Operation Failed", "With error message (" + e.status + ") " + e.data.errorMessage != undefined ? e.data.errorMessage : "");
+        })              
     }
 
     $scope.revokeAllAuthorisations = function(){
@@ -470,5 +483,24 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             return;
         }
     }
+
+    // helper function to show First initial and last name for teachers
+    $scope.convertToTeacherName = function(userObject) {
+        if (null == userObject)
+            return null;
+        
+        return (userObject.givenName ? userObject.givenName.charAt(0) + ". " : "") + userObject.familyName;
+    }
     // end authorisation stuff
+
+    $scope.requestPassword = function() {
+        // Don#t submit request if email is invalid:
+        if ($scope.user.emailVerifcationStatus != "DELIVERY_FAILED") {
+            api.password.reset({'email': $scope.user.email}).$promise.then(function(){
+                $scope.showToast($scope.toastTypes.Success, "Password Request Processed", "Please check your email.");
+            }).catch(function(e){
+                $scope.showToast($scope.toastTypes.Failure, "Password Request Failed", "With error message (" + e.status + ") "+ e.status + ") "+ e.data.errorMessage != undefined ? e.data.errorMessage : "");
+            });
+        }
+    }
 }];

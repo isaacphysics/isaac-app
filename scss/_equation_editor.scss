@@ -69,6 +69,18 @@ $menu-handle-width: 160px;
             }
         }
     }
+    &.logic {
+        .top-menu {
+            .handle {
+                &.m1 {
+                    margin-left: -$menu-handle-width;
+                }
+                &.m2 {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
     .top-menu {
         z-index: 100;
         background: #509e2e;

@@ -154,6 +154,45 @@
 		background:white;
 	}
 
+	.my-groups-table-section {
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 0px;
+			th{
+				background-color: $ru_darkgrey;
+				color:#fff;
+				text-align:center;
+				font-size:1rem;
+			}
+			td li {
+				color: #858585;
+			    font-size: .875rem;
+			    text-align: left;
+			}
+			.centered-table-column {
+				text-align:center;
+				a {
+					font-weight:bold;
+					font-size: 1rem;
+				}
+			}
+		}
+		.my-groups-table-row-container {
+			max-height: 300px; 
+			overflow-y: auto;
+			margin-bottom: 1.25rem;
+		    border: #e3e3e3 1px solid;
+		    border-top: 0;
+			table {
+				border: none;
+			}
+			& ul {
+				margin-bottom: 0px;
+			}
+		}
+	}
+
 	dd.ru-error-message {
 		border-color: #dc5757;
 

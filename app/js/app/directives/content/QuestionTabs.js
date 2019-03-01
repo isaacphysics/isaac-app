@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"], function(rv, templateUrl) {
-	return ["$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($location, $filter, $state, api, questionActions, QUESTION_TYPES) {
+	return ["$rootScope", "$location", "$filter", "$state", "api", "questionActions", "QUESTION_TYPES", function($rootScope, $location, $filter, $state, api, questionActions, QUESTION_TYPES) {
 		return {
 			restrict: 'A',
 			scope: true,
@@ -39,6 +39,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 					pageCompleted: false,
 					id: scope.doc.id,
 					type: scope.doc.type,
+					passedFrontEndValidation: true,
 					relatedConcepts: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, {type: "isaacConceptPage"})),
 					relatedUnansweredEasierQuestions: emptyListIfUndefined($filter('filter')(scope.doc.relatedContent, function(relatedContent){
 						let isQuestionPage = ["isaacQuestionPage", "isaacFastTrackQuestionPage"].indexOf(relatedContent.type) >= 0;
@@ -153,6 +154,24 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 					return pageCompleted;
 				}
 
+				let getQuestionPartIds = function(content, questionPartIds) {
+					if (QUESTION_TYPES.indexOf(content.type) >= 0) {
+						questionPartIds.push(content.id);
+					}
+					if (content.children) {
+						for (let i=0; i < content.children.length; i++) {
+							let child = content.children[i];
+							getQuestionPartIds(child, questionPartIds);
+						}
+					}
+				}
+
+				let calculateQuestionPartIndex = function(page, questionPartId) {
+					let questionPartIds = [];
+					getQuestionPartIds(page, questionPartIds);
+					return questionPartIds.indexOf(questionPartId);
+				}
+
 				let determineFastTrackPrimaryAction = function(questionPart, questionPage, questionHistory, gameboardId) {
 					let questionPartAnsweredCorrectly = questionPart.validationResponse && questionPart.validationResponse.correct;
 					if (questionPartAnsweredCorrectly) {
@@ -213,8 +232,7 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 
 					if (newVal === oldVal)
 						return; // Init
-
-					scope.canSubmit = true;
+					scope.canSubmit = scope.question.passedFrontEndValidation;
 					scope.question.validationResponse = null;
 				}, true);
 
@@ -241,6 +259,10 @@ define(["../../honest/responsive_video", "/partials/content/QuestionTabs.html"],
 					if (newVal !== oldVal) {
 						if (scope.question.validationResponse) {
 							applyValidationResponseToQuestionPart(scope.page, scope.question.validationResponse);
+							if (scope.question.validationResponse.correct) {
+								let questionPartIndex = calculateQuestionPartIndex(scope.page, scope.question.id);
+								$rootScope.$emit('questionPartCorrect', scope.page.id, questionPartIndex);
+							}
 							scope.question.pageCompleted = isPageCompleted(scope.page);
 							if (scope.question.pageCompleted) {
 								scope.$emit('pageCompleted');

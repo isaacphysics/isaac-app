@@ -88,8 +88,7 @@ define([
         function($locationProvider, apiProvider, $httpProvider, $rootScopeProvider, uiGmapGoogleMapApiProvider, $analyticsProvider) {
 
         // Support multiple Google Analytics accounts
-        // TODO REMOVE ANALYTICS - Remove 'Isaac' once old account is closed
-        $analyticsProvider.settings.ga.additionalAccountNames = ['Isaac', 'IsaacAnalytics'];
+        $analyticsProvider.settings.ga.additionalAccountNames = ['IsaacAnalytics'];
 
         $rootScopeProvider.digestTtl(50);
         // Send session cookies with the API requests.
@@ -148,7 +147,7 @@ define([
             // Have reserved domians on ngrok.io, hardcode them for ease of use:
             apiProvider.urlPrefix("https://isaacscience.eu.ngrok.io/isaac-api/api");
         } else {
-            apiProvider.urlPrefix("/api/v2.6.1/api");
+            apiProvider.urlPrefix("/api/v2.8.0/api");
         }
 
         NProgress.configure({ showSpinner: false });
@@ -800,8 +799,8 @@ define([
                 }
             })
 
-            // Check again in five minutes
-            $timeout(checkForNotifications, 300000);
+            // Check again in half an hour. This style of notification isn't really used much now.
+            $timeout(checkForNotifications, 30*60*1000);
         }
 
         $timeout(checkForNotifications, 5000);
@@ -871,6 +870,48 @@ define([
                 $rootScope.figureNumbers[figures[i].id] = parseInt(i)+1;
             }
         }
+
+        // We have to have *some* Easter Eggs for dedicated users. 
+
+        // For now, just a popup message:
+        var konamiCodeUsed = false;
+        var onKonamiCode = function(cb) {
+          var input = '';
+          var konamiCode = '38384040373937396665';
+          document.addEventListener('keyup', function (e) {
+            if (!e.keyCode) return;
+            input += ("" + e.keyCode);
+            if (input === konamiCode) {
+              return cb();
+            }
+            if (!konamiCode.indexOf(input)) return;
+            input = ("" + e.keyCode);
+          });
+        }
+        onKonamiCode(function () {
+            $rootScope.showToast($rootScope.toastTypes.Failure, "Cheat Mode Denied", "Sorry, but we don't believe in cheating on your homework! \u{1F607}");
+            $rootScope.$apply();
+            if (!konamiCodeUsed) {
+                api.logger.log({type: "USE_KONAMI_CODE"});
+                konamiCodeUsed = true;
+            }
+        });
+
+        // And a Christmas surprise:
+        let now = new Date();
+        let isChristmas = (now.getMonth() + 1 == 12 && now.getDate() >= 24 && now.getDate() <= 26);
+        if (isChristmas) {
+            $timeout(function() {
+                $('a > img[data-interchange]').each(function( index ) {
+                    let logoElement = $(this);
+                    // FIXME: this assumes and requires that the logos exist. They may not, and if they don't: no logo shown!
+                    // Replace all logos with the Christmas version!
+                    logoElement.attr('data-interchange', logoElement.attr('data-interchange').replace(/isaac-logo/g, 'isaac-logo-christmas'));
+                });
+            }, 0);
+        }
+
+        // End easter egg madness.
 
 	}]);
 

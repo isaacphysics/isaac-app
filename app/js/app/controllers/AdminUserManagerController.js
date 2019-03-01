@@ -20,7 +20,7 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     $scope.contentVersion = api.contentVersion.get();
     $scope.userSearch = {};
     $scope.userSearch.isLoading = false;
-    $scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIFTY_MILES", subjectOfInterest: ""};
+    $scope.userSearch.searchTerms = {role:"", email:"", familyName:"", postcode:"", postcoderadius:"FIVE_MILES", subjectOfInterest: ""};
     $scope.userManagerSelection = {};
 
     // FIXME - reimplement this, but in a more sensible location!
@@ -47,8 +47,6 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     //         $interval.cancel(indexQueueInterval);
     //     }
     // });
-
-    $scope.schoolOtherEntries = api.schools.getSchoolOther();
 
     $scope.isStaffUser = $rootScope.user.role == 'ADMIN' || $rootScope.user.role == 'EVENT_MANAGER' || $rootScope.user.role == 'CONTENT_EDITOR';
     
@@ -80,8 +78,8 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
 
                 //Add selections in, so we can select all
                 for (let resultItem in $scope.userSearch.results) {
-                    if(result.hasOwnProperty(resultItem) && !resultItem.startsWith("$")) {
-                        let key = result[resultItem]._id;
+                    if(result.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$")) {
+                        let key = result[resultItem].id;
                         $scope.userManagerSelection[key] = false;
                     }
                 }
@@ -116,8 +114,8 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
         let emails = new Set();
         let ids = $scope.getSelectedUserIds();
         for (let resultItem in $scope.userSearch.results) {
-            let id = $scope.userSearch.results[resultItem]._id;
-            if($scope.userSearch.results.hasOwnProperty(resultItem) && !resultItem.startsWith("$") && ids.has("" + id)) {
+            let id = $scope.userSearch.results[resultItem].id;
+            if($scope.userSearch.results.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$") && ids.has("" + id)) {
                 emails.add($scope.userSearch.results[resultItem].email)
             }
         }
@@ -127,8 +125,8 @@ export const PageController = ['$scope', 'auth', 'api', '$window', '$rootScope',
     let confirmUnverifiedUserPromotions = function(){
         let ids = $scope.getSelectedUserIds();
         for (let resultItem in $scope.userSearch.results) {
-            let id = $scope.userSearch.results[resultItem]._id;
-            if ($scope.userSearch.results.hasOwnProperty(resultItem) && !resultItem.startsWith("$") && ids.has("" + id)) {
+            let id = $scope.userSearch.results[resultItem].id;
+            if ($scope.userSearch.results.hasOwnProperty(resultItem) && !_.startsWith(resultItem, "$") && ids.has("" + id)) {
                 // This user is to be promoted
                 if ($scope.userSearch.results[resultItem].emailVerificationStatus != "VERIFIED") {
                     let promoteUser = $window.confirm('Are you really sure you want to promote unverified user: (' + $scope.userSearch.results[resultItem].email + ')?'

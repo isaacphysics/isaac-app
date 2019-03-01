@@ -30,6 +30,8 @@
 	// TODO: This should probably be a service rather than a factory
 	.service('tags', require("./services/Tags"))
 
+	.service('searchResults', require("./services/SearchResults"))
+
 	.factory('units', require("./services/Units"))
 
 	.factory('filterWarnings', require("./services/FilterWarnings"))
@@ -73,11 +75,13 @@
 
 	.service('auth', auth.service)
 
+	.service('equationEditor', require("./services/EquationEditor"))
+
 	.factory('promiseLoggedIn', auth.promiseLoggedIn)
 
 	.constant('EditorURL', "https://editor.isaacphysics.org/#!/edit/master/")
 
-	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacAnvilQuestion"])
+	.constant('QUESTION_TYPES', ["isaacMultiChoiceQuestion", "isaacNumericQuestion", "isaacSymbolicQuestion", "isaacSymbolicChemistryQuestion", "isaacSymbolicLogicQuestion", "isaacAnvilQuestion"])
 
-	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017'])
+	.constant('fastTrackProgressEnabledBoards', ['ft_core_2017', 'ft_core_2018'])
 });

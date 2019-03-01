@@ -67,14 +67,20 @@ span.hidden {
 .ru-search-result-content {
     margin-left: 25px;
 }
+.ru-search-result.shortcut {
+        background: url('/assets/search-shortcut.png') no-repeat left center;
+        background-size: 28px 28px;
+        background-position-x: 16px;
+        background-position-y: 17px;
+}
 .ru-search-result.concept.physics {
-        background: url('/assets/concept-physics.png') no-repeat left center;
+        background: url('/assets/search-concept-physics.png') no-repeat left center;
         background-size: 28px 28px;
         background-position-x: 16px;
         background-position-y: 17px;
 }
 .ru-search-result.concept.maths {
-        background: url('/assets/concept-maths.png') no-repeat left center;
+        background: url('/assets/search-concept-maths.png') no-repeat left center;
         background-size: 28px 28px;
         background-position-x: 12px;
         background-position-y: 17px;

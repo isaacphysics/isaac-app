@@ -25,6 +25,7 @@ import { Symbol } from './Symbol'
 import { BinaryOperation } from './BinaryOperation';
 import { Fraction } from './Fraction';
 import { Brackets } from './Brackets';
+import { AbsoluteValue } from './AbsoluteValue';
 import { Radix } from './Radix';
 import { Num } from './Num';
 import { Fn } from './Fn';
@@ -35,6 +36,10 @@ import { Relation } from './Relation';
 import { ChemicalElement } from './ChemicalElement';
 import { StateSymbol } from './StateSymbol';
 import { Particle } from './Particle';
+
+import { LogicBinaryOperation } from './LogicBinaryOperation';
+import { LogicLiteral } from './LogicLiteral';
+import { LogicNot } from './LogicNot';
 
 // This is where the fun starts
 
@@ -86,6 +91,8 @@ export
     activeDockingPoint: DockingPoint = null;
     private _canvasDockingPoints: Array<DockingPoint> = [];
 
+    logicSyntax: string = null;
+
     constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
@@ -133,8 +140,11 @@ export
     setup = () => {
         this.p.frameRate(7);
 
+        this.logicSyntax = this.scope.logicSyntax || 'logic';
+
         switch (this.scope.editorMode) {
             case 'maths':
+            case 'logic':
                 this.baseFontSize = 50;
                 this.baseDockingPointSize = 50/3;
                 break;
@@ -151,6 +161,8 @@ export
         this.p.createCanvas(this.width, this.height);
 
         this.prevTouch = this.p.createVector(0, 0);
+
+        this.initialSymbolsToParse = [];
 
         try {
             _.each(this.initialSymbolsToParse || [], s => {
@@ -318,6 +330,9 @@ export
             case "Brackets":
                 w = new Brackets(this.p, this, node["properties"]["type"], node["properties"]["mode"]);
                 break;
+            case "AbsoluteValue":
+                w = new AbsoluteValue(this.p, this);
+                break;
             case "Radix":
                 w = new Radix(this.p, this);
                 break;
@@ -344,6 +359,15 @@ export
                 break;
             case "Particle":
                 w = new Particle(this.p, this, node["properties"]["particle"], node["properties"]["type"]);
+                break;
+            case "LogicBinaryOperation":
+                w = new LogicBinaryOperation(this.p, this, node["properties"]["operation"]);
+                break;
+            case "LogicLiteral":
+                w = new LogicLiteral(this.p, this, node["properties"]["value"]);
+                break;
+            case "LogicNot":
+                w = new LogicNot(this.p, this);
                 break;
             default: // this would be a Widget...
                 break;
@@ -644,11 +668,11 @@ export
     };
 
     centre = (init = false) => {
-        let top = 380; // FIXME: This should be computed, not hard-coded. // this.height/2;
+        let top = this.height/Math.ceil(window.devicePixelRatio*2);
         _.each(this.symbols, (symbol, i) => {
             let sbox = symbol.subtreeDockingPointsBoundingBox;
             symbol.position = this.p.createVector(this.width/(Math.ceil(window.devicePixelRatio*2)) - sbox.center.x, top + sbox.center.y);
-            top += sbox.h*1.5;
+            top += sbox.h;
             symbol.shakeIt();
         });
         if (!init) {

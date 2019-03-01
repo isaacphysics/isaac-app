@@ -53,7 +53,13 @@ define([], function() {
             },
         });
 
-        this.fastTrackGameboards = $resource(urlPrefix + "/gameboards/fasttrack/:id", {id: "@id"});
+        this.fastTrack = $resource("", {}, {
+            concepts: {
+                method: 'GET',
+                url: urlPrefix + "/fasttrack/:gameboardId/concepts?concept=:concept",
+                isArray: true,
+            },
+        });
 
         this.contentProblems = $resource(urlPrefix + "/admin/content_problems");
 
@@ -108,7 +114,7 @@ define([], function() {
         
         this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
             'search': {
-                method: 'GET', 
+                method: 'GET',
                 isArray: false 
             },
         });
@@ -170,8 +176,12 @@ define([], function() {
             },
             'getLogEventTypes' : {
                 method: 'GET',
-                url: urlPrefix + "/info/log_event_types",
-            },          
+                url: urlPrefix + "/log/event_types",
+            },
+            'countUsersByRole' : {
+                method: 'GET',
+                url: urlPrefix + "/admin/stats/users",
+            },            
         });
 
         this.makeDownloadEventsOverTimeLink = function(startDate, endDate, events, binData) {
@@ -218,6 +228,17 @@ define([], function() {
                 method: 'DELETE',
                 url: urlPrefix + "/groups/:id/manager/:userId", 
                 isArray: false 
+            },
+            'getMyMembership' : {
+                method: 'GET',
+                url: urlPrefix + "/groups/membership", 
+                isArray: true 
+            },
+            'changeMyMembershipStatus' : {
+                method: 'POST',
+                url: urlPrefix + "/groups/membership/:groupId/:newStatus", 
+                isArray: false, 
+                params: {groupId: '@groupId', newStatus: '@newStatus'},
             },
         });
 
@@ -293,7 +314,7 @@ define([], function() {
 
         this.events = $resource(urlPrefix + "/events/:id");
         
-        this.eventOverview = $resource(urlPrefix + "/events/overview?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly&show_inactive_only=:showInactiveOnly");
+        this.eventOverview = $resource(urlPrefix + "/events/overview");
 
         this.eventMapData = $resource(urlPrefix + "/events/map_data?start_index=:startIndex&limit=:limit&show_active_only=:showActiveOnly");
 
@@ -415,13 +436,9 @@ define([], function() {
             return urlPrefix + "/content/units";
         }
 
-        // this.admin = {
-        //  synchroniseDatastores: function() {
-        //      return $http.post(urlPrefix + "/admin/synchronise_datastores").then(function() {
-        //          console.warn("Synchronising Datastores. The next page load will take a while.");
-        //      });
-        //  }
-        // };
+        this.getSwaggerUrl = function() {
+            return urlPrefix + "-docs/";
+        }
 
         this.account = $resource(urlPrefix + "/users", {}, {
             saveSettings: {
@@ -454,9 +471,14 @@ define([], function() {
             },
         });
 
-        this.password = $resource(urlPrefix + "/users/resetpassword/:token", null, {
+        this.password = $resource(urlPrefix + "", {userId: '@userId'}, {
             reset: {
                 method: "POST",
+                url: urlPrefix + "/users/resetpassword/:token"
+            },
+            resetForUser: {
+                method: 'POST',
+                url: urlPrefix + "/users/:userId/resetpassword"
             },
         });
 

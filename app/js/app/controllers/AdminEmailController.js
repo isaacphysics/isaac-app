@@ -106,7 +106,7 @@
         return total;
     }
 
-    api.statisticsEndpoint.get().$promise.then(function(result){
+    api.statisticsEndpoint.countUsersByRole().$promise.then(function(result){
         $scope.statistics = result;
         $scope.setLoading(false);
     }).catch(function(e){

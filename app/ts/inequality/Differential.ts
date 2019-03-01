@@ -120,7 +120,7 @@ class Differential extends Widget {
         if (format == "latex") {
             if (this.letter == "δ") {
                 expression = "\\mathrm{\\delta}";
-            } else if (this.letter == "∆") {
+            } else if (this.letter == "∆" || this.letter == "Δ") { // The two deltas are different!
                 expression = "\\mathrm{\\Delta}";
             } else {
                 expression = "\\mathrm{" + this.letter + "}";
@@ -147,7 +147,7 @@ class Differential extends Widget {
         } else if (format == "python") {
             if (this.letter == "δ") {
                 expression = "delta";
-            } else if (this.letter == "∆") {
+            } else if (this.letter == "∆" || this.letter == "Δ") { // The two deltas are different!
                 expression = "Delta";
             } else {
                 expression = "d";
@@ -201,7 +201,7 @@ class Differential extends Widget {
         let expression;
         if (this.letter == "δ") {
             expression = "delta";
-        } else if (this.letter == "∆") {
+        } else if (this.letter == "∆" || this.letter == "Δ") { // The two Deltas are different!
             expression = "Delta";
         } else {
             expression = "d";
