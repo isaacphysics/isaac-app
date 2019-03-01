@@ -180,6 +180,10 @@ define(['./GraphUtils.js'], function(graphUtils) {
                 return;
             }
 
+            if (curves[idx] == undefined) {
+                return;
+            }
+
             let curve = curves[idx];
 
             let minX = curve.minX;

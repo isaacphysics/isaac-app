@@ -115,34 +115,20 @@ define(["../../../lib/math.js"], function(m) {
         },
 
         linearLineStyle: function(pts) {
-
-            let numberOfPoints = pts.length - 1;
+            pts.sort(function(a, b){return a.x - b.x});
+            let start = pts[0];
+            let end = pts[1];
+            let increment = 1/numOfPts;
             let linearPoints = [];
-            let sum_x = 0;
-            let sum_y = 0;
-            let sum_xy = 0;
-            let sum_xx = 0;
-            let count = 0;
-            let X = 0;
-            let Y = 0;
+            let x_diff = pts[1].x-pts[0].x;
+            let y_diff = pts[1].y-pts[0].y;
 
-            for (let currentIndex = 0; currentIndex < numberOfPoints; currentIndex += 1) {
-                X = pts[currentIndex].x;
-                Y = pts[currentIndex].y;
-                sum_x += X;
-                sum_y += Y;
-                sum_xx += X*X;
-                sum_xy += X*Y;
-                count++;
-            }
+            
 
-            let gradient = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
-
-            let offset = (sum_y/count) - (m*sum_x)/count;
-
-            for (let currentIndex = 0; currentIndex < numberOfPoints; currentIndex += 1) {
-                let sx = pts[currentIndex].x;
-                linearPoints.push(this.createPoint(sx, gradient * sx + offset));
+            for (let currentPoint = 0; currentPoint < numOfPts; currentPoint += 1) {
+                let x_co = pts[0].x + (currentPoint*increment*x_diff);
+                let y_co = pts[0].y + (currentPoint*increment*y_diff);
+                linearPoints.push(this.createPoint(x_co,y_co,currentPoint));
             }
             return linearPoints;
         },
@@ -339,53 +325,28 @@ define(["../../../lib/math.js"], function(m) {
               return [];
             }
 
-            let grad = [];
-            for (let i = 0; i < pts.length - 1; i++) {
-                let dx = pts[i+1].x - pts[i].x;
-                let dy = pts[i+1].y - pts[i].y;
-                grad.push(dy/dx);
+            let turnPts = [];
+            let pot_max = [];
+            let pot_min = [];
+
+            for (let i = 1; i < pts.length-1; i++) { 
+                if (mode == 'maxima') {
+                    if (pts[i].y < pts[i-1].y && pts[i].y < pts[i+1].y) {
+                        pot_max.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                    } 
+                } else {
+                    if (pts[i].y > pts[i-1].y && pts[i].y > pts[i+1].y) {
+                        pot_min.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
+                    } 
+                }
             }
 
-            let turnPts = [];
-
-            for (let i = 1; i < grad.length; i++) {
-                if (!isNaN(grad[i-1]) && !isNaN(grad[i])) {
-                    if (grad[i] * grad[i-1] < 0 && (pts[i].x - pts[i-1].x) * (pts[i+1].x - pts[i].x) > 0) {
-
-                        let limit = 0.01;
-
-                        let l = i - 2;
-                        while (l >= 0 && Math.abs(grad[l]) < limit && Math.abs(grad[l]) > Math.abs(grad[l+1]) && grad[l] * grad[l+1] >= 0) {
-                            l--;
-                        }
-                        if (!(Math.abs(grad[l]) >= limit)) {
-                            continue;
-                        }
-
-                        let r = i + 1;
-                        while (r < grad.length && Math.abs(grad[r]) < limit && Math.abs(grad[r]) > Math.abs(grad[r-1]) && grad[r] * grad[r-1] >= 0) {
-                            r++;
-                        }
-                        if (!(Math.abs(grad[r]) >= limit)) {
-                            continue;
-                        }
-
-                        let acc1 = grad[l];
-                        let acc2 = grad[r];
-
-                        if (mode == 'maxima') {
-                            if ((pts[i].x > pts[i-1].x && acc1 < 0 && acc2 > 0) || (pts[i].x < pts[i-1].x && acc1 > 0 && acc2 < 0)) {
-                                turnPts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                            } 
-                        } else {
-                            if ((pts[i].x > pts[i-1].x && acc1 > 0 && acc2 < 0) || (pts[i].x < pts[i-1].x && acc1 < 0 && acc2 > 0)) {
-                                turnPts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                            } 
-                        }
-
-
-                    }
-                }
+            if (mode == 'maxima') {
+                turnPts = pot_max;
+                turnPts.sort(function(a, b){return a.x - b.x});
+            } else {
+                turnPts = pot_min;
+                turnPts.sort(function(a, b){return a.x - b.x});
             }
 
             return turnPts;
@@ -483,19 +444,20 @@ define(["../../../lib/math.js"], function(m) {
             let tempMin = undefined;
             let tempMax = undefined;
             let turningPoints = isMaxima ? selectedCurve.maxima : selectedCurve.minima;
-
             for (let i = 0; i < importantPoints.length; i++) {
-                if (importantPoints[i].ind == turningPoints[selectedPointIndex].ind) {
+                if (importantPoints[i] == undefined || turningPoints[selectedPointIndex] == undefined) {
+                    break;
+                }
+                if (importantPoints[i].x == turningPoints[selectedPointIndex].x) {
                     tempMin = importantPoints[i - 1]; 
                     tempMax = importantPoints[i + 1];
                 }
             }
-
             let xBuffer = 30;
             let yBuffer = 15;
             let withinXBoundary = (mousePosition.x - tempMax.x) < -xBuffer && (mousePosition.x - tempMin.x) > xBuffer;
             let withinYBoundary = (isMaxima && ((mousePosition.y - tempMax.y) < -yBuffer && (mousePosition.y - tempMin.y) < -yBuffer)) || (!isMaxima && ((mousePosition.y - tempMax.y) > yBuffer && (mousePosition.y - tempMin.y) > yBuffer));
-            let movementWithinBoundary = withinXBoundary && withinYBoundary;
+            let movementWithinBoundary = (withinXBoundary && withinYBoundary);
             if (movementWithinBoundary) {
                 // to this point we get the clicked knot and the turning/end points either side, now we will split the curve into the two
                 // origional max/min sides and the 2 new curves to be stretched, then combine them all after.
@@ -570,6 +532,7 @@ define(["../../../lib/math.js"], function(m) {
                 selectedCurve.minY = minY;
                 selectedCurve.maxY = maxY;
             }
+            return selectedCurve;
         },
 
         stretchCurve: function(c, orx, ory, nrx, nry, baseX, baseY, canvasProperties) {

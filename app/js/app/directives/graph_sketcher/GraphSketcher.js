@@ -153,7 +153,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     // for moving and stretching curve
                     let movedCurveIdx;
                     let stretchMode;
-                    let isMaxima = false;
+                    let isMaxima = undefined;
 
 
                     // for moving symbols
@@ -581,21 +581,20 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                 for (let i = 0; i < selectedCurve.pts.length; i++) { //TODO maybe remove the i property of pts
                                     selectedCurve.pts[i].ind = i;
                                 }
-                                selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
-                                selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
-                                selectedCurve.minima = graphUtils.findTurnPts(selectedCurve.pts, 'minima');
                             }
+                            selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
+                            selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
+                            selectedCurve.minima = graphUtils.findTurnPts(selectedCurve.pts, 'minima');
                             importantPoints.push.apply(importantPoints, selectedCurve.endPt);
                             importantPoints.push.apply(importantPoints, selectedCurve.maxima);
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
                             importantPoints.sort(function(a, b){return a.ind - b.ind});
 
                             // maxima and minima are treated in slightly different ways
-                            if (isMaxima) {
-                                graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
-                            } else if (!isMaxima) {
-                                graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
+                            if (isMaxima !== undefined) {
+                                curves[clickedCurve] = graphUtils.stretchTurningPoint(importantPoints, e, selectedCurve, isMaxima, clickedKnotId, prevMousePt, canvasProperties);
                             }
+
                             reDraw();
                             prevMousePt = mousePosition;
 
@@ -987,7 +986,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     if (scope.selectedLineType == "bezier") {
                                         pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
                                     } else if (scope.selectedLineType == "linear") {
-                                        pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
+                                        // pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
+                                        pts = graphUtils.linearLineStyle([drawnPts[0],drawnPts[drawnPts.length-1]])
                                     }
                                     curve = {};
                                     curve.pts = pts;
@@ -1010,15 +1010,19 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     curve.endPt = graphUtils.findEndPts(pts);
                                     curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
                                     curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
-                                    curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
-                                    curve.minima = graphUtils.findTurnPts(pts, 'minima');
+                                    if (scope.selectedLineType == "bezier") {
+                                        curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
+                                        curve.minima = graphUtils.findTurnPts(pts, 'minima');
+                                    } else {
+                                        curve.maxima = [];
+                                        curve.minima = [];
+                                    }
                                     curve.colorIdx = drawnColorIdx;
 
                                 } else {
                                     p.checkPointsUndo.push(p.checkPoint);
                                     p.checkPointsRedo = [];
                                     scope.$apply();
-
 
                                     let n = 100;
                                     let rx = lineEnd.x - lineStart.x;
@@ -1047,8 +1051,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     curve.minima = [];
                                     curve.colorIdx = drawnColorIdx;
                                 }
-
-
 
                                 loop(curve.maxima);
                                 loop(curve.minima);
