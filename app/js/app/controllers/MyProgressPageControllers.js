@@ -38,7 +38,7 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
         userOfInterest = $scope.user._id;
     }
 
-    api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate, events:"ANSWER_QUESTION", bin_data:true}).$promise.then(function(result) {
+    api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate}).$promise.then(function(result) {
         $scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
         $scope.showQuestionsOverTime = false;
         for (let property in $scope.questionsAnsweredOverTime) {
