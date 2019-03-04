@@ -39,18 +39,9 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
     }
 
     api.user.getEventsOverTime({userId: userOfInterest, from_date: dataStartDate, to_date:dataEndDate}).$promise.then(function(result) {
-        $scope.questionsAnsweredOverTime = JSON.parse(angular.toJson(result));
-        $scope.showQuestionsOverTime = false;
-        for (let property in $scope.questionsAnsweredOverTime) {
-            if ($scope.questionsAnsweredOverTime.hasOwnProperty(property)) {
-                if ($scope.questionsAnsweredOverTime[property]) {
-                    $scope.showQuestionsOverTime = true; // There is data to show.
-                }
-                // remove underscores in series label.
-                $scope.questionsAnsweredOverTime[property.replace("_", " ").toLowerCase()] = $scope.questionsAnsweredOverTime[property];
-                delete $scope.questionsAnsweredOverTime[property];
-            }
-        }           
+        let questionsPerMonth = JSON.parse(angular.toJson(result));
+        $scope.questionsAnsweredOverTime = {"Question Attempts": questionsPerMonth};
+        $scope.showQuestionsOverTime = true;         
         $scope.setLoading(false);
     }).catch(function(e) {
         console.error("Unable to load user timeline:", e);
