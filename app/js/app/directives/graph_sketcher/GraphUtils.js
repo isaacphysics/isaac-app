@@ -352,24 +352,16 @@ define(["../../../lib/math.js"], function(m) {
             });
 
             for (let i = 0; i < statPts.length; i++) { 
-                if ((statPts[i].y < pts[statPts[i].ind-5].y && statPts[i].y < pts[statPts[i].ind+5].y)) {
-                    pot_max.push(statPts[i]);
-                } 
-                if ((statPts[i].y > pts[statPts[i].ind-5].y && statPts[i].y > pts[statPts[i].ind+5].y)) {
-                    pot_min.push(statPts[i]);
-                }
+                ((statPts[i].y < pts[statPts[i].ind-5].y && statPts[i].y < pts[statPts[i].ind+5].y)) && pot_max.push(statPts[i]);
+                ((statPts[i].y > pts[statPts[i].ind-5].y && statPts[i].y > pts[statPts[i].ind+5].y)) && pot_min.push(statPts[i]);
             }
 
             let true_max = this.duplicateStationaryPts(pot_max, mode);
             let true_min = this.duplicateStationaryPts(pot_min, mode);
 
-            if (mode == 'maxima') {
-                turnPts = true_max;
-                turnPts.sort(function(a, b){return a.x - b.x});
-            } else {
-                turnPts = true_min;
-                turnPts.sort(function(a, b){return a.x - b.x});
-            }
+            mode == 'maxima' ? turnPts = true_max : turnPts = true_min;  
+            turnPts.sort(function(a, b){return a.x - b.x});
+            
             return turnPts;
         },
 
@@ -378,19 +370,10 @@ define(["../../../lib/math.js"], function(m) {
             for (let i = 0; i < pts.length; i++) {
                 let similar_ind = [pts[i]]
                 for (let j = 0; j < pts.length; j++) {
-                    if (pts[j].ind !== pts[i].ind) {
-                        if ((pts[j].ind < pts[i].ind + 5) && (pts[j].ind > pts[i].ind - 5)) {
-                            similar_ind.push(pts[j])
-                        }
-                    }
+                    (pts[j].ind !== pts[i].ind) && ((pts[j].ind < pts[i].ind + 5) && (pts[j].ind > pts[i].ind - 5)) && similar_ind.push(pts[j])
                 }
-                if (mode == 'maxima') {
-                    similar_ind.sort(function(a, b){return a.y - b.y});
-                    non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
-                } else {
-                    similar_ind.sort(function(a, b){return b.y - a.y});
-                    non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
-                }
+                mode == 'maxima' ? similar_ind.sort(function(a, b){return a.y - b.y}) : similar_ind.sort(function(a, b){return b.y - a.y})
+                non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
             }
             return non_duplicates;
         },
