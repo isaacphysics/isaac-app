@@ -122,9 +122,6 @@ define(["../../../lib/math.js"], function(m) {
             let linearPoints = [];
             let x_diff = pts[1].x-pts[0].x;
             let y_diff = pts[1].y-pts[0].y;
-
-            
-
             for (let currentPoint = 0; currentPoint < numOfPts; currentPoint += 1) {
                 let x_co = pts[0].x + (currentPoint*increment*x_diff);
                 let y_co = pts[0].y + (currentPoint*increment*y_diff);
@@ -326,30 +323,76 @@ define(["../../../lib/math.js"], function(m) {
             }
 
             let turnPts = [];
+            let potentialPts = [];
+            let statPts = [];
             let pot_max = [];
             let pot_min = [];
+            let cutoff = 10;
 
-            for (let i = 1; i < pts.length-1; i++) { 
-                if (mode == 'maxima') {
-                    if (pts[i].y < pts[i-1].y && pts[i].y < pts[i+1].y) {
-                        pot_max.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                    } 
-                } else {
-                    if (pts[i].y > pts[i-1].y && pts[i].y > pts[i+1].y) {
-                        pot_min.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
-                    } 
+            for (let i = cutoff; i < pts.length-cutoff; i++) {
+                if ((pts[i].y < pts[i-1].y && pts[i].y < pts[i+1].y) || (pts[i].y > pts[i-1].y && pts[i].y > pts[i+1].y) || (pts[i].y == pts[i-1].y)) {
+                    potentialPts.push(this.createPoint(pts[i].x, pts[i].y, pts[i].ind));
                 }
             }
 
-            if (mode == 'maxima') {
-                turnPts = pot_max;
-                turnPts.sort(function(a, b){return a.x - b.x});
-            } else {
-                turnPts = pot_min;
-                turnPts.sort(function(a, b){return a.x - b.x});
+            let stationaryArrays = Object.create(null);
+
+            // loop over turn pts and put them in arrays by same y value
+            potentialPts.forEach(function(pt) {
+                let stationaryArray = stationaryArrays[pt.y];
+                if (!stationaryArray) {
+                    stationaryArray = stationaryArrays[pt.y] = [];
+                }
+                stationaryArray.push(pt);
+            });
+
+            Object.keys(stationaryArrays).forEach(function(key) {
+                let middle = stationaryArrays[key][Math.floor(stationaryArrays[key].length / 2)];
+                statPts.push(middle);
+            });
+
+            for (let i = 0; i < statPts.length; i++) { 
+                if ((statPts[i].y < pts[statPts[i].ind-5].y && statPts[i].y < pts[statPts[i].ind+5].y)) {
+                    pot_max.push(statPts[i]);
+                } 
+                if ((statPts[i].y > pts[statPts[i].ind-5].y && statPts[i].y > pts[statPts[i].ind+5].y)) {
+                    pot_min.push(statPts[i]);
+                }
             }
 
+            let true_max = this.duplicateStationaryPts(pot_max, mode);
+            let true_min = this.duplicateStationaryPts(pot_min, mode);
+
+            if (mode == 'maxima') {
+                turnPts = true_max;
+                turnPts.sort(function(a, b){return a.x - b.x});
+            } else {
+                turnPts = true_min;
+                turnPts.sort(function(a, b){return a.x - b.x});
+            }
             return turnPts;
+        },
+
+        duplicateStationaryPts: function(pts, mode) {
+            let non_duplicates = []
+            for (let i = 0; i < pts.length; i++) {
+                let similar_ind = [pts[i]]
+                for (let j = 0; j < pts.length; j++) {
+                    if (pts[j].ind !== pts[i].ind) {
+                        if ((pts[j].ind < pts[i].ind + 5) && (pts[j].ind > pts[i].ind - 5)) {
+                            similar_ind.push(pts[j])
+                        }
+                    }
+                }
+                if (mode == 'maxima') {
+                    similar_ind.sort(function(a, b){return a.y - b.y});
+                    non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
+                } else {
+                    similar_ind.sort(function(a, b){return b.y - a.y});
+                    non_duplicates.indexOf(similar_ind[0]) === -1 ? non_duplicates.push(similar_ind[0]) : {};
+                }
+            }
+            return non_duplicates;
         },
 
         // given a curve, translate the curve
@@ -603,7 +646,7 @@ define(["../../../lib/math.js"], function(m) {
                                 symbol.y = knot.y;
                                 knot.symbol = symbol;
                             } else {
-                                freeSymbols.push(symbol);// TODO MT not defined
+                                // freeSymbols.push(symbol);// TODO MT not defined
                             }
                         }
                     }
