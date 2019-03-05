@@ -143,6 +143,12 @@
                             </div>
                         </li>
                         <li>
+                            <div class="progress-bar-box">
+                                <span>Pre-University <a class="book-title" ui-sref="book_pre_uni_maths">Mathematics</a> questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
+                                <div progress-bar class="progress-bar bar-purple" value="progress.correctByTag['maths_book']" max="progress.attemptsByTag['maths_book']" title="{{progress.percentCorrectMathsBook}}%"></div>
+                            </div>
+                        </li>
+                        <li>
                             <div class="progress-bar-box end">
                                 <span>Mastering Essential <a class="book-title" ui-sref="book_chemistry_16">Pre-University Physical Chemistry</a> questions completed <span class="ru_green">correctly</span> of those <span class="progress-attempted">attempted</span></span>
                                 <div progress-bar class="progress-bar bar-orangered" value="progress.correctByTag['chemistry_16']" max="progress.attemptsByTag['chemistry_16']" title="{{progress.percentCorrectChemistry16}}%"></div>

@@ -75,6 +75,7 @@ export const PageController = ['$rootScope','$scope', 'auth', 'api', 'tags', '$s
         $scope.progress.percentCorrectPhysicsSkills14 = Math.round(100*$scope.progress.correctByTag["physics_skills_14"]/$scope.progress.attemptsByTag["physics_skills_14"]) || 0;
         $scope.progress.percentCorrectChemistry16 = Math.round(100*$scope.progress.correctByTag["chemistry_16"]/$scope.progress.attemptsByTag["chemistry_16"]) || 0;
         $scope.progress.percentCorrectPhysBookGCSE = Math.round(100*$scope.progress.correctByTag["phys_book_gcse"]/$scope.progress.attemptsByTag["phys_book_gcse"]) || 0;
+        $scope.progress.percentCorrectMathsBook = Math.round(100*$scope.progress.correctByTag["maths_book"]/$scope.progress.attemptsByTag["maths_book"]) || 0;
 
         $scope.correctQuestions = {};
         $scope.attemptedQuestions = {};
