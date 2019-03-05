@@ -77,7 +77,7 @@ define([], function() {
             },
             'getEventsOverTime' : {
                 method: 'GET',
-                url: urlPrefix + "/users/:userId/event_data/over_time?from_date=:from_date&to_date=:to_date&events=:events"
+                url: urlPrefix + "/questions/answered_questions/:userId?from_date=:from_date&to_date=:to_date"
             },
             'getUserPreferences' : {
                 method: 'GET',
