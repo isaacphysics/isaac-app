@@ -25,11 +25,14 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 
     $scope.emailInviteFeatureAvailable = false;
 
+    $scope.largeNumberOfUsers = 100;
+
     $scope.selectedGroup = null;
     $scope.selectedGroupMembers = null;
     $scope.selectedGroupAdditionalManagers = null;
     $scope.selectedGroupToken = null;
     $scope.groupJoinURL = null;
+    $scope.showGroup = false;
 
     $scope.newGroup = {};
 
@@ -58,8 +61,13 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
         // don't do anything as there is no change.
     }
     
+    $scope.expandGroup = function() {
+        $scope.showGroup = true;
+        $timeout(Opentip.findElements, 100);
+    }
 
     $scope.setSelectedGroup = function(group) {
+        $scope.showGroup = false;
         if (group == null || ($scope.selectedGroup && group._id == $scope.selectedGroup._id)) {
             $scope.selectedGroup = null;
             $scope.selectedGroupMembers = null;
@@ -72,9 +80,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
             $scope.selectedGroupAdditionalManagers = $scope.selectedGroup.additionalManagers;
             
             $scope.selectedGroupMembers.$promise.then(function(){
-                $timeout(function(){
-                    Opentip.findElements();
-                }, 500);
+                $timeout(Opentip.findElements, 100);
                 $scope.setLoading(false);
             }).catch(function(e) {
                 console.error(e)
