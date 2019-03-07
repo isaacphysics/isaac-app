@@ -162,8 +162,6 @@ export
 
         this.prevTouch = this.p.createVector(0, 0);
 
-        this.initialSymbolsToParse = [];
-
         try {
             _.each(this.initialSymbolsToParse || [], s => {
                 this.parseSubtreeObject(s);
