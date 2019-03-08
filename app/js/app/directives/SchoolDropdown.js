@@ -15,7 +15,7 @@
  */
 define(["/partials/school_dropdown.html"], function(templateUrl) {
 
-    return ["api", function(api) {
+    return ["api", "$timeout", function(api, $timeout) {
 
         return {
             scope: {
@@ -46,10 +46,23 @@ define(["/partials/school_dropdown.html"], function(templateUrl) {
             
 
                 // When the search text changes to something longer than 2 chars, search school.
+                // timer for the search box to minimise number of requests sent to api
+                let timer = null;
+                let searchSchools = function() {
+                    scope.searchResults = api.schools.query({query: scope.searchText});
+                }
                 scope.$watch("searchText", function(newText) {
+                    if (timer) {
+                        $timeout.cancel(timer);
+                        timer = null;
+                    }
 
-                    if (newText.length > 2) {
-                        scope.searchResults = api.schools.query({query: scope.searchText});
+                    if (newText.length % 5 == 3) {
+                        // Search every 5th character
+                        searchSchools();
+                    } else if (newText.length > 2) {
+                        // Else only search after they stop typing.
+                        timer = $timeout(function() {searchSchools()}, 500);
                     } else {
                         // We don't have enough text. Clear search results.
                         scope.searchResults = [];
