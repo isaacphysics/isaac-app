@@ -56,31 +56,33 @@ a.login-forgot-password {
 .login-social-google,
 .login-social-twitter,
 .login-social-facebook {
+	position: relative;
 	text-indent: -99999em;
 	display: inline-block;
 	text-align: center;
 	width: 79px;
 	height: 78px;
 	background: url(../assets/social-login-sprite.png) no-repeat 0 0;
+	-webkit-transition: top 2s ease-in-out;
+	-moz-transition: top 2s ease-in-out;
+	-o-transition: top 2s ease-in-out;
+	-ms-transition: top 2s ease-in-out;
+	transition: top 0.2s ease-in-out;
 	margin-right: 10px;
+	margin-top: 8px;
+	top: 0px;
+	&:hover {
+		top: -4px;
+	}
 }
 .login-social-facebook {
 	margin-right: 0;
-	&:hover {
-		background-position: 0 -78px;
-	}
 }
 .login-social-google {
 	background-position: 0 -156px;
-	&:hover {
-		background-position: 0 -234px;
-	}
 }
 .login-social-twitter {
 	background-position: 0 -312px;
-	&:hover {
-		background-position: 0 -390px;
-	}
 }
 .ru-separator {
 }
