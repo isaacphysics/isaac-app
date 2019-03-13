@@ -34,8 +34,8 @@ define(['./GraphUtils.js'], function(graphUtils) {
             // want to connect closest points x,y wise, not just x wise
             let pts = curve.pts;
             for (let i = 1; i < pts.length; i++) {
-                if (pts[i].x - pts[i-1].x < 100 && pts[i].y - pts[i-1].y < 100) {
-                    this.p.line(pts[i-1].x, pts[i-1].y, pts[i].x, pts[i].y);
+                if (pts[i][0] - pts[i-1][0] < 100 && pts[i][1] - pts[i-1][1] < 100) {
+                    this.p.line(pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
                 }
             }
 
@@ -66,8 +66,8 @@ define(['./GraphUtils.js'], function(graphUtils) {
                 this.p.noFill();
                 this.p.stroke(color);
                 this.p.strokeWeight(1.5);
-                this.p.line(knot.x - 3, knot.y - 3, knot.x + 3, knot.y + 3);
-                this.p.line(knot.x + 3, knot.y - 3, knot.x - 3, knot.y + 3);
+                this.p.line(knot[0] - 3, knot[1] - 3, knot[0] + 3, knot[1] + 3);
+                this.p.line(knot[0] + 3, knot[1] - 3, knot[0] - 3, knot[1] + 3);
                 this.p.pop();
             }
         }
@@ -78,8 +78,8 @@ define(['./GraphUtils.js'], function(graphUtils) {
                 this.p.noFill();
                 this.p.stroke(GraphView.KNOT_DETECT_COLOR);
                 this.p.strokeWeight(2);
-                this.p.line(knot.x - 5, knot.y - 5, knot.x + 5, knot.y + 5);
-                this.p.line(knot.x + 5, knot.y - 5, knot.x - 5, knot.y + 5);
+                this.p.line(knot[0] - 5, knot[1] - 5, knot[0] + 5, knot[1] + 5);
+                this.p.line(knot[0] + 5, knot[1] - 5, knot[0] - 5, knot[1] + 5);
                 this.p.pop();
             }
         }

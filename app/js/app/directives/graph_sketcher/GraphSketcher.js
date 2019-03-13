@@ -194,13 +194,13 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         let top = button.position().top;
                         let width = button.width();
                         let height = button.height();
-                        return (pt.x > left && pt.x < left + width && pt.y > top && pt.y < top + height);
+                        return (pt[0] > left && pt[0] < left + width && pt[1] > top && pt[1] < top + height);
                     }
 
                     // Mouse is inactive if over buttons - stops curves being drawn where they can't be seen
                     function isActive(pt) {
 
-                        if (!(pt.x > 0 && pt.x < canvasProperties.width && pt.y > 0 && pt.y < canvasProperties.height)) {
+                        if (!(pt[0] > 0 && pt[0] < canvasProperties.width && pt[1] > 0 && pt[1] < canvasProperties.height)) {
                             return false;
                         }
 
@@ -240,7 +240,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         let mousePosition = graphUtils.getMousePt(e);
 
                         function detect(x, y) {
-                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                            return (Math.abs(mousePosition[0] - x) < 5 && Math.abs(mousePosition[1] - y) < 5);
                         }
 
                         // this function does not react if the mouse is over buttons or outside the canvas.
@@ -267,7 +267,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         // stretch box
                         if (clickedCurveIdx != undefined) {
                             let c = curves[clickedCurveIdx];
-                            if (mousePosition.x >= c.minX && mousePosition.x <= c.maxX && mousePosition.y >= c.minY && mousePosition.y <= c.maxY) {
+                            if (mousePosition[0] >= c.minX && mousePosition[0] <= c.maxX && mousePosition[1] >= c.minY && mousePosition[1] <= c.maxY) {
                                 found = true;
                                 p.cursor(p.MOVE);
                             } else if (detect(c.minX, c.minY) || detect(c.maxX, c.minY) || detect(c.minX, c.maxY) || detect(c.maxX, c.maxY)) {
@@ -337,7 +337,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         }
 
                         function detect(x, y) {
-                            return (Math.abs(mousePosition.x - x) < 5 && Math.abs(mousePosition.y - y) < 5);
+                            return (Math.abs(mousePosition[0] - x) < 5 && Math.abs(mousePosition[1] - y) < 5);
                         }
                         // record down mousePosition status, may be used later for undo.
                         p.checkPoint = {};
@@ -351,6 +351,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                 freeSymbols.splice(i, 1);
                                 prevMousePt = mousePosition;
                                 action = "MOVE_SYMBOL";
+                                console.log(action);
                                 return;
                             }
                         }
@@ -499,7 +500,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             }
                             if (tc != undefined) {
                                 // && graphUtils.getDist(mousePosition, knot) > MOUSE_DETECT_RADIUS + 10
-                                if (mousePosition.x >= tc.minX && mousePosition.x <= tc.maxX && mousePosition.y >= tc.minY && mousePosition.y <= tc.maxY) {
+                                if (mousePosition[0] >= tc.minX && mousePosition[0] <= tc.maxX && mousePosition[1] >= tc.minY && mousePosition[1] <= tc.maxY) {
                                     movedCurveIdx = clickedCurveIdx;
                                     action = "MOVE_CURVE";
                                     clickedKnot = null;
@@ -576,11 +577,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             let selectedCurve = curves[clickedCurve];
                             // we need to know the (important) ordered end and turning points
                             let importantPoints = [];
-                            if (selectedCurve.pts[0].x > selectedCurve.pts[selectedCurve.pts.length - 1].x) {
+                            if (selectedCurve.pts[0][0] > selectedCurve.pts[selectedCurve.pts.length - 1][0]) {
                                 selectedCurve.pts.reverse();
-                                for (let i = 0; i < selectedCurve.pts.length; i++) { //TODO maybe remove the i property of pts
-                                    selectedCurve.pts[i].ind = i;
-                                }
                             }
                             selectedCurve.endPt = graphUtils.findEndPts(selectedCurve.pts);
                             selectedCurve.maxima = graphUtils.findTurnPts(selectedCurve.pts, 'maxima');
@@ -588,7 +586,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             importantPoints.push.apply(importantPoints, selectedCurve.endPt);
                             importantPoints.push.apply(importantPoints, selectedCurve.maxima);
                             importantPoints.push.apply(importantPoints, selectedCurve.minima);
-                            importantPoints.sort(function(a, b){return a.ind - b.ind});
+                            importantPoints.sort(function(a, b){return a[0] - b[0]});
 
                             // maxima and minima are treated in slightly different ways
                             if (isMaxima !== undefined) {
@@ -604,8 +602,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             scope.trashActive = isOverButton(mousePosition, element.find(".trash-button"));
                             scope.$apply();
 
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
+                            let dx = mousePosition[0] - prevMousePt[0];
+                            let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
                             graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties, freeSymbols);
                             reDraw();
@@ -613,8 +611,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         } else if (action == "STRETCH_CURVE") {
                             p.cursor(p.MOVE);
 
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
+                            let dx = mousePosition[0] - prevMousePt[0];
+                            let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
 
                             let currentCurve = curves[clickedCurveIdx];
@@ -734,8 +732,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         } else if (action == "MOVE_SYMBOL") {
                             p.cursor(p.MOVE);
 
-                            let dx = mousePosition.x - prevMousePt.x;
-                            let dy = mousePosition.y - prevMousePt.y;
+                            let dx = mousePosition[0] - prevMousePt[0];
+                            let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
 
                             movedSymbol.x += dx;
@@ -767,7 +765,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
                                     if (drawnPts.length > 0) {
                                         let precedingPoint = drawnPts[drawnPts.length - 1];
-                                        p.line(precedingPoint.x, precedingPoint.y, mousePosition.x, mousePosition.y);
+                                        p.line(precedingPoint[0], precedingPoint[1], mousePosition[0], mousePosition[1]);
                                     }
                                     p.pop();
                                     drawnPts.push(mousePosition);
@@ -777,7 +775,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     p.push();
                                     p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
                                     p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
-                                    p.line(lineStart.x, lineStart.y, mousePosition.x, mousePosition.y);
+                                    p.line(lineStart[0], lineStart[1], mousePosition[0], mousePosition[1]);
                                     p.pop();
 
                                     lineEnd = mousePosition;
@@ -795,9 +793,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                 let knot = knots[i];
                                 for (let j = 0; j < freeSymbols.length; j++) {
                                     let sym = freeSymbols[j];
-                                    if (graphUtils.getDist(knot, sym) < 20) {
-                                        sym.x = knot.x;
-                                        sym.y = knot.y;
+                                    if (graphUtils.getDist(knot, graphUtils.createPoint(sym.x, sym.y)) < 20) {
+                                        sym.x = knot[0];
+                                        sym.y = knot[1];
                                         knot.symbol = sym;
                                         freeSymbols.splice(j, 1);
                                     }
@@ -812,9 +810,11 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             }
                             for (let j = 0; j < knots.length; j++) {
                                 let knot = knots[j];
-                                if (knot.symbol == undefined && graphUtils.getDist(movedSymbol, knot) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot.x;
-                                    movedSymbol.y = knot.y;
+                                console.log(movedSymbol);
+                                console.log(knot);
+                                if (knot.symbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), knot) < MOUSE_DETECT_RADIUS) {
+                                    movedSymbol.x = knot[0];
+                                    movedSymbol.y = knot[1];
                                     knot.symbol = movedSymbol;
                                     found = true;
                                 }
@@ -932,14 +932,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
 
                             if (!found && clickedKnot != null) {
                                 let knot = clickedKnot;
-                                if (knot.xSymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(knot.x, canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot.x;
+                                if (knot.xSymbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), graphUtils.createPoint(knot[0], canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
+                                    movedSymbol.x = knot[0];
                                     movedSymbol.y = canvasProperties.height/2;
                                     knot.xSymbol = movedSymbol;
                                     found = true;
-                                } else if (knot.ySymbol == undefined && graphUtils.getDist(movedSymbol, graphUtils.createPoint(canvasProperties.width/2, knot.y)) < MOUSE_DETECT_RADIUS) {
+                                } else if (knot.ySymbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), graphUtils.createPoint(canvasProperties.width/2, knot[1])) < MOUSE_DETECT_RADIUS) {
                                     movedSymbol.x = canvasProperties.width/2;
-                                    movedSymbol.y = knot.y;
+                                    movedSymbol.y = knot[1];
                                     knot.ySymbol = movedSymbol;
                                     found = true;
                                 }
@@ -968,17 +968,17 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     scope.$apply();
 
                                     // adjustment of start and end to attach to the axis automatically.
-                                    if (Math.abs(drawnPts[0].y - canvasProperties.height/2) < 3) {
-                                        drawnPts[0].y = canvasProperties.height/2;
+                                    if (Math.abs(drawnPts[0][1] - canvasProperties.height/2) < 3) {
+                                        drawnPts[0][1] = canvasProperties.height/2;
                                     }
-                                    if (Math.abs(drawnPts[0].x - canvasProperties.width/2) < 3) {
-                                        drawnPts[0].x = canvasProperties.width/2;
+                                    if (Math.abs(drawnPts[0][0] - canvasProperties.width/2) < 3) {
+                                        drawnPts[0][0] = canvasProperties.width/2;
                                     }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].y - canvasProperties.height/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].y = canvasProperties.height/2;
+                                    if (Math.abs(drawnPts[drawnPts.length - 1][1] - canvasProperties.height/2) < 3) {
+                                        drawnPts[drawnPts.length - 1][1] = canvasProperties.height/2;
                                     }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1].x - canvasProperties.width/2) < 3) {
-                                        drawnPts[drawnPts.length - 1].x = canvasProperties.width/2;
+                                    if (Math.abs(drawnPts[drawnPts.length - 1][0] - canvasProperties.width/2) < 3) {
+                                        drawnPts[drawnPts.length - 1][0] = canvasProperties.width/2;
                                     }
 
                                     // sampler.sample, bezier.genericBezier
@@ -992,15 +992,15 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     curve = {};
                                     curve.pts = pts;
 
-                                    let minX = pts[0].x;
-                                    let maxX = pts[0].x;
-                                    let minY = pts[0].y;
-                                    let maxY = pts[0].y;
+                                    let minX = pts[0][0];
+                                    let maxX = pts[0][0];
+                                    let minY = pts[0][1];
+                                    let maxY = pts[0][1];
                                     for (let i = 1; i < pts.length; i++) {
-                                        minX = Math.min(pts[i].x, minX);
-                                        maxX = Math.max(pts[i].x, maxX);
-                                        minY = Math.min(pts[i].y, minY);
-                                        maxY = Math.max(pts[i].y, maxY);
+                                        minX = Math.min(pts[i][0], minX);
+                                        maxX = Math.max(pts[i][0], maxX);
+                                        minY = Math.min(pts[i][1], minY);
+                                        maxY = Math.max(pts[i][1], maxY);
                                     }
                                     curve.minX = minX;
                                     curve.maxX = maxX;
@@ -1025,24 +1025,24 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     scope.$apply();
 
                                     let n = 100;
-                                    let rx = lineEnd.x - lineStart.x;
-                                    let ry = lineEnd.y - lineStart.y;
+                                    let rx = lineEnd[0] - lineStart[0];
+                                    let ry = lineEnd[1] - lineStart[1];
                                     let sx = rx / n;
                                     let sy = ry / n;
                                     let pts = [];
                                     for (let i = 0; i < n-1; i++) {
-                                        let x = lineStart.x + i * sx;
-                                        let y = lineStart.y + i * sy;
-                                        pts.push(graphUtils.createPoint(x, y, i));
+                                        let x = lineStart[0] + i * sx;
+                                        let y = lineStart[1] + i * sy;
+                                        pts.push(graphUtils.createPoint(x, y));
                                     }
 
                                     curve = {};
                                     curve.pts = pts;
 
-                                    curve.minX = Math.min(lineStart.x, lineEnd.x);
-                                    curve.maxX = Math.max(lineStart.x, lineEnd.x);
-                                    curve.minY = Math.min(lineStart.y, lineEnd.y);
-                                    curve.maxY = Math.max(lineStart.y, lineEnd.y);
+                                    curve.minX = Math.min(lineStart[0], lineEnd[0]);
+                                    curve.maxX = Math.max(lineStart[0], lineEnd[0]);
+                                    curve.minY = Math.min(lineStart[1], lineEnd[1]);
+                                    curve.maxY = Math.max(lineStart[1], lineEnd[1]);
 
                                     curve.endPt = graphUtils.findEndPts(pts);
                                     curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
@@ -1153,7 +1153,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                 if (pts.length == 0) return 0;
                                 let min = canvasProperties.width;
                                 for (let i = 0; i < pts.length; i++)
-                                    min = Math.min(min, pts[i].x);
+                                    min = Math.min(min, pts[i][0]);
                                 return min;
                             }
 
@@ -1167,14 +1167,14 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         clonedCurves.sort(compare);
 
                         function normalise(pt) {
-                            let x = (pt.x - canvasProperties.width/2) / canvasProperties.width;
-                            let y = (canvasProperties.height/2 - pt.y) / canvasProperties.height;
+                            let x = (pt[0] - canvasProperties.width/2) / canvasProperties.width;
+                            let y = (canvasProperties.height/2 - pt[1]) / canvasProperties.height;
                             if (trunc) {
-                                pt.x = Math.trunc(x * 1000) / 1000;
-                                pt.y = Math.trunc(y * 1000) / 1000;
+                                pt[0] = Math.trunc(x * 1000) / 1000;
+                                pt[1] = Math.trunc(y * 1000) / 1000;
                             } else {
-                                pt.x = x;
-                                pt.y = y;
+                                pt[0] = x;
+                                pt[1] = y;
                             }
                         }
 
@@ -1315,6 +1315,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         // reload previous answer if there is one ////////////////////////////////////////////////
                         if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
                             graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
+                            clickedCurveIdx = undefined
                             reDraw();
                         }
                     });

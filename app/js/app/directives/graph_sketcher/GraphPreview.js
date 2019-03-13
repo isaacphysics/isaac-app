@@ -43,8 +43,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         let data = graphUtils.clone(rawData);
 
                         function denormalise(pt) {
-                                pt.x = pt.x * canvasWidth + canvasWidth/2;
-                                pt.y = canvasHeight/2 - pt.y * canvasHeight;
+                                pt[0] = pt[0] * canvasWidth + canvasWidth/2;
+                                pt[1] = canvasHeight/2 - pt[1] * canvasHeight;
                             }
 
                         function denormalise1(knots) {
