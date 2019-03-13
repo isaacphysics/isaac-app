@@ -84,33 +84,6 @@ define(['./GraphUtils.js'], function(graphUtils) {
             }
         }
 
-        drawSymbols(symbols, color) {
-            for (let i = 0; i < symbols.length; i++) {
-                this.drawSymbol(symbols[i], color);
-            }
-        }
-
-        drawSymbol(symbol, color) {
-            if (color == undefined) {
-                color = DEFAULT_KNOT_COLOR;
-            }
-            this.p.push();
-
-            this.p.stroke(color);
-            this.p.strokeWeight(1.5);
-            this.p.noFill();
-            this.p.line(symbol.x - 3, symbol.y - 3, symbol.x + 3, symbol.y + 3);
-            this.p.line(symbol.x + 3, symbol.y - 3, symbol.x - 3, symbol.y + 3);
-
-            this.p.stroke(0);
-            this.p.strokeWeight(0.5);
-            this.p.fill(0);
-            this.p.textSize(16);
-            this.p.text(symbol.text, symbol.x - 5, symbol.y + 20);
-
-            this.p.pop();
-        }
-
         drawVerticalDotLine(x, begin, end) {
             if (x < 0 || x > canvasWidth) {
                 return;

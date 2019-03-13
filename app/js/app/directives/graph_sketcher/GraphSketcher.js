@@ -15,31 +15,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                 let colorSelect = element.find(".color-select")[0];
                 let encodeData;
                 let reDraw;
-                let freeSymbols = [];
                 let curves = [];
                 let clickedKnot = null;
                 let clickedCurveIdx;
-
-                function initiateFreeSymbols() {
-                    freeSymbols = [];
-
-                    const symbolList = ['A', 'B', 'C', 'D', 'E'];
-                    symbolList.forEach(function(symbol) {
-                        freeSymbols.push(graphUtils.createSymbol(symbol));
-                    });
-                    refreshFreeSymbols();
-                }
-
-                function refreshFreeSymbols() {
-                    let start = 15;
-                    let separation = 30;
-
-                    for (let i = 0; i < freeSymbols.length; i++) {
-                        let symbol = freeSymbols[i];
-                        symbol.x = start + i * separation;
-                        symbol.y = start;
-                    }
-                }
 
                 element.on("touchstart touchmove", "canvas", function(e) {
                     e.preventDefault();
@@ -52,12 +30,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     }
 
                     let checkPointRedo = {};
-                    checkPointRedo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     checkPointRedo.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsRedo.push(checkPointRedo);
 
                     let checkPointUndo = scope.p.checkPointsUndo.pop();
-                    freeSymbols = JSON.parse(checkPointUndo.freeSymbolsJSON);
                     curves = JSON.parse(checkPointUndo.curvesJSON);
                     clickedKnot = null;
                     clickedCurveIdx = undefined;
@@ -73,12 +49,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     }
 
                     let checkPointUndo = {};
-                    checkPointUndo.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     checkPointUndo.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsUndo.push(checkPointUndo);
 
                     let checkPointRedo = scope.p.checkPointsRedo.pop();
-                    freeSymbols = JSON.parse(checkPointRedo.freeSymbolsJSON);
                     curves = JSON.parse(checkPointRedo.curvesJSON);
 
                     clickedKnot = null;
@@ -107,7 +81,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                 // The ability to wipe the canvas, deletion for example
                 scope.clean = function() {
                     scope.p.checkPoint = {};
-                    scope.p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                     scope.p.checkPoint.curvesJSON = JSON.stringify(curves);
                     scope.p.checkPointsUndo.push(scope.p.checkPoint);
                     scope.p.checkPointsRedo = [];
@@ -115,7 +88,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     curves = [];
                     clickedKnot = null;
                     clickedCurveIdx = undefined;
-                    initiateFreeSymbols();
                     reDraw();
                 }
 
@@ -169,22 +141,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     p.checkPointsUndo = [];
                     p.checkPointsRedo = [];
 
-                    // Allows symbol retention upon curve deletion
-                    function freeAllSymbols(knots) {
-                        for (let i = 0; i < knots.length; i++) {
-                            let knot = knots[i];
-                            if (knot.symbol != undefined) {
-                                freeSymbols.push(knot.symbol);
-                            }
-                            if (knot.xSymbol != undefined) {
-                                freeSymbols.push(knot.xSymbol);
-                            }
-                            if (knot.ySymbol != undefined) {
-                                freeSymbols.push(knot.ySymbol);
-                            }
-                        }
-                    }
-
                     function isOverButton(pt, button) {
                         if (button.position() == undefined) {
                             return false;
@@ -230,8 +186,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         p.createCanvas(canvasProperties.width, canvasProperties.height);
                         p.noLoop();
                         p.cursor(p.ARROW);
-
-                        initiateFreeSymbols();
                         reDraw();
                     }
 
@@ -251,7 +205,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         let found = "notFound";
 
                         if (found == "notFound") {
-                            found = graphUtils.overItem(curves, e, freeSymbols, MOUSE_DETECT_RADIUS, found);
+                            found = graphUtils.overItem(curves, e, MOUSE_DETECT_RADIUS, found);
                             if (found == "overKnot") {
                                 p.cursor(p.HAND);
                                 return;
@@ -341,91 +295,9 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         }
                         // record down mousePosition status, may be used later for undo.
                         p.checkPoint = {};
-                        p.checkPoint.freeSymbolsJSON = JSON.stringify(freeSymbols);
                         p.checkPoint.curvesJSON = JSON.stringify(curves);
 
-                        // check if it is to move a symbol
-                        for (let i = 0; i < freeSymbols.length; i++) {
-                            if (graphUtils.isOverSymbol(mousePosition, freeSymbols[i])) {
-                                movedSymbol = freeSymbols[i];
-                                freeSymbols.splice(i, 1);
-                                prevMousePt = mousePosition;
-                                action = "MOVE_SYMBOL";
-                                console.log(action);
-                                return;
-                            }
-                        }
-
                         let found = false;
-                        function detach1(knots) {
-                            if (found) {
-                                return;
-                            }
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.symbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.symbol)) {
-                                    movedSymbol = knot.symbol;
-                                    knot.symbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'symbol';
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        function detach2(knots) {
-                            if (found) {
-                                return;
-                            }
-                            detach1(knots);
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.xSymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.xSymbol)) {
-                                    movedSymbol = knot.xSymbol;
-                                    knot.xSymbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'xSymbol';
-                                    found = true;
-                                }
-                                if (knot.ySymbol != undefined && graphUtils.isOverSymbol(mousePosition, knot.ySymbol)) {
-                                    movedSymbol = knot.ySymbol;
-                                    knot.ySymbol = undefined;
-                                    bindedKnot = knot;
-                                    symbolType = 'ySymbol';
-                                    found = true;
-                                }
-                                if (found) {
-                                    break;
-                                }
-                            }
-                        }
-
-                        for (let i = 0; i < curves.length; i++) {
-                            let interX = curves[i]['interX'];
-                            detach1(interX);
-
-                            let interY = curves[i]['interY'];
-                            detach1(interY);
-
-                            let maxima = curves[i]['maxima'];
-                            detach2(maxima);
-
-                            let minima = curves[i]['minima'];
-                            detach2(minima);
-
-                            if (found) {
-                                break;
-                            }
-                        }
-
-                        if (found) {
-                            action = "MOVE_SYMBOL";
-                            prevMousePt = mousePosition;
-                            // clickedCurveIdx = undefined;
-
-                            return;
-                        }
 
                         // check if stretching curve
                         if (clickedCurveIdx != undefined) {
@@ -533,18 +405,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             if (clickedCurveIdx != undefined) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
 
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
                                 clickedCurveIdx = undefined;
                             }
                         }
@@ -605,7 +465,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             let dx = mousePosition[0] - prevMousePt[0];
                             let dy = mousePosition[1] - prevMousePt[1];
                             prevMousePt = mousePosition;
-                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties, freeSymbols);
+                            graphUtils.translateCurve(curves[movedCurveIdx], dx, dy, canvasProperties);
                             reDraw();
 
                         } else if (action == "STRETCH_CURVE") {
@@ -729,33 +589,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             reDraw();
                             scope.graphView.drawCorner(stretchMode, currentCurve);
 
-                        } else if (action == "MOVE_SYMBOL") {
-                            p.cursor(p.MOVE);
-
-                            let dx = mousePosition[0] - prevMousePt[0];
-                            let dy = mousePosition[1] - prevMousePt[1];
-                            prevMousePt = mousePosition;
-
-                            movedSymbol.x += dx;
-                            movedSymbol.y += dy;
-
-                            reDraw();
-                            scope.graphView.drawSymbol(movedSymbol, MOVE_SYMBOL_COLOR);
-
-                            for (let i = 0; i < curves.length; i++) {
-                                let interX = curves[i]['interX'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interX, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let interY = curves[i]['interY'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(interY, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let maxima = curves[i]['maxima'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(maxima, movedSymbol, MOUSE_DETECT_RADIUS));
-
-                                let minima = curves[i]['minima'];
-                                scope.graphView.drawDetectedKnot(graphUtils.symbolOverKnot(minima, movedSymbol, MOUSE_DETECT_RADIUS));
-                            }
-
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
                             if (curves.length < CURVE_LIMIT) {
@@ -787,39 +620,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     // Need to know where to update points to - gives final position
                     p.mouseReleased = function(_e) {
                         let mousePosition = releasePt;
-
-                        function loop(knots) {
-                            for (let i = 0; i < knots.length; i++) {
-                                let knot = knots[i];
-                                for (let j = 0; j < freeSymbols.length; j++) {
-                                    let sym = freeSymbols[j];
-                                    if (graphUtils.getDist(knot, graphUtils.createPoint(sym.x, sym.y)) < 20) {
-                                        sym.x = knot[0];
-                                        sym.y = knot[1];
-                                        knot.symbol = sym;
-                                        freeSymbols.splice(j, 1);
-                                    }
-                                }
-
-                            }
-                        }
-
-                        function attach(knots, found) {
-                            if (found) {
-                                return;
-                            }
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                console.log(movedSymbol);
-                                console.log(knot);
-                                if (knot.symbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), knot) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot[0];
-                                    movedSymbol.y = knot[1];
-                                    knot.symbol = movedSymbol;
-                                    found = true;
-                                }
-                            }
-                        }
 
                         // if it is just a click, handle click in the following if block
                         if (!isMouseDragged) {
@@ -874,18 +674,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             if (scope.trashActive) {
                                 let curve = (curves.splice(movedCurveIdx, 1))[0];
 
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
                                 clickedCurveIdx = undefined;
                             }
 
@@ -904,52 +692,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             p.checkPointsRedo = [];
 
                             // let c = curves[clickedCurveIdx];
-
-                        } else if (action == "MOVE_SYMBOL") {
-                            p.checkPointsUndo.push(p.checkPoint);
-                            p.checkPointsRedo = [];
-                            scope.$apply();
-
-                            let found = false;
-
-                            for (let i = 0; i < curves.length; i++) {
-                                let interX = curves[i]['interX'];
-                                attach(interX, found);
-
-                                let interY = curves[i]['interY'];
-                                attach(interY, found);
-
-                                let maxima = curves[i]['maxima'];
-                                attach(maxima, found);
-
-                                let minima = curves[i]['minima'];
-                                attach(minima, found);
-
-                                if (found) {
-                                    break;
-                                }
-                            }
-
-                            if (!found && clickedKnot != null) {
-                                let knot = clickedKnot;
-                                if (knot.xSymbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), graphUtils.createPoint(knot[0], canvasProperties.height/2)) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = knot[0];
-                                    movedSymbol.y = canvasProperties.height/2;
-                                    knot.xSymbol = movedSymbol;
-                                    found = true;
-                                } else if (knot.ySymbol == undefined && graphUtils.getDist(graphUtils.createPoint(movedSymbol.x, movedSymbol.y), graphUtils.createPoint(canvasProperties.width/2, knot[1])) < MOUSE_DETECT_RADIUS) {
-                                    movedSymbol.x = canvasProperties.width/2;
-                                    movedSymbol.y = knot[1];
-                                    knot.ySymbol = movedSymbol;
-                                    found = true;
-                                }
-                            }
-
-                            if (!found) {
-                                freeSymbols.push(movedSymbol);
-                            }
-
-                            reDraw();
 
                         } else if (action == "DRAW_CURVE") {
 
@@ -1052,11 +794,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                                     curve.colorIdx = drawnColorIdx;
                                 }
 
-                                loop(curve.maxima);
-                                loop(curve.minima);
-                                loop(curve.interX);
-                                loop(curve.interY);
-
                                 curves.push(curve);
                                 reDraw();
                             }
@@ -1095,18 +832,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             if (clickedCurveIdx != undefined) {
                                 let curve = (curves.splice(clickedCurveIdx, 1))[0];
 
-                                let interX = curve.interX;
-                                freeAllSymbols(interX);
-
-                                let interY = curve.interY;
-                                freeAllSymbols(interY);
-
-                                let maxima = curve.maxima;
-                                freeAllSymbols(maxima);
-
-                                let minima = curve.minima;
-                                freeAllSymbols(minima);
-
                                 clickedCurveIdx = undefined;
                                 reDraw();
                             }
@@ -1118,7 +843,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         if (curves.length < 4) {
                             scope.graphView.drawBackground(canvasProperties.width, canvasProperties.height);
                             scope.graphView.drawCurves(curves);
-                            scope.graphView.drawSymbols(freeSymbols, DEFAULT_KNOT_COLOR);
                             scope.graphView.drawStretchBox(clickedCurveIdx, curves);
                             scope.state = encodeData();
                         }
@@ -1238,13 +962,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
 
                         data.curves = clonedCurves;
 
-                        let clonedFreeSymbols = graphUtils.clone(freeSymbols);
-                        for (let i = 0; i < clonedFreeSymbols.length; i++) {
-                            let symbol = clonedFreeSymbols[i];
-                            normalise(symbol);
-                        }
-                        data.freeSymbols = clonedFreeSymbols;
-
                         return data;
                     };
                 }
@@ -1313,7 +1030,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         });
 
                         // reload previous answer if there is one ////////////////////////////////////////////////
-                        if (scope.state.curves != undefined && scope.state.freeSymbols != undefined) {
+                        if (scope.state.curves != undefined) {
                             graphUtils.decodeData(scope.state, window.innerWidth, window.innerHeight);
                             clickedCurveIdx = undefined
                             reDraw();

@@ -71,11 +71,6 @@ define(["../../../lib/math.js"], function(m) {
                 denormalise2(minima);
             }
 
-            let freeSymbols = data.freeSymbols;
-            for (let j = 0; j < freeSymbols.length; j++) {
-                denormalise(freeSymbols[j]);
-            }
-
             return;
         },
 
@@ -90,24 +85,8 @@ define(["../../../lib/math.js"], function(m) {
             return (this.createPoint(x, y));
         },
 
-        symbolOverKnot: function(knots, movedSymbol, MOUSE_DETECT_RADIUS) {
-            for (let j = 0; j < knots.length; j++) {
-                if (knots[j].symbol == undefined && this.getDist(movedSymbol, knots[j]) < MOUSE_DETECT_RADIUS) {
-                    return knots[j];
-                }
-            }
-        },
-
         createPoint: function(x, y) {
             let obj = [x, y];
-            return obj;
-        },
-
-        createSymbol: function(text, x, y) {
-            let obj = {};
-            obj.text = text;
-            obj.x = x;
-            obj.y = y;
             return obj;
         },
 
@@ -183,35 +162,16 @@ define(["../../../lib/math.js"], function(m) {
             return sampled;
         },
 
-        isOverSymbol: function(pt, symbol) {
-            if (symbol == undefined) {
-                return false;
-            }
-            let left = symbol.x - 5;
-            let right = symbol.x + 5;
-            let top = symbol.y - 5;
-            let bottom = symbol.y + 20 + 5;
-            return (pt[0] > left && pt[0] < right && pt[1] > top && pt[1] < bottom);
-        },
-
-        overItem: function(curves, e, freeSymbols, MOUSE_DETECT_RADIUS, found) {
+        overItem: function(curves, e, MOUSE_DETECT_RADIUS, found) {
             let mousePosition = this.getMousePt(e);
             let loop = function(knots) {
                 for (let j = 0; j < knots.length; j++) {
                     let knot = knots[j];
                     if (this.getDist(mousePosition, knot) < MOUSE_DETECT_RADIUS) {
                         found = "overKnot";
-                    } else if (knot.symbol != undefined && this.isOverSymbol(mousePosition, knot.symbol)) {
-                        found = "overAttachedSymbol";
-                    }
+                    } 
                 }
             }.bind(this);
-
-            for (let i = 0; i < freeSymbols.length; i++) { // detects if mouse over free symbol
-                if (this.isOverSymbol(mousePosition, freeSymbols[i])) {
-                    found = "overFreeSymbol";
-                }
-            }
 
             for (let j = 0; j < curves.length; j++) { // detects if mouse is over curve
                 for (let k = 0; k < curves[j].pts.length; k++) {
@@ -383,7 +343,7 @@ define(["../../../lib/math.js"], function(m) {
         },
 
         // given a curve, translate the curve
-        translateCurve: function(curve, dx, dy, canvasProperties, freeSymbols) {
+        translateCurve: function(curve, dx, dy, canvasProperties) {
             let pts = curve.pts;
 
             curve.minX += dx;
@@ -402,19 +362,6 @@ define(["../../../lib/math.js"], function(m) {
 
                     knot[0] += dx;
                     knot[1] += dy;
-
-                    if (knot.symbol != undefined) {
-                        knot.symbol.x += dx;
-                        knot.symbol.y += dy;
-                    }
-
-                    if (knot.xSymbol != undefined) {
-                        knot.xSymbol.x = knot[0];
-                    }
-
-                    if (knot.ySymbol != undefined) {
-                        knot.ySymbol.y = knot.y;
-                    }
                 }
             }
 
@@ -445,9 +392,7 @@ define(["../../../lib/math.js"], function(m) {
                             symbol.x = knot[0];
                             symbol.y = knot.y;
                             knot.symbol = symbol;
-                        } else {
-                            freeSymbols.push(symbol);
-                        }
+                        } 
                     }
                 }
                 return newInter;
@@ -474,8 +419,6 @@ define(["../../../lib/math.js"], function(m) {
             let tempMin = undefined;
             let tempMax = undefined;
             let turningPoints = isMaxima ? selectedCurve.maxima : selectedCurve.minima;
-            console.log(importantPoints);
-            console.log(turningPoints);
             for (let i = 0; i < importantPoints.length; i++) {
                 if (importantPoints[i] == undefined || turningPoints[selectedPointIndex] == undefined) {
                     break;
@@ -485,8 +428,6 @@ define(["../../../lib/math.js"], function(m) {
                     tempMax = importantPoints[i + 1];
                 }
             }
-            console.log(tempMax);
-            console.log(tempMin);
             let xBuffer = 30;
             let yBuffer = 15;
             let withinXBoundary = (mousePosition[0] - tempMax[0]) < -xBuffer && (mousePosition[0] - tempMin[0]) > xBuffer;
@@ -591,18 +532,6 @@ define(["../../../lib/math.js"], function(m) {
                         let knot = knots[j];
 
                         stretch(knot);
-
-                        if (knot.symbol != undefined) {
-                            stretch(knot.symbol);
-                        }
-
-                        if (knot.xSymbol != undefined) {
-                            stretch(knot.xSymbol);
-                        }
-
-                        if (knot.ySymbol != undefined) {
-                            stretch(knot.ySymbol);
-                        }
                     }
                 }
             }
