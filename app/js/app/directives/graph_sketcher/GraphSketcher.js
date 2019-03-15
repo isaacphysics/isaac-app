@@ -844,7 +844,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             scope.log = null;
                             scope.p.remove();
                             curves = [];
-                            console.log(scope.state.curves);
                             resolve(scope.state);
                             return(scope.state);
                         });
