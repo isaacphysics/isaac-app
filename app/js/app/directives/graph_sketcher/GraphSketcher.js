@@ -111,7 +111,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                     let action = undefined;
                     let isMouseDragged;
                     let releasePt;
-                    let drawMode;
                     let key = undefined;
 
                     // for drawing curve
@@ -393,22 +392,6 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             reDraw();
                         }
 
-                        if (key === "shift") {
-                            lineStart = mousePosition;
-                            drawMode = "line";
-                        } else {
-                            drawMode = "curve";
-                        }
-
-                        if (key === 46) {
-                            // delete key pressed
-                            if (clickedCurveIdx != undefined) {
-                                let curve = (curves.splice(movedCurveIdx, 1))[0];
-
-                                clickedCurveIdx = undefined;
-                            }
-                        }
-
                         // get drawnColor
                         switch (colorSelect.value) {
                             case "Blue": {
@@ -592,27 +575,15 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         } else if (action == "DRAW_CURVE") {
                             p.cursor(p.CROSS);
                             if (curves.length < CURVE_LIMIT) {
-                                if (drawMode == "curve") {
-                                    p.push();
-                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
-                                    if (drawnPts.length > 0) {
-                                        let precedingPoint = drawnPts[drawnPts.length - 1];
-                                        p.line(precedingPoint[0], precedingPoint[1], mousePosition[0], mousePosition[1]);
-                                    }
-                                    p.pop();
-                                    drawnPts.push(mousePosition);
-                                } else {
-                                    reDraw();
-
-                                    p.push();
-                                    p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
-                                    p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
-                                    p.line(lineStart[0], lineStart[1], mousePosition[0], mousePosition[1]);
-                                    p.pop();
-
-                                    lineEnd = mousePosition;
+                                p.push();
+                                p.stroke(graphViewBuilder.graphView.CURVE_COLORS[drawnColorIdx]);
+                                p.strokeWeight(graphViewBuilder.graphView.CURVE_STRKWEIGHT);
+                                if (drawnPts.length > 0) {
+                                    let precedingPoint = drawnPts[drawnPts.length - 1];
+                                    p.line(precedingPoint[0], precedingPoint[1], mousePosition[0], mousePosition[1]);
                                 }
+                                p.pop();
+                                drawnPts.push(mousePosition);
                             }
                         }
                     }
@@ -699,100 +670,65 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
 
                                 let curve;
 
-                                if (drawMode == "curve") {
-                                    // reject if curve drawn is too short
-                                    if (graphUtils.sample(drawnPts).length < 3) {
-                                        return;
-                                    }
+                                if (graphUtils.sample(drawnPts).length < 3) {
+                                    return;
+                                }
 
-                                    p.checkPointsUndo.push(p.checkPoint);
-                                    p.checkPointsRedo = [];
-                                    scope.$apply();
+                                p.checkPointsUndo.push(p.checkPoint);
+                                p.checkPointsRedo = [];
+                                scope.$apply();
 
-                                    // adjustment of start and end to attach to the axis automatically.
-                                    if (Math.abs(drawnPts[0][1] - canvasProperties.height/2) < 3) {
-                                        drawnPts[0][1] = canvasProperties.height/2;
-                                    }
-                                    if (Math.abs(drawnPts[0][0] - canvasProperties.width/2) < 3) {
-                                        drawnPts[0][0] = canvasProperties.width/2;
-                                    }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1][1] - canvasProperties.height/2) < 3) {
-                                        drawnPts[drawnPts.length - 1][1] = canvasProperties.height/2;
-                                    }
-                                    if (Math.abs(drawnPts[drawnPts.length - 1][0] - canvasProperties.width/2) < 3) {
-                                        drawnPts[drawnPts.length - 1][0] = canvasProperties.width/2;
-                                    }
+                                // adjustment of start and end to attach to the axis automatically.
+                                if (Math.abs(drawnPts[0][1] - canvasProperties.height/2) < 3) {
+                                    drawnPts[0][1] = canvasProperties.height/2;
+                                }
+                                if (Math.abs(drawnPts[0][0] - canvasProperties.width/2) < 3) {
+                                    drawnPts[0][0] = canvasProperties.width/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1][1] - canvasProperties.height/2) < 3) {
+                                    drawnPts[drawnPts.length - 1][1] = canvasProperties.height/2;
+                                }
+                                if (Math.abs(drawnPts[drawnPts.length - 1][0] - canvasProperties.width/2) < 3) {
+                                    drawnPts[drawnPts.length - 1][0] = canvasProperties.width/2;
+                                }
 
-                                    // sampler.sample, bezier.genericBezier
-                                    let pts = [];
-                                    if (scope.selectedLineType == "bezier") {
-                                        pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
-                                    } else if (scope.selectedLineType == "linear") {
-                                        // pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
-                                        pts = graphUtils.linearLineStyle([drawnPts[0],drawnPts[drawnPts.length-1]])
-                                    }
-                                    curve = {};
-                                    curve.pts = pts;
+                                // sampler.sample, bezier.genericBezier
+                                let pts = [];
+                                if (scope.selectedLineType == "bezier") {
+                                    pts = graphUtils.bezierLineStyle(graphUtils.sample(drawnPts));
+                                } else if (scope.selectedLineType == "linear") {
+                                    // pts = graphUtils.linearLineStyle(graphUtils.sample(drawnPts));
+                                    pts = graphUtils.linearLineStyle([drawnPts[0],drawnPts[drawnPts.length-1]])
+                                }
+                                curve = {};
+                                curve.pts = pts;
 
-                                    let minX = pts[0][0];
-                                    let maxX = pts[0][0];
-                                    let minY = pts[0][1];
-                                    let maxY = pts[0][1];
-                                    for (let i = 1; i < pts.length; i++) {
-                                        minX = Math.min(pts[i][0], minX);
-                                        maxX = Math.max(pts[i][0], maxX);
-                                        minY = Math.min(pts[i][1], minY);
-                                        maxY = Math.max(pts[i][1], maxY);
-                                    }
-                                    curve.minX = minX;
-                                    curve.maxX = maxX;
-                                    curve.minY = minY;
-                                    curve.maxY = maxY;
+                                let minX = pts[0][0];
+                                let maxX = pts[0][0];
+                                let minY = pts[0][1];
+                                let maxY = pts[0][1];
+                                for (let i = 1; i < pts.length; i++) {
+                                    minX = Math.min(pts[i][0], minX);
+                                    maxX = Math.max(pts[i][0], maxX);
+                                    minY = Math.min(pts[i][1], minY);
+                                    maxY = Math.max(pts[i][1], maxY);
+                                }
+                                curve.minX = minX;
+                                curve.maxX = maxX;
+                                curve.minY = minY;
+                                curve.maxY = maxY;
 
-                                    curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
-                                    if (scope.selectedLineType == "bezier") {
-                                        curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
-                                        curve.minima = graphUtils.findTurnPts(pts, 'minima');
-                                    } else {
-                                        curve.maxima = [];
-                                        curve.minima = [];
-                                    }
-                                    curve.colorIdx = drawnColorIdx;
-
+                                curve.endPt = graphUtils.findEndPts(pts);
+                                curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
+                                curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
+                                if (scope.selectedLineType == "bezier") {
+                                    curve.maxima = graphUtils.findTurnPts(pts, 'maxima');
+                                    curve.minima = graphUtils.findTurnPts(pts, 'minima');
                                 } else {
-                                    p.checkPointsUndo.push(p.checkPoint);
-                                    p.checkPointsRedo = [];
-                                    scope.$apply();
-
-                                    let n = 100;
-                                    let rx = lineEnd[0] - lineStart[0];
-                                    let ry = lineEnd[1] - lineStart[1];
-                                    let sx = rx / n;
-                                    let sy = ry / n;
-                                    let pts = [];
-                                    for (let i = 0; i < n-1; i++) {
-                                        let x = lineStart[0] + i * sx;
-                                        let y = lineStart[1] + i * sy;
-                                        pts.push(graphUtils.createPoint(x, y));
-                                    }
-
-                                    curve = {};
-                                    curve.pts = pts;
-
-                                    curve.minX = Math.min(lineStart[0], lineEnd[0]);
-                                    curve.maxX = Math.max(lineStart[0], lineEnd[0]);
-                                    curve.minY = Math.min(lineStart[1], lineEnd[1]);
-                                    curve.maxY = Math.max(lineStart[1], lineEnd[1]);
-
-                                    curve.endPt = graphUtils.findEndPts(pts);
-                                    curve.interX = graphUtils.findInterceptX(canvasProperties.height, pts);
-                                    curve.interY = graphUtils.findInterceptY(canvasProperties.width, pts);
                                     curve.maxima = [];
                                     curve.minima = [];
-                                    curve.colorIdx = drawnColorIdx;
                                 }
+                                curve.colorIdx = drawnColorIdx;
 
                                 curves.push(curve);
                                 reDraw();
@@ -817,7 +753,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
 
                     // TODO BH remember to properly resize curves for continuous resizing - i.e. undo/redo correctly
                     p.windowResized = function() {
-                        let data = encodeData(false);
+                        let data = graphUtils.encodeData(false, canvasProperties, curves);
                         canvasProperties.width = window.innerWidth;
                         canvasProperties.height = window.innerHeight;
                         p.resizeCanvas(window.innerWidth, window.innerHeight);
@@ -844,125 +780,8 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             scope.graphView.drawBackground(canvasProperties.width, canvasProperties.height);
                             scope.graphView.drawCurves(curves);
                             scope.graphView.drawStretchBox(clickedCurveIdx, curves);
-                            scope.state = encodeData();
+                            scope.state = graphUtils.encodeData(true, canvasProperties, curves);
                         }
-                    };
-
-                    // enables data to be encoded/decoded to input on reload (2nd attempt at a question etc)
-                    encodeData = function(trunc) {
-
-                        if (trunc == undefined) {
-                            trunc = true;
-                        }
-
-                        if (canvasProperties.width > 5000 || canvasProperties.width <= 0) {
-                            alert("Invalid canvasProperties.width.");
-                            return;
-                        }
-
-                        if (canvasProperties.height > 5000 || canvasProperties.height <= 0) {
-                            alert("Invalid canvasProperties.height.");
-                            return;
-                        }
-
-                        let data = {};
-                        data.canvasWidth = canvasProperties.width;
-                        data.canvasHeight = canvasProperties.height;
-
-                        let clonedCurves = graphUtils.clone(curves);
-
-                        // sort segments according to their left most points.
-                        function compare(curve1, curve2) {
-                            function findMinX(pts) {
-                                if (pts.length == 0) return 0;
-                                let min = canvasProperties.width;
-                                for (let i = 0; i < pts.length; i++)
-                                    min = Math.min(min, pts[i][0]);
-                                return min;
-                            }
-
-                            let min1 = findMinX(curve1.pts);
-                            let min2 = findMinX(curve2.pts);
-                            if (min1 < min2) return -1
-                            else if (min1 == min2) return 0
-                            else return 1;
-                        }
-
-                        clonedCurves.sort(compare);
-
-                        function normalise(pt) {
-                            let x = (pt[0] - canvasProperties.width/2) / canvasProperties.width;
-                            let y = (canvasProperties.height/2 - pt[1]) / canvasProperties.height;
-                            if (trunc) {
-                                pt[0] = Math.trunc(x * 1000) / 1000;
-                                pt[1] = Math.trunc(y * 1000) / 1000;
-                            } else {
-                                pt[0] = x;
-                                pt[1] = y;
-                            }
-                        }
-
-                        function normalise1(knots) {
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                normalise(knot);
-                                if (knot.symbol != undefined) {
-                                    normalise(knot.symbol);
-                                }
-                            }
-                        }
-
-                        function normalise2(knots) {
-                            normalise1(knots);
-                            for (let j = 0; j < knots.length; j++) {
-                                let knot = knots[j];
-                                if (knot.xSymbol != undefined) {
-                                    normalise(knot.xSymbol);
-                                }
-                                if (knot.ySymbol != undefined) {
-                                    normalise(knot.ySymbol);
-                                }
-                            }
-                        }
-
-
-                        for (let i = 0; i < clonedCurves.length; i++) {
-                            let pts = clonedCurves[i].pts;
-                            for (let j = 0; j < pts.length; j++) {
-                                normalise(pts[j]);
-                            }
-
-                            let tmp;
-
-                            tmp = (clonedCurves[i].minX - canvasProperties.width/2) / canvasProperties.width;
-                            clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (clonedCurves[i].maxX - canvasProperties.width/2) / canvasProperties.width;
-                            clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (canvasProperties.height/2 - clonedCurves[i].minY) / canvasProperties.height;
-                            clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
-
-                            tmp = (canvasProperties.height/2 - clonedCurves[i].maxY) / canvasProperties.height;
-                            clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
-
-
-                            let interX = clonedCurves[i].interX;
-                            normalise1(interX);
-
-                            let interY = clonedCurves[i].interY;
-                            normalise1(interY);
-
-                            let maxima = clonedCurves[i].maxima;
-                            normalise2(maxima);
-
-                            let minima = clonedCurves[i].minima;
-                            normalise2(minima);
-                        }
-
-                        data.curves = clonedCurves;
-
-                        return data;
                     };
                 }
 
@@ -1025,6 +844,7 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                             scope.log = null;
                             scope.p.remove();
                             curves = [];
+                            console.log(scope.state.curves);
                             resolve(scope.state);
                             return(scope.state);
                         });

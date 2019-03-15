@@ -11,6 +11,123 @@ define(["../../../lib/math.js"], function(m) {
             return Math.sqrt(Math.pow(pt1[0] - pt2[0], 2) + Math.pow(pt1[1] - pt2[1], 2));
         },
 
+        // enables data to be encoded/decoded to input on reload (2nd attempt at a question etc)
+        encodeData: function(trunc, canvasProperties, curves) {
+
+            if (trunc == undefined) {
+                trunc = true;
+            }
+
+            if (canvasProperties.width > 5000 || canvasProperties.width <= 0) {
+                alert("Invalid canvasProperties.width.");
+                return;
+            }
+
+            if (canvasProperties.height > 5000 || canvasProperties.height <= 0) {
+                alert("Invalid canvasProperties.height.");
+                return;
+            }
+
+            let data = {};
+            data.canvasWidth = canvasProperties.width;
+            data.canvasHeight = canvasProperties.height;
+
+            let clonedCurves = this.clone(curves);
+
+            // sort segments according to their left most points.
+            function compare(curve1, curve2) {
+                function findMinX(pts) {
+                    if (pts.length == 0) return 0;
+                    let min = canvasProperties.width;
+                    for (let i = 0; i < pts.length; i++)
+                        min = Math.min(min, pts[i][0]);
+                    return min;
+                }
+
+                let min1 = findMinX(curve1.pts);
+                let min2 = findMinX(curve2.pts);
+                if (min1 < min2) return -1
+                else if (min1 == min2) return 0
+                else return 1;
+            }
+
+            clonedCurves.sort(compare);
+
+            function normalise(pt) {
+                let x = (pt[0] - canvasProperties.width/2) / canvasProperties.width;
+                let y = (canvasProperties.height/2 - pt[1]) / canvasProperties.height;
+                if (trunc) {
+                    pt[0] = Math.trunc(x * 10000) / 10000;
+                    pt[1] = Math.trunc(y * 10000) / 10000;
+                } else {
+                    pt[0] = x;
+                    pt[1] = y;
+                }
+            }
+
+            function normalise1(knots) {
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    normalise(knot);
+                    if (knot.symbol != undefined) {
+                        normalise(knot.symbol);
+                    }
+                }
+            }
+
+            function normalise2(knots) {
+                normalise1(knots);
+                for (let j = 0; j < knots.length; j++) {
+                    let knot = knots[j];
+                    if (knot.xSymbol != undefined) {
+                        normalise(knot.xSymbol);
+                    }
+                    if (knot.ySymbol != undefined) {
+                        normalise(knot.ySymbol);
+                    }
+                }
+            }
+
+
+            for (let i = 0; i < clonedCurves.length; i++) {
+                let pts = clonedCurves[i].pts;
+                for (let j = 0; j < pts.length; j++) {
+                    normalise(pts[j]);
+                }
+
+                let tmp;
+
+                tmp = (clonedCurves[i].minX - canvasProperties.width/2) / canvasProperties.width;
+                clonedCurves[i].minX = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (clonedCurves[i].maxX - canvasProperties.width/2) / canvasProperties.width;
+                clonedCurves[i].maxX = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (canvasProperties.height/2 - clonedCurves[i].minY) / canvasProperties.height;
+                clonedCurves[i].minY = Math.trunc(tmp * 1000) / 1000;
+
+                tmp = (canvasProperties.height/2 - clonedCurves[i].maxY) / canvasProperties.height;
+                clonedCurves[i].maxY = Math.trunc(tmp * 1000) / 1000;
+
+
+                let interX = clonedCurves[i].interX;
+                normalise1(interX);
+
+                let interY = clonedCurves[i].interY;
+                normalise1(interY);
+
+                let maxima = clonedCurves[i].maxima;
+                normalise2(maxima);
+
+                let minima = clonedCurves[i].minima;
+                normalise2(minima);
+            }
+
+            data.curves = clonedCurves;
+
+            return data;
+        },
+
         decodeData: function(data, width, height) {
 
             // let data = this.clone(rawData);
@@ -284,9 +401,9 @@ define(["../../../lib/math.js"], function(m) {
             let statPts = [];
             let pot_max = [];
             let pot_min = [];
-            let cutoff = 10;
+            let CUTOFF = 10;
 
-            for (let i = cutoff; i < pts.length-cutoff; i++) {
+            for (let i = CUTOFF; i < pts.length-CUTOFF; i++) {
                 if ((pts[i][1] < pts[i-1][1] && pts[i][1] < pts[i+1][1]) || (pts[i][1] > pts[i-1][1] && pts[i][1] > pts[i+1][1]) || (pts[i][1] == pts[i-1][1])) {
                     potentialPts.push(this.createPoint(pts[i][0], pts[i][1]));
                 }
@@ -428,10 +545,10 @@ define(["../../../lib/math.js"], function(m) {
                     tempMax = importantPoints[i + 1];
                 }
             }
-            let xBuffer = 30;
-            let yBuffer = 15;
-            let withinXBoundary = (mousePosition[0] - tempMax[0]) < -xBuffer && (mousePosition[0] - tempMin[0]) > xBuffer;
-            let withinYBoundary = (isMaxima && ((mousePosition[1] - tempMax[1]) < -yBuffer && (mousePosition[1] - tempMin[1]) < -yBuffer)) || (!isMaxima && ((mousePosition[1] - tempMax[1]) > yBuffer && (mousePosition[1] - tempMin[1]) > yBuffer));
+            let XBUFFER = 30;
+            let YBUFFER = 15;
+            let withinXBoundary = (mousePosition[0] - tempMax[0]) < -XBUFFER && (mousePosition[0] - tempMin[0]) > XBUFFER;
+            let withinYBoundary = (isMaxima && ((mousePosition[1] - tempMax[1]) < -YBUFFER && (mousePosition[1] - tempMin[1]) < -YBUFFER)) || (!isMaxima && ((mousePosition[1] - tempMax[1]) > YBUFFER && (mousePosition[1] - tempMin[1]) > YBUFFER));
             let movementWithinBoundary = (withinXBoundary && withinYBoundary);
             if (movementWithinBoundary) {
                 // to this point we get the clicked knot and the turning/end points either side, now we will split the curve into the two

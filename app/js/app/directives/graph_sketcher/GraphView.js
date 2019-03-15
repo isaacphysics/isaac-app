@@ -13,7 +13,7 @@ define(['./GraphUtils.js'], function(graphUtils) {
     // self explanatory drawing methods
     class GraphView {
         constructor(p) {
-            this.p = p
+            this.p = p;
         }        
 
         drawCurves(curves, color) {
