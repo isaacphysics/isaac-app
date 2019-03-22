@@ -31,11 +31,6 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         passwordCurrent : ""
     };
 
-    // It appears ng-model can no longer cope matching a string value to a number?
-    if ($scope.user.defaultLevel) {
-        $scope.user.defaultLevel = String($scope.user.defaultLevel);
-    }
-
     // the hash will be used as an anchor
     if ($location.hash){
         switch($location.hash()){
