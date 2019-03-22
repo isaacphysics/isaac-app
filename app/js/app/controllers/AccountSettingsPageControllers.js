@@ -62,6 +62,10 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         $scope.editingSelf = true;
     }
 
+    api.authentication.getUserAuthenticationSettings({'userId':$scope.user.id}).$promise.then(function(result){
+        $scope.authenticationSettings = result;
+    });
+
     if ($scope.editingSelf) {
         api.user.getUserPreferences().$promise.then(function(result){
             // Only update values if response contains key:
@@ -180,7 +184,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
         let linked = {"GOOGLE":false, "TWITTER":false, "FACEBOOK":false};
 
         // loop through linked accounts
-        angular.forEach($scope.user.linkedAccounts, function(account){
+        angular.forEach($scope.authenticationSettings.linkedAccounts, function(account){
             Object.keys(linked).forEach(function(key) {
                 // If there is a match update to true
                 if (key === account) linked[key] = true;
@@ -192,9 +196,12 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     $scope.removeLinkedAccount = function(provider) {
         api.removeLinkedAccount(provider).then(function() {
-            auth.updateUser();
+            api.authentication.getUserAuthenticationSettings({'userId':$scope.user.id}).$promise.then(function(result){
+                $scope.authenticationSettings = result;
+            });
         });
     }
+    
     $scope.addLinkedAccount = function(provider) {
         auth.linkRedirect(provider);
     }

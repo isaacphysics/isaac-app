@@ -110,6 +110,11 @@ define([], function() {
                 method: 'POST',
                 url: urlPrefix+"/auth/logout",
             },
+            'getUserAuthenticationSettings': {
+                method: 'GET',
+                url: urlPrefix+"/auth/user_authentication_settings/:userId",
+                isArray: false 
+            },
         });
         
         this.searchEndpoint = $resource(urlPrefix + "/search/:searchTerms?types=:types", {}, {
