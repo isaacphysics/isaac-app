@@ -11,7 +11,8 @@
 	                <li ng-class="{'ru-answer-block': true, 'ru-error': question.validationResponse.correct === false}">
 	                    <!-- <div>Value</div> -->
 	                    <div class="ru-answer-block-panel">
-	                        <input type="text" maxlength="75" ng-model="ctrl.selectedValue" placeholder="Type your answer here.">
+							<textarea ng-if="doc.multiLineEntry" spellcheck="true" maxlength="250" ng-model="ctrl.selectedValue" placeholder="Type your answer here." rows="3"></textarea>
+	                        <input    ng-if="!doc.multiLineEntry" type="text" maxlength="75" ng-model="ctrl.selectedValue" placeholder="Type your answer here.">
 	                    </div>              
 	                </li>
 	            </ul>
