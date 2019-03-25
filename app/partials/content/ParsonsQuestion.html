@@ -1,0 +1,35 @@
+<div class="isaac-parsons-question">
+    <div class="row">
+        <div class="small-14 small-offset-1 columns end">
+            <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
+        </div>
+    </div>
+    <div class="row ru-answer-block-panel">
+        <div class="small-8 medium-7 medium-offset-1 columns end no-print">
+            <div class="parsons-panel">
+                <div as-sortable="parsonsDragOptions" ng-model="parsonsItemOptions">
+                    <div ng-repeat="parsonsItem in parsonsItemOptions" as-sortable-item class="parsons-item">
+                        <div as-sortable-item-handle>
+                            <code ng-show="{{parsonsItem.code}}">{{parsonsItem.value}}</code>
+                            <span ng-hide="{{parsonsItem.code}}">{{parsonsItem.value}}</span>
+                        </div>
+                    </div>
+                </div>
+                <button ng-show="{{parsonsItemOptions != parsonsQuestionItems}}" ng-click="initaliseState()">Reset</button>
+            </div>
+        </div>
+        <div class="small-8 medium-7 columns end no-print">
+            <div as-sortable="parsonsDragOptions" ng-model="parsonsAnswerItems" class="parsons-panel">
+                <div ng-hide="parsonsAnswerItems.length" class="parsons-item parsons-item-instruction">
+                    <code>Your answer</code>
+                </div>
+                <div ng-repeat="parsonsItem in parsonsAnswerItems" as-sortable-item class="parsons-item" style="margin-left: {{tabWidth * parsonsItem.indentation}}px">
+                    <div as-sortable-item-handle>
+                        <code ng-show="{{parsonsItem.code}}">{{parsonsItem.value}}</code>
+                        <span ng-hide="{{parsonsItem.code}}">{{parsonsItem.value}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

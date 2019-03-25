@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"], function(_rv, templateUrl) {
+define(["../../honest/responsive_video", "/partials/content/ParsonsQuestion.html"], function(_rv, templateUrl) {
 
     return ["api", function(_api) {
 
@@ -30,31 +30,31 @@ define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"
                 scope.tabWidth = 40;
                 scope.maxIndent = 2; // TODO initialise this value fromthe question
 
-                scope.parsonQuestionItems = [
+                scope.parsonsQuestionItems = [
                     {id: 123, value:'print("C")', indentation: 0, code: true},
                     {id: 232, value:'print("A")', indentation: 0, code: true},
                     {id: 333, value:'print("B")', indentation: 0, code: true},
                 ]
 
-                scope.parsonDragOptions = {
-                    additionalPlaceholderClass: 'parson-item',
+                scope.parsonsDragOptions = {
+                    additionalPlaceholderClass: 'parsons-item',
                     accept: function(source, target) {
                         let targetOffset = source.element[0].getBoundingClientRect().left - target.element[0].getBoundingClientRect().left;
                         if (targetOffset > scope.tabWidth) {
                             let indentation = Math.max(Math.min(Math.floor(targetOffset / scope.tabWidth), scope.maxIndent), 0)
                             $(".as-sortable-placeholder").css("margin-left", (scope.tabWidth * indentation) + "px");
-                            source.parsonItem.indentation = indentation;
+                            source.parsonsItem.indentation = indentation;
                         } else {
                             $(".as-sortable-placeholder").css("margin-left", "0px");
-                            source.parsonItem.indentation = 0;
+                            source.parsonsItem.indentation = 0;
                         }
                         return true;
                     }
                 };
 
                 scope.initaliseState = function() {
-                    scope.parsonAnswerItems = []; // TODO swap with scope.doc.seed or something if it exists
-                    scope.parsonItemOptions = angular.copy(scope.parsonQuestionItems);
+                    scope.parsonsAnswerItems = []; // TODO swap with scope.doc.seed or something if it exists
+                    scope.parsonsItemOptions = angular.copy(scope.parsonsQuestionItems);
                 };
                 scope.initaliseState();
 
@@ -62,7 +62,7 @@ define(["../../honest/responsive_video", "/partials/content/ParsonQuestion.html"
                 ctrl.selectedValue = null;
                 scope.$watch("ctrl.selectedValue", function(value, oldValue) {
                     if (value === oldValue) { return; /* Init */ }
-                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "stringChoice" };
+                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "parsonsChoice" };
                     scope.question.selectedChoice.value = value;
                 });
                 if (scope.question.selectedChoice) {

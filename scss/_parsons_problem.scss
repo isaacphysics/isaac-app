@@ -1,12 +1,12 @@
-.isaac-parson-question {
-    .parson-panel {
+.isaac-parsons-question {
+    .parsons-panel {
         min-height: 200px;
         padding: 0.5rem;
         background-color: #999;
         border: solid 1px #333;
         color: #333;
     }
-    .parson-item {
+    .parsons-item {
         background-color: #ffe330;
         color: #333;
         border: solid 1px #333;
@@ -20,7 +20,7 @@
         opacity: 0.8;
         box-sizing: border-box;
     }
-    .parson-item-instruction {
+    .parsons-item-instruction {
         border: dashed 2px white;
         background: inherit;
         color: white;
@@ -71,7 +71,7 @@
     user-select: none;
 }
 
-.as-sortable-item, .as-sortable-placeholder, .parson-item {
+.as-sortable-item, .as-sortable-placeholder, .parsons-item {
     display: block;
     margin: 5px 2px;
     /*border-radius: 7px;*/

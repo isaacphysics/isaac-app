@@ -170,7 +170,7 @@ define(function(require) {
 
 	.directive('isaacFreeTextQuestion', require("./directives/content/FreeTextQuestion"))
 
-	.directive('isaacParsonQuestion', require("./directives/content/ParsonQuestion"))
+	.directive('isaacParsonsQuestion', require("./directives/content/ParsonsQuestion"))
 
 	.directive('isaacQuickQuestion', require("./directives/content/QuickQuestion"))
 
