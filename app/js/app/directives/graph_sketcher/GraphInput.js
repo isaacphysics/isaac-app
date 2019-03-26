@@ -23,6 +23,12 @@ define(['/partials/graph_sketcher/graph_input.html'], function(templateUrl) {
                         }
                     );
                 };
+
+                // scope.$watch("state", function(s) {
+                //     if (!s) {
+                //         element.find(".graph-preview").html("Draw a graph");
+                //     } 
+                // });
             }
         };
     }];

@@ -16,4 +16,16 @@
 
 export const PageController = ['$scope', '$rootScope', '$stateParams', function($scope, _$rootScope, _$stateParams) {
     $scope.mode = "sketcher";
+    // $scope.state = [];
+     $scope.$watch("$scope.state", function(s) {
+        if (s == null) return;
+        try {
+            let curves = JSON.parse(s);
+            $scope.curveState = {
+                curve: curves
+            }
+        } catch (e) {
+            console.error("Invalid curves");
+        }
+    });
 }];

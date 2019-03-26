@@ -314,13 +314,14 @@ define(["../../../lib/math.js"], function(m) {
             return found;
         },
 
-        findEndPts: function(pts) {
+        findEndPts: function(pts) { //TODO look at this, pts now
             if (pts.length == 0) return [];
 
             let ends = [];
 
             ends.push(this.createPoint(pts[0][0], pts[0][1]));
-            ends.push(this.createPoint(pts[pts.length - 2][0], pts[pts.length - 2][1]));
+            ends.push(this.createPoint(pts[pts.length - 2][0], pts[pts.length - 2][1]));//TODO possible 1, from 101?
+
 
             for (let i = 1; i < pts.length; i++) {
                 if (pts[i-1][0] - pts[i][0] > 200) {

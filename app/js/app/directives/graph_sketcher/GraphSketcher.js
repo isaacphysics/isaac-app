@@ -803,7 +803,10 @@ define(["p5", "./GraphView.js", "./GraphUtils.js", "/partials/graph_sketcher/gra
                         // initialise our canvas
                         scope.p = new p5(scope.sketch, element.find(".graph-sketcher")[0]);
                         graphSketcherModal.foundation("reveal", "open");
-                        if (initialState.curves == undefined) {
+                        if (initialState == undefined || typeof(initialState) == "undefined") {
+                            scope.state = {freeSymbols: [], curves: []};
+                            initialState = scope.state;
+                        } else if (typeof(initialState.curves) == undefined || initialState.curves == undefined) {
                             scope.state = {freeSymbols: [], curves: []};
                         } else {
                             scope.state = initialState;
