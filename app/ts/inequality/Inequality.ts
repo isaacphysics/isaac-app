@@ -70,14 +70,14 @@ export
     baseFontSize = 50;
     baseDockingPointSize = this.baseFontSize/3;
 
-    changeBaseFontSizeBy = (amount) => {
+    changeBaseFontSizeBy = (amount: number) => {
         if (this.baseFontSize + amount > 0) {
             this.baseFontSize += amount;
             this.updateLetterBoxes();
         }
     };
 
-    changeBaseDockingPointSizeBy = (amount) => {
+    changeBaseDockingPointSizeBy = (amount: number) => {
         if (this.baseDockingPointSize + amount/3 > 0) {
             this.baseDockingPointSize += amount/3;
             this.updateLetterBoxes();
@@ -93,7 +93,18 @@ export
 
     logicSyntax: string = null;
 
-    constructor(private p, public scope, private width, private height, private initialSymbolsToParse, private textEntry = false) {
+    // There are more properties, but these are the only ones required from within TS
+    // TODO: Create a better specified object.
+    log: { initialState: Array<Object>, actions: Array<Object> } = null;
+
+    constructor(
+        private p: p5,
+        public scope,
+        private width: number,
+        private height: number,
+        private initialSymbolsToParse: Array<Object>,
+        private textEntry = false
+        ) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
@@ -102,6 +113,7 @@ export
         this.p.touchEnded = this.touchEnded;
         this.p.mouseMoved = this.mouseMoved;
         this.p.windowResized = this.windowResized;
+        debugger;
     }
 
     preload = () => {
@@ -123,10 +135,10 @@ export
         this.centre(true);
 
         if (!this.textEntry) {
-            this.scope.log.initialState = [];
+            this.log.initialState = [];
             
             for (let symbol of this.symbols) {
-                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+                this.log.initialState.push(symbol.subtreeObject(true, true));
             };
         }
         this.updateCanvasDockingPoints();
@@ -138,9 +150,10 @@ export
     };
 
     setup = () => {
+        debugger;
         this.p.frameRate(7);
 
-        this.logicSyntax = this.scope.logicSyntax || 'logic';
+        this.logicSyntax = this.logicSyntax || 'logic';
 
         switch (this.scope.editorMode) {
             case 'maths':
@@ -171,15 +184,14 @@ export
         }
         this.centre(true);
         if (!this.textEntry) {
-            this.scope.log.initialState = [];
+            this.log.initialState = [];
 
             for (let symbol of this.symbols) {
-                this.scope.log.initialState.push(symbol.subtreeObject(true, true));
+                this.log.initialState.push(symbol.subtreeObject(true, true));
             };
         }
         this.updateCanvasDockingPoints();
-
-    };
+    }
 
     windowResized = () => {
         this.p.resizeCanvas(this.p.windowWidth * Math.ceil(window.devicePixelRatio), this.p.windowHeight * Math.ceil(window.devicePixelRatio));
@@ -233,12 +245,12 @@ export
         return minDistance <= this.baseFontSize*1.5 ? candidateDockingPoint : null;
     };
 
-    updatePotentialSymbol = (spec, x?, y?) => {
+    updatePotentialSymbol = (spec, x?: number, y?: number) => {
         // NB: This logic requires spec to be briefly set to null when switching between potential symbol types.
         if (spec) {
             if (!this.potentialSymbol) {
                 this.potentialSymbol = this._parseSubtreeObject(spec);
-                this.scope.log.actions.push({
+                this.log.actions.push({
                     event: "DRAG_POTENTIAL_SYMBOL",
                     symbol: this.potentialSymbol.subtreeObject(false, true, true),
                     timestamp: Date.now()
@@ -276,7 +288,7 @@ export
         // Make sure we have an active docking point, and that the moving symbol can dock to it.
         if (this.activeDockingPoint != null && _.intersection(this.potentialSymbol.docksTo, this.activeDockingPoint.type).length > 0) {
             this.activeDockingPoint.child = this.potentialSymbol;
-            this.scope.log.actions.push({
+            this.log.actions.push({
                 event: "DOCK_POTENTIAL_SYMBOL",
                 symbol: this.potentialSymbol.subtreeObject(false, true, true),
                 parent: this.potentialSymbol.parentWidget.subtreeObject(false, true, true),
@@ -285,7 +297,7 @@ export
             });
         } else if (this.potentialSymbol != null) {
             this.symbols.push(this.potentialSymbol);
-            this.scope.log.actions.push({
+            this.log.actions.push({
                 event: "DROP_POTENTIAL_SYMBOL",
                 symbol: this.potentialSymbol.subtreeObject(false, true, true),
                 timestamp: Date.now()
@@ -403,7 +415,7 @@ export
             if (hitSymbol != null && hitSymbol.isDetachable) {
                 // If we hit that symbol, then mark it as moving
                 this.movingSymbol = hitSymbol;
-                this.scope.log.actions.push({
+                this.log.actions.push({
                     event: "DRAG_START",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
                     timestamp: Date.now()
@@ -546,7 +558,7 @@ export
                 // Let the widget know to which docking point it is docked. This is starting to become ridiculous...
                 this.activeDockingPoint.child.dockedTo = this.activeDockingPoint.name;
 
-                this.scope.log.actions.push({
+                this.log.actions.push({
                     event: "DOCK_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
                     parent: this.movingSymbol.parentWidget.subtreeObject(false, true, true),
@@ -554,7 +566,7 @@ export
                     timestamp: Date.now()
                 });
             } else if (this.scope.trashActive) {
-                this.scope.log.actions.push({
+                this.log.actions.push({
                     event: "TRASH_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
                     timestamp: Date.now()
@@ -562,7 +574,7 @@ export
                 this.symbols = _.without(this.symbols, this.movingSymbol);
                 this.updateCanvasDockingPoints();
             } else {
-                this.scope.log.actions.push({
+                this.log.actions.push({
                     event: "DROP_SYMBOL",
                     symbol: this.movingSymbol.subtreeObject(false, true, true),
                     timestamp: Date.now()
@@ -674,7 +686,7 @@ export
             symbol.shakeIt();
         });
         if (!init) {
-            this.scope.log.actions.push({
+            this.log.actions.push({
                 event: "CENTRE_SYMBOLS",
                 timestamp: Date.now()
             });

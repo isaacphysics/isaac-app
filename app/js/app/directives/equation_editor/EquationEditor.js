@@ -440,6 +440,7 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                             } catch (error) {
                                 console.log(error);
                             }
+                            sketch.log = scope.log;
                             $rootScope.sketch = sketch;
                             return sketch;
                         }, element.find(".equation-editor")[0]);

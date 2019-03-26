@@ -58,7 +58,12 @@ define(["p5",
                 let sketch = null;
                 let editorCanvas = element.find(".equation-editor-text-entry")[0];
                 let p = new p5(function (p5instance) {
-                    sketch = new Inequality(p5instance, scope, element.width(), element.height(), [], true);
+                    try {
+                        sketch = new Inequality(p5instance, scope, element.width(), element.height(), [], true);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    sketch.log = scope.log;
                     $rootScope.sketch = sketch;
                     return sketch;
                 }, editorCanvas);
