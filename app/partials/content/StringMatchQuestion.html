@@ -1,22 +1,22 @@
 <div class="isaac-string-match-question">
-	<div class="row">
-	    <div class="small-14 small-offset-1 columns end">
-	        <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
-	    </div>
-	</div>
-	<div class="row">
-	    <div class="medium-11 medium-offset-1 columns end no-print">
-	        <form class="" autocomplete="off">
-	            <ul class="small-block-grid-1">
-	                <li ng-class="{'ru-answer-block': true, 'ru-error': question.validationResponse.correct === false}">
-	                    <!-- <div>Value</div> -->
-	                    <div class="ru-answer-block-panel">
-							<textarea ng-if="doc.multiLineEntry" spellcheck="true" maxlength="250" ng-model="ctrl.selectedValue" placeholder="Type your answer here." rows="3"></textarea>
-	                        <input    ng-if="!doc.multiLineEntry" type="text" maxlength="75" ng-model="ctrl.selectedValue" placeholder="Type your answer here.">
-	                    </div>              
-	                </li>
-	            </ul>
-	        </form>
-	    </div>
-	</div>
+    <div class="row">
+        <div class="small-14 small-offset-1 columns end">
+            <h3><div isaac-content-value-or-children value="doc.value" children="doc.children" encoding="doc.encoding"></div></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="medium-11 medium-offset-1 columns end no-print">
+            <form class="" autocomplete="off">
+                <ul class="small-block-grid-1">
+                    <li ng-class="{'ru-answer-block': true, 'ru-error': question.validationResponse.correct === false}">
+                        <!-- <div>Value</div> -->
+                        <div class="ru-answer-block-panel">
+                            <textarea ng-if=" doc.multiLineEntry" maxlength="250" ng-model="ctrl.selectedValue" placeholder="Type your answer here." spellcheck="true" rows="3"></textarea>
+                            <input    ng-if="!doc.multiLineEntry" maxlength="75"  ng-model="ctrl.selectedValue" placeholder="Type your answer here." type="text">
+                        </div>              
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
 </div>
