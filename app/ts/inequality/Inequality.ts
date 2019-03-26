@@ -95,7 +95,7 @@ export
 
     // There are more properties, but these are the only ones required from within TS
     // TODO: Create a better specified object.
-    log: { initialState: Array<Object>, actions: Array<Object> } = null;
+    log: { initialState: Array<Object>, actions: Array<Object> } | null;
 
     constructor(
         private p: p5,
