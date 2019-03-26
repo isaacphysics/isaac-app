@@ -113,7 +113,6 @@ export
         this.p.touchEnded = this.touchEnded;
         this.p.mouseMoved = this.mouseMoved;
         this.p.windowResized = this.windowResized;
-        debugger;
     }
 
     preload = () => {
@@ -150,7 +149,6 @@ export
     };
 
     setup = () => {
-        debugger;
         this.p.frameRate(7);
 
         this.logicSyntax = this.logicSyntax || 'logic';
