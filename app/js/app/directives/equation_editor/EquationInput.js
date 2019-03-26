@@ -4,9 +4,9 @@ define(["p5",
         "app/js/lib/equation_editor/grammar.ne",
         "app/ts/inequality/Inequality.ts",
         "/partials/equation_editor/equation_input.html"],
-        function(p5, nearley, grammar, MySketch, templateUrl) {
+        function(p5, nearley, grammar, Inequality, templateUrl) {
 
-    MySketch = MySketch.MySketch;
+    Inequality = Inequality.Inequality;
     const compiledGrammar = nearley.Grammar.fromCompiled(grammar);
 
     const parseExpression = (expression = '') => {
@@ -58,7 +58,7 @@ define(["p5",
                 let sketch = null;
                 let editorCanvas = element.find(".equation-editor-text-entry")[0];
                 let p = new p5(function (p5instance) {
-                    sketch = new MySketch(p5instance, scope, element.width(), element.height(), [], true);
+                    sketch = new Inequality(p5instance, scope, element.width(), element.height(), [], true);
                     $rootScope.sketch = sketch;
                     return sketch;
                 }, editorCanvas);

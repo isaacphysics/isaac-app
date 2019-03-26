@@ -45,7 +45,7 @@ import { LogicNot } from './LogicNot';
 
 // This is the "main" app with the update/render loop and all that jazz.
 export
-    class MySketch {
+    class Inequality {
     symbols: Array<Widget>;
     movingSymbol: Widget = null;
     potentialSymbol: Widget = null;
