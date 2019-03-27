@@ -83,7 +83,7 @@ export
         this.s = s;
         this.modifier = modifier;
         this.docksTo = ['relation', 'exponent', 'symbol_subscript', 'symbol', 'differential_argument'];
-        if (this.s.scope.editorMode != 'logic') {
+        if (this.s.editorMode != 'logic') {
             this.docksTo.push('operator');
             this.docksTo.push('operator_brackets');
         }
@@ -112,7 +112,7 @@ export
         let descent = this.position.y - (box.y + box.h); // TODO Check that `descent` is necessary...
 
         this.dockingPoints["right"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.s.mBox_w/4, -this.s.xBox_h/2), 1, ["operator"], "right");
-        if (this.s.scope.editorMode != 'logic') {
+        if (this.s.editorMode != 'logic') {
             this.dockingPoints["superscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, -this.scale * this.s.mBox_h), 2/3, ["exponent"], "superscript");
             this.dockingPoints["subscript"] = new DockingPoint(this, this.p.createVector(box.w/2 + this.scale * 20, descent), 2/3, ["symbol_subscript"], "subscript");
         }

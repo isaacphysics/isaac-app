@@ -97,14 +97,20 @@ export
     // TODO: Create a better specified object.
     log: { initialState: Array<Object>, actions: Array<Object> } | null;
 
+    public editorMode: string;
+    public textEntry: boolean;
+
     constructor(
         private p: p5,
         public scope,
         private width: number,
         private height: number,
         private initialSymbolsToParse: Array<Object>,
-        private textEntry = false
-        ) {
+        {
+            editorMode = "math",
+            textEntry = false
+        } = {}
+    ) {
         this.p.preload = this.preload;
         this.p.setup = this.setup;
         this.p.draw = this.draw;
@@ -113,6 +119,9 @@ export
         this.p.touchEnded = this.touchEnded;
         this.p.mouseMoved = this.mouseMoved;
         this.p.windowResized = this.windowResized;
+
+        this.editorMode = editorMode;
+        this.textEntry = textEntry;
     }
 
     preload = () => {
@@ -153,7 +162,7 @@ export
 
         this.logicSyntax = this.logicSyntax || 'logic';
 
-        switch (this.scope.editorMode) {
+        switch (this.editorMode) {
             case 'maths':
             case 'logic':
                 this.baseFontSize = 50;

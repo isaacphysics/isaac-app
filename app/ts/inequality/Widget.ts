@@ -237,7 +237,7 @@ export
                     } else {
                         this.p.noFill();
                     }
-                    let dps = this.s.scope.editorMode === 'chemistry' ? this.dockingPointSize*(50/30) : this.dockingPointSize;
+                    let dps = this.s.editorMode === 'chemistry' ? this.dockingPointSize*(50/30) : this.dockingPointSize;
                     this.p.ellipse(dockingPoint.position.x, dockingPoint.position.y, dps, dps);
                 }
             }
@@ -354,7 +354,7 @@ export
         this.dockedTo = "";
         _.each(this.parentWidget.dockingPoints, (dockingPoint) => {
             if (dockingPoint.child == this) {
-                this.s.scope.log.actions.push({
+                this.s.log.actions.push({
                     event: "UNDOCK_SYMBOL",
                     symbol: this.subtreeObject(false, true, true),
                     parent: this.parentWidget.subtreeObject(false, true, true),
