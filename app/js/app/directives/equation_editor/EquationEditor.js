@@ -29,10 +29,6 @@ define(["p5", "app/ts/inequality/Inequality.ts", "../../../lib/equation_editor/t
                 // Are we dragging a new symbol from the menu?
                 scope.draggingNewSymbol = false;
 
-                // The moving symbol(s) when symbol(s) are moving.
-                // In practice, only one (top-level) symbol can be moving at any given time, because no multi-touch.
-                scope.selectedSymbols = [];
-
                 // TODO Figure out this one. I'm not sure this is necessary, really...
                 scope.selectionHandleFlags = {
                     showCalc: false,

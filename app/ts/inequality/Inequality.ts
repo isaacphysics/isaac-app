@@ -449,12 +449,6 @@ export
             }
         });
 
-        this.scope.selectedSymbols.length = 0;
-        if (this.movingSymbol) {
-            this.scope.selectedSymbols.push(this.movingSymbol);
-        }
-        this.scope.$digest();
-
         // Put the moving symbol on top (bottom?) of the list (this only works with roots,
         // and may not be necessary at all, but eye candy, right?)
         if (index > -1) {
@@ -540,7 +534,6 @@ export
             // Click
             // Close the menu when touching the canvas
             this.scope.$broadcast("closeMenus");
-            this.scope.selectedSymbols.length = 0;
             this.scope.selectionHandleFlags.symbolModMenuOpen = false;
 
             this.scope.dragMode = "selectionBox";
@@ -587,8 +580,6 @@ export
                     timestamp: Date.now()
                 });
             }
-            this.scope.selectedSymbols.length = 0;
-            this.scope.$digest();
         }
 
         this.updateState();
