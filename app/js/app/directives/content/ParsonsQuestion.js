@@ -30,11 +30,7 @@ define(["../../honest/responsive_video", "/partials/content/ParsonsQuestion.html
                 scope.tabWidth = 40;
                 scope.maxIndent = 2; // TODO initialise this value fromthe question
 
-                scope.parsonsQuestionItems = [
-                    {id: 123, value:'print("C")', indentation: 0, code: true},
-                    {id: 232, value:'print("A")', indentation: 0, code: true},
-                    {id: 333, value:'print("B")', indentation: 0, code: true},
-                ]
+                scope.parsonsQuestionItems = scope.doc.items;
 
                 scope.parsonsDragOptions = {
                     additionalPlaceholderClass: 'parsons-item',
@@ -53,21 +49,40 @@ define(["../../honest/responsive_video", "/partials/content/ParsonsQuestion.html
                 };
 
                 scope.initaliseState = function() {
-                    scope.parsonsAnswerItems = []; // TODO swap with scope.doc.seed or something if it exists
-                    scope.parsonsItemOptions = angular.copy(scope.parsonsQuestionItems);
+
+                    if (scope.question.selectedChoice) {
+                        // We have a previous answer. Load it.
+                        console.debug("Loading the previous answer.");
+                        try {
+                            ctrl.selectedValue = angular.fromJson(scope.question.selectedChoice.value);
+                        } catch (e) {
+                            console.warn("Error loading previous answer: ", e.message);
+                        }  
+                    } else {
+                        // We have no answer and no seed
+                        console.debug("No previous answer or seed.");
+                        ctrl.selectedValue = {
+                            items: [],
+                            remainingItems: angular.copy(scope.parsonsQuestionItems),
+                        };
+                    }
                 };
                 scope.initaliseState();
 
-                // manage selected value
-                ctrl.selectedValue = null;
                 scope.$watch("ctrl.selectedValue", function(value, oldValue) {
-                    if (value === oldValue) { return; /* Init */ }
-                    scope.question.selectedChoice = scope.question.selectedChoice || { type: "parsonsChoice" };
-                    scope.question.selectedChoice.value = value;
-                });
-                if (scope.question.selectedChoice) {
-                    ctrl.selectedValue = scope.question.selectedChoice.value;
-                }
+                    if (value === oldValue) {
+                        return; /* Init */
+                    }
+                    if (value.items) {
+                        scope.question.selectedChoice = {
+                            type: "parsonsChoice",
+                            value: angular.toJson(value),
+                            items: value.items,
+                        };
+                    } else {
+                        scope.question.selectedChoice = null;
+                    }
+                }, true);
             }],
 
             controllerAs: "ctrl",

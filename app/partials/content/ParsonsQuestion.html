@@ -7,23 +7,23 @@
     <div class="row ru-answer-block-panel">
         <div class="small-8 medium-7 medium-offset-1 columns end no-print">
             <div class="parsons-panel">
-                <div as-sortable="parsonsDragOptions" ng-model="parsonsItemOptions">
-                    <div ng-repeat="parsonsItem in parsonsItemOptions" as-sortable-item class="parsons-item">
+                <div as-sortable="parsonsDragOptions" ng-model="ctrl.selectedValue.remainingItems">
+                    <div ng-repeat="parsonsItem in ctrl.selectedValue.remainingItems" as-sortable-item class="parsons-item">
                         <div as-sortable-item-handle>
                             <code ng-show="{{parsonsItem.code}}">{{parsonsItem.value}}</code>
                             <span ng-hide="{{parsonsItem.code}}">{{parsonsItem.value}}</span>
                         </div>
                     </div>
                 </div>
-                <button ng-show="{{parsonsItemOptions != parsonsQuestionItems}}" ng-click="initaliseState()">Reset</button>
+                <button ng-show="{{ctrl.selectedValue.remainingItems != parsonsQuestionItems}}" ng-click="initaliseState()">Reset</button>
             </div>
         </div>
         <div class="small-8 medium-7 columns end no-print">
-            <div as-sortable="parsonsDragOptions" ng-model="parsonsAnswerItems" class="parsons-panel">
-                <div ng-hide="parsonsAnswerItems.length" class="parsons-item parsons-item-instruction">
+            <div as-sortable="parsonsDragOptions" ng-model="ctrl.selectedValue.items" class="parsons-panel">
+                <div ng-hide="ctrl.selectedValue.items.length" class="parsons-item parsons-item-instruction">
                     <code>Your answer</code>
                 </div>
-                <div ng-repeat="parsonsItem in parsonsAnswerItems" as-sortable-item class="parsons-item" style="margin-left: {{tabWidth * parsonsItem.indentation}}px">
+                <div ng-repeat="parsonsItem in ctrl.selectedValue.items" as-sortable-item class="parsons-item" style="margin-left: {{tabWidth * parsonsItem.indentation}}px">
                     <div as-sortable-item-handle>
                         <code ng-show="{{parsonsItem.code}}">{{parsonsItem.value}}</code>
                         <span ng-hide="{{parsonsItem.code}}">{{parsonsItem.value}}</span>
