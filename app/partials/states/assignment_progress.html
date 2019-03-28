@@ -117,8 +117,7 @@
                                                     </td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        title='{{questionHeaderOverview(group.groupName, assignment.gameBoard.questions[$index].title, average)}}'>
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);">
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
@@ -149,25 +148,19 @@
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
                                                         ng-if="studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        title="{{studentQuestionInfo(studentProgress, assignment.gameBoard.questions, $index)}}">
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index">
                                                         {{formatMark(studentProgress.correctPartResults[$index], assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-repeat="q in assignment.gameBoard.questions"
                                                         ng-if="!studentProgress.user.authorisedFullAccess"
                                                         ng-class="getStateClass(studentProgress,  $index, assignment.gameBoard.questions[$index].questionPartsTotal, pageSettings.colourBlind, assignmentSelectedQuestion[assignment._id] == $index)"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index"
-                                                        title="Not Sharing">
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index">
                                                     </td>
-                                                    <td ng-if="studentProgress.user.authorisedFullAccess"
-                                                        class="total-column left"
-                                                        title="{{studentQuestionPartSummaryInfo(studentProgress, assignment.gameBoard.title, assignmentTotalQuestionParts[assignment._id])}}">
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess" class="total-column left">
                                                         {{formatMark(studentProgress.correctQuestionPartsCount, assignmentTotalQuestionParts[assignment._id], pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column left" title="Not Sharing"></td>
-                                                    <td ng-if="studentProgress.user.authorisedFullAccess"
-                                                        class="total-column right"
-                                                        title="{{studentQuestionSummaryInfo(studentProgress, assignment.gameBoard.title, assignment.gameBoard.questions.length)}}">
+                                                    <td ng-if="studentProgress.user.authorisedFullAccess" class="total-column right">
                                                         {{formatMark(studentProgress.tickCount, assignment.gameBoard.questions.length, pageSettings.formatAsPercentage)}}
                                                     </td>
                                                     <td ng-if="!studentProgress.user.authorisedFullAccess" class="total-column right" title="Not Sharing"></td>
@@ -180,8 +173,7 @@
                                                     </td>
                                                     <td ng-repeat="average in assignmentAverages[assignment._id] track by $index"
                                                         ng-class="{'selected': assignmentSelectedQuestion[assignment._id] == $index}"
-                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);"
-                                                        title='{{questionHeaderOverview(group.groupName, assignment.gameBoard.questions[$index].title, average)}}'>
+                                                        ng-click="assignmentSelectedQuestion[assignment._id] = $index; assignment.sortPupilsBy(questionPageLabel + $index);">
                                                         <div ng-class="{
                                                                 'sortable': assignmentSelectedQuestion[assignment._id] == $index,
                                                                 'ascending': assignment.pupilSortOption == assignment.pupilSortOptions[questionPageLabel + $index] && assignment.pupilSortOption.reverse,
