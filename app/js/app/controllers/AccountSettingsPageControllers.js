@@ -147,6 +147,8 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
             $scope.dob.month = $scope.datePicker.months[date.getMonth()];
             $scope.dob.year = date.getFullYear();
         }
+    }).catch(function() {
+        // The user probably isn't logged in. We don't care.
     });
 
     // Watch for changes to the DOB selection
@@ -197,7 +199,7 @@ export const PageController = ['$scope', 'auth', 'api', 'userOfInterest', 'subje
 
     $scope.removeLinkedAccount = function(provider) {
         api.removeLinkedAccount(provider).then(function() {
-            auth.updateUser();
+            auth.updateUser().catch(function() {});
         });
     }
     $scope.addLinkedAccount = function(provider) {

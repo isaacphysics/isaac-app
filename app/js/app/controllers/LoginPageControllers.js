@@ -20,7 +20,7 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 	$scope.globalFlags.noSearch = true;
 	
 	// Make sure the internal user object is up-to-date
-	auth.updateUser().then(function(_user){			
+	auth.updateUser().then(function(_user){	
 		// We will only do this bit if the user is already logged in.
 		let target = $location.search().target;
 		if (target) {
@@ -28,5 +28,5 @@ export const PageController = ['$scope', 'auth', '$state', '$location', '$window
 		} else {
 			$state.go('home');
 		}
-	});
+	}).catch(function() {});
 }];

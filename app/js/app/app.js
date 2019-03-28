@@ -185,7 +185,7 @@ define([
         };
         Opentip.defaultStyle = "globalStyle";
 
-        auth.updateUser();
+        auth.updateUser().catch(function() {});
 
         var mathjaxRenderTimeout = null;
 
@@ -744,6 +744,8 @@ define([
                     $rootScope.notificationWebSocket = null;
                 }
 
+            }).catch(function() {
+                // The user probably isn't logged in. We don't care.
             });
         }
 
@@ -797,6 +799,8 @@ define([
                         })
                     }
                 }
+            }).catch(function() {
+                // The user probably isn't logged in. We don't care.
             })
 
             // Check again in half an hour. This style of notification isn't really used much now.
@@ -818,6 +822,8 @@ define([
                         var newUrl = notification.externalReference.url.replace(userIdToken, user._id);
 
                         window.open(newUrl, "_blank");
+                    }).catch(function() {
+                        // The user probably isn't logged in. We don't care.
                     });
                 } else {
                     window.open(notification.externalReference.url, "_blank");
